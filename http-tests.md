@@ -386,8 +386,8 @@ To assert that an attribute is present or absent, you may use the `has` and `mis
 In addition, the `hasAll` and `missingAll` methods allow asserting the presence or absence of multiple attributes simultaneously:
 
     $response->assertJson(fn (AssertableJson $json) =>
-        $json->hasAll('status', 'data')
-             ->missingAll('message', 'code')
+        $json->hasAll(['status', 'data'])
+             ->missingAll(['message', 'code'])
     );
 
 You may use the `hasAny` method to determine if at least one of a given list of attributes is present:
@@ -602,12 +602,14 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 <style>
     .collection-method-list > p {
-        column-count: 2; -moz-column-count: 2; -webkit-column-count: 2;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+        columns: 14.4em 2; -moz-columns: 14.4em 2; -webkit-columns: 14.4em 2;
     }
 
     .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 

@@ -326,7 +326,7 @@ When using a custom keyed implicit binding as a nested route parameter, Laravel 
 <a name="restful-localizing-resource-uris"></a>
 ### Localizing Resource URIs
 
-By default, `Route::resource` will create resource URIs using English verbs. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\Providers\RouteServiceProvider`:
+By default, `Route::resource` will create resource URIs using English verbs and plural rules. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\Providers\RouteServiceProvider`:
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -343,11 +343,11 @@ By default, `Route::resource` will create resource URIs using English verbs. If 
         // ...
     }
 
-Once the verbs have been customized, a resource route registration such as `Route::resource('fotos', PhotoController::class)` will produce the following URIs:
+Laravel's pluralizer supports [several different languages which you may configure based on your needs](/docs/{{version}}/localization#pluralization-language). Once the verbs and pluralization language have been customized, a resource route registration such as `Route::resource('publicacion', PublicacionController::class)` will produce the following URIs:
 
-    /fotos/crear
+    /publicacion/crear
 
-    /fotos/{foto}/editar
+    /publicacion/{publicaciones}/editar
 
 <a name="restful-supplementing-resource-controllers"></a>
 ### Supplementing Resource Controllers

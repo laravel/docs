@@ -223,7 +223,7 @@ For convenience, some commonly used regular expression patterns have helper meth
 
     Route::get('/category/{category}', function ($category) {
         //
-    })->whereIn(['movie', 'song', 'painting']);
+    })->whereIn('category', ['movie', 'song', 'painting']);
 
 If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.
 

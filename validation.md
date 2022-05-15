@@ -752,12 +752,14 @@ Below is a list of all available validation rules and their function:
 
 <style>
     .collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
     }
 
     .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 
@@ -807,10 +809,10 @@ Below is a list of all available validation rules and their function:
 [In Array](#rule-in-array)
 [Integer](#rule-integer)
 [IP Address](#rule-ip)
-[MAC Address](#rule-mac)
 [JSON](#rule-json)
 [Less Than](#rule-lt)
 [Less Than Or Equal](#rule-lte)
+[MAC Address](#rule-mac)
 [Max](#rule-max)
 [MIME Types](#rule-mimetypes)
 [MIME Type By File Extension](#rule-mimes)
@@ -1248,11 +1250,6 @@ The field under validation must be an IPv4 address.
 
 The field under validation must be an IPv6 address.
 
-<a name="rule-mac"></a>
-#### mac_address
-
-The field under validation must be a MAC address.
-
 <a name="rule-json"></a>
 #### json
 
@@ -1267,6 +1264,11 @@ The field under validation must be less than the given _field_. The two fields m
 #### lte:_field_
 
 The field under validation must be less than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+
+<a name="rule-mac"></a>
+#### mac_address
+
+The field under validation must be a MAC address.
 
 <a name="rule-max"></a>
 #### max:_value_

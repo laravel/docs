@@ -19,6 +19,7 @@
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
 - [Valet Directories & Files](#valet-directories-and-files)
+    - [Disk Access](#disk-access)
 
 <a name="introduction"></a>
 ## Introduction
@@ -485,7 +486,7 @@ This directory contains custom Valet extensions / commands.
 
 #### `~/.config/valet/Nginx/`
 
-This directory contains all of Valet's Nginx site configurations. These files are rebuilt when running the `install`, `secure`, and `tld` commands.
+This directory contains all of Valet's Nginx site configurations. These files are rebuilt when running the `install` and `secure` commands.
 
 #### `~/.config/valet/Sites/`
 
@@ -526,3 +527,10 @@ This file is the PHP-FPM pool configuration file.
 #### `~/.composer/vendor/laravel/valet/cli/stubs/secure.valet.conf`
 
 This file is the default Nginx configuration used for building SSL certificates for your sites.
+
+<a name="disk-access"></a>
+### Disk Access
+
+Since macOS 10.14, [access to some files and directories is restricted by default](https://manuals.info.apple.com/MANUALS/1000/MA1902/en_US/apple-platform-security-guide.pdf). These restrictions include the Desktop, Documents, and Downloads directories. In addition, network volume and removable volume access is restricted. Therefore, Valet recommends your site folders are located outside of these protected locations.
+
+However, if you wish to serve sites from within one of those locations, you will need to give Nginx "Full Disk Access". Otherwise, you may encounter server errors or other unpredictable behavior from Nginx, especially when serving static assets. Typically, macOS will automatically prompt you to grant Nginx full access to these locations. Or, you may do so manually via `System Preferences` > `Security & Privacy` > `Privacy` and selecting `Full Disk Access`. Next, enable any `nginx` entries in the main window pane.

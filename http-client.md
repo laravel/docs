@@ -14,6 +14,7 @@
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
     - [Inspecting Requests](#inspecting-requests)
+    - [Preventing Stray Requests](#preventing-stray-requests)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -188,7 +189,7 @@ If needed, you may pass a third argument to the `retry` method. The third argume
 If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:
 
     $response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {
-        if (! $exception instanceof RequestException || $request->response->status() !== 401) {
+        if (! $exception instanceof RequestException || $exception->response->status() !== 401) {
             return false;
         }
 
@@ -324,7 +325,7 @@ $response = Http::github()->get('/');
 <a name="testing"></a>
 ## Testing
 
-Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP wrapper is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made.
+Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP client is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made.
 
 <a name="faking-responses"></a>
 ### Faking Responses
@@ -399,6 +400,25 @@ If you require more complicated logic to determine what responses to return for 
     Http::fake(function (Request $request) {
         return Http::response('Hello World', 200);
     });
+
+<a name="preventing-stray-requests"></a>
+### Preventing Stray Requests
+
+If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:
+
+    use Illuminate\Support\Facades\Http;
+
+    Http::preventStrayRequests();
+
+    Http::fake([
+        'github.com/*' => Http::response('ok'),
+    ]);
+
+    // An "ok" response is returned...
+    Http::get('https://github.com/laravel/framework');
+
+    // An exception is thrown...
+    Http::get('https://laravel.com');
 
 <a name="inspecting-requests"></a>
 ### Inspecting Requests

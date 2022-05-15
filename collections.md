@@ -79,17 +79,19 @@ If necessary, you may define macros that accept additional arguments:
 For the majority of the remaining collection documentation, we'll discuss each method available on the `Collection` class. Remember, all of these methods may be chained to fluently manipulate the underlying array. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary:
 
 <style>
-    #collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    .collection-method-list > p {
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
     }
 
-    #collection-method-list a {
+    .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 
-<div id="collection-method-list" markdown="1">
+<div class="collection-method-list" markdown="1">
 
 [all](#method-all)
 [average](#method-average)
@@ -1034,7 +1036,7 @@ Multiple grouping criteria may be passed as an array. Each array element will be
 
     $result = $data->groupBy(['skill', function ($item) {
         return $item['roles'];
-    }], $preserveKeys = true);
+    }], preserveKeys: true);
 
     /*
     [
@@ -1247,13 +1249,13 @@ The `lazy` method returns a new [`LazyCollection`](#lazy-collections) instance f
 
 This is especially useful when you need to perform transformations on a huge `Collection` that contains many items:
 
-    $count = $hugeCollection()
+    $count = $hugeCollection
         ->lazy()
         ->where('country', 'FR')
         ->where('balance', '>', '100')
         ->count();
 
-By converting the collection to a `LazyCollection`, though the original values are all held in memory, subsequent filters do not need to store their values in memory. Therefore, virtually no additional memory will be allocated when filtering the collection's results.
+By converting the collection to a `LazyCollection`, we avoid having to allocate a ton of additional memory. Though the original collection still keeps _its_ values in memory, the subsequent filters will not. Therefore, virtually no additional memory will be allocated when filtering the collection's results.
 
 <a name="method-macro"></a>
 #### `macro()` {.collection-method}
@@ -3351,6 +3353,7 @@ Almost all methods available on the `Collection` class are also available on the
 [shuffle](#method-shuffle)
 [skip](#method-skip)
 [slice](#method-slice)
+[sole](#method-sole)
 [some](#method-some)
 [sort](#method-sort)
 [sortBy](#method-sortby)

@@ -13,12 +13,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 <style>
     .collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
     }
 
     .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 
@@ -1583,7 +1585,7 @@ The `Str::padRight` method wraps PHP's `str_pad` function, padding the right sid
 <a name="method-str-plural"></a>
 #### `Str::plural()` {.collection-method}
 
-The `Str::plural` method converts a singular word string to its plural form. This function currently only supports the English language:
+The `Str::plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
     use Illuminate\Support\Str;
 
@@ -1610,7 +1612,7 @@ You may provide an integer as a second argument to the function to retrieve the 
 <a name="method-str-plural-studly"></a>
 #### `Str::pluralStudly()` {.collection-method}
 
-The `Str::pluralStudly` method converts a singular word string formatted in studly caps case to its plural form. This function currently only supports the English language:
+The `Str::pluralStudly` method converts a singular word string formatted in studly caps case to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
     use Illuminate\Support\Str;
 
@@ -1721,7 +1723,7 @@ The `Str::reverse` method reverses the given string:
 <a name="method-str-singular"></a>
 #### `Str::singular()` {.collection-method}
 
-The `Str::singular` method converts a string to its singular form. This function currently only supports the English language:
+The `Str::singular` method converts a string to its singular form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
     use Illuminate\Support\Str;
 
@@ -2539,7 +2541,7 @@ The `pipe` method allows you to transform the string by passing its current valu
 <a name="method-fluent-str-plural"></a>
 #### `plural` {.collection-method}
 
-The `plural` method converts a singular word string to its plural form. This function currently only supports the English language:
+The `plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
     use Illuminate\Support\Str;
 
@@ -2683,7 +2685,7 @@ The `scan` method parses input from a string into a collection according to a fo
 <a name="method-fluent-str-singular"></a>
 #### `singular` {.collection-method}
 
-The `singular` method converts a string to its singular form. This function currently only supports the English language:
+The `singular` method converts a string to its singular form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
     use Illuminate\Support\Str;
 
@@ -3486,6 +3488,14 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an [
     $value = old('value');
 
     $value = old('value', 'default');
+
+Since the "default value" provided as the second argument to the `old` function is often an attribute of an Eloquent model, Laravel allows you to simply pass the entire Eloquent model as the second argument to the `old` function. When doing so, Laravel will assume the first argument provided to the `old` function is the name of the Eloquent attribute that should be considered the "default value":
+
+    {{ old('name', $user->name) }}
+
+    // Is equivalent to...
+
+    {{ old('name', $user) }}
 
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}

@@ -22,9 +22,13 @@
     - [Reserved Keywords](#reserved-keywords)
     - [Slots](#slots)
     - [Inline Component Views](#inline-component-views)
-    - [Anonymous Components](#anonymous-components)
     - [Dynamic Components](#dynamic-components)
     - [Manually Registering Components](#manually-registering-components)
+- [Anonymous Components](#anonymous-components)
+    - [Anonymous Index Components](#anonymous-index-components)
+    - [Data Properties / Attributes](#data-properties-attributes)
+    - [Accessing Parent Data](#accessing-parent-data)
+    - [Anonymous Components Namespaces](#anonymous-component-namespaces)
 - [Building Layouts](#building-layouts)
     - [Layouts Using Components](#layouts-using-components)
     - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
@@ -338,7 +342,7 @@ In addition to conditional statements, Blade provides simple directives for work
 
 > {tip} While iterating through a `foreach` loop, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
 
-When using loops you may also end the loop or skip the current iteration using the `@continue` and `@break` directives:
+When using loops you may also skip the current iteration or end the loop using the `@continue` and `@break` directives:
 
 ```blade
 @foreach ($users as $user)
@@ -673,7 +677,7 @@ You may pass data to Blade components using HTML attributes. Hard-coded, primiti
 <x-alert type="error" :message="$message"/>
 ```
 
-You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
+You should define all of the component's data attributes in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
 
     <?php
 
@@ -1157,111 +1161,6 @@ To create a component that renders an inline view, you may use the `inline` opti
 php artisan make:component Alert --inline
 ```
 
-<a name="anonymous-components"></a>
-### Anonymous Components
-
-Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/views/components/alert.blade.php`, you may simply render it like so:
-
-```blade
-<x-alert/>
-```
-
-You may use the `.` character to indicate if a component is nested deeper inside the `components` directory. For example, assuming the component is defined at `resources/views/components/inputs/button.blade.php`, you may render it like so:
-
-```blade
-<x-inputs.button/>
-```
-
-<a name="anonymous-index-components"></a>
-#### Anonymous Index Components
-
-Sometimes, when a component is made up of many Blade templates, you may wish to group the given component's templates within a single directory. For example, imagine an "accordion" component with the following directory structure:
-
-```none
-/resources/views/components/accordion.blade.php
-/resources/views/components/accordion/item.blade.php
-```
-
-This directory structure allows you to render the accordion component and its item like so:
-
-```blade
-<x-accordion>
-    <x-accordion.item>
-        ...
-    </x-accordion.item>
-</x-accordion>
-```
-
-However, in order to render the accordion component via `x-accordion`, we were forced to place the "index" accordion component template in the `resources/views/components` directory instead of nesting it within the `accordion` directory with the other accordion related templates.
-
-Thankfully, Blade allows you to place an `index.blade.php` file within a component's template directory. When an `index.blade.php` template exists for the component, it will be rendered as the "root" node of the component. So, we can continue to use the same Blade syntax given in the example above; however, we will adjust our directory structure like so:
-
-```none
-/resources/views/components/accordion/index.blade.php
-/resources/views/components/accordion/item.blade.php
-```
-
-<a name="data-properties-attributes"></a>
-#### Data Properties / Attributes
-
-Since anonymous components do not have any associated class, you may wonder how you may differentiate which data should be passed to the component as variables and which attributes should be placed in the component's [attribute bag](#component-attributes).
-
-You may specify which attributes should be considered data variables using the `@props` directive at the top of your component's Blade template. All other attributes on the component will be available via the component's attribute bag. If you wish to give a data variable a default value, you may specify the variable's name as the array key and the default value as the array value:
-
-```blade
-<!-- /resources/views/components/alert.blade.php -->
-
-@props(['type' => 'info', 'message'])
-
-<div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
-    {{ $message }}
-</div>
-```
-
-Given the component definition above, we may render the component like so:
-
-```blade
-<x-alert type="error" :message="$message" class="mb-4"/>
-```
-
-<a name="accessing-parent-data"></a>
-#### Accessing Parent Data
-
-Sometimes you may want to access data from a parent component inside a child component. In these cases, you may use the `@aware` directive. For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>`:
-
-```blade
-<x-menu color="purple">
-    <x-menu.item>...</x-menu.item>
-    <x-menu.item>...</x-menu.item>
-</x-menu>
-```
-
-The `<x-menu>` component may have an implementation like the following:
-
-```blade
-<!-- /resources/views/components/menu/index.blade.php -->
-
-@props(['color' => 'gray'])
-
-<ul {{ $attributes->merge(['class' => 'bg-'.$color.'-200']) }}>
-    {{ $slot }}
-</ul>
-```
-
-Because the `color` prop was only passed into the parent (`<x-menu>`), it won't be available inside `<x-menu.item>`. However, if we use the `@aware` directive, we can make it available inside `<x-menu.item>` as well:
-
-```blade
-<!-- /resources/views/components/menu/item.blade.php -->
-
-@aware(['color' => 'gray'])
-
-<li {{ $attributes->merge(['class' => 'text-'.$color.'-800']) }}>
-    {{ $slot }}
-</li>
-```
-
-> {note} The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
-
 <a name="dynamic-components"></a>
 ### Dynamic Components
 
@@ -1323,6 +1222,136 @@ This will allow the usage of package components by their vendor namespace using 
 ```
 
 Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using "dot" notation.
+
+<a name="anonymous-components"></a>
+## Anonymous Components
+
+Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/views/components/alert.blade.php`, you may simply render it like so:
+
+```blade
+<x-alert/>
+```
+
+You may use the `.` character to indicate if a component is nested deeper inside the `components` directory. For example, assuming the component is defined at `resources/views/components/inputs/button.blade.php`, you may render it like so:
+
+```blade
+<x-inputs.button/>
+```
+
+<a name="anonymous-index-components"></a>
+### Anonymous Index Components
+
+Sometimes, when a component is made up of many Blade templates, you may wish to group the given component's templates within a single directory. For example, imagine an "accordion" component with the following directory structure:
+
+```none
+/resources/views/components/accordion.blade.php
+/resources/views/components/accordion/item.blade.php
+```
+
+This directory structure allows you to render the accordion component and its item like so:
+
+```blade
+<x-accordion>
+    <x-accordion.item>
+        ...
+    </x-accordion.item>
+</x-accordion>
+```
+
+However, in order to render the accordion component via `x-accordion`, we were forced to place the "index" accordion component template in the `resources/views/components` directory instead of nesting it within the `accordion` directory with the other accordion related templates.
+
+Thankfully, Blade allows you to place an `index.blade.php` file within a component's template directory. When an `index.blade.php` template exists for the component, it will be rendered as the "root" node of the component. So, we can continue to use the same Blade syntax given in the example above; however, we will adjust our directory structure like so:
+
+```none
+/resources/views/components/accordion/index.blade.php
+/resources/views/components/accordion/item.blade.php
+```
+
+<a name="data-properties-attributes"></a>
+### Data Properties / Attributes
+
+Since anonymous components do not have any associated class, you may wonder how you may differentiate which data should be passed to the component as variables and which attributes should be placed in the component's [attribute bag](#component-attributes).
+
+You may specify which attributes should be considered data variables using the `@props` directive at the top of your component's Blade template. All other attributes on the component will be available via the component's attribute bag. If you wish to give a data variable a default value, you may specify the variable's name as the array key and the default value as the array value:
+
+```blade
+<!-- /resources/views/components/alert.blade.php -->
+
+@props(['type' => 'info', 'message'])
+
+<div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
+    {{ $message }}
+</div>
+```
+
+Given the component definition above, we may render the component like so:
+
+```blade
+<x-alert type="error" :message="$message" class="mb-4"/>
+```
+
+<a name="accessing-parent-data"></a>
+### Accessing Parent Data
+
+Sometimes you may want to access data from a parent component inside a child component. In these cases, you may use the `@aware` directive. For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>`:
+
+```blade
+<x-menu color="purple">
+    <x-menu.item>...</x-menu.item>
+    <x-menu.item>...</x-menu.item>
+</x-menu>
+```
+
+The `<x-menu>` component may have an implementation like the following:
+
+```blade
+<!-- /resources/views/components/menu/index.blade.php -->
+
+@props(['color' => 'gray'])
+
+<ul {{ $attributes->merge(['class' => 'bg-'.$color.'-200']) }}>
+    {{ $slot }}
+</ul>
+```
+
+Because the `color` prop was only passed into the parent (`<x-menu>`), it won't be available inside `<x-menu.item>`. However, if we use the `@aware` directive, we can make it available inside `<x-menu.item>` as well:
+
+```blade
+<!-- /resources/views/components/menu/item.blade.php -->
+
+@aware(['color' => 'gray'])
+
+<li {{ $attributes->merge(['class' => 'text-'.$color.'-800']) }}>
+    {{ $slot }}
+</li>
+```
+
+> {note} The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
+
+<a name="anonymous-component-namespaces"></a>
+### Anonymous Component Namespaces
+
+As previously discussed, anonymous components are typically defined by placing a Blade template within your `resources/views/components` directory. However, you may occasionally want to register other anonymous component paths with Laravel in addition to the default path.
+
+For example, when building a vacation booking application, you may wish to place flight booking related anonymous components within a `resources/views/flights/bookings/components` directory. To inform Laravel of this anonymous component location, you may use the `anonymousComponentNamespace` method provided by the `Blade` facade.
+
+The `anonymousComponentNamespace` method accepts the "path" to the anonymous component location as its first argument and the "namespace" that components should be placed under as its second argument. As you will see in the example below, the "namespace" will be prefixed to the component's name when the component is rendered. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Blade::anonymousComponentNamespace('flights.bookings.components', 'flights');
+    }
+
+Given the example above, you may render a `panel` component that exists within the newly registered component directory like so:
+
+```blade
+<x-flights::panel :flight="$flight" />
+```
 
 <a name="building-layouts"></a>
 ## Building Layouts
