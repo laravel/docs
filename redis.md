@@ -299,11 +299,11 @@ Sometimes you may need to execute dozens of Redis commands. Instead of making a 
         }
     });
 
-It is also possible to initialize a pipeline and to bind methods to the Redis instance.
+It is also possible to initialize a pipeline which returns a Redis instance and can be used to chain Redis commands.
 
     use Illuminate\Support\Facades\Redis;
 
-    Redis::HMSET(
+    Redis::hmset(
         'myhash',
         [
             'field1' => 'Taylor Otwell',
@@ -313,8 +313,9 @@ It is also possible to initialize a pipeline and to bind methods to the Redis in
 
     $pipe = Redis::pipeline();
     $pipe->ping();
-    $pipe->hmget('myhash', ['field1', 'field2]);
-    $result = $pipe->exec();
+    $pipe->hmget('myhash', ['field1', 'field2']);
+
+    return $pipe->exec();
 
 <a name="pubsub"></a>
 ## Pub / Sub
