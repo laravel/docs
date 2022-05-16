@@ -822,7 +822,7 @@ Assert that the response contains the given data at the specified path:
 
     $response->assertJsonPath($path, $expectedValue);
 
-For example, if the JSON response returned by your application contains the following data:
+For example, if the following JSON response is returned by your application:
 
 ```js
 {
@@ -843,7 +843,7 @@ Assert that the response does not contain the given path:
 
     $response->assertJsonMissingPath($path);
 
-For example, if the JSON response returned by your application contains the following data:
+For example, if the following JSON response is returned by your application:
 
 ```js
 {
