@@ -1219,8 +1219,8 @@ When the `in` rule is combined with the `array` rule, each value in the input ar
         'airports' => [
             'required',
             'array',
-            Rule::in(['NYC', 'LIT']),
         ],
+        'airports.*' => Rule::in(['NYC', 'LIT']),
     ]);
 
 <a name="rule-in-array"></a>
