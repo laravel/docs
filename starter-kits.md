@@ -23,6 +23,8 @@ Breeze provides a wonderful starting point for beginning a fresh Laravel applica
 
 <img src="https://laravel.com/img/docs/breeze-register.png">
 
+> {tip} If you are adding authentication to an existing application or will be implementing your own frontend views and logic you find [Fortify](/docs/{{version}}/fortify) a better match. Fortify provides a complete serverside authentication setup without imposing a frontend on you.
+
 <a name="laravel-breeze-installation"></a>
 ### Installation
 
