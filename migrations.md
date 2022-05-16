@@ -927,7 +927,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
         }
     };
 
-> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
+> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation. In addition, it is not possible to combine raw `default` expressions (using `DB::raw`) with column changes via the `change` method.
 
 <a name="column-order"></a>
 #### Column Order
