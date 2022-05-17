@@ -1335,8 +1335,6 @@ To check if an existing trial has expired, you may use the `hasExpiredTrial` met
         //
     }
 
-This can be useful to show a banner on your app to indicate that their trial has expired and should subscribe.
-
 <a name="defining-trial-days-in-stripe-cashier"></a>
 #### Defining Trial Days In Stripe / Cashier
 
