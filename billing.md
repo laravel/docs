@@ -1325,7 +1325,7 @@ You may use the `endTrial` method to immediately end a subscription trial:
 
     $user->subscription('default')->endTrial();
 
-To check if an existing trial has expired, you may use the `hasExpiredTrial` methods:
+To determine if an existing trial has expired, you may use the `hasExpiredTrial` methods:
 
     if ($user->hasExpiredTrial('default')) {
         //
