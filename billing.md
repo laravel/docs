@@ -1314,11 +1314,11 @@ The `trialUntil` method allows you to provide a `DateTime` instance that specifi
 You may determine if a user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
 
     if ($user->onTrial('default')) {
-        //
+        // ...
     }
 
     if ($user->subscription('default')->onTrial()) {
-        //
+        // ...
     }
 
 You may use the `endTrial` method to immediately end a subscription trial:
