@@ -1255,7 +1255,7 @@ For example, if a customer cancels a subscription on March 1st, but the subscrip
 You may determine if a user has canceled their subscription but are still on their "grace period" using the `onGracePeriod` method:
 
     if ($user->subscription('default')->onGracePeriod()) {
-        // ...
+        //
     }
 
 If you wish to cancel a subscription immediately, call the `cancelNow` method on the user's subscription:
@@ -1314,11 +1314,11 @@ The `trialUntil` method allows you to provide a `DateTime` instance that specifi
 You may determine if a user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
 
     if ($user->onTrial('default')) {
-        // ...
+        //
     }
 
     if ($user->subscription('default')->onTrial()) {
-        // ...
+        //
     }
 
 You may use the `endTrial` method to immediately end a subscription trial:
@@ -1328,11 +1328,11 @@ You may use the `endTrial` method to immediately end a subscription trial:
 To determine if an existing trial has expired, you may use the `hasExpiredTrial` methods:
 
     if ($user->hasExpiredTrial('default')) {
-        // ...
+        //
     }
 
     if ($user->subscription('default')->hasExpiredTrial()) {
-        // ...
+        //
     }
 
 <a name="defining-trial-days-in-stripe-cashier"></a>
