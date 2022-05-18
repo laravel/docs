@@ -464,6 +464,9 @@ After calling the `Notification` facade's `fake` method, you may then assert tha
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
+
+            // Assert that a given number of notifications were sent...
+            Notification::assertCount(3);
         }
     }
 
