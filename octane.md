@@ -73,6 +73,12 @@ Next, you should start a Sail shell and use the `rr` executable to retrieve the 
 ./vendor/bin/rr get-binary
 ```
 
+ ```
+ # choose no as an answer
+ Do you want create default ".rr.yaml" configuration file? (yes/no) [yes]:
+ > no
+ ```
+
 After installing the RoadRunner binary, you may exit your Sail shell session. You will now need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
 
 ```shell
