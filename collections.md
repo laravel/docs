@@ -212,6 +212,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [unlessEmpty](#method-unlessempty)
 [unlessNotEmpty](#method-unlessnotempty)
 [unwrap](#method-unwrap)
+[value](#method-value)
 [values](#method-values)
 [when](#method-when)
 [whenEmpty](#method-whenempty)
@@ -2790,6 +2791,20 @@ The static `unwrap` method returns the collection's underlying items from the gi
     Collection::unwrap('John Doe');
 
     // 'John Doe'
+
+<a name="method-value"></a>
+#### `value()` {.collection-method}
+
+The `value` method retrieves a given value from the first element of the collection:
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Speaker', 'price' => 400],
+    ]);
+
+    $value = $collection->value('price');
+
+    // 200
 
 <a name="method-values"></a>
 #### `values()` {.collection-method}
