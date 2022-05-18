@@ -1229,7 +1229,7 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
 <a name="inline-relationship-existence-queries"></a>
 #### Inline Relationship Existence Queries
 
-If you would like to query for a relationship's existence with a single, simple where condition attached to the relationship query, you may find it more convenient to use the `whereRelation`, `orWhereRelation`, `whereMorphRelation` and `orWhereMorphRelation` methods. For example, we may query for all posts that have unapproved comments:
+If you would like to query for a relationship's existence with a single, simple where condition attached to the relationship query, you may find it more convenient to use the `whereRelation`, `orWhereRelation`, `whereMorphRelation`, and `orWhereMorphRelation` methods. For example, we may query for all posts that have unapproved comments:
 
     use App\Models\Post;
 
