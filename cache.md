@@ -220,7 +220,7 @@ The callback accepts a second argument to modify the refreshed lifetime. The `in
 
 > {tip} If you don't want to refresh the item and its lifetime, you can return `null`.
 
-When the lock cannot be acquired immediately, it waits for a maximum of 10 seconds. You may further configure the atomic lock by omiting the callback, which will return an object to alter the lock properties and waiting time.
+When the lock cannot be acquired immediately, it waits for a maximum of 10 seconds. You may further configure the atomic lock by omitting the callback, which will return an object to alter the lock properties and waiting time.
 
     Cache::refresh('mission')
         ->lock('mission_lock', 30, 'agent_taylor')
