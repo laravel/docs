@@ -190,7 +190,7 @@ If you need to retrieve an item from the cache and then delete the item, you may
 <a name="retrieve-update"></a>
 #### Retrieve & Update
 
-If your driver supports [atomic locks](#atomic-locks), you will be able to retrieve and update an item without race conditions, avoiding any change on the value by other process while it's being manipulated.
+If your driver supports [atomic locks](#atomic-locks), you will be able to retrieve and update an item without race conditions, avoiding any change in the value by other processes while it's being manipulated.
 
 The `refresh` method accepts the cache key of the item, a callback, and an optional lifetime. The callback receives the cached item, or `null` if it doesn't exist, and it should return the updated value.
 
