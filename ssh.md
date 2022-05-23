@@ -218,7 +218,6 @@ The `deploy` macro can now be run via a single, simple command:
 	envoy run deploy
 
 <a name="envoy-notifications"></a>
-<a name="envoy-hipchat-notifications"></a>
 ### Notifications
 
 #### HipChat
