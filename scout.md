@@ -220,6 +220,7 @@ By default, Scout will use the configured engine from your configuration. This c
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Laravel\Scout\EngineManager;
     use Laravel\Scout\Searchable;
 
     class User extends Model
