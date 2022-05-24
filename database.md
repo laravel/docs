@@ -231,7 +231,7 @@ If your application defines multiple connections in your `config/database.php` c
 
     use Illuminate\Support\Facades\DB;
 
-    $users = DB::connection('sqlite')->select(...);
+    $users = DB::connection('sqlite')->select(/* ... */);
 
 You may access the raw, underlying PDO instance of a connection using the `getPdo` method on a connection instance:
 

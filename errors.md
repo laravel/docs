@@ -229,7 +229,7 @@ Instead of type-checking exceptions in the exception handler's `register` method
          */
         public function render($request)
         {
-            return response(...);
+            return response(/* ... */);
         }
     }
 

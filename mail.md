@@ -987,7 +987,7 @@ Once you've defined your custom transport, you may register it via the `extend` 
     public function boot()
     {
         Mail::extend('mailchimp', function (array $config = []) {
-            return new MailchimpTransport(...);
+            return new MailchimpTransport(/* ... */);
         })
     }
 

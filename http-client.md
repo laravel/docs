@@ -148,43 +148,43 @@ For convenience, you may use the `acceptJson` method to quickly specify that you
 You may specify basic and digest authentication credentials using the `withBasicAuth` and `withDigestAuth` methods, respectively:
 
     // Basic authentication...
-    $response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(...);
+    $response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(/* ... */);
 
     // Digest authentication...
-    $response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(...);
+    $response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(/* ... */);
 
 <a name="bearer-tokens"></a>
 #### Bearer Tokens
 
 If you would like to quickly add a bearer token to the request's `Authorization` header, you may use the `withToken` method:
 
-    $response = Http::withToken('token')->post(...);
+    $response = Http::withToken('token')->post(/* ... */);
 
 <a name="timeout"></a>
 ### Timeout
 
 The `timeout` method may be used to specify the maximum number of seconds to wait for a response:
 
-    $response = Http::timeout(3)->get(...);
+    $response = Http::timeout(3)->get(/* ... */);
 
 If the given timeout is exceeded, an instance of `Illuminate\Http\Client\ConnectionException` will  be thrown.
 
 You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method:
 
-    $response = Http::connectTimeout(3)->get(...);
+    $response = Http::connectTimeout(3)->get(/* ... */);
 
 <a name="retries"></a>
 ### Retries
 
 If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts the maximum number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:
 
-    $response = Http::retry(3, 100)->post(...);
+    $response = Http::retry(3, 100)->post(/* ... */);
 
 If needed, you may pass a third argument to the `retry` method. The third argument should be a callable that determines if the retries should actually be attempted. For example, you may wish to only retry the request if the initial request encounters an `ConnectionException`:
 
     $response = Http::retry(3, 100, function ($exception, $request) {
         return $exception instanceof ConnectionException;
-    })->post(...);
+    })->post(/* ... */);
 
 If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:
 
@@ -196,11 +196,11 @@ If a request attempt fails, you may wish to make a change to the request before 
         $request->withToken($this->getNewToken());
 
         return true;
-    })->post(...);
+    })->post(/* ... */);
 
 If all of the requests fail, an instance of `Illuminate\Http\Client\RequestException` will be thrown. If you would like to disable this behavior, you may provide a `throw` argument with a value of `false`. When disabled, the last response received by the client will be returned after all retries have been attempted:
 
-    $response = Http::retry(3, 100, throw: false)->post(...);
+    $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 
 > {note} If all of the requests fail because of a connection issue, a `Illuminate\Http\Client\ConnectionException` will still be thrown even when the `throw` argument is set to `false`.
 
@@ -229,7 +229,7 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 
 If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error, you may use the `throw` or `throwIf` methods:
 
-    $response = Http::post(...);
+    $response = Http::post(/* ... */);
 
     // Throw an exception if a client or server error occurred...
     $response->throw();
@@ -243,11 +243,11 @@ The `Illuminate\Http\Client\RequestException` instance has a public `$response` 
 
 The `throw` method returns the response instance if no error occurred, allowing you to chain other operations onto the `throw` method:
 
-    return Http::post(...)->throw()->json();
+    return Http::post(/* ... */)->throw()->json();
 
 If you would like to perform some additional logic before the exception is thrown, you may pass a closure to the `throw` method. The exception will be thrown automatically after the closure is invoked, so you do not need to re-throw the exception from within the closure:
 
-    return Http::post(...)->throw(function ($response, $e) {
+    return Http::post(/* ... */)->throw(function ($response, $e) {
         //
     })->json();
 
@@ -336,7 +336,7 @@ For example, to instruct the HTTP client to return empty, `200` status code resp
 
     Http::fake();
 
-    $response = Http::post(...);
+    $response = Http::post(/* ... */);
 
 <a name="faking-specific-urls"></a>
 #### Faking Specific URLs

@@ -258,7 +258,7 @@ Instead of using the `DB::raw` method, you may also use the following methods to
 <a name="selectraw"></a>
 #### `selectRaw`
 
-The `selectRaw` method can be used in place of `addSelect(DB::raw(...))`. This method accepts an optional array of bindings as its second argument:
+The `selectRaw` method can be used in place of `addSelect(DB::raw(/* ... */))`. This method accepts an optional array of bindings as its second argument:
 
     $orders = DB::table('orders')
                     ->selectRaw('price * ? as price_with_tax', [1.0825])
@@ -348,7 +348,7 @@ You may also specify more advanced join clauses. To get started, pass a closure 
 
     DB::table('users')
             ->join('contacts', function ($join) {
-                $join->on('users.id', '=', 'contacts.user_id')->orOn(...);
+                $join->on('users.id', '=', 'contacts.user_id')->orOn(/* ... */);
             })
             ->get();
 

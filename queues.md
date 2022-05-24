@@ -622,7 +622,7 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
          */
         public function store(Request $request)
         {
-            $podcast = Podcast::create(...);
+            $podcast = Podcast::create(/* ... */);
 
             // ...
 
@@ -660,7 +660,7 @@ If you would like to specify that a job should not be immediately available for 
          */
         public function store(Request $request)
         {
-            $podcast = Podcast::create(...);
+            $podcast = Podcast::create(/* ... */);
 
             // ...
 
@@ -713,7 +713,7 @@ If you would like to dispatch a job immediately (synchronously), you may use the
          */
         public function store(Request $request)
         {
-            $podcast = Podcast::create(...);
+            $podcast = Podcast::create(/* ... */);
 
             // Create podcast...
 
@@ -775,7 +775,7 @@ In addition to chaining job class instances, you may also chain closures:
         new ProcessPodcast,
         new OptimizePodcast,
         function () {
-            Podcast::update(...);
+            Podcast::update(/* ... */);
         },
     ])->dispatch();
 
@@ -835,7 +835,7 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
          */
         public function store(Request $request)
         {
-            $podcast = Podcast::create(...);
+            $podcast = Podcast::create(/* ... */);
 
             // Create podcast...
 
@@ -894,7 +894,7 @@ If your application interacts with multiple queue connections, you may specify w
          */
         public function store(Request $request)
         {
-            $podcast = Podcast::create(...);
+            $podcast = Podcast::create(/* ... */);
 
             // Create podcast...
 
