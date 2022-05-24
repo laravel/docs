@@ -50,6 +50,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
+[Arr::prependKeysWith](#method-array-prependkeyswith)
 [Arr::pull](#method-array-pull)
 [Arr::query](#method-array-query)
 [Arr::random](#method-array-random)
@@ -710,6 +711,27 @@ If needed, you may specify the key that should be used for the value:
     $array = Arr::prepend($array, 'Desk', 'name');
 
     // ['name' => 'Desk', 'price' => 100]
+
+<a name="method-array-prependkeyswith"></a>
+#### `Arr::prependKeysWith()` {.collection-method}
+
+The `Arr::prependKeysWith` prepends all key names of an associative array with the given prefix:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        'name' => 'Desk',
+        'price' => 100,
+    ];
+
+    $keyed = Arr::prependKeysWith($array, 'product.');
+
+    /*
+        [
+            'product.name' => 'Desk',
+            'product.price' => 100,
+        ]
+    */
 
 <a name="method-array-pull"></a>
 #### `Arr::pull()` {.collection-method}
