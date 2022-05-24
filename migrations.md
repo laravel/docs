@@ -269,6 +269,14 @@ The `temporary` method may be used to indicate that the table should be "tempora
         // ...
     });
 
+If you would like to add a "comment" to a database table, you may invoke the `comment` method on the table instance. Table comments are currently only supported by MySQL and Postgres:
+
+    Schema::create('calculations', function (Blueprint $table) {
+        $table->comment('Business calculations');
+
+        // ...
+    });
+
 <a name="updating-tables"></a>
 ### Updating Tables
 
