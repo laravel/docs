@@ -449,7 +449,7 @@ The [HTTP client](/docs/{{version}}/http-client) now has a default timeout of 30
 
 If you wish to specify a longer timeout for a given request, you may do so using the `timeout` method:
 
-    $response = Http::timeout(120)->get(...);
+    $response = Http::timeout(120)->get(/* ... */);
 
 #### HTTP Fake & Middleware
 

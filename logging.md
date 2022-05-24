@@ -406,6 +406,6 @@ Once you have configured the `custom` driver channel, you're ready to define the
          */
         public function __invoke(array $config)
         {
-            return new Logger(...);
+            return new Logger(/* ... */);
         }
     }
