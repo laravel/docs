@@ -8,7 +8,7 @@
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
     - [Configuring The Model ID](#configuring-the-model-id)
-    - [Declaring The Model Engine](#declaring-model-engine)
+    - [Configuring Search Engines Per Model](#configuring-search-engines-per-model)
     - [Identifying Users](#identifying-users)
 - [Database / Collection Engines](#database-and-collection-engines)
     - [Database Engine](#database-engine)
@@ -210,10 +210,10 @@ By default, Scout will use the primary key of the model as model's unique ID / k
         }
     }
 
-<a name="declaring-model-engine"></a>
-### Declaring the Model engine
+<a name="configuring-search-engines-per-model"></a>
+### Configuring Search Engines Per Model
 
-By default, Scout will use the configured engine from your configuration. This can be overriden on a model basis by overriding the `searchableUsing` method from the `Searchable` trait:
+When searching, Scout will typically use the default search engine specified in your application's `scout` configuration file. However, the search engine for a particular model can be changed by overriding the `searchableUsing` method on the model:
 
     <?php
 
@@ -228,7 +228,7 @@ By default, Scout will use the configured engine from your configuration. This c
         use Searchable;
 
         /**
-         * Get the value used to index the model.
+         * Get the engine used to index the model.
          *
          * @return \Laravel\Scout\Engines\Engine
          */
