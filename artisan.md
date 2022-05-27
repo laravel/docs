@@ -43,7 +43,7 @@ php artisan help migrate
 If you are using [Laravel Sail](/docs/{{version}}/sail) as your local development environment, remember to use the `sail` command line to invoke Artisan commands. Sail will execute your Artisan commands within your application's Docker containers:
 
 ```shell
-./sail artisan list
+./vendor/bin/sail artisan list
 ```
 
 <a name="tinker"></a>
