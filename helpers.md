@@ -186,6 +186,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isEmpty](#method-fluent-str-is-empty)
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [isUuid](#method-fluent-str-is-uuid)
+[isJson](#method-fluent-str-is-json)
 [kebab](#method-fluent-str-kebab)
 [lcfirst](#method-fluent-str-lcfirst)
 [length](#method-fluent-str-length)
@@ -2336,6 +2337,29 @@ The `isUuid` method determines if a given string is a UUID:
     $result = Str::of('Taylor')->isUuid();
 
     // false
+
+<a name="method-fluent-str-is-json"></a>
+#### `isJson` {.collection-method}
+
+The `isJson` method determines if a given string is valid JSON:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::isJson('[1,2,3]'));
+
+    // true
+
+    $result = Str::isJson('{"first": "John", "last": "Doe"}'));
+
+    // true
+
+    $result = Str::isJson('{first: "John", last: "Doe"}'));
+
+    // false
+
+    $result = Str::of('[{"name": "John Doe"}, {"name": "Jane Doe"}]')->isJson();
+
+    // true
 
 <a name="method-fluent-str-kebab"></a>
 #### `kebab` {.collection-method}
