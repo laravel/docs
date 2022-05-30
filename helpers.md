@@ -47,6 +47,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::isList](#method-array-islist)
 [Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
+[Arr::map](#method-array-map)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
@@ -651,6 +652,21 @@ A default value may be passed as the third argument to the method. This value wi
     use Illuminate\Support\Arr;
 
     $last = Arr::last($array, $callback, $default);
+
+<a name="method-array-map"></a>
+#### `Arr::map()` {.collection-method}
+
+The `Arr::map` method iterates through the array and passes each value and key to the given callback.
+
+    use Illuminate\Support\Arr;
+
+    $array = ['firstname' => 'taylor', 'lastname' => 'otwell'];
+
+    $mapped = Arr::map($array, function ($value, $key) {
+        return ucfirst($value);
+    });
+
+    // ['firstname' => 'Taylor', 'lastname' => 'Otwell']
 
 <a name="method-array-only"></a>
 #### `Arr::only()` {.collection-method}
