@@ -994,12 +994,12 @@ The field under validation must have a different value than _field_.
 <a name="rule-digits"></a>
 #### digits:_value_
 
-The field under validation must be a non-fraction number and must have an exact length of _value_.
+The integer under validation must have an exact length of _value_.
 
 <a name="rule-digits-between"></a>
 #### digits_between:_min_,_max_
 
-The field under validation must be non-fraction number and must have a length between the given _min_ and _max_.
+The integer validation must have a length between the given _min_ and _max_.
 
 <a name="rule-dimensions"></a>
 #### dimensions
