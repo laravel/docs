@@ -45,6 +45,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::isList](#method-array-islist)
+[Arr::join](#method-array-join)
 [Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
@@ -609,6 +610,23 @@ The `Arr::isList` method returns `true` if the given array's keys are sequential
     $isAssoc = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 
     // false
+
+<a name="method-array-islist"></a>
+#### `Arr::join()` {.collection-method}
+
+The `Arr::join` method joins the values with a string. Using this method's second argument, you may also specify how the final element should be appended to the string:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['Tailwind', 'Alpine', 'Laravel', 'Livewire'];
+
+    $joined = Arr::join($array, ', ');
+
+    // Tailwind, Alpine, Laravel, Livewire
+
+    $joined = Arr::join($array, ', ', ' and ');
+
+    // Tailwind, Alpine, Laravel and Livewire
 
 <a name="method-array-keyby"></a>
 #### `Arr::keyBy()` {.collection-method}
