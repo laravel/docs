@@ -614,7 +614,7 @@ The `Arr::isList` method returns `true` if the given array's keys are sequential
 <a name="method-array-join"></a>
 #### `Arr::join()` {.collection-method}
 
-The `Arr::join` method joins the values with a string. Using this method's second argument, you may also specify how the final element should be appended to the string:
+The `Arr::join` method joins array elements with a string. Using this method's second argument, you may also specify the joining string for the final element of the array:
 
     use Illuminate\Support\Arr;
 
