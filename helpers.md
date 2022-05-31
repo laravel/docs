@@ -113,6 +113,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::headline](#method-str-headline)
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
+[Str::isJson](#method-str-is-json)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
 [Str::lcfirst](#method-str-lcfirst)
@@ -1452,6 +1453,25 @@ The `Str::isAscii` method determines if a given string is 7 bit ASCII:
     // true
 
     $isAscii = Str::isAscii('ü');
+
+    // false
+
+<a name="method-str-is-json"></a>
+#### `Str::isJson()` {.collection-method}
+
+The `Str::isJson` method determines if the given string is valid JSON:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::isJson('[1,2,3]');
+
+    // true
+
+    $result = Str::isJson('{"first": "John", "last": "Doe"}');
+
+    // true
+
+    $result = Str::isJson('{first: "John", last: "Doe"}');
 
     // false
 
