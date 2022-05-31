@@ -185,6 +185,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
 [isNotEmpty](#method-fluent-str-is-not-empty)
+[isJson](#method-fluent-str-is-json)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
 [lcfirst](#method-fluent-str-lcfirst)
@@ -2321,6 +2322,25 @@ The `isNotEmpty` method determines if the given string is not empty:
     $result = Str::of('Laravel')->trim()->isNotEmpty();
 
     // true
+
+<a name="method-fluent-str-is-json"></a>
+#### `isJson` {.collection-method}
+
+The `isJson` method determines if a given string is valid JSON:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::isJson('[1,2,3]'));
+
+    // true
+
+    $result = Str::isJson('{"first": "John", "last": "Doe"}'));
+
+    // true
+
+    $result = Str::isJson('{first: "John", last: "Doe"}'));
+
+    // false
 
 <a name="method-fluent-str-is-uuid"></a>
 #### `isUuid` {.collection-method}
