@@ -146,6 +146,12 @@ In addition, you may instruct Laravel to hide any routes that are defined by thi
 php artisan route:list --except-vendor
 ```
 
+Likewise, you may also instruct Laravel to only show routes that are defined by third-party packages by providing the `--only-vendor` option when executing the `route:list` command:
+
+```shell
+php artisan route:list --only-vendor
+```
+
 <a name="route-parameters"></a>
 ## Route Parameters
 
