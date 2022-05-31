@@ -47,6 +47,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::isList](#method-array-islist)
 [Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
+[Arr::map](#method-array-map)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
@@ -652,6 +653,21 @@ A default value may be passed as the third argument to the method. This value wi
     use Illuminate\Support\Arr;
 
     $last = Arr::last($array, $callback, $default);
+
+<a name="method-array-map"></a>
+#### `Arr::map()` {.collection-method}
+
+The `Arr::map` method iterates through the array and passes each value and key to the given callback. The array value is replaced by the value returned by the callback:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['first' => 'james', 'last' => 'kirk'];
+
+    $mapped = Arr::map($array, function ($value, $key) {
+        return ucfirst($value);
+    });
+
+    // ['first' => 'James', 'last' => 'Kirk']
 
 <a name="method-array-only"></a>
 #### `Arr::only()` {.collection-method}
@@ -2330,15 +2346,15 @@ The `isJson` method determines if a given string is valid JSON:
 
     use Illuminate\Support\Str;
 
-    $result = Str::isJson('[1,2,3]'));
+    $result = Str::of('[1,2,3]')->isJson();
 
     // true
 
-    $result = Str::isJson('{"first": "John", "last": "Doe"}'));
+    $result = Str::of('{"first": "John", "last": "Doe"}')->isJson();
 
     // true
 
-    $result = Str::isJson('{first: "John", last: "Doe"}'));
+    $result = Str::of('{first: "John", last: "Doe"}')->isJson();
 
     // false
 
