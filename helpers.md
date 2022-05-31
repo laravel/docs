@@ -3696,7 +3696,7 @@ If you would like to manually calculate the number of milliseconds to sleep betw
 
     return retry(5, function () {
         // ...
-    }, function ($attempt) {
+    }, function ($attempt, $exception) {
         return $attempt * 100;
     });
 
