@@ -1,43 +1,65 @@
 # Broadcasting
 
-- [Introduction](#introduction)
-- [Server Side Installation](#server-side-installation)
+- [Broadcasting](#broadcasting)
+  - [Introduction](#introduction)
+      - [Supported Drivers](#supported-drivers)
+  - [Server Side Installation](#server-side-installation)
     - [Configuration](#configuration)
+      - [Broadcast Service Provider](#broadcast-service-provider)
+      - [Queue Configuration](#queue-configuration)
     - [Pusher Channels](#pusher-channels)
+      - [Open Source Pusher Alternatives](#open-source-pusher-alternatives)
     - [Ably](#ably)
     - [Open Source Alternatives](#open-source-alternatives)
-- [Client Side Installation](#client-side-installation)
-    - [Pusher Channels](#client-pusher-channels)
-    - [Ably](#client-ably)
-- [Concept Overview](#concept-overview)
-    - [Using An Example Application](#using-example-application)
-- [Defining Broadcast Events](#defining-broadcast-events)
+      - [PHP](#php)
+      - [Node](#node)
+  - [Client Side Installation](#client-side-installation)
+    - [Pusher Channels](#pusher-channels-1)
+      - [Using An Existing Client Instance](#using-an-existing-client-instance)
+    - [Ably](#ably-1)
+  - [Concept Overview](#concept-overview)
+    - [Using An Example Application](#using-an-example-application)
+      - [The `ShouldBroadcast` Interface](#the-shouldbroadcast-interface)
+      - [Authorizing Channels](#authorizing-channels)
+      - [Listening For Event Broadcasts](#listening-for-event-broadcasts)
+  - [Defining Broadcast Events](#defining-broadcast-events)
     - [Broadcast Name](#broadcast-name)
     - [Broadcast Data](#broadcast-data)
     - [Broadcast Queue](#broadcast-queue)
     - [Broadcast Conditions](#broadcast-conditions)
-    - [Broadcasting & Database Transactions](#broadcasting-and-database-transactions)
-- [Authorizing Channels](#authorizing-channels)
+      - [Broadcasting & Database Transactions](#broadcasting--database-transactions)
+  - [Authorizing Channels](#authorizing-channels-1)
     - [Defining Authorization Routes](#defining-authorization-routes)
+      - [Customizing The Authentication Endpoint](#customizing-the-authentication-endpoint)
+      - [Customizing The User Authentication Endpoint](#customizing-the-user-authentication-endpoint)
+      - [Customizing The Authorization Request](#customizing-the-authorization-request)
+      - [Customizing The User Authentication Request](#customizing-the-user-authentication-request)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
+      - [Authorization Callback Model Binding](#authorization-callback-model-binding)
+      - [Authorization Callback Authentication](#authorization-callback-authentication)
     - [Defining Channel Classes](#defining-channel-classes)
     - [Defining Authorized Connections](#defining-authorized-connections)
-- [Broadcasting Events](#broadcasting-events)
+  - [Broadcasting Events](#broadcasting-events)
     - [Only To Others](#only-to-others)
+      - [Configuration](#configuration-1)
     - [Customizing The Connection](#customizing-the-connection)
-- [Receiving Broadcasts](#receiving-broadcasts)
+  - [Receiving Broadcasts](#receiving-broadcasts)
     - [Listening For Events](#listening-for-events)
+      - [Stop Listening For Events](#stop-listening-for-events)
     - [Leaving A Channel](#leaving-a-channel)
     - [Namespaces](#namespaces)
-- [Presence Channels](#presence-channels)
+  - [Presence Channels](#presence-channels)
     - [Authorizing Presence Channels](#authorizing-presence-channels)
     - [Joining Presence Channels](#joining-presence-channels)
     - [Broadcasting To Presence Channels](#broadcasting-to-presence-channels)
-- [Model Broadcasting](#model-broadcasting)
+  - [Model Broadcasting](#model-broadcasting)
+      - [Customizing Model Broadcasting Event Creation](#customizing-model-broadcasting-event-creation)
     - [Model Broadcasting Conventions](#model-broadcasting-conventions)
+      - [Channel Conventions](#channel-conventions)
+      - [Event Conventions](#event-conventions)
     - [Listening For Model Broadcasts](#listening-for-model-broadcasts)
-- [Client Events](#client-events)
-- [Notifications](#notifications)
+  - [Client Events](#client-events)
+  - [Notifications](#notifications)
 
 <a name="introduction"></a>
 ## Introduction
@@ -524,8 +546,8 @@ The `Broadcast::routes` method will automatically place its routes within the `w
 
     Broadcast::routes($attributes);
 
-<a name="customizing-the-authorization-endpoint"></a>
-#### Customizing The Authorization Endpoint
+<a name="customizing-the-authentication-endpoint"></a>
+#### Customizing The Authentication Endpoint
 
 By default, Echo will use the `/broadcasting/auth` endpoint to authorize channel access. However, you may specify your own authorization endpoint by passing the `authEndpoint` configuration option to your Echo instance:
 
@@ -534,6 +556,21 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     // ...
     authEndpoint: '/custom/endpoint/auth'
+});
+```
+
+<a name="customizing-the-user-authentication-endpoint"></a>
+#### Customizing The User Authentication Endpoint
+
+By default, Echo will use the `/broadcasting/user-auth` endpoint to authenticate users' connection. However, you may specify your own authentication endpoint by passing the `userAuthentication.endpoint` configuration option to your Echo instance:
+
+```js
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    // ...
+    userAuthentication: {
+        endpoint: '/custom/endpoint/auth',
+    },
 });
 ```
 
@@ -562,6 +599,28 @@ window.Echo = new Echo({
         };
     },
 })
+```
+
+<a name="customizing-the-user-authentication-request"></a>
+#### Customizing The User Authentication Request
+
+You can customize how Laravel Echo performs authorization requests by providing a custom authorizer when initializing Echo:
+
+```js
+window.Echo = new Echo({
+    // ...
+    userAuthentication: {
+        customHandler: ({ socketId }, callback) => {
+            axios.post('/api/broadcasting/auth', { socket_id: socketId })
+            .then(response => {
+                callback(false, response.data);
+            })
+            .catch(error => {
+                callback(true, error);
+            });
+        },
+    },
+});
 ```
 
 <a name="defining-authorization-callbacks"></a>
@@ -653,7 +712,7 @@ Finally, you may place the authorization logic for your channel in the channel c
 <a name="defining-authorized-connections"></a>
 ### Defining Authorized Connections
 
-> {tip} This feature is supported only by the `pusher` driver and need to be explicitly enabled.
+> {tip} This feature is supported only by the `pusher` driver and need to be explicitly enabled from your Pusher app.
 
 While you can authorize your connections to access specific channels, you can also restrict the connections only for your authenticated users. This can be useful in case you have no publicly-exposed channels and you want to prevent anyone to maliciously use your app key to spawn a lot of browsers, consuming your connections quota.
 
