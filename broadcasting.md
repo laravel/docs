@@ -524,8 +524,8 @@ The `Broadcast::routes` method will automatically place its routes within the `w
 
     Broadcast::routes($attributes);
 
-<a name="customizing-the-authentication-endpoint"></a>
-#### Customizing The Authentication Endpoint
+<a name="customizing-the-authorization-endpoint"></a>
+#### Customizing The Authorization Endpoint
 
 By default, Echo will use the `/broadcasting/auth` endpoint to authorize channel access. However, you may specify your own authorization endpoint by passing the `authEndpoint` configuration option to your Echo instance:
 
@@ -534,21 +534,6 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     // ...
     authEndpoint: '/custom/endpoint/auth'
-});
-```
-
-<a name="customizing-the-user-authentication-endpoint"></a>
-#### Customizing The User Authentication Endpoint
-
-By default, Echo will use the `/broadcasting/user-auth` endpoint to authenticate users' connection. However, you may specify your own authentication endpoint by passing the `userAuthentication.endpoint` configuration option to your Echo instance:
-
-```js
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    // ...
-    userAuthentication: {
-        endpoint: '/custom/endpoint/auth',
-    },
 });
 ```
 
@@ -577,28 +562,6 @@ window.Echo = new Echo({
         };
     },
 })
-```
-
-<a name="customizing-the-user-authentication-request"></a>
-#### Customizing The User Authentication Request
-
-You can customize how Laravel Echo performs authorization requests by providing a custom authorizer when initializing Echo:
-
-```js
-window.Echo = new Echo({
-    // ...
-    userAuthentication: {
-        customHandler: ({ socketId }, callback) => {
-            axios.post('/api/broadcasting/auth', { socket_id: socketId })
-            .then(response => {
-                callback(false, response.data);
-            })
-            .catch(error => {
-                callback(true, error);
-            });
-        },
-    },
-});
 ```
 
 <a name="defining-authorization-callbacks"></a>
@@ -717,6 +680,43 @@ Broadcast::resolveAuthenticatedUserUsing(function ($request) {
         'id' => $request->user()->id,
         'name' => $request->user()->name,
     ];
+});
+```
+
+<a name="customizing-the-user-authentication-endpoint"></a>
+#### Customizing The User Authentication Endpoint
+
+By default, Echo will use the `/broadcasting/user-auth` endpoint to authenticate users' connection. However, you may specify your own authentication endpoint by passing the `userAuthentication.endpoint` configuration option to your Echo instance:
+
+```js
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    // ...
+    userAuthentication: {
+        endpoint: '/custom/endpoint/auth',
+    },
+});
+```
+
+<a name="customizing-the-user-authentication-request"></a>
+#### Customizing The User Authentication Request
+
+You can customize how Laravel Echo performs authorization requests by providing a custom authorizer when initializing Echo:
+
+```js
+window.Echo = new Echo({
+    // ...
+    userAuthentication: {
+        customHandler: ({ socketId }, callback) => {
+            axios.post('/api/broadcasting/auth', { socket_id: socketId })
+            .then(response => {
+                callback(false, response.data);
+            })
+            .catch(error => {
+                callback(true, error);
+            });
+        },
+    },
 });
 ```
 
