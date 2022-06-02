@@ -233,7 +233,9 @@ Occasionally, you may wish to specify some contextual information that should be
                 'request-id' => $requestId
             ]);
 
-            return $next($request)->header('Request-Id', $requestId);
+            $request->headers->set('Request-Id', $requestId);
+
+            return $next($request);
         }
     }
 
