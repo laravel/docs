@@ -653,11 +653,13 @@ Finally, you may place the authorization logic for your channel in the channel c
 <a name="defining-authorized-connections"></a>
 ### Defining Authorized Connections
 
-> {tip} This feature is supported only by the `pusher` driver and need to be explicitly enabled from your Pusher app.
+> {tip} This feature is supported only by the `pusher` driver and needs to be explicitly enabled from your Pusher app.
 
 While you can authorize your connections to access specific channels, you can also restrict the connections only for your authenticated users. This can be useful in case you have no publicly-exposed channels and you want to prevent anyone to maliciously use your app key to spawn a lot of browsers, consuming your connections quota.
 
-When enabled, the frontend Pusher app will automatically send a HTTP request to `/broadcasting/user-auth` on each connection attempt towards the WebSocket connection. Laravel allows you to define the user details in `boot` method of `\App\Providers\BroadcastServiceProvider` so you can share with Pusher upon connection so that you can authorize only logged users.
+When enabled, in case the user does not subscribe to any private or presence channel in the first few seconds after connection, you shall attempt to authorize.
+
+You will configure the frontend Pusher app to send a HTTP request to `/broadcasting/user-auth`. Laravel allows you to define the user details in `boot` method of `\App\Providers\BroadcastServiceProvider` so you can share with Pusher the authentication details.
 
 ```php
 Broadcast::resolveAuthenticatedUserUsing(function ($request) {
@@ -683,7 +685,7 @@ Broadcast::resolveAuthenticatedUserUsing(function ($request) {
 });
 ```
 
-Authentication is performed automatically if you users join to a private or presence channel immediately after connection. However, you may sometimes initiate a connection without subscribing to a authorization-protected channel. If the authencation is enabled the latter scenario will eventually make your users disconnect without the possibility of reconnection without a refresh.
+Authentication is performed automatically if your users join to a private or presence channel immediately after connection. However, you may sometimes initiate a connection without subscribing to a authorization-protected channel. If the authencation is enabled the latter scenario will eventually make your users disconnect without the possibility of reconnection without a refresh.
 
 In order to perform the authentication in your frontend and explicitly tell Pusher to check the user, you shall call `.signin()` from Echo:
 
