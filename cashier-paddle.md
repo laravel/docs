@@ -1249,7 +1249,7 @@ If you run into a situaton where you need to provide a specific response from Pa
             'name' => 'main',
             'paddle_id' => 23423,
             'paddle_plan' => 12345,
-            'paddle_status' => Subscription::STATUS_ACTIVE,
+            'paddle_status' => 'active',
             'quantity' => 1,
         ]);
 
