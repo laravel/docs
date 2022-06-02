@@ -716,13 +716,13 @@ window.Echo = new Echo({
     // ...
     userAuthentication: {
         customHandler: ({ socketId }, callback) => {
-            axios.post('/api/broadcasting/auth', { socket_id: socketId })
-            .then(response => {
-                callback(false, response.data);
-            })
-            .catch(error => {
-                callback(true, error);
-            });
+            axios.post('/api/broadcasting/user-auth', { socket_id: socketId })
+                .then(response => {
+                    callback(false, response.data);
+                })
+                .catch(error => {
+                    callback(true, error);
+                });
         },
     },
 });
