@@ -21,6 +21,7 @@
     - [Defining Authorization Routes](#defining-authorization-routes)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
     - [Defining Channel Classes](#defining-channel-classes)
+    - [Defining Authorized Connections](#defining-authorized-connections)
 - [Broadcasting Events](#broadcasting-events)
     - [Only To Others](#only-to-others)
     - [Customizing The Connection](#customizing-the-connection)
@@ -648,6 +649,41 @@ Finally, you may place the authorization logic for your channel in the channel c
     }
 
 > {tip} Like many other classes in Laravel, channel classes will automatically be resolved by the [service container](/docs/{{version}}/container). So, you may type-hint any dependencies required by your channel in its constructor.
+
+<a name="defining-authorized-connections"></a>
+### Defining Authorized Connections
+
+> {tip} This feature is supported only by the `pusher` driver and need to be explicitly enabled.
+
+While you can authorize your connections to access specific channels, you can also restrict the connections only for your authenticated users. This can be useful in case you have no publicly-exposed channels and you want to prevent anyone to maliciously use your app key to spawn a lot of browsers, consuming your connections quota.
+
+When enabled, the frontend Pusher app will automatically send a HTTP request to `/broadcasting/user-auth` on each connection attempt towards the WebSocket connection. Laravel allows you to define the user details in `boot` method of `\App\Providers\BroadcastServiceProvider` so you can share with Pusher upon connection so that you can authorize only logged users.
+
+```php
+Broadcast::resolveAuthenticatedUserUsing(function ($request) {
+    return [
+        'id' => $request->user()->id,
+        'name' => $request->user()->name,
+    ];
+});
+```
+
+You can as well reject WebSocket connections by returning `null`:
+
+```php
+Broadcast::resolveAuthenticatedUserUsing(function ($request) {
+    if ($request->user()->isBanned()) {
+        return null;
+    }
+
+    return [
+        'id' => $request->user()->id,
+        'name' => $request->user()->name,
+    ];
+});
+```
+
+You can read more about authorized connections on the [Pusher website](https://pusher.com/docs/channels/using_channels/authorized-connections/).
 
 <a name="broadcasting-events"></a>
 ## Broadcasting Events
