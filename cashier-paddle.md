@@ -1219,4 +1219,56 @@ Alternatively, you can perform more precise customization by catching the [`subs
 
 While testing, you should manually test your billing flow to make sure your integration works as expected.
 
-For automated tests, including those executed within a CI environment, you may use [Laravel's HTTP Client](/docs/{{version}}/http-client#testing) to fake HTTP calls made to Paddle. Although this does not test the actual responses from Paddle, it does provide a way to test your application without actually calling Paddle's API.
+For automated tests, including those executed within a CI environment, we provide some handy methods for you to fake HTTP calls made to Paddle. Although this does not test the actual responses from Paddle, it does provide a way to test your application without actually calling Paddle's API.
+
+By using `Cashier::fake()` you can fake all calls made by Cashier to Paddle. In a test this would work as follows:
+
+    use Laravel\Cashier\Cashier;
+
+    public function test_my_test_method()
+    {
+        Cashier::fake();
+
+        // Call Cashier methods...
+    }
+
+If you run into a situaton where you need to provide a specific response from Paddle you may use the fluent API and call the `response` method:
+
+    use App\Models\User;
+    use Laravel\Cashier\Cashier;
+
+    public function test_create_subscription()
+    {
+        Cashier::fake()->response('subscription/users', [[
+            'user_email' => 'john@example.com',
+        ]]);
+
+        $billable = User::factory()->create();
+
+        $subscription = $billable->subscriptions()->create([
+            'name' => 'main',
+            'paddle_id' => 23423,
+            'paddle_plan' => 12345,
+            'paddle_status' => Subscription::STATUS_ACTIVE,
+            'quantity' => 1,
+        ]);
+
+        $this->assertSame('john@example.com', $subscription->paddleEmail());
+    }
+
+You can also fake error responses with the `error` method:
+
+    use App\Models\User;
+    use Laravel\Cashier\Cashier;
+    use Laravel\Paddle\Exceptions\PaddleException;
+
+    public function test_failed_refunds_throw_an_error()
+    {
+        $this->expectException(PaddleException::class);
+
+        Cashier::fake()->error('payment/refund');
+
+        $billable = User::factory()->create();
+
+        $billable->refund(4321, 12.50, 'Incorrect order');
+    }
