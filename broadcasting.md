@@ -653,7 +653,7 @@ Finally, you may place the authorization logic for your channel in the channel c
 <a name="defining-authorized-connections"></a>
 ### Defining Authorized Connections
 
-> {tip} This feature is supported only by the `pusher` driver and needs to be explicitly enabled from your Pusher app. Your Pusher SDKs must also be upated to 7.1+
+> {tip} This feature is supported only by the `pusher` driver and needs to be explicitly enabled from your Pusher app. Your Pusher SDKs must also be upated to 7.1+ and your Laravel Echo to 1.12+
 
 While you can authorize your connections to access specific channels, you can also restrict the connections only for your authenticated users. This can be useful in case you have no publicly-exposed channels and you want to prevent anyone to maliciously use your app key to spawn a lot of browsers, consuming your connections quota.
 
