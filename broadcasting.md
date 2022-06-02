@@ -683,6 +683,14 @@ Broadcast::resolveAuthenticatedUserUsing(function ($request) {
 });
 ```
 
+Authentication is performed automatically if you users join to a private or presence channel immediately after connection. However, you may sometimes initiate a connection without subscribing to a authorization-protected channel. If the authencation is enabled the latter scenario will eventually make your users disconnect without the possibility of reconnection without a refresh.
+
+In order to perform the authentication in your frontend and explicitly tell Pusher to check the user, you shall call `.signin()` from Echo:
+
+```js
+Echo.signin();
+```
+
 <a name="customizing-the-user-authentication-endpoint"></a>
 #### Customizing The User Authentication Endpoint
 
