@@ -8,6 +8,7 @@
     - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
     - [Repopulating Forms](#repopulating-forms)
     - [A Note On Optional Fields](#a-note-on-optional-fields)
+    - [Validation Error Response Format](#validation-error-response-format)
 - [Form Request Validation](#form-request-validation)
     - [Creating Form Requests](#creating-form-requests)
     - [Authorizing Form Requests](#authorizing-form-requests)
@@ -257,6 +258,30 @@ By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` m
     ]);
 
 In this example, we are specifying that the `publish_at` field may be either `null` or a valid date representation. If the `nullable` modifier is not added to the rule definition, the validator would consider `null` an invalid date.
+
+<a name="validation-error-response-format"></a>
+### Validation Error Response Format
+
+When your application throws a `ValidationException` and the request is expecting a Json response, Laravel will automatically format the error messages for you and return a `422 Unprocessable Entity` status code. Below is an example of the response format. You will notice that the error keys are flattened into dot-notation format:
+
+    {
+        "message": "The team name must be a string. (and 4 more errors)",
+        "errors": {
+            "team_name": [
+                "The team name must be a string.",
+                "The team name must be at least 1 characters."
+            ],
+            "authorization.role": [
+                "The selected authorization.role is invalid."
+            ],
+            "users.0.email": [
+                "The users.0.email field is required."
+            ],
+            "users.3.email": [
+                "The users.3.email must be a valid email address."
+            ]
+        }
+    }
 
 <a name="form-request-validation"></a>
 ## Form Request Validation
