@@ -659,7 +659,7 @@ While you can authorize your connections to access specific channels, you can al
 
 When enabled, in case the user does not subscribe to any private or presence channel in the first few seconds after connection, you shall attempt to authorize.
 
-You will configure the frontend Pusher app to send a HTTP request to `/broadcasting/user-auth`. Laravel allows you to define the user details in the `boot` method of `\App\Providers\BroadcastServiceProvider` so you can share with Pusher the authentication details.
+You will configure the frontend Pusher app to send an HTTP request to `/broadcasting/user-auth`. Laravel allows you to define the user details in the `boot` method of `\App\Providers\BroadcastServiceProvider` so you can share with Pusher the authentication details.
 
 ```php
 Broadcast::resolveAuthenticatedUserUsing(function ($request) {
