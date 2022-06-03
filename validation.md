@@ -8,6 +8,7 @@
     - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
     - [Repopulating Forms](#repopulating-forms)
     - [A Note On Optional Fields](#a-note-on-optional-fields)
+    - [Validation Error Response Format](#validation-error-response-format)
 - [Form Request Validation](#form-request-validation)
     - [Creating Form Requests](#creating-form-requests)
     - [Authorizing Form Requests](#authorizing-form-requests)
@@ -99,7 +100,7 @@ Next, let's take a look at a simple controller that handles incoming requests to
 
 Now we are ready to fill in our `store` method with the logic to validate the new blog post. To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an `Illuminate\Validation\ValidationException` exception will be thrown and the proper error response will automatically be sent back to the user.
 
-If validation fails during a traditional HTTP request, a redirect response to the previous URL will be generated. If the incoming request is an XHR request, a JSON response containing the validation error messages will be returned.
+If validation fails during a traditional HTTP request, a redirect response to the previous URL will be generated. If the incoming request is an XHR request, a [JSON response containing the validation error messages](#validation-error-response-format) will be returned.
 
 To get a better understanding of the `validate` method, let's jump back into the `store` method:
 
@@ -202,7 +203,7 @@ In addition, you may copy this file to another translation language directory to
 <a name="quick-xhr-requests-and-validation"></a>
 #### XHR Requests & Validation
 
-In this example, we used a traditional form to send data to the application. However, many applications receive XHR requests from a JavaScript powered frontend. When using the `validate` method during an XHR request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
+In this example, we used a traditional form to send data to the application. However, many applications receive XHR requests from a JavaScript powered frontend. When using the `validate` method during an XHR request, Laravel will not generate a redirect response. Instead, Laravel generates a [JSON response containing all of the validation errors](#validation-error-response-format). This JSON response will be sent with a 422 HTTP status code.
 
 <a name="the-at-error-directive"></a>
 #### The `@error` Directive
@@ -258,6 +259,34 @@ By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` m
 
 In this example, we are specifying that the `publish_at` field may be either `null` or a valid date representation. If the `nullable` modifier is not added to the rule definition, the validator would consider `null` an invalid date.
 
+<a name="validation-error-response-format"></a>
+### Validation Error Response Format
+
+When your application throws a `Illuminate\Validation\ValidationException` exception and the incoming HTTP request is expecting a JSON response, Laravel will automatically format the error messages for you and return a `422 Unprocessable Entity` HTTP response.
+
+Below, you can review an example of the JSON response format for validation errors. Note that nested error keys are flattened into "dot" notation format:
+
+```json
+{
+    "message": "The team name must be a string. (and 4 more errors)",
+    "errors": {
+        "team_name": [
+            "The team name must be a string.",
+            "The team name must be at least 1 characters."
+        ],
+        "authorization.role": [
+            "The selected authorization.role is invalid."
+        ],
+        "users.0.email": [
+            "The users.0.email field is required."
+        ],
+        "users.2.email": [
+            "The users.2.email must be a valid email address."
+        ]
+    }
+}
+```
+
 <a name="form-request-validation"></a>
 ## Form Request Validation
 
@@ -309,7 +338,7 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
         $validated = $request->safe()->except(['name', 'email']);
     }
 
-If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
+If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a [JSON representation of the validation errors](#validation-error-response-format).
 
 <a name="adding-after-hooks-to-form-requests"></a>
 #### Adding After Hooks To Form Requests
@@ -522,7 +551,7 @@ The `stopOnFirstFailure` method will inform the validator that it should stop va
 <a name="automatic-redirection"></a>
 ### Automatic Redirection
 
-If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the HTTP request's `validate` method, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an XHR request, a JSON response will be returned:
+If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the HTTP request's `validate` method, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an XHR request, a [JSON response will be returned](#validation-error-response-format):
 
     Validator::make($request->all(), [
         'title' => 'required|unique:posts|max:255',
