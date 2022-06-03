@@ -16,11 +16,9 @@
 
 The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper for working with arrays of data. For example, check out the following code. We'll use the `collect` helper to create a new collection instance from the array, run the `strtoupper` function on each element, and then remove all empty elements:
 
-    $collection = collect(['taylor', 'abigail', null])->map(function ($name) {
-        return strtoupper($name);
-    })->reject(function ($name) {
-        return empty($name);
-    });
+    $collection = collect(['taylor', 'abigail', null])
+    ->map(fn ($name) => strtoupper($name)})
+    ->reject(fn ($name) => empty($name));
 
 As you can see, the `Collection` class allows you to chain its methods to perform fluent mapping and reducing of the underlying array. In general, collections are immutable, meaning every `Collection` method returns an entirely new `Collection` instance.
 
@@ -310,9 +308,7 @@ The `chunkWhile` method breaks the collection into multiple, smaller collections
 
     $collection = collect(str_split('AABBCCCD'));
 
-    $chunks = $collection->chunkWhile(function ($value, $key, $chunk) {
-        return $value === $chunk->last();
-    });
+    $chunks = $collection->chunkWhile(fn ($value, $key, $chunk) => $value === $chunk->last());
 
     $chunks->all();
 
@@ -403,9 +399,7 @@ The `contains` method determines whether the collection contains a given item. Y
 
     $collection = collect([1, 2, 3, 4, 5]);
 
-    $collection->contains(function ($value, $key) {
-        return $value > 5;
-    });
+    $collection->contains(fn ($value, $key) => $value > 5);
 
     // false
 
@@ -471,9 +465,7 @@ You pass a closure to the `countBy` method to count all items by a custom value:
 
     $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
 
-    $counted = $collection->countBy(function ($email) {
-        return substr(strrchr($email, "@"), 1);
-    });
+    $counted = $collection->countBy(fn ($email) => substr(strrchr($email, "@"), 1));
 
     $counted->all();
 
@@ -606,9 +598,7 @@ The `doesntContain` method determines whether the collection does not contain a 
 
     $collection = collect([1, 2, 3, 4, 5]);
 
-    $collection->doesntContain(function ($value, $key) {
-        return $value < 5;
-    });
+    $collection->doesntContain(fn ($value, $key) => $value < 5);
 
     // false
 
@@ -724,9 +714,7 @@ You may stop iterating through the items by returning `false` from the callback:
 
 The `every` method may be used to verify that all elements of a collection pass a given truth test:
 
-    collect([1, 2, 3, 4])->every(function ($value, $key) {
-        return $value > 2;
-    });
+    collect([1, 2, 3, 4])->every(fn ($value, $key) => $value > 2);
 
     // false
 
@@ -734,9 +722,7 @@ If the collection is empty, the `every` method will return true:
 
     $collection = collect([]);
 
-    $collection->every(function ($value, $key) {
-        return $value > 2;
-    });
+    $collection->every(fn ($value, $key) => $value > 2);
 
     // true
 
@@ -764,9 +750,7 @@ The `filter` method filters the collection using the given callback, keeping onl
 
     $collection = collect([1, 2, 3, 4]);
 
-    $filtered = $collection->filter(function ($value, $key) {
-        return $value > 2;
-    });
+    $filtered = $collection->filter(fn ($value, $key) => $value > 2);
 
     $filtered->all();
 
@@ -787,9 +771,7 @@ For the inverse of `filter`, see the [reject](#method-reject) method.
 
 The `first` method returns the first element in the collection that passes a given truth test:
 
-    collect([1, 2, 3, 4])->first(function ($value, $key) {
-        return $value > 2;
-    });
+    collect([1, 2, 3, 4])->first(fn ($value, $key) => $value > 2);
 
     // 3
 
@@ -804,9 +786,7 @@ You may also call the `first` method with no arguments to get the first element 
 
 The `firstOrFail` method is identical to the `first` method; however, if no result is found, an `Illuminate\Support\ItemNotFoundException` exception will be thrown:
 
-    collect([1, 2, 3, 4])->firstOrFail(function ($value, $key) {
-        return $value > 5;
-    });
+    collect([1, 2, 3, 4])->firstOrFail(fn ($value, $key) => $value > 5);
 
     // Throws ItemNotFoundException...
 
@@ -855,9 +835,7 @@ The `flatMap` method iterates through the collection and passes each value to th
         ['age' => 28]
     ]);
 
-    $flattened = $collection->flatMap(function ($values) {
-        return array_map('strtoupper', $values);
-    });
+    $flattened = $collection->flatMap(fn ($values) => array_map('strtoupper', $values));
 
     $flattened->all();
 
@@ -973,9 +951,7 @@ You may optionally pass a default value as the second argument:
 
 You may even pass a callback as the method's default value. The result of the callback will be returned if the specified key does not exist:
 
-    $collection->get('email', function () {
-        return 'taylor@example.com';
-    });
+    $collection->get('email', fn () => 'taylor@example.com');
 
     // taylor@example.com
 
@@ -1008,9 +984,7 @@ The `groupBy` method groups the collection's items by a given key:
 
 Instead of passing a string `key`, you may pass a callback. The callback should return the value you wish to key the group by:
 
-    $grouped = $collection->groupBy(function ($item, $key) {
-        return substr($item['account_id'], -3);
-    });
+    $grouped = $collection->groupBy(fn ($item, $key) => substr($item['account_id'], -3));
 
     $grouped->all();
 
@@ -1035,9 +1009,7 @@ Multiple grouping criteria may be passed as an array. Each array element will be
         40 => ['user' => 4, 'skill' => 2, 'roles' => ['Role_2']],
     ]);
 
-    $result = $data->groupBy(['skill', function ($item) {
-        return $item['roles'];
-    }], preserveKeys: true);
+    $result = $data->groupBy(['skill', fn ($item) => $item['roles']], preserveKeys: true);
 
     /*
     [
@@ -1187,9 +1159,7 @@ The `keyBy` method keys the collection by the given key. If multiple items have 
 
 You may also pass a callback to the method. The callback should return the value to key the collection by:
 
-    $keyed = $collection->keyBy(function ($item) {
-        return strtoupper($item['product_id']);
-    });
+    $keyed = $collection->keyBy(fn ($item) => strtoupper($item['product_id']));
 
     $keyed->all();
 
@@ -1221,9 +1191,7 @@ The `keys` method returns all of the collection's keys:
 
 The `last` method returns the last element in the collection that passes a given truth test:
 
-    collect([1, 2, 3, 4])->last(function ($value, $key) {
-        return $value < 3;
-    });
+    collect([1, 2, 3, 4])->last(fn ($value, $key) => $value < 3);
 
     // 2
 
@@ -1275,9 +1243,7 @@ The `map` method iterates through the collection and passes each value to the gi
 
     $collection = collect([1, 2, 3, 4, 5]);
 
-    $multiplied = $collection->map(function ($item, $key) {
-        return $item * 2;
-    });
+    $multiplied = $collection->map(fn ($item, $key) => $item * 2);
 
     $multiplied->all();
 
@@ -1321,9 +1287,7 @@ The `mapSpread` method iterates over the collection's items, passing each nested
 
     $chunks = $collection->chunk(2);
 
-    $sequence = $chunks->mapSpread(function ($even, $odd) {
-        return $even + $odd;
-    });
+    $sequence = $chunks->mapSpread(fn ($even, $odd) => $even + $odd);
 
     $sequence->all();
 
@@ -1573,9 +1537,7 @@ The `partition` method may be combined with PHP array destructuring to separate 
 
     $collection = collect([1, 2, 3, 4, 5, 6]);
 
-    [$underThree, $equalOrAboveThree] = $collection->partition(function ($i) {
-        return $i < 3;
-    });
+    [$underThree, $equalOrAboveThree] = $collection->partition(fn ($i) => $i < 3);
 
     $underThree->all();
 
@@ -1592,9 +1554,7 @@ The `pipe` method passes the collection to the given closure and returns the res
 
     $collection = collect([1, 2, 3]);
 
-    $piped = $collection->pipe(function ($collection) {
-        return $collection->sum();
-    });
+    $piped = $collection->pipe(fn ($collection) => $collection->sum());
 
     // 6
 
@@ -1834,17 +1794,13 @@ The `reduce` method reduces the collection to a single value, passing the result
 
     $collection = collect([1, 2, 3]);
 
-    $total = $collection->reduce(function ($carry, $item) {
-        return $carry + $item;
-    });
+    $total = $collection->reduce(fn ($carry, $item) => $carry + $item);
 
     // 6
 
 The value for `$carry` on the first iteration is `null`; however, you may specify its initial value by passing a second argument to `reduce`:
 
-    $collection->reduce(function ($carry, $item) {
-        return $carry + $item;
-    }, 4);
+    $collection->reduce(fn ($carry, $item) => $carry + $item, 4);
 
     // 10
 
@@ -1862,9 +1818,7 @@ The `reduce` method also passes array keys in associative collections to the giv
         'eur' => 1.22,
     ];
 
-    $collection->reduce(function ($carry, $value, $key) use ($ratio) {
-        return $carry + ($value * $ratio[$key]);
-    });
+    $collection->reduce(fn ($carry, $value, $key) => $carry + ($value * $ratio[$key]));
 
     // 4264
     
@@ -1892,9 +1846,7 @@ The `reject` method filters the collection using the given closure. The closure 
 
     $collection = collect([1, 2, 3, 4]);
 
-    $filtered = $collection->reject(function ($value, $key) {
-        return $value > 2;
-    });
+    $filtered = $collection->reject(fn ($value, $key) => $value > 2);
 
     $filtered->all();
 
@@ -1979,9 +1931,7 @@ The search is done using a "loose" comparison, meaning a string with an integer 
 
 Alternatively, you may provide your own closure to search for the first item that passes a given truth test:
 
-    collect([2, 4, 6, 8])->search(function ($item, $key) {
-        return $item > 5;
-    });
+    collect([2, 4, 6, 8])->search(fn ($item, $key) => $item > 5);
 
     // 2
 
@@ -2074,9 +2024,7 @@ The `skipUntil` method skips over items from the collection until the given call
 
     $collection = collect([1, 2, 3, 4]);
 
-    $subset = $collection->skipUntil(function ($item) {
-        return $item >= 3;
-    });
+    $subset = $collection->skipUntil(fn ($item) => $item >= 3);
 
     $subset->all();
 
@@ -2101,9 +2049,7 @@ The `skipWhile` method skips over items from the collection while the given call
 
     $collection = collect([1, 2, 3, 4]);
 
-    $subset = $collection->skipWhile(function ($item) {
-        return $item <= 3;
-    });
+    $subset = $collection->skipWhile(fn ($item) => $item <= 3);
 
     $subset->all();
 
@@ -2139,9 +2085,7 @@ The returned slice will preserve keys by default. If you do not wish to preserve
 
 The `sole` method returns the first element in the collection that passes a given truth test, but only if the truth test matches exactly one element:
 
-    collect([1, 2, 3, 4])->sole(function ($value, $key) {
-        return $value === 2;
-    });
+    collect([1, 2, 3, 4])->sole(fn ($value, $key) => $value === 2);
 
     // 2
 
@@ -2241,9 +2185,7 @@ Alternatively, you may pass your own closure to determine how to sort the collec
         ['name' => 'Bookcase', 'colors' => ['Red', 'Beige', 'Brown']],
     ]);
 
-    $sorted = $collection->sortBy(function ($product, $key) {
-        return count($product['colors']);
-    });
+    $sorted = $collection->sortBy(fn ($product, $key) => count($product['colors']));
 
     $sorted->values()->all();
 
@@ -2477,9 +2419,7 @@ In addition, you may pass your own closure to determine which values of the coll
         ['name' => 'Bookcase', 'colors' => ['Red', 'Beige', 'Brown']],
     ]);
 
-    $collection->sum(function ($product) {
-        return count($product['colors']);
-    });
+    $collection->sum(fn ($product) => count($product['colors']));
 
     // 6
 
@@ -2513,9 +2453,7 @@ The `takeUntil` method returns items in the collection until the given callback 
 
     $collection = collect([1, 2, 3, 4]);
 
-    $subset = $collection->takeUntil(function ($item) {
-        return $item >= 3;
-    });
+    $subset = $collection->takeUntil(fn ($item) => $item >= 3);
 
     $subset->all();
 
@@ -2540,9 +2478,7 @@ The `takeWhile` method returns items in the collection until the given callback 
 
     $collection = collect([1, 2, 3, 4]);
 
-    $subset = $collection->takeWhile(function ($item) {
-        return $item < 3;
-    });
+    $subset = $collection->takeWhile(fn ($item) => $item < 3);
 
     $subset->all();
 
@@ -2612,9 +2548,7 @@ The `transform` method iterates over the collection and calls the given callback
 
     $collection = collect([1, 2, 3, 4, 5]);
 
-    $collection->transform(function ($item, $key) {
-        return $item * 2;
-    });
+    $collection->transform(fn ($item, $key) => $item * 2);
 
     $collection->all();
 
@@ -2737,13 +2671,9 @@ The `unless` method will execute the given callback unless the first argument gi
 
     $collection = collect([1, 2, 3]);
 
-    $collection->unless(true, function ($collection) {
-        return $collection->push(4);
-    });
+    $collection->unless(true, fn ($collection) => $collection->push(4));
 
-    $collection->unless(false, function ($collection) {
-        return $collection->push(5);
-    });
+    $collection->unless(false, fn ($collection) => $collection->push(5));
 
     $collection->all();
 
@@ -2753,11 +2683,10 @@ A second callback may be passed to the `unless` method. The second callback will
 
     $collection = collect([1, 2, 3]);
 
-    $collection->unless(true, function ($collection) {
-        return $collection->push(4);
-    }, function ($collection) {
-        return $collection->push(5);
-    });
+    $collection->unless(true, 
+        fn ($collection) => $collection->push(4),
+        fn ($collection) => $collection->push(5)
+    );
 
     $collection->all();
 
@@ -2834,13 +2763,9 @@ The `when` method will execute the given callback when the first argument given 
 
     $collection = collect([1, 2, 3]);
 
-    $collection->when(true, function ($collection, $value) {
-        return $collection->push(4);
-    });
+    $collection->when(true, fn ($collection, $value) => $collection->push(4));
 
-    $collection->when(false, function ($collection, $value) {
-        return $collection->push(5);
-    });
+    $collection->when(false, fn ($collection, $value) => $collection->push(5));
 
     $collection->all();
 
@@ -2850,11 +2775,10 @@ A second callback may be passed to the `when` method. The second callback will b
 
     $collection = collect([1, 2, 3]);
 
-    $collection->when(false, function ($collection, $value) {
-        return $collection->push(4);
-    }, function ($collection) {
-        return $collection->push(5);
-    });
+    $collection->when(false, 
+        fn ($collection, $value) => $collection->push(4),
+        fn ($collection) => $collection->push(5)
+    );
 
     $collection->all();
 
@@ -2869,9 +2793,7 @@ The `whenEmpty` method will execute the given callback when the collection is em
 
     $collection = collect(['Michael', 'Tom']);
 
-    $collection->whenEmpty(function ($collection) {
-        return $collection->push('Adam');
-    });
+    $collection->whenEmpty(fn ($collection) => $collection->push('Adam'));
 
     $collection->all();
 
@@ -2892,11 +2814,10 @@ A second closure may be passed to the `whenEmpty` method that will be executed w
 
     $collection = collect(['Michael', 'Tom']);
 
-    $collection->whenEmpty(function ($collection) {
-        return $collection->push('Adam');
-    }, function ($collection) {
-        return $collection->push('Taylor');
-    });
+    $collection->whenEmpty(
+        fn ($collection) => $collection->push('Adam'),
+        fn ($collection) => $collection->push('Taylor')
+    );
 
     $collection->all();
 
@@ -2911,9 +2832,7 @@ The `whenNotEmpty` method will execute the given callback when the collection is
 
     $collection = collect(['michael', 'tom']);
 
-    $collection->whenNotEmpty(function ($collection) {
-        return $collection->push('adam');
-    });
+    $collection->whenNotEmpty(fn ($collection) => $collection->push('adam'));
 
     $collection->all();
 
@@ -2922,9 +2841,7 @@ The `whenNotEmpty` method will execute the given callback when the collection is
 
     $collection = collect();
 
-    $collection->whenNotEmpty(function ($collection) {
-        return $collection->push('adam');
-    });
+    $collection->whenNotEmpty(fn ($collection) => $collection->push('adam'));
 
     $collection->all();
 
@@ -2934,11 +2851,10 @@ A second closure may be passed to the `whenNotEmpty` method that will be execute
 
     $collection = collect();
 
-    $collection->whenNotEmpty(function ($collection) {
-        return $collection->push('adam');
-    }, function ($collection) {
-        return $collection->push('taylor');
-    });
+    $collection->whenNotEmpty(
+        fn ($collection) => $collection->push('adam'),
+        fn ($collection) => $collection->push('taylor')
+    );
 
     $collection->all();
 
@@ -3256,17 +3172,13 @@ Or, imagine you need to iterate through 10,000 Eloquent models. When using tradi
 
     use App\Models\User;
 
-    $users = User::all()->filter(function ($user) {
-        return $user->id > 500;
-    });
+    $users = User::all()->filter(fn ($user) => $user->id > 500);
 
 However, the query builder's `cursor` method returns a `LazyCollection` instance. This allows you to still only run a single query against the database but also only keep one Eloquent model loaded in memory at a time. In this example, the `filter` callback is not executed until we actually iterate over each user individually, allowing for a drastic reduction in memory usage:
 
     use App\Models\User;
 
-    $users = User::cursor()->filter(function ($user) {
-        return $user->id > 500;
-    });
+    $users = User::cursor()->filter(fn ($user) => $user->id > 500);
 
     foreach ($users as $user) {
         echo $user->id;
