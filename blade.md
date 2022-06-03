@@ -619,7 +619,7 @@ However, if you are building a package that utilizes Blade components, you will 
      */
     public function boot()
     {
-        Blade::component('package-alert', Alert::class);
+        Blade::component(Alert::class, 'package-alert');
     }
 
 Once your component has been registered, it may be rendered using its tag alias:
@@ -1189,7 +1189,7 @@ However, if you are building a package that utilizes Blade components or placing
      */
     public function boot()
     {
-        Blade::component('package-alert', AlertComponent::class);
+        Blade::component(AlertComponent::class, 'package-alert');
     }
 
 Once your component has been registered, it may be rendered using its tag alias:
