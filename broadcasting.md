@@ -163,13 +163,14 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
 
 ```js
 import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
-window.Pusher = require('pusher-js');
+window.Pusher = Pusher;
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     forceTLS: true
 });
 ```
@@ -180,7 +181,7 @@ Once you have uncommented and adjusted the Echo configuration according to your 
 npm run dev
 ```
 
-> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
+> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
 
 <a name="using-an-existing-client-instance"></a>
 #### Using An Existing Client Instance
@@ -188,10 +189,6 @@ npm run dev
 If you already have a pre-configured Pusher Channels client instance that you would like Echo to utilize, you may pass it to Echo via the `client` configuration option:
 
 ```js
-import Echo from 'laravel-echo';
-
-const client = require('pusher-js');
-
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: 'your-pusher-channels-key',
@@ -216,12 +213,13 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
 
 ```js
 import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
-window.Pusher = require('pusher-js');
+window.Pusher = Pusher;
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: process.env.MIX_ABLY_PUBLIC_KEY,
+    key: import.meta.env.VITE_ABLY_PUBLIC_KEY,
     wsHost: 'realtime-pusher.ably.io',
     wsPort: 443,
     disableStats: true,
@@ -229,7 +227,7 @@ window.Echo = new Echo({
 });
 ```
 
-Note that our Ably Echo configuration references a `MIX_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
+Note that our Ably Echo configuration references a `VITE_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
 
 Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
 
@@ -237,7 +235,7 @@ Once you have uncommented and adjusted the Echo configuration according to your 
 npm run dev
 ```
 
-> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
+> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
 
 <a name="concept-overview"></a>
 ## Concept Overview
