@@ -176,6 +176,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [between](#method-fluent-str-between)
 [betweenFirst](#method-fluent-str-between-first)
 [camel](#method-fluent-str-camel)
+[classBasename](#method-fluent-str-class-basename)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
 [dirname](#method-fluent-str-dirname)
@@ -2180,6 +2181,17 @@ The `camel` method converts the given string to `camelCase`:
     $converted = Str::of('foo_bar')->camel();
 
     // fooBar
+
+<a name="method-fluent-str-class-basename"></a>
+#### `classBasename` {.collection-method}
+
+The `classBasename` method returns the class name of the given class with the class's namespace removed:
+
+    use Illuminate\Support\Str;
+
+    $class = Str::of('Foo\Bar\Baz')->classBasename();
+
+    // Baz
 
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
