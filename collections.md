@@ -1676,9 +1676,15 @@ The `pluck` method also supports retrieving nested values using "dot" notation:
 
     $collection = collect([
         [
+            'name' => 'Laracon',
             'speakers' => [
                 'first_day' => ['Rosa', 'Judith'],
-                'second_day' => ['Angela', 'Kathleen'],
+            ],
+        ],
+        [
+            'name' => 'VueConf',
+            'speakers' => [
+                'first_day' => ['Abigail', 'Joey'],
             ],
         ],
     ]);
@@ -1687,7 +1693,7 @@ The `pluck` method also supports retrieving nested values using "dot" notation:
 
     $plucked->all();
 
-    // [['Rosa', 'Judith']]
+    // [['Rosa', 'Judith'], ['Abigail', 'Joey']]
 
 If duplicate keys exist, the last matching element will be inserted into the plucked collection:
 
