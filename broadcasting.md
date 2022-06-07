@@ -516,13 +516,13 @@ Private channels require you to authorize that the currently authenticated user 
 <a name="defining-authorization-routes"></a>
 ### Defining Authorization Routes
 
-Thankfully, Laravel makes it easy to define the routes to respond to channel authorization requests. In the `App\Providers\BroadcastServiceProvider` included with your Laravel application, you will see a call to the `Broadcast::routes` method. This method will register the `/broadcasting/auth` route to handle authorization requests:
+Thankfully, Laravel makes it easy to define the routes to respond to channel authorization requests. In the `App\Providers\BroadcastServiceProvider` included with your Laravel application, you will see a call to the `Broadcast::channelAuthorizationRoutes` method. This method will register the `/broadcasting/auth` route to handle authorization requests:
 
-    Broadcast::routes();
+    Broadcast::channelAuthorizationRoutes();
 
-The `Broadcast::routes` method will automatically place its routes within the `web` middleware group; however, you may pass an array of route attributes to the method if you would like to customize the assigned attributes:
+The `Broadcast::channelAuthorizationRoutes` method will automatically place its routes within the `web` middleware group; however, you may pass an array of route attributes to the method if you would like to customize the assigned attributes:
 
-    Broadcast::routes($attributes);
+    Broadcast::channelAuthorizationRoutes($attributes);
 
 <a name="customizing-the-authorization-endpoint"></a>
 #### Customizing The Authorization Endpoint
@@ -650,8 +650,8 @@ Finally, you may place the authorization logic for your channel in the channel c
 
 > {tip} Like many other classes in Laravel, channel classes will automatically be resolved by the [service container](/docs/{{version}}/container). So, you may type-hint any dependencies required by your channel in its constructor.
 
-<a name="defining-authorized-connections"></a>
-### Defining Authorized Connections
+<a name="defining-user-authentication-routes"></a>
+### Defining User Authentication Routes
 
 > {tip} This feature is supported only by the `pusher` driver and needs to be explicitly enabled from your Pusher app. Your Pusher SDKs must also be updated to 7.1+ and your Laravel Echo to 1.12+
 
@@ -659,7 +659,18 @@ While you can authorize your connections to access specific channels, you can al
 
 When enabled, in case the user does not subscribe to any private or presence channel in the first few seconds after connection, you shall attempt to authorize.
 
-You will configure the frontend Pusher app to send an HTTP request to `/broadcasting/user-auth`. Laravel allows you to define the user details in the `boot` method of `\App\Providers\BroadcastServiceProvider` so you can share with Pusher the authentication details.
+Thankfully, Laravel makes it easy to define the routes to respond to user authentication requests. In the `App\Providers\BroadcastServiceProvider` included with your Laravel application, you will see a call to the `Broadcast::userAuthenticationRoutes` method. This method will register the `/broadcasting/user-auth` route to handle authorization requests:
+
+    Broadcast::userAuthenticationRoutes();
+
+The `Broadcast::userAuthenticationRoutes` method will automatically place its routes within the `web` middleware group; however, you may pass an array of route attributes to the method if you would like to customize the assigned attributes:
+
+    Broadcast::userAuthenticationRoutes($attributes);
+
+<a name="defining-authorized-connections"></a>
+### Defining Authorized Connections
+
+You can configure the frontend Pusher app to send an HTTP request to `/broadcasting/user-auth`. Laravel allows you on the backend side to define the user details in the `boot` method of `\App\Providers\BroadcastServiceProvider` so you can share with Pusher the authentication details.
 
 ```php
 Broadcast::resolveAuthenticatedUserUsing(function ($request) {
