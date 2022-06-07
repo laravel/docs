@@ -1687,7 +1687,7 @@ The `pluck` method also supports retrieving nested values using "dot" notation:
 
     $plucked->all();
 
-    // ['Rosa', 'Judith']
+    // [['Rosa', 'Judith']]
 
 If duplicate keys exist, the last matching element will be inserted into the plucked collection:
 
