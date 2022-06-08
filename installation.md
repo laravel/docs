@@ -72,7 +72,7 @@ After the project has been created, you can navigate to the application director
 ```shell
 cd example-app
 
-./vendor/bin/sail up
+vendor/bin/sail up
 ```
 
 The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
@@ -101,7 +101,7 @@ After the project has been created, you can navigate to the application director
 ```shell
 cd example-app
 
-./vendor/bin/sail up
+vendor/bin/sail up
 ```
 
 The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
@@ -132,7 +132,7 @@ After the project has been created, you can navigate to the application director
 ```shell
 cd example-app
 
-./vendor/bin/sail up
+vendor/bin/sail up
 ```
 
 The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
