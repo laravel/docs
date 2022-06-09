@@ -272,6 +272,22 @@ If you need to add a new, temporary cast at runtime, you may use the `mergeCasts
 
 > {note} Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship.
 
+If you use Array Attribute Casting in a JSON Field on a MySQL Connection, MySQL will reorder the Array in Database
+
+    $data = [
+      'aa' => 1,
+      'b' => 2,
+    ];
+
+This will be stored as following:
+
+    $data = [
+      'b' => 2,
+      'aa' => 1,
+    ];
+
+You should use TEXT Column to prevent this.
+
 <a name="stringable-casting"></a>
 #### Stringable Casting
 
