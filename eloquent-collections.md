@@ -62,6 +62,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 
 <div class="collection-method-list" markdown="1">
 
+[append](#method-append)
 [contains](#method-contains)
 [diff](#method-diff)
 [except](#method-except)
@@ -79,8 +80,17 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 
 </div>
 
+<a name="method-append"></a>
+#### `append($attributes)` {.collection-method .first-collection-method}
+
+The `append` method may be used to append an attribute across the entire collection. This method accepts an array of attributes, or a string/single attribute:
+
+    $users->append('team');
+    
+    $users->append(['team', 'is_admin']);
+
 <a name="method-contains"></a>
-#### `contains($key, $operator = null, $value = null)` {.collection-method .first-collection-method}
+#### `contains($key, $operator = null, $value = null)` {.collection-method}
 
 The `contains` method may be used to determine if a given model instance is contained by the collection. This method accepts a primary key or a model instance:
 
