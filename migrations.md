@@ -202,6 +202,19 @@ php artisan migrate:fresh --seed
 
 > {note} The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications.
 
+<a name="check-status-of-migrations"></a>
+#### Check status of migrations
+
+The `migrate:status` command will drop all tables from the database and then execute the `migrate` command:
+
+```shell
+php artisan migrate:fresh
+
+php artisan migrate:fresh --seed
+```
+
+> {note} The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications.
+
 <a name="tables"></a>
 ## Tables
 
