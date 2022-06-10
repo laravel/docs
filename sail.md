@@ -419,7 +419,7 @@ sail share --subdomain=my-sail-site
 Laravel Sail's Docker configuration includes support for [Xdebug](https://xdebug.org/), a popular and powerful debugger for PHP. In order to enable Xdebug, you will need to add a few variables to your application's `.env` file to [configure Xdebug](https://xdebug.org/docs/step_debug#mode). To enable Xdebug you must set the appropriate mode(s) before starting Sail:
 
 ```ini
-SAIL_XDEBUG_MODE=develop,debug
+SAIL_XDEBUG_MODE=develop,debug,coverage
 ```
 
 #### Linux Host IP Configuration
