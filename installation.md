@@ -48,9 +48,9 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 <a name="your-first-laravel-project"></a>
 ## Your First Laravel Project
 
-We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your own computer. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
+We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your local machine. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
 
-Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local computer's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your personal computer. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
+Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local machine's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your local machine. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
 Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience.
 
@@ -75,7 +75,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
+The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
 
@@ -104,7 +104,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
+The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
 
@@ -135,7 +135,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
+The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
 
@@ -161,7 +161,7 @@ curl -s "https://laravel.build/example-app?with=mysql,redis&devcontainer" | bash
 <a name="installation-via-composer"></a>
 ### Installation Via Composer
 
-If your computer already has PHP and Composer installed, you may create a new Laravel project by using Composer directly. After the application has been created, you may start Laravel's local development server using the Artisan CLI's `serve` command:
+If your local machine already has PHP and Composer installed, you may create a new Laravel project by using Composer directly. After the application has been created, you may start Laravel's local development server using the Artisan CLI's `serve` command:
 
 ```shell
 composer create-project laravel/laravel example-app
@@ -170,6 +170,8 @@ cd example-app
 
 php artisan serve
 ```
+
+Once you have started the Artisan development server, you may access your application at `http://localhost:8000`.
 
 <a name="the-laravel-installer"></a>
 #### The Laravel Installer
@@ -236,7 +238,7 @@ Laravel needs almost no additional configuration out of the box. You are free to
 <a name="environment-based-configuration"></a>
 ### Environment Based Configuration
 
-Since many of Laravel's configuration option values may vary depending on whether your application is running on your local computer or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
+Since many of Laravel's configuration option values may vary depending on whether your application is running on your local machine or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
 
 Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
 

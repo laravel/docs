@@ -146,6 +146,12 @@ In addition, you may instruct Laravel to hide any routes that are defined by thi
 php artisan route:list --except-vendor
 ```
 
+Likewise, you may also instruct Laravel to only show routes that are defined by third-party packages by providing the `--only-vendor` option when executing the `route:list` command:
+
+```shell
+php artisan route:list --only-vendor
+```
+
 <a name="route-parameters"></a>
 ## Route Parameters
 
@@ -644,6 +650,7 @@ Laravel includes powerful and customizable rate limiting services that you may u
 Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. Limit configuration are instances of the `Illuminate\Cache\RateLimiting\Limit` class. This class contains helpful "builder" methods so that you can quickly define your limit. The rate limiter name may be any string you wish:
 
     use Illuminate\Cache\RateLimiting\Limit;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\RateLimiter;
 
     /**
@@ -661,8 +668,8 @@ Rate limiters are defined using the `RateLimiter` facade's `for` method. The `fo
 If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Laravel. If you would like to define your own response that should be returned by a rate limit, you may use the `response` method:
 
     RateLimiter::for('global', function (Request $request) {
-        return Limit::perMinute(1000)->response(function () {
-            return response('Custom response...', 429);
+        return Limit::perMinute(1000)->response(function (Request $request, array $headers) {
+            return response('Custom response...', 429, $headers);
         });
     });
 

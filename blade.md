@@ -342,7 +342,7 @@ In addition to conditional statements, Blade provides simple directives for work
 
 > {tip} While iterating through a `foreach` loop, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
 
-When using loops you may also end the loop or skip the current iteration using the `@continue` and `@break` directives:
+When using loops you may also skip the current iteration or end the loop using the `@continue` and `@break` directives:
 
 ```blade
 @foreach ($users as $user)
@@ -677,7 +677,7 @@ You may pass data to Blade components using HTML attributes. Hard-coded, primiti
 <x-alert type="error" :message="$message"/>
 ```
 
-You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
+You should define all of the component's data attributes in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
 
     <?php
 

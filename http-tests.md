@@ -386,8 +386,8 @@ To assert that an attribute is present or absent, you may use the `has` and `mis
 In addition, the `hasAll` and `missingAll` methods allow asserting the presence or absence of multiple attributes simultaneously:
 
     $response->assertJson(fn (AssertableJson $json) =>
-        $json->hasAll('status', 'data')
-             ->missingAll('message', 'code')
+        $json->hasAll(['status', 'data'])
+             ->missingAll(['message', 'code'])
     );
 
 You may use the `hasAny` method to determine if at least one of a given list of attributes is present:
@@ -602,12 +602,14 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 <style>
     .collection-method-list > p {
-        column-count: 2; -moz-column-count: 2; -webkit-column-count: 2;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+        columns: 14.4em 2; -moz-columns: 14.4em 2; -webkit-columns: 14.4em 2;
     }
 
     .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 
@@ -632,6 +634,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonMissingExact](#assert-json-missing-exact)
 [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
 [assertJsonPath](#assert-json-path)
+[assertJsonMissingPath](#assert-json-missing-path)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
@@ -819,7 +822,7 @@ Assert that the response contains the given data at the specified path:
 
     $response->assertJsonPath($path, $expectedValue);
 
-For example, if the JSON response returned by your application contains the following data:
+For example, if the following JSON response is returned by your application:
 
 ```js
 {
@@ -832,6 +835,27 @@ For example, if the JSON response returned by your application contains the foll
 You may assert that the `name` property of the `user` object matches a given value like so:
 
     $response->assertJsonPath('user.name', 'Steve Schoger');
+
+<a name="assert-json-missing-path"></a>
+#### assertJsonMissingPath
+
+Assert that the response does not contain the given path:
+
+    $response->assertJsonMissingPath($path);
+
+For example, if the following JSON response is returned by your application:
+
+```js
+{
+    "user": {
+        "name": "Steve Schoger"
+    }
+}
+```
+
+You may assert that it does not contain the `email` property of the `user` object:
+
+    $response->assertJsonMissingPath('user.email');
 
 <a name="assert-json-structure"></a>
 #### assertJsonStructure

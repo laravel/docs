@@ -449,7 +449,7 @@ The [HTTP client](/docs/{{version}}/http-client) now has a default timeout of 30
 
 If you wish to specify a longer timeout for a given request, you may do so using the `timeout` method:
 
-    $response = Http::timeout(120)->get(...);
+    $response = Http::timeout(120)->get(/* ... */);
 
 #### HTTP Fake & Middleware
 
@@ -486,7 +486,7 @@ composer require symfony/postmark-mailer symfony/http-client
 
 #### Updated Return Types
 
-The `send`, `html`, `text`, and `plain` methods no longer return the number of recipients that received the message. Instead, an instance of `Illuminate\Mail\SentMessage` is returned. This object contains an instance of `Symfony\Component\Mailer\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object.
+The `send`, `html`, `raw`, and `plain` methods on `Illuminate\Mail\Mailer` no longer return `void`. Instead, an instance of `Illuminate\Mail\SentMessage` is returned. This object contains an instance of `Symfony\Component\Mailer\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object.
 
 #### Renamed "Swift" Methods
 

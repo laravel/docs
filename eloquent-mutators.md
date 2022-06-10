@@ -80,7 +80,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  *
  * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
-public function address(): Attribute
+protected function address(): Attribute
 {
     return Attribute::make(
         get: fn ($value, $attributes) => new Address(
@@ -108,7 +108,7 @@ When returning value objects from accessors, any changes made to the value objec
 However, you may sometimes wish to enable caching for primitive values like strings and booleans, particularly if they are computationally intensive. To accomplish this, you may invoke the `shouldCache` method when defining your accessor:
 
 ```php
-public function hash(): Attribute
+protected function hash(): Attribute
 {
     return Attribute::make(
         get: fn ($value) => bcrypt(gzuncompress($value)),
@@ -124,7 +124,7 @@ If you would like to disable the object caching behavior of attributes, you may 
  *
  * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
-public function address(): Attribute
+protected function address(): Attribute
 {
     return Attribute::make(
         get: fn ($value, $attributes) => new Address(
@@ -188,7 +188,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  *
  * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
-public function address(): Attribute
+protected function address(): Attribute
 {
     return Attribute::make(
         get: fn ($value, $attributes) => new Address(

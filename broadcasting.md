@@ -748,9 +748,9 @@ If you would like to listen for events on a private channel, use the `private` m
 
 ```js
 Echo.private(`orders.${this.order.id}`)
-    .listen(...)
-    .listen(...)
-    .listen(...);
+    .listen(/* ... */)
+    .listen(/* ... */)
+    .listen(/* ... */);
 ```
 
 <a name="stop-listening-for-events"></a>
@@ -865,9 +865,9 @@ As typical of other types of events, you may listen for events sent to presence 
 
 ```js
 Echo.join(`chat.${roomId}`)
-    .here(...)
-    .joining(...)
-    .leaving(...)
+    .here(/* ... */)
+    .joining(/* ... */)
+    .leaving(/* ... */)
     .listen('NewMessage', (e) => {
         //
     });
