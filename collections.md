@@ -112,6 +112,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
 [doesntContain](#method-doesntcontain)
+[dot](#method-dot)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
 [duplicatesStrict](#method-duplicatesstrict)
@@ -636,6 +637,43 @@ You may also pass a key / value pair to the `doesntContain` method, which will d
     // true
 
 The `doesntContain` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value.
+
+<a name="method-dot"></a>
+#### `dot()` {.collection-method}
+
+The `dot` method flattens a multi-dimensional collection into a single-dimensional collection that uses "dot" notation:
+
+    $person = collect([
+        'name' => [
+            'first_name' => 'Marie',
+            'last_name' => 'Valentine',
+        ],
+        'address' => [
+            'line_1' => '2992 Eagle Drive',
+            'line_2' => '',
+            'suburb' => 'Detroit',
+            'state' => 'MI',
+            'postcode' => '48219',
+        ],
+    ]);
+
+    $person = $person->dot();
+
+    $person->toArray();
+
+    /*
+        [
+            "name.first_name" => "Marie",
+            "name.last_name" => "Valentine",
+            "address.line_1" => "2992 Eagle Drive",
+            "address.line_2" => "",
+            "address.suburb" => "Detroit",
+            "address.state" => "MI",
+            "address.postcode" => "48219",
+        ]
+    */
+
+For the inverse of `dot`, see the [undot](#method-undot) method.
 
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}
@@ -2640,8 +2678,8 @@ The `undot` method expands a single-dimensional collection that uses "dot" notat
         'address.line_2' => '',
         'address.suburb' => 'Detroit',
         'address.state' => 'MI',
-        'address.postcode' => '48219'
-    ])
+        'address.postcode' => '48219',
+    ]);
 
     $person = $person->undot();
 
@@ -2662,6 +2700,8 @@ The `undot` method expands a single-dimensional collection that uses "dot" notat
             ],
         ]
     */
+
+For the inverse of `undot`, see the [dot](#method-dot) method.
 
 <a name="method-union"></a>
 #### `union()` {.collection-method}
