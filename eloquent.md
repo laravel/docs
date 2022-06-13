@@ -46,7 +46,7 @@ Laravel includes Eloquent, an object-relational mapper (ORM) that makes it enjoy
 <a name="generating-model-classes"></a>
 ## Generating Model Classes
 
-To get started, let's create an Eloquent model. Models typically live in the `app\Models` directory and extend the `Illuminate\Database\Eloquent\Model` class. You may use the `make:model` [Artisan command](/docs/{{version}}/artisan) to generate a new model:
+To get started, let's create an Eloquent model. Models typically placed in the `app\Models` directory and extend the `Illuminate\Database\Eloquent\Model` class. You may use the `make:model` [Artisan command](/docs/{{version}}/artisan) to generate a new model:
 
 ```shell
 php artisan make:model Flight
