@@ -300,7 +300,7 @@ If your local machine contains an Apple Silicon chip, your `selenium` service mu
 
 ```yaml
 selenium:
-    image: 'seleniarm/standalone-chromium'
+    image: 'selenium/standalone-chromium'
     volumes:
         - '/dev/shm:/dev/shm'
     networks:
