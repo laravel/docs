@@ -617,7 +617,7 @@ Sometimes you may need to group several "where" clauses within parentheses in or
     $users = DB::table('users')
                ->where('name', '=', 'John')
                ->where(function ($query) {
-                   $query->where('votes', '>', 100)
+                   $query->orWhere('votes', '>', 100)
                          ->orWhere('title', '=', 'Admin');
                })
                ->get();
