@@ -577,6 +577,33 @@ Since we have bound all `{user}` parameters to the `App\Models\User` model, an i
 
 If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
 
+If you intend to use key customisation within route declaration by [customizing the key](#customizing-the-key), then you will need to ensure the key used for the route declaration and explicit binding are the same.
+
+With the route model binding like so:
+
+    use App\Models\User;
+
+    Route::get('/users/{user:slug}', function (User $user) {
+        //
+    });
+
+The explicit binding would be declared link so:
+
+    use App\Models\User;
+    use Illuminate\Support\Facades\Route;
+
+    /**
+     * Define your route model bindings, pattern filters, etc.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Route::model('user:slug', User::class);
+
+        // ...
+    }
+
 <a name="customizing-the-resolution-logic"></a>
 #### Customizing The Resolution Logic
 
