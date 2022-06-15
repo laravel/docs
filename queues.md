@@ -183,7 +183,7 @@ Job classes are very simple, normally containing only a `handle` method that is 
          *
          * @var \App\Models\Podcast
          */
-        protected $podcast;
+        public $podcast;
 
         /**
          * Create a new job instance.
@@ -1711,7 +1711,7 @@ When a particular job fails, you may want to send an alert to your users or reve
          *
          * @var \App\Podcast
          */
-        protected $podcast;
+        public $podcast;
 
         /**
          * Create a new job instance.
