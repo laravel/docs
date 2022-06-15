@@ -241,6 +241,12 @@ AWS_ENDPOINT=http://minio:9000
 AWS_USE_PATH_STYLE_ENDPOINT=true
 ```
 
+In order to generate proper URLs by the Filesystem in a development environment, the base URL must explicitely be defined as well:
+
+```ini
+AWS_URL=http://localhost:9000/local # APP_URL:9000/AWS_BUCKET
+```
+
 <a name="running-tests"></a>
 ## Running Tests
 
