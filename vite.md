@@ -60,6 +60,78 @@ The only remaining step is to install your npm dependencies. Within a fresh inst
 npm install
 ```
 
+<a name="configuring-vite"></a>
+### Configuring Vite
+
+Vite is configured in a `vite.config.js` file in the root of your project. You are free to customise this based on your needs and install any other plugins, such as `@vitejs/vue-plugin` or `@vitejs/react-plugin`.
+
+The Laravel plugin requires you to specify any entry points for your application. These may be JavaScript or CSS, and include preprocessed languages such TypeScript, JSX, TSX, and Sass.
+
+```js
+import { defineConfig } from 'vite'
+import laravel from 'laravel-vite-plugin'
+
+export default defineConfig({
+    plugins: [
+        laravel([
+            'resources/css/app.css',
+            'resources/js/app.js',
+        ]),
+    ],
+})
+```
+
+If you are building an SPA, for example with Inertia, Vite works best with only JavaScript entry points:
+
+```js
+import { defineConfig } from 'vite'
+import laravel from 'laravel-vite-plugin'
+
+export default defineConfig({
+    plugins: [
+        laravel([
+            'resources/js/app.js',
+        ]),
+    ],
+})
+```
+
+You would then import your CSS via JavaScript, for example in your `resources/js/app.js` file:
+
+```diff
+  import './bootstrap';
++ import '../css/app.css';
+```
+
+The Laravel plugin also supports multiple entry points, and advanced configuration such as [SSR entry points](#ssr).
+
+<a name="loading-your-scripts-and-styles"></a>
+### Loading your scripts and styles
+
+With your Vite entry points configured, you only need add them in a `@vite()` Blade directive to the `<head>` of your application:
+
+```blade
+<!doctype html>
+<head>
+    {{-- ... --}}
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+```
+
+If you're importing your CSS via JavaScript, then you only need to include the JavaScript entry point:
+
+```blade
+<!doctype html>
+<head>
+    {{-- ... --}}
+
+    @vite('resources/js/app.js')
+</head>
+```
+
+The `@vite` directive will automatically detect the Vite development server and inject the Vite client for you to enable Hot Module Replacement. In build mode, it will load your compiled and versioned assets, including any imported CSS.
+
 <a name="running-vite"></a>
 ## Running Vite
 
@@ -78,55 +150,6 @@ npm run build
 <a name="working-with-scripts"></a>
 ## Working With JavaScript
 
-<a name="entry-points"></a>
-### Entry Points
-
-Out of the box, the Laravel plugin will look for your entry point at `resources/js/app.js`, so with that file already in place with a fresh Laravel installation, the only thing you will need to do is add the `@vite` directive to the `<head>` of your application.
-
-```blade
-<!doctype html>
-<head>
-    {{-- ... --}}
-
-    @vite
-</head>
-```
-
-If you want to change the default entry point to your application, you should pass the path to the Laravel plugin in your `vite.config.js`. Entry points may be JavaScript, TypeScript, JSX, or TSX files.
-
-```js
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
-
-export default defineConfig({
-    plugins: [
-        laravel('resources/js/entry-point.js'),
-    ],
-})
-```
-
-The compiled entry point can then be loaded by specifying the same path in the `@vite` Blade directive...
-
-```blade
-@vite('resources/js/entry-point.js')
-```
-
-If you have multiple entry points, you can also pass an array of paths to the Laravel plugin:
-
-```js
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
-
-export default defineConfig({
-    plugins: [
-        laravel([
-            'resources/js/app.js',
-            'resources/js/admin.js',
-        ]),
-    ],
-})
-```
-
 <a name="aliases"></a>
 ### Aliases
 
@@ -139,7 +162,7 @@ The Laravel plugin provides two common aliases to help you hit the ground runnin
 }
 ```
 
-You may overwrite the `'@'` alias by adding your own to the `vite.config.js`...
+You may overwrite the `'@'` alias by adding your own to the `vite.config.js`:
 
 ```js
 import { defineConfig } from 'vite'
@@ -283,16 +306,7 @@ import.meta.env.VITE_SENTRY_DSN_PUBLIC
 <a name="ssr"></a>
 ## Server-Side Rendering (SSR)
 
-The Laravel plugin makes it painless to set up Server-Side Rending with Vite. Create your SSR entry point at `resources/js/ssr.js`, and no additional configuration is required.
-
-Then to build and start the SSR server, you may run the following commands:
-
-```sh
-npm run ssr:build
-npm run ssr:serve
-```
-
-However, if you want to specify a different entry point, you may augment your `vite.config.js` to include the SSR and non-SSR entry points.
+The Laravel plugin makes it painless to set up Server-Side Rending with Vite. Create your SSR entry point, for example at `resources/js/ssr.js`, and specify the entry point by passing a configuration option to the Laravel plugin:
 
 ```js
 import { defineConfig } from 'vite'
@@ -306,4 +320,11 @@ export default defineConfig({
         }),
     ],
 })
+```
+
+Then to build and start the SSR server, you may run the following commands:
+
+```sh
+npm run ssr:build
+npm run ssr:serve
 ```
