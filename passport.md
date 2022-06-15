@@ -1161,7 +1161,7 @@ Typically, if you want to consume your API from your JavaScript application, you
 
 > {note} You should ensure that the `CreateFreshApiToken` middleware is the last middleware listed in your middleware stack.
 
-This middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. The JWT has a lifetime equal to your `session.lifetime` configuration value. Now, since the browser will automatically send the cookie with all subsequent requests, you may make requests to your application's API without explicitly passing an access token:
+This middleware will attach a `laravel_token` cookie to your outgoing responses, but it will create cookie only for `web` routes, `GET` requests. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. The JWT has a lifetime equal to your `session.lifetime` configuration value. Now, since the browser will automatically send the cookie with all subsequent requests, you may make requests to your application's API without explicitly passing an access token:
 
     axios.get('/api/user')
         .then(response => {
