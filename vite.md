@@ -11,6 +11,7 @@
   - [Aliases](#aliases)
   - [Vue](#vue)
   - [React](#react)
+  - [Inertia](#inertia)
   - [URL Processing](#url-processing)
 - [Working With Stylesheets](#working-with-stylesheets)
 - [Custom Base URLs](#custom-base-urls)
@@ -227,6 +228,25 @@ When using Vite with React, you will need to ensure that any files containing JS
 
 The `@viteReactRefresh` directive must be called **before** the `@vite` directive.
 
+<a name="inertia"></a>
+### Inertia
+
+The Laravel Plugin provides a convenient `resolvePageComponent` helper function to utilise in the `resolve` callback when booting Inertia via `createInertiaApp`. Here is an example of the helper in use with Vue3, however the same applies to other frameworks such as React.
+
+```js
+import { createApp, h } from 'vue'
+import { createInertiaApp } from '@inertiajs/inertia-vue3'
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
+
+createInertiaApp({
+  resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+  setup({ el, App, props, plugin }) {
+    createApp({ render: () => h(App, props) })
+      .use(plugin)
+      .mount(el)
+  },
+})
+```
 
 <a name="url-processing"></a>
 ### URL Processing
