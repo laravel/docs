@@ -393,12 +393,13 @@ If you only want to exclude event listeners from being faked for a portion of yo
         public function test_orders_can_be_processed()
         {
             $order = Event::fakeExceptFor(function () {
+                // Events are dispatched as normal and observers will run ...
                 $order = Order::factory()->create();
 
                 return $order;
             });
 
-            // Events are dispatched as normal and observers will run ...
+            // The Order Update Model Event will not be dispatched
             $order->update([...]);
         }
     }
