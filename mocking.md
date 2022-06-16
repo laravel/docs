@@ -395,8 +395,6 @@ If you only want to exclude event listeners from being faked for a portion of yo
             $order = Event::fakeExceptFor(function () {
                 $order = Order::factory()->create();
 
-                Event::assertDispatched(OrderCreated::class);
-
                 return $order;
             });
 
