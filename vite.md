@@ -71,8 +71,8 @@ Vite is configured in a `vite.config.js` file in the root of your project. You a
 The Laravel plugin requires you to specify any entry points for your application. These may be JavaScript or CSS, and include preprocessed languages such TypeScript, JSX, TSX, and Sass.
 
 ```js
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
     plugins: [
@@ -81,14 +81,14 @@ export default defineConfig({
             'resources/js/app.js',
         ]),
     ],
-})
+});
 ```
 
-If you are building an SPA, for example with Inertia, Vite works best with only JavaScript entry points:
+If you are building an SPA, for example with Inertia, Vite works best without CSS entry points:
 
 ```js
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
     plugins: [
@@ -96,10 +96,10 @@ export default defineConfig({
             'resources/js/app.js',
         ]),
     ],
-})
+});
 ```
 
-You would then import your CSS via JavaScript, for example in your `resources/js/app.js` file:
+Instead, you should import your CSS via JavaScript, for example in your `resources/js/app.js` file:
 
 ```diff
   import './bootstrap';
@@ -168,8 +168,8 @@ The Laravel plugin provides two common aliases to help you hit the ground runnin
 You may overwrite the `'@'` alias by adding your own to the `vite.config.js`:
 
 ```js
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
     plugins: [
@@ -180,7 +180,7 @@ export default defineConfig({
             '@': 'resources/ts',
         },
     },
-})
+});
 ```
 
 <a name="vue"></a>
@@ -189,9 +189,9 @@ export default defineConfig({
 There are a few additional options you will need to include when using the Vue plugin with the Laravel plugin:
 
 ```js
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     plugins: [
@@ -215,7 +215,7 @@ export default defineConfig({
             },
         }),
     ],
-})
+});
 ```
 
 <a name="react"></a>
@@ -236,9 +236,9 @@ The `@viteReactRefresh` directive must be called **before** the `@vite` directiv
 The Laravel Plugin provides a convenient `resolvePageComponent` helper function to utilise in the `resolve` callback when booting Inertia via `createInertiaApp`. Here is an example of the helper in use with Vue3, however the same applies to other frameworks such as React.
 
 ```js
-import { createApp, h } from 'vue'
-import { createInertiaApp } from '@inertiajs/inertia-vue3'
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
+import { createApp, h } from 'vue';
+import { createInertiaApp } from '@inertiajs/inertia-vue3';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 createInertiaApp({
   resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
@@ -247,7 +247,7 @@ createInertiaApp({
       .use(plugin)
       .mount(el)
   },
-})
+});
 ```
 
 <a name="url-processing"></a>
@@ -286,7 +286,7 @@ The following demonstrates how Vite will treat relative and absolute URLs:
 When using Vite, it is recommended to import your stylesheets from within your JavaScript files:
 
 ```js
-import '../css/app.css'
+import '../css/app.css';
 ```
 
 When you import the JavaScript using the `@vite` Blade directive, Laravel will automatically load any stylesheets referenced in those files for you.
@@ -331,8 +331,8 @@ import.meta.env.VITE_SENTRY_DSN_PUBLIC
 The Laravel plugin makes it painless to set up Server-Side Rending with Vite. Create your SSR entry point, for example at `resources/js/ssr.js`, and specify the entry point by passing a configuration option to the Laravel plugin:
 
 ```js
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
     plugins: [
@@ -341,7 +341,7 @@ export default defineConfig({
             ssr: 'resources/js/ssr.js',
         }),
     ],
-})
+});
 ```
 
 To ensure you don't forget to rebuild the SSR entry point, we recommend augmenting the "build" script in your `package.json` to create your SSR build:
