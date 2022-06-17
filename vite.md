@@ -133,7 +133,7 @@ If you're importing your CSS via JavaScript, then you only need to include the J
 </head>
 ```
 
-The `@vite` directive will automatically detect the Vite development server and inject the Vite client for you to enable Hot Module Replacement. In build mode, it will load your compiled and versioned assets, including any imported CSS.
+The `@vite` directive will automatically detect the Vite development server and inject the Vite client to enable Hot Module Replacement. In build mode, it will load your compiled and versioned assets, including any imported CSS.
 
 <a name="running-vite"></a>
 ## Running Vite
