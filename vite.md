@@ -283,15 +283,18 @@ The following demonstrates how Vite will treat relative and absolute URLs:
 <a name="working-with-stylesheets"></a>
 ## Working With Stylesheets
 
-When using Vite, it is recommended to import your stylesheets from within your JavaScript files:
+You can learn more about Vite's CSS support on the [Vite docs](https://vitejs.dev/guide/features.html#css).
+
+If you are using PostCSS plugins, such as Tailwind, you may create a `postcss.config.js` file in the root of your project and Vite will automatically apply it:
 
 ```js
-import '../css/app.css';
+module.exports = {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+};
 ```
-
-When you import the JavaScript using the `@vite` Blade directive, Laravel will automatically load any stylesheets referenced in those files for you.
-
-Vite supports <a href="https://vitejs.dev/guide/features.html#postcss">PostCSS</a> without any additional plugins. You can learn more about Vite's CSS support on the [Vite docs](https://vitejs.dev/guide/features.html#css).
 
 <a name="custom-base-urls"></a>
 ## Custom Base URLs
