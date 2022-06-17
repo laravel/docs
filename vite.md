@@ -359,6 +359,6 @@ To ensure you don't forget to rebuild the SSR entry point, we recommend augmenti
 Then to build and start the SSR server, you may run the following commands:
 
 ```sh
-npm run ssr:build
+npm run build
 node storage/ssr/ssr.js
 ```
