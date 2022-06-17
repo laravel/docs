@@ -189,6 +189,9 @@ npm run dev
 If you already have a pre-configured Pusher Channels client instance that you would like Echo to utilize, you may pass it to Echo via the `client` configuration option:
 
 ```js
+import Echo from 'laravel-echo';
+import client from 'pusher-js';
+
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: 'your-pusher-channels-key',
