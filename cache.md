@@ -10,6 +10,7 @@
     - [Removing Items From The Cache](#removing-items-from-the-cache)
     - [The Cache Helper](#the-cache-helper)
 - [Cache Tags](#cache-tags)
+    - [A Note On Using Cache Tags](#a-note-on-using-cache-tags)
     - [Storing Tagged Cache Items](#storing-tagged-cache-items)
     - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
     - [Removing Tagged Cache Items](#removing-tagged-cache-items)
@@ -262,6 +263,39 @@ When the `cache` function is called without any arguments, it returns an instanc
 ## Cache Tags
 
 > {note} Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+
+
+<a name="a-note-on-using-cache-tags"></a>
+### A Note On Using Cache 'Tags'
+
+Although this feature is named 'tags', be aware that it may not function as you would expect tags to work in the traditional web development sense. Tags in caching are almost similar to a form of namespacing or modifier.
+
+For example, saving a value with tags:
+
+```php
+Cache::tags('names')->put('full_name', 'John Smith', $seconds);
+```
+Will not return this value if called without the `tags` function first:
+
+```php
+// Will return null
+Cache::get('full_name'); 
+```
+
+#### Multiple Tags And Ordering
+
+When using multiple tags, tag ordering can determine if the cache returns the desired value, for example:
+
+```php
+// Set a value
+Cache::tags(['people','artists'])->put('name', 'John', $seconds);
+
+// Will return 'John'
+Cache::tags(['people','artists'])->get('name');
+
+// Will return null
+Cache::tags(['artists','people'])->get('name');
+```
 
 <a name="storing-tagged-cache-items"></a>
 ### Storing Tagged Cache Items
