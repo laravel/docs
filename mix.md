@@ -16,4 +16,4 @@ mix.js('resources/js/app.js', 'public/js')
 
 If you've ever been confused and overwhelmed about getting started with webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application; you are free to use any asset pipeline tool you wish, or even none at all.
 
-You will now want to install and configure Laravel Mix for your project. For full instructions, head over to the [Laravel Mix website](https://laravel-mix.com/). If you are migrating a Laravel Vite based project to Mix, you may also wish to read the [Vite to Mix migration guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-vite-to-laravel-mix).
+> {tip} Vite has replaced Laravel Mix in new Laravel installations. For Mix documentation, please visit the [Laravel Mix](https://laravel-mix.com/) website. If you would like to switch to Vite, please see our [upgrade guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite).
