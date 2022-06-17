@@ -157,12 +157,11 @@ npm run build
 <a name="aliases"></a>
 ### Aliases
 
-The Laravel plugin provides two common aliases to help you hit the ground running, with the Ziggy alias only being applied when installed.
+The Laravel plugin provides a common aliases to help you hit the ground running:
 
 ```js
 {
-    '@' => 'resources/js',
-    'ziggy' => 'vendor/tightenco/ziggy/dist/index.es.js',
+    '@' => 'resources/js'
 }
 ```
 
