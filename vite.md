@@ -221,7 +221,7 @@ export default defineConfig({
 <a name="react"></a>
 ### React
 
-When using Vite with React, you will need to ensure that any files containing JSX have the `.jsx` or `.tsx` extension, remembering to update your entry point, if required, as [shown above](#entry-points). You will also need to include the additional `@viteReactRefresh` directive alongside your existing `@vite` directive.
+When using Vite with React, you will need to ensure that any files containing JSX have the `.jsx` or `.tsx` extension, remembering to update your entry point, if required, as [shown above](#configuring-vite). You will also need to include the additional `@viteReactRefresh` directive alongside your existing `@vite` directive.
 
 ```blade
 @viteReactRefresh
