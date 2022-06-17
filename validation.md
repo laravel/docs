@@ -951,7 +951,7 @@ php artisan make:request StorePostRequest
 <a name="rule-confirmed"></a>
 #### confirmed
 
-The field under validation must have a matching field of `{field}_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
+يجب أن يحتوي الحقل تحت التحقق على حقل مطابق لـ `{field}_confirmation`.  على سبيل المثال ، إذا كان الحقل الخاص بالتحقق هو كلمة المرور `password` ، فيجب أن يكون حقل `password_confirmation` موجودًا في الإدخال.
 
 <a name="rule-current-password"></a>
 #### current_password (كلمة المرور الحالية)
@@ -961,59 +961,59 @@ The field under validation must have a matching field of `{field}_confirmation`.
     'password' => 'current_password:api'
 
 <a name="rule-date"></a>
-#### date
+#### التاريخ
 
-The field under validation must be a valid, non-relative date according to the `strtotime` PHP function.
+يجب أن يكون الحقل تحت التحقق تاريخًا صالحًا وغير نسبي وفقًا لتابع PHP `strtotime`.
 
 <a name="rule-date-equals"></a>
-#### date_equals:_date_
+#### التاريخ يساوي
 
-The field under validation must be equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance.
+يجب أن يكون الحقل تحت التحقق مساوياً لتاريخ المحدد. سيتم تمرير التواريخ في تابع PHP `Strtotime` من أجل تحويلها إلى مساوة صالحة `DateTime`.
 
 <a name="rule-date-format"></a>
-#### date_format:_format_
+#### صيغة التاريخ
 
-The field under validation must match the given _format_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
+يجب أن يتطابق الحقل تحت التحقق مع `_format_` الصيغة المحددة .  يجب عليك استخدام **إما** تاريخ `date` أو تنسيق التاريخ `date_format` عند التحقق من صحة أحد الحقول ، وليس كليهما.  تدعم قاعدة التحقق هذه جميع التنسيقات التي تدعمها فئة الخاصة بـ PHP [DateTime](https://www.php.net/manual/en/class.datetime.php).
 
 <a name="rule-declined"></a>
-#### declined
+#### قيمة مرفوضة
 
-The field under validation must be `"no"`, `"off"`, `0`, or `false`.
+يجب أن يكون الحقل تحت التحقق `"no"`, `"off"`, `0`, او `false`.
 
 <a name="rule-declined-if"></a>
-#### declined_if:anotherfield,value,...
+#### شرط الرفض
 
-The field under validation must be `"no"`, `"off"`, `0`, or `false` if another field under validation is equal to a specified value.
+يجب أن يكون الحقل تحت التحقق `"no"`, `"off"`, `0`, او `false` إذا كان حقل آخر تحت التحقق يساوي قيمة محددة.
 
 <a name="rule-different"></a>
-#### different:_field_
+#### الاختلاف
 
-The field under validation must have a different value than _field_.
+يجب أن يكون للحقل تحت التحقق قيمة مختلفة عن _field_.
 
 <a name="rule-digits"></a>
-#### digits:_value_
+#### القيمة أرقام
 
-The field under validation must be _numeric_ and must have an exact length of _value_.
+يجب أن يكون الحقل تحت التحقق _numeric_ ويجب أن يكون بطول _value_ بالضبط.
 
 <a name="rule-digits-between"></a>
-#### digits_between:_min_,_max_
+#### بين رقمين (أصغري،أغظمي)
 
-The field under validation must be _numeric_ and must have a length between the given _min_ and _max_.
+يجب أن يكون الحقل تحت التحقق _numeric_ ويجب أن يكون بطول يتراوح بين _min_ المحدد و _ الحد الأقصى_.
 
 <a name="rule-dimensions"></a>
-#### dimensions
+#### الأبعاد (للصور)
 
-The file under validation must be an image meeting the dimension constraints as specified by the rule's parameters:
+يجب أن يكون الملف قيد التحقق صورة تفي بقيود الأبعاد كما هو محدد بواسطة معلمات القاعدة:
 
     'avatar' => 'dimensions:min_width=100,min_height=200'
 
-Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_.
+القيود المتاحة هي: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_.
 
-A _ratio_ constraint should be represented as width divided by height. This can be specified either by a fraction like `3/2` or a float like `1.5`:
+يجب تمثيل القيد _ratio_ بالعرض مقسومًا على الارتفاع. يمكن تحديد ذلك إما بكسر مثل `3/2` أو عدد عشري مثل `1.5`:
 
     'avatar' => 'dimensions:ratio=3/2'
 
-Since this rule requires several arguments, you may use the `Rule::dimensions` method to fluently construct the rule:
+نظرًا لأن هذه القاعدة تتطلب عدة وسيطات ، يمكنك استخدام التابع `Rule :: features` لإنشاء القاعدة بطلاقة:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
