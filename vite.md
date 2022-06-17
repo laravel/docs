@@ -173,7 +173,7 @@ import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
     plugins: [
-        laravel('resources/ts/app.tsx'),
+        laravel(['resources/ts/app.tsx']),
     ],
     resolve: {
         alias: {
@@ -195,7 +195,7 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     plugins: [
-        laravel(),
+        laravel(['resources/js/app.js']),
         vue({
             template: {
                 transformAssetUrls: {
