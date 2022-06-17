@@ -344,9 +344,18 @@ export default defineConfig({
 })
 ```
 
+To ensure you don't forget to rebuild the SSR entry point, we recommend augmenting the "build" script in your `package.json` to create your SSR build:
+```diff
+"scripts": {
+     "dev": "vite",
+-    "build": "vite build"
++    "build": "vite build && vite build --ssr"
+}
+```
+
 Then to build and start the SSR server, you may run the following commands:
 
 ```sh
 npm run ssr:build
-npm run ssr:serve
+node storage/ssr/ssr.js
 ```
