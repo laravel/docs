@@ -1,7 +1,7 @@
 # Compiling Assets (Vite)
 
 - [Introduction](#introduction)
-  - [Choosing Between Vite and Laravel Mix](#vite-or-mix)
+  - [Choosing Between Vite And Laravel Mix](#vite-or-mix)
 - [Installation & Setup](#installation)
   - [Installing Node](#installing-node)
   - [Installing Vite & The Laravel Plugin](#installing-vite-and-laravel-plugin)
@@ -28,7 +28,7 @@ Laravel integrates seamlessly with Vite by providing an official plugin and Blad
 > {tip} Are you running Laravel Mix? Vite has replaced Laravel Mix in new Laravel installations. For Mix documentation, please visit the [Laravel Mix](https://laravel-mix.com/) website. If you would like to switch to Vite, please see our [upgrade guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite).
 
 <a name="vite-or-mix"></a>
-### Choosing Between Vite and Laravel Mix
+### Choosing Between Vite And Laravel Mix
 
 Vite focuses on building rich JavaScript applications. If you are developing a Single Page Application (SPA), including those developed with tools like InertiaJS, Vite will be the perfect fit.
 
@@ -109,7 +109,7 @@ Instead, you should import your CSS via JavaScript, for example in your `resourc
 The Laravel plugin also supports multiple entry points, and advanced configuration such as [SSR entry points](#ssr).
 
 <a name="loading-your-scripts-and-styles"></a>
-### Loading your scripts and styles
+### Loading Your Scripts And Styles
 
 With your Vite entry points configured, you only need add them in a `@vite()` Blade directive to the `<head>` of your application:
 
