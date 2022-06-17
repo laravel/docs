@@ -233,7 +233,7 @@ The `@viteReactRefresh` directive must be called **before** the `@vite` directiv
 <a name="inertia"></a>
 ### Inertia
 
-The Laravel Plugin provides a convenient `resolvePageComponent` helper function to utilise in the `resolve` callback when booting Inertia via `createInertiaApp`. Here is an example of the helper in use with Vue3, however the same applies to other frameworks such as React.
+The Laravel Plugin provides a convenient `resolvePageComponent` helper function to utilise in the `resolve` callback when booting Inertia via `createInertiaApp`. Here is an example of the helper in use with Vue 3, however the same applies to other frameworks such as React.
 
 ```js
 import { createApp, h } from 'vue';
