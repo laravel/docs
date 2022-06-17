@@ -850,12 +850,12 @@ php artisan make:request StorePostRequest
 <a name="rule-accepted"></a>
 #### accepted (قبول)
 
-يجب أن يكون الحقل تحت التحقق `"yes"` أو `"on"` أو `1`, أو `true`. هذا مفيد للتحقق من قبول "شروط الخدمة" (Terms of Service) أو الحقول المماثلة.
+يجب أن يكون الحقل تحت التحقق `yes` أو `on` أو `1`, أو `true`. هذا مفيد للتحقق من قبول "شروط الخدمة" (Terms of Service) أو الحقول المماثلة.
 
 <a name="rule-accepted-if"></a>
 #### accepted_if:anotherfield,value,... (قبول شرطي)
 
-يجب أن يكون الحقل تحت التحقق `"yes"` أو `"on"` أو `1`, أو `true` إذا كان حقل آخر تحت التحقق مساويًا لقيمة محددة. هذا مفيد للتحقق من قبول "شروط الخدمة" (Terms of Service) أو الحقول المماثلة.
+يجب أن يكون الحقل تحت التحقق `yes` أو `on` أو `1`, أو `true` إذا كان حقل آخر تحت التحقق مساويًا لقيمة محددة. هذا مفيد للتحقق من قبول "شروط الخدمة" (Terms of Service) أو الحقول المماثلة.
 
 <a name="rule-active-url"></a>
 #### active_url (عنوان url نشط)
@@ -961,47 +961,47 @@ php artisan make:request StorePostRequest
     'password' => 'current_password:api'
 
 <a name="rule-date"></a>
-#### التاريخ
+#### date (التاريخ)
 
 يجب أن يكون الحقل تحت التحقق تاريخًا صالحًا وغير نسبي وفقًا لتابع PHP `strtotime`.
 
 <a name="rule-date-equals"></a>
-#### التاريخ يساوي
+#### date_equals:date (التاريخ يساوي)
 
 يجب أن يكون الحقل تحت التحقق مساوياً لتاريخ المحدد. سيتم تمرير التواريخ في تابع PHP `Strtotime` من أجل تحويلها إلى مساوة صالحة `DateTime`.
 
 <a name="rule-date-format"></a>
-#### صيغة التاريخ
+#### date_format:format (صيغة التاريخ)
 
 يجب أن يتطابق الحقل تحت التحقق مع `_format_` الصيغة المحددة .  يجب عليك استخدام **إما** تاريخ `date` أو تنسيق التاريخ `date_format` عند التحقق من صحة أحد الحقول ، وليس كليهما.  تدعم قاعدة التحقق هذه جميع التنسيقات التي تدعمها فئة الخاصة بـ PHP [DateTime](https://www.php.net/manual/en/class.datetime.php).
 
 <a name="rule-declined"></a>
-#### قيمة مرفوضة
+#### declined (قيمة مرفوضة)
 
-يجب أن يكون الحقل تحت التحقق `"no"`, `"off"`, `0`, او `false`.
+يجب أن يكون الحقل تحت التحقق `no`, `off`, `0`, او `false`.
 
 <a name="rule-declined-if"></a>
-#### شرط الرفض
+#### declined_if:anotherfield,value,... (شرط الرفض)
 
-يجب أن يكون الحقل تحت التحقق `"no"`, `"off"`, `0`, او `false` إذا كان حقل آخر تحت التحقق يساوي قيمة محددة.
+يجب أن يكون الحقل تحت التحقق `no`, `off`, `0`, او `false` إذا كان حقل آخر تحت التحقق يساوي قيمة محددة.
 
 <a name="rule-different"></a>
-#### الاختلاف
+#### different:field (الاختلاف)
 
 يجب أن يكون للحقل تحت التحقق قيمة مختلفة عن _field_.
 
 <a name="rule-digits"></a>
-#### القيمة أرقام
+#### digits:value(القيمة أرقام)
 
 يجب أن يكون الحقل تحت التحقق _numeric_ ويجب أن يكون بطول _value_ بالضبط.
 
 <a name="rule-digits-between"></a>
-#### بين رقمين (أصغري،أغظمي)
+####  digits_between:min,max (بين رقمين "أصغري،أغظمي")
 
-يجب أن يكون الحقل تحت التحقق _numeric_ ويجب أن يكون بطول يتراوح بين _min_ المحدد و _ الحد الأقصى_.
+يجب أن يكون الحقل تحت التحقق _numeric_ ويجب أن يكون بطول يتراوح بين _min_ الأصغري والحد الأقصى _max_.
 
 <a name="rule-dimensions"></a>
-#### الأبعاد (للصور)
+####dimensions (الأبعاد للصور)
 
 يجب أن يكون الملف قيد التحقق صورة تفي بقيود الأبعاد كما هو محدد بواسطة معلمات القاعدة:
 
@@ -1013,7 +1013,7 @@ php artisan make:request StorePostRequest
 
     'avatar' => 'dimensions:ratio=3/2'
 
-نظرًا لأن هذه القاعدة تتطلب عدة وسيطات ، يمكنك استخدام التابع `Rule :: features` لإنشاء القاعدة بطلاقة:
+نظرًا لأن هذه القاعدة تتطلب عدة وسيطات ، يمكنك استخدام التابع `Rule::features` لإنشاء القاعدة بطلاقة:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -1026,52 +1026,52 @@ php artisan make:request StorePostRequest
     ]);
 
 <a name="rule-distinct"></a>
-#### distinct
+#### distinct (قيمة غير مكررة)
 
-When validating arrays, the field under validation must not have any duplicate values:
+عند التحقق من المصفوفات، يجب ألا يحتوي الحقل تحت التحقق على أي قيم مكررة:
 
     'foo.*.id' => 'distinct'
 
-Distinct uses loose variable comparisons by default. To use strict comparisons, you may add the `strict` parameter to your validation rule definition:
+يستخدم عامل التميز مقارنات متغيرة فضفاضة بشكل افتراضي. لاستخدام مقارنات صارمة، يمكنك إضافة المعامل `strict` إلى تعريف قاعدة التحقق من الصحة:
 
     'foo.*.id' => 'distinct:strict'
 
-You may add `ignore_case` to the validation rule's arguments to make the rule ignore capitalization differences:
+يمكنك إضافة المعامل `ignore_case` إلى تعريف قاعدة التحقق من الصحة لجعل القاعدة تتجاهل اختلافات الكتابة بالأحرف الكبيرة: 
 
     'foo.*.id' => 'distinct:ignore_case'
 
 <a name="rule-email"></a>
-#### email
+#### email (تحقق الإيميل)
 
-The field under validation must be formatted as an email address. This validation rule utilizes the [`egulias/email-validator`](https://github.com/egulias/EmailValidator) package for validating the email address. By default, the `RFCValidation` validator is applied, but you can apply other validation styles as well:
+يجب تنسيق الحقل تحت التحقق كعنوان بريد إلكتروني. تستخدم قاعدة التحقق هذه الحزمة [`egulias/email-validator`](https://github.com/egulias/EmailValidator) للتحقق من صحة البريد الالكتروني. بشكل افتراضي ، يتم تطبيق مدقق `RFCValidation` ، ولكن يمكنك تطبيق أنماط تحقق أخرى أيضًا:
 
     'email' => 'email:rfc,dns'
 
-The example above will apply the `RFCValidation` and `DNSCheckValidation` validations. Here's a full list of validation styles you can apply:
+سيطبق المثال أعلاه عمليتي التحقق من صحة `RFCValidation` و `DNSCheckValidation`. فيما يلي قائمة كاملة بأنماط التحقق التي يمكنك تطبيقها:
 
 <div class="content-list" markdown="1">
 
-- `rfc`: `RFCValidation`
-- `strict`: `NoRFCWarningsValidation`
-- `dns`: `DNSCheckValidation`
-- `spoof`: `SpoofCheckValidation`
-- `filter`: `FilterEmailValidation`
+- `rfc`: `RFCValidation` : `بريد صالح`
+- `strict`: `NoRFCWarningsValidation` : `لا يوجد أخطاء بتحقق البريد`
+- `dns`: `DNSCheckValidation` : `مجال البريد صالح`
+- `spoof`: `SpoofCheckValidation`: `منع انتحال بريد موثوق`
+- `filter`: `FilterEmailValidation` : `التحقق بإستخدام تابع Filter`
 
 </div>
 
-The `filter` validator, which uses PHP's `filter_var` function, ships with Laravel and was Laravel's default email validation behavior prior to Laravel version 5.8.
+مدقق `filter` ، الذي يستخدم دالة`filter_var` في PHP ، يأتي مع Laravel وكان سلوك Laravel الافتراضي للتحقق من البريد الإلكتروني قبل إصدار Laravel 5.8.
 
-> {note} The `dns` and `spoof` validators require the PHP `intl` extension.
+> {ملاحظة} تتطلب أدوات التحقق من `dns` و`spoof` امتداد PHP`intl`
 
 <a name="rule-ends-with"></a>
-#### ends_with:_foo_,_bar_,...
+#### ends_with:_foo_,_bar_,... (ينتهي في)
 
-The field under validation must end with one of the given values.
+يجب أن ينتهي الحقل تحت التحقق بإحدى القيم المقدمة.
 
 <a name="rule-enum"></a>
-#### enum
+#### enum (التعداد)
 
-The `Enum` rule is a class based rule that validates whether the field under validation contains a valid enum value. The `Enum` rule accepts the name of the enum as its only constructor argument:
+قاعدة `Enum` هي قاعدة قائمة على فئة تتحقق مما إذا كان الحقل تحت التحقق يحتوي على قيمة تعداد صالحة. تقبل قاعدة `Enum` اسم التعداد باعتباره الوسيطة المنشئة الوحيدة:
 
     use App\Enums\ServerStatus;
     use Illuminate\Validation\Rules\Enum;
@@ -1080,32 +1080,32 @@ The `Enum` rule is a class based rule that validates whether the field under val
         'status' => [new Enum(ServerStatus::class)],
     ]);
 
-> {note} Enums are only available on PHP 8.1+.
+> {ملاحظة} Enums متاحة فقط في PHP 8.1+.
 
 <a name="rule-exclude"></a>
-#### exclude
+#### exclude (استبعاد)
 
-The field under validation will be excluded from the request data returned by the `validate` and `validated` methods.
+سيتم استبعاد الحقل تحت التحقق من بيانات الطلب التي يتم إرجاعها بواسطة طريقتي `validate` و `validated`.
 
 <a name="rule-exclude-if"></a>
-#### exclude_if:_anotherfield_,_value_
+#### exclude_if:_anotherfield_,_value_ (استبعاد شرطي)
 
-The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is equal to _value_.
+سيتم استبعاد الحقل تحت التحقق من بيانات الطلب التي يتم إرجاعها بواسطة طريقتي `validate` و `validated`بشرط ال _anotherfield_ الحقل يساوي _value_.
 
 <a name="rule-exclude-unless"></a>
-#### exclude_unless:_anotherfield_,_value_
+#### exclude_unless:_anotherfield_,_value_ (استبعاد ما لم)
 
-The field under validation will be excluded from the request data returned by the `validate` and `validated` methods unless _anotherfield_'s field is equal to _value_. If _value_ is `null` (`exclude_unless:name,null`), the field under validation will be excluded unless the comparison field is `null` or the comparison field is missing from the request data.
+سيتم استبعاد الحقل تحت التحقق من بيانات الطلب التي يتم إرجاعها بواسطة طريقتي `validate` و `validated`. ما لم يكن حقل _anotherfield_ يساوي _value_.  إذا كانت _value_ `null` (`exclude_unless:name,null`) ، فسيتم استبعاد الحقل تحت التحقق ما لم يكن حقل المقارنة فارغاً `null` أو كان حقل المقارنة مفقودًا من بيانات الطلب.
 
 <a name="rule-exclude-without"></a>
-#### exclude_without:_anotherfield_
+#### exclude_without:_anotherfield_ (استبعاد بدون)
 
-The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is not present.
+سيتم استبعاد الحقل تحت التحقق من بيانات الطلب التي يتم إرجاعها بواسطة طريقتي `validate` و `validated`إذا كان الحقل _anotherfield_ غير موجود.
 
 <a name="rule-exists"></a>
-#### exists:_table_,_column_
+#### exists:_table_,_column_ (موجود بقاعدة البيانات "جدول,عامود")
 
-The field under validation must exist in a given database table.
+يجب أن يكون الحقل تحت التحقق موجودًا في جدول قاعدة بيانات محدد.
 
 <a name="basic-usage-of-exists-rule"></a>
 #### Basic Usage Of Exists Rule
