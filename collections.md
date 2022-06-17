@@ -178,11 +178,11 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [search](#method-search)
 [shift](#method-shift)
 [shuffle](#method-shuffle)
-[sliding](#method-sliding)
 [skip](#method-skip)
 [skipUntil](#method-skipuntil)
 [skipWhile](#method-skipwhile)
 [slice](#method-slice)
+[sliding](#method-sliding)
 [sole](#method-sole)
 [some](#method-some)
 [sort](#method-sort)
@@ -2031,35 +2031,6 @@ The `shuffle` method randomly shuffles the items in the collection:
 
     // [3, 2, 5, 1, 4] - (generated randomly)
 
-<a name="method-sliding"></a>
-#### `sliding()` {.collection-method}
-
-The `sliding` method returns a new collection of chunks representing a "sliding window" view of the items in the collection:
-
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    $chunks = $collection->sliding(2);
-
-    $chunks->toArray();
-
-    // [[1, 2], [2, 3], [3, 4], [4, 5]]
-
-This is especially useful in conjunction with the [`eachSpread`](#method-eachspread) method:
-
-    $transactions->sliding(2)->eachSpread(function ($previous, $current) {
-        $current->total = $previous->total + $current->amount;
-    });
-
-You may optionally pass a second "step" value, which determines the distance between the first item of every chunk:
-
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    $chunks = $collection->sliding(3, step: 2);
-
-    $chunks->toArray();
-
-    // [[1, 2, 3], [3, 4, 5]]
-
 <a name="method-skip"></a>
 #### `skip()` {.collection-method}
 
@@ -2139,6 +2110,35 @@ If you would like to limit the size of the returned slice, pass the desired size
     // [5, 6]
 
 The returned slice will preserve keys by default. If you do not wish to preserve the original keys, you can use the [`values`](#method-values) method to reindex them.
+
+<a name="method-sliding"></a>
+#### `sliding()` {.collection-method}
+
+The `sliding` method returns a new collection of chunks representing a "sliding window" view of the items in the collection:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $chunks = $collection->sliding(2);
+
+    $chunks->toArray();
+
+    // [[1, 2], [2, 3], [3, 4], [4, 5]]
+
+This is especially useful in conjunction with the [`eachSpread`](#method-eachspread) method:
+
+    $transactions->sliding(2)->eachSpread(function ($previous, $current) {
+        $current->total = $previous->total + $current->amount;
+    });
+
+You may optionally pass a second "step" value, which determines the distance between the first item of every chunk:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $chunks = $collection->sliding(3, step: 2);
+
+    $chunks->toArray();
+
+    // [[1, 2, 3], [3, 4, 5]]
 
 <a name="method-sole"></a>
 #### `sole()` {.collection-method}
