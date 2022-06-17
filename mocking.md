@@ -312,6 +312,27 @@ If you only want to fake event listeners for a specific set of events, you may p
         $order->update([...]);
     }
 
+<a name="excluding-event"></a>
+### Excluding Events From Fake
+
+If you want to fake everything but a given event, you may use the `fakeExcept` method:
+
+    /**
+     * Test order process.
+     */
+    public function test_orders_can_be_processed()
+    {
+        Event::fakeExcept([
+            OrderCreated::class,
+        ]);
+
+        ShippingLabel::factory()->create();
+
+        Order::factory()->create();
+    }
+
+This will fake all events except the OrderCreated event.
+
 <a name="scoped-event-fakes"></a>
 ### Scoped Event Fakes
 
@@ -344,6 +365,41 @@ If you only want to fake event listeners for a portion of your test, you may use
             });
 
             // Events are dispatched as normal and observers will run ...
+            $order->update([...]);
+        }
+    }
+
+<a name="excluding-scoped-event-fakes"></a>
+### Excluding Scoped Event Fakes
+
+If you only want to exclude event listeners from being faked for a portion of your test, you may use the `fakeExceptFor` method:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use App\Events\OrderCreated;
+    use App\Models\Order;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Support\Facades\Event;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Tests\TestCase;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * Test order process.
+         */
+        public function test_orders_can_be_processed()
+        {
+            $order = Event::fakeExceptFor(function () {
+                // Events are dispatched as normal and observers will run ...
+                $order = Order::factory()->create();
+
+                return $order;
+            });
+
+            // The Order Update Model Event will not be dispatched
             $order->update([...]);
         }
     }
