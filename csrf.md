@@ -1,4 +1,4 @@
-# CSRF Protection
+# 跨站請求偽造(Cross-site request forgery)保護措施
 
 - [Introduction](#csrf-introduction)
 - [Preventing CSRF Requests](#preventing-csrf-requests)
