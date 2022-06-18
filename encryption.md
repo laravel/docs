@@ -1,26 +1,34 @@
-# Encryption
+# 加密
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [Using The Encrypter](#using-the-encrypter)
+- [加密](#加密)
+  - [介紹](#介紹)
+  - [設定](#設定)
+  - [使用加密](#使用加密)
+      - [加密一個值](#加密一個值)
+      - [解密一個值](#解密一個值)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-Laravel's encryption services provide a simple, convenient interface for encrypting and decrypting text via OpenSSL using AES-256 and AES-128 encryption. All of Laravel's encrypted values are signed using a message authentication code (MAC) so that their underlying value can not be modified or tampered with once encrypted.
+
+Laravel 的加密服務提供一個簡單、方便的介面使用 OpenSSL 所提供的 AES-256 和 AES-128 去加密及解密文字。所有 Laravel 加密值都會用到訊息認證碼（MAC），因此原始值在加密後不會被再次修改。
+
 
 <a name="configuration"></a>
-## Configuration
+## 設定
 
-Before using Laravel's encrypter, you must set the `key` configuration option in your `config/app.php` configuration file. This configuration value is driven by the `APP_KEY` environment variable. You should use the `php artisan key:generate` command to generate this variable's value since the `key:generate` command will use PHP's secure random bytes generator to build a cryptographically secure key for your application. Typically, the value of the `APP_KEY` environment variable will be generated for you during [Laravel's installation](/docs/{{version}}/installation).
+
+在使用 Laravel 加密器之前，請務必在 config/app.php 設定檔設定 key 選項。這個設定項由環境變量 `APP_KEY` 設定。你應該使用 `php artisan key:generate` 指令來產生這個金鑰，因為`key:generate` 這個指令會使用 PHP 的安全隨機字元產生器來產生金鑰。如果這個值還未設定，所有 Laravel 加密的值都不會是安全的。
+一般來說，在 [Laravel's installation](/docs/{{version}}/installation) 中會生成 `APP_KEY` 環境變數的值。
 
 <a name="using-the-encrypter"></a>
-## Using The Encrypter
+## 使用加密
 
 <a name="encrypting-a-value"></a>
-#### Encrypting A Value
+#### 加密一個值
 
-You may encrypt a value using the `encryptString` method provided by the `Crypt` facade. All encrypted values are encrypted using OpenSSL and the AES-256-CBC cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC). The integrated message authentication code will prevent the decryption of any values that have been tampered with by malicious users:
+
+你可以使用 `Crypt` Facades 提供的 `encryptString` 來加密一個值。所有加密的值都使用 OpenSSL 的 AES-256-CBC 來進行加密。此外，所有加密過的值都會使用消息認證碼(MAC) 來簽名，並用來避免被惡意用戶竄改： 
 
     <?php
 
@@ -48,9 +56,11 @@ You may encrypt a value using the `encryptString` method provided by the `Crypt`
     }
 
 <a name="decrypting-a-value"></a>
-#### Decrypting A Value
+#### 解密一個值
 
-You may decrypt values using the `decryptString` method provided by the `Crypt` facade. If the value can not be properly decrypted, such as when the message authentication code is invalid, an `Illuminate\Contracts\Encryption\DecryptException` will be thrown:
+
+你可以使用 `Crypt` Facades 提供的 `decryptString` 來進行解密。如果該值不能被正確解密，例如消息認證碼（MAC）無效時，會拋出異常 `Illuminate\Contracts\Encryption\DecryptException`：
+
 
     use Illuminate\Contracts\Encryption\DecryptException;
     use Illuminate\Support\Facades\Crypt;
