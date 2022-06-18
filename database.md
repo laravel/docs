@@ -18,7 +18,7 @@ Almost every modern web application interacts with a database. Laravel makes int
 
 - MariaDB 10.2+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))
 - MySQL 5.7+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
-- PostgreSQL 9.6+ ([Version Policy](https://www.postgresql.org/support/versioning/))
+- PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
 - SQL Server 2017+ ([Version Policy](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
@@ -152,6 +152,15 @@ The `select` method will always return an `array` of results. Each result within
     foreach ($users as $user) {
         echo $user->name;
     }
+
+<a name="selecting-scalar-values"></a>
+#### Selecting Scalar Values
+
+Sometimes your database query may result in a single, scalar value. Instead of being required to retrieve the query's scalar result from a record object, Laravel allows you to retrieve this value directly using the `scalar` method:
+
+    $burgers = DB::scalar(
+        "select count(case when food = 'burger' then 1 end) as burgers from menu"
+    );
 
 <a name="using-named-bindings"></a>
 #### Using Named Bindings

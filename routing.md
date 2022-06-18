@@ -221,6 +221,10 @@ For convenience, some commonly used regular expression patterns have helper meth
         //
     })->whereUuid('id');
 
+    Route::get('/category/{category}', function ($category) {
+        //
+    })->whereIn('category', ['movie', 'song', 'painting']);
+
 If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.
 
 <a name="parameters-global-constraints"></a>

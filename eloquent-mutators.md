@@ -91,6 +91,9 @@ public function address(): Attribute
 }
 ```
 
+<a name="accessor-caching"></a>
+#### Accessor Caching
+
 When returning value objects from accessors, any changes made to the value object will automatically be synced back to the model before the model is saved. This is possible because Eloquent retains instances returned by accessors so it can return the same instance each time the accessor is invoked:
 
     use App\Models\User;
@@ -101,6 +104,17 @@ When returning value objects from accessors, any changes made to the value objec
     $user->address->lineTwo = 'Updated Address Line 2 Value';
 
     $user->save();
+
+However, you may sometimes wish to enable caching for primitive values like strings and booleans, particularly if they are computationally intensive. To accomplish this, you may invoke the `shouldCache` method when defining your accessor:
+
+```php
+public function hash(): Attribute
+{
+    return Attribute::make(
+        get: fn ($value) => bcrypt(gzuncompress($value)),
+    )->shouldCache();
+}
+```
 
 If you would like to disable the object caching behavior of attributes, you may invoke the `withoutObjectCaching` method when defining the attribute:
 

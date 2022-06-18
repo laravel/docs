@@ -524,6 +524,10 @@ The `when` method also accepts a closure as its second argument, allowing you to
         return 'secret-value';
     }),
 
+Additionally, the `whenNotNull` method may be used to include an attribute in the resource response if the attribute is not null:
+
+    'name' => $this->whenNotNull($this->name),
+
 <a name="merging-conditional-attributes"></a>
 #### Merging Conditional Attributes
 
