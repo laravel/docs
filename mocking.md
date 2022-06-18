@@ -312,6 +312,12 @@ If you only want to fake event listeners for a specific set of events, you may p
         $order->update([...]);
     }
 
+You may fake all events except for a set of specified events using the `fakeExcept` method:
+
+    Event::fakeExcept([
+        OrderCreated::class,
+    ]);
+
 <a name="scoped-event-fakes"></a>
 ### Scoped Event Fakes
 
