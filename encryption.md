@@ -42,7 +42,7 @@ Laravel 的加密服務提供一個簡單、方便的介面使用 OpenSSL 所提
     class DigitalOceanTokenController extends Controller
     {
         /**
-         * Store a DigitalOcean API token for the user.
+         * 為使用者儲存 DigitalOcean API 標記。
          *
          * @param  \Illuminate\Http\Request  $request
          * @return \Illuminate\Http\Response
