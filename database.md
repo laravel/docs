@@ -1,35 +1,35 @@
-# Database: Getting Started
+# 資料庫： 快速入門
 
-- [Introduction](#introduction)
-    - [Configuration](#configuration)
-    - [Read & Write Connections](#read-and-write-connections)
-- [Running SQL Queries](#running-queries)
-    - [Using Multiple Database Connections](#using-multiple-database-connections)
-    - [Listening For Query Events](#listening-for-query-events)
-- [Database Transactions](#database-transactions)
-- [Connecting To The Database CLI](#connecting-to-the-database-cli)
+- [簡介](#introduction)
+    - [設定](#configuration)
+    - [分離讀寫的連接](#read-and-write-connections)
+- [執行 SQL 語句](#running-queries)
+    - [使用多個 SQL 連接](#using-multiple-database-connections)
+    - [監聽查詢事件](#listening-for-query-events)
+- [資料庫交易](#database-transactions)
+- [連接到資料庫的 CLI](#connecting-to-the-database-cli)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Almost every modern web application interacts with a database. Laravel makes interacting with databases extremely simple across a variety of supported databases using raw SQL, a [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel provides first-party support for five databases:
+幾乎所有的現代 Web 應用程式都需要和資料庫互動。 Laravel 用 [fluent query builder](/docs/{{version}}/queries) 和 [Eloquent ORM](/docs/{{version}}/eloquent) 來與受支援的資料庫進行互動，並使其變得異常簡單。現今，Laravel 提供五種資料庫的第一手支援：
 
 <div class="content-list" markdown="1">
 
-- MariaDB 10.2+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))
-- MySQL 5.7+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
-- PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))
+- MariaDB 10.2+ ([版本原則](https://mariadb.org/about/#maintenance-policy))
+- MySQL 5.7+ ([版本原則](https://en.wikipedia.org/wiki/MySQL#Release_history))
+- PostgreSQL 10.0+ ([版本原則](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
-- SQL Server 2017+ ([Version Policy](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
+- SQL Server 2017+ ([版本原則](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
 </div>
 
 <a name="configuration"></a>
-### Configuration
+### 設定
 
-The configuration for Laravel's database services is located in your application's `config/database.php` configuration file. In this file, you may define all of your database connections, as well as specify which connection should be used by default. Most of the configuration options within this file are driven by the values of your application's environment variables. Examples for most of Laravel's supported database systems are provided in this file.
+Laravel 的資料庫服務設定檔位於應用程式的 `config/database.php`。在這個檔案中，你可以定義所有的資料庫連接，並指定哪個連線應該要被當成預設值。此檔案的多數設定值取決於你應用程式的環境變數設定。同時，此檔案也提供了 Laravel 支援的大多資料庫的設定檔範例。
 
-By default, Laravel's sample [environment configuration](/docs/{{version}}/configuration#environment-configuration) is ready to use with [Laravel Sail](/docs/{{version}}/sail), which is a Docker configuration for developing Laravel applications on your local machine. However, you are free to modify your database configuration as needed for your local database.
+在預設情況下，Laravel簡易[環境變數](/docs/{{version}}/configuration#environment-configuration)已經可以和 [Laravel Sail](/docs/{{version}}/sail) 搭配使用，Laravel Sail 是一個可以直接架起本機開發狀態應用程式的 Docker 設定。 不過你也可以自由修改資料庫的設定檔以符合你本機的資料庫。
 
 <a name="sqlite-configuration"></a>
 #### SQLite Configuration
