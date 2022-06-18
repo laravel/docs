@@ -1,15 +1,15 @@
-# Error Handling
+# 錯誤處理
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [The Exception Handler](#the-exception-handler)
-    - [Reporting Exceptions](#reporting-exceptions)
-    - [Exception Log Levels](#exception-log-levels)
-    - [Ignoring Exceptions By Type](#ignoring-exceptions-by-type)
-    - [Rendering Exceptions](#rendering-exceptions)
-    - [Reportable & Renderable Exceptions](#renderable-exceptions)
-- [HTTP Exceptions](#http-exceptions)
-    - [Custom HTTP Error Pages](#custom-http-error-pages)
+- [介紹](#introduction)
+- [設定](#configuration)
+- [例外處理](#the-exception-handler)
+    - [例外回報](#reporting-exceptions)
+    - [例外記錄階層](#exception-log-levels)
+    - [根據形態忽略例外](#ignoring-exceptions-by-type)
+    - [渲染例外](#rendering-exceptions)
+    - [可回報 & 可渲染的例外](#renderable-exceptions)
+- [HTTP 例外](#http-exceptions)
+    - [客制化 HTTP 錯誤頁面](#custom-http-error-pages)
 
 <a name="introduction"></a>
 ## Introduction
