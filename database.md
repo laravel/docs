@@ -32,16 +32,17 @@ Laravel 的資料庫服務設定檔位於應用程式的 `config/database.php`�
 在預設情況下，Laravel簡易[環境變數](/docs/{{version}}/configuration#environment-configuration)已經可以和 [Laravel Sail](/docs/{{version}}/sail) 搭配使用，Laravel Sail 是一個可以直接架起本機開發狀態應用程式的 Docker 設定。 不過你也可以自由修改資料庫的設定檔以符合你本機的資料庫。
 
 <a name="sqlite-configuration"></a>
-#### SQLite Configuration
+#### SQLite 設定
 
-SQLite databases are contained within a single file on your filesystem. You can create a new SQLite database using the `touch` command in your terminal: `touch database/database.sqlite`. After the database has been created, you may easily configure your environment variables to point to this database by placing the absolute path to the database in the `DB_DATABASE` environment variable:
+SQLite 資料庫被包含在你的檔案系統上的一個檔案中。你可以在終端機用 `touch` 指令建立一個全新的 SQLite 資料庫
+： `touch database/database.sqlite`。資料庫被建立後，你可以輕鬆的在 `DB_DATABASE` 設定放置資料庫的絕對路徑：
 
 ```ini
 DB_CONNECTION=sqlite
 DB_DATABASE=/absolute/path/to/database.sqlite
 ```
 
-To enable foreign key constraints for SQLite connections, you should set the `DB_FOREIGN_KEYS` environment variable to `true`:
+要啟用 SQLite 的外鍵約束，你需要設定 `DB_FOREIGN_KEYS` 的環境變數為 `true`：
 
 ```ini
 DB_FOREIGN_KEYS=true
