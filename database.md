@@ -208,13 +208,13 @@ driver://username:password@host:port/database?options
     DB::statement('drop table users');
 
 <a name="running-an-unprepared-statement"></a>
-#### Running An Unprepared Statement
+#### 執行不需準備的語句
 
-Sometimes you may want to execute an SQL statement without binding any values. You may use the `DB` facade's `unprepared` method to accomplish this:
+有時候你可能想執行一個沒有綁定任何述職的 SQL 語句。你可以用 `DB` 中的 `unprepared` 方法來達成：
 
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 
-> {note} Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
+> {note} 因為不需準備的語句沒有綁定任何參數，它們可能會受到 SQL 注入的攻擊。你永遠不應該讓使用者可以自己控制此種語句其中的數值。
 
 <a name="implicit-commits-in-transactions"></a>
 #### Implicit Commits
