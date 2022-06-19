@@ -192,9 +192,9 @@ driver://username:password@host:port/database?options
     );
 
 <a name="running-a-delete-statement"></a>
-#### Running A Delete Statement
+#### 執行刪除的語句
 
-The `delete` method should be used to delete records from the database. Like `update`, the number of rows affected will be returned by the method:
+`delete` 方法應該用在刪除資料庫中的紀錄。就像 `update` 一樣，它會回傳總影響的列數：
 
     use Illuminate\Support\Facades\DB;
 
