@@ -164,9 +164,9 @@ driver://username:password@host:port/database?options
     );
 
 <a name="using-named-bindings"></a>
-#### Using Named Bindings
+#### 使用名稱綁定
 
-Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
+你可以用名稱綁定來執行查詢，而不用使用 `?` 來表示參數綁定：
 
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
 
