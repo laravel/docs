@@ -304,23 +304,23 @@ driver://username:password@host:port/database?options
     }, 5);
 
 <a name="manually-using-transactions"></a>
-#### Manually Using Transactions
+#### 手動使用交易
 
-If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method provided by the `DB` facade:
+如果你想要手動開始一個交易且完全控制退回和提交，你可以使用 `DB` facade 中的 `beginTransaction` 方法：
 
     use Illuminate\Support\Facades\DB;
 
     DB::beginTransaction();
 
-You can rollback the transaction via the `rollBack` method:
+你可以用 `rollBack` 方法來退回交易：
 
     DB::rollBack();
 
-Lastly, you can commit a transaction via the `commit` method:
+最後用 `commit` 方法來提交交易：
 
     DB::commit();
 
-> {tip} The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+> {tip} `DB` facade 中的 transaction 方法控制 [query builder](/docs/{{version}}/queries) 和 [Eloquent ORM](/docs/{{version}}/eloquent) 兩者的交易。
 
 <a name="connecting-to-the-database-cli"></a>
 ## Connecting To The Database CLI
