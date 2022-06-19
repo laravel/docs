@@ -106,9 +106,9 @@ driver://username:password@host:port/database?options
 如果你想要覆寫掉 `mysql` 設定陣列中的內容，你只需要把項目放置在 `read` 和 `write` 陣列中。所以在這個例子中，`192.168.1.1` 將會被用做 "read" 連接的 host，而 `192.168.1.3` 將會被用作 "write" 連接的 host。資料庫的憑證、前綴、字符集和其他在 `mysql` 設定陣列的設定將會在兩個連接中共享。當 `host` 的設定陣列中有複數個數值時，每個請求會在其中隨機選取一個來使用。
 
 <a name="the-sticky-option"></a>
-#### The `sticky` Option
+#### `sticky` 設定
 
-The `sticky` option is an *optional* value that can be used to allow the immediate reading of records that have been written to the database during the current request cycle. If the `sticky` option is enabled and a "write" operation has been performed against the database during the current request cycle, any further "read" operations will use the "write" connection. This ensures that any data written during the request cycle can be immediately read back from the database during that same request. It is up to you to decide if this is the desired behavior for your application.
+`sticky` 是一個 *選用* 的數值，可用於允許立即讀取在當前請求週期中已寫入資料庫的記錄。如果 `sticky` 已啟用且 "寫入" 操作對資料庫來說在當前請求週期中已經執行，任何進一步的 "讀取" 操作都會用 "write" 連接執行。這確保在當前請求週期中已寫入的資料可以在同一個請求中立刻從資料庫中被讀回來。你可以自己決定這是否是你應用程式的預期行為。
 
 <a name="running-queries"></a>
 ## Running SQL Queries
