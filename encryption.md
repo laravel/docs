@@ -3,7 +3,7 @@
 - [加密](#加密)
   - [介紹](#介紹)
   - [設定](#設定)
-  - [使用加密](#使用加密)
+  - [使用加密器](#使用加密器)
       - [加密一個值](#加密一個值)
       - [解密一個值](#解密一個值)
 
@@ -22,7 +22,7 @@ Laravel 的加密服務提供一個簡單、方便的介面使用 OpenSSL 所提
 一般來說，在 [Laravel's installation](/docs/{{version}}/installation) 中會生成 `APP_KEY` 環境變數的值。
 
 <a name="using-the-encrypter"></a>
-## 使用加密
+## 使用加密器
 
 <a name="encrypting-a-value"></a>
 #### 加密一個值
