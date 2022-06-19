@@ -73,11 +73,11 @@ driver://username:password@host:port/database?options
 為了方便起見，Laravel 支援直接使用這些 URL 來替代數個設定。如果 `url`（或對應的 `DATABASE_URL` 環境變數） 的設定存在，它就會被用來解析資料庫連接和憑證資訊。
 
 <a name="read-and-write-connections"></a>
-### Read & Write Connections
+### 分離讀寫的連接
 
-Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
+有時你可能希望用一個資料庫連接來執行 SELECT 語句，另一個用來執行 INSERT、UPDATE 和 DELETE 語句。Laravel 讓它變得異常簡單，無論你使用的是原生查詢、 query builder 或是 Eloquent ORM 都將始終使用適當的連接。
 
-To see how read / write connections should be configured, let's look at this example:
+來看看下面分離讀寫連接是怎麼設定的：
 
     'mysql' => [
         'read' => [
@@ -101,9 +101,9 @@ To see how read / write connections should be configured, let's look at this exa
         'prefix' => '',
     ],
 
-Note that three keys have been added to the configuration array: `read`, `write` and `sticky`. The `read` and `write` keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` configuration array.
+注意到 `read`、`write` 和 `sticky` 這三個索引鍵被加到設定的陣列中。`read` 和 `write` 這兩個索引鍵的陣列值裡面有單個 `host` 的索引鍵。`read` 和 `write` 的其他資料庫設定將會從主要的 `mysql` 設定陣列中合併進來。
 
-You only need to place items in the `read` and `write` arrays if you wish to override the values from the main `mysql` array. So, in this case, `192.168.1.1` will be used as the host for the "read" connection, while `192.168.1.3` will be used for the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections. When multiple values exist in the `host` configuration array, a database host will be randomly chosen for each request.
+如果你想要覆寫掉 `mysql` 設定陣列中的內容，你只需要把項目放置在 `read` 和 `write` 陣列中。所以在這個例子中，`192.168.1.1` 將會被用做 "read" 連接的 host，而 `192.168.1.3` 將會被用作 "write" 連接的 host。資料庫的憑證、前綴、字符集和其他在 `mysql` 設定陣列的設定將會在兩個連接中共享。當 `host` 的設定陣列中有複數個數值時，每個請求會在其中隨機選取一個來使用。
 
 <a name="the-sticky-option"></a>
 #### The `sticky` Option
