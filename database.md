@@ -111,14 +111,14 @@ driver://username:password@host:port/database?options
 `sticky` 是一個 *選用* 的數值，可用於允許立即讀取在當前請求週期中已寫入資料庫的記錄。如果 `sticky` 已啟用且 "寫入" 操作對資料庫來說在當前請求週期中已經執行，任何進一步的 "讀取" 操作都會用 "write" 連接執行。這確保在當前請求週期中已寫入的資料可以在同一個請求中立刻從資料庫中被讀回來。你可以自己決定這是否是你應用程式的預期行為。
 
 <a name="running-queries"></a>
-## Running SQL Queries
+## 執行 SQL 語句
 
-Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, `delete`, and `statement`.
+當你設定好你的資料庫連接後，你可以用 `DB` facade 來執行語句。`DB` facade 為每個類型的語句都提供了方法：`select`、`update`、`insert`、`delete` 和 `statement`。
 
 <a name="running-a-select-query"></a>
-#### Running A Select Query
+#### 執行一個 Select 語句
 
-To run a basic SELECT query, you may use the `select` method on the `DB` facade:
+要執行基本的 SELECT 語句，你可以用 `DB` facade 中的 `select` 方法：
 
     <?php
 
@@ -130,7 +130,7 @@ To run a basic SELECT query, you may use the `select` method on the `DB` facade:
     class UserController extends Controller
     {
         /**
-         * Show a list of all of the application's users.
+         * 顯示一個有所有應用程式使用者的清單。
          *
          * @return \Illuminate\Http\Response
          */
@@ -142,9 +142,9 @@ To run a basic SELECT query, you may use the `select` method on the `DB` facade:
         }
     }
 
-The first argument passed to the `select` method is the SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection.
+第一個傳遞給 `select` 方法的參數是 SQL 語句，而第二個參數是任何需要被綁定在語句中的參數綁定。一般來說，這些數值是 `where` 子句的約束。參數綁定提供了對 SQL 注入的保護措施。
 
-The `select` method will always return an `array` of results. Each result within the array will be a PHP `stdClass` object representing a record from the database:
+`select` 方法總是回傳一個結果的 `array`。每個在這個陣列中的結果都會是一個用來表示來自資料庫的紀錄的 PHP `stdClass` 物件：
 
     use Illuminate\Support\Facades\DB;
 
