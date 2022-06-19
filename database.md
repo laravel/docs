@@ -34,8 +34,7 @@ Laravel 的資料庫服務設定檔位於應用程式的 `config/database.php`�
 <a name="sqlite-configuration"></a>
 #### SQLite 設定
 
-SQLite 資料庫被包含在你的檔案系統上的一個檔案中。你可以在終端機用 `touch` 指令建立一個全新的 SQLite 資料庫
-： `touch database/database.sqlite`。資料庫被建立後，你可以輕鬆的在 `DB_DATABASE` 設定放置資料庫的絕對路徑：
+SQLite 資料庫被包含在你的檔案系統上的一個檔案中。你可以在終端機用 `touch` 指令建立一個全新的 SQLite 資料庫： `touch database/database.sqlite`。資料庫被建立後，你可以輕鬆的在 `DB_DATABASE` 設定放置資料庫的絕對路徑：
 
 ```ini
 DB_CONNECTION=sqlite
