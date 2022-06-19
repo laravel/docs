@@ -180,9 +180,9 @@ driver://username:password@host:port/database?options
     DB::insert('insert into users (id, name) values (?, ?)', [1, 'Marc']);
 
 <a name="running-an-update-statement"></a>
-#### Running An Update Statement
+#### 執行更新的語句
 
-The `update` method should be used to update existing records in the database. The number of rows affected by the statement is returned by the method:
+`update` 方法應該用於更新資料庫中已存在的紀錄。此方法會回傳總共影響的列數：
 
     use Illuminate\Support\Facades\DB;
 
