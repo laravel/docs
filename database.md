@@ -54,23 +54,23 @@ DB_FOREIGN_KEYS=true
 要使用 Microsoft SQL Server 資料庫, 你需要確保 `sqlsrv` 和 `pdo_sqlsrv` 的 PHP 擴充功能和其他依賴已經安裝完成（例如 Microsoft SQL ODBC 驅動）。
 
 <a name="configuration-using-urls"></a>
-#### Configuration Using URLs
+#### 用 URL 來進行設定
 
-Typically, database connections are configured using multiple configuration values such as `host`, `database`, `username`, `password`, etc. Each of these configuration values has its own corresponding environment variable. This means that when configuring your database connection information on a production server, you need to manage several environment variables.
+在傳統作法中，資料庫連接都是用 `host`、`database`、`username`、`password` 等設定值來設定。每個設定值都有它自己對應的環境變數。這表示當你要設定你生產環境伺服器的資料庫連線資訊時，你需要管理數個環境變數。
 
-Some managed database providers such as AWS and Heroku provide a single database "URL" that contains all of the connection information for the database in a single string. An example database URL may look something like the following:
+有些託管資料庫的提供商（如 AWS 和 Heroku）用單個字串提供一個資料庫 "URL"，並包含了所有資料庫的連接資訊。舉例來說資料庫 URL 可能看起來像下面這樣：
 
 ```html
 mysql://root:password@127.0.0.1/forge?charset=UTF-8
 ```
 
-These URLs typically follow a standard schema convention:
+這些 URL 基本上遵照一個標準的結構慣例：
 
 ```html
 driver://username:password@host:port/database?options
 ```
 
-For convenience, Laravel supports these URLs as an alternative to configuring your database with multiple configuration options. If the `url` (or corresponding `DATABASE_URL` environment variable) configuration option is present, it will be used to extract the database connection and credential information.
+為了方便起見，Laravel 支援直接使用這些 URL 來替代數個設定。如果 `url`（或對應的 `DATABASE_URL` 環境變數） 的設定存在，它就會被用來解析資料庫連接和憑證資訊。
 
 <a name="read-and-write-connections"></a>
 ### Read & Write Connections
