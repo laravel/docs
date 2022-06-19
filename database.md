@@ -291,9 +291,9 @@ driver://username:password@host:port/database?options
     });
 
 <a name="handling-deadlocks"></a>
-#### Handling Deadlocks
+#### 處理死結
 
-The `transaction` method accepts an optional second argument which defines the number of times a transaction should be retried when a deadlock occurs. Once these attempts have been exhausted, an exception will be thrown:
+`transaction` 方法接受一個選用的第二參數，它定義了交易在死結發生時應該嘗試的次數。當這些嘗試次數都用盡時，會拋出一個例外：
 
     use Illuminate\Support\Facades\DB;
 
