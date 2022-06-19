@@ -239,9 +239,9 @@ driver://username:password@host:port/database?options
     $pdo = DB::connection()->getPdo();
 
 <a name="listening-for-query-events"></a>
-### Listening For Query Events
+### 監聽查詢事件
 
-If you would like to specify a closure that is invoked for each SQL query executed by your application, you may use the `DB` facade's `listen` method. This method can be useful for logging queries or debugging. You may register your query listener closure in the `boot` method of a [service provider](/docs/{{version}}/providers):
+如果你想要指定一個閉包在你應用程式 SQL 查詢執行時觸發，你可以用 `DB` facade 中的 `listen` 方法。這個方法在紀錄查詢或除錯時特別有用。你可以在 [service provider](/docs/{{version}}/providers) 的 `boot` 方法中註冊你的查詢監聽監聽器：
 
     <?php
 
@@ -253,7 +253,7 @@ If you would like to specify a closure that is invoked for each SQL query execut
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register any application services.
+         * 註冊任何應用程式的服務
          *
          * @return void
          */
@@ -263,7 +263,7 @@ If you would like to specify a closure that is invoked for each SQL query execut
         }
 
         /**
-         * Bootstrap any application services.
+         * 任何服務的啟動程序
          *
          * @return void
          */
