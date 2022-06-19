@@ -217,13 +217,13 @@ driver://username:password@host:port/database?options
 > {note} 因為不需準備的語句沒有綁定任何參數，它們可能會受到 SQL 注入的攻擊。你永遠不應該讓使用者可以自己控制此種語句其中的數值。
 
 <a name="implicit-commits-in-transactions"></a>
-#### Implicit Commits
+#### 隱式提交
 
-When using the `DB` facade's `statement` and `unprepared` methods within transactions you must be careful to avoid statements that cause [implicit commits](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html). These statements will cause the database engine to indirectly commit the entire transaction, leaving Laravel unaware of the database's transaction level. An example of such a statement is creating a database table:
+當在交易（transaction）中使用 `DB` facade 中的 `statement` 和 `unprepared` 方法時，你一定要小心避免語句造成[隱式提交](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。這些語句會導致資料庫引擎間接提交整個交易，讓 Laravel 不知道資料庫的交易階段。一個此類型語句的範例就是建立一個資料庫表：
 
     DB::unprepared('create table a (col varchar(1) null)');
 
-Please refer to the MySQL manual for [a list of all statements](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) that trigger implicit commits.
+請參考 MySQL 說明書中的 [a list of all statements](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) 來了解哪些語句會觸發隱式提交。
 
 <a name="using-multiple-database-connections"></a>
 ### Using Multiple Database Connections
