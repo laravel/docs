@@ -171,9 +171,9 @@ driver://username:password@host:port/database?options
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
 
 <a name="running-an-insert-statement"></a>
-#### Running An Insert Statement
+#### 執行插入的語句
 
-To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method accepts the SQL query as its first argument and bindings as its second argument:
+你可以用 `DB` facade 中的 `insert` 方法來執行 `insert` 語句。像 `select` 一樣，這個方法接受 SQL 查詢與參數綁定作為它的第一和第二個參數：
 
     use Illuminate\Support\Facades\DB;
 
