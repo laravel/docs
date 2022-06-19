@@ -278,9 +278,9 @@ driver://username:password@host:port/database?options
     }
 
 <a name="database-transactions"></a>
-## Database Transactions
+## 資料庫交易
 
-You may use the `transaction` method provided by the `DB` facade to run a set of operations within a database transaction. If an exception is thrown within the transaction closure, the transaction will automatically be rolled back and the exception is re-thrown. If the closure executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:
+你可以在資料庫交易中用 `DB` facade 中的 `transaction`方法來執行一系列的操作。如果在交易的閉包中拋出了任何例外，交易會自動被退回且例外會被再次丟出。如果閉包執行成功，這個交易會被自動提交。當你使用 `transaction` 時你不需要擔心手動退回或提交：
 
     use Illuminate\Support\Facades\DB;
 
