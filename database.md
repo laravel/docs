@@ -201,9 +201,9 @@ driver://username:password@host:port/database?options
     $deleted = DB::delete('delete from users');
 
 <a name="running-a-general-statement"></a>
-#### Running A General Statement
+#### 執行一般的語句
 
-Some database statements do not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
+有些資料庫語句不回傳任何數值。對這種類型的操作，你可以用 `DB` facade 中的 `statement` 方法：
 
     DB::statement('drop table users');
 
