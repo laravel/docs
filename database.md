@@ -155,9 +155,9 @@ driver://username:password@host:port/database?options
     }
 
 <a name="selecting-scalar-values"></a>
-#### Selecting Scalar Values
+#### 搜尋標量數值
 
-Sometimes your database query may result in a single, scalar value. Instead of being required to retrieve the query's scalar result from a record object, Laravel allows you to retrieve this value directly using the `scalar` method:
+有時你的資料庫查詢可能拿到一個標量數值。Laravel 讓你用 `scalar` 方法直接取得數值，而不必從記錄物件中把標量的結果取出：
 
     $burgers = DB::scalar(
         "select count(case when food = 'burger' then 1 end) as burgers from menu"
