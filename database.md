@@ -49,9 +49,9 @@ DB_FOREIGN_KEYS=true
 ```
 
 <a name="mssql-configuration"></a>
-#### Microsoft SQL Server Configuration
+#### Microsoft SQL Server 設定
 
-To use a Microsoft SQL Server database, you should ensure that you have the `sqlsrv` and `pdo_sqlsrv` PHP extensions installed as well as any dependencies they may require such as the Microsoft SQL ODBC driver.
+要使用 Microsoft SQL Server 資料庫, 你需要確保 `sqlsrv` 和 `pdo_sqlsrv` 的 PHP 擴充功能和其他依賴已經安裝完成（例如 Microsoft SQL ODBC 驅動）。
 
 <a name="configuration-using-urls"></a>
 #### Configuration Using URLs
