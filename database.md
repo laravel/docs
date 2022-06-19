@@ -226,15 +226,15 @@ driver://username:password@host:port/database?options
 請參考 MySQL 說明書中的 [a list of all statements](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) 來了解哪些語句會觸發隱式提交。
 
 <a name="using-multiple-database-connections"></a>
-### Using Multiple Database Connections
+### 使用多個 SQL 連接
 
-If your application defines multiple connections in your `config/database.php` configuration file, you may access each connection via the `connection` method provided by the `DB` facade. The connection name passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file or configured at runtime using the `config` helper:
+如果你的應用程式在 `config/database.php` 中定義了複數個資料庫連接，你可以用 `DB` facade 中的 `connection` 方法來存取每個連接。要傳遞給 `connection` 方法的連接名稱應該要對應到 `config/database.php` 或執行時其用 `config` helper 設定的其中一個連接：
 
     use Illuminate\Support\Facades\DB;
 
     $users = DB::connection('sqlite')->select(...);
 
-You may access the raw, underlying PDO instance of a connection using the `getPdo` method on a connection instance:
+你可以用連接實體上的 `getPdo` 方法來存取連接底層的 PDO 實例：
 
     $pdo = DB::connection()->getPdo();
 
