@@ -323,15 +323,15 @@ driver://username:password@host:port/database?options
 > {tip} `DB` facade 中的 transaction 方法控制 [query builder](/docs/{{version}}/queries) 和 [Eloquent ORM](/docs/{{version}}/eloquent) 兩者的交易。
 
 <a name="connecting-to-the-database-cli"></a>
-## Connecting To The Database CLI
+## 連接到資料庫的 CLI
 
-If you would like to connect to your database's CLI, you may use the `db` Artisan command:
+如果你想要連接到你的資料庫 CLI，你可以用 `db` Artisan 指令:
 
 ```shell
 php artisan db
 ```
 
-If needed, you may specify a database connection name to connect to a database connection that is not the default connection:
+如果有需要，你也可以指定一個資料庫連接名稱連接到一個非預設的資料庫連接：
 
 ```shell
 php artisan db mysql
