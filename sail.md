@@ -241,6 +241,12 @@ AWS_ENDPOINT=http://minio:9000
 AWS_USE_PATH_STYLE_ENDPOINT=true
 ```
 
+In order for Laravel's Flysystem integration to generate proper URLs when using MinIO, you should define the `AWS_URL` environment variable so that it matches your application's local URL and includes the bucket name in the URL path:
+
+```ini
+AWS_URL=http://localhost:9000/local
+```
+
 <a name="running-tests"></a>
 ## Running Tests
 
