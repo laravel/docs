@@ -1,22 +1,22 @@
-# Testing: Getting Started
+# 測試：準備開始
 
-- [Introduction](#introduction)
-- [Environment](#environment)
-- [Creating Tests](#creating-tests)
-- [Running Tests](#running-tests)
-    - [Running Tests In Parallel](#running-tests-in-parallel)
-    - [Reporting Test Coverage](#reporting-test-coverage)
+- [前言](#introduction)
+- [環境](#environment)
+- [建立測試](#creating-tests)
+- [執行測試](#running-tests)
+    - [同步執行測試](#running-tests-in-parallel)
+    - [回報測試覆蓋範圍](#reporting-test-coverage)
 
 <a name="introduction"></a>
-## Introduction
+## 前言
 
-Laravel is built with testing in mind. In fact, support for testing with PHPUnit is included out of the box and a `phpunit.xml` file is already set up for your application. The framework also ships with convenient helper methods that allow you to expressively test your applications.
+Laravel 在建立時就已經考慮到測試。事實上，本來就支援以 PHPUnit 來進行測試，同時已經為你的應用程式建立了一份 `phpunit.xml` 檔案。框架也提供了便利的輔助函式，讓你能更直觀地測試你的應用程式。
 
-By default, your application's `tests` directory contains two directories: `Feature` and `Unit`. Unit tests are tests that focus on a very small, isolated portion of your code. In fact, most unit tests probably focus on a single method. Tests within your "Unit" test directory do not boot your Laravel application and therefore are unable to access your application's database or other framework services.
+在預設下，你的應用程式的 `tests` 資料夾下會有兩個資料夾：`Feature` 及 `Unit`。單元測試 (Unit tests) 會專注在測試非常小、獨立的程式碼。事實上，大部分的單元測試通常只專注在單一方法上。在你的「Unit」資料夾裡的測試不會去驅動你的 Laravel 應用程式，因此也沒辦法存取你應用程式的資料庫和其他的框架服務。
 
-Feature tests may test a larger portion of your code, including how several objects interact with each other or even a full HTTP request to a JSON endpoint. **Generally, most of your tests should be feature tests. These types of tests provide the most confidence that your system as a whole is functioning as intended.**
+功能測試 (Feature tests) 會測試相對大範圍的程式碼，包含數個元件如何互動，甚或是從 HTTP 開始到 JSON 端點的完整請求。 **一般來說，多數的測試應該要是功能測試。因為這種測試會提升可信度，讓你的整體系統如所預期的運作。**
 
-An `ExampleTest.php` file is provided in both the `Feature` and `Unit` test directories. After installing a new Laravel application, execute the `vendor/bin/phpunit` or `php artisan test` commands to run your tests.
+在 `Feature` 和 `Unit` 這兩個資料夾裡同時有提供一個叫 `ExampleTest.php` 的檔案。在安裝新的 Laravel 應用程式之後，執行指令 `vendor/bin/phpunit` 或 `php artisan test` 會驅動你的測試。
 
 <a name="environment"></a>
 ## Environment
