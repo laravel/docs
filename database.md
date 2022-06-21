@@ -6,6 +6,7 @@
 - [Running SQL Queries](#running-queries)
     - [Using Multiple Database Connections](#using-multiple-database-connections)
     - [Listening For Query Events](#listening-for-query-events)
+    - [Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)
 - [Database Transactions](#database-transactions)
 - [Connecting To The Database CLI](#connecting-to-the-database-cli)
 
@@ -272,6 +273,43 @@ If you would like to specify a closure that is invoked for each SQL query execut
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
+            });
+        }
+    }
+
+<a name="monitoring-cumulative-query-time"></a>
+### Monitoring Cumulative Query Time
+
+A common performance bottleneck of modern web applications is the amount of time they spend querying databases. Thankfully, Laravel can invoke a closure or callback of your choice when it spends too much time querying the database during a single request. To get started, provide a query time threshold (in milliseconds) and closure to the `whenQueryingForLongerThan` method. You may invoke this method in the `boot` method of a [service provider](/docs/{{version}}/providers):
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            DB::whenQueryingForLongerThan(500, function () {
+                // Notify development team...
             });
         }
     }
