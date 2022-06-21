@@ -123,4 +123,4 @@ Laravel把當前的CSRF憑證存在加密`XSRF-TOKEN` cookie中，而每個由�
 有些Javascript框架與函式庫，像是Angular和Axios，會自動把值放在原請求的`X-XSRF-TOKEN`標頭中，因此這個cookie主要是設計來當開發者的便利工具。
 
 > {小技巧} 預設情況下，`resources/js/bootstrap.js`引入了Axios HTTP 函式庫，它會自動幫你傳送`X-XSRF-TOKEN`的標頭。
-}
+
