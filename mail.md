@@ -487,7 +487,7 @@ To get started, implement the `Illuminate\Contracts\Mail\Attachable` interface o
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Mail\Attachment;
 
-    class Photo extends Model
+    class Photo extends Model implements Attachable
     {
         /**
          * Get the attachable representation of the model.
