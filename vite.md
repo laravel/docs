@@ -31,9 +31,9 @@ Laravel integrates seamlessly with Vite by providing an official plugin and Blad
 <a name="vite-or-mix"></a>
 ### Choosing Between Vite And Laravel Mix
 
-Vite focuses on building rich JavaScript applications. If you are developing a Single Page Application (SPA), including those developed with tools like InertiaJS, Vite will be the perfect fit.
+Vite focuses on building rich JavaScript applications. If you are developing a Single Page Application (SPA), including those developed with tools like [Inertia.js](https://inertiajs.com), Vite will be the perfect fit.
 
-Vite also works well with traditional Server-Side Rendered applications with JavaScript "sprinkles". It lacks some features that Laravel Mix supports, such as the ability to copy arbitrary assets into the build that are not referenced directly in your JavaScript application.
+Vite also works well with traditional server-side rendered applications with JavaScript "sprinkles", including those using [Livewire](https://laravel-livewire.com). However, it lacks some features that Laravel Mix supports, such as the ability to copy arbitrary assets into the build that are not referenced directly in your JavaScript application.
 
 <a name="installation"></a>
 ## Installation & Setup
@@ -58,7 +58,7 @@ You can easily install the latest version of Node and NPM using simple graphical
 <a name="installing-vite-and-laravel-plugin"></a>
 ### Installing Vite And The Laravel Plugin
 
-Within a fresh installation of Laravel, you'll find a `package.json` file in the root of your directory structure. The default `package.json` file already includes everything you need to get started using Vite and the Laravel plugin. You may install the dependencies by running:
+Within a fresh installation of Laravel, you will find a `package.json` file in the root of your application's directory structure. The default `package.json` file already includes everything you need to get started using Vite and the Laravel plugin. You may install your application's frontend dependencies by running:
 
 ```sh
 npm install
@@ -67,9 +67,9 @@ npm install
 <a name="configuring-vite"></a>
 ### Configuring Vite
 
-Vite is configured in a `vite.config.js` file in the root of your project. You are free to customise this based on your needs and install any other plugins, such as `@vitejs/vue-plugin` or `@vitejs/react-plugin`.
+Vite is configured in a `vite.config.js` file in the root of your project. You are free to customize this file based on your needs and you may also install any other plugins your application requires, such as `@vitejs/vue-plugin` or `@vitejs/react-plugin`.
 
-The Laravel plugin requires you to specify any entry points for your application. These may be JavaScript or CSS, and include preprocessed languages such TypeScript, JSX, TSX, and Sass.
+The Laravel Vite plugin requires you to specify any entry points for your application. These may be JavaScript or CSS files, and include preprocessed languages such as TypeScript, JSX, TSX, and Sass.
 
 ```js
 import { defineConfig } from 'vite';
@@ -85,7 +85,7 @@ export default defineConfig({
 });
 ```
 
-If you are building an SPA, for example with Inertia, Vite works best without CSS entry points:
+If you are building an SPA, including applications built using Inertia, Vite works best without CSS entry points:
 
 ```js
 import { defineConfig } from 'vite';
@@ -100,19 +100,19 @@ export default defineConfig({
 });
 ```
 
-Instead, you should import your CSS via JavaScript, for example in your `resources/js/app.js` file:
+Instead, you should import your CSS via JavaScript. Typically, this would be done in your application's `resources/js/app.js` file:
 
-```diff
-  import './bootstrap';
-+ import '../css/app.css';
+```js
+import './bootstrap';
+import '../css/app.css'; // [tl! add]
 ```
 
-The Laravel plugin also supports multiple entry points, and advanced configuration such as [SSR entry points](#ssr).
+The Laravel plugin also supports multiple entry points and advanced configuration such as [SSR entry points](#ssr).
 
 <a name="loading-your-scripts-and-styles"></a>
 ### Loading Your Scripts And Styles
 
-With your Vite entry points configured, you only need add them in a `@vite()` Blade directive to the `<head>` of your application:
+With your Vite entry points configured, you only need reference them in a `@vite()` Blade directive that you add to the `<head>` of your application's root template:
 
 ```blade
 <!doctype html>
@@ -123,7 +123,7 @@ With your Vite entry points configured, you only need add them in a `@vite()` Bl
 </head>
 ```
 
-If you're importing your CSS via JavaScript, then you only need to include the JavaScript entry point:
+If you're importing your CSS via JavaScript then you only need to include the JavaScript entry point:
 
 ```blade
 <!doctype html>
@@ -139,15 +139,15 @@ The `@vite` directive will automatically detect the Vite development server and 
 <a name="running-vite"></a>
 ## Running Vite
 
-There are two ways you can run Vite. You may run the development server, which is useful while developing locally. It will automatically detect changes to your files and instantly reflect them in any open browser windows.
+There are two ways you can run Vite. You may run the development server via the `dev` command, which is useful while developing locally. The development server will automatically detect changes to your files and instantly reflect them in any open browser windows.
 
-On the other hand, running the build command will version and bundle your application's assets and get them ready for you to deploy to production.
+Or, running the `build` command will version and bundle your application's assets and get them ready for you to deploy to production.
 
 ```shell
-# Run the Vite development server
+# Run the Vite development server...
 npm run dev
 
-# Build and version the assets for production
+# Build and version the assets for production...
 npm run build
 ```
 
@@ -233,7 +233,7 @@ The `@viteReactRefresh` directive must be called **before** the `@vite` directiv
 <a name="inertia"></a>
 ### Inertia
 
-The Laravel Plugin provides a convenient `resolvePageComponent` function to help you resolve your Inertia page components. Here is an example of the helper in use with Vue 3, however you may also utilise the function in other frameworks such as React.
+The Laravel Vite plugin provides a convenient `resolvePageComponent` function to help you resolve your Inertia page components. Below is an example of the helper in use with Vue 3; however, you may also utilize the function in other frameworks such as React.
 
 ```js
 import { createApp, h } from 'vue';
@@ -253,13 +253,13 @@ createInertiaApp({
 <a name="url-processing"></a>
 ### URL Processing
 
-When referencing assets in your application's HTML, CSS, or JS, there are a couple of things to consider. If you reference assets with an absolute path, Vite will not include the asset in the build. You should ensure that the asset is available in your public directory.
+When referencing assets in your application's HTML, CSS, or JS, there are a couple of things to consider. If you reference assets with an absolute path, Vite will not include the asset in the build; therefore, you should ensure that the asset is available in your public directory.
 
 When referencing relative asset paths, you should remember that the paths are relative to the file where they are referenced. Any assets referenced via a relative path will be re-written, versioned, and bundled by Vite.
 
 Consider the following project structure:
 
-```
+```nothing
 public/
   taylor.png
 resources/
@@ -283,9 +283,7 @@ The following demonstrates how Vite will treat relative and absolute URLs:
 <a name="working-with-stylesheets"></a>
 ## Working With Stylesheets
 
-You can learn more about Vite's CSS support on the [Vite docs](https://vitejs.dev/guide/features.html#css).
-
-If you are using PostCSS plugins, such as Tailwind, you may create a `postcss.config.js` file in the root of your project and Vite will automatically apply it:
+You can learn more about Vite's CSS support within the [Vite documentation](https://vitejs.dev/guide/features.html#css). If you are using PostCSS plugins, such as [Tailwind](https://tailwindcss.com), you may create a `postcss.config.js` file in the root of your project and Vite will automatically apply it:
 
 ```js
 module.exports = {
@@ -299,7 +297,7 @@ module.exports = {
 <a name="custom-base-urls"></a>
 ## Custom Base URLs
 
-If your Vite compiled assets are deployed to a domain separate from your application, e.g. via a CDN, you must specify the `ASSET_URL` environment variable:
+If your Vite compiled assets are deployed to a domain separate from your application such as via a CDN, you must specify the `ASSET_URL` environment variable within your application's `.env` file:
 
 ```env
 ASSET_URL=https://cdn.example.com
@@ -307,7 +305,7 @@ ASSET_URL=https://cdn.example.com
 
 After configuring the asset URL, all re-written URLs to your assets will be prefixed with the configured value:
 
-```
+```nothing
 https://cdn.example.com/build/assets/app.9dce8d17.js
 ```
 
@@ -331,7 +329,7 @@ import.meta.env.VITE_SENTRY_DSN_PUBLIC
 <a name="ssr"></a>
 ## Server-Side Rendering (SSR)
 
-The Laravel plugin makes it painless to set up Server-Side Rending with Vite. Create your SSR entry point, for example at `resources/js/ssr.js`, and specify the entry point by passing a configuration option to the Laravel plugin:
+The Laravel Vite plugin makes it painless to set up server-side rending with Vite. Create your SSR entry point, for example at `resources/js/ssr.js`, and specify the entry point by passing a configuration option to the Laravel plugin:
 
 ```js
 import { defineConfig } from 'vite';
@@ -347,16 +345,17 @@ export default defineConfig({
 });
 ```
 
-To ensure you don't forget to rebuild the SSR entry point, we recommend augmenting the "build" script in your `package.json` to create your SSR build:
-```diff
+To ensure you don't forget to rebuild the SSR entry point, we recommend augmenting the "build" script in your application's `package.json` to create your SSR build:
+
+```json
 "scripts": {
      "dev": "vite",
--    "build": "vite build"
-+    "build": "vite build && vite build --ssr"
+     "build": "vite build" // [tl! remove]
+     "build": "vite build && vite build --ssr" // [tl! add]
 }
 ```
 
-Then to build and start the SSR server, you may run the following commands:
+Then, to build and start the SSR server, you may run the following commands:
 
 ```sh
 npm run build
