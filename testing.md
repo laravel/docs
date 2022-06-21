@@ -19,11 +19,11 @@ Laravel 在建立時就已經考慮到測試。事實上，本來就支援以 PH
 在 `Feature` 和 `Unit` 這兩個資料夾裡同時有提供一個叫 `ExampleTest.php` 的檔案。在安裝新的 Laravel 應用程式之後，執行指令 `vendor/bin/phpunit` 或 `php artisan test` 會驅動你的測試。
 
 <a name="environment"></a>
-## Environment
+## 環境
 
-When running tests, Laravel will automatically set the [configuration environment](/docs/{{version}}/configuration#environment-configuration) to `testing` because of the environment variables defined in the `phpunit.xml` file. Laravel also automatically configures the session and cache to the `array` driver while testing, meaning no session or cache data will be persisted while testing.
+當在執行測試的時候，Laravel 會自動將 [組態環境](/docs/{{version}}/configuration#environment-configuration) 設定成 `testing`，這是因為該環境變數事先被定義在 `phpunit.xml` 檔案裡了。Laravel 在測試的時候也自動將 session 和快取設置到 `array` 驅動裡，即測試時的 session 或快取的資料之後不會留存。
 
-You are free to define other testing environment configuration values as necessary. The `testing` environment variables may be configured in your application's `phpunit.xml` file, but make sure to clear your configuration cache using the `config:clear` Artisan command before running your tests!
+必要的話你可以自行定義其他的測試用環境組態值。`testing` 環境變數可以被設置在應用程式的 `phpunit.xml` 檔案中，不過在執行測試前，請先確認組態的快取已經清除，使用 Artisan 指令 `config:clear` 來清除快取。
 
 <a name="the-env-testing-environment-file"></a>
 #### The `.env.testing` Environment File
