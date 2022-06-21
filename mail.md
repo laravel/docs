@@ -11,6 +11,7 @@
     - [View Data](#view-data)
     - [Attachments](#attachments)
     - [Inline Attachments](#inline-attachments)
+    - [Attachable Objects](#attachable-objects)
     - [Tags & Metadata](#tags-and-metadata)
     - [Customizing The Symfony Message](#customizing-the-symfony-message)
 - [Markdown Mailables](#markdown-mailables)
@@ -470,6 +471,65 @@ If you already have a raw image data string you wish to embed into an email temp
     <img src="{{ $message->embedData($data, 'example-image.jpg') }}">
 </body>
 ```
+
+<a name="attachable-objects"></a>
+### Attachable Objects
+
+While attaching files to messages via simple string paths is often sufficient, in many cases the attachable entities within your application are represented by classes. For example, if your application is attaching a photo to a message, your application may also have a `Photo` model that represents that photo. When that is the case, wouldn't it be convenient to simply pass the `Photo` model to the `attach` method? Attachable objects allow you to do just that.
+
+To get started, implement the `Illuminate\Contracts\Mail\Attachable` interface on the object that will be attachable to messages. This interface dictates that your class defines a `toMailAttachment` method that returns an `Illuminate\Mail\Attachment` instance:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Contracts\Mail\Attachable;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Mail\Attachment;
+
+    class Photo extends Model
+    {
+        /**
+         * Get the attachable representation of the model.
+         *
+         * @return \Illuminate\Mail\Attachment
+         */
+        public function toMailAttachment()
+        {
+            return Attachment::fromPath('/path/to/file');
+        }
+    }
+
+Once you have defined your attachable object, you may simply pass an instance of that object to the `attach` method when building an email message:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('photos.resized')
+                    ->attach($this->photo);
+    }
+
+Of course, attachment data may be stored on a remote file storage service such as Amazon S3. So, Laravel also allows you to generate attachment instances from data that is stored on one of your application's [filesystem disks](/docs/{{version}}/filesystem):
+
+    // Create an attachment from a file on your default disk...
+    return Attachment::fromStorage($this->path);
+
+    // Create an attachment from a file on a specific disk...
+    return Attachment::fromStorageDisk('backblaze', $this->path);
+
+In addition, you may create attachment instances via data that you have in memory. To accomplish this, provide a closure to the `fromData` method. The closure should return the raw data that represents the attachment:
+
+    return Attachment::fromData(fn () => $this->content);
+
+Laravel also provides additional methods that you may use to customize your attachments. For example, you may use the `as` and `withMime` methods to customize the file's name and MIME type:
+
+    return Attachment::fromPath('/path/to/file')
+            ->as('Photo Name')
+            ->withMime('image/jpeg');
 
 <a name="tags-and-metadata"></a>
 ### Tags & Metadata
