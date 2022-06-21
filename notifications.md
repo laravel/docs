@@ -495,6 +495,8 @@ To add attachments to an email notification, use the `attach` method while build
                     ->attach('/path/to/file');
     }
 
+> {tip} The `attach` method offered by notification mail messages also accepts [attachable objects](/docs/{{version}}/mail#attachable-objects). Please consult the comprehensive [attachable object documentation](/docs/{{version}}/mail#attachable-objects) to learn more.
+
 When attaching files to a message, you may also specify the display name and / or MIME type by passing an `array` as the second argument to the `attach` method:
 
     /**
