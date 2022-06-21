@@ -1512,6 +1512,15 @@ To eager load a relationship's relationships, you may use "dot" syntax. For exam
 
     $books = Book::with('author.contacts')->get();
 
+Alternatively, you may specify nested eager loaded relationships by providing a nested array to the `with` method, which can be convenient when eager loading multiple nested relationships:
+
+    $books = Book::with([
+        'author' => [
+            'contacts',
+            'publisher',
+        ],
+    ])->get();
+
 <a name="nested-eager-loading-morphto-relationships"></a>
 #### Nested Eager Loading `morphTo` Relationships
 
