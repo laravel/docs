@@ -1560,7 +1560,7 @@ In your `config/queue.php` configuration file, each queue connection defines a `
 <a name="worker-timeouts"></a>
 #### Worker Timeouts
 
-The `queue:work` Artisan command exposes a `--timeout` option. By default, the `--timeout` value is set to `60`. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):
+The `queue:work` Artisan command exposes a `--timeout` option. By default, the `--timeout` value is 60 seconds. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):
 
 ```shell
 php artisan queue:work --timeout=60
