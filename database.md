@@ -308,7 +308,7 @@ A common performance bottleneck of modern web applications is the amount of time
          */
         public function boot()
         {
-            DB::whenQueryingForLongerThan(500, function () {
+            DB::whenQueryingForLongerThan(500, function ($connection, $event) {
                 // Notify development team...
             });
         }
