@@ -61,7 +61,7 @@ Next, you may navigate to your application's `/login` or `/register` URLs in you
 
 Laravel Breeze also offers React and Vue scaffolding via an [Inertia.js](https://inertiajs.com) frontend implementation. Inertia allows you to build modern, single-page React and Vue applications using classic server-side routing and controllers.
 
-Inertia lets you enjoy the frontend power of React and Vue combined with the incredible backend productivity of Laravel. To use an Inertia stack, specify `vue` or `react` as your desired stack when executing the `breeze:install` Artisan command:
+Inertia lets you enjoy the frontend power of React and Vue combined with the incredible backend productivity of Laravel and lightning-fast [Vite](https://vitejs.dev) compilation. To use an Inertia stack, specify `vue` or `react` as your desired stack when executing the `breeze:install` Artisan command:
 
 ```shell
 php artisan breeze:install vue

@@ -38,6 +38,8 @@ Vite also works well with traditional server-side rendered applications with Jav
 <a name="installation"></a>
 ## Installation & Setup
 
+> {tip} The following documentation discusses how to manually install and configure the Laravel Vite plugin. However, Laravel's [starter kits](/docs/{{version}}/starter-kits) already include all of this scaffolding! Laravel's starter kits are the fastest way to get started with Laravel and Vite.
+
 <a name="installing-node"></a>
 ### Installing Node
 
@@ -218,6 +220,8 @@ export default defineConfig({
 });
 ```
 
+> {tip} Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vite, and Vue configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Vite, and Vue.
+
 <a name="react"></a>
 ### React
 
@@ -229,6 +233,8 @@ When using Vite with React, you will need to ensure that any files containing JS
 ```
 
 The `@viteReactRefresh` directive must be called **before** the `@vite` directive.
+
+> {tip} Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vite, and React configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Vite, and React.
 
 <a name="inertia"></a>
 ### Inertia
@@ -249,6 +255,8 @@ createInertiaApp({
   },
 });
 ```
+
+> {tip} Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vite, and Inertia configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Vite, and Inertia.
 
 <a name="url-processing"></a>
 ### URL Processing
