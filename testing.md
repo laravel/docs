@@ -26,40 +26,40 @@ Laravel 在建立時就已經考慮到測試。事實上，本來就支援以 PH
 必要的話你可以自行定義其他的測試用環境組態值。`testing` 環境變數可以被設置在應用程式的 `phpunit.xml` 檔案中，不過在執行測試前，請先確認組態的快取已經清除，使用 Artisan 指令 `config:clear` 來清除快取。
 
 <a name="the-env-testing-environment-file"></a>
-#### The `.env.testing` Environment File
+#### `.env.testing` 環境檔
 
-In addition, you may create a `.env.testing` file in the root of your project. This file will be used instead of the `.env` file when running PHPUnit tests or executing Artisan commands with the `--env=testing` option.
+另外，你也可新增一個 `.env.testing` 檔案在你專案的根目錄。當執行 PHPUnit 測試或是運作 Artisan 指令的時候，加上 `--env=testing` 選項則 `.env.testing` 檔案會取代 `.env` 被使用。
 
 <a name="the-creates-application-trait"></a>
 #### The `CreatesApplication` Trait
 
-Laravel includes a `CreatesApplication` trait that is applied to your application's base `TestCase` class. This trait contains a `createApplication` method that bootstraps the Laravel application before running your tests. It's important that you leave this trait at its original location as some features, such as Laravel's parallel testing feature, depend on it.
+Laravel 包含一個叫做 `CreatesApplication` 的 trait，它被應用程式的基礎類別 `TestCase` 所套用。這個 trait 包含一個叫做 `createApplication` 的方法，在執行你的測試之前， `createApplication` 方法會啟動 Laravel 應用程式。將這個 trait 保留在原處非常重要，因為有些功能仰賴它，例如 Laravel 的同步測試功能。
 
 <a name="creating-tests"></a>
-## Creating Tests
+## 建立測試
 
-To create a new test case, use the `make:test` Artisan command. By default, tests will be placed in the `tests/Feature` directory:
+要建立一個新的測試，要使用 `make:test` Artisan 指令。預設下，測試會被放在 `tests/Feature` 資料夾中：
 
 ```shell
 php artisan make:test UserTest
 ```
 
-If you would like to create a test within the `tests/Unit` directory, you may use the `--unit` option when executing the `make:test` command:
+如果你想要在 `tests/Unit` 資料夾裡新增測試，你可以在執行 `make:test` 指令的時候，加上 `--unit` 選項：
 
 ```shell
 php artisan make:test UserTest --unit
 ```
 
-If you would like to create a [Pest PHP](https://pestphp.com) test, you may provide the `--pest` option to the `make:test` command:
+如果你想要建立一個 [Pest PHP](https://pestphp.com) 測試，你可以在 `make:test` 指令加上 `--pest` 選項：
 
 ```shell
 php artisan make:test UserTest --pest
 php artisan make:test UserTest --unit --pest
 ```
 
-> {tip} Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
+> {小訣竅} 可以使用 [stub publishing](/docs/{{version}}/artisan#stub-customization) 來客製化測試 stubs 。
 
-Once the test has been generated, you may define test methods as you normally would using [PHPUnit](https://phpunit.de). To run your tests, execute the `vendor/bin/phpunit` or `php artisan test` command from your terminal:
+一旦測試建立好了之後，你可以照一般的方式用 [PHPUnit](https://phpunit.de) 來定義測試方法。在你的終端機執行 `vendor/bin/phpunit` 或 `php artisan test` 指令來運作你的測試：
 
     <?php
 
@@ -80,7 +80,7 @@ Once the test has been generated, you may define test methods as you normally wo
         }
     }
 
-> {note} If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class.
+> {備註} 如果你在測試類別中定義了你自己的 `setUp` / `tearDown` 方法，請記得在父類別去個別呼叫 `parent::setUp()` / `parent::tearDown()` 方法。
 
 <a name="running-tests"></a>
 ## Running Tests
