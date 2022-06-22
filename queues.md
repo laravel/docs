@@ -1034,7 +1034,7 @@ In this example, the job is released for ten seconds if the application is unabl
 
 > {note} The `pcntl` PHP extension must be installed in order to specify job timeouts.
 
-Often, you know roughly how long you expect your queued jobs to take. For this reason, Laravel allows you to specify a "timeout" value. By default, the `--timeout` value is set to `60`. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration).
+Often, you know roughly how long you expect your queued jobs to take. For this reason, Laravel allows you to specify a "timeout" value. By default, the timeout value is 60 seconds. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration).
 
 The maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
 
