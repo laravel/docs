@@ -110,19 +110,13 @@ Sometimes a user may misplace or accidentally delete the email address verificat
 <a name="protecting-routes"></a>
 ### Protecting Routes
 
-[Route middleware](/docs/{{version}}/middleware) may be used to only allow verified users to access a given route. Laravel ships with a `verified` middleware, which references the `Illuminate\Auth\Middleware\EnsureEmailIsVerified` class. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition:
-
-    Route::get('/profile', function () {
-        // Only verified users may access this route...
-    })->middleware('verified');
-
-If an unverified user attempts to access a route that has been assigned this middleware, they will automatically be redirected to the `verification.notice` [named route](/docs/{{version}}/routing#named-routes). 
-
-Note that if you want the user to properly redirect to the previous page after loging in successfully, you'll need to combine this with the `auth` middleware:
+[Route middleware](/docs/{{version}}/middleware) may be used to only allow verified users to access a given route. Laravel ships with a `verified` middleware, which references the `Illuminate\Auth\Middleware\EnsureEmailIsVerified` class. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition. Typically, this middleware is paired with the `auth` middleware:
 
     Route::get('/profile', function () {
         // Only verified users may access this route...
     })->middleware(['auth', 'verified']);
+
+If an unverified user attempts to access a route that has been assigned this middleware, they will automatically be redirected to the `verification.notice` [named route](/docs/{{version}}/routing#named-routes).
 
 <a name="customization"></a>
 ## Customization
