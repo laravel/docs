@@ -286,6 +286,7 @@ A common performance bottleneck of modern web applications is the amount of time
 
     namespace App\Providers;
 
+    use Illuminate\Database\Connection;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\ServiceProvider;
 
@@ -308,7 +309,7 @@ A common performance bottleneck of modern web applications is the amount of time
          */
         public function boot()
         {
-            DB::whenQueryingForLongerThan(500, function () {
+            DB::whenQueryingForLongerThan(500, function (Connection $connection) {
                 // Notify development team...
             });
         }
