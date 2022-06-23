@@ -3530,7 +3530,7 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 <a name="method-fake"></a>
 #### `fake()` {.collection-method}
 
-The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) singleton from the container, which can be useful when creating fake data in model factories, database seeding, tests, and also for quickly prototyping views.
+The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) singleton from the container, which can be useful when creating fake data in model factories, database seeding, tests, and prototyping views:
 
 ```blade
 @for($i = 0; $i < 10; $i++)
@@ -3544,7 +3544,7 @@ The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) single
 @endfor
 ```
 
-By default, the `fake` function will utilise the `app.faker_locale` configuration option in your `config/app.php` configuration file, however you may also specify the locale by passing it to the `fake` function. Each locale will resolve a respective singleton.
+By default, the `fake` function will utilize the `app.faker_locale` configuration option in your `config/app.php` configuration file; however, you may also specify the locale by passing it to the `fake` function. Each locale will resolve an individual singleton:
 
     fake('nl_NL')->name()
 
