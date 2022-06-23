@@ -83,42 +83,42 @@ php artisan make:test UserTest --unit --pest
 > {備註} 如果你在測試類別中定義了你自己的 `setUp` / `tearDown` 方法，請記得在父類別去個別呼叫 `parent::setUp()` / `parent::tearDown()` 方法。
 
 <a name="running-tests"></a>
-## Running Tests
+## 執行測試
 
-As mentioned previously, once you've written tests, you may run them using `phpunit`:
+如同之前提到的，一旦寫好了測試，你就可以用 `phpunit` 來執行他們：
 
 ```shell
 ./vendor/bin/phpunit
 ```
 
-In addition to the `phpunit` command, you may use the `test` Artisan command to run your tests. The Artisan test runner provides verbose test reports in order to ease development and debugging:
+除了 `phpunit` 指令之外，你也可以使用 `test` Artisan 指令來執行你的測試。為了開發及測試方便，Artisan 測試運行器提供詳細測試報告：
 
 ```shell
 php artisan test
 ```
 
-Any arguments that can be passed to the `phpunit` command may also be passed to the Artisan `test` command:
+所有能夠被傳給 `phpunit` 指令的引數，也同樣能被傳給 Artisan 的 `test` 指令：
 
 ```shell
 php artisan test --testsuite=Feature --stop-on-failure
 ```
 
 <a name="running-tests-in-parallel"></a>
-### Running Tests In Parallel
+### 同步執行測試
 
-By default, Laravel and PHPUnit execute your tests sequentially within a single process. However, you may greatly reduce the amount of time it takes to run your tests by running tests simultaneously across multiple processes. To get started, ensure your application depends on version `^5.3` or greater of the `nunomaduro/collision` package. Then, include the `--parallel` option when executing the `test` Artisan command:
+預設下，在單一程序中 Laravel 和 PHPUnit 會按順序地執行你的測試。不過，你也可以藉由同時執行多個跨程序的測試，來大大降低多個測試所花費的時間。先從確認你的應用程式是否套用版本 `^5.3` 或以上的 `nunomaduro/collision` 套件開始。然後，在執行 `test` Artisan 指令的時候，加上 `--parallel` 選項：
 
 ```shell
 php artisan test --parallel
 ```
 
-By default, Laravel will create as many processes as there are available CPU cores on your machine. However, you may adjust the number of processes using the `--processes` option:
+預設下，Laravel 會建立你機器的處理器核心所能提供的最大程序量。不過，你也可以用  `--processes` 選項來調整程序量：
 
 ```shell
 php artisan test --parallel --processes=4
 ```
 
-> {note} When running tests in parallel, some PHPUnit options (such as `--do-not-cache-result`) may not be available.
+> {備註} 當執行同步測試的時候，有些 PHPUnit 選項是無效的。（例如 `--do-not-cache-result`）
 
 <a name="parallel-testing-and-databases"></a>
 #### Parallel Testing & Databases
