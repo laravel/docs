@@ -352,6 +352,22 @@ Attempting to `delete` a file that does not exist now returns `true`.
 
 Flysystem no longer supports "cached adapters". Thus, they have been removed from Laravel and any relevant configuration (such as the `cache` key within disk configurations) can be removed.
 
+#### Directory Permissions
+
+Flysystem v3 is a bit stricter on directory permissions. Should you run into any issues with permissions not being set as you expected, you can try to add the `directory_visibility` setting to your disk:
+
+```php
+    'disks' => [
+        'local' => [
+            'driver' => 'local',
+            'root' => storage_path('app'),
+            'directory_visibility' => 'public',
+        ],
+    ],
+```
+
+However, it's recommended to not 
+
 #### Custom Filesystems
 
 Slight changes have been made to the steps required to register custom filesystem drivers. Therefore, if you were defining your own custom filesystem drivers, or using packages that define custom drivers, you should update your code and dependencies.
