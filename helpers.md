@@ -294,6 +294,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [encrypt](#method-encrypt)
 [env](#method-env)
 [event](#method-event)
+[fake](#method-fake)
 [filled](#method-filled)
 [info](#method-info)
 [logger](#method-logger)
@@ -3525,6 +3526,27 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
 The `event` function dispatches the given [event](/docs/{{version}}/events) to its listeners:
 
     event(new UserRegistered($user));
+
+<a name="method-fake"></a>
+#### `fake()` {.collection-method}
+
+The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) singleton from the container, which can be useful when creating fake data in model factories, database seeding, tests, and also for quickly prototyping views.
+
+```blade
+@for($i = 0; $i < 10; $i++)
+    <dl>
+        <dt>Name</dt>
+        <dd>{{ fake()->name() }}</dd>
+
+        <dt>Email</dt>
+        <dd>{{ fake()->unique()->safeEmail() }}</dd>
+    </dl>
+@endfor
+```
+
+By default, the `fake` function will utilise the `app.faker_locale` configuration option in your `config/app.php` configuration file, however you may also specify the locale by passing it to the `fake` function. Each locale will resolve a respective singleton.
+
+    fake('nl_NL')->name()
 
 <a name="method-filled"></a>
 #### `filled()` {.collection-method}
