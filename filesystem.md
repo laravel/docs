@@ -207,6 +207,8 @@ The `download` method may be used to generate a response that forces the user's 
 
     return Storage::download('file.jpg', $name, $headers);
 
+> {note} The `$name` should only contain the proposed file name excluding the extension otherwise the extension will be added twice in the complete file name.
+> 
 <a name="file-urls"></a>
 ### File URLs
 
