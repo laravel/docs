@@ -396,7 +396,7 @@ If you would like to generate the URL to the billing portal without generating a
 <a name="payment-methods"></a>
 ## Payment Methods
 
-> **Note:** as of Cashier v13, the legacy Source API by Stripe is no longer supported (including the `default_source` on a customer object). It's recommended that you only rely on the Payment Methods API.
+> **Note:** The legacy Sources API by Stripe is deprecated and should no longer be used (including the `default_source` on a customer object). It's recommended that you only rely on the Payment Methods API.
 
 <a name="storing-payment-methods"></a>
 ### Storing Payment Methods
