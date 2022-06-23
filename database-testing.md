@@ -95,7 +95,7 @@ To see an example of how to write a factory, take a look at the `database/factor
 
 As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory.
 
-Via the `fake()` helper, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
+Via the `fake` helper, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
 
 > {tip} You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
 
