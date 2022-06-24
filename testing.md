@@ -121,22 +121,22 @@ php artisan test --parallel --processes=4
 > {備註} 當執行同步測試的時候，有些 PHPUnit 選項是無效的。（例如 `--do-not-cache-result`）
 
 <a name="parallel-testing-and-databases"></a>
-#### Parallel Testing & Databases
+#### 同步測試與資料庫
 
-Laravel automatically handles creating and migrating a test database for each parallel process that is running your tests. The test databases will be suffixed with a process token which is unique per process. For example, if you have two parallel test processes, Laravel will create and use `your_db_test_1` and `your_db_test_2` test databases.
+針對每個執行測試的平行程序，Laravel 會自動協助建立和遷徙一個測試用的資料庫。每個程序會有獨一無二的程序標記，被作為測試用資料庫的接尾詞。例如，如果你有兩個平行的測試程序，Laravel 會建立並使用 `your_db_test_1` 和 `your_db_test_2` 這兩個測試資料庫。
 
-By default, test databases persist between calls to the `test` Artisan command so that they can be used again by subsequent `test` invocations. However, you may re-create them using the `--recreate-databases` option:
+預設下，測試資料庫會在 `test` Artisan 指令的呼叫之間被保留，這樣他們才能被接下來的 `test` 調用所使用。不過，你也可以用 `--recreate-databases` 選項來重建測試資料庫：
 
 ```shell
 php artisan test --parallel --recreate-databases
 ```
 
 <a name="parallel-testing-hooks"></a>
-#### Parallel Testing Hooks
+#### 同步測試掛勾
 
-Occasionally, you may need to prepare certain resources used by your application's tests so they may be safely used by multiple test processes.
+有時候，你會需要準備被你的應用程式的測試所使用的特定資源，這些測試才能被多個測試程序安全地使用。
 
-Using the `ParallelTesting` facade, you may specify code to be executed on the `setUp` and `tearDown` of a process or test case. The given closures receive the `$token` and `$testCase` variables that contain the process token and the current test case, respectively:
+藉由使用 `ParallelTesting` facade，你可以在程序或測試項目的 `setUp` 和 `tearDown` 中指派要被執行的程式碼。給定的閉包會分別接收包含程序標記的 `$token` 和 `$testCase` 變數以及目前的測試項目。
 
     <?php
 
