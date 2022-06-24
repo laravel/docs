@@ -31,7 +31,7 @@ Laravel integrates seamlessly with Vite by providing an official plugin and Blad
 <a name="vite-or-mix"></a>
 ### Choosing Between Vite And Laravel Mix
 
-Vite focuses on building rich JavaScript applications. If you are developing a Single Page Application (SPA), including those developed with tools like [Inertia.js](https://inertiajs.com), Vite will be the perfect fit.
+Vite focuses on building rich JavaScript applications. If you are developing a Single Page Application (SPA), including those developed with tools like [Inertia](https://inertiajs.com), Vite will be the perfect fit.
 
 Vite also works well with traditional server-side rendered applications with JavaScript "sprinkles", including those using [Livewire](https://laravel-livewire.com). However, it lacks some features that Laravel Mix supports, such as the ability to copy arbitrary assets into the build that are not referenced directly in your JavaScript application.
 

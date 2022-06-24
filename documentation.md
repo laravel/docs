@@ -6,6 +6,7 @@
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
     - [Directory Structure](/docs/{{version}}/structure)
+    - [Frontend](/docs/{{version}}/frontend)
     - [Starter Kits](/docs/{{version}}/starter-kits)
     - [Deployment](/docs/{{version}}/deployment)
 - ## Architecture Concepts
