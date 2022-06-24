@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Laravel Breeze](#laravel-breeze)
     - [Installation](#laravel-breeze-installation)
+    - [Breeze & Blade](#breeze-and-blade)
     - [Breeze & React / Vue](#breeze-and-inertia)
     - [Breeze & Next.js / API](#breeze-and-next)
 - [Laravel Jetstream](#laravel-jetstream)
@@ -32,7 +33,14 @@ First, you should [create a new Laravel application](/docs/{{version}}/installat
 composer require laravel/breeze --dev
 ```
 
-After Composer has installed the Laravel Breeze package, you may run the `breeze:install` Artisan command. This command publishes the authentication views, routes, controllers, and other resources to your application. Laravel Breeze publishes all of its code to your application so that you have full control and visibility over its features and implementation. After Breeze is installed, you should also compile your application's frontend assets:
+Once Breeze is installed, you may scaffold your application using one of the Breeze "stacks" discussed in the documentation below.
+
+<a name="breeze-and-blade"></a>
+### Breeze & Blade
+
+After Composer has installed the Laravel Breeze package, you may run the `breeze:install` Artisan command. This command publishes the authentication views, routes, controllers, and other resources to your application. Laravel Breeze publishes all of its code to your application so that you have full control and visibility over its features and implementation.
+
+The default Breeze "stack" is the Blade stack, which utilizes simple [Blade templates](/docs/{{version}}/blade) to render your application's frontend. The Blade stack may be installed by invoking the `breeze:install` command with no other additional arguments. After Breeze's scaffolding is installed, you should also compile your application's frontend assets:
 
 ```shell
 php artisan breeze:install
@@ -51,7 +59,7 @@ Next, you may navigate to your application's `/login` or `/register` URLs in you
 
 Laravel Breeze also offers React and Vue scaffolding via an [Inertia](https://inertiajs.com) frontend implementation. Inertia allows you to build modern, single-page React and Vue applications using classic server-side routing and controllers.
 
-Inertia lets you enjoy the frontend power of React and Vue combined with the incredible backend productivity of Laravel and lightning-fast [Vite](https://vitejs.dev) compilation. To use an Inertia stack, specify `vue` or `react` as your desired stack when executing the `breeze:install` Artisan command:
+Inertia lets you enjoy the frontend power of React and Vue combined with the incredible backend productivity of Laravel and lightning-fast [Vite](https://vitejs.dev) compilation. To use an Inertia stack, specify `vue` or `react` as your desired stack when executing the `breeze:install` Artisan command. After Breeze's scaffolding is installed, you should also compile your application's frontend assets:
 
 ```shell
 php artisan breeze:install vue
