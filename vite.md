@@ -1,7 +1,6 @@
-# Compiling Assets (Vite)
+# Bundling Assets (Vite)
 
 - [Introduction](#introduction)
-  - [Choosing Between Vite And Laravel Mix](#vite-or-mix)
 - [Installation & Setup](#installation)
   - [Installing Node](#installing-node)
   - [Installing Vite And The Laravel Plugin](#installing-vite-and-laravel-plugin)
@@ -22,16 +21,16 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Vite](https://vitejs.dev) is a modern frontend build tool that provides an extremely fast development environment and bundles your code for production.
+[Vite](https://vitejs.dev) is a modern frontend build tool that provides an extremely fast development environment and bundles your code for production. For example, you will typically use Vite to bundle your application's Tailwind CSS and JavaScript files into production ready assets.
 
 Laravel integrates seamlessly with Vite by providing an official plugin and Blade directive to load your assets for development and production.
 
 > {tip} Are you running Laravel Mix? Vite has replaced Laravel Mix in new Laravel installations. For Mix documentation, please visit the [Laravel Mix](https://laravel-mix.com/) website. If you would like to switch to Vite, please see our [upgrade guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite).
 
 <a name="vite-or-mix"></a>
-### Choosing Between Vite And Laravel Mix
+#### Choosing Between Vite And Laravel Mix
 
-Vite focuses on building rich JavaScript applications. If you are developing a Single Page Application (SPA), including those developed with tools like [Inertia](https://inertiajs.com), Vite will be the perfect fit.
+Before transitioning to Vite, new Laravel applications utilized [Mix](https://laravel-mix.com/), which is powered by [webpack](https://webpack.js.org/), when bundling assets. Vite focuses on providing a faster and more productive experience when building rich JavaScript applications. If you are developing a Single Page Application (SPA), including those developed with tools like [Inertia](https://inertiajs.com), Vite will be the perfect fit.
 
 Vite also works well with traditional server-side rendered applications with JavaScript "sprinkles", including those using [Livewire](https://laravel-livewire.com). However, it lacks some features that Laravel Mix supports, such as the ability to copy arbitrary assets into the build that are not referenced directly in your JavaScript application.
 
