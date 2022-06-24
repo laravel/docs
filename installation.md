@@ -3,7 +3,7 @@
 - [Meet Laravel](#meet-laravel)
     - [Why Laravel?](#why-laravel)
 - [Your First Laravel Project](#your-first-laravel-project)
-- [Getting Started With Docker](#getting-started-with-docker)
+- [Laravel & Docker](#laravel-and-docker)
     - [Getting Started On macOS](#getting-started-on-macos)
     - [Getting Started On Windows](#getting-started-on-windows)
     - [Getting Started On Linux](#getting-started-on-linux)
@@ -11,6 +11,7 @@
 - [Initial Configuration](#initial-configuration)
     - [Environment Based Configuration](#environment-based-configuration)
     - [Directory Configuration](#directory-configuration)
+    - [Databases & Migrations](#databases-and-migrations)
 - [Next Steps](#next-steps)
     - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
     - [Laravel The API Backend](#laravel-the-api-backend)
@@ -52,7 +53,7 @@ Before creating your first Laravel project, you should ensure that your local ma
 
 You may create a new Laravel project via Composer. After the project has been created, you may start Laravel's local development server using the Laravel's Artisan CLI `serve` command:
 
-```shell
+```nothing
 composer create-project laravel/laravel example-app
 
 cd example-app
@@ -60,10 +61,12 @@ cd example-app
 php artisan serve
 ```
 
-Once you have started the Artisan development server, you may access your application in your web browser at `http://localhost:8000` and [start taking your next steps into the Laravel ecosystem](#next-steps).
+Once you have started the Artisan development server, you may access your application in your web browser at `http://localhost:8000` and [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also [configure a database](#databases-and-migrations).
 
-<a name="getting-started-with-docker"></a>
-## Getting Started With Docker
+> {tip} If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
+
+<a name="laravel-and-docker"></a>
+## Laravel & Docker
 
 We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your local machine. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
 
@@ -195,6 +198,35 @@ Your `.env` file should not be committed to your application's source control, s
 ### Directory Configuration
 
 Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files that exist within your application.
+
+<a name="databases-and-migrations"></a>
+### Databases & Migrations
+
+Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with a MySQL database and will access the database at `127.0.0.1`. If you are developing on macOS and need to install MySQL, Postgres, or Redis locally, you may find it convenient to utilize [DBngin](https://dbngin.com/).
+
+If you do not want to install MySQL or Postgres on your local machine, you can always use an [SQLite](https://www.sqlite.org/index.html) database. SQLite is a small, fast, self-contained database engine. To get started, create a SQLite database by creating an empty SQLite file. Typically, this file will exist within the `database` directory of your Laravel application:
+
+```shell
+touch database/database.sqlite
+```
+
+Next, update your `.env` configuration file to use Laravel's `sqlite` database driver. You may remove the other database configuration options:
+
+```ini
+DB_CONNECTION=sqlite # [tl! add]
+DB_CONNECTION=mysql # [tl! remove]
+DB_HOST=127.0.0.1 # [tl! remove]
+DB_PORT=3306 # [tl! remove]
+DB_DATABASE=laravel # [tl! remove]
+DB_USERNAME=root # [tl! remove]
+DB_PASSWORD= # [tl! remove]
+```
+
+Once you have configured your SQLite database, you may run your application's [database migrations](/docs/{{version}}/migrations), which will create your application's database tables:
+
+```shell
+php artisan migrate
+```
 
 <a name="next-steps"></a>
 ## Next Steps
