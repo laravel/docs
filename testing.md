@@ -23,7 +23,7 @@ Laravel 在建立時就已經考慮到測試。事實上，本來就支援以 PH
 
 當在執行測試的時候，Laravel 會自動將 [組態環境](/docs/{{version}}/configuration#environment-configuration) 設定成 `testing`，這是因為該環境變數事先被定義在 `phpunit.xml` 檔案裡了。Laravel 在測試的時候也自動將 session 和快取設置到 `array` 驅動裡，即測試時的 session 或快取的資料之後不會留存。
 
-必要的話你可以自行定義其他的測試用環境組態值。`testing` 環境變數可以被設置在應用程式的 `phpunit.xml` 檔案中，不過在執行測試前，請先確認組態的快取已經清除，使用 Artisan 指令 `config:clear` 來清除快取。
+必要的話你可以自行定義其他的測試用環境組態值。`testing` 環境變數可以被設置在應用程式的 `phpunit.xml` 檔案中，不過在執行測試前，請先確認組態的快取已經清除，使用 Artisan 指令 `config:clear` 來清除快取！
 
 <a name="the-env-testing-environment-file"></a>
 #### `.env.testing` 環境檔
@@ -136,7 +136,7 @@ php artisan test --parallel --recreate-databases
 
 有時候，你會需要準備被你的應用程式的測試所使用的特定資源，這些測試才能被多個測試程序安全地使用。
 
-藉由使用 `ParallelTesting` facade，你可以在程序或測試項目的 `setUp` 和 `tearDown` 中指派要被執行的程式碼。給定的閉包會分別接收包含程序標記的 `$token` 和 `$testCase` 變數以及目前的測試項目。
+藉由使用 `ParallelTesting` facade，你可以在程序或測試項目的 `setUp` 和 `tearDown` 中指派要被執行的程式碼。給定的閉包會分別接收包含程序標記的 `$token` 和 `$testCase` 變數以及目前的測試項目：
 
     <?php
 
@@ -179,27 +179,27 @@ php artisan test --parallel --recreate-databases
     }
 
 <a name="accessing-the-parallel-testing-token"></a>
-#### Accessing The Parallel Testing Token
+#### 存取同步測試
 
-If you would like to access the current parallel process "token" from any other location in your application's test code, you may use the `token` method. This token is a unique, string identifier for an individual test process and may be used to segment resources across parallel test processes. For example, Laravel automatically appends this token to the end of the test databases created by each parallel testing process:
+如果你想要從你的應用程式測試碼去存取目前同步進行程序的「標記」的話，你可以使用 `token` 方法。這個標記是針對一個獨立測試程序的一個獨一無二的字串識別符，可用來區隔跨平行程序的測試程序資源：
 
     $token = ParallelTesting::token();
 
 <a name="reporting-test-coverage"></a>
-### Reporting Test Coverage
+### 回報測試覆蓋範圍
 
-> {note} This feature requires [Xdebug](https://xdebug.org) or [PCOV](https://pecl.php.net/package/pcov).
+> {備註} 這個功能需要安裝 [Xdebug](https://xdebug.org) or [PCOV](https://pecl.php.net/package/pcov) 。
 
-When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much application code is used when running your tests. To accomplish this, you may provide the `--coverage` option when invoking the `test` command:
+當執行你的應用程式測試時，你可能會想要確定你的測試項目是否真的涵蓋到應用程式，以及多少的應用程式碼被測試使用到。要確認這些資訊，你可以在呼叫 `test` 指令時加上 `--coverage` 選項：
 
 ```shell
 php artisan test --coverage
 ```
 
 <a name="enforcing-a-minimum-coverage-threshold"></a>
-#### Enforcing A Minimum Coverage Threshold
+#### 實施最低覆蓋臨界值
 
-You may use the `--min` option to define a minimum test coverage threshold for your application. The test suite will fail if this threshold is not met:
+你可以為你的應用程式使用 `--min` 選項來定義最低測試覆蓋臨界值。如果沒有達到臨界值，測試套件就會失敗：
 
 ```shell
 php artisan test --coverage --min=80.3
