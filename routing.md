@@ -448,7 +448,6 @@ Typically, implicit model binding will not retrieve models that have been [soft 
     })->withTrashed();
 
 <a name="customizing-the-key"></a>
-<a name="customizing-the-default-key-name"></a>
 #### Customizing The Key
 
 Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
