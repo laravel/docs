@@ -16,7 +16,7 @@ Laravel 在建立時就已經考慮到測試。事實上，本來就支援以 PH
 
 功能測試 (Feature tests) 會測試相對大範圍的程式碼，包含數個元件如何互動，甚或是從 HTTP 開始到 JSON 端點的完整請求。 **一般來說，多數的測試應該要是功能測試。因為這種測試會提升可信度，讓你的整體系統如所預期的運作。**
 
-在 `Feature` 和 `Unit` 這兩個資料夾裡同時有提供一個叫 `ExampleTest.php` 的檔案。在安裝新的 Laravel 應用程式之後，執行指令 `vendor/bin/phpunit` 或 `php artisan test` 會執行你的測試。
+在 `Feature` 和 `Unit` 這兩個資料夾裡同時有提供一個叫 `ExampleTest.php` 的檔案。在安裝新的 Laravel 應用程式之後，執行指令 `vendor/bin/phpunit` 或 `php artisan test` 會實行你的測試。
 
 <a name="environment"></a>
 ## 環境
