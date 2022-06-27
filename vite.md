@@ -68,7 +68,7 @@ npm install
 <a name="configuring-vite"></a>
 ### Configuring Vite
 
-Vite is configured in a `vite.config.js` file in the root of your project. You are free to customize this file based on your needs and you may also install any other plugins your application requires, such as `@vitejs/vue-plugin` or `@vitejs/react-plugin`.
+Vite is configured in a `vite.config.js` file in the root of your project. You are free to customize this file based on your needs and you may also install any other plugins your application requires, such as `@vitejs/plugin-vue` or `@vitejs/plugin-react`.
 
 The Laravel Vite plugin requires you to specify any entry points for your application. These may be JavaScript or CSS files, and include preprocessed languages such as TypeScript, JSX, TSX, and Sass.
 
