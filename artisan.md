@@ -388,6 +388,26 @@ If necessary, you may specify that the confirmation prompt should return `true` 
         //
     }
 
+<a name="asking-for-confirmation-in-production"></a>
+#### Asking for Confirmation in Production
+
+Sometimes you may wish to ask for confirmation only in production (for something like migrations). To do so you may use the `ConfirmableTrait` on your command class and call `confirmToProceed` method;
+
+    use Illuminate\Console\ConfirmableTrait;
+
+    class MyCommand
+    {
+        use ConfirmableTrait;
+
+        public function handle()
+        {
+            $this->confirmToProceed();
+        }
+
+    }
+
+The default warning is `'Application In Production!'`, which can be overriden by supplying the first parameter. A callback maybe provided in the second parameter for custom confirmation logic.
+
 <a name="auto-completion"></a>
 #### Auto-Completion
 
