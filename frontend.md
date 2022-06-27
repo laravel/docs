@@ -116,29 +116,31 @@ Thankfully, Laravel has an answer to this problem. [Inertia](https://inertiajs.c
 
 After installing Inertia into your Laravel application, you will write routes and controllers like normal. However, instead of returning a Blade template from your controller, you will return an Inertia page:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
-    use App\Models\User;
-    use Inertia\Inertia;
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use Inertia\Inertia;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * Show the profile for a given user.
+     *
+     * @param  int  $id
+     * @return \Inertia\Response
+     */
+    public function show($id)
     {
-        /**
-         * Show the profile for a given user.
-         *
-         * @param  int  $id
-         * @return \Inertia\Response
-         */
-        public function show($id)
-        {
-            return Inertia::render('Users/Profile', [
-                'user' => User::findOrFail($id)
-            ]);
-        }
+        return Inertia::render('Users/Profile', [
+            'user' => User::findOrFail($id)
+        ]);
     }
+}
+```
 
 An Inertia page corresponds to a Vue or React component, typically stored within the `resources/js/Pages` directory of your application. The data given to the page via the `Inertia::render` method will be used to hydrate the "props" of the page component:
 
