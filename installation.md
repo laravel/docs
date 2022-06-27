@@ -51,17 +51,21 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 
 Before creating your first Laravel project, you should ensure that your local machine has PHP and [Composer](https://getcomposer.org) installed. If you are developing on macOS, PHP and Composer can be installed via [Homebrew](https://brew.sh/). In addition, we recommend [installing Node and NPM](https://nodejs.org).
 
-You may create a new Laravel project via Composer. After the project has been created, start Laravel's local development server using the Laravel's Artisan CLI `serve` command:
+After you have installed PHP and Composer, you may create a new Laravel project via the Composer `create-project` command:
 
 ```nothing
 composer create-project laravel/laravel example-app
+```
 
+After the project has been created, start Laravel's local development server using the Laravel's Artisan CLI `serve` command:
+
+```nothing
 cd example-app
 
 php artisan serve
 ```
 
-Once you have started the Artisan development server, your application will be accessible in your web browser at `http://localhost:8000` and [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also [configure a database](#databases-and-migrations).
+Once you have started the Artisan development server, your application will be accessible in your web browser at `http://localhost:8000`. Next, you're ready to [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also want to [configure a database](#databases-and-migrations).
 
 > {tip} If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
@@ -204,7 +208,7 @@ Laravel should always be served out of the root of the "web directory" configure
 
 Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with a MySQL database and will access the database at `127.0.0.1`. If you are developing on macOS and need to install MySQL, Postgres, or Redis locally, you may find it convenient to utilize [DBngin](https://dbngin.com/).
 
-If you do not want to install MySQL or Postgres on your local machine, you can always use an [SQLite](https://www.sqlite.org/index.html) database. SQLite is a small, fast, self-contained database engine. To get started, create a SQLite database by creating an empty SQLite file. Typically, this file will exist within the `database` directory of your Laravel application:
+If you do not want to install MySQL or Postgres on your local machine, you can always use a [SQLite](https://www.sqlite.org/index.html) database. SQLite is a small, fast, self-contained database engine. To get started, create a SQLite database by creating an empty SQLite file. Typically, this file will exist within the `database` directory of your Laravel application:
 
 ```shell
 touch database/database.sqlite
