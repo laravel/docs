@@ -242,6 +242,7 @@ Now that you have created your Laravel project, you may be wondering what to lea
 - [Request Lifecycle](/docs/{{version}}/lifecycle)
 - [Configuration](/docs/{{version}}/configuration)
 - [Directory Structure](/docs/{{version}}/structure)
+- [Frontend](/docs/{{version}}/frontend)
 - [Service Container](/docs/{{version}}/container)
 - [Facades](/docs/{{version}}/facades)
 
