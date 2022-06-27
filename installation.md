@@ -51,7 +51,7 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 
 Before creating your first Laravel project, you should ensure that your local machine has PHP and [Composer](https://getcomposer.org) installed. If you are developing on macOS, PHP and Composer can be installed via [Homebrew](https://brew.sh/). In addition, we recommend [installing Node and NPM](https://nodejs.org).
 
-You may create a new Laravel project via Composer. After the project has been created, you may start Laravel's local development server using the Laravel's Artisan CLI `serve` command:
+You may create a new Laravel project via Composer. After the project has been created, start Laravel's local development server using the Laravel's Artisan CLI `serve` command:
 
 ```nothing
 composer create-project laravel/laravel example-app
@@ -61,7 +61,7 @@ cd example-app
 php artisan serve
 ```
 
-Once you have started the Artisan development server, you may access your application in your web browser at `http://localhost:8000` and [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also [configure a database](#databases-and-migrations).
+Once you have started the Artisan development server, your application will be accessible in your web browser at `http://localhost:8000` and [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also [configure a database](#databases-and-migrations).
 
 > {tip} If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
