@@ -111,6 +111,23 @@ import '../css/app.css'; // [tl! add]
 
 The Laravel plugin also supports multiple entry points and advanced configuration such as [SSR entry points](#ssr).
 
+<a name="working-with-a-secure-development-server"></a>
+#### Working With A Secure Development Server
+
+If your development web server is running on HTTPS, include Valet's [secure command](/docs/{{version}}/valet#securing-sites), you may run into issues connecting to the Vite development server. You may configure Vite to also run on HTTPS by adding the following to your `vite.config.js`:
+
+```js
+export default defineConfig({
+    // ...
+    server: { // [tl! add]
+        https: true, // [tl! add]
+        host: 'localhost', // [tl! add]
+    }, // [tl! add]
+});
+```
+
+You will also need to accept the certificate warning for Vite's development server in your browser by following the "Local" link in your console when running `npm run dev`.
+
 <a name="loading-your-scripts-and-styles"></a>
 ### Loading Your Scripts And Styles
 
