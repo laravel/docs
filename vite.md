@@ -242,7 +242,7 @@ export default defineConfig({
 });
 ```
 
-> {tip} Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vute, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Vue, and Vite.
+> {tip} Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vue, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Vue, and Vite.
 
 <a name="react"></a>
 ### React
