@@ -62,6 +62,10 @@ Within the Laravel ecosystem, the need to create modern, dynamic frontends by pr
 When using Livewire, you will create Livewire "components" that render a discrete portion of your UI and exposes methods and data that can be invoked and interacted with from your application's frontend. For example, a simple "Counter" component might look like the following:
 
 ```php
+<?php
+
+namespace App\Http\Livewire;
+
 use Livewire\Component;
 
 class Counter extends Component
