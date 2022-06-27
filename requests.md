@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Interacting With The Request](#interacting-with-the-request)
     - [Accessing The Request](#accessing-the-request)
-    - [Request Path & Method](#request-path-and-method)
+    - [Request Path, Host, & Method](#request-path-and-method)
     - [Request Headers](#request-headers)
     - [Request IP Address](#request-ip-address)
     - [Content Negotiation](#content-negotiation)
@@ -97,7 +97,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` route
     }
 
 <a name="request-path-and-method"></a>
-### Request Path & Method
+### Request Path, Host, & Method
 
 The `Illuminate\Http\Request` instance provides a variety of methods for examining the incoming HTTP request and extends the `Symfony\Component\HttpFoundation\Request` class. We will discuss a few of the most important methods below.
 
@@ -135,6 +135,15 @@ To retrieve the full URL for the incoming request you may use the `url` or `full
 If you would like to append query string data to the current URL, you may call the `fullUrlWithQuery` method. This method merges the given array of query string variables with the current query string:
 
     $request->fullUrlWithQuery(['type' => 'phone']);
+
+<a name="retrieving-the-request-host"></a>
+#### Retrieving The Request Host
+
+You may retrieve the "host" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:
+
+    $request->host();
+    $request->httpHost();
+    $request->schemeAndHttpHost();
 
 <a name="retrieving-the-request-method"></a>
 #### Retrieving The Request Method
