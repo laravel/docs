@@ -158,7 +158,7 @@ npm run build
 <a name="aliases"></a>
 ### Aliases
 
-The Laravel plugin provides a common aliases to help you hit the ground running:
+The Laravel plugin provides a common alias to help you hit the ground running:
 
 ```js
 {
