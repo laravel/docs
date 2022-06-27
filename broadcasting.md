@@ -189,13 +189,16 @@ If you already have a pre-configured Pusher Channels client instance that you wo
 
 ```js
 import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
-const client = require('pusher-js');
+const options = {
+    broadcaster: 'pusher',
+    key: 'your-pusher-channels-key'
+}
 
 window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: 'your-pusher-channels-key',
-    client: client
+    ...options,
+    client: new Pusher(options.key, options)
 });
 ```
 
