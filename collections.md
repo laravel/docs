@@ -2641,7 +2641,7 @@ The `undot` method expands a single-dimensional collection that uses "dot" notat
         'address.suburb' => 'Detroit',
         'address.state' => 'MI',
         'address.postcode' => '48219'
-    ])
+    ]);
 
     $person = $person->undot();
 
