@@ -263,6 +263,8 @@ To help prevent stray memory leaks, Octane can gracefully restart a worker once 
 php artisan octane:start --max-requests=250
 ```
 
+The restarted workers abandon the database connection. If this leads to too many open connections on your database or you are bothered by aborted connection and `Connection reset by peer` warnings, you should uncomment `DisconnectFromDatabases::class` listener for `OperationTerminated::class` event in the `octane` configuration file.
+
 <a name="reloading-the-workers"></a>
 ### Reloading The Workers
 
