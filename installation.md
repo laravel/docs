@@ -3,14 +3,15 @@
 - [Meet Laravel](#meet-laravel)
     - [Why Laravel?](#why-laravel)
 - [Your First Laravel Project](#your-first-laravel-project)
+- [Laravel & Docker](#laravel-and-docker)
     - [Getting Started On macOS](#getting-started-on-macos)
     - [Getting Started On Windows](#getting-started-on-windows)
     - [Getting Started On Linux](#getting-started-on-linux)
     - [Choosing Your Sail Services](#choosing-your-sail-services)
-    - [Installation Via Composer](#installation-via-composer)
 - [Initial Configuration](#initial-configuration)
     - [Environment Based Configuration](#environment-based-configuration)
     - [Directory Configuration](#directory-configuration)
+    - [Databases & Migrations](#databases-and-migrations)
 - [Next Steps](#next-steps)
     - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
     - [Laravel The API Backend](#laravel-the-api-backend)
@@ -48,7 +49,30 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 <a name="your-first-laravel-project"></a>
 ## Your First Laravel Project
 
-We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your local machine. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
+Before creating your first Laravel project, you should ensure that your local machine has PHP and [Composer](https://getcomposer.org) installed. If you are developing on macOS, PHP and Composer can be installed via [Homebrew](https://brew.sh/). In addition, we recommend [installing Node and NPM](https://nodejs.org).
+
+After you have installed PHP and Composer, you may create a new Laravel project via the Composer `create-project` command:
+
+```nothing
+composer create-project laravel/laravel example-app
+```
+
+After the project has been created, start Laravel's local development server using the Laravel's Artisan CLI `serve` command:
+
+```nothing
+cd example-app
+
+php artisan serve
+```
+
+Once you have started the Artisan development server, your application will be accessible in your web browser at `http://localhost:8000`. Next, you're ready to [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also want to [configure a database](#databases-and-migrations).
+
+> {tip} If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
+
+<a name="laravel-and-docker"></a>
+## Laravel & Docker
+
+We want it to be as easy as possible to get started with Laravel regardless of your preferred operating system. So, there are a variety of options for developing and running a Laravel project on your local machine. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
 
 Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local machine's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your local machine. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
@@ -158,76 +182,6 @@ You may instruct Sail to install a default [Devcontainer](/docs/{{version}}/sail
 curl -s "https://laravel.build/example-app?with=mysql,redis&devcontainer" | bash
 ```
 
-<a name="installation-via-composer"></a>
-### Installation Via Composer
-
-If your local machine already has PHP and Composer installed, you may create a new Laravel project by using Composer directly. After the application has been created, you may start Laravel's local development server using the Artisan CLI's `serve` command:
-
-```shell
-composer create-project laravel/laravel example-app
-
-cd example-app
-
-php artisan serve
-```
-
-Once you have started the Artisan development server, you may access your application at `http://localhost:8000`.
-
-<a name="the-laravel-installer"></a>
-#### The Laravel Installer
-
-Or, you may install the Laravel Installer as a global Composer dependency:
-
-```shell
-composer global require laravel/installer
-
-laravel new example-app
-
-cd example-app
-
-php artisan serve
-```
-
-Make sure to place Composer's system-wide vendor bin directory in your `$PATH` so the `laravel` executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
-
-<div class="content-list" markdown="1">
-
-- macOS: `$HOME/.composer/vendor/bin`
-- Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
-- GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin` or `$HOME/.composer/vendor/bin`
-
-</div>
-
-For convenience, the Laravel installer can also create a Git repository for your new project. To indicate that you want a Git repository to be created, pass the `--git` flag when creating a new project:
-
-```shell
-laravel new example-app --git
-```
-
-This command will initialize a new Git repository for your project and automatically commit the base Laravel skeleton. The `git` flag assumes you have properly installed and configured Git. You can also use the `--branch` flag to set the initial branch name:
-
-```shell
-laravel new example-app --git --branch="main"
-```
-
-Instead of using the `--git` flag, you may also use the `--github` flag to create a Git repository and also create a corresponding private repository on GitHub:
-
-```shell
-laravel new example-app --github
-```
-
-The created repository will then be available at `https://github.com/<your-account>/example-app`. The `github` flag assumes you have properly installed the [GitHub CLI](https://cli.github.com) and are authenticated with GitHub. Additionally, you should have `git` installed and properly configured. If needed, you can pass additional flags that are supported by the GitHub CLI:
-
-```shell
-laravel new example-app --github="--public"
-```
-
-You may use the `--organization` flag to create the repository under a specific GitHub organization:
-
-```shell
-laravel new example-app --github="--public" --organization="laravel"
-```
-
 <a name="initial-configuration"></a>
 ## Initial Configuration
 
@@ -249,6 +203,35 @@ Your `.env` file should not be committed to your application's source control, s
 
 Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files that exist within your application.
 
+<a name="databases-and-migrations"></a>
+### Databases & Migrations
+
+Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with a MySQL database and will access the database at `127.0.0.1`. If you are developing on macOS and need to install MySQL, Postgres, or Redis locally, you may find it convenient to utilize [DBngin](https://dbngin.com/).
+
+If you do not want to install MySQL or Postgres on your local machine, you can always use a [SQLite](https://www.sqlite.org/index.html) database. SQLite is a small, fast, self-contained database engine. To get started, create a SQLite database by creating an empty SQLite file. Typically, this file will exist within the `database` directory of your Laravel application:
+
+```shell
+touch database/database.sqlite
+```
+
+Next, update your `.env` configuration file to use Laravel's `sqlite` database driver. You may remove the other database configuration options:
+
+```ini
+DB_CONNECTION=sqlite # [tl! add]
+DB_CONNECTION=mysql # [tl! remove]
+DB_HOST=127.0.0.1 # [tl! remove]
+DB_PORT=3306 # [tl! remove]
+DB_DATABASE=laravel # [tl! remove]
+DB_USERNAME=root # [tl! remove]
+DB_PASSWORD= # [tl! remove]
+```
+
+Once you have configured your SQLite database, you may run your application's [database migrations](/docs/{{version}}/migrations), which will create your application's database tables:
+
+```shell
+php artisan migrate
+```
+
 <a name="next-steps"></a>
 ## Next Steps
 
@@ -259,6 +242,7 @@ Now that you have created your Laravel project, you may be wondering what to lea
 - [Request Lifecycle](/docs/{{version}}/lifecycle)
 - [Configuration](/docs/{{version}}/configuration)
 - [Directory Structure](/docs/{{version}}/structure)
+- [Frontend](/docs/{{version}}/frontend)
 - [Service Container](/docs/{{version}}/container)
 - [Facades](/docs/{{version}}/facades)
 
@@ -269,11 +253,11 @@ How you want to use Laravel will also dictate the next steps on your journey. Th
 <a name="laravel-the-fullstack-framework"></a>
 ### Laravel The Full Stack Framework
 
-Laravel may serve as a full stack framework. By "full stack" framework we mean that you are going to use Laravel to route requests to your application and render your frontend via [Blade templates](/docs/{{version}}/blade) or a single-page application hybrid technology like [Inertia.js](https://inertiajs.com). This is the most common way to use the Laravel framework, and, in our opinion, the most productive way to use Laravel.
+Laravel may serve as a full stack framework. By "full stack" framework we mean that you are going to use Laravel to route requests to your application and render your frontend via [Blade templates](/docs/{{version}}/blade) or a single-page application hybrid technology like [Inertia](https://inertiajs.com). This is the most common way to use the Laravel framework, and, in our opinion, the most productive way to use Laravel.
 
-If this is how you plan to use Laravel, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [views](/docs/{{version}}/views), or the [Eloquent ORM](/docs/{{version}}/eloquent). In addition, you might be interested in learning about community packages like [Livewire](https://laravel-livewire.com) and [Inertia.js](https://inertiajs.com). These packages allow you to use Laravel as a full-stack framework while enjoying many of the UI benefits provided by single-page JavaScript applications.
+If this is how you plan to use Laravel, you may want to check out our documentation on [frontend development](/docs/{{version}}/frontend), [routing](/docs/{{version}}/routing), [views](/docs/{{version}}/views), or the [Eloquent ORM](/docs/{{version}}/eloquent). In addition, you might be interested in learning about community packages like [Livewire](https://laravel-livewire.com) and [Inertia](https://inertiajs.com). These packages allow you to use Laravel as a full-stack framework while enjoying many of the UI benefits provided by single-page JavaScript applications.
 
-If you are using Laravel as a full stack framework, we also strongly encourage you to learn how to compile your application's CSS and JavaScript using [Laravel Mix](/docs/{{version}}/mix).
+If you are using Laravel as a full stack framework, we also strongly encourage you to learn how to compile your application's CSS and JavaScript using [Vite](/docs/{{version}}/vite).
 
 > {tip} If you want to get a head start building your application, check out one of our official [application starter kits](/docs/{{version}}/starter-kits).
 

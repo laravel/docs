@@ -187,7 +187,7 @@ Node commands may be executed using the `node` command while NPM commands may be
 ```shell
 sail node --version
 
-sail npm run prod
+sail npm run dev
 ```
 
 If you wish, you may use Yarn instead of NPM:
