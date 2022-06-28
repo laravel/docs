@@ -4,7 +4,7 @@
 - [環境](#environment)
 - [建立測試](#creating-tests)
 - [執行測試](#running-tests)
-    - [同步執行測試](#running-tests-in-parallel)
+    - [平行執行測試](#running-tests-in-parallel)
     - [回報測試覆蓋範圍](#reporting-test-coverage)
 
 <a name="introduction"></a>
@@ -12,11 +12,11 @@
 
 Laravel 在建立時就已經考慮到測試。事實上，本來就支援以 PHPUnit 來進行測試，同時已經為你的應用程式建立了一份 `phpunit.xml` 檔案。框架也提供了便利的輔助函式，讓你能更直觀地測試你的應用程式。
 
-在預設下，你的應用程式的 `tests` 資料夾下會有兩個資料夾：`Feature` 及 `Unit`。單元測試 (Unit tests) 會專注在測試非常小、獨立的程式碼。事實上，大部分的單元測試通常只專注在單一方法上。在你的「Unit」資料夾裡的測試不會去驅動你的 Laravel 應用程式，因此也沒辦法存取你應用程式的資料庫和其他的框架服務。
+在預設下，你的應用程式的 `tests` 資料夾下會有兩個資料夾：`Feature` 及 `Unit`。單元測試 (Unit tests) 會專注在測試非常小、獨立的程式碼。事實上，大部分的單元測試通常只專注在單一方法上。在你的「Unit」資料夾裡的測試不會去初始化你的 Laravel 應用程式，因此也沒辦法存取你應用程式的資料庫和其他的框架服務。
 
 功能測試 (Feature tests) 會測試相對大範圍的程式碼，包含數個元件如何互動，甚或是從 HTTP 開始到 JSON 端點的完整請求。 **一般來說，多數的測試應該要是功能測試。因為這種測試會提升可信度，讓你的整體系統如所預期的運作。**
 
-在 `Feature` 和 `Unit` 這兩個資料夾裡同時有提供一個叫 `ExampleTest.php` 的檔案。在安裝新的 Laravel 應用程式之後，執行指令 `vendor/bin/phpunit` 或 `php artisan test` 會驅動你的測試。
+在 `Feature` 和 `Unit` 這兩個資料夾裡同時有提供一個叫 `ExampleTest.php` 的檔案。在安裝新的 Laravel 應用程式之後，執行指令 `vendor/bin/phpunit` 或 `php artisan test` 會跑你的測試。
 
 <a name="environment"></a>
 ## 環境
@@ -33,7 +33,7 @@ Laravel 在建立時就已經考慮到測試。事實上，本來就支援以 PH
 <a name="the-creates-application-trait"></a>
 #### The `CreatesApplication` Trait
 
-Laravel 包含一個叫做 `CreatesApplication` 的 trait，它被應用程式的基礎類別 `TestCase` 所套用。這個 trait 包含一個叫做 `createApplication` 的方法，在執行你的測試之前， `createApplication` 方法會啟動 Laravel 應用程式。將這個 trait 保留在原處非常重要，因為有些功能仰賴它，例如 Laravel 的同步測試功能。
+Laravel 包含一個叫做 `CreatesApplication` 的 trait，它被應用程式的基礎類別 `TestCase` 所套用。這個 trait 包含一個叫做 `createApplication` 的方法，在執行你的測試之前， `createApplication` 方法會啟動 Laravel 應用程式。將這個 trait 保留在原處非常重要，因為有些功能仰賴它，例如 Laravel 的平行測試功能。
 
 <a name="creating-tests"></a>
 ## 建立測試
@@ -104,7 +104,7 @@ php artisan test --testsuite=Feature --stop-on-failure
 ```
 
 <a name="running-tests-in-parallel"></a>
-### 同步執行測試
+### 平行執行測試
 
 預設下，在單一程序中 Laravel 和 PHPUnit 會按順序地執行你的測試。不過，你也可以藉由同時執行多個跨程序的測試，來大大降低多個測試所花費的時間。先從確認你的應用程式是否套用版本 `^5.3` 或以上的 `nunomaduro/collision` 套件開始。然後，在執行 `test` Artisan 指令的時候，加上 `--parallel` 選項：
 
@@ -118,10 +118,10 @@ php artisan test --parallel
 php artisan test --parallel --processes=4
 ```
 
-> {備註} 當執行同步測試的時候，有些 PHPUnit 選項是無效的。（例如 `--do-not-cache-result`）
+> {備註} 當執行平行測試的時候，有些 PHPUnit 選項是無效的。（例如 `--do-not-cache-result`）
 
 <a name="parallel-testing-and-databases"></a>
-#### 同步測試與資料庫
+#### 平行測試與資料庫
 
 針對每個執行測試的平行程序，Laravel 會自動協助建立和遷徙一個測試用的資料庫。每個程序會有獨一無二的程序標記，被作為測試用資料庫的接尾詞。例如，如果你有兩個平行的測試程序，Laravel 會建立並使用 `your_db_test_1` 和 `your_db_test_2` 這兩個測試資料庫。
 
@@ -132,7 +132,7 @@ php artisan test --parallel --recreate-databases
 ```
 
 <a name="parallel-testing-hooks"></a>
-#### 同步測試掛勾
+#### 平行測試掛勾
 
 有時候，你會需要準備被你的應用程式的測試所使用的特定資源，這些測試才能被多個測試程序安全地使用。
 
@@ -179,9 +179,9 @@ php artisan test --parallel --recreate-databases
     }
 
 <a name="accessing-the-parallel-testing-token"></a>
-#### 存取同步測試
+#### 存取平行測試標記
 
-如果你想要從你的應用程式測試碼去存取目前同步進行程序的「標記」的話，你可以使用 `token` 方法。這個標記是針對一個獨立測試程序的一個獨一無二的字串識別符，可用來區隔跨平行程序的測試程序資源：
+如果你想要從你的應用程式測試碼去存取目前平行程序的「標記」的話，你可以使用 `token` 方法。這個標記是針對一個獨立測試程序的一個獨一無二的字串識別符，可用來區隔跨平行程序的測試程序資源：
 
     $token = ParallelTesting::token();
 
