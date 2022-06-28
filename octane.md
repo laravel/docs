@@ -239,6 +239,8 @@ npm install --save-dev chokidar
 
 You may configure the directories and files that should be watched using the `watch` configuration option within your application's `config/octane.php` configuration file.
 
+> {tip} If you don't mind reloading twice to see changes, you can simply limit the [worker count](#specifying-the-worker-count) and [request count](#specifying-the-max-request-count) to 1 which will make the worker restart *after* every request.
+
 <a name="specifying-the-worker-count"></a>
 ### Specifying The Worker Count
 
