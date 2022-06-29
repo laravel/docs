@@ -185,7 +185,7 @@ By default, The Laravel plugin provides a common alias to help you hit the groun
 
 ```js
 {
-    '@' => 'resources/js'
+    '@' => '/resources/js'
 }
 ```
 
@@ -201,7 +201,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': 'resources/ts',
+            '@': '/resources/ts',
         },
     },
 });
