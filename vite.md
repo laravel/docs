@@ -119,7 +119,7 @@ The Laravel plugin also supports multiple entry points and advanced configuratio
 <a name="working-with-a-secure-development-server"></a>
 #### Working With A Secure Development Server
 
-If your development web server is running on HTTPS, include Valet's [secure command](/docs/{{version}}/valet#securing-sites), you may run into issues connecting to the Vite development server. You may configure Vite to also run on HTTPS by adding the following to your `vite.config.js` configuration file:
+If your development web server is running on HTTPS, including Valet's [secure command](/docs/{{version}}/valet#securing-sites), you may run into issues connecting to the Vite development server. You may configure Vite to also run on HTTPS by adding the following to your `vite.config.js` configuration file:
 
 ```js
 export default defineConfig({
