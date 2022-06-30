@@ -490,7 +490,7 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
 
 Components and slots provide similar benefits to sections and layouts; however, some may find the mental model of components and slots easier to understand. There are two approaches to writing components: class based components and anonymous components.
 
-To create a class based component, you may use the `make:component` Artisan command. To illustrate how to use components, we will create a simple `Alert` component. The `make:component` command will place the component in the `App\View\Components` directory:
+To create a class based component, you may use the `make:component` Artisan command. To illustrate how to use components, we will create a simple `Alert` component. The `make:component` command will place the component in the `app/View/Components` directory:
 
     php artisan make:component Alert
 
@@ -525,7 +525,7 @@ To display a component, you may use a Blade component tag within one of your Bla
 
     <x-user-profile/>
 
-If the component class is nested deeper within the `App\View\Components` directory, you may use the `.` character to indicate directory nesting. For example, if we assume a component is located at `App\View\Components\Inputs\Button.php`, we may render it like so:
+If the component class is nested deeper within the `app/View/Components` directory, you may use the `.` character to indicate directory nesting. For example, if we assume a component is located at `App/View/Components/Inputs/Button.php`, we may render it like so:
 
     <x-inputs.button/>
 
