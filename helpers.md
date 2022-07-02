@@ -115,6 +115,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
 [Str::isJson](#method-str-is-json)
+[Str::isSerialized](#method-str-is-serialized)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
 [Str::lcfirst](#method-str-lcfirst)
@@ -190,6 +191,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isEmpty](#method-fluent-str-is-empty)
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [isJson](#method-fluent-str-is-json)
+[isSerialized](#method-fluent-str-is-serialized)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
 [lcfirst](#method-fluent-str-lcfirst)
@@ -1495,6 +1497,29 @@ The `Str::isJson` method determines if the given string is valid JSON:
 
     // false
 
+<a name="method-str-is-serialized"></a>
+#### `Str::isSerialized()` {.collection-method}
+
+The `Str::isSerialized` method determine if a given value is a valid serialized string:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::isSerialized('d:24.04;');
+
+    // true
+
+    $result = Str::isSerialized('b:0;');
+
+    // true
+
+    $result = Str::isSerialized('a:1:{s:3:"foo";s:3:"bar";}');
+
+    // true
+
+    $result = Str::isSerialized('a:1:{42}');
+
+    // false
+
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {.collection-method}
 
@@ -2406,6 +2431,29 @@ The `isJson` method determines if a given string is valid JSON:
     // true
 
     $result = Str::of('{first: "John", last: "Doe"}')->isJson();
+
+    // false
+
+<a name="method-fluent-str-is-serialized"></a>
+#### `isSerialized` {.collection-method}
+
+The `isSerialized` method determine if a given value is a valid serialized string:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('d:24.04;')->isSerialized();
+
+    // true
+
+    $result = Str::of('b:0;')->isSerialized();
+
+    // true
+
+    $result = Str::of('a:1:{s:3:"foo";s:3:"bar";}')->isSerialized();
+
+    // true
+
+    $result = Str::of('a:1:{42}')->isSerialized();
 
     // false
 
