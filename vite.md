@@ -171,7 +171,7 @@ Or, running the `build` command will version and bundle your application's asset
 ### Running Vite From Virtual Environments
 If your Laravel app is running on a virtual machine (such as with Sail, Homestead or other Docker based setups including WSL2) you may need to run the Vite server from your _host machine_.
 Hot Module Replacement may not work if the dev server is running within the virtual machine.
-In this case you'll need to install Node directly on your host machine,s and run `npm run dev` from your application directory there.
+In this case you'll need to install Node directly on your host machine, and run `npm run dev` from your application directory there.
 
 ```shell
 # Run the Vite development server...
