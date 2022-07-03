@@ -1,22 +1,27 @@
 # Bundling Assets (Vite)
 
-- [Introduction](#introduction)
-- [Installation & Setup](#installation)
-  - [Installing Node](#installing-node)
-  - [Installing Vite And The Laravel Plugin](#installing-vite-and-laravel-plugin)
-  - [Configuring Vite](#configuring-vite)
-  - [Loading Your Scripts And Styles](#loading-your-scripts-and-styles)
-- [Running Vite](#running-vite)
-- [Working With JavaScript](#working-with-scripts)
-  - [Aliases](#aliases)
-  - [Vue](#vue)
-  - [React](#react)
-  - [Inertia](#inertia)
-  - [URL Processing](#url-processing)
-- [Working With Stylesheets](#working-with-stylesheets)
-- [Custom Base URLs](#custom-base-urls)
-- [Environment Variables](#environment-variables)
-- [Server-Side Rendering (SSR)](#ssr)
+- [Bundling Assets (Vite)](#bundling-assets-vite)
+  - [Introduction](#introduction)
+      - [Choosing Between Vite And Laravel Mix](#choosing-between-vite-and-laravel-mix)
+      - [Migrating Back To Mix](#migrating-back-to-mix)
+  - [Installation & Setup](#installation--setup)
+    - [Installing Node](#installing-node)
+    - [Installing Vite And The Laravel Plugin](#installing-vite-and-the-laravel-plugin)
+    - [Configuring Vite](#configuring-vite)
+      - [Working With A Secure Development Server](#working-with-a-secure-development-server)
+    - [Loading Your Scripts And Styles](#loading-your-scripts-and-styles)
+  - [Running Vite](#running-vite)
+    - [Running Vite From Virtual Environments](#running-vite-from-virtual-environments)
+  - [Working With JavaScript](#working-with-javascript)
+    - [Aliases](#aliases)
+    - [Vue](#vue)
+    - [React](#react)
+    - [Inertia](#inertia)
+    - [URL Processing](#url-processing)
+  - [Working With Stylesheets](#working-with-stylesheets)
+  - [Custom Base URLs](#custom-base-urls)
+  - [Environment Variables](#environment-variables)
+  - [Server-Side Rendering (SSR)](#server-side-rendering-ssr)
 
 <a name="introduction"></a>
 ## Introduction
@@ -166,6 +171,11 @@ The `@vite` directive will automatically detect the Vite development server and 
 There are two ways you can run Vite. You may run the development server via the `dev` command, which is useful while developing locally. The development server will automatically detect changes to your files and instantly reflect them in any open browser windows.
 
 Or, running the `build` command will version and bundle your application's assets and get them ready for you to deploy to production:
+
+### Running Vite From Virtual Environments
+If your Laravel app is running on a virtual machine (such as with Sail, Homestead or other Docker based setups including WSL2) you may need to run the Vite server from your _host machine_.
+Hot Module Replacement may not work if the dev server is running within the virtual machine.
+In this case you'll need to install Node directly on your host machine,s and run `npm run dev` from your application directory there.
 
 ```shell
 # Run the Vite development server...
