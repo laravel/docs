@@ -1185,7 +1185,7 @@ Scopes should always return the same query builder instance or `void`:
          * Scope a query to only include active users.
          *
          * @param  \Illuminate\Database\Eloquent\Builder  $query
-         * @return void
+         * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeActive($query)
         {
