@@ -14,6 +14,7 @@
   - [Inertia](#inertia)
   - [URL Processing](#url-processing)
 - [Working With Stylesheets](#working-with-stylesheets)
+- [Working With Views](#working-with-views)
 - [Custom Base URLs](#custom-base-urls)
 - [Environment Variables](#environment-variables)
 - [Server-Side Rendering (SSR)](#ssr)
@@ -322,6 +323,62 @@ module.exports = {
         autoprefixer: {},
     },
 };
+```
+
+<a name="working-with-views"></a>
+## Working With Views
+
+When your application is built using traditional server-side rendering with Blade, Vite can improve your development workflow by automatically refreshing the browser when you make changes to view files in your application. To watch the "default" files for changes, you can simply specify the `refresh` option as `true`.
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            // ...
+            refresh: true,
+        }),
+    ],
+});
+```
+
+This will watch for changes in `resources/views/**`, `app/View/Components/**` and `routes/**`. When you save files in any of these paths, the browser will perform a full page refresh.
+
+If these default paths do not suit your needs, you can specify your own list of paths to watch:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            // ...
+            refresh: ['resources/views/**'],
+        }),
+    ],
+});
+```
+
+Under the hood, the Laravel plugin is utilising the [`vite-plugin-full-reload`](https://github.com/ElMassimo/vite-plugin-full-reload) package which offers some advanced configuration options to fine-tune how this feature can work. If you need this level of customisation, you can specify a rich configuration option:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            // ...
+            refresh: [{
+                paths: ['path/to/watch/**'],
+                config: { delay: 300 }],
+            }],
+        }),
+    ],
+});
 ```
 
 <a name="custom-base-urls"></a>
