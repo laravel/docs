@@ -2575,7 +2575,7 @@ The `tap` method passes the collection to the given callback, allowing you to "t
 
 The static `times` method creates a new collection by invoking the given closure a specified number of times:
 
-    $collection = Collection::times(10, function ($number) {
+    $collection = collect()->times(10, function ($number) {
         return $number * 9;
     });
 
