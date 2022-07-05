@@ -392,4 +392,24 @@ npm run build
 node storage/ssr/ssr.js
 ```
 
+### Customising Your SSR File Output Directory
+It is common for server deployment solutions such as [Envoyer](https://envoyer.io/) to create a symlinked `/storage` directory. This will prevent the `ssr.js` file built with Vite from functioning properly. In this case you may wish to define a different output directory in your Vite config.
+
+  ```js
+  import { defineConfig } from 'vite';
+  import laravel from 'laravel-vite-plugin';
+
+  export default defineConfig({
+      plugins: [
+          laravel({
+              input: 'resources/js/app.js',
+              ssr: 'resources/js/ssr.js',
+              ssrOutputDirectory: 'public/ssr',  // [tl! add]
+          }),
+      ],
+  });
+  ```
+
+This example overrides the default output path and outputs your built `ssr.js` file to `/public/ssr/ssr.js`.
+
 > {tip} Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia SSR, and Vite.
