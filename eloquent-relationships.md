@@ -494,6 +494,19 @@ Typical Eloquent foreign key conventions will be used when performing the relati
         }
     }
 
+<a name="has-many-through-defining-the-inverse-of-the-relationship"></a>
+#### Defining The Inverse Of The Relationship
+
+In some cases, you may need the inverse relationship to get the `Project` that contains the `Deployment`. It can be done using the `hasOneThrough` method with customized keys:
+
+    class Deployment extends Model
+    {
+        public function project()
+        {
+            return $this->hasOneThrough(Project::class, Environment::class, 'id', 'id', 'environment_id', 'project_id');
+        }
+    }
+
 <a name="many-to-many"></a>
 ## Many To Many Relationships
 
