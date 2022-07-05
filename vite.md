@@ -14,7 +14,7 @@
   - [Inertia](#inertia)
   - [URL Processing](#url-processing)
 - [Working With Stylesheets](#working-with-stylesheets)
-- [Working With Views](#working-with-views)
+- [Working With Blade & Routes](#working-with-blade-and-routes)
 - [Custom Base URLs](#custom-base-urls)
 - [Environment Variables](#environment-variables)
 - [Server-Side Rendering (SSR)](#ssr)
@@ -325,8 +325,8 @@ module.exports = {
 };
 ```
 
-<a name="working-with-views"></a>
-## Working With Views
+<a name="working-with-blade-and-routes"></a>
+## Working With Blade & Routes
 
 When your application is built using traditional server-side rendering with Blade, Vite can improve your development workflow by automatically refreshing the browser when you make changes to view files in your application. To watch the "default" files for changes, you can simply specify the `refresh` option as `true`.
 
@@ -344,7 +344,9 @@ export default defineConfig({
 });
 ```
 
-This will watch for changes in `resources/views/**`, `app/View/Components/**` and `routes/**`. When you save files in any of these paths, the browser will perform a full page refresh.
+This will mean that saving files in `resources/views/**`, `app/View/Components/**` and `routes/**` will trigger the browser to perform a full page refresh while you are running `npm run dev`.
+
+Watching the `routes/**` directory is useful if you are utilising [Ziggy](https://github.com/tighten/ziggy) to generate route links in the front-end parts of your application.
 
 If these default paths do not suit your needs, you can specify your own list of paths to watch:
 
