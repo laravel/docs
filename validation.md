@@ -1873,34 +1873,52 @@ Occasionally, you may want to attach additional validation rules to your default
 Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you may use the `make:rule` Artisan command. Let's use this command to generate a rule that verifies a string is uppercase. Laravel will place the new rule in the `app/Rules` directory. If this directory does not exist, Laravel will create it when you execute the Artisan command to create your rule:
 
 ```shell
-php artisan make:rule Uppercase --invokable
+php artisan make:rule Uppercase
 ```
 
-Once the rule has been created, we are ready to define its behavior. A rule object contains a single method: `__invoke`. This method receives the attribute name, its value, and a callback that should be invoked on failure with the validation error message:
+Once the rule has been created, we are ready to define its behavior. A rule object contains a constructor and two methods: `passes()` and `message()`. The `passes()` method sets how the data will be evaluated, returning either true or false. The `message()` method returns a string containing the message displayed when the `passes()` method returns false:
 
     <?php
-
+    
     namespace App\Rules;
-
-    use Illuminate\Contracts\Validation\InvokableRule;
-
-    class Uppercase implements InvokableRule
+    
+    use Illuminate\Contracts\Validation\Rule;
+    
+    class Uppercase implements Rule
     {
         /**
-         * Run the validation rule.
+         * Create a new rule instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            //
+        }
+    
+        /**
+         * Determine if the validation rule passes.
          *
          * @param  string  $attribute
          * @param  mixed  $value
-         * @param  \Closure  $fail
-         * @return void
+         * @return bool
          */
-        public function __invoke($attribute, $value, $fail)
+        public function passes($attribute, $value)
         {
-            if (strtoupper($value) !== $value) {
-                $fail('The :attribute must be uppercase.');
-            }
+            return strtoupper($value) === $value;
+        }
+    
+        /**
+         * Get the validation error message.
+         *
+         * @return string
+         */
+        public function message()
+        {
+            return 'The :attribute must be uppercase.';
         }
     }
+
 
 Once the rule has been defined, you may attach it to a validator by passing an instance of the rule object with your other validation rules:
 
@@ -1912,15 +1930,22 @@ Once the rule has been defined, you may attach it to a validator by passing an i
 
 #### Translating Validation Messages
 
-Instead of providing a literal error message to the `$fail` closure, you may also provide a [translation string key](/docs/{{version}}/localization) and instruct Laravel to translate the error message:
+Instead of providing a literal error message to the `message()` method, you may also provide a [translation string key](/docs/{{version}}/localization) and instruct Laravel to translate the error message:
 
-    if (strtoupper($value) !== $value) {
-        $fail('validation.uppercase')->translate();
-    }
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+     public function message()
+     {
+         return __('validation.uppercase')->translate();
+     }
+    
 
 If necessary, you may provide placeholder replacements and the preferred language as the first and second arguments to the `translate` method:
 
-    $fail('validation.location')->translate([
+    return __('validation.location')->translate([
         'value' => $this->value,
     ], 'fr')
 
@@ -1966,10 +1991,9 @@ Or, if your validation rule requires access to the validator instance performing
 
     namespace App\Rules;
 
-    use Illuminate\Contracts\Validation\InvokableRule;
     use Illuminate\Contracts\Validation\ValidatorAwareRule;
 
-    class Uppercase implements InvokableRule, ValidatorAwareRule
+    class Uppercase implements ValidatorAwareRule
     {
         /**
          * The validator instance.
@@ -2031,7 +2055,7 @@ For a custom rule to run even when an attribute is empty, the rule must imply th
 To generate a new implicit rule object, you may use the `make:rule` Artisan command with the `--implicit` option :
 
 ```shell
-php artisan make:rule Uppercase --invokable --implicit
+php artisan make:rule Uppercase --implicit
 ```
 
 > {note} An "implicit" rule only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
