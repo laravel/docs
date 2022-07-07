@@ -942,7 +942,7 @@ When additional values are provided to the `array` rule, each key in the input a
     ];
 
     Validator::make($input, [
-        'user' => 'array:username,locale',
+        'user' => 'array:name,username',
     ]);
 
 In general, you should always specify the array keys that are allowed to be present within your array.
