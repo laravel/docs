@@ -359,7 +359,7 @@ import.meta.env.VITE_SENTRY_DSN_PUBLIC
 <a name="ssr"></a>
 ## Server-Side Rendering (SSR)
 
-The Laravel Vite plugin makes it painless to set up server-side rending with Vite. To get started, create an SSR entry point at `resources/js/ssr.js` and specify the entry point by passing a configuration option to the Laravel plugin:
+The Laravel Vite plugin makes it painless to set up server-side rendering with Vite. To get started, create an SSR entry point at `resources/js/ssr.js` and specify the entry point by passing a configuration option to the Laravel plugin:
 
 ```js
 import { defineConfig } from 'vite';
