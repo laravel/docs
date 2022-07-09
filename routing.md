@@ -659,7 +659,7 @@ Rate limiters are defined using the `RateLimiter` facade's `for` method. The `fo
        $this->configureRateLimiting();
     }
     
-The rate limiter name may be any string you wish:
+The rate limiter name may then be any string you wish:
 
     use Illuminate\Cache\RateLimiting\Limit;
     use Illuminate\Http\Request;
