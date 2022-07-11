@@ -10,7 +10,7 @@
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
     - [Conditional Classes](#conditional-classes)
-    - [Checked / Selected / Disabled](#checked-and-selected)
+    - [Checked / Selected / Disabled / Required](#checked-and-selected)
     - [Including Subviews](#including-subviews)
     - [The `@once` Directive](#the-once-directive)
     - [Raw PHP](#raw-php)
@@ -438,7 +438,7 @@ The `@class` directive conditionally compiles a CSS class string. The directive 
 ```
 
 <a name="checked-and-selected"></a>
-### Checked / Selected / Disabled
+### Checked / Selected / Disabled / Required
 
 For convenience, you may use the `@checked` directive to easily indicate if a given HTML checkbox input is "checked". This directive will echo `checked` if the provided condition evaluates to `true`:
 
@@ -461,9 +461,10 @@ Likewise, the `@selected` directive may be used to indicate if a given select op
 </select>
 ```
 
-Additionally, the `@disabled` directive may be used to indicate if a given element should be "disabled":
+Additionally, the `@required` or `@disabled` directives may be used to indicate if a given element should be "required" or "disabled" respectively:
 
 ```blade
+<input type="text" name="verification_code" @required(! $user->is_admin) />
 <button type="submit" @disabled($errors->isNotEmpty())>Submit</button>
 ```
 
