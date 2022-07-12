@@ -448,7 +448,7 @@ Then, to build and start the SSR server, you may run the following commands:
 
 ```sh
 npm run build
-node storage/ssr/ssr.js
+node bootstrap/ssr/ssr.js
 ```
 
 > {tip} Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia SSR, and Vite.
