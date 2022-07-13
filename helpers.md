@@ -1451,21 +1451,13 @@ The `Str::headline` method will convert strings delimited by casing, hyphens, or
 <a name="method-str-inline-markdown"></a>
 #### `Str::inlineMarkdown()` {.collection-method}
 
-The `Str::inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/):
+The `Str::inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/). However, unlike the `markdown` method, it does not wrap all generated HTML in a block-level element:
 
     use Illuminate\Support\Str;
 
     $html = Str::inlineMarkdown('**Laravel**');
 
     // <strong>Laravel</strong>
-
-    $html = Str::markdown('<a href="https://laravel.com">The **Laravel** Framework</a>', [
-        'html_input' => 'strip',
-    ]);
-
-    // The <strong>Laravel</strong> Framework
-    
-This differs from the [markdown](#method-str-markdown) method, since that will wrap all generated HTML in a block-level element, which is not the desired behaviour in some cases.
 
 <a name="method-str-is"></a>
 #### `Str::is()` {.collection-method}
@@ -2353,21 +2345,13 @@ The `finish` method adds a single instance of the given value to a string if it 
 <a name="method-fluent-str-inline-markdown"></a>
 #### `inlineMarkdown` {.collection-method}
 
-The `inlineMarkdown` method converts GitHub flavored Markdown into inline HTML:
+The `inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/). However, unlike the `markdown` method, it does not wrap all generated HTML in a block-level element:
 
     use Illuminate\Support\Str;
 
     $html = Str::of('**Laravel**')->inlineMarkdown();
 
     // <strong>Laravel</strong>
-
-    $html = Str::of('<a href="https://laravel.com">The **Laravel** Framework</a>')->inlineMarkdown([
-        'html_input' => 'strip',
-    ]);
-
-    // The <strong>Laravel</strong> Framework
-    
-This differs from the [markdown](#method-flient-str-markdown) method, since that will wrap all generated HTML in a block-level element, which is not the desired behaviour in some cases.
 
 <a name="method-fluent-str-is"></a>
 #### `is` {.collection-method}
