@@ -443,6 +443,7 @@ Below is a list of all available validation rules and their function:
 </style>
 
 <div class="collection-method-list" markdown="1">
+
 [Accepted](#rule-accepted)
 [Active URL](#rule-active-url)
 [After (Date)](#rule-after)
