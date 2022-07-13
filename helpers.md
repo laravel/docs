@@ -112,6 +112,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
 [Str::headline](#method-str-headline)
+[Str::inlineMarkdown](#method-str-inline-markdown)
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
 [Str::isJson](#method-str-is-json)
@@ -185,6 +186,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [exactly](#method-fluent-str-exactly)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
+[inlineMarkdown](#method-fluent-str-inline-markdown)
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
@@ -1446,6 +1448,25 @@ The `Str::headline` method will convert strings delimited by casing, hyphens, or
 
     // Email Notification Sent
 
+<a name="method-str-inline-markdown"></a>
+#### `Str::inlineMarkdown()` {.collection-method}
+
+The `Str::inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/):
+
+    use Illuminate\Support\Str;
+
+    $html = Str::inlineMarkdown('**Laravel**');
+
+    // <strong>Laravel</strong>
+
+    $html = Str::markdown('<a href="https://laravel.com">The **Laravel** Framework</a>', [
+        'html_input' => 'strip',
+    ]);
+
+    // The <strong>Laravel</strong> Framework
+    
+This differs from the [markdown](#method-str-markdown) method, since that will wrap all generated HTML in a block-level element, which is not the desired behaviour in some cases.
+
 <a name="method-str-is"></a>
 #### `Str::is()` {.collection-method}
 
@@ -2328,6 +2349,25 @@ The `finish` method adds a single instance of the given value to a string if it 
     $adjusted = Str::of('this/string/')->finish('/');
 
     // this/string/
+
+<a name="method-fluent-str-inline-markdown"></a>
+#### `inlineMarkdown` {.collection-method}
+
+The `inlineMarkdown` method converts GitHub flavored Markdown into inline HTML:
+
+    use Illuminate\Support\Str;
+
+    $html = Str::of('**Laravel**')->inlineMarkdown();
+
+    // <strong>Laravel</strong>
+
+    $html = Str::of('<a href="https://laravel.com">The **Laravel** Framework</a>')->inlineMarkdown([
+        'html_input' => 'strip',
+    ]);
+
+    // The <strong>Laravel</strong> Framework
+    
+This differs from the [markdown](#method-flient-str-markdown) method, since that will wrap all generated HTML in a block-level element, which is not the desired behaviour in some cases.
 
 <a name="method-fluent-str-is"></a>
 #### `is` {.collection-method}
