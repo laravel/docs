@@ -196,9 +196,9 @@ When using the `Gate::authorize` method, which throws an `AuthorizationException
     // The action is authorized...
 
 <a name="customising-gate-response-status"></a>
-#### Customizing The Response Status
+#### Customizing The HTTP Response Status
 
-When an action is denied via a Gate, a `403 Forbidden` response is returned, however it can be useful to instead return an alternative HTTP status.
+When an action is denied via a Gate, a `403 Forbidden` HTTP response is returned, however it can be useful to instead return an alternative HTTP status.
 
 You may customize the HTTP status returned for a failed authorization check by using the `denyWithStatus` static constructor on `Illuminate\Auth\Access\Response`:
 
@@ -419,9 +419,9 @@ When using the `Gate::authorize` method, which throws an `AuthorizationException
     // The action is authorized...
 
 <a name="customising-policy-response-status"></a>
-#### Customizing The Response Status
+#### Customizing The HTTP Response Status
 
-When an action is denied via a policy method, a `403 Forbidden` response is returned, however it can be useful to instead return an alternative HTTP status.
+When an action is denied via a policy method, a `403 Forbidden` HTTP response is returned, however it can be useful to instead return an alternative HTTP status.
 
 You may customize the HTTP status returned for a failed authorization check by using the `denyWithStatus` static constructor on `Illuminate\Auth\Access\Response`:
 
