@@ -1822,6 +1822,14 @@ You may pass an integer to `random` to specify how many items you would like to 
 
 If the collection instance has fewer items than requested, the `random` method will throw an `InvalidArgumentException`.
 
+The `random` method also accepts a closure, which will receive the current collection instance:
+
+    $random = $collection->random(fn ($items) => min(10, count($items)));
+
+    $random->all();
+
+    // [1, 2, 3, 4, 5] - (retrieved randomly)
+
 <a name="method-range"></a>
 #### `range()` {.collection-method}
 
