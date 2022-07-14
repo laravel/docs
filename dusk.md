@@ -419,6 +419,10 @@ You may use the `screenshot` method to take a screenshot and store it with the g
 
     $browser->screenshot('filename');
 
+The `responsiveScreenshots` method may be used to take a series of screenshots at various breakpoints:
+
+    $browser->responsiveScreenshots('filename');
+
 <a name="storing-console-output-to-disk"></a>
 ### Storing Console Output To Disk
 
