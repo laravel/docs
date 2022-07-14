@@ -198,9 +198,7 @@ When using the `Gate::authorize` method, which throws an `AuthorizationException
 <a name="customising-gate-response-status"></a>
 #### Customizing The HTTP Response Status
 
-When an action is denied via a Gate, a `403 Forbidden` HTTP response is returned, however it can be useful to instead return an alternative HTTP status.
-
-You may customize the HTTP status returned for a failed authorization check by using the `denyWithStatus` static constructor on `Illuminate\Auth\Access\Response`:
+When an action is denied via a Gate, a `403` HTTP response is returned; however, it can sometimes be useful to return an alternative HTTP status code. You may customize the HTTP status code returned for a failed authorization check using the `denyWithStatus` static constructor on the `Illuminate\Auth\Access\Response` class:
 
     use App\Models\User;
     use Illuminate\Auth\Access\Response;
@@ -212,7 +210,7 @@ You may customize the HTTP status returned for a failed authorization check by u
                     : Response::denyWithStatus(404);
     });
 
-Because hiding resources via a `404 Not Found` response is such a common pattern for web applications, we have also added a nice named helper:
+Because hiding resources via a `404` response is such a common pattern for web applications, the `denyAsNotFound` method is offered for convenience:
 
     use App\Models\User;
     use Illuminate\Auth\Access\Response;
