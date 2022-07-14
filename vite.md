@@ -367,8 +367,8 @@ export default defineConfig({
 Under the hood, the Laravel Vite plugin uses the [`vite-plugin-full-reload`](https://github.com/ElMassimo/vite-plugin-full-reload) package, which offers some advanced configuration options to fine-tune this feature's behavior. If you need this level of customization, you may provide a `config` definition:
 
 ```js
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
     plugins: [
@@ -380,7 +380,7 @@ export default defineConfig({
             }],
         }),
     ],
-})
+});
 ```
 
 <a name="custom-base-urls"></a>
