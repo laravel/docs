@@ -202,15 +202,27 @@ When an action is denied via a Gate, a `403 Forbidden` response is returned, how
 
 You may customize the HTTP status returned for a failed authorization check by using the `denyWithStatus` static constructor on `Illuminate\Auth\Access\Response`:
 
-    return $user->isAdmin
-                ? Response::allow()
-                : Response::denyWithStatus(404);
+    use App\Models\User;
+    use Illuminate\Auth\Access\Response;
+    use Illuminate\Support\Facades\Gate;
+
+    Gate::define('edit-settings', function (User $user) {
+        return $user->isAdmin
+                    ? Response::allow()
+                    : Response::denyWithStatus(404);
+    });
 
 Because hiding resources via a `404 Not Found` response is such a common pattern for web applications, we have also added a nice named helper:
 
-    return $user->isAdmin
-                ? Response::allow()
-                : Response::denyAsNotFound();
+    use App\Models\User;
+    use Illuminate\Auth\Access\Response;
+    use Illuminate\Support\Facades\Gate;
+
+    Gate::define('edit-settings', function (User $user) {
+        return $user->isAdmin
+                    ? Response::allow()
+                    : Response::denyAsNotFound();
+    });
 
 <a name="intercepting-gate-checks"></a>
 ### Intercepting Gate Checks
@@ -413,15 +425,43 @@ When an action is denied via a policy method, a `403 Forbidden` response is retu
 
 You may customize the HTTP status returned for a failed authorization check by using the `denyWithStatus` static constructor on `Illuminate\Auth\Access\Response`:
 
-    return $user->id === $post->user_id
-                ? Response::allow()
-                : Response::denyWithStatus(404);
+    use App\Models\Post;
+    use App\Models\User;
+    use Illuminate\Auth\Access\Response;
+
+    /**
+     * Determine if the given post can be updated by the user.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function update(User $user, Post $post)
+    {
+        return $user->id === $post->user_id
+                    ? Response::allow()
+                    : Response::denyWithStatus(404);
+    }
 
 Because hiding resources via a `404 Not Found` response is such a common pattern for web applications, we have also added a nice named helper:
 
-    return $user->id === $post->user_id
-                ? Response::allow()
-                : Response::denyAsNotFound();
+    use App\Models\Post;
+    use App\Models\User;
+    use Illuminate\Auth\Access\Response;
+
+    /**
+     * Determine if the given post can be updated by the user.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function update(User $user, Post $post)
+    {
+        return $user->id === $post->user_id
+                    ? Response::allow()
+                    : Response::denyAsNotFound();
+    }
 
 <a name="methods-without-models"></a>
 ### Methods Without Models
