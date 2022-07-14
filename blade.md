@@ -467,6 +467,15 @@ Additionally, the `@disabled` directive may be used to indicate if a given eleme
 <button type="submit" @disabled($errors->isNotEmpty())>Submit</button>
 ```
 
+In addition, the `@required` directive may be used to indicate if a given element should be "required":
+
+```blade
+<input type="text"
+        name="title"
+        value="title"
+        @required($user->isAdmin()) />
+```
+
 <a name="including-subviews"></a>
 ### Including Subviews
 
