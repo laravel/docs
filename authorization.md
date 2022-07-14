@@ -406,6 +406,23 @@ When using the `Gate::authorize` method, which throws an `AuthorizationException
 
     // The action is authorized...
 
+<a name="customising-policy-response-status"></a>
+#### Customizing The Response Status
+
+When an action is denied via a policy method, a `403 Forbidden` response is returned, however it can be useful to instead return an alternative HTTP status.
+
+You may customize the HTTP status returned for a failed authorization check by using the `denyWithStatus` static constructor on `Illuminate\Auth\Access\Response`:
+
+    return $user->id === $post->user_id
+                ? Response::allow()
+                : Response::denyWithStatus(404);
+
+Because hiding resources via a `404 Not Found` response is such a common pattern for web applications, we have also added a nice named helper:
+
+    return $user->id === $post->user_id
+                ? Response::allow()
+                : Response::denyAsNotFound();
+
 <a name="methods-without-models"></a>
 ### Methods Without Models
 
