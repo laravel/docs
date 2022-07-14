@@ -376,7 +376,7 @@ export default defineConfig({
             // ...
             refresh: [{
                 paths: ['path/to/watch/**'],
-                config: { delay: 300 }],
+                config: { delay: 300 }
             }],
         }),
     ],
