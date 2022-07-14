@@ -590,11 +590,11 @@ In this example, if the relationship has not been loaded, the `posts` key will b
 <a name="conditional-relationship-counts"></a>
 #### Conditional Relationship Counts
 
-In addition to conditionally including relationships, you may conditionally include relationship counts on your resource responses based on if the relationship count has been loaded on the model:
+In addition to conditionally including relationships, you may conditionally include relationship counts on your resource responses based on if the relationship's count has been loaded on the model:
 
     new UserResource($user->loadCount('posts'));
 
-The `whenCounted` method may be used to conditionally include a relationship's count, in order to avoid unnecessarily including the attribute if the relation count is not present. This method accepts the relationship's name:
+The `whenCounted` method may be used to conditionally include a relationship's count, in order to avoid unnecessarily including the attribute if the relationships's count is not present. This method accepts the relationship's name:
 
     /**
      * Transform the resource into an array.
@@ -614,7 +614,7 @@ The `whenCounted` method may be used to conditionally include a relationship's c
         ];
     }
 
-In this example, if the `posts` relationship count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client.
+In this example, if the `posts` relationship's count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client.
 
 <a name="conditional-pivot-information"></a>
 #### Conditional Pivot Information
