@@ -128,6 +128,9 @@ export default defineConfig({
     server: { // [tl! add]
         https: true, // [tl! add]
         host: 'localhost', // [tl! add]
+        hmr: { // [tl! add]
+            host: 'localhost', // [tl! add]
+        }, // [tl! add]
     }, // [tl! add]
 });
 ```
