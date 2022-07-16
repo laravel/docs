@@ -152,6 +152,13 @@ Likewise, you may also instruct Laravel to only show routes that are defined by 
 php artisan route:list --only-vendor
 ```
 
+
+Additionally, you may also instruct Laravel to only show routes that are defined in a particular route path such as the api routes, the web routes, etc by providing the `--path` option when executing the `route:list` command:
+
+```shell
+php artisan route:list --path=api
+```
+
 <a name="route-parameters"></a>
 ## Route Parameters
 
