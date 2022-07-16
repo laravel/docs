@@ -10,7 +10,7 @@
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
     - [Conditional Classes](#conditional-classes)
-    - [Checked / Selected / Disabled](#checked-and-selected)
+    - [Attributes Checking](#attributes-checking)
     - [Including Subviews](#including-subviews)
     - [The `@once` Directive](#the-once-directive)
     - [Raw PHP](#raw-php)
@@ -437,8 +437,8 @@ The `@class` directive conditionally compiles a CSS class string. The directive 
 <span class="p-4 text-gray-500 bg-red"></span>
 ```
 
-<a name="checked-and-selected"></a>
-### Checked / Selected / Disabled
+<a name="attributes-checking"></a>
+### Attributes Checking
 
 For convenience, you may use the `@checked` directive to easily indicate if a given HTML checkbox input is "checked". This directive will echo `checked` if the provided condition evaluates to `true`:
 
@@ -465,6 +465,12 @@ Additionally, the `@disabled` directive may be used to indicate if a given eleme
 
 ```blade
 <button type="submit" @disabled($errors->isNotEmpty())>Submit</button>
+```
+
+Moreover, the `@readonly` directive may be used to indicate if a given element should be "readonly":
+
+```blade
+<input type="email" name="email" value="email@laravel.com" @readonly($user->isNotAdmin()) />
 ```
 
 In addition, the `@required` directive may be used to indicate if a given element should be "required":
