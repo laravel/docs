@@ -202,6 +202,60 @@ window.Echo = new Echo({
 <a name="client-ably"></a>
 ### Ably
 
+[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. 
+
+New - Official Ably SDK support now available as a part of `laravel-echo`
+
+Install official `ably` package along with `laravel-echo` using NPM. 
+
+```shell
+npm install --save-dev laravel-echo ably
+`````
+
+Once Echo is installed, you are ready to create a fresh Echo instance in your applications JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file; however, the default configuration in the bootstrap.js file is intended for Pusher. You may copy the configuration below to transition your configuration to Ably
+
+```
+import Echo from 'laravel-echo';
+
+window.Ably = require('ably');
+window.Echo = new Echo({
+    broadcaster: 'ably',
+});
+
+window.Echo.connector.ably.connection.on(stateChange => {
+    if (stateChange.current === 'connected') {
+        console.log('connected to ably server');
+    }
+});
+
+```
+
+You can set custom [clientOptions](https://docs.ably.io/client-lib-development-guide/features/#options) while creating `Echo` instance.
+
+```
+window.Echo = new Echo({
+    broadcaster: 'ably',
+    // laravel-broadcasting specific auth options
+    authHost: 'localhost',
+    authPort: 80,
+    authProtocol: 'http',
+    authEndpoint: '/broadcasting/auth'
+    // Additional ably specific options  
+    realtimeHost: 'realtime.ably.com',
+    restHost: 'rest.ably.com',
+    port: '80',
+});
+```
+Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
+
+```shell
+npm run dev
+```
+
+> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
+
+<br/>
+
 > ### **Deprecated (Using ably-pusher adapter)** 
 >In this example, we will install the `pusher-js` package.
 >
