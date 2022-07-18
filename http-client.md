@@ -8,6 +8,7 @@
     - [Timeout](#timeout)
     - [Retries](#retries)
     - [Error Handling](#error-handling)
+    - [Middleware](#middleware)
     - [Guzzle Options](#guzzle-options)
 - [Concurrent Requests](#concurrent-requests)
 - [Macros](#macros)
@@ -203,6 +204,7 @@ If all of the requests fail, an instance of `Illuminate\Http\Client\RequestExcep
     $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 
 > {note} If all of the requests fail because of a connection issue, a `Illuminate\Http\Client\ConnectionException` will still be thrown even when the `throw` argument is set to `false`.
+> 
 
 <a name="error-handling"></a>
 ### Error Handling
@@ -223,6 +225,25 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 
     // Immediately execute the given callback if there was a client or server error...
     $response->onError(callable $callback);
+    
+<a name="middleware"></a>
+### Middleware
+
+The request and response can be altered using a Guzzle Middleware - [Guzzle middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) 
+
+You can alter the request simply by using the Middleware::mapRequest method
+
+    Http::withMiddleware(\GuzzleHttp\Middleware::mapRequest(function (\Psr\Http\Message\RequestInterface $request) {
+        $request->withHeader('Additional', 'Value');
+    })
+    ->get('http://example.com');
+    
+You can alter the response simply by using the Middleware::mapResponse method
+
+    Http::withMiddleware(\GuzzleHttp\Middleware::mapResponse(function (\Psr\Http\Message\ResponseInterface $response) {
+        $response->getHeader('Additional');
+    })
+    ->get('http://example.com');
 
 <a name="throwing-exceptions"></a>
 #### Throwing Exceptions
