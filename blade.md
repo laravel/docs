@@ -10,7 +10,7 @@
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
     - [Conditional Classes](#conditional-classes)
-    - [Attributes Checking](#attributes-checking)
+    - [Additional Attributes](#additional-attributes)
     - [Including Subviews](#including-subviews)
     - [The `@once` Directive](#the-once-directive)
     - [Raw PHP](#raw-php)
@@ -437,8 +437,8 @@ The `@class` directive conditionally compiles a CSS class string. The directive 
 <span class="p-4 text-gray-500 bg-red"></span>
 ```
 
-<a name="attributes-checking"></a>
-### Attributes Checking
+<a name="additional-attributes"></a>
+### Additional Attributes
 
 For convenience, you may use the `@checked` directive to easily indicate if a given HTML checkbox input is "checked". This directive will echo `checked` if the provided condition evaluates to `true`:
 
