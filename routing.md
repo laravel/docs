@@ -140,6 +140,12 @@ By default, the route middleware that are assigned to each route will not be dis
 php artisan route:list -v
 ```
 
+You may also instruct Laravel to only show routes that begin with a given URI:
+
+```shell
+php artisan route:list --path=api
+```
+
 In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:
 
 ```shell
@@ -150,13 +156,6 @@ Likewise, you may also instruct Laravel to only show routes that are defined by 
 
 ```shell
 php artisan route:list --only-vendor
-```
-
-
-Additionally, you may also instruct Laravel to only show routes that are defined in a particular route path such as the api routes, the web routes, etc by providing the `--path` option when executing the `route:list` command:
-
-```shell
-php artisan route:list --path=api
 ```
 
 <a name="route-parameters"></a>
