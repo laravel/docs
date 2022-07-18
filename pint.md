@@ -5,21 +5,19 @@
 - [Configuring Pint](#configuring-pint)
     - [Presets](#presets)
     - [Rules](#rules)
-    - [Excluding Files or Folders](#excluding-files-or-folders)
+    - [Excluding Files / Folders](#excluding-files-or-folders)
 
 <a name="introduction"></a>
 ## Introduction
 
 [Laravel Pint](https://github.com/laravel/pint) is an opinionated PHP code style fixer for minimalists. Pint is built on top of PHP-CS-Fixer and makes it simple to ensure that your code style stays clean and consistent.
 
-Pint is automatically installed with all new Laravel applications so you may start using it immediately.
-
-By default, Pint does not require any configuration and will fix code style issues in your code by following an opinionated coding style of Laravel.
+Pint is automatically installed with all new Laravel applications so you may start using it immediately. By default, Pint does not require any configuration and will fix code style issues in your code by following the opinionated coding style of Laravel.
 
 <a name="running-pint"></a>
 ## Running Pint
 
-You may start fixing code style issues by running the `pint` binary that is available in your project's `vendor/bin` directory:
+You instruct Pint to fix code style issues by running the `pint` binary that is available in your project's `vendor/bin` directory:
 
 ```shell
 ./vendor/bin/pint
@@ -31,7 +29,7 @@ When running Pint, it will output a list of files that have been fixed. It is po
 ./vendor/bin/pint -v
 ```
 
-In addition, if you would like Pint to simply inspect your code for style errors without actually changing the files, you may use the `--test` option:
+If you would like Pint to simply inspect your code for style errors without actually changing the files, you may use the `--test` option:
 
 ```shell
 ./vendor/bin/pint --test
@@ -48,7 +46,7 @@ As previously mentioned, Pint does not require any configuration. However, if yo
 }
 ```
 
-In addition, if you wish to use a `pint.json` from a specific directory, you may use the `--config` option:
+In addition, if you wish to use a `pint.json` from a specific directory, you may provide the `--config` option when invoking Pint:
 
 ```shell
 pint --config vendor/my-company/coding-style/pint.json
@@ -57,9 +55,7 @@ pint --config vendor/my-company/coding-style/pint.json
 <a name="presets"></a>
 ### Presets
 
-Presets defines a set of rules that can be used to fix code style issues in your code. By default, Pint uses the `laravel` preset, which fixes issues by following an opinionated coding style of Laravel.
-
-However, you can use a different preset by passing the `--preset` option:
+Presets defines a set of rules that can be used to fix code style issues in your code. By default, Pint uses the `laravel` preset, which fixes issues by following the opinionated coding style of Laravel. However, you may specify a different preset by providing the `--preset` option to Pint:
 
 ```shell
 pint --preset psr12
@@ -73,7 +69,7 @@ If you wish, you may also set the preset in your project's `pint.json` file:
 }
 ```
 
-The currently supported presets are: `laravel`, `psr12`, and `symfony`.
+Pint's currently supported presets are: `laravel`, `psr12`, and `symfony`.
 
 <a name="rules"></a>
 ### Rules
@@ -99,9 +95,9 @@ However, if you wish, you may enable or disable specific rules in your `pint.jso
 Pint is built on top of [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Therefore, you may use any of its rules to fix code style issues in your project: [PHP-CS-Fixer Configurator](https://mlocati.github.io/php-cs-fixer-configurator).
 
 <a name="excluding-files-or-folders"></a>
-### Excluding Files or Folders
+### Excluding Files / Folders
 
-By default, Pint will inspect all `.php` files in your project except those in the vendor folder. If you wish to exclude more folders, you may do so by using the `exclude` configuration option:
+By default, Pint will inspect all `.php` files in your project except those in the `vendor` directory. If you wish to exclude more folders, you may do so using the `exclude` configuration option:
 
 ```json
 {
@@ -111,7 +107,7 @@ By default, Pint will inspect all `.php` files in your project except those in t
 }
 ```
 
-If you wish to exclude a file with a specific name, you may do so by using the `notName` configuration option:
+If you wish to exclude all files that contain a given name pattern, you may do so using the `notName` configuration option:
 
 ```json
 {
@@ -121,7 +117,7 @@ If you wish to exclude a file with a specific name, you may do so by using the `
 }
 ```
 
-If you want to exclude a file from an exact path, you may do so by using the `notPath` configuration option:
+If you would like to exclude a file by providing an exact path to the file, you may do so using the `notPath` configuration option:
 
 ```json
 {
