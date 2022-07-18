@@ -229,7 +229,7 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 <a name="middleware"></a>
 ### Middleware
 
-The request and response can be altered using a Guzzle Middleware - [Guzzle middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) 
+The request and response can be altered using [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) 
 
 You can alter the request simply by using the Middleware::mapRequest method
 
