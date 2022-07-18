@@ -202,42 +202,37 @@ window.Echo = new Echo({
 <a name="client-ably"></a>
 ### Ably
 
-[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package.
-
-You may wonder why we would install the `pusher-js` JavaScript library even though we are using Ably to broadcast our events. Thankfully, Ably includes a Pusher compatibility mode which lets us use the Pusher protocol when listening for events in our client-side application:
-
-```shell
-npm install --save-dev laravel-echo pusher-js
-```
-
-**Before continuing, you should enable Pusher protocol support in your Ably application settings. You may enable this feature within the "Protocol Adapter Settings" portion of your Ably application's settings dashboard.**
-
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file; however, the default configuration in the `bootstrap.js` file is intended for Pusher. You may copy the configuration below to transition your configuration to Ably:
-
-```js
-import Echo from 'laravel-echo';
-
-window.Pusher = require('pusher-js');
-
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: process.env.MIX_ABLY_PUBLIC_KEY,
-    wsHost: 'realtime-pusher.ably.io',
-    wsPort: 443,
-    disableStats: true,
-    encrypted: true,
-});
-```
-
-Note that our Ably Echo configuration references a `MIX_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
-
-Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
-
-```shell
-npm run dev
-```
-
-> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
+> ### **Deprecated (Using ably-pusher adapter)** 
+>In this example, we will install the `pusher-js` package.
+>
+>You may wonder why we would install the `pusher-js` JavaScript library even though we are using Ably to broadcast our events. Thankfully, Ably includes a Pusher compatibility mode which lets us use the Pusher protocol when listening for events in our client-side application:
+>
+>```shell
+>npm install --save-dev laravel-echo pusher-js
+>`````
+>
+>**Before continuing, you should enable Pusher protocol support in your Ably application settings. You may enable this feature within the "Protocol Adapter Settings" portion of your Ably application's settings dashboard.**
+>
+>Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file; however, the default configuration in the `bootstrap.js` file is intended for Pusher. You may copy the configuration below to transition your configuration to Ably:
+>
+>```js
+>import Echo from 'laravel-echo';
+>
+>window.Pusher = require('pusher-js');
+>
+>window.Echo = new Echo({
+>    broadcaster: 'pusher',
+>    key: process.env.MIX_ABLY_PUBLIC_KEY,
+>    wsHost: 'realtime-pusher.ably.io',
+>    wsPort: 443,
+>    disableStats: true,
+>    encrypted: true,
+>});
+>```
+>
+>Note that our Ably Echo configuration references a `MIX_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
+>
+>Update php-Laravel config. - Set `ABLY_PUSHER_ADAPTER` as true in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'pusher_adapter' => env('ABLY_PUSHER_ADAPTER', false)`
 
 <a name="concept-overview"></a>
 ## Concept Overview
