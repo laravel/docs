@@ -629,11 +629,11 @@ The `Arr::join` method joins array elements with a string. Using this method's s
 
     $joined = Arr::join($array, ', ');
 
-    // Tailwind, Alpine, Laravel, Livewire
+    // 'Tailwind, Alpine, Laravel, Livewire'
 
     $joined = Arr::join($array, ', ', ' and ');
 
-    // Tailwind, Alpine, Laravel and Livewire
+    // 'Tailwind, Alpine, Laravel and Livewire'
 
 <a name="method-array-keyby"></a>
 #### `Arr::keyBy()` {.collection-method}
@@ -811,7 +811,7 @@ The `Arr::query` method converts the array into a query string:
 
     Arr::query($array);
 
-    // name=Taylor&order[column]=created_at&order[direction]=desc
+    // 'name=Taylor&order[column]=created_at&order[direction]=desc'
 
 <a name="method-array-random"></a>
 #### `Arr::random()` {.collection-method}
@@ -1228,7 +1228,7 @@ The `class_basename` function returns the class name of the given class with the
 
     $class = class_basename('Foo\Bar\Baz');
 
-    // Baz
+    // 'Baz'
 
 <a name="method-e"></a>
 #### `e()` {.collection-method}
@@ -1237,7 +1237,7 @@ The `e` function runs PHP's `htmlspecialchars` function with the `double_encode`
 
     echo e('<html>foo</html>');
 
-    // &lt;html&gt;foo&lt;/html&gt;
+    // '&lt;html&gt;foo&lt;/html&gt;'
 
 <a name="method-preg-replace-array"></a>
 #### `preg_replace_array()` {.collection-method}
@@ -1336,7 +1336,7 @@ The `Str::camel` method converts the given string to `camelCase`:
 
     $converted = Str::camel('foo_bar');
 
-    // fooBar
+    // 'fooBar'
 
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
@@ -1427,11 +1427,11 @@ The `Str::finish` method adds a single instance of the given value to a string i
 
     $adjusted = Str::finish('this/string', '/');
 
-    // this/string/
+    // 'this/string/'
 
     $adjusted = Str::finish('this/string/', '/');
 
-    // this/string/
+    // 'this/string/'
 
 <a name="method-str-headline"></a>
 #### `Str::headline()` {.collection-method}
@@ -1442,11 +1442,11 @@ The `Str::headline` method will convert strings delimited by casing, hyphens, or
 
     $headline = Str::headline('steve_jobs');
 
-    // Steve Jobs
+    // 'Steve Jobs'
 
     $headline = Str::headline('EmailNotificationSent');
 
-    // Email Notification Sent
+    // 'Email Notification Sent'
 
 <a name="method-str-inline-markdown"></a>
 #### `Str::inlineMarkdown()` {.collection-method}
@@ -1457,7 +1457,7 @@ The `Str::inlineMarkdown` method converts GitHub flavored Markdown into inline H
 
     $html = Str::inlineMarkdown('**Laravel**');
 
-    // <strong>Laravel</strong>
+    // '<strong>Laravel</strong>'
 
 <a name="method-str-is"></a>
 #### `Str::is()` {.collection-method}
@@ -1532,7 +1532,7 @@ The `Str::kebab` method converts the given string to `kebab-case`:
 
     $converted = Str::kebab('fooBar');
 
-    // foo-bar
+    // 'foo-bar'
 
 <a name="method-str-lcfirst"></a>
 #### `Str::lcfirst()` {.collection-method}
@@ -1543,7 +1543,7 @@ The `Str::lcfirst` method returns the given string with the first character lowe
 
     $string = Str::lcfirst('Foo Bar');
 
-    // foo Bar
+    // 'foo Bar'
 
 <a name="method-str-length"></a>
 #### `Str::length()` {.collection-method}
@@ -1565,7 +1565,7 @@ The `Str::limit` method truncates the given string to the specified length:
 
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20);
 
-    // The quick brown fox...
+    // 'The quick brown fox...'
 
 You may pass a third argument to the method to change the string that will be appended to the end of the truncated string:
 
@@ -1573,7 +1573,7 @@ You may pass a third argument to the method to change the string that will be ap
 
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
 
-    // The quick brown fox (...)
+    // 'The quick brown fox (...)'
 
 <a name="method-str-lower"></a>
 #### `Str::lower()` {.collection-method}
@@ -1584,7 +1584,7 @@ The `Str::lower` method converts the given string to lowercase:
 
     $converted = Str::lower('LARAVEL');
 
-    // laravel
+    // 'laravel'
 
 <a name="method-str-markdown"></a>
 #### `Str::markdown()` {.collection-method}
@@ -1595,13 +1595,13 @@ The `Str::markdown` method converts GitHub flavored Markdown into HTML using [Co
 
     $html = Str::markdown('# Laravel');
 
-    // <h1>Laravel</h1>
+    // '<h1>Laravel</h1>'
 
     $html = Str::markdown('# Taylor <b>Otwell</b>', [
         'html_input' => 'strip',
     ]);
 
-    // <h1>Taylor Otwell</h1>
+    // '<h1>Taylor Otwell</h1>'
 
 <a name="method-str-mask"></a>
 #### `Str::mask()` {.collection-method}
@@ -1612,13 +1612,13 @@ The `Str::mask` method masks a portion of a string with a repeated character, an
 
     $string = Str::mask('taylor@example.com', '*', 3);
 
-    // tay***************
+    // 'tay***************'
 
 If needed, you provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
 
     $string = Str::mask('taylor@example.com', '*', -15, 3);
 
-    // tay***@example.com
+    // 'tay***@example.com'
 
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {.collection-method}
@@ -1683,11 +1683,11 @@ The `Str::plural` method converts a singular word string to its plural form. Thi
 
     $plural = Str::plural('car');
 
-    // cars
+    // 'cars'
 
     $plural = Str::plural('child');
 
-    // children
+    // 'children'
 
 You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
 
@@ -1695,11 +1695,11 @@ You may provide an integer as a second argument to the function to retrieve the 
 
     $plural = Str::plural('child', 2);
 
-    // children
+    // 'children'
 
     $singular = Str::plural('child', 1);
 
-    // child
+    // 'child'
 
 <a name="method-str-plural-studly"></a>
 #### `Str::pluralStudly()` {.collection-method}
@@ -1710,11 +1710,11 @@ The `Str::pluralStudly` method converts a singular word string formatted in stud
 
     $plural = Str::pluralStudly('VerifiedHuman');
 
-    // VerifiedHumans
+    // 'VerifiedHumans'
 
     $plural = Str::pluralStudly('UserFeedback');
 
-    // UserFeedback
+    // 'UserFeedback'
 
 You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
 
@@ -1722,11 +1722,11 @@ You may provide an integer as a second argument to the function to retrieve the 
 
     $plural = Str::pluralStudly('VerifiedHuman', 2);
 
-    // VerifiedHumans
+    // 'VerifiedHumans'
 
     $singular = Str::pluralStudly('VerifiedHuman', 1);
 
-    // VerifiedHuman
+    // 'VerifiedHuman'
 
 <a name="method-str-random"></a>
 #### `Str::random()` {.collection-method}
@@ -1748,7 +1748,7 @@ The `Str::remove` method removes the given value or array of values from the str
 
     $removed = Str::remove('e', $string);
 
-    // Ptr Pipr pickd a pck of pickld ppprs.
+    // 'Ptr Pipr pickd a pck of pickld ppprs.'
 
 You may also pass `false` as a third argument to the `remove` method to ignore case when removing strings.
 
@@ -1763,7 +1763,7 @@ The `Str::replace` method replaces a given string within the string:
 
     $replaced = Str::replace('8.x', '9.x', $string);
 
-    // Laravel 9.x
+    // 'Laravel 9.x'
 
 <a name="method-str-replace-array"></a>
 #### `Str::replaceArray()` {.collection-method}
@@ -1776,7 +1776,7 @@ The `Str::replaceArray` method replaces a given value in the string sequentially
 
     $replaced = Str::replaceArray('?', ['8:30', '9:00'], $string);
 
-    // The event will take place between 8:30 and 9:00
+    // 'The event will take place between 8:30 and 9:00'
 
 <a name="method-str-replace-first"></a>
 #### `Str::replaceFirst()` {.collection-method}
@@ -1787,7 +1787,7 @@ The `Str::replaceFirst` method replaces the first occurrence of a given value in
 
     $replaced = Str::replaceFirst('the', 'a', 'the quick brown fox jumps over the lazy dog');
 
-    // a quick brown fox jumps over the lazy dog
+    // 'a quick brown fox jumps over the lazy dog'
 
 <a name="method-str-replace-last"></a>
 #### `Str::replaceLast()` {.collection-method}
@@ -1798,7 +1798,7 @@ The `Str::replaceLast` method replaces the last occurrence of a given value in a
 
     $replaced = Str::replaceLast('the', 'a', 'the quick brown fox jumps over the lazy dog');
 
-    // the quick brown fox jumps over a lazy dog
+    // 'the quick brown fox jumps over a lazy dog'
 
 
 <a name="method-str-reverse"></a>
@@ -1810,7 +1810,7 @@ The `Str::reverse` method reverses the given string:
 
     $reversed = Str::reverse('Hello World');
 
-    // dlroW olleH
+    // 'dlroW olleH'
 
 <a name="method-str-singular"></a>
 #### `Str::singular()` {.collection-method}
@@ -1821,11 +1821,11 @@ The `Str::singular` method converts a string to its singular form. This function
 
     $singular = Str::singular('cars');
 
-    // car
+    // 'car'
 
     $singular = Str::singular('children');
 
-    // child
+    // 'child'
 
 <a name="method-str-slug"></a>
 #### `Str::slug()` {.collection-method}
@@ -1836,7 +1836,7 @@ The `Str::slug` method generates a URL friendly "slug" from the given string:
 
     $slug = Str::slug('Laravel 5 Framework', '-');
 
-    // laravel-5-framework
+    // 'laravel-5-framework'
 
 <a name="method-snake-case"></a>
 #### `Str::snake()` {.collection-method}
@@ -1847,11 +1847,11 @@ The `Str::snake` method converts the given string to `snake_case`:
 
     $converted = Str::snake('fooBar');
 
-    // foo_bar
+    // 'foo_bar'
 
     $converted = Str::snake('fooBar', '-');
 
-    // foo-bar
+    // 'foo-bar'
 
 <a name="method-str-squish"></a>
 #### `Str::squish()` {.collection-method}
@@ -1862,7 +1862,7 @@ The `Str::squish` method removes all extraneous white space from a string, inclu
 
     $string = Str::squish('    laravel    framework    ');
 
-    // laravel framework
+    // 'laravel framework'
 
 <a name="method-str-start"></a>
 #### `Str::start()` {.collection-method}
@@ -1873,11 +1873,11 @@ The `Str::start` method adds a single instance of the given value to a string if
 
     $adjusted = Str::start('this/string', '/');
 
-    // /this/string
+    // '/this/string'
 
     $adjusted = Str::start('/this/string', '/');
 
-    // /this/string
+    // '/this/string'
 
 <a name="method-starts-with"></a>
 #### `Str::startsWith()` {.collection-method}
@@ -1905,7 +1905,7 @@ The `Str::studly` method converts the given string to `StudlyCase`:
 
     $converted = Str::studly('foo_bar');
 
-    // FooBar
+    // 'FooBar'
 
 <a name="method-str-substr"></a>
 #### `Str::substr()` {.collection-method}
@@ -1916,7 +1916,7 @@ The `Str::substr` method returns the portion of string specified by the start an
 
     $converted = Str::substr('The Laravel Framework', 4, 7);
 
-    // Laravel
+    // 'Laravel'
 
 <a name="method-str-substrcount"></a>
 #### `Str::substrCount()` {.collection-method}
@@ -1937,10 +1937,10 @@ The `Str::substrReplace` method replaces text within a portion of a string, star
     use Illuminate\Support\Str;
 
     $result = Str::substrReplace('1300', ':', 2);
-    // 13:
+    // '13:'
 
     $result = Str::substrReplace('1300', ':', 2, 0);
-    // 13:00
+    // '13:00'
 
 <a name="method-str-swap"></a>
 #### `Str::swap()` {.collection-method}
@@ -1954,7 +1954,7 @@ The `Str::swap` method replaces multiple values in the given string using PHP's 
         'great' => 'fantastic',
     ], 'Tacos are great!');
 
-    // Burritos are fantastic!
+    // 'Burritos are fantastic!'
 
 <a name="method-title-case"></a>
 #### `Str::title()` {.collection-method}
@@ -1965,7 +1965,7 @@ The `Str::title` method converts the given string to `Title Case`:
 
     $converted = Str::title('a nice title uses the correct case');
 
-    // A Nice Title Uses The Correct Case
+    // 'A Nice Title Uses The Correct Case'
 
 <a name="method-str-to-html-string"></a>
 #### `Str::toHtmlString()` {.collection-method}
@@ -1985,7 +1985,7 @@ The `Str::ucfirst` method returns the given string with the first character capi
 
     $string = Str::ucfirst('foo bar');
 
-    // Foo bar
+    // 'Foo bar'
 
 <a name="method-str-ucsplit"></a>
 #### `Str::ucsplit()` {.collection-method}
@@ -2007,7 +2007,7 @@ The `Str::upper` method converts the given string to uppercase:
 
     $string = Str::upper('laravel');
 
-    // LARAVEL
+    // 'LARAVEL'
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
@@ -2038,7 +2038,7 @@ The `Str::words` method limits the number of words in a string. An additional st
 
     return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
 
-    // Perfectly balanced, as >>>
+    // 'Perfectly balanced, as >>>'
 
 <a name="method-str"></a>
 #### `str()` {.collection-method}
@@ -2194,7 +2194,7 @@ The `camel` method converts the given string to `camelCase`:
 
     $converted = Str::of('foo_bar')->camel();
 
-    // fooBar
+    // 'fooBar'
 
 <a name="method-fluent-str-class-basename"></a>
 #### `classBasename` {.collection-method}
@@ -2205,7 +2205,7 @@ The `classBasename` method returns the class name of the given class with the cl
 
     $class = Str::of('Foo\Bar\Baz')->classBasename();
 
-    // Baz
+    // 'Baz'
 
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
@@ -2336,11 +2336,11 @@ The `finish` method adds a single instance of the given value to a string if it 
 
     $adjusted = Str::of('this/string')->finish('/');
 
-    // this/string/
+    // 'this/string/'
 
     $adjusted = Str::of('this/string/')->finish('/');
 
-    // this/string/
+    // 'this/string/'
 
 <a name="method-fluent-str-inline-markdown"></a>
 #### `inlineMarkdown` {.collection-method}
@@ -2351,7 +2351,7 @@ The `inlineMarkdown` method converts GitHub flavored Markdown into inline HTML u
 
     $html = Str::of('**Laravel**')->inlineMarkdown();
 
-    // <strong>Laravel</strong>
+    // '<strong>Laravel</strong>'
 
 <a name="method-fluent-str-is"></a>
 #### `is` {.collection-method}
@@ -2457,7 +2457,7 @@ The `kebab` method converts the given string to `kebab-case`:
 
     $converted = Str::of('fooBar')->kebab();
 
-    // foo-bar
+    // 'foo-bar'
 
 <a name="method-fluent-str-lcfirst"></a>
 #### `lcfirst` {.collection-method}
@@ -2468,7 +2468,7 @@ The `lcfirst` method returns the given string with the first character lowercase
 
     $string = Str::of('Foo Bar')->lcfirst();
 
-    // foo Bar
+    // 'foo Bar'
 
 
 <a name="method-fluent-str-length"></a>
@@ -2491,7 +2491,7 @@ The `limit` method truncates the given string to the specified length:
 
     $truncated = Str::of('The quick brown fox jumps over the lazy dog')->limit(20);
 
-    // The quick brown fox...
+    // 'The quick brown fox...'
 
 You may also pass a second argument to change the string that will be appended to the end of the truncated string:
 
@@ -2499,7 +2499,7 @@ You may also pass a second argument to change the string that will be appended t
 
     $truncated = Str::of('The quick brown fox jumps over the lazy dog')->limit(20, ' (...)');
 
-    // The quick brown fox (...)
+    // 'The quick brown fox (...)'
 
 <a name="method-fluent-str-lower"></a>
 #### `lower` {.collection-method}
@@ -2536,13 +2536,13 @@ The `markdown` method converts GitHub flavored Markdown into HTML:
 
     $html = Str::of('# Laravel')->markdown();
 
-    // <h1>Laravel</h1>
+    // '<h1>Laravel</h1>'
 
     $html = Str::of('# Taylor <b>Otwell</b>')->markdown([
         'html_input' => 'strip',
     ]);
 
-    // <h1>Taylor Otwell</h1>
+    // '<h1>Taylor Otwell</h1>'
 
 <a name="method-fluent-str-mask"></a>
 #### `mask` {.collection-method}
@@ -2553,13 +2553,13 @@ The `mask` method masks a portion of a string with a repeated character, and may
 
     $string = Str::of('taylor@example.com')->mask('*', 3);
 
-    // tay***************
+    // 'tay***************'
 
 If needed, you provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
 
     $string = Str::of('taylor@example.com')->mask('*', -15, 3);
 
-    // tay***@example.com
+    // 'tay***@example.com'
 
 <a name="method-fluent-str-match"></a>
 #### `match` {.collection-method}
@@ -2680,11 +2680,11 @@ The `plural` method converts a singular word string to its plural form. This fun
 
     $plural = Str::of('car')->plural();
 
-    // cars
+    // 'cars'
 
     $plural = Str::of('child')->plural();
 
-    // children
+    // 'children'
 
 You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
 
@@ -2692,11 +2692,11 @@ You may provide an integer as a second argument to the function to retrieve the 
 
     $plural = Str::of('child')->plural(2);
 
-    // children
+    // 'children'
 
     $plural = Str::of('child')->plural(1);
 
-    // child
+    // 'child'
 
 <a name="method-fluent-str-prepend"></a>
 #### `prepend` {.collection-method}
@@ -2707,7 +2707,7 @@ The `prepend` method prepends the given values onto the string:
 
     $string = Str::of('Framework')->prepend('Laravel ');
 
-    // Laravel Framework
+    // 'Laravel Framework'
 
 <a name="method-fluent-str-remove"></a>
 #### `remove` {.collection-method}
@@ -2718,7 +2718,7 @@ The `remove` method removes the given value or array of values from the string:
 
     $string = Str::of('Arkansas is quite beautiful!')->remove('quite');
 
-    // Arkansas is beautiful!
+    // 'Arkansas is beautiful!'
 
 You may also pass `false` as a second parameter to ignore case when removing strings.
 
@@ -2731,7 +2731,7 @@ The `replace` method replaces a given string within the string:
 
     $replaced = Str::of('Laravel 6.x')->replace('6.x', '7.x');
 
-    // Laravel 7.x
+    // 'Laravel 7.x'
 
 <a name="method-fluent-str-replace-array"></a>
 #### `replaceArray` {.collection-method}
@@ -2744,7 +2744,7 @@ The `replaceArray` method replaces a given value in the string sequentially usin
 
     $replaced = Str::of($string)->replaceArray('?', ['8:30', '9:00']);
 
-    // The event will take place between 8:30 and 9:00
+    // 'The event will take place between 8:30 and 9:00'
 
 <a name="method-fluent-str-replace-first"></a>
 #### `replaceFirst` {.collection-method}
@@ -2755,7 +2755,7 @@ The `replaceFirst` method replaces the first occurrence of a given value in a st
 
     $replaced = Str::of('the quick brown fox jumps over the lazy dog')->replaceFirst('the', 'a');
 
-    // a quick brown fox jumps over the lazy dog
+    // 'a quick brown fox jumps over the lazy dog'
 
 <a name="method-fluent-str-replace-last"></a>
 #### `replaceLast` {.collection-method}
@@ -2766,7 +2766,7 @@ The `replaceLast` method replaces the last occurrence of a given value in a stri
 
     $replaced = Str::of('the quick brown fox jumps over the lazy dog')->replaceLast('the', 'a');
 
-    // the quick brown fox jumps over a lazy dog
+    // 'the quick brown fox jumps over a lazy dog'
 
 <a name="method-fluent-str-replace-matches"></a>
 #### `replaceMatches` {.collection-method}
@@ -2824,11 +2824,11 @@ The `singular` method converts a string to its singular form. This function supp
 
     $singular = Str::of('cars')->singular();
 
-    // car
+    // 'car'
 
     $singular = Str::of('children')->singular();
 
-    // child
+    // 'child'
 
 <a name="method-fluent-str-slug"></a>
 #### `slug` {.collection-method}
@@ -2839,7 +2839,7 @@ The `slug` method generates a URL friendly "slug" from the given string:
 
     $slug = Str::of('Laravel Framework')->slug('-');
 
-    // laravel-framework
+    // 'laravel-framework'
 
 <a name="method-fluent-str-snake"></a>
 #### `snake` {.collection-method}
@@ -2850,7 +2850,7 @@ The `snake` method converts the given string to `snake_case`:
 
     $converted = Str::of('fooBar')->snake();
 
-    // foo_bar
+    // 'foo_bar'
 
 <a name="method-fluent-str-split"></a>
 #### `split` {.collection-method}
@@ -2872,7 +2872,7 @@ The `squish` method removes all extraneous white space from a string, including 
 
     $string = Str::of('    laravel    framework    ')->squish();
 
-    // laravel framework
+    // 'laravel framework'
 
 <a name="method-fluent-str-start"></a>
 #### `start` {.collection-method}
@@ -2883,11 +2883,11 @@ The `start` method adds a single instance of the given value to a string if it d
 
     $adjusted = Str::of('this/string')->start('/');
 
-    // /this/string
+    // '/this/string'
 
     $adjusted = Str::of('/this/string')->start('/');
 
-    // /this/string
+    // '/this/string'
 
 <a name="method-fluent-str-starts-with"></a>
 #### `startsWith` {.collection-method}
@@ -2909,7 +2909,7 @@ The `studly` method converts the given string to `StudlyCase`:
 
     $converted = Str::of('foo_bar')->studly();
 
-    // FooBar
+    // 'FooBar'
 
 <a name="method-fluent-str-substr"></a>
 #### `substr` {.collection-method}
@@ -2920,11 +2920,11 @@ The `substr` method returns the portion of the string specified by the given sta
 
     $string = Str::of('Laravel Framework')->substr(8);
 
-    // Framework
+    // 'Framework'
 
     $string = Str::of('Laravel Framework')->substr(8, 5);
 
-    // Frame
+    // 'Frame'
 
 <a name="method-fluent-str-substrreplace"></a>
 #### `substrReplace` {.collection-method}
@@ -2935,11 +2935,11 @@ The `substrReplace` method replaces text within a portion of a string, starting 
 
     $string = Str::of('1300')->substrReplace(':', 2);
 
-    // 13:
+    // '13:'
 
     $string = Str::of('The Framework')->substrReplace(' Laravel', 3, 0);
 
-    // The Laravel Framework
+    // 'The Laravel Framework'
 
 <a name="method-fluent-str-swap"></a>
 #### `swap` {.collection-method}
@@ -2954,7 +2954,7 @@ The `swap` method replaces multiple values in the string using PHP's `strtr` fun
             'great' => 'fantastic',
         ]);
 
-    // Burritos are fantastic!
+    // 'Burritos are fantastic!'
 
 <a name="method-fluent-str-tap"></a>
 #### `tap` {.collection-method}
@@ -2970,7 +2970,7 @@ The `tap` method passes the string to the given closure, allowing you to examine
         })
         ->upper();
 
-    // LARAVEL FRAMEWORK
+    // 'LARAVEL FRAMEWORK'
 
 <a name="method-fluent-str-test"></a>
 #### `test` {.collection-method}
@@ -2992,7 +2992,7 @@ The `title` method converts the given string to `Title Case`:
 
     $converted = Str::of('a nice title uses the correct case')->title();
 
-    // A Nice Title Uses The Correct Case
+    // 'A Nice Title Uses The Correct Case'
 
 <a name="method-fluent-str-trim"></a>
 #### `trim` {.collection-method}
@@ -3018,7 +3018,7 @@ The `ucfirst` method returns the given string with the first character capitaliz
 
     $string = Str::of('foo bar')->ucfirst();
 
-    // Foo bar
+    // 'Foo bar'
 
 <a name="method-fluent-str-ucsplit"></a>
 #### `ucsplit` {.collection-method}
@@ -3040,7 +3040,7 @@ The `upper` method converts the given string to uppercase:
 
     $adjusted = Str::of('laravel')->upper();
 
-    // LARAVEL
+    // 'LARAVEL'
 
 <a name="method-fluent-str-when"></a>
 #### `when` {.collection-method}
@@ -3083,7 +3083,7 @@ You may also pass an array of values to determine if the given string contains a
                     return $string->title();
                 });
 
-    // Tony Stark
+    // 'Tony Stark'
 
 <a name="method-fluent-str-when-contains-all"></a>
 #### `whenContainsAll` {.collection-method}
@@ -3238,7 +3238,7 @@ The `words` method limits the number of words in a string. If necessary, you may
 
     $string = Str::of('Perfectly balanced, as all things should be.')->words(3, ' >>>');
 
-    // Perfectly balanced, as >>>
+    // 'Perfectly balanced, as >>>'
 
 <a name="urls"></a>
 ## URLs
@@ -3870,7 +3870,7 @@ A default value or closure may be passed as the third argument to the function. 
 
     $result = transform(null, $callback, 'The value is blank');
 
-    // The value is blank
+    // 'The value is blank'
 
 <a name="method-validator"></a>
 #### `validator()` {.collection-method}
