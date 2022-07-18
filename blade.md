@@ -470,7 +470,10 @@ Additionally, the `@disabled` directive may be used to indicate if a given eleme
 Moreover, the `@readonly` directive may be used to indicate if a given element should be "readonly":
 
 ```blade
-<input type="email" name="email" value="email@laravel.com" @readonly($user->isNotAdmin()) />
+<input type="email"
+        name="email"
+        value="email@laravel.com"
+        @readonly($user->isNotAdmin()) />
 ```
 
 In addition, the `@required` directive may be used to indicate if a given element should be "required":
@@ -1586,6 +1589,14 @@ Blade allows you to push to named stacks which can be rendered somewhere else in
 @push('scripts')
     <script src="/example.js"></script>
 @endpush
+```
+
+If you would like to `@push` content if a given boolean expression evaluates to `true`, you may use the `@pushIf` directive:
+
+```blade
+@pushIf($shouldPush, 'scripts')
+    <script src="/example.js"></script>
+@endPushIf
 ```
 
 You may push to a stack as many times as needed. To render the complete stack contents, pass the name of the stack to the `@stack` directive:
