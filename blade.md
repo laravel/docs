@@ -1591,12 +1591,12 @@ Blade allows you to push to named stacks which can be rendered somewhere else in
 @endpush
 ```
 
-If you would like to `@push` a script if a given boolean expression evaluates to true or false, you may use the `@pushIf` directive:
+If you would like to `@push` content if a given boolean expression evaluates to `true`, you may use the `@pushIf` directive:
 
 ```blade
-@pushIf($boolean, 'scripts')
+@pushIf($shouldPush, 'scripts')
     <script src="/example.js"></script>
-@endpushIf
+@endPushIf
 ```
 
 You may push to a stack as many times as needed. To render the complete stack contents, pass the name of the stack to the `@stack` directive:
