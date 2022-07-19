@@ -318,6 +318,15 @@ The second and third arguments accepted by the `date` method may be used to spec
 
 If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method.
 
+<a name="retrieving-enum-input-values"></a>
+#### Retrieving Enum Input Values
+
+Input values that correspond to [PHP enums](https://www.php.net/manual/en/language.types.enumerations.php) may also be retrieved from the request. If the request does not contain an input value with the given name or the enum does not have a backing value that matches the input value, `null` will be returned. The `enum` method accepts the name of the input value and the enum class as its first and second arguments:
+
+    use App\Enums\Status;
+
+    $status = $request->enum('status', Status::class);
+
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input Via Dynamic Properties
 
