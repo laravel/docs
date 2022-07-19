@@ -5,6 +5,7 @@
 - [Package Discovery](#package-discovery)
 - [Service Providers](#service-providers)
 - [Resources](#resources)
+    - [About](#about)
     - [Configuration](#configuration)
     - [Migrations](#migrations)
     - [Routes](#routes)
@@ -85,6 +86,24 @@ A service provider extends the `Illuminate\Support\ServiceProvider` class and co
 
 <a name="resources"></a>
 ## Resources
+
+<a name="about"></a>
+### About
+
+Packages may push additional information to the output of the `about` Artisan command:
+
+    use Illuminate\Foundation\Console\AboutCommand;
+
+    AboutCommand::add('My Package', 'Version', '1.0.0');
+
+If certain data is expensive to compute, you may consider lazy-loading that information by passing a closure:
+
+    AboutCommand::add('My Package', [
+        'Version' => '1.0.0',
+        'Driver' => fn() => config('my-package.driver'),
+    ]);
+
+> {tip} Packages may also push to existing sections such as "Environment" and "Drivers".
 
 <a name="configuration"></a>
 ### Configuration
