@@ -5,13 +5,13 @@
 - [Package Discovery](#package-discovery)
 - [Service Providers](#service-providers)
 - [Resources](#resources)
-    - [About](#about)
     - [Configuration](#configuration)
     - [Migrations](#migrations)
     - [Routes](#routes)
     - [Translations](#translations)
     - [Views](#views)
     - [View Components](#view-components)
+    - ["About" Artisan Command](#about-artisan-command)
 - [Commands](#commands)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
@@ -86,24 +86,6 @@ A service provider extends the `Illuminate\Support\ServiceProvider` class and co
 
 <a name="resources"></a>
 ## Resources
-
-<a name="about"></a>
-### About
-
-Packages may push additional information to the output of the `about` Artisan command:
-
-    use Illuminate\Foundation\Console\AboutCommand;
-
-    AboutCommand::add('My Package', 'Version', '1.0.0');
-
-If certain data is expensive to compute, you may consider lazy-loading that information by passing a closure:
-
-    AboutCommand::add('My Package', [
-        'Version' => '1.0.0',
-        'Driver' => fn() => config('my-package.driver'),
-    ]);
-
-> {tip} Packages may also push to existing sections such as "Environment" and "Drivers".
 
 <a name="configuration"></a>
 ### Configuration
@@ -326,6 +308,30 @@ If your package contains anonymous components, they must be placed within a `com
 ```blade
 <x-courier::alert />
 ```
+
+<a name="about-artisan-command"></a>
+### "About" Artisan Command
+
+Laravel's built-in `about` Artisan command provides a synopsis of the application's environment and configuration. Packages may push additional information to this command's output via the `AboutCommand` class. Typically, this information may be added from your package service provider's `register` method:
+
+    use Illuminate\Foundation\Console\AboutCommand;
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        AboutCommand::add('My Package', 'Version', '1.0.0');
+    }
+
+The `about` command's values may also be provided a closures if deferred execution is desirable:
+
+    AboutCommand::add('My Package', [
+        'Version' => '1.0.0',
+        'Driver' => fn () => config('my-package.driver'),
+    ]);
 
 <a name="commands"></a>
 ## Commands
