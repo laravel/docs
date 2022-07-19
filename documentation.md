@@ -87,6 +87,7 @@
     - [Mix](/docs/{{version}}/mix)
     - [Octane](/docs/{{version}}/octane)
     - [Passport](/docs/{{version}}/passport)
+    - [Pint](/docs/{{version}}/pint)
     - [Sail](/docs/{{version}}/sail)
     - [Sanctum](/docs/{{version}}/sanctum)
     - [Scout](/docs/{{version}}/scout)
