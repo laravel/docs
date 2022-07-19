@@ -95,7 +95,7 @@ You may also pass arguments to the `environment` method to determine if the envi
 <a name="environment-information"></a>
 ### Environment Information
 
-Laravel ships with a built-in Artisan command that outputs information about your application, such as; configuration, environment, drivers and more.
+Laravel ships with a built-in `about` Artisan command that outputs information about your application, such as; configuration, environment, drivers and more.
 
 Applications and packages may add their own information to the output of the command:
 
