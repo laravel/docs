@@ -92,28 +92,19 @@ You may also pass arguments to the `environment` method to determine if the envi
 
 > {tip} The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable.
 
-<a name="environment-information"></a>
-### Environment Information
+<a name="environment-overview"></a>
+## Environment Overview
 
-Laravel ships with a built-in `about` Artisan command that outputs information about your application, such as; configuration, environment, drivers and more.
+To get an overview of your application's configuration, drivers and environment, you may use the `about` Artisan commmand:
 
-Applications and packages may add their own information to the output of the command:
-
-```php
-<?php
-
-use Illuminate\Foundation\Console\AboutCommand;
-
-AboutCommand::add('My Package', 'Version', '1.0.0');
+```shell
+php artisan about
 ```
 
-You may also add multiple key / value pairs:
+In addition, you may filter by sections using the `--only` option:
 
-```php
-AboutCommand::add('My Package', [
-    'Version' => '1.0.0',
-    'Driver' => fn() => config('my-package.driver'),
-]);
+```shell
+php artisan about --only=environment
 ```
 
 <a name="accessing-configuration-values"></a>
