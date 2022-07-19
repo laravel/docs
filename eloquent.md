@@ -902,6 +902,15 @@ The `onlyTrashed` method will retrieve **only** soft deleted models:
                     ->where('airline_id', 1)
                     ->get();
 
+<a name="viewing-models"></a>
+## Viewing Models
+
+Sometimes, by looking at the model's code it may be difficult to see what attributes it has without checking the database or the migrations file. To mitigate this issue, you may use the `model:show` Artisan command can provides an overview of all of the model's attributes and relations:
+
+```shell
+php artisan model:show Flight
+```
+
 <a name="pruning-models"></a>
 ## Pruning Models
 
