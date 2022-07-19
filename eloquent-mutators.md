@@ -152,7 +152,6 @@ A mutator transforms an Eloquent attribute value when it is set. To define a mut
         /**
          * Interact with the user's first name.
          *
-         * @param  string  $value
          * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
         protected function firstName(): Attribute
