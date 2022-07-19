@@ -90,6 +90,15 @@ php artisan make:model Flight --all
 php artisan make:model Member --pivot
 ```
 
+<a name="inspecting-models"></a>
+#### Inspecting Models
+
+Sometimes it can be difficult to determine all of a model's available attributes and relationships just by skimming its code. Instead, try the `model:show` Artisan command, which provides a convenient overview of all the model's attributes and relations:
+
+```shell
+php artisan model:show Flight
+```
+
 <a name="eloquent-model-conventions"></a>
 ## Eloquent Model Conventions
 
