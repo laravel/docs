@@ -17,6 +17,21 @@ All of the configuration files for the Laravel framework are stored in the `conf
 
 These configuration files allow you to configure things like your database connection information, your mail server information, as well as various other core configuration values such as your application timezone and encryption key.
 
+<a name="application-overview"></a>
+#### Application Overview
+
+In a hurry? You can get a quick overview of your application's configuration, drivers, and environment via the `about` Artisan command:
+
+```shell
+php artisan about
+```
+
+If you're only interested in a particular section of the application overview output, you may filter for that section using the `--only` option:
+
+```shell
+php artisan about --only=environment
+```
+
 <a name="environment-configuration"></a>
 ## Environment Configuration
 
