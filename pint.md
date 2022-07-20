@@ -18,7 +18,7 @@ Pint is automatically installed with all new Laravel applications so you may sta
 <a name="installation"></a>
 ## Installation
 
-Laravel is included in recent releases of the Laravel framework, so installation is typically unnecessary. However, for older applications, you may install Laravel Pint via Composer:
+Pint is included in recent releases of the Laravel framework, so installation is typically unnecessary. However, for older applications, you may install Laravel Pint via Composer:
 
 ```shell
 composer require laravel/pint --dev
