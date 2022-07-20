@@ -1,6 +1,7 @@
 # Laravel Pint
 
 - [Introduction](#introduction)
+- [Installation](#installation)
 - [Running Pint](#running-pint)
 - [Configuring Pint](#configuring-pint)
     - [Presets](#presets)
@@ -13,6 +14,15 @@
 [Laravel Pint](https://github.com/laravel/pint) is an opinionated PHP code style fixer for minimalists. Pint is built on top of PHP-CS-Fixer and makes it simple to ensure that your code style stays clean and consistent.
 
 Pint is automatically installed with all new Laravel applications so you may start using it immediately. By default, Pint does not require any configuration and will fix code style issues in your code by following the opinionated coding style of Laravel.
+
+<a name="installation"></a>
+## Installation
+
+For older applications you might need to install Pint via the Composer package manager:
+
+```shell
+composer require laravel/pint
+```
 
 <a name="running-pint"></a>
 ## Running Pint
