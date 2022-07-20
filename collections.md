@@ -1087,7 +1087,7 @@ The `has` method determines if a given key exists in the collection:
 <a name="method-hasany"></a>
 #### `hasAny()` {.collection-method}
 
-The `hasAny` method checks whether any item in a given key exists in the collection:
+The `hasAny` method determines whether any of the given keys exist in the collection:
 
     $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
 
