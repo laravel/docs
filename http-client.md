@@ -8,7 +8,7 @@
     - [Timeout](#timeout)
     - [Retries](#retries)
     - [Error Handling](#error-handling)
-    - [Middleware](#middleware)
+    - [Guzzle Middleware](#guzzle-middleware)
     - [Guzzle Options](#guzzle-options)
 - [Concurrent Requests](#concurrent-requests)
 - [Macros](#macros)
@@ -226,25 +226,6 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
     // Immediately execute the given callback if there was a client or server error...
     $response->onError(callable $callback);
     
-<a name="middleware"></a>
-### Middleware
-
-The request and response can be altered using [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) 
-
-You can alter the request simply by using the Middleware::mapRequest method
-
-    Http::withMiddleware(\GuzzleHttp\Middleware::mapRequest(function (\Psr\Http\Message\RequestInterface $request) {
-        $request->withHeader('Additional', 'Value');
-    })
-    ->get('http://example.com');
-    
-You can alter the response simply by using the Middleware::mapResponse method
-
-    Http::withMiddleware(\GuzzleHttp\Middleware::mapResponse(function (\Psr\Http\Message\ResponseInterface $response) {
-        $response->getHeader('Additional');
-    })
-    ->get('http://example.com');
-
 <a name="throwing-exceptions"></a>
 #### Throwing Exceptions
 
@@ -271,6 +252,35 @@ If you would like to perform some additional logic before the exception is throw
     return Http::post(/* ... */)->throw(function ($response, $e) {
         //
     })->json();
+
+<a name="guzzle-middleware"></a>
+### Guzzle Middleware
+
+Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withMiddleware` method in combination with Guzzle's `mapRequest` middleware factory:
+
+    use GuzzleHttp\Middleware;
+    use Illuminate\Support\Facades\Http;
+    use Psr\Http\Message\RequestInterface;
+
+    $response = Http::withMiddleware(
+        Middleware::mapRequest(function (RequestInterface $request) {
+            $request->withHeader('X-Example', 'Value');
+        })
+    ->get('http://example.com');
+
+Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withMiddleware` method in combination with Guzzle's `mapResponse` middleware factory:
+
+    use GuzzleHttp\Middleware;
+    use Illuminate\Support\Facades\Http;
+    use Psr\Http\Message\ResponseInterface;
+
+    $response = Http::withMiddleware(
+        Middleware::mapResponse(function (ResponseInterface $response) {
+            $header = $response->getHeader('X-Example');
+
+            // ...
+        })
+    )->get('http://example.com');
 
 <a name="guzzle-options"></a>
 ### Guzzle Options
