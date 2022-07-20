@@ -1,6 +1,7 @@
 # Laravel Pint
 
 - [Introduction](#introduction)
+- [Installation](#installation)
 - [Running Pint](#running-pint)
 - [Configuring Pint](#configuring-pint)
     - [Presets](#presets)
@@ -14,16 +15,25 @@
 
 Pint is automatically installed with all new Laravel applications so you may start using it immediately. By default, Pint does not require any configuration and will fix code style issues in your code by following the opinionated coding style of Laravel.
 
+<a name="installation"></a>
+## Installation
+
+Laravel is included in recent releases of the Laravel framework, so installation is typically unnecessary. However, for older applications, you may install Laravel Pint via Composer:
+
+```shell
+composer require laravel/pint --dev
+```
+
 <a name="running-pint"></a>
 ## Running Pint
 
-You instruct Pint to fix code style issues by running the `pint` binary that is available in your project's `vendor/bin` directory:
+You can instruct Pint to fix code style issues by invoking the `pint` binary that is available in your project's `vendor/bin` directory:
 
 ```shell
 ./vendor/bin/pint
 ```
 
-When running Pint, it will output a list of files that have been fixed. It is possible to see the changes made in more detail using the `-v` option:
+Pint will display a thorough list of all of the files that it updates while fixing code style issues throughout your project. You can view even more detail about Pint's changes by providing the `-v` option when invoking Pint:
 
 ```shell
 ./vendor/bin/pint -v
