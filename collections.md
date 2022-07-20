@@ -131,6 +131,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [get](#method-get)
 [groupBy](#method-groupby)
 [has](#method-has)
+[hasAny](#method-hasany)
 [implode](#method-implode)
 [intersect](#method-intersect)
 [intersectByKeys](#method-intersectbykeys)
@@ -1080,6 +1081,21 @@ The `has` method determines if a given key exists in the collection:
     // true
 
     $collection->has(['amount', 'price']);
+
+    // false
+
+<a name="method-hasany"></a>
+#### `hasAny()` {.collection-method}
+
+The `hasAny` method checks whether any item in a given key exists in the collection:
+
+    $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
+
+    $collection->hasAny(['product', 'price']);
+
+    // true
+
+    $collection->hasAny(['name', 'price']);
 
     // false
 
