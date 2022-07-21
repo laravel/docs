@@ -1771,6 +1771,8 @@ Occasionally, you may want to attach additional validation rules to your default
         // ...
     });
 
+> {note} Translation keys are not yet working in Laravel 8 for validating `letters`, `mixedCasev`, `numbers`, `symbols` and `uncompromised`. If you want to localize those messages use translation string as a key.
+
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
 
