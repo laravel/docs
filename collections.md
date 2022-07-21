@@ -103,6 +103,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [combine](#method-combine)
 [concat](#method-concat)
 [contains](#method-contains)
+[containsOneItem](#method-containsoneitem)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
 [countBy](#method-countBy)
@@ -436,6 +437,23 @@ You may also pass a key / value pair to the `contains` method, which will determ
 The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`containsStrict`](#method-containsstrict) method to filter using "strict" comparisons.
 
 For the inverse of `contains`, see the [doesntContain](#method-doesntcontain) method.
+
+<a name="method-containsoneitem"></a>
+#### `containsOneItem()` {.collection-method}
+
+The `containsOneItem` method determines whether the collection contains only one single item.
+
+    collect([])->containsOneItem();
+
+    // false
+
+    collect(['1'])->containsOneItem();
+
+    // true
+
+    collect(['1','2'])->containsOneItem();
+
+    //false
 
 <a name="method-containsstrict"></a>
 #### `containsStrict()` {.collection-method}
