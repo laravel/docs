@@ -274,6 +274,17 @@ If you wish, you may also add extra query conditions to the authentication query
 
 > {note} In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database table.
 
+<a name="running-additional-checks"></a>
+#### Running additional checks
+
+To determine if the found user should be able to authenticate, you can use the `attemptWhen` method. It accepts a callback as second parameter that receives the found user. The attempt will stop if the callback returns anything _falsy_.
+
+    if (Auth::attemptWhen(['email' => $email, 'password' => $password], fn($user) => $user->isNotBanned())) {
+        // Authentication was successful...
+    }
+
+> {note} The callback is not executed if the user is not found by the credentials.
+
 <a name="accessing-specific-guard-instances"></a>
 #### Accessing Specific Guard Instances
 
