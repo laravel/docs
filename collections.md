@@ -441,7 +441,7 @@ For the inverse of `contains`, see the [doesntContain](#method-doesntcontain) me
 <a name="method-containsoneitem"></a>
 #### `containsOneItem()` {.collection-method}
 
-The `containsOneItem` method determines whether the collection contains only one single item.
+The `containsOneItem` method determines whether the collection contains a single item:
 
     collect([])->containsOneItem();
 
@@ -451,9 +451,9 @@ The `containsOneItem` method determines whether the collection contains only one
 
     // true
 
-    collect(['1','2'])->containsOneItem();
+    collect(['1', '2'])->containsOneItem();
 
-    //false
+    // false
 
 <a name="method-containsstrict"></a>
 #### `containsStrict()` {.collection-method}
