@@ -247,6 +247,8 @@ In order for Laravel's Flysystem integration to generate proper URLs when using 
 AWS_URL=http://localhost:9000/local
 ```
 
+You may create buckets via the MinIO console, which is available at `http://localhost:8900`. The default username for the MinIO console is `sail` while the default password is `password`.
+
 <a name="running-tests"></a>
 ## Running Tests
 
