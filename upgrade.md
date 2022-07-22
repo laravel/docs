@@ -128,6 +128,10 @@ The exception handler's `ignore` method is now `public` instead of `protected`. 
 public function ignore(string $class);
 ```
 
+#### Exception Handler Contract
+
+Previously, in order to override the default's app Exception Handler container instance you had to use the abstract `\App\Exceptions\Handler::class`. Now you must use `\Illuminate\Contracts\Debug\ExceptionHandler::class`
+
 ### Blade
 
 #### Lazy Collections & The `$loop` Variable
