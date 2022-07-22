@@ -132,7 +132,7 @@ public function ignore(string $class);
 
 **Likelihood Of Impact: Very Low**
 
-Previously, in order to override the default exception handler, custom implementations were bound into the container using the `\App\Exceptions\Handler::class` type. However, you should now bind custom implementations using the `\Illuminate\Contracts\Debug\ExceptionHandler::class` type.
+Previously, in order to override the default Laravel exception handler, custom implementations were bound into the service container using the `\App\Exceptions\Handler::class` type. However, you should now bind custom implementations using the `\Illuminate\Contracts\Debug\ExceptionHandler::class` type.
 
 ### Blade
 
