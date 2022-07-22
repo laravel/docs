@@ -128,9 +128,11 @@ The exception handler's `ignore` method is now `public` instead of `protected`. 
 public function ignore(string $class);
 ```
 
-#### Exception Handler Contract
+#### Exception Handler Contract Binding
 
-Previously, in order to override the default's app Exception Handler container instance you had to use the abstract `\App\Exceptions\Handler::class`. Now you must use `\Illuminate\Contracts\Debug\ExceptionHandler::class`
+**Likelihood Of Impact: Very Low**
+
+Previously, in order to override the default exception handler, custom implementations were bound into the container using the `\App\Exceptions\Handler::class` type. However, you should now bind custom implementations using the `\Illuminate\Contracts\Debug\ExceptionHandler::class` type.
 
 ### Blade
 
