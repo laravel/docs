@@ -112,7 +112,7 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 
 Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
 
-If you would like additional control over the connection and queue that your Scout jobs are queued on, you may pass an array to the `queue` option:
+To specify the connection and queue that your Scout jobs utilize, you may define the `queue` configuration option as an array:
 
     'queue' => [
         'connection' => 'redis',
