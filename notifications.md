@@ -16,6 +16,8 @@
     - [Customizing The Mailer](#customizing-the-mailer)
     - [Customizing The Templates](#customizing-the-templates)
     - [Attachments](#mail-attachments)
+    - [Adding Tags & Metadata](#adding-tags-metadata)
+    - [Customizing The Symfony Message](#customizing-the-symfony-message)
     - [Using Mailables](#using-mailables)
     - [Previewing Mail Notifications](#previewing-mail-notifications)
 - [Markdown Mail Notifications](#markdown-mail-notifications)
@@ -152,11 +154,19 @@ Once the `ShouldQueue` interface has been added to your notification, you may se
 
     $user->notify(new InvoicePaid($invoice));
 
+When queueing notifications, a queued job will be created for each recipient and channel combination. For example, six jobs will be dispatched to the queue if your notification has three recipients and two channels.
+
+<a name="delaying-notifications"></a>
+#### Delaying Notifications
+
 If you would like to delay the delivery of the notification, you may chain the `delay` method onto your notification instantiation:
 
     $delay = now()->addMinutes(10);
 
     $user->notify((new InvoicePaid($invoice))->delay($delay));
+
+<a name="delaying-notifications-per-channel"></a>
+#### Delaying Notifications Per Channel
 
 You may pass an array to the `delay` method to specify the delay amount for specific channels:
 
@@ -165,7 +175,21 @@ You may pass an array to the `delay` method to specify the delay amount for spec
         'sms' => now()->addMinutes(10),
     ]));
 
-When queueing notifications, a queued job will be created for each recipient and channel combination. For example, six jobs will be dispatched to the queue if your notification has three recipients and two channels.
+Alternatively, you may define a `withDelay` method on the notification class itself. The `withDelay` method should return an array of channel names and delay values:
+
+    /**
+     * Determine the notification's delivery delay.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function withDelay($notifiable)
+    {
+        return [
+            'mail' => now()->addMinutes(5),
+            'sms' => now()->addMinutes(10),
+        ];
+    }
 
 <a name="customizing-the-notification-queue-connection"></a>
 #### Customizing The Notification Queue Connection
@@ -348,7 +372,7 @@ Some notifications inform users of errors, such as a failed invoice payment. You
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Message
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
@@ -471,6 +495,8 @@ To add attachments to an email notification, use the `attach` method while build
                     ->attach('/path/to/file');
     }
 
+> {tip} The `attach` method offered by notification mail messages also accepts [attachable objects](/docs/{{version}}/mail#attachable-objects). Please consult the comprehensive [attachable object documentation](/docs/{{version}}/mail#attachable-objects) to learn more.
+
 When attaching files to a message, you may also specify the display name and / or MIME type by passing an `array` as the second argument to the `attach` method:
 
     /**
@@ -524,6 +550,53 @@ The `attachData` method may be used to attach a raw string of bytes as an attach
                     ->attachData($this->pdf, 'name.pdf', [
                         'mime' => 'application/pdf',
                     ]);
+    }
+
+<a name="adding-tags-metadata"></a>
+### Adding Tags & Metadata
+
+Some third-party email providers such as Mailgun and Postmark support message "tags" and "metadata", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via the `tag` and `metadata` methods:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->greeting('Comment Upvoted!')
+                    ->tag('upvote')
+                    ->metadata('comment_id', $this->comment->id);
+    }
+
+If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
+
+If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message.
+Tags and metadata can be added to the `MailMessage` - these are used by your email service for filtering/processing:
+
+<a name="customizing-the-symfony-message"></a>
+### Customizing The Symfony Message
+
+The `withSymfonyMessage` method of the `MailMessage` class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
+
+    use Symfony\Component\Mime\Email;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->withSymfonyMessage(function (Email $message) {
+                        $message->getHeaders()->addTextHeader(
+                            'Custom-Header', 'Header Value'
+                        );
+                    });
     }
 
 <a name="using-mailables"></a>

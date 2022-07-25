@@ -79,17 +79,19 @@ If necessary, you may define macros that accept additional arguments:
 For the majority of the remaining collection documentation, we'll discuss each method available on the `Collection` class. Remember, all of these methods may be chained to fluently manipulate the underlying array. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary:
 
 <style>
-    #collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    .collection-method-list > p {
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
     }
 
-    #collection-method-list a {
+    .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 
-<div id="collection-method-list" markdown="1">
+<div class="collection-method-list" markdown="1">
 
 [all](#method-all)
 [average](#method-average)
@@ -101,6 +103,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [combine](#method-combine)
 [concat](#method-concat)
 [contains](#method-contains)
+[containsOneItem](#method-containsoneitem)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
 [countBy](#method-countBy)
@@ -119,6 +122,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [except](#method-except)
 [filter](#method-filter)
 [first](#method-first)
+[firstOrFail](#method-first-or-fail)
 [firstWhere](#method-first-where)
 [flatMap](#method-flatmap)
 [flatten](#method-flatten)
@@ -128,6 +132,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [get](#method-get)
 [groupBy](#method-groupby)
 [has](#method-has)
+[hasAny](#method-hasany)
 [implode](#method-implode)
 [intersect](#method-intersect)
 [intersectByKeys](#method-intersectbykeys)
@@ -137,6 +142,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [keyBy](#method-keyby)
 [keys](#method-keys)
 [last](#method-last)
+[lazy](#method-lazy)
 [macro](#method-macro)
 [make](#method-make)
 [map](#method-map)
@@ -166,7 +172,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [random](#method-random)
 [range](#method-range)
 [reduce](#method-reduce)
-[reduceMany](#method-reduce-many)
 [reduceSpread](#method-reduce-spread)
 [reject](#method-reject)
 [replace](#method-replace)
@@ -175,11 +180,11 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [search](#method-search)
 [shift](#method-shift)
 [shuffle](#method-shuffle)
-[sliding](#method-sliding)
 [skip](#method-skip)
 [skipUntil](#method-skipuntil)
 [skipWhile](#method-skipwhile)
 [slice](#method-slice)
+[sliding](#method-sliding)
 [sole](#method-sole)
 [some](#method-some)
 [sort](#method-sort)
@@ -209,6 +214,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [unlessEmpty](#method-unlessempty)
 [unlessNotEmpty](#method-unlessnotempty)
 [unwrap](#method-unwrap)
+[value](#method-value)
 [values](#method-values)
 [when](#method-when)
 [whenEmpty](#method-whenempty)
@@ -431,6 +437,23 @@ You may also pass a key / value pair to the `contains` method, which will determ
 The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`containsStrict`](#method-containsstrict) method to filter using "strict" comparisons.
 
 For the inverse of `contains`, see the [doesntContain](#method-doesntcontain) method.
+
+<a name="method-containsoneitem"></a>
+#### `containsOneItem()` {.collection-method}
+
+The `containsOneItem` method determines whether the collection contains a single item:
+
+    collect([])->containsOneItem();
+
+    // false
+
+    collect(['1'])->containsOneItem();
+
+    // true
+
+    collect(['1', '2'])->containsOneItem();
+
+    // false
 
 <a name="method-containsstrict"></a>
 #### `containsStrict()` {.collection-method}
@@ -795,6 +818,23 @@ You may also call the `first` method with no arguments to get the first element 
 
     // 1
 
+<a name="method-first-or-fail"></a>
+#### `firstOrFail()` {.collection-method}
+
+The `firstOrFail` method is identical to the `first` method; however, if no result is found, an `Illuminate\Support\ItemNotFoundException` exception will be thrown:
+
+    collect([1, 2, 3, 4])->firstOrFail(function ($value, $key) {
+        return $value > 5;
+    });
+
+    // Throws ItemNotFoundException...
+
+You may also call the `firstOrFail` method with no arguments to get the first element in the collection. If the collection is empty, an `Illuminate\Support\ItemNotFoundException` exception will be thrown:
+
+    collect([])->firstOrFail();
+
+    // Throws ItemNotFoundException...
+
 <a name="method-first-where"></a>
 #### `firstWhere()` {.collection-method}
 
@@ -1016,7 +1056,7 @@ Multiple grouping criteria may be passed as an array. Each array element will be
 
     $result = $data->groupBy(['skill', function ($item) {
         return $item['roles'];
-    }], $preserveKeys = true);
+    }], preserveKeys: true);
 
     /*
     [
@@ -1059,6 +1099,21 @@ The `has` method determines if a given key exists in the collection:
     // true
 
     $collection->has(['amount', 'price']);
+
+    // false
+
+<a name="method-hasany"></a>
+#### `hasAny()` {.collection-method}
+
+The `hasAny` method determines whether any of the given keys exist in the collection:
+
+    $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
+
+    $collection->hasAny(['product', 'price']);
+
+    // true
+
+    $collection->hasAny(['name', 'price']);
 
     // false
 
@@ -1211,6 +1266,31 @@ You may also call the `last` method with no arguments to get the last element in
     collect([1, 2, 3, 4])->last();
 
     // 4
+
+<a name="method-lazy"></a>
+#### `lazy()` {.collection-method}
+
+The `lazy` method returns a new [`LazyCollection`](#lazy-collections) instance from the underlying array of items:
+
+    $lazyCollection = collect([1, 2, 3, 4])->lazy();
+
+    get_class($lazyCollection);
+
+    // Illuminate\Support\LazyCollection
+
+    $lazyCollection->all();
+
+    // [1, 2, 3, 4]
+
+This is especially useful when you need to perform transformations on a huge `Collection` that contains many items:
+
+    $count = $hugeCollection
+        ->lazy()
+        ->where('country', 'FR')
+        ->where('balance', '>', '100')
+        ->count();
+
+By converting the collection to a `LazyCollection`, we avoid having to allocate a ton of additional memory. Though the original collection still keeps _its_ values in memory, the subsequent filters will not. Therefore, virtually no additional memory will be allocated when filtering the collection's results.
 
 <a name="method-macro"></a>
 #### `macro()` {.collection-method}
@@ -1630,9 +1710,15 @@ The `pluck` method also supports retrieving nested values using "dot" notation:
 
     $collection = collect([
         [
+            'name' => 'Laracon',
             'speakers' => [
                 'first_day' => ['Rosa', 'Judith'],
-                'second_day' => ['Angela', 'Kathleen'],
+            ],
+        ],
+        [
+            'name' => 'VueConf',
+            'speakers' => [
+                'first_day' => ['Abigail', 'Joey'],
             ],
         ],
     ]);
@@ -1641,7 +1727,7 @@ The `pluck` method also supports retrieving nested values using "dot" notation:
 
     $plucked->all();
 
-    // ['Rosa', 'Judith']
+    // [['Rosa', 'Judith'], ['Abigail', 'Joey']]
 
 If duplicate keys exist, the last matching element will be inserted into the plucked collection:
 
@@ -1770,6 +1856,14 @@ You may pass an integer to `random` to specify how many items you would like to 
 
 If the collection instance has fewer items than requested, the `random` method will throw an `InvalidArgumentException`.
 
+The `random` method also accepts a closure, which will receive the current collection instance:
+
+    $random = $collection->random(fn ($items) => min(10, count($items)));
+
+    $random->all();
+
+    // [1, 2, 3, 4, 5] - (retrieved randomly)
+
 <a name="method-range"></a>
 #### `range()` {.collection-method}
 
@@ -1821,24 +1915,7 @@ The `reduce` method also passes array keys in associative collections to the giv
     });
 
     // 4264
-
-<a name="method-reduce-many"></a>
-#### `reduceMany()` {.collection-method}
-
-The `reduceMany` method reduces the collection to an array of values, passing the results of each iteration into the subsequent iteration. This method is similar to the `reduce` method; however, it can accept multiple initial values:
-
-    [$creditsRemaining, $batch] = Image::where('status', 'unprocessed')
-        ->get()
-        ->reduceMany(function ($creditsRemaining, $batch, $image) {
-            if ($creditsRemaining >= $image->creditsRequired()) {
-                $batch->push($image);
-
-                $creditsRemaining -= $image->creditsRequired();
-            }
-
-            return [$creditsRemaining, $batch];
-        }, $creditsAvailable, collect());
-
+    
 <a name="method-reduce-spread"></a>
 #### `reduceSpread()` {.collection-method}
 
@@ -1996,35 +2073,6 @@ The `shuffle` method randomly shuffles the items in the collection:
 
     // [3, 2, 5, 1, 4] - (generated randomly)
 
-<a name="method-sliding"></a>
-#### `sliding()` {.collection-method}
-
-The `sliding` method returns a new collection of chunks representing a "sliding window" view of the items in the collection:
-
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    $chunks = $collection->sliding(2);
-
-    $chunks->toArray();
-
-    // [[1, 2], [2, 3], [3, 4], [4, 5]]
-
-This is especially useful in conjunction with the [`eachSpread`](#method-eachspread) method:
-
-    $transactions->sliding(2)->eachSpread(function ($previous, $current) {
-        $current->total = $previous->total + $current->amount;
-    });
-
-You may optionally pass a second "step" value, which determines the distance between the first item of every chunk:
-
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    $chunks = $collection->sliding(3, step: 2);
-
-    $chunks->toArray();
-
-    // [[1, 2, 3], [3, 4, 5]]
-
 <a name="method-skip"></a>
 #### `skip()` {.collection-method}
 
@@ -2104,6 +2152,35 @@ If you would like to limit the size of the returned slice, pass the desired size
     // [5, 6]
 
 The returned slice will preserve keys by default. If you do not wish to preserve the original keys, you can use the [`values`](#method-values) method to reindex them.
+
+<a name="method-sliding"></a>
+#### `sliding()` {.collection-method}
+
+The `sliding` method returns a new collection of chunks representing a "sliding window" view of the items in the collection:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $chunks = $collection->sliding(2);
+
+    $chunks->toArray();
+
+    // [[1, 2], [2, 3], [3, 4], [4, 5]]
+
+This is especially useful in conjunction with the [`eachSpread`](#method-eachspread) method:
+
+    $transactions->sliding(2)->eachSpread(function ($previous, $current) {
+        $current->total = $previous->total + $current->amount;
+    });
+
+You may optionally pass a second "step" value, which determines the distance between the first item of every chunk:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $chunks = $collection->sliding(3, step: 2);
+
+    $chunks->toArray();
+
+    // [[1, 2, 3], [3, 4, 5]]
 
 <a name="method-sole"></a>
 #### `sole()` {.collection-method}
@@ -2606,7 +2683,7 @@ The `undot` method expands a single-dimensional collection that uses "dot" notat
         'address.suburb' => 'Detroit',
         'address.state' => 'MI',
         'address.postcode' => '48219'
-    ])
+    ]);
 
     $person = $person->undot();
 
@@ -2763,6 +2840,20 @@ The static `unwrap` method returns the collection's underlying items from the gi
 
     // 'John Doe'
 
+<a name="method-value"></a>
+#### `value()` {.collection-method}
+
+The `value` method retrieves a given value from the first element of the collection:
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Speaker', 'price' => 400],
+    ]);
+
+    $value = $collection->value('price');
+
+    // 200
+
 <a name="method-values"></a>
 #### `values()` {.collection-method}
 
@@ -2787,15 +2878,15 @@ The `values` method returns a new collection with the keys reset to consecutive 
 <a name="method-when"></a>
 #### `when()` {.collection-method}
 
-The `when` method will execute the given callback when the first argument given to the method evaluates to `true`:
+The `when` method will execute the given callback when the first argument given to the method evaluates to `true`. The collection instance and the first argument given to the `when` method will be provided to the closure:
 
     $collection = collect([1, 2, 3]);
 
-    $collection->when(true, function ($collection) {
+    $collection->when(true, function ($collection, $value) {
         return $collection->push(4);
     });
 
-    $collection->when(false, function ($collection) {
+    $collection->when(false, function ($collection, $value) {
         return $collection->push(5);
     });
 
@@ -2807,7 +2898,7 @@ A second callback may be passed to the `when` method. The second callback will b
 
     $collection = collect([1, 2, 3]);
 
-    $collection->when(false, function ($collection) {
+    $collection->when(false, function ($collection, $value) {
         return $collection->push(4);
     }, function ($collection) {
         return $collection->push(5);
@@ -3278,6 +3369,7 @@ Almost all methods available on the `Collection` class are also available on the
 [except](#method-except)
 [filter](#method-filter)
 [first](#method-first)
+[firstOrFail](#method-first-or-fail)
 [firstWhere](#method-first-where)
 [flatMap](#method-flatmap)
 [flatten](#method-flatten)
@@ -3324,6 +3416,7 @@ Almost all methods available on the `Collection` class are also available on the
 [shuffle](#method-shuffle)
 [skip](#method-skip)
 [slice](#method-slice)
+[sole](#method-sole)
 [some](#method-some)
 [sort](#method-sort)
 [sortBy](#method-sortby)

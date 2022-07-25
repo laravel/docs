@@ -13,12 +13,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 <style>
     .collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
     }
 
     .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 
@@ -43,11 +45,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::isList](#method-array-islist)
+[Arr::join](#method-array-join)
 [Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
+[Arr::map](#method-array-map)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
+[Arr::prependKeysWith](#method-array-prependkeyswith)
 [Arr::pull](#method-array-pull)
 [Arr::query](#method-array-query)
 [Arr::random](#method-array-random)
@@ -107,10 +112,13 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
 [Str::headline](#method-str-headline)
+[Str::inlineMarkdown](#method-str-inline-markdown)
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
+[Str::isJson](#method-str-is-json)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
+[Str::lcfirst](#method-str-lcfirst)
 [Str::length](#method-str-length)
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
@@ -132,6 +140,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
 [Str::snake](#method-snake-case)
+[Str::squish](#method-str-squish)
 [Str::start](#method-str-start)
 [Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
@@ -142,6 +151,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::title](#method-title-case)
 [Str::toHtmlString](#method-str-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
+[Str::ucsplit](#method-str-ucsplit)
 [Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
@@ -167,6 +177,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [between](#method-fluent-str-between)
 [betweenFirst](#method-fluent-str-between-first)
 [camel](#method-fluent-str-camel)
+[classBasename](#method-fluent-str-class-basename)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
 [dirname](#method-fluent-str-dirname)
@@ -175,12 +186,15 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [exactly](#method-fluent-str-exactly)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
+[inlineMarkdown](#method-fluent-str-inline-markdown)
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
 [isNotEmpty](#method-fluent-str-is-not-empty)
+[isJson](#method-fluent-str-is-json)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
+[lcfirst](#method-fluent-str-lcfirst)
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
@@ -189,6 +203,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
+[newLine](#method-fluent-str-new-line)
 [padBoth](#method-fluent-str-padboth)
 [padLeft](#method-fluent-str-padleft)
 [padRight](#method-fluent-str-padright)
@@ -207,6 +222,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [slug](#method-fluent-str-slug)
 [snake](#method-fluent-str-snake)
 [split](#method-fluent-str-split)
+[squish](#method-fluent-str-squish)
 [start](#method-fluent-str-start)
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
@@ -218,6 +234,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [title](#method-fluent-str-title)
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
+[ucsplit](#method-fluent-str-ucsplit)
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
 [whenContains](#method-fluent-str-when-contains)
@@ -279,6 +296,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [encrypt](#method-encrypt)
 [env](#method-env)
 [event](#method-event)
+[fake](#method-fake)
 [filled](#method-filled)
 [info](#method-info)
 [logger](#method-logger)
@@ -600,6 +618,23 @@ The `Arr::isList` method returns `true` if the given array's keys are sequential
 
     // false
 
+<a name="method-array-join"></a>
+#### `Arr::join()` {.collection-method}
+
+The `Arr::join` method joins array elements with a string. Using this method's second argument, you may also specify the joining string for the final element of the array:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['Tailwind', 'Alpine', 'Laravel', 'Livewire'];
+
+    $joined = Arr::join($array, ', ');
+
+    // Tailwind, Alpine, Laravel, Livewire
+
+    $joined = Arr::join($array, ', ', ' and ');
+
+    // Tailwind, Alpine, Laravel and Livewire
+
 <a name="method-array-keyby"></a>
 #### `Arr::keyBy()` {.collection-method}
 
@@ -641,6 +676,21 @@ A default value may be passed as the third argument to the method. This value wi
     use Illuminate\Support\Arr;
 
     $last = Arr::last($array, $callback, $default);
+
+<a name="method-array-map"></a>
+#### `Arr::map()` {.collection-method}
+
+The `Arr::map` method iterates through the array and passes each value and key to the given callback. The array value is replaced by the value returned by the callback:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['first' => 'james', 'last' => 'kirk'];
+
+    $mapped = Arr::map($array, function ($value, $key) {
+        return ucfirst($value);
+    });
+
+    // ['first' => 'James', 'last' => 'Kirk']
 
 <a name="method-array-only"></a>
 #### `Arr::only()` {.collection-method}
@@ -701,6 +751,27 @@ If needed, you may specify the key that should be used for the value:
     $array = Arr::prepend($array, 'Desk', 'name');
 
     // ['name' => 'Desk', 'price' => 100]
+
+<a name="method-array-prependkeyswith"></a>
+#### `Arr::prependKeysWith()` {.collection-method}
+
+The `Arr::prependKeysWith` prepends all key names of an associative array with the given prefix:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        'name' => 'Desk',
+        'price' => 100,
+    ];
+
+    $keyed = Arr::prependKeysWith($array, 'product.');
+
+    /*
+        [
+            'product.name' => 'Desk',
+            'product.price' => 100,
+        ]
+    */
 
 <a name="method-array-pull"></a>
 #### `Arr::pull()` {.collection-method}
@@ -1244,7 +1315,7 @@ The `Str::between` method returns the portion of a string between two values:
     $slice = Str::between('This is my name', 'This', 'name');
 
     // ' is my '
-    
+
 <a name="method-str-between-first"></a>
 #### `Str::betweenFirst()` {.collection-method}
 
@@ -1377,6 +1448,17 @@ The `Str::headline` method will convert strings delimited by casing, hyphens, or
 
     // Email Notification Sent
 
+<a name="method-str-inline-markdown"></a>
+#### `Str::inlineMarkdown()` {.collection-method}
+
+The `Str::inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/). However, unlike the `markdown` method, it does not wrap all generated HTML in a block-level element:
+
+    use Illuminate\Support\Str;
+
+    $html = Str::inlineMarkdown('**Laravel**');
+
+    // <strong>Laravel</strong>
+
 <a name="method-str-is"></a>
 #### `Str::is()` {.collection-method}
 
@@ -1407,6 +1489,25 @@ The `Str::isAscii` method determines if a given string is 7 bit ASCII:
 
     // false
 
+<a name="method-str-is-json"></a>
+#### `Str::isJson()` {.collection-method}
+
+The `Str::isJson` method determines if the given string is valid JSON:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::isJson('[1,2,3]');
+
+    // true
+
+    $result = Str::isJson('{"first": "John", "last": "Doe"}');
+
+    // true
+
+    $result = Str::isJson('{first: "John", last: "Doe"}');
+
+    // false
+
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {.collection-method}
 
@@ -1432,6 +1533,17 @@ The `Str::kebab` method converts the given string to `kebab-case`:
     $converted = Str::kebab('fooBar');
 
     // foo-bar
+
+<a name="method-str-lcfirst"></a>
+#### `Str::lcfirst()` {.collection-method}
+
+The `Str::lcfirst` method returns the given string with the first character lowercased:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::lcfirst('Foo Bar');
+
+    // foo Bar
 
 <a name="method-str-length"></a>
 #### `Str::length()` {.collection-method}
@@ -1477,7 +1589,7 @@ The `Str::lower` method converts the given string to lowercase:
 <a name="method-str-markdown"></a>
 #### `Str::markdown()` {.collection-method}
 
-The `Str::markdown` method converts GitHub flavored Markdown into HTML:
+The `Str::markdown` method converts GitHub flavored Markdown into HTML using [CommonMark](https://commonmark.thephpleague.com/):
 
     use Illuminate\Support\Str;
 
@@ -1565,7 +1677,7 @@ The `Str::padRight` method wraps PHP's `str_pad` function, padding the right sid
 <a name="method-str-plural"></a>
 #### `Str::plural()` {.collection-method}
 
-The `Str::plural` method converts a singular word string to its plural form. This function currently only supports the English language:
+The `Str::plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
     use Illuminate\Support\Str;
 
@@ -1592,7 +1704,7 @@ You may provide an integer as a second argument to the function to retrieve the 
 <a name="method-str-plural-studly"></a>
 #### `Str::pluralStudly()` {.collection-method}
 
-The `Str::pluralStudly` method converts a singular word string formatted in studly caps case to its plural form. This function currently only supports the English language:
+The `Str::pluralStudly` method converts a singular word string formatted in studly caps case to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
     use Illuminate\Support\Str;
 
@@ -1703,7 +1815,7 @@ The `Str::reverse` method reverses the given string:
 <a name="method-str-singular"></a>
 #### `Str::singular()` {.collection-method}
 
-The `Str::singular` method converts a string to its singular form. This function currently only supports the English language:
+The `Str::singular` method converts a string to its singular form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
     use Illuminate\Support\Str;
 
@@ -1740,6 +1852,17 @@ The `Str::snake` method converts the given string to `snake_case`:
     $converted = Str::snake('fooBar', '-');
 
     // foo-bar
+
+<a name="method-str-squish"></a>
+#### `Str::squish()` {.collection-method}
+
+The `Str::squish` method removes all extraneous white space from a string, including extraneous white space between words:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::squish('    laravel    framework    ');
+
+    // laravel framework
 
 <a name="method-str-start"></a>
 #### `Str::start()` {.collection-method}
@@ -1813,10 +1936,10 @@ The `Str::substrReplace` method replaces text within a portion of a string, star
 
     use Illuminate\Support\Str;
 
-    $result = Str::substrReplace('1300', ':', 2); 
+    $result = Str::substrReplace('1300', ':', 2);
     // 13:
-    
-    $result = Str::substrReplace('1300', ':', 2, 0); 
+
+    $result = Str::substrReplace('1300', ':', 2, 0);
     // 13:00
 
 <a name="method-str-swap"></a>
@@ -1863,6 +1986,17 @@ The `Str::ucfirst` method returns the given string with the first character capi
     $string = Str::ucfirst('foo bar');
 
     // Foo bar
+
+<a name="method-str-ucsplit"></a>
+#### `Str::ucsplit()` {.collection-method}
+
+The `Str::ucsplit` method splits the given string into an array by uppercase characters:
+
+    use Illuminate\Support\Str;
+
+    $segments = Str::ucsplit('FooBar');
+
+    // [0 => 'Foo', 1 => 'Bar']
 
 <a name="method-str-upper"></a>
 #### `Str::upper()` {.collection-method}
@@ -2039,7 +2173,7 @@ The `between` method returns the portion of a string between two values:
     $converted = Str::of('This is my name')->between('This', 'name');
 
     // ' is my '
-    
+
 <a name="method-fluent-str-between-first"></a>
 #### `betweenFirst` {.collection-method}
 
@@ -2061,6 +2195,17 @@ The `camel` method converts the given string to `camelCase`:
     $converted = Str::of('foo_bar')->camel();
 
     // fooBar
+
+<a name="method-fluent-str-class-basename"></a>
+#### `classBasename` {.collection-method}
+
+The `classBasename` method returns the class name of the given class with the class's namespace removed:
+
+    use Illuminate\Support\Str;
+
+    $class = Str::of('Foo\Bar\Baz')->classBasename();
+
+    // Baz
 
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
@@ -2197,6 +2342,17 @@ The `finish` method adds a single instance of the given value to a string if it 
 
     // this/string/
 
+<a name="method-fluent-str-inline-markdown"></a>
+#### `inlineMarkdown` {.collection-method}
+
+The `inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/). However, unlike the `markdown` method, it does not wrap all generated HTML in a block-level element:
+
+    use Illuminate\Support\Str;
+
+    $html = Str::of('**Laravel**')->inlineMarkdown();
+
+    // <strong>Laravel</strong>
+
 <a name="method-fluent-str-is"></a>
 #### `is` {.collection-method}
 
@@ -2258,6 +2414,25 @@ The `isNotEmpty` method determines if the given string is not empty:
 
     // true
 
+<a name="method-fluent-str-is-json"></a>
+#### `isJson` {.collection-method}
+
+The `isJson` method determines if a given string is valid JSON:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('[1,2,3]')->isJson();
+
+    // true
+
+    $result = Str::of('{"first": "John", "last": "Doe"}')->isJson();
+
+    // true
+
+    $result = Str::of('{first: "John", last: "Doe"}')->isJson();
+
+    // false
+
 <a name="method-fluent-str-is-uuid"></a>
 #### `isUuid` {.collection-method}
 
@@ -2283,6 +2458,18 @@ The `kebab` method converts the given string to `kebab-case`:
     $converted = Str::of('fooBar')->kebab();
 
     // foo-bar
+
+<a name="method-fluent-str-lcfirst"></a>
+#### `lcfirst` {.collection-method}
+
+The `lcfirst` method returns the given string with the first character lowercased:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Foo Bar')->lcfirst();
+
+    // foo Bar
+
 
 <a name="method-fluent-str-length"></a>
 #### `length` {.collection-method}
@@ -2410,6 +2597,18 @@ If you specify a matching group within the expression, Laravel will return a col
 
 If no matches are found, an empty collection will be returned.
 
+<a name="method-fluent-str-new-line"></a>
+#### `newLine` {.collection-method}
+
+The `newLine` method appends an "end of line" character to a string:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('Laravel')->newLine()->append('Framework');
+
+    // 'Laravel
+    //  Framework'
+
 <a name="method-fluent-str-padboth"></a>
 #### `padBoth` {.collection-method}
 
@@ -2475,7 +2674,7 @@ The `pipe` method allows you to transform the string by passing its current valu
 <a name="method-fluent-str-plural"></a>
 #### `plural` {.collection-method}
 
-The `plural` method converts a singular word string to its plural form. This function currently only supports the English language:
+The `plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
     use Illuminate\Support\Str;
 
@@ -2619,7 +2818,7 @@ The `scan` method parses input from a string into a collection according to a fo
 <a name="method-fluent-str-singular"></a>
 #### `singular` {.collection-method}
 
-The `singular` method converts a string to its singular form. This function currently only supports the English language:
+The `singular` method converts a string to its singular form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
     use Illuminate\Support\Str;
 
@@ -2663,6 +2862,17 @@ The `split` method splits a string into a collection using a regular expression:
     $segments = Str::of('one, two, three')->split('/[\s,]+/');
 
     // collect(["one", "two", "three"])
+
+<a name="method-fluent-str-squish"></a>
+#### `squish` {.collection-method}
+
+The `squish` method removes all extraneous white space from a string, including extraneous white space between words:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('    laravel    framework    ')->squish();
+
+    // laravel framework
 
 <a name="method-fluent-str-start"></a>
 #### `start` {.collection-method}
@@ -2756,7 +2966,7 @@ The `tap` method passes the string to the given closure, allowing you to examine
     $string = Str::of('Laravel')
         ->append(' Framework')
         ->tap(function ($string) {
-            dump('String after append: ' . $string);
+            dump('String after append: '.$string);
         })
         ->upper();
 
@@ -2809,6 +3019,17 @@ The `ucfirst` method returns the given string with the first character capitaliz
     $string = Str::of('foo bar')->ucfirst();
 
     // Foo bar
+
+<a name="method-fluent-str-ucsplit"></a>
+#### `ucsplit` {.collection-method}
+
+The `ucsplit` method splits the given string into a collection by uppercase characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Foo Bar')->ucsplit();
+
+    // collect(['Foo', 'Bar'])
 
 <a name="method-fluent-str-upper"></a>
 #### `upper` {.collection-method}
@@ -3330,6 +3551,27 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 
     event(new UserRegistered($user));
 
+<a name="method-fake"></a>
+#### `fake()` {.collection-method}
+
+The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) singleton from the container, which can be useful when creating fake data in model factories, database seeding, tests, and prototyping views:
+
+```blade
+@for($i = 0; $i < 10; $i++)
+    <dl>
+        <dt>Name</dt>
+        <dd>{{ fake()->name() }}</dd>
+
+        <dt>Email</dt>
+        <dd>{{ fake()->unique()->safeEmail() }}</dd>
+    </dl>
+@endfor
+```
+
+By default, the `fake` function will utilize the `app.faker_locale` configuration option in your `config/app.php` configuration file; however, you may also specify the locale by passing it to the `fake` function. Each locale will resolve an individual singleton:
+
+    fake('nl_NL')->name()
+
 <a name="method-filled"></a>
 #### `filled()` {.collection-method}
 
@@ -3400,6 +3642,14 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an [
     $value = old('value');
 
     $value = old('value', 'default');
+
+Since the "default value" provided as the second argument to the `old` function is often an attribute of an Eloquent model, Laravel allows you to simply pass the entire Eloquent model as the second argument to the `old` function. When doing so, Laravel will assume the first argument provided to the `old` function is the name of the Eloquent attribute that should be considered the "default value":
+
+    {{ old('name', $user->name) }}
+
+    // Is equivalent to...
+
+    {{ old('name', $user) }}
 
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}
@@ -3504,13 +3754,13 @@ If you would like to manually calculate the number of milliseconds to sleep betw
 
     return retry(5, function () {
         // ...
-    }, function ($attempt) {
+    }, function ($attempt, $exception) {
         return $attempt * 100;
     });
 
 For convenience, you may provide an array as the first argument to the `retry` function. This array will be used to determine how many milliseconds to sleep between subsequent attempts:
 
-    return retry([100, 200] function () {
+    return retry([100, 200], function () {
         // Sleep for 100ms on first retry, 200ms on second retry...
     });
 

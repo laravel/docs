@@ -43,7 +43,7 @@ php artisan help migrate
 If you are using [Laravel Sail](/docs/{{version}}/sail) as your local development environment, remember to use the `sail` command line to invoke Artisan commands. Sail will execute your Artisan commands within your application's Docker containers:
 
 ```shell
-./sail artisan list
+./vendor/bin/sail artisan list
 ```
 
 <a name="tinker"></a>
@@ -285,10 +285,10 @@ If you would like to define arguments or options to expect multiple input values
 
     'mail:send {user*}'
 
-When calling this method, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `foo` and `bar` as its values:
+When calling this method, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `1` and `2` as its values:
 
 ```shell
-php artisan mail:send foo bar
+php artisan mail:send 1 2
 ```
 
 This `*` character can be combined with an optional argument definition to allow zero or more instances of an argument:
@@ -300,7 +300,7 @@ This `*` character can be combined with an optional argument definition to allow
 
 When defining an option that expects multiple input values, each option value passed to the command should be prefixed with the option name:
 
-    'mail:send {user} {--id=*}'
+    'mail:send {--id=*}'
 
 Such a command may be invoked by passing multiple `--id` arguments:
 

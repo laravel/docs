@@ -79,7 +79,7 @@ _Laravel Breeze_ is a simple, minimal implementation of all of Laravel's authent
 
 _Laravel Fortify_ is a headless authentication backend for Laravel that implements many of the features found in this documentation, including cookie-based authentication as well as other features such as two-factor authentication and email verification. Fortify provides the authentication backend for Laravel Jetstream or may be used independently in combination with [Laravel Sanctum](/docs/{{version}}/sanctum) to provide authentication for an SPA that needs to authenticate with Laravel.
 
-_[Laravel Jetstream](https://jetstream.laravel.com)_ is a robust application starter kit that consumes and exposes Laravel Fortify's authentication services with a beautiful, modern UI powered by [Tailwind CSS](https://tailwindcss.com), [Livewire](https://laravel-livewire.com), and / or [Inertia.js](https://inertiajs.com). Laravel Jetstream includes optional support for two-factor authentication, team support, browser session management, profile management, and built-in integration with [Laravel Sanctum](/docs/{{version}}/sanctum) to offer API token authentication. Laravel's API authentication offerings are discussed below.
+_[Laravel Jetstream](https://jetstream.laravel.com)_ is a robust application starter kit that consumes and exposes Laravel Fortify's authentication services with a beautiful, modern UI powered by [Tailwind CSS](https://tailwindcss.com), [Livewire](https://laravel-livewire.com), and / or [Inertia](https://inertiajs.com). Laravel Jetstream includes optional support for two-factor authentication, team support, browser session management, profile management, and built-in integration with [Laravel Sanctum](/docs/{{version}}/sanctum) to offer API token authentication. Laravel's API authentication offerings are discussed below.
 
 <a name="laravels-api-authentication-services"></a>
 #### Laravel's API Authentication Services
@@ -123,7 +123,7 @@ First, you should [install a Laravel application starter kit](/docs/{{version}}/
 
 Laravel Breeze is a minimal, simple implementation of all of Laravel's authentication features, including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](https://tailwindcss.com). Breeze also offers an [Inertia](https://inertiajs.com) based scaffolding option using Vue or React.
 
-[Laravel Jetstream](https://jetstream.laravel.com) is a more robust application starter kit that includes support for scaffolding your application with [Livewire](https://laravel-livewire.com) or [Inertia.js and Vue](https://inertiajs.com). In addition, Jetstream features optional support for two-factor authentication, teams, profile management, browser session management, API support via [Laravel Sanctum](/docs/{{version}}/sanctum), account deletion, and more.
+[Laravel Jetstream](https://jetstream.laravel.com) is a more robust application starter kit that includes support for scaffolding your application with [Livewire](https://laravel-livewire.com) or [Inertia and Vue](https://inertiajs.com). In addition, Jetstream features optional support for two-factor authentication, teams, profile management, browser session management, API support via [Laravel Sanctum](/docs/{{version}}/sanctum), account deletion, and more.
 
 <a name="retrieving-the-authenticated-user"></a>
 ### Retrieving The Authenticated User
@@ -251,7 +251,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
 
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
-            ]);
+            ])->onlyInput('email');
         }
     }
 
@@ -273,6 +273,17 @@ If you wish, you may also add extra query conditions to the authentication query
     }
 
 > {note} In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database table.
+
+The `attemptWhen` method, which receives a closure as its second argument, may be used to perform more extensive inspection of the potential user before actually authenticating the user. The closure receives the potential user and should return `true` or `false` to indicate if the user may be authenticated:
+
+    if (Auth::attemptWhen([
+        'email' => $email,
+        'password' => $password,
+    ], function ($user) {
+        return $user->isNotBanned();
+    })) {
+        // Authentication was successful...
+    }
 
 <a name="accessing-specific-guard-instances"></a>
 #### Accessing Specific Guard Instances
@@ -296,6 +307,14 @@ When this value is `true`, Laravel will keep the user authenticated indefinitely
 
     if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
         // The user is being remembered...
+    }
+
+If your application offers "remember me" functionality, you may use the `viaRemember`  method to determine if the currently authenticated user was authenticated using the "remember me" cookie:
+
+    use Illuminate\Support\Facades\Auth;
+
+    if (Auth::viaRemember()) {
+        // ...
     }
 
 <a name="other-authentication-methods"></a>
@@ -424,13 +443,13 @@ In addition to calling the `logout` method, it is recommended that you invalidat
 
 Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device. This feature is typically utilized when a user is changing or updating their password and you would like to invalidate sessions on other devices while keeping the current device authenticated.
 
-Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is present and un-commented in your `App\Http\Kernel` class' `web` middleware group:
+Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is included on the routes that should receive session authentication. Typically, you should place this middleware on a route group definition so that it can be applied to the majority of your application's routes. By default, the `AuthenticateSession` middleware may be attached to a route using the `auth.session` route middleware key as defined in your application's HTTP kernel:
 
-    'web' => [
-        // ...
-        \Illuminate\Session\Middleware\AuthenticateSession::class,
-        // ...
-    ],
+    Route::middleware(['auth', 'auth.session'])->group(function () {
+        Route::get('/', function () {
+            // ...
+        });
+    });
 
 Then, you may use the `logoutOtherDevices` method provided by the `Auth` facade. This method requires the user to confirm their current password, which your application should accept through an input form:
 

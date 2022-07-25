@@ -292,6 +292,12 @@ However, you may find it more convenient to use the `whereBelongsTo` method, whi
 
     $posts = Post::whereBelongsTo($user)->get();
 
+You may also provide a [collection](/docs/{{version}}/eloquent-collections) instance to the `whereBelongsTo` method. When doing so, Laravel will retrieve models that belong to any of the parent models within the collection:
+
+    $users = User::where('vip', true)->get();
+
+    $posts = Post::whereBelongsTo($users)->get();
+
 By default, Laravel will determine the relationship associated with the given model based on the class name of the model; however, you may specify the relationship name manually by providing it as the second argument to the `whereBelongsTo` method:
 
     $posts = Post::whereBelongsTo($user, 'author')->get();
@@ -342,7 +348,7 @@ public function largestOrder()
 <a name="advanced-has-one-of-many-relationships"></a>
 #### Advanced Has One Of Many Relationships
 
-It is possible to construct more advanced "has one of many" relationships. For example, A `Product` model may have many associated `Price` models that are retained in the system even after new pricing is published. In addition, new pricing data for the product may be able to be published in advance to take effect at a future date via a `published_at` column.
+It is possible to construct more advanced "has one of many" relationships. For example, a `Product` model may have many associated `Price` models that are retained in the system even after new pricing is published. In addition, new pricing data for the product may be able to be published in advance to take effect at a future date via a `published_at` column.
 
 So, in summary, we need to retrieve the latest published pricing where the published date is not in the future. In addition, if two prices have the same published date, we will prefer the price with the greatest ID. To accomplish this, we must pass an array to the `ofMany` method that contains the sortable columns which determine the latest price. In addition, a closure will be provided as the second argument to the `ofMany` method. This closure will be responsible for adding additional publish date constraints to the relationship query:
 
@@ -657,7 +663,7 @@ You can also filter the results returned by `belongsToMany` relationship queries
 <a name="defining-custom-intermediate-table-models"></a>
 ### Defining Custom Intermediate Table Models
 
-If you would like to define a custom model to represent the intermediate table of your many-to-many relationship, you may call the `using` method when defining the relationship. Custom pivot models give you the opportunity to define additional methods on the pivot model.
+If you would like to define a custom model to represent the intermediate table of your many-to-many relationship, you may call the `using` method when defining the relationship. Custom pivot models give you the opportunity to define additional behavior on the pivot model, such as methods and casts.
 
 Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\MorphPivot` class. For example, we may define a `Role` model which uses a custom `RoleUser` pivot model:
 
@@ -1223,7 +1229,7 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
 <a name="inline-relationship-existence-queries"></a>
 #### Inline Relationship Existence Queries
 
-If you would like to query for a relationship's existence with a single, simple where condition attached to the relationship query, you may find it more convenient to use the `whereRelation` and `whereMorphRelation` methods. For example, we may query for all posts that have unapproved comments:
+If you would like to query for a relationship's existence with a single, simple where condition attached to the relationship query, you may find it more convenient to use the `whereRelation`, `orWhereRelation`, `whereMorphRelation`, and `orWhereMorphRelation` methods. For example, we may query for all posts that have unapproved comments:
 
     use App\Models\Post;
 
@@ -1506,6 +1512,15 @@ To eager load a relationship's relationships, you may use "dot" syntax. For exam
 
     $books = Book::with('author.contacts')->get();
 
+Alternatively, you may specify nested eager loaded relationships by providing a nested array to the `with` method, which can be convenient when eager loading multiple nested relationships:
+
+    $books = Book::with([
+        'author' => [
+            'contacts',
+            'publisher',
+        ],
+    ])->get();
+
 <a name="nested-eager-loading-morphto-relationships"></a>
 #### Nested Eager Loading `morphTo` Relationships
 
@@ -1633,7 +1648,7 @@ If you are eager loading a `morphTo` relationship, Eloquent will run multiple qu
         ]);
     }])->get();
 
-In this example, Eloquent will only eager load posts that have not been hidden and videos have a `type` value of "educational".
+In this example, Eloquent will only eager load posts that have not been hidden and videos that have a `type` value of "educational".
 
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading

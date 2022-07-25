@@ -80,7 +80,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  *
  * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
-public function address(): Attribute
+protected function address(): Attribute
 {
     return Attribute::make(
         get: fn ($value, $attributes) => new Address(
@@ -91,7 +91,10 @@ public function address(): Attribute
 }
 ```
 
-When returning value objects from accessors, any changes made to the value object will automatically be synced back to the model before the model is saved. This is possible because Eloquent retains instances returned by accessors so it can be return the same instance each time the accessor is invoked:
+<a name="accessor-caching"></a>
+#### Accessor Caching
+
+When returning value objects from accessors, any changes made to the value object will automatically be synced back to the model before the model is saved. This is possible because Eloquent retains instances returned by accessors so it can return the same instance each time the accessor is invoked:
 
     use App\Models\User;
 
@@ -102,6 +105,17 @@ When returning value objects from accessors, any changes made to the value objec
 
     $user->save();
 
+However, you may sometimes wish to enable caching for primitive values like strings and booleans, particularly if they are computationally intensive. To accomplish this, you may invoke the `shouldCache` method when defining your accessor:
+
+```php
+protected function hash(): Attribute
+{
+    return Attribute::make(
+        get: fn ($value) => bcrypt(gzuncompress($value)),
+    )->shouldCache();
+}
+```
+
 If you would like to disable the object caching behavior of attributes, you may invoke the `withoutObjectCaching` method when defining the attribute:
 
 ```php
@@ -110,7 +124,7 @@ If you would like to disable the object caching behavior of attributes, you may 
  *
  * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
-public function address(): Attribute
+protected function address(): Attribute
 {
     return Attribute::make(
         get: fn ($value, $attributes) => new Address(
@@ -138,7 +152,6 @@ A mutator transforms an Eloquent attribute value when it is set. To define a mut
         /**
          * Interact with the user's first name.
          *
-         * @param  string  $value
          * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
         protected function firstName(): Attribute
@@ -174,7 +187,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  *
  * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
-public function address(): Attribute
+protected function address(): Attribute
 {
     return Attribute::make(
         get: fn ($value, $attributes) => new Address(
@@ -412,7 +425,7 @@ If a custom format is applied to the `date` or `datetime` cast, such as `datetim
 
 > {note} Enum casting is only available for PHP 8.1+.
 
-Eloquent also allows you to cast your attribute values to PHP ["backed" enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
+Eloquent also allows you to cast your attribute values to PHP ["backed" Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 
     use App\Enums\ServerStatus;
 

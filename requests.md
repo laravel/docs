@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Interacting With The Request](#interacting-with-the-request)
     - [Accessing The Request](#accessing-the-request)
-    - [Request Path & Method](#request-path-and-method)
+    - [Request Path, Host, & Method](#request-path-and-method)
     - [Request Headers](#request-headers)
     - [Request IP Address](#request-ip-address)
     - [Content Negotiation](#content-negotiation)
@@ -97,7 +97,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` route
     }
 
 <a name="request-path-and-method"></a>
-### Request Path & Method
+### Request Path, Host, & Method
 
 The `Illuminate\Http\Request` instance provides a variety of methods for examining the incoming HTTP request and extends the `Symfony\Component\HttpFoundation\Request` class. We will discuss a few of the most important methods below.
 
@@ -135,6 +135,15 @@ To retrieve the full URL for the incoming request you may use the `url` or `full
 If you would like to append query string data to the current URL, you may call the `fullUrlWithQuery` method. This method merges the given array of query string variables with the current query string:
 
     $request->fullUrlWithQuery(['type' => 'phone']);
+
+<a name="retrieving-the-request-host"></a>
+#### Retrieving The Request Host
+
+You may retrieve the "host" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:
+
+    $request->host();
+    $request->httpHost();
+    $request->schemeAndHttpHost();
 
 <a name="retrieving-the-request-method"></a>
 #### Retrieving The Request Method
@@ -282,6 +291,13 @@ When sending JSON requests to your application, you may access the JSON data via
 
     $name = $request->input('user.name');
 
+<a name="retrieving-stringable-input-values"></a>
+#### Retrieving Stringable Input Values
+
+Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\Support\Stringable`](/docs/{{version}}/helpers#fluent-strings):
+
+    $name = $request->string('name')->trim();
+
 <a name="retrieving-boolean-input-values"></a>
 #### Retrieving Boolean Input Values
 
@@ -301,6 +317,15 @@ The second and third arguments accepted by the `date` method may be used to spec
     $elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');
 
 If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method.
+
+<a name="retrieving-enum-input-values"></a>
+#### Retrieving Enum Input Values
+
+Input values that correspond to [PHP enums](https://www.php.net/manual/en/language.types.enumerations.php) may also be retrieved from the request. If the request does not contain an input value with the given name or the enum does not have a backing value that matches the input value, `null` will be returned. The `enum` method accepts the name of the input value and the enum class as its first and second arguments:
+
+    use App\Enums\Status;
+
+    $status = $request->enum('status', Status::class);
 
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input Via Dynamic Properties
@@ -455,7 +480,32 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
 By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `App\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
 
-If you would like to disable this behavior, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
+#### Disabling Input Normalization
+
+If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
+
+If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`.
+
+```php
+use App\Http\Middleware\ConvertEmptyStringsToNull;
+use App\Http\Middleware\TrimStrings;
+
+/**
+ * Bootstrap any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    TrimStrings::skipWhen(function ($request) {
+        return $request->is('admin/*');
+    });
+
+    ConvertEmptyStringsToNull::skipWhen(function ($request) {
+        // ...
+    });
+}
+```
 
 <a name="files"></a>
 ## Files

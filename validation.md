@@ -8,6 +8,7 @@
     - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
     - [Repopulating Forms](#repopulating-forms)
     - [A Note On Optional Fields](#a-note-on-optional-fields)
+    - [Validation Error Response Format](#validation-error-response-format)
 - [Form Request Validation](#form-request-validation)
     - [Creating Form Requests](#creating-form-requests)
     - [Authorizing Form Requests](#authorizing-form-requests)
@@ -99,7 +100,7 @@ Next, let's take a look at a simple controller that handles incoming requests to
 
 Now we are ready to fill in our `store` method with the logic to validate the new blog post. To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an `Illuminate\Validation\ValidationException` exception will be thrown and the proper error response will automatically be sent back to the user.
 
-If validation fails during a traditional HTTP request, a redirect response to the previous URL will be generated. If the incoming request is an XHR request, a JSON response containing the validation error messages will be returned.
+If validation fails during a traditional HTTP request, a redirect response to the previous URL will be generated. If the incoming request is an XHR request, a [JSON response containing the validation error messages](#validation-error-response-format) will be returned.
 
 To get a better understanding of the `validate` method, let's jump back into the `store` method:
 
@@ -202,7 +203,7 @@ In addition, you may copy this file to another translation language directory to
 <a name="quick-xhr-requests-and-validation"></a>
 #### XHR Requests & Validation
 
-In this example, we used a traditional form to send data to the application. However, many applications receive XHR requests from a JavaScript powered frontend. When using the `validate` method during an XHR request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
+In this example, we used a traditional form to send data to the application. However, many applications receive XHR requests from a JavaScript powered frontend. When using the `validate` method during an XHR request, Laravel will not generate a redirect response. Instead, Laravel generates a [JSON response containing all of the validation errors](#validation-error-response-format). This JSON response will be sent with a 422 HTTP status code.
 
 <a name="the-at-error-directive"></a>
 #### The `@error` Directive
@@ -258,6 +259,34 @@ By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` m
 
 In this example, we are specifying that the `publish_at` field may be either `null` or a valid date representation. If the `nullable` modifier is not added to the rule definition, the validator would consider `null` an invalid date.
 
+<a name="validation-error-response-format"></a>
+### Validation Error Response Format
+
+When your application throws a `Illuminate\Validation\ValidationException` exception and the incoming HTTP request is expecting a JSON response, Laravel will automatically format the error messages for you and return a `422 Unprocessable Entity` HTTP response.
+
+Below, you can review an example of the JSON response format for validation errors. Note that nested error keys are flattened into "dot" notation format:
+
+```json
+{
+    "message": "The team name must be a string. (and 4 more errors)",
+    "errors": {
+        "team_name": [
+            "The team name must be a string.",
+            "The team name must be at least 1 characters."
+        ],
+        "authorization.role": [
+            "The selected authorization.role is invalid."
+        ],
+        "users.0.email": [
+            "The users.0.email field is required."
+        ],
+        "users.2.email": [
+            "The users.2.email must be a valid email address."
+        ]
+    }
+}
+```
+
 <a name="form-request-validation"></a>
 ## Form Request Validation
 
@@ -309,7 +338,7 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
         $validated = $request->safe()->except(['name', 'email']);
     }
 
-If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
+If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a [JSON representation of the validation errors](#validation-error-response-format).
 
 <a name="adding-after-hooks-to-form-requests"></a>
 #### Adding After Hooks To Form Requests
@@ -522,7 +551,7 @@ The `stopOnFirstFailure` method will inform the validator that it should stop va
 <a name="automatic-redirection"></a>
 ### Automatic Redirection
 
-If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the HTTP request's `validate` method, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an XHR request, a JSON response will be returned:
+If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the HTTP request's `validate` method, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an XHR request, a [JSON response will be returned](#validation-error-response-format):
 
     Validator::make($request->all(), [
         'title' => 'required|unique:posts|max:255',
@@ -590,7 +619,7 @@ Many of Laravel's built-in error messages include an `:attribute` placeholder th
 
 You may also attach callbacks to be run after validation is completed. This allows you to easily perform further validation and even add more error messages to the message collection. To get started, call the `after` method on a validator instance:
 
-    $validator = Validator::make(...);
+    $validator = Validator::make(/* ... */);
 
     $validator->after(function ($validator) {
         if ($this->somethingElseIsInvalid()) {
@@ -752,12 +781,14 @@ Below is a list of all available validation rules and their function:
 
 <style>
     .collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
     }
 
     .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 
@@ -795,6 +826,7 @@ Below is a list of all available validation rules and their function:
 [Exclude](#rule-exclude)
 [Exclude If](#rule-exclude-if)
 [Exclude Unless](#rule-exclude-unless)
+[Exclude With](#rule-exclude-with)
 [Exclude Without](#rule-exclude-without)
 [Exists (Database)](#rule-exists)
 [File](#rule-file)
@@ -806,10 +838,10 @@ Below is a list of all available validation rules and their function:
 [In Array](#rule-in-array)
 [Integer](#rule-integer)
 [IP Address](#rule-ip)
-[MAC Address](#rule-mac)
 [JSON](#rule-json)
 [Less Than](#rule-lt)
 [Less Than Or Equal](#rule-lte)
+[MAC Address](#rule-mac)
 [Max](#rule-max)
 [MIME Types](#rule-mimetypes)
 [MIME Type By File Extension](#rule-mimes)
@@ -910,7 +942,7 @@ When additional values are provided to the `array` rule, each key in the input a
     ];
 
     Validator::make($input, [
-        'user' => 'array:username,locale',
+        'user' => 'array:name,username',
     ]);
 
 In general, you should always specify the array keys that are allowed to be present within your array.
@@ -991,12 +1023,12 @@ The field under validation must have a different value than _field_.
 <a name="rule-digits"></a>
 #### digits:_value_
 
-The field under validation must be _numeric_ and must have an exact length of _value_.
+The integer under validation must have an exact length of _value_.
 
 <a name="rule-digits-between"></a>
 #### digits_between:_min_,_max_
 
-The field under validation must be _numeric_ and must have a length between the given _min_ and _max_.
+The integer validation must have a length between the given _min_ and _max_.
 
 <a name="rule-dimensions"></a>
 #### dimensions
@@ -1090,10 +1122,28 @@ The field under validation will be excluded from the request data returned by th
 
 The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is equal to _value_.
 
+If complex conditional exclusion logic is required, you may utilize the `Rule::excludeIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be excluded:
+
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Rule;
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::excludeIf($request->user()->is_admin),
+    ]);
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::excludeIf(fn () => $request->user()->is_admin),
+    ]);
+
 <a name="rule-exclude-unless"></a>
 #### exclude_unless:_anotherfield_,_value_
 
 The field under validation will be excluded from the request data returned by the `validate` and `validated` methods unless _anotherfield_'s field is equal to _value_. If _value_ is `null` (`exclude_unless:name,null`), the field under validation will be excluded unless the comparison field is `null` or the comparison field is missing from the request data.
+
+<a name="rule-exclude-with"></a>
+#### exclude_with:_anotherfield_
+
+The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is present.
 
 <a name="rule-exclude-without"></a>
 #### exclude_without:_anotherfield_
@@ -1140,6 +1190,10 @@ If you would like to customize the query executed by the validation rule, you ma
             }),
         ],
     ]);
+
+You may explicitly specify the database column name that should be used by the `exists` rule generated by the `Rule::exists` method by providing the column name as the second argument to the `exists` method:
+
+    'state' => Rule::exists('states', 'abbreviation'),
 
 <a name="rule-file"></a>
 #### file
@@ -1194,8 +1248,8 @@ When the `in` rule is combined with the `array` rule, each value in the input ar
         'airports' => [
             'required',
             'array',
-            Rule::in(['NYC', 'LIT']),
         ],
+        'airports.*' => Rule::in(['NYC', 'LIT']),
     ]);
 
 <a name="rule-in-array"></a>
@@ -1225,11 +1279,6 @@ The field under validation must be an IPv4 address.
 
 The field under validation must be an IPv6 address.
 
-<a name="rule-mac"></a>
-#### mac_address
-
-The field under validation must be a MAC address.
-
 <a name="rule-json"></a>
 #### json
 
@@ -1244,6 +1293,11 @@ The field under validation must be less than the given _field_. The two fields m
 #### lte:_field_
 
 The field under validation must be less than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+
+<a name="rule-mac"></a>
+#### mac_address
+
+The field under validation must be a MAC address.
 
 <a name="rule-max"></a>
 #### max:_value_
@@ -1340,6 +1394,19 @@ The field under validation must be empty or not present.
 
 The field under validation must be empty or not present if the _anotherfield_ field is equal to any _value_.
 
+If complex conditional prohibition logic is required, you may utilize the `Rule::prohibitedIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be prohibited:
+
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Rule;
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::prohibitedIf($request->user()->is_admin),
+    ]);
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::prohibitedIf(fn () => $request->user()->is_admin),
+    ]);
+
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_anotherfield_,_value_,...
 
@@ -1388,9 +1455,7 @@ If you would like to construct a more complex condition for the `required_if` ru
     ]);
 
     Validator::make($request->all(), [
-        'role_id' => Rule::requiredIf(function () use ($request) {
-            return $request->user()->is_admin;
-        }),
+        'role_id' => Rule::requiredIf(fn () => $request->user()->is_admin),
     ]);
 
 <a name="rule-required-unless"></a>
@@ -1515,9 +1580,7 @@ By default, the `unique` rule will check the uniqueness of the column matching t
 
 You may specify additional query conditions by customizing the query using the `where` method. For example, let's add a query condition that scopes the query to only search records that have an `account_id` column value of `1`:
 
-    'email' => Rule::unique('users')->where(function ($query) {
-        return $query->where('account_id', 1);
-    })
+    'email' => Rule::unique('users')->where(fn ($query) => $query->where('account_id', 1))
 
 <a name="rule-url"></a>
 #### url
@@ -1810,52 +1873,33 @@ Occasionally, you may want to attach additional validation rules to your default
 Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you may use the `make:rule` Artisan command. Let's use this command to generate a rule that verifies a string is uppercase. Laravel will place the new rule in the `app/Rules` directory. If this directory does not exist, Laravel will create it when you execute the Artisan command to create your rule:
 
 ```shell
-php artisan make:rule Uppercase
+php artisan make:rule Uppercase --invokable
 ```
 
-Once the rule has been created, we are ready to define its behavior. A rule object contains two methods: `passes` and `message`. The `passes` method receives the attribute value and name, and should return `true` or `false` depending on whether the attribute value is valid or not. The `message` method should return the validation error message that should be used when validation fails:
+Once the rule has been created, we are ready to define its behavior. A rule object contains a single method: `__invoke`. This method receives the attribute name, its value, and a callback that should be invoked on failure with the validation error message:
 
     <?php
 
     namespace App\Rules;
 
-    use Illuminate\Contracts\Validation\Rule;
+    use Illuminate\Contracts\Validation\InvokableRule;
 
-    class Uppercase implements Rule
+    class Uppercase implements InvokableRule
     {
         /**
-         * Determine if the validation rule passes.
+         * Run the validation rule.
          *
          * @param  string  $attribute
          * @param  mixed  $value
-         * @return bool
+         * @param  \Closure  $fail
+         * @return void
          */
-        public function passes($attribute, $value)
+        public function __invoke($attribute, $value, $fail)
         {
-            return strtoupper($value) === $value;
+            if (strtoupper($value) !== $value) {
+                $fail('The :attribute must be uppercase.');
+            }
         }
-
-        /**
-         * Get the validation error message.
-         *
-         * @return string
-         */
-        public function message()
-        {
-            return 'The :attribute must be uppercase.';
-        }
-    }
-
-You may call the `trans` helper from your `message` method if you would like to return an error message from your translation files:
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return trans('validation.uppercase');
     }
 
 Once the rule has been defined, you may attach it to a validator by passing an instance of the rule object with your other validation rules:
@@ -1866,6 +1910,20 @@ Once the rule has been defined, you may attach it to a validator by passing an i
         'name' => ['required', 'string', new Uppercase],
     ]);
 
+#### Translating Validation Messages
+
+Instead of providing a literal error message to the `$fail` closure, you may also provide a [translation string key](/docs/{{version}}/localization) and instruct Laravel to translate the error message:
+
+    if (strtoupper($value) !== $value) {
+        $fail('validation.uppercase')->translate();
+    }
+
+If necessary, you may provide placeholder replacements and the preferred language as the first and second arguments to the `translate` method:
+
+    $fail('validation.location')->translate([
+        'value' => $this->value,
+    ], 'fr')
+
 #### Accessing Additional Data
 
 If your custom validation rule class needs to access all of the other data undergoing validation, your rule class may implement the `Illuminate\Contracts\Validation\DataAwareRule` interface. This interface requires your class to define a `setData` method. This method will automatically be invoked by Laravel (before validation proceeds) with all of the data under validation:
@@ -1874,10 +1932,10 @@ If your custom validation rule class needs to access all of the other data under
 
     namespace App\Rules;
 
-    use Illuminate\Contracts\Validation\Rule;
     use Illuminate\Contracts\Validation\DataAwareRule;
+    use Illuminate\Contracts\Validation\InvokableRule;
 
-    class Uppercase implements Rule, DataAwareRule
+    class Uppercase implements DataAwareRule, InvokableRule
     {
         /**
          * All of the data under validation.
@@ -1908,10 +1966,10 @@ Or, if your validation rule requires access to the validator instance performing
 
     namespace App\Rules;
 
-    use Illuminate\Contracts\Validation\Rule;
+    use Illuminate\Contracts\Validation\InvokableRule;
     use Illuminate\Contracts\Validation\ValidatorAwareRule;
 
-    class Uppercase implements Rule, ValidatorAwareRule
+    class Uppercase implements InvokableRule, ValidatorAwareRule
     {
         /**
          * The validator instance.
@@ -1973,7 +2031,7 @@ For a custom rule to run even when an attribute is empty, the rule must imply th
 To generate a new implicit rule object, you may use the `make:rule` Artisan command with the `--implicit` option :
 
 ```shell
-php artisan make:rule Uppercase --implicit
+php artisan make:rule Uppercase --invokable --implicit
 ```
 
 > {note} An "implicit" rule only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.

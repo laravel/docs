@@ -90,6 +90,15 @@ php artisan make:model Flight --all
 php artisan make:model Member --pivot
 ```
 
+<a name="inspecting-models"></a>
+#### Inspecting Models
+
+Sometimes it can be difficult to determine all of a model's available attributes and relationships just by skimming its code. Instead, try the `model:show` Artisan command, which provides a convenient overview of all the model's attributes and relations:
+
+```shell
+php artisan model:show Flight
+```
+
 <a name="eloquent-model-conventions"></a>
 ## Eloquent Model Conventions
 
@@ -401,7 +410,7 @@ Similar to the `lazy` method, the `cursor` method may be used to significantly r
 
 The `cursor` method will only execute a single database query; however, the individual Eloquent models will not be hydrated until they are actually iterated over. Therefore, only one Eloquent model is kept in memory at any given time while iterating over the cursor.
 
-> {note} Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load relationships, consider using [the `lazy` method](#streaming-results-lazily) instead.
+> {note} Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load relationships, consider using [the `lazy` method](#chunking-using-lazy-collections) instead.
 
 Internally, the `cursor` method uses PHP [generators](https://www.php.net/manual/en/language.generators.overview.php) to implement this functionality:
 
@@ -427,7 +436,7 @@ foreach ($users as $user) {
 }
 ```
 
-Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with a very large number of Eloquent records, consider using [the `lazy` method](#streaming-results-lazily) instead.
+Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with a very large number of Eloquent records, consider using [the `lazy` method](#chunking-using-lazy-collections) instead.
 
 <a name="advanced-subqueries"></a>
 ### Advanced Subqueries
@@ -476,9 +485,13 @@ In addition to retrieving all of the records matching a given query, you may als
     // Alternative to retrieving the first model matching the query constraints...
     $flight = Flight::firstWhere('active', 1);
 
-Sometimes you may wish to retrieve the first result of a query or perform some other action if no results are found. The `firstOr` method will return the first result matching the query or, if no results are found, execute the given closure. The value returned by the closure will be considered the result of the `firstOr` method:
+Sometimes you may wish to perform some other action if no results are found. The `findOr` and `firstOr` methods will return a single model instance or, if no results are found, execute the given closure. The value returned by the closure will be considered the result of the method:
 
-    $model = Flight::where('legs', '>', 3)->firstOr(function () {
+    $flight = Flight::findOr(1, function () {
+        // ...
+    });
+
+    $flight = Flight::where('legs', '>', 3)->firstOr(function () {
         // ...
     });
 
@@ -618,7 +631,7 @@ The `update` method expects an array of column and value pairs representing the 
 
 Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine the internal state of your model and determine how its attributes have changed from when the model was originally retrieved.
 
-The `isDirty` method determines if any of the model's attributes have been changed since the model was retrieved. You may pass a specific attribute name or an array of attributes to the `isDirty` method to determine if any of the attributes are "dirty". The `isClean` will determine if an attribute has remained unchanged since the model was retrieved. This method also accepts an optional attribute argument:
+The `isDirty` method determines if any of the model's attributes have been changed since the model was retrieved. You may pass a specific attribute name or an array of attributes to the `isDirty` method to determine if any of the attributes are "dirty". The `isClean` method will determine if an attribute has remained unchanged since the model was retrieved. This method also accepts an optional attribute argument:
 
     use App\Models\User;
 
@@ -1262,7 +1275,7 @@ The `is` and `isNot` methods are also available when using the `belongsTo`, `has
 
 > {tip} Want to broadcast your Eloquent events directly to your client-side application? Check out Laravel's [model event broadcasting](/docs/{{version}}/broadcasting#model-broadcasting).
 
-Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`, and `replicating`.
+Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `trashed`, `forceDeleted`, `restoring`, `restored`, and `replicating`.
 
 The `retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will dispatch. The `updating` / `updated` events will dispatch when an existing model is modified and the `save` method is called. The `saving` / `saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
 
@@ -1380,6 +1393,17 @@ This command will place the new observer in your `App/Observers` directory. If t
          * @return void
          */
         public function deleted(User $user)
+        {
+            //
+        }
+        
+        /**
+         * Handle the User "restored" event.
+         *
+         * @param  \App\Models\User  $user
+         * @return void
+         */
+        public function restored(User $user)
         {
             //
         }

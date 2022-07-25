@@ -312,6 +312,12 @@ If you only want to fake event listeners for a specific set of events, you may p
         $order->update([...]);
     }
 
+You may fake all events except for a set of specified events using the `fakeExcept` method:
+
+    Event::fakeExcept([
+        OrderCreated::class,
+    ]);
+
 <a name="scoped-event-fakes"></a>
 ### Scoped Event Fakes
 
@@ -406,12 +412,15 @@ You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or 
         return $mail->order->id === $order->id;
     });
 
-When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the recipients of the mailable:
+When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:
 
     Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
         return $mail->hasTo($user->email) &&
                $mail->hasCc('...') &&
-               $mail->hasBcc('...');
+               $mail->hasBcc('...') &&
+               $mail->hasReplyTo('...') &&
+               $mail->hasFrom('...') &&
+               $mail->hasSubject('...');
     });
 
 You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:
@@ -421,6 +430,11 @@ You may have noticed that there are two methods for asserting that mail was not 
     Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {
         return $mail->order->id === $order->id;
     });
+
+<a name="testing-mailable-content"></a>
+#### Testing Mailable Content
+
+We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. To learn how to test the content of your mailables, check out our documentation on the [testing mailables](/docs/{{version}}/mail#testing-mailables).
 
 <a name="notification-fake"></a>
 ## Notification Fake
@@ -459,6 +473,9 @@ After calling the `Notification` facade's `fake` method, you may then assert tha
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
+
+            // Assert that a given number of notifications were sent...
+            Notification::assertCount(3);
         }
     }
 
@@ -474,18 +491,13 @@ You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in ord
 <a name="on-demand-notifications"></a>
 #### On-Demand Notifications
 
-If the code you are testing sends [on-demand notifications](/docs/{{version}}/notifications#on-demand-notifications), you will need to assert that the notification was sent to an `Illuminate\Notifications\AnonymousNotifiable` instance:
+If the code you are testing sends [on-demand notifications](/docs/{{version}}/notifications#on-demand-notifications), you can test that the on-demand notification was sent via the `assertSentOnDemand` method:
 
-    use Illuminate\Notifications\AnonymousNotifiable;
+    Notification::assertSentOnDemand(OrderShipped::class);
 
-    Notification::assertSentTo(
-        new AnonymousNotifiable, OrderShipped::class
-    );
+By passing a closure as the second argument to the `assertSentOnDemand` method, you may determine if an on-demand notification was sent to the correct "route" address:
 
-By passing a closure as the third argument to the notification assertion methods, you may determine if an on-demand notification was sent to the correct "route" address:
-
-    Notification::assertSentTo(
-        new AnonymousNotifiable,
+    Notification::assertSentOnDemand(
         OrderShipped::class,
         function ($notification, $channels, $notifiable) use ($user) {
             return $notifiable->routes['mail'] === $user->email;
@@ -598,17 +610,22 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
             // Assert one or more files were not stored...
             Storage::disk('photos')->assertMissing('missing.jpg');
             Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
+
+            // Assert that a given directory is empty...
+            Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');
         }
     }
 
-For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads).
+By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads).
 
-> {tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead.
+> {note} The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php).
 
 <a name="interacting-with-time"></a>
 ## Interacting With Time
 
 When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\Support\Carbon::now()`. Thankfully, Laravel's base feature test class includes helpers that allow you to manipulate the current time:
+
+    use Illuminate\Support\Carbon;
 
     public function testTimeCanBeManipulated()
     {
@@ -620,6 +637,11 @@ When testing, you may occasionally need to modify the time returned by helpers s
         $this->travel(5)->days();
         $this->travel(5)->weeks();
         $this->travel(5)->years();
+
+        // Freeze time and resume normal time after executing closure...
+        $this->freezeTime(function (Carbon $time) {
+            // ...
+        });
 
         // Travel into the past...
         $this->travel(-5)->hours();

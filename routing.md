@@ -140,10 +140,22 @@ By default, the route middleware that are assigned to each route will not be dis
 php artisan route:list -v
 ```
 
+You may also instruct Laravel to only show routes that begin with a given URI:
+
+```shell
+php artisan route:list --path=api
+```
+
 In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:
 
 ```shell
 php artisan route:list --except-vendor
+```
+
+Likewise, you may also instruct Laravel to only show routes that are defined by third-party packages by providing the `--only-vendor` option when executing the `route:list` command:
+
+```shell
+php artisan route:list --only-vendor
 ```
 
 <a name="route-parameters"></a>
@@ -220,6 +232,10 @@ For convenience, some commonly used regular expression patterns have helper meth
     Route::get('/user/{id}', function ($id) {
         //
     })->whereUuid('id');
+
+    Route::get('/category/{category}', function ($category) {
+        //
+    })->whereIn('category', ['movie', 'song', 'painting']);
 
 If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.
 
@@ -510,7 +526,7 @@ Typically, a 404 HTTP response will be generated if an implicitly bound model is
 <a name="implicit-enum-binding"></a>
 ### Implicit Enum Binding
 
-PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint an Enum on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
+PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint a [backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
 
 ```php
 <?php
@@ -640,6 +656,7 @@ Laravel includes powerful and customizable rate limiting services that you may u
 Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. Limit configuration are instances of the `Illuminate\Cache\RateLimiting\Limit` class. This class contains helpful "builder" methods so that you can quickly define your limit. The rate limiter name may be any string you wish:
 
     use Illuminate\Cache\RateLimiting\Limit;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\RateLimiter;
 
     /**
@@ -657,8 +674,8 @@ Rate limiters are defined using the `RateLimiter` facade's `for` method. The `fo
 If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Laravel. If you would like to define your own response that should be returned by a rate limit, you may use the `response` method:
 
     RateLimiter::for('global', function (Request $request) {
-        return Limit::perMinute(1000)->response(function () {
-            return response('Custom response...', 429);
+        return Limit::perMinute(1000)->response(function (Request $request, array $headers) {
+            return response('Custom response...', 429, $headers);
         });
     });
 

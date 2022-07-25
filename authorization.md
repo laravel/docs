@@ -30,7 +30,7 @@ In addition to providing built-in [authentication](/docs/{{version}}/authenticat
 
 Laravel provides two primary ways of authorizing actions: [gates](#gates) and [policies](#creating-policies). Think of gates and policies like routes and controllers. Gates provide a simple, closure-based approach to authorization while policies, like controllers, group logic around a particular model or resource. In this documentation, we'll explore gates first and then examine policies.
 
-You do not need to choose between exclusively using gates or exclusively using policies when building an application. Most applications will most likely contain some mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions which are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource.
+You do not need to choose between exclusively using gates or exclusively using policies when building an application. Most applications will most likely contain some mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions that are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource.
 
 <a name="gates"></a>
 ## Gates
@@ -195,6 +195,33 @@ When using the `Gate::authorize` method, which throws an `AuthorizationException
 
     // The action is authorized...
 
+<a name="customising-gate-response-status"></a>
+#### Customizing The HTTP Response Status
+
+When an action is denied via a Gate, a `403` HTTP response is returned; however, it can sometimes be useful to return an alternative HTTP status code. You may customize the HTTP status code returned for a failed authorization check using the `denyWithStatus` static constructor on the `Illuminate\Auth\Access\Response` class:
+
+    use App\Models\User;
+    use Illuminate\Auth\Access\Response;
+    use Illuminate\Support\Facades\Gate;
+
+    Gate::define('edit-settings', function (User $user) {
+        return $user->isAdmin
+                    ? Response::allow()
+                    : Response::denyWithStatus(404);
+    });
+
+Because hiding resources via a `404` response is such a common pattern for web applications, the `denyAsNotFound` method is offered for convenience:
+
+    use App\Models\User;
+    use Illuminate\Auth\Access\Response;
+    use Illuminate\Support\Facades\Gate;
+
+    Gate::define('edit-settings', function (User $user) {
+        return $user->isAdmin
+                    ? Response::allow()
+                    : Response::denyAsNotFound();
+    });
+
 <a name="intercepting-gate-checks"></a>
 ### Intercepting Gate Checks
 
@@ -223,7 +250,7 @@ Similar to the `before` method, if the `after` closure returns a non-null result
 <a name="inline-authorization"></a>
 ### Inline Authorization
 
-Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicate gate that corresponds to the action. Laravel allows you to perform these types of "inline" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:
+Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicated gate that corresponds to the action. Laravel allows you to perform these types of "inline" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:
 
 ```php
 use Illuminate\Support\Facades\Gate;
@@ -233,7 +260,7 @@ Gate::allowIf(fn ($user) => $user->isAdministrator());
 Gate::denyIf(fn ($user) => $user->banned());
 ```
 
-If the action is not authorized or if no user is currently authenticated, Laravel will automatically throw an `Illuminate\Auth\Access\AuthorizationException` exception. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler:
+If the action is not authorized or if no user is currently authenticated, Laravel will automatically throw an `Illuminate\Auth\Access\AuthorizationException` exception. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler.
 
 <a name="creating-policies"></a>
 ## Creating Policies
@@ -388,6 +415,49 @@ When using the `Gate::authorize` method, which throws an `AuthorizationException
     Gate::authorize('update', $post);
 
     // The action is authorized...
+
+<a name="customising-policy-response-status"></a>
+#### Customizing The HTTP Response Status
+
+When an action is denied via a policy method, a `403` HTTP response is returned; however, it can sometimes be useful to return an alternative HTTP status code. You may customize the HTTP status code returned for a failed authorization check using the `denyWithStatus` static constructor on the `Illuminate\Auth\Access\Response` class:
+
+    use App\Models\Post;
+    use App\Models\User;
+    use Illuminate\Auth\Access\Response;
+
+    /**
+     * Determine if the given post can be updated by the user.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function update(User $user, Post $post)
+    {
+        return $user->id === $post->user_id
+                    ? Response::allow()
+                    : Response::denyWithStatus(404);
+    }
+
+Because hiding resources via a `404` response is such a common pattern for web applications, the `denyAsNotFound` method is offered for convenience:
+
+    use App\Models\Post;
+    use App\Models\User;
+    use Illuminate\Auth\Access\Response;
+
+    /**
+     * Determine if the given post can be updated by the user.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function update(User $user, Post $post)
+    {
+        return $user->id === $post->user_id
+                    ? Response::allow()
+                    : Response::denyAsNotFound();
+    }
 
 <a name="methods-without-models"></a>
 ### Methods Without Models

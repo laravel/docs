@@ -10,6 +10,7 @@
     - [Token Abilities](#token-abilities)
     - [Protecting Routes](#protecting-routes)
     - [Revoking Tokens](#revoking-tokens)
+    - [Token Expiration](#token-expiration)
 - [SPA Authentication](#spa-authentication)
     - [Configuration](#spa-configuration)
     - [Authenticating](#spa-authenticating)
@@ -72,7 +73,7 @@ Finally, you should run your database migrations. Sanctum will create one databa
 php artisan migrate
 ```
 
-Next, if you plan to utilize Sanctum to authenticate an SPA, you should add Sanctum's middleware to your `api` middleware group within your application's `app/Http/Kernel.php` file:
+Next, if you plan to utilize Sanctum to authenticate a SPA, you should add Sanctum's middleware to your `api` middleware group within your application's `app/Http/Kernel.php` file:
 
     'api' => [
         \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
@@ -226,6 +227,21 @@ You may "revoke" tokens by deleting them from your database using the `tokens` r
     // Revoke a specific token...
     $user->tokens()->where('id', $tokenId)->delete();
 
+<a name="token-expiration"></a>
+### Token Expiration
+
+By default, Sanctum tokens never expire and may only be invalidated by [revoking the token](#revoking-tokens). However, if you would like to configure an expiration time for your application's API tokens, you may do so via the `expiration` configuration option defined in your application's `sanctum` configuration file. This configuration option defines the number of minutes until an issued token will be considered expired:
+
+```php
+'expiration' => 525600,
+```
+
+If you have configured a token expiration time for your application, you may also wish to [schedule a task](/docs/{{version}}/scheduling) to prune your application's expired tokens. Thankfully, Sanctum includes a `sanctum:prune-expired` Artisan command that you may use to accomplish this. For example, you may configure a scheduled tasks to delete all expired token database records that have been expired for at least 24 hours:
+
+```php
+$schedule->command('sanctum:prune-expired --hours=24')->daily();
+```
+
 <a name="spa-authentication"></a>
 ## SPA Authentication
 
@@ -324,9 +340,9 @@ Next, in order for Pusher's authorization requests to succeed, you will need to 
 ```js
 window.Echo = new Echo({
     broadcaster: "pusher",
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     encrypted: true,
-    key: process.env.MIX_PUSHER_APP_KEY,
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
     authorizer: (channel, options) => {
         return {
             authorize: (socketId, callback) => {

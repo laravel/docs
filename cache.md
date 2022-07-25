@@ -141,7 +141,7 @@ The `Cache` facade's `get` method is used to retrieve items from the cache. If t
 You may even pass a closure as the default value. The result of the closure will be returned if the specified item does not exist in the cache. Passing a closure allows you to defer the retrieval of default values from a database or other external service:
 
     $value = Cache::get('key', function () {
-        return DB::table(...)->get();
+        return DB::table(/* ... */)->get();
     });
 
 <a name="checking-for-item-existence"></a>
@@ -266,7 +266,7 @@ When the `cache` function is called without any arguments, it returns an instanc
 <a name="storing-tagged-cache-items"></a>
 ### Storing Tagged Cache Items
 
-Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` a value into the cache:
+Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. Items stored via tags may not be accessed without also providing the tags that were used to store the value. For example, let's access a tagged cache and `put` a value into the cache:
 
     Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
 

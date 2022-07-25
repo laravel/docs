@@ -880,6 +880,16 @@ You may determine if the user is within their trial period using either the `onT
         //
     }
 
+To determine if an existing trial has expired, you may use the `hasExpiredTrial` methods:
+
+    if ($user->hasExpiredTrial('default')) {
+        //
+    }
+
+    if ($user->subscription('default')->hasExpiredTrial()) {
+        //
+    }
+
 <a name="defining-trial-days-in-paddle-cashier"></a>
 #### Defining Trial Days In Paddle / Cashier
 

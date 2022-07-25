@@ -82,7 +82,7 @@ After installing the RoadRunner binary, you may exit your Sail shell session. Yo
 Next, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
 
 ```ini
-command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=8000
+command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=80
 ```
 
 Finally, ensure the `rr` binary is executable and build your Sail images:
@@ -257,7 +257,7 @@ php artisan octane:start --workers=4 --task-workers=6
 <a name="specifying-the-max-request-count"></a>
 ### Specifying The Max Request Count
 
-To help prevent stray memory leaks, Octane can gracefully restart a worker once it has handled a given number of requests. To instruct Octane to do this, you may use the `--max-requests` option:
+To help prevent stray memory leaks, Octane gracefully restarts any worker once it has handled 500 requests. To adjust this number, you may use the `--max-requests` option:
 
 ```shell
 php artisan octane:start --max-requests=250

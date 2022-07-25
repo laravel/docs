@@ -6,6 +6,7 @@
 - [Running SQL Queries](#running-queries)
     - [Using Multiple Database Connections](#using-multiple-database-connections)
     - [Listening For Query Events](#listening-for-query-events)
+    - [Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)
 - [Database Transactions](#database-transactions)
 - [Connecting To The Database CLI](#connecting-to-the-database-cli)
 
@@ -18,7 +19,7 @@ Almost every modern web application interacts with a database. Laravel makes int
 
 - MariaDB 10.2+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))
 - MySQL 5.7+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
-- PostgreSQL 9.6+ ([Version Policy](https://www.postgresql.org/support/versioning/))
+- PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
 - SQL Server 2017+ ([Version Policy](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
@@ -153,6 +154,15 @@ The `select` method will always return an `array` of results. Each result within
         echo $user->name;
     }
 
+<a name="selecting-scalar-values"></a>
+#### Selecting Scalar Values
+
+Sometimes your database query may result in a single, scalar value. Instead of being required to retrieve the query's scalar result from a record object, Laravel allows you to retrieve this value directly using the `scalar` method:
+
+    $burgers = DB::scalar(
+        "select count(case when food = 'burger' then 1 end) as burgers from menu"
+    );
+
 <a name="using-named-bindings"></a>
 #### Using Named Bindings
 
@@ -222,7 +232,7 @@ If your application defines multiple connections in your `config/database.php` c
 
     use Illuminate\Support\Facades\DB;
 
-    $users = DB::connection('sqlite')->select(...);
+    $users = DB::connection('sqlite')->select(/* ... */);
 
 You may access the raw, underlying PDO instance of a connection using the `getPdo` method on a connection instance:
 
@@ -263,6 +273,44 @@ If you would like to specify a closure that is invoked for each SQL query execut
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
+            });
+        }
+    }
+
+<a name="monitoring-cumulative-query-time"></a>
+### Monitoring Cumulative Query Time
+
+A common performance bottleneck of modern web applications is the amount of time they spend querying databases. Thankfully, Laravel can invoke a closure or callback of your choice when it spends too much time querying the database during a single request. To get started, provide a query time threshold (in milliseconds) and closure to the `whenQueryingForLongerThan` method. You may invoke this method in the `boot` method of a [service provider](/docs/{{version}}/providers):
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Database\Connection;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            DB::whenQueryingForLongerThan(500, function (Connection $connection) {
+                // Notify development team...
             });
         }
     }

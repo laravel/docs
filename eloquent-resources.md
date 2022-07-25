@@ -498,8 +498,6 @@ Paginated responses always contain `meta` and `links` keys with information abou
 
 Sometimes you may wish to only include an attribute in a resource response if a given condition is met. For example, you may wish to only include a value if the current user is an "administrator". Laravel provides a variety of helper methods to assist you in this situation. The `when` method may be used to conditionally add an attribute to a resource response:
 
-    use Illuminate\Support\Facades\Auth;
-
     /**
      * Transform the resource into an array.
      *
@@ -512,7 +510,7 @@ Sometimes you may wish to only include an attribute in a resource response if a 
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'secret' => $this->when(Auth::user()->isAdmin(), 'secret-value'),
+            'secret' => $this->when($request->user()->isAdmin(), 'secret-value'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
@@ -522,9 +520,13 @@ In this example, the `secret` key will only be returned in the final resource re
 
 The `when` method also accepts a closure as its second argument, allowing you to calculate the resulting value only if the given condition is `true`:
 
-    'secret' => $this->when(Auth::user()->isAdmin(), function () {
+    'secret' => $this->when($request->user()->isAdmin(), function () {
         return 'secret-value';
     }),
+
+Additionally, the `whenNotNull` method may be used to include an attribute in the resource response if the attribute is not null:
+
+    'name' => $this->whenNotNull($this->name),
 
 <a name="merging-conditional-attributes"></a>
 #### Merging Conditional Attributes
@@ -543,7 +545,7 @@ Sometimes you may have several attributes that should only be included in the re
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            $this->mergeWhen(Auth::user()->isAdmin(), [
+            $this->mergeWhen($request->user()->isAdmin(), [
                 'first-secret' => 'value',
                 'second-secret' => 'value',
             ]),
@@ -584,6 +586,35 @@ The `whenLoaded` method may be used to conditionally load a relationship. In ord
     }
 
 In this example, if the relationship has not been loaded, the `posts` key will be removed from the resource response before it is sent to the client.
+
+<a name="conditional-relationship-counts"></a>
+#### Conditional Relationship Counts
+
+In addition to conditionally including relationships, you may conditionally include relationship "counts" on your resource responses based on if the relationship's count has been loaded on the model:
+
+    new UserResource($user->loadCount('posts'));
+
+The `whenCounted` method may be used to conditionally include a relationship's count in your resource response. This method avoids unnecessarily including the attribute if the relationships's count is not present:
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'posts_count' => $this->whenCounted('posts'),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
+
+In this example, if the `posts` relationship's count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client.
 
 <a name="conditional-pivot-information"></a>
 #### Conditional Pivot Information

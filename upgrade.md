@@ -128,6 +128,12 @@ The exception handler's `ignore` method is now `public` instead of `protected`. 
 public function ignore(string $class);
 ```
 
+#### Exception Handler Contract Binding
+
+**Likelihood Of Impact: Very Low**
+
+Previously, in order to override the default Laravel exception handler, custom implementations were bound into the service container using the `\App\Exceptions\Handler::class` type. However, you should now bind custom implementations using the `\Illuminate\Contracts\Debug\ExceptionHandler::class` type.
+
 ### Blade
 
 #### Lazy Collections & The `$loop` Variable
@@ -135,6 +141,12 @@ public function ignore(string $class);
 **Likelihood Of Impact: Low**
 
 When iterating over a `LazyCollection` instance within a Blade template, the `$loop` variable is no longer available, as accessing this variable causes the entire `LazyCollection` to be loaded into memory, thus rendering the usage of lazy collections pointless in this scenario.
+
+#### Checked / Disabled / Selected Blade Directives
+
+**Likelihood Of Impact: Low**
+
+The new `@checked`, `@disabled`, and `@selected` Blade directives may conflict with Vue events of the same name. You may use `@@` to escape the directives and avoid this conflict: `@@selected`.
 
 ### Collections
 
@@ -324,7 +336,15 @@ Write operations such as `put`, `write`, and `writeStream` now overwrite existin
 
 #### Write Exceptions
 
-Write operations such as `put`, `write`, and `writeStream` no longer throw an exception when a write operation fails. Instead, `false` is returned.
+Write operations such as `put`, `write`, and `writeStream` no longer throw an exception when a write operation fails. Instead, `false` is returned. If you would like to preserve the previous behavior which threw exceptions, you may define the `throw` option within a filesystem disk's configuration array:
+
+```php
+'public' => [
+    'driver' => 'local',
+    // ...
+    'throw' => true,
+],
+```
 
 #### Reading Missing Files
 
@@ -435,7 +455,7 @@ The [HTTP client](/docs/{{version}}/http-client) now has a default timeout of 30
 
 If you wish to specify a longer timeout for a given request, you may do so using the `timeout` method:
 
-    $response = Http::timeout(120)->get(...);
+    $response = Http::timeout(120)->get(/* ... */);
 
 #### HTTP Fake & Middleware
 
@@ -472,7 +492,7 @@ composer require symfony/postmark-mailer symfony/http-client
 
 #### Updated Return Types
 
-The `send`, `html`, `text`, and `plain` methods no longer return the number of recipients that received the message. Instead, an instance of `Illuminate\Mail\SentMessage` is returned. This object contains an instance of `Symfony\Component\Mailer\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object.
+The `send`, `html`, `raw`, and `plain` methods on `Illuminate\Mail\Mailer` no longer return `void`. Instead, an instance of `Illuminate\Mail\SentMessage` is returned. This object contains an instance of `Symfony\Component\Mailer\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object.
 
 #### Renamed "Swift" Methods
 
@@ -541,6 +561,12 @@ Again, many applications may not be interacting with these methods, as they are 
 #### Generated Messages IDs
 
 SwiftMailer offered the ability to define a custom domain to include in generated Message IDs via the `mime.idgenerator.idright` configuration option. This is not supported by Symfony Mailer. Instead, Symfony Mailer will automatically generate a Message ID based on the sender.
+
+#### `MessageSent` Event Changes
+
+The `message` property of the `Illuminate\Mail\Events\MessageSent` event now contains an instance of `Symfony\Component\Mime\Email` instead of an instance of `Swift_Message`. This message represents the email **before** it is sent.
+
+Additionally, a new `sent` property has been added to the `MessageSent` event. This property contains an instance of `Illuminate\Mail\SentMessage` and contains information about the sent email, such as the message ID.
 
 #### Forced Reconnections
 

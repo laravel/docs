@@ -8,6 +8,7 @@
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
     - [Configuring The Model ID](#configuring-the-model-id)
+    - [Configuring Search Engines Per Model](#configuring-search-engines-per-model)
     - [Identifying Users](#identifying-users)
 - [Database / Collection Engines](#database-and-collection-engines)
     - [Database Engine](#database-engine)
@@ -111,6 +112,13 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 
 Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
 
+To specify the connection and queue that your Scout jobs utilize, you may define the `queue` configuration option as an array:
+
+    'queue' => [
+        'connection' => 'redis',
+        'queue' => 'scout'
+    ],
+
 <a name="configuration"></a>
 ## Configuration
 
@@ -206,6 +214,34 @@ By default, Scout will use the primary key of the model as model's unique ID / k
         public function getScoutKeyName()
         {
             return 'email';
+        }
+    }
+
+<a name="configuring-search-engines-per-model"></a>
+### Configuring Search Engines Per Model
+
+When searching, Scout will typically use the default search engine specified in your application's `scout` configuration file. However, the search engine for a particular model can be changed by overriding the `searchableUsing` method on the model:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Laravel\Scout\EngineManager;
+    use Laravel\Scout\Searchable;
+
+    class User extends Model
+    {
+        use Searchable;
+
+        /**
+         * Get the engine used to index the model.
+         *
+         * @return \Laravel\Scout\Engines\Engine
+         */
+        public function searchableUsing()
+        {
+            return app(EngineManager::class)->engine('meilisearch');
         }
     }
 

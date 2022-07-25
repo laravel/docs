@@ -163,13 +163,14 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
 
 ```js
 import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
-window.Pusher = require('pusher-js');
+window.Pusher = Pusher;
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     forceTLS: true
 });
 ```
@@ -180,7 +181,7 @@ Once you have uncommented and adjusted the Echo configuration according to your 
 npm run dev
 ```
 
-> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
+> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
 
 <a name="using-an-existing-client-instance"></a>
 #### Using An Existing Client Instance
@@ -189,13 +190,16 @@ If you already have a pre-configured Pusher Channels client instance that you wo
 
 ```js
 import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
-const client = require('pusher-js');
+const options = {
+    broadcaster: 'pusher',
+    key: 'your-pusher-channels-key'
+}
 
 window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: 'your-pusher-channels-key',
-    client: client
+    ...options,
+    client: new Pusher(options.key, options)
 });
 ```
 
@@ -216,12 +220,13 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
 
 ```js
 import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
-window.Pusher = require('pusher-js');
+window.Pusher = Pusher;
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: process.env.MIX_ABLY_PUBLIC_KEY,
+    key: import.meta.env.VITE_ABLY_PUBLIC_KEY,
     wsHost: 'realtime-pusher.ably.io',
     wsPort: 443,
     disableStats: true,
@@ -229,7 +234,7 @@ window.Echo = new Echo({
 });
 ```
 
-Note that our Ably Echo configuration references a `MIX_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
+Note that our Ably Echo configuration references a `VITE_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
 
 Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
 
@@ -237,7 +242,7 @@ Once you have uncommented and adjusted the Echo configuration according to your 
 npm run dev
 ```
 
-> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
+> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
 
 <a name="concept-overview"></a>
 ## Concept Overview
@@ -268,7 +273,7 @@ When a user is viewing one of their orders, we don't want them to have to refres
 
     namespace App\Events;
 
-    use App\Order;
+    use App\Models\Order;
     use Illuminate\Broadcasting\Channel;
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Broadcasting\PresenceChannel;
@@ -748,9 +753,9 @@ If you would like to listen for events on a private channel, use the `private` m
 
 ```js
 Echo.private(`orders.${this.order.id}`)
-    .listen(...)
-    .listen(...)
-    .listen(...);
+    .listen(/* ... */)
+    .listen(/* ... */)
+    .listen(/* ... */);
 ```
 
 <a name="stop-listening-for-events"></a>
@@ -865,9 +870,9 @@ As typical of other types of events, you may listen for events sent to presence 
 
 ```js
 Echo.join(`chat.${roomId}`)
-    .here(...)
-    .joining(...)
-    .leaving(...)
+    .here(/* ... */)
+    .joining(/* ... */)
+    .leaving(/* ... */)
     .listen('NewMessage', (e) => {
         //
     });

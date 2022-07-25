@@ -56,6 +56,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 </style>
 
 <div id="software-list" markdown="1">
+
 - Ubuntu 20.04
 - Git
 - PHP 8.1
@@ -82,6 +83,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Xdebug
 - XHProf / Tideways / XHGui
 - wp-cli
+
 </div>
 
 <a name="optional-software"></a>
@@ -96,6 +98,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 </style>
 
 <div id="software-list" markdown="1">
+
 - Apache
 - Blackfire
 - Cassandra
@@ -125,6 +128,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - TimescaleDB
 - Trader <small>(PHP extension)</small>
 - Webdriver & Laravel Dusk Utilities
+
 </div>
 
 <a name="installation-and-setup"></a>
@@ -593,7 +597,7 @@ Homestead can automatically backup your database when your Homestead virtual mac
 
     backup: true
 
-Once configured, Homestead will export your databases to `mysql_backup` and `postgres_backup` directories when the `vagrant destroy` command is executed. These directories can be found in the folder where you installed Homestead or in the root of your project if you are using the [per project installation](#per-project-installation) method.
+Once configured, Homestead will export your databases to `.backup/mysql_backup` and `.backup/postgres_backup` directories when the `vagrant destroy` command is executed. These directories can be found in the folder where you installed Homestead or in the root of your project if you are using the [per project installation](#per-project-installation) method.
 
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules

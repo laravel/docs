@@ -183,7 +183,7 @@ Job classes are very simple, normally containing only a `handle` method that is 
          *
          * @var \App\Models\Podcast
          */
-        protected $podcast;
+        public $podcast;
 
         /**
          * Create a new job instance.
@@ -301,6 +301,8 @@ In certain cases, you may want to define a specific "key" that makes the job uni
     }
 
 In the example above, the `UpdateSearchIndex` job is unique by a product ID. So, any new dispatches of the job with the same product ID will be ignored until the existing job has completed processing. In addition, if the existing job is not processed within one hour, the unique lock will be released and another job with the same unique key can be dispatched to the queue.
+
+> {note} If your application dispatches jobs from multiple web servers or containers, you should ensure that all of your servers are communicating with the same central cache server so that Laravel can accurately determine if a job is unique.
 
 <a name="keeping-jobs-unique-until-processing-begins"></a>
 #### Keeping Jobs Unique Until Processing Begins
@@ -620,7 +622,7 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
          */
         public function store(Request $request)
         {
-            $podcast = Podcast::create(...);
+            $podcast = Podcast::create(/* ... */);
 
             // ...
 
@@ -658,7 +660,7 @@ If you would like to specify that a job should not be immediately available for 
          */
         public function store(Request $request)
         {
-            $podcast = Podcast::create(...);
+            $podcast = Podcast::create(/* ... */);
 
             // ...
 
@@ -711,7 +713,7 @@ If you would like to dispatch a job immediately (synchronously), you may use the
          */
         public function store(Request $request)
         {
-            $podcast = Podcast::create(...);
+            $podcast = Podcast::create(/* ... */);
 
             // Create podcast...
 
@@ -773,7 +775,7 @@ In addition to chaining job class instances, you may also chain closures:
         new ProcessPodcast,
         new OptimizePodcast,
         function () {
-            Podcast::update(...);
+            Podcast::update(/* ... */);
         },
     ])->dispatch();
 
@@ -833,7 +835,7 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
          */
         public function store(Request $request)
         {
-            $podcast = Podcast::create(...);
+            $podcast = Podcast::create(/* ... */);
 
             // Create podcast...
 
@@ -892,7 +894,7 @@ If your application interacts with multiple queue connections, you may specify w
          */
         public function store(Request $request)
         {
-            $podcast = Podcast::create(...);
+            $podcast = Podcast::create(/* ... */);
 
             // Create podcast...
 
@@ -1032,7 +1034,7 @@ In this example, the job is released for ten seconds if the application is unabl
 
 > {note} The `pcntl` PHP extension must be installed in order to specify job timeouts.
 
-Often, you know roughly how long you expect your queued jobs to take. For this reason, Laravel allows you to specify a "timeout" value. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration).
+Often, you know roughly how long you expect your queued jobs to take. For this reason, Laravel allows you to specify a "timeout" value. By default, the timeout value is 60 seconds. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration).
 
 The maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
 
@@ -1558,7 +1560,7 @@ In your `config/queue.php` configuration file, each queue connection defines a `
 <a name="worker-timeouts"></a>
 #### Worker Timeouts
 
-The `queue:work` Artisan command exposes a `--timeout` option. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):
+The `queue:work` Artisan command exposes a `--timeout` option. By default, the `--timeout` value is 60 seconds. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):
 
 ```shell
 php artisan queue:work --timeout=60
@@ -1709,7 +1711,7 @@ When a particular job fails, you may want to send an alert to your users or reve
          *
          * @var \App\Podcast
          */
-        protected $podcast;
+        public $podcast;
 
         /**
          * Create a new job instance.

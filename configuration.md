@@ -17,6 +17,21 @@ All of the configuration files for the Laravel framework are stored in the `conf
 
 These configuration files allow you to configure things like your database connection information, your mail server information, as well as various other core configuration values such as your application timezone and encryption key.
 
+<a name="application-overview"></a>
+#### Application Overview
+
+In a hurry? You can get a quick overview of your application's configuration, drivers, and environment via the `about` Artisan command:
+
+```shell
+php artisan about
+```
+
+If you're only interested in a particular section of the application overview output, you may filter for that section using the `--only` option:
+
+```shell
+php artisan about --only=environment
+```
+
 <a name="environment-configuration"></a>
 ## Environment Configuration
 
@@ -45,16 +60,16 @@ Before loading your application's environment variables, Laravel determines if e
 
 All variables in your `.env` files are typically parsed as strings, so some reserved values have been created to allow you to return a wider range of types from the `env()` function:
 
-`.env` Value  | `env()` Value
-------------- | -------------
-true | (bool) true
-(true) | (bool) true
-false | (bool) false
-(false) | (bool) false
-empty | (string) ''
-(empty) | (string) ''
-null | (null) null
-(null) | (null) null
+| `.env` Value | `env()` Value |
+|--------------|---------------|
+| true         | (bool) true   |
+| (true)       | (bool) true   |
+| false        | (bool) false  |
+| (false)      | (bool) false  |
+| empty        | (string) ''   |
+| (empty)      | (string) ''   |
+| null         | (null) null   |
+| (null)       | (null) null   |
 
 If you need to define an environment variable with a value that contains spaces, you may do so by enclosing the value in double quotes:
 

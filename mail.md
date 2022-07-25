@@ -11,6 +11,8 @@
     - [View Data](#view-data)
     - [Attachments](#attachments)
     - [Inline Attachments](#inline-attachments)
+    - [Attachable Objects](#attachable-objects)
+    - [Tags & Metadata](#tags-and-metadata)
     - [Customizing The Symfony Message](#customizing-the-symfony-message)
 - [Markdown Mailables](#markdown-mailables)
     - [Generating Markdown Mailables](#generating-markdown-mailables)
@@ -470,6 +472,86 @@ If you already have a raw image data string you wish to embed into an email temp
 </body>
 ```
 
+<a name="attachable-objects"></a>
+### Attachable Objects
+
+While attaching files to messages via simple string paths is often sufficient, in many cases the attachable entities within your application are represented by classes. For example, if your application is attaching a photo to a message, your application may also have a `Photo` model that represents that photo. When that is the case, wouldn't it be convenient to simply pass the `Photo` model to the `attach` method? Attachable objects allow you to do just that.
+
+To get started, implement the `Illuminate\Contracts\Mail\Attachable` interface on the object that will be attachable to messages. This interface dictates that your class defines a `toMailAttachment` method that returns an `Illuminate\Mail\Attachment` instance:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Contracts\Mail\Attachable;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Mail\Attachment;
+
+    class Photo extends Model implements Attachable
+    {
+        /**
+         * Get the attachable representation of the model.
+         *
+         * @return \Illuminate\Mail\Attachment
+         */
+        public function toMailAttachment()
+        {
+            return Attachment::fromPath('/path/to/file');
+        }
+    }
+
+Once you have defined your attachable object, you may simply pass an instance of that object to the `attach` method when building an email message:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('photos.resized')
+                    ->attach($this->photo);
+    }
+
+Of course, attachment data may be stored on a remote file storage service such as Amazon S3. So, Laravel also allows you to generate attachment instances from data that is stored on one of your application's [filesystem disks](/docs/{{version}}/filesystem):
+
+    // Create an attachment from a file on your default disk...
+    return Attachment::fromStorage($this->path);
+
+    // Create an attachment from a file on a specific disk...
+    return Attachment::fromStorageDisk('backblaze', $this->path);
+
+In addition, you may create attachment instances via data that you have in memory. To accomplish this, provide a closure to the `fromData` method. The closure should return the raw data that represents the attachment:
+
+    return Attachment::fromData(fn () => $this->content);
+
+Laravel also provides additional methods that you may use to customize your attachments. For example, you may use the `as` and `withMime` methods to customize the file's name and MIME type:
+
+    return Attachment::fromPath('/path/to/file')
+            ->as('Photo Name')
+            ->withMime('image/jpeg');
+
+<a name="tags-and-metadata"></a>
+### Tags & Metadata
+
+Some third-party email providers such as Mailgun and Postmark support message "tags" and "metadata", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via the `tag` and `metadata` methods:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('emails.orders.shipped')
+                    ->tag('shipment')
+                    ->metadata('order_id', $this->order->id);
+    }
+
+If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
+
+If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message.
+
 <a name="customizing-the-symfony-message"></a>
 ### Customizing The Symfony Message
 
@@ -921,7 +1003,7 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
          */
         public function __construct(ApiClient $client)
         {
-            $this->client = $client
+            $this->client = $client;
         }
 
         /**
@@ -965,7 +1047,7 @@ Once you've defined your custom transport, you may register it via the `extend` 
     public function boot()
     {
         Mail::extend('mailchimp', function (array $config = []) {
-            return new MailchimpTransport(...);
+            return new MailchimpTransport(/* ... */);
         })
     }
 

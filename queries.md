@@ -258,7 +258,7 @@ Instead of using the `DB::raw` method, you may also use the following methods to
 <a name="selectraw"></a>
 #### `selectRaw`
 
-The `selectRaw` method can be used in place of `addSelect(DB::raw(...))`. This method accepts an optional array of bindings as its second argument:
+The `selectRaw` method can be used in place of `addSelect(DB::raw(/* ... */))`. This method accepts an optional array of bindings as its second argument:
 
     $orders = DB::table('orders')
                     ->selectRaw('price * ? as price_with_tax', [1.0825])
@@ -348,7 +348,7 @@ You may also specify more advanced join clauses. To get started, pass a closure 
 
     DB::table('users')
             ->join('contacts', function ($join) {
-                $join->on('users.id', '=', 'contacts.user_id')->orOn(...);
+                $join->on('users.id', '=', 'contacts.user_id')->orOn(/* ... */);
             })
             ->get();
 
@@ -837,14 +837,20 @@ You may insert several records at once by passing an array of arrays. Each array
         ['email' => 'janeway@example.com', 'votes' => 0],
     ]);
 
-The `insertOrIgnore` method will ignore errors while inserting records into the database:
+The `insertOrIgnore` method will ignore errors while inserting records into the database. When using this method, you should be aware that duplicate record errors will be ignored and other types of errors may also be ignored depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution):
 
     DB::table('users')->insertOrIgnore([
         ['id' => 1, 'email' => 'sisko@example.com'],
         ['id' => 2, 'email' => 'archer@example.com'],
     ]);
 
-> {note} `insertOrIgnore` will ignore duplicate records and also may ignore other types of errors depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution).
+The `insertUsing` method will insert new records into the table while using a subquery to determine the data that should be inserted:
+
+    DB::table('pruned_users')->insertUsing([
+        'id', 'name', 'email', 'email_verified_at'
+    ], DB::table('users')->select(
+        'id', 'name', 'email', 'email_verified_at'
+    )->where('updated_at', '<=', now()->subMonth()));
 
 <a name="auto-incrementing-ids"></a>
 #### Auto-Incrementing IDs

@@ -172,7 +172,7 @@ Laravel's session is typically used to maintain state for the currently authenti
         }
     }
 
-You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method:
+You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method. The guard that is provided to the `actingAs` method will also become the default guard for the duration of the test:
 
     $this->actingAs($user, 'web')
 
@@ -338,6 +338,10 @@ If you would like to verify that the JSON response contains the given data at a 
         }
     }
 
+The `assertJsonPath` method also accepts a closure, which may be used to dynamically determine if the assertion should pass:
+
+    $response->assertJsonPath('team.owner.name', fn ($name) => strlen($name) >= 3);
+
 <a name="fluent-json-testing"></a>
 ### Fluent JSON Testing
 
@@ -382,8 +386,8 @@ To assert that an attribute is present or absent, you may use the `has` and `mis
 In addition, the `hasAll` and `missingAll` methods allow asserting the presence or absence of multiple attributes simultaneously:
 
     $response->assertJson(fn (AssertableJson $json) =>
-        $json->hasAll('status', 'data')
-             ->missingAll('message', 'code')
+        $json->hasAll(['status', 'data'])
+             ->missingAll(['message', 'code'])
     );
 
 You may use the `hasAny` method to determine if at least one of a given list of attributes is present:
@@ -598,12 +602,14 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 <style>
     .collection-method-list > p {
-        column-count: 2; -moz-column-count: 2; -webkit-column-count: 2;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+        columns: 14.4em 2; -moz-columns: 14.4em 2; -webkit-columns: 14.4em 2;
     }
 
     .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 
@@ -628,6 +634,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonMissingExact](#assert-json-missing-exact)
 [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
 [assertJsonPath](#assert-json-path)
+[assertJsonMissingPath](#assert-json-missing-path)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
@@ -651,7 +658,6 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSessionHasNoErrors](#assert-session-has-no-errors)
 [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors)
 [assertSessionMissing](#assert-session-missing)
-[assertSimilarJson](#assert-similar-json)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
 [assertUnauthorized](#assert-unauthorized)
@@ -816,7 +822,7 @@ Assert that the response contains the given data at the specified path:
 
     $response->assertJsonPath($path, $expectedValue);
 
-For example, if the JSON response returned by your application contains the following data:
+For example, if the following JSON response is returned by your application:
 
 ```js
 {
@@ -829,6 +835,27 @@ For example, if the JSON response returned by your application contains the foll
 You may assert that the `name` property of the `user` object matches a given value like so:
 
     $response->assertJsonPath('user.name', 'Steve Schoger');
+
+<a name="assert-json-missing-path"></a>
+#### assertJsonMissingPath
+
+Assert that the response does not contain the given path:
+
+    $response->assertJsonMissingPath($path);
+
+For example, if the following JSON response is returned by your application:
+
+```js
+{
+    "user": {
+        "name": "Steve Schoger"
+    }
+}
+```
+
+You may assert that it does not contain the `email` property of the `user` object:
+
+    $response->assertJsonMissingPath('user.email');
 
 <a name="assert-json-structure"></a>
 #### assertJsonStructure
@@ -1045,6 +1072,8 @@ Or, you may assert that a given field has a particular validation error message:
         'name' => 'The given name was invalid.'
     ]);
 
+> {tip} The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage.
+
 <a name="assert-session-has-errors-in"></a>
 #### assertSessionHasErrorsIn
 
@@ -1065,6 +1094,8 @@ Assert that the session has no validation errors:
 Assert that the session has no validation errors for the given keys:
 
     $response->assertSessionDoesntHaveErrors($keys = [], $format = null, $errorBag = 'default');
+
+> {tip} The more generic [assertValid](#assert-valid) method may be used to assert that a response does not have validation errors that were returned as JSON **and** that no errors were flashed to session storage.
 
 <a name="assert-session-missing"></a>
 #### assertSessionMissing

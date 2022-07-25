@@ -4,6 +4,7 @@
 - [Configuration](#configuration)
 - [The Exception Handler](#the-exception-handler)
     - [Reporting Exceptions](#reporting-exceptions)
+    - [Exception Log Levels](#exception-log-levels)
     - [Ignoring Exceptions By Type](#ignoring-exceptions-by-type)
     - [Rendering Exceptions](#rendering-exceptions)
     - [Reportable & Renderable Exceptions](#renderable-exceptions)
@@ -117,6 +118,27 @@ Sometimes you may need to report an exception but continue handling the current 
         }
     }
 
+<a name="exception-log-levels"></a>
+### Exception Log Levels
+
+When messages are written to your application's [logs](/docs/{{version}}/logging), the messages are written at a specified [log level](/docs/{{version}}/logging#log-levels), which indicates the severity or importance of the message being logged.
+
+As noted above, even when you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at.
+
+To accomplish this, you may define an array of exception types and their associated log levels within the `$levels` property of your application's exception handler:
+
+    use PDOException;
+    use Psr\Log\LogLevel;
+
+    /**
+     * A list of exception types with their corresponding custom log levels.
+     *
+     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
+     */
+    protected $levels = [
+        PDOException::class => LogLevel::CRITICAL,
+    ];
+
 <a name="ignoring-exceptions-by-type"></a>
 ### Ignoring Exceptions By Type
 
@@ -125,9 +147,9 @@ When building your application, there will be some types of exceptions you simpl
     use App\Exceptions\InvalidOrderException;
 
     /**
-     * A list of the exception types that should not be reported.
+     * A list of the exception types that are not reported.
      *
-     * @var array
+     * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
         InvalidOrderException::class,
@@ -207,7 +229,7 @@ Instead of type-checking exceptions in the exception handler's `register` method
          */
         public function render($request)
         {
-            return response(...);
+            return response(/* ... */);
         }
     }
 

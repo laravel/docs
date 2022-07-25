@@ -104,20 +104,6 @@ Within both of these methods, you may use the Laravel schema builder to expressi
         }
     };
 
-<a name="anonymous-migrations"></a>
-#### Anonymous Migrations
-
-As you may have noticed in the example above, Laravel will automatically assign a class name to all of the migrations that you generate using the `make:migration` command. However, if you wish, you may return an anonymous class from your migration file. This is primarily useful if your application accumulates many migrations and two of them have a class name collision:
-
-    <?php
-
-    use Illuminate\Database\Migrations\Migration;
-
-    return new class extends Migration
-    {
-        //
-    };
-
 <a name="setting-the-migration-connection"></a>
 #### Setting The Migration Connection
 
@@ -283,6 +269,14 @@ The `temporary` method may be used to indicate that the table should be "tempora
         // ...
     });
 
+If you would like to add a "comment" to a database table, you may invoke the `comment` method on the table instance. Table comments are currently only supported by MySQL and Postgres:
+
+    Schema::create('calculations', function (Blueprint $table) {
+        $table->comment('Business calculations');
+
+        // ...
+    });
+
 <a name="updating-tables"></a>
 ### Updating Tables
 
@@ -336,13 +330,15 @@ The `table` method on the `Schema` facade may be used to update existing tables.
 The schema builder blueprint offers a variety of methods that correspond to the different types of columns you can add to your database tables. Each of the available methods are listed in the table below:
 
 <style>
-    #collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    .collection-method-list > p {
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
     }
 
-    #collection-method-list a {
+    .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .collection-method code {
@@ -354,7 +350,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
     }
 </style>
 
-<div id="collection-method-list" markdown="1">
+<div class="collection-method-list" markdown="1">
 
 [bigIncrements](#column-method-bigIncrements)
 [bigInteger](#column-method-bigInteger)
@@ -939,7 +935,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
         }
     };
 
-> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
+> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation. In addition, it is not possible to combine raw `default` expressions (using `DB::raw`) with column changes via the `change` method.
 
 <a name="column-order"></a>
 #### Column Order
@@ -1113,6 +1109,7 @@ Command  |  Description
 `$table->dropPrimary('users_id_primary');`  |  Drop a primary key from the "users" table.
 `$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
 `$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
+`$table->dropFullText('posts_body_fulltext');`  |  Drop a full text index from the "posts" table.
 `$table->dropSpatialIndex('geo_location_spatialindex');`  |  Drop a spatial index from the "geo" table  (except SQLite).
 
 If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns, and index type:

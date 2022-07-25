@@ -72,7 +72,7 @@ When an Eloquent model is converted to JSON, its loaded relationships will autom
 <a name="hiding-attributes-from-json"></a>
 ## Hiding Attributes From JSON
 
-Sometimes you may wish to limit the attributes, such as passwords, that are included in your model's array or JSON representation. To do so, add a `$hidden` property to your model. In attributes that are listed in the `$hidden` property's array will not be included in the serialized representation of your model:
+Sometimes you may wish to limit the attributes, such as passwords, that are included in your model's array or JSON representation. To do so, add a `$hidden` property to your model. Attributes that are listed in the `$hidden` property's array will not be included in the serialized representation of your model:
 
     <?php
 

@@ -444,7 +444,7 @@ If your queue connection's `after_commit` configuration option is set to `false`
 <a name="handling-failed-jobs"></a>
 ### Handling Failed Jobs
 
-Sometimes your queued event listeners may fail. If queued listener exceeds the maximum number of attempts as defined by your queue worker, the `failed` method will be called on your listener. The `failed` method receives the event instance and the `Throwable` that caused the failure:
+Sometimes your queued event listeners may fail. If the queued listener exceeds the maximum number of attempts as defined by your queue worker, the `failed` method will be called on your listener. The `failed` method receives the event instance and the `Throwable` that caused the failure:
 
     <?php
 
@@ -487,7 +487,7 @@ Sometimes your queued event listeners may fail. If queued listener exceeds the m
 
 If one of your queued listeners is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a listener may be attempted.
 
-You may define `$tries` property on your listener class to specify how many times the listener may be attempted before it is considered to have failed:
+You may define a `$tries` property on your listener class to specify how many times the listener may be attempted before it is considered to have failed:
 
     <?php
 
@@ -552,6 +552,12 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
             OrderShipped::dispatch($order);
         }
     }
+    
+ If you would like to conditionally dispatch an event, you may use the `dispatchIf` and `dispatchUnless` methods:
+
+    OrderShipped::dispatchIf($condition, $order);
+
+    OrderShipped::dispatchUnless($condition, $order);
 
 > {tip} When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#event-fake) makes it a cinch.
 
