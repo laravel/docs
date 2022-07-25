@@ -719,6 +719,8 @@ If you would like to stop iterating through the items, you may return `false` fr
         if (/* condition */) {
             return false;
         }
+
+        return null;
     });
 
 <a name="method-eachspread"></a>

@@ -178,6 +178,8 @@ public function boot()
             Hash::check($request->password, $user->password)) {
             return $user;
         }
+
+        return null;
     });
 
     // ...

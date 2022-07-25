@@ -180,6 +180,7 @@ The closure passed to the `renderable` method should return an instance of `Illu
 
 You may also use the `renderable` method to override the rendering behavior for built-in Laravel or Symfony exceptions such as `NotFoundHttpException`. If the closure given to the `renderable` method does not return a value, Laravel's default exception rendering will be utilized:
 
+    use Illuminate\Http\JsonResponse;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
     /**
@@ -189,12 +190,14 @@ You may also use the `renderable` method to override the rendering behavior for 
      */
     public function register()
     {
-        $this->renderable(function (NotFoundHttpException $e, $request) {
+        $this->renderable(function (NotFoundHttpException $e, $request): ?JsonResponse {
             if ($request->is('api/*')) {
                 return response()->json([
                     'message' => 'Record not found.'
                 ], 404);
             }
+
+            return null;
         });
     }
 

@@ -233,6 +233,8 @@ Sometimes, you may wish to grant all abilities to a specific user. You may use t
         if ($user->isAdministrator()) {
             return true;
         }
+
+        return null;
     });
 
 If the `before` closure returns a non-null result that result will be considered the result of the authorization check.
@@ -243,6 +245,8 @@ You may use the `after` method to define a closure to be executed after all othe
         if ($user->isAdministrator()) {
             return true;
         }
+
+        return null;
     });
 
 Similar to the `before` method, if the `after` closure returns a non-null result that result will be considered the result of the authorization check.
