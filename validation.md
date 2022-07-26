@@ -1797,7 +1797,6 @@ Laravel provides a variety of validation rules that may be used to validate uplo
 If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to indicate that the uploaded file should be an image. In addition, the `dimensions` rule may be used to limit the dimensions of the image:
 
     use Illuminate\Support\Facades\Validator;
-    use Illuminate\Validation\Rules\Dimensions;
     use Illuminate\Validation\Rules\File;
 
     Validator::validate($input, [
