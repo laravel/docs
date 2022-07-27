@@ -141,6 +141,12 @@ If you would like to see which migrations have run thus far, you may use the `mi
 php artisan migrate:status
 ```
 
+If you would like to see what SQL will be executed before running actual migrations, use the `--pretend` flag:
+
+```shell
+php artisan migrate --pretend
+```
+
 <a name="forcing-migrations-to-run-in-production"></a>
 #### Forcing Migrations To Run In Production
 
