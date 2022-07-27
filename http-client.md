@@ -237,6 +237,9 @@ If you have a response instance and would like to throw an instance of `Illumina
 
     // Throw an exception if an error occurred and the given condition is true...
     $response->throwIf($condition);
+    
+    // Throw an exception if an error occurred and the given condition is false...
+    $response->throwUnless($condition);
 
     return $response['user']['id'];
 
