@@ -132,7 +132,7 @@ Next, you should call the `Passport::routes` method within the `boot` method of 
         }
     }
 
-Finally, in your application's `config/auth.php` configuration file, you should add `api` authentication guard and set the `driver` option to `passport`. This will instruct your application to use Passport's `TokenGuard` when authenticating incoming API requests:
+Finally, in your application's `config/auth.php` configuration file, you should define an `api` authentication guard and set the `driver` option to `passport`. This will instruct your application to use Passport's `TokenGuard` when authenticating incoming API requests:
 
     'guards' => [
         'web' => [
