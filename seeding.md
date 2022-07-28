@@ -38,7 +38,7 @@ php artisan make:seeder UserSeeder
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Str;
 
-    類別DatabaseSeeder extends Seeder
+    Class DatabaseSeeder extends Seeder
     {
         /**
          * Run the database seeders.
@@ -111,7 +111,7 @@ php artisan make:seeder UserSeeder
     use Illuminate\Database\Seeder;
     use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-    類別DatabaseSeeder extends Seeder
+    Class DatabaseSeeder extends Seeder
     {
         use WithoutModelEvents;
 
@@ -136,7 +136,7 @@ php artisan make:seeder UserSeeder
 ```shell
 php artisan db:seed
 
-php artisan db:seed --類別=UserSeeder
+php artisan db:seed --class=UserSeeder
 ```
 
 該指令可用於重建整個資料庫。
