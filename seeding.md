@@ -38,7 +38,7 @@ php artisan make:seeder UserSeeder
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Str;
 
-    Class DatabaseSeeder extends Seeder
+    class DatabaseSeeder extends Seeder
     {
         /**
          * Run the database seeders.
@@ -92,9 +92,9 @@ php artisan make:seeder UserSeeder
     public function run()
     {
         $this->call([
-            UserSeeder::Class,
-            PostSeeder::Class,
-            CommentSeeder::Class,
+            UserSeeder::class,
+            PostSeeder::class,
+            CommentSeeder::class,
         ]);
     }
 
@@ -111,7 +111,7 @@ php artisan make:seeder UserSeeder
     use Illuminate\Database\Seeder;
     use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-    Class DatabaseSeeder extends Seeder
+    class DatabaseSeeder extends Seeder
     {
         use WithoutModelEvents;
 
@@ -123,7 +123,7 @@ php artisan make:seeder UserSeeder
         public function run()
         {
             $this->call([
-                UserSeeder::Class,
+                UserSeeder::class,
             ]);
         }
     }
