@@ -344,7 +344,7 @@ If you would like to use a custom key instead of `data`, you may define a `$wrap
         /**
          * The "data" wrapper that should be applied.
          *
-         * @var string/null
+         * @var string|null
          */
         public static $wrap = 'user';
     }
