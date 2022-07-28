@@ -92,9 +92,9 @@ php artisan make:seeder UserSeeder
     public function run()
     {
         $this->call([
-            UserSeeder::類別,
-            PostSeeder::類別,
-            CommentSeeder::類別,
+            UserSeeder::Class,
+            PostSeeder::Class,
+            CommentSeeder::Class,
         ]);
     }
 
@@ -123,7 +123,7 @@ php artisan make:seeder UserSeeder
         public function run()
         {
             $this->call([
-                UserSeeder::類別,
+                UserSeeder::Class,
             ]);
         }
     }
