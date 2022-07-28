@@ -139,7 +139,7 @@ php artisan db:seed
 php artisan db:seed --class=UserSeeder
 ```
 
-該指令可用於重建整個資料庫。
+若您想刪掉現有的資料表並重新建立資料，您也可以使用 `migrate:fresh` 與 `--seed`，該指令可用於重建整個資料庫。
 
 ```shell
 php artisan migrate:fresh --seed
