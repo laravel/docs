@@ -345,6 +345,12 @@ While your command is executing, you will likely need to access the values for t
 If you need to retrieve all of the arguments as an `array`, call the `arguments` method:
 
     $arguments = $this->arguments();
+    
+If you need to check if an argument exists, call the `hasArgument` method:
+    
+    if ($this->hasArgument('user')) {
+        // perform an action
+    };
 
 Options may be retrieved just as easily as arguments using the `option` method. To retrieve all of the options as an array, call the `options` method:
 
@@ -353,6 +359,12 @@ Options may be retrieved just as easily as arguments using the `option` method. 
 
     // Retrieve all options as an array...
     $options = $this->options();
+    
+If you need to check if an argument exists, call the `hasOption` method:
+    
+    if ($this->hasOption('queue')) {
+        // perform an action
+    };
 
 <a name="prompting-for-input"></a>
 ### Prompting For Input
@@ -446,6 +458,14 @@ To display an error message, use the `error` method. Error message text is typic
 You may use the `line` method to display plain, uncolored text:
 
     $this->line('Display this on the screen');
+    
+You may use the `alert` method to display a string in an alert box:
+
+    $this->alert('Display this on the screen');
+    
+You may use the `comment` method to display a string as comment output:
+
+    $this->comment('Display this on the screen');
 
 You may use the `newLine` method to display a blank line:
 
