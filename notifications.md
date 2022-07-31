@@ -535,7 +535,7 @@ Unlike attaching files in mailable objects, you may not attach a file directly f
 
 Multiple files can be attached in a single call with the `attachMany` method:
 
-	/**
+    /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
@@ -551,7 +551,7 @@ Multiple files can be attached in a single call with the `attachMany` method:
                             'as' => 'Vapor Logo.svg', 
                             'mime' => 'text/css',
                         ],
-						new class() implements Attachable
+                        new class() implements Attachable
                         {
                             public function toMailAttachment()
                             {
