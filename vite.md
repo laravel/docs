@@ -463,7 +463,7 @@ node bootstrap/ssr/ssr.mjs
 <a name="content-security-policy-csp-nonce"></a>
 ### Content Security Policy (CSP) Nonce
 
-If you wish to include a [`nonce` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) on your script and style tags as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may generate or specify a nonce using the `Vite::useCspNonce` method within a custom [middleware](/docs/{{version}}/middleware):
+If you wish to include a [`nonce` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) on your script and style tags as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may generate or specify a nonce using the `useCspNonce` method within a custom [middleware](/docs/{{version}}/middleware):
 
 ```php
 <?php
@@ -493,15 +493,15 @@ class AddContentSecurityPolicyHeaders
 }
 ```
 
-After invoking `Vite::useCspNonce`, Laravel will automatically include the `nonce` attributes on all generated script and style tags.
+After invoking `useCspNonce`, Laravel will automatically include the `nonce` attributes on all generated script and style tags.
 
-If you need to specify the nonce elsewhere, including the [Ziggy `@route` directive](https://github.com/tighten/ziggy#using-routes-with-a-content-security-policy) included with Laravel's [starter kits](/docs/{{version}}/starter-kits), you may retrieve it using the `Vite::cspNonce` method:
+If you need to specify the nonce elsewhere, including the [Ziggy `@route` directive](https://github.com/tighten/ziggy#using-routes-with-a-content-security-policy) included with Laravel's [starter kits](/docs/{{version}}/starter-kits), you may retrieve it using the `cspNonce` method:
 
 ```blade
 @routes(nonce: Vite::cspNonce())
 ```
 
-If you already have a nonce that you would like to instruct Laravel to use, you may pass the nonce to the `Vite::useCspNonce` method:
+If you already have a nonce that you would like to instruct Laravel to use, you may pass the nonce to the `useCspNonce` method:
 
 ```php
 Vite::useCspNonce($nonce);
