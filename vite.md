@@ -493,7 +493,7 @@ class AddContentSecurityPolicyHeaders
 }
 ```
 
-After invoking `useCspNonce`, Laravel will automatically include the `nonce` attributes on all generated script and style tags.
+After invoking the `useCspNonce` method, Laravel will automatically include the `nonce` attributes on all generated script and style tags.
 
 If you need to specify the nonce elsewhere, including the [Ziggy `@route` directive](https://github.com/tighten/ziggy#using-routes-with-a-content-security-policy) included with Laravel's [starter kits](/docs/{{version}}/starter-kits), you may retrieve it using the `cspNonce` method:
 
