@@ -267,6 +267,8 @@ Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guz
     $response = Http::withMiddleware(
         Middleware::mapRequest(function (RequestInterface $request) {
             $request->withHeader('X-Example', 'Value');
+            
+            return $request;
         })
     ->get('http://example.com');
 
@@ -281,6 +283,8 @@ Likewise, you can inspect the incoming HTTP response by registering a middleware
             $header = $response->getHeader('X-Example');
 
             // ...
+            
+            return $response;
         })
     )->get('http://example.com');
 
