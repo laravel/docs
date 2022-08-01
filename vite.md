@@ -18,6 +18,10 @@
 - [Custom Base URLs](#custom-base-urls)
 - [Environment Variables](#environment-variables)
 - [Server-Side Rendering (SSR)](#ssr)
+- [Script & Style Tag Attributes](#script-and-style-attributes)
+  - [Content Security Policy (CSP) Nonce](#content-security-policy-csp-nonce)
+  - [Subresource Integrity (SRI)](#subresource-integrity-sri)
+  - [Arbitrary Attributes](#arbitrary-attributes)
 
 <a name="introduction"></a>
 ## Introduction
@@ -452,3 +456,128 @@ node bootstrap/ssr/ssr.mjs
 ```
 
 > {tip} Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia SSR, and Vite.
+
+<a name="script-and-style-attributes"></a>
+## Script & Style Tag Attributes
+
+<a name="content-security-policy-csp-nonce"></a>
+### Content Security Policy (CSP) Nonce
+
+If you wish to include a [`nonce` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) on your script and style tags as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may generate or specify one using `Vite::useCspNonce()` in a [middleware](/docs/{{version}}/middleware):
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\Vite;
+
+class ContentSecurityPolicy
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        Vite::useCspNonce();
+
+        return $next($response)->withHeaders([
+            'Content-Security-Policy' => "script-src 'nonce-".Vite::cspNonce()."'",
+        ]);
+    }
+}
+```
+
+After calling `Vite::useCspNonce()`, Laravel will automatically include the `nonce` attributes on all generated script and style tags.
+
+If you need to specify the nonce elsewhere, including the [Ziggy `@route` directive](https://github.com/tighten/ziggy#using-routes-with-a-content-security-policy) included with Laravel's [starter kits](/docs/{{version}}/starter-kits), you may retrieve it using `Vite::cspNonce()`:
+
+```blade
+@routes(nonce: Vite::cspNonce())
+```
+
+If you already have a nonce, you may pass it to `Vite::useCspNonce()`:
+
+```php
+Vite::useCspNonce($nonce);
+```
+
+<a name="subresource-integrity-sri"></a>
+### Subresource Integrity (SRI)
+
+If your Vite manifest includes `integrity` hashes for your assets, Laravel will automatically add the `integrity` attribute on any script and style tags it generates to enforce [Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity). By default, Vite does not include the `integrity` hash in its manifest, but you may enable it by installing the [`vite-plugin-manifest-uri`](https://www.npmjs.com/package/vite-plugin-manifest-sri) NPM plugin:
+
+```shell
+npm install -D vite-plugin-manifest-sri
+```
+
+You may then enable this plugin in your `vite.config.js` file:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import manifestSRI from 'vite-plugin-manifest-sri';// [tl! add]
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            // ...
+        }),
+        manifestSRI(),// [tl! add]
+    ],
+});
+```
+
+If required, you may also customize the manifest key where the integrity hash can be found:
+
+```php
+use Illuminate\Support\Facades\Vite;
+
+Vite::useIntegrityKey('a-different-integrity-key');
+```
+
+If you want to disable this auto-detection completely, you may opt-out of it:
+
+```php
+Vite::useIntegrityKey(false);
+```
+
+<a name="arbitrary-attributes"></a>
+### Arbitrary Attributes
+
+If you need to include additional attributes on your script and style tags that aren't covered above, such as the [`data-turbo-track`](https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change) attribute, you may specify them as follows:
+
+```php
+use Illuminate\Support\Facades\Vite;
+
+Vite::useScriptTagAttributes([
+    'data-turbo-track' => 'reload', // specify a value for the attribute.
+    'async' => true, // specify an attribute without a value.
+    'integrity' => false, // exclude an attribute that would otherwise be included.
+]);
+
+Vite::useStyleTagAttributes([
+    'data-turbo-track' => 'reload',
+]);
+```
+
+If you need to conditionally add attributes, you may pass a callback that will receive the asset source path, its URL, its manifest chunk, and the entire manifest:
+
+```php
+use Illuminate\Support\Facades\Vite;
+
+Vite::useScriptTagAttributes(fn (string $src, string $url, array|null $chunk, array|null $manifest) => [
+    'data-turbo-track' => $src === 'resources/js/app.js' ? 'reload' : false,
+]);
+
+Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, array|null $manifest) => [
+    'data-turbo-track' => $chunk && $chunk['isEntry'] ? 'reload' : false,
+]);
+```
+
+> {note} The `$chunk` and `$manifest` arguments will be `null` while the Vite development server is running.
