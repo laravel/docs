@@ -45,9 +45,9 @@ The default Breeze "stack" is the Blade stack, which utilizes simple [Blade temp
 ```shell
 php artisan breeze:install
 
+php artisan migrate
 npm install
 npm run dev
-php artisan migrate
 ```
 
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
@@ -68,9 +68,9 @@ php artisan breeze:install vue
 
 php artisan breeze:install react
 
+php artisan migrate
 npm install
 npm run dev
-php artisan migrate
 ```
 
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
