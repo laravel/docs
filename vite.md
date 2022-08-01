@@ -48,7 +48,7 @@ Have you started a new Laravel application using our Vite scaffolding but need t
 <a name="installing-node"></a>
 ### Installing Node
 
-You must ensure that Node.js and NPM are installed with version 16 or higher before running Vite and the Laravel plugin:
+You must ensure that Node.js (16+) and NPM are installed before running Vite and the Laravel plugin:
 
 ```sh
 node -v
