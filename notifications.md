@@ -317,7 +317,7 @@ The `MailMessage` class contains a few simple methods to help you build transact
         return (new MailMessage)
                     ->greeting('Hello!')
                     ->line('One of your invoices has been paid!')
-                    ->lineIf($this->amount > 0, "The amount received was {$this->amount}")
+                    ->lineIf($this->amount > 0, "Amount paid: {$this->amount}")
                     ->action('View Invoice', $url)
                     ->line('Thank you for using our application!');
     }
@@ -533,7 +533,7 @@ Unlike attaching files in mailable objects, you may not attach a file directly f
                     ->attachFromStorage('/path/to/file');
     }
 
-Multiple files can be attached in a single call with the `attachMany` method:
+When necessary, multiple files may be attached to a message using the `attachMany` method:
 
     /**
      * Get the mail representation of the notification.
@@ -546,20 +546,11 @@ Multiple files can be attached in a single call with the `attachMany` method:
         return (new MailMessage)
                     ->greeting('Hello!')
                     ->attachMany([
-                        '/forge.svg',
-                        '/vapor.svg' => [
-                            'as' => 'Vapor Logo.svg', 
-                            'mime' => 'text/css',
+                        '/path/to/forge.svg',
+                        '/path/to/vapor.svg' => [
+                            'as' => 'Logo.svg',
+                            'mime' => 'image/svg+xml',
                         ],
-                        new class() implements Attachable
-                        {
-                            public function toMailAttachment()
-                            {
-                                return Attachment::fromPath('/foo.jpg')
-                                    ->as('bar')
-                                    ->withMime('image/png');
-                            }
-                        },
                     ]);
     }
 
