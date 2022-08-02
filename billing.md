@@ -31,7 +31,7 @@
     - [Checking Subscription Status](#checking-subscription-status)
     - [Changing Prices](#changing-prices)
     - [Subscription Quantity](#subscription-quantity)
-    - [Multiprice Subscriptions](#multiprice-subscriptions)
+    - [Subscriptions With Multiple Products](#subscriptions-with-multiple-products)
     - [Metered Billing](#metered-billing)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
@@ -955,19 +955,19 @@ The `noProrate` method may be used to update the subscription's quantity without
 
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
 
-<a name="multiprice-subscription-quantities"></a>
-#### Multiprice Subscription Quantities
+<a name="quantities-for-subscription-with-multiple-products"></a>
+#### Quantities For Subscriptions With Multiple Products
 
-If your subscription is a [multiprice subscription](#multiprice-subscriptions), you should pass the name of the price whose quantity you wish to increment or decrement as the second argument to the increment / decrement methods:
+If your subscription is a [subscription with multiple products](#subscriptions-with-multiple-products), you should pass the ID of the price whose quantity you wish to increment or decrement as the second argument to the increment / decrement methods:
 
     $user->subscription('default')->incrementQuantity(1, 'price_chat');
 
-<a name="multiprice-subscriptions"></a>
-### Multiprice Subscriptions
+<a name="subscriptions-with-multiple-products"></a>
+### Subscriptions With Multiple Products
 
-[Multiprice subscriptions](https://stripe.com/docs/billing/subscriptions/multiple-products) allow you to assign multiple billing prices to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription price of $10 per month but offers a live chat add-on price for an additional $15 per month. Multiprice subscription information is stored in Cashier's `subscription_items` database table.
+[Subscription with multiple products](https://stripe.com/docs/billing/subscriptions/multiple-products) allow you to assign multiple billing products to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription price of $10 per month but offers a live chat add-on product for an additional $15 per month. Information for subscriptions with multiple products is stored in Cashier's `subscription_items` database table.
 
-You may specify multiple prices for a given subscription by passing an array of prices as the second argument to the `newSubscription` method:
+You may specify multiple products for a given subscription by passing an array of prices as the second argument to the `newSubscription` method:
 
     use Illuminate\Http\Request;
 
@@ -1013,7 +1013,7 @@ You may remove prices from subscriptions using the `removePrice` method:
 <a name="swapping-prices"></a>
 #### Swapping Prices
 
-You may also change the prices attached to a multiprice subscription. For example, imagine a customer has a `price_basic` subscription with a `price_chat` add-on price and you want to upgrade the customer from the `price_basic` to the `price_pro` price:
+You may also change the prices attached to a subscription with multiple products. For example, imagine a customer has a `price_basic` subscription with a `price_chat` add-on product and you want to upgrade the customer from the `price_basic` to the `price_pro` price:
 
     use App\Models\User;
 
@@ -1043,7 +1043,7 @@ If you want to swap a single price on a subscription, you may do so using the `s
 <a name="proration"></a>
 #### Proration
 
-By default, Stripe will prorate charges when adding or removing prices from a multiprice subscription. If you would like to make a price adjustment without proration, you should chain the `noProrate` method onto your price operation:
+By default, Stripe will prorate charges when adding or removing prices from a subscription with multiple products. If you would like to make a price adjustment without proration, you should chain the `noProrate` method onto your price operation:
 
     $user->subscription('default')->noProrate()->removePrice('price_chat');
 
@@ -1182,7 +1182,7 @@ To specify the tax rates a user pays on a subscription, you should implement the
 
 The `taxRates` method enables you to apply a tax rate on a customer-by-customer basis, which may be helpful for a user base that spans multiple countries and tax rates.
 
-If you're offering multiprice subscriptions, you may define different tax rates for each price by implementing a `priceTaxRates` method on your billable model:
+If you're offering subscriptions with multiple products, you may define different tax rates for each price by implementing a `priceTaxRates` method on your billable model:
 
     /**
      * The tax rates that should apply to the customer's subscriptions.
@@ -1205,7 +1205,7 @@ When changing the hard-coded tax rate IDs returned by the `taxRates` method, the
 
     $user->subscription('default')->syncTaxRates();
 
-This will also sync any multiprice subscription item tax rates. If your application is offering multiprice subscriptions, you should ensure that your billable model implements the `priceTaxRates` method [discussed above](#subscription-taxes).
+This will also sync any item tax rates for a subscription with multiple products. If your application is offering subscriptions with multiple products, you should ensure that your billable model implements the `priceTaxRates` method [discussed above](#subscription-taxes).
 
 <a name="tax-exemption"></a>
 #### Tax Exemption
