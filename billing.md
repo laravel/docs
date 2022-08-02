@@ -1205,7 +1205,7 @@ When changing the hard-coded tax rate IDs returned by the `taxRates` method, the
 
     $user->subscription('default')->syncTaxRates();
 
-This will also sync any item tax rates for a subscriptionwith multiple products. If your application is offering subscriptions with multiple products, you should ensure that your billable model implements the `priceTaxRates` method [discussed above](#subscription-taxes).
+This will also sync any item tax rates for a subscription with multiple products. If your application is offering subscriptions with multiple products, you should ensure that your billable model implements the `priceTaxRates` method [discussed above](#subscription-taxes).
 
 <a name="tax-exemption"></a>
 #### Tax Exemption
