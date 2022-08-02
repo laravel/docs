@@ -136,7 +136,7 @@
     ]);
 
 <a name="stopping-on-first-validation-failure"></a>
-#### التوقف عند أول فشل في التحقق من الصحة
+#### Stopping On First Validation Failure Attribute (التوقف عند أول فشل في التحقق من الصحة)
 قد ترغب أحيانًا في إيقاف تشغيل قواعد التحقق من الصحة على إحدى السمات (Attributes) بعد فشل أول تحقق. للقيام بذلك ، عيِّن قاعدة "bail" للسمة:
 
     $request->validate([
@@ -259,10 +259,10 @@
 في هذا المثال ، نحدد أن الحقل `publish_at` قد يكون إما فارغ `null` أو يمثيل تاريخ صالح. إذا لم تتم إضافة تحقق `nullable` إلى تعريف القاعدة ، فإن المتحقق سيعتبر أن القيمة الفارغة `null` تاريخ غير صالح.
 
 <a name="form-request-validation"></a>
-## التحقق من صحة طلب النموذج
+## Form Request Validation (التحقق من صحة طلب النموذج)
 
 <a name="creating-form-requests"></a>
-### إنشاء نموذج الإتصال
+### Creating Form Requests (إنشاء نموذج الإتصال)
 
 لأمثلة التحقق الأكثر تعقيدًا ، قد ترغب في إنشاء طلب نموذج `form request`. طلبات النموذج هي فئات طلبات مخصصة تلخص منطق التحقق من الصحة والتفويض الخاص بها. لإنشاء فئة طلب نموذج ، يمكنك استخدام الأمر `make: request`Artisan CLI:
 
@@ -334,7 +334,7 @@ php artisan make:request StorePostRequest
 
 
 <a name="request-stopping-on-first-validation-rule-failure"></a>
-#### التوقف عند فشل التحقق باول سمة
+#### Stopping On First Validation Failure Attribute (التوقف عند فشل التحقق باول سمة)
 
 من خلال إضافة خاصية `stopOnFirstFailure` إلى فئة الطلب الخاصة بك ، يمكنك إبلاغ المتحقق بأنه يجب عليه التوقف عن التحقق من صحة جميع السمات (Attributes) بمجرد حدوث فشل واحد في التحقق من الصحة:
 
@@ -346,7 +346,7 @@ php artisan make:request StorePostRequest
     protected $stopOnFirstFailure = true;
 
 <a name="customizing-the-redirect-location"></a>
-#### تخصيص موقع إعادة التوجيه
+#### Customizing The Redirect Location (تخصيص موقع إعادة التوجيه)
 
 كما تمت مناقشته سابقًا ، سيتم إنشاء استجابة إعادة التوجيه لإرسال المستخدم مرة أخرى إلى موقعه السابق عند فشل التحقق من صحة طلب النموذج. ومع ذلك ، فأنت حر في تخصيص موقع التوجيه. للقيام بذلك ، حدد خاصية `$redirect` في طلب النموذج الخاص بك:
 
@@ -367,7 +367,7 @@ php artisan make:request StorePostRequest
     protected $redirectRoute = 'dashboard';
 
 <a name="authorizing-form-requests"></a>
-### قبول طلبات النماذج
+### Authorizing Form Requests (قبول طلبات النماذج)
 
 تحتوي فئة طلب النموذج أيضًا على طريقة التفويض `authorize`. ضمن هذه الطريقة ، يمكنك تحديد ما إذا كان المستخدم المقبولة لديه بالفعل صلاحية تحديث معلومات معينة. على سبيل المثال ، يمكنك تحديد ما إذا كان المستخدم يمتلك بالفعل تعليق مدونة يحاول تحديثه. على الأرجح ، ستتفاعل مع بوابات التفويض والسياسات [authorization gates and policies](/docs/{{version}}/authorization)من خلال هذه الطريقة:
 
@@ -512,7 +512,7 @@ php artisan make:request StorePostRequest
 
 بعد تحديد ما إذا كان التحقق من صحة الطلب قد فشل ، يمكنك استخدام التابع `withErrors` لإرسال رسائل الخطأ إلى الجلسة. عند استخدام هذا التابع ، ستتم مشاركة المتغير `$errors` تلقائيًا مع طرق العرض الخاصة بك بعد إعادة التوجيه ، مما يتيح لك عرضها بسهولة مرة أخرى للمستخدم. يقبل التابع `withError` مدققًا أو `MessageBag` أو PHP `array`.
 
-#### التوقف عند أول فشل في التحقق من الصحة
+#### Stopping On First Validation Failure (التوقف عند أول فشل في التحقق من الصحة)
 
 سيُعلم التابع `stopOnFirstFailure` المحقق بأنه يجب عليه التوقف عن التحقق من صحة جميع السمات بمجرد حدوث فشل واحد في التحقق من الصحة:
 
@@ -521,7 +521,7 @@ php artisan make:request StorePostRequest
     }
 
 <a name="automatic-redirection"></a>
-### إعادة التوجيه التلقائي
+### Automatic Redirection (إعادة التوجيه التلقائي)
 
 إذا كنت ترغب في إنشاء طلب يدقق يدويًا ولكنك لا تزال تستفيد من إعادة التوجيه التلقائي التي توفرها طريقة التحقق `validate` لطلب HTTP ، فيمكنك استدعاء التابع `validate` على مثيل مدقق موجود. إذا فشل التحقق من الصحة ، فسيتم إعادة توجيه المستخدم تلقائيًا أو ، في حالة طلب XHR ، سيتم إرجاع استجابة JSON:
 
@@ -606,7 +606,7 @@ php artisan make:request StorePostRequest
     }
 
 <a name="working-with-validated-input"></a>
-## العمل مع المدخلات التي تم التحقق من صحتها
+## Working With Validated Input (العمل مع المدخلات التي تم التحقق من صحتها)
 
 بعد التحقق من صحة بيانات الطلب الوارد باستخدام طلب نموذج أو مثيل مدقق تم إنشاؤه يدويًا ، قد ترغب في استرداد بيانات الطلب الواردة التي خضعت بالفعل لعملية التحقق من الصحة. هذا يمكن أن يكون إنجاز بطرق متعددة. أولاً ، يمكنك استدعاء التابع `validate` في طلب نموذج أو نسخة مدقق. تقوم هذه الطريقة بإرجاع مصفوفة من البيانات التي تم التحقق من صحتها:
 
@@ -643,12 +643,12 @@ php artisan make:request StorePostRequest
     $collection = $request->safe()->collect();
 
 <a name="working-with-error-messages"></a>
-## التعامل مع رسائل الخطأ
+## Working With Error Messages (التعامل مع رسائل الخطأ)
 
 بعد استدعاء التابع `errors` في مثيل `Validator` ، ستتلقى نتيجة من `Illuminate\Support\MessageBag` ، والذي يحتوي على مجموعة متنوعة من التوابع الملائمة للتعامل مع رسائل الخطأ. المتغير `$errors` الذي يتم إتاحته تلقائيًا لجميع طرق العرض هو أيضًا مثيل لفئة `MessageBag`.
 
 <a name="retrieving-the-first-error-message-for-a-field"></a>
-#### استرجاع رسالة الخطأ الأولى لحقول الإدخال
+#### Retrieving The First Error Message For A Field (استرجاع رسالة الخطأ الأولى لحقول الإدخال)
 
 لاسترداد رسالة الخطأ الأولى لحقل معين، استخدم التابع `first`:
 
@@ -657,7 +657,7 @@ php artisan make:request StorePostRequest
     echo $errors->first('email');
 
 <a name="retrieving-all-error-messages-for-a-field"></a>
-#### استرداد كافة رسائل الخطأ للحقل
+#### Retrieving All Error Messages For A Field (استرداد كافة رسائل الخطأ للحقل)
 
 إذا كنت بحاجة إلى استرداد مصفوفة من جميع الرسائل لحقل معين ، فاستخدم التابع `get`:
 
@@ -672,7 +672,7 @@ php artisan make:request StorePostRequest
     }
 
 <a name="retrieving-all-error-messages-for-all-fields"></a>
-#### استرداد كافة رسائل الخطأ لكافة الحقول
+#### Retrieving All Error Messages For All Fields (استرداد كافة رسائل الخطأ لكافة الحقول)
 
 لاسترداد مصفوفة من جميع الرسائل لجميع الحقول ، استخدم التابع `all`:
 
@@ -681,7 +681,7 @@ php artisan make:request StorePostRequest
     }
 
 <a name="determining-if-messages-exist-for-a-field"></a>
-#### تحديد ما إذا كانت الرسائل موجودة في أحد الحقول
+#### Determining If Messages Exist For A Field (تحديد ما إذا كانت الرسائل موجودة في أحد الحقول)
 
 يمكن استخدام التابع `has` لتحديد ما إذا كانت هناك أية رسائل خطأ لحقل معين:
 
@@ -690,14 +690,14 @@ php artisan make:request StorePostRequest
     }
 
 <a name="specifying-custom-messages-in-language-files"></a>
-### تحديد الرسائل المخصصة في ملفات اللغة
+### Specifying Custom Messages In Language Files (تحديد الرسائل المخصصة في ملفات اللغة)
 
 تحتوي كل قواعد التحقق من الصحة المضمنة في Laravel على رسالة خطأ موجودة في ملف `lang/en/validation.php` الخاص بتطبيقك. في هذا الملف ، ستجد إدخال ترجمة لكل قاعدة تحقق من الصحة. أنت حر في تغيير أو تعديل هذه الرسائل بناءً على احتياجات تطبيقك.
 
 بالإضافة إلى ذلك ، يمكنك نسخ هذا الملف إلى دليل لغة ترجمة آخر لترجمة الرسائل للغة التطبيق الخاص بك. لمعرفة المزيد حول الترجمة في Laravel ، تحقق من [وثائق الترجمة](/docs/{{version}}/localization).
 
 <a name="custom-messages-for-specific-attributes"></a>
-#### رسائل مخصصة لسمات محددة
+#### Custom Messages For Specific Attributes (رسائل مخصصة لسمات محددة)
 
 يمكنك تخصيص رسائل الخطأ المستخدمة في مجموعات القواعد والسمات المحددة ضمن ملفات لغة التحقق من صحة التطبيق الخاص بك. للقيام بذلك ، أضف تخصيصات رسالتك إلى المصفوفة المخصصة `custom` لملف اللغة `lang/xx/validation.php` الخاص بتطبيقك:
 
@@ -709,7 +709,7 @@ php artisan make:request StorePostRequest
     ],
 
 <a name="specifying-attribute-in-language-files"></a>
-### تحديد السمات في ملفات اللغة
+### Specifying Attributes In Language Files (تحديد السمات في ملفات اللغة)
 
 تتضمن العديد من رسائل الخطأ المضمنة في Laravel العنصر النائب `: attribute` الذي تم استبداله باسم الحقل أو السمة تحت التحقق. إذا كنت ترغب في استبدال جزء `: attribute` من رسالة التحقق بقيمة مخصصة ، يمكنك تحديد اسم السمة المخصصة في مصفوفة` attributes` لملف اللغة `lang/xx/validation.php`:
 
@@ -718,7 +718,7 @@ php artisan make:request StorePostRequest
     ],
 
 <a name="specifying-values-in-language-files"></a>
-### تحديد القيم في ملفات اللغة
+### Specifying Values In Language Files (تحديد القيم في ملفات اللغة)
 
 تحتوي بعض رسائل خطأ في قاعدة التحقق المضمنة في Laravel على عنصر نائب `:value` يتم استبداله بالقيمة الحالية لسمة الطلب. ومع ذلك ، قد تحتاج أحيانًا إلى استبدال الجزء `:value` من رسالة التحقق بتمثيل مخصص للقيمة. على سبيل المثال ، ضع في اعتبارك القاعدة التالية التي تحدد أن رقم بطاقة الائتمان مطلوب إذا كان نوع الدفع `payment_type` له قيمة نسخة أولية `cc`:
 
@@ -850,12 +850,12 @@ php artisan make:request StorePostRequest
 <a name="rule-accepted"></a>
 #### accepted (قبول)
 
-يجب أن يكون الحقل تحت التحقق `"yes"` أو `"on"` أو `1`, أو `true`. هذا مفيد للتحقق من قبول "شروط الخدمة" (Terms of Service) أو الحقول المماثلة.
+يجب أن يكون الحقل تحت التحقق `yes` أو `on` أو `1`, أو `true`. هذا مفيد للتحقق من قبول "شروط الخدمة" (Terms of Service) أو الحقول المماثلة.
 
 <a name="rule-accepted-if"></a>
 #### accepted_if:anotherfield,value,... (قبول شرطي)
 
-يجب أن يكون الحقل تحت التحقق `"yes"` أو `"on"` أو `1`, أو `true` إذا كان حقل آخر تحت التحقق مساويًا لقيمة محددة. هذا مفيد للتحقق من قبول "شروط الخدمة" (Terms of Service) أو الحقول المماثلة.
+يجب أن يكون الحقل تحت التحقق `yes` أو `on` أو `1`, أو `true` إذا كان حقل آخر تحت التحقق مساويًا لقيمة محددة. هذا مفيد للتحقق من قبول "شروط الخدمة" (Terms of Service) أو الحقول المماثلة.
 
 <a name="rule-active-url"></a>
 #### active_url (عنوان url نشط)
@@ -951,7 +951,7 @@ php artisan make:request StorePostRequest
 <a name="rule-confirmed"></a>
 #### confirmed
 
-The field under validation must have a matching field of `{field}_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
+يجب أن يحتوي الحقل تحت التحقق على حقل مطابق لـ `{field}_confirmation`.  على سبيل المثال ، إذا كان الحقل الخاص بالتحقق هو كلمة المرور `password` ، فيجب أن يكون حقل `password_confirmation` موجودًا في الإدخال.
 
 <a name="rule-current-password"></a>
 #### current_password (كلمة المرور الحالية)
@@ -961,59 +961,59 @@ The field under validation must have a matching field of `{field}_confirmation`.
     'password' => 'current_password:api'
 
 <a name="rule-date"></a>
-#### date
+#### date (التاريخ)
 
-The field under validation must be a valid, non-relative date according to the `strtotime` PHP function.
+يجب أن يكون الحقل تحت التحقق تاريخًا صالحًا وغير نسبي وفقًا لتابع PHP `strtotime`.
 
 <a name="rule-date-equals"></a>
-#### date_equals:_date_
+#### date_equals:date (التاريخ يساوي)
 
-The field under validation must be equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance.
+يجب أن يكون الحقل تحت التحقق مساوياً لتاريخ المحدد. سيتم تمرير التواريخ في تابع PHP `Strtotime` من أجل تحويلها إلى مساوة صالحة `DateTime`.
 
 <a name="rule-date-format"></a>
-#### date_format:_format_
+#### date_format:format (صيغة التاريخ)
 
-The field under validation must match the given _format_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
+يجب أن يتطابق الحقل تحت التحقق مع `_format_` الصيغة المحددة .  يجب عليك استخدام **إما** تاريخ `date` أو تنسيق التاريخ `date_format` عند التحقق من صحة أحد الحقول ، وليس كليهما.  تدعم قاعدة التحقق هذه جميع التنسيقات التي تدعمها فئة الخاصة بـ PHP [DateTime](https://www.php.net/manual/en/class.datetime.php).
 
 <a name="rule-declined"></a>
-#### declined
+#### declined (قيمة مرفوضة)
 
-The field under validation must be `"no"`, `"off"`, `0`, or `false`.
+يجب أن يكون الحقل تحت التحقق `no`, `off`, `0`, او `false`.
 
 <a name="rule-declined-if"></a>
-#### declined_if:anotherfield,value,...
+#### declined_if:anotherfield,value,... (شرط الرفض)
 
-The field under validation must be `"no"`, `"off"`, `0`, or `false` if another field under validation is equal to a specified value.
+يجب أن يكون الحقل تحت التحقق `no`, `off`, `0`, او `false` إذا كان حقل آخر تحت التحقق يساوي قيمة محددة.
 
 <a name="rule-different"></a>
-#### different:_field_
+#### different:field (الاختلاف)
 
-The field under validation must have a different value than _field_.
+يجب أن يكون للحقل تحت التحقق قيمة مختلفة عن _field_.
 
 <a name="rule-digits"></a>
-#### digits:_value_
+#### digits:value(القيمة أرقام)
 
-The field under validation must be _numeric_ and must have an exact length of _value_.
+يجب أن يكون الحقل تحت التحقق _numeric_ ويجب أن يكون بطول _value_ بالضبط.
 
 <a name="rule-digits-between"></a>
-#### digits_between:_min_,_max_
+####  digits_between:min,max (بين رقمين "أصغري،أغظمي")
 
-The field under validation must be _numeric_ and must have a length between the given _min_ and _max_.
+يجب أن يكون الحقل تحت التحقق _numeric_ ويجب أن يكون بطول يتراوح بين _min_ الأصغري والحد الأقصى _max_.
 
 <a name="rule-dimensions"></a>
-#### dimensions
+####dimensions (الأبعاد للصور)
 
-The file under validation must be an image meeting the dimension constraints as specified by the rule's parameters:
+يجب أن يكون الملف قيد التحقق صورة تفي بقيود الأبعاد كما هو محدد بواسطة معلمات القاعدة:
 
     'avatar' => 'dimensions:min_width=100,min_height=200'
 
-Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_.
+القيود المتاحة هي: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_.
 
-A _ratio_ constraint should be represented as width divided by height. This can be specified either by a fraction like `3/2` or a float like `1.5`:
+يجب تمثيل القيد _ratio_ بالعرض مقسومًا على الارتفاع. يمكن تحديد ذلك إما بكسر مثل `3/2` أو عدد عشري مثل `1.5`:
 
     'avatar' => 'dimensions:ratio=3/2'
 
-Since this rule requires several arguments, you may use the `Rule::dimensions` method to fluently construct the rule:
+نظرًا لأن هذه القاعدة تتطلب عدة وسيطات ، يمكنك استخدام التابع `Rule::features` لإنشاء القاعدة بطلاقة:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -1026,52 +1026,52 @@ Since this rule requires several arguments, you may use the `Rule::dimensions` m
     ]);
 
 <a name="rule-distinct"></a>
-#### distinct
+#### distinct (قيمة غير مكررة)
 
-When validating arrays, the field under validation must not have any duplicate values:
+عند التحقق من المصفوفات، يجب ألا يحتوي الحقل تحت التحقق على أي قيم مكررة:
 
     'foo.*.id' => 'distinct'
 
-Distinct uses loose variable comparisons by default. To use strict comparisons, you may add the `strict` parameter to your validation rule definition:
+يستخدم عامل التميز مقارنات متغيرة فضفاضة بشكل افتراضي. لاستخدام مقارنات صارمة، يمكنك إضافة المعامل `strict` إلى تعريف قاعدة التحقق من الصحة:
 
     'foo.*.id' => 'distinct:strict'
 
-You may add `ignore_case` to the validation rule's arguments to make the rule ignore capitalization differences:
+يمكنك إضافة المعامل `ignore_case` إلى تعريف قاعدة التحقق من الصحة لجعل القاعدة تتجاهل اختلافات الكتابة بالأحرف الكبيرة: 
 
     'foo.*.id' => 'distinct:ignore_case'
 
 <a name="rule-email"></a>
-#### email
+#### email (تحقق الإيميل)
 
-The field under validation must be formatted as an email address. This validation rule utilizes the [`egulias/email-validator`](https://github.com/egulias/EmailValidator) package for validating the email address. By default, the `RFCValidation` validator is applied, but you can apply other validation styles as well:
+يجب تنسيق الحقل تحت التحقق كعنوان بريد إلكتروني. تستخدم قاعدة التحقق هذه الحزمة [`egulias/email-validator`](https://github.com/egulias/EmailValidator) للتحقق من صحة البريد الالكتروني. بشكل افتراضي ، يتم تطبيق مدقق `RFCValidation` ، ولكن يمكنك تطبيق أنماط تحقق أخرى أيضًا:
 
     'email' => 'email:rfc,dns'
 
-The example above will apply the `RFCValidation` and `DNSCheckValidation` validations. Here's a full list of validation styles you can apply:
+سيطبق المثال أعلاه عمليتي التحقق من صحة `RFCValidation` و `DNSCheckValidation`. فيما يلي قائمة كاملة بأنماط التحقق التي يمكنك تطبيقها:
 
 <div class="content-list" markdown="1">
 
-- `rfc`: `RFCValidation`
-- `strict`: `NoRFCWarningsValidation`
-- `dns`: `DNSCheckValidation`
-- `spoof`: `SpoofCheckValidation`
-- `filter`: `FilterEmailValidation`
+- `rfc`: `RFCValidation` : `بريد صالح`
+- `strict`: `NoRFCWarningsValidation` : `لا يوجد أخطاء بتحقق البريد`
+- `dns`: `DNSCheckValidation` : `مجال البريد صالح`
+- `spoof`: `SpoofCheckValidation`: `منع انتحال بريد موثوق`
+- `filter`: `FilterEmailValidation` : `التحقق بإستخدام تابع Filter`
 
 </div>
 
-The `filter` validator, which uses PHP's `filter_var` function, ships with Laravel and was Laravel's default email validation behavior prior to Laravel version 5.8.
+مدقق `filter` ، الذي يستخدم دالة`filter_var` في PHP ، يأتي مع Laravel وكان سلوك Laravel الافتراضي للتحقق من البريد الإلكتروني قبل إصدار Laravel 5.8.
 
-> {note} The `dns` and `spoof` validators require the PHP `intl` extension.
+> {ملاحظة} تتطلب أدوات التحقق من `dns` و`spoof` امتداد PHP`intl`
 
 <a name="rule-ends-with"></a>
-#### ends_with:_foo_,_bar_,...
+#### ends_with:_foo_,_bar_,... (ينتهي في)
 
-The field under validation must end with one of the given values.
+يجب أن ينتهي الحقل تحت التحقق بإحدى القيم المقدمة.
 
 <a name="rule-enum"></a>
-#### enum
+#### enum (التعداد)
 
-The `Enum` rule is a class based rule that validates whether the field under validation contains a valid enum value. The `Enum` rule accepts the name of the enum as its only constructor argument:
+قاعدة `Enum` هي قاعدة قائمة على فئة تتحقق مما إذا كان الحقل تحت التحقق يحتوي على قيمة تعداد صالحة. تقبل قاعدة `Enum` اسم التعداد باعتباره الوسيطة المنشئة الوحيدة:
 
     use App\Enums\ServerStatus;
     use Illuminate\Validation\Rules\Enum;
@@ -1080,56 +1080,56 @@ The `Enum` rule is a class based rule that validates whether the field under val
         'status' => [new Enum(ServerStatus::class)],
     ]);
 
-> {note} Enums are only available on PHP 8.1+.
+> {ملاحظة} Enums متاحة فقط في PHP 8.1+.
 
 <a name="rule-exclude"></a>
-#### exclude
+#### exclude (استبعاد)
 
-The field under validation will be excluded from the request data returned by the `validate` and `validated` methods.
+سيتم استبعاد الحقل تحت التحقق من بيانات الطلب التي يتم إرجاعها بواسطة طريقتي `validate` و `validated`.
 
 <a name="rule-exclude-if"></a>
-#### exclude_if:_anotherfield_,_value_
+#### exclude_if:_anotherfield_,_value_ (استبعاد شرطي)
 
-The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is equal to _value_.
+سيتم استبعاد الحقل تحت التحقق من بيانات الطلب التي يتم إرجاعها بواسطة طريقتي `validate` و `validated`بشرط ال _anotherfield_ الحقل يساوي _value_.
 
 <a name="rule-exclude-unless"></a>
-#### exclude_unless:_anotherfield_,_value_
+#### exclude_unless:_anotherfield_,_value_ (استبعاد ما لم)
 
-The field under validation will be excluded from the request data returned by the `validate` and `validated` methods unless _anotherfield_'s field is equal to _value_. If _value_ is `null` (`exclude_unless:name,null`), the field under validation will be excluded unless the comparison field is `null` or the comparison field is missing from the request data.
+سيتم استبعاد الحقل تحت التحقق من بيانات الطلب التي يتم إرجاعها بواسطة طريقتي `validate` و `validated`. ما لم يكن حقل _anotherfield_ يساوي _value_.  إذا كانت _value_ `null` (`exclude_unless:name,null`) ، فسيتم استبعاد الحقل تحت التحقق ما لم يكن حقل المقارنة فارغاً `null` أو كان حقل المقارنة مفقودًا من بيانات الطلب.
 
 <a name="rule-exclude-without"></a>
-#### exclude_without:_anotherfield_
+#### exclude_without:_anotherfield_ (استبعاد بدون)
 
-The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is not present.
+سيتم استبعاد الحقل تحت التحقق من بيانات الطلب التي يتم إرجاعها بواسطة طريقتي `validate` و `validated`إذا كان الحقل _anotherfield_ غير موجود.
 
 <a name="rule-exists"></a>
-#### exists:_table_,_column_
+#### exists:_table_,_column_ (موجود بقاعدة البيانات "جدول,عامود")
 
-The field under validation must exist in a given database table.
+يجب أن يكون الحقل تحت التحقق موجودًا في جدول قاعدة بيانات محدد.
 
 <a name="basic-usage-of-exists-rule"></a>
-#### Basic Usage Of Exists Rule
+#### Basic Usage Of Exists Rule (الاستخدام الأساسي للقاعدة الموجود)
 
     'state' => 'exists:states'
 
-If the `column` option is not specified, the field name will be used. So, in this case, the rule will validate that the `states` database table contains a record with a `state` column value matching the request's `state` attribute value.
+إذا لم يتم تحديد العمود `column` ، فسيتم استخدام اسم الإدخال. لذلك ، في هذه الحالة ، ستتحقق القاعدة من أن جدول قاعدة بيانات الحالات `states` يحتوي على سجل له قيمة عمود الحالة `state` تطابق قيمة سمة الحالة `state` للطلب.
 
 <a name="specifying-a-custom-column-name"></a>
-#### Specifying A Custom Column Name
+#### Specifying A Custom Column Name (تحديد اسم عمود مخصص)
 
-You may explicitly specify the database column name that should be used by the validation rule by placing it after the database table name:
+يمكنك تحديد اسم عمود قاعدة البيانات بشكل صريح والذي يجب أن تستخدمه قاعدة التحقق من الصحة بوضعه بعد اسم جدول قاعدة البيانات:
 
     'state' => 'exists:states,abbreviation'
 
-Occasionally, you may need to specify a specific database connection to be used for the `exists` query. You can accomplish this by prepending the connection name to the table name:
+في بعض الأحيان ، قد تحتاج إلى تحديد اتصال قاعدة بيانات معين لاستخدامه في الاستعلام موجود `exists`. يمكنك تحقيق ذلك من خلال إضافة اسم الاتصال مسبقًا إلى اسم الجدول:
 
     'email' => 'exists:connection.staff,email'
 
-Instead of specifying the table name directly, you may specify the Eloquent model which should be used to determine the table name:
+بدلاً من تحديد اسم الجدول مباشرةً ، يمكنك تحديد نموذج Eloquent الذي يجب استخدامه لتحديد اسم الجدول:
 
     'user_id' => 'exists:App\Models\User,id'
 
-If you would like to customize the query executed by the validation rule, you may use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit them:
+إذا كنت ترغب في تخصيص الاستعلام الذي تم تنفيذه بواسطة قاعدة التحقق ، فيمكنك استخدام فئة `Rule` لتعريف القاعدة بطلاقة. في هذا المثال ، سنحدد أيضًا قواعد التحقق من الصحة كمصفوفة بدلاً من استخدام الحرف `|` لتحديدها:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -1144,34 +1144,34 @@ If you would like to customize the query executed by the validation rule, you ma
     ]);
 
 <a name="rule-file"></a>
-#### file
+#### file (الملفات)
 
-The field under validation must be a successfully uploaded file.
+يجب أن يكون الحقل تحت التحقق ملفًا تم تحميله بنجاح.
 
 <a name="rule-filled"></a>
-#### filled
+#### filled (غير فارغ)
 
-The field under validation must not be empty when it is present.
+يجب ألا يكون الحقل تحت التحقق فارغًا عندما يكون موجودًا.
 
 <a name="rule-gt"></a>
-#### gt:_field_
+#### gt:_field_ (حجم أكبر من)
 
-The field under validation must be greater than the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+يجب أن يكون الحقل تحت التحقق أكبر من _field_ المحدد. يجب أن يكون الحقلين من نفس النوع. يتم تقييم السلاسل والأرقام والمصفوفات والملفات باستخدام نفس الاصطلاحات مثل قاعدة الحجم [`size`](#rule-size).
 
 <a name="rule-gte"></a>
-#### gte:_field_
+#### gte:_field_ (حجم أكبر أو يساوي)
 
-The field under validation must be greater than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+يجب أن يكون الحقل تحت التحقق أكبر من _field_ المحدد أو مساويًا له. يجب أن يكون الحقلين من نفس النوع. يتم تقييم السلاسل والأرقام والمصفوفات والملفات باستخدام نفس الاصطلاحات مثل قاعدةالحجم [`size`](#rule-size).
 
 <a name="rule-image"></a>
-#### image
+#### image (الصور)
 
-The file under validation must be an image (jpg, jpeg, png, bmp, gif, svg, or webp).
+يجب أن يكون الملف قيد التحقق صورة إمتداد (jpg أو jpeg أو png أو bmp أو gif أو svg أو webp).
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
 
-The field under validation must be included in the given list of values. Since this rule often requires you to `implode` an array, the `Rule::in` method may be used to fluently construct the rule:
+يجب تضمين الحقل تحت التحقق في قائمة القيم المحددة. نظرًا لأن هذه القاعدة تتطلب منك دمج `implode` مصفوفة ، يمكن استخدام التابع `Rule::in` لبناء القاعدة بطلاقة:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -1183,7 +1183,7 @@ The field under validation must be included in the given list of values. Since t
         ],
     ]);
 
-When the `in` rule is combined with the `array` rule, each value in the input array must be present within the list of values provided to the `in` rule. In the following example, the `LAS` airport code in the input array is invalid since it is not contained in the list of airports provided to the `in` rule:
+عند دمج القاعدة `in` مع قاعدة المصفوفة `array` ، يجب أن تكون كل قيمة في مصفوفة الإدخال موجودة ضمن قائمة القيم المقدمة إلى القاعدة في `in`. في المثال التالي ، رمز المطار `LAS` في مصفوفة الإدخال غير صالح لأنه غير مضمن في قائمة المطارات المقدمة لقاعدة` in`:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -1201,96 +1201,96 @@ When the `in` rule is combined with the `array` rule, each value in the input ar
     ]);
 
 <a name="rule-in-array"></a>
-#### in_array:_anotherfield_.*
+#### in_array:_anotherfield_.* (تحقق قيمة موجودة في مصفوفة أم لا)
 
-The field under validation must exist in _anotherfield_'s values.
+يجب أن يوجد الحقل تحت التحقق في قيم _anotherfield_.
 
 <a name="rule-integer"></a>
-#### integer
+#### integer (عدد صحيح)
 
-The field under validation must be an integer.
+يجب أن يكون الحقل تحت التحقق عددًا صحيحًا.
 
-> {note} This validation rule does not verify that the input is of the "integer" variable type, only that the input is of a type accepted by PHP's `FILTER_VALIDATE_INT` rule. If you need to validate the input as being a number please use this rule in combination with [the `numeric` validation rule](#rule-numeric).
+> {ملاحظة} لا تتحقق قاعدة التحقق من صحة الإدخال من نوع متغير عدد صحيح `integer` ، فقط أن الإدخال من النوع المقبول بواسطة قاعدة `FILTER_VALIDATE_INT` الخاصة بـ PHP. إذا كنت بحاجة إلى التحقق من صحة الإدخال باعتباره رقمًا ، فيرجى استخدام هذه القاعدة مع قاعدة تحقق الأرقام [the `numeric` validation rule](#rule-numeric).
 
 <a name="rule-ip"></a>
 #### ip
 
-The field under validation must be an IP address.
+يجب أن يكون الحقل تحت التحقق عنوان IP.
 
 <a name="ipv4"></a>
 #### ipv4
 
-The field under validation must be an IPv4 address.
+يجب أن يكون الحقل تحت التحقق عنوان IPv4.
 
 <a name="ipv6"></a>
 #### ipv6
 
-The field under validation must be an IPv6 address.
+يجب أن يكون الحقل تحت التحقق عنوان IPv6.
 
 <a name="rule-mac"></a>
 #### mac_address
 
-The field under validation must be a MAC address.
+يجب أن يكون الحقل تحت التحقق عنوان MAC.
 
 <a name="rule-json"></a>
 #### json
 
-The field under validation must be a valid JSON string.
+يجب أن يكون الحقل تحت التحقق سلسلة JSON صالحة.
 
 <a name="rule-lt"></a>
-#### lt:_field_
+#### lt:_field_ (حجم أقل من المحدد)
 
-The field under validation must be less than the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+يجب أن يكون الحقل تحت التحقق أقل من _field_ المحدد. يجب أن يكون الحقلين من نفس النوع. يتم تقييم السلاسل والأرقام والمصفوفات والملفات باستخدام نفس الاصطلاحات مثل قاعدة الحجم [`size`](#rule-size).
 
 <a name="rule-lte"></a>
-#### lte:_field_
+#### lte:_field_ (حجم أقل أو يساوي من المحدد)
 
-The field under validation must be less than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+يجب أن يكون الحقل تحت التحقق أقل من أو يساوي _field_ المحدد. يجب أن يكون الحقلين من نفس النوع. يتم تقييم السلاسل والأرقام والمصفوفات والملفات باستخدام نفس الاصطلاحات مثل قاعدة الحجم [`size`](#rule-size).
 
 <a name="rule-max"></a>
-#### max:_value_
+#### max:_value_ (حجم أقل أو يساوي الحد الأقصى)
 
-The field under validation must be less than or equal to a maximum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+يجب أن يكون الحقل تحت التحقق أقل أو يساوي الحد الأقصى _value_. يجب أن يكون الحقلين من نفس النوع. يتم تقييم السلاسل والأرقام والمصفوفات والملفات باستخدام نفس الاصطلاحات مثل قاعدة الحجم [`size`](#rule-size).
 
 <a name="rule-mimetypes"></a>
-#### mimetypes:_text/plain_,...
+#### mimetypes:_text/plain_,... (تيساوي نوع MINE)
 
-The file under validation must match one of the given MIME types:
+يجب أن يتطابق الملف قيد التحقق مع أحد أنواع MIME المحددة:
 
     'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'
 
-To determine the MIME type of the uploaded file, the file's contents will be read and the framework will attempt to guess the MIME type, which may be different from the client's provided MIME type.
+لتحديد نوع MIME للملف الذي تم تحميله ، ستتم قراءة محتويات الملف وسيحاول إطار العمل تخمين نوع MIME ، والذي قد يكون مختلفًا عن نوع MIME المقدم من العميل.
 
 <a name="rule-mimes"></a>
-#### mimes:_foo_,_bar_,...
+#### mimes:_foo_,_bar_,... (تيساوي أحد أنواع MINE)
 
-The file under validation must have a MIME type corresponding to one of the listed extensions.
+يجب أن يحتوي الملف قيد التحقق من نوع MIME المطابق لإحدى الامتدادات المدرجة.
 
 <a name="basic-usage-of-mime-rule"></a>
-#### Basic Usage Of MIME Rule
+#### Basic Usage Of MIME Rule (الاستخدام الأساسي لقاعدة MIME)
 
     'photo' => 'mimes:jpg,bmp,png'
 
-Even though you only need to specify the extensions, this rule actually validates the MIME type of the file by reading the file's contents and guessing its MIME type. A full listing of MIME types and their corresponding extensions may be found at the following location:
+على الرغم من أنك تحتاج فقط إلى تحديد الامتدادات ، فإن هذه القاعدة تتحقق بالفعل من نوع MIME للملف من خلال قراءة محتويات الملف وتخمين نوع MIME الخاص به. يمكن العثور على قائمة كاملة بأنواع MIME والإضافات المقابلة لها في الموقع التالي:
 
 [https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 
 <a name="rule-min"></a>
-#### min:_value_
+#### min:_value_ (أقل حجم من)
 
-The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+يجب أن يحتوي الحقل تحت التحقق على _value_ كحد أدنى. يتم تقييم السلاسل والأرقام والمصفوفات والملفات بنفس طريقة تقييم قاعدة الحجم [`size`](#rule-size).
 
 <a name="multiple-of"></a>
-#### multiple_of:_value_
+#### multiple_of:_value_ (مضاعفات)
 
-The field under validation must be a multiple of _value_.
+يجب أن يكون الحقل تحت التحقق من مضاعفات _value_.
 
-> {note} The [`bcmath` PHP extension](https://www.php.net/manual/en/book.bc.php) is required in order to use the `multiple_of` rule.
+> {ملاحظة} ملحق bcmath PHP [`bcmath` PHP extension](https://www.php.net/manual/en/book.bc.php) مطلوب من أجل استخدام قاعدة `multi_of`.
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
 
-The field under validation must not be included in the given list of values. The `Rule::notIn` method may be used to fluently construct the rule:
+يجب عدم تضمين الحقل تحت التحقق في قائمة القيم المحددة. يمكن استخدام التابع `Rule :notIn` لبناء القاعدة بطلاقة:
 
     use Illuminate\Validation\Rule;
 
@@ -1302,85 +1302,85 @@ The field under validation must not be included in the given list of values. The
     ]);
 
 <a name="rule-not-regex"></a>
-#### not_regex:_pattern_
+#### not_regex:_pattern_ (الحقل لا يطابق التعبير العادي)
 
-The field under validation must not match the given regular expression.
+يجب ألا يتطابق الحقل تحت التحقق مع التعبير العادي المحدد.
 
-Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'not_regex:/^.+$/i'`.
+داخليًا ، تستخدم هذه القاعدة وظيفة PHP `preg_match`. يجب أن يتبع النمط المحدد نفس التنسيق المطلوب بواسطة `preg_match` وبالتالي يتضمن أيضًا محددات صالحة. فمثلا: `'email' => 'not_regex:/^.+$/i'`.
 
-> {note} When using the `regex` / `not_regex` patterns, it may be necessary to specify your validation rules using an array instead of using `|` delimiters, especially if the regular expression contains a `|` character.
+> {ملاحظة} عند استخدام أنماط `regex` / `not_regex` ، قد يكون من الضروري تحديد قواعد التحقق من الصحة باستخدام مصفوفة بدلاً من استخدام محددات `|` ، خاصةً إذا كان التعبير العادي يحتوي على الحرف `|`.
 
 <a name="rule-nullable"></a>
-#### nullable
+#### nullable (لاغية)
 
-The field under validation may be `null`.
+قد يكون الحقل تحت التحقق فارغاً `null`.
 
 <a name="rule-numeric"></a>
-#### numeric
+#### numeric (أرقام)
 
-The field under validation must be [numeric](https://www.php.net/manual/en/function.is-numeric.php).
+يجب أن يكون الحقل تحت التحقق رقميًا [numeric](https://www.php.net/manual/en/function.is-numeric.php).
 
 <a name="rule-password"></a>
-#### password
+#### password (كلمة سر)
 
-The field under validation must match the authenticated user's password.
+يجب أن يتطابق الحقل تحت التحقق مع كلمة مرور المستخدم المصادق عليه.
 
-> {note} This rule was renamed to `current_password` with the intention of removing it in Laravel 9. Please use the [Current Password](#rule-current-password) rule instead.
+> {note} تمت إعادة تسمية هذه القاعدة إلى `current_password` بهدف إزالتها في Laravel 9. الرجاء استخدام كلمة المرور الحالية [Current Password](#rule-current-password) قاعدة بدلاً من ذلك.
 
 <a name="rule-present"></a>
-#### present
+#### present (فارغ)
 
-The field under validation must be present in the input data but can be empty.
+يجب أن يكون الحقل تحت التحقق موجودًا في بيانات الإدخال ولكن يمكن أن يكون فارغًا.
 
 <a name="rule-prohibited"></a>
-#### prohibited
+#### prohibited (غير فارغ)
 
-The field under validation must be empty or not present.
+يجب أن يكون الحقل تحت التحقق فارغًا أو غير موجود.
 
 <a name="rule-prohibited-if"></a>
 #### prohibited_if:_anotherfield_,_value_,...
 
-The field under validation must be empty or not present if the _anotherfield_ field is equal to any _value_.
+يجب أن يكون الحقل تحت التحقق فارغًا أو غير موجود إذا كان الحقل _anotherfield_ يساوي أي _value_.
 
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_anotherfield_,_value_,...
 
-The field under validation must be empty or not present unless the _anotherfield_ field is equal to any _value_.
+يجب أن يكون الحقل تحت التحقق فارغًا أو غير موجود ما لم يكن الحقل _anotherfield_ يساوي أي _value_.
 
 <a name="rule-prohibits"></a>
 #### prohibits:_anotherfield_,...
 
-If the field under validation is present, no fields in _anotherfield_ can be present, even if empty.
+إذا كان الحقل تحت التحقق موجودًا ، فلا يمكن وجود حقول أخرى في _anotherfield_ ، حتى لو كانت فارغة.
 
 <a name="rule-regex"></a>
 #### regex:_pattern_
 
-The field under validation must match the given regular expression.
+يجب أن يتطابق الحقل تحت التحقق مع التعبير العادي المحدد.
 
-Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
+داخليًا ، تستخدم هذه القاعدة وظيفة PHP `preg_match`. يجب أن يتبع النمط المحدد نفس التنسيق المطلوب بواسطة `preg_match` وبالتالي يتضمن أيضًا محددات صالحة. فمثلا: `'email' => 'regex:/^.+@.+$/i'`.
 
-> {note} When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using `|` delimiters, especially if the regular expression contains a `|` character.
+> {ملاحظة} عند استخدام أنماط `regex` / `not_regex` ، قد يكون من الضروري تحديد قواعد التحقق من الصحة باستخدام مصفوفة بدلاً من استخدام محددات `|` ، خاصةً إذا كان التعبير العادي يحتوي على الحرف `|`.
 
 <a name="rule-required"></a>
-#### required
+#### required (مطلوب)
 
-The field under validation must be present in the input data and not empty. A field is considered "empty" if one of the following conditions are true:
+يجب أن يكون الحقل تحت التحقق موجودًا في بيانات الإدخال وألا يكون فارغًا. يعتبر الحقل فارغًا "empty" إذا تحققت إحدى الشروط التالية:
 
 <div class="content-list" markdown="1">
 
-- The value is `null`.
-- The value is an empty string.
-- The value is an empty array or empty `Countable` object.
-- The value is an uploaded file with no path.
+- القيمة خالية `null`.
+- القيمة عبارة عن سلسلة فارغة.
+- القيمة عبارة عن مصفوفة فارغة أو كائن قابل للعد `Countable` فارغ.
+- القيمة عبارة عن ملف تم تحميله بدون مسار.
 
 </div>
 
 <a name="rule-required-if"></a>
-#### required_if:_anotherfield_,_value_,...
+#### required_if:_anotherfield_,_value_,... (مطلوب بشرط)
 
-The field under validation must be present and not empty if the _anotherfield_ field is equal to any _value_.
+يجب أن يكون الحقل تحت التحقق موجودًا وألا يكون فارغًا إذا كان الحقل _anotherfield_ يساوي أي قيمة _value_.
 
-If you would like to construct a more complex condition for the `required_if` rule, you may use the `Rule::requiredIf` method. This method accepts a boolean or a closure. When passed a closure, the closure should return `true` or `false` to indicate if the field under validation is required:
+إذا كنت ترغب في إنشاء شرط أكثر تعقيدًا لقاعدة `required_if` ، فيمكنك استخدام طريقة ` Rule::requiredIf`. تقبل هذه الطريقة منطقية أو إغلاق. عند تمرير الإغلاق ، يجب أن يعرض الإغلاق صواب `true` أو خطأ `false` للإشارة إلى ما إذا كان الحقل تحت التحقق مطلوبًا:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -1398,42 +1398,42 @@ If you would like to construct a more complex condition for the `required_if` ru
 <a name="rule-required-unless"></a>
 #### required_unless:_anotherfield_,_value_,...
 
-The field under validation must be present and not empty unless the _anotherfield_ field is equal to any _value_. This also means _anotherfield_ must be present in the request data unless _value_ is `null`. If _value_ is `null` (`required_unless:name,null`), the field under validation will be required unless the comparison field is `null` or the comparison field is missing from the request data.
+يجب أن يكون الحقل تحت التحقق موجودًا وألا يكون فارغًا ما لم يكن الحقل _anotherfield_ يساوي أي _value_. وهذا يعني أيضًا أن _anotherfield_ يجب أن يكون موجودًا في بيانات الطلب ما لم تكن _value_ خالية `خالية`. إذا كانت _value_ خالية `null` (`required_unless:name، null`) ، فسيكون الحقل تحت التحقق مطلوبًا ما لم يكن حقل المقارنة فارغاً `null` أو كان حقل المقارنة مفقودًا من بيانات الطلب.
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
 
-The field under validation must be present and not empty _only if_ any of the other specified fields are present and not empty.
+يجب أن يكون الحقل تحت التحقق موجودًا وألا يكون فارغًا _ فقط إذا كان أي من الحقول المحددة الأخرى موجودًا وليس فارغًا.
 
 <a name="rule-required-with-all"></a>
 #### required_with_all:_foo_,_bar_,...
 
-The field under validation must be present and not empty _only if_ all of the other specified fields are present and not empty.
+يجب أن يكون الحقل تحت التحقق موجودًا وألا يكون فارغًا _ فقط إذا كانت جميع الحقول المحددة الأخرى موجودة وليست فارغة.
 
 <a name="rule-required-without"></a>
-#### required_without:_foo_,_bar_,...
+#### required_without:_foo_,_bar_,... (مطلوب بدون)
 
-The field under validation must be present and not empty _only when_ any of the other specified fields are empty or not present.
+يجب أن يكون الحقل تحت التحقق موجودًا وألا يكون فارغًا فقط عندما يكون أي من الحقول الأخرى المحددة فارغًا أو غير موجود.
 
 <a name="rule-required-without-all"></a>
-#### required_without_all:_foo_,_bar_,...
+#### required_without_all:_foo_,_bar_,... (مطلوب بدون الكل)
 
-The field under validation must be present and not empty _only when_ all of the other specified fields are empty or not present.
+يجب أن يكون الحقل تحت التحقق موجودًا وألا يكون فارغًا فقط عندما تكون _ جميع الحقول المحددة الأخرى فارغة أو غير موجودة.
 
 <a name="rule-required-array-keys"></a>
-#### required_array_keys:_foo_,_bar_,...
+#### required_array_keys:_foo_,_bar_,... (مطلوب مفاتيح مصفوفة)
 
-The field under validation must be an array and must contain at least the specified keys.
+يجب أن يكون الحقل تحت التحقق مصفوفة ويجب أن يحتوي على الأقل على المفاتيح المحددة.
 
 <a name="rule-same"></a>
-#### same:_field_
+#### same:_field_ (مساوة قيمة)
 
-The given _field_ must match the field under validation.
+يجب أن يتطابق _field_ المقدم مع الحقل قيد التحقق.
 
 <a name="rule-size"></a>
-#### size:_value_
+#### size:_value_ (مساوة حجم)
 
-The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value (the attribute must also have the `numeric` or `integer` rule). For an array, _size_ corresponds to the `count` of the array. For files, _size_ corresponds to the file size in kilobytes. Let's look at some examples:
+يجب أن يكون للحقل تحت التحقق حجم يطابق _value_ المعطى. بالنسبة لبيانات السلسلة ، تتوافق القيمة _value_ مع عدد الأحرف. بالنسبة إلى البيانات الرقمية ، تتوافق _value_ مع قيمة عدد صحيح معين (يجب أن تحتوي السمة أيضًا على قاعدة عدد ``numeric أو عدد صحيح  `integer`). بالنسبة إلى المصفوفة ، يتوافق _size_ مع عدد `numeric` المصفوفة. بالنسبة للملفات ، يتوافق الحجم _ مع حجم الملف بالكيلو بايت. لنلقِ نظرة على بعض الأمثلة:
 
     // Validate that a string is exactly 12 characters long...
     'title' => 'size:12';
@@ -1448,46 +1448,46 @@ The field under validation must have a size matching the given _value_. For stri
     'image' => 'file|size:512';
 
 <a name="rule-starts-with"></a>
-#### starts_with:_foo_,_bar_,...
+#### starts_with:_foo_,_bar_,... (ابدا ب)
 
-The field under validation must start with one of the given values.
+يجب أن يبدأ الحقل تحت التحقق بإحدى القيم المقدمة.
 
 <a name="rule-string"></a>
-#### string
+#### string (ابدء)
 
-The field under validation must be a string. If you would like to allow the field to also be `null`, you should assign the `nullable` rule to the field.
+يجب أن يكون الحقل تحت التحقق سلسلة. إذا كنت تريد السماح للحقل بأن يكون "فارغًا" ، فيجب عليك تعيين القاعدة "nullable" للحقل.
 
 <a name="rule-timezone"></a>
-#### timezone
+#### timezone (منطقة زمنية)
 
-The field under validation must be a valid timezone identifier according to the `timezone_identifiers_list` PHP function.
+يجب أن يكون الحقل تحت التحقق معرّف منطقة زمنية صالحًا وفقًا لوظيفة PHP `timezone_identifiers_list`.
 
 <a name="rule-unique"></a>
-#### unique:_table_,_column_
+#### unique:_table_,_column_ (مطلوب:جدول،عامود)
 
-The field under validation must not exist within the given database table.
+يجب ألا يكون الحقل تحت التحقق موجودًا في جدول قاعدة البيانات المحدد.
 
-**Specifying A Custom Table / Column Name:**
+**تحديد اسم عمود / جدول مخصص:**
 
-Instead of specifying the table name directly, you may specify the Eloquent model which should be used to determine the table name:
+بدلاً من تحديد اسم الجدول مباشرةً ، يمكنك تحديد نموذج مساوي الذي يجب استخدامه لتحديد اسم الجدول:
 
     'email' => 'unique:App\Models\User,email_address'
 
-The `column` option may be used to specify the field's corresponding database column. If the `column` option is not specified, the name of the field under validation will be used.
+يمكن استخدام خيار العمود `column` لتحديد عمود قاعدة البيانات المقابل للحقل. إذا لم يتم تحديد خيار `column` ، فسيتم استخدام اسم الحقل تحت التحقق كاسم للعامود.
 
     'email' => 'unique:users,email_address'
 
-**Specifying A Custom Database Connection**
+**تحديد اتصال قاعدة بيانات مخصص**
 
-Occasionally, you may need to set a custom connection for database queries made by the Validator. To accomplish this, you may prepend the connection name to the table name:
+من حين لآخر ، قد تحتاج إلى تعيين اتصال مخصص لاستعلامات قاعدة البيانات التي يتم إجراؤها بواسطة Validator. لتحقيق ذلك ، يمكنك إضافة اسم الاتصال إلى اسم الجدول مسبقًا:
 
     'email' => 'unique:connection.users,email_address'
 
-**Forcing A Unique Rule To Ignore A Given ID:**
+**فرض قاعدة فريدة لتجاهل معرف معين:**
 
-Sometimes, you may wish to ignore a given ID during unique validation. For example, consider an "update profile" screen that includes the user's name, email address, and location. You will probably want to verify that the email address is unique. However, if the user only changes the name field and not the email field, you do not want a validation error to be thrown because the user is already the owner of the email address in question.
+في بعض الأحيان ، قد ترغب في تجاهل معرف معين أثناء التحقق الفريد من الصحة. على سبيل المثال ، ضع في اعتبارك شاشة "تحديث ملف التعريف" التي تتضمن اسم المستخدم وعنوان البريد الإلكتروني والموقع. ربما تريد التحقق من أن عنوان البريد الإلكتروني فريد. ومع ذلك ، إذا قام المستخدم بتغيير حقل الاسم فقط وليس حقل البريد الإلكتروني ، فلن ترغب في إلقاء خطأ في التحقق من الصحة لأن المستخدم هو بالفعل مالك عنوان البريد الإلكتروني المعني.
 
-To instruct the validator to ignore the user's ID, we'll use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit the rules:
+لتوجيه المدقق لتجاهل معرف المستخدم ، سنستخدم فئة `Rule` لتعريف القاعدة بطلاقة. في هذا المثال ، سنحدد أيضًا قواعد التحقق من الصحة كمصفوفة بدلاً من استخدام الحرف `|` لتحديد القواعد:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -1499,45 +1499,45 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
         ],
     ]);
 
-> {note} You should never pass any user controlled request input into the `ignore` method. Instead, you should only pass a system generated unique ID such as an auto-incrementing ID or UUID from an Eloquent model instance. Otherwise, your application will be vulnerable to an SQL injection attack.
+> {ملاحظة} يجب ألا تمرر أبدًا أي إدخال طلب يتحكم فيه المستخدم إلى طريقة `ignore`. بدلاً من ذلك ، يجب عليك فقط تمرير معرف فريد تم إنشاؤه من قبل النظام مثل معرف التزايد التلقائي أو UUID من مثيل نموذج Eloquent. خلاف ذلك ، سيكون تطبيقك عرضة لهجوم حقن SQL.
 
-Instead of passing the model key's value to the `ignore` method, you may also pass the entire model instance. Laravel will automatically extract the key from the model:
+بدلاً من تمرير قيمة مفتاح النموذج إلى طريقة `ignore` ، يمكنك أيضًا تمرير مثيل النموذج بالكامل. سيستخرج Laravel المفتاح تلقائيًا من النموذج:
 
     Rule::unique('users')->ignore($user)
 
-If your table uses a primary key column name other than `id`, you may specify the name of the column when calling the `ignore` method:
+إذا كان الجدول الخاص بك يستخدم اسم عمود مفتاح أساسي بخلاف `id` ، فيمكنك تحديد اسم العمود عند استدعاء طريقة `ignore`:
 
     Rule::unique('users')->ignore($user->id, 'user_id')
 
-By default, the `unique` rule will check the uniqueness of the column matching the name of the attribute being validated. However, you may pass a different column name as the second argument to the `unique` method:
+بشكل افتراضي ، ستتحقق القاعدة `unique` من تفرد العمود الذي يطابق اسم السمة التي يتم التحقق من صحتها. ومع ذلك ، يمكنك تمرير اسم عمود مختلف باعتباره الوسيطة الثانية للتابع `unique`:
 
     Rule::unique('users', 'email_address')->ignore($user->id),
 
-**Adding Additional Where Clauses:**
+**إضافة بنود مكان إضافية:**
 
-You may specify additional query conditions by customizing the query using the `where` method. For example, let's add a query condition that scopes the query to only search records that have an `account_id` column value of `1`:
+يمكنك تحديد شروط طلب بحث إضافية عن طريق تخصيص الاستعلام باستخدام طريقة `where`. على سبيل المثال ، دعنا نضيف شرط استعلام يحدد نطاق الاستعلام لسجلات البحث التي تحتوي على قيمة عمود معرف_الحساب `account_id` `1`:
 
     'email' => Rule::unique('users')->where(function ($query) {
         return $query->where('account_id', 1);
     })
 
 <a name="rule-url"></a>
-#### url
+#### url (رابط)
 
-The field under validation must be a valid URL.
+يجب أن يكون الحقل تحت التحقق عنوان URL صالحًا.
 
 <a name="rule-uuid"></a>
 #### uuid
 
-The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) universally unique identifier (UUID).
+يجب أن يكون الحقل تحت التحقق RFC 4122 صالحًا (الإصدار 1 أو 3 أو 4 أو 5) معرّفًا فريدًا عالميًا (UUID).
 
 <a name="conditionally-adding-rules"></a>
-## Conditionally Adding Rules
+## Conditionally Adding Rules (إضافة القواعد بشكل مشروط)
 
 <a name="skipping-validation-when-fields-have-certain-values"></a>
-#### Skipping Validation When Fields Have Certain Values
+#### Skipping Validation When Fields Have Certain Values (تخطي التحقق من الصحة عندما تحتوي الحقول على قيم معينة)
 
-You may occasionally wish to not validate a given field if another field has a given value. You may accomplish this using the `exclude_if` validation rule. In this example, the `appointment_date` and `doctor_name` fields will not be validated if the `has_appointment` field has a value of `false`:
+قد ترغب في بعض الأحيان في عدم التحقق من صحة حقل معين إذا كان حقل آخر له قيمة معينة. يمكنك تحقيق ذلك باستخدام قاعدة التحقق من شرط مستبعد `exclude_if`. في هذا المثال ، لن يتم التحقق من حقلي موعد التاريخ `appointment_date` و اسم الطبيب `doctor_name` إذا كان الحقل موعد المواعيد `has_appointment` يحتوي على قيمة خطأ `false`:
 
     use Illuminate\Support\Facades\Validator;
 
@@ -1547,7 +1547,7 @@ You may occasionally wish to not validate a given field if another field has a g
         'doctor_name' => 'exclude_if:has_appointment,false|required|string',
     ]);
 
-Alternatively, you may use the `exclude_unless` rule to not validate a given field unless another field has a given value:
+بدلاً من ذلك ، يمكنك استخدام قاعدة استبعاد غير `exclude_unless` لعدم التحقق من صحة حقل معين ما لم يكن هناك حقل آخر له قيمة معينة:
 
     $validator = Validator::make($data, [
         'has_appointment' => 'required|boolean',
@@ -1556,22 +1556,22 @@ Alternatively, you may use the `exclude_unless` rule to not validate a given fie
     ]);
 
 <a name="validating-when-present"></a>
-#### Validating When Present
+#### Validating When Present (التحقق من صحة عند التقديم)
 
-In some situations, you may wish to run validation checks against a field **only** if that field is present in the data being validated. To quickly accomplish this, add the `sometimes` rule to your rule list:
+في بعض الحالات ، قد ترغب في إجراء عمليات التحقق من الصحة مقابل حقل **فقط** إذا كان هذا الحقل موجودًا في البيانات التي يتم التحقق من صحتها. لإنجاز ذلك بسرعة ، أضف القاعدة `sometimes` إلى قائمة القواعد الخاصة بك:
 
     $v = Validator::make($data, [
         'email' => 'sometimes|required|email',
     ]);
 
-In the example above, the `email` field will only be validated if it is present in the `$data` array.
+في المثال أعلاه ، لن يتم التحقق من صحة حقل `email` إلا إذا كان موجودًا في المصفوفة `$data`.
 
-> {tip} If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields).
+> {نصيحة} إذا كنت تحاول التحقق من صحة حقل يجب أن يكون دائمًا موجودًا ولكن قد يكون فارغًا ، فقم بإلغاء تحديده (هذه المذكرة في الحقول الاختيارية) [this note on optional fields](#a-note-on-optional-fields).
 
 <a name="complex-conditional-validation"></a>
-#### Complex Conditional Validation
+#### Complex Conditional Validation (المصادقة الشرطية المعقدة)
 
-Sometimes you may wish to add validation rules based on more complex conditional logic. For example, you may wish to require a given field only if another field has a greater value than 100. Or, you may need two fields to have a given value only when another field is present. Adding these validation rules doesn't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
+قد ترغب أحيانًا في إضافة قواعد تحقق تستند إلى منطق شرطي أكثر تعقيدًا. على سبيل المثال ، قد ترغب في طلب حقل معين فقط إذا كانت قيمة حقل آخر أكبر من 100. أو قد تحتاج إلى حقلين للحصول على قيمة معينة فقط عند وجود حقل آخر. لا يجب أن تكون إضافة قواعد التحقق هذه مزعجة. أولاً ، قم بإنشاء مثيل `Validator` بقواعدك الثابة التي لا تتغير أبدًا:
 
     use Illuminate\Support\Facades\Validator;
 
@@ -1580,24 +1580,24 @@ Sometimes you may wish to add validation rules based on more complex conditional
         'games' => 'required|numeric',
     ]);
 
-Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game resale shop, or maybe they just enjoy collecting games. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
+لنفترض أن تطبيق الويب الخاص بنا مخصص لهواة جمع الألعاب. إذا قام أحد جامعي الألعاب بالتسجيل في تطبيقنا وكان لديهم أكثر من 100 لعبة ، فنحن نريدهم توضيح سبب امتلاكهم للعديد من الألعاب. على سبيل المثال ، ربما يديرون متجرًا لإعادة بيع الألعاب ، أو ربما يستمتعون فقط بجمع الألعاب. لإضافة هذا المطلب بشكل مشروط ، يمكننا استخدام طريقة "أحيانًا" في مثيل `Validator`.
 
     $validator->sometimes('reason', 'required|max:500', function ($input) {
         return $input->games >= 100;
     });
 
-The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is a list of the rules we want to add. If the closure passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
+المعامل الأول الذي يتم تمريره إلى الأسلوب `sometimes` هو اسم الحقل الذي نتحقق منه بشروط. الوسيطة الثانية هي قائمة بالقواعد التي نريد إضافتها. إذا تم تمرير الإغلاق لأن الوسيطة الثالثة ترجع `true` ، فستتم إضافة القواعد. تجعل هذه الطريقة إنشاء عمليات تحقق شرطية معقدة أمرًا في غاية السهولة. يمكنك أيضًا إضافة عمليات تحقق شرطية لعدة حقول في وقت واحد:
 
     $validator->sometimes(['reason', 'cost'], 'required', function ($input) {
         return $input->games >= 100;
     });
 
-> {tip} The `$input` parameter passed to your closure will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files under validation.
+> {نصيحة} ستكون المعلمة `$input` التي تم تمريرها إلى الإغلاق الخاص بك نسخة من ` Illuminate\Support\Fluent` ويمكن استخدامها للوصول إلى المدخلات والملفات الخاصة بك تحت التحقق.
 
 <a name="complex-conditional-array-validation"></a>
-#### Complex Conditional Array Validation
+#### Complex Conditional Array Validation (مصفوفة شرطية معقدة)
 
-Sometimes you may want to validate a field based on another field in the same nested array whose index you do not know. In these situations, you may allow your closure to receive a second argument which will be the current individual item in the array being validated:
+قد ترغب أحيانًا في التحقق من صحة حقل استنادًا إلى حقل آخر في نفس المصفوفة المتداخلة التي لا تعرف فهرسها. في هذه الحالات ، قد تسمح لإغلاقك باستلام وسيطة ثانية والتي ستكون العنصر الفردي الحالي في المصفوفة التي يتم التحقق من صحتها:
 
     $input = [
         'channels' => [
@@ -1620,12 +1620,12 @@ Sometimes you may want to validate a field based on another field in the same ne
         return $item->type !== 'email';
     });
 
-Like the `$input` parameter passed to the closure, the `$item` parameter is an instance of `Illuminate\Support\Fluent` when the attribute data is an array; otherwise, it is a string.
+مثل المعلمة `$input` التي تم تمريرها إلى الإغلاق ، فإن المعلمة `$item` هي مثيل لـ `Illuminate\Support\Fluent` عندما تكون بيانات السمة عبارة عن مصفوفة ؛ وإلا فهو عبارة عن سلسلة.
 
 <a name="validating-arrays"></a>
-## Validating Arrays
+## Validating Arrays (التحقق من صحة المصفوفات)
 
-As discussed in the [`array` validation rule documentation](#rule-array), the `array` rule accepts a list of allowed array keys. If any additional keys are present within the array, validation will fail:
+كما تمت مناقشته في وثائق قاعدة التحقق من صحة المصفوفة [`array` validation rule documentation](#rule-array), تقبل قاعدة المصفوفة `array` قائمة بمفاتيح الصفيف المسموح بها. في حالة وجود أي مفاتيح إضافية داخل المصفوفة ، سيفشل التحقق من الصحة:
 
     use Illuminate\Support\Facades\Validator;
 
@@ -1641,12 +1641,12 @@ As discussed in the [`array` validation rule documentation](#rule-array), the `a
         'user' => 'array:username,locale',
     ]);
 
-In general, you should always specify the array keys that are allowed to be present within your array. Otherwise, the validator's `validate` and `validated` methods will return all of the validated data, including the array and all of its keys, even if those keys were not validated by other nested array validation rules.
+بشكل عام ، يجب عليك دائمًا تحديد مفاتيح المصفوفة المسموح لها بالتواجد داخل المصفوفة الخاصة بك. وبخلاف ذلك ، ستعيد أساليب `validate` و `validated` الخاصة بالمدقق جميع البيانات التي تم التحقق من صحتها ، بما في ذلك المصفوفة وجميع مفاتيحها ، حتى لو لم يتم التحقق من صحة هذه المفاتيح بواسطة قواعد أخرى للتحقق من صحة المصفوفة المتداخلة.
 
 <a name="validating-nested-array-input"></a>
-### Validating Nested Array Input
+### Validating Nested Array Input (التحقق من صحة إدخال المصفوفة المتداخلة)
 
-Validating nested array based form input fields doesn't have to be a pain. You may use "dot notation" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:
+لا يجب أن يكون التحقق من صحة حقول إدخال النموذج القائمة على المصفوفة المتداخلة أمرًا صعبًا. يمكنك استخدام "تدوين النقطة" للتحقق من صحة السمات داخل المصفوفة. على سبيل المثال ، إذا كان طلب HTTP الوارد يحتوي على حقل `photos[profile]` ، فيمكنك التحقق من صحته كما يلي:
 
     use Illuminate\Support\Facades\Validator;
 
@@ -1654,14 +1654,14 @@ Validating nested array based form input fields doesn't have to be a pain. You m
         'photos.profile' => 'required|image',
     ]);
 
-You may also validate each element of an array. For example, to validate that each email in a given array input field is unique, you may do the following:
+يمكنك أيضًا التحقق من صحة كل عنصر من عناصر المصفوفة. على سبيل المثال ، للتحقق من أن كل بريد إلكتروني في حقل إدخال مصفوفة معين فريد ، يمكنك القيام بما يلي:
 
     $validator = Validator::make($request->all(), [
         'person.*.email' => 'email|unique:users',
         'person.*.first_name' => 'required_with:person.*.last_name',
     ]);
 
-Likewise, you may use the `*` character when specifying [custom validation messages in your language files](#custom-messages-for-specific-attributes), making it a breeze to use a single validation message for array based fields:
+وبالمثل ، يمكنك استخدام الحرف `*` عند تحديد رسائل تحقق مخصصة في ملفات لغتك [custom validation messages in your language files](#custom-messages-for-specific-attributes), مما يجعل من السهل استخدام رسالة تحقق واحدة للحقول القائمة على المصفوفة:
 
     'custom' => [
         'person.*.email' => [
@@ -1670,9 +1670,9 @@ Likewise, you may use the `*` character when specifying [custom validation messa
     ],
 
 <a name="accessing-nested-array-data"></a>
-#### Accessing Nested Array Data
+#### Accessing Nested Array Data (الوصول إلى بيانات المصفوفة المتداخلة)
 
-Sometimes you may need to access the value for a given nested array element when assigning validation rules to the attribute. You may accomplish this using the `Rule::foreEach` method. The `forEach` method accepts a closure that will be invoked for each iteration of the array attribute under validation and will receive the attribute's value and explicit, fully-expanded attribute name. The closure should return an array of rules to assign to the array element:
+قد تحتاج أحيانًا إلى الوصول إلى قيمة عنصر مصفوفة متداخلة عند تعيين قواعد التحقق من الصحة إلى السمة. يمكنك إنجاز ذلك باستخدام طريقة `Rule::forEach`. يقبل الأسلوب `forEach` إغلاقًا سيتم استدعاؤه لكل تكرار لسمة المصفوفة تحت التحقق من الصحة وسيتلقى قيمة السمة واسم السمة الصريح الموسع بالكامل. يجب أن يعيد الإغلاق مصفوفة من القواعد لتعيينها لعنصر المصفوفة:
 
     use App\Rules\HasPermission;
     use Illuminate\Support\Facades\Validator;
@@ -1688,9 +1688,9 @@ Sometimes you may need to access the value for a given nested array element when
     ]);
 
 <a name="validating-passwords"></a>
-## Validating Passwords
+## Validating Passwords (التحقق من صحة كلمات المرور)
 
-To ensure that passwords have an adequate level of complexity, you may use Laravel's `Password` rule object:
+للتأكد من أن كلمات المرور ذات مستوى مناسب من التعقيد ، يمكنك استخدام كائن قاعدة `Password` الخاص بـ Laravel:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rules\Password;
@@ -1699,35 +1699,35 @@ To ensure that passwords have an adequate level of complexity, you may use Larav
         'password' => ['required', 'confirmed', Password::min(8)],
     ]);
 
-The `Password` rule object allows you to easily customize the password complexity requirements for your application, such as specifying that passwords require at least one letter, number, symbol, or characters with mixed casing:
+يسمح لك كائن قاعدة `password` بتخصيص متطلبات تعقيد كلمة المرور لتطبيقك بسهولة ، مثل تحديد أن كلمات المرور تتطلب حرفًا واحدًا أو رقمًا أو رمزًا أو أحرفًا ذات غلاف مختلط:
 
-    // Require at least 8 characters...
+    // تتطلب 8 أحرف على الأقل ...
     Password::min(8)
 
-    // Require at least one letter...
+    // تتطلب حرفًا كبيرًا واحدًا على الأقل ...
     Password::min(8)->letters()
 
-    // Require at least one uppercase and one lowercase letter...
+    // تتطلب حرفًا كبيرًا واحدًا وحرفًا صغيرًا واحدًا على الأقل ...
     Password::min(8)->mixedCase()
 
-    // Require at least one number...
+    // يتطلب رقمًا واحدًا على الأقل ...
     Password::min(8)->numbers()
 
-    // Require at least one symbol...
+    // مطلوب رمز واحد على الأقل ...
     Password::min(8)->symbols()
 
-In addition, you may ensure that a password has not been compromised in a public password data breach leak using the `uncompromised` method:
+بالإضافة إلى ذلك ، يمكنك التأكد من أن كلمة المرور لم يتم اختراقها في عملية تسريب لخرق بيانات كلمة المرور العامة باستخدام طريقة `uncompromised`:
 
     Password::min(8)->uncompromised()
 
-Internally, the `Password` rule object uses the [k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity) model to determine if a password has been leaked via the [haveibeenpwned.com](https://haveibeenpwned.com) service without sacrificing the user's privacy or security.
+داخليًا ، يستخدم كائن قاعدة `Password` إخفاء الهوية  [k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity) mأوديل لتحديد ما إذا كان قد تم تسريب كلمة المرور عبر [haveibeenpwned.com](https://haveibeenpwned.com) الخدمة دون التضحية بخصوصية المستخدم أو أمانه.
 
-By default, if a password appears at least once in a data leak, it will be considered compromised. You can customize this threshold using the first argument of the `uncompromised` method:
+بشكل افتراضي ، إذا ظهرت كلمة المرور مرة واحدة على الأقل في تسرب البيانات ، فسيتم اعتبارها مخترقة. يمكنك تخصيص هذا الحد باستخدام الوسيطة الأولى للطريقة `uncompromised`:
 
-    // Ensure the password appears less than 3 times in the same data leak...
+    // تأكد من ظهور كلمة المرور أقل من 3 مرات في نفس تسريب البيانات ...
     Password::min(8)->uncompromised(3);
 
-Of course, you may chain all the methods in the examples above:
+بالطبع ، يمكنك ربط جميع التوابع في الأمثلة أعلاه:
 
     Password::min(8)
         ->letters()
@@ -1737,9 +1737,9 @@ Of course, you may chain all the methods in the examples above:
         ->uncompromised()
 
 <a name="defining-default-password-rules"></a>
-#### Defining Default Password Rules
+#### تحديد قواعد كلمة المرور الافتراضية
 
-You may find it convenient to specify the default validation rules for passwords in a single location of your application. You can easily accomplish this using the `Password::defaults` method, which accepts a closure. The closure given to the `defaults` method should return the default configuration of the Password rule. Typically, the `defaults` rule should be called within the `boot` method of one of your application's service providers:
+قد تجد أنه من الملائم تحديد قواعد التحقق الافتراضية لكلمات المرور في مكان واحد من تطبيقك. يمكنك إنجاز ذلك بسهولة باستخدام طريقة `Password::defaults` التي تقبل الإغلاق. يجب أن يعيد الإغلاق الممنوح لطريقة `defaults` التكوين الافتراضي لقاعدة كلمة المرور. عادةً ، يجب استدعاء قاعدة `defaults` في طريقة `boot`  لأحد مزودي خدمة التطبيق الخاص بك:
 
 ```php
 use Illuminate\Validation\Rules\Password;
@@ -1761,11 +1761,11 @@ public function boot()
 }
 ```
 
-Then, when you would like to apply the default rules to a particular password undergoing validation, you may invoke the `defaults` method with no arguments:
+بعد ذلك ، عندما ترغب في تطبيق القواعد الافتراضية على كلمة مرور معينة تخضع للتحقق ، يمكنك استدعاء التابع `defaults` بدون وسيطات:
 
     'password' => ['required', Password::defaults()],
 
-Occasionally, you may want to attach additional validation rules to your default password validation rules. You may use the `rules` method to accomplish this:
+من حين لآخر ، قد ترغب في إرفاق قواعد تحقق إضافية بقواعد التحقق من صحة كلمة المرور الافتراضية. يمكنك استخدام التابع `rules` لإنجاز هذا:
 
     use App\Rules\ZxcvbnRule;
 
@@ -1776,18 +1776,18 @@ Occasionally, you may want to attach additional validation rules to your default
     });
 
 <a name="custom-validation-rules"></a>
-## Custom Validation Rules
+## Custom Validation Rules (قواعد التحقق من الصحة المخصصة)
 
 <a name="using-rule-objects"></a>
-### Using Rule Objects
+### Using Rule Objects (استخدام كائنات القاعدة)
 
-Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you may use the `make:rule` Artisan command. Let's use this command to generate a rule that verifies a string is uppercase. Laravel will place the new rule in the `app/Rules` directory. If this directory does not exist, Laravel will create it when you execute the Artisan command to create your rule:
+يوفر Laravel مجموعة متنوعة من قواعد التحقق المفيدة ؛ ومع ذلك ، قد ترغب في تحديد بعض ما يخصك. تتمثل إحدى طرق تسجيل قواعد التحقق المخصصة في استخدام كائنات القاعدة. لإنشاء كائن قاعدة جديدة ، يمكنك استخدام الأمر `make:rule` Artisan. دعنا نستخدم هذا الأمر لإنشاء قاعدة تتحقق من أن السلسلة أحرف كبيرة. سيضع Laravel القاعدة الجديدة في مجلد `app/Rules`. إذا لم يكن هذا المجلد موجودًا ، فسيقوم Laravel بإنشائه عند تنفيذ الأمر Artisan لإنشاء القاعدة الخاصة بك:
 
 ```shell
 php artisan make:rule Uppercase
 ```
 
-Once the rule has been created, we are ready to define its behavior. A rule object contains two methods: `passes` and `message`. The `passes` method receives the attribute value and name, and should return `true` or `false` depending on whether the attribute value is valid or not. The `message` method should return the validation error message that should be used when validation fails:
+بمجرد إنشاء القاعدة ، نكون مستعدين لتحديد سلوكها. يحتوي كائن القاعدة على طريقتين: `passes` و` message`. يتلقى الأسلوب `passes` قيمة السمة واسمها ، ويجب أن يعرض `true` أو `false` بناءً على ما إذا كانت قيمة السمة صالحة أم لا. يجب أن تُرجع الطريقة `message` رسالة خطأ التحقق التي يجب استخدامها عند فشل التحقق:
 
     <?php
 
@@ -1820,7 +1820,7 @@ Once the rule has been created, we are ready to define its behavior. A rule obje
         }
     }
 
-You may call the `trans` helper from your `message` method if you would like to return an error message from your translation files:
+يمكنك استدعاء المساعد `trans` من طريقة `message` إذا كنت ترغب في إرجاع رسالة خطأ من ملفات الترجمة الخاصة بك:
 
     /**
      * Get the validation error message.
@@ -1832,7 +1832,7 @@ You may call the `trans` helper from your `message` method if you would like to 
         return trans('validation.uppercase');
     }
 
-Once the rule has been defined, you may attach it to a validator by passing an instance of the rule object with your other validation rules:
+بمجرد تحديد القاعدة ، يمكنك إرفاقها بمدقق عن طريق تمرير مثيل لكائن القاعدة مع قواعد التحقق الأخرى الخاصة بك:
 
     use App\Rules\Uppercase;
 
@@ -1842,7 +1842,7 @@ Once the rule has been defined, you may attach it to a validator by passing an i
 
 #### Accessing Additional Data
 
-If your custom validation rule class needs to access all of the other data undergoing validation, your rule class may implement the `Illuminate\Contracts\Validation\DataAwareRule` interface. This interface requires your class to define a `setData` method. This method will automatically be invoked by Laravel (before validation proceeds) with all of the data under validation:
+إذا كانت فئة قاعدة التحقق المخصصة تحتاج إلى الوصول إلى جميع البيانات الأخرى التي تخضع للتحقق ، فقد تقوم فئة القاعدة الخاصة بك بتنفيذ واجهة `Illuminate\Contracts\Validation\DataAwareRule`. تتطلب هذه الواجهة من فصلك تحديد طريقة `setData`. سيتم استدعاء هذا التابع تلقائيًا بواسطة Laravel (قبل متابعة التحقق) مع جميع البيانات قيد التحقق:
 
     <?php
 
@@ -1876,7 +1876,7 @@ If your custom validation rule class needs to access all of the other data under
         }
     }
 
-Or, if your validation rule requires access to the validator instance performing the validation, you may implement the `ValidatorAwareRule` interface:
+أو ، إذا كانت قاعدة التحقق الخاصة بك تتطلب الوصول إلى مثيل المدقق الذي يقوم بعملية التحقق ، فيمكنك تنفيذ واجهة `ValidatorAwareRule`:
 
     <?php
 
@@ -1911,9 +1911,9 @@ Or, if your validation rule requires access to the validator instance performing
     }
 
 <a name="using-closures"></a>
-### Using Closures
+### Using Closures (استخدام الإغلاق)
 
-If you only need the functionality of a custom rule once throughout your application, you may use a closure instead of a rule object. The closure receives the attribute's name, the attribute's value, and a `$fail` callback that should be called if validation fails:
+إذا كنت تحتاج فقط إلى وظيفة القاعدة المخصصة مرة واحدة في جميع أنحاء التطبيق ، فيمكنك استخدام الإغلاق بدلاً من كائن القاعدة. يتلقى الإغلاق اسم السمة ، وقيمة السمة ، واستدعاء `$fail` الذي يجب استدعاؤه في حالة فشل التحقق:
 
     use Illuminate\Support\Facades\Validator;
 
@@ -1930,9 +1930,9 @@ If you only need the functionality of a custom rule once throughout your applica
     ]);
 
 <a name="implicit-rules"></a>
-### Implicit Rules
+### Implicit Rules (القواعد الضمنية)
 
-By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom rules, are not run. For example, the [`unique`](#rule-unique) rule will not be run against an empty string:
+بشكل افتراضي ، عندما لا تكون السمة التي يتم التحقق من صحتها موجودة أو تحتوي على سلسلة فارغة ، لا يتم تشغيل قواعد التحقق العادية ، بما في ذلك القواعد المخصصة. على سبيل المثال ، ملف [`unique`](#rule-unique) لن يتم تشغيل القاعدة مقابل سلسلة فارغة:
 
     use Illuminate\Support\Facades\Validator;
 
@@ -1942,12 +1942,12 @@ By default, when an attribute being validated is not present or contains an empt
 
     Validator::make($input, $rules)->passes(); // true
 
-For a custom rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create an "implicit" rule, implement the `Illuminate\Contracts\Validation\ImplicitRule` interface. This interface serves as a "marker interface" for the validator; therefore, it does not contain any additional methods you need to implement beyond the methods required by the typical `Rule` interface.
+لكي يتم تشغيل قاعدة مخصصة حتى عندما تكون السمة فارغة ، يجب أن تشير القاعدة ضمنيًا إلى أن السمة مطلوبة. لإنشاء قاعدة "ضمنية" ، قم بتنفيذ واجهة `Illuminate\Contracts\Validation\ImplicitRule`. تعمل هذه الواجهة بمثابة "واجهة علامة" (marker interface) للمدقق ؛ لذلك ، فهو لا يحتوي على أي طرق إضافية تحتاج إلى تنفيذها بخلاف الطرق التي تتطلبها واجهة "القاعدة" النموذجية.
 
-To generate a new implicit rule object, you may use the `make:rule` Artisan command with the `--implicit` option :
+لإنشاء كائن قاعدة ضمنية جديد ، يمكنك استخدام الأمر `make: rule` Artisan مع الخيار `--implicit` :
 
 ```shell
 php artisan make:rule Uppercase --implicit
 ```
 
-> {note} An "implicit" rule only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
+> {ملاحظة} القاعدة "الضمنية" فقط _ تشير إلى أن السمة مطلوبة. ما إذا كان يؤدي بالفعل إلى إبطال سمة مفقودة أو فارغة ، فهذا أمر متروك لك.
