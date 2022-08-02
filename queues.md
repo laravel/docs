@@ -499,7 +499,7 @@ For example, let's imagine you have a queued job that updates a user's credit sc
         return [new WithoutOverlapping($this->user->id)];
     }
 
-Any overlapping jobs will be released back to the queue. You may also specify the number of seconds that must elapse before the released job will be attempted again:
+Any overlapping jobs will be released back to the queue with an increase in the `tries` count. Repeated releasing of the job may result in rapid failure with `MaxAttemptsExceededException`. To reduce anticipated overlapping you may also specify the number of seconds that must elapse before the released job will be attempted again:
 
     /**
      * Get the middleware the job should pass through.
