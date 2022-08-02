@@ -278,6 +278,21 @@ To indicate that the task should run on only one server, use the `onOneServer` m
                     ->at('17:00')
                     ->onOneServer();
 
+
+Sometimes you will need to schedule the dispatch of the same Job Class multiple times, but using different parameters. If you are using `onOneServer` option, only the first call will be dispatched. To avoid this behaviour, you need to define a unique name for each task:
+
+```
+$schedule->job(new CheckUptimeJob('https://laravel.com'))
+            ->name('check_uptime:laravel.com')
+            ->everyFiveMinutes()
+            ->onOneServer();
+
+$schedule->job(new CheckUptimeJob('https://vapor.laravel.com'))
+            ->name('check_uptime:vapor.laravel.com')
+            ->everyFiveMinutes()
+            ->onOneServer();
+```
+
 <a name="background-tasks"></a>
 ### Background Tasks
 
