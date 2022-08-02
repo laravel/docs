@@ -278,16 +278,18 @@ To indicate that the task should run on only one server, use the `onOneServer` m
                     ->at('17:00')
                     ->onOneServer();
 
+<a name="naming-unique-jobs"></a>
+#### Naming Single Server Jobs
 
-Sometimes you will need to schedule the dispatch of the same Job Class multiple times, but using different parameters. If you are using `onOneServer` option, only the first call will be dispatched. To avoid this behaviour, you need to define a unique name for each task:
+Sometimes you may need to schedule the same job to be dispatched with different parameters, while still instructing Laravel to run each permutation of the job on a single server. To accomplish this, you may assign each schedule definition a unique name via the `name` method:
 
-```
-$schedule->job(new CheckUptimeJob('https://laravel.com'))
+```php
+$schedule->job(new CheckUptime('https://laravel.com'))
             ->name('check_uptime:laravel.com')
             ->everyFiveMinutes()
             ->onOneServer();
 
-$schedule->job(new CheckUptimeJob('https://vapor.laravel.com'))
+$schedule->job(new CheckUptime('https://vapor.laravel.com'))
             ->name('check_uptime:vapor.laravel.com')
             ->everyFiveMinutes()
             ->onOneServer();
