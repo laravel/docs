@@ -142,7 +142,8 @@ The Telescope dashboard may be accessed at the `/telescope` route. By default, y
         });
     }
 
-> {note} You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
+> **Warning**  
+> You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
 
 <a name="upgrading-telescope"></a>
 ## Upgrading Telescope
