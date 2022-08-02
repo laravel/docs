@@ -362,6 +362,7 @@ Laravel also offers a beautiful way to fluently test your application's JSON res
             ->assertJson(fn (AssertableJson $json) =>
                 $json->where('id', 1)
                      ->where('name', 'Victoria Faith')
+                     ->whereNot('status', 'pending')
                      ->missing('password')
                      ->etc()
             );
