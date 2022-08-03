@@ -523,7 +523,7 @@ Of course, attachment data may be stored on a remote file storage service such a
 
 In addition, you may create attachment instances via data that you have in memory. To accomplish this, provide a closure to the `fromData` method. The closure should return the raw data that represents the attachment:
 
-    return Attachment::fromData(fn () => $this->content);
+    return Attachment::fromData(fn () => $this->content, 'Photo Name');
 
 Laravel also provides additional methods that you may use to customize your attachments. For example, you may use the `as` and `withMime` methods to customize the file's name and MIME type:
 
