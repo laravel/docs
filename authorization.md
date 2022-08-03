@@ -514,7 +514,7 @@ For certain users, you may wish to authorize all actions within a given policy. 
      *
      * @param  \App\Models\User  $user
      * @param  string  $ability
-     * @return void|bool
+     * @return void|null|bool
      */
     public function before(User $user, $ability)
     {
