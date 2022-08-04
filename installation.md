@@ -67,7 +67,8 @@ php artisan serve
 
 Once you have started the Artisan development server, your application will be accessible in your web browser at `http://localhost:8000`. Next, you're ready to [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also want to [configure a database](#databases-and-migrations).
 
-> {tip} If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
+> **Note**  
+> If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
 <a name="laravel-and-docker"></a>
 ## Laravel & Docker
@@ -78,7 +79,8 @@ Docker is a tool for running applications and services in small, light-weight "c
 
 Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience.
 
-> {tip} Already a Docker expert? Don't worry! Everything about Sail can be customized using the `docker-compose.yml` file included with Laravel.
+> **Note**  
+> Already a Docker expert? Don't worry! Everything about Sail can be customized using the `docker-compose.yml` file included with Laravel.
 
 <a name="getting-started-on-macos"></a>
 ### Getting Started On macOS
@@ -103,14 +105,16 @@ The first time you run the Sail `up` command, Sail's application containers will
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
 
-> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
+> **Note**  
+> To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
 
 <a name="getting-started-on-windows"></a>
 ### Getting Started On Windows
 
 Before we create a new Laravel application on your Windows machine, make sure to install [Docker Desktop](https://www.docker.com/products/docker-desktop). Next, you should ensure that Windows Subsystem for Linux 2 (WSL2) is installed and enabled. WSL allows you to run Linux binary executables natively on Windows 10. Information on how to install and enable WSL2 can be found within Microsoft's [developer environment documentation](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
-> {tip} After installing and enabling WSL2, you should ensure that Docker Desktop is [configured to use the WSL2 backend](https://docs.docker.com/docker-for-windows/wsl/).
+> **Note**  
+> After installing and enabling WSL2, you should ensure that Docker Desktop is [configured to use the WSL2 backend](https://docs.docker.com/docker-for-windows/wsl/).
 
 Next, you are ready to create your first Laravel project. Launch [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab) and begin a new terminal session for your WSL2 Linux operating system. Next, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
@@ -132,7 +136,8 @@ The first time you run the Sail `up` command, Sail's application containers will
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
 
-> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
+> **Note**  
+> To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
 
 #### Developing Within WSL2
 
@@ -163,7 +168,8 @@ The first time you run the Sail `up` command, Sail's application containers will
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
 
-> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
+> **Note**  
+> To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
 
 <a name="choosing-your-sail-services"></a>
 ### Choosing Your Sail Services
@@ -196,7 +202,8 @@ Since many of Laravel's configuration option values may vary depending on whethe
 
 Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
 
-> {tip} For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
+> **Note**  
+> For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="directory-configuration"></a>
 ### Directory Configuration
@@ -259,7 +266,8 @@ If this is how you plan to use Laravel, you may want to check out our documentat
 
 If you are using Laravel as a full stack framework, we also strongly encourage you to learn how to compile your application's CSS and JavaScript using [Vite](/docs/{{version}}/vite).
 
-> {tip} If you want to get a head start building your application, check out one of our official [application starter kits](/docs/{{version}}/starter-kits).
+> **Note**  
+> If you want to get a head start building your application, check out one of our official [application starter kits](/docs/{{version}}/starter-kits).
 
 <a name="laravel-the-api-backend"></a>
 ### Laravel The API Backend
@@ -268,4 +276,5 @@ Laravel may also serve as an API backend to a JavaScript single-page application
 
 If this is how you plan to use Laravel, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [Laravel Sanctum](/docs/{{version}}/sanctum), and the [Eloquent ORM](/docs/{{version}}/eloquent).
 
-> {tip} Need a head start scaffolding your Laravel backend and Next.js frontend? Laravel Breeze offers an [API stack](/docs/{{version}}/starter-kits#breeze-and-next) as well as a [Next.js frontend implementation](https://github.com/laravel/breeze-next) so you can get started in minutes.
+> **Note**  
+> Need a head start scaffolding your Laravel backend and Next.js frontend? Laravel Breeze offers an [API stack](/docs/{{version}}/starter-kits#breeze-and-next) as well as a [Next.js frontend implementation](https://github.com/laravel/breeze-next) so you can get started in minutes.

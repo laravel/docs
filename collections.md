@@ -31,7 +31,8 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 
     $collection = collect([1, 2, 3]);
 
-> {tip} The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
+> **Note**  
+> The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
 
 <a name="extending-collections"></a>
 ### Extending Collections
@@ -368,7 +369,8 @@ The `collect` method is primarily useful for converting [lazy collections](#lazy
 
     // [1, 2, 3]
 
-> {tip} The `collect` method is especially useful when you have an instance of `Enumerable` and need a non-lazy collection instance. Since `collect()` is part of the `Enumerable` contract, you can safely use it to get a `Collection` instance.
+> **Note**  
+> The `collect` method is especially useful when you have an instance of `Enumerable` and need a non-lazy collection instance. Since `collect()` is part of the `Enumerable` contract, you can safely use it to get a `Collection` instance.
 
 <a name="method-combine"></a>
 #### `combine()` {.collection-method}
@@ -460,7 +462,8 @@ The `containsOneItem` method determines whether the collection contains a single
 
 This method has the same signature as the [`contains`](#method-contains) method; however, all values are compared using "strict" comparisons.
 
-> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-contains).
+> **Note**  
+> This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-contains).
 
 <a name="method-count"></a>
 #### `count()` {.collection-method}
@@ -570,7 +573,8 @@ The `diff` method compares the collection against another collection or a plain 
 
     // [1, 3, 5]
 
-> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-diff).
+> **Note**  
+> This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-diff).
 
 <a name="method-diffassoc"></a>
 #### `diffAssoc()` {.collection-method}
@@ -774,7 +778,8 @@ The `except` method returns all items in the collection except for those with th
 
 For the inverse of `except`, see the [only](#method-only) method.
 
-> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-except).
+> **Note**  
+> This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-except).
 
 <a name="method-filter"></a>
 #### `filter()` {.collection-method}
@@ -956,7 +961,8 @@ The `forget` method removes an item from the collection by its key:
 
     // ['framework' => 'laravel']
 
-> {note} Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
+> **Warning**  
+> Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
 
 <a name="method-forpage"></a>
 #### `forPage()` {.collection-method}
@@ -1150,7 +1156,8 @@ The `intersect` method removes any values from the original collection that are 
 
     // [0 => 'Desk', 2 => 'Chair']
 
-> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-intersect).
+> **Note**  
+> This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-intersect).
 
 <a name="method-intersectbykeys"></a>
 #### `intersectByKeys()` {.collection-method}
@@ -1317,7 +1324,8 @@ The `map` method iterates through the collection and passes each value to the gi
 
     // [2, 4, 6, 8, 10]
 
-> {note} Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
+> **Warning**  
+> Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
 
 <a name="method-mapinto"></a>
 #### `mapInto()` {.collection-method}
@@ -1577,7 +1585,8 @@ The `only` method returns the items in the collection with the specified keys:
 
 For the inverse of `only`, see the [except](#method-except) method.
 
-> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-only).
+> **Note**  
+> This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-only).
 
 <a name="method-pad"></a>
 #### `pad()` {.collection-method}
@@ -2111,7 +2120,8 @@ You may also pass a simple value to the `skipUntil` method to skip all items unt
 
     // [3, 4]
 
-> {note} If the given value is not found or the callback never returns `true`, the `skipUntil` method will return an empty collection.
+> **Warning**  
+> If the given value is not found or the callback never returns `true`, the `skipUntil` method will return an empty collection.
 
 <a name="method-skipwhile"></a>
 #### `skipWhile()` {.collection-method}
@@ -2128,7 +2138,8 @@ The `skipWhile` method skips over items from the collection while the given call
 
     // [4]
 
-> {note} If the callback never returns `false`, the `skipWhile` method will return an empty collection.
+> **Warning**  
+> If the callback never returns `false`, the `skipWhile` method will return an empty collection.
 
 <a name="method-slice"></a>
 #### `slice()` {.collection-method}
@@ -2236,7 +2247,8 @@ The `sort` method sorts the collection. The sorted collection keeps the original
 
 If your sorting needs are more advanced, you may pass a callback to `sort` with your own algorithm. Refer to the PHP documentation on [`uasort`](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters), which is what the collection's `sort` method calls utilizes internally.
 
-> {tip} If you need to sort a collection of nested arrays or objects, see the [`sortBy`](#method-sortby) and [`sortByDesc`](#method-sortbydesc) methods.
+> **Note**  
+> If you need to sort a collection of nested arrays or objects, see the [`sortBy`](#method-sortby) and [`sortByDesc`](#method-sortbydesc) methods.
 
 <a name="method-sortby"></a>
 #### `sortBy()` {.collection-method}
@@ -2579,7 +2591,8 @@ You may also pass a simple value to the `takeUntil` method to get the items unti
 
     // [1, 2]
 
-> {note} If the given value is not found or the callback never returns `true`, the `takeUntil` method will return all items in the collection.
+> **Warning**  
+> If the given value is not found or the callback never returns `true`, the `takeUntil` method will return all items in the collection.
 
 <a name="method-takewhile"></a>
 #### `takeWhile()` {.collection-method}
@@ -2596,7 +2609,8 @@ The `takeWhile` method returns items in the collection until the given callback 
 
     // [1, 2]
 
-> {note} If the callback never returns `false`, the `takeWhile` method will return all items in the collection.
+> **Warning**  
+> If the callback never returns `false`, the `takeWhile` method will return all items in the collection.
 
 <a name="method-tap"></a>
 #### `tap()` {.collection-method}
@@ -2640,7 +2654,8 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
         ]
     */
 
-> {note} `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw array underlying the collection, use the [`all`](#method-all) method instead.
+> **Warning**  
+> `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw array underlying the collection, use the [`all`](#method-all) method instead.
 
 <a name="method-tojson"></a>
 #### `toJson()` {.collection-method}
@@ -2668,7 +2683,8 @@ The `transform` method iterates over the collection and calls the given callback
 
     // [2, 4, 6, 8, 10]
 
-> {note} Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.
+> **Warning**  
+> Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.
 
 <a name="method-undot"></a>
 #### `undot()` {.collection-method}
@@ -2771,7 +2787,8 @@ Finally, you may also pass your own closure to the `unique` method to specify wh
 
 The `unique` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`uniqueStrict`](#method-uniquestrict) method to filter using "strict" comparisons.
 
-> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-unique).
+> **Note**  
+> This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-unique).
 
 <a name="method-uniquestrict"></a>
 #### `uniqueStrict()` {.collection-method}
@@ -3279,7 +3296,8 @@ Likewise, we can use the `sum` higher order message to gather the total number o
 <a name="lazy-collection-introduction"></a>
 ### Introduction
 
-> {note} Before learning more about Laravel's lazy collections, take some time to familiarize yourself with [PHP generators](https://www.php.net/manual/en/language.generators.overview.php).
+> **Warning**  
+> Before learning more about Laravel's lazy collections, take some time to familiarize yourself with [PHP generators](https://www.php.net/manual/en/language.generators.overview.php).
 
 To supplement the already powerful `Collection` class, the `LazyCollection` class leverages PHP's [generators](https://www.php.net/manual/en/language.generators.overview.php) to allow you to work with very large datasets while keeping memory usage low.
 
@@ -3455,7 +3473,8 @@ Almost all methods available on the `Collection` class are also available on the
 
 </div>
 
-> {note} Methods that mutate the collection (such as `shift`, `pop`, `prepend` etc.) are **not** available on the `LazyCollection` class.
+> **Warning**  
+> Methods that mutate the collection (such as `shift`, `pop`, `prepend` etc.) are **not** available on the `LazyCollection` class.
 
 <a name="lazy-collection-methods"></a>
 ### Lazy Collection Methods

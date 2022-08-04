@@ -39,7 +39,8 @@ Providers define how users are retrieved from your persistent storage. Laravel s
 
 Your application's authentication configuration file is located at `config/auth.php`. This file contains several well-documented options for tweaking the behavior of Laravel's authentication services.
 
-> {tip} Guards and providers should not be confused with "roles" and "permissions". To learn more about authorizing user actions via permissions, please refer to the [authorization](/docs/{{version}}/authorization) documentation.
+> **Note**  
+> Guards and providers should not be confused with "roles" and "permissions". To learn more about authorizing user actions via permissions, please refer to the [authorization](/docs/{{version}}/authorization) documentation.
 
 <a name="starter-kits"></a>
 ### Starter Kits
@@ -114,7 +115,8 @@ And, if you would like to get started quickly, we are pleased to recommend [Lara
 <a name="authentication-quickstart"></a>
 ## Authentication Quickstart
 
-> {note} This portion of the documentation discusses authenticating users via the [Laravel application starter kits](/docs/{{version}}/starter-kits), which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users).
+> **Warning**  
+> This portion of the documentation discusses authenticating users via the [Laravel application starter kits](/docs/{{version}}/starter-kits), which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users).
 
 <a name="install-a-starter-kit"></a>
 ### Install A Starter Kit
@@ -171,7 +173,8 @@ To determine if the user making the incoming HTTP request is authenticated, you 
         // The user is logged in...
     }
 
-> {tip} Even though it is possible to determine if a user is authenticated using the `check` method, you will typically use a middleware to verify that the user is authenticated before allowing the user access to certain routes / controllers. To learn more about this, check out the documentation on [protecting routes](/docs/{{version}}/authentication#protecting-routes).
+> **Note**  
+> Even though it is possible to determine if a user is authenticated using the `check` method, you will typically use a middleware to verify that the user is authenticated before allowing the user access to certain routes / controllers. To learn more about this, check out the documentation on [protecting routes](/docs/{{version}}/authentication#protecting-routes).
 
 <a name="protecting-routes"></a>
 ### Protecting Routes
@@ -212,7 +215,8 @@ When attaching the `auth` middleware to a route, you may also specify which "gua
 
 If you are using the Laravel Breeze or Laravel Jetstream [starter kits](/docs/{{version}}/starter-kits), rate limiting will automatically be applied to login attempts. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / email address and their IP address.
 
-> {tip} If you would like to rate limit other routes in your application, check out the [rate limiting documentation](/docs/{{version}}/routing#rate-limiting).
+> **Note**  
+> If you would like to rate limit other routes in your application, check out the [rate limiting documentation](/docs/{{version}}/routing#rate-limiting).
 
 <a name="authenticating-users"></a>
 ## Manually Authenticating Users
@@ -272,7 +276,8 @@ If you wish, you may also add extra query conditions to the authentication query
         // Authentication was successful...
     }
 
-> {note} In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database table.
+> **Warning**  
+> In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database table.
 
 The `attemptWhen` method, which receives a closure as its second argument, may be used to perform more extensive inspection of the potential user before actually authenticating the user. The closure receives the potential user and should return `true` or `false` to indicate if the user may be authenticated:
 
@@ -464,7 +469,8 @@ When the `logoutOtherDevices` method is invoked, the user's other sessions will 
 
 While building your application, you may occasionally have actions that should require the user to confirm their password before the action is performed or before the user is redirected to a sensitive area of the application. Laravel includes built-in middleware to make this process a breeze. Implementing this feature will require you to define two routes: one route to display a view asking the user to confirm their password and another route to confirm that the password is valid and redirect the user to their intended destination.
 
-> {tip} The following documentation discusses how to integrate with Laravel's password confirmation features directly; however, if you would like to get started more quickly, the [Laravel application starter kits](/docs/{{version}}/starter-kits) include support for this feature!
+> **Note**  
+> The following documentation discusses how to integrate with Laravel's password confirmation features directly; however, if you would like to get started more quickly, the [Laravel application starter kits](/docs/{{version}}/starter-kits) include support for this feature!
 
 <a name="password-confirmation-configuration"></a>
 ### Configuration

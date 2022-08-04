@@ -59,7 +59,8 @@ Name | Description
 `stack` | A wrapper to facilitate creating "multi-channel" channels
 `syslog` | A `SyslogHandler` based Monolog driver
 
-> {tip} Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
+> **Note**  
+> Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
 <a name="channel-prerequisites"></a>
 ### Channel Prerequisites
@@ -336,7 +337,8 @@ Once you have configured the `tap` option on your channel, you're ready to defin
         }
     }
 
-> {tip} All of your "tap" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected.
+> **Note**  
+> All of your "tap" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected.
 
 <a name="creating-monolog-handler-channels"></a>
 ### Creating Monolog Handler Channels

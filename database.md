@@ -214,7 +214,8 @@ Sometimes you may want to execute an SQL statement without binding any values. Y
 
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 
-> {note} Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
+> **Warning**  
+> Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
 
 <a name="implicit-commits-in-transactions"></a>
 #### Implicit Commits
@@ -358,7 +359,8 @@ Lastly, you can commit a transaction via the `commit` method:
 
     DB::commit();
 
-> {tip} The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+> **Note**  
+> The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
 
 <a name="connecting-to-the-database-cli"></a>
 ## Connecting To The Database CLI
@@ -374,4 +376,3 @@ If needed, you may specify a database connection name to connect to a database c
 ```shell
 php artisan db mysql
 ```
-
