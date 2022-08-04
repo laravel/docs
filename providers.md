@@ -28,7 +28,7 @@ All service providers extend the `Illuminate\Support\ServiceProvider` class. Mos
 The Artisan CLI can generate a new provider via the `make:provider` command:
 
 ```shell
-php artisan make:provider RiakServiceProvider
+php artisan make:provider RiskServiceProvider
 ```
 
 <a name="the-register-method"></a>
