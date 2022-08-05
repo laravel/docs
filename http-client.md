@@ -412,7 +412,7 @@ Sometimes you may need to specify that a single URL should return a series of fa
                                 ->pushStatus(404),
     ]);
 
-When all of the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:
+When all the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:
 
     Http::fake([
         // Stub a series of responses for GitHub endpoints...
@@ -511,6 +511,45 @@ Or, you may use the `assertNothingSent` method to assert that no requests were s
     Http::fake();
 
     Http::assertNothingSent();
+
+<a name="recording-requests-and-responses"></a>
+#### Recording Requests / Responses
+
+You may use the `recorded` method to gather all requests and their corresponding responses. The `recorded` method returns a collection of arrays that contains instances of `Illuminate\Http\Client\Request` and `Illuminate\Http\Client\Response`:
+
+```php
+Http::fake([
+    'https://laravel.com' => Http::response(status: 500),
+    'https://nova.laravel.com/' => Http::response(),
+]);
+
+Http::get('https://laravel.com');
+Http::get('https://nova.laravel.com/');
+
+$recorded = Http::recorded();
+
+[$request, $response] = $recorded[0];
+```
+
+Additionally, the `recorded` method accepts a closure which will receive an instance of `Illuminate\Http\Client\Request` and `Illuminate\Http\Client\Response` and may be used to filter request / response pairs based on your expectations:
+
+```php
+use Illuminate\Http\Client\Request;
+use Illuminate\Http\Client\Response;
+
+Http::fake([
+    'https://laravel.com' => Http::response(status: 500),
+    'https://nova.laravel.com/' => Http::response(),
+]);
+
+Http::get('https://laravel.com');
+Http::get('https://nova.laravel.com/');
+
+$recorded = Http::recorded(function (Request $request, Response $response) {
+    return $request->url() !== 'https://laravel.com' &&
+           $response->successful();
+});
+```
 
 <a name="events"></a>
 ## Events
