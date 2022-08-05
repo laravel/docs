@@ -512,6 +512,43 @@ Or, you may use the `assertNothingSent` method to assert that no requests were s
 
     Http::assertNothingSent();
 
+You may use the `recorded` method and capture all sent request. The `recorded` method returns a collection of arrays that contains instances of `Illuminate\Http\Client\Request` and `Illuminate\Http\Client\Response`
+
+```php
+        Http::fake(
+            [
+                'https://laravel.com' => Http::response(status: 500),
+                'https://nova.laravel.com/' => Http::response()
+            ]
+        );
+
+        Http::get('https://laravel.com');
+        Http::get('https://nova.laravel.com/');
+  
+        $recorded = Http::recorded();
+```
+
+Additionally, the `recorded` method accepts a closure which will receive an instance of `Illuminate\Http\Client\Request` and `Illuminate\Http\Client\Response` and will filter out request that matches your expectations.
+
+```php
+        use Illuminate\Http\Client\Request;
+        use Illuminate\Http\Client\Response;
+        
+        Http::fake(
+            [
+                'https://laravel.com' => Http::response(status: 500),
+                'https://nova.laravel.com/' => Http::response()
+            ]
+        );
+
+        Http::get('https://laravel.com');
+        Http::get('https://nova.laravel.com/');
+
+        $recorded = Http::recorded(function (Request $request, Response $response) {
+            return $request->url() !== 'https://laravel.com' && $response->successful();
+        });
+```
+
 <a name="events"></a>
 ## Events
 
