@@ -1198,7 +1198,7 @@ If you would like to customize the query executed by the validation rule, for ex
     Validator::make($data, [
         'email' => [
             'required',
-            Rule::exists('users','personal_email')->whereNotNull('email_verified_at', 1);
+            Rule::exists('users','personal_email')->whereNotNull('email_verified_at');
             }),
         ],
     ]);
