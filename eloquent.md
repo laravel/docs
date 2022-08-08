@@ -1520,7 +1520,7 @@ Sometimes you may wish to "save" a given model without dispatching any events. Y
 
     $user->saveQuietly();
 
-You can also "update", "delete", "soft delete", "restore", and "replicate" a given model without dispatching any events:
+You may also "update", "delete", "soft delete", "restore", and "replicate" a given model without dispatching any events:
 
     $user->deleteQuietly();
 
