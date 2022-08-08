@@ -252,18 +252,19 @@ Once you have uncommented and adjusted the Echo configuration according to your 
 npm run dev
 ```
 
-### Additional Ably-Laravel options (Supported by official ably client)
-**1. Disable public channels :**
-- If default public channel access needs to be disabled  ->
->Update php-Laravel config. - Set `ABLY_DISABLE_PUBLIC_CHANNELS` as **true** in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'disable_public_channels' => env('ABLY_DISABLE_PUBLIC_CHANNELS', true)`
 
-**2. Set Issued Token Expiry : Default - 3600 (1 hr)**
+> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
+
+### Additional Ably-Laravel Features (Supported by official ably client)
+
+**1. Set Issued Token Expiry : Default - 3600 (1 hr)**
 - Laravel app issues `JWT` token (signed using ably Key) with authorized channel claim and default expiry of 1 hr. 
->Update php-Laravel config. - Set `ABLY_TOKEN_EXPIRY` in **seconds** in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'token_expiry' => env('ABLY_TOKEN_EXPIRY', 3600)`
+- Update php-Laravel config. - Set `ABLY_TOKEN_EXPIRY` in **seconds** in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'token_expiry' => env('ABLY_TOKEN_EXPIRY', 3600)`
 
-**3. Set channel capability at runtime**
+**2. Issue user-auth based channel capability at runtime**
 - By default, private and presence channels are given full capability access.
 - Channel access can be changed as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations)
+
 ```php
 // file - routes/channels.php
 
@@ -278,8 +279,8 @@ Broadcast::channel('channel2', function ($user) {
 });
 ```
 
-
-> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
+**3. Disable public channels :**
+- Update php-Laravel config. - Set `ABLY_DISABLE_PUBLIC_CHANNELS` as **true** in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'disable_public_channels' => env('ABLY_DISABLE_PUBLIC_CHANNELS', true)`
 
 <br/>
 
