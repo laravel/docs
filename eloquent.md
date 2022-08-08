@@ -1520,12 +1520,8 @@ Sometimes you may wish to "save" a given model without dispatching any events. Y
 
     $user->saveQuietly();
 
-You can also "update", "delete", "soft delete", "restore", "replicate" a given model without dispatching any events.
+You can also "update", "delete", "soft delete", "restore", and "replicate" a given model without dispatching any events:
 
     $user->deleteQuietly();
 
     $user->restoreQuietly();
-
-    $user2 = $user->replicateQuietly();
-
-    $user2->updateQuietly(['email' => 'taylor@laravel.com']);
