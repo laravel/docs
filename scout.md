@@ -553,6 +553,9 @@ Of course, if you would like to retrieve the pagination results as JSON, you may
     Route::get('/orders', function (Request $request) {
         return Order::search($request->input('query'))->paginate(15);
     });
+    
+> **Warning**  
+> Right now, combining global scopes with paginated results in Scout is not supported.
 
 <a name="soft-deleting"></a>
 ### Soft Deleting
