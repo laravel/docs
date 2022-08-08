@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Installation & Setup](#installation)
     - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
-    - [Configuring A Bash Alias](#configuring-a-bash-alias)
+    - [Configuring A Shell Alias](#configuring-a-shell-alias)
 - [Starting & Stopping Sail](#starting-and-stopping-sail)
 - [Executing Commands](#executing-sail-commands)
     - [Executing PHP Commands](#executing-php-commands)
@@ -71,8 +71,8 @@ If you would like to develop within a [Devcontainer](https://code.visualstudio.c
 php artisan sail:install --devcontainer
 ```
 
-<a name="configuring-a-bash-alias"></a>
-### Configuring A Bash Alias
+<a name="configuring-a-shell-alias"></a>
+### Configuring A Shell Alias
 
 By default, Sail commands are invoked using the `vendor/bin/sail` script that is included with all new Laravel applications:
 
@@ -80,13 +80,15 @@ By default, Sail commands are invoked using the `vendor/bin/sail` script that is
 ./vendor/bin/sail up
 ```
 
-However, instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a Bash alias that allows you to execute Sail's commands more easily:
+However, instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a shell alias that allows you to execute Sail's commands more easily:
 
 ```shell
-alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 ```
 
-Once the Bash alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:
+To make sure this is always available, you may add this to your shell configuration file in your home directory, such as `~/.zshrc` or `~/.bashrc`, and then restart your shell.
+
+Once the shell alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:
 
 ```shell
 sail up
