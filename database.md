@@ -6,6 +6,7 @@
 - [Running SQL Queries](#running-queries)
     - [Using Multiple Database Connections](#using-multiple-database-connections)
     - [Listening For Query Events](#listening-for-query-events)
+    - [Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)
 - [Database Transactions](#database-transactions)
 - [Connecting To The Database CLI](#connecting-to-the-database-cli)
 
@@ -213,7 +214,8 @@ Sometimes you may want to execute an SQL statement without binding any values. Y
 
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 
-> {note} Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
+> **Warning**  
+> Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
 
 <a name="implicit-commits-in-transactions"></a>
 #### Implicit Commits
@@ -276,6 +278,44 @@ If you would like to specify a closure that is invoked for each SQL query execut
         }
     }
 
+<a name="monitoring-cumulative-query-time"></a>
+### Monitoring Cumulative Query Time
+
+A common performance bottleneck of modern web applications is the amount of time they spend querying databases. Thankfully, Laravel can invoke a closure or callback of your choice when it spends too much time querying the database during a single request. To get started, provide a query time threshold (in milliseconds) and closure to the `whenQueryingForLongerThan` method. You may invoke this method in the `boot` method of a [service provider](/docs/{{version}}/providers):
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Database\Connection;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            DB::whenQueryingForLongerThan(500, function (Connection $connection) {
+                // Notify development team...
+            });
+        }
+    }
+
 <a name="database-transactions"></a>
 ## Database Transactions
 
@@ -319,7 +359,8 @@ Lastly, you can commit a transaction via the `commit` method:
 
     DB::commit();
 
-> {tip} The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+> **Note**  
+> The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
 
 <a name="connecting-to-the-database-cli"></a>
 ## Connecting To The Database CLI
@@ -335,4 +376,3 @@ If needed, you may specify a database connection name to connect to a database c
 ```shell
 php artisan db mysql
 ```
-

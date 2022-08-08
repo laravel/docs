@@ -62,7 +62,8 @@ To get started, you should install [Google Chrome](https://www.google.com/chrome
 composer require --dev laravel/dusk
 ```
 
-> {note} If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
+> **Warning**  
+> If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
 
 After installing the Dusk package, execute the `dusk:install` Artisan command. The `dusk:install` command will create a `tests/Browser` directory and an example Dusk test:
 
@@ -72,7 +73,8 @@ php artisan dusk:install
 
 Next, set the `APP_URL` environment variable in your application's `.env` file. This value should match the URL you use to access your application in a browser.
 
-> {tip} If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please also consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
+> **Note**  
+> If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please also consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
 
 <a name="managing-chromedriver-installations"></a>
 ### Managing ChromeDriver Installations
@@ -93,7 +95,8 @@ php artisan dusk:chrome-driver --all
 php artisan dusk:chrome-driver --detect
 ```
 
-> {note} Dusk requires the `chromedriver` binaries to be executable. If you're having problems running Dusk, you should ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin/`.
+> **Warning**  
+> Dusk requires the `chromedriver` binaries to be executable. If you're having problems running Dusk, you should ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin/`.
 
 <a name="using-other-browsers"></a>
 ### Using Other Browsers
@@ -158,7 +161,8 @@ Most of the tests you write will interact with pages that retrieve data from you
         use DatabaseMigrations;
     }
 
-> {note} SQLite in-memory databases may not be used when executing Dusk tests. Since the browser executes within its own process, it will not be able to access the in-memory databases of other processes.
+> **Warning**  
+> SQLite in-memory databases may not be used when executing Dusk tests. Since the browser executes within its own process, it will not be able to access the in-memory databases of other processes.
 
 <a name="running-tests"></a>
 ### Running Tests
@@ -181,7 +185,8 @@ The `dusk` command accepts any argument that is normally accepted by the PHPUnit
 php artisan dusk --group=foo
 ```
 
-> {tip} If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
+> **Note**  
+> If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
 
 <a name="manually-starting-chromedriver"></a>
 #### Manually Starting ChromeDriver
@@ -377,7 +382,8 @@ Often, you will be testing pages that require authentication. You can use Dusk's
               ->visit('/home');
     });
 
-> {note} After using the `loginAs` method, the user session will be maintained for all tests within the file.
+> **Warning**  
+> After using the `loginAs` method, the user session will be maintained for all tests within the file.
 
 <a name="cookies"></a>
 ### Cookies
@@ -418,6 +424,10 @@ You may use the `script` method to execute arbitrary JavaScript statements withi
 You may use the `screenshot` method to take a screenshot and store it with the given filename. All screenshots will be stored within the `tests/Browser/screenshots` directory:
 
     $browser->screenshot('filename');
+
+The `responsiveScreenshots` method may be used to take a series of screenshots at various breakpoints:
+
+    $browser->responsiveScreenshots('filename');
 
 <a name="storing-console-output-to-disk"></a>
 ### Storing Console Output To Disk
@@ -563,7 +573,8 @@ The `attach` method may be used to attach a file to a `file` input element. Like
 
     $browser->attach('photo', __DIR__.'/photos/mountains.png');
 
-> {note} The attach function requires the `Zip` PHP extension to be installed and enabled on your server.
+> **Warning**  
+> The attach function requires the `Zip` PHP extension to be installed and enabled on your server.
 
 <a name="pressing-buttons"></a>
 ### Pressing Buttons
@@ -593,7 +604,8 @@ You may use the `seeLink` method to determine if a link with the given display t
         // ...
     }
 
-> {note} These methods interact with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
+> **Warning**  
+> These methods interact with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
 
 <a name="using-the-keyboard"></a>
 ### Using The Keyboard
@@ -606,7 +618,8 @@ Another valuable use case for the `keys` method is sending a "keyboard shortcut"
 
     $browser->keys('.app', ['{command}', 'j']);
 
-> {tip} All modifier keys such as `{command}` are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php).
+> **Note**  
+> All modifier keys such as `{command}` are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php).
 
 <a name="using-the-mouse"></a>
 ### Using The Mouse
@@ -1817,7 +1830,8 @@ Once the component has been defined, we can easily select a date within the date
 <a name="continuous-integration"></a>
 ## Continuous Integration
 
-> {note} Most Dusk continuous integration configurations expect your Laravel application to be served using the built-in PHP development server on port 8000. Therefore, before continuing, you should ensure that your continuous integration environment has an `APP_URL` environment variable value of `http://127.0.0.1:8000`.
+> **Warning**  
+> Most Dusk continuous integration configurations expect your Laravel application to be served using the built-in PHP development server on port 8000. Therefore, before continuing, you should ensure that your continuous integration environment has an `APP_URL` environment variable value of `http://127.0.0.1:8000`.
 
 <a name="running-tests-on-heroku-ci"></a>
 ### Heroku CI

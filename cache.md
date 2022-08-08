@@ -50,7 +50,8 @@ When using the `database` cache driver, you will need to setup a table to contai
         $table->integer('expiration');
     });
 
-> {tip} You may also use the `php artisan cache:table` Artisan command to generate a migration with the proper schema.
+> **Note**  
+> You may also use the `php artisan cache:table` Artisan command to generate a migration with the proper schema.
 
 <a name="memcached"></a>
 #### Memcached
@@ -216,7 +217,8 @@ The `forever` method may be used to store an item in the cache permanently. Sinc
 
     Cache::forever('key', 'value');
 
-> {tip} If you are using the Memcached driver, items that are stored "forever" may be removed when the cache reaches its size limit.
+> **Note**  
+> If you are using the Memcached driver, items that are stored "forever" may be removed when the cache reaches its size limit.
 
 <a name="removing-items-from-the-cache"></a>
 ### Removing Items From The Cache
@@ -235,7 +237,8 @@ You may clear the entire cache using the `flush` method:
 
     Cache::flush();
 
-> {note} Flushing the cache does not respect your configured cache "prefix" and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
+> **Warning**  
+> Flushing the cache does not respect your configured cache "prefix" and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
 
 <a name="the-cache-helper"></a>
 ### The Cache Helper
@@ -256,17 +259,19 @@ When the `cache` function is called without any arguments, it returns an instanc
         return DB::table('users')->get();
     });
 
-> {tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing the facade](/docs/{{version}}/mocking#mocking-facades).
+> **Note**  
+> When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing the facade](/docs/{{version}}/mocking#mocking-facades).
 
 <a name="cache-tags"></a>
 ## Cache Tags
 
-> {note} Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+> **Warning**  
+> Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
 
 <a name="storing-tagged-cache-items"></a>
 ### Storing Tagged Cache Items
 
-Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` a value into the cache:
+Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. Items stored via tags may not be accessed without also providing the tags that were used to store the value. For example, let's access a tagged cache and `put` a value into the cache:
 
     Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
 
@@ -295,7 +300,8 @@ In contrast, this statement would remove only cached values tagged with `authors
 <a name="atomic-locks"></a>
 ## Atomic Locks
 
-> {note} To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+> **Warning**  
+> To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 <a name="lock-driver-prerequisites"></a>
 ### Driver Prerequisites
@@ -411,7 +417,8 @@ We just need to implement each of these methods using a MongoDB connection. For 
         return Cache::repository(new MongoStore);
     });
 
-> {tip} If you're wondering where to put your custom cache driver code, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
+> **Note**  
+> If you're wondering where to put your custom cache driver code, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
 
 <a name="registering-the-driver"></a>
 ### Registering The Driver

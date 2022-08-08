@@ -44,7 +44,8 @@ php artisan make:resource UserCollection
 <a name="concept-overview"></a>
 ## Concept Overview
 
-> {tip} This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources.
+> **Note**  
+> This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources.
 
 Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` resource class:
 
@@ -195,7 +196,8 @@ For example, `UserCollection` will attempt to map the given user instances into 
 <a name="writing-resources"></a>
 ## Writing Resources
 
-> {tip} If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation.
+> **Note**  
+> If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation.
 
 In essence, resources are simple. They only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:
 
@@ -259,7 +261,8 @@ If you would like to include related resources in your response, you may add the
         ];
     }
 
-> {tip} If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships).
+> **Note**  
+> If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships).
 
 <a name="writing-resource-collections"></a>
 #### Resource Collections
@@ -344,7 +347,7 @@ If you would like to use a custom key instead of `data`, you may define a `$wrap
         /**
          * The "data" wrapper that should be applied.
          *
-         * @var string
+         * @var string|null
          */
         public static $wrap = 'user';
     }
@@ -381,7 +384,8 @@ If you would like to disable the wrapping of the outermost resource, you should 
         }
     }
 
-> {note} The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections.
+> **Warning**  
+> The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections.
 
 <a name="wrapping-nested-resources"></a>
 #### Wrapping Nested Resources
@@ -556,7 +560,8 @@ Sometimes you may have several attributes that should only be included in the re
 
 Again, if the given condition is `false`, these attributes will be removed from the resource response before it is sent to the client.
 
-> {note} The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially.
+> **Warning**  
+> The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially.
 
 <a name="conditional-relationships"></a>
 ### Conditional Relationships
@@ -586,6 +591,35 @@ The `whenLoaded` method may be used to conditionally load a relationship. In ord
     }
 
 In this example, if the relationship has not been loaded, the `posts` key will be removed from the resource response before it is sent to the client.
+
+<a name="conditional-relationship-counts"></a>
+#### Conditional Relationship Counts
+
+In addition to conditionally including relationships, you may conditionally include relationship "counts" on your resource responses based on if the relationship's count has been loaded on the model:
+
+    new UserResource($user->loadCount('posts'));
+
+The `whenCounted` method may be used to conditionally include a relationship's count in your resource response. This method avoids unnecessarily including the attribute if the relationships's count is not present:
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'posts_count' => $this->whenCounted('posts'),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
+
+In this example, if the `posts` relationship's count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client.
 
 <a name="conditional-pivot-information"></a>
 #### Conditional Pivot Information

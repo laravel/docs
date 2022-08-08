@@ -64,7 +64,8 @@ As you can see, the original value of the column is passed to the accessor, allo
 
     $firstName = $user->first_name;
 
-> {tip} If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](/docs/{{version}}/eloquent-serialization#appending-values-to-json).
+> **Note**  
+> If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](/docs/{{version}}/eloquent-serialization#appending-values-to-json).
 
 <a name="building-value-objects-from-multiple-attributes"></a>
 #### Building Value Objects From Multiple Attributes
@@ -152,7 +153,6 @@ A mutator transforms an Eloquent attribute value when it is set. To define a mut
         /**
          * Interact with the user's first name.
          *
-         * @param  string  $value
          * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
         protected function firstName(): Attribute
@@ -270,7 +270,8 @@ If you need to add a new, temporary cast at runtime, you may use the `mergeCasts
         'options' => 'object',
     ]);
 
-> {note} Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship.
+> **Warning**  
+> Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship.
 
 <a name="stringable-casting"></a>
 #### Stringable Casting
@@ -424,7 +425,8 @@ If a custom format is applied to the `date` or `datetime` cast, such as `datetim
 <a name="enum-casting"></a>
 ### Enum Casting
 
-> {note} Enum casting is only available for PHP 8.1+.
+> **Warning**  
+> Enum casting is only available for PHP 8.1+.
 
 Eloquent also allows you to cast your attribute values to PHP ["backed" Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 
@@ -614,7 +616,8 @@ When casting to value objects, any changes made to the value object will automat
 
     $user->save();
 
-> {tip} If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces on the value object.
+> **Note**  
+> If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces on the value object.
 
 <a name="array-json-serialization"></a>
 ### Array / JSON Serialization

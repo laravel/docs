@@ -17,6 +17,21 @@ All of the configuration files for the Laravel framework are stored in the `conf
 
 These configuration files allow you to configure things like your database connection information, your mail server information, as well as various other core configuration values such as your application timezone and encryption key.
 
+<a name="application-overview"></a>
+#### Application Overview
+
+In a hurry? You can get a quick overview of your application's configuration, drivers, and environment via the `about` Artisan command:
+
+```shell
+php artisan about
+```
+
+If you're only interested in a particular section of the application overview output, you may filter for that section using the `--only` option:
+
+```shell
+php artisan about --only=environment
+```
+
 <a name="environment-configuration"></a>
 ## Environment Configuration
 
@@ -28,7 +43,8 @@ Laravel's default `.env` file contains some common configuration values that may
 
 If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting placeholder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
 
-> {tip} Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
+> **Note**  
+> Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
 
 <a name="environment-file-security"></a>
 #### Environment File Security
@@ -90,7 +106,8 @@ You may also pass arguments to the `environment` method to determine if the envi
         // The environment is either local OR staging...
     }
 
-> {tip} The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable.
+> **Note**  
+> The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable.
 
 <a name="accessing-configuration-values"></a>
 ## Accessing Configuration Values
@@ -113,7 +130,8 @@ To give your application a speed boost, you should cache all of your configurati
 
 You should typically run the `php artisan config:cache` command as part of your production deployment process. The command should not be run during local development as configuration options will frequently need to be changed during the course of your application's development.
 
-> {note} If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables.
+> **Warning**  
+> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables.
 
 <a name="debug-mode"></a>
 ## Debug Mode
@@ -162,7 +180,8 @@ https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
 
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
 
-> {tip} Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?`.
+> **Note**  
+> Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?`.
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
 #### Pre-Rendering The Maintenance Mode View
@@ -193,7 +212,8 @@ To disable maintenance mode, use the `up` command:
 php artisan up
 ```
 
-> {tip} You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`.
+> **Note**  
+> You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`.
 
 <a name="maintenance-mode-queues"></a>
 #### Maintenance Mode & Queues

@@ -112,6 +112,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
 [Str::headline](#method-str-headline)
+[Str::inlineMarkdown](#method-str-inline-markdown)
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
 [Str::isJson](#method-str-is-json)
@@ -185,6 +186,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [exactly](#method-fluent-str-exactly)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
+[inlineMarkdown](#method-fluent-str-inline-markdown)
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
@@ -294,6 +296,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [encrypt](#method-encrypt)
 [env](#method-env)
 [event](#method-event)
+[fake](#method-fake)
 [filled](#method-filled)
 [info](#method-info)
 [logger](#method-logger)
@@ -1445,6 +1448,17 @@ The `Str::headline` method will convert strings delimited by casing, hyphens, or
 
     // Email Notification Sent
 
+<a name="method-str-inline-markdown"></a>
+#### `Str::inlineMarkdown()` {.collection-method}
+
+The `Str::inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/). However, unlike the `markdown` method, it does not wrap all generated HTML in a block-level element:
+
+    use Illuminate\Support\Str;
+
+    $html = Str::inlineMarkdown('**Laravel**');
+
+    // <strong>Laravel</strong>
+
 <a name="method-str-is"></a>
 #### `Str::is()` {.collection-method}
 
@@ -2328,6 +2342,17 @@ The `finish` method adds a single instance of the given value to a string if it 
 
     // this/string/
 
+<a name="method-fluent-str-inline-markdown"></a>
+#### `inlineMarkdown` {.collection-method}
+
+The `inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/). However, unlike the `markdown` method, it does not wrap all generated HTML in a block-level element:
+
+    use Illuminate\Support\Str;
+
+    $html = Str::of('**Laravel**')->inlineMarkdown();
+
+    // <strong>Laravel</strong>
+
 <a name="method-fluent-str-is"></a>
 #### `is` {.collection-method}
 
@@ -2941,7 +2966,7 @@ The `tap` method passes the string to the given closure, allowing you to examine
     $string = Str::of('Laravel')
         ->append(' Framework')
         ->tap(function ($string) {
-            dump('String after append: ' . $string);
+            dump('String after append: '.$string);
         })
         ->upper();
 
@@ -3517,7 +3542,8 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
 
     $env = env('APP_ENV', 'production');
 
-> {note} If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
+> **Warning**  
+> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
 
 <a name="method-event"></a>
 #### `event()` {.collection-method}
@@ -3525,6 +3551,27 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
 The `event` function dispatches the given [event](/docs/{{version}}/events) to its listeners:
 
     event(new UserRegistered($user));
+
+<a name="method-fake"></a>
+#### `fake()` {.collection-method}
+
+The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) singleton from the container, which can be useful when creating fake data in model factories, database seeding, tests, and prototyping views:
+
+```blade
+@for($i = 0; $i < 10; $i++)
+    <dl>
+        <dt>Name</dt>
+        <dd>{{ fake()->name() }}</dd>
+
+        <dt>Email</dt>
+        <dd>{{ fake()->unique()->safeEmail() }}</dd>
+    </dl>
+@endfor
+```
+
+By default, the `fake` function will utilize the `app.faker_locale` configuration option in your `config/app.php` configuration file; however, you may also specify the locale by passing it to the `fake` function. Each locale will resolve an individual singleton:
+
+    fake('nl_NL')->name()
 
 <a name="method-filled"></a>
 #### `filled()` {.collection-method}
@@ -3714,7 +3761,7 @@ If you would like to manually calculate the number of milliseconds to sleep betw
 
 For convenience, you may provide an array as the first argument to the `retry` function. This array will be used to determine how many milliseconds to sleep between subsequent attempts:
 
-    return retry([100, 200] function () {
+    return retry([100, 200], function () {
         // Sleep for 100ms on first retry, 200ms on second retry...
     });
 

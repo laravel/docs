@@ -84,8 +84,8 @@ To see an example of how to write a factory, take a look at the `database/factor
         public function definition()
         {
             return [
-                'name' => $this->faker->name(),
-                'email' => $this->faker->unique()->safeEmail(),
+                'name' => fake()->name(),
+                'email' => fake()->unique()->safeEmail(),
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
@@ -95,9 +95,10 @@ To see an example of how to write a factory, take a look at the `database/factor
 
 As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory.
 
-Via the `faker` property, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
+Via the `fake` helper, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
 
-> {tip} You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
+> **Note**  
+> You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
 
 <a name="generating-factories"></a>
 ### Generating Factories
@@ -246,7 +247,8 @@ Alternatively, the `state` method may be called directly on the factory instance
         'name' => 'Abigail Otwell',
     ])->make();
 
-> {tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories.
+> **Note**  
+> [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories.
 
 <a name="persisting-models"></a>
 ### Persisting Models
@@ -515,8 +517,8 @@ To define a relationship within your model factory, you will typically assign a 
     {
         return [
             'user_id' => User::factory(),
-            'title' => $this->faker->title(),
-            'content' => $this->faker->paragraph(),
+            'title' => fake()->title(),
+            'content' => fake()->paragraph(),
         ];
     }
 
@@ -534,8 +536,8 @@ If the relationship's columns depend on the factory that defines it you may assi
             'user_type' => function (array $attributes) {
                 return User::find($attributes['user_id'])->type;
             },
-            'title' => $this->faker->title(),
-            'content' => $this->faker->paragraph(),
+            'title' => fake()->title(),
+            'content' => fake()->paragraph(),
         ];
     }
 
