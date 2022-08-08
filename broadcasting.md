@@ -323,7 +323,7 @@ Echo.join('channel3').leaveChannel("presence:channel3")
 ```
 instead of [Pusher Channel Conventions](https://pusher.com/docs/channels/using_channels/channels/#channel-types)
 ```js
-Echo.channel('channel1').leaveChannel("public-channel1")
+Echo.channel('channel1').leaveChannel("channel1")
 Echo.private('channel2').leaveChannel("private-channel2")
 Echo.join('channel3').leaveChannel("presence-channel3")
 ```
