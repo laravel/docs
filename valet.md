@@ -83,7 +83,20 @@ Next, you should use Homebrew to install PHP:
 brew install php
 ```
 
-After installing PHP, you are ready to install the [Composer package manager](https://getcomposer.org). In addition, you should make sure the `~/.composer/vendor/bin` directory is in your system's "PATH". After Composer has been installed, you may install Laravel Valet as a global Composer package:
+After installing PHP, you are ready to install the [Composer package manager](https://getcomposer.org):
+
+```shell
+brew install composer
+```
+
+After installing Composer, you should make sure the `~/.composer/vendor/bin` directory is in your system's "PATH". For example, if using a `zsh` terminal, you may execute the following commands from your home folder:
+
+```shell
+echo "export PATH=$PATH:$HOME/.composer/vendor/bin" >> ~/.zshrc
+source ~/.zshrc
+```
+
+After Composer has been installed and the "PATH" is configured, you may install Laravel Valet as a global Composer package:
 
 ```shell
 composer global require laravel/valet
