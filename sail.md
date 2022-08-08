@@ -252,7 +252,7 @@ AWS_URL=http://localhost:9000/local
 You may create buckets via the MinIO console, which is available at `http://localhost:8900`. The default username for the MinIO console is `sail` while the default password is `password`.
 
 > **Warning**  
-> It is not possible to use the `temporaryUrl` filesystem method when using MinIO because it cannot handle a different host.
+> Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
 
 <a name="running-tests"></a>
 ## Running Tests
