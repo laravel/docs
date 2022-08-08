@@ -235,15 +235,12 @@ You can set custom [clientOptions](https://docs.ably.io/client-lib-development-g
 ```
 window.Echo = new Echo({
     broadcaster: 'ably',
-    // laravel-broadcasting specific auth options
-    authHost: 'localhost',
-    authPort: 80,
-    authProtocol: 'http',
-    authEndpoint: '/broadcasting/auth'
-    // Additional ably specific options  
+    authEndpoint: 'http://www.localhost:8000/broadcasting/auth'
+    // Additional ably specific options - https://docs.ably.io/client-lib-development-guide/features/#options  
     realtimeHost: 'realtime.ably.com',
     restHost: 'rest.ably.com',
     port: '80',
+    echoMessages: true // By default self-echo for published message is false
 });
 ```
 Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
@@ -251,6 +248,33 @@ Once you have uncommented and adjusted the Echo configuration according to your 
 ```shell
 npm run dev
 ```
+
+### Additional Ably-Laravel options (Supported by official ably client)
+**1. Disable public channels :**
+- If default public channel access needs to be disabled  ->
+>Update php-Laravel config. - Set `ABLY_DISABLE_PUBLIC_CHANNELS` as **true** in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'disable_public_channels' => env('ABLY_DISABLE_PUBLIC_CHANNELS', true)`
+
+**2. Set Issued Token Expiry : Default - 3600 (1 hr)**
+- Laravel app issues `JWT` token (signed using ably Key) with authorized channel claim and default expiry of 1 hr. 
+>Update php-Laravel config. - Set `ABLY_TOKEN_EXPIRY` in **seconds** in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'token_expiry' => env('ABLY_TOKEN_EXPIRY', 3600)`
+
+**3. Set channel capability at runtime**
+- By default, private and presence channels are given full capability access.
+- Channel access can be changed as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations)
+```php
+// file - routes/channels.php
+
+// for private channel
+Broadcast::channel('channel1', function ($user) {
+    return ['capability' => ["subscribe", "history"]];
+});
+
+// for presence channel
+Broadcast::channel('channel2', function ($user) {
+    return ['id' => $user->id, 'name' => $user->name, 'capability' => ["subscribe", "presence"]];
+});
+```
+
 
 > {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
 
@@ -286,7 +310,22 @@ npm run dev
 >
 >Note that our Ably Echo configuration references a `MIX_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
 >
->Update php-Laravel config. - Set `ABLY_PUSHER_ADAPTER` as true in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'pusher_adapter' => env('ABLY_PUSHER_ADAPTER', false)`
+>Update php-Laravel config. - Set `ABLY_PUSHER_ADAPTER` as **true** in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'pusher_adapter' => env('ABLY_PUSHER_ADAPTER', true)`
+
+### Migrating from deprecated ably-pusher adapter to ably
+- Latest Ably broadcaster is fully compatible with old Ably-Pusher broadcaster.
+- Only **Leaving the channel**, [Use Ably Channel Namespace](https://ably.com/docs/general/channel-rules-namespaces) conventions
+```js
+Echo.channel('channel1').leaveChannel("public:channel1")
+Echo.private('channel2').leaveChannel("private:channel2")
+Echo.join('channel3').leaveChannel("presence:channel3")
+```
+instead of [Pusher Channel Conventions](https://pusher.com/docs/channels/using_channels/channels/#channel-types)
+```js
+Echo.channel('channel1').leaveChannel("public-channel1")
+Echo.private('channel2').leaveChannel("private-channel2")
+Echo.join('channel3').leaveChannel("presence-channel3")
+```
 
 <a name="concept-overview"></a>
 ## Concept Overview
