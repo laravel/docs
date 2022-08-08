@@ -208,11 +208,9 @@ window.Echo = new Echo({
 <a name="client-ably"></a>
 ### Ably
 
-[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. 
+[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver.
 
-New - Official Ably SDK support now available as a part of `laravel-echo`
-
-Install official `ably` package along with `laravel-echo` using NPM. 
+Install **official** `ably` package along with `laravel-echo` using NPM. 
 
 ```shell
 npm install --save-dev laravel-echo ably
