@@ -174,7 +174,7 @@ You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@end
         I don't have any records!
     @endif
 
-For convenience, Blade also provides an `@unless` directive:
+For convenience, Blade also provides an `@unless` directive, which acts as opposite `@if`:
 
     @unless (Auth::check())
         You are not signed in.
