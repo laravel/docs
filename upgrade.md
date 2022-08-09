@@ -60,9 +60,7 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
-In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your application's `composer.json` file.
-
-If using Pusher, please update `pusher/pusher-php-server` to `^5.0`.
+In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` and `pusher/pusher-php-server` (if applicable) with `"pusher/pusher-php-server": "^5.0"` in your application's `composer.json` file.
 
 Furthermore, the following first-party packages have received new major releases to support Laravel 9.x. If applicable, you should read their individual upgrade guides before upgrading:
 
