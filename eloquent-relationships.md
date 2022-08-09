@@ -1660,6 +1660,20 @@ If you are eager loading a `morphTo` relationship, Eloquent will run multiple qu
 
 In this example, Eloquent will only eager load posts that have not been hidden and videos that have a `type` value of "educational".
 
+<a name="constraining-eager-loads-along-with-relationship-existence"></a>
+#### Constraining Eager Loads Along With Relationship Existence
+
+You may often find yourself wanting to check the existence of a relationship whilst simultaneously loading the relationship based on the same conditions.
+For this you can use `withWhereHas`.
+
+    use App\Models\User;
+  
+    $users = User::withWhereHas('posts', function ($query) {
+        $query->where('featured', true);
+    )->get();
+
+In this example, Eloquent will only fetch users who have featured posts whilst also loading each users' featured posts.
+
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
 
