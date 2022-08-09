@@ -10,6 +10,7 @@
 - [Database Transactions](#database-transactions)
 - [Monitoring Your Databases](#monitoring-your-databases)
 - [Connecting To The Database CLI](#connecting-to-the-database-cli)
+- [Inspecting Your Databases](#inspecting-your-databases)
 
 <a name="introduction"></a>
 ## Introduction
@@ -412,4 +413,45 @@ If needed, you may specify a database connection name to connect to a database c
 
 ```shell
 php artisan db mysql
+```
+
+<a name="inspecting-your-databases"></a>
+## Inspecting Your Databases
+
+#### Database Overview
+Using the `db:show` and `db:table` Artisan commands, you can get a valuable insight into your database and its associated tables.
+
+To see an overview of your database, including its size, number and summary of tables and current number of open connections, you may use the `db:show` Artisan command:
+
+```shell
+php artisan db:show
+```
+
+If you wish to specify the connection which is not the default, you may do so with the `--database` option.
+
+```shell
+php artisan db:show --database=pgsql
+```
+
+If you would like to include row counts and database view details with the output of the command, you may use the `--counts` and `--views` options.
+
+```shell
+php artisan db:show --counts --views
+```
+
+> **Warning**  
+> On large databases, returning row counts and view details can be a slow operation.
+
+
+#### Table Overiew
+Should you wish to see an overview of an individual table, you may use the `db:table` Artisan command. This provides a more granular breakdown of an individual table including column names, data types and attributes and details of primary keys, foreign keys and indexes.
+
+```shell
+php artisan db:table
+```
+
+If you know the name of the table you wish to inspect, you may pass it as an argument to the command.
+
+```shell
+php artisan db:table users
 ```
