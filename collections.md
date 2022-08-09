@@ -1228,7 +1228,7 @@ The `keyBy` method keys the collection by the given key. If multiple items have 
 
 You may also pass a callback to the method. The callback should return the value to key the collection by:
 
-    $keyed = $collection->keyBy(function ($item) {
+    $keyed = $collection->keyBy(function ($item, $key) {
         return strtoupper($item['product_id']);
     });
 
