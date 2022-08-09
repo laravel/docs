@@ -823,8 +823,8 @@ Below is a list of all available validation rules and their function:
 [Digits Between](#rule-digits-between)
 [Dimensions (Image Files)](#rule-dimensions)
 [Distinct](#rule-distinct)
-[Doesnt End With](#rule-doesnt-end-with)
 [Doesnt Start With](#rule-doesnt-start-with)
+[Doesnt End With](#rule-doesnt-end-with)
 [Email](#rule-email)
 [Ends With](#rule-ends-with)
 [Enum](#rule-enum)
@@ -1075,15 +1075,15 @@ You may add `ignore_case` to the validation rule's arguments to make the rule ig
 
     'foo.*.id' => 'distinct:ignore_case'
 
-<a name="rule-doesnt-end-with"></a>
-#### doesnt_end_with:_foo_,_bar_,...
-
-The field under validation must not end with one of the given values.
-
 <a name="rule-doesnt-start-with"></a>
 #### doesnt_start_with:_foo_,_bar_,...
 
 The field under validation must not start with one of the given values.
+
+<a name="rule-doesnt-end-with"></a>
+#### doesnt_end_with:_foo_,_bar_,...
+
+The field under validation must not end with one of the given values.
 
 <a name="rule-email"></a>
 #### email
