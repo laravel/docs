@@ -204,7 +204,7 @@ You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@end
 @endif
 ```
 
-For convenience, Blade also provides an `@unless` directive:
+For convenience, Blade also provides an `@unless` directive, what acts as opposite `@if`:
 
 ```blade
 @unless (Auth::check())
