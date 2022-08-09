@@ -220,8 +220,9 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
 
 ```js
 import Echo from 'laravel-echo';
+import * as Ably from 'ably';
 
-window.Ably = require('ably');
+window.Ably = Ably;
 window.Echo = new Echo({
     broadcaster: 'ably',
 });
@@ -255,16 +256,16 @@ npm run dev
 
 ### Additional supported features (official ably client)
 
-**1. Token Expiry : Default - 3600 (1 hr)**
-- Update`ABLY_TOKEN_EXPIRY` in **seconds** in `.env` file. 
+**1. Update token expiry (Default 3600, 1 hr)**
+- Update`ABLY_TOKEN_EXPIRY` in `.env` file. 
 - Update `ably` section under `config/broaadcasting.php` with `'token_expiry' => env('ABLY_TOKEN_EXPIRY', 3600)`
 
-**2. Issue channel capability at runtime**
+**2. Modify channel capability**
 - Channel access can be changed as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations)
 ```php
   // file - routes/channels.php
 
-  // for private channel
+  // for private channel (array is returned as a truthy value)
   Broadcast::channel('channel1', function ($user) {
       return ['capability' => ["subscribe", "history"]];
   });
@@ -275,7 +276,7 @@ npm run dev
   });
 ```
 
-**3. Disable public channels :**
+**3. Disable public channels**
 - Update `ABLY_DISABLE_PUBLIC_CHANNELS`, set as **true** in `.env` file. 
 - Update `ably` section under `config/broadcasting.php` with `'disable_public_channels' => env('ABLY_DISABLE_PUBLIC_CHANNELS', true)`
 
