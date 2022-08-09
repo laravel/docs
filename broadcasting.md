@@ -258,7 +258,7 @@ npm run dev
 
 **1. Update token expiry (Default 3600, 1 hr)**
 - Update`ABLY_TOKEN_EXPIRY` in `.env` file. 
-- Update `ably` section under `config/broaadcasting.php` with `'token_expiry' => env('ABLY_TOKEN_EXPIRY', 3600)`
+- Update `ably` section under `config/broadcasting.php` with `'token_expiry' => env('ABLY_TOKEN_EXPIRY', 3600)`
 
 **2. Modify channel capability**
 - Channel access can be changed as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations)
@@ -278,7 +278,7 @@ npm run dev
 
 **3. Disable public channels**
 - Update `ABLY_DISABLE_PUBLIC_CHANNELS`, set as **true** in `.env` file. 
-- Update `ably` section under `config/broadcasting.php` with `'disable_public_channels' => env('ABLY_DISABLE_PUBLIC_CHANNELS', true)`
+- Update `ably` section under `config/broadcasting.php` with `'disable_public_channels' => env('ABLY_DISABLE_PUBLIC_CHANNELS', false)`
 
 <br/>
 
@@ -312,7 +312,7 @@ npm run dev
 >
 >Note that our Ably Echo configuration references a `MIX_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
 >
->Update php-Laravel config. - Set `ABLY_PUSHER_ADAPTER` as **true** in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'pusher_adapter' => env('ABLY_PUSHER_ADAPTER', true)`
+>Update php-Laravel config. - Set `ABLY_PUSHER_ADAPTER` as **true** in `.env` file. Also, make sure `ably` section under `config/broadcasting.php` is updated with `'pusher_adapter' => env('ABLY_PUSHER_ADAPTER', false)`
 
 ### Migrating from deprecated ably-pusher adapter to ably
 - Latest Ably broadcaster is fully compatible with old Ably-Pusher broadcaster.
