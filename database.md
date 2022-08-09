@@ -8,6 +8,7 @@
     - [Listening For Query Events](#listening-for-query-events)
     - [Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)
 - [Database Transactions](#database-transactions)
+- [Monitoring Your Databases](#monitoring-your-databases)
 - [Connecting To The Database CLI](#connecting-to-the-database-cli)
 
 <a name="introduction"></a>
@@ -361,6 +362,42 @@ Lastly, you can commit a transaction via the `commit` method:
 
 > **Note**  
 > The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+
+<a name="monitoring-your-databases"></a>
+## Monitoring Your Databases
+
+Using the `php artisan db:monitor` Artisan command, you can see how many open connections your database currently has. This is a useful metric to understanding your application's load.
+
+To get started, you should schedule the `db:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the database configurations you wish to monitor as well as the desired number of open connections threshold:
+
+```shell
+php artisan db:monitor --databases=mysql,pgsql --max=100
+```
+
+Scheduling this command alone is not enough to trigger a notification alerting you of the number of open connections. When the command encounters a database that has a number of open connections exceeding your threshold, an `Illuminate\Database\Events\DatabaseBusy` event will be dispatched. You may listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
+
+```php
+use App\Notifications\DatabaseHasHighOpenConnections;
+use Illuminate\Database\Events\DatabaseBusy;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+
+/**
+ * Register any other events for your application.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Event::listen(function (DatabaseBusy $event) {
+        Notification::route('mail', 'dev@example.com')
+                ->notify(new DatabaseHasHighOpenConnections(
+                    $event->connectionName,
+                    $event->connections
+                ));
+    });
+}
+```
 
 <a name="connecting-to-the-database-cli"></a>
 ## Connecting To The Database CLI
