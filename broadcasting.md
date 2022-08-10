@@ -233,12 +233,12 @@ window.Echo.connector.ably.connection.on(stateChange => {
 });
 ```
 
-You can set custom [clientOptions](https://docs.ably.com/client-lib-development-guide/features/#options) while creating `Echo` instance.
+You can set custom [clientOptions](https://ably.com/docs/api/realtime-sdk?lang=javascript#client-options) when creating an `Echo` instance.
 
 ```
     broadcaster: 'ably',
     authEndpoint: 'http://www.localhost:8000/broadcasting/auth'
-    // Additional ably specific options - https://ably.com/docs/api/realtime-sdk#client-options  
+      // Additional ably specific options - https://ably.com/docs/api/realtime-sdk?lang=javascript#client-options  
     realtimeHost: 'realtime.ably.com',
     restHost: 'rest.ably.com',
     port: '80',
@@ -264,7 +264,7 @@ npm run dev
 ```php
   // file - routes/channels.php
 
-  // for private channel (array is returned as a truthy value)
+  // for private channel (Access is allowed for truthy values and denied for falsy values)
   Broadcast::channel('channel1', function ($user) {
       return ['capability' => ["subscribe", "history"]];
   });
