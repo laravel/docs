@@ -1,7 +1,7 @@
 # Eloquent: Factories
 
+- [Introduction](#introduction)
 - [Defining Model Factories](#defining-model-factories)
-    - [Concept Overview](#concept-overview)
     - [Generating Factories](#generating-factories)
     - [Factory States](#factory-states)
     - [Factory Callbacks](#factory-callbacks)
@@ -16,13 +16,10 @@
     - [Polymorphic Relationships](#polymorphic-relationships)
     - [Defining Relationships Within Factories](#defining-relationships-within-factories)
 
-<a name="defining-model-factories"></a>
-## Defining Model Factories
+<a name="introduction"></a>
+## Introduction
 
-<a name="concept-overview"></a>
-### Concept Overview
-
-First, let's talk about Eloquent model factories. When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories.
+When testing your application or seeding your database, you may need to insert a few records into your database. Instead of manually specifying the value of each column, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories.
 
 To see an example of how to write a factory, take a look at the `database/factories/UserFactory.php` file in your application. This factory is included with all new Laravel applications and contains the following factory definition:
 
@@ -52,10 +49,13 @@ To see an example of how to write a factory, take a look at the `database/factor
 
 As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory.
 
-Via the `fake` helper, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
+Via the `fake` helper, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing and seeding.
 
 > **Note**
 > You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
+
+<a name="defining-model-factories"></a>
+## Defining Model Factories
 
 <a name="generating-factories"></a>
 ### Generating Factories
@@ -171,12 +171,7 @@ Once you have defined your factories, you may use the static `factory` method pr
 
     use App\Models\User;
 
-    public function test_models_can_be_instantiated()
-    {
-        $user = User::factory()->make();
-
-        // Use model in tests...
-    }
+    $user = User::factory()->make();
 
 You may create a collection of many models using the `count` method:
 
@@ -214,16 +209,11 @@ The `create` method instantiates model instances and persists them to the databa
 
     use App\Models\User;
 
-    public function test_models_can_be_persisted()
-    {
-        // Create a single App\Models\User instance...
-        $user = User::factory()->create();
+    // Create a single App\Models\User instance...
+    $user = User::factory()->create();
 
-        // Create three App\Models\User instances...
-        $users = User::factory()->count(3)->create();
-
-        // Use model in tests...
-    }
+    // Create three App\Models\User instances...
+    $users = User::factory()->count(3)->create();
 
 You may override the factory's default model attributes by passing an array of attributes to the `create` method:
 
