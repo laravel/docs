@@ -74,6 +74,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Sqlite3
 - PostgreSQL 13
 - Composer
+- Docker
 - Node (With Yarn, Bower, Grunt, and Gulp)
 - Redis
 - Memcached
@@ -106,7 +107,6 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Chronograf
 - CouchDB
 - Crystal & Lucky Framework
-- Docker
 - Elasticsearch
 - EventStoreDB
 - Gearman
@@ -330,7 +330,6 @@ features:
     - chronograf: true
     - couchdb: true
     - crystal: true
-    - docker: true
     - elasticsearch:
         version: 7.9.0
     - eventstore: true
