@@ -555,9 +555,6 @@ You may pass a closure to the `assertPushed` or `assertNotPushed` methods in ord
 
 If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:
 
-    /**
-     * Test order process.
-     */
     public function test_orders_can_be_shipped()
     {
         Queue::fake([
