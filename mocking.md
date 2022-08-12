@@ -553,6 +553,20 @@ You may pass a closure to the `assertPushed` or `assertNotPushed` methods in ord
         return $job->order->id === $order->id;
     });
 
+If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:
+
+    public function test_orders_can_be_shipped()
+    {
+        Queue::fake([
+            ShipOrder::class,
+        ]);
+        
+        // Perform order shipping...
+
+        // Assert a job was pushed twice...
+        Queue::assertPushed(ShipOrder::class, 2);
+    }
+
 <a name="job-chains"></a>
 ### Job Chains
 
