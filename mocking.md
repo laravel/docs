@@ -553,10 +553,7 @@ You may pass a closure to the `assertPushed` or `assertNotPushed` methods in ord
         return $job->order->id === $order->id;
     });
 
-<a name="faking-a-subset-of-jqueued-obs"></a>
-#### Faking A Subset Of Queued Jobs
-
-If you only want to fake a specific set of jobs, you may pass them to the `fake` method:
+If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:
 
     /**
      * Test order process.
