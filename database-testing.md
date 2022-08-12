@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
     - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
+- [Using Model Factories](#using-model-factories)
 - [Running Seeders](#running-seeders)
 - [Available Assertions](#available-assertions)
 
@@ -43,6 +44,22 @@ Before proceeding much further, let's discuss how to reset your database after e
 The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database.
 
 If you would like to totally reset the database using migrations, you may use the `Illuminate\Foundation\Testing\DatabaseMigrations` trait instead. However, the `DatabaseMigrations` trait is significantly slower than the `RefreshDatabase` trait.
+
+<a name="using-model-factories"></a>
+## Using Model Factories
+
+When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using [model factories](/docs/{{version}}/eloquent-factories). First, review the [model factory documentation](/docs/{{version}}/eloquent-factories) to learn how to define your factories.
+
+For example, let's create a user that we can use in our test:
+
+    use App\Models\User;
+
+    public function test_models_can_be_instantiated()
+    {
+        $user = User::factory()->create();
+
+        // Use model in tests...
+    }
 
 <a name="running-seeders"></a>
 ## Running Seeders
