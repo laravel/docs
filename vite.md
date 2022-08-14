@@ -17,6 +17,7 @@
 - [Working With Blade & Routes](#working-with-blade-and-routes)
 - [Custom Base URLs](#custom-base-urls)
 - [Environment Variables](#environment-variables)
+- [Disabling Vite In Tests](#disabling-vite-in-tests)
 - [Server-Side Rendering (SSR)](#ssr)
 - [Script & Style Tag Attributes](#script-and-style-attributes)
   - [Content Security Policy (CSP) Nonce](#content-security-policy-csp-nonce)
@@ -422,6 +423,49 @@ You may access injected environment variables via the `import.meta.env` object:
 
 ```js
 import.meta.env.VITE_SENTRY_DSN_PUBLIC
+```
+
+<a name="disabling-vite-in-tests"></a>
+## Disabling Vite In Tests
+
+Laravel's Vite integration will attempt to resolve your assets while running your tests. This requires you to either run the Vite development server or build your assets.
+
+If you'd prefer to mock Vite during tests, you may call the `withoutVite` method that is available for any tests that extend Laravel's `TestCase` class:
+
+```php
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_without_vite_example()
+    {
+        $this->withoutVite();
+
+        // ...
+    }
+}
+```
+
+If you would like to disable Vite for all tests, you may call the `withoutVite` method from the `setUp` method on your base `TestCase` class:
+
+```php
+<?php
+
+namespace Tests;
+
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase
+{
+    use CreatesApplication;
+
+    public function setUp(): void// [tl! add:start]
+    {
+        parent::setUp();
+
+        $this->withoutVite();
+    }// [tl! add:end]
+}
 ```
 
 <a name="ssr"></a>
