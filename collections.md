@@ -1137,6 +1137,14 @@ The `implode` method joins items in a collection. Its arguments depend on the ty
 
     // Desk, Chair
 
+You may also pass a callback to the method. The callback should return the value:
+
+    $collection->implode(function ($item, $key) {
+        return strtoupper($item['product']);
+    }, ', ');
+
+    // DESK, CHAIR
+
 If the collection contains simple strings or numeric values, you should pass the "glue" as the only argument to the method:
 
     collect([1, 2, 3, 4, 5])->implode('-');
