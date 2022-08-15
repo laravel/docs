@@ -333,7 +333,7 @@ module.exports = {
 <a name="blade-processing-static-assets"></a>
 ### Processing Static Assets With Vite
 
-When referencing assets in your JavaScript or CSS, Vite automatically processes and version them. However, when building Blade templated applications, Vite can still be used to process and version static assets that you reference solely in Blade templates.
+When referencing assets in your JavaScript or CSS, Vite automatically processes and version them. However, when building Blade templated applications, Vite can also process and version static assets that you reference solely in Blade templates.
 
 In order to do this you will need to make Vite aware of the assets your application depends on by importing your static assets into the applications' entry point - even if you do not plan to use any JavaScript in your application. 
 
