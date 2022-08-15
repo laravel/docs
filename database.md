@@ -367,7 +367,7 @@ Lastly, you can commit a transaction via the `commit` method:
 <a name="monitoring-your-databases"></a>
 ## Monitoring Your Databases
 
-Using the `php artisan db:monitor` Artisan command, you can see how many open connections your database currently has. This is a useful metric to understanding your application's load.
+Using the `php artisan db:monitor` Artisan command, you can see how many open connections your database currently has. This is a useful metric for understanding your application's load.
 
 To get started, you should schedule the `db:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the database configurations you wish to monitor as well as the desired number of open connections threshold:
 
