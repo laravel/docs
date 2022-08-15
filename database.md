@@ -421,7 +421,7 @@ php artisan db mysql
 #### Database Overview
 Using the `db:show` and `db:table` Artisan commands, you can get a valuable insight into your database and its associated tables.
 
-To see an overview of your database, including its size, number and summary of tables and current number of open connections, you may use the `db:show` Artisan command:
+To see an overview of your database, including its size, number, summary of tables, and the current number of open connections, you may use the `db:show` Artisan command:
 
 ```shell
 php artisan db:show
