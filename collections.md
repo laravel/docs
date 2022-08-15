@@ -1143,6 +1143,14 @@ If the collection contains simple strings or numeric values, you should pass the
 
     // '1-2-3-4-5'
 
+You may pass a closure to the `implode` method if you would like to format the values being imploded:
+
+    $collection->implode(function ($item, $key) {
+        return strtoupper($item['product']);
+    }, ', ');
+
+    // DESK, CHAIR
+
 <a name="method-intersect"></a>
 #### `intersect()` {.collection-method}
 
