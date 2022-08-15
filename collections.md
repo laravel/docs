@@ -1137,19 +1137,19 @@ The `implode` method joins items in a collection. Its arguments depend on the ty
 
     // Desk, Chair
 
-You may also pass a callback to the method. The callback should return the value:
+If the collection contains simple strings or numeric values, you should pass the "glue" as the only argument to the method:
+
+    collect([1, 2, 3, 4, 5])->implode('-');
+
+    // '1-2-3-4-5'
+
+You may pass a closure to the `implode` method if you would like to format the values being imploded:
 
     $collection->implode(function ($item, $key) {
         return strtoupper($item['product']);
     }, ', ');
 
     // DESK, CHAIR
-
-If the collection contains simple strings or numeric values, you should pass the "glue" as the only argument to the method:
-
-    collect([1, 2, 3, 4, 5])->implode('-');
-
-    // '1-2-3-4-5'
 
 <a name="method-intersect"></a>
 #### `intersect()` {.collection-method}
