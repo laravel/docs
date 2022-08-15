@@ -328,6 +328,29 @@ module.exports = {
 <a name="working-with-blade-and-routes"></a>
 ## Working With Blade & Routes
 
+### Processing static assets with Vite
+
+When building JavaScript templated applications, Vite automatically detects your assets to process and version them. However, when building Blade templated applications, Vite may still be used to process and version your static assets, such as images or fonts. 
+
+In order to do this, we will need to manually make Vite aware of the assets your application depends on. You can do this by importing your static assets into the applications' entry point (even if you do not plan to use any JavaScript in your application). 
+
+Let's say we want to version all images stored in `resources/images` and also version the fonts we have stored in `resources/fonts`. To achieve this, we can add the following in the `resources/js/app.js` entry point:
+
+```js
+import.meta.glob([
+  '../images/**',
+  '../fonts/**',
+]);
+```
+
+These assets will now be versioned and included in your build assets. You can reference these assets in Blade templates with the `Vite::asset()` helper to get the versioned URL for each asset:
+
+```blade
+<img src="{{ Vite::asset('resources/images/logo.png') }}">
+```
+
+### Refreshing On Save
+
 When your application is built using traditional server-side rendering with Blade, Vite can improve your development workflow by automatically refreshing the browser when you make changes to view files in your application. To get started, you can simply specify the `refresh` option as `true`.
 
 ```js
