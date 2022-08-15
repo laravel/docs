@@ -428,9 +428,9 @@ import.meta.env.VITE_SENTRY_DSN_PUBLIC
 <a name="disabling-vite-in-tests"></a>
 ## Disabling Vite In Tests
 
-Laravel's Vite integration will attempt to resolve your assets while running your tests. This requires you to either run the Vite development server or build your assets.
+Laravel's Vite integration will attempt to resolve your assets while running your tests, which requires you to either run the Vite development server or build your assets.
 
-If you'd prefer to mock Vite during tests, you may call the `withoutVite` method that is available for any tests that extend Laravel's `TestCase` class:
+If you would prefer to mock Vite during testing, you may call the `withoutVite` method, which is is available for any tests that extend Laravel's `TestCase` class:
 
 ```php
 use Tests\TestCase;
