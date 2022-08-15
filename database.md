@@ -444,7 +444,7 @@ php artisan db:show --counts --views
 
 
 #### Table Overiew
-Should you wish to see an overview of an individual table, you may use the `db:table` Artisan command. This provides a more granular breakdown of an individual table including column names, data types and attributes and details of primary keys, foreign keys and indexes.
+Should you wish to see an overview of an individual table, you may use the `db:table` Artisan command. This provides a more granular breakdown of an individual table including column names, data types, attributes, and details of primary keys, foreign keys, and indexes.
 
 ```shell
 php artisan db:table
