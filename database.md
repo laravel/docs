@@ -8,9 +8,9 @@
     - [Listening For Query Events](#listening-for-query-events)
     - [Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)
 - [Database Transactions](#database-transactions)
-- [Monitoring Your Databases](#monitoring-your-databases)
 - [Connecting To The Database CLI](#connecting-to-the-database-cli)
 - [Inspecting Your Databases](#inspecting-your-databases)
+- [Monitoring Your Databases](#monitoring-your-databases)
 
 <a name="introduction"></a>
 ## Introduction
@@ -364,42 +364,6 @@ Lastly, you can commit a transaction via the `commit` method:
 > **Note**  
 > The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
 
-<a name="monitoring-your-databases"></a>
-## Monitoring Your Databases
-
-Using the `php artisan db:monitor` Artisan command, you can see how many open connections your database currently has. This is a useful metric for understanding your application's load.
-
-To get started, you should schedule the `db:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the database configurations you wish to monitor as well as the desired number of open connections threshold:
-
-```shell
-php artisan db:monitor --databases=mysql,pgsql --max=100
-```
-
-Scheduling this command alone is not enough to trigger a notification alerting you of the number of open connections. When the command encounters a database that has a number of open connections exceeding your threshold, an `Illuminate\Database\Events\DatabaseBusy` event will be dispatched. You may listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
-
-```php
-use App\Notifications\DatabaseHasHighOpenConnections;
-use Illuminate\Database\Events\DatabaseBusy;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Notification;
-
-/**
- * Register any other events for your application.
- *
- * @return void
- */
-public function boot()
-{
-    Event::listen(function (DatabaseBusy $event) {
-        Notification::route('mail', 'dev@example.com')
-                ->notify(new DatabaseHasHighOpenConnections(
-                    $event->connectionName,
-                    $event->connections
-                ));
-    });
-}
-```
-
 <a name="connecting-to-the-database-cli"></a>
 ## Connecting To The Database CLI
 
@@ -418,40 +382,65 @@ php artisan db mysql
 <a name="inspecting-your-databases"></a>
 ## Inspecting Your Databases
 
-#### Database Overview
-Using the `db:show` and `db:table` Artisan commands, you can get valuable insight into your database and its associated tables.
-
-To see an overview of your database, including its size, number, summary of tables, and the current number of open connections, you may use the `db:show` Artisan command:
+Using the `db:show` and `db:table` Artisan commands, you can get valuable insight into your database and its associated tables. To see an overview of your database, including its size, type, number of open connections, and a summary of its tables, you may use the `db:show` command:
 
 ```shell
 php artisan db:show
 ```
 
-If you wish to specify the connection which is not the default, you may do so with the `--database` option.
+You may specify which database connection should be inspected by providing the database connection name to the command via the `--database` option:
 
 ```shell
 php artisan db:show --database=pgsql
 ```
 
-If you would like to include row counts and database view details with the output of the command, you may use the `--counts` and `--views` options.
+If you would like to include table row counts and database view details within the output of the command, you may provide the `--counts` and `--views` options, respectively. On large databases, retrieving row counts and view details can be slow:
 
 ```shell
 php artisan db:show --counts --views
 ```
 
-> **Warning**  
-> On large databases, returning row counts and view details can be a slow operation.
+<a name="table-overview"></a>
+#### Table Overview
 
-
-#### Table Overiew
-Should you wish to see an overview of an individual table, you may use the `db:table` Artisan command. This provides a more granular breakdown of an individual table including column names, data types, attributes, and details of primary keys, foreign keys, and indexes.
-
-```shell
-php artisan db:table
-```
-
-If you know the name of the table you wish to inspect, you may pass it as an argument to the command.
+If you would like to get an overview of an individual table within your database, you may execute the `db:table` Artisan command. This command provides a general overview of a database table, including its columns, types, attributes, keys, and indexes:
 
 ```shell
 php artisan db:table users
+```
+
+<a name="monitoring-your-databases"></a>
+## Monitoring Your Databases
+
+Using the `db:monitor` Artisan command, you can instruct Laravel to dispatch an `Illuminate\Database\Events\DatabaseBusy` event if your database is managing more than a specified number of open connections.
+
+To get started, you should schedule the `db:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the database connection configurations that you wish to monitor as well as the maximum number of open connections that should be tolerated before dispatching an event:
+
+```shell
+php artisan db:monitor --databases=mysql,pgsql --max=100
+```
+
+Scheduling this command alone is not enough to trigger a notification alerting you of the number of open connections. When the command encounters a database that has a open connection count that exceeds your threshold, a `DatabaseBusy` event will be dispatched. You should listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
+
+```php
+use App\Notifications\DatabaseApproachingMaxConnections;
+use Illuminate\Database\Events\DatabaseBusy;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+
+/**
+ * Register any other events for your application.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Event::listen(function (DatabaseBusy $event) {
+        Notification::route('mail', 'dev@example.com')
+                ->notify(new DatabaseApproachingMaxConnections(
+                    $event->connectionName,
+                    $event->connections
+                ));
+    });
+}
 ```
