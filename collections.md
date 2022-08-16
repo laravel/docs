@@ -763,6 +763,19 @@ If the collection is empty, the `every` method will return true:
 
     // true
 
+You may also call the `every` method with a comparison operator:
+
+    $collection = collect([
+        ['name' => 'Josh', 'age' => 18],
+        ['name' => 'Taylor', 'age' => 19],
+        ['name' => 'Diego', 'age' => 20],
+        ['name' => 'Linda', 'age' => 21],
+    ]);
+
+    $collection->every('age', '>=', 18);
+
+    // true
+
 <a name="method-except"></a>
 #### `except()` {.collection-method}
 
