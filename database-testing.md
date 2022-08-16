@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
     - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
-- [Using Model Factories](#using-model-factories)
+- [Model Factories](#model-factories)
 - [Running Seeders](#running-seeders)
 - [Available Assertions](#available-assertions)
 
@@ -45,12 +45,12 @@ The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your 
 
 If you would like to totally reset the database using migrations, you may use the `Illuminate\Foundation\Testing\DatabaseMigrations` trait instead. However, the `DatabaseMigrations` trait is significantly slower than the `RefreshDatabase` trait.
 
-<a name="using-model-factories"></a>
-## Using Model Factories
+<a name="model-factories"></a>
+## Model Factories
 
-When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using [model factories](/docs/{{version}}/eloquent-factories). First, review the [model factory documentation](/docs/{{version}}/eloquent-factories) to learn how to define your factories.
+When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using [model factories](/docs/{{version}}/eloquent-factories).
 
-For example, let's create a user that we can use in our test:
+To learn more about creating and utilizing model factories to create models, please consult the complete [model factory documentation](/docs/{{version}}/eloquent-factories). Once you have defined a model factory, you may utilize the factory within your test to create models:
 
     use App\Models\User;
 
@@ -58,7 +58,7 @@ For example, let's create a user that we can use in our test:
     {
         $user = User::factory()->create();
 
-        // Use model in tests...
+        // ...
     }
 
 <a name="running-seeders"></a>
