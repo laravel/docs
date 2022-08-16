@@ -1743,14 +1743,14 @@ Validating nested array based form input fields doesn't have to be a pain. You m
 You may also validate each element of an array. For example, to validate that each email in a given array input field is unique, you may do the following:
 
     $validator = Validator::make($request->all(), [
-        'person.*.email' => 'email|unique:users',
-        'person.*.first_name' => 'required_with:person.*.last_name',
+        'persons.*.email' => 'email|unique:users',
+        'persons.*.first_name' => 'required_with:person.*.last_name',
     ]);
 
 Likewise, you may use the `*` character when specifying [custom validation messages in your language files](#custom-messages-for-specific-attributes), making it a breeze to use a single validation message for array based fields:
 
     'custom' => [
-        'person.*.email' => [
+        'persons.*.email' => [
             'unique' => 'Each person must have a unique email address',
         ]
     ],
