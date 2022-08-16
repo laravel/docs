@@ -135,7 +135,7 @@ The `@` symbol may also be used to escape Blade directives:
 
 ```blade
 {{-- Blade template --}}
-@@if()
+@if()
 
 <!-- HTML output -->
 @if()
