@@ -16,6 +16,7 @@
 - [Working With Stylesheets](#working-with-stylesheets)
 - [Working With Blade & Routes](#working-with-blade-and-routes)
 - [Custom Base URLs](#custom-base-urls)
+- [Override Build Path](#override-build-path)
 - [Environment Variables](#environment-variables)
 - [Disabling Vite In Tests](#disabling-vite-in-tests)
 - [Server-Side Rendering (SSR)](#ssr)
@@ -409,6 +410,25 @@ https://cdn.example.com/build/assets/app.9dce8d17.js
 ```
 
 Remember that [absolute URLs are not re-written by Vite](#url-processing), so they will not be prefixed.
+
+<a name="override-build-path"></a>
+## Override Build Path
+
+You can customise the folder name which vite uses when compiling. The example will change the folder name from 'build' to just 'folderName'
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            // Default is 'build' 
+            buildPath: 'folderName'
+        }),
+    ],
+});
+```
 
 <a name="environment-variables"></a>
 ## Environment Variables
