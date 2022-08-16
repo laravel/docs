@@ -244,6 +244,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [whenStartsWith](#method-fluent-str-when-starts-with)
 [whenEndsWith](#method-fluent-str-when-ends-with)
 [whenExactly](#method-fluent-str-when-exactly)
+[whenNotExactly](#method-fluent-str-when-not-exactly)
 [whenIs](#method-fluent-str-when-is)
 [whenIsAscii](#method-fluent-str-when-is-ascii)
 [whenIsUuid](#method-fluent-str-when-is-uuid)
@@ -3165,6 +3166,19 @@ The `whenExactly` method invokes the given closure if the string exactly matches
     });
 
     // 'Laravel'
+
+<a name="method-fluent-str-when-not-exactly"></a>
+#### `whenNotExactly` {.collection-method}
+
+The `whenNotExactly` method invokes the given closure if the string does not exactly match the given string. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('framework')->whenNotExactly('laravel', function ($string) {
+        return $string->title();
+    });
+
+    // 'Framework'
 
 <a name="method-fluent-str-when-is"></a>
 #### `whenIs` {.collection-method}
