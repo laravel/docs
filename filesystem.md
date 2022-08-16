@@ -108,6 +108,9 @@ Laravel's Flysystem integrations work great with FTP; however, a sample configur
         // 'ssl' => true,
         // 'timeout' => 30,
     ],
+    
+If you don't have any username/password, you need to specify 'anonymous' as username to make it work.
+See : https://www.php.net/manual/fr/function.ftp-login.php#101177
 
 <a name="sftp-driver-configuration"></a>
 #### SFTP Driver Configuration
