@@ -183,6 +183,9 @@ npm run dev
 npm run build
 ```
 
+> **Note**  
+> The Vite Local URL is only used for the compiling of assets. To view your application, including Hot Module Replacement, use the app URL of your local server.
+
 <a name="working-with-scripts"></a>
 ## Working With JavaScript
 
