@@ -67,6 +67,7 @@
     - [Mutators / Casts](/docs/{{version}}/eloquent-mutators)
     - [API Resources](/docs/{{version}}/eloquent-resources)
     - [Serialization](/docs/{{version}}/eloquent-serialization)
+    - [Factories](/docs/{{version}}/eloquent-factories)
 - ## Testing
     - [Getting Started](/docs/{{version}}/testing)
     - [HTTP Tests](/docs/{{version}}/http-tests)
