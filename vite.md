@@ -333,11 +333,9 @@ module.exports = {
 <a name="blade-processing-static-assets"></a>
 ### Processing Static Assets With Vite
 
-When referencing assets in your JavaScript or CSS, Vite automatically processes and versions them. However, when building Blade templated applications, Vite can also process and version static assets that you reference solely in Blade templates.
+When referencing assets in your JavaScript or CSS, Vite automatically processes and versions them. In addition, when building Blade based applications, Vite can also process and version static assets that you reference solely in Blade templates.
 
-In order to do this you will need to make Vite aware of the assets your application depends on by importing your static assets into the applications' entry point - even if you do not plan to use any JavaScript in your application. 
-
-Let's say we want to process and version all images stored in `resources/images` and also the fonts stored in `resources/fonts`. To achieve this, we can add the following in the `resources/js/app.js` entry point:
+However, in order to accomplish this, you need to make Vite aware of your assets by importing the static assets into the application's entry point. For example, if you want to process and version all images stored in `resources/images` and all fonts stored in `resources/fonts`, you should add the following in your application's `resources/js/app.js` entry point:
 
 ```js
 import.meta.glob([
@@ -346,7 +344,7 @@ import.meta.glob([
 ]);
 ```
 
-These assets will now be processed by Vite on build. You can then reference these assets in Blade templates with the `Vite::asset()` helper to get the versioned URL for each asset:
+These assets will now be processed by Vite when running `npm run build`. You can then reference these assets in Blade templates using the `Vite::asset` method, which will return the versioned URL for a given asset:
 
 ```blade
 <img src="{{ Vite::asset('resources/images/logo.png') }}">
