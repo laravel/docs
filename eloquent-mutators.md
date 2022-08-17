@@ -600,8 +600,10 @@ As an example, we will define a custom cast class that casts multiple model valu
             }
 
             return [
-                'address_line_one' => $value->lineOne,
-                'address_line_two' => $value->lineTwo,
+                $key => [
+                    'address_line_one' => $value->lineOne,
+                    'address_line_two' => $value->lineTwo,
+                ]
             ];
         }
     }
@@ -781,8 +783,10 @@ By combining "castables" with PHP's [anonymous classes](https://www.php.net/manu
                 public function set($model, $key, $value, $attributes)
                 {
                     return [
-                        'address_line_one' => $value->lineOne,
-                        'address_line_two' => $value->lineTwo,
+                        $key => [
+                            'address_line_one' => $value->lineOne,
+                            'address_line_two' => $value->lineTwo,
+                        ]
                     ];
                 }
             };
