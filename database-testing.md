@@ -171,6 +171,13 @@ Assert that a table in the database does not contain records matching the given 
 The `assertSoftDeleted` method may be used to assert a given Eloquent model has been "soft deleted":
 
     $this->assertSoftDeleted($user);
+    
+<a name="assert-not-deleted"></a>
+#### assertNotSoftDeleted
+
+The `assertNotSoftDeleted` method may be used to assert a given Eloquent model hasn't been "soft deleted":
+
+    $this->assertNotSoftDeleted($user);
 
 <a name="assert-model-exists"></a>
 #### assertModelExists
