@@ -93,6 +93,8 @@ curl -s "https://laravel.build/example-app" | bash
 
 Of course, you can change "example-app" in this URL to anything you like - just make sure the application name only contains alpha-numeric characters, dashes, and underscores. The Laravel application's directory will be created within the directory you execute the command from.
 
+Sail installation may take several minutes while Sail's application containers are built on your local machine.
+
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
 ```shell
@@ -100,8 +102,6 @@ cd example-app
 
 ./vendor/bin/sail up
 ```
-
-The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
 
@@ -124,6 +124,8 @@ curl -s https://laravel.build/example-app | bash
 
 Of course, you can change "example-app" in this URL to anything you like - just make sure the application name only contains alpha-numeric characters, dashes, and underscores. The Laravel application's directory will be created within the directory you execute the command from.
 
+Sail installation may take several minutes while Sail's application containers are built on your local machine.
+
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
 ```shell
@@ -131,8 +133,6 @@ cd example-app
 
 ./vendor/bin/sail up
 ```
-
-The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
 
@@ -156,6 +156,8 @@ curl -s https://laravel.build/example-app | bash
 
 Of course, you can change "example-app" in this URL to anything you like - just make sure the application name only contains alpha-numeric characters, dashes, and underscores. The Laravel application's directory will be created within the directory you execute the command from.
 
+Sail installation may take several minutes while Sail's application containers are built on your local machine.
+
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
 ```shell
@@ -163,8 +165,6 @@ cd example-app
 
 ./vendor/bin/sail up
 ```
-
-The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
 
