@@ -93,7 +93,7 @@ curl -s "https://laravel.build/example-app" | bash
 
 Of course, you can change "example-app" in this URL to anything you like - just make sure the application name only contains alpha-numeric characters, dashes, and underscores. The Laravel application's directory will be created within the directory you execute the command from.
 
-The installation can take several minutes while Sail's application containers are built on your local machine.
+Sail installation may take several minutes while Sail's application containers are built on your local machine.
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
@@ -124,7 +124,7 @@ curl -s https://laravel.build/example-app | bash
 
 Of course, you can change "example-app" in this URL to anything you like - just make sure the application name only contains alpha-numeric characters, dashes, and underscores. The Laravel application's directory will be created within the directory you execute the command from.
 
-The installation can take several minutes while Sail's application containers are built on your local machine.
+Sail installation may take several minutes while Sail's application containers are built on your local machine.
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
@@ -156,7 +156,7 @@ curl -s https://laravel.build/example-app | bash
 
 Of course, you can change "example-app" in this URL to anything you like - just make sure the application name only contains alpha-numeric characters, dashes, and underscores. The Laravel application's directory will be created within the directory you execute the command from.
 
-The installation can take several minutes while Sail's application containers are built on your local machine.
+Sail installation may take several minutes while Sail's application containers are built on your local machine.
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
