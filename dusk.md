@@ -1894,13 +1894,13 @@ jobs:
   dusk-php:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Prepare The Environment
         run: cp .env.example .env
       - name: Create Database
         run: |
           sudo systemctl start mysql
-          mysql --user="root" --password="root" -e "CREATE DATABASE 'my-database' character set UTF8mb4 collate utf8mb4_bin;"
+          mysql --user="root" --password="root" -e "CREATE DATABASE \`my-database\` character set UTF8mb4 collate utf8mb4_bin;"
       - name: Install Composer Dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Generate Application Key
