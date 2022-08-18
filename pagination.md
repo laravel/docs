@@ -151,7 +151,8 @@ However, cursor pagination has the following limitations:
 
 - Like `simplePaginate`, cursor pagination can only be used to display "Next" and "Previous" links and does not support generating links with page numbers.
 - It requires that the ordering is based on at least one unique column or a combination of columns that are unique. Columns with `null` values are not supported.
-- Query expressions in "order by" clauses are supported only if they are aliased and added to the "select" clause as well. Query expressions with parameters are not supported.
+- Query expressions in "order by" clauses are supported only if they are aliased and added to the "select" clause as well. 
+- Query expressions with parameters are not supported.
 
 <a name="manually-creating-a-paginator"></a>
 ### Manually Creating A Paginator
