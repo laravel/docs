@@ -1894,7 +1894,7 @@ jobs:
   dusk-php:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Prepare The Environment
         run: cp .env.example .env
       - name: Create Database
