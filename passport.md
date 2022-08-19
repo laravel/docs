@@ -98,42 +98,6 @@ After running the `passport:install` command, add the `Laravel\Passport\HasApiTo
         use HasApiTokens, HasFactory, Notifiable;
     }
 
-Next, you should call the `Passport::routes` method within the `boot` method of your `App\Providers\AuthServiceProvider`. This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
-
-    <?php
-
-    namespace App\Providers;
-
-    use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-    use Illuminate\Support\Facades\Gate;
-    use Laravel\Passport\Passport;
-
-    class AuthServiceProvider extends ServiceProvider
-    {
-        /**
-         * The policy mappings for the application.
-         *
-         * @var array
-         */
-        protected $policies = [
-            'App\Models\Model' => 'App\Policies\ModelPolicy',
-        ];
-
-        /**
-         * Register any authentication / authorization services.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            $this->registerPolicies();
-
-            if (! $this->app->routesAreCached()) {
-                Passport::routes();
-            }
-        }
-    }
-
 Finally, in your application's `config/auth.php` configuration file, you should define an `api` authentication guard and set the `driver` option to `passport`. This will instruct your application to use Passport's `TokenGuard` when authenticating incoming API requests:
 
     'guards' => [
@@ -176,8 +140,6 @@ If necessary, you may define the path where Passport's keys should be loaded fro
     public function boot()
     {
         $this->registerPolicies();
-
-        Passport::routes();
 
         Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');
     }
@@ -245,8 +207,6 @@ By default, Passport issues long-lived access tokens that expire after one year.
     {
         $this->registerPolicies();
 
-        Passport::routes();
-
         Passport::tokensExpireIn(now()->addDays(15));
         Passport::refreshTokensExpireIn(now()->addDays(30));
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
@@ -282,8 +242,6 @@ After defining your model, you may instruct Passport to use your custom model vi
     public function boot()
     {
         $this->registerPolicies();
-
-        Passport::routes();
 
         Passport::useTokenModel(Token::class);
         Passport::useClientModel(Client::class);
@@ -419,7 +377,7 @@ Once a client has been created, developers may use their client ID and secret to
     });
 
 > **Note**  
-> Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route.
+> Remember, the `/oauth/authorize` route is already defined by Passport. You do not need to manually define this route.
 
 <a name="approving-the-request"></a>
 #### Approving The Request
@@ -483,7 +441,7 @@ If the user approves the authorization request, they will be redirected back to 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
 
 > **Note**  
-> Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by the `Passport::routes` method. There is no need to manually define this route.
+> Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by Passport. There is no need to manually define this route.
 
 <a name="tokens-json-api"></a>
 #### JSON API
@@ -689,7 +647,7 @@ php artisan passport:client --password
 <a name="requesting-password-grant-tokens"></a>
 ### Requesting Tokens
 
-Once you have created a password grant client, you may request an access token by issuing a `POST` request to the `/oauth/token` route with the user's email address and password. Remember, this route is already registered by the `Passport::routes` method so there is no need to define it manually. If the request is successful, you will receive an `access_token` and `refresh_token` in the JSON response from the server:
+Once you have created a password grant client, you may request an access token by issuing a `POST` request to the `/oauth/token` route with the user's email address and password. Remember, this route is already registered by Passport so there is no need to define it manually. If the request is successful, you will receive an `access_token` and `refresh_token` in the JSON response from the server:
 
     use Illuminate\Support\Facades\Http;
 
@@ -804,8 +762,6 @@ The implicit grant is similar to the authorization code grant; however, the toke
     {
         $this->registerPolicies();
 
-        Passport::routes();
-
         Passport::enableImplicitGrant();
     }
 
@@ -828,7 +784,7 @@ Once the grant has been enabled, developers may use their client ID to request a
     });
 
 > **Note**  
-> Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route.
+> Remember, the `/oauth/authorize` route is already defined by Passport. You do not need to manually define this route.
 
 <a name="client-credentials-grant-tokens"></a>
 ## Client Credentials Grant Tokens
@@ -1048,8 +1004,6 @@ You may define your API's scopes using the `Passport::tokensCan` method in the `
     {
         $this->registerPolicies();
 
-        Passport::routes();
-
         Passport::tokensCan([
             'place-orders' => 'Place orders',
             'check-status' => 'Check order status',
@@ -1194,8 +1148,6 @@ If needed, you can customize the `laravel_token` cookie's name using the `Passpo
     public function boot()
     {
         $this->registerPolicies();
-
-        Passport::routes();
 
         Passport::cookie('custom_name');
     }
