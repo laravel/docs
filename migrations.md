@@ -1070,7 +1070,7 @@ You may even pass an array of columns to an index method to create a compound (o
 
 When creating an index, Laravel will automatically generate an index name based on the table, column names, and the index type, but you may pass a second argument to the method to specify the index name yourself:
 
-    $table->unique('email', 'unique_email');
+    $table->unique(['email', 'unique_email']);
 
 <a name="available-index-types"></a>
 #### Available Index Types
