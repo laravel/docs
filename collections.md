@@ -438,7 +438,7 @@ You may also pass a key / value pair to the `contains` method, which will determ
 
 The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`containsStrict`](#method-containsstrict) method to filter using "strict" comparisons.
 
-For the inverse of `contains`, see the [doesntContain](#method-doesntcontain) method.
+For the inverse of `contains` method, see the [doesntContain](#method-doesntcontain) method.
 
 <a name="method-containsoneitem"></a>
 #### `containsOneItem()` {.collection-method}
@@ -776,7 +776,7 @@ The `except` method returns all items in the collection except for those with th
 
     // ['product_id' => 1]
 
-For the inverse of `except`, see the [only](#method-only) method.
+For the inverse of `except` method, see the [only](#method-only) method.
 
 > **Note**  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-except).
@@ -804,7 +804,7 @@ If no callback is supplied, all entries of the collection that are equivalent to
 
     // [1, 2, 3]
 
-For the inverse of `filter`, see the [reject](#method-reject) method.
+For the inverse of `filter` method, see the [reject](#method-reject) method.
 
 <a name="method-first"></a>
 #### `first()` {.collection-method}
@@ -1591,7 +1591,7 @@ The `only` method returns the items in the collection with the specified keys:
 
     // ['product_id' => 1, 'name' => 'Desk']
 
-For the inverse of `only`, see the [except](#method-except) method.
+For the inverse of `only` method, see the [except](#method-except) method.
 
 > **Note**  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-only).
@@ -2836,7 +2836,7 @@ A second callback may be passed to the `unless` method. The second callback will
 
     // [1, 2, 3, 5]
 
-For the inverse of `unless`, see the [`when`](#method-when) method.
+For the inverse of `unless` method, see the [`when`](#method-when) method.
 
 <a name="method-unlessempty"></a>
 #### `unlessEmpty()` {.collection-method}
@@ -2933,7 +2933,7 @@ A second callback may be passed to the `when` method. The second callback will b
 
     // [1, 2, 3, 5]
 
-For the inverse of `when`, see the [`unless`](#method-unless) method.
+For the inverse of `when` method, see the [`unless`](#method-unless) method.
 
 <a name="method-whenempty"></a>
 #### `whenEmpty()` {.collection-method}
@@ -2975,7 +2975,7 @@ A second closure may be passed to the `whenEmpty` method that will be executed w
 
     // ['Michael', 'Tom', 'Taylor']
 
-For the inverse of `whenEmpty`, see the [`whenNotEmpty`](#method-whennotempty) method.
+For the inverse of `whenEmpty` method, see the [`whenNotEmpty`](#method-whennotempty) method.
 
 <a name="method-whennotempty"></a>
 #### `whenNotEmpty()` {.collection-method}
@@ -3017,7 +3017,7 @@ A second closure may be passed to the `whenNotEmpty` method that will be execute
 
     // ['taylor']
 
-For the inverse of `whenNotEmpty`, see the [`whenEmpty`](#method-whenempty) method.
+For the inverse of `whenNotEmpty` method, see the [`whenEmpty`](#method-whenempty) method.
 
 <a name="method-where"></a>
 #### `where()` {.collection-method}
