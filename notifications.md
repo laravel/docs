@@ -336,6 +336,25 @@ In this example, we register a greeting, a line of text, a call to action, and t
 > **Note**  
 > When sending mail notifications, be sure to set the `name` configuration option in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.
 
+<a name="error-messages"></a>
+#### Error Messages
+
+Some notifications inform users of errors, such as a failed invoice payment. You may indicate that a mail message is regarding an error by calling the `error` method when building your message. When using the `error` method on a mail message, the call to action button will be red instead of black:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->error()
+                    ->subject('Invoice Payment Failed')
+                    ->line('...');
+    }
+
 <a name="other-mail-notification-formatting-options"></a>
 #### Other Mail Notification Formatting Options
 
@@ -368,25 +387,6 @@ You may specify a plain-text view for the mail message by passing the view name 
             ['emails.name.html', 'emails.name.plain'],
             ['invoice' => $this->invoice]
         );
-    }
-
-<a name="error-messages"></a>
-#### Error Messages
-
-Some notifications inform users of errors, such as a failed invoice payment. You may indicate that a mail message is regarding an error by calling the `error` method when building your message. When using the `error` method on a mail message, the call to action button will be red instead of black:
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->error()
-                    ->subject('Notification Subject')
-                    ->line('...');
     }
 
 <a name="customizing-the-sender"></a>
