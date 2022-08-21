@@ -1,22 +1,22 @@
-# CSRF Protection
+# 跨站偽造請求攻擊 (Cross-site request forgery) 保護措施
 
-- [Introduction](#csrf-introduction)
-- [Preventing CSRF Requests](#preventing-csrf-requests)
-    - [Excluding URIs](#csrf-excluding-uris)
+- [介紹](#csrf-introduction)
+- [避免 CSRF 攻擊](#preventing-csrf-requests)
+    - [排除特定網址](#csrf-excluding-uris)
 - [X-CSRF-Token](#csrf-x-csrf-token)
 - [X-XSRF-Token](#csrf-x-xsrf-token)
 
 <a name="csrf-introduction"></a>
-## Introduction
+## 介紹
 
-Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of an authenticated user. Thankfully, Laravel makes it easy to protect your application from [cross-site request forgery](https://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) attacks.
+跨站偽造請求是一種惡意的攻擊，會偽造已驗證的使用者執行未授權的指令。幸好Laravel有簡單的方式來保護你的應用程式免於[跨站偽造請求攻擊 (CSRF)](https://en.wikipedia.org/wiki/Cross-site_request_forgery)(CSRF)。
 
 <a name="csrf-explanation"></a>
-#### An Explanation Of The Vulnerability
+#### 漏洞來源解釋
 
-In case you're not familiar with cross-site request forgeries, let's discuss an example of how this vulnerability can be exploited. Imagine your application has a `/user/email` route that accepts a `POST` request to change the authenticated user's email address. Most likely, this route expects an `email` input field to contain the email address the user would like to begin using.
+為避免你對於CSRF不太熟悉，我們先來討論攻擊者會如何利用漏洞。假設你的應用程式有這樣一條路徑 `/user/email`，你可以送出 `POST` 請求來更改使用者的電子信箱地址。更精確來說，`email` 這個欄位會預期放的是新的電子郵件地址。
 
-Without CSRF protection, a malicious website could create an HTML form that points to your application's `/user/email` route and submits the malicious user's own email address:
+如果沒有CSRF的保護措施，有心人士就可以架一個惡意的網站，並創建一個HTML表單，將使用者輸入的資料傳送到你的 `/user/email` 路徑，並把電子郵件地址改成惡意人士所想要的地址。
 
 ```blade
 <form action="https://your-application.com/user/email" method="POST">
@@ -28,16 +28,16 @@ Without CSRF protection, a malicious website could create an HTML form that poin
 </script>
 ```
 
- If the malicious website automatically submits the form when the page is loaded, the malicious user only needs to lure an unsuspecting user of your application to visit their website and their email address will be changed in your application.
+假設這個惡意網站會自動提交表單，那麼有心人士就只需要引誘沒有戒心的使用者造訪他們的惡意網站，這樣一來使用者在你的應用程式中的電子信箱就會被竄改了。
 
- To prevent this vulnerability, we need to inspect every incoming `POST`, `PUT`, `PATCH`, or `DELETE` request for a secret session value that the malicious application is unable to access.
+要補起這個漏洞，我們要檢視每個 `POST`，`PUT`，`PATCH`，或者 `DELETE` 請求的祕密 session，而這個暗號是惡意程式無法得到的。
 
 <a name="preventing-csrf-requests"></a>
-## Preventing CSRF Requests
+## 避免 CSRF 攻擊
 
-Laravel automatically generates a CSRF "token" for each active [user session](/docs/{{version}}/session) managed by the application. This token is used to verify that the authenticated user is the person actually making the requests to the application. Since this token is stored in the user's session and changes each time the session is regenerated, a malicious application is unable to access it.
+Laravel對於每個應用程式收到的[用戶 session](/docs/{{version}}/session)會自動生成一個 CSRF 標記。這個標記是拿來檢驗這個請求是不是真的由已驗證的使用者本人所發出的。因為標記儲存在用戶 session 中，並且在每次活動時都會重新生成，因此惡意程式是無法取得這個標記的。
 
-The current session's CSRF token can be accessed via the request's session or via the `csrf_token` helper function:
+現在 CRSF 標記可以從請求的 session 中取得，或者用這個 `csrf_token` 這個輔助函式: 
 
     use Illuminate\Http\Request;
 
@@ -49,7 +49,7 @@ The current session's CSRF token can be accessed via the request's session or vi
         // ...
     });
 
-Anytime you define a "POST", "PUT", "PATCH", or "DELETE" HTML form in your application, you should include a hidden CSRF `_token` field in the form so that the CSRF protection middleware can validate the request. For convenience, you may use the `@csrf` Blade directive to generate the hidden token input field:
+每當你在你的應用程式建立一個 `POST`，`PUT`，`PATCH`，或 `DELETE` 表單，你都應該把一個隱藏參數CSRF `_token` 放進你的表單中，好讓中介層 (middleware) 可以驗證你的請求。為了方便起見，你可以用 `@csrf` Blade 引擎來幫你在表單中生成隱藏標記。
 
 ```blade
 <form method="POST" action="/profile">
@@ -60,19 +60,19 @@ Anytime you define a "POST", "PUT", "PATCH", or "DELETE" HTML form in your appli
 </form>
 ```
 
-The `App\Http\Middleware\VerifyCsrfToken` [middleware](/docs/{{version}}/middleware), which is included in the `web` middleware group by default, will automatically verify that the token in the request input matches the token stored in the session. When these two tokens match, we know that the authenticated user is the one initiating the request.
+`App\Http\Middleware\VerifyCsrfToken` [中介層 (middleware)](/docs/{{version}}/middleware)預設被包含在 `web` 中介層群組中，會自動比對請求中的標記與儲存在 session 的標記是否相符。如果這兩個標記相同的話，我們就可以認定就是這個使用者發起這個請求。
 
 <a name="csrf-tokens-and-spas"></a>
-### CSRF Tokens & SPAs
+### CSRF 標記們與單頁式網站應用程式（SPAs）
 
-If you are building a SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities.
+如果你正在開發一個利用Laravel當作 API 後端的單頁式網站的話，你應該去[Laravel Sanctum documentation](/docs/{{version}}/sanctum)尋找關於驗證 API 與避免 CSRF 漏洞的相關資訊。
 
 <a name="csrf-excluding-uris"></a>
-### Excluding URIs From CSRF Protection
+### 排除特定 URIs 在 CSRF 保護名單之外
 
-Sometimes you may wish to exclude a set of URIs from CSRF protection. For example, if you are using [Stripe](https://stripe.com) to process payments and are utilizing their webhook system, you will need to exclude your Stripe webhook handler route from CSRF protection since Stripe will not know what CSRF token to send to your routes.
+有時候你會希望某些 URIs 能夠不用被放在 CSRF 的保護中。例如，你正在使用[ Stripe ](https??stripe.com)來處理付款並利用他們的 webhook 系統，你會需要排除 Stripe webhook 路徑在 CSRF 保護之外，這是因為 Stripe 並不知道要傳送什麼標記給你的路徑。
 
-Typically, you should place these kinds of routes outside of the `web` middleware group that the `App\Providers\RouteServiceProvider` applies to all routes in the `routes/web.php` file. However, you may also exclude the routes by adding their URIs to the `$except` property of the `VerifyCsrfToken` middleware:
+`App\Providers\RouteServiceProvider` 會套用到所有在 `routes/web.php` 這個檔案中的路徑，所以，通常來說，你應該把想排除的路徑放在 `web` 中介層群組之外。或者是，你也可以把那些 URIs 加到 `VerifyCsrfToken` 中介層的 `$except` 屬性中以排除特定路徑。
 
     <?php
 
@@ -94,18 +94,18 @@ Typically, you should place these kinds of routes outside of the `web` middlewar
         ];
     }
 
-> {tip} For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing).
+> {小技巧} 為了方便起見，CSRF 中介層在[測試時 (running tests) ](/docs/{{version}}/testing}})會自動取消對所有路徑進行驗證。
 
 <a name="csrf-x-csrf-token"></a>
 ## X-CSRF-TOKEN
 
-In addition to checking for the CSRF token as a POST parameter, the `App\Http\Middleware\VerifyCsrfToken` middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in an HTML `meta` tag:
+除了檢查 POST 請求中的 CSRF 參數，`App\Http\Middleware\VerifyCsrfToken` 中介層也會檢查 `X-CSRF-TOKEN` 的請求標頭。例如，你可以把標記儲存在 HTML 的 `meta` 標籤中。
 
 ```blade
 <meta name="csrf-token" content="{{ csrf_token() }}">
 ```
 
-Then, you can instruct a library like jQuery to automatically add the token to all request headers. This provides simple, convenient CSRF protection for your AJAX based applications using legacy JavaScript technology:
+接著，你可以指示像 jQuery 這樣的函式庫自動新增標記到所有的請求標頭中。如此一來就可以利用繼承 Jacascript 的技巧來提供 AJAX based 的應用程式一個簡單、方便的 CSRF 保護措施。
 
 ```js
 $.ajaxSetup({
@@ -118,8 +118,8 @@ $.ajaxSetup({
 <a name="csrf-x-xsrf-token"></a>
 ## X-XSRF-TOKEN
 
-Laravel stores the current CSRF token in an encrypted `XSRF-TOKEN` cookie that is included with each response generated by the framework. You can use the cookie value to set the `X-XSRF-TOKEN` request header.
+Laravel把當前的 CSRF 標記存在加密`XSRF-TOKEN` cookie 中，而每個由框架所生成的回應都會包含這些 cookie。你可以利用 cookie 的值去設定 `X-XSRF-TOKEN` 的請求標頭。
 
-This cookie is primarily sent as a developer convenience since some JavaScript frameworks and libraries, like Angular and Axios, automatically place its value in the `X-XSRF-TOKEN` header on same-origin requests.
+有些 Javascript 框架與函式庫，像是 Angular 和 Axios，會自動把值放在原請求的 `X-XSRF-TOKEN` 標頭中，因此這個 cookie 主要是傳送來便利開發者的。
 
-> {tip} By default, the `resources/js/bootstrap.js` file includes the Axios HTTP library which will automatically send the `X-XSRF-TOKEN` header for you.
+> {小技巧} 預設情況下，`resources/js/bootstrap.js` 引入了 Axios HTTP 函式庫，它會自動幫你傳送 `X-XSRF-TOKEN` 的標頭。
