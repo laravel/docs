@@ -1408,12 +1408,12 @@ The field under validation must be present in the input data but can be empty.
 <a name="rule-prohibited"></a>
 #### prohibited
 
-The field under validation must be empty or not present.
+The field under validation must be an empty string or not present. 
 
 <a name="rule-prohibited-if"></a>
 #### prohibited_if:_anotherfield_,_value_,...
 
-The field under validation must be empty or not present if the _anotherfield_ field is equal to any _value_.
+The field under validation must be an empty string or not present if the _anotherfield_ field is equal to any _value_.
 
 If complex conditional prohibition logic is required, you may utilize the `Rule::prohibitedIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be prohibited:
 
@@ -1431,7 +1431,7 @@ If complex conditional prohibition logic is required, you may utilize the `Rule:
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_anotherfield_,_value_,...
 
-The field under validation must be empty or not present unless the _anotherfield_ field is equal to any _value_.
+The field under validation must be an empty string or not present unless the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-prohibits"></a>
 #### prohibits:_anotherfield_,...
