@@ -172,7 +172,7 @@ The mutator closure will receive the value that is being set on the attribute, a
 
     $user->first_name = 'Sally';
 
-In this example, the `set` callback will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its resulting value in model's the internal `$attributes` array.
+In this example, the `set` callback will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its resulting value in the model's internal `$attributes` array.
 
 <a name="mutating-multiple-attributes"></a>
 #### Mutating Multiple Attributes

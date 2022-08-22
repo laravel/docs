@@ -739,7 +739,7 @@ If you would like to swap plans and immediately invoice the user instead of wait
 <a name="prorations"></a>
 #### Prorations
 
-By default, Paddle prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
+By default, Paddle prorates charges when swapping between plans. The `noProrate` method may be used to update the subscriptions without prorating the charges:
 
     $user->subscription('default')->noProrate()->swap($premium = 34567);
 

@@ -323,12 +323,12 @@ By default, your outermost resource is wrapped in a `data` key when the resource
         {
             "id": 1,
             "name": "Eladio Schroeder Sr.",
-            "email": "therese28@example.com",
+            "email": "therese28@example.com"
         },
         {
             "id": 2,
             "name": "Liliana Mayert",
-            "email": "evandervort@example.com",
+            "email": "evandervort@example.com"
         }
     ]
 }
@@ -425,12 +425,12 @@ When returning paginated collections via a resource response, Laravel will wrap 
         {
             "id": 1,
             "name": "Eladio Schroeder Sr.",
-            "email": "therese28@example.com",
+            "email": "therese28@example.com"
         },
         {
             "id": 2,
             "name": "Liliana Mayert",
-            "email": "evandervort@example.com",
+            "email": "evandervort@example.com"
         }
     ],
     "links":{
@@ -471,12 +471,12 @@ Paginated responses always contain `meta` and `links` keys with information abou
         {
             "id": 1,
             "name": "Eladio Schroeder Sr.",
-            "email": "therese28@example.com",
+            "email": "therese28@example.com"
         },
         {
             "id": 2,
             "name": "Liliana Mayert",
-            "email": "evandervort@example.com",
+            "email": "evandervort@example.com"
         }
     ],
     "links":{
@@ -599,7 +599,7 @@ In addition to conditionally including relationships, you may conditionally incl
 
     new UserResource($user->loadCount('posts'));
 
-The `whenCounted` method may be used to conditionally include a relationship's count in your resource response. This method avoids unnecessarily including the attribute if the relationships's count is not present:
+The `whenCounted` method may be used to conditionally include a relationship's count in your resource response. This method avoids unnecessarily including the attribute if the relationships' count is not present:
 
     /**
      * Transform the resource into an array.

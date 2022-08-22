@@ -184,7 +184,7 @@ By default, the entire `toArray` form of a given model will be persisted to its 
 <a name="configuring-the-model-id"></a>
 ### Configuring The Model ID
 
-By default, Scout will use the primary key of the model as model's unique ID / key that is stored in the search index. If you need to customize this behavior, you may override the `getScoutKey` and the `getScoutKeyName` methods on the model:
+By default, Scout will use the primary key of the model as the model's unique ID / key that is stored in the search index. If you need to customize this behavior, you may override the `getScoutKey` and the `getScoutKeyName` methods on the model:
 
     <?php
 

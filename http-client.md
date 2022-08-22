@@ -177,7 +177,7 @@ You may specify the maximum number of seconds to wait while trying to connect to
 <a name="retries"></a>
 ### Retries
 
-If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts the maximum number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:
+If you would like the HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts the maximum number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:
 
     $response = Http::retry(3, 100)->post(/* ... */);
 
@@ -187,7 +187,7 @@ If needed, you may pass a third argument to the `retry` method. The third argume
         return $exception instanceof ConnectionException;
     })->post(/* ... */);
 
-If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:
+If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying the request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:
 
     $response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {
         if (! $exception instanceof RequestException || $exception->response->status() !== 401) {
