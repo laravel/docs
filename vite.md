@@ -25,6 +25,7 @@
   - [Content Security Policy (CSP) Nonce](#content-security-policy-csp-nonce)
   - [Subresource Integrity (SRI)](#subresource-integrity-sri)
   - [Arbitrary Attributes](#arbitrary-attributes)
+- [Advanced Customization](#advanced-customisation)
 
 <a name="introduction"></a>
 ## Introduction
@@ -657,3 +658,38 @@ Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr
 
 > **Warning**  
 > The `$chunk` and `$manifest` arguments will be `null` while the Vite development server is running.
+
+<a name="advanced-customisation"></a>
+## Advanced Customization
+
+Out of the box, the Vite plugin uses sensible conventions that should work for the majority of applications, however it can sometimes be useful in unique scenarios to customise things futher. To enable these additional customisations, we offer the following syntax and options in place of using the `@vite()` Blade directive.
+
+```blade
+<!doctype html>
+<head>
+    {{-- ... --}}
+
+    {{
+        Vite::useHotFile(storage_path('vite.hot'))     // customize the hot file
+            ->useBuildDirectory('bundle')              // customize the build directory
+            ->withEntryPoints(['resources/js/app.js']) // specify the entry points
+    }}
+</head>
+```
+
+Within the `vite.config.js` file, you can then specify the same configuration:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            hotFile: 'storage/vite.hot',    // customize the hot file
+            buildDirectory: 'bundle',       // customize the build directory
+            input: ['resources/js/app.js'], // specify the entry points
+        }),
+    ],
+});
+```
