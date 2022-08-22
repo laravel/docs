@@ -512,6 +512,10 @@ Scout allows you to add simple "where" clauses to your search queries. Currently
 
     $orders = Order::search('Star Trek')->where('user_id', 1)->get();
 
+Note that if you're using Meilisearch as your Scout driver, where clauses will not work by default. You will first need to configure the filterable attribute on any Meilisearch index you wish to search:
+
+    $client->index('orders')->updateFilterableAttributes(['user_id']);
+
 You may use the `whereIn` method to constrain results against a given set of values:
 
     $orders = Order::search('Star Trek')->whereIn(
