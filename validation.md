@@ -848,9 +848,11 @@ Below is a list of all available validation rules and their function:
 [Less Than Or Equal](#rule-lte)
 [MAC Address](#rule-mac)
 [Max](#rule-max)
+[Max Digits](#rule-max-digits)
 [MIME Types](#rule-mimetypes)
 [MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
+[Min Digits](#rule-min-digits)
 [Multiple Of](#multiple-of)
 [Not In](#rule-not-in)
 [Not Regex](#rule-not-regex)
@@ -1322,6 +1324,11 @@ The field under validation must be a MAC address.
 
 The field under validation must be less than or equal to a maximum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
+<a name="rule-max-digits"></a>
+#### max_digits:_value_
+
+The integer under validation must have a maximum length of _value_.
+
 <a name="rule-mimetypes"></a>
 #### mimetypes:_text/plain_,...
 
@@ -1349,6 +1356,11 @@ Even though you only need to specify the extensions, this rule actually validate
 #### min:_value_
 
 The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+
+<a name="rule-min-digits"></a>
+#### min_digits:_value_
+
+The integer under validation must have a minimum length of _value_.
 
 <a name="multiple-of"></a>
 #### multiple_of:_value_
