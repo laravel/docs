@@ -271,7 +271,7 @@ The Sail `test` command is equivalent to running the `test` Artisan command:
 sail artisan test
 ```
 
-By default, Sail will create a dedicated `testing` database that your tests do not interfere with the current state of your database. In a default Laravel installation, Sail will also configure your `phpunit.xml` file to use this database when executing your tests:
+By default, Sail will create a dedicated `testing` database so that your tests do not interfere with the current state of your database. In a default Laravel installation, Sail will also configure your `phpunit.xml` file to use this database when executing your tests:
 
 ```xml
 <env name="DB_DATABASE" value="testing"/>

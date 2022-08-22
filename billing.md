@@ -746,7 +746,7 @@ You may also create subscriptions from the Stripe dashboard itself. When doing s
 
 In addition, you may only create one type of subscription via the Stripe dashboard. If your application offers multiple subscriptions that use different names, only one type of subscription may be added through the Stripe dashboard.
 
-Finally, you should always make sure to only add one active subscription per type of subscription offered by your application. If customer has two `default` subscriptions, only the most recently added subscription will be used by Cashier even though both would be synced with your application's database.
+Finally, you should always make sure to only add one active subscription per type of subscription offered by your application. If a customer has two `default` subscriptions, only the most recently added subscription will be used by Cashier even though both would be synced with your application's database.
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
