@@ -589,7 +589,7 @@ If necessary, you may use the `blade` method to evaluate and render a raw [Blade
 
     $view->assertSee('Taylor');
 
-You may use the `component` method to evaluate and render a [Blade component](/docs/{{version}}/blade#components). Like the `view` method, the `component` method returns an instance of `Illuminate\Testing\TestView`:
+You may use the `component` method to evaluate and render a [Blade component](/docs/{{version}}/blade#components). The `component` method returns an instance of `Illuminate\Testing\TestComponent`:
 
     $view = $this->component(Profile::class, ['name' => 'Taylor']);
 
