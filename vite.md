@@ -25,7 +25,7 @@
   - [Content Security Policy (CSP) Nonce](#content-security-policy-csp-nonce)
   - [Subresource Integrity (SRI)](#subresource-integrity-sri)
   - [Arbitrary Attributes](#arbitrary-attributes)
-- [Advanced Customization](#advanced-customisation)
+- [Advanced Customization](#advanced-customization)
 
 <a name="introduction"></a>
 ## Introduction
@@ -659,10 +659,10 @@ Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr
 > **Warning**  
 > The `$chunk` and `$manifest` arguments will be `null` while the Vite development server is running.
 
-<a name="advanced-customisation"></a>
+<a name="advanced-customization"></a>
 ## Advanced Customization
 
-Out of the box, the Vite plugin uses sensible conventions that should work for the majority of applications, however it can sometimes be useful in unique scenarios to customise things futher. To enable these additional customisations, we offer the following syntax and options in place of using the `@vite()` Blade directive.
+Out of the box, Laravel's Vite plugin uses sensible conventions that should work for the majority of applications; however, sometimes you may need to customize Vite's behavior. To enable additional customization options, we offer the following methods and options which can be used in place of the `@vite` Blade directive:
 
 ```blade
 <!doctype html>
@@ -670,14 +670,14 @@ Out of the box, the Vite plugin uses sensible conventions that should work for t
     {{-- ... --}}
 
     {{
-        Vite::useHotFile(storage_path('vite.hot'))     // customize the hot file
-            ->useBuildDirectory('bundle')              // customize the build directory
-            ->withEntryPoints(['resources/js/app.js']) // specify the entry points
+        Vite::useHotFile(storage_path('vite.hot')) // Customize the "hot" file...
+            ->useBuildDirectory('bundle') // Customize the build directory...
+            ->withEntryPoints(['resources/js/app.js']) // Specify the entry points...
     }}
 </head>
 ```
 
-Within the `vite.config.js` file, you can then specify the same configuration:
+Within the `vite.config.js` file, you may then specify the same configuration:
 
 ```js
 import { defineConfig } from 'vite';
@@ -686,9 +686,9 @@ import laravel from 'laravel-vite-plugin';
 export default defineConfig({
     plugins: [
         laravel({
-            hotFile: 'storage/vite.hot',    // customize the hot file
-            buildDirectory: 'bundle',       // customize the build directory
-            input: ['resources/js/app.js'], // specify the entry points
+            hotFile: 'storage/vite.hot', // Customize the "hot" file...
+            buildDirectory: 'bundle', // Customize the build directory...
+            input: ['resources/js/app.js'], // Specify the entry points...
         }),
     ],
 });
