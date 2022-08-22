@@ -170,7 +170,7 @@ If you're importing your CSS via JavaScript, you only need to include the JavaSc
 
 The `@vite` directive will automatically detect the Vite development server and inject the Vite client to enable Hot Module Replacement. In build mode, the directive will load your compiled and versioned assets, including any imported CSS.
 
-You can also specify build path of your compiled assets within `@vite` directive:
+If needed, you may also specify the build path of your compiled assets when invoking the `@vite` directive:
 
 ```blade
 <!doctype html>
