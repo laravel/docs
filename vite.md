@@ -677,7 +677,7 @@ Out of the box, Laravel's Vite plugin uses sensible conventions that should work
 </head>
 ```
 
-Within the `vite.config.js` file, you may then specify the same configuration:
+Within the `vite.config.js` file, you should then specify the same configuration:
 
 ```js
 import { defineConfig } from 'vite';
