@@ -79,7 +79,7 @@ Next, set the `APP_URL` environment variable in your application's `.env` file. 
 <a name="managing-chromedriver-installations"></a>
 ### Managing ChromeDriver Installations
 
-If you would like to install a different version of ChromeDriver than what is installed through Laravel Dusk, you may use the `dusk:chrome-driver` command:
+If you would like to install a different version of ChromeDriver than what is installed by Laravel Dusk via the `dusk:install` command, you may use the `dusk:chrome-driver` command:
 
 ```shell
 # Install the latest version of ChromeDriver for your OS...
