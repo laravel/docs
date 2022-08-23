@@ -1,4 +1,4 @@
-[# Helpers
+# Helpers
 
 - [Introduction](#introduction)
 - [Available Methods](#available-methods)
@@ -3936,4 +3936,3 @@ The `with` function returns the value it is given. If a closure is passed as the
     $result = with(5, null);
 
     // 5
-]()
