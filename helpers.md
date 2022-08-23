@@ -1,4 +1,4 @@
-# Helpers
+[# Helpers
 
 - [Introduction](#introduction)
 - [Available Methods](#available-methods)
@@ -611,11 +611,11 @@ The `Arr::isList` method returns `true` if the given array's keys are sequential
 
     use Illuminate\Support\Arr;
 
-    $isAssoc = Arr::isList(['foo', 'bar', 'baz']);
+    $isList = Arr::isList(['foo', 'bar', 'baz']);
 
     // true
 
-    $isAssoc = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
+    $isList = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 
     // false
 
@@ -3936,3 +3936,4 @@ The `with` function returns the value it is given. If a closure is passed as the
     $result = with(5, null);
 
     // 5
+]()
