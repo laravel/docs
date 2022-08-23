@@ -647,7 +647,7 @@ If you would like to conditionally dispatch a job, you may use the `dispatchIf` 
 
     ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
     
-**Note**
+> **Note**
 > You may notice that your jobs are running syncrhonously even as you dispatch them to a queue, and think you are doing something wrong. However, This is standard behavior in development environments and particularly newly-created Laravel projects, in which the default queue connection is `sync`.
 
 <a name="delayed-dispatching"></a>
