@@ -647,6 +647,8 @@ If you would like to conditionally dispatch a job, you may use the `dispatchIf` 
 
     ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
 
+In new Laravel applications, the `sync` driver is the default queue driver. This driver executes jobs synchronously in the foreground of the current request, which is often convenient during local development. If you would like to actually begin queueing jobs for background processing, you may specify a different queue driver within your application's `config/queue.php` configuration file.
+
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
 
