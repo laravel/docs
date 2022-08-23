@@ -65,7 +65,7 @@ composer require --dev laravel/dusk
 > **Warning**  
 > If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
 
-After installing the Dusk package, execute the `dusk:install` Artisan command. The `dusk:install` command will create a `tests/Browser` directory and an example Dusk test:
+After installing the Dusk package, execute the `dusk:install` Artisan command. The `dusk:install` command will create a `tests/Browser` directory, an example Dusk test, and install the Chrome Driver binary for your operation system:
 
 ```shell
 php artisan dusk:install
@@ -79,7 +79,7 @@ Next, set the `APP_URL` environment variable in your application's `.env` file. 
 <a name="managing-chromedriver-installations"></a>
 ### Managing ChromeDriver Installations
 
-If you would like to install a different version of ChromeDriver than what is included with Laravel Dusk, you may use the `dusk:chrome-driver` command:
+If you would like to install a different version of ChromeDriver than what is installed by Laravel Dusk via the `dusk:install` command, you may use the `dusk:chrome-driver` command:
 
 ```shell
 # Install the latest version of ChromeDriver for your OS...
