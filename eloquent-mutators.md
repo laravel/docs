@@ -428,7 +428,7 @@ If a custom format is applied to the `date` or `datetime` cast, such as `datetim
 > **Warning**  
 > Enum casting is only available for PHP 8.1+.
 
-Eloquent also allows you to cast your attribute values to PHP ["backed" Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
+Eloquent also allows you to cast your attribute values to PHP [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 
     use App\Enums\ServerStatus;
 
