@@ -77,7 +77,7 @@
 When upgrading to a new version of Cashier, it's important that you carefully review [the upgrade guide](https://github.com/laravel/cashier-stripe/blob/master/UPGRADE.md).
 
 > **Warning**  
-> To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 13 utilizes Stripe API version `2020-08-27`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
+> To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 14 utilizes Stripe API version `2022-08-01`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
 
 <a name="installation"></a>
 ## Installation
@@ -296,13 +296,13 @@ Stripe allows you to credit or debit a customer's "balance". Later, this balance
 
     $balance = $user->balance();
 
-To credit a customer's balance, you may provide a negative value to the `applyBalance` method. If you wish, you may also provide a description:
+To credit a customer's balance, you may provide a value to the `creditBalance` method. If you wish, you may also provide a description:
 
-    $user->applyBalance(-500, 'Premium customer top-up.');
+    $user->creditBalance(500, 'Premium customer top-up.');
 
-Providing a positive value to the `applyBalance` method will debit the customer's balance:
+Providing a value to the `debitBalance` method will debit the customer's balance:
 
-    $user->applyBalance(300, 'Bad usage penalty.');
+    $user->debitBalance(300, 'Bad usage penalty.');
 
 The `applyBalance` method will create new customer balance transactions for the customer. You may retrieve these transaction records using the `balanceTransactions` method, which may be useful in order to provide a log of credits and debits for the customer to review:
 
@@ -375,7 +375,7 @@ You may customize the columns used for syncing customer information to Stripe by
         return $this->company_name;
     }
 
-Similarly, you may override the `stripeEmail`, `stripePhone`, and `stripeAddress` methods. These methods will sync information to their corresponding customer parameters when [updating the Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to take total control over the customer information sync process, you may override the `syncStripeCustomerDetails` method.
+Similarly, you may override the `stripeEmail`, `stripePhone`, `stripeAddress`, and `stripePreferredLocales` methods. These methods will sync information to their corresponding customer parameters when [updating the Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to take total control over the customer information sync process, you may override the `syncStripeCustomerDetails` method.
 
 <a name="billing-portal"></a>
 ### Billing Portal
@@ -1704,18 +1704,21 @@ You may pass an array of prices to the `previewInvoice` method in order to previ
 <a name="generating-invoice-pdfs"></a>
 ### Generating Invoice PDFs
 
+To get started with generating invoice PDF's, you should require the Dompdf library which is the default renderer for Cashier:
+
+```php
+composer require dompdf/dompdf
+```
+
 From within a route or controller, you may use the `downloadInvoice` method to generate a PDF download of a given invoice. This method will automatically generate the proper HTTP response needed to download the invoice:
 
     use Illuminate\Http\Request;
 
     Route::get('/user/invoice/{invoice}', function (Request $request, $invoiceId) {
-        return $request->user()->downloadInvoice($invoiceId, [
-            'vendor' => 'Your Company',
-            'product' => 'Your Product',
-        ]);
+        return $request->user()->downloadInvoice($invoiceId);
     });
 
-By default, all data on the invoice is derived from the customer and invoice data stored in Stripe. However, you can customize some of this data by providing an array as the second argument to the `downloadInvoice` method. This array allows you to customize information such as your company and product details:
+By default, all data on the invoice is derived from the customer and invoice data stored in Stripe. The filename is based on your `app.name` config value. However, you can customize some of this data by providing an array as the second argument to the `downloadInvoice` method. This array allows you to customize information such as your company and product details:
 
     return $request->user()->downloadInvoice($invoiceId, [
         'vendor' => 'Your Company',
@@ -1726,7 +1729,7 @@ By default, all data on the invoice is derived from the customer and invoice dat
         'email' => 'info@example.com',
         'url' => 'https://example.com',
         'vendorVat' => 'BE123456789',
-    ], 'my-invoice');
+    ]);
 
 The `downloadInvoice` method also allows for a custom filename via its third argument. This filename will automatically be suffixed with `.pdf`:
 
