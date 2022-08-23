@@ -1704,7 +1704,7 @@ You may pass an array of prices to the `previewInvoice` method in order to previ
 <a name="generating-invoice-pdfs"></a>
 ### Generating Invoice PDFs
 
-Before generating invoice PDF's, you should use Composer to install the Dompdf library, which is the default invoice renderer for Cashier:
+Before generating invoice PDFs, you should use Composer to install the Dompdf library, which is the default invoice renderer for Cashier:
 
 ```php
 composer require dompdf/dompdf
