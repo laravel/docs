@@ -986,6 +986,21 @@ If you would like to customize which channel that an entity's broadcast notifica
         }
     }
 
+If you are sending an [on-demand notification](#on-demand-notifications), you will need to manually specify the broadcast channel that your notification should use, as the `{notifiable}.{id}` convention will not work with an anonymous notifiable.
+You may define a `broadcastOn` method on your notification, returning an array of channels that this notification should be broadcast on:
+    
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return array
+     */
+    public function broadcastOn()
+    {
+        return [
+            new PrivateChannel('notifications.'.$this->user->id),
+        ];
+    }
+
 <a name="sms-notifications"></a>
 ## SMS Notifications
 
