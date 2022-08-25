@@ -56,6 +56,13 @@ After you have installed PHP and Composer, you may create a new Laravel project 
 composer create-project laravel/laravel example-app
 ```
 
+Or, you may install the Laravel Installer as a global Composer dependency:
+
+```nothing
+composer global require laravel/installer
+laravel new example-app
+```
+
 After the project has been created, start Laravel's local development server using the Laravel's Artisan CLI `serve` command:
 
 ```nothing
