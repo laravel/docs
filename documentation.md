@@ -23,7 +23,7 @@
     - [Responses](/docs/{{version}}/responses)
     - [Views](/docs/{{version}}/views)
     - [Blade Templates](/docs/{{version}}/blade)
-    - [Bundling Assets](/docs/{{version}}/vite)
+    - [Asset Bundling](/docs/{{version}}/vite)
     - [URL Generation](/docs/{{version}}/urls)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)

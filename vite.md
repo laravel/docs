@@ -1,4 +1,4 @@
-# Bundling Assets (Vite)
+# Asset Bundling (Vite)
 
 - [Introduction](#introduction)
 - [Installation & Setup](#installation)
