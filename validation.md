@@ -2105,9 +2105,7 @@ By default, when an attribute being validated is not present or contains an empt
 
     Validator::make($input, $rules)->passes(); // true
 
-For a custom rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create an "implicit" rule, you just need to set a public property `implicit` to `true`.
-
-To generate a new implicit rule object, you may use the `make:rule` Artisan command with the `--implicit` option :
+For a custom rule to run even when an attribute is empty, the rule must imply that the attribute is required. To quickly generate a new implicit rule object, you may use the `make:rule` Artisan command with the `--implicit` option:
 
 ```shell
 php artisan make:rule Uppercase --invokable --implicit
