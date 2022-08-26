@@ -130,19 +130,62 @@ The Laravel plugin also supports multiple entry points and advanced configuratio
 <a name="working-with-a-secure-development-server"></a>
 #### Working With A Secure Development Server
 
-If your development web server is running on HTTPS, including Valet's [secure command](/docs/{{version}}/valet#securing-sites), you may run into issues connecting to the Vite development server. You may configure Vite to also run on HTTPS by adding the following to your `vite.config.js` configuration file:
+If your development web server is running on HTTPS, you may run into issues connecting to the Vite development server.
+
+If you are using [Laravel Valet](/docs/{{version}}/valet) for local development, and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may configure the Vite development server to automatically use Valet's generated TLS certificates:
 
 ```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
 export default defineConfig({
-    // ...
-    server: { // [tl! add]
-        https: true, // [tl! add]
-        host: 'localhost', // [tl! add]
-    }, // [tl! add]
+    plugins: [
+        laravel({
+            // ...
+            valetTls: true, // [!tl add]
+        }),
+    ],
 });
 ```
 
-You will also need to accept the certificate warning for Vite's development server in your browser by following the "Local" link in your console when running the `npm run dev` command.
+If you are not using Valet's default conventions and have instead manually specified a host when linking and securing your application, you should specify the host manually:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            // ...
+            valetTls: 'my-app.test', // [!tl add]
+        }),
+    ],
+});
+```
+
+When using another web server, you should generate a trusted certificate and manually configure Vite to use the generated certificates:
+
+```js
+// ...
+import fs from 'fs'; // [tl! add]
+
+const host = 'my-app.test'; // [tl! add]
+
+export default defineConfig({
+    // ...
+    server: { // [!tl add]
+        host, // [!tl add]
+        hmr: { host }, // [!tl add]
+        https: { // [!tl add]
+            key: fs.readFileSync(`/path/to/${host}.key`), // [!tl add]
+            cert: fs.readFileSync(`/path/to/${host}.crt`), // [!tl add]
+        }, // [!tl add]
+    }, // [!tl add]
+});
+```
+
+If you are using an untrusted certificate, you will need to accept the certificate warning for Vite's development server in your browser by following the "Local" link in your console when running the `npm run dev` command.
 
 <a name="loading-your-scripts-and-styles"></a>
 ### Loading Your Scripts And Styles
