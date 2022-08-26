@@ -366,6 +366,16 @@ import.meta.glob([
 ]);
 ```
 
+By default, Vite will only add assets to the manifest file if they are greater than 4kb. If they are less, Vite will try to inject base64encoded URL strings which will fail using static files and blade views as Laravel will try to read the asset from the manifest file. To overcome this, simply add the following to your `vite.config.js` file.
+
+```js
+export default defineConfig({
+    build: {
+        assetsInlineLimit: 0
+    },
+});
+```
+
 These assets will now be processed by Vite when running `npm run build`. You can then reference these assets in Blade templates using the `Vite::asset` method, which will return the versioned URL for a given asset:
 
 ```blade
