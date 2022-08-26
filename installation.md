@@ -56,10 +56,11 @@ After you have installed PHP and Composer, you may create a new Laravel project 
 composer create-project laravel/laravel example-app
 ```
 
-Or, you may install the Laravel Installer as a global Composer dependency:
+Or, you may create new Laravel projects by globally installing the Laravel installer via Composer:
 
 ```nothing
 composer global require laravel/installer
+
 laravel new example-app
 ```
 
