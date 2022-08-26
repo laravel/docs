@@ -65,7 +65,7 @@ The `App\Http\Middleware\VerifyCsrfToken` [middleware](/docs/{{version}}/middlew
 <a name="csrf-tokens-and-spas"></a>
 ### CSRF Tokens & SPAs
 
-If you are building an SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities.
+If you are building a SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities.
 
 <a name="csrf-excluding-uris"></a>
 ### Excluding URIs From CSRF Protection
@@ -94,7 +94,8 @@ Typically, you should place these kinds of routes outside of the `web` middlewar
         ];
     }
 
-> {tip} For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing).
+> **Note**  
+> For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing).
 
 <a name="csrf-x-csrf-token"></a>
 ## X-CSRF-TOKEN
@@ -122,4 +123,5 @@ Laravel stores the current CSRF token in an encrypted `XSRF-TOKEN` cookie that i
 
 This cookie is primarily sent as a developer convenience since some JavaScript frameworks and libraries, like Angular and Axios, automatically place its value in the `X-XSRF-TOKEN` header on same-origin requests.
 
-> {tip} By default, the `resources/js/bootstrap.js` file includes the Axios HTTP library which will automatically send the `X-XSRF-TOKEN` header for you.
+> **Note**  
+> By default, the `resources/js/bootstrap.js` file includes the Axios HTTP library which will automatically send the `X-XSRF-TOKEN` header for you.

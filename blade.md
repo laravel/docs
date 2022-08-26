@@ -10,7 +10,7 @@
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
     - [Conditional Classes](#conditional-classes)
-    - [Checked / Selected / Disabled](#checked-and-selected)
+    - [Additional Attributes](#additional-attributes)
     - [Including Subviews](#including-subviews)
     - [The `@once` Directive](#the-once-directive)
     - [Raw PHP](#raw-php)
@@ -22,9 +22,13 @@
     - [Reserved Keywords](#reserved-keywords)
     - [Slots](#slots)
     - [Inline Component Views](#inline-component-views)
-    - [Anonymous Components](#anonymous-components)
     - [Dynamic Components](#dynamic-components)
     - [Manually Registering Components](#manually-registering-components)
+- [Anonymous Components](#anonymous-components)
+    - [Anonymous Index Components](#anonymous-index-components)
+    - [Data Properties / Attributes](#data-properties-attributes)
+    - [Accessing Parent Data](#accessing-parent-data)
+    - [Anonymous Components Namespaces](#anonymous-component-namespaces)
 - [Building Layouts](#building-layouts)
     - [Layouts Using Components](#layouts-using-components)
     - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
@@ -44,13 +48,14 @@
 
 Blade is the simple, yet powerful templating engine that is included with Laravel. Unlike some PHP templating engines, Blade does not restrict you from using plain PHP code in your templates. In fact, all Blade templates are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade template files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
 
-Blade views may be returned from routes or controller using the global `view` helper. Of course, as mentioned in the documentation on [views](/docs/{{version}}/views), data may be passed to the Blade view using the `view` helper's second argument:
+Blade views may be returned from routes or controllers using the global `view` helper. Of course, as mentioned in the documentation on [views](/docs/{{version}}/views), data may be passed to the Blade view using the `view` helper's second argument:
 
     Route::get('/', function () {
         return view('greeting', ['name' => 'Finn']);
     });
 
-> {tip} Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
+> **Note**  
+> Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
 
 <a name="displaying-data"></a>
 ## Displaying Data
@@ -67,7 +72,8 @@ You may display the contents of the `name` variable like so:
 Hello, {{ $name }}.
 ```
 
-> {tip} Blade's `{{ }}` echo statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
+> **Note**  
+> Blade's `{{ }}` echo statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
 You are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
 
@@ -109,7 +115,8 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmls
 Hello, {!! $name !!}.
 ```
 
-> {note} Be very careful when echoing content that is supplied by users of your application. You should typically use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
+> **Warning**  
+> Be very careful when echoing content that is supplied by users of your application. You should typically use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
 
 <a name="blade-and-javascript-frameworks"></a>
 ### Blade & JavaScript Frameworks
@@ -161,7 +168,8 @@ The latest versions of the Laravel application skeleton include a `Js` facade, w
 </script>
 ```
 
-> {note} You should only use the `Js::from` method to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
+> **Warning**  
+> You should only use the `Js::from` method to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 <a name="the-at-verbatim-directive"></a>
 #### The `@verbatim` Directive
@@ -336,9 +344,10 @@ In addition to conditional statements, Blade provides simple directives for work
 @endwhile
 ```
 
-> {tip} While iterating through a `foreach` loop, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
+> **Note**  
+> While iterating through a `foreach` loop, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
 
-When using loops you may also end the loop or skip the current iteration using the `@continue` and `@break` directives:
+When using loops you may also skip the current iteration or end the loop using the `@continue` and `@break` directives:
 
 ```blade
 @foreach ($users as $user)
@@ -399,18 +408,18 @@ If you are in a nested loop, you may access the parent loop's `$loop` variable v
 
 The `$loop` variable also contains a variety of other useful properties:
 
-Property  | Description
-------------- | -------------
-`$loop->index`  |  The index of the current loop iteration (starts at 0).
-`$loop->iteration`  |  The current loop iteration (starts at 1).
-`$loop->remaining`  |  The iterations remaining in the loop.
-`$loop->count`  |  The total number of items in the array being iterated.
-`$loop->first`  |  Whether this is the first iteration through the loop.
-`$loop->last`  |  Whether this is the last iteration through the loop.
-`$loop->even`  |  Whether this is an even iteration through the loop.
-`$loop->odd`  |  Whether this is an odd iteration through the loop.
-`$loop->depth`  |  The nesting level of the current loop.
-`$loop->parent`  |  When in a nested loop, the parent's loop variable.
+| Property           | Description                                            |
+|--------------------|--------------------------------------------------------|
+| `$loop->index`     | The index of the current loop iteration (starts at 0). |
+| `$loop->iteration` | The current loop iteration (starts at 1).              |
+| `$loop->remaining` | The iterations remaining in the loop.                  |
+| `$loop->count`     | The total number of items in the array being iterated. |
+| `$loop->first`     | Whether this is the first iteration through the loop.  |
+| `$loop->last`      | Whether this is the last iteration through the loop.   |
+| `$loop->even`      | Whether this is an even iteration through the loop.    |
+| `$loop->odd`       | Whether this is an odd iteration through the loop.     |
+| `$loop->depth`     | The nesting level of the current loop.                 |
+| `$loop->parent`    | When in a nested loop, the parent's loop variable.     |
 
 <a name="conditional-classes"></a>
 ### Conditional Classes
@@ -433,8 +442,8 @@ The `@class` directive conditionally compiles a CSS class string. The directive 
 <span class="p-4 text-gray-500 bg-red"></span>
 ```
 
-<a name="checked-and-selected"></a>
-### Checked / Selected / Disabled
+<a name="additional-attributes"></a>
+### Additional Attributes
 
 For convenience, you may use the `@checked` directive to easily indicate if a given HTML checkbox input is "checked". This directive will echo `checked` if the provided condition evaluates to `true`:
 
@@ -463,10 +472,29 @@ Additionally, the `@disabled` directive may be used to indicate if a given eleme
 <button type="submit" @disabled($errors->isNotEmpty())>Submit</button>
 ```
 
+Moreover, the `@readonly` directive may be used to indicate if a given element should be "readonly":
+
+```blade
+<input type="email"
+        name="email"
+        value="email@laravel.com"
+        @readonly($user->isNotAdmin()) />
+```
+
+In addition, the `@required` directive may be used to indicate if a given element should be "required":
+
+```blade
+<input type="text"
+        name="title"
+        value="title"
+        @required($user->isAdmin()) />
+```
+
 <a name="including-subviews"></a>
 ### Including Subviews
 
-> {tip} While you're free to use the `@include` directive, Blade [components](#components) provide similar functionality and offer several benefits over the `@include` directive such as data and attribute binding.
+> **Note**  
+> While you're free to use the `@include` directive, Blade [components](#components) provide similar functionality and offer several benefits over the `@include` directive such as data and attribute binding.
 
 Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
 
@@ -506,7 +534,8 @@ To include the first view that exists from a given array of views, you may use t
 @includeFirst(['custom.admin', 'admin'], ['status' => 'complete'])
 ```
 
-> {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
+> **Warning**  
+> You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
 <a name="rendering-views-for-collections"></a>
 #### Rendering Views For Collections
@@ -525,7 +554,8 @@ You may also pass a fourth argument to the `@each` directive. This argument dete
 @each('view.name', $jobs, 'job', 'view.empty')
 ```
 
-> {note} Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use the `@foreach` and `@include` directives instead.
+> **Warning**  
+> Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use the `@foreach` and `@include` directives instead.
 
 <a name="the-once-directive"></a>
 ### The `@once` Directive
@@ -577,7 +607,7 @@ Blade also allows you to define comments in your views. However, unlike HTML com
 
 Components and slots provide similar benefits to sections, layouts, and includes; however, some may find the mental model of components and slots easier to understand. There are two approaches to writing components: class based components and anonymous components.
 
-To create a class based component, you may use the `make:component` Artisan command. To illustrate how to use components, we will create a simple `Alert` component. The `make:component` command will place the component in the `App\View\Components` directory:
+To create a class based component, you may use the `make:component` Artisan command. To illustrate how to use components, we will create a simple `Alert` component. The `make:component` command will place the component in the `app/View/Components` directory:
 
 ```shell
 php artisan make:component Alert
@@ -591,7 +621,7 @@ You may also create components within subdirectories:
 php artisan make:component Forms/Input
 ```
 
-The command above will create an `Input` component in the `App\View\Components\Forms` directory and the view will be placed in the `resources/views/components/forms` directory.
+The command above will create an `Input` component in the `app/View/Components/Forms` directory and the view will be placed in the `resources/views/components/forms` directory.
 
 If you would like to create an anonymous component (a component with only a Blade template and no class), you may use the `--view` flag when invoking the `make:component` command:
 
@@ -658,7 +688,7 @@ To display a component, you may use a Blade component tag within one of your Bla
 <x-user-profile/>
 ```
 
-If the component class is nested deeper within the `App\View\Components` directory, you may use the `.` character to indicate directory nesting. For example, if we assume a component is located at `App\View\Components\Inputs\Button.php`, we may render it like so:
+If the component class is nested deeper within the `app/View/Components` directory, you may use the `.` character to indicate directory nesting. For example, if we assume a component is located at `app/View/Components/Inputs/Button.php`, we may render it like so:
 
 ```blade
 <x-inputs.button/>
@@ -673,7 +703,7 @@ You may pass data to Blade components using HTML attributes. Hard-coded, primiti
 <x-alert type="error" :message="$message"/>
 ```
 
-You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
+You should define all of the component's data attributes in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
 
     <?php
 
@@ -888,7 +918,8 @@ All of the attributes that are not part of the component's constructor will auto
 </div>
 ```
 
-> {note} Using directives such as `@env` within component tags is not supported at this time. For example, `<x-alert :live="@env('production')"/>` will not be compiled.
+> **Warning**  
+> Using directives such as `@env` within component tags is not supported at this time. For example, `<x-alert :live="@env('production')"/>` will not be compiled.
 
 <a name="default-merged-attributes"></a>
 #### Default / Merged Attributes
@@ -934,7 +965,8 @@ If you need to merge other attributes onto your component, you can chain the `me
 </button>
 ```
 
-> {tip} If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [`@class` directive](#conditional-classes).
+> **Note**  
+> If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [`@class` directive](#conditional-classes).
 
 <a name="non-class-attribute-merging"></a>
 #### Non-Class Attribute Merging
@@ -1157,109 +1189,6 @@ To create a component that renders an inline view, you may use the `inline` opti
 php artisan make:component Alert --inline
 ```
 
-<a name="anonymous-components"></a>
-### Anonymous Components
-
-Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/views/components/alert.blade.php`, you may simply render it like so:
-
-```blade
-<x-alert/>
-```
-
-You may use the `.` character to indicate if a component is nested deeper inside the `components` directory. For example, assuming the component is defined at `resources/views/components/inputs/button.blade.php`, you may render it like so:
-
-```blade
-<x-inputs.button/>
-```
-
-<a name="anonymous-index-components"></a>
-#### Anonymous Index Components
-
-Sometimes, when a component is made up of many Blade templates, you may wish to group the given component's templates within a single directory. For example, imagine an "accordion" component with the following directory structure:
-
-```none
-/resources/views/components/accordion.blade.php
-/resources/views/components/accordion/item.blade.php
-```
-
-This directory structure allows you to render the accordion component and its item like so:
-
-```blade
-<x-accordion>
-    <x-accordion.item>
-        ...
-    </x-accordion.item>
-</x-accordion>
-```
-
-However, in order to render the accordion component via `x-accordion`, we were forced to place the "index" accordion component template in the `resources/views/components` directory instead of nesting it within the `accordion` directory with the other accordion related templates.
-
-Thankfully, Blade allows you to place an `index.blade.php` file within a component's template directory. When an `index.blade.php` template exists for the component, it will be rendered as the "root" node of the component. So, we can continue to use the same Blade syntax given in the example above; however, we will adjust our directory structure like so:
-
-```none
-/resources/views/components/accordion/index.blade.php
-/resources/views/components/accordion/item.blade.php
-```
-
-<a name="data-properties-attributes"></a>
-#### Data Properties / Attributes
-
-Since anonymous components do not have any associated class, you may wonder how you may differentiate which data should be passed to the component as variables and which attributes should be placed in the component's [attribute bag](#component-attributes).
-
-You may specify which attributes should be considered data variables using the `@props` directive at the top of your component's Blade template. All other attributes on the component will be available via the component's attribute bag. If you wish to give a data variable a default value, you may specify the variable's name as the array key and the default value as the array value:
-
-```blade
-<!-- /resources/views/components/alert.blade.php -->
-
-@props(['type' => 'info', 'message'])
-
-<div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
-    {{ $message }}
-</div>
-```
-
-Given the component definition above, we may render the component like so:
-
-```blade
-<x-alert type="error" :message="$message" class="mb-4"/>
-```
-
-<a name="accessing-parent-data"></a>
-#### Accessing Parent Data
-
-Sometimes you may want to access data from a parent component inside a child component. In these cases, you may use the `@aware` directive. For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>`:
-
-```blade
-<x-menu color="purple">
-    <x-menu.item>...</x-menu.item>
-    <x-menu.item>...</x-menu.item>
-</x-menu>
-```
-
-The `<x-menu>` component may have an implementation like the following:
-
-```blade
-<!-- /resources/views/components/menu/index.blade.php -->
-
-@props(['color' => 'gray'])
-
-<ul {{ $attributes->merge(['class' => 'bg-'.$color.'-200']) }}>
-    {{ $slot }}
-</ul>
-```
-
-Because the `color` prop was only passed into the parent (`<x-menu>`), it won't be available inside `<x-menu.item>`. However, if we use the `@aware` directive, we can make it available inside `<x-menu.item>` as well:
-
-```blade
-<!-- /resources/views/components/menu/item.blade.php -->
-
-@aware(['color' => 'gray'])
-
-<li {{ $attributes->merge(['class' => 'text-'.$color.'-800']) }}>
-    {{ $slot }}
-</li>
-```
-
 <a name="dynamic-components"></a>
 ### Dynamic Components
 
@@ -1272,7 +1201,8 @@ Sometimes you may need to render a component but not know which component should
 <a name="manually-registering-components"></a>
 ### Manually Registering Components
 
-> {note} The following documentation on manually registering components is primarily applicable to those who are writing Laravel packages that include view components. If you are not writing a package, this portion of the component documentation may not be relevant to you.
+> **Warning**  
+> The following documentation on manually registering components is primarily applicable to those who are writing Laravel packages that include view components. If you are not writing a package, this portion of the component documentation may not be relevant to you.
 
 When writing components for your own application, components are automatically discovered within the `app/View/Components` directory and `resources/views/components` directory.
 
@@ -1321,6 +1251,137 @@ This will allow the usage of package components by their vendor namespace using 
 ```
 
 Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using "dot" notation.
+
+<a name="anonymous-components"></a>
+## Anonymous Components
+
+Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/views/components/alert.blade.php`, you may simply render it like so:
+
+```blade
+<x-alert/>
+```
+
+You may use the `.` character to indicate if a component is nested deeper inside the `components` directory. For example, assuming the component is defined at `resources/views/components/inputs/button.blade.php`, you may render it like so:
+
+```blade
+<x-inputs.button/>
+```
+
+<a name="anonymous-index-components"></a>
+### Anonymous Index Components
+
+Sometimes, when a component is made up of many Blade templates, you may wish to group the given component's templates within a single directory. For example, imagine an "accordion" component with the following directory structure:
+
+```none
+/resources/views/components/accordion.blade.php
+/resources/views/components/accordion/item.blade.php
+```
+
+This directory structure allows you to render the accordion component and its item like so:
+
+```blade
+<x-accordion>
+    <x-accordion.item>
+        ...
+    </x-accordion.item>
+</x-accordion>
+```
+
+However, in order to render the accordion component via `x-accordion`, we were forced to place the "index" accordion component template in the `resources/views/components` directory instead of nesting it within the `accordion` directory with the other accordion related templates.
+
+Thankfully, Blade allows you to place an `index.blade.php` file within a component's template directory. When an `index.blade.php` template exists for the component, it will be rendered as the "root" node of the component. So, we can continue to use the same Blade syntax given in the example above; however, we will adjust our directory structure like so:
+
+```none
+/resources/views/components/accordion/index.blade.php
+/resources/views/components/accordion/item.blade.php
+```
+
+<a name="data-properties-attributes"></a>
+### Data Properties / Attributes
+
+Since anonymous components do not have any associated class, you may wonder how you may differentiate which data should be passed to the component as variables and which attributes should be placed in the component's [attribute bag](#component-attributes).
+
+You may specify which attributes should be considered data variables using the `@props` directive at the top of your component's Blade template. All other attributes on the component will be available via the component's attribute bag. If you wish to give a data variable a default value, you may specify the variable's name as the array key and the default value as the array value:
+
+```blade
+<!-- /resources/views/components/alert.blade.php -->
+
+@props(['type' => 'info', 'message'])
+
+<div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
+    {{ $message }}
+</div>
+```
+
+Given the component definition above, we may render the component like so:
+
+```blade
+<x-alert type="error" :message="$message" class="mb-4"/>
+```
+
+<a name="accessing-parent-data"></a>
+### Accessing Parent Data
+
+Sometimes you may want to access data from a parent component inside a child component. In these cases, you may use the `@aware` directive. For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>`:
+
+```blade
+<x-menu color="purple">
+    <x-menu.item>...</x-menu.item>
+    <x-menu.item>...</x-menu.item>
+</x-menu>
+```
+
+The `<x-menu>` component may have an implementation like the following:
+
+```blade
+<!-- /resources/views/components/menu/index.blade.php -->
+
+@props(['color' => 'gray'])
+
+<ul {{ $attributes->merge(['class' => 'bg-'.$color.'-200']) }}>
+    {{ $slot }}
+</ul>
+```
+
+Because the `color` prop was only passed into the parent (`<x-menu>`), it won't be available inside `<x-menu.item>`. However, if we use the `@aware` directive, we can make it available inside `<x-menu.item>` as well:
+
+```blade
+<!-- /resources/views/components/menu/item.blade.php -->
+
+@aware(['color' => 'gray'])
+
+<li {{ $attributes->merge(['class' => 'text-'.$color.'-800']) }}>
+    {{ $slot }}
+</li>
+```
+
+> **Warning**  
+> The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
+
+<a name="anonymous-component-namespaces"></a>
+### Anonymous Component Namespaces
+
+As previously discussed, anonymous components are typically defined by placing a Blade template within your `resources/views/components` directory. However, you may occasionally want to register other anonymous component paths with Laravel in addition to the default path.
+
+For example, when building a vacation booking application, you may wish to place flight booking related anonymous components within a `resources/views/flights/bookings/components` directory. To inform Laravel of this anonymous component location, you may use the `anonymousComponentNamespace` method provided by the `Blade` facade.
+
+The `anonymousComponentNamespace` method accepts the "path" to the anonymous component location as its first argument and the "namespace" that components should be placed under as its second argument. As you will see in the example below, the "namespace" will be prefixed to the component's name when the component is rendered. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Blade::anonymousComponentNamespace('flights.bookings.components', 'flights');
+    }
+
+Given the example above, you may render a `panel` component that exists within the newly registered component directory like so:
+
+```blade
+<x-flights::panel :flight="$flight" />
+```
 
 <a name="building-layouts"></a>
 ## Building Layouts
@@ -1447,7 +1508,8 @@ When defining a child view, use the `@extends` Blade directive to specify which 
 
 In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
-> {tip} Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
+> **Note**  
+> Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
 
 The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
 
@@ -1540,6 +1602,14 @@ Blade allows you to push to named stacks which can be rendered somewhere else in
 @push('scripts')
     <script src="/example.js"></script>
 @endpush
+```
+
+If you would like to `@push` content if a given boolean expression evaluates to `true`, you may use the `@pushIf` directive:
+
+```blade
+@pushIf($shouldPush, 'scripts')
+    <script src="/example.js"></script>
+@endPushIf
 ```
 
 You may push to a stack as many times as needed. To render the complete stack contents, pass the name of the stack to the `@stack` directive:
@@ -1643,7 +1713,8 @@ As you can see, we will chain the `format` method onto whatever expression is pa
 
     <?php echo ($var)->format('m/d/Y H:i'); ?>
 
-> {note} After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
+> **Warning**  
+> After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
 
 <a name="custom-echo-handlers"></a>
 ### Custom Echo Handlers

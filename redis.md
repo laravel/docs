@@ -148,7 +148,11 @@ In addition to the default `host`, `port`, `database`, and `password` server con
 <a name="the-redis-facade-alias"></a>
 #### The Redis Facade Alias
 
-Laravel's `config/app.php` configuration file contains an `aliases` array which defines all of the class aliases that will be registered by the framework. For convenience, an alias entry is included for each [facade](/docs/{{version}}/facades) offered by Laravel; however, the `Redis` alias is disabled because it conflicts with the `Redis` class name provided by the phpredis extension. If you are using the Predis client and would like to enable this alias, you may un-comment the alias in your application's `config/app.php` configuration file.
+Laravel's `config/app.php` configuration file contains an `aliases` array which defines all of the class aliases that will be registered by the framework. By default, no `Redis` alias is included because it would conflict with the `Redis` class name provided by the phpredis extension. If you are using the Predis client and would like to add a `Redis` alias, you may add it to the `aliases` array in your application's `config/app.php` configuration file:
+
+    'aliases' => Facade::defaultAliases()->merge([
+        'Redis' => Illuminate\Support\Facades\Redis::class,
+    ])->toArray(),
 
 <a name="phpredis"></a>
 ### phpredis
@@ -179,7 +183,7 @@ In addition to the default `scheme`, `host`, `port`, `database`, and `password` 
 <a name="phpredis-serialization"></a>
 #### phpredis Serialization & Compression
 
-The phpredis extension may also be configured to use a variety serialization and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
+The phpredis extension may also be configured to use a variety of serialization and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
 
     'redis' => [
 
@@ -260,7 +264,8 @@ The `Redis` facade's `transaction` method provides a convenient wrapper around R
         $redis->incr('total_visits', 1);
     });
 
-> {note} When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands.
+> **Warning**  
+> When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands.
 
 #### Lua Scripts
 
@@ -280,7 +285,8 @@ In this example, we will increment a counter, inspect its new value, and increme
         return counter
     LUA, 2, 'first-counter', 'second-counter');
 
-> {note} Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
+> **Warning**  
+> Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
 
 <a name="pipelining-commands"></a>
 ### Pipelining Commands

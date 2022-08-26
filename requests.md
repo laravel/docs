@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Interacting With The Request](#interacting-with-the-request)
     - [Accessing The Request](#accessing-the-request)
-    - [Request Path & Method](#request-path-and-method)
+    - [Request Path, Host, & Method](#request-path-and-method)
     - [Request Headers](#request-headers)
     - [Request IP Address](#request-ip-address)
     - [Content Negotiation](#content-negotiation)
@@ -97,7 +97,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` route
     }
 
 <a name="request-path-and-method"></a>
-### Request Path & Method
+### Request Path, Host, & Method
 
 The `Illuminate\Http\Request` instance provides a variety of methods for examining the incoming HTTP request and extends the `Symfony\Component\HttpFoundation\Request` class. We will discuss a few of the most important methods below.
 
@@ -135,6 +135,15 @@ To retrieve the full URL for the incoming request you may use the `url` or `full
 If you would like to append query string data to the current URL, you may call the `fullUrlWithQuery` method. This method merges the given array of query string variables with the current query string:
 
     $request->fullUrlWithQuery(['type' => 'phone']);
+
+<a name="retrieving-the-request-host"></a>
+#### Retrieving The Request Host
+
+You may retrieve the "host" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:
+
+    $request->host();
+    $request->httpHost();
+    $request->schemeAndHttpHost();
 
 <a name="retrieving-the-request-method"></a>
 #### Retrieving The Request Method
@@ -214,7 +223,8 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
         //
     });
 
-> {tip} If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
+> **Note**  
+> If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
 
 <a name="input"></a>
 ## Input
@@ -278,9 +288,16 @@ You may call the `query` method without any arguments in order to retrieve all o
 <a name="retrieving-json-input-values"></a>
 #### Retrieving JSON Input Values
 
-When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to retrieve values that are nested within JSON arrays:
+When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to retrieve values that are nested within JSON arrays / objects:
 
     $name = $request->input('user.name');
+
+<a name="retrieving-stringable-input-values"></a>
+#### Retrieving Stringable Input Values
+
+Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\Support\Stringable`](/docs/{{version}}/helpers#fluent-strings):
+
+    $name = $request->string('name')->trim();
 
 <a name="retrieving-boolean-input-values"></a>
 #### Retrieving Boolean Input Values
@@ -301,6 +318,15 @@ The second and third arguments accepted by the `date` method may be used to spec
     $elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');
 
 If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method.
+
+<a name="retrieving-enum-input-values"></a>
+#### Retrieving Enum Input Values
+
+Input values that correspond to [PHP enums](https://www.php.net/manual/en/language.types.enumerations.php) may also be retrieved from the request. If the request does not contain an input value with the given name or the enum does not have a backing value that matches the input value, `null` will be returned. The `enum` method accepts the name of the input value and the enum class as its first and second arguments:
+
+    use App\Enums\Status;
+
+    $status = $request->enum('status', Status::class);
 
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input Via Dynamic Properties
@@ -324,7 +350,8 @@ If you need to retrieve a subset of the input data, you may use the `only` and `
 
     $input = $request->except('credit_card');
 
-> {note} The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request.
+> **Warning**  
+> The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request.
 
 <a name="determining-if-input-is-present"></a>
 ### Determining If Input Is Present
@@ -455,7 +482,32 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
 By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `App\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
 
-If you would like to disable this behavior, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
+#### Disabling Input Normalization
+
+If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
+
+If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`.
+
+```php
+use App\Http\Middleware\ConvertEmptyStringsToNull;
+use App\Http\Middleware\TrimStrings;
+
+/**
+ * Bootstrap any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    TrimStrings::skipWhen(function ($request) {
+        return $request->is('admin/*');
+    });
+
+    ConvertEmptyStringsToNull::skipWhen(function ($request) {
+        // ...
+    });
+}
+```
 
 <a name="files"></a>
 ## Files
@@ -517,7 +569,8 @@ If you do not want a filename to be automatically generated, you may use the `st
 
     $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
 
-> {tip} For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem).
+> **Note**  
+> For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem).
 
 <a name="configuring-trusted-proxies"></a>
 ## Configuring Trusted Proxies
@@ -553,7 +606,8 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
         protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
     }
 
-> {tip} If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).
+> **Note**  
+> If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).
 
 <a name="trusting-all-proxies"></a>
 #### Trusting All Proxies

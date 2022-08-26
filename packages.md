@@ -11,6 +11,7 @@
     - [Translations](#translations)
     - [Views](#views)
     - [View Components](#view-components)
+    - ["About" Artisan Command](#about-artisan-command)
 - [Commands](#commands)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
@@ -107,7 +108,8 @@ Now, when users of your package execute Laravel's `vendor:publish` command, your
 
     $value = config('courier.option');
 
-> {note} You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
+> **Warning**  
+> You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
 
 <a name="default-package-configuration"></a>
 #### Default Package Configuration
@@ -128,7 +130,8 @@ The `mergeConfigFrom` method accepts the path to your package's configuration fi
         );
     }
 
-> {note} This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
+> **Warning**  
+> This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
 
 <a name="routes"></a>
 ### Routes
@@ -252,40 +255,78 @@ Now, when users of your package execute Laravel's `vendor:publish` Artisan comma
 <a name="view-components"></a>
 ### View Components
 
-If your package contains [view components](/docs/{{version}}/blade#components), you may use the `loadViewComponentsAs` method to inform Laravel how to load them. The `loadViewComponentsAs` method accepts two arguments: the tag prefix for your view components and an array of your view component class names. For example, if your package's prefix is `courier` and you have `Alert` and `Button` view components, you would add the following to your service provider's `boot` method:
+If you are building a package that utilizes Blade components or placing components in non-conventional directories, you will need to manually register your component class and its HTML tag alias so that Laravel knows where to find the component. You should typically register your components in the `boot` method of your package's service provider:
 
-    use Courier\Components\Alert;
-    use Courier\Components\Button;
+    use Illuminate\Support\Facades\Blade;
+    use VendorPackage\View\Components\AlertComponent;
 
     /**
-     * Bootstrap any package services.
+     * Bootstrap your package's services.
      *
      * @return void
      */
     public function boot()
     {
-        $this->loadViewComponentsAs('courier', [
-            Alert::class,
-            Button::class,
-        ]);
+        Blade::component('package-alert', AlertComponent::class);
     }
 
-Once your view components are registered in a service provider, you may reference them in your view like so:
+Once your component has been registered, it may be rendered using its tag alias:
 
 ```blade
-<x-courier-alert />
-
-<x-courier-button />
+<x-package-alert/>
 ```
+
+<a name="autoloading-package-components"></a>
+#### Autoloading Package Components
+
+Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Nightshade\Views\Components` namespace:
+
+    use Illuminate\Support\Facades\Blade;
+
+    /**
+     * Bootstrap your package's services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
+    }
+
+This will allow the usage of package components by their vendor namespace using the `package-name::` syntax:
+
+```blade
+<x-nightshade::calendar />
+<x-nightshade::color-picker />
+```
+
+Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using "dot" notation.
 
 <a name="anonymous-components"></a>
 #### Anonymous Components
 
-If your package contains anonymous components, they must be placed within a `components` directory of your package's "views" directory (as specified by `loadViewsFrom`). Then, you may render them by prefixing the component name with the package's view namespace:
+If your package contains anonymous components, they must be placed within a `components` directory of your package's "views" directory (as specified by the [`loadViewsFrom` method](#views)). Then, you may render them by prefixing the component name with the package's view namespace:
 
 ```blade
 <x-courier::alert />
 ```
+
+<a name="about-artisan-command"></a>
+### "About" Artisan Command
+
+Laravel's built-in `about` Artisan command provides a synopsis of the application's environment and configuration. Packages may push additional information to this command's output via the `AboutCommand` class. Typically, this information may be added from your package service provider's `boot` method:
+
+    use Illuminate\Foundation\Console\AboutCommand;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        AboutCommand::add('My Package', fn () => ['Version' => '1.0.0']);
+    }
 
 <a name="commands"></a>
 ## Commands

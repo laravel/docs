@@ -62,9 +62,10 @@ To get started, you should install [Google Chrome](https://www.google.com/chrome
 composer require --dev laravel/dusk
 ```
 
-> {note} If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
+> **Warning**  
+> If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
 
-After installing the Dusk package, execute the `dusk:install` Artisan command. The `dusk:install` command will create a `tests/Browser` directory and an example Dusk test:
+After installing the Dusk package, execute the `dusk:install` Artisan command. The `dusk:install` command will create a `tests/Browser` directory, an example Dusk test, and install the Chrome Driver binary for your operation system:
 
 ```shell
 php artisan dusk:install
@@ -72,12 +73,13 @@ php artisan dusk:install
 
 Next, set the `APP_URL` environment variable in your application's `.env` file. This value should match the URL you use to access your application in a browser.
 
-> {tip} If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please also consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
+> **Note**  
+> If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please also consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
 
 <a name="managing-chromedriver-installations"></a>
 ### Managing ChromeDriver Installations
 
-If you would like to install a different version of ChromeDriver than what is included with Laravel Dusk, you may use the `dusk:chrome-driver` command:
+If you would like to install a different version of ChromeDriver than what is installed by Laravel Dusk via the `dusk:install` command, you may use the `dusk:chrome-driver` command:
 
 ```shell
 # Install the latest version of ChromeDriver for your OS...
@@ -93,7 +95,8 @@ php artisan dusk:chrome-driver --all
 php artisan dusk:chrome-driver --detect
 ```
 
-> {note} Dusk requires the `chromedriver` binaries to be executable. If you're having problems running Dusk, you should ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin/`.
+> **Warning**  
+> Dusk requires the `chromedriver` binaries to be executable. If you're having problems running Dusk, you should ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin/`.
 
 <a name="using-other-browsers"></a>
 ### Using Other Browsers
@@ -158,7 +161,8 @@ Most of the tests you write will interact with pages that retrieve data from you
         use DatabaseMigrations;
     }
 
-> {note} SQLite in-memory databases may not be used when executing Dusk tests. Since the browser executes within its own process, it will not be able to access the in-memory databases of other processes.
+> **Warning**  
+> SQLite in-memory databases may not be used when executing Dusk tests. Since the browser executes within its own process, it will not be able to access the in-memory databases of other processes.
 
 <a name="running-tests"></a>
 ### Running Tests
@@ -181,7 +185,8 @@ The `dusk` command accepts any argument that is normally accepted by the PHPUnit
 php artisan dusk --group=foo
 ```
 
-> {tip} If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
+> **Note**  
+> If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
 
 <a name="manually-starting-chromedriver"></a>
 #### Manually Starting ChromeDriver
@@ -377,7 +382,8 @@ Often, you will be testing pages that require authentication. You can use Dusk's
               ->visit('/home');
     });
 
-> {note} After using the `loginAs` method, the user session will be maintained for all tests within the file.
+> **Warning**  
+> After using the `loginAs` method, the user session will be maintained for all tests within the file.
 
 <a name="cookies"></a>
 ### Cookies
@@ -418,6 +424,10 @@ You may use the `script` method to execute arbitrary JavaScript statements withi
 You may use the `screenshot` method to take a screenshot and store it with the given filename. All screenshots will be stored within the `tests/Browser/screenshots` directory:
 
     $browser->screenshot('filename');
+
+The `responsiveScreenshots` method may be used to take a series of screenshots at various breakpoints:
+
+    $browser->responsiveScreenshots('filename');
 
 <a name="storing-console-output-to-disk"></a>
 ### Storing Console Output To Disk
@@ -563,16 +573,17 @@ The `attach` method may be used to attach a file to a `file` input element. Like
 
     $browser->attach('photo', __DIR__.'/photos/mountains.png');
 
-> {note} The attach function requires the `Zip` PHP extension to be installed and enabled on your server.
+> **Warning**  
+> The attach function requires the `Zip` PHP extension to be installed and enabled on your server.
 
 <a name="pressing-buttons"></a>
 ### Pressing Buttons
 
-The `press` method may be used to click a button element on the page. The first argument given to the `press` method may be either the display text of the button or a CSS / Dusk selector:
+The `press` method may be used to click a button element on the page. The argument given to the `press` method may be either the display text of the button or a CSS / Dusk selector:
 
     $browser->press('Login');
 
-When submitting forms, many application's disable the form's submission button after it is pressed and then re-enable the button when the form submission's HTTP request is complete. To press a button and wait for the button to be re-enabled, you may use the `pressAndWaitFor` method:
+When submitting forms, many applications disable the form's submission button after it is pressed and then re-enable the button when the form submission's HTTP request is complete. To press a button and wait for the button to be re-enabled, you may use the `pressAndWaitFor` method:
 
     // Press the button and wait a maximum of 5 seconds for it to be enabled...
     $browser->pressAndWaitFor('Save');
@@ -593,7 +604,8 @@ You may use the `seeLink` method to determine if a link with the given display t
         // ...
     }
 
-> {note} These methods interact with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
+> **Warning**  
+> These methods interact with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
 
 <a name="using-the-keyboard"></a>
 ### Using The Keyboard
@@ -606,7 +618,8 @@ Another valuable use case for the `keys` method is sending a "keyboard shortcut"
 
     $browser->keys('.app', ['{command}', 'j']);
 
-> {tip} All modifier keys such as `{command}` are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php).
+> **Note**  
+> All modifier keys such as `{command}` are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php).
 
 <a name="using-the-mouse"></a>
 ### Using The Mouse
@@ -825,7 +838,7 @@ You may also wait for a [named route's](/docs/{{version}}/routing#named-routes) 
     $browser->waitForRoute($routeName, $parameters);
 
 <a name="waiting-for-page-reloads"></a>
-#### Waiting for Page Reloads
+#### Waiting For Page Reloads
 
 If you need to wait for a page to reload after performing an action, use the `waitForReload` method:
 
@@ -863,6 +876,32 @@ The `waitUntilVue` and `waitUntilVueIsNot` methods may be used to wait until a [
     // Wait until the component attribute doesn't contain the given value...
     $browser->waitUntilVueIsNot('user.name', null, '@user');
 
+<a name="waiting-for-javascript-events"></a>
+#### Waiting For JavaScript Events
+
+The `waitForEvent` method can be used to pause the execution of a test until a JavaScript event occurs:
+
+    $browser->waitForEvent('load');
+
+The event listener is attached to the current scope, which is the `body` element by default. When using a scoped selector, the event listener will be attached to the matching element:
+
+    $browser->with('iframe', function ($iframe) {
+        // Wait for the iframe's load event...
+        $iframe->waitForEvent('load');
+    });
+
+You may also provide a selector as the second argument to the `waitForEvent` method to attach the event listener to a specific element:
+
+    $browser->waitForEvent('load', '.selector');
+
+You may also wait for events on the `document` and `window` objects:
+
+    // Wait until the document is scrolled...
+    $browser->waitForEvent('scroll', 'document');
+
+    // Wait a maximum of five seconds until the window is resized...
+    $browser->waitForEvent('resize', 'window', 5);
+
 <a name="waiting-with-a-callback"></a>
 #### Waiting With A Callback
 
@@ -887,12 +926,14 @@ Dusk provides a variety of assertions that you may make against your application
 
 <style>
     .collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
     }
 
     .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 
@@ -1789,7 +1830,8 @@ Once the component has been defined, we can easily select a date within the date
 <a name="continuous-integration"></a>
 ## Continuous Integration
 
-> {note} Most Dusk continuous integration configurations expect your Laravel application to be served using the built-in PHP development server on port 8000. Therefore, before continuing, you should ensure that your continuous integration environment has an `APP_URL` environment variable value of `http://127.0.0.1:8000`.
+> **Warning**  
+> Most Dusk continuous integration configurations expect your Laravel application to be served using the built-in PHP development server on port 8000. Therefore, before continuing, you should ensure that your continuous integration environment has an `APP_URL` environment variable value of `http://127.0.0.1:8000`.
 
 <a name="running-tests-on-heroku-ci"></a>
 ### Heroku CI
@@ -1842,7 +1884,7 @@ script:
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
 
-If you are using [Github Actions](https://github.com/features/actions) to run your Dusk tests, you may use the following configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
+If you are using [GitHub Actions](https://github.com/features/actions) to run your Dusk tests, you may use the following configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
 
 ```yaml
 name: CI
@@ -1852,13 +1894,13 @@ jobs:
   dusk-php:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Prepare The Environment
         run: cp .env.example .env
       - name: Create Database
         run: |
           sudo systemctl start mysql
-          mysql --user="root" --password="root" -e "CREATE DATABASE 'my-database' character set UTF8mb4 collate utf8mb4_bin;"
+          mysql --user="root" --password="root" -e "CREATE DATABASE \`my-database\` character set UTF8mb4 collate utf8mb4_bin;"
       - name: Install Composer Dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Generate Application Key
