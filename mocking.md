@@ -186,9 +186,6 @@ You may use the `Bus` facade's `fake` method to prevent jobs from being dispatch
 
             // Assert a job was not dispatched after response was sent...
             Bus::assertNotDispatchedAfterResponse(AnotherJob::class);
-
-            // Assert no jobs were dispatched...
-            Bus::assertNothingDispatched();
         }
     }
 
