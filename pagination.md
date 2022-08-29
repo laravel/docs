@@ -126,7 +126,7 @@ You may create a cursor based paginator instance via the `cursorPaginate` method
 
 Once you have retrieved a cursor paginator instance, you may [display the pagination results](#displaying-pagination-results) as you typically would when using the `paginate` and `simplePaginate` methods. For more information on the instance methods offered by the cursor paginator, please consult the [cursor paginator instance method documentation](#cursor-paginator-instance-methods).
 
-> **Warning**
+> **Warning**  
 > Your query must contain an "order by" clause in order to take advantage of cursor pagination.
 
 <a name="cursor-vs-offset-pagination"></a>
@@ -163,7 +163,7 @@ The `Paginator` and `CursorPaginator` classes do not need to know the total numb
 
 In other words, the `Paginator` corresponds to the `simplePaginate` method on the query builder, the `CursorPaginator` corresponds to the `cursorPaginate` method, and the `LengthAwarePaginator` corresponds to the `paginate` method.
 
-> **Warning**
+> **Warning**  
 > When manually creating a paginator instance, you should manually "slice" the array of results you pass to the paginator. If you're unsure how to do this, check out the [array_slice](https://secure.php.net/manual/en/function.array-slice.php) PHP function.
 
 <a name="customizing-pagination-urls"></a>
