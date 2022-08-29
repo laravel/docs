@@ -223,6 +223,34 @@ Because hiding resources via a `404` response is such a common pattern for web a
                     : Response::denyAsNotFound();
     });
 
+You may find it preferable to set a default deny status across all Gate and Policy responses. If you would like to do this, you should call the `Gate::useDefaultDenyStatus($status)` function in a service provider's `boot` function and pass your preferred status:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+    use Illuminate\Support\Facades\Gate;
+
+    class AuthServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application authentication / authorization services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Gate::useDefaultDenyStatus(404);
+
+            $this->registerPolicies();
+
+            //
+        }
+    }
+
+All deny responses that do not specify a status code, e.g. `Response::deny()`, will now return a `404` to the browser. You can still customise the status code on a case by case basis with `Response::denyWithStatus(403)`.
+
 <a name="intercepting-gate-checks"></a>
 ### Intercepting Gate Checks
 
