@@ -131,7 +131,7 @@ public function address(): Attribute
 <a name="enum-casting"></a>
 ### Enum Eloquent Attribute Casting
 
-> **Warning**  
+> **Warning**
 > Enum casting is only available for PHP 8.1+.
 
 _Enum casting was contributed by [Mohamed Said](https://github.com/themsaid)_.

@@ -60,7 +60,7 @@ All Laravel applications include Tinker by default. However, you may install Tin
 composer require laravel/tinker
 ```
 
-> **Note**  
+> **Note**
 > Looking for a graphical UI for interacting with your Laravel application? Check out [Tinkerwell](https://tinkerwell.app)!
 
 <a name="usage"></a>
@@ -78,7 +78,7 @@ You can publish Tinker's configuration file using the `vendor:publish` command:
 php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 ```
 
-> **Warning**  
+> **Warning**
 > The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depends on garbage collection to place the job on the queue. Therefore, when using tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs.
 
 <a name="command-allow-list"></a>
@@ -156,7 +156,7 @@ Let's take a look at an example command. Note that we are able to request any de
         }
     }
 
-> **Note**  
+> **Note**
 > For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
 
 <a name="closure-commands"></a>
@@ -498,7 +498,7 @@ Sometimes, you may need more manual control over how a progress bar is advanced.
 
     $bar->finish();
 
-> **Note**  
+> **Note**
 > For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/current/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>

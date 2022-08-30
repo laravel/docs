@@ -44,7 +44,7 @@ php artisan make:resource UserCollection
 <a name="concept-overview"></a>
 ## Concept Overview
 
-> **Note**  
+> **Note**
 > This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources.
 
 Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` resource class:
@@ -196,7 +196,7 @@ For example, `UserCollection` will attempt to map the given user instances into 
 <a name="writing-resources"></a>
 ## Writing Resources
 
-> **Note**  
+> **Note**
 > If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation.
 
 In essence, resources are simple. They only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:
@@ -261,7 +261,7 @@ If you would like to include related resources in your response, you may add the
         ];
     }
 
-> **Note**  
+> **Note**
 > If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships).
 
 <a name="writing-resource-collections"></a>
@@ -384,7 +384,7 @@ If you would like to disable the wrapping of the outermost resource, you should 
         }
     }
 
-> **Warning**  
+> **Warning**
 > The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections.
 
 <a name="wrapping-nested-resources"></a>
@@ -560,7 +560,7 @@ Sometimes you may have several attributes that should only be included in the re
 
 Again, if the given condition is `false`, these attributes will be removed from the resource response before it is sent to the client.
 
-> **Warning**  
+> **Warning**
 > The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially.
 
 <a name="conditional-relationships"></a>

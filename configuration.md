@@ -43,7 +43,7 @@ Laravel's default `.env` file contains some common configuration values that may
 
 If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting placeholder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
 
-> **Note**  
+> **Note**
 > Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
 
 <a name="environment-file-security"></a>
@@ -106,7 +106,7 @@ You may also pass arguments to the `environment` method to determine if the envi
         // The environment is either local OR staging...
     }
 
-> **Note**  
+> **Note**
 > The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable.
 
 <a name="accessing-configuration-values"></a>
@@ -130,7 +130,7 @@ To give your application a speed boost, you should cache all of your configurati
 
 You should typically run the `php artisan config:cache` command as part of your production deployment process. The command should not be run during local development as configuration options will frequently need to be changed during the course of your application's development.
 
-> **Warning**  
+> **Warning**
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables.
 
 <a name="debug-mode"></a>
@@ -180,7 +180,7 @@ https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
 
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
 
-> **Note**  
+> **Note**
 > Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?`.
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
@@ -212,7 +212,7 @@ To disable maintenance mode, use the `up` command:
 php artisan up
 ```
 
-> **Note**  
+> **Note**
 > You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`.
 
 <a name="maintenance-mode-queues"></a>

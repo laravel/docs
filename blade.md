@@ -54,7 +54,7 @@ Blade views may be returned from routes or controllers using the global `view` h
         return view('greeting', ['name' => 'Finn']);
     });
 
-> **Note**  
+> **Note**
 > Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
 
 <a name="displaying-data"></a>
@@ -72,7 +72,7 @@ You may display the contents of the `name` variable like so:
 Hello, {{ $name }}.
 ```
 
-> **Note**  
+> **Note**
 > Blade's `{{ }}` echo statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
 You are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
@@ -115,7 +115,7 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmls
 Hello, {!! $name !!}.
 ```
 
-> **Warning**  
+> **Warning**
 > Be very careful when echoing content that is supplied by users of your application. You should typically use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
 
 <a name="blade-and-javascript-frameworks"></a>
@@ -168,7 +168,7 @@ The latest versions of the Laravel application skeleton include a `Js` facade, w
 </script>
 ```
 
-> **Warning**  
+> **Warning**
 > You should only use the `Js::from` method to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 <a name="the-at-verbatim-directive"></a>
@@ -344,7 +344,7 @@ In addition to conditional statements, Blade provides simple directives for work
 @endwhile
 ```
 
-> **Note**  
+> **Note**
 > While iterating through a `foreach` loop, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
 
 When using loops you may also skip the current iteration or end the loop using the `@continue` and `@break` directives:
@@ -493,7 +493,7 @@ In addition, the `@required` directive may be used to indicate if a given elemen
 <a name="including-subviews"></a>
 ### Including Subviews
 
-> **Note**  
+> **Note**
 > While you're free to use the `@include` directive, Blade [components](#components) provide similar functionality and offer several benefits over the `@include` directive such as data and attribute binding.
 
 Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
@@ -534,7 +534,7 @@ To include the first view that exists from a given array of views, you may use t
 @includeFirst(['custom.admin', 'admin'], ['status' => 'complete'])
 ```
 
-> **Warning**  
+> **Warning**
 > You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
 <a name="rendering-views-for-collections"></a>
@@ -554,7 +554,7 @@ You may also pass a fourth argument to the `@each` directive. This argument dete
 @each('view.name', $jobs, 'job', 'view.empty')
 ```
 
-> **Warning**  
+> **Warning**
 > Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use the `@foreach` and `@include` directives instead.
 
 <a name="the-once-directive"></a>
@@ -918,7 +918,7 @@ All of the attributes that are not part of the component's constructor will auto
 </div>
 ```
 
-> **Warning**  
+> **Warning**
 > Using directives such as `@env` within component tags is not supported at this time. For example, `<x-alert :live="@env('production')"/>` will not be compiled.
 
 <a name="default-merged-attributes"></a>
@@ -965,7 +965,7 @@ If you need to merge other attributes onto your component, you can chain the `me
 </button>
 ```
 
-> **Note**  
+> **Note**
 > If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [`@class` directive](#conditional-classes).
 
 <a name="non-class-attribute-merging"></a>
@@ -1201,7 +1201,7 @@ Sometimes you may need to render a component but not know which component should
 <a name="manually-registering-components"></a>
 ### Manually Registering Components
 
-> **Warning**  
+> **Warning**
 > The following documentation on manually registering components is primarily applicable to those who are writing Laravel packages that include view components. If you are not writing a package, this portion of the component documentation may not be relevant to you.
 
 When writing components for your own application, components are automatically discovered within the `app/View/Components` directory and `resources/views/components` directory.
@@ -1355,7 +1355,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 </li>
 ```
 
-> **Warning**  
+> **Warning**
 > The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
 
 <a name="anonymous-component-namespaces"></a>
@@ -1508,7 +1508,7 @@ When defining a child view, use the `@extends` Blade directive to specify which 
 
 In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
-> **Note**  
+> **Note**
 > Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
 
 The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
@@ -1713,7 +1713,7 @@ As you can see, we will chain the `format` method onto whatever expression is pa
 
     <?php echo ($var)->format('m/d/Y H:i'); ?>
 
-> **Warning**  
+> **Warning**
 > After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
 
 <a name="custom-echo-handlers"></a>

@@ -37,7 +37,7 @@
 <a name="estimated-upgrade-time-10-minutes"></a>
 #### Estimated Upgrade Time: 30 Minutes
 
-> **Note**  
+> **Note**
 > We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
 
 <a name="updating-dependencies"></a>
@@ -515,7 +515,7 @@ Various SwiftMailer related methods, some of which were undocumented, have been 
         );
     });
 
-> **Warning**  
+> **Warning**
 > Please thoroughly review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the `Symfony\Component\Mime\Email` object.
 
 The list below contains a more thorough overview of renamed methods. Many of these methods are low-level methods used to interact with SwiftMailer / Symfony Mailer directly, so may not be commonly used within most Laravel applications:
@@ -592,7 +592,7 @@ Defining stream options for the SMTP transport is no longer supported. Instead, 
 
 To learn more about the available configuration options, please review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#transport-setup).
 
-> **Warning**  
+> **Warning**
 > In spite of the example above, you are not generally advised to disable SSL verification since it introduces the possibility of "man-in-the-middle" attacks.
 
 #### SMTP `auth_mode`

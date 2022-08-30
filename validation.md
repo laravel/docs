@@ -317,7 +317,7 @@ As you might have guessed, the `authorize` method is responsible for determining
         ];
     }
 
-> **Note**  
+> **Note**
 > You may type-hint any dependencies you require within the `rules` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
 So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
@@ -437,7 +437,7 @@ If you plan to handle authorization logic for the request in another part of you
         return true;
     }
 
-> **Note**  
+> **Note**
 > You may type-hint any dependencies you need within the `authorize` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
 <a name="customizing-the-error-messages"></a>
@@ -1108,7 +1108,7 @@ The example above will apply the `RFCValidation` and `DNSCheckValidation` valida
 
 The `filter` validator, which uses PHP's `filter_var` function, ships with Laravel and was Laravel's default email validation behavior prior to Laravel version 5.8.
 
-> **Warning**  
+> **Warning**
 > The `dns` and `spoof` validators require the PHP `intl` extension.
 
 <a name="rule-ends-with"></a>
@@ -1128,7 +1128,7 @@ The `Enum` rule is a class based rule that validates whether the field under val
         'status' => [new Enum(ServerStatus::class)],
     ]);
 
-> **Warning**  
+> **Warning**
 > Enums are only available on PHP 8.1+.
 
 <a name="rule-exclude"></a>
@@ -1281,7 +1281,7 @@ The field under validation must exist in _anotherfield_'s values.
 
 The field under validation must be an integer.
 
-> **Warning**  
+> **Warning**
 > This validation rule does not verify that the input is of the "integer" variable type, only that the input is of a type accepted by PHP's `FILTER_VALIDATE_INT` rule. If you need to validate the input as being a number please use this rule in combination with [the `numeric` validation rule](#rule-numeric).
 
 <a name="rule-ip"></a>
@@ -1367,7 +1367,7 @@ The integer under validation must have a minimum length of _value_.
 
 The field under validation must be a multiple of _value_.
 
-> **Warning**  
+> **Warning**
 > The [`bcmath` PHP extension](https://www.php.net/manual/en/book.bc.php) is required in order to use the `multiple_of` rule.
 
 <a name="rule-not-in"></a>
@@ -1391,7 +1391,7 @@ The field under validation must not match the given regular expression.
 
 Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'not_regex:/^.+$/i'`.
 
-> **Warning**  
+> **Warning**
 > When using the `regex` / `not_regex` patterns, it may be necessary to specify your validation rules using an array instead of using `|` delimiters, especially if the regular expression contains a `|` character.
 
 <a name="rule-nullable"></a>
@@ -1409,7 +1409,7 @@ The field under validation must be [numeric](https://www.php.net/manual/en/funct
 
 The field under validation must match the authenticated user's password.
 
-> **Warning**  
+> **Warning**
 > This rule was renamed to `current_password` with the intention of removing it in Laravel 9. Please use the [Current Password](#rule-current-password) rule instead.
 
 <a name="rule-present"></a>
@@ -1457,7 +1457,7 @@ The field under validation must match the given regular expression.
 
 Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
 
-> **Warning**  
+> **Warning**
 > When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using `|` delimiters, especially if the regular expression contains a `|` character.
 
 <a name="rule-required"></a>
@@ -1596,7 +1596,7 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
         ],
     ]);
 
-> **Warning**  
+> **Warning**
 > You should never pass any user controlled request input into the `ignore` method. Instead, you should only pass a system generated unique ID such as an auto-incrementing ID or UUID from an Eloquent model instance. Otherwise, your application will be vulnerable to an SQL injection attack.
 
 Instead of passing the model key's value to the `ignore` method, you may also pass the entire model instance. Laravel will automatically extract the key from the model:
@@ -1662,7 +1662,7 @@ In some situations, you may wish to run validation checks against a field **only
 
 In the example above, the `email` field will only be validated if it is present in the `$data` array.
 
-> **Note**  
+> **Note**
 > If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields).
 
 <a name="complex-conditional-validation"></a>
@@ -1689,7 +1689,7 @@ The first argument passed to the `sometimes` method is the name of the field we 
         return $input->games >= 100;
     });
 
-> **Note**  
+> **Note**
 > The `$input` parameter passed to your closure will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files under validation.
 
 <a name="complex-conditional-array-validation"></a>
@@ -1845,7 +1845,7 @@ If your application accepts images uploaded by your users, you may use the `File
         ],
     ]);
 
-> **Note**  
+> **Note**
 > More information regarding validating image dimensions may be found in the [dimension rule documentation](#rule-dimensions).
 
 <a name="validating-files-file-types"></a>
@@ -2111,5 +2111,5 @@ For a custom rule to run even when an attribute is empty, the rule must imply th
 php artisan make:rule Uppercase --invokable --implicit
 ```
 
-> **Warning**  
+> **Warning**
 > An "implicit" rule only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.

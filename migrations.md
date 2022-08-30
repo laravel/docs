@@ -43,7 +43,7 @@ Laravel will use the name of the migration to attempt to guess the name of the t
 
 If you would like to specify a custom path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
 
-> **Note**  
+> **Note**
 > Migration stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="squashing-migrations"></a>
@@ -62,7 +62,7 @@ When you execute this command, Laravel will write a "schema" file to your applic
 
 You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
 
-> **Warning**  
+> **Warning**
 > Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases and utilizes the database's command-line client. Schema dumps may not be restored to in-memory SQLite databases.
 
 <a name="migration-structure"></a>
@@ -208,7 +208,7 @@ php artisan migrate:fresh
 php artisan migrate:fresh --seed
 ```
 
-> **Warning**  
+> **Warning**
 > The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications.
 
 <a name="tables"></a>
@@ -944,7 +944,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
         }
     };
 
-> **Warning**  
+> **Warning**
 > Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation. In addition, it is not possible to combine raw `default` expressions (using `DB::raw`) with column changes via the `change` method.
 
 <a name="column-order"></a>
@@ -980,7 +980,7 @@ use Illuminate\Database\DBAL\TimestampType;
 ],
 ```
 
-> **Warning**  
+> **Warning**
 > If your application is using Microsoft SQL Server, please ensure that you install `doctrine/dbal:^3.0`.
 
 <a name="updating-column-attributes"></a>
@@ -998,7 +998,7 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> **Warning**  
+> **Warning**
 > The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.  To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
 
 <a name="renaming-columns"></a>
@@ -1010,7 +1010,7 @@ To rename a column, you may use the `renameColumn` method provided by the schema
         $table->renameColumn('from', 'to');
     });
 
-> **Warning**  
+> **Warning**
 > Renaming an `enum` column is not currently supported.
 
 <a name="dropping-columns"></a>
@@ -1028,7 +1028,7 @@ You may drop multiple columns from a table by passing an array of column names t
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
-> **Warning**  
+> **Warning**
 > Dropping or modifying multiple columns within a single migration while using an SQLite database is not supported.
 
 <a name="available-command-aliases"></a>
@@ -1201,7 +1201,7 @@ You may enable or disable foreign key constraints within your migrations by usin
 
     Schema::disableForeignKeyConstraints();
 
-> **Warning**  
+> **Warning**
 > SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations. In addition, SQLite only supports foreign keys upon creation of the table and [not when tables are altered](https://www.sqlite.org/omitted.html).
 
 <a name="events"></a>

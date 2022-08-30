@@ -34,7 +34,7 @@
 
 Laravel integrates seamlessly with Vite by providing an official plugin and Blade directive to load your assets for development and production.
 
-> **Note**  
+> **Note**
 > Are you running Laravel Mix? Vite has replaced Laravel Mix in new Laravel installations. For Mix documentation, please visit the [Laravel Mix](https://laravel-mix.com/) website. If you would like to switch to Vite, please see our [migration guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite).
 
 <a name="vite-or-mix"></a>
@@ -52,7 +52,7 @@ Have you started a new Laravel application using our Vite scaffolding but need t
 <a name="installation"></a>
 ## Installation & Setup
 
-> **Note**  
+> **Note**
 > The following documentation discusses how to manually install and configure the Laravel Vite plugin. However, Laravel's [starter kits](/docs/{{version}}/starter-kits) already include all of this scaffolding and are the fastest way to get started with Laravel and Vite.
 
 <a name="installing-node"></a>
@@ -264,7 +264,7 @@ export default defineConfig({
 });
 ```
 
-> **Note**  
+> **Note**
 > Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vue, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Vue, and Vite.
 
 <a name="react"></a>
@@ -279,7 +279,7 @@ When using Vite with React, you will need to ensure that any files containing JS
 
 The `@viteReactRefresh` directive must be called before the `@vite` directive.
 
-> **Note**  
+> **Note**
 > Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, React, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, React, and Vite.
 
 <a name="inertia"></a>
@@ -302,7 +302,7 @@ createInertiaApp({
 });
 ```
 
-> **Note**  
+> **Note**
 > Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia, and Vite.
 
 <a name="url-processing"></a>
@@ -541,7 +541,7 @@ npm run build
 node bootstrap/ssr/ssr.mjs
 ```
 
-> **Note**  
+> **Note**
 > Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia SSR, and Vite.
 
 <a name="script-and-style-attributes"></a>
@@ -667,7 +667,7 @@ Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr
 ]);
 ```
 
-> **Warning**  
+> **Warning**
 > The `$chunk` and `$manifest` arguments will be `null` while the Vite development server is running.
 
 <a name="advanced-customization"></a>

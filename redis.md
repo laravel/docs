@@ -264,7 +264,7 @@ The `Redis` facade's `transaction` method provides a convenient wrapper around R
         $redis->incr('total_visits', 1);
     });
 
-> **Warning**  
+> **Warning**
 > When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands.
 
 #### Lua Scripts
@@ -285,7 +285,7 @@ In this example, we will increment a counter, inspect its new value, and increme
         return counter
     LUA, 2, 'first-counter', 'second-counter');
 
-> **Warning**  
+> **Warning**
 > Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
 
 <a name="pipelining-commands"></a>

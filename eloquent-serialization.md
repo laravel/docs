@@ -13,7 +13,7 @@
 
 When building APIs using Laravel, you will often need to convert your models and relationships to arrays or JSON. Eloquent includes convenient methods for making these conversions, as well as controlling which attributes are included in the serialized representation of your models.
 
-> **Note**  
+> **Note**
 > For an even more robust way of handling Eloquent model and collection JSON serialization, check out the documentation on [Eloquent API resources](/docs/{{version}}/eloquent-resources).
 
 <a name="serializing-models-and-collections"></a>
@@ -91,7 +91,7 @@ Sometimes you may wish to limit the attributes, such as passwords, that are incl
         protected $hidden = ['password'];
     }
 
-> **Note**  
+> **Note**
 > To hide relationships, add the relationship's method name to your Eloquent model's `$hidden` property.
 
 Alternatively, you may use the `visible` property to define an "allow list" of attributes that should be included in your model's array and JSON representation. All attributes that are not present in the `$visible` array will be hidden when the model is converted to an array or JSON:

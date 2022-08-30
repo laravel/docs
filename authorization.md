@@ -38,7 +38,7 @@ You do not need to choose between exclusively using gates or exclusively using p
 <a name="writing-gates"></a>
 ### Writing Gates
 
-> **Warning**  
+> **Warning**
 > Gates are a great way to learn the basics of Laravel's authorization features; however, when building robust Laravel applications you should consider using [policies](#creating-policies) to organize your authorization rules.
 
 Gates are simply closures that determine if a user is authorized to perform a given action. Typically, gates are defined within the `boot` method of the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument and may optionally receive additional arguments such as a relevant Eloquent model.
@@ -336,7 +336,7 @@ If you would like to define your own policy discovery logic, you may register a 
         // Return the name of the policy class for the given model...
     });
 
-> **Warning**  
+> **Warning**
 > Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potentially auto-discovered policies.
 
 <a name="writing-policies"></a>
@@ -375,7 +375,7 @@ You may continue to define additional methods on the policy as needed for the va
 
 If you used the `--model` option when generating your policy via the Artisan console, it will already contain methods for the `viewAny`, `view`, `create`, `update`, `delete`, `restore`, and `forceDelete` actions.
 
-> **Note**  
+> **Note**
 > All policies are resolved via the Laravel [service container](/docs/{{version}}/container), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected.
 
 <a name="policy-responses"></a>
@@ -528,7 +528,7 @@ For certain users, you may wish to authorize all actions within a given policy. 
 
 If you would like to deny all authorization checks for a particular type of user then you may return `false` from the `before` method. If `null` is returned, the authorization check will fall through to the policy method.
 
-> **Warning**  
+> **Warning**
 > The `before` method of a policy class will not be called if the class doesn't contain a method with a name matching the name of the ability being checked.
 
 <a name="authorizing-actions-using-policies"></a>
@@ -696,7 +696,7 @@ The following controller methods will be mapped to their corresponding policy me
 | update | update |
 | destroy | delete |
 
-> **Note**  
+> **Note**
 > You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`.
 
 <a name="via-middleware"></a>

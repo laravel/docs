@@ -251,7 +251,7 @@ AWS_URL=http://localhost:9000/local
 
 You may create buckets via the MinIO console, which is available at `http://localhost:8900`. The default username for the MinIO console is `sail` while the default password is `password`.
 
-> **Warning**  
+> **Warning**
 > Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
 
 <a name="running-tests"></a>
@@ -424,7 +424,7 @@ If you would like to choose the subdomain for your shared site, you may provide 
 sail share --subdomain=my-sail-site
 ```
 
-> **Note**  
+> **Note**
 > The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de).
 
 <a name="debugging-with-xdebug"></a>
@@ -472,7 +472,7 @@ To debug your application while interacting with the application via a web brows
 
 If you're using PhpStorm, please review JetBrain's documentation regarding [zero-configuration debugging](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html).
 
-> **Warning**  
+> **Warning**
 > Laravel Sail relies on `artisan serve` to serve your application. The `artisan serve` command only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) do not support these variables and will not accept debug connections.
 
 <a name="sail-customization"></a>

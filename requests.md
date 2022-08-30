@@ -223,7 +223,7 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
         //
     });
 
-> **Note**  
+> **Note**
 > If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
 
 <a name="input"></a>
@@ -350,7 +350,7 @@ If you need to retrieve a subset of the input data, you may use the `only` and `
 
     $input = $request->except('credit_card');
 
-> **Warning**  
+> **Warning**
 > The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request.
 
 <a name="determining-if-input-is-present"></a>
@@ -569,7 +569,7 @@ If you do not want a filename to be automatically generated, you may use the `st
 
     $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
 
-> **Note**  
+> **Note**
 > For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem).
 
 <a name="configuring-trusted-proxies"></a>
@@ -606,7 +606,7 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
         protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
     }
 
-> **Note**  
+> **Note**
 > If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).
 
 <a name="trusting-all-proxies"></a>

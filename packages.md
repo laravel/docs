@@ -108,7 +108,7 @@ Now, when users of your package execute Laravel's `vendor:publish` command, your
 
     $value = config('courier.option');
 
-> **Warning**  
+> **Warning**
 > You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
 
 <a name="default-package-configuration"></a>
@@ -130,7 +130,7 @@ The `mergeConfigFrom` method accepts the path to your package's configuration fi
         );
     }
 
-> **Warning**  
+> **Warning**
 > This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
 
 <a name="routes"></a>

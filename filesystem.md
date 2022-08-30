@@ -34,7 +34,7 @@ Laravel's filesystem configuration file is located at `config/filesystems.php`. 
 
 The `local` driver interacts with files stored locally on the server running the Laravel application while the `s3` driver is used to write to Amazon's S3 cloud storage service.
 
-> **Note**  
+> **Note**
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
 
 <a name="the-local-driver"></a>
@@ -219,7 +219,7 @@ You may use the `url` method to get the URL for a given file. If you are using t
 
 When using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) at `public/storage` which points to the `storage/app/public` directory.
 
-> **Warning**  
+> **Warning**
 > When using the `local` driver, the return value of `url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
 
 <a name="temporary-urls"></a>
@@ -422,7 +422,7 @@ You may also use the `putFileAs` method on the `Storage` facade, which will perf
         'avatars', $request->file('avatar'), $request->user()->id
     );
 
-> **Warning**  
+> **Warning**
 > Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\WhitespacePathNormalizer::normalizePath` method.
 
 <a name="specifying-a-disk"></a>

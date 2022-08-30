@@ -41,7 +41,7 @@
 
 Laravel includes Eloquent, an object-relational mapper (ORM) that makes it enjoyable to interact with your database. When using Eloquent, each database table has a corresponding "Model" that is used to interact with that table. In addition to retrieving records from the database table, Eloquent models allow you to insert, update, and delete records from the table as well.
 
-> **Note**  
+> **Note**
 > Before getting started, be sure to configure a database connection in your application's `config/database.php` configuration file. For more information on configuring your database, check out [the database configuration documentation](/docs/{{version}}/database#configuration).
 
 <a name="generating-model-classes"></a>
@@ -307,7 +307,7 @@ The Eloquent `all` method will return all of the results in the model's table. H
                    ->take(10)
                    ->get();
 
-> **Note**  
+> **Note**
 > Since Eloquent models are query builders, you should review all of the methods provided by Laravel's [query builder](/docs/{{version}}/queries). You may use any of these methods when writing your Eloquent queries.
 
 <a name="refreshing-models"></a>
@@ -412,7 +412,7 @@ Similar to the `lazy` method, the `cursor` method may be used to significantly r
 
 The `cursor` method will only execute a single database query; however, the individual Eloquent models will not be hydrated until they are actually iterated over. Therefore, only one Eloquent model is kept in memory at any given time while iterating over the cursor.
 
-> **Warning**  
+> **Warning**
 > Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load relationships, consider using [the `lazy` method](#chunking-using-lazy-collections) instead.
 
 Internally, the `cursor` method uses PHP [generators](https://www.php.net/manual/en/language.generators.overview.php) to implement this functionality:
@@ -627,7 +627,7 @@ Updates can also be performed against models that match a given query. In this e
 
 The `update` method expects an array of column and value pairs representing the columns that should be updated. The `update` method returns the number of affected rows.
 
-> **Warning**  
+> **Warning**
 > When issuing a mass update via Eloquent, the `saving`, `saved`, `updating`, and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.
 
 <a name="examining-attribute-changes"></a>
@@ -779,7 +779,7 @@ If you would like to perform multiple "upserts" in a single query, then you shou
         ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
     ], ['departure', 'destination'], ['price']);
     
-> **Warning**  
+> **Warning**
 > All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the "primary" and "unique" indexes of the table to detect existing records.
 
 <a name="deleting-models"></a>
@@ -810,7 +810,7 @@ In the example above, we are retrieving the model from the database before calli
 
     Flight::destroy(collect([1, 2, 3]));
 
-> **Warning**  
+> **Warning**
 > The `destroy` method loads each model individually and calls the `delete` method so that the `deleting` and `deleted` events are properly dispatched for each model.
 
 <a name="deleting-models-using-queries"></a>
@@ -820,7 +820,7 @@ Of course, you may build an Eloquent query to delete all models matching your qu
 
     $deleted = Flight::where('active', 0)->delete();
 
-> **Warning**  
+> **Warning**
 > When executing a mass delete statement via Eloquent, the `deleting` and `deleted` model events will not be dispatched for the deleted models. This is because the models are never actually retrieved when executing the delete statement.
 
 <a name="soft-deleting"></a>
@@ -840,7 +840,7 @@ In addition to actually removing records from your database, Eloquent can also "
         use SoftDeletes;
     }
 
-> **Note**  
+> **Note**
 > The `SoftDeletes` trait will automatically cast the `deleted_at` attribute to a `DateTime` / `Carbon` instance for you.
 
 You should also add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
@@ -989,7 +989,7 @@ You may test your `prunable` query by executing the `model:prune` command with t
 php artisan model:prune --pretend
 ```
 
-> **Warning**  
+> **Warning**
 > Soft deleting models will be permanently deleted (`forceDelete`) if they match the prunable query.
 
 <a name="mass-pruning"></a>
@@ -1092,7 +1092,7 @@ The `Scope` interface requires you to implement one method: `apply`. The `apply`
         }
     }
 
-> **Note**  
+> **Note**
 > If your global scope is adding columns to the select clause of the query, you should use the `addSelect` method instead of `select`. This will prevent the unintentional replacement of the query's existing select clause.
 
 <a name="applying-global-scopes"></a>
@@ -1283,7 +1283,7 @@ The `is` and `isNot` methods are also available when using the `belongsTo`, `has
 <a name="events"></a>
 ## Events
 
-> **Note**  
+> **Note**
 > Want to broadcast your Eloquent events directly to your client-side application? Check out Laravel's [model event broadcasting](/docs/{{version}}/broadcasting#model-broadcasting).
 
 Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `trashed`, `forceDeleted`, `restoring`, `restored`, and `replicating`.
@@ -1317,7 +1317,7 @@ To start listening to model events, define a `$dispatchesEvents` property on you
 
 After defining and mapping your Eloquent events, you may use [event listeners](/docs/{{version}}/events#defining-listeners) to handle the events.
 
-> **Warning**  
+> **Warning**
 > When issuing a mass update or delete query via Eloquent, the `saved`, `updated`, `deleting`, and `deleted` model events will not be dispatched for the affected models. This is because the models are never actually retrieved when performing mass updates or deletes.
 
 <a name="events-using-closures"></a>
@@ -1461,7 +1461,7 @@ Alternatively, you may list your observers within an `$observers` property of yo
         User::class => [UserObserver::class],
     ];
 
-> **Note**  
+> **Note**
 > There are additional events an observer can listen to, such as `saving` and `retrieved`. These events are described within the [events](#events) documentation.
 
 <a name="observers-and-database-transactions"></a>

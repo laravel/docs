@@ -12,7 +12,7 @@
 
 Laravel includes the ability to seed your database with data using seed classes. All seed classes are stored in the `database/seeders` directory. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
 
-> **Note**  
+> **Note**
 > [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled during database seeding.
 
 <a name="writing-seeders"></a>
@@ -54,7 +54,7 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
         }
     }
 
-> **Note**  
+> **Note**
 > You may type-hint any dependencies you need within the `run` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
 <a name="using-model-factories"></a>

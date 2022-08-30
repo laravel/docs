@@ -203,7 +203,7 @@ If all of the requests fail, an instance of `Illuminate\Http\Client\RequestExcep
 
     $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 
-> **Warning**  
+> **Warning**
 > If all of the requests fail because of a connection issue, a `Illuminate\Http\Client\ConnectionException` will still be thrown even when the `throw` argument is set to `false`.
 
 <a name="error-handling"></a>

@@ -68,7 +68,7 @@ However, you may extend Valet with your own [custom drivers](#custom-valet-drive
 <a name="installation"></a>
 ## Installation
 
-> **Warning**  
+> **Warning**
 > Valet requires macOS and [Homebrew](https://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.
 
 To get started, you first need to ensure that Homebrew is up to date using the `update` command:
@@ -118,7 +118,7 @@ php@7.2
 
 Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
 
-> **Warning**  
+> **Warning**
 > Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
 
 <a name="database"></a>
@@ -272,7 +272,7 @@ valet share
 
 To stop sharing your site, you may press `Control + C`. Sharing your site using Ngrok requires you to [create an Ngrok account](https://dashboard.ngrok.com/signup) and [setup an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken).
 
-> **Note**  
+> **Note**
 > You may pass additional Ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
 
 <a name="sharing-sites-via-expose"></a>
@@ -398,7 +398,7 @@ The `isStaticFile` should determine if the incoming request is for a file that i
         return false;
     }
 
-> **Warning**  
+> **Warning**
 > The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
 
 <a name="the-frontcontrollerpath-method"></a>

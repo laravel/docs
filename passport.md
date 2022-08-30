@@ -48,7 +48,7 @@
 
 [Laravel Passport](https://github.com/laravel/passport) provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
 
-> **Warning**  
+> **Warning**
 > This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing.
 
 <a name="passport-or-sanctum"></a>
@@ -79,7 +79,7 @@ Next, you should execute the `passport:install` Artisan command. This command wi
 php artisan passport:install
 ```
 
-> **Note**  
+> **Note**
 > If you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers, please install Passport using [the `uuids` option](#client-uuids).
 
 After running the `passport:install` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes. If your model is already using the `Laravel\Sanctum\HasApiTokens` trait, you may remove that trait:
@@ -212,7 +212,7 @@ By default, Passport issues long-lived access tokens that expire after one year.
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
 
-> **Warning**  
+> **Warning**
 > The `expires_at` columns on Passport's database tables are read-only and for display purposes only. When issuing tokens, Passport stores the expiration information within the signed and encrypted tokens. If you need to invalidate a token you should [revoke it](#revoking-tokens).
 
 <a name="overriding-default-models"></a>
@@ -376,7 +376,7 @@ Once a client has been created, developers may use their client ID and secret to
         return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
-> **Note**  
+> **Note**
 > Remember, the `/oauth/authorize` route is already defined by Passport. You do not need to manually define this route.
 
 <a name="approving-the-request"></a>
@@ -440,7 +440,7 @@ If the user approves the authorization request, they will be redirected back to 
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
 
-> **Note**  
+> **Note**
 > Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by Passport. There is no need to manually define this route.
 
 <a name="tokens-json-api"></a>
@@ -630,7 +630,7 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
 <a name="password-grant-tokens"></a>
 ## Password Grant Tokens
 
-> **Warning**  
+> **Warning**
 > We no longer recommend using password grant tokens. Instead, you should choose [a grant type that is currently recommended by OAuth2 Server](https://oauth2.thephpleague.com/authorization-server/which-grant/).
 
 The OAuth2 password grant allows your other first-party clients, such as a mobile application, to obtain an access token using an email address / username and password. This allows you to issue access tokens securely to your first-party clients without requiring your users to go through the entire OAuth2 authorization code redirect flow.
@@ -662,7 +662,7 @@ Once you have created a password grant client, you may request an access token b
 
     return $response->json();
 
-> **Note**  
+> **Note**
 > Remember, access tokens are long-lived by default. However, you are free to [configure your maximum access token lifetime](#configuration) if needed.
 
 <a name="requesting-all-scopes"></a>
@@ -748,7 +748,7 @@ When authenticating using the password grant, Passport will use the `password` a
 <a name="implicit-grant-tokens"></a>
 ## Implicit Grant Tokens
 
-> **Warning**  
+> **Warning**
 > We no longer recommend using implicit grant tokens. Instead, you should choose [a grant type that is currently recommended by OAuth2 Server](https://oauth2.thephpleague.com/authorization-server/which-grant/).
 
 The implicit grant is similar to the authorization code grant; however, the token is returned to the client without exchanging an authorization code. This grant is most commonly used for JavaScript or mobile applications where the client credentials can't be securely stored. To enable the grant, call the `enableImplicitGrant` method in the `boot` method of your application's `App\Providers\AuthServiceProvider` class:
@@ -783,7 +783,7 @@ Once the grant has been enabled, developers may use their client ID to request a
         return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
-> **Note**  
+> **Note**
 > Remember, the `/oauth/authorize` route is already defined by Passport. You do not need to manually define this route.
 
 <a name="client-credentials-grant-tokens"></a>
@@ -838,7 +838,7 @@ To retrieve a token using this grant type, make a request to the `oauth/token` e
 
 Sometimes, your users may want to issue access tokens to themselves without going through the typical authorization code redirect flow. Allowing users to issue tokens to themselves via your application's UI can be useful for allowing users to experiment with your API or may serve as a simpler approach to issuing access tokens in general.
 
-> **Note**  
+> **Note**
 > If your application is primarily using Passport to issue personal access tokens, consider using [Laravel Sanctum](/docs/{{version}}/sanctum), Laravel's light-weight first-party library for issuing API access tokens.
 
 <a name="creating-a-personal-access-client"></a>
@@ -944,7 +944,7 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
         //
     })->middleware('auth:api');
 
-> **Warning**  
+> **Warning**
 > If you are using the [client credentials grant](#client-credentials-grant-tokens), you should use [the `client` middleware](#client-credentials-grant-tokens) to protect your routes instead of the `auth:api` middleware.
 
 <a name="multiple-authentication-guards"></a>
@@ -968,7 +968,7 @@ The following route will utilize the `api-customers` guard, which uses the `cust
         //
     })->middleware('auth:api-customers');
 
-> **Note**  
+> **Note**
 > For more information on using multiple user providers with Passport, please consult the [password grant documentation](#customizing-the-user-provider).
 
 <a name="passing-the-access-token"></a>
@@ -1125,7 +1125,7 @@ Typically, if you want to consume your API from your JavaScript application, you
         \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
     ],
 
-> **Warning**  
+> **Warning**
 > You should ensure that the `CreateFreshApiToken` middleware is the last middleware listed in your middleware stack.
 
 This middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. The JWT has a lifetime equal to your `session.lifetime` configuration value. Now, since the browser will automatically send the cookie with all subsequent requests, you may make requests to your application's API without explicitly passing an access token:
@@ -1157,7 +1157,7 @@ If needed, you can customize the `laravel_token` cookie's name using the `Passpo
 
 When using this method of authentication, you will need to ensure a valid CSRF token header is included in your requests. The default Laravel JavaScript scaffolding includes an Axios instance, which will automatically use the encrypted `XSRF-TOKEN` cookie value to send an `X-XSRF-TOKEN` header on same-origin requests.
 
-> **Note**  
+> **Note**
 > If you choose to send the `X-CSRF-TOKEN` header instead of `X-XSRF-TOKEN`, you will need to use the unencrypted token provided by `csrf_token()`.
 
 <a name="events"></a>
