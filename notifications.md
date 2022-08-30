@@ -287,9 +287,12 @@ However, if you would like to make the final determination on whether the queued
 
 Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the `Notification` facade's `route` method, you may specify ad-hoc notification routing information before sending the notification:
 
+    use Illuminate\Broadcasting\Channel;
+
     Notification::route('mail', 'taylor@example.com')
                 ->route('vonage', '5555555555')
                 ->route('slack', 'https://hooks.slack.com/services/...')
+                ->route('broadcast', [new Channel('channel-name')])
                 ->notify(new InvoicePaid($invoice));
 
 If you would like to provide the recipient's name when sending an on-demand notification to the `mail` route, you may provide an array that contains the email address as the key and the name as the value of the first element in the array:
