@@ -520,6 +520,14 @@ You may use the `whereIn` method to constrain results against a given set of val
 
 Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
 
+<a name="limits"></a>
+### Limiting Results
+Unlike [Eloquent's `get` method](/docs/{{version}}/eloquent#building-queries), Scout's `get` method does not always return all matching results. It returns as many results as the engine returns, which may be a subset. For example, Meilisearch uses a default `limit` setting of 20 results. To control this behavior you may use the `take` method:
+
+    $orders = Order::search('Star Trek')->take(50)->get();
+
+Meilisearch's upper limit is controlled by the `maxTotalHits` setting which has a default value of 1000.
+
 <a name="pagination"></a>
 ### Pagination
 
