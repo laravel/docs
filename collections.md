@@ -1932,7 +1932,7 @@ The `reduce` method also passes array keys in associative collections to the giv
     });
 
     // 4264
-    
+
 <a name="method-reduce-spread"></a>
 #### `reduceSpread()` {.collection-method}
 

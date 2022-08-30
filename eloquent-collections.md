@@ -86,7 +86,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 The `append` method may be used to indicate that an attribute should be [appended](/docs/{{version}}/eloquent-serialization#appending-values-to-json) for every model in the collection. This method accepts an array of attributes or a single attribute:
 
     $users->append('team');
-    
+
     $users->append(['team', 'is_admin']);
 
 <a name="method-contains"></a>

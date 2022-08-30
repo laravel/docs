@@ -123,7 +123,7 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
     'sftp' => [
         'driver' => 'sftp',
         'host' => env('SFTP_HOST'),
-        
+
         // Settings for basic authentication...
         'username' => env('SFTP_USERNAME'),
         'password' => env('SFTP_PASSWORD'),

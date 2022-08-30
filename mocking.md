@@ -560,7 +560,7 @@ If you only need to fake specific jobs while allowing your other jobs to execute
         Queue::fake([
             ShipOrder::class,
         ]);
-        
+
         // Perform order shipping...
 
         // Assert a job was pushed twice...

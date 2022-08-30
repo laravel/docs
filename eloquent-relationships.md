@@ -1666,7 +1666,7 @@ In this example, Eloquent will only eager load posts that have not been hidden a
 You may sometimes find yourself needing to check for the existence of a relationship while simultaneously loading the relationship based on the same conditions. For example, you may wish to only retrieve `User` models that have child `Post` models matching a given query condition while also eager loading the matching posts. You may accomplish this using the `withWhereHas` method:
 
     use App\Models\User;
-  
+
     $users = User::withWhereHas('posts', function ($query) {
         $query->where('featured', true);
     )->get();

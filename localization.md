@@ -82,9 +82,9 @@ You may instruct Laravel's "pluralizer", which is used by Eloquent and other por
      */
     public function boot()
     {
-        Pluralizer::useLanguage('spanish');     
+        Pluralizer::useLanguage('spanish');
 
-        // ...     
+        // ...
     }
 
 > **Warning**

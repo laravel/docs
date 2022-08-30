@@ -561,7 +561,7 @@ If your application is using Amazon SES to send emails, you should use the `meta
 The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
 
     use Symfony\Component\Mime\Email;
-    
+
     /**
      * Build the message.
      *
