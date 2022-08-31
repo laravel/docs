@@ -360,7 +360,7 @@ When referencing assets in your JavaScript or CSS, Vite automatically processes 
 However, in order to accomplish this, you need to make Vite aware of your assets by importing the static assets into the application's entry point. For example, if you want to process and version all images stored in `resources/images` and all fonts stored in `resources/fonts`, you should add the following in your application's `resources/js/app.js` entry point:
 
 ```js
-import.meta.glob([
+import.meta.globEager([
   '../images/**',
   '../fonts/**',
 ]);
