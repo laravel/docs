@@ -261,22 +261,14 @@ Typically, you will want to pass some data to your view that you can utilize whe
         use Queueable, SerializesModels;
 
         /**
-         * The order instance.
-         *
-         * @var \App\Models\Order
-         */
-        public $order;
-
-        /**
          * Create a new message instance.
          *
          * @param  \App\Models\Order  $order
          * @return void
          */
-        public function __construct(Order $order)
-        {
-            $this->order = $order;
-        }
+        public function __construct(
+          public Order $order
+        ) {}
 
         /**
          * Build the message.
@@ -314,22 +306,14 @@ If you would like to customize the format of your email's data before it is sent
         use Queueable, SerializesModels;
 
         /**
-         * The order instance.
-         *
-         * @var \App\Models\Order
-         */
-        protected $order;
-
-        /**
          * Create a new message instance.
          *
          * @param  \App\Models\Order  $order
          * @return void
          */
-        public function __construct(Order $order)
-        {
-            $this->order = $order;
-        }
+        public function __construct(
+          protected Order $order
+        ) {}
 
         /**
          * Build the message.
