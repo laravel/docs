@@ -406,7 +406,7 @@ If you would like to generate the URL to the billing portal without generating a
 <a name="storing-payment-methods"></a>
 ### Storing Payment Methods
 
-In order to create subscriptions or perform "one off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish this differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
+In order to create subscriptions or perform "one-off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish this differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
 
 <a name="payment-methods-for-subscriptions"></a>
 #### Payment Methods For Subscriptions
@@ -1215,7 +1215,7 @@ If you're offering subscriptions with multiple products, you may define differen
     }
 
 > **Warning**  
-> The `taxRates` method only applies to subscription charges. If you use Cashier to make "one off" charges, you will need to manually specify the tax rate at that time.
+> The `taxRates` method only applies to subscription charges. If you use Cashier to make "one-off" charges, you will need to manually specify the tax rate at that time.
 
 <a name="syncing-tax-rates"></a>
 #### Syncing Tax Rates
