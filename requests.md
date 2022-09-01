@@ -388,13 +388,13 @@ The `hasAny` method returns `true` if any of the specified values are present:
         //
     }
 
-If you would like to determine if a value is present on the request and is not empty, you may use the `filled` method:
+If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:
 
     if ($request->filled('name')) {
         //
     }
 
-The `whenFilled` method will execute the given closure if a value is present on the request and is not empty:
+The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:
 
     $request->whenFilled('name', function ($input) {
         //
