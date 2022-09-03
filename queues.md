@@ -797,6 +797,7 @@ If you would like to specify the connection and queue that should be used for th
 
 When chaining jobs, you may use the `catch` method to specify a closure that should be invoked if a job within the chain fails. The given callback will receive the `Throwable` instance that caused the job failure:
 
+    use Illuminate\Bus\Batch;
     use Illuminate\Support\Facades\Bus;
     use Throwable;
 
@@ -804,7 +805,7 @@ When chaining jobs, you may use the `catch` method to specify a closure that sho
         new ProcessPodcast,
         new OptimizePodcast,
         new ReleasePodcast,
-    ])->catch(function (Throwable $e) {
+    ])->catch(function (Batch $batch, Throwable $e) {
         // A job within the chain has failed...
     })->dispatch();
 
