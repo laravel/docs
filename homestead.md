@@ -733,8 +733,9 @@ When debugging functional tests that make requests to the web server, it is easi
 
 ```ini
 ; If Homestead.yaml contains a different subnet for the IP address, this address may be different...
-xdebug.remote_host = 192.168.10.1
-xdebug.remote_autostart = 1
+xdebug.client_host = 192.168.10.1
+xdebug.mode = debug
+xdebug.start_with_request = yes
 ```
 
 <a name="debugging-cli-applications"></a>
