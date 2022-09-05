@@ -659,8 +659,8 @@ The `isDirty` method determines if any of the model's attributes have been chang
 
     $user->save();
 
-    $user->isDirty(); // false
-    $user->isClean(); // true
+    $user->isDirty(); // true
+    $user->isClean(); // false
 
 The `wasChanged` method determines if any attributes were changed when the model was last saved within the current request cycle. If needed, you may pass an attribute name to see if a particular attribute was changed:
 
