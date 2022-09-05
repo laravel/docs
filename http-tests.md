@@ -376,8 +376,7 @@ In the example above, you may have noticed we invoked the `etc` method at the en
 
 The intention behind this behavior is to protect you from unintentionally exposing sensitive information in your JSON responses by forcing you to either explicitly make an assertion against the attribute or explicitly allow additional attributes via the `etc` method.
 
-> **Note**  
-> Nested attributes are not protected by leaving out the `etc` method. So if you use, for example, a `data` key to nest your attributes in the JSON response, you still can accidentally add attributes that way.
+However, you should be aware that not including the `etc` method in your assertion chain does not ensure that additional attributes are not being added to arrays that are nested within your JSON object. The `etc` method only ensures that no additional attributes exist at the nesting level in which the `etc` method is invoked.
 
 <a name="asserting-json-attribute-presence-and-absence"></a>
 #### Asserting Attribute Presence / Absence
