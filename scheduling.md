@@ -321,11 +321,60 @@ Your application's scheduled tasks will not run when the application is in [main
 
 Now that we have learned how to define scheduled tasks, let's discuss how to actually run them on our server. The `schedule:run` Artisan command will evaluate all of your scheduled tasks and determine if they need to run based on the server's current time.
 
-So, when using Laravel's scheduler, we only need to add a single cron configuration entry to our server that runs the `schedule:run` command every minute. If you do not know how to add cron entries to your server, consider using a service such as [Laravel Forge](https://forge.laravel.com) which can manage the cron entries for you:
+So, when using Laravel's scheduler, we only need to add a single cron configuration entry to our server that runs the `schedule:run` command every minute. If you do not know how to add cron entries to your server, consider using a service such as [Laravel Forge](https://forge.laravel.com) which can manage the cron entries for you.
+
+### Crontab
+
+There are some examples for you to set your crontab:
+
+#### Running without log files (Recommended)
+
+Laravel schedule does not output too much useful things, you should output to log files only for debugging.
+
+Otherwise, your log file will be very large.
 
 ```shell
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 ```
+
+#### Running with single log file
+
+```shell
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /path-to-your-project/storage/logs/schedule.log 2>&1
+```
+
+#### Running with daily log file
+
+```shell
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /path-to-your-project/storage/logs/schedule.$(date +'\%Y\%m\%d').log 2>&1
+```
+
+### Systemd-Timer
+
+Systemd Timers are systemd unit files whose name ends in .timer that control .service files or events. Timers can be used as an alternative to cron. 
+
+Timers have built-in support for calendar time events, monotonic time events, and can be run asynchronously.
+
+Although cron is arguably the most well-known job scheduler, systemd timers can be an alternative.
+
+#### Benefits
+
+The main benefits of using timers come from each job having its own systemd service. Some of these benefits are:
+
+- Jobs can be easily started independently of their timers. This simplifies debugging.
+- Each job can be configured to run in a specific environment.
+- Jobs can be attached to cgroups.
+- Jobs can be set up to depend on other systemd units.
+- Jobs are logged in the systemd journal for easy debugging.
+
+#### Caveats
+
+Some things that are easy to do with cron are difficult to do with timer units alone:
+
+- Creation: to set up a timed job with systemd you need to create two files and run `systemctl` commands, compared to adding a single line to a crontab.
+- Emails: there is no built-in equivalent to cron's `MAILTO` for sending emails on job failure. See the next section for an example of setting up a similar functionality using `OnFailure=`.
+
+Also note that user timer units will only run during an active user login session by default. However, lingering can enable services to run at boot even when the user has no active login session.
 
 <a name="running-the-scheduler-locally"></a>
 ## Running The Scheduler Locally
