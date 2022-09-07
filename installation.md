@@ -1,54 +1,54 @@
-# Installation
+# 安裝
 
-- [Meet Laravel](#meet-laravel)
-    - [Why Laravel?](#why-laravel)
-- [Your First Laravel Project](#your-first-laravel-project)
-    - [Getting Started On macOS](#getting-started-on-macos)
-    - [Getting Started On Windows](#getting-started-on-windows)
-    - [Getting Started On Linux](#getting-started-on-linux)
-    - [Choosing Your Sail Services](#choosing-your-sail-services)
-    - [Installation Via Composer](#installation-via-composer)
-- [Initial Configuration](#initial-configuration)
-    - [Environment Based Configuration](#environment-based-configuration)
-    - [Directory Configuration](#directory-configuration)
-- [Next Steps](#next-steps)
-    - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
-    - [Laravel The API Backend](#laravel-the-api-backend)
+- [初見 Laravel](#meet-laravel)
+    - [為什麼選擇 Laravel ?](#why-laravel)
+- [你的第一個 Laravel 專案](#your-first-laravel-project)
+    - [從 macOS 開始](#getting-started-on-macos)
+    - [從 Windows 開始](#getting-started-on-windows)
+    - [從 Linux 開始](#getting-started-on-linux)
+    - [選擇你的 Sail 服務](#choosing-your-sail-services)
+    - [透過 Composer 安裝](#installation-via-composer)
+- [初始化設定](#initial-configuration)
+    - [環境基本設定](#environment-based-configuration)
+    - [目錄設定](#directory-configuration)
+- [下一步](#next-steps)
+    - [將 Laravel 作為全端框架](#laravel-the-fullstack-framework)
+    - [將 Laravel 作為API後端](#laravel-the-api-backend)
 
 <a name="meet-laravel"></a>
-## Meet Laravel
+## 初見 Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. A web framework provides a structure and starting point for creating your application, allowing you to focus on creating something amazing while we sweat the details.
+Laravel 是一款直觀且語法優雅的 web 框架。 一個　web　框架能在你建立應用程式時提供結構及起始點，讓你能專心創造些驚人之舉，而其他細節就儘管交給我們處理。
 
-Laravel strives to provide an amazing developer experience while providing powerful features such as thorough dependency injection, an expressive database abstraction layer, queues and scheduled jobs, unit and integration testing, and more.
+Laravel 致力於提供出色的開發體驗且提供強大的功能，例如全面的依賴注入( Dependency Injection )、直觀的資料庫抽象層( Database Abstraction Layer )、佇列和任務排程、單元和整合測試等等。
 
-Whether you are new to PHP web frameworks or have years of experience, Laravel is a framework that can grow with you. We'll help you take your first steps as a web developer or give you a boost as you take your expertise to the next level. We can't wait to see what you build.
+不論你是 PHP web 框架的新手還是征戰多年的資深老鳥， Laravel 都是一款能伴隨你成長的框架。我們將會協助你邁出成為 web 開發者的第一步或讓你的專業知識昇華到更高境界。我們迫不及待要看你露一手啦。
 
 <a name="why-laravel"></a>
-### Why Laravel?
+### 為什麼選擇 Laravel ?
 
-There are a variety of tools and frameworks available to you when building a web application. However, we believe Laravel is the best choice for building modern, full-stack web applications.
+建立一個 web 應用程式有琳瑯滿目的工具和框架供你選擇。但我們相信 Laravel 絕對是先進的全端 web 應用框架首選。
 
-#### A Progressive Framework
+#### 漸進式框架
 
-We like to call Laravel a "progressive" framework. By that, we mean that Laravel grows with you. If you're just taking your first steps into web development, Laravel's vast library of documentation, guides, and [video tutorials](https://laracasts.com) will help you learn the ropes without becoming overwhelmed.
+我們喜歡稱呼 Laravel 為一個「漸進式框架」，意思是 Laravel 會跟你一同進步。如果你剛好是正在起步的 web 開發者， Laravel 大量的文件、指南和 [影片教學](https://laracasts.com) 將幫助你學習而不至於不知所措。
 
-If you're a senior developer, Laravel gives you robust tools for [dependency injection](/docs/{{version}}/container), [unit testing](/docs/{{version}}/testing), [queues](/docs/{{version}}/queues), [real-time events](/docs/{{version}}/broadcasting), and more. Laravel is fine-tuned for building professional web applications and ready to handle enterprise work loads.
+如果你是資深的開發者， Laravel 提供了 [依賴注入](/docs/{{version}}/container) 、 [單元測試](/docs/{{version}}/testing) 、 [佇列](/docs/{{version}}/queues) 、 [廣播事件](/docs/{{version}}/broadcasting) 等等。 Laravel 對專業的 web 開發者提供穩定且易於掌控的企業工作量。
 
-#### A Scalable Framework
+#### 可擴展的框架
 
-Laravel is incredibly scalable. Thanks to the scaling-friendly nature of PHP and Laravel's built-in support for fast, distributed cache systems like Redis, horizontal scaling with Laravel is a breeze. In fact, Laravel applications have been easily scaled to handle hundreds of millions of requests per month.
+Laravel 具有令人難以置信的可擴展性。歸功於 PHP 友善的靈活性和 Laravel 內建支援 Redis 等的快速分散式快取系統，讓擴充 Laravel 顯得輕而易舉。事實上， Laravel 的應用程式已經可以很輕鬆地每月處理幾億個請求。
 
-Need extreme scaling? Platforms like [Laravel Vapor](https://vapor.laravel.com) allow you to run your Laravel application at nearly limitless scale on AWS's latest serverless technology.
+需要壓縮開發費用嗎? [Laravel Vapor](https://vapor.laravel.com) 允許你在 AWS 最新的無伺服器技術平台上以近乎無限的規模執行 Laravel 的應用程式。
 
-#### A Community Framework
+#### 社群框架
 
-Laravel combines the best packages in the PHP ecosystem to offer the most robust and developer friendly framework available. In addition, thousands of talented developers from around the world have [contributed to the framework](https://github.com/laravel/framework). Who knows, maybe you'll even become a Laravel contributor.
+Laravel 結合了 PHP 生態系統中最好的套件且提供最強大又對開發者友善的框架。除此之外，世界各地數以千計的大神開發者們 [為框架做出了貢獻](https://github.com/laravel/framework) 。說不定你也會是為 Laravel 貢獻的大神。
 
 <a name="your-first-laravel-project"></a>
-## Your First Laravel Project
+## 你的第一個 Laravel 專案
 
-We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your local machine. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
+我們希望讓開始 Laravel 變得盡可能容易。這邊有各種選項讓你在本機開發並執行專案。儘管你可能希望晚點再來探索這些選項， Laravel 在你使用 [Docker](https://www.docker.com) 時提供內建執行 Laravel 專案的方法： [Sail](/docs/{{version}}/sail) 。
 
 Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local machine's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your local machine. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
