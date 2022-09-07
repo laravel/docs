@@ -2073,6 +2073,21 @@ Or, if your validation rule requires access to the validator instance performing
         }
     }
 
+#### Customizing The Error Messages
+
+If needed, you may provide custom error messages instead of the default ones provided by the rule objects.
+
+    use App\Rules\Uppercase;
+
+    $request->validate([
+        'name' => ['required', 'string', new UpperCase],
+    ], [
+        UpperCase::class => 'Custom error message.',
+
+        // or only for a specific attribute.
+        'name.'.UpperCase::class => 'Custom error message.',
+    ]);
+
 <a name="using-closures"></a>
 ### Using Closures
 
