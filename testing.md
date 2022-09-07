@@ -118,7 +118,8 @@ php artisan test --parallel
 php artisan test --parallel --processes=4
 ```
 
-> {備註} 當執行平行測試的時候，有些 PHPUnit 選項是無效的。（例如 `--do-not-cache-result`）
+> **WARNING** 
+> 當執行平行測試的時候，有些 PHPUnit 選項是無效的。（例如 `--do-not-cache-result`）
 
 <a name="parallel-testing-and-databases"></a>
 #### 平行測試與資料庫
