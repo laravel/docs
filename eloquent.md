@@ -1174,6 +1174,52 @@ If you would like to remove several or even all of the query's global scopes, yo
         FirstScope::class, SecondScope::class
     ])->get();
 
+<a name="extending-global-scopes"></a>
+#### Extending Global Scopes
+
+You can extend your scope class by defining `extend` method. It will be executed when global scope is added. One of the useful ways to use it is to define macros to interact with your scope:
+
+    <?php
+
+    namespace App\Scopes;
+
+    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Scope;
+
+    class AncientScope implements Scope
+    {
+        /**
+         * Apply the scope to a given Eloquent query builder.
+         *
+         * @param  \Illuminate\Database\Eloquent\Builder  $builder
+         * @param  \Illuminate\Database\Eloquent\Model  $model
+         * @return void
+         */
+        public function apply(Builder $builder, Model $model)
+        {
+            $builder->where('created_at', '<', now()->subYears(2000));
+        }
+
+        /**
+        * Extend scope's Eloquent query builder.
+        * @param  \Illuminate\Database\Eloquent\Builder  $builder
+        * @return void
+        */
+        public function extend(Builder $builder)
+        {
+            $builder->macro('notVeryAncient', function (Builder $builder) {
+                return $builder->withoutGlobalScope($this)->where('created_at', '<', now()->subYears(1000));
+            });
+        }
+    }
+
+By defining this macro and adding scope to Model's `booted` method now you are able to call it when building a query. For example, by calling `User::notVeryAncient()->get()`, the following SQL query will be executed:
+
+```sql
+select * from `users` where `created_at` < 1021-02-18 00:00:00
+```
+
 <a name="local-scopes"></a>
 ### Local Scopes
 
