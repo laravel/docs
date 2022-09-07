@@ -371,10 +371,19 @@ Once a client has been created, developers may use their client ID and secret to
             'response_type' => 'code',
             'scope' => '',
             'state' => $state,
+            'prompt' => '',
         ]);
 
         return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
+
+The consuming application may set the `prompt` parameter to specify whether Passport should prompt the user for re-authentication or authorization approval. The possible values are:
+
+* `none` Passport does not display login or authorization approval screens; it will return an error if the user is not already authenticated and has not pre-configured consent for the requested scopes. This can be used to check for existing authentication and/or consent.
+* `consent` Passport always prompts the authorization approval screen, even if all scopes were previously granted to the consuming application. For this reason, use this only when necessary.
+* `login` Passport prompts the user to log in every time, even if they already have an active session at your application. This is useful to prohibit a dead-loop UX when a user logs out of the consuming application and wants to sign in with a different account.
+
+If no value is specified, the user will be prompted only the first time that they have not previously authorized access to the consuming application for the requested scopes.
 
 > **Note**  
 > Remember, the `/oauth/authorize` route is already defined by Passport. You do not need to manually define this route.
@@ -382,7 +391,7 @@ Once a client has been created, developers may use their client ID and secret to
 <a name="approving-the-request"></a>
 #### Approving The Request
 
-When receiving authorization requests, Passport will automatically display a template to the user allowing them to approve or deny the authorization request. If they approve the request, they will be redirected back to the `redirect_uri` that was specified by the consuming application. The `redirect_uri` must match the `redirect` URL that was specified when the client was created.
+When receiving authorization requests, Passport will automatically respond based on the value of `prompt` parameter and may display a template to the user allowing them to approve or deny the authorization request. If they approve the request, they will be redirected back to the `redirect_uri` that was specified by the consuming application. The `redirect_uri` must match the `redirect` URL that was specified when the client was created.
 
 If you would like to customize the authorization approval screen, you may publish Passport's views using the `vendor:publish` Artisan command. The published views will be placed in the `resources/views/vendor/passport` directory:
 
@@ -390,7 +399,7 @@ If you would like to customize the authorization approval screen, you may publis
 php artisan vendor:publish --tag=passport-views
 ```
 
-Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately:
+Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately, unless the consuming application has explicitly set `prompt` parameter when redirecting for authorization:
 
     <?php
 
@@ -591,10 +600,14 @@ Once a client has been created, you may use the client ID and the generated code
             'state' => $state,
             'code_challenge' => $codeChallenge,
             'code_challenge_method' => 'S256',
+            'prompt' => ''
         ]);
 
         return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
+
+> **Note**  
+> The possible values for the `prompt` parameter are `none`, `consent`, and `login`. To learn more, check out the documentation on [redirecting for authorization](#requesting-tokens-redirecting-for-authorization).
 
 <a name="code-grant-pkce-converting-authorization-codes-to-access-tokens"></a>
 #### Converting Authorization Codes To Access Tokens
@@ -778,10 +791,14 @@ Once the grant has been enabled, developers may use their client ID to request a
             'response_type' => 'token',
             'scope' => '',
             'state' => $state,
+            'prompt' => '',
         ]);
 
         return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
+
+> **Note**  
+> The possible values for the `prompt` parameter are `none`, `consent`, and `login`. To learn more, check out the documentation on [redirecting for authorization](#requesting-tokens-redirecting-for-authorization).
 
 > **Note**  
 > Remember, the `/oauth/authorize` route is already defined by Passport. You do not need to manually define this route.
