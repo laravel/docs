@@ -1669,7 +1669,7 @@ You may sometimes find yourself needing to check for the existence of a relation
   
     $users = User::withWhereHas('posts', function ($query) {
         $query->where('featured', true);
-    )->get();
+    })->get();
 
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
