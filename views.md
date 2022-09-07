@@ -32,7 +32,8 @@ Since this view is stored at `resources/views/greeting.blade.php`, we may return
         return view('greeting', ['name' => 'James']);
     });
 
-> {tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
+> **Note**  
+> Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
 
 <a name="creating-and-rendering-views"></a>
 ## Creating & Rendering Views
@@ -60,7 +61,8 @@ Views may also be nested within subdirectories of the `resources/views` director
 
     return view('admin.profile', $data);
 
-> {note} View directory names should not contain the `.` character.
+> **Warning**  
+> View directory names should not contain the `.` character.
 
 <a name="creating-the-first-available-view"></a>
 ### Creating The First Available View
@@ -177,7 +179,8 @@ We'll use the `View` facade's `composer` method to register the view composer. L
         }
     }
 
-> {note} Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
+> **Warning**  
+> Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
 
 Now that we have registered the composer, the `compose` method of the `App\View\Composers\ProfileComposer` class will be executed each time the `profile` view is being rendered. Let's take a look at an example of the composer class:
 
@@ -266,4 +269,3 @@ You may use the `view:clear` command to clear the view cache:
 ```shell
 php artisan view:clear
 ```
-

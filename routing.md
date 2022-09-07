@@ -74,7 +74,8 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
         //
     });
 
-> {tip} When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, and `options` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route.
+> **Note**  
+> When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, and `options` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route.
 
 <a name="dependency-injection"></a>
 #### Dependency Injection
@@ -112,7 +113,8 @@ Or, you may use the `Route::permanentRedirect` method to return a `301` status c
 
     Route::permanentRedirect('/here', '/there');
 
-> {note} When using route parameters in redirect routes, the following parameters are reserved by Laravel and cannot be used: `destination` and `status`.
+> **Warning**  
+> When using route parameters in redirect routes, the following parameters are reserved by Laravel and cannot be used: `destination` and `status`.
 
 <a name="view-routes"></a>
 ### View Routes
@@ -123,7 +125,8 @@ If your route only needs to return a [view](/docs/{{version}}/views), you may us
 
     Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 
-> {note} When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
+> **Warning**  
+> When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
 
 <a name="the-route-list"></a>
 ### The Route List
@@ -140,10 +143,22 @@ By default, the route middleware that are assigned to each route will not be dis
 php artisan route:list -v
 ```
 
+You may also instruct Laravel to only show routes that begin with a given URI:
+
+```shell
+php artisan route:list --path=api
+```
+
 In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:
 
 ```shell
 php artisan route:list --except-vendor
+```
+
+Likewise, you may also instruct Laravel to only show routes that are defined by third-party packages by providing the `--only-vendor` option when executing the `route:list` command:
+
+```shell
+php artisan route:list --only-vendor
 ```
 
 <a name="route-parameters"></a>
@@ -257,7 +272,8 @@ The Laravel routing component allows all characters except `/` to be present wit
         return $search;
     })->where('search', '.*');
 
-> {note} Encoded forward slashes are only supported within the last route segment.
+> **Warning**  
+> Encoded forward slashes are only supported within the last route segment.
 
 <a name="named-routes"></a>
 ## Named Routes
@@ -275,7 +291,8 @@ You may also specify route names for controller actions:
         [UserProfileController::class, 'show']
     )->name('profile');
 
-> {note} Route names should always be unique.
+> **Warning**  
+> Route names should always be unique.
 
 <a name="generating-urls-to-named-routes"></a>
 #### Generating URLs To Named Routes
@@ -287,6 +304,8 @@ Once you have assigned a name to a given route, you may use the route's name whe
 
     // Generating Redirects...
     return redirect()->route('profile');
+
+    return to_route('profile');
 
 If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the generated URL in their correct positions:
 
@@ -306,7 +325,8 @@ If you pass additional parameters in the array, those key / value pairs will aut
 
     // /user/1/profile?photos=yes
 
-> {tip} Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values).
+> **Note**  
+> Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values).
 
 <a name="inspecting-the-current-route"></a>
 #### Inspecting The Current Route
@@ -374,7 +394,8 @@ Route groups may also be used to handle subdomain routing. Subdomains may be ass
         });
     });
 
-> {note} In order to ensure your subdomain routes are reachable, you should register subdomain routes before registering root domain routes. This will prevent root domain routes from overwriting subdomain routes which have the same URI path.
+> **Warning**  
+> In order to ensure your subdomain routes are reachable, you should register subdomain routes before registering root domain routes. This will prevent root domain routes from overwriting subdomain routes which have the same URI path.
 
 <a name="route-group-prefixes"></a>
 ### Route Prefixes
@@ -631,7 +652,8 @@ Using the `Route::fallback` method, you may define a route that will be executed
         //
     });
 
-> {note} The fallback route should always be the last route registered by your application.
+> **Warning**  
+> The fallback route should always be the last route registered by your application.
 
 <a name="rate-limiting"></a>
 ## Rate Limiting
@@ -644,6 +666,7 @@ Laravel includes powerful and customizable rate limiting services that you may u
 Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. Limit configuration are instances of the `Illuminate\Cache\RateLimiting\Limit` class. This class contains helpful "builder" methods so that you can quickly define your limit. The rate limiter name may be any string you wish:
 
     use Illuminate\Cache\RateLimiting\Limit;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\RateLimiter;
 
     /**
@@ -661,8 +684,8 @@ Rate limiters are defined using the `RateLimiter` facade's `for` method. The `fo
 If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Laravel. If you would like to define your own response that should be returned by a rate limit, you may use the `response` method:
 
     RateLimiter::for('global', function (Request $request) {
-        return Limit::perMinute(1000)->response(function () {
-            return response('Custom response...', 429);
+        return Limit::perMinute(1000)->response(function (Request $request, array $headers) {
+            return response('Custom response...', 429, $headers);
         });
     });
 
@@ -762,7 +785,8 @@ You may refer to the API documentation for both the [underlying class of the Rou
 
 Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. All CORS settings may be configured in your application's `config/cors.php` configuration file. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/{{version}}/middleware) that is included by default in your global middleware stack. Your global middleware stack is located in your application's HTTP kernel (`App\Http\Kernel`).
 
-> {tip} For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+> **Note**  
+> For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
 
 <a name="route-caching"></a>
 ## Route Caching

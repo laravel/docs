@@ -183,7 +183,7 @@ In addition to the default `scheme`, `host`, `port`, `database`, and `password` 
 <a name="phpredis-serialization"></a>
 #### phpredis Serialization & Compression
 
-The phpredis extension may also be configured to use a variety serialization and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
+The phpredis extension may also be configured to use a variety of serialization and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
 
     'redis' => [
 
@@ -264,7 +264,8 @@ The `Redis` facade's `transaction` method provides a convenient wrapper around R
         $redis->incr('total_visits', 1);
     });
 
-> {note} When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands.
+> **Warning**  
+> When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands.
 
 #### Lua Scripts
 
@@ -284,7 +285,8 @@ In this example, we will increment a counter, inspect its new value, and increme
         return counter
     LUA, 2, 'first-counter', 'second-counter');
 
-> {note} Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
+> **Warning**  
+> Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
 
 <a name="pipelining-commands"></a>
 ### Pipelining Commands
