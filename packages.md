@@ -11,6 +11,7 @@
     - [Translations](#translations)
     - [Views](#views)
     - [View Components](#view-components)
+    - ["About" Artisan Command](#about-artisan-command)
 - [Commands](#commands)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
@@ -107,7 +108,8 @@ Now, when users of your package execute Laravel's `vendor:publish` command, your
 
     $value = config('courier.option');
 
-> {note} You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
+> **Warning**  
+> You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
 
 <a name="default-package-configuration"></a>
 #### Default Package Configuration
@@ -128,7 +130,8 @@ The `mergeConfigFrom` method accepts the path to your package's configuration fi
         );
     }
 
-> {note} This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
+> **Warning**  
+> This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
 
 <a name="routes"></a>
 ### Routes
@@ -307,6 +310,23 @@ If your package contains anonymous components, they must be placed within a `com
 ```blade
 <x-courier::alert />
 ```
+
+<a name="about-artisan-command"></a>
+### "About" Artisan Command
+
+Laravel's built-in `about` Artisan command provides a synopsis of the application's environment and configuration. Packages may push additional information to this command's output via the `AboutCommand` class. Typically, this information may be added from your package service provider's `boot` method:
+
+    use Illuminate\Foundation\Console\AboutCommand;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        AboutCommand::add('My Package', fn () => ['Version' => '1.0.0']);
+    }
 
 <a name="commands"></a>
 ## Commands

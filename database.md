@@ -8,6 +8,8 @@
     - [監聽查詢事件](#listening-for-query-events)
 - [資料庫交易](#database-transactions)
 - [連接到資料庫的 CLI](#connecting-to-the-database-cli)
+- [Inspecting Your Databases](#inspecting-your-databases)
+- [Monitoring Your Databases](#monitoring-your-databases)
 
 <a name="introduction"></a>
 ## 簡介
@@ -16,7 +18,7 @@
 
 <div class="content-list" markdown="1">
 
-- MariaDB 10.2+ ([版本原則](https://mariadb.org/about/#maintenance-policy))
+- MariaDB 10.3+ ([版本原則](https://mariadb.org/about/#maintenance-policy))
 - MySQL 5.7+ ([版本原則](https://en.wikipedia.org/wiki/MySQL#Release_history))
 - PostgreSQL 10.0+ ([版本原則](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
@@ -213,7 +215,8 @@ driver://username:password@host:port/database?options
 
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 
-> {note} 因為不需準備的語句沒有綁定任何參數，它們可能會受到 SQL 注入的攻擊。你永遠不應該讓使用者可以自己控制此種語句其中的數值。
+> **Warning**
+> 因為不需準備的語句沒有綁定任何參數，它們可能會受到 SQL 注入的攻擊。你永遠不應該讓使用者可以自己控制此種語句其中的數值。
 
 <a name="implicit-commits-in-transactions"></a>
 #### 隱式提交
@@ -231,7 +234,7 @@ driver://username:password@host:port/database?options
 
     use Illuminate\Support\Facades\DB;
 
-    $users = DB::connection('sqlite')->select(...);
+    $users = DB::connection('sqlite')->select(/* ... */);
 
 你可以用連接實體上的 `getPdo` 方法來存取連接底層的 PDO 實例：
 
@@ -272,6 +275,44 @@ driver://username:password@host:port/database?options
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
+            });
+        }
+    }
+
+<a name="monitoring-cumulative-query-time"></a>
+### Monitoring Cumulative Query Time
+
+A common performance bottleneck of modern web applications is the amount of time they spend querying databases. Thankfully, Laravel can invoke a closure or callback of your choice when it spends too much time querying the database during a single request. To get started, provide a query time threshold (in milliseconds) and closure to the `whenQueryingForLongerThan` method. You may invoke this method in the `boot` method of a [service provider](/docs/{{version}}/providers):
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Database\Connection;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            DB::whenQueryingForLongerThan(500, function (Connection $connection) {
+                // Notify development team...
             });
         }
     }
@@ -319,7 +360,8 @@ driver://username:password@host:port/database?options
 
     DB::commit();
 
-> {tip} `DB` facade 中的 transaction 方法控制 [query builder](/docs/{{version}}/queries) 和 [Eloquent ORM](/docs/{{version}}/eloquent) 兩者的交易。
+> **Note**  
+> `DB` facade 中的 transaction 方法控制 [query builder](/docs/{{version}}/queries) 和 [Eloquent ORM](/docs/{{version}}/eloquent) 兩者的交易。
 
 <a name="connecting-to-the-database-cli"></a>
 ## 連接到資料庫的 CLI
@@ -336,3 +378,68 @@ php artisan db
 php artisan db mysql
 ```
 
+<a name="inspecting-your-databases"></a>
+## Inspecting Your Databases
+
+Using the `db:show` and `db:table` Artisan commands, you can get valuable insight into your database and its associated tables. To see an overview of your database, including its size, type, number of open connections, and a summary of its tables, you may use the `db:show` command:
+
+```shell
+php artisan db:show
+```
+
+You may specify which database connection should be inspected by providing the database connection name to the command via the `--database` option:
+
+```shell
+php artisan db:show --database=pgsql
+```
+
+If you would like to include table row counts and database view details within the output of the command, you may provide the `--counts` and `--views` options, respectively. On large databases, retrieving row counts and view details can be slow:
+
+```shell
+php artisan db:show --counts --views
+```
+
+<a name="table-overview"></a>
+#### Table Overview
+
+If you would like to get an overview of an individual table within your database, you may execute the `db:table` Artisan command. This command provides a general overview of a database table, including its columns, types, attributes, keys, and indexes:
+
+```shell
+php artisan db:table users
+```
+
+<a name="monitoring-your-databases"></a>
+## Monitoring Your Databases
+
+Using the `db:monitor` Artisan command, you can instruct Laravel to dispatch an `Illuminate\Database\Events\DatabaseBusy` event if your database is managing more than a specified number of open connections.
+
+To get started, you should schedule the `db:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the database connection configurations that you wish to monitor as well as the maximum number of open connections that should be tolerated before dispatching an event:
+
+```shell
+php artisan db:monitor --databases=mysql,pgsql --max=100
+```
+
+Scheduling this command alone is not enough to trigger a notification alerting you of the number of open connections. When the command encounters a database that has an open connection count that exceeds your threshold, a `DatabaseBusy` event will be dispatched. You should listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
+
+```php
+use App\Notifications\DatabaseApproachingMaxConnections;
+use Illuminate\Database\Events\DatabaseBusy;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+
+/**
+ * Register any other events for your application.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Event::listen(function (DatabaseBusy $event) {
+        Notification::route('mail', 'dev@example.com')
+                ->notify(new DatabaseApproachingMaxConnections(
+                    $event->connectionName,
+                    $event->connections
+                ));
+    });
+}
+```
