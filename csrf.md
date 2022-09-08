@@ -94,7 +94,8 @@ Laravel對於每個應用程式收到的[用戶 session](/docs/{{version}}/sessi
         ];
     }
 
-> {小技巧} 為了方便起見，CSRF 中介層在[測試時 (running tests) ](/docs/{{version}}/testing}})會自動取消對所有路徑進行驗證。
+> **Note**  
+> 為了方便起見，CSRF 中介層在[測試時 (running tests) ](/docs/{{version}}/testing}})會自動取消對所有路徑進行驗證。
 
 <a name="csrf-x-csrf-token"></a>
 ## X-CSRF-TOKEN
@@ -122,4 +123,5 @@ Laravel把當前的 CSRF 標記存在加密`XSRF-TOKEN` cookie 中，而每個�
 
 有些 Javascript 框架與函式庫，像是 Angular 和 Axios，會自動把值放在原請求的 `X-XSRF-TOKEN` 標頭中，因此這個 cookie 主要是傳送來便利開發者的。
 
-> {小技巧} 預設情況下，`resources/js/bootstrap.js` 引入了 Axios HTTP 函式庫，它會自動幫你傳送 `X-XSRF-TOKEN` 的標頭。
+> **Note**
+> 預設情況下，`resources/js/bootstrap.js` 引入了 Axios HTTP 函式庫，它會自動幫你傳送 `X-XSRF-TOKEN` 的標頭。
