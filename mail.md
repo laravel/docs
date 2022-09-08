@@ -191,6 +191,7 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
     public function build()
     {
         return $this->from('example@example.com', 'Example')
+                    ->subject('Order Shipped')
                     ->view('emails.orders.shipped');
     }
 
