@@ -270,6 +270,17 @@ Next, let's explore building Eloquent model relationships using Laravel's fluent
                 ->has(Post::factory()->count(3))
                 ->create();
 
+The `has` method may also be chained for multi level seeding:
+
+    use App\Models\Comment;
+    use App\Models\Post;
+    use App\Models\User;
+
+    $user = User::factory()
+                ->has(Post::factory()->count(3)
+                        ->has(Comment::factory()->count(4))
+                ->create();
+
 By convention, when passing a `Post` model to the `has` method, Laravel will assume that the `User` model must have a `posts` method that defines the relationship. If necessary, you may explicitly specify the name of the relationship that you would like to manipulate:
 
     $user = User::factory()
