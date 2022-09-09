@@ -37,7 +37,8 @@
 <a name="estimated-upgrade-time-10-minutes"></a>
 #### Estimated Upgrade Time: 30 Minutes
 
-> {tip} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
+> **Note**  
+> We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
@@ -59,7 +60,7 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
-In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your application's `composer.json` file.
+In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` and `pusher/pusher-php-server` (if applicable) with `"pusher/pusher-php-server": "^5.0"` in your application's `composer.json` file.
 
 Furthermore, the following first-party packages have received new major releases to support Laravel 9.x. If applicable, you should read their individual upgrade guides before upgrading:
 
@@ -127,6 +128,12 @@ The exception handler's `ignore` method is now `public` instead of `protected`. 
 ```php
 public function ignore(string $class);
 ```
+
+#### Exception Handler Contract Binding
+
+**Likelihood Of Impact: Very Low**
+
+Previously, in order to override the default Laravel exception handler, custom implementations were bound into the service container using the `\App\Exceptions\Handler::class` type. However, you should now bind custom implementations using the `\Illuminate\Contracts\Debug\ExceptionHandler::class` type.
 
 ### Blade
 
@@ -449,7 +456,7 @@ The [HTTP client](/docs/{{version}}/http-client) now has a default timeout of 30
 
 If you wish to specify a longer timeout for a given request, you may do so using the `timeout` method:
 
-    $response = Http::timeout(120)->get(...);
+    $response = Http::timeout(120)->get(/* ... */);
 
 #### HTTP Fake & Middleware
 
@@ -508,7 +515,8 @@ Various SwiftMailer related methods, some of which were undocumented, have been 
         );
     });
 
-> {note} Please thoroughly review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the `Symfony\Component\Mime\Email` object.
+> **Warning**  
+> Please thoroughly review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the `Symfony\Component\Mime\Email` object.
 
 The list below contains a more thorough overview of renamed methods. Many of these methods are low-level methods used to interact with SwiftMailer / Symfony Mailer directly, so may not be commonly used within most Laravel applications:
 
@@ -584,7 +592,8 @@ Defining stream options for the SMTP transport is no longer supported. Instead, 
 
 To learn more about the available configuration options, please review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#transport-setup).
 
-> {note} In spite of the example above, you are not generally advised to disable SSL verification since it introduces the possibility of "man-in-the-middle" attacks.
+> **Warning**  
+> In spite of the example above, you are not generally advised to disable SSL verification since it introduces the possibility of "man-in-the-middle" attacks.
 
 #### SMTP `auth_mode`
 
