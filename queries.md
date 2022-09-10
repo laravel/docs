@@ -877,7 +877,7 @@ If the table has an auto-incrementing id, use the `insertGetId` method to insert
 <a name="upserts"></a>
 ### Upserts
 
-The `upsert` method will insert records that do not exist and update the records that already exist with new values that you may specify. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of columns that should be updated if a matching record already exists in the database:
+The `upsert` method will insert records that do not exist and update the records that already exist with new values that you may specify. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of columns that should be updated if a matching record already exists in the database, while all columns will be updated if this argument is omitted:
 
     DB::table('flights')->upsert(
         [
