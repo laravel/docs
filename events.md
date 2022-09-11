@@ -42,7 +42,8 @@ The `App\Providers\EventServiceProvider` included with your Laravel application 
         ],
     ];
 
-> {tip} The `event:list` command may be used to display a list of all events and listeners registered by your application.
+> **Note**  
+> The `event:list` command may be used to display a list of all events and listeners registered by your application.
 
 <a name="generating-events-and-listeners"></a>
 ### Generating Events & Listeners
@@ -264,7 +265,8 @@ Next, let's take a look at the listener for our example event. Event listeners r
         }
     }
 
-> {tip} Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
+> **Note**  
+> Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
 
 <a name="stopping-the-propagation-of-an-event"></a>
 #### Stopping The Propagation Of An Event
@@ -439,7 +441,8 @@ If your queue connection's `after_commit` configuration option is set to `false`
         public $afterCommit = true;
     }
 
-> {tip} To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
+> **Note**  
+> To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="handling-failed-jobs"></a>
 ### Handling Failed Jobs
@@ -559,7 +562,8 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
 
     OrderShipped::dispatchUnless($condition, $order);
 
-> {tip} When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#event-fake) makes it a cinch.
+> **Note**  
+> When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#event-fake) makes it a cinch.
 
 <a name="event-subscribers"></a>
 ## Event Subscribers

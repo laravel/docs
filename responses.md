@@ -34,7 +34,8 @@
         return [1, 2, 3];
     });
 
-> {tip} 你知道你也能從路由和控制器中回傳 [Eloquent 集合](/docs/{{version}}/eloquent-collections) 嗎？它們會自動被轉換成 JSON。快來試試看！
+> **Note**  
+> 你知道你也能從路由和控制器中回傳 [Eloquent 集合](/docs/{{version}}/eloquent-collections) 嗎？它們會自動被轉換成 JSON。快來試試看！
 
 <a name="response-objects"></a>
 #### 回應物件
@@ -288,7 +289,8 @@ You may use the `withInput` method provided by the `RedirectResponse` instance t
 
     return response()->download($pathToFile, $name, $headers);
 
-> {note} 管理檔案下載的套件 Symfony HttpFoundation，要求被下載的檔案名稱必須為 ASCII。
+> **Warning**  
+> 管理檔案下載的套件 Symfony HttpFoundation，要求被下載的檔案名稱必須為 ASCII。
 
 <a name="streamed-downloads"></a>
 #### Streamed Downloads
