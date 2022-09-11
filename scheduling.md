@@ -440,29 +440,41 @@ composer require guzzlehttp/guzzle
 
 If needed, you may listen to [events](/docs/{{version}}/events) dispatched by the scheduler. Typically, event listener mappings will be defined within your application's `App\Providers\EventServiceProvider` class:
 
+    use App\Listeners\LogScheduledTaskStarting;
+    use App\Listeners\LogScheduledTaskFinished;
+    use App\Listeners\LogScheduledBackgroundTaskFinished;
+    use App\Listeners\LogScheduledTaskSkipped;
+    use App\Listeners\LogScheduledTaskFailed;
+    
+    use Illuminate\Console\Events\ScheduledTaskStarting;
+    use Illuminate\Console\Events\ScheduledTaskFinished;
+    use Illuminate\Console\Events\ScheduledBackgroundTaskFinished;
+    use Illuminate\Console\Events\ScheduledTaskSkipped;
+    use Illuminate\Console\Events\ScheduledTaskFailed;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Console\Events\ScheduledTaskStarting' => [
-            'App\Listeners\LogScheduledTaskStarting',
+        ScheduledTaskStarting::class => [
+            LogScheduledTaskStarting::class,
         ],
 
-        'Illuminate\Console\Events\ScheduledTaskFinished' => [
-            'App\Listeners\LogScheduledTaskFinished',
+        ScheduledTaskFinished::class => [
+            LogScheduledTaskFinished::class,
         ],
 
-        'Illuminate\Console\Events\ScheduledBackgroundTaskFinished' => [
-            'App\Listeners\LogScheduledBackgroundTaskFinished',
+        ScheduledBackgroundTaskFinished::class => [
+            LogScheduledBackgroundTaskFinished::class,
         ],
 
-        'Illuminate\Console\Events\ScheduledTaskSkipped' => [
-            'App\Listeners\LogScheduledTaskSkipped',
+        ScheduledTaskSkipped::class => [
+            LogScheduledTaskSkipped::class,
         ],
 
-        'Illuminate\Console\Events\ScheduledTaskFailed' => [
-            'App\Listeners\LogScheduledTaskFailed',
+        ScheduledTaskFailed::class => [
+            LogScheduledTaskFailed::class,
         ],
     ];
