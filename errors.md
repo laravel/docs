@@ -57,7 +57,8 @@
         return false;
     });
 
-> (提示) 要自訂回報特定例外時，也可以使用[可回報例外](/docs/{{version}}/errors#renderable-exceptions).
+> **Note**  
+> 要自訂回報特定例外時，也可以使用[可回報例外](/docs/{{version}}/errors#renderable-exceptions).
 
 <a name="global-log-context"></a>
 #### 全域日誌 context
@@ -159,8 +160,8 @@ When messages are written to your application's [logs](/docs/{{version}}/logging
         InvalidOrderException::class,
     ];
 
-
-> {提示} 在背後, Laravel 已經為你忽略一些錯誤, 如「找不到頁面」的 404 錯誤代碼或因為無效的 CSRF 憑證造成的 419 錯誤代碼。
+> **Note**  
+> 在背後, Laravel 已經為你忽略一些錯誤, 如「找不到頁面」的 404 錯誤代碼或因為無效的 CSRF 憑證造成的 419 錯誤代碼。
 
 <a name="rendering-exceptions"></a>
 ### 顯示例外
@@ -234,7 +235,7 @@ When messages are written to your application's [logs](/docs/{{version}}/logging
          */
         public function render($request)
         {
-            return response(...);
+            return response(/* ... */);
         }
     }
 
@@ -267,8 +268,8 @@ When messages are written to your application's [logs](/docs/{{version}}/logging
         return false;
     }
 
-> {提示} 你可以將任何需要依賴 `report` 方法 type-hint 並且它們會被自動加入 Laravel的 [服務容器](/docs/{{version}}/container) 方法中
-
+> **Note**  
+> 你可以將任何需要依賴 `report` 方法 type-hint 並且它們會被自動加入 Laravel的 [服務容器](/docs/{{version}}/container) 方法中
 
 <a name="http-exceptions"></a>
 ## HTTP 例外

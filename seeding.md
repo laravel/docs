@@ -12,7 +12,8 @@
 
 Laravel includes the ability to seed your database with data using seed classes. All seed classes are stored in the `database/seeders` directory. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
 
-> {tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled during database seeding.
+> **Note**  
+> [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled during database seeding.
 
 <a name="writing-seeders"></a>
 ## Writing Seeders
@@ -23,7 +24,7 @@ To generate a seeder, execute the `make:seeder` [Artisan command](/docs/{{versio
 php artisan make:seeder UserSeeder
 ```
 
-A seeder class only contains one method by default: `run`. This method is called when the `db:seed` [Artisan command](/docs/{{version}}/artisan) is executed. Within the `run` method, you may insert data into your database however you wish. You may use the [query builder](/docs/{{version}}/queries) to manually insert data or you may use [Eloquent model factories](/docs/{{version}}/database-testing#defining-model-factories).
+A seeder class only contains one method by default: `run`. This method is called when the `db:seed` [Artisan command](/docs/{{version}}/artisan) is executed. Within the `run` method, you may insert data into your database however you wish. You may use the [query builder](/docs/{{version}}/queries) to manually insert data or you may use [Eloquent model factories](/docs/{{version}}/eloquent-factories).
 
 As an example, let's modify the default `DatabaseSeeder` class and add a database insert statement to the `run` method:
 
@@ -53,12 +54,13 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
         }
     }
 
-> {tip} You may type-hint any dependencies you need within the `run` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
+> **Note**  
+> You may type-hint any dependencies you need within the `run` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
 <a name="using-model-factories"></a>
 ### Using Model Factories
 
-Of course, manually specifying the attributes for each model seed is cumbersome. Instead, you can use [model factories](/docs/{{version}}/database-testing#defining-model-factories) to conveniently generate large amounts of database records. First, review the [model factory documentation](/docs/{{version}}/database-testing#defining-model-factories) to learn how to define your factories.
+Of course, manually specifying the attributes for each model seed is cumbersome. Instead, you can use [model factories](/docs/{{version}}/eloquent-factories) to conveniently generate large amounts of database records. First, review the [model factory documentation](/docs/{{version}}/eloquent-factories) to learn how to define your factories.
 
 For example, let's create 50 users that each has one related post:
 
