@@ -1285,14 +1285,17 @@ Once you have implemented the interface, Laravel will automatically use the pref
 
 When a notification is sending, the `Illuminate\Notifications\Events\NotificationSending` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register listeners for this event in your application's `EventServiceProvider`:
 
+    use App\Listeners\CheckNotificationStatus;
+    use Illuminate\Notifications\Events\NotificationSending;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Notifications\Events\NotificationSending' => [
-            'App\Listeners\CheckNotificationStatus',
+        NotificationSending::class => [
+            CheckNotificationStatus::class,
         ],
     ];
 
@@ -1331,14 +1334,17 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
 
 When a notification is sent, the `Illuminate\Notifications\Events\NotificationSent` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register listeners for this event in your `EventServiceProvider`:
 
+    use App\Listeners\LogNotification;
+    use Illuminate\Notifications\Events\NotificationSent;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Notifications\Events\NotificationSent' => [
-            'App\Listeners\LogNotification',
+        NotificationSent::class => [
+            LogNotification::class,
         ],
     ];
 
