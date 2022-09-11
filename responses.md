@@ -7,7 +7,7 @@
 - [重導](#redirects)
     - [重導到已命名的路由](#redirecting-named-routes)
     - [重導到控制器行為](#redirecting-controller-actions)
-    - [Redirecting To External Domains](#redirecting-external-domains)
+    - [重導到外部域名](#redirecting-external-domains)
     - [重導並加上快閃 Session 資料](#redirecting-with-flashed-session-data)
 - [其他回應類型](#other-response-types)
     - [視圖回應](#view-responses)
@@ -34,8 +34,7 @@
         return [1, 2, 3];
     });
 
-> **Note**  
-> 你知道你也能從路由和控制器中回傳 [Eloquent 集合](/docs/{{version}}/eloquent-collections) 嗎？它們會自動被轉換成 JSON。快來試試看！
+> {tip} 你知道你也能從路由和控制器中回傳 [Eloquent 集合](/docs/{{version}}/eloquent-collections) 嗎？它們會自動被轉換成 JSON。快來試試看！
 
 <a name="response-objects"></a>
 #### 回應物件
@@ -50,9 +49,9 @@
     });
 
 <a name="eloquent-models-and-collections"></a>
-#### Eloquent Models & Collections
+#### Eloquent 模型＆集合
 
-You may also return [Eloquent ORM](/docs/{{version}}/eloquent) models and collections directly from your routes and controllers. When you do, Laravel will automatically convert the models and collections to JSON responses while respecting the model's [hidden attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json):
+你也可以直接從你的路由和控制器中回傳 [Eloquent ORM](/docs/{{version}}/eloquent) 模型和集合。 當你這樣做時, Laravel 將會自動地轉換模型和集合到 JSON 回應，並遵守模型的 [隱藏屬性](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json)：
 
     use App\Models\User;
 
@@ -80,9 +79,9 @@ You may also return [Eloquent ORM](/docs/{{version}}/eloquent) models and collec
                 ]);
 
 <a name="cache-control-middleware"></a>
-#### Cache Control Middleware
+#### 快取控制中介層
 
-Laravel includes a `cache.headers` middleware, which may be used to quickly set the `Cache-Control` header for a group of routes. Directives should be provided using the "snake case" equivalent of the corresponding cache-control directive and should be separated by a semicolon. If `etag` is specified in the list of directives, an MD5 hash of the response content will automatically be set as the ETag identifier:
+Laravel 包含一個 `cache.headers` 中介層，可以被使用來快速地設定一組路由的 `Cache-Control` 標頭。指事詞需要使用「蛇行命名法」的相應 Cache-Control 指事詞，並以分號分隔。 如果在指事詞列表裡設置了 `etag`，則回應內容的 MD5 雜湊將會設置 ETag：
 
     Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
         Route::get('/privacy', function () {
@@ -97,7 +96,7 @@ Laravel includes a `cache.headers` middleware, which may be used to quickly set 
 <a name="attaching-cookies-to-responses"></a>
 ### 回應附加 Cookie
 
-You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method. You should pass the name, value, and the number of minutes the cookie should be considered valid to this method:
+你可以使用 `cookie` 方法附加 cookie 到回傳的 `Illuminate\Http\Response` 執行個體。你應該傳入 cookie 的名稱、值以及有效分鐘到此方法：
 
     return response('Hello World')->cookie(
         'name', 'value', $minutes
@@ -109,29 +108,29 @@ You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using
         'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
     );
 
-If you would like to ensure that a cookie is sent with the outgoing response but you do not yet have an instance of that response, you can use the `Cookie` facade to "queue" cookies for attachment to the response when it is sent. The `queue` method accepts the arguments needed to create a cookie instance. These cookies will be attached to the outgoing response before it is sent to the browser:
+如果你尚未有回應的執行個體，但想要確保 cookie 與傳出的回應一起送出，你可以使用 `Cookie` facade將 cookie 加入佇列，當回應被送出時一起附帶在回應上。`queue` 方法接受創建 cookie 執行個體時需要的引數。在回應被發送到瀏覽器前，這些 cookie 將附加到回傳的回應上：
 
     use Illuminate\Support\Facades\Cookie;
 
     Cookie::queue('name', 'value', $minutes);
 
 <a name="generating-cookie-instances"></a>
-#### Generating Cookie Instances
+#### 創建 Cookie 執行個體
 
-If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instance that can be attached to a response instance at a later time, you may use the global `cookie` helper. This cookie will not be sent back to the client unless it is attached to a response instance:
+如果想要創建可以稍後附加到回應上的 `Symfony\Component\HttpFoundation\Cookie` 執行個體，你可以使用全域的 `cookie` 輔助函式。 這個 cookie 不會發送回客戶端，除非它被附帶在回應的執行個體：
 
     $cookie = cookie('name', 'value', $minutes);
 
     return response('Hello World')->cookie($cookie);
 
 <a name="expiring-cookies-early"></a>
-#### Expiring Cookies Early
+#### 提早過期 Cookie
 
-You may remove a cookie by expiring it via the `withoutCookie` method of an outgoing response:
+你可以藉由回應的 `withoutCookie` 方法使 cookie 過期以刪除它：
 
     return response('Hello World')->withoutCookie('name');
 
-If you do not yet have an instance of the outgoing response, you may use the `Cookie` facade's `expire` method to expire a cookie:
+如果你尚未有回應的執行個體，你可以使用 `Cookie` facade 的 `expire` 方法去使 cookie 過期：
 
     Cookie::expire('name');
 
@@ -216,9 +215,9 @@ If you do not yet have an instance of the outgoing response, you may use the `Co
     );
 
 <a name="redirecting-external-domains"></a>
-### Redirecting To External Domains
+### 重導到外部域名
 
-Sometimes you may need to redirect to a domain outside of your application. You may do so by calling the `away` method, which creates a `RedirectResponse` without any additional URL encoding, validation, or verification:
+有時會需要重導到你的應用外的域名。你可以呼叫 `away` 方法，它會創建不帶有任何額外 URL 編碼、驗證、認證的 `RedirectResponse`：
 
     return redirect()->away('https://www.google.com');
 
