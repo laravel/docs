@@ -50,7 +50,8 @@ Laravel 提供一個快速、統一的 API 方法給各式各樣不同的快取�
         $table->integer('expiration');
     });
 
-> {tip} 你可以使用 `php artisan cache:table` 這個 Artisan 指令來產生一個較合適的資料庫遷移結構。
+> **Note**  
+> 你可以使用 `php artisan cache:table` 這個 Artisan 指令來產生一個較合適的資料庫遷移結構。
 
 <a name="memcached"></a>
 #### Memcached
@@ -143,7 +144,7 @@ Laravel 提供一個快速、統一的 API 方法給各式各樣不同的快取�
 你甚至可以傳入一個`閉包`作為預設值，當指定的項目不存在快取中時，閉包將會被回傳。傳入一個閉包讓你可以延後存取資料庫，或從外部服務中取出資料作為找不到快取時的預設值：
 
     $value = Cache::get('key', function () {
-        return DB::table(...)->get();
+        return DB::table(/* ... */)->get();
     });
 
 <a name="checking-for-item-existence"></a>
@@ -218,7 +219,8 @@ Laravel 提供一個快速、統一的 API 方法給各式各樣不同的快取�
 
     Cache::forever('key', 'value');
 
-> {tip} 如果你是使用 Memcached 驅動，永久儲存的項目會在到達大小限制時被刪除。
+> **Note**  
+> 如果你是使用 Memcached 驅動，永久儲存的項目會在到達大小限制時被刪除。
 
 <a name="removing-items-from-the-cache"></a>
 ### 刪除快取中的項目
@@ -235,7 +237,8 @@ Laravel 提供一個快速、統一的 API 方法給各式各樣不同的快取�
 
     Cache::flush();
 
-> {note} 在清除所有快取時，將會直接清除快取中的所有項目，與你設定的任何前輟字串都沒有關係。如果你有與其他應用程式共用快取中的項目，請特別注意到這點。
+> **Warning**  
+> 在清除所有快取時，將會直接清除快取中的所有項目，與你設定的任何前輟字串都沒有關係。如果你有與其他應用程式共用快取中的項目，請特別注意到這點。
 
 <a name="the-cache-helper"></a>
 ### 快取輔助函式
@@ -256,12 +259,14 @@ Laravel 提供一個快速、統一的 API 方法給各式各樣不同的快取�
         return DB::table('users')->get();
     });
 
-> {tip} 當你在測試中呼叫這個全域的 `cache` 輔助函式，你可以使用 `Cache::shouldReceive` 方法就像你在[測試一個 facade](/docs/{{version}}/mocking#mocking-facades) 一樣。
+> **Note**  
+> 當你在測試中呼叫這個全域的 `cache` 輔助函式，你可以使用 `Cache::shouldReceive` 方法就像你在[測試一個 facade](/docs/{{version}}/mocking#mocking-facades) 一樣。>>>>>>> 9.x
 
 <a name="cache-tags"></a>
 ## 快取標籤
 
-> {note} 快取標籤並不支援 `file`、`dynamodb`及 `database` 驅動。此外，當使用多個標籤以及將快取儲存成「永久」時，使用像是 memcached 這樣性能較好的驅動，可以自動清除舊的歷史記錄。
+> **Warning**  
+> 快取標籤並不支援 `file`、`dynamodb`及 `database` 驅動。此外，當使用多個標籤以及將快取儲存成「永久」時，使用像是 memcached 這樣性能較好的驅動，可以自動清除舊的歷史記錄。
 
 <a name="storing-tagged-cache-items"></a>
 ### 寫入被標記的快取項目
@@ -295,7 +300,8 @@ Laravel 提供一個快速、統一的 API 方法給各式各樣不同的快取�
 <a name="atomic-locks"></a>
 ## 原子鎖
 
-> {note} 要使用此功能，你的應用必須使用 `memcached`、`redis`、`dynamodb`、`database`、`file` 或 `array` 快取驅動作為應用的預設快取驅動。此外，所有伺服器都必須與同一個中央快取伺服器進行溝通。
+> **Warning**  
+> 要使用此功能，你的應用必須使用 `memcached`、`redis`、`dynamodb`、`database`、`file` 或 `array` 快取驅動作為應用的預設快取驅動。此外，所有伺服器都必須與同一個中央快取伺服器進行溝通。
 
 <a name="lock-driver-prerequisites"></a>
 ### 驅動程式的先決條件
@@ -411,7 +417,8 @@ Laravel 提供一個快速、統一的 API 方法給各式各樣不同的快取�
         return Cache::repository(new MongoStore);
     });
 
-> {tip} 如果你不知道要將你的客製化快取驅動程式碼放置在何處，你可以在你的 `app` 目錄下建立一個 `Extension` 的命名空間。但是請記住，Laravel 沒有硬性規定的應用程式結構，你可以依照你的喜好任意組織你的應用程式。
+> **Note**  
+> 如果你不知道要將你的客製化快取驅動程式碼放置在何處，你可以在你的 `app` 目錄下建立一個 `Extension` 的命名空間。但是請記住，Laravel 沒有硬性規定的應用程式結構，你可以依照你的喜好任意組織你的應用程式。
 
 <a name="registering-the-driver"></a>
 ### 註冊快取驅動
@@ -463,26 +470,35 @@ Laravel 提供一個快速、統一的 API 方法給各式各樣不同的快取�
 ## 快取事件
 
 如果要在每次操作快取時執行一段程式碼，你可以監聽由快取所觸發的[事件](/docs/{{version}}/events)。一般來說，你必須將事件監聽器放置在 `App\Providers\EventServiceProvider` 類別中：
-
+    
+    use App\Listeners\LogCacheHit;
+    use App\Listeners\LogCacheMissed;
+    use App\Listeners\LogKeyForgotten;
+    use App\Listeners\LogKeyWritten;
+    use Illuminate\Cache\Events\CacheHit;
+    use Illuminate\Cache\Events\CacheMissed;
+    use Illuminate\Cache\Events\KeyForgotten;
+    use Illuminate\Cache\Events\KeyWritten;
+    
     /**
      * 應用程式的事件監聽器列表。
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Cache\Events\CacheHit' => [
-            'App\Listeners\LogCacheHit',
+        CacheHit::class => [
+            LogCacheHit::class,
         ],
 
-        'Illuminate\Cache\Events\CacheMissed' => [
-            'App\Listeners\LogCacheMissed',
+        CacheMissed::class => [
+            LogCacheMissed::class,
         ],
 
-        'Illuminate\Cache\Events\KeyForgotten' => [
-            'App\Listeners\LogKeyForgotten',
+        KeyForgotten::class => [
+            LogKeyForgotten::class,
         ],
 
-        'Illuminate\Cache\Events\KeyWritten' => [
-            'App\Listeners\LogKeyWritten',
+        KeyWritten::class => [
+            LogKeyWritten::class,
         ],
     ];

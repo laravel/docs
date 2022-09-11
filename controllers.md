@@ -59,7 +59,8 @@ You can define a route to this controller method like so:
 
 When an incoming request matches the specified route URI, the `show` method on the `App\Http\Controllers\UserController` class will be invoked and the route parameters will be passed to the method.
 
-> {tip} Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods.
+> **Note**  
+> Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods.
 
 <a name="single-action-controllers"></a>
 ### Single Action Controllers
@@ -98,7 +99,8 @@ You may generate an invokable controller by using the `--invokable` option of th
 php artisan make:controller ProvisionServer --invokable
 ```
 
-> {tip} Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
+> **Note**  
+> Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="controller-middleware"></a>
 ## Controller Middleware
@@ -359,7 +361,8 @@ If you need to add additional routes to a resource controller beyond the default
     Route::get('/photos/popular', [PhotoController::class, 'popular']);
     Route::resource('photos', PhotoController::class);
 
-> {tip} Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
+> **Note**  
+> Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
 
 <a name="dependency-injection-and-controllers"></a>
 ## Dependency Injection & Controllers

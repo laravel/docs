@@ -34,7 +34,8 @@ In addition to returning strings from your routes and controllers, you may also 
         return [1, 2, 3];
     });
 
-> {tip} Did you know you can also return [Eloquent collections](/docs/{{version}}/eloquent-collections) from your routes or controllers? They will automatically be converted to JSON. Give it a shot!
+> **Note**  
+> Did you know you can also return [Eloquent collections](/docs/{{version}}/eloquent-collections) from your routes or controllers? They will automatically be converted to JSON. Give it a shot!
 
 <a name="response-objects"></a>
 #### Response Objects
@@ -288,7 +289,8 @@ The `download` method may be used to generate a response that forces the user's 
 
     return response()->download($pathToFile, $name, $headers);
 
-> {note} Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII filename.
+> **Warning**  
+> Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII filename.
 
 <a name="streamed-downloads"></a>
 #### Streamed Downloads
