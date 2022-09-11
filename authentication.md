@@ -708,57 +708,83 @@ This interface allows the authentication system to work with any "user" class, r
 
 Laravel dispatches a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
 
+    use App\Listeners\LogAuthenticationAttempt;
+    use App\Listeners\LogAuthenticated;
+    use App\Listeners\LogCurrentDeviceLogout;
+    use App\Listeners\LogFailedLogin;
+    use App\Listeners\LogLockout;
+    use App\Listeners\LogOtherDeviceLogout;
+    use App\Listeners\LogPasswordReset;
+    use App\Listeners\LogRegisteredUser;
+    use App\Listeners\LogSuccessfulLogin;
+    use App\Listeners\LogSuccessfulLogout;
+    use App\Listeners\LogValidated;
+    use App\Listeners\LogVerified;
+    
+    use Illuminate\Auth\Events\Attempting;
+    use Illuminate\Auth\Events\Authenticated;
+    use Illuminate\Auth\Events\CurrentDeviceLogout;
+    use Illuminate\Auth\Events\Failed;
+    use Illuminate\Auth\Events\Lockout;
+    use Illuminate\Auth\Events\Login;
+    use Illuminate\Auth\Events\Logout;
+    use Illuminate\Auth\Events\OtherDeviceLogout;
+    use Illuminate\Auth\Events\PasswordReset;
+    use Illuminate\Auth\Events\Registered;
+    use Illuminate\Auth\Events\Validated;
+    use Illuminate\Auth\Events\Verified;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Auth\Events\Registered' => [
-            'App\Listeners\LogRegisteredUser',
+        Registered::class => [
+            LogRegisteredUser::class,
         ],
 
-        'Illuminate\Auth\Events\Attempting' => [
-            'App\Listeners\LogAuthenticationAttempt',
+        Attempting::class => [
+            LogAuthenticationAttempt::class,
         ],
 
-        'Illuminate\Auth\Events\Authenticated' => [
-            'App\Listeners\LogAuthenticated',
+        Authenticated::class => [
+            LogAuthenticated::class,
         ],
 
-        'Illuminate\Auth\Events\Login' => [
-            'App\Listeners\LogSuccessfulLogin',
+        Login::class => [
+            LogSuccessfulLogin::class,
         ],
 
-        'Illuminate\Auth\Events\Failed' => [
-            'App\Listeners\LogFailedLogin',
+        Failed::class => [
+            LogFailedLogin::class,
         ],
 
-        'Illuminate\Auth\Events\Validated' => [
-            'App\Listeners\LogValidated',
+        Validated::class => [
+            LogValidated::class,
         ],
 
-        'Illuminate\Auth\Events\Verified' => [
-            'App\Listeners\LogVerified',
+        Verified::class => [
+            LogVerified::class,
         ],
 
-        'Illuminate\Auth\Events\Logout' => [
-            'App\Listeners\LogSuccessfulLogout',
+        Logout::class => [
+            LogSuccessfulLogout::class,
         ],
 
-        'Illuminate\Auth\Events\CurrentDeviceLogout' => [
-            'App\Listeners\LogCurrentDeviceLogout',
+        CurrentDeviceLogout::class => [
+            LogCurrentDeviceLogout::class,
         ],
 
-        'Illuminate\Auth\Events\OtherDeviceLogout' => [
-            'App\Listeners\LogOtherDeviceLogout',
+        OtherDeviceLogout::class => [
+            LogOtherDeviceLogout::class,
         ],
 
-        'Illuminate\Auth\Events\Lockout' => [
-            'App\Listeners\LogLockout',
+        Lockout::class => [
+            LogLockout::class,
         ],
 
-        'Illuminate\Auth\Events\PasswordReset' => [
-            'App\Listeners\LogPasswordReset',
+        PasswordReset::class => [
+            LogPasswordReset::class,
         ],
     ];
