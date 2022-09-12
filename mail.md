@@ -983,6 +983,7 @@ Laravel fires two events during the process of sending mail messages. The `Messa
         MessageSending::class => [
             LogSendingMessage::class,
         ],
+
         MessageSent::class => [
             LogSentMessage::class,
         ],
