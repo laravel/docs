@@ -389,6 +389,37 @@ Sometimes, you may need to determine whether a listener should be queued based o
         }
     }
 
+Additionally, you can also determine the connection and the queue name based on your `$event` instance.
+
+    /**
+     * Get the name of the listener's queue connection based on the event's data
+     *
+     * @return string
+     */
+    public function viaConnection(OrderCreated $event)
+    {
+        if ($event->shouldUseRedis) {
+            return 'redis';
+        }
+
+        return 'sqs';
+    }
+
+    /**
+     * Get the name of the listener's queue based on the event's data
+     *
+     * @return string
+     */
+    public function viaQueue(OrderCreated $event)
+    {
+        if ($event->isHighPriorityOrder) {
+            return 'high';
+        }
+
+        return 'default';
+    }
+
+
 <a name="manually-interacting-with-the-queue"></a>
 ### Manually Interacting With The Queue
 
