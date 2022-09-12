@@ -201,6 +201,9 @@ By default, processes are synchronous, meaning that the method `run` will automa
 
     $result = Process::async()->run(/* ... */);
 
+    dump($result->running()); // true
+    dump($result->pid()); // int
+
     // Do other tasks, while the process runs in background...
 
     // Wait for the result when necessary..
