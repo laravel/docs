@@ -144,7 +144,7 @@ Let's dissect this configuration. First, notice our `stack` channel aggregates t
 <a name="log-levels"></a>
 #### Log Levels
 
-Take note of the `level` configuration option present on the `syslog` and `slack` channel configurations in the example above. This option determines the minimum "level" a message must be in order to be logged by the channel. Monolog, which powers Laravel's logging services, offers all of the log levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info**, and **debug**.
+Take note of the `level` configuration option present on the `syslog` and `slack` channel configurations in the example above. This option determines the minimum "level" a message must be in order to be logged by the channel. Monolog, which powers Laravel's logging services, offers all of the log levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424). The following are available, and are listed in decending order of severity: **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info**, and **debug**.
 
 So, imagine we log a message using the `debug` method:
 
