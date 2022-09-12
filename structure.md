@@ -98,6 +98,7 @@ The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/
 
 <a name="the-vendor-directory"></a>
 #### Vendor 目錄
+
 `vendor` 目錄包含了你的 [ Composer ](https://getcomposer.org) 依賴模組。
 
 <a name="the-app-directory"></a>
@@ -125,8 +126,7 @@ The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/
 <a name="the-events-directory"></a>
 #### Events 目錄
 
-這個目錄預設並不存在，但會因為你執行 Artisan 指令 `event:generate` 或 `make:event` 而被建立。
-目錄 `Events` 儲存著 [ 事件類別（event classes）](/docs/{{version}}/events)。事件常被用於當指定動作發生時，為提醒應用程式的其它部分提供了很棒的靈活性及解耦。
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `event:generate` 或 `make:event` 而被建立。目錄 `Events` 儲存著 [ 事件類別（event classes）](/docs/{{version}}/events)。事件常被用於當指定動作發生時，為提醒應用程式的其它部分提供了很棒的靈活性及解耦。
 
 <a name="the-exceptions-directory"></a>
 #### Exceptions 目錄
@@ -161,14 +161,12 @@ The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/
 <a name="the-notifications-directory"></a>
 #### Notifications 目錄
 
-這個目錄預設並不存在，但會因為你執行 Artisan 指令（command） `make:notification` 而被建立。
-目錄 `Notifications` 包含由應用程式發送的所有「業務性」 [ 通知 ](/docs/{{version}}/notifications)，例如應用程式發生事件的簡易通知。Laravel 的通知特性會將透過驅動程式發送的通知例如電子郵件、Slack、簡訊或資料儲存抽象化。 
+這個目錄預設並不存在，但會因為你執行 Artisan 指令（command） `make:notification` 而被建立。目錄 `Notifications` 包含由應用程式發送的所有「業務性」 [ 通知 ](/docs/{{version}}/notifications)，例如應用程式發生事件的簡易通知。Laravel 的通知特性會將透過驅動程式發送的通知例如電子郵件、Slack、簡訊或資料儲存抽象化。 
 
 <a name="the-policies-directory"></a>
 #### Policies 目錄
 
-這個目錄預設並不存在，但會因為你執行 Artisan 指令（command）`make:policy` 而被建立。
-目錄 `Policies` 包含應用程式的 [ 授權原則類別（authorization policy class）](/docs/{{version}}/authorization)。這個類別用於判斷某個使用者是否可以對資源進行給定的操作行為。
+這個目錄預設並不存在，但會因為你執行 Artisan 指令（command）`make:policy` 而被建立。目錄 `Policies` 包含應用程式的 [ 授權原則類別（authorization policy class）](/docs/{{version}}/authorization)。這個類別用於判斷某個使用者是否可以對資源進行給定的操作行為。
 
 <a name="the-providers-directory"></a>
 #### Providers 目錄
@@ -180,5 +178,4 @@ The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/
 <a name="the-rules-directory"></a>
 #### Rules 目錄
 
-這個目錄預設並不存在，但會因為你執行 Artisan 指令（command）`make:rule` 而被建立。
-目錄 `Rules` 包含應用程式自定義的驗證規則（validation rule）。這些規則用於將複雜的驗證邏輯（validation logic）封裝在一個簡單的物件中。關於更多資訊，可以查看 [ 驗證文件 ](/docs/{{version}}/validation)。
+這個目錄預設並不存在，但會因為你執行 Artisan 指令（command）`make:rule` 而被建立。目錄 `Rules` 包含應用程式自定義的驗證規則（validation rule）。這些規則用於將複雜的驗證邏輯（validation logic）封裝在一個簡單的物件中。關於更多資訊，可以查看 [ 驗證文件 ](/docs/{{version}}/validation)。
