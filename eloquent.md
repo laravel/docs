@@ -44,6 +44,10 @@ Laravel includes Eloquent, an object-relational mapper (ORM) that makes it enjoy
 > **Note**  
 > Before getting started, be sure to configure a database connection in your application's `config/database.php` configuration file. For more information on configuring your database, check out [the database configuration documentation](/docs/{{version}}/database#configuration).
 
+#### Laravel Bootcamp
+
+If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://bootcamp.laravel.com). The Laravel Bootcamp will walk you through building your first Laravel application using Eloquent. It's a great way to get a tour of everything the Laravel and Eloquent have to offer.
+
 <a name="generating-model-classes"></a>
 ## Generating Model Classes
 

@@ -153,6 +153,9 @@ If you aren't quite ready to manage your own server configuration or aren't comf
 
 Laravel Forge can create servers on various infrastructure providers such as DigitalOcean, Linode, AWS, and more. In addition, Forge installs and manages all of the tools needed to build robust Laravel applications, such as Nginx, MySQL, Redis, Memcached, Beanstalk, and more.
 
+> **Note**
+> Want a full guide to deploying with Laravel Forge? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com/deploying) and the Forge [video series available on Laracasts](https://laracasts.com/series/learn-laravel-forge-2022-edition).
+
 <a name="laravel-vapor"></a>
 #### Laravel Vapor
 
