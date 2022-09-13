@@ -762,7 +762,7 @@ When your component is rendered, you may display the contents of your component'
 <a name="casing"></a>
 #### Casing
 
-Component constructor arguments should be specified using `camelCase`, while `kebab-case` should be used when referencing the argument names in your HTML attributes. For example, given the following component constructor:
+Component constructor arguments should be specified using `camelCase`, while `kebab-case` or `snake_case` should be used when referencing the argument names in your HTML attributes. For example, given the following component constructor:
 
     /**
      * Create the component instance.
@@ -1318,6 +1318,8 @@ Given the component definition above, we may render the component like so:
 ```blade
 <x-alert type="error" :message="$message" class="mb-4"/>
 ```
+
+Note that unlike other attributes, `@props` will be [converted to camelCase](#casing).
 
 <a name="accessing-parent-data"></a>
 ### Accessing Parent Data
