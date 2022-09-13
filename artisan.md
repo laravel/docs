@@ -615,9 +615,7 @@ If you would like to call another console command and suppress all of its output
 <a name="signal-handling"></a>
 ## Signal Handling
 
-As you may know, operating systems allow signals to be sent to running processes. As an example, the `SIGTERM` signal is the normal way for an operating system to politely ask a program to terminate.
-
-If you wish to catch signals in your Artisan console commands and execute code when they occur, you may use the `trap` method:
+As you may know, operating systems allow signals to be sent to running processes. For example, the `SIGTERM` signal is how operating systems ask a program to terminate. If you wish to listen for signals in your Artisan console commands and execute code when they occur, you may use the `trap` method:
 
     /**
      * Execute the console command.
@@ -626,19 +624,19 @@ If you wish to catch signals in your Artisan console commands and execute code w
      */
     public function handle()
     {
-        $this->trap(SIGTERM, fn () => $this->running = false);
+        $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);
 
-        while($this->running) {
-            // do something ...
+        while ($this->shouldKeepRunning) {
+            // ...
         }
     }
 
-If you wish to catch multiple signals at once, you may pass an array of signals:
+To listen for multiple signals at once, you may provide an array of signals to the `trap` method:
 
     $this->trap([SIGTERM, SIGQUIT], function ($signal) {
-        $this->running = false;
+        $this->shouldKeepRunning = false;
 
-        dump($signal); // SIGTERM or SIGQUIT
+        dump($signal); // SIGTERM / SIGQUIT
     });
 
 <a name="stub-customization"></a>
