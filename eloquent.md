@@ -1299,6 +1299,7 @@ To start listening to model events, define a `$dispatchesEvents` property on you
     use App\Events\UserDeleted;
     use App\Events\UserSaved;
     use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
 
     class User extends Authenticatable
     {
