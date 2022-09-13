@@ -425,7 +425,7 @@ When calling the `Mail` facade's assertion methods, the mailable instance accept
                $mail->hasSubject('...');
     });
 
-The mailable instance also includes several helpful methods for examining attachments on a mailable:
+The mailable instance also includes several helpful methods for examining the attachments on a mailable:
 
     Mail::assertSent(OrderShipped::class, function ($mail) {
         return $mail->hasAttachment('/path/to/file');
@@ -443,7 +443,9 @@ The mailable instance also includes several helpful methods for examining attach
     });
 
     Mail::assertSent(OrderShipped::class, function ($mail) use ($pdfData) {
-        return $mail->hasAttachedData($pdfData, 'name.pdf', ['mime' => 'application/pdf']);
+        return $mail->hasAttachedData($pdfData, 'name.pdf', [
+            'mime' => 'application/pdf'
+        ]);
     });
 
 You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:
