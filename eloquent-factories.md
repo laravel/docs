@@ -15,6 +15,7 @@
     - [Many To Many Relationships](#many-to-many-relationships)
     - [Polymorphic Relationships](#polymorphic-relationships)
     - [Defining Relationships Within Factories](#defining-relationships-within-factories)
+    - [Recycling An Existing Model For Relationships](#recycling-an-existing-model-for-relationships)
 
 <a name="introduction"></a>
 ## Introduction
@@ -487,3 +488,17 @@ If the relationship's columns depend on the factory that defines it you may assi
             'content' => fake()->paragraph(),
         ];
     }
+
+<a name="recycling-an-existing-model-for-relationships"></a>
+### Recycling An Existing Model For Relationships
+
+To specify a model instance to use when creating relationships you may pass it to the `recycle` method. For example, imagine you have an `Invoice` factory that creates a user, customer, and payments that should all belong to the same team:
+
+    $team = Team::factory()->create();
+
+    $invoice = Invoice::factory()
+        ->recycle($team)
+        ->hasPayments(2)
+        ->create();
+
+Instead of creating a unique team for each relationship, the provided team will be used for all of them.
