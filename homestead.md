@@ -344,8 +344,8 @@ features:
     - mongodb: true
     - neo4j: true
     - ohmyzsh:
-        - theme: "agnoster"
-        - plugins: "git command-not-found"
+        theme: "agnoster"
+        plugins: "git command-not-found"
     - openresty: true
     - pm2: true
     - python: true
