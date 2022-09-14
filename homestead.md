@@ -343,7 +343,9 @@ features:
     - minio: true
     - mongodb: true
     - neo4j: true
-    - ohmyzsh: true
+    - ohmyzsh:
+        - theme: "agnoster"
+        - plugins: "git command-not-found"
     - openresty: true
     - pm2: true
     - python: true
