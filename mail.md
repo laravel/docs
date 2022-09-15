@@ -902,7 +902,7 @@ Once you have implemented the interface, Laravel will automatically use the pref
 <a name="testing-mailables"></a>
 ## Testing Mailables
 
-Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, and `assertSeeInOrderInText`.
+Laravel provides several convenient methods for testing that your mailable contains the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, `assertSeeInOrderInText`, `assertHasAttachment`, `assertHasAttachedData`, `assertHasAttachmentFromStorage`, and `assertHasAttachmentFromStorageDisk`.
 
 As you might expect, the "HTML" assertions assert that the HTML version of your mailable contains a given string, while the "text" assertions assert that the plain-text version of your mailable contains a given string:
 
@@ -921,6 +921,12 @@ As you might expect, the "HTML" assertions assert that the HTML version of your 
 
         $mailable->assertSeeInText($user->email);
         $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);
+
+        $mailable->assertHasAttachment('/path/to/file');
+        $mailable->assertHasAttachment(Attachment::fromPath('/path/to/file'));
+        $mailable->assertHasAttachedData($pdfData, 'name.pdf', ['mime' => 'application/pdf']);
+        $mailable->assertHasAttachementFromStorage('/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
+        $mailable->assertHasAttachementFromStorageDisk('s3', '/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
     }
 
 <a name="testing-mailable-sending"></a>
@@ -969,17 +975,23 @@ Finally, you may specify a global "to" address by invoking the `alwaysTo` method
 
 Laravel fires two events during the process of sending mail messages. The `MessageSending` event is fired prior to a message being sent, while the `MessageSent` event is fired after a message has been sent. Remember, these events are fired when the mail is being *sent*, not when it is queued. You may register event listeners for this event in your `App\Providers\EventServiceProvider` service provider:
 
+    use App\Listeners\LogSendingMessage;
+    use App\Listeners\LogSentMessage;
+    use Illuminate\Mail\Events\MessageSending;
+    use Illuminate\Mail\Events\MessageSent;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Mail\Events\MessageSending' => [
-            'App\Listeners\LogSendingMessage',
+        MessageSending::class => [
+            LogSendingMessage::class,
         ],
-        'Illuminate\Mail\Events\MessageSent' => [
-            'App\Listeners\LogSentMessage',
+
+        MessageSent::class => [
+            LogSentMessage::class,
         ],
     ];
 

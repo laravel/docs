@@ -155,13 +155,16 @@ php artisan migrate
 
 使用 [Laravel 應用程式入門套件](/docs/{{version}}/starter-kits)時，Laravel 在電子郵件驗證過程中分派[多個事件](/docs/{{version}}/events)。如果您正在為您的應用程式手動處理電子郵件驗證，您可能會希望在驗證完成後手動分派這些事件。您可以在應用程式的 `EventServiceProvider` 中將監聽器附加到這些事件:
 
+    use App\Listeners\LogVerifiedUser;
+    use Illuminate\Auth\Events\Verified;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Auth\Events\Verified' => [
-            'App\Listeners\LogVerifiedUser',
+        Verified::class => [
+            LogVerifiedUser::class,
         ],
     ];

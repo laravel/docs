@@ -25,6 +25,9 @@ Laravel 致力於提供出色的開發體驗且提供強大的功能，例如全
 
 不論你是 PHP web 框架的新手還是征戰多年的資深老鳥， Laravel 都是一款能伴隨你成長的框架。我們將會協助你邁出成為 web 開發者的第一步或讓你的專業知識昇華到更高境界。我們迫不及待要看你露一手啦。
 
+> **Note**
+> New to Laravel? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com) for a hands-on tour of the framework while we walk you through building your first Laravel application.
+
 <a name="why-laravel"></a>
 ### 為什麼選擇 Laravel ？
 
@@ -249,6 +252,9 @@ php artisan migrate
 </div>
 
 你想如何使用 Laravel 將會決定你旅程的下一步。這裡有很多 Laravel 的用法，以下我們將探討兩個主要的框架用法：
+
+> **Note**
+> New to Laravel? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com) for a hands-on tour of the framework while we walk you through building your first Laravel application.
 
 <a name="laravel-the-fullstack-framework"></a>
 ### 將 Laravel 作為全端框架

@@ -615,47 +615,29 @@ If you would like to call another console command and suppress all of its output
 <a name="signal-handling"></a>
 ## Signal Handling
 
-The Symfony Console component, which powers the Artisan console, allows you to indicate which process signals (if any) your command handles. For example, you may indicate that your command handles the `SIGINT` and `SIGTERM` signals.
-
-To get started, you should implement the `Symfony\Component\Console\Command\SignalableCommandInterface` interface on your Artisan command class. This interface requires you to define two methods: `getSubscribedSignals` and `handleSignal`:
-
-```php
-<?php
-
-use Symfony\Component\Console\Command\SignalableCommandInterface;
-
-class StartServer extends Command implements SignalableCommandInterface
-{
-    // ...
+As you may know, operating systems allow signals to be sent to running processes. For example, the `SIGTERM` signal is how operating systems ask a program to terminate. If you wish to listen for signals in your Artisan console commands and execute code when they occur, you may use the `trap` method:
 
     /**
-     * Get the list of signals handled by the command.
+     * Execute the console command.
      *
-     * @return array
+     * @return mixed
      */
-    public function getSubscribedSignals(): array
+    public function handle()
     {
-        return [SIGINT, SIGTERM];
-    }
+        $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);
 
-    /**
-     * Handle an incoming signal.
-     *
-     * @param  int  $signal
-     * @return void
-     */
-    public function handleSignal(int $signal): void
-    {
-        if ($signal === SIGINT) {
-            $this->stopServer();
-
-            return;
+        while ($this->shouldKeepRunning) {
+            // ...
         }
     }
-}
-```
 
-As you might expect, the `getSubscribedSignals` method should return an array of the signals that your command can handle, while the `handleSignal` method receives the signal and can respond accordingly.
+To listen for multiple signals at once, you may provide an array of signals to the `trap` method:
+
+    $this->trap([SIGTERM, SIGQUIT], function ($signal) {
+        $this->shouldKeepRunning = false;
+
+        dump($signal); // SIGTERM / SIGQUIT
+    });
 
 <a name="stub-customization"></a>
 ## Stub Customization
