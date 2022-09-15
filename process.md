@@ -63,7 +63,7 @@ By default, when using the `output` method, Laravel waits for the process to be 
 
     return $result->output(); // 1, 2
 
-If you wish to access the process's output at real-time, you may use a closure as second argument of the `run` method:
+If you wish to access the process's output at real-time, you may use a closure as the second argument of the `run` method:
 
     Process::run('echo 1; sleep 1; echo 2', function ($output) {
         dump($output); // Dumps "1", and after a second dumps "2"
@@ -93,7 +93,7 @@ If you would like to "dump" the outgoing process instance before it is sent and 
 <a name="command"></a>
 ### Command
 
-When running processes, you may pass an string or an array of strings as the first argument to the `run` method:
+When running processes, you may pass a string or an array of strings as the first argument to the `run` method:
 
     Process::run('ls -la');
     Process::run(['ls', '-la', storage_path('images')]);
@@ -206,7 +206,7 @@ By default, processes are synchronous, meaning that the method `run` will automa
 
     // Do other tasks, while the process runs in background...
 
-    // Wait for the result when necessary..
+    // Wait for the result when necessary...
     return $result->wait()->output();
 
 > **Warning**
