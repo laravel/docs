@@ -179,7 +179,7 @@ If you would like to perform some additional logic before the exception is throw
 
 Sometimes, you may wish to run multiple processes concurrently. In other words, you want several processes to be "run" at the same time, instead of running them sequentially.
 
-Thankfully, you may accomplish this using the `pool` method. The `pool` method accepts a closure which receives an `Illuminate\Console\Process\Pool` instance, allowing you to easily add processes to the pool so, they can run concurrently:
+Thankfully, you may accomplish this using the `pool` method. The `pool` method accepts a closure which receives an `Illuminate\Console\Process\Pool` instance, allowing you to easily add processes to the pool so they can run concurrently:
 
     use Illuminate\Console\Process\Pool;
     use Illuminate\Support\Facades\Process;
@@ -197,7 +197,7 @@ Thankfully, you may accomplish this using the `pool` method. The `pool` method a
 <a name="asynchronous-processes"></a>
 ## Asynchronous Processes
 
-By default, processes are synchronous, meaning that the method `run` will automatically wait for the process to be finished before returning the process's result. Yet, if you need to run processes asynchronously while performing other tasks in your code, you may use the `async` method:process pool, so they can run concurrently:
+By default, processes are synchronous, meaning that the method `run` will automatically wait for the process to be finished before returning the process's result. Yet, if you need to run processes asynchronously while performing other tasks in your code, you may use the `async` method:process pool so they can run concurrently:
 
     $result = Process::async()->run(/* ... */);
 
