@@ -195,7 +195,7 @@ php artisan make:controller PhotoController --model=Photo --resource
 <a name="generating-form-requests"></a>
 #### Generating Form Requests
 
-You may provide the `--requests` option when generating a resource controller to instruct Artisan to generate [form request classes](/docs/{{version}}/validation#form-request-validation) for the controller's storage and update methods:
+You may provide the `--requests` option when generating a resource controller to instruct Artisan to generate [form request classes](/docs/{{version}}/validation#form-request-validation) for the controller's store and update methods:
 
 ```shell
 php artisan make:controller PhotoController --model=Photo --resource --requests
