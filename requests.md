@@ -20,6 +20,7 @@
     - [Storing Uploaded Files](#storing-uploaded-files)
 - [Configuring Trusted Proxies](#configuring-trusted-proxies)
 - [Configuring Trusted Hosts](#configuring-trusted-hosts)
+- [Handling Slow Requests](#handling-slow-requests)
 
 <a name="introduction"></a>
 ## Introduction
@@ -644,3 +645,49 @@ The `TrustHosts` middleware is already included in the `$middleware` stack of yo
     }
 
 The `allSubdomainsOfApplicationUrl` helper method will return a regular expression matching all subdomains of your application's `app.url` configuration value. This helper method provides a convenient way to allow all of your application's subdomains when building an application that utilizes wildcard subdomains.
+
+<a name="handling-slow-requests"></a>
+## Handling Slow Requests
+
+It may be useful to monitor how long a request takes to execute. You may register a handler to invoke if a request exceeds a given threshold in your service provider:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Contracts\Http\Kernel;
+    use Illuminate\Support\Facades\Log;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            if ($this->app->runningInConsole()) {
+                return;
+            }
+
+            $this->app[Kernel::class]->whenRequestLifecycleIsLongerThan(3000, function ($startedAt, $request, $response) {
+                Log::warning('Request exceeded 3 seconds.', [
+                    'duration' => $startedAt->floatDiffInSeconds(),
+                    'url' => $request->fullUrl(),
+                    'user' => $request->user()?->id,
+                ]);
+            });
+        }
+    }
