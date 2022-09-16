@@ -492,13 +492,12 @@ If the relationship's columns depend on the factory that defines it you may assi
 <a name="recycling-an-existing-model-for-relationships"></a>
 ### Recycling An Existing Model For Relationships
 
-To specify a model instance to use when creating relationships you may pass it to the `recycle` method. For example, imagine you have an `Invoice` factory that creates a user, customer, and payments that should all belong to the same team:
+If you have models that share a common relationship with another model, you may use the `recycle` method to ensure a single instance is recycled for them all.
 
-    $team = Team::factory()->create();
+For example, imagine you have an `Airline`, `Flight`, and `Ticket` model, where the ticket belongs to an airline and a flight, and the flight also belongs to an airline. When creating tickets, you will probably want the same airline for both the ticket and the flight, so you pass an airline to the `recycle` method:
 
-    $invoice = Invoice::factory()
-        ->recycle($team)
-        ->hasPayments(2)
+    Ticket::factory()
+        ->recycle(Airline::factory()->create())
         ->create();
 
-Instead of creating a unique team for each relationship, the provided team will be used for all of them.
+You may find this particularly useful if you have models belonging to a common user or team.
