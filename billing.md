@@ -647,9 +647,14 @@ The `create` method, which accepts [a Stripe payment method identifier](#storing
 
 Instead of collecting a customer's recurring payments automatically, you may instruct Stripe to email an invoice to the customer each time their recurring payment is due. Then, the customer may manually pay the invoice once they receive it. The customer does not need to provide a payment method up front when collecting recurring payments via invoices:
 
-    $user->newSubscription('default', 'price_monthly')->createAndSendInvoice();
+    $user->newSubscription('default', 'price_monthly')->createAndSendInvoice([], [
+        'days_until_due' => 30
+    ]);
 
-The amount of time a customer has to pay their invoice before their subscription is canceled is determined by your subscription and invoice settings within the [Stripe dashboard](https://dashboard.stripe.com/settings/billing/automatic).
+The amount of time a customer has to pay their invoice before their subscription is canceled is determined by the second argument, 30 days in the above example.
+
+> **Warning**  
+> The `days_until_due` argument is required. If not provided, the Stripe subscription request will fail.
 
 <a name="subscription-quantities"></a>
 #### Quantities
