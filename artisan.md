@@ -21,6 +21,7 @@
 - [Signal Handling](#signal-handling)
 - [Stub Customization](#stub-customization)
 - [Events](#events)
+- [Handling Slow Commands](#handling-slow-command)
 
 <a name="introduction"></a>
 ## Introduction
@@ -654,3 +655,49 @@ The published stubs will be located within a `stubs` directory in the root of yo
 ## Events
 
 Artisan dispatches three events when running commands: `Illuminate\Console\Events\ArtisanStarting`, `Illuminate\Console\Events\CommandStarting`, and `Illuminate\Console\Events\CommandFinished`. The `ArtisanStarting` event is dispatched immediately when Artisan starts running. Next, the `CommandStarting` event is dispatched immediately before a command runs. Finally, the `CommandFinished` event is dispatched once a command finishes executing.
+
+<a name="handling-slow-command"></a>
+## Handling Slow Commands
+
+It may be useful to monitor how long a command invoked from the CLI takes to execute. You may register a handler to invoke if a command exceeds a given threshold in your service provider:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Contracts\Console\Kernel;
+    use Illuminate\Support\Facades\Log;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            if (! $this->app->runningInConsole()) {
+                return;
+            }
+
+            $this->app[Kernel::class]->whenCommandLifecycleIsLongerThan(3000, function ($startedAt, $input, $status) {
+                if ($input->getFirstArgument() === 'app:deploy') {
+                    Log::warning('Deployment exceeded 3 seconds.', [
+                        'duration' => $startedAt->floatDiffInSeconds(),
+                    ]);
+                }
+            });
+        }
+    }
