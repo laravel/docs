@@ -651,10 +651,7 @@ Instead of collecting a customer's recurring payments automatically, you may ins
         'days_until_due' => 30
     ]);
 
-The amount of time a customer has to pay their invoice before their subscription is canceled is determined by the second argument, 30 days in the above example.
-
-> **Warning**  
-> The `days_until_due` argument is required. If not provided, the Stripe subscription request will fail.
+The amount of time a customer has to pay their invoice before their subscription is cancelled is determined by the `days_until_due` option.
 
 <a name="subscription-quantities"></a>
 #### Quantities
