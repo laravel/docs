@@ -853,7 +853,7 @@ Below is a list of all available validation rules and their function:
 [MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
 [Min Digits](#rule-min-digits)
-[Multiple Of](#multiple-of)
+[Multiple Of](#rule-multiple-of)
 [Not In](#rule-not-in)
 [Not Regex](#rule-not-regex)
 [Nullable](#rule-nullable)
@@ -1362,7 +1362,7 @@ The field under validation must have a minimum _value_. Strings, numerics, array
 
 The integer under validation must have a minimum length of _value_.
 
-<a name="multiple-of"></a>
+<a name="rule-multiple-of"></a>
 #### multiple_of:_value_
 
 The field under validation must be a multiple of _value_.
