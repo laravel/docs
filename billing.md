@@ -905,6 +905,14 @@ A complete list of available scopes is available below:
     Subscription::query()->onTrial();
     Subscription::query()->pastDue();
     Subscription::query()->recurring();
+    
+<a name="generic-trial-scope"></a>
+#### Generic Trial Scopes
+
+Just like subscription scopes, you can scope your billable model based on the state of their generic trial:
+    
+    User::query()->onGenericTrial();
+    User::query()->hasExpiredGenericTrial();
 
 <a name="changing-prices"></a>
 ### Changing Prices
