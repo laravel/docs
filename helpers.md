@@ -153,6 +153,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
 [Str::upper](#method-str-upper)
+[Str::ulid](#method-str-ulid)
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
 [Str::words](#method-str-words)
@@ -2009,6 +2010,20 @@ The `Str::upper` method converts the given string to uppercase:
     $string = Str::upper('laravel');
 
     // LARAVEL
+
+<a name="method-str-uuid"></a>
+#### `Str::ulid()` {.collection-method}
+
+The `Str::ulid` method generates a ULID:
+
+    use Illuminate\Support\Str;
+
+    return (string) Str::ulid();
+    
+    // 01GD6R360BP37ZJ17NXB55YV40
+
+> **Note**
+> The `symfony/ulid` library is required to generate ULID.
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
