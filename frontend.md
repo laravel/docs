@@ -8,7 +8,7 @@
 - [使用 Vue / React](#using-vue-react)
     - [Inertia](#inertia)
     - [入門套件](#inertia-starter-kits)
-- [綁定資源](#bundling-assets)
+- [綁定資源檔](#bundling-assets)
 
 <a name="introduction"></a>
 ## 前言
@@ -185,13 +185,13 @@ const props = defineProps(['user']);
 如果你想使用 Inertia 和 Vue 或 React 建立前端，你可以用我們的 Breeze 或 Jetstream [starter kits](/docs/{{version}}/starter-kits#breeze-and-inertia) 來快速啟動應用程式的開發。這些入門套件都會使用 Inertia、Vue / React、 [Tailwind](https://tailwindcss.com)和 [Vite](https://vitejs.dev) 構建應用程式後端和前端認證流程，以便你可以輕鬆地開始建造下一個新創想法。
 
 <a name="bundling-assets"></a>
-## 綁定資源
+## 綁定資源檔
 
-無論你選擇使用 Blade 和 Livewire 或 Vue / React 和  Inertia 開發前端，你可能需要綁定應用程式的 CSS 到產品的預備資源（asset）內。當然，如果你選擇使用 Vue 或 React 建立應用程式的前端，你也會需要綁定你的元件到瀏覽器預備的 JavaScript 資源。
+無論你選擇使用 Blade 和 Livewire 或 Vue / React 和  Inertia 開發前端，你可能需要綁定應用程式的 CSS 到產品的預備資源檔（asset）內。當然，如果你選擇使用 Vue 或 React 建立應用程式的前端，你也會需要綁定你的元件到瀏覽器預備的 JavaScript 資源檔。
 
-預設情況下，Laravel 使用 [Vite](https://vitejs.dev) 去綁定你的資源。Vite 在本地端開發時提供了快如閃電的建立時間和瞬間的熱模型轉換（Hot Module Replacement, HMR）。在所有新的 Laravel 應用程式含我們使用的 [入門套件](/docs/{{version}}/starter-kits) 中，你會發現我們輕量的 Laravel Vite 外掛中載入了 `vite.config.js` 檔，使其在 Laravel 中使用 Vite 成為樂趣。
+預設情況下，Laravel 使用 [Vite](https://vitejs.dev) 去綁定你的資源檔。Vite 在本地端開發時提供了快如閃電的建立時間和瞬間的熱模型轉換（Hot Module Replacement, HMR）。在所有新的 Laravel 應用程式含我們使用的 [入門套件](/docs/{{version}}/starter-kits) 中，你會發現我們輕量的 Laravel Vite 外掛中載入了 `vite.config.js` 檔，使其在 Laravel 中使用 Vite 成為樂趣。
 
 起手 Laravel 和 Vite 最快的方法是用上 [Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze) 開始開發應用程式，這是簡易的入門套件，供你快速開始建置提供前端和後端認證結構的應用程式。
 
 > **Note**  
-> 關於更多在 Laravel 中使用 Vite 的詳細文件，請參閱我們的 [綁定和編譯資源的專用文件](/docs/{{version}}/vite)。
+> 關於更多在 Laravel 中使用 Vite 的詳細文件，請參閱我們的 [綁定和編譯資源檔的專用文件](/docs/{{version}}/vite)。
