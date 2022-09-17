@@ -2011,7 +2011,7 @@ The `Str::upper` method converts the given string to uppercase:
 
     // LARAVEL
 
-<a name="method-str-uuid"></a>
+<a name="method-str-ulid"></a>
 #### `Str::ulid()` {.collection-method}
 
 The `Str::ulid` method generates a ULID:
