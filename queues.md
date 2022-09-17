@@ -1842,13 +1842,13 @@ For convenience, you may choose to automatically delete jobs with missing models
 <a name="pruning-failed-jobs"></a>
 ### Pruning Failed Jobs
 
-You may delete all of the records in your application's `failed_jobs` table by invoking the `queue:prune-failed` Artisan command:
+You may prune the records in your application's `failed_jobs` table by invoking the `queue:prune-failed` Artisan command:
 
 ```shell
 php artisan queue:prune-failed
 ```
 
-If you provide the `--hours` option to the command, only the failed job records that were inserted within the last N number of hours will be retained. For example, the following command will delete all of the failed job records that were inserted more than 48 hours ago:
+By default, all the failed job records that are more than 24 hours old will be pruned. If you provide the `--hours` option to the command, only the failed job records that were inserted within the last N number of hours will be retained. For example, the following command will delete all the failed job records that were inserted more than 48 hours ago:
 
 ```shell
 php artisan queue:prune-failed --hours=48
