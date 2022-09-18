@@ -7,6 +7,7 @@
     - [Using The Notification Facade](#using-the-notification-facade)
     - [Specifying Delivery Channels](#specifying-delivery-channels)
     - [Queueing Notifications](#queueing-notifications)
+    - [Using middleware](#using-middleware)
     - [On-Demand Notifications](#on-demand-notifications)
 - [Mail Notifications](#mail-notifications)
     - [Formatting Mail Messages](#formatting-mail-messages)
@@ -280,6 +281,24 @@ However, if you would like to make the final determination on whether the queued
     public function shouldSend($notifiable, $channel)
     {
         return $this->invoice->isPaid();
+    }
+
+<a name="using-middleware"></a>
+### Using Middleware
+
+You can use middlewares in Notifications same as Queue Jobs.
+
+    <?php
+    use App\Jobs\Middleware\RateLimited;
+
+    /**
+    * Get the middleware the job should pass through.
+    *
+    * @return array
+    */
+    public function middleware()
+    {
+        return [new RateLimited];
     }
 
 <a name="on-demand-notifications"></a>
