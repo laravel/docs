@@ -20,6 +20,7 @@
     - [Customizing The Components](#customizing-the-components)
 - [Sending Mail](#sending-mail)
     - [Queueing Mail](#queueing-mail)
+    - [Using Middleware](#using-middleware)
 - [Rendering Mailables](#rendering-mailables)
     - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
 - [Localizing Mailables](#localizing-mailables)
@@ -837,6 +838,25 @@ Alternatively, you may call the `afterCommit` method from your mailable's constr
 
 > **Note**  
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
+
+
+<a name="using-middleware"></a>
+#### Using Middleware
+
+You can use middlewares in Mailables same as Queue Jobs.
+    
+    <?php
+    use App\Jobs\Middleware\RateLimited;
+
+    /**
+    * Get the middleware the job should pass through.
+    *
+    * @return array
+    */
+    public function middleware()
+    {
+        return [new RateLimited];
+    }
 
 <a name="rendering-mailables"></a>
 ## Rendering Mailables
