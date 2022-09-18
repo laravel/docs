@@ -9,6 +9,7 @@
 - [Defining Listeners](#defining-listeners)
 - [Queued Event Listeners](#queued-event-listeners)
     - [Manually Interacting With The Queue](#manually-interacting-with-the-queue)
+    - [Using Middleware](#using-middleware)
     - [Queued Event Listeners & Database Transactions](#queued-event-listeners-and-database-transactions)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
@@ -418,6 +419,24 @@ If you need to manually access the listener's underlying queue job's `delete` an
                 $this->release(30);
             }
         }
+    }
+
+<a name="using-middleware"></a>
+### Using Middleware
+
+You can use middlewares in Listeners same as Queue Jobs.
+
+    <?php
+    use App\Jobs\Middleware\RateLimited;
+
+    /**
+    * Get the middleware the job should pass through.
+    *
+    * @return array
+    */
+    public function middleware()
+    {
+        return [new RateLimited];
     }
 
 <a name="queued-event-listeners-and-database-transactions"></a>
