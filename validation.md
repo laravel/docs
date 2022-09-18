@@ -1103,6 +1103,7 @@ The example above will apply the `RFCValidation` and `DNSCheckValidation` valida
 - `dns`: `DNSCheckValidation`
 - `spoof`: `SpoofCheckValidation`
 - `filter`: `FilterEmailValidation`
+- `filter_unicode`: `FilterEmailValidation::unicode()`
 
 </div>
 
