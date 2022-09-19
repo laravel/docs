@@ -2022,9 +2022,6 @@ The `Str::ulid` method generates a ULID:
     
     // 01GD6R360BP37ZJ17NXB55YV40
 
-> **Note**
-> The `symfony/ulid` library is required to generate ULID.
-
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
 
