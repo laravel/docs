@@ -5,6 +5,7 @@
     - [The Local Driver](#the-local-driver)
     - [The Public Disk](#the-public-disk)
     - [Driver Prerequisites](#driver-prerequisites)
+    - [Scoped & Read-Only Filesystems](#scoped-and-read-only-filesystems)
     - [Amazon S3 Compatible Filesystems](#amazon-s3-compatible-filesystems)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
     - [On-Demand Disks](#on-demand-disks)
@@ -34,7 +35,7 @@ Laravel's filesystem configuration file is located at `config/filesystems.php`. 
 
 The `local` driver interacts with files stored locally on the server running the Laravel application while the `s3` driver is used to write to Amazon's S3 cloud storage service.
 
-> **Note**  
+> **Note**
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
 
 <a name="the-local-driver"></a>
@@ -123,7 +124,7 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
     'sftp' => [
         'driver' => 'sftp',
         'host' => env('SFTP_HOST'),
-        
+
         // Settings for basic authentication...
         'username' => env('SFTP_USERNAME'),
         'password' => env('SFTP_PASSWORD'),
@@ -141,6 +142,29 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
         // 'timeout' => 30,
         // 'useAgent' => true,
     ],
+
+<a name="scoped-and-read-only-filesystems"></a>
+### Scoped & Read-Only Filesystems
+
+You may create a path scoped instance of any existing filesystem disk by defining a disk that utilizes the `scoped` driver. Scoped disks allow you to define a filesystem where all paths are automatically prefixed with a given path prefix. For example, you may create a disk which scopes your existing `s3` disk to a specific path prefix, and then every file operation using your scoped disk will utilize the specified prefix:
+
+```php
+'s3-videos' => [
+    'driver' => 'scoped',
+    'disk' => 's3',
+    'prefix' => 'path/to/videos',
+],
+```
+
+If you would like to specify that any filesystem disk should be "read-only", you may include the `read-only` configuration option in the disk's configuration array:
+
+```php
+'s3-videos' => [
+    'driver' => 's3',
+    // ...
+    'read-only' => true,
+],
+```
 
 <a name="amazon-s3-compatible-filesystems"></a>
 ### Amazon S3 Compatible Filesystems
