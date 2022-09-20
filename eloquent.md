@@ -764,6 +764,25 @@ If you would like to make all of your attributes mass assignable, you may define
      */
     protected $guarded = [];
 
+<a name="mass-assignment-exceptions"></a>
+#### Mass Assignment Exceptions
+
+By default, attributes that are not included in the `$fillable` array are silently discarded when performing mass-assignment operations. In production, this is expected behavior; however, during local development it can lead to confusion as to why model changes are not taking effect.
+
+If you wish, you may instruct Laravel to throw an exception when attempting to fill an unfillable attribute by invoking the `preventSilentlyDiscardingAttributes` method. Typically, this method should be invoked within the `boot` method of one of your application's service providers:
+
+    use Illuminate\Database\Eloquent\Model;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Model::preventSilentlyDiscardingAttributes($this->app->isLocal());
+    }
+
 <a name="upserts"></a>
 ### Upserts
 
