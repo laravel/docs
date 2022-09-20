@@ -2020,7 +2020,7 @@ The `Str::ulid` method generates a ULID:
 
     return (string) Str::ulid();
     
-    // 01GD6R360BP37ZJ17NXB55YV40
+    // 01gd6r360bp37zj17nxb55yv40
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
