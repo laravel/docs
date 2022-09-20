@@ -375,6 +375,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [float](#column-method-float)
 [foreignId](#column-method-foreignId)
 [foreignIdFor](#column-method-foreignIdFor)
+[foreignUlid](#column-method-foreignUlid)
 [foreignUuid](#column-method-foreignUuid)
 [geometryCollection](#column-method-geometryCollection)
 [geometry](#column-method-geometry)
@@ -423,6 +424,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [unsignedSmallInteger](#column-method-unsignedSmallInteger)
 [unsignedTinyInteger](#column-method-unsignedTinyInteger)
 [uuidMorphs](#column-method-uuidMorphs)
+[ulid](#column-method-ulid)
 [uuid](#column-method-uuid)
 [year](#column-method-year)
 
@@ -525,6 +527,13 @@ The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column:
 The `foreignIdFor` method adds a `{column}_id UNSIGNED BIGINT` equivalent column for a given model class:
 
     $table->foreignIdFor(User::class);
+
+<a name="column-method-foreignUlid"></a>
+#### `foreignUlid()` {.collection-method}
+
+The `foreignUlid` method creates a `ULID` equivalent column:
+
+    $table->foreignUlid('user_id');
 
 <a name="column-method-foreignUuid"></a>
 #### `foreignUuid()` {.collection-method}
@@ -865,6 +874,13 @@ The `uuidMorphs` method is a convenience method that adds a `{column}_id` `CHAR(
 This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that use UUID identifiers. In the following example, `taggable_id` and `taggable_type` columns would be created:
 
     $table->uuidMorphs('taggable');
+
+<a name="column-method-ulid"></a>
+#### `ulid()` {.collection-method}
+
+The `ulid` method creates a `ULID` equivalent column:
+
+    $table->ulid('id');
 
 <a name="column-method-uuid"></a>
 #### `uuid()` {.collection-method}
