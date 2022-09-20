@@ -198,6 +198,29 @@ You may pass a closure to the available methods in order to assert that a job wa
         return $job->order->id === $order->id;
     });
 
+<a name="faking-a-subset-of-jobs"></a>
+#### Faking A Subset Of Jobs
+
+If you only want to prevent certain jobs from being dispatched, you may pass the jobs that should be faked to the `fake` method:
+
+    /**
+     * Test order process.
+     */
+    public function test_orders_can_be_shipped()
+    {
+        Bus::fake([
+            ShipOrder::class,
+        ]);
+
+        // ...
+    }
+
+You may fake all jobs except for a set of specified jobs using the `except` method:
+
+    Bus::fake()->except([
+        ShipOrder::class,
+    ]);
+
 <a name="bus-job-chains"></a>
 ### Job Chains
 
@@ -314,9 +337,9 @@ If you only want to fake event listeners for a specific set of events, you may p
         $order->update([...]);
     }
 
-You may fake all events except for a set of specified events using the `fakeExcept` method:
+You may fake all events except for a set of specified events using the `except` method:
 
-    Event::fakeExcept([
+    Event::fake()->except([
         OrderCreated::class,
     ]);
 
