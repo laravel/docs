@@ -999,7 +999,7 @@ We could also modify a column to be nullable:
     });
 
 > **Warning**  
-> The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.  To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
+> The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.  To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
 
 <a name="renaming-columns"></a>
 #### Renaming Columns
