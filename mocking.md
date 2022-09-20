@@ -258,6 +258,15 @@ The `Bus` facade's `assertBatched` method may be used to assert that a [batch of
                $batch->jobs->count() === 10;
     });
 
+In addition, you may occasionally need to test an individual job's interaction with its underlying batch. For example, you may need to test if a job cancelled further processing for its batch. To accomplish this, you need to assign a fake batch to the job via the `withFakeBatch` method. The `withFakeBatch` method returns a tuple containing the job instance and the fake batch:
+
+    [$job, $batch] = (new ShipOrder)->withFakeBatch();
+
+    $job->handle();
+
+    $this->assertTrue($batch->cancelled());
+    $this->assertEmpty($batch->added);
+
 <a name="event-fake"></a>
 ## Event Fake
 
