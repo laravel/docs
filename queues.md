@@ -1223,6 +1223,9 @@ The batch's ID, which may be accessed via the `$batch->id` property, may be used
 > **Warning**  
 > Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks.
 
+> **Warning**  
+> Since batches are wrapped in a database transaction, you should not execute [implicit commits](/docs/{{version}}/database#implicit-commits-in-transactions) from within them or you'll risk running into a "There is no active transaction" error.
+
 <a name="naming-batches"></a>
 #### Naming Batches
 
