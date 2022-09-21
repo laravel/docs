@@ -242,7 +242,7 @@ If you need to customize the names of the columns used to store the timestamps, 
         const UPDATED_AT = 'updated_date';
     }
 
-If you want to update the model without having it's `updated_at` timestamp changed, you should persist the model within a Closure passed to `Model::withoutTimestamps()`:
+If you would like to perform model operations without the model having its `updated_at` timestamp modified, you may operate on the model within a closure given to the `withoutTimestamps` method:
 
     Model::withoutTimestamps(fn () => $post->incrememt(['reads']));
 
