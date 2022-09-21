@@ -392,7 +392,13 @@ export default defineConfig({
 });
 ```
 
-When the `refresh` option is `true`, saving files in `resources/views/**`, `app/View/Components/**`, and `routes/**` will trigger the browser to perform a full page refresh while you are running `npm run dev`.
+When the `refresh` option is `true`, saving files in the following directories will trigger the browser to perform a full page refresh while you are running `npm run dev`:
+
+- `app/View/Components/**`
+- `lang/**`
+- `resources/lang/**`
+- `resources/views/**`
+- `routes/**`
 
 Watching the `routes/**` directory is useful if you are utilizing [Ziggy](https://github.com/tighten/ziggy) to generate route links within your application's frontend.
 
