@@ -276,7 +276,7 @@ If you wish, you may also add extra query conditions to the authentication query
         // Authentication was successful...
     }
 
-For more complex conditions, like asserting a relation existence, you may also pass a callback to change the underlying query to execute.
+For complex query conditions, you may provide a closure in your array of credentials. This closure will be invoked with the query instance, allowing you to customize the query based on your application's needs:
 
     if (Auth::attempt([
         'email' => $email, 
