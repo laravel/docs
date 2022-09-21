@@ -16,13 +16,65 @@
 
 ## Introduction
 
-Laravel Precognition allows you to predict the outcome of a future request. Some ways Precognition can be used include:
+Laravel Precognition performs side-effect free requests to your application, allowing you to predict the outcome of a future request. Some ways Precognition may be used include:
 
-- Live validation of forms, without using a front-end validation library.
-- Notifying the user that a resource they are editing has been updated since it was retrieved.
-- Notifying the user their session has expired.
+- Live validation of forms, powered by Laravel validation rules.
+- Notifying users that a resource they are editing has been updated since it was retrieved.
+- Notifying users their session has expired.
 
-And it enables all of this without the need for creating additional routes for your application. You should be noted that Precognition is part feature and part pattern.
+Precognition works by executing all middleware and form requests, but not executing the route's controller.  You will also see that Precognition is part feature and part pattern.
+
+## Validation
+
+Offering front-end validation to your users can drastically improve their experience, however it requires you to duplicate validation rules in a front-end validation library. There are also validation rules that cannot be performed by a front-end validation library, such as checking if a value is unique in the database.
+
+Laravel Precognition enables you to use your back-end validation rules on the front-end, without duplicating you applications validation logic.
+
+As an example, lets imagine we have an existing form that creates users in our system. The route that powers this form is using a [Form Request](/docs/{version}/validation#form-request-validation) to house its validation rules:
+
+```php
+Route::post('/users', function (StoreUserRequest $request) {
+    $user = User::create($request->validated());
+
+    return redirect()->route('users.show', ['user' => $user]);
+});
+```
+
+To use Precognition on this route, first we must add the `HandlePrecognitiveRequests` middleware:
+
+```php
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+
+Route::post('/users', function (StoreUserRequest $request) {
+    $user = User::create($request->validated());
+
+    return redirect()->route('users.show', ['user' => $user]);
+})->middleware(HandlePrecognitiveRequests::class);
+```
+
+That is all we need to do to allow Precognition on this route, so we will now switch to the front-end:
+
+```html
+<script>
+    const { validate, changed } = precognition.validate(client => client.post('/users', data(), {
+        onPrecognitionSuccess: clearErrors,
+        onValidationError: setErrors,
+    });
+</script>
+<input name="email" onchange="validate('email')">
+```
+
+From a back-end perspective, this is all we need to do to enable Precognition for this route.
+
+
+As we mentioned, Precognition does not execute the controller, so a Precognition request will never create the user.
+
+The following route is using a 
+
+
+A Precognition request is 
+
+You should be noted that Precognition is part feature and part pattern.
 
 This library provides a wrapper around [Axios](https://axios-http.com/) to make Precognition requests.
 
