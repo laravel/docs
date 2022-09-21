@@ -434,34 +434,23 @@ export default defineConfig({
 <a name="blade-aliases"></a>
 ### Aliases
 
-It is common in JavaScript applications to [create aliases](#aliases) to regularly referenced directories. You may create aliases to use in Blade by using the `macro` method on the `Illuminate\Support\Vite` class. Typically, "macros" should be defined within a [service provider's](/docs/{{version}}/providers) boot method:
+It is common in JavaScript applications to [create aliases](#aliases) to regularly referenced directories. But, you may also create aliases to use in Blade by using the `macro` method on the `Illuminate\Support\Vite` class. Typically, "macros" should be defined within the `boot` method of a [service provider](/docs/{{version}}/providers):
 
-    <?php
-
-    namespace App\Providers;
-
-    use Illuminate\Support\Vite;
-    use Illuminate\Support\ServiceProvider;
-
-    class AppServiceProvider extends ServiceProvider
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
     {
-        /**
-         * Bootstrap any application services.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            Vite::macro('image', fn ($asset) => $this->asset("/resources/images/{$asset}"));
-        }
+        Vite::macro('image', fn ($asset) => $this->asset("/resources/images/{$asset}"));
     }
 
-You could then reference an asset located at `resources/images/logo.png` via the alias:
+Once a macro has been defined, it can be invoked within your templates. For example, we can use the `image` macro defined above to reference an asset located at `resources/images/logo.png`:
 
 ```blade
 <img src="{{ Vite::image('logo.png') }}" alt="Laravel Logo">
 ```
-
 
 <a name="custom-base-urls"></a>
 ## Custom Base URLs
