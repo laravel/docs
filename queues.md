@@ -544,6 +544,36 @@ The `WithoutOverlapping` middleware is powered by Laravel's atomic lock feature.
         return [(new WithoutOverlapping($this->order->id))->expireAfter(180)];
     }
 
+By default, `WithoutOverlapping` will ensure that jobs of the same class that have a shared key do not overlap. If you want `WithoutOverlapping` to apply across different job classes, you should ensure both jobs use the same key use the `shareKey()` method:
+
+    use Illuminate\Queue\Middleware\WithoutOverlapping;
+
+    class ProviderIsDown
+    {
+        // ...
+
+
+        public function middleware()
+        {
+            return [
+                (new WithoutOverlapping("provider-status:{$this->provider}"))->shareKey(),
+            ];
+        }
+    }
+
+    class ProviderIsUp
+    {
+        // ...
+
+
+        public function middleware()
+        {
+            return [
+                (new WithoutOverlapping("provider-status:{$this->provider}"))->shareKey(),
+            ];
+        }
+    }
+
 > **Warning**  
 > The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
 
