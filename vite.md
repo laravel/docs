@@ -130,25 +130,9 @@ The Laravel plugin also supports multiple entry points and advanced configuratio
 <a name="working-with-a-secure-development-server"></a>
 #### Working With A Secure Development Server
 
-If your development web server is running on HTTPS, you may run into issues connecting to the Vite development server.
+If your local development web server is serving your application via HTTPS, you may run into issues connecting to the Vite development server.
 
-If you are using [Laravel Valet](/docs/{{version}}/valet) for local development, and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may configure the Vite development server to automatically use Valet's generated TLS certificates:
-
-```js
-import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
-
-export default defineConfig({
-    plugins: [
-        laravel({
-            // ...
-            valetTls: true, // [!tl add]
-        }),
-    ],
-});
-```
-
-If you are not using Valet's default conventions and have instead manually specified a host when linking and securing your application, you should specify the host manually:
+If you are using [Laravel Valet](/docs/{{version}}/valet) for local development and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may configure the Vite development server to automatically use Valet's generated TLS certificates:
 
 ```js
 import { defineConfig } from 'vite';
