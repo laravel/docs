@@ -26,7 +26,7 @@ In this overview, you will learn how to write your own service providers and reg
 
 All service providers extend the `Illuminate\Support\ServiceProvider` class. Most service providers contain a `register` and a `boot` method. Within the `register` method, you should **only bind things into the [service container](/docs/{{version}}/container)**. You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method.
 
-The Artisan CLI can generate a new provider via the `make:provider` command:
+You can generate a new provider using the `make:provider` Artisan command:
 
 ```shell
 php artisan make:provider RiakServiceProvider
@@ -38,8 +38,6 @@ php artisan make:provider RiakServiceProvider
 As mentioned previously, within the `register` method, you should only bind things into the [service container](/docs/{{version}}/container). You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method. Otherwise, you may accidentally use a service that is provided by a service provider which has not loaded yet.
 
 Let's take a look at a basic service provider. Within any of your service provider methods, you always have access to the `$app` property which provides access to the service container:
-
-    <?php
 
     namespace App\Providers;
 
@@ -66,9 +64,7 @@ This service provider only defines a `register` method, and uses that method to 
 <a name="the-bindings-and-singletons-properties"></a>
 #### The `bindings` And `singletons` Properties
 
-If your service provider registers many simple bindings, you may wish to use the `bindings` and `singletons` properties instead of manually registering each container binding. When the service provider is loaded by the framework, it will automatically check for these properties and register their bindings:
-
-    <?php
+As described in the documentation of [service container](/docs/{{version}}/container#binding), you may bind service(s) into the container using method `bind` and `singleton` of the `$app` property. However, if you only need to register some simple bindings, you can use the `bindings` and `singletons` properties instead of manually registering each container binding inside the `register` method. When the service provider is loaded by the framework, it will automatically check for these properties and register their bindings:
 
     namespace App\Providers;
 
@@ -104,9 +100,7 @@ If your service provider registers many simple bindings, you may wish to use the
 <a name="the-boot-method"></a>
 ### The Boot Method
 
-So, what if we need to register a [view composer](/docs/{{version}}/views#view-composers) within our service provider? This should be done within the `boot` method. **This method is called after all other service providers have been registered**, meaning you have access to all other services that have been registered by the framework:
-
-    <?php
+So, what if we need to register a [view composer](/docs/{{version}}/views#view-composers) within our service provider? This should be done within the `boot` method. **This method is called after all service providers in your application have been registered**, meaning you have access to all other services that have been registered by the framework:
 
     namespace App\Providers;
 
@@ -131,7 +125,7 @@ So, what if we need to register a [view composer](/docs/{{version}}/views#view-c
 <a name="boot-method-dependency-injection"></a>
 #### Boot Method Dependency Injection
 
-You may type-hint dependencies for your service provider's `boot` method. The [service container](/docs/{{version}}/container) will automatically inject any dependencies you need:
+As mentioned previously, **the boot method is called after all service providers in your application have been registered**. As a result, you may type-hint dependencies for the `boot` method of your service provider. The [service container](/docs/{{version}}/container) will automatically inject any dependencies you need:
 
     use Illuminate\Contracts\Routing\ResponseFactory;
 
@@ -164,13 +158,11 @@ To register your provider, add it to the array:
 <a name="deferred-providers"></a>
 ## Deferred Providers
 
-If your provider is **only** registering bindings in the [service container](/docs/{{version}}/container), you may choose to defer its registration until one of the registered bindings is actually needed. Deferring the loading of such a provider will improve the performance of your application, since it is not loaded from the filesystem on every request.
+If you **only** use a provider to register bindings in the [service container](/docs/{{version}}/container) (**only** use `register` method without utilizing the `boot` method), you may choose to defer its registration until one of the registered bindings is actually needed. Deferring the loading of such a provider will improve the performance of your application, since it is not loaded from the filesystem on every request.
 
 Laravel compiles and stores a list of all of the services supplied by deferred service providers, along with the name of its service provider class. Then, only when you attempt to resolve one of these services does Laravel load the service provider.
 
 To defer the loading of a provider, implement the `\Illuminate\Contracts\Support\DeferrableProvider` interface and define a `provides` method. The `provides` method should return the service container bindings registered by the provider:
-
-    <?php
 
     namespace App\Providers;
 
