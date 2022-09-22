@@ -25,11 +25,8 @@ The Laravel service container is a powerful tool for managing class dependencies
 
 Let's look at a simple example:
 
-    <?php
-
     namespace App\Http\Controllers;
-
-    use App\Http\Controllers\Controller;
+    
     use App\Repositories\UserRepository;
     use App\Models\User;
 
@@ -75,8 +72,6 @@ A deep understanding of the Laravel service container is essential to building a
 ### Zero Configuration Resolution
 
 If a class has no dependencies or only depends on other concrete classes (not interfaces), the container does not need to be instructed on how to resolve that class. For example, you may place the following code in your `routes/web.php` file:
-
-    <?php
 
     class Service
     {
@@ -252,8 +247,6 @@ If you need to inject a value from one of your application's configuration files
 
 Occasionally, you may have a class that receives an array of typed objects using a variadic constructor argument:
 
-    <?php
-
     use App\Models\Filter;
     use App\Services\Logger;
 
@@ -395,8 +388,6 @@ Alternatively, and importantly, you may type-hint the dependency in the construc
 
 For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:
 
-    <?php
-
     namespace App\Http\Controllers;
 
     use App\Repositories\UserRepository;
@@ -437,8 +428,6 @@ For example, you may type-hint a repository defined by your application in a con
 ## Method Invocation & Injection
 
 Sometimes you may wish to invoke a method on an object instance while allowing the container to automatically inject that method's dependencies. For example, given the following class:
-
-    <?php
 
     namespace App;
 
