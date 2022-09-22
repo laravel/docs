@@ -26,9 +26,7 @@ Instead of defining all of your request handling logic as closures in your route
 <a name="basic-controllers"></a>
 ### Basic Controllers
 
-Let's take a look at an example of a basic controller. Note that the controller extends the base controller class included with Laravel: `App\Http\Controllers\Controller`:
-
-    <?php
+Let's take a look at an example of a basic controller. Notice that the controller extends `Controller` class located in the same directory of your application's controllers. This `App\Http\Controllers\Controller` class extends the base `Illuminate\Routing\Controller` class, which you may use to add functionality into the `Controller` that will be applied to your other controllers in your application.
 
     namespace App\Http\Controllers;
     
@@ -65,8 +63,6 @@ When an incoming request matches the specified route URI, the `show` method on t
 ### Single Action Controllers
 
 If a controller action is particularly complex, you might find it convenient to dedicate an entire controller class to that single action. To accomplish this, you may define a single `__invoke` method within the controller:
-
-    <?php
 
     namespace App\Http\Controllers;
     
@@ -370,8 +366,6 @@ If you need to add additional routes to a resource controller beyond the default
 
 The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:
 
-    <?php
-
     namespace App\Http\Controllers;
 
     use App\Repositories\UserRepository;
@@ -400,8 +394,6 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
 
 In addition to constructor injection, you may also type-hint dependencies on your controller's methods. A common use-case for method injection is injecting the `Illuminate\Http\Request` instance into your controller methods:
 
-    <?php
-
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
@@ -429,8 +421,6 @@ If your controller method is also expecting input from a route parameter, list y
     Route::put('/user/{id}', [UserController::class, 'update']);
 
 You may still type-hint the `Illuminate\Http\Request` and access your `id` parameter by defining your controller method as follows:
-
-    <?php
 
     namespace App\Http\Controllers;
 
