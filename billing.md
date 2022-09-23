@@ -649,7 +649,11 @@ Instead of collecting a customer's recurring payments automatically, you may ins
 
     $user->newSubscription('default', 'price_monthly')->createAndSendInvoice();
 
-The amount of time a customer has to pay their invoice before their subscription is canceled is determined by your subscription and invoice settings within the [Stripe dashboard](https://dashboard.stripe.com/settings/billing/automatic).
+The amount of time a customer has to pay their invoice before their subscription is cancelled is determined by the `days_until_due` option. By default, this is 30 days; however, you may provide a specific value for this option if you wish:
+
+    $user->newSubscription('default', 'price_monthly')->createAndSendInvoice([], [
+        'days_until_due' => 30
+    ]);
 
 <a name="subscription-quantities"></a>
 #### Quantities

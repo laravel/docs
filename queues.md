@@ -688,7 +688,7 @@ If you would like to specify that a job should not be immediately available for 
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
 #### Dispatching After The Response Is Sent To Browser
 
-Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:
+Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser if your web server is using FastCGI. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:
 
     use App\Jobs\SendNotification;
 
@@ -1842,13 +1842,13 @@ For convenience, you may choose to automatically delete jobs with missing models
 <a name="pruning-failed-jobs"></a>
 ### Pruning Failed Jobs
 
-You may delete all of the records in your application's `failed_jobs` table by invoking the `queue:prune-failed` Artisan command:
+You may prune the records in your application's `failed_jobs` table by invoking the `queue:prune-failed` Artisan command:
 
 ```shell
 php artisan queue:prune-failed
 ```
 
-If you provide the `--hours` option to the command, only the failed job records that were inserted within the last N number of hours will be retained. For example, the following command will delete all of the failed job records that were inserted more than 48 hours ago:
+By default, all the failed job records that are more than 24 hours old will be pruned. If you provide the `--hours` option to the command, only the failed job records that were inserted within the last N number of hours will be retained. For example, the following command will delete all the failed job records that were inserted more than 48 hours ago:
 
 ```shell
 php artisan queue:prune-failed --hours=48

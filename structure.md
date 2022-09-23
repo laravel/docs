@@ -33,6 +33,9 @@
 
 預設的 Laravel 應用程式結構旨在提供一個好的起始點給不同大小的應用程式。但你也可以依照喜好自由地組織應用程式。Laravel 幾乎沒有強加限制任何類別的放置位置 - 只要 Composer 可以自動載入這些類別即可。
 
+> **Note**
+> New to Laravel? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com) for a hands-on tour of the framework while we walk you through building your first Laravel application.
+
 <a name="the-root-directory"></a>
 ## 根目錄
 
