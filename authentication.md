@@ -276,6 +276,16 @@ If you wish, you may also add extra query conditions to the authentication query
         // Authentication was successful...
     }
 
+For complex query conditions, you may provide a closure in your array of credentials. This closure will be invoked with the query instance, allowing you to customize the query based on your application's needs:
+
+    if (Auth::attempt([
+        'email' => $email, 
+        'password' => $password, 
+        fn ($query) => $query->has('activeSubscription'),
+    ]) {
+        // Authentication was successful...
+    }
+
 > **Warning**  
 > In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database table.
 

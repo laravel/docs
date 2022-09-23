@@ -17,6 +17,7 @@
 - [Working With Blade & Routes](#working-with-blade-and-routes)
   - [Processing Static Assets With Vite](#blade-processing-static-assets)
   - [Refreshing On Save](#blade-refreshing-on-save)
+  - [Aliases](#blade-aliases)
 - [Custom Base URLs](#custom-base-urls)
 - [Environment Variables](#environment-variables)
 - [Disabling Vite In Tests](#disabling-vite-in-tests)
@@ -130,19 +131,46 @@ The Laravel plugin also supports multiple entry points and advanced configuratio
 <a name="working-with-a-secure-development-server"></a>
 #### Working With A Secure Development Server
 
-If your development web server is running on HTTPS, including Valet's [secure command](/docs/{{version}}/valet#securing-sites), you may run into issues connecting to the Vite development server. You may configure Vite to also run on HTTPS by adding the following to your `vite.config.js` configuration file:
+If your local development web server is serving your application via HTTPS, you may run into issues connecting to the Vite development server.
+
+If you are using [Laravel Valet](/docs/{{version}}/valet) for local development and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may configure the Vite development server to automatically use Valet's generated TLS certificates:
 
 ```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
 export default defineConfig({
-    // ...
-    server: { // [tl! add]
-        https: true, // [tl! add]
-        host: 'localhost', // [tl! add]
-    }, // [tl! add]
+    plugins: [
+        laravel({
+            // ...
+            valetTls: 'my-app.test', // [!tl add]
+        }),
+    ],
 });
 ```
 
-You will also need to accept the certificate warning for Vite's development server in your browser by following the "Local" link in your console when running the `npm run dev` command.
+When using another web server, you should generate a trusted certificate and manually configure Vite to use the generated certificates:
+
+```js
+// ...
+import fs from 'fs'; // [tl! add]
+
+const host = 'my-app.test'; // [tl! add]
+
+export default defineConfig({
+    // ...
+    server: { // [!tl add]
+        host, // [!tl add]
+        hmr: { host }, // [!tl add]
+        https: { // [!tl add]
+            key: fs.readFileSync(`/path/to/${host}.key`), // [!tl add]
+            cert: fs.readFileSync(`/path/to/${host}.crt`), // [!tl add]
+        }, // [!tl add]
+    }, // [!tl add]
+});
+```
+
+If you are unable to generate a trusted certificate for your system, you may install and configure the [`@vitejs/plugin-basic-ssl` plugin](https://github.com/vitejs/vite-plugin-basic-ssl). When using untrusted certificates, you will need to accept the certificate warning for Vite's development server in your browser by following the "Local" link in your console when running the `npm run dev` command.
 
 <a name="loading-your-scripts-and-styles"></a>
 ### Loading Your Scripts And Styles
@@ -391,7 +419,13 @@ export default defineConfig({
 });
 ```
 
-When the `refresh` option is `true`, saving files in `resources/views/**`, `app/View/Components/**`, and `routes/**` will trigger the browser to perform a full page refresh while you are running `npm run dev`.
+When the `refresh` option is `true`, saving files in the following directories will trigger the browser to perform a full page refresh while you are running `npm run dev`:
+
+- `app/View/Components/**`
+- `lang/**`
+- `resources/lang/**`
+- `resources/views/**`
+- `routes/**`
 
 Watching the `routes/**` directory is useful if you are utilizing [Ziggy](https://github.com/tighten/ziggy) to generate route links within your application's frontend.
 
@@ -428,6 +462,27 @@ export default defineConfig({
         }),
     ],
 });
+```
+
+<a name="blade-aliases"></a>
+### Aliases
+
+It is common in JavaScript applications to [create aliases](#aliases) to regularly referenced directories. But, you may also create aliases to use in Blade by using the `macro` method on the `Illuminate\Support\Vite` class. Typically, "macros" should be defined within the `boot` method of a [service provider](/docs/{{version}}/providers):
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Vite::macro('image', fn ($asset) => $this->asset("/resources/images/{$asset}"));
+    }
+
+Once a macro has been defined, it can be invoked within your templates. For example, we can use the `image` macro defined above to reference an asset located at `resources/images/logo.png`:
+
+```blade
+<img src="{{ Vite::image('logo.png') }}" alt="Laravel Logo">
 ```
 
 <a name="custom-base-urls"></a>
