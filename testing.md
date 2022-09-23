@@ -224,7 +224,7 @@ Occasionally, you may want to test the performance of certain pieces of the appl
         fn () => User::all()->count(), // 20.0 ms
     ]);
 
-By default, the given callbacks will be executed 10 times each, and the average time the callback toke to run will be returned.
+By default, the given callbacks will be executed 10 times each, and the average time the callbacks toke to run will be displayed on the browser / console.
 
 If you wish to use a different number of repetitions you may use the `repeat` method:
 
