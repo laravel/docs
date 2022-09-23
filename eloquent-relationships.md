@@ -666,14 +666,11 @@ You can also filter the results returned by `belongsToMany` relationship queries
 <a name="ordering-queries-via-intermediate-table-columns"></a>
 ### Ordering Queries Via Intermediate Table Columns
 
-You can order the results returned by `belongsToMany` relationship queries using the `orderByPivot` method. In the following example, we want to retrieve all the latest gold badges for a user in a forum:
+You can order the results returned by `belongsToMany` relationship queries using the `orderByPivot` method. In the following example, we will retrieve all of the latest badges for the user:
 
-    use App\Models\Badge;
-
-    return $user->belongsToMany(Badge::class)
+    return $this->belongsToMany(Badge::class)
                     ->where('rank', 'gold')
                     ->orderByPivot('created_at', 'desc');
-
 
 <a name="defining-custom-intermediate-table-models"></a>
 ### Defining Custom Intermediate Table Models
