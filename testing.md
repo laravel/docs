@@ -6,6 +6,7 @@
 - [Running Tests](#running-tests)
     - [Running Tests In Parallel](#running-tests-in-parallel)
     - [Reporting Test Coverage](#reporting-test-coverage)
+- [Benchmark](#benchmark)
 
 <a name="introduction"></a>
 ## Introduction
@@ -208,3 +209,26 @@ You may use the `--min` option to define a minimum test coverage threshold for y
 ```shell
 php artisan test --coverage --min=80.3
 ```
+
+<a name="benchmark"></a>
+## Benchmark
+
+Occasionally, you may want to test the performance of certain pieces of the application. For that, you may use the `Benchmark` facade to measure the time the given callbacks take to complete:
+
+    <?php
+
+    use Illuminate\Support\Facades\Benchmark;
+
+    Benchmark::measure([
+        fn () => User::count(), // 0.5 ms
+        fn () => User::all()->count(), // 20.0 ms
+    ]);
+
+By default, the given callbacks will be executed 10 times each, and the average time the callback toke to run will be returned.
+
+If you wish to use a different number of repetitions you may use the `repeat` method:
+
+    Benchmark::repeat(100)->measure(function () {
+        User::count();
+    });
+
