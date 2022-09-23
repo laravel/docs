@@ -534,13 +534,13 @@ The `whereNotBetween` method verifies that a column's value lies outside of two 
 
 **whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
 
-The `whereBetweenColumns` verified that a column's value is between the two values of two columns in the same table row.
+The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:
 
     $patients = DB::table('patients')
                            ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
                            ->get();
 
-The `whereNotBetweenColumns` verified that a column's value lies outside the two values of two columns in the same table row.
+The `whereNotBetweenColumns` verifies that a column's value lies outside the two values of two columns in the same table row:
 
     $patients = DB::table('patients')
                            ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
