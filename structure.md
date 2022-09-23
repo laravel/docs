@@ -34,7 +34,7 @@
 預設的 Laravel 應用程式結構旨在提供一個好的起始點給不同大小的應用程式。但你也可以依照喜好自由地組織應用程式。Laravel 幾乎沒有強加限制任何類別的放置位置 - 只要 Composer 可以自動載入這些類別即可。
 
 > **Note**
-> New to Laravel? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com) for a hands-on tour of the framework while we walk you through building your first Laravel application.
+> 是 Laravel 的新手嗎？參考看看 [Laravel Bootcamp](https://bootcamp.laravel.com) 提供的框架實作旅程，讓我們引領你建立最初的 Laravel 應用程式。
 
 <a name="the-root-directory"></a>
 ## 根目錄
@@ -47,7 +47,7 @@
 <a name="the-bootstrap-directory"></a>
 #### Bootstrap 目錄
 
-目錄 `bootstrap` 包含用來啟動框架的 `app.php` 檔案。以及包含用來生成框架檔和設定路由及服務（service）快取檔的 `cache` 目錄。你通常不需要修改這個目錄中的任何檔案。
+目錄 `bootstrap` 包含用來啟動框架的 `app.php` 檔案。以及包含用來生成框架檔和設定路由及服務快取檔的 `cache` 目錄。你通常不需要修改這個目錄中的任何檔案。
 
 <a name="the-config-directory"></a>
 #### Config 目錄
@@ -77,20 +77,20 @@
 <a name="the-routes-directory"></a>
 #### Routes 目錄
 
-目錄 `routes`  包含所有應用程式的路由（route）定義。預設情況下，大部分的路由檔案都能在 Laravel 找到： `web.php`, `api.php`, `console.php` 和 `channels.php`。
+目錄 `routes`  包含所有應用程式的路由定義。預設情況下，大部分的路由檔案都能在 Laravel 找到： `web.php`, `api.php`, `console.php` 和 `channels.php`。
 
 `web.php` 檔案中定義的路由都會在 `RouteServiceProvider` 中且被指配到 `web` 中介層群組。具備 Session、CSRF 防護以及 Cookie 加密功能。如果你的應用程式不用提供無狀態的 RESTful API，那麼所有的路由都能在 `web.php` 檔案內找到。
 
-`api.php` 檔案裡定義的路由都會在`RouteServiceProvider` 中且被指配到 `api` 中介層群組。 這些路由通常是無狀態的，所以透過這些路由進入應用程式的請求（request）通常是 [ 透過標記（tokens） ](/docs/{{version}}/sanctum) 進行驗證（authenticate）且不能存取 Session 狀態。
+`api.php` 檔案裡定義的路由都會在`RouteServiceProvider` 中且被指配到 `api` 中介層群組。 這些路由通常是無狀態的，所以透過這些路由進入應用程式的請求通常是 [ 透過標記（tokens） ](/docs/{{version}}/sanctum) 進行驗證（authenticate）且不能存取 Session 狀態。
 
-`console.php` 檔案是你定義所有基於閉包（closure）終端機指令（console command）的地方。每個閉包一定是一個允許跟指令的 IO 方法（method）進行簡易互動的指令執行個體（command instance）。儘管這個檔案沒有定義 HTTP 路由，它也會定義應用程式中基於入口點（路由）的終端（console）。
+`console.php` 檔案是你定義所有基於閉包（closure）終端機指令（console command）的地方。每個閉包一定是一個允許跟指令的 IO 方法（method）進行簡易互動的指令執行個體（command instance）。儘管這個檔案沒有定義 HTTP 路由，它也會定義應用程式中基於入口點（路由）的終端。
 
 The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/docs/{{version}}/broadcasting) 頻道的地方。
 
 <a name="the-storage-directory"></a>
 #### Storage 目錄
 
-目錄 `storage` 包含你的日誌、編譯後的 Blade 模板（template）、基於檔案的 Session、檔案快取（cache）和框架產生的其他檔案。這個目錄又被分為 `app`, `framework` 和 `logs` 資料夾。 `app` 目錄常用來儲存應用程式產生的任何檔案。 `framework` 目錄常用來儲存框架產生的檔案及快取。最後 `logs` 目錄包含應用程式的日誌檔。
+目錄 `storage` 包含你的日誌、編譯後的 Blade 模板（template）、基於檔案的 Session、檔案快取和框架產生的其他檔案。這個目錄又被分為 `app`, `framework` 和 `logs` 資料夾。 `app` 目錄常用來儲存應用程式產生的任何檔案。 `framework` 目錄常用來儲存框架產生的檔案及快取。最後 `logs` 目錄包含應用程式的日誌檔。
 
 目錄 `storage/app/public` 常用來儲存使用者上傳的檔案，例如個人資料的頭像這些可以公開存取的檔案。你應該在 `public/storage` 建立一個象徵性的連結並導向 `storage/app/public` 目錄。你可以使用 Artisan 指令 `php artisan storage:link` 來建立連結。
 
@@ -111,7 +111,7 @@ The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/
 
 目錄 `app` 包含各種額外資料夾例如 `Console`, `Http` 和 `Providers`。將 `Console` 和 `Http` 目錄試想成作為進入應用程式核心所提供的 API。HTTP 協定和 CLI 都是跟應用程式互動的機制，但實際上沒有包含應用程式的邏輯。換句話說，它們是兩種對應用程式發出指令的方法。目錄 `Comsole` 包含了所有的 Artisan 指令，而目錄 `Http` 包含控制器（controller）、中介層（middleware）和請求（request）。
 
-當你使用 Artisan 指令 `make` 產生類別（class）的時候，其他的目錄才會被建立到目錄 `app` 下。例如執行 Artisan 指令 `make:job` 產生任務類別（job class）時，`app/Jobs` 才會出現在目錄中。
+當你使用 Artisan 指令 `make` 產生類別的時候，其他的目錄才會被建立到目錄 `app` 下。例如執行 Artisan 指令 `make:job` 產生任務類別（job class）時，`app/Jobs` 才會出現在目錄中。
 
 > **Note**  
 > 目錄 `app` 下的許多類別都可以透過 Artisan 指令產生。要檢視所有可用的指令可以在終端機（terminal）執行指令 `php artisan list make`。
@@ -119,7 +119,7 @@ The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/
 <a name="the-broadcasting-directory"></a>
 #### Broadcasting 目錄
 
-目錄 `Broadcasting` 包含了所有的廣播頻道類別（ broadcast channel class）。這些類別可以使用指令 `make:channel` 產生。這個目錄預設並不存在，但會在你建立第一個頻道時出現。想了解更多關於頻道的資訊，可以查閱文件 [ 廣播事件（event broadcast） ](/docs/{{version}}/broadcasting)。
+目錄 `Broadcasting` 包含了所有的廣播頻道類別（broadcast channel class）。這些類別可以使用指令 `make:channel` 產生。這個目錄預設並不存在，但會在你建立第一個頻道時出現。想了解更多關於頻道的資訊，可以查閱文件 [ 廣播事件（event broadcast） ](/docs/{{version}}/broadcasting)。
 
 <a name="the-console-directory"></a>
 #### Console 目錄
@@ -134,12 +134,12 @@ The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/
 <a name="the-exceptions-directory"></a>
 #### Exceptions 目錄
 
-目錄 `Exceptions` 包含應用程式的異常處理程序且也是放置應用程式拋出例外（throw exception）的好地方。如果你想要自定義如何記錄或呈現異常的方法，你應該修改此目錄中的 `Handler` 類別（class）。
+目錄 `Exceptions` 包含應用程式的異常處理程序且也是放置應用程式拋出例外（throw exception）的好地方。如果你想要自定義如何記錄或呈現異常的方法，你應該修改此目錄中的 `Handler` 類別。
 
 <a name="the-http-directory"></a>
 #### Http 目錄
 
-`Http` 目錄包含了你的控制器（controller）、中介層（middleware）和表單（form）請求（request）。幾乎所有進入應用程式的請求處理都會放置在這個目錄。
+`Http` 目錄包含了你的控制器（controller）、中介層（middleware）和表單（form）請求。幾乎所有進入應用程式的請求處理都會放置在這個目錄。
 
 <a name="the-jobs-directory"></a>
 #### Jobs 目錄
@@ -154,7 +154,7 @@ The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/
 <a name="the-mail-directory"></a>
 #### Mail 目錄
 
-這個目錄預設並不存在，但會因為你執行 Artisan 指令（command）`make:mail` 而被建立。目錄 `Mail` 包含應用程式發送的 [ 代表電子郵件的類別 ](/docs/{{version}}/mail)，郵件對象允許你將建立郵件的所有邏輯封裝在一個簡單的類別中，該類別可能使用 `Mail::send` 方法寄信。
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `make:mail` 而被建立。目錄 `Mail` 包含應用程式發送的 [ 代表電子郵件的類別 ](/docs/{{version}}/mail)，郵件對象允許你將建立郵件的所有邏輯封裝在一個簡單的類別中，該類別可能使用 `Mail::send` 方法寄信。
 
 <a name="the-models-directory"></a>
 #### Models 目錄
@@ -164,12 +164,12 @@ The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/
 <a name="the-notifications-directory"></a>
 #### Notifications 目錄
 
-這個目錄預設並不存在，但會因為你執行 Artisan 指令（command） `make:notification` 而被建立。目錄 `Notifications` 包含由應用程式發送的所有「業務性」 [ 通知 ](/docs/{{version}}/notifications)，例如應用程式發生事件的簡易通知。Laravel 的通知特性會將透過驅動程式發送的通知例如電子郵件、Slack、簡訊或資料儲存抽象化。 
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `make:notification` 而被建立。目錄 `Notifications` 包含由應用程式發送的所有「業務性」 [ 通知 ](/docs/{{version}}/notifications)，例如應用程式發生事件的簡易通知。Laravel 的通知特性會將透過驅動程式發送的通知例如電子郵件、Slack、簡訊或資料儲存抽象化。 
 
 <a name="the-policies-directory"></a>
 #### Policies 目錄
 
-這個目錄預設並不存在，但會因為你執行 Artisan 指令（command）`make:policy` 而被建立。目錄 `Policies` 包含應用程式的 [ 授權原則類別（authorization policy class）](/docs/{{version}}/authorization)。這個類別用於判斷某個使用者是否可以對資源進行給定的操作行為。
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `make:policy` 而被建立。目錄 `Policies` 包含應用程式的 [ 授權原則類別（authorization policy class）](/docs/{{version}}/authorization)。這個類別用於判斷某個使用者是否可以對資源進行給定的操作行為。
 
 <a name="the-providers-directory"></a>
 #### Providers 目錄
@@ -181,4 +181,4 @@ The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/
 <a name="the-rules-directory"></a>
 #### Rules 目錄
 
-這個目錄預設並不存在，但會因為你執行 Artisan 指令（command）`make:rule` 而被建立。目錄 `Rules` 包含應用程式自定義的驗證規則（validation rule）。這些規則用於將複雜的驗證邏輯（validation logic）封裝在一個簡單的物件中。關於更多資訊，可以查看 [ 驗證文件 ](/docs/{{version}}/validation)。
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `make:rule` 而被建立。目錄 `Rules` 包含應用程式自定義的驗證規則（validation rule）。這些規則用於將複雜的驗證邏輯（validation logic）封裝在一個簡單的物件中。關於更多資訊，可以查看 [ 驗證文件 ](/docs/{{version}}/validation)。
