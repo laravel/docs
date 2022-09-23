@@ -71,7 +71,7 @@ If you wish to access the process's output at real-time, you may use a closure a
 
     return $result->output(); // 1, 2
 
-In addition, if you with to know if the given output is from the type `stderr` or `stderr`, you may use the second argument of given closure:
+In addition, if you want to know if the given output is from the type `stderr` or `stderr`, you may use the second argument of given closure:
 
     Process::run('echo 1; sleep 1; echo 2', function ($output, $type) {
         dump($type == "out"); // true
