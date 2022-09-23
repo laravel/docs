@@ -153,6 +153,9 @@ config/app.php 設定檔中的偵錯選項用於判斷該實際展示給使用�
 
 Laravel Forge 可以在多個基礎設施提供者例如 DigitalOcean, Linode, AWS 等上建立伺服器。此外，Forge 可安裝並管理建立大型 Laravel 應用程式的全部所需工具，例如 Nginx, MySQL, Redis, Memcached, Beanstalk 等。
 
+> **Note**
+> Want a full guide to deploying with Laravel Forge? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com/deploying) and the Forge [video series available on Laracasts](https://laracasts.com/series/learn-laravel-forge-2022-edition).
+
 <a name="laravel-vapor"></a>
 #### Laravel Vapor
 

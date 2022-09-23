@@ -15,6 +15,7 @@
     - [Many To Many Relationships](#many-to-many-relationships)
     - [Polymorphic Relationships](#polymorphic-relationships)
     - [Defining Relationships Within Factories](#defining-relationships-within-factories)
+    - [Recycling An Existing Model For Relationships](#recycling-an-existing-model-for-relationships)
 
 <a name="introduction"></a>
 ## Introduction
@@ -487,3 +488,16 @@ If the relationship's columns depend on the factory that defines it you may assi
             'content' => fake()->paragraph(),
         ];
     }
+
+<a name="recycling-an-existing-model-for-relationships"></a>
+### Recycling An Existing Model For Relationships
+
+If you have models that share a common relationship with another model, you may use the `recycle` method to ensure a single instance of the related model is recycled for all of the relationships.
+
+For example, imagine you have `Airline`, `Flight`, and `Ticket` models, where the ticket belongs to an airline and a flight, and the flight also belongs to an airline. When creating tickets, you will probably want the same airline for both the ticket and the flight, so you may pass an airline instance to the `recycle` method:
+
+    Ticket::factory()
+        ->recycle(Airline::factory()->create())
+        ->create();
+
+You may find the `recycle` method particularly useful if you have models belonging to a common user or team.

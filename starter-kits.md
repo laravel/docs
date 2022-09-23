@@ -25,7 +25,8 @@ Breeze 提供了一個精彩的起點去開始全新的 Laravel 應用程式，�
 <img src="https://laravel.com/img/docs/breeze-register.png">
 
 #### Laravel Bootcamp
-如果你是 Laravel 新手，可以加入 Laravel Bootcamp。它可以引導你使用 Breeze 建立你的一個 Laravel 應用程式。這是個體驗 Laravel 和 Breeze 一切的好方法。
+
+如果你是 Laravel 新手，可以加入 [Laravel Bootcamp](https://bootcamp.laravel.com)。它可以引導你使用 Breeze 建立你的一個 Laravel 應用程式。這是個體驗 Laravel 和 Breeze 一切的好方法。
 
 <a name="laravel-breeze-installation"></a>
 ### 安裝
