@@ -540,7 +540,7 @@ The `whereBetweenColumns` method verifies that a column's value is between the t
                            ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
                            ->get();
 
-The `whereNotBetweenColumns` verifies that a column's value lies outside the two values of two columns in the same table row:
+The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:
 
     $patients = DB::table('patients')
                            ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
