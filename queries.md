@@ -532,6 +532,20 @@ The `whereNotBetween` method verifies that a column's value lies outside of two 
                         ->whereNotBetween('votes', [1, 100])
                         ->get();
 
+**whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
+
+The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:
+
+    $patients = DB::table('patients')
+                           ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+                           ->get();
+
+The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:
+
+    $patients = DB::table('patients')
+                           ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+                           ->get();
+
 **whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
 The `whereIn` method verifies that a given column's value is contained within the given array:
