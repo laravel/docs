@@ -172,7 +172,6 @@ php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
 ```
 
 將應用程式設置在維護模式之後，你可以導航到應用程式 URL 指定的標記（token）且 Laravel 會向瀏覽器發佈一個繞過維護模式的 cookie。
-After placing the application in maintenance mode, you may navigate to the application URL matching this token and Laravel will issue a maintenance mode bypass cookie to your browser:
 
 ```shell
 https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
