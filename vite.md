@@ -551,7 +551,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function setUp(): void// [tl! add:start]
+    protected function setUp(): void// [tl! add:start]
     {
         parent::setUp();
 
