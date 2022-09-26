@@ -213,22 +213,20 @@ php artisan test --coverage --min=80.3
 <a name="benchmark"></a>
 ## Benchmark
 
-Sometimes, you may wish to test the performance of certain parts of your application. On those occasions, you may utilize the `Benchmark` facade to measure the time taken for the given callbacks to complete:
+Sometimes, you may wish to test the performance of certain parts of your application. On those occasions, you may utilize the `Benchmark` support class to measure the time taken for the given callbacks to complete:
 
     <?php
 
-    use Illuminate\Support\Facades\Benchmark;
+    use Illuminate\Support\Benchmark;
 
-    Benchmark::measure([
+    Benchmark::dd([
         fn () => User::count(), // 0.5 ms
         fn () => User::all()->count(), // 20.0 ms
     ]);
 
-By default, the given callbacks will be executed 10 times each, and their average completion duration will be displayed in the browser / console.
+By default, the given callbacks will be executed once (one iteration), and their duration will be displayed in the browser / console. 
 
-If you wish to define the number of repetitions you may use the `repeat` method:
+If you wish to define the number of iterations you may use the second argument of the `dd` method:
 
-    Benchmark::repeat(100)->measure(function () {
-        User::count();
-    });
-
+    // 10 iterations:
+    Benchmark::dd(fn () => User::count(), 10); // 0.5 ms
