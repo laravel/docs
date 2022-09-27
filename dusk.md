@@ -830,6 +830,17 @@ The `waitForLink` method may be used to wait until the given link text is displa
     // Wait a maximum of one second for the link...
     $browser->waitForLink('Create', 1);
 
+<a name="waiting-for-input"></a>
+#### Waiting For Input
+
+The `waitForInput` method may be used to wait until the given input is visible on the page:
+
+    // Wait a maximum of five seconds for the input...
+    $browser->waitForInput($field);
+
+    // Wait a maximum of one second for the input...
+    $browser->waitForInput($field, 1);
+
 <a name="waiting-on-the-page-location"></a>
 #### Waiting On The Page Location
 
