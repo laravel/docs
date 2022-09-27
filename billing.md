@@ -1923,14 +1923,14 @@ When this method is invoked, a new checkbox will be available to the customer th
 > **Warning**  
 > If you have already configured [automatic tax collection](#tax-configuration) in your application's service provider then this feature will be enabled automatically and there is no need to invoke the `collectTaxIds` method.
 
-<a name="guest-checkout"></a>
-## Guest Checkout
+<a name="guest-checkouts"></a>
+## Guest Checkouts
 
-You might want to use guest checkouts for users that are not registered. When this method is called Cashier automatically creates a guest checkout session for you and you can inject you items, session configuration as you are used to via `create`.
+Using the `Checkout::guest` method, you may initiate checkout sessions for guests of your application that do not have an "account":
 
     $checkout = Checkout::guest()->create($items, $sessionOptions);
 
-Guest checkouts uses a `CheckoutBuilder` under the hood, so you can use the same functionality as you can use when you trigger an user related checkout.
+Guest checkout use a `CheckoutBuilder` instance under the hood, so you can use the same functionality as you can use when you trigger an user related checkout.
 
     $checkout = Checkout::guest()->withPromotionCode('promo-code')->create($items, $sessionOptions);
 
