@@ -743,9 +743,9 @@ If you just need to pause the test for a given number of milliseconds, use the `
 
 If you need to pause the test only if a given condition is `true`, use the `pauseIf` method:
 
-    $browser->pauseIf(App::isProduction(), 1000);
+    $browser->pauseIf(App::environment('production'), 1000);
 
-If you need to pause the test unless a given condition is `true`, use the `pauseUnless` method:
+Likewise, if you need to pause the test unless a given condition is `true`, you may use the `pauseUnless` method:
 
     $browser->pauseUnless(App::environment('testing'), 1000);
 
