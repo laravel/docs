@@ -745,6 +745,10 @@ If you need to pause the test only if a given condition is `true`, use the `paus
 
     $browser->pauseIf(App::isProduction(), 1000);
 
+If you need to pause the test unless a given condition is `true`, use the `pauseUnless` method:
+
+    $browser->pauseUnless(App::environment('testing'), 1000);
+
 <a name="waiting-for-selectors"></a>
 #### Waiting For Selectors
 
