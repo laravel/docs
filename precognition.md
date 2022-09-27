@@ -81,13 +81,13 @@ For a vanilla JavaScript application, you will need to implement a mechanism to 
 ```blade
 <script>
     const form = {
-        // Implement your specific form logic...
+        // Implement your form logic...
     };
 
     const { validate } = precognition.validate(client => client.post('/users', form.data(), {
         onPrecognitionSuccess: () => form.clearErrors(),
         onValidationError: (errors) => form.setErrors(errors),
-    });
+    }));
 </script>
 
 <form action="/users" method="POST">
