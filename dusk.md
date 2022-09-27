@@ -986,6 +986,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertInputValueIsNot](#assert-input-value-is-not)
 [assertChecked](#assert-checked)
 [assertNotChecked](#assert-not-checked)
+[assertIndeterminate](#assert-indeterminate)
 [assertRadioSelected](#assert-radio-selected)
 [assertRadioNotSelected](#assert-radio-not-selected)
 [assertSelected](#assert-selected)
@@ -1300,6 +1301,13 @@ Assert that the given checkbox is checked:
 Assert that the given checkbox is not checked:
 
     $browser->assertNotChecked($field);
+
+<a name="assert-indeterminate"></a>
+#### assertIndeterminate
+
+Assert that the given checkbox is in an indeterminate state:
+
+    $browser->assertIndeterminate($field);
 
 <a name="assert-radio-selected"></a>
 #### assertRadioSelected
