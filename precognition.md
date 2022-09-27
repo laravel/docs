@@ -16,21 +16,41 @@
 
 ## Introduction
 
-Laravel Precognition performs side-effect free requests to your application, allowing you to predict the outcome of a future request. Some ways Precognition may be used include:
+Laravel Precognition allows you to predict the outcome of a future request by performing side-effect free requests. Some ways Precognition may be used include:
 
 - Live validation of forms, powered by Laravel validation rules.
 - Notifying users that a resource they are editing has been updated since it was retrieved.
 - Notifying users their session has expired.
 
-Precognition works by executing all middleware and form requests, but not executing the route's controller.  You will also see that Precognition is part feature and part pattern.
+Precognition works by executing all a route's middleware and dependency resolution (including form requests), but not executing the code contained within the route's controller.  You will also see that Precognition is part feature and part pattern.
+
+## Installation
+
+We have created some front-end helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we highly recommend installing the libraries for your project. The Laravel starter kits and skeleton pre-install and configure the helper library, however if your application does not yet have them installed, you can install them via NPM:
+
+```
+# vanilla JavaScript:
+npm install laravel-precognition
+
+# VueJS:
+npm install laravel-precognition-vue
+```
+
+If you are using vanilla JavaScript, we also recommend importing Precognition into your `resources/js/app.js` and attaching the Precognitive client to the `window` to make it globally available to your views:
+
+```js
+import precognitive from 'laravel-precognition';
+
+window.precognitive = precognitive;
+```
 
 ## Validation
 
 Offering front-end validation to your users can drastically improve their experience, however it requires you to duplicate validation rules in a front-end validation library. There are also validation rules that cannot be performed by a front-end validation library, such as checking if a value is unique in the database.
 
-Laravel Precognition enables you to use your back-end validation rules on the front-end, without duplicating you applications validation logic.
+With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the front-end.
 
-As an example, lets imagine we have an existing form that creates users in our system. The route that powers this form is using a [Form Request](/docs/{version}/validation#form-request-validation) to house its validation rules:
+As an example, lets imagine we have an existing form that creates a user in our system. The route that powers this form is using a [Form Request](/docs/{version}/validation#form-request-validation) to house the validation rules:
 
 ```php
 Route::post('/users', function (StoreUserRequest $request) {
@@ -40,7 +60,7 @@ Route::post('/users', function (StoreUserRequest $request) {
 });
 ```
 
-To use Precognition on this route, first we must add the `HandlePrecognitiveRequests` middleware:
+To use Precognition on this route, we must add the `HandlePrecognitiveRequests` middleware:
 
 ```php
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -52,16 +72,52 @@ Route::post('/users', function (StoreUserRequest $request) {
 })->middleware(HandlePrecognitiveRequests::class);
 ```
 
-That is all we need to do to allow Precognition on this route, so we will now switch to the front-end:
+That is all we need to do to enable Precognition on this route. When a Precognition request hits this route, the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
 
-```html
+### Vanilla JavaScript
+
+For a vanilla JavaScript application, you will need to implement a mechanism to retrieve the current form data, show validation errors, and clear validation errors for you for form. Once you have your form object, you may then set up your forms Precognitive validation:
+
+```blade
 <script>
-    const { validate, changed } = precognition.validate(client => client.post('/users', data(), {
-        onPrecognitionSuccess: clearErrors,
-        onValidationError: setErrors,
+    const form = {
+        // Implement your specific form logic...
+    };
+
+    const { validate } = precognition.validate(client => client.post('/users', form.data(), {
+        onPrecognitionSuccess: () => form.clearErrors(),
+        onValidationError: (errors) => form.setErrors(errors),
     });
 </script>
-<input name="email" onchange="validate('email')">
+
+<form action="/users" method="POST">
+    {{-- ... --}}
+</form>
+```
+
+We now need to attach the `validate` function to the `onchange` event of our inputs. Then when the inputs change, a debounced Precognition request will be sent to our application.
+
+```blade
+<form action="/users" method="POST">
+    {{-- ... --}}
+    <input name="name" onchange="validate">
+    {{-- ... --}}
+    <input name="email" onchange="validate">
+    {{-- ... --}}
+    <input name="phone" onchange="validate">
+</form>
+```
+
+
+In the above example, when the back-end returns a validation error we will set those errors on our form. If validation passes, we will clear all errors on the form. Now we need to start sending validation requests when users enter input into the form.
+
+You can attach the `validate` function to the `onchange` event handler of your form inputs. This will trigger a debounced validation request each time the user changes a form input:
+
+```
+<!-- ... -->
+<input name="name" onchange="validate">
+<!-- ... -->
+<input name="email" onchange="validate">
 ```
 
 From a back-end perspective, this is all we need to do to enable Precognition for this route.
