@@ -830,6 +830,17 @@ The `waitForLink` method may be used to wait until the given link text is displa
     // Wait a maximum of one second for the link...
     $browser->waitForLink('Create', 1);
 
+<a name="waiting-for-inputs"></a>
+#### Waiting For Inputs
+
+The `waitForInput` method may be used to wait until the given input field is visible on the page:
+
+    // Wait a maximum of five seconds for the input...
+    $browser->waitForInput($field);
+
+    // Wait a maximum of one second for the input...
+    $browser->waitForInput($field, 1);
+
 <a name="waiting-on-the-page-location"></a>
 #### Waiting On The Page Location
 
@@ -986,6 +997,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertInputValueIsNot](#assert-input-value-is-not)
 [assertChecked](#assert-checked)
 [assertNotChecked](#assert-not-checked)
+[assertIndeterminate](#assert-indeterminate)
 [assertRadioSelected](#assert-radio-selected)
 [assertRadioNotSelected](#assert-radio-not-selected)
 [assertSelected](#assert-selected)
@@ -1300,6 +1312,13 @@ Assert that the given checkbox is checked:
 Assert that the given checkbox is not checked:
 
     $browser->assertNotChecked($field);
+
+<a name="assert-indeterminate"></a>
+#### assertIndeterminate
+
+Assert that the given checkbox is in an indeterminate state:
+
+    $browser->assertIndeterminate($field);
 
 <a name="assert-radio-selected"></a>
 #### assertRadioSelected
