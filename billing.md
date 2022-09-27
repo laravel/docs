@@ -1924,15 +1924,19 @@ When this method is invoked, a new checkbox will be available to the customer th
 > If you have already configured [automatic tax collection](#tax-configuration) in your application's service provider then this feature will be enabled automatically and there is no need to invoke the `collectTaxIds` method.
 
 <a name="guest-checkouts"></a>
-## Guest Checkouts
+### Guest Checkouts
 
 Using the `Checkout::guest` method, you may initiate checkout sessions for guests of your application that do not have an "account":
 
+    use Laravel\Cashier\Checkout;
+
     $checkout = Checkout::guest()->create($items, $sessionOptions);
 
-Guest checkout use a `CheckoutBuilder` instance under the hood, so you can use the same functionality as you can use when you trigger an user related checkout.
+Similarly to creating checkout sessions with existing users, you may utilize additional methods available on the returned `Laravel\Cashier\CheckoutBuilder` instance to customize the guest checkout session:
 
-    $checkout = Checkout::guest()->withPromotionCode('promo-code')->create($items, $sessionOptions);
+    $checkout = Checkout::guest()
+                    ->withPromotionCode('promo-code')
+                    ->create($items, $sessionOptions);
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
