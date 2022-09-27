@@ -6,7 +6,6 @@
 - [Running Tests](#running-tests)
     - [Running Tests In Parallel](#running-tests-in-parallel)
     - [Reporting Test Coverage](#reporting-test-coverage)
-- [Benchmark](#benchmark)
 
 <a name="introduction"></a>
 ## Introduction
@@ -209,24 +208,3 @@ You may use the `--min` option to define a minimum test coverage threshold for y
 ```shell
 php artisan test --coverage --min=80.3
 ```
-
-<a name="benchmark"></a>
-## Benchmark
-
-Sometimes, you may wish to test the performance of certain parts of your application. On those occasions, you may utilize the `Benchmark` support class to measure the time taken for the given callbacks to complete:
-
-    <?php
-
-    use Illuminate\Support\Benchmark;
-
-    Benchmark::dd([
-        fn () => User::count(), // 0.5 ms
-        fn () => User::all()->count(), // 20.0 ms
-    ]);
-
-By default, the given callbacks will be executed once (one iteration), and their duration will be displayed in the browser / console. 
-
-If you wish to define the number of iterations you may use the second argument of the `dd` method:
-
-    // 10 iterations:
-    Benchmark::dd(fn () => User::count(), 10); // 0.5 ms
