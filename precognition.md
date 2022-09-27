@@ -99,16 +99,8 @@ We now need to attach the `validate` function to the `onchange` event of our inp
 
 ```blade
 <form action="/users" method="POST">
-    {{-- ... --}}
-
     <input name="name" onchange="validate">
-
-    {{-- ... --}}
-
     <input name="email" onchange="validate">
-
-    {{-- ... --}}
-
     <input name="phone" onchange="validate">
 </form>
 ```
