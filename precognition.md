@@ -95,7 +95,7 @@ For a vanilla JavaScript application, you will need to implement a mechanism to 
 </form>
 ```
 
-We now need to attach the `validate` function to the `onchange` event of our inputs. Then when the value is changed, a debounced Precognition request will be sent to our application.
+We now need to attach the `validate` function to the `onchange` event of our inputs.
 
 ```blade
 <form action="/users" method="POST">
@@ -105,30 +105,10 @@ We now need to attach the `validate` function to the `onchange` event of our inp
 </form>
 ```
 
+When the value of these inputs is changed, a debounced Precognition request will be sent to our application. When the data is invalid our `onValidationError` callback will be invoked, but when the data is valid, our `onPrecognitionSuccess` callback will be invoked. These in combination will create a realtime validation experience for users.
 
-In the above example, when the back-end returns a validation error we will set those errors on our form. If validation passes, we will clear all errors on the form. Now we need to start sending validation requests when users enter input into the form.
-
-You can attach the `validate` function to the `onchange` event handler of your form inputs. This will trigger a debounced validation request each time the user changes a form input:
-
-```
-<!-- ... -->
-<input name="name" onchange="validate">
-<!-- ... -->
-<input name="email" onchange="validate">
-```
-
-From a back-end perspective, this is all we need to do to enable Precognition for this route.
-
-
-As we mentioned, Precognition does not execute the controller, so a Precognition request will never create the user.
-
-The following route is using a 
-
-
-A Precognition request is 
-
-You should be noted that Precognition is part feature and part pattern.
-
+---
+From the readme:
 This library provides a wrapper around [Axios](https://axios-http.com/) to make Precognition requests.
 
 To get started you should install the package:
