@@ -1930,6 +1930,10 @@ You might want to use guest checkouts for users that are not registered. When th
 
     $checkout = Checkout::guest()->create($items, $sessionOptions);
 
+Guest checkouts uses a `CheckoutBuilder` under the hood, so you can use the same functionality as you can use when you trigger an user related checkout.
+
+    $checkout = Checkout::guest()->withPromotionCode('promo-code')->create($items, $sessionOptions);
+
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
 
