@@ -95,15 +95,20 @@ For a vanilla JavaScript application, you will need to implement a mechanism to 
 </form>
 ```
 
-We now need to attach the `validate` function to the `onchange` event of our inputs. Then when the inputs change, a debounced Precognition request will be sent to our application.
+We now need to attach the `validate` function to the `onchange` event of our inputs. Then when the value is changed, a debounced Precognition request will be sent to our application.
 
 ```blade
 <form action="/users" method="POST">
     {{-- ... --}}
+
     <input name="name" onchange="validate">
+
     {{-- ... --}}
+
     <input name="email" onchange="validate">
+
     {{-- ... --}}
+
     <input name="phone" onchange="validate">
 </form>
 ```
