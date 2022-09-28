@@ -4,9 +4,9 @@
 - [Installation](#installation)
 - [Validation](#validation)
     - [Making Routes Precognitive](#making-routes-precognitive)
+    - [Working With Vue and Inertia](#validating-vue-inertia)
     - [Validating a Form Object](#form-object)
     - [Working With Vanilla JavaScript](#validating-vanilla-javascript)
-    - [Working With Vue](#validating-vue)
 
 
 <a name="introduction"></a>
@@ -72,6 +72,92 @@ Route::post('/users', function (StoreUserRequest $request) {
 
 When a Precognition request hits this route, the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
 
+<a name="validating-vue-inertia"></a>
+### Working With Vue and Inertia
+
+When working with Vue and Inertia, you are likely already familiar with the form helper. When using Precognition, we augment the form helper to add some useful functionality. Assuming we have the following set up in our application:
+
+```html
+<script setup>
+    import { useForm } from '@inertiajs/inertia-vue3';
+
+    const form = useForm({
+        name: '',
+        email: '',
+    });
+
+    const submit = () => {
+        form.post('/users', {
+            // Inertia options...
+        });
+    };
+</script>
+
+<template>
+    <form @submit.prevent="submit">
+        <input name="name" v-model="form.name" ... >
+        <input name="email" v-model="form.email" ... >
+
+        <!-- ... -->
+    </form>
+</template>
+```
+
+We will want to swap out `useForm` for `usePrecognitiveForm`:
+
+```html
+<script setup>
+    import { usePrecognitiveForm } from 'laravel-precognition-vue-inertia';
+
+    const form = usePrecognitiveForm({
+        url: '/users',
+        method: 'post',
+        data: {
+            name: '',
+            email: '',
+        },
+    });
+
+    const submit = () => {
+        form.post('/users', {
+            // Inertia options...
+        });
+    };
+</script>
+
+<template>
+    <form @submit.prevent="submit">
+        <input name="name" v-model="form.name" ... >
+        <input name="email" v-model="form.email" ... >
+
+        <!-- ... -->
+    </form>
+</template>
+```
+
+Now we are able to simplify the form submission logic:
+
+```js
+const submit = () => {
+    form.submit({
+        // Inertia options...
+    });
+};
+```
+
+The precognitive form already knows the url and method, so we are now able to just call `form.submit()` without again specifying the method and the URL. However we have not implemented any validation logic yet, so now we will tell the inputs to validate whenever the value changes:
+
+```
+<form @submit.prevent="submit">
+    <input name="name" v-model="form.name" @change="form.validate" ... >
+    <input name="email" v-model="form.email" @change="form.validate" ... >
+
+    <!-- ... -->
+</form>
+```
+
+
+
 <a name="form-object"></a>
 ### Validating a Form Object
 
@@ -132,35 +218,6 @@ As the validator will run validation rules for inputs that have already "changed
 
 To see the full API of the validator, check out the [API docs](#).
 
-<a name="validating-vue"></a>
-### Working With Vue
-
-With VuIf you are using VueJS, you can achieve the same thing, however in a terser manner.
-
-```blade
-<script setup>
-    import { usePrecognitiveValidation } from 'laravel-precognition-vue';
-
-    const form = {
-        // ...
-    };
-
-    const submit = () => {
-        // ...
-    };
-
-    const { validate } = usePrecognitiveValidation(form);
-</script>
-<template>
-    <form @submit.prevent="submit">
-        <input name="name" onchange="validate" ... >
-        <input name="email" onchange="validate" ... >
-        <input name="phone" onchange="validate" ... >
-
-        <!-- ... -->
-    </form>
-</template>
-```
 
 <a name="validation-vanilla-javascript"></a>
 ---
