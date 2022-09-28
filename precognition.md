@@ -155,9 +155,36 @@ The precognitive form already knows the url and method, so we are now able to ca
 </form>
 ```
 
-Precognitive validation is now in place for our form. Any errors that are received will be available via the reactive `form.errors` object, as you would normally expect.
+Precognitive validation is now in place for our form. Any errors that are received will be available via the reactive `form.errors` object, as you would normally expect. The final result is a Inertia form that has live validation powered by Precognition:
 
-You may checkout the libraries readme for [full API documentation](#).
+```vue
+<script setup>
+    import { usePrecognitiveForm } from 'laravel-precognition-vue-inertia';
+
+    const form = usePrecognitiveForm('post', '/users', {
+        name: '',
+        email: '',
+    });
+
+    const submit = () => {
+        form.submit({
+            // Inertia options...
+        });
+    };
+</script>
+
+<template>
+    <form @submit.prevent="submit">
+        <VLabel for="name" />
+        <VInput id="name" v-model="form.name" @change="form.validate('name')" />
+        <VError :message="form.errors.name" />
+
+        <!-- ... -->
+    </form>
+</template>
+```
+
+You can see the libraries readme for [full API documentation](#).
 
 <a name="form-object"></a>
 ### Validating a Form Object
