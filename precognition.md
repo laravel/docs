@@ -30,7 +30,7 @@ npm install laravel-precognition
 npm install laravel-precognition-vue
 ```
 
-If you are using vanilla JavaScript, we also recommend importing Precognition into `resources/js/bootstrap.js` and attaching the Precognition client to the `window` to make it globally available in your views:
+If you are using vanilla JavaScript, you should also import Precognition into `resources/js/bootstrap.js` and attaching the Precognition client to the `window` to make it globally available in your views:
 
 ```js
 import precognition from 'laravel-precognition';
@@ -86,7 +86,7 @@ Now we will take a look at how we can use the frontend library to create a realt
 </script>
 ```
 
-Once this is implemented, you can then set up the precognitive validation for your form:
+Once this is implemented, you can then create a validator for your form. For vanilla JavaScript applications, you should attach the validator to the `window`:
 
 ```blade
 <script type="module">
@@ -97,7 +97,7 @@ Once this is implemented, you can then set up the precognitive validation for yo
 </script>
 ```
 
-The above will attach a `validator` object to the window that may then be used across your form inputs. We recommend validating your inputs on the `changed` event by invoking the `validator.validate()` function passing the same of the input:
+We recommend validating your inputs on the `changed` event by invoking the `validator.validate()` function passing the same of the input:
 
 ```blade
 <form action="/users" method="POST">
