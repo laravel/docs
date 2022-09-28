@@ -3,9 +3,11 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Making Routes Precognitive](#making-routes-precognitive)
+- [Making Precognitive Requests](#making-requests)
 - [Validation](#validation)
     - [Working With Vue and Inertia](#validating-vue-inertia)
 - [Polling](#polling)
+    - [Working With Vue and Inertia](#polling-vue-inertia)
 
 <a name="introduction"></a>
 ## Introduction
@@ -57,6 +59,11 @@ Route::post('/users', function (StoreUserRequest $request) {
 ```
 
 When a Precognition request hits this route, all middleware will run and the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
+
+<a name="making-requests"></a>
+## Making Precognitive Requests
+
+// TODO
 
 <a name="validation"></a>
 ## Validation
@@ -191,3 +198,8 @@ You can see the libraries readme for [full API documentation](#).
 
 <a name="#polling"></a>
 ## Polling
+
+Precognition exposes some polling 
+
+<a name="polling-vue-inertia"></a>
+### Working With Vue and Inertia
