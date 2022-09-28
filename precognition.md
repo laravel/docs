@@ -16,7 +16,7 @@
 
 ## Introduction
 
-Laravel Precognition allows you to predict the outcome of a future request by performing side-effect free requests. Some ways Precognition may be used include:
+Laravel Precognition allows you to anticipate the outcome of a future request. Some ways Precognition may be used include:
 
 - Live validation of forms, powered by Laravel validation rules.
 - Notifying users that a resource they are editing has been updated since it was retrieved.
@@ -26,7 +26,7 @@ Precognition works by executing all a route's middleware and dependency resoluti
 
 ## Installation
 
-We have created some front-end helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the libraries for your project. The Laravel starter kits and skeleton pre-install and configure the library, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and a VueJS flavoured package available:
+We have created some front-end helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate libraries for your project. The Laravel starter kits and skeleton install and configure the Precognition libraries, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and a VueJS flavoured package available:
 
 ```
 # vanilla JavaScript:
@@ -36,7 +36,7 @@ npm install laravel-precognition
 npm install laravel-precognition-vue
 ```
 
-If you are using vanilla JavaScript, we also recommend importing Precognition into your `resources/js/app.js` and attaching the Precognitive client to the `window` to make it globally available to your views:
+If you are using vanilla JavaScript, we also recommend importing Precognition into `resources/js/app.js` and attaching the Precognitive client to the `window` to make it globally available to your views:
 
 ```js
 import precognitive from 'laravel-precognition';
@@ -56,11 +56,11 @@ As an example, lets imagine we have an existing form that creates a user in our 
 Route::post('/users', function (StoreUserRequest $request) {
     $user = User::create($request->validated());
 
-    return redirect()->route('users.show', ['user' => $user]);
+    return to_route('users.show', ['user' => $user]);
 });
 ```
 
-To get started with Precognition on this route, we must add the `HandlePrecognitiveRequests` middleware:
+To get started with Precognition on this endpoint, we must add the `HandlePrecognitiveRequests` middleware:
 
 ```php
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -75,6 +75,8 @@ Route::post('/users', function (StoreUserRequest $request) {
 When a Precognition request hits this route, the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
 
 Now we will take a look at how we can use the front-end library to create a realtime validation experience on the front-end of our application.
+
+## Vanilla JavaScript
 
 You will need to have a mechanism to retrieve the current form data, show validation errors, and clear validation errors for your form. Once you have your form object, you may then set up your forms Precognitive validation:
 
@@ -95,7 +97,7 @@ You will need to have a mechanism to retrieve the current form data, show valida
 </form>
 ```
 
-We will now attach the returned `validate` function to the `onchange` event of the form's inputs.
+Finally, we will attach the returned `validate` function to the `onchange` event of the form's inputs.
 
 ```blade
 <form action="/users" method="POST">
