@@ -22,11 +22,11 @@ Laravel Precognition allows you to predict the outcome of a future request by pe
 - Notifying users that a resource they are editing has been updated since it was retrieved.
 - Notifying users their session has expired.
 
-Precognition works by executing all a route's middleware and dependency resolution (including form requests), but not executing the code contained within the route's controller.  You will also see that Precognition is part feature and part pattern.
+Precognition works by executing all a route's middleware and dependency resolution (including form requests), but not executing the route's controller. You will also see that Precognition is part feature and part pattern.
 
 ## Installation
 
-We have created some front-end helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we highly recommend installing the libraries for your project. The Laravel starter kits and skeleton pre-install and configure the helper library, however if your application does not yet have them installed, you can install them via NPM:
+We have created some front-end helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the libraries for your project. The Laravel starter kits and skeleton pre-install and configure the library, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and a VueJS flavoured package available:
 
 ```
 # vanilla JavaScript:
@@ -46,7 +46,7 @@ window.precognitive = precognitive;
 
 ## Validation
 
-Offering front-end validation to your users can drastically improve their experience, however it requires you to duplicate validation rules in a front-end validation library. There are also validation rules that cannot be performed by a front-end validation library, such as checking if a value is unique in the database.
+Offering front-end validation to your users can drastically improve their experience, however it requires you to duplicate validation rules in a front-end validation library. There are also validation rules that cannot be performed by front-end validation libraries, such as checking if a value is unique in the database.
 
 With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the front-end.
 
@@ -60,7 +60,7 @@ Route::post('/users', function (StoreUserRequest $request) {
 });
 ```
 
-To use Precognition on this route, we must add the `HandlePrecognitiveRequests` middleware:
+To get started with Precognition on this route, we must add the `HandlePrecognitiveRequests` middleware:
 
 ```php
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -72,11 +72,11 @@ Route::post('/users', function (StoreUserRequest $request) {
 })->middleware(HandlePrecognitiveRequests::class);
 ```
 
-That is all we need to do to enable Precognition on this route. When a Precognition request hits this route, the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
+When a Precognition request hits this route, the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
 
-### Vanilla JavaScript
+Now we will take a look at how we can use the front-end library to create a realtime validation experience on the front-end of our application.
 
-For a vanilla JavaScript application, you will need to implement a mechanism to retrieve the current form data, show validation errors, and clear validation errors for you for form. Once you have your form object, you may then set up your forms Precognitive validation:
+You will need to have a mechanism to retrieve the current form data, show validation errors, and clear validation errors for your form. Once you have your form object, you may then set up your forms Precognitive validation:
 
 ```blade
 <script>
@@ -95,7 +95,7 @@ For a vanilla JavaScript application, you will need to implement a mechanism to 
 </form>
 ```
 
-We now need to attach the `validate` function to the `onchange` event of our inputs.
+We will now attach the returned `validate` function to the `onchange` event of the form's inputs.
 
 ```blade
 <form action="/users" method="POST">
