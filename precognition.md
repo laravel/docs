@@ -60,6 +60,22 @@ Route::post('/users', function (StoreUserRequest $request) {
 
 When a Precognition request hits this route, all middleware will run and the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
 
+Within the middleware, you can detect if the current request is a Precognitive request by calling the `isPrecognitive()` method on the Request:
+
+```php
+public function handle($request, $next)
+{
+    if (! $request->isPrecognitive()) {
+        $this->service->persist();
+    }
+
+    return $next($request);
+}
+```
+
+
+// TODO: requests should not have side-effects.
+
 <a name="making-requests"></a>
 ## Making Precognitive Requests
 
