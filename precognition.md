@@ -15,7 +15,7 @@ Laravel Precognition allows you to anticipate the outcome of a future request. S
 - Notifying users that a resource they are editing has been updated since it was retrieved.
 - Notifying users their session has expired.
 
-Precognition works by executing all a route's middleware and dependency resolution (including form requests), but not executing the route's controller. You will also see that Precognition is part feature and part pattern.
+Precognition works by executing all middleware and resolving all dependencies (including form requests) of a particular route, but not executing the route's controller. You will also see that Precognition is part feature and part pattern.
 
 <a name="installation"></a>
 ## Installation
