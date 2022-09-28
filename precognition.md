@@ -4,7 +4,7 @@
 - [Installation](#installation)
 - [Validation](#validation)
     - [Making Routes Precognitive](#making-routes-precognitive)
-    - [Form Object](#form-object)
+    - [Validating a Form Object](#form-object)
 
 <a name="introduction"></a>
 ## Introduction
@@ -70,7 +70,7 @@ Route::post('/users', function (StoreUserRequest $request) {
 When a Precognition request hits this route, the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
 
 <a name="form-object"></a>
-### Form Object
+### Validating a Form Object
 
 Now we will take a look at how we can use the frontend library to create a realtime validation experience. For the best experience, we suggest creating a form object that offers the following API:
 
