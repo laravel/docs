@@ -593,7 +593,7 @@ In some situations, it's useful to embed PHP code into your views. You can use t
 @endphp
 ```
 
-If you have only one statement, you can write it inside parenthesis:
+If you only have one statement, you can write it inside parenthesis:
 
 ```blade
 @php($counter = 1)
