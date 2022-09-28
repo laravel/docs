@@ -593,6 +593,12 @@ In some situations, it's useful to embed PHP code into your views. You can use t
 @endphp
 ```
 
+If you only need to write a single PHP statement, you can include the statement within the `@php` directive:
+
+```blade
+@php($counter = 1)
+```
+
 <a name="comments"></a>
 ### Comments
 
