@@ -46,7 +46,7 @@ Offering frontend validation to your users can drastically improve their experie
 With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the frontend.
 
 <a name="validation-backend"></a>
-## Backend
+### Backend
 
 As an example, lets imagine we have an existing form that creates a user in our system. The route that powers this form is using a [Form Request](/docs/{version}/validation#form-request-validation) to house the validation rules:
 
@@ -75,7 +75,7 @@ When a Precognition request hits this route, the form request will be resolved a
 Now we will take a look at how we can use the frontend library to create a realtime validation experience on the frontend of our application.
 
 <a name="validation-frontend"></a>
-## Frontend
+### Frontend
 
 You will need to have a mechanism to retrieve the current form data, show validation errors, and clear validation errors for your form. Once you have your form object, you may then set up your forms Precognitive validation:
 
