@@ -146,7 +146,7 @@ const submit = () => {
 };
 ```
 
-The precognitive form already knows the url and method, so we are now able to call `form.submit()` without specifying them again. However, we have not implemented any validation logic yet, so now we will finally tell the inputs to validate whenever their value changes by passing the `form.validate` function as the `@changed` handler:
+The precognitive form already knows the url and method, so we are now able to call `form.submit()` without specifying them again. However, we have not implemented any validation logic yet, so now we will finally tell the inputs to validate whenever their value changes by invoking the `form.validate` function in the `@changed` handler, passing through the inputs name:
 
 ```vue
 <form @submit.prevent="submit">
