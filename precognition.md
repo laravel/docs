@@ -78,7 +78,7 @@ Route::post('/users', function (StoreUserRequest $request) {
 <a name="validating-vue-inertia"></a>
 ### Working With Vue and Inertia
 
-Precognition augments the Inertia form helper to add some validation functionality. Assuming we have the following form in our application:
+Precognition augments the Inertia form helper to add validation functionality. Assuming we have the following form in our application:
 
 ```vue
 <script setup>
