@@ -36,7 +36,7 @@ npm install laravel-precognition-vue
 npm install laravel-precognition-vue-inertia
 ```
 
-If you are using vanilla JavaScript, you should also import Precognition into `resources/js/bootstrap.js` and attaching the Precognition client to the `window` to make it globally available in your views:
+If you are using vanilla JavaScript, you should also import Precognition into `resources/js/bootstrap.js` and attach the Precognition client to the `window` to make it globally available in your views:
 
 ```js
 import precognition from 'laravel-precognition';
