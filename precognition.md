@@ -75,7 +75,7 @@ When a Precognition request hits this route, the form request will be resolved a
 <a name="validating-vue-inertia"></a>
 ### Working With Vue and Inertia
 
-When working with Vue and Inertia, you are likely already familiar with the form helper. When using Precognition, we augment the form helper to add some useful functionality. Assuming we have the following set up in our application:
+Precognition augments the Inertia form helper to add some validation functionality. Assuming we have the following form in our application:
 
 ```vue
 <script setup>
@@ -95,16 +95,16 @@ When working with Vue and Inertia, you are likely already familiar with the form
 
 <template>
     <form @submit.prevent="submit">
-        <VLabel for="username" />
-        <VInput id="username" name="username" v-model="form.username" />
-        <VError :message="form.errors.username" />
+        <VLabel for="name" />
+        <VInput id="name" v-model="form.name" />
+        <VError :message="form.errors.name" />
 
         <!-- ... -->
     </form>
 </template>
 ```
 
-We will swap out `useForm` for `usePrecognitiveForm`, passing through the method and the URL before the form data:
+We will swap out `useForm` for `usePrecognitiveForm`, additionally passing through the method and the URL before the form data:
 
 ```vue
 <script setup>
@@ -124,16 +124,16 @@ We will swap out `useForm` for `usePrecognitiveForm`, passing through the method
 
 <template>
     <form @submit.prevent="submit">
-        <VLabel for="username" />
-        <VInput id="username" name="username" v-model="form.username" />
-        <VError :message="form.errors.username" />
+        <VLabel for="name" />
+        <VInput id="name" v-model="form.name" />
+        <VError :message="form.errors.name" />
 
         <!-- ... -->
     </form>
 </template>
 ```
 
-We are now able to simplify the form submission logic, if we want to, removing the method and the url:
+We are now able to simplify the form submission logic, if we want to, by removing the method and the url:
 
 ```js
 const submit = () => {
@@ -143,13 +143,13 @@ const submit = () => {
 };
 ```
 
-The precognitive form already knows the url and method, so we are now able to call `form.submit()` without specifying them again. However we have not implemented any validation logic yet, so now we will finally tell the inputs to validate whenever the value changes:
+The precognitive form already knows the url and method, so we are now able to call `form.submit()` without specifying them again. However, we have not implemented any validation logic yet, so now we will finally tell the inputs to validate whenever their value changes by passing the `form.validate` function as the `@changed` handler:
 
 ```vue
 <form @submit.prevent="submit">
-    <VLabel for="username" />
-    <VInput id="username" name="username" v-model="form.username" @change="form.validate" />
-    <VError :message="form.errors.username" />
+    <VLabel for="name" />
+    <VInput id="name" v-model="form.name" @change="form.validate('name')" />
+    <VError :message="form.errors.name" />
 
     <!-- ... -->
 </form>
