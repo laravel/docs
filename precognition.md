@@ -5,6 +5,9 @@
 - [Validation](#validation)
     - [Making Routes Precognitive](#making-routes-precognitive)
     - [Validating a Form Object](#form-object)
+    - [Working With Vanilla JavaScript](#validating-vanilla-javascript)
+    - [Working With Vue](#validating-vue)
+
 
 <a name="introduction"></a>
 ## Introduction
@@ -20,13 +23,13 @@ Precognition works by executing all middleware and resolving all dependencies (i
 <a name="installation"></a>
 ## Installation
 
-We have created some frontend helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate libraries for your project. The Laravel starter kits and skeleton install and configure the Precognition libraries, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and a VueJS flavoured packages available:
+We have created some frontend helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate libraries for your project. The Laravel starter kits and skeleton install and configure the Precognition libraries, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and a Vue flavoured packages available:
 
 ```
 # vanilla JavaScript
 npm install laravel-precognition
 
-# VueJS
+# Vue
 npm install laravel-precognition-vue
 ```
 
@@ -92,13 +95,14 @@ Now we will take a look at how we can use the frontend library to create a realt
 </script>
 ```
 
+<a name="validating-vanilla-javascript"></a>
+### Working With Vanilla JavaScript
+
 Once you have a form object implemented, you can create a validator for your form. You should attach the returned validator to the `window`:
 
 ```blade
 <script type="module">
-    window.validator = precognition.validate(form, {
-        // configuration...
-    });
+    window.validator = precognition.validate(form);
 </script>
 ```
 
@@ -122,17 +126,20 @@ As the validator will run validation rules for inputs that have already "changed
 ```blade
 <script type="module">
     window.validator = precognition.validate(form)
-        .withChanged(@js($errors->keys()));
+          .withChanged(@js($errors->keys()));
 </script>
 ```
 
-### VueJS
+To see the full API of the validator, check out the [API docs](#).
 
-If you are using VueJS, you can achieve the same thing, however in a terser manner. If you are not using Inertia, you will still be need to create the form object.
+<a name="validating-vue"></a>
+### Working With Vue
+
+With VuIf you are using VueJS, you can achieve the same thing, however in a terser manner.
 
 ```blade
 <script setup>
-    import { usePrecognitiveValidation } from 'laravel-validation';
+    import { usePrecognitiveValidation } from 'laravel-precognition-vue';
 
     const form = {
         // ...
@@ -142,10 +149,7 @@ If you are using VueJS, you can achieve the same thing, however in a terser mann
         // ...
     };
 
-    const { validate } = usePrecognitiveValidation(client => client.post('/users', form.data(), {
-        onPrecognitionSuccess: () => form.clearErrors(),
-        onValidationError: (errors) => form.setErrors(errors),
-    }));
+    const { validate } = usePrecognitiveValidation(form);
 </script>
 <template>
     <form @submit.prevent="submit">
