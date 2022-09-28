@@ -75,8 +75,6 @@ Now we will take a look at how we can use the frontend library to create a realt
             // ...
         },
         setErrors(errors) {
-            this.clearErrors();
-
             // ...
         },
         clearErrors() {
@@ -97,17 +95,16 @@ Once this is implemented, you can then create a validator for your form. For van
 </script>
 ```
 
-We recommend validating your inputs on the `changed` event by invoking the `validator.validate()` function passing the same of the input:
+You may then validate your inputs on the `changed` event by invoking the `window.validator.validate()` function passing the name of the input:
 
 ```blade
 <form action="/users" method="POST">
     @csrf
-
     <input name="name" onchange="window.validator.validate('name')">
     <input name="email" onchange="window.validator.validate('email')">
     <input name="phone" onchange="window.validator.validate('phone')">
 
-    <button>Save</button>
+    <!-- ... -->
 </form>
 ```
 
