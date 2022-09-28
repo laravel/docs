@@ -3,8 +3,8 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Validation](#validation)
-    - [Backend](#backend)
-    - [Frontend](#frontend)
+    - [Making Routes Precognitive](#making-routes-precognitive)
+    - [Form Object](#form-object)
 
 <a name="introduction"></a>
 ## Introduction
@@ -52,6 +52,9 @@ Route::post('/users', function (StoreUserRequest $request) {
 });
 ```
 
+<a name="making-routes-precognitive"></a>
+### Making Routes Precognitive
+
 To get started with Precognition on this endpoint, we must add the `HandlePrecognitiveRequests` middleware:
 
 ```php
@@ -66,11 +69,16 @@ Route::post('/users', function (StoreUserRequest $request) {
 
 When a Precognition request hits this route, the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
 
-Now we will take a look at how we can use the frontend library to create a realtime validation experience. You will need to have a mechanism to retrieve the form data, show validation errors, and clear validation errors for your form:
+<a name="form-object"></a>
+### Form Object
+
+Now we will take a look at how we can use the frontend library to create a realtime validation experience. For the best experience, we suggest creating a form object that offers the following API:
 
 ```blade
 <script>
     const form = {
+        method: 'post',
+        url(): '/users',
         data() {
             // ...
         },
@@ -84,19 +92,17 @@ Now we will take a look at how we can use the frontend library to create a realt
 </script>
 ```
 
-Once this is implemented, you can then create a validator for your form. For vanilla JavaScript applications, you should attach the validator to the `window`:
+Once you have a form object implemented, you can create a validator for your form. You should attach the returned validator to the `window`:
 
 ```blade
 <script type="module">
-    window.validator = precognition.validate(client => client.post('/users', form.data(), {
-        onPrecognitionSuccess: () => form.clearErrors(),
-        onValidationError: (errors) => form.setErrors(errors),
-    }));
-    // TODO: show setting the changed from the validation errors
+    window.validator = precognition.validate(form, {
+        // configuration...
+    });
 </script>
 ```
 
-You may then validate your inputs on the `changed` event by invoking the `validator.validate()` function passing the name of the input:
+You can now validate your inputs on the `changed` event by invoking the `validator.validate()` function passing the name of the input:
 
 ```blade
 <form action="/users" method="POST">
@@ -109,7 +115,16 @@ You may then validate your inputs on the `changed` event by invoking the `valida
 </form>
 ```
 
-When the value of these inputs are changed, a Precognition request will be sent to our application. If the data is invalid our `onValidationError` callback will be invoked setting the errors on the form, but when the data is valid, our `onPrecognitionSuccess` callback will be invoked clearing any previously set errors. These in combination will create a realtime validation experience for users.
+When the value of these inputs are changed, a debounced Precognition request will be sent to our application. If the data is invalid, the form's `setErrors` function will be passed the received validation errors, but when the data is valid, the form's `clearErrors` function will be invoked. These in combination will create a realtime validation experience for users.
+
+As the validator will run validation rules for inputs that have already "changed", it is a good idea in Blade applications to tell the validator which inputs already have validation errors on page load. This will account for any server-side validation errors:
+
+```blade
+<script type="module">
+    window.validator = precognition.validate(form)
+        .withChanged(@js($errors->keys()));
+</script>
+```
 
 ### VueJS
 
