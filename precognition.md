@@ -103,19 +103,15 @@ When working with Vue and Inertia, you are likely already familiar with the form
 </template>
 ```
 
-We will want to swap out `useForm` for `usePrecognitiveForm`:
+We will want to swap out `useForm` for `usePrecognitiveForm` passing through the method and the URL before the data values:
 
 ```html
 <script setup>
     import { usePrecognitiveForm } from 'laravel-precognition-vue-inertia';
 
-    const form = usePrecognitiveForm({
-        url: '/users',
-        method: 'post',
-        data: {
-            name: '',
-            email: '',
-        },
+    const form = usePrecognitiveForm('post', '/users', {
+        name: '',
+        email: '',
     });
 
     const submit = () => {
