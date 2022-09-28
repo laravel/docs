@@ -77,7 +77,7 @@ When a Precognition request hits this route, the form request will be resolved a
 
 When working with Vue and Inertia, you are likely already familiar with the form helper. When using Precognition, we augment the form helper to add some useful functionality. Assuming we have the following set up in our application:
 
-```html
+```vue
 <script setup>
     import { useForm } from '@inertiajs/inertia-vue3';
 
@@ -105,7 +105,7 @@ When working with Vue and Inertia, you are likely already familiar with the form
 
 We will want to swap out `useForm` for `usePrecognitiveForm` passing through the method and the URL before the data values:
 
-```html
+```vue
 <script setup>
     import { usePrecognitiveForm } from 'laravel-precognition-vue-inertia';
 
@@ -143,7 +143,7 @@ const submit = () => {
 
 The precognitive form already knows the url and method, so we are now able to just call `form.submit()` without again specifying the method and the URL. However we have not implemented any validation logic yet, so now we will tell the inputs to validate whenever the value changes:
 
-```
+```vue
 <form @submit.prevent="submit">
     <input name="name" v-model="form.name" @change="form.validate" ... >
     <input name="email" v-model="form.email" @change="form.validate" ... >
