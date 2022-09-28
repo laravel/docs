@@ -95,15 +95,16 @@ When working with Vue and Inertia, you are likely already familiar with the form
 
 <template>
     <form @submit.prevent="submit">
-        <input name="name" v-model="form.name" ... >
-        <input name="email" v-model="form.email" ... >
+        <VLabel for="username" />
+        <VInput id="username" name="username" v-model="form.username" />
+        <VError :message="form.errors.username" />
 
         <!-- ... -->
     </form>
 </template>
 ```
 
-We will want to swap out `useForm` for `usePrecognitiveForm` passing through the method and the URL before the data values:
+We will swap out `useForm` for `usePrecognitiveForm`, passing through the method and the URL before the form data:
 
 ```vue
 <script setup>
@@ -123,15 +124,16 @@ We will want to swap out `useForm` for `usePrecognitiveForm` passing through the
 
 <template>
     <form @submit.prevent="submit">
-        <input name="name" v-model="form.name" ... >
-        <input name="email" v-model="form.email" ... >
+        <VLabel for="username" />
+        <VInput id="username" name="username" v-model="form.username" />
+        <VError :message="form.errors.username" />
 
         <!-- ... -->
     </form>
 </template>
 ```
 
-Now we are able to simplify the form submission logic:
+We are now able to simplify the form submission logic, if we want to, removing the method and the url:
 
 ```js
 const submit = () => {
@@ -141,18 +143,21 @@ const submit = () => {
 };
 ```
 
-The precognitive form already knows the url and method, so we are now able to just call `form.submit()` without again specifying the method and the URL. However we have not implemented any validation logic yet, so now we will tell the inputs to validate whenever the value changes:
+The precognitive form already knows the url and method, so we are now able to call `form.submit()` without specifying them again. However we have not implemented any validation logic yet, so now we will finally tell the inputs to validate whenever the value changes:
 
 ```vue
 <form @submit.prevent="submit">
-    <input name="name" v-model="form.name" @change="form.validate" ... >
-    <input name="email" v-model="form.email" @change="form.validate" ... >
+    <VLabel for="username" />
+    <VInput id="username" name="username" v-model="form.username" @change="form.validate" />
+    <VError :message="form.errors.username" />
 
     <!-- ... -->
 </form>
 ```
 
+Precognitive validation is now in place for our form. Any errors that are received will be available via the reactive `form.errors` object, as you would normally expect.
 
+You may checkout the libraries readme for [full API documentation](#).
 
 <a name="form-object"></a>
 ### Validating a Form Object
