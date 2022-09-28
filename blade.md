@@ -793,10 +793,10 @@ The `$alertType` argument may be provided to the component like so:
 When passing attributes to components, you may also use a "short attribute" syntax. This is often convenient since attribute names frequently match the variable names they correspond to:
 
 ```blade
-{-- Short attribute syntax... --}
+{{-- Short attribute syntax... --}}
 <x-profile :$userId :$name />
 
-{-- Is equivalent to... --}
+{{-- Is equivalent to... --}}
 <x-profile :user-id="$userId" :name="$name" />
 ```
 
