@@ -9,6 +9,7 @@
     - [Database Migrations](#migrations)
     - [Running Tests](#running-tests)
     - [Environment Handling](#environment-handling)
+    - [Disabling Headless Mode](#disabling-headless-mode)
 - [Browser Basics](#browser-basics)
     - [Creating Browsers](#creating-browsers)
     - [Navigation](#navigation)
@@ -224,6 +225,13 @@ In addition, if you start ChromeDriver on a port other than 9515, you should mod
 To force Dusk to use its own environment file when running tests, create a `.env.dusk.{environment}` file in the root of your project. For example, if you will be initiating the `dusk` command from your `local` environment, you should create a `.env.dusk.local` file.
 
 When running tests, Dusk will back-up your `.env` file and rename your Dusk environment to `.env`. Once the tests have completed, your `.env` file will be restored.
+
+<a name="disabling-headless-mode"></a>
+### Disabling Headless Mode
+
+By default, Dusk starts the browser in the headless mode. This means no browser window will open and you won't be able to interactively see how the tests pass. But for debugging, it can be useful to see the browser window. So you can disable headless mode by setting the environment variable `DUSK_HEADLESS_DISABLED`.
+
+The browser window will be opened inside the container. To see what's going on, go to `localhost:7900` and connect to it with a noVNC client. If you get a prompt asking for a password, it is: `secret`.
 
 <a name="browser-basics"></a>
 ## Browser Basics
