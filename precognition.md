@@ -1,19 +1,12 @@
 # Precognition
 
 - [Introduction](#introduction)
-- [Handling Responses](#handling-responses)
-    - [Successful Responses](#successful-responses)
-    - [Validation Responses](#validation-responses)
-    - [Error Responses](#error-responses)
-    - [Other Responses](#other-responses)
-    - [Non-Precognition Responses](#non-precognition-responses)
-- [Specifying Inputs For Validation](#specifying-inputs-for-validation)
-- [Using An Existing Axios Instance](#using-an-existing-axios-instance)
-- [Aborting Stale Requests](#aborting-stale-requests)
-- [Polling](#polling)
-    - [Timeout](#timeout)
-    - [Checking the Status](#checking-the-status)
+- [Installation](#installation)
+- [Validation](#validation)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
 
+<a name="introduction"></a>
 ## Introduction
 
 Laravel Precognition allows you to anticipate the outcome of a future request. Some ways Precognition may be used include:
@@ -24,9 +17,10 @@ Laravel Precognition allows you to anticipate the outcome of a future request. S
 
 Precognition works by executing all a route's middleware and dependency resolution (including form requests), but not executing the route's controller. You will also see that Precognition is part feature and part pattern.
 
+<a name="installation"></a>
 ## Installation
 
-We have created some front-end helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate libraries for your project. The Laravel starter kits and skeleton install and configure the Precognition libraries, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and a VueJS flavoured package available:
+We have created some frontend helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate libraries for your project. The Laravel starter kits and skeleton install and configure the Precognition libraries, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and a VueJS flavoured package available:
 
 ```
 # vanilla JavaScript:
@@ -44,11 +38,15 @@ import precognitive from 'laravel-precognition';
 window.precognitive = precognitive;
 ```
 
+<a name="validation"></a>
 ## Validation
 
-Offering front-end validation to your users can drastically improve their experience, however it requires you to duplicate validation rules in a front-end validation library. There are also validation rules that cannot be performed by front-end validation libraries, such as checking if a value is unique in the database.
+Offering frontend validation to your users can drastically improve their experience, however it requires you to duplicate validation rules in a frontend validation library. There are also validation rules that cannot be performed by frontend validation libraries, such as checking if a value is unique in the database.
 
-With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the front-end.
+With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the frontend.
+
+<a name="validation-backend"></a>
+## Backend
 
 As an example, lets imagine we have an existing form that creates a user in our system. The route that powers this form is using a [Form Request](/docs/{version}/validation#form-request-validation) to house the validation rules:
 
@@ -74,17 +72,30 @@ Route::post('/users', function (StoreUserRequest $request) {
 
 When a Precognition request hits this route, the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
 
-Now we will take a look at how we can use the front-end library to create a realtime validation experience on the front-end of our application.
+Now we will take a look at how we can use the frontend library to create a realtime validation experience on the frontend of our application.
 
-## Vanilla JavaScript
+<a name="validation-frontend"></a>
+## Frontend
 
 You will need to have a mechanism to retrieve the current form data, show validation errors, and clear validation errors for your form. Once you have your form object, you may then set up your forms Precognitive validation:
 
 ```blade
 <script>
     const form = {
-        // Implement your form logic...
+        data() {
+            // ...
+        },
+        setErrors(errors) {
+            this.clearErrors();
+
+            // ...
+        },
+        clearErrors() {
+            // ...
+        },
     };
+
+    // Precognition...
 
     const { validate } = precognition.validate(client => client.post('/users', form.data(), {
         onPrecognitionSuccess: () => form.clearErrors(),
@@ -93,8 +104,6 @@ You will need to have a mechanism to retrieve the current form data, show valida
 </script>
 
 <form action="/users" method="POST">
-    {{-- ... --}}
-</form>
 ```
 
 Finally, we will attach the returned `validate` function to the `onchange` event of the form's inputs.
@@ -107,8 +116,9 @@ Finally, we will attach the returned `validate` function to the `onchange` event
 </form>
 ```
 
-When the value of these inputs is changed, a debounced Precognition request will be sent to our application. When the data is invalid our `onValidationError` callback will be invoked, but when the data is valid, our `onPrecognitionSuccess` callback will be invoked. These in combination will create a realtime validation experience for users.
+When the value of these inputs is changed, a Precognition request will be sent to our application. When the data is invalid our `onValidationError` callback will be invoked, but when the data is valid, our `onPrecognitionSuccess` callback will be invoked. These in combination will create a realtime validation experience for users.
 
+<a name="validation-vanilla-javascript"></a>
 ---
 From the readme:
 This library provides a wrapper around [Axios](https://axios-http.com/) to make Precognition requests.
@@ -215,7 +225,7 @@ precognitive.post('/users', data, {
 });
 ```
 
-When sending a request with the `validate` option, the back-end will stop execution after validation, even when it passes.
+When sending a request with the `validate` option, the backend will stop execution after validation, even when it passes.
 
 ## Using An Existing Axios Instance
 
