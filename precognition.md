@@ -20,22 +20,21 @@ Precognition works by executing all a route's middleware and dependency resoluti
 <a name="installation"></a>
 ## Installation
 
-We have created some frontend helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate libraries for your project. The Laravel starter kits and skeleton install and configure the Precognition libraries, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and a VueJS flavoured package available:
+We have created some frontend helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate libraries for your project. The Laravel starter kits and skeleton install and configure the Precognition libraries, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and a VueJS flavoured packages available:
 
 ```
-# vanilla JavaScript:
+# vanilla JavaScript
 npm install laravel-precognition
 
-# VueJS:
+# VueJS
 npm install laravel-precognition-vue
 ```
 
-If you are using vanilla JavaScript, we also recommend importing Precognition into `resources/js/app.js` and attaching the Precognitive client to the `window` to make it globally available to your views:
+If you are using vanilla JavaScript, we also recommend importing Precognition into `resources/js/bootstrap.js` and attaching the Precognition client to the `window` to make it globally available in your views:
 
 ```js
-import precognitive from 'laravel-precognition';
-
-window.precognitive = precognitive;
+import precognition from 'laravel-precognition';
+window.precognition = precognition;
 ```
 
 <a name="validation"></a>
@@ -43,12 +42,7 @@ window.precognitive = precognitive;
 
 Offering frontend validation to your users can drastically improve their experience, however it requires you to duplicate validation rules in a frontend validation library. There are also validation rules that cannot be performed by frontend validation libraries, such as checking if a value is unique in the database.
 
-With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the frontend.
-
-<a name="validation-backend"></a>
-### Backend
-
-As an example, lets imagine we have an existing form that creates a user in our system. The route that powers this form is using a [Form Request](/docs/{version}/validation#form-request-validation) to house the validation rules:
+With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the frontend. As an example, lets imagine we have an existing form that creates a user in our system. The route that powers this form is using a [Form Request](/docs/{version}/validation#form-request-validation) to house the validation rules:
 
 ```php
 Route::post('/users', function (StoreUserRequest $request) {
@@ -72,12 +66,7 @@ Route::post('/users', function (StoreUserRequest $request) {
 
 When a Precognition request hits this route, the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
 
-Now we will take a look at how we can use the frontend library to create a realtime validation experience on the frontend of our application.
-
-<a name="validation-frontend"></a>
-### Frontend
-
-You will need to have a mechanism to retrieve the current form data, show validation errors, and clear validation errors for your form. Once you have your form object, you may then set up your forms Precognitive validation:
+Now we will take a look at how we can use the frontend library to create a realtime validation experience. You will need to have a mechanism to retrieve the form data, show validation errors, and clear validation errors for your form:
 
 ```blade
 <script>
@@ -94,29 +83,35 @@ You will need to have a mechanism to retrieve the current form data, show valida
             // ...
         },
     };
+</script>
+```
 
-    // Precognition...
+Once this is implemented, you can then set up the precognitive validation for your form:
 
-    const { validate } = precognition.validate(client => client.post('/users', form.data(), {
+```blade
+<script type="module">
+    window.validator = precognition.validate(client => client.post('/users', form.data(), {
         onPrecognitionSuccess: () => form.clearErrors(),
         onValidationError: (errors) => form.setErrors(errors),
     }));
 </script>
-
-<form action="/users" method="POST">
 ```
 
-Finally, we will attach the returned `validate` function to the `onchange` event of the form's inputs.
+The above will attach a `validator` object to the window that may then be used across your form inputs. We recommend validating your inputs on the `changed` event by invoking the `validator.validate()` function passing the same of the input:
 
 ```blade
 <form action="/users" method="POST">
-    <input name="name" onchange="validate">
-    <input name="email" onchange="validate">
-    <input name="phone" onchange="validate">
+    @csrf
+
+    <input name="name" onchange="window.validator.validate('name')">
+    <input name="email" onchange="window.validator.validate('email')">
+    <input name="phone" onchange="window.validator.validate('phone')">
+
+    <button>Save</button>
 </form>
 ```
 
-When the value of these inputs is changed, a Precognition request will be sent to our application. When the data is invalid our `onValidationError` callback will be invoked, but when the data is valid, our `onPrecognitionSuccess` callback will be invoked. These in combination will create a realtime validation experience for users.
+When the value of these inputs is changed, a Precognition request will be sent to our application. If the data is invalid our `onValidationError` callback will be invoked setting the errors on the form, but when the data is valid, our `onPrecognitionSuccess` callback will be invoked clearing any previously set errors. These in combination will create a realtime validation experience for users.
 
 <a name="validation-vanilla-javascript"></a>
 ---
@@ -132,17 +127,17 @@ npm install laravel-precognition
 The available request methods, which all return a `Promise`, are:
 
 ```js
-import precognitive from 'laravel-precognition';
+import precognition from 'laravel-precognition';
 
-precognitive.get(url, config);
+precognition.get(url, config);
 
-precognitive.post(url, data, config);
+precognition.post(url, data, config);
 
-precognitive.patch(url, data, config);
+precognition.patch(url, data, config);
 
-precognitive.put(url, data, config);
+precognition.put(url, data, config);
 
-precognitive.delete(url, config);
+precognition.delete(url, config);
 ```
 
 The optional `config` argument is the [Axios' configuration](https://axios-http.com/docs/req_config) object with some additional Precognition options, which are documented below.
@@ -156,7 +151,7 @@ The library has baked in configuration options that make handling common Precogn
 A `204 No Content` response with a `Precognition: true` header indicates that a Precognition request was successful. The `onPrecognitionSuccess` option is a convenient way to handle these responses:
 
 ```js
-precognitive.post(url, data, {
+precognition.post(url, data, {
     onPrecognitionSuccess: response => {
         // ...
     },
@@ -170,7 +165,7 @@ The function's `response` argument is the [Axios response](https://axios-http.co
 As validation is a common use-case for Precognition, we have included an `onValidationError` option:
 
 ```js
-precognitive.post(url, data, {
+precognition.post(url, data, {
     onValidationError: (errors, axiosError) => {
         emailError = errors.email[0];
     },
@@ -186,7 +181,7 @@ The function's `errors` argument is the error object from the [Laravel validatio
 There are a few additional error response handlers for common Precognition response codes:
 
 ```js
-precognitive.post(url, data, {
+precognition.post(url, data, {
     onUnauthorized: (response, error) => /* ... */,
     onForbidden: (response, error) => /* ... */,
     onNotFound: (response, error) => /* ... */,
@@ -202,7 +197,7 @@ The function's `response` argument is the [Axios response](https://axios-http.co
 You may handle additional response types as you normally would with Axios via the returned Promise:
 
 ```js
-precognitive.post(url, data)
+precognition.post(url, data)
             .then(() => /* ... */)
             .catch(() => /* ... */)
             .finally(() => /* ... */);
@@ -217,7 +212,7 @@ If a response does not have the `Precognition: true` header, an error will be th
 One of the features of Precognition is the ability to specify which inputs should be validated against. To use this feature you should pass a list of input names to the `validate` option:
 
 ```js
-precognitive.post('/users', data, {
+precognition.post('/users', data, {
     validate: ['username', 'email'],
     onValidationError: errors => {
         // ...
@@ -233,7 +228,7 @@ If your application configures an Axios instance, you may use that instance for 
 
 ```js
 import axios from 'axios';
-import precognitive from 'laravel-precognition';
+import precognition from 'laravel-precognition';
 
 // Configure Axios...
 
@@ -242,7 +237,7 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // Configure Precognition...
 
-window.precognitive = precognitive.use(axios);
+window.precognition = precognition.use(axios);
 ```
 
 ## Aborting Stale Requests
@@ -252,37 +247,37 @@ When an [`AbortController` or `CancelToken`](https://axios-http.com/docs/cancell
 In the following example the method and URL match for both requests, so if the first request is still waiting on a response when second request is fired, the first request will be automatically aborted.
 
 ```js
-precognitive.post('/projects/5', { name: 'Laravel' });
+precognition.post('/projects/5', { name: 'Laravel' });
 
-precognitive.post('/projects/5', { name: 'Laravel', repo: 'laravel/framework' });
+precognition.post('/projects/5', { name: 'Laravel', repo: 'laravel/framework' });
 ```
 
 If the URL or the method do not match, then the first request would not be aborted:
 
 ```js
-precognitive.post('/projects/5', { name: 'Laravel' });
+precognition.post('/projects/5', { name: 'Laravel' });
 
-precognitive.post('/repositories/5', { name: 'Laravel' });
+precognition.post('/repositories/5', { name: 'Laravel' });
 ```
 
 You may customize how fingerprints are calculated by passing a callback to `fingerprintRequestsUsing`:
 
 ```js
-import precognitive from 'laravel-precognition';
+import precognition from 'laravel-precognition';
 
 // Configure Precognition...
 
-precognitive.fingerprintRequestsUsing((config, axios) => config.headers['Request-Fingerprint']);
+precognition.fingerprintRequestsUsing((config, axios) => config.headers['Request-Fingerprint']);
 ```
 
 Alternatively, you may pass the `fingerprint` option per request:
 
 ```js
-precognitive.post('/projects/5', data, {
+precognition.post('/projects/5', data, {
     fingerprint: 'request-1',
 });
 
-precognitive.post('/projects/5', data, {
+precognition.post('/projects/5', data, {
     fingerprint: 'request-2',
 });
 ```
@@ -290,17 +285,17 @@ precognitive.post('/projects/5', data, {
 A fingerprint of `null` will disable this feature. You may disable it globally by passing `null` to `fingerprintRequestsUsing`:
 
 ```js
-import precognitive from 'laravel-precognition';
+import precognition from 'laravel-precognition';
 
 // Configure Precognition...
 
-precognitive.fingerprintRequestsUsing(null);
+precognition.fingerprintRequestsUsing(null);
 ```
 
 or by passing `null` to the `fingerprint` option per request:
 
 ```js
-precognitive.post('/projects/5', form.data(), {
+precognition.post('/projects/5', form.data(), {
     fingerprint: null,
 });
 ```
@@ -310,9 +305,9 @@ precognitive.post('/projects/5', form.data(), {
 As polling with Precognition is a common use-case, the library comes with some handy polling features. To create a "poll" instance, you should call the `poll` function, passing through a closure to be executed while polling:
 
 ```js
-import precognitive, { Poll } from 'laravel-precognition';
+import precognition, { Poll } from 'laravel-precognition';
 
-const poll = Poll(() => precognitive.get('/users/me', {
+const poll = Poll(() => precognition.get('/users/me', {
     onUnauthorized: () => poll.stop() && handleUnauthorized(),
 }));
 
@@ -330,9 +325,9 @@ poll.stop();
 By default, the poll will have a timeout of one minute. To configure a different timeout, you should pass the duration to the `every` function:
 
 ```js
-import precognitive, { Poll } from 'laravel-precognition';
+import precognition, { Poll } from 'laravel-precognition';
 
-const poll = Poll(() => precognitive.get('/users/me', {
+const poll = Poll(() => precognition.get('/users/me', {
     onUnauthorized: () => poll.stop() && handleUnauthorized(),
 }));
 
