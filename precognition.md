@@ -23,7 +23,7 @@ Precognition works by executing all middleware and resolving all dependencies (i
 <a name="installation"></a>
 ## Installation
 
-We have created some frontend helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate libraries for your project. The Laravel starter kits and skeleton install and configure the Precognition libraries, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and a Vue flavoured packages available:
+We have created some frontend helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate libraries for your project. The Laravel starter kits and skeleton install and configure the Precognition libraries, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript, Vue, and Vue with Inertia flavoured packages available:
 
 ```
 # vanilla JavaScript
@@ -31,6 +31,9 @@ npm install laravel-precognition
 
 # Vue
 npm install laravel-precognition-vue
+
+# Vue and Inertia
+npm install laravel-precognition-vue-inertia
 ```
 
 If you are using vanilla JavaScript, you should also import Precognition into `resources/js/bootstrap.js` and attaching the Precognition client to the `window` to make it globally available in your views:
