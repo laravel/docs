@@ -92,10 +92,11 @@ Once this is implemented, you can then create a validator for your form. For van
         onPrecognitionSuccess: () => form.clearErrors(),
         onValidationError: (errors) => form.setErrors(errors),
     }));
+    // TODO: show setting the changed from the validation errors
 </script>
 ```
 
-You may then validate your inputs on the `changed` event by invoking the `window.validator.validate()` function passing the name of the input:
+You may then validate your inputs on the `changed` event by invoking the `validator.validate()` function passing the name of the input:
 
 ```blade
 <form action="/users" method="POST">
@@ -108,7 +109,39 @@ You may then validate your inputs on the `changed` event by invoking the `window
 </form>
 ```
 
-When the value of these inputs is changed, a Precognition request will be sent to our application. If the data is invalid our `onValidationError` callback will be invoked setting the errors on the form, but when the data is valid, our `onPrecognitionSuccess` callback will be invoked clearing any previously set errors. These in combination will create a realtime validation experience for users.
+When the value of these inputs are changed, a Precognition request will be sent to our application. If the data is invalid our `onValidationError` callback will be invoked setting the errors on the form, but when the data is valid, our `onPrecognitionSuccess` callback will be invoked clearing any previously set errors. These in combination will create a realtime validation experience for users.
+
+### VueJS
+
+If you are using VueJS, you can achieve the same thing, however in a terser manner. If you are not using Inertia, you will still be need to create the form object.
+
+```blade
+<script setup>
+    import { usePrecognitiveValidation } from 'laravel-validation';
+
+    const form = {
+        // ...
+    };
+
+    const submit = () => {
+        // ...
+    };
+
+    const { validate } = usePrecognitiveValidation(client => client.post('/users', form.data(), {
+        onPrecognitionSuccess: () => form.clearErrors(),
+        onValidationError: (errors) => form.setErrors(errors),
+    }));
+</script>
+<template>
+    <form @submit.prevent="submit">
+        <input name="name" onchange="validate" ... >
+        <input name="email" onchange="validate" ... >
+        <input name="phone" onchange="validate" ... >
+
+        <!-- ... -->
+    </form>
+</template>
+```
 
 <a name="validation-vanilla-javascript"></a>
 ---
