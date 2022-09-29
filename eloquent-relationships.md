@@ -1929,6 +1929,13 @@ The many-to-many relationship also provides a `toggle` method which "toggles" th
 
     $user->roles()->toggle([1, 2, 3]);
 
+You may also pass additional intermediate table values with the IDs:
+
+    $user->roles()->toggle([
+        1 => ['expires' => true],
+        2 => ['expires' => true],
+    ]);
+
 <a name="updating-a-record-on-the-intermediate-table"></a>
 #### Updating A Record On The Intermediate Table
 

@@ -593,6 +593,12 @@ In some situations, it's useful to embed PHP code into your views. You can use t
 @endphp
 ```
 
+If you only need to write a single PHP statement, you can include the statement within the `@php` directive:
+
+```blade
+@php($counter = 1)
+```
+
 <a name="comments"></a>
 ### Comments
 
@@ -779,6 +785,19 @@ The `$alertType` argument may be provided to the component like so:
 
 ```blade
 <x-alert alert-type="danger" />
+```
+
+<a name="short-attribute-syntax"></a>
+#### Short Attribute Syntax
+
+When passing attributes to components, you may also use a "short attribute" syntax. This is often convenient since attribute names frequently match the variable names they correspond to:
+
+```blade
+{{-- Short attribute syntax... --}}
+<x-profile :$userId :$name />
+
+{{-- Is equivalent to... --}}
+<x-profile :user-id="$userId" :name="$name" />
 ```
 
 <a name="escaping-attribute-rendering"></a>

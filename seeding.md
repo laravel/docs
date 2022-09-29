@@ -138,10 +138,12 @@ php artisan db:seed
 php artisan db:seed --class=UserSeeder
 ```
 
-You may also seed your database using the `migrate:fresh` command in combination with the `--seed` option, which will drop all tables and re-run all of your migrations. This command is useful for completely re-building your database:
+You may also seed your database using the `migrate:fresh` command in combination with the `--seed` option, which will drop all tables and re-run all of your migrations. This command is useful for completely re-building your database. The `--seeder` option may be used to specify a specific seeder to run:
 
 ```shell
 php artisan migrate:fresh --seed
+
+php artisan migrate:fresh --seed --seeder=UserSeeder 
 ```
 
 <a name="forcing-seeding-production"></a>
