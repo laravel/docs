@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Making Routes Precognitive](#making-routes-precognitive)
+    - [Determining If A Request Is Precognitive](#)
 - [Making Precognitive Requests](#making-requests)
 - [Validation](#validation)
     - [Working With Vue and Inertia](#validating-vue-inertia)
@@ -18,12 +19,12 @@ Laravel Precognition allows you to anticipate the outcome of a future request. S
 - Notifying users that a resource they are editing has been updated since it was retrieved.
 - Notifying users their session has expired.
 
-Precognition works by executing all middleware and resolving all dependencies (including form requests) of a particular route, but not executing the route's controller. You will also see that Precognition is part feature and part pattern.
+Precognition works by executing all middleware and resolving all controller dependencies (including form requests) of a particular route, but not executing the route's controller. You will also see that Precognition is part feature and part pattern.
 
 <a name="installation"></a>
 ## Installation
 
-We have created some frontend helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate libraries for your project. The Laravel starter kits and skeleton install and configure the Precognition libraries, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript, Vue, and Vue with Inertia flavoured packages available:
+We have created some frontend helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate library for your project. The Laravel starter kits and skeleton install and configure the library, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and Vue flavoured package available:
 
 ```
 # vanilla JavaScript
@@ -31,9 +32,6 @@ npm install laravel-precognition
 
 # Vue
 npm install laravel-precognition-vue
-
-# Vue and Inertia
-npm install laravel-precognition-vue-inertia
 ```
 
 If you are using vanilla JavaScript, you should also import Precognition into `resources/js/bootstrap.js` and attach the Precognition client to the `window` to make it globally available in your views:
@@ -46,7 +44,7 @@ window.precognition = precognition;
 <a name="making-routes-precognitive"></a>
 ## Making Routes Precognitive
 
-To get started with Precognition an endpoint, we must apply the `HandlePrecognitiveRequests` middleware:
+To get started with Precognition a route, you must apply the `HandlePrecognitiveRequests` middleware:
 
 ```php
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -60,7 +58,11 @@ Route::post('/users', function (StoreUserRequest $request) {
 
 When a Precognition request hits this route, all middleware will run and the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
 
-Within the middleware, you can detect if the current request is a Precognitive request by calling the `isPrecognitive()` method on the Request:
+### Handling Precognitive Requests
+
+Precognition requests are meant to be mostly side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider all the code paths that a Precognition request will take through your application and determine if there are side-effects that should not trigger. Due to the nature of Precognition, this will mostly be important in middleware and form requests. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for Precognitive requests.
+
+You can determine if a request is Precognitive by calling the `isPrecognitive` method:
 
 ```php
 public function handle($request, $next)
@@ -73,8 +75,30 @@ public function handle($request, $next)
 }
 ```
 
+It can also be useful in Form Requests if you wish to limit the validation rules applied during a Precognitive request:
 
-// TODO: requests should not have side-effects.
+```php
+class StoreUserRequest extends FormRequest
+{
+    protected function rules()
+    {
+        return [
+            'username' => [
+                ...$this->isPrecognitive() ? [
+                        Rule::unique('users')
+                    ] : [
+                        'required',
+                        'string',
+                        'min:3',
+                        'max:16',
+                        Rule::unique('users'),
+                    ],
+            ],
+            // ...
+        ];
+    }
+}
+```
 
 <a name="making-requests"></a>
 ## Making Precognitive Requests
