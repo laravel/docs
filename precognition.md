@@ -4,10 +4,15 @@
 - [Installation](#installation)
 - [Making Routes Precognitive](#making-routes-precognitive)
     - [Handling Precognitive Requests](#handling-precognitive-requests)
+- [The Precognitive Client](#precognitive-client)
+    - [Aborting Stale Requests](#aborting-stale-requests)
+    - [Configuration](#configuration)
 - [Validation](#validation)
     - [Customizing Validation Rules](#customizing-validation-rules)
     - [Working With Vue](#validating-vue)
     - [Working With Vue and Inertia](#validating-vue-inertia)
+- [The Precognitive Client](#precognitive-client)
+- [Specification](#specification)
 
 <a name="introduction"></a>
 ## Introduction
@@ -19,6 +24,8 @@ Laravel Precognition allows you to anticipate the outcome of a future request. S
 - Notifying users their session has expired.
 
 Precognition works by executing all middleware and resolving all controller dependencies (including form requests) of a particular route, but not executing the route's controller. You will also see that Precognition is part feature and part pattern.
+
+> **Note** If you are not familiar with Precognition, we recommend taking a look at the demos. _Coming soon._
 
 <a name="installation"></a>
 ## Installation
@@ -60,7 +67,7 @@ When a precognitive request hits this route all middleware will run, the form re
 <a name="handling-precognitive-requests"></a>
 ### Handling Precognitive Requests
 
-Precognitive requests should be generally side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider the side-effects triggered in your application's middleware and form requests. If the side-effects present should be skipped for precognitive requests, you may need to add a conditional around the side-effect. 
+Precognitive requests should generally be side-effect free. This is where the Precognition "pattern" comes in. It is recommend when you add Precognition to your routes that you consider the side-effects triggered in your application's middleware and form requests. If the side-effects present should be skipped for precognitive requests, you may need to add a conditional around the side-effect. 
 
 As an example, if you are performing precognitive polling against an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for precognitive requests.
 
@@ -90,6 +97,205 @@ class InteractionMiddleware
         return $next($request);
     }
 }
+```
+
+<a name="precognitive-client"></a>
+## The Precognitive Client
+
+The Precognitive client is a wrapper around the [Axios](https://axios-http.com/) client. It allows you to easily make precognitive requests in your application:
+
+```js
+import precognitive from 'laravel-precognition';
+
+precognitive.get(url, config);
+precognitive.post(url, data, config);
+precognitive.patch(url, data, config);
+precognitive.put(url, data, config);
+precognitive.delete(url, config);
+```
+
+All of these methods return a `Promise` for you to work with as you need:
+
+```js
+precognitive.post(url, data)
+            .then(/* ... */)
+            .catch(/* ... */)
+            .finally(/* ... */);
+```
+
+> **Warning** The Precognition client will throw an error if the response does not contain the `Precognition: true` header. All routes you are hitting must apply the [Precognition middleware](#making-routes-precognitive).
+
+<a name="aborting-stale-requests"></a>
+### Aborting Stale Requests
+
+Whenever the client makes a request, if an [`AbortController` or `CancelToken`](https://axios-http.com/docs/cancellation) is not present in the configuration, any in-flight request with the same "fingerprint" will be aborted. A request's fingerprint is comprised of the request's method and URL.
+
+In the following example the method and URL match for both requests, so if the first request is still waiting on a response when second request is fired, the first request will be automatically aborted.
+
+```js
+// fingerprint: "post:/projects/5"
+precognitive.post('/projects/5', { name: 'Laravel' });
+
+// fingerprint: "post:/projects/5"
+precognitive.post('/projects/5', { name: 'Laravel', repo: 'laravel/framework' });
+```
+
+If the URL or the method do not match, then the first request would not be aborted:
+
+```js
+// fingerprint: "post:/projects/5"
+precognitive.post('/projects/5', { name: 'Laravel' });
+
+// fingerprint: "post:/repositories/5"
+precognitive.post('/repositories/5', { name: 'Laravel' });
+```
+
+You may globally customize how fingerprints are calculated by passing a callback to `fingerprintRequestsUsing`:
+
+```js
+import precognitive from 'laravel-precognition';
+
+precognitive.fingerprintRequestsUsing(
+    (config, axios) => config.headers['Request-Fingerprint']
+);
+```
+
+Alternatively, you may pass the `fingerprint` option per request:
+
+```js
+precognitive.post('/projects/5', data, {
+    fingerprint: 'request-1',
+});
+
+precognitive.post('/projects/5', data, {
+    fingerprint: 'request-2',
+});
+```
+
+To disable this feature you may specify a fingerprint of `null`. You may disable it globally by passing `null` to `fingerprintRequestsUsing`:
+
+```js
+import precognitive from 'laravel-precognition';
+
+precognitive.fingerprintRequestsUsing(null);
+```
+
+or by passing `null` to the `fingerprint` option per request:
+
+```js
+precognitive.post('/projects/5', form.data(), {
+    fingerprint: null,
+});
+```
+<a name="configuration"></a>
+### Configuration
+
+The optional `config` argument that the request methods accept is the [Axios' configuration](https://axios-http.com/docs/req_config) object with some additional Precognition options, which are documented below.
+
+<a name="config-onprecognitionsuccess"></a>
+#### `onPrecognitionSuccess`
+
+A `204 No Content` response with a `Precognition: true` header indicates that a Precognition request was successful. The `onPrecognitionSuccess` option is a convenient way to handle these responses:
+
+```js
+precognitive.post(url, data, {
+    onPrecognitionSuccess: response => { /* ... */ },
+});
+```
+
+The function's `response` argument is the [Axios response](https://axios-http.com/docs/res_schema) object.
+
+<a name="config-onvalidationerror"></a>
+#### `onValidationError`
+
+The Precognition client has lot of [validation features baked in](#validation). If you are not using the backed in validation features, you may want to use this option to handle validation responses:
+
+```js
+precognitive.post(url, data, {
+    onValidationError: (errors, axiosError) => {
+        emailError = errors.email[0];
+    },
+});
+```
+
+The function's `errors` argument is the error object from the [Laravel validation response](https://laravel.com/docs/validation#validation-error-response-format) and the `axiosError` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
+
+> **Note** Unlike the other error handlers seen below, `onValidationError` does not receive the standard Axios response object as it's first argument, however it is still available via `axiosError.response`.
+
+<a name="config-onunauthorized"></a>
+#### `onUnauthorized`
+
+Handle `401 Unauthorized` responses:
+
+```js
+precognitive.post(url, data, {
+    onUnauthorized: (response, error) => { /* ... */ },
+});
+```
+
+The function's `response` argument is the [Axios response](https://axios-http.com/docs/res_schema) object and the `error` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
+
+<a name="config-onforbidden"></a>
+#### `onForbidden`
+
+Handle `403 Forbidden` responses:
+
+```js
+precognitive.post(url, data, {
+    onForbidden: (response, error) => { /* ... */ },
+});
+```
+
+The function's `response` argument is the [Axios response](https://axios-http.com/docs/res_schema) object and the `error` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
+
+<a name="config-onnotfound"></a>
+#### `onNotFound`
+
+Handle `404 Not Found` responses:
+
+```js
+precognitive.post(url, data, {
+    onNotFound: (response, error) => { /* ... */ },
+});
+```
+
+The function's `response` argument is the [Axios response](https://axios-http.com/docs/res_schema) object and the `error` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
+
+<a name="config-onconflict"></a>
+#### `onConflict`
+
+Handle `409 Conflict` responses:
+
+```js
+precognitive.post(url, data, {
+    onConflict: (response, error) => { /* ... */ },
+});
+```
+
+The function's `response` argument is the [Axios response](https://axios-http.com/docs/res_schema) object and the `error` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
+
+<a name="config-onlocked"></a>
+#### `onLocked`
+
+Handle `423 Locked` responses:
+
+```js
+precognitive.post(url, data, {
+    onLocked: (response, error) => { /* ... */ },
+});
+```
+
+The function's `response` argument is the [Axios response](https://axios-http.com/docs/res_schema) object and the `error` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
+
+<a name="config-fingerprint"></a>
+#### `fingerprint`
+
+The "fingerprint" to use when [aborting stale requests](#aborting-stale-requests).
+
+```js
+precognitive.post(url, data, {
+    fingerprint: 'create-form',
+});
 ```
 
 <a name="validation"></a>
@@ -142,12 +348,12 @@ class StoreUserRequest extends FormRequest
 }
 ```
 
-This may also be useful in the validator's `after` validation hook.
+You may also find this useful in the form request's `after` validation hook.
 
 <a name="validating-vue"></a>
 ### Working With Vue
 
-When working with Vue, you will already be keeping track of your form's data and validation errors. When the form is submitted and a validation response is received, the `errors` would be populated. Your application may resemble the following:
+When working with forms in Vue, you will already be keeping track of the form's data and validation errors. Your application may resemble the following:
 
 ```vue
 <script setup>
@@ -185,7 +391,7 @@ When working with Vue, you will already be keeping track of your form's data and
 </template>
 ```
 
-We will augment this implementation to add live validation powered by Laravel Precognition. First we will create a precognitive form, passing through the method, url, and initial data:
+We will augment this implementation to add live validation powered by Laravel Precognition. First we will create a precognitive form, passing through the method, url, and initial form data:
 
 ```vue
 <script setup>
@@ -229,12 +435,14 @@ We will augment this implementation to add live validation powered by Laravel Pr
 </template>
 ```
 
-We will then use:
+We will then modify the application to use:
 
 - `form.username` where we were previously accessing `data.username`.
-- `form.data()` in place of our accessing the existing `data` ref value.
+- `form.data()` in place of our accessing the `data` ref.
 - `form.errors.username` where we were previously accessing `errors.username?.[0]`.
-- `form.setErrors(errors)` in place of setting the existing `errors` ref value.
+- `form.setErrors(errors)` in place of setting the `errors` ref.
+
+We will also remove the existing `data` and `errors` refs.
 
 ```vue
 <script setup>
@@ -282,7 +490,7 @@ We will then use:
 </template>
 ```
 
-You will notice that instead of exposing an array validation errors for a given input, the form exposes the first validation error. If you would like to retrieve the array of errors returned, you may use `form.allErrors(name)` instead.
+You will notice that instead of exposing an array validation errors for a given input, the form only exposes the first validation error. If you would like to retrieve the array of errors for a given input, you may use `form.allErrors(name)` instead.
 
 ```vue
 <template>
@@ -333,7 +541,7 @@ This has set up our data and error management, however we have not yet implement
 </template>
 ```
 
-Precognitive validation is now in place for the form. As the for is filled out by a user, precognitive validation requests will be sent to the server and any errors that are received during Precognition will populate the `form.errors`, as you would expect.
+Precognitive validation is now in place for the form. As the form is filled out by a user, precognitive validation requests will be sent to the server and any errors that are returned will populate `form.errors`.
 
 If you are using the same Axios client to submit the form that Precognition is using to send requests (you can learn more about [customizing the client in API docs](#)), you may replace the Axios form submission with `form.submit()`:
 
@@ -373,12 +581,14 @@ If you are using the same Axios client to submit the form that Precognition is u
 </template>
 ```
 
-The final result is a form that has live validation powered by Precognition.
+The final result is a form that has live validation powered by Laravel Precognition.
+
+> **Note** The precognitive form has a handful of additional helpful features to enhance your forms. To check out the full API, [check out the packages readme](#).
 
 <a name="validating-vue-inertia"></a>
 ### Working With Vue and Inertia
 
-Inertia has a lovely built in form helper that makes working with forms a lovely experience. We wanted to maintain this experience while enabling realtime validation with Precognition. So we decided to wrap Inertia's form helper.
+Inertia has a built-in form helper that makes working with forms a lovely experience. We wanted to maintain this experience while enabling realtime validation with Precognition, so we decided to wrap Inertia's form helper.
 
 When using Inertia's form helper, your application may resemble the following:
 
@@ -454,10 +664,21 @@ This has set up our data and error management, however we have not yet implement
         username: '',
         // ...
     });
+
     const form = usePrecognitiveForm('post', '/users', useForm({
         username: '',
         // ...
     }));
+
+    form.validator
+        .withChanged(['username'])
+        .withTimeout({ seconds: 2 })
+        .withConfig({
+            onUnauthorized: () => { /* ... */ },
+        })
+        .after(promise => {
+            return promise.then().catch()
+        });
 
     const submit = () => {
         form.post('/users', {
@@ -478,7 +699,7 @@ This has set up our data and error management, however we have not yet implement
 </template>
 ```
 
-Precognitive validation is now in place for the form. As the for is completed, precognitive validation requests will be sent to the server and any errors that are received during Precognition will populate the `form.errors`, as you would expect.
+Precognitive validation is now in place for the form. As the form is completed, precognitive validation requests will be sent to the server and any errors that are return will populate the `form.errors`.
 
 When creating a precognitive form, we already know the method and URL of the form, so we have monkey patched the `submit` method on the form to remove the need to specify the method and URL. This means you may additionally call `form.submit()` in place of `form.post(url)`:
 
@@ -515,5 +736,12 @@ When creating a precognitive form, we already know the method and URL of the for
 </template>
 ```
 
-The final result is an Inertia form that has live validation powered by Precognition.
+The final result is an Inertia form that has live validation powered by Laravel Precognition.
 
+> **Note** The precognitive form has a handful of additional helpful features to enhance your forms. To check out the full API, [check out the packages readme](#).
+
+
+<a name="specification"></a>
+## Specification
+
+// TODO
