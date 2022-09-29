@@ -12,7 +12,8 @@
     - [Customizing Validation Rules](#customizing-validation-rules)
     - [Working With Vue](#validating-vue)
     - [Working With Vue and Inertia](#validating-vue-inertia)
-- [The Precognitive Client](#precognitive-client)
+    - [Working With Vanilla JavaScript](#validating-vanilla-js)
+- [Polling](#polling)
 - [Specification](#specification)
 
 <a name="introduction"></a>
@@ -96,6 +97,37 @@ class InteractionMiddleware
         }
 
         return $next($request);
+    }
+}
+```
+
+If your middleware is returning HTML or redirects, which is the case for Blade applications and Inertia applications, you may need to return dedicated responses for Precognition requests:
+
+```php
+namespace App\Http\Middleware;
+
+use Closure;
+use Interaction;
+
+class EnsureResourceHasNotBeenUpdated
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  $resource
+     * @return mixed
+     */
+    public function handle($request, Closure $next, $resource)
+    {
+        if ($request->{$resource}->updated_at->lessThanOrEqualTo($request->last_updated_at)) {
+            return $next($request);
+        }
+
+        return $request->isPrecognitive()
+            ? response()->json({ conflict: true }, 409)
+            : back()->withInput()->with('conflict', true);
     }
 }
 ```
@@ -304,6 +336,21 @@ precognitive.post(url, data, {
 ```
 
 The function's `response` argument is the [Axios response](https://axios-http.com/docs/res_schema) object and the `error` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
+
+<a name="config-before"></a>
+#### `before`
+
+The before hook allows you to execute some code before the request is sent. This is mostly useful for repeated requests when using [validation](#validation) or [polling](#polling):
+
+```js
+let precognitive = false;
+
+// ...
+
+precognitive.post(url, data, {
+    before: () => { precognitive = true },
+}).finally(() => { precognitive = false });
+```
 
 <a name="config-fingerprint"></a>
 #### `fingerprint`
@@ -772,6 +819,15 @@ The final result is an Inertia form that has live validation powered by Laravel 
 
 > **Note** The precognitive form has a handful of additional helpful features to enhance your forms. To check out the full API, [check out the packages readme](#).
 
+<a name="validating-vanilla-js"></a>
+### Working With Vanilla JavaScript
+
+// TODO
+
+<a name="polling"></a>
+## Polling
+
+// TODO
 
 <a name="specification"></a>
 ## Specification
