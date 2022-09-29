@@ -1938,7 +1938,7 @@ jobs:
       - name: Generate Application Key
         run: php artisan key:generate
       - name: Upgrade Chrome Driver
-        run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
+        run: php artisan dusk:chrome-driver --detect
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux &
       - name: Run Laravel Server
