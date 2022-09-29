@@ -58,7 +58,7 @@ When a precognitive request hits this route all middleware will run, the form re
 
 ### Handling Precognitive Requests
 
-Precognition requests are meant to be side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider the side-effects triggered in your application's middleware and form requests and if the side-effects should be skipped for precognitive requests. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for precognitive requests.
+Precognitive requests are meant to be side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider the side-effects triggered in your application's middleware and form requests and if the side-effects should be skipped for precognitive requests. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for precognitive requests.
 
 You can determine if a request is precognitive by calling the `isPrecognitive()` method:
 
