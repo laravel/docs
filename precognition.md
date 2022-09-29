@@ -162,10 +162,10 @@ When working with Vue, you will already be keeping track of your forms data and 
              .then(/* ... */)
              .catch(error => {
                 if (error.response?.status !== 422) {
-                    throw error
+                    throw error;
                 }
 
-                errors.value = error.response.data.errors
+                errors.value = error.response.data.errors;
              });
     };
 </script>
