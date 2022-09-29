@@ -12,7 +12,6 @@
 - [Sharing Sites](#sharing-sites)
     - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
     - [Sharing Sites Via Expose](#sharing-sites-via-expose)
-    - [Sharing Sites On Your Local Network](#sharing-sites-on-your-local-network)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Proxying Services](#proxying-services)
 - [Custom Valet Drivers](#custom-valet-drivers)
@@ -287,17 +286,6 @@ expose
 ```
 
 To stop sharing your site, you may press `Control + C`.
-
-<a name="sharing-sites-on-your-local-network"></a>
-### Sharing Sites On Your Local Network
-
-Valet restricts incoming traffic to the internal `127.0.0.1` interface by default so that your development machine isn't exposed to security risks from the Internet.
-
-If you wish to allow other devices on your local network to access the Valet sites on your machine via your machine's IP address (eg: `192.168.1.10/application.test`), you will need to manually edit the appropriate Nginx configuration file for that site to remove the restriction on the `listen` directive. You should remove the `127.0.0.1:` prefix on the `listen` directive for ports 80 and 443.
-
-If you have not run `valet secure` on the project, you can open up network access for all non-HTTPS sites by editing the `/usr/local/etc/nginx/valet/valet.conf` file. However, if you're serving the project site over HTTPS (you have run `valet secure` for the site) then you should edit the `~/.config/valet/Nginx/app-name.test` file.
-
-Once you have updated your Nginx configuration, run the `valet restart` command to apply the configuration changes.
 
 <a name="site-specific-environment-variables"></a>
 ## Site Specific Environment Variables
