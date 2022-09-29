@@ -44,7 +44,7 @@ window.precognition = precognition;
 <a name="making-routes-precognitive"></a>
 ## Making Routes Precognitive
 
-To get started with Precognition a route, you must apply the `HandlePrecognitiveRequests` middleware:
+To add Precognition to a route, you must apply the `HandlePrecognitiveRequests` middleware:
 
 ```php
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -56,22 +56,32 @@ Route::post('/users', function (StoreUserRequest $request) {
 })->middleware(HandlePrecognitiveRequests::class);
 ```
 
-When a Precognition request hits this route, all middleware will run and the form request will be resolved and execution will stop after the validation has passed or failed, i.e. the controller will not actually be invoked.
+When a Precognition request hits this route all middleware will run, the form request will be resolved, and execution will stop after the validation, regardless of if it passed or failed, i.e. the controller will not actually be invoked.
 
 ### Handling Precognitive Requests
 
-Precognition requests are meant to be mostly side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider all the code paths that a Precognition request will take through your application and determine if there are side-effects that should not trigger. Due to the nature of Precognition, this will mostly be important in middleware and form requests. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for Precognitive requests.
+Precognition requests are meant to be side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider all the code paths that a Precognition request will take through your application and determine if there are side-effects that should not trigger. 
+
+Due to the nature of Precognition, this will be in middleware and form requests. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for Precognitive requests.
 
 You can determine if a request is Precognitive by calling the `isPrecognitive` method:
 
 ```php
-public function handle($request, $next)
+class ServiceMiddleware
 {
-    if (! $request->isPrecognitive()) {
-        $this->service->persist();
+    public function __construct(private Service $service)
+    {
+        //
     }
 
-    return $next($request);
+    public function handle($request, $next)
+    {
+        if (! $request->isPrecognitive()) {
+            $this->service->persist();
+        }
+
+        return $next($request);
+    }
 }
 ```
 
