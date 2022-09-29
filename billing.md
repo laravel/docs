@@ -1930,13 +1930,31 @@ Using the `Checkout::guest` method, you may initiate checkout sessions for guest
 
     use Laravel\Cashier\Checkout;
 
-    $checkout = Checkout::guest()->create($items, $sessionOptions);
+    $checkout = Checkout::guest()->create('price_tshirt', [
+                    'success_url' => route('your-success-route'),
+                    'cancel_url' => route('your-cancel-route'),
+                ]);
 
 Similarly to creating checkout sessions with existing users, you may utilize additional methods available on the returned `Laravel\Cashier\CheckoutBuilder` instance to customize the guest checkout session:
 
+    use Laravel\Cashier\Checkout;
+
     $checkout = Checkout::guest()
                     ->withPromotionCode('promo-code')
-                    ->create($items, $sessionOptions);
+                    ->create('price_tshirt', [
+                        'success_url' => route('your-success-route'),
+                        'cancel_url' => route('your-cancel-route'),
+                    ]);
+
+After calling `create()` you will receive a `Laravel\Cashier\Checkout` instance. You could use this instance to redirect the user directly to Stripe:
+
+    use Laravel\Cashier\Checkout;
+
+    $checkout = Checkout::guest()->create($items, $sessionOptions);
+
+    return $checkout->redirect();
+
+After a successful payment the user will be redirected to your provided `success_url`. In case of failure or cancellation the user will be redirected to your provided `cancel_url`.
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
