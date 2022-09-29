@@ -3,8 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Making Routes Precognitive](#making-routes-precognitive)
-    - [Determining If A Request Is Precognitive](#)
-- [Making Precognitive Requests](#making-requests)
+    - [Handling Precognitive Requests](#handling-precognitive-requests)
 - [Validation](#validation)
     - [Working With Vue and Inertia](#validating-vue-inertia)
 - [Polling](#polling)
@@ -56,11 +55,11 @@ Route::post('/users', function (StoreUserRequest $request) {
 })->middleware(HandlePrecognitiveRequests::class);
 ```
 
-When a Precognition request hits this route all middleware will run, the form request will be resolved, and execution will stop after the validation, regardless of if it passed or failed, i.e. the controller will not actually be invoked.
+When a Precognition request hits this route all middleware will run, the form request will be resolved, and execution will stop after validation, regardless of if the validation passed or failed.
 
 ### Handling Precognitive Requests
 
-Precognition requests are meant to be side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider the side-effects triggered in your applications middleware and form request and if they should be skipped during a Precognitive request. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for Precognitive requests.
+Precognition requests are meant to be side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider the side-effects triggered in your application's middleware and form requests and if the side-effects should be skipped for Precognitive requests. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for Precognitive requests.
 
 You can determine if a request is Precognitive by calling the `$request->isPrecognitive()` method:
 
@@ -70,7 +69,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Interaction;
 
-class ServiceMiddleware
+class InteractionMiddleware
 {
     /**
      * Handle an incoming request.
@@ -90,7 +89,24 @@ class ServiceMiddleware
 }
 ```
 
-It can also be useful in Form Requests if you wish to limit the validation rules applied during a Precognitive request:
+<a name="validation"></a>
+## Validation
+
+Offering frontend validation to your users can drastically improve their experience, however it requires you to duplicate validation rules in a frontend validation library. There are also validation rules that cannot be performed by frontend validation libraries, such as checking if a value is unique in the database.
+
+With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the frontend. As an example, lets imagine we have an existing form that creates a user in our system. The route that powers this form is using a [Form Request](/docs/{version}/validation#form-request-validation) to house the validation rules:
+
+```php
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+
+Route::post('/users', function (StoreUserRequest $request) {
+    $user = User::create($request->validated());
+
+    return redirect()->route('users.show', ['user' => $user]);
+})->middleware(HandlePrecognitiveRequests::class);
+```
+
+You may also use this method in Form Requests to limit the validation rules applied during a Precognitive request:
 
 ```php
 namespace App\Http\Requests;
@@ -120,28 +136,6 @@ class StoreUserRequest extends FormRequest
         ];
     }
 }
-```
-
-<a name="making-requests"></a>
-## Making Precognitive Requests
-
-// TODO
-
-<a name="validation"></a>
-## Validation
-
-Offering frontend validation to your users can drastically improve their experience, however it requires you to duplicate validation rules in a frontend validation library. There are also validation rules that cannot be performed by frontend validation libraries, such as checking if a value is unique in the database.
-
-With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the frontend. As an example, lets imagine we have an existing form that creates a user in our system. The route that powers this form is using a [Form Request](/docs/{version}/validation#form-request-validation) to house the validation rules:
-
-```php
-use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
-
-Route::post('/users', function (StoreUserRequest $request) {
-    $user = User::create($request->validated());
-
-    return redirect()->route('users.show', ['user' => $user]);
-})->middleware(HandlePrecognitiveRequests::class);
 ```
 
 <a name="validating-vue-inertia"></a>
