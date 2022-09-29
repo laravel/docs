@@ -348,8 +348,8 @@ let precognitive = false;
 // ...
 
 precognitive.post(url, data, {
-    before: () => { precognitive = true },
-}).finally(() => { precognitive = false });
+    before: () => precognitive = true,
+}).finally(() => precognitive = false);
 ```
 
 <a name="config-fingerprint"></a>
