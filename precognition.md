@@ -132,6 +132,8 @@ class EnsureResourceHasNotBeenUpdated
 }
 ```
 
+The Laravel error handler will seamlessly convert HTTP exceptions to JSON for Precognition requests, so this is only a concern if you are manually returning responses.
+
 <a name="precognitive-client"></a>
 ## The Precognitive Client
 
