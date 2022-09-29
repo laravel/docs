@@ -6,9 +6,7 @@
     - [Handling Precognitive Requests](#handling-precognitive-requests)
 - [Validation](#validation)
     - [Customizing Validation Rules](#customizing-validation-rules)
-    - [Working With Vue and Inertia](#validating-vue-inertia)
-- [Polling](#polling)
-    - [Working With Vue and Inertia](#polling-vue-inertia)
+    - [Working With Vue](#validating-vue)
 
 <a name="introduction"></a>
 ## Introduction
