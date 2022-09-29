@@ -5,6 +5,7 @@
 - [Making Routes Precognitive](#making-routes-precognitive)
     - [Handling Precognitive Requests](#handling-precognitive-requests)
 - [Validation](#validation)
+    - [Customizing Validation Rules](#customizing-validation-rules)
     - [Working With Vue and Inertia](#validating-vue-inertia)
 - [Polling](#polling)
     - [Working With Vue and Inertia](#polling-vue-inertia)
@@ -92,8 +93,6 @@ class InteractionMiddleware
 <a name="validation"></a>
 ## Validation
 
-Offering frontend validation to your users can drastically improve their experience, however it requires you to duplicate validation rules in a frontend validation library. There are also validation rules that cannot be performed by frontend validation libraries, such as checking if a value is unique in the database.
-
 With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the frontend. As an example, lets imagine we have an existing form that creates a user in our system. The route that powers this form is using a [Form Request](/docs/{version}/validation#form-request-validation) to house the validation rules:
 
 ```php
@@ -105,6 +104,9 @@ Route::post('/users', function (StoreUserRequest $request) {
     return redirect()->route('users.show', ['user' => $user]);
 })->middleware(HandlePrecognitiveRequests::class);
 ```
+
+<a name="customizing-validation-rules"></a>
+### Customizing Validation Rules
 
 You may also use this method in Form Requests to limit the validation rules applied during a Precognitive request:
 
@@ -138,37 +140,47 @@ class StoreUserRequest extends FormRequest
 }
 ```
 
-<a name="validating-vue-inertia"></a>
-### Working With Vue and Inertia
+<a name="validating-vue"></a>
+### Working With Vue
 
-Precognition augments the Inertia form helper to add validation functionality. Assuming we have the following form in our application:
+When working with Vue, you will already be keeping track of your forms data and the errors. When the form is submitted and a validation error is returned, the `errors` are populated:
 
 ```vue
 <script setup>
-    import { useForm } from '@inertiajs/inertia-vue3';
+    import axios from 'axios';
+    import { ref } from 'vue';
 
-    const form = useForm({
-        name: '',
-        email: '',
+    const data = ref({
+        username: '',
+        // ...
     });
 
+    const errors = ref({});
+
     const submit = () => {
-        form.post('/users', {
-            // Inertia options...
-        });
+        axios.post('/users', data.value)
+             .then(/* ... */)
+             .catch(error => {
+                if (error.response?.status !== 422) {
+                    throw error
+                }
+
+                errors.value = error.response.data.errors
+             });
     };
 </script>
 
 <template>
     <form @submit.prevent="submit">
-        <VLabel for="name" />
-        <VInput id="name" v-model="form.name" />
-        <VError :message="form.errors.name" />
+        <VLabel for="username" />
+        <VInput id="username" v-model="data.username" />
+        <VError :message="errors.username" />
 
         <!-- ... -->
     </form>
 </template>
 ```
+
 
 We will swap out `useForm` for `usePrecognitiveForm`, additionally passing through the method and the URL before the form data:
 
