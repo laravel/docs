@@ -106,7 +106,7 @@ Route::post('/users', function (StoreUserRequest $request) {
 <a name="customizing-validation-rules"></a>
 ### Customizing Validation Rules
 
-You may also use this method in Form Requests to limit the validation rules applied during a precognitive request:
+If you would like to customize the validation rules that run during a precognitive request, you may use the `isPrecognitive()` method to only apply the appropriate rules:
 
 ```php
 namespace App\Http\Requests;
