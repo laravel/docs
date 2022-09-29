@@ -52,6 +52,8 @@ If you are developing with a team, you may wish to continue including a `.env.ex
 
 Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
 
+However, it is possible to encrypt your environment file using Laravel's built-in [environment encryption](#encrypting-environment-files). Encrypted environment files may be placed in source control safely.
+
 <a name="additional-environment-files"></a>
 #### Additional Environment Files
 
