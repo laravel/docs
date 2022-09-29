@@ -60,24 +60,29 @@ When a Precognition request hits this route all middleware will run, the form re
 
 ### Handling Precognitive Requests
 
-Precognition requests are meant to be side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider all the code paths that a Precognition request will take through your application and determine if there are side-effects that should not trigger. 
+Precognition requests are meant to be side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider the side-effects triggered in your applications middleware and form request and if they should be skipped during a Precognitive request. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for Precognitive requests.
 
-Due to the nature of Precognition, this will be in middleware and form requests. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for Precognitive requests.
-
-You can determine if a request is Precognitive by calling the `isPrecognitive` method:
+You can determine if a request is Precognitive by calling the `$request->isPrecognitive()` method:
 
 ```php
+namespace App\Http\Middleware;
+
+use Closure;
+use Interaction;
+
 class ServiceMiddleware
 {
-    public function __construct(private Service $service)
-    {
-        //
-    }
-
-    public function handle($request, $next)
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
     {
         if (! $request->isPrecognitive()) {
-            $this->service->persist();
+            Interaction::incrementFor($request->user());
         }
 
         return $next($request);
@@ -88,20 +93,27 @@ class ServiceMiddleware
 It can also be useful in Form Requests if you wish to limit the validation rules applied during a Precognitive request:
 
 ```php
+namespace App\Http\Requests;
+
 class StoreUserRequest extends FormRequest
 {
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     protected function rules()
     {
         return [
             'username' => [
                 ...$this->isPrecognitive() ? [
-                        Rule::unique('users')
+                        'unique:users',
                     ] : [
                         'required',
                         'string',
                         'min:3',
                         'max:16',
-                        Rule::unique('users'),
+                        'unique:users',
                     ],
             ],
             // ...
