@@ -143,7 +143,7 @@ class StoreUserRequest extends FormRequest
 <a name="validating-vue"></a>
 ### Working With Vue
 
-When working with Vue, you will already be keeping track of your forms data and the errors. When the form is submitted and a validation response is received, the `errors` are populated:
+When working with Vue, you will already be keeping track of your form's data and the validation errors. When the form is submitted and a validation response is received, the `errors` are would be populated:
 
 ```vue
 <script setup>
@@ -181,9 +181,7 @@ When working with Vue, you will already be keeping track of your forms data and 
 </template>
 ```
 
-We will augment this implementation to add live validation powered by Laravel Precognition.
-
-First we will create a Precognitive form passing through the method, url and data. We will also then use:
+We will augment this existing implementation to add live validation powered by Laravel Precognition. First we will create a Precognitive form, passing through the method, url, and initial data. We will also then use:
 
 - `form.username` where we were previously accessing `data.username`.
 - `form.data()` in place of our accessing the existing `data` ref value.
@@ -197,7 +195,7 @@ First we will create a Precognitive form passing through the method, url and dat
     const form = usePrecognitiveForm('post', '/users', {
         username: '',
         // ...
-    })
+    });
 
     const submit = () => {
         axios.post('/users', form.data())
@@ -223,9 +221,9 @@ First we will create a Precognitive form passing through the method, url and dat
 </template>
 ```
 
-Precognitive validation is now in place for the form. Any errors that are received during Precognition will populate the `form.errors`, as you would expect. The final result is a form that has live validation powered by Precognition.
+Precognitive validation is now in place for the form. Any errors that are received during Precognition will populate the `form.errors`, as you would expect.
 
-If you are using the same Axios client to submit the form that Precognition is utilising (you can learn more about [customizing the client in API docs](#)), you may optionally replace the axios call with `form.submit()`:
+If you are using the same Axios client to submit the form that Precognition is using to send requests (you can learn more about [customizing the client in API docs](#)), you may optionally replace the axios form submission call with `form.submit()`:
 
 ```vue
 <script setup>
@@ -234,7 +232,7 @@ If you are using the same Axios client to submit the form that Precognition is u
     const form = usePrecognitiveForm('post', '/users', {
         username: '',
         // ...
-    })
+    });
 
     const submit = () => {
         form.submit()
@@ -259,3 +257,5 @@ If you are using the same Axios client to submit the form that Precognition is u
     </form>
 </template>
 ```
+
+The final result is a form that has live validation powered by Precognition.
