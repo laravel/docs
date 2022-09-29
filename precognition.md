@@ -192,7 +192,7 @@ First we will create a Precognitive form passing through the method, url and dat
 ```vue
 <script setup>
     import axios from 'axios';
-    import { ref } from 'vue';
+    import { usePrecognitiveForm } from 'laravel-precognition-vue';
 
     const form = usePrecognitiveForm('post', '/users', {
         username: '',
@@ -229,8 +229,7 @@ If you are using the same Axios client to submit the form that Precognition is u
 
 ```vue
 <script setup>
-    import axios from 'axios';
-    import { ref } from 'vue';
+    import { usePrecognitiveForm } from 'laravel-precognition-vue';
 
     const form = usePrecognitiveForm('post', '/users', {
         username: '',
