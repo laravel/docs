@@ -106,7 +106,7 @@ Route::post('/users', function (StoreUserRequest $request) {
 <a name="customizing-validation-rules"></a>
 ### Customizing Validation Rules
 
-If you would like to customize the validation rules that run during a precognitive request, you may use the `isPrecognitive()` method to only apply the appropriate rules:
+If you would like to customize the validation rules for precognitive requests, the `isPrecognitive()` method will allow you to do so:
 
 ```php
 namespace App\Http\Requests;
@@ -138,10 +138,12 @@ class StoreUserRequest extends FormRequest
 }
 ```
 
+This may also be useful in the validator's `after` validation hook.
+
 <a name="validating-vue"></a>
 ### Working With Vue
 
-When working with Vue, you will already be keeping track of your form's data and the validation errors. When the form is submitted and a validation response is received, the `errors` are would be populated:
+When working with Vue, you will already be keeping track of your form's data and validation errors. When the form is submitted and a validation response is received, the `errors` would be populated. Your application may resemble the following:
 
 ```vue
 <script setup>
@@ -179,7 +181,7 @@ When working with Vue, you will already be keeping track of your form's data and
 </template>
 ```
 
-We will augment this existing implementation to add live validation powered by Laravel Precognition. First we will create a precognitive form, passing through the method, url, and initial data. We will also then use:
+We will augment this implementation to add live validation powered by Laravel Precognition. First we will create a precognitive form, passing through the method, url, and initial data. We will then use:
 
 - `form.username` where we were previously accessing `data.username`.
 - `form.data()` in place of our accessing the existing `data` ref value.
