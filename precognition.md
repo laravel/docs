@@ -161,11 +161,11 @@ When working with Vue, you will already be keeping track of your forms data and 
         axios.post('/users', data.value)
              .then(/* ... */)
              .catch(error => {
-                if (error.response?.status !== 422) {
-                    throw error;
-                }
+                 if (error.response?.status !== 422) {
+                     throw error;
+                 }
 
-                errors.value = error.response.data.errors;
+                 errors.value = error.response.data.errors;
              });
     };
 </script>
@@ -203,11 +203,11 @@ First we will create a Precognitive form passing through the method, url and dat
         axios.post('/users', form.data())
              .then(/* ... */)
              .catch(error => {
-                if (error.response?.status !== 422) {
-                    throw error;
-                }
+                 if (error.response?.status !== 422) {
+                     throw error;
+                 }
 
-                form.setErrors(error.response.data.errors);
+                 form.setErrors(error.response.data.errors);
              });
     };
 </script>
@@ -239,14 +239,14 @@ If you are using the same Axios client to submit the form that Precognition is u
 
     const submit = () => {
         form.submit()
-             .then(/* ... */)
-             .catch(error => {
+            .then(/* ... */)
+            .catch(error => {
                 if (error.response?.status !== 422) {
                     throw error;
                 }
 
                 form.setErrors(error.response.data.errors);
-             });
+            });
     };
 </script>
 
