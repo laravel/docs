@@ -1920,6 +1920,11 @@ jobs:
 
   dusk-php:
     runs-on: ubuntu-latest
+    env:
+      APP_URL: "http://127.0.0.1:8000"
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      MAIL_MAILER: log
     steps:
       - uses: actions/checkout@v3
       - name: Prepare The Environment
@@ -1939,8 +1944,6 @@ jobs:
       - name: Run Laravel Server
         run: php artisan serve --no-reload &
       - name: Run Dusk Tests
-        env:
-          APP_URL: "http://127.0.0.1:8000"
         run: php artisan dusk
       - name: Upload Screenshots
         if: failure()
