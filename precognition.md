@@ -6,6 +6,7 @@
     - [Handling Precognitive Requests](#handling-precognitive-requests)
 - [The Precognitive Client](#precognitive-client)
     - [Aborting Stale Requests](#aborting-stale-requests)
+    - [Using An Existing Axios Instance](#using-an-existing-axios-instance)
     - [Configuration](#configuration)
 - [Validation](#validation)
     - [Customizing Validation Rules](#customizing-validation-rules)
@@ -187,6 +188,23 @@ precognitive.post('/projects/5', form.data(), {
     fingerprint: null,
 });
 ```
+
+<a name="using-an-existing-axios-instance"></a>
+### Using An Existing Axios Instance
+
+If your application configures an Axios instance, you may use that instance for Precognition requests by passing it to the `use` function:
+
+```js
+import axios from 'axios';
+import precognitive from 'laravel-precognition';
+
+const client = axios.create({
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+});
+
+precognitive.use(client);
+```
+
 <a name="configuration"></a>
 ### Configuration
 
@@ -295,6 +313,20 @@ The "fingerprint" to use when [aborting stale requests](#aborting-stale-requests
 ```js
 precognitive.post(url, data, {
     fingerprint: 'create-form',
+});
+```
+
+<a name="config-validate"></a>
+#### `validate`
+
+The Precognition client has lot of [validation features baked in](#validation). If you are not using the backed in validation features, you may use this option to specify the input fields you would like to have validation rules run against. In the following example, only `username` rules will be run:
+
+```js
+const data = { name: 'Laravel', language: '' };
+
+precognitive.post(url, data, {
+    validate: ['username'],
+    onValidationError: errors => { /* ... */ },
 });
 ```
 
