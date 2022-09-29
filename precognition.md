@@ -143,7 +143,7 @@ class StoreUserRequest extends FormRequest
 <a name="validating-vue"></a>
 ### Working With Vue
 
-When working with Vue, you will already be keeping track of your forms data and the errors. When the form is submitted and a validation error is returned, the `errors` are populated:
+When working with Vue, you will already be keeping track of your forms data and the errors. When the form is submitted and a validation response is received, the `errors` are populated:
 
 ```vue
 <script setup>
@@ -181,93 +181,82 @@ When working with Vue, you will already be keeping track of your forms data and 
 </template>
 ```
 
+We will augment this implementation to add live validation powered by Laravel Precognition.
 
-We will swap out `useForm` for `usePrecognitiveForm`, additionally passing through the method and the URL before the form data:
+First we will create a Precognitive form passing through the method, url and data. We will also then use:
+
+- `form.username` where we were previously accessing `data.username`.
+- `form.data()` in place of our accessing the existing `data` ref value.
+- `form.setErrors(errors)` in place of setting the existing `errors` ref value.
 
 ```vue
 <script setup>
-    import { usePrecognitiveForm } from 'laravel-precognition-vue-inertia';
+    import axios from 'axios';
+    import { ref } from 'vue';
 
     const form = usePrecognitiveForm('post', '/users', {
-        name: '',
-        email: '',
-    });
+        username: '',
+        // ...
+    })
 
     const submit = () => {
-        form.post('/users', {
-            // Inertia options...
-        });
+        axios.post('/users', form.data())
+             .then(/* ... */)
+             .catch(error => {
+                if (error.response?.status !== 422) {
+                    throw error;
+                }
+
+                form.setErrors(error.response.data.errors);
+             });
     };
 </script>
 
 <template>
     <form @submit.prevent="submit">
-        <VLabel for="name" />
-        <VInput id="name" v-model="form.name" />
-        <VError :message="form.errors.name" />
+        <VLabel for="username" />
+        <VInput id="username" v-model="form.username" />
+        <VError :message="form.errors.username" />
 
         <!-- ... -->
     </form>
 </template>
 ```
 
-We are now able to simplify the form submission logic, if we want to, by removing the method and the url:
+Precognitive validation is now in place for the form. Any errors that are received during Precognition will populate the `form.errors`, as you would expect. The final result is a form that has live validation powered by Precognition.
 
-```js
-const submit = () => {
-    form.submit({
-        // Inertia options...
-    });
-};
-```
-
-The precognitive form already knows the url and method, so we are now able to call `form.submit()` without specifying them again. However, we have not implemented any validation logic yet, so now we will finally tell the inputs to validate whenever their value changes by invoking the `form.validate` function in the `@changed` handler, passing through the inputs name:
-
-```vue
-<form @submit.prevent="submit">
-    <VLabel for="name" />
-    <VInput id="name" v-model="form.name" @change="form.validate('name')" />
-    <VError :message="form.errors.name" />
-
-    <!-- ... -->
-</form>
-```
-
-Precognitive validation is now in place for our form. Any errors that are received will be available via the reactive `form.errors` object, as you would normally expect. The final result is a Inertia form that has live validation powered by Precognition:
+If you are using the same Axios client to submit the form that Precognition is utilising (you can learn more about [customizing the client in API docs](#)), you may optionally replace the axios call with `form.submit()`:
 
 ```vue
 <script setup>
-    import { usePrecognitiveForm } from 'laravel-precognition-vue-inertia';
+    import axios from 'axios';
+    import { ref } from 'vue';
 
     const form = usePrecognitiveForm('post', '/users', {
-        name: '',
-        email: '',
-    });
+        username: '',
+        // ...
+    })
 
     const submit = () => {
-        form.submit({
-            // Inertia options...
-        });
+        form.submit()
+             .then(/* ... */)
+             .catch(error => {
+                if (error.response?.status !== 422) {
+                    throw error;
+                }
+
+                form.setErrors(error.response.data.errors);
+             });
     };
 </script>
 
 <template>
     <form @submit.prevent="submit">
-        <VLabel for="name" />
-        <VInput id="name" v-model="form.name" @change="form.validate('name')" />
-        <VError :message="form.errors.name" />
+        <VLabel for="username" />
+        <VInput id="username" v-model="form.username" />
+        <VError :message="form.errors.username" />
 
         <!-- ... -->
     </form>
 </template>
 ```
-
-You can see the libraries readme for [full API documentation](#).
-
-<a name="#polling"></a>
-## Polling
-
-Precognition exposes some polling 
-
-<a name="polling-vue-inertia"></a>
-### Working With Vue and Inertia
