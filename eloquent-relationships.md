@@ -1928,6 +1928,11 @@ If you do not want to detach existing IDs that are missing from the given array,
 The many-to-many relationship also provides a `toggle` method which "toggles" the attachment status of the given related model IDs. If the given ID is currently attached, it will be detached. Likewise, if it is currently detached, it will be attached:
 
     $user->roles()->toggle([1, 2, 3]);
+    
+    $user->roles()->toggle([
+        1 => ['expires' => $expires],
+        2 => ['expires' => $expires],
+    ]);
 
 <a name="updating-a-record-on-the-intermediate-table"></a>
 #### Updating A Record On The Intermediate Table
