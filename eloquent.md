@@ -1595,7 +1595,7 @@ You may occasionally need to temporarily "mute" all events fired by a model. You
 
     use App\Models\User;
 
-    $user = User::withoutEvents(function () use () {
+    $user = User::withoutEvents(function () {
         User::findOrFail(1)->delete();
 
         return User::find(2);

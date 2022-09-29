@@ -117,6 +117,7 @@ Method  | Description
 `->everyThirtyMinutes();`  |  Run the task every thirty minutes
 `->hourly();`  |  Run the task every hour
 `->hourlyAt(17);`  |  Run the task every hour at 17 minutes past the hour
+`->everyOddHour();`  |  Run the task every odd hour
 `->everyTwoHours();`  |  Run the task every two hours
 `->everyThreeHours();`  |  Run the task every three hours
 `->everyFourHours();`  |  Run the task every four hours
