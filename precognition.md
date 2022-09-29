@@ -348,7 +348,7 @@ let precognitive = false;
 // ...
 
 precognitive.post(url, data, {
-    before: () => precognitive = true,
+   before: () => precognitive = true,
 }).finally(() => precognitive = false);
 ```
 
