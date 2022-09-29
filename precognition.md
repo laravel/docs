@@ -54,13 +54,13 @@ Route::post('/users', function (StoreUserRequest $request) {
 })->middleware(HandlePrecognitiveRequests::class);
 ```
 
-When a Precognition request hits this route all middleware will run, the form request will be resolved, and execution will stop after validation, regardless of if the validation passed or failed.
+When a precognitive request hits this route all middleware will run, the form request will be resolved, and execution will stop after validation, regardless of if the validation passed or failed.
 
 ### Handling Precognitive Requests
 
-Precognition requests are meant to be side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider the side-effects triggered in your application's middleware and form requests and if the side-effects should be skipped for Precognitive requests. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for Precognitive requests.
+Precognition requests are meant to be side-effect free. This is where the Precognition "pattern" comes in. It is recommend that you consider the side-effects triggered in your application's middleware and form requests and if the side-effects should be skipped for precognitive requests. As an example, if you are polling an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for precognitive requests.
 
-You can determine if a request is Precognitive by calling the `$request->isPrecognitive()` method:
+You can determine if a request is precognitive by calling the `isPrecognitive()` method:
 
 ```php
 namespace App\Http\Middleware;
@@ -106,7 +106,7 @@ Route::post('/users', function (StoreUserRequest $request) {
 <a name="customizing-validation-rules"></a>
 ### Customizing Validation Rules
 
-You may also use this method in Form Requests to limit the validation rules applied during a Precognitive request:
+You may also use this method in Form Requests to limit the validation rules applied during a precognitive request:
 
 ```php
 namespace App\Http\Requests;
@@ -179,7 +179,7 @@ When working with Vue, you will already be keeping track of your form's data and
 </template>
 ```
 
-We will augment this existing implementation to add live validation powered by Laravel Precognition. First we will create a Precognitive form, passing through the method, url, and initial data. We will also then use:
+We will augment this existing implementation to add live validation powered by Laravel Precognition. First we will create a precognitive form, passing through the method, url, and initial data. We will also then use:
 
 - `form.username` where we were previously accessing `data.username`.
 - `form.data()` in place of our accessing the existing `data` ref value.
