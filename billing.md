@@ -747,7 +747,7 @@ If you would like to add a subscription to a customer who already has a default 
 <a name="creating-subscriptions-from-the-stripe-dashboard"></a>
 #### Creating Subscriptions From The Stripe Dashboard
 
-You may also create subscriptions from the Stripe dashboard itself. When doing so, Cashier will sync newly added subscriptions and assign them a name of `default`. To customize the subscription name that is assigned to dashboard created subscriptions, [extend the `WebhookController`](/docs/{{version}}/billing#defining-webhook-event-handlers) and overwrite the `newSubscriptionName` method.
+You may also create subscriptions from the Stripe dashboard itself. When doing so, Cashier will sync newly added subscriptions and assign them a name of `default`. To customize the subscription name that is assigned to dashboard created subscriptions, [extend the `WebhookController`](#defining-webhook-event-handlers) and overwrite the `newSubscriptionName` method.
 
 In addition, you may only create one type of subscription via the Stripe dashboard. If your application offers multiple subscriptions that use different names, only one type of subscription may be added through the Stripe dashboard.
 
@@ -1928,33 +1928,31 @@ When this method is invoked, a new checkbox will be available to the customer th
 
 Using the `Checkout::guest` method, you may initiate checkout sessions for guests of your application that do not have an "account":
 
+    use Illuminate\Http\Request;
     use Laravel\Cashier\Checkout;
 
-    $checkout = Checkout::guest()->create('price_tshirt', [
-                    'success_url' => route('your-success-route'),
-                    'cancel_url' => route('your-cancel-route'),
-                ]);
+    Route::get('/product-checkout', function (Request $request) {
+        return Checkout::guest()->create('price_tshirt', [
+            'success_url' => route('your-success-route'),
+            'cancel_url' => route('your-cancel-route'),
+        ]);
+    });
 
 Similarly to creating checkout sessions with existing users, you may utilize additional methods available on the returned `Laravel\Cashier\CheckoutBuilder` instance to customize the guest checkout session:
 
+    use Illuminate\Http\Request;
     use Laravel\Cashier\Checkout;
 
-    $checkout = Checkout::guest()
-                    ->withPromotionCode('promo-code')
-                    ->create('price_tshirt', [
-                        'success_url' => route('your-success-route'),
-                        'cancel_url' => route('your-cancel-route'),
-                    ]);
+    Route::get('/product-checkout', function (Request $request) {
+        return Checkout::guest()
+            ->withPromotionCode('promo-code')
+            ->create('price_tshirt', [
+                'success_url' => route('your-success-route'),
+                'cancel_url' => route('your-cancel-route'),
+            ]);
+    });
 
-After calling `create()` you will receive a `Laravel\Cashier\Checkout` instance. You could use this instance to redirect the user directly to Stripe:
-
-    use Laravel\Cashier\Checkout;
-
-    $checkout = Checkout::guest()->create($items, $sessionOptions);
-
-    return $checkout->redirect();
-
-After a successful payment the user will be redirected to your provided `success_url`. In case of failure or cancellation the user will be redirected to your provided `cancel_url`.
+After a guest checkout has been completed Stripe will send a `checkout.session.completed` event. Make sure to [configure your Stripe webhook](https://dashboard.stripe.com/webhooks) to send this event to your application. After that you may [handle the webhook with Cashier](#handling-stripe-webhooks). The received object will be [a `checkout` object](https://stripe.com/docs/api/checkout/sessions/object) that you can use to fulfill your customer's order.
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
