@@ -13,7 +13,6 @@
     - [Customizing Validation Rules](#customizing-validation-rules)
     - [Working With Vue](#validating-vue)
     - [Working With Vue and Inertia](#validating-vue-inertia)
-- [Polling](#polling)
 - [Specification](#specification)
 
 <a name="introduction"></a>
@@ -137,7 +136,7 @@ class EnsureResourceHasNotBeenUpdated
 The Laravel error handler will seamlessly convert HTTP exceptions to JSON for Precognition requests, so this is only a concern if you are manually returning responses.
 
 <a name="executing-controller"></a>
-### Executing the Controller
+### Executing Code In A Controller
 
 As previously discussed, Laravel Precognition with not invoke the controller, however many applications may not be using route model binding, form requests, and middleware and instead are doing this work in the controller. This is why we have created a mechanism for applications that want to use Precognition but also keep their code co-located within the controller. Imagine we have the following controller:
 
