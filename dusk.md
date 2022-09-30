@@ -179,11 +179,45 @@ If you had test failures the last time you ran the `dusk` command, you may save 
 php artisan dusk:fails
 ```
 
-The `dusk` command accepts any argument that is normally accepted by the PHPUnit test runner, such as allowing you to only run the tests for a given [group](https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.group):
+The `dusk` command accepts any argument that is normally accepted by the PHPUnit test runner, such as allowing you to only run the tests for a given [group](https://phpunit.readthedocs.io/en/9.5/annotations.html#group):
 
 ```shell
 php artisan dusk --group=foo
 ```
+
+You may also use Dusk's XML configuration file instead by creating a `phpunit.dusk.xml` file in the root of your project which accepts any elements normally accepted by the PHPUnit XML Configuration file and adding the [groups element](https://phpunit.readthedocs.io/en/9.5/configuration.html#the-groups-element):
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         beStrictAboutTestsThatDoNotTestAnything="false"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertDeprecationsToExceptions="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         verbose="true"
+>
+  <testsuites>
+    <testsuite name="Laravel Dusk Test Suite">
+      <directory suffix="Test.php">./tests</directory>
+    </testsuite>
+  </testsuites>
+  <groups>
+    <include>
+      <group>foo</group>
+    </include>
+  </groups>
+</phpunit>
+```
+
+By default, Dusk creates a `phpunit.dusk.xml` file in the root of your project if it doesn't exist, whenever the `dusk` command is run. You may modify the 
 
 > **Note**
 > If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
