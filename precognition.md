@@ -680,8 +680,8 @@ If would like to use the [same Axios client](#using-an-existing-axios-instance) 
 
 The final result is a form that has live validation powered by Laravel Precognition.
 
-<a name="vue-validation-checking-state"></a>
-#### Checking the State
+<a name="vue-validation-exposed-state"></a>
+#### Exposed State
 
 The form exposes a reactive `validating` property that allows you to check if the form is currently validating. This can be useful if you would like to toggle some UI to show the current state of the form:
 
@@ -859,7 +859,10 @@ When creating a precognitive form, we already know the method and URL of the for
 
 The final result is an Inertia form that has live validation powered by Laravel Precognition.
 
-> **Note** The precognitive form has a handful of additional helpful features to enhance your forms. To check out the full API, check out the packages readme (_coming soon_).
+You may also like to checkout out:
+
+- [Exposed State](#vue-validation-exposed-state)
+- [Configuring the Validator](#vue-validation-configuration)
 
 <a name="validating-vanilla-js"></a>
 ### Working With Vanilla JavaScript
