@@ -71,7 +71,7 @@ Precognitive requests should generally be side-effect free. This is where the Pr
 
 As an example, if you are performing precognitive polling against an endpoint, we do not want to keep the user's session alive indefinitely. This is why, under the hood, Laravel does not persist or extend the session for precognitive requests.
 
-You can determine if a request is precognitive by calling the `isPrecognitive()` method:
+You can determine if a request is precognitive by calling the request's `isPrecognitive()` method:
 
 ```php
 <?php
@@ -179,11 +179,11 @@ To use Precognition with this controller, you will need to re-bind the standard 
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests as BaseMiddleware;
 use Illuminate\Routing\CallableDispatcher;
-use Illuminate\Routing\ControllerDispatcher;
 use Illuminate\Routing\Contracts\CallableDispatcher as CallableDispatcherContract;
 use Illuminate\Routing\Contracts\ControllerDispatcher as ControllerDispatcherContract;
-use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests as BaseMiddleware;
+use Illuminate\Routing\ControllerDispatcher;
 
 class HandlePrecognitiveRequests extends BaseMiddleware
 {
@@ -518,7 +518,7 @@ Route::post('/users', function (StoreUserRequest $request) {
 <a name="customizing-validation-rules"></a>
 ### Customizing Validation Rules
 
-If you would like to customize the validation rules for precognitive requests, the `isPrecognitive()` method will allow you to do so:
+If you would like to customize the validation rules for precognitive requests, the request's `isPrecognitive()` method will allow you to do so:
 
 ```php
 <?php
@@ -643,8 +643,6 @@ const submit = () => {
     </form>
 </template>
 ```
-
-> **Note** The form helper is very much inspired by Inertia's form helper.
 
 We will now use the form helper to implement live validation. To do this we will want to call the `form.validate` function, passing through the input name. We recommend doing this in the `@change` event handler of your inputs:
 
