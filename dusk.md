@@ -217,8 +217,6 @@ You may also use Dusk's XML configuration file instead by creating a `phpunit.du
 </phpunit>
 ```
 
-By default, Dusk creates a `phpunit.dusk.xml` file in the root of your project if it doesn't exist, whenever the `dusk` command is run. You may modify the 
-
 > **Note**
 > If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
 
