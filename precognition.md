@@ -862,3 +862,7 @@ The final result is an Inertia form that has live validation powered by Laravel 
 ## Specification
 
 // TODO
+
+
+## Notes
+- Where to document running code in the controller.
