@@ -351,6 +351,17 @@ precognitive.post(url, data, {
 });
 ```
 
+<a name="config-after"></a>
+#### `after`
+
+The after hook allows you to execute some code after the response is received and all other handlers have run. This is mostly useful for repeated requests when using [validation](#validation) or [polling](#polling):
+
+```js
+precognitive.post(url, data, {
+   after: (promise) => promise.then(/* ... */),
+});
+```
+
 <a name="config-fingerprint"></a>
 #### `fingerprint`
 
@@ -669,7 +680,7 @@ If would like to use the [same Axios client](#using-an-existing-axios-instance) 
 
 The final result is a form that has live validation powered by Laravel Precognition.
 
-<a name="vue-checking-state"></a>
+<a name="vue-validation-checking-state"></a>
 #### Checking the State
 
 The form exposes a reactive `validating` property that allows you to check if the form is currently validating. This can be useful if you would like to toggle some UI to show the current state of the form:
@@ -682,32 +693,34 @@ The form exposes a reactive `validating` property that allows you to check if th
 <template>
 ```
 
-<a name="vue-configuration"></a>
-#### Configuration
+<a name="vue-validation-configuration"></a>
+#### Configuring The Validation Requests
 
-// WIP
+You may pass [configuration options](#configuration) to the validator via the form's `validator.withConfig` function:
 
 ```js
+let validationRequestCount = 0;
+
 const form = usePrecognitiveForm(/* ... */);
 
-form.valdiator
-    .withTimeout({
-        hours: 1,
-        minutes: 5,
-        seconds: 4,
-        milliseconds: 333,
-    })
-    .withChanged([
-        'username',
-        // ...
-    ])
-    .withConfig({
-        onConflict: () => { /* ... */ },
-    })
-    .after(
-        promise => promise.then().catch()
-    );
+form.validator.withConfig({
+    before: () => validationRequestCount++,
+});
+```
 
+There are two additional configuration options available to the validator:
+
+```js
+form.validator.withConfig({
+    // debounced request timeout...
+    timeout: {
+        seconds: 4, 
+    },
+    // initial "changed" inputs...
+    initialChanged: [
+        'username', //
+    ],
+});
 ```
 
 <a name="validating-vue-inertia"></a>
