@@ -869,15 +869,13 @@ You may also like to checkout out:
 
 // TODO
 
-<a name="polling"></a>
-## Polling
-
-// TODO
-
 <a name="specification"></a>
 ## Specification
 
-// TODO
+- Precognition requests MUST have a `Precognition` header with the value `true`.
+- Precognition responses MUST have a `Precognition` header with the value `true`.
+- When requesting specific inputs be validated, the `Precognition-Validate-Only` header SHOULD be used. The value should be a comma seperated list in input names e.g. `email,phone`. There should be no spaces between inputs, unless they are meaninful.
+- Routes that support Precognition MUST respond with a `Vary` header containing the value `Precognition`. This header MUST be returned for normal and Precognition requests.
 
 
 ## Notes
