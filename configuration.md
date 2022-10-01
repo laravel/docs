@@ -5,7 +5,7 @@
     - [ 環境變數型態 ](#environment-variable-types)
     - [ 檢索環境設定 ](#retrieving-environment-configuration)
     - [ 判斷目前環境 ](#determining-the-current-environment)
-    - [Encrypting Environment Files](#encrypting-environment-files)
+    - [ 加密環境檔 ](#encrypting-environment-files)
 - [ 存取設定值 ](#accessing-configuration-values)
 - [ 快取設定 ](#configuration-caching)
 - [ 除錯模式 ](#debug-mode)
