@@ -1,180 +1,184 @@
 # Directory Structure
 
-- [Introduction](#introduction)
-- [The Root Directory](#the-root-directory)
-    - [The `app` Directory](#the-root-app-directory)
-    - [The `bootstrap` Directory](#the-bootstrap-directory)
-    - [The `config` Directory](#the-config-directory)
-    - [The `database` Directory](#the-database-directory)
-    - [The `lang` Directory](#the-lang-directory)
-    - [The `public` Directory](#the-public-directory)
-    - [The `resources` Directory](#the-resources-directory)
-    - [The `routes` Directory](#the-routes-directory)
-    - [The `storage` Directory](#the-storage-directory)
-    - [The `tests` Directory](#the-tests-directory)
-    - [The `vendor` Directory](#the-vendor-directory)
-- [The App Directory](#the-app-directory)
-    - [The `Broadcasting` Directory](#the-broadcasting-directory)
-    - [The `Console` Directory](#the-console-directory)
-    - [The `Events` Directory](#the-events-directory)
-    - [The `Exceptions` Directory](#the-exceptions-directory)
-    - [The `Http` Directory](#the-http-directory)
-    - [The `Jobs` Directory](#the-jobs-directory)
-    - [The `Listeners` Directory](#the-listeners-directory)
-    - [The `Mail` Directory](#the-mail-directory)
-    - [The `Models` Directory](#the-models-directory)
-    - [The `Notifications` Directory](#the-notifications-directory)
-    - [The `Policies` Directory](#the-policies-directory)
-    - [The `Providers` Directory](#the-providers-directory)
-    - [The `Rules` Directory](#the-rules-directory)
+- [ 前言 ](#introduction)
+- [ 目錄 ](#the-root-directory)
+    - [ `app` 目錄 ](#the-root-app-directory)
+    - [ `bootstrap` 目錄 ](#the-bootstrap-directory)
+    - [ `config` 目錄 ](#the-config-directory)
+    - [ `database` 目錄 ](#the-database-directory)
+    - [ `lang` 目錄 ](#the-lang-directory)
+    - [ `public` 目錄 ](#the-public-directory)
+    - [ `resources` 目錄 ](#the-resources-directory)
+    - [ `routes` 目錄 ](#the-routes-directory)
+    - [ `storage` 目錄 ](#the-storage-directory)
+    - [ `tests` 目錄 ](#the-tests-directory)
+    - [ `vendor` 目錄 ](#the-vendor-directory)
+- [ App 目錄 ](#the-app-directory)
+    - [ `Broadcasting` 目錄 ](#the-broadcasting-directory)
+    - [ `Console` 目錄 ](#the-console-directory)
+    - [ `Events` 目錄 ](#the-events-directory)
+    - [ `Exceptions` 目錄 ](#the-exceptions-directory)
+    - [ `Http` 目錄 ](#the-http-directory)
+    - [ `Jobs` 目錄 ](#the-jobs-directory)
+    - [ `Listeners` 目錄 ](#the-listeners-directory)
+    - [ `Mail` 目錄 ](#the-mail-directory)
+    - [ `Models` 目錄 ](#the-models-directory)
+    - [ `Notifications` 目錄 ](#the-notifications-directory)
+    - [ `Policies` 目錄 ](#the-policies-directory)
+    - [ `Providers` 目錄 ](#the-providers-directory)
+    - [ `Rules` 目錄 ](#the-rules-directory)
 
 <a name="introduction"></a>
-## Introduction
+## 前言
 
-The default Laravel application structure is intended to provide a great starting point for both large and small applications. But you are free to organize your application however you like. Laravel imposes almost no restrictions on where any given class is located - as long as Composer can autoload the class.
+預設的 Laravel 應用程式結構旨在提供一個好的起始點給不同大小的應用程式。但你也可以依照喜好自由地組織應用程式。Laravel 幾乎沒有強加限制任何類別的放置位置 - 只要 Composer 可以自動載入這些類別即可。
+
+> **Note**
+> 是 Laravel 的新手嗎？參考看看 [Laravel Bootcamp](https://bootcamp.laravel.com) 提供的框架實作旅程，讓我們引領你建立最初的 Laravel 應用程式。
 
 <a name="the-root-directory"></a>
-## The Root Directory
+## 根目錄
 
 <a name="the-root-app-directory"></a>
-#### The App Directory
+#### App 目錄
 
-The `app` directory contains the core code of your application. We'll explore this directory in more detail soon; however, almost all of the classes in your application will be in this directory.
+目錄 `app` 包含應用程式的核心程式碼，我們很快會深入探討這個目錄的細節；然而，你應用程式的大部分類別將會放置在這個目錄之中。
 
 <a name="the-bootstrap-directory"></a>
-#### The Bootstrap Directory
+#### Bootstrap 目錄
 
-The `bootstrap` directory contains the `app.php` file which bootstraps the framework. This directory also houses a `cache` directory which contains framework generated files for performance optimization such as the route and services cache files. You should not typically need to modify any files within this directory.
+目錄 `bootstrap` 包含用來啟動框架的 `app.php` 檔案。以及包含用來生成框架檔和設定路由及服務快取檔的 `cache` 目錄。你通常不需要修改這個目錄中的任何檔案。
 
 <a name="the-config-directory"></a>
-#### The Config Directory
+#### Config 目錄
 
-The `config` directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
+顧名思義，目錄 `config` 包含應用程式的所有設定檔。把這些檔案瀏覽一遍並熟悉對你有用的選項是個好主意。
 
 <a name="the-database-directory"></a>
-#### The Database Directory
+#### Database 目錄
 
-The `database` directory contains your database migrations, model factories, and seeds. If you wish, you may also use this directory to hold an SQLite database.
+目錄 `database` 包含你的資料庫遷移（database migration）、模型工廠（model factory）和資料填充（seed）。如果你希望，也可以在此目錄存放 SQLite 資料庫。
 
 <a name="the-lang-directory"></a>
-#### The Lang Directory
+#### Lang 目錄
 
-The `lang` directory houses all of your application's language files.
+目錄 `lang` 存放著應用程式所有的語言檔案。
 
 <a name="the-public-directory"></a>
-#### The Public Directory
+#### Public 目錄
 
-The `public` directory contains the `index.php` file, which is the entry point for all requests entering your application and configures autoloading. This directory also houses your assets such as images, JavaScript, and CSS.
+目錄 `public` 包含進入應用程式所有請求的入口和設定為自動載入的 `index.php` 檔。這個目錄也存放著你的資源，例如圖片、JavaScript 和 CSS。
 
 <a name="the-resources-directory"></a>
-#### The Resources Directory
+#### Resources 目力
 
-The `resources` directory contains your [views](/docs/{{version}}/views) as well as your raw, un-compiled assets such as CSS or JavaScript.
+目錄 `resources` 包含你 [ 視圖（views）](/docs/{{version}}/views) 的原始碼和尚未編譯的 CSS 和 JavaScript 資源。
 
 <a name="the-routes-directory"></a>
-#### The Routes Directory
+#### Routes 目錄
 
-The `routes` directory contains all of the route definitions for your application. By default, several route files are included with Laravel: `web.php`, `api.php`, `console.php`, and `channels.php`.
+目錄 `routes`  包含所有應用程式的路由定義。預設情況下，大部分的路由檔案都能在 Laravel 找到： `web.php`, `api.php`, `console.php` 和 `channels.php`。
 
-The `web.php` file contains routes that the `RouteServiceProvider` places in the `web` middleware group, which provides session state, CSRF protection, and cookie encryption. If your application does not offer a stateless, RESTful API then it is likely that all of your routes will most likely be defined in the `web.php` file.
+`web.php` 檔案中定義的路由都會在 `RouteServiceProvider` 中且被指配到 `web` 中介層群組。具備 Session、CSRF 防護以及 Cookie 加密功能。如果你的應用程式不用提供無狀態的 RESTful API，那麼所有的路由都能在 `web.php` 檔案內找到。
 
-The `api.php` file contains routes that the `RouteServiceProvider` places in the `api` middleware group. These routes are intended to be stateless, so requests entering the application through these routes are intended to be authenticated [via tokens](/docs/{{version}}/sanctum) and will not have access to session state.
+`api.php` 檔案裡定義的路由都會在`RouteServiceProvider` 中且被指配到 `api` 中介層群組。 這些路由通常是無狀態的，所以透過這些路由進入應用程式的請求通常是 [ 透過標記（tokens） ](/docs/{{version}}/sanctum) 進行驗證（authenticate）且不能存取 Session 狀態。
 
-The `console.php` file is where you may define all of your closure based console commands. Each closure is bound to a command instance allowing a simple approach to interacting with each command's IO methods. Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application.
+`console.php` 檔案是你定義所有基於閉包（closure）終端機指令（console command）的地方。每個閉包一定是一個允許跟指令的 IO 方法（method）進行簡易互動的指令執行個體（command instance）。儘管這個檔案沒有定義 HTTP 路由，它也會定義應用程式中基於入口點（路由）的終端。
 
-The `channels.php` file is where you may register all of the [event broadcasting](/docs/{{version}}/broadcasting) channels that your application supports.
+The `channels.php` 檔是你註冊所有應用程式支援的 [ 廣播事件 ](/docs/{{version}}/broadcasting) 頻道的地方。
 
 <a name="the-storage-directory"></a>
-#### The Storage Directory
+#### Storage 目錄
 
-The `storage` directory contains your logs, compiled Blade templates, file based sessions, file caches, and other files generated by the framework. This directory is segregated into `app`, `framework`, and `logs` directories. The `app` directory may be used to store any files generated by your application. The `framework` directory is used to store framework generated files and caches. Finally, the `logs` directory contains your application's log files.
+目錄 `storage` 包含你的日誌、編譯後的 Blade 模板（template）、基於檔案的 Session、檔案快取和框架產生的其他檔案。這個目錄又被分為 `app`, `framework` 和 `logs` 資料夾。 `app` 目錄常用來儲存應用程式產生的任何檔案。 `framework` 目錄常用來儲存框架產生的檔案及快取。最後 `logs` 目錄包含應用程式的日誌檔。
 
-The `storage/app/public` directory may be used to store user-generated files, such as profile avatars, that should be publicly accessible. You should create a symbolic link at `public/storage` which points to this directory. You may create the link using the `php artisan storage:link` Artisan command.
+目錄 `storage/app/public` 常用來儲存使用者上傳的檔案，例如個人資料的頭像這些可以公開存取的檔案。你應該在 `public/storage` 建立一個象徵性的連結並導向 `storage/app/public` 目錄。你可以使用 Artisan 指令 `php artisan storage:link` 來建立連結。
 
 <a name="the-tests-directory"></a>
-#### The Tests Directory
+#### Tests 目錄
 
-The `tests` directory contains your automated tests. Example [PHPUnit](https://phpunit.de/) unit tests and feature tests are provided out of the box. Each test class should be suffixed with the word `Test`. You may run your tests using the `phpunit` or `php vendor/bin/phpunit` commands. Or, if you would like a more detailed and beautiful representation of your test results, you may run your tests using the `php artisan test` Artisan command.
+目錄 `tests` 包含了你的自動化測試。例如 [ PHPUnit ](https://phpunit.de/) 現成的單元測試（unit test）和功能測試（feature test）。每一個測試類別都需要新增 `Test` 字首。你可以使用 `phpunit` 和 `php vendor/bin/phpunit` 指令執行測試。又或者你想要更多詳細且漂亮地顯示測試結果，你可以使用 Artisan 指令 `php artisan test` 執行測試。
 
 <a name="the-vendor-directory"></a>
-#### The Vendor Directory
+#### Vendor 目錄
 
-The `vendor` directory contains your [Composer](https://getcomposer.org) dependencies.
+`vendor` 目錄包含了你的 [ Composer ](https://getcomposer.org) 依賴模組。
 
 <a name="the-app-directory"></a>
-## The App Directory
+## App 目錄
 
-The majority of your application is housed in the `app` directory. By default, this directory is namespaced under `App` and is autoloaded by Composer using the [PSR-4 autoloading standard](https://www.php-fig.org/psr/psr-4/).
+你的應用程式大部分都儲存在 `app` 目錄。預設情況下，這個目錄使用命名空間（namespace）`App` 且藉由 Composer 的 [PSR-4 自動載入標準](https://www.php-fig.org/psr/psr-4/) 被自動載入。
 
-The `app` directory contains a variety of additional directories such as `Console`, `Http`, and `Providers`. Think of the `Console` and `Http` directories as providing an API into the core of your application. The HTTP protocol and CLI are both mechanisms to interact with your application, but do not actually contain application logic. In other words, they are two ways of issuing commands to your application. The `Console` directory contains all of your Artisan commands, while the `Http` directory contains your controllers, middleware, and requests.
+目錄 `app` 包含各種額外資料夾例如 `Console`, `Http` 和 `Providers`。將 `Console` 和 `Http` 目錄試想成作為進入應用程式核心所提供的 API。HTTP 協定和 CLI 都是跟應用程式互動的機制，但實際上沒有包含應用程式的邏輯。換句話說，它們是兩種對應用程式發出指令的方法。目錄 `Comsole` 包含了所有的 Artisan 指令，而目錄 `Http` 包含控制器（controller）、中介層（middleware）和請求（request）。
 
-A variety of other directories will be generated inside the `app` directory as you use the `make` Artisan commands to generate classes. So, for example, the `app/Jobs` directory will not exist until you execute the `make:job` Artisan command to generate a job class.
+當你使用 Artisan 指令 `make` 產生類別的時候，其他的目錄才會被建立到目錄 `app` 下。例如執行 Artisan 指令 `make:job` 產生任務類別（job class）時，`app/Jobs` 才會出現在目錄中。
 
-> {tip} Many of the classes in the `app` directory can be generated by Artisan via commands. To review the available commands, run the `php artisan list make` command in your terminal.
+> **Note**  
+> 目錄 `app` 下的許多類別都可以透過 Artisan 指令產生。要檢視所有可用的指令可以在終端機（terminal）執行指令 `php artisan list make`。
 
 <a name="the-broadcasting-directory"></a>
-#### The Broadcasting Directory
+#### Broadcasting 目錄
 
-The `Broadcasting` directory contains all of the broadcast channel classes for your application. These classes are generated using the `make:channel` command. This directory does not exist by default, but will be created for you when you create your first channel. To learn more about channels, check out the documentation on [event broadcasting](/docs/{{version}}/broadcasting).
+目錄 `Broadcasting` 包含了所有的廣播頻道類別（broadcast channel class）。這些類別可以使用指令 `make:channel` 產生。這個目錄預設並不存在，但會在你建立第一個頻道時出現。想了解更多關於頻道的資訊，可以查閱文件 [ 廣播事件（event broadcast） ](/docs/{{version}}/broadcasting)。
 
 <a name="the-console-directory"></a>
-#### The Console Directory
+#### Console 目錄
 
-The `Console` directory contains all of the custom Artisan commands for your application. These commands may be generated using the `make:command` command. This directory also houses your console kernel, which is where your custom Artisan commands are registered and your [scheduled tasks](/docs/{{version}}/scheduling) are defined.
+`Console` 目錄包含應用程式所有自定義的 Artisan 指令。這些指令透過 `make:command` 產生。這個目錄同時儲存已註冊的 Artisan 指令和已定義的 [ 任務排程（scheduled tasks） ](/docs/{{version}}/scheduling) 的終端（console）核心。
 
 <a name="the-events-directory"></a>
-#### The Events Directory
+#### Events 目錄
 
-This directory does not exist by default, but will be created for you by the `event:generate` and `make:event` Artisan commands. The `Events` directory houses [event classes](/docs/{{version}}/events). Events may be used to alert other parts of your application that a given action has occurred, providing a great deal of flexibility and decoupling.
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `event:generate` 或 `make:event` 而被建立。目錄 `Events` 儲存著 [ 事件類別（event classes）](/docs/{{version}}/events)。事件常被用於當指定動作發生時，為提醒應用程式的其它部分提供了很棒的靈活性及解耦。
 
 <a name="the-exceptions-directory"></a>
-#### The Exceptions Directory
+#### Exceptions 目錄
 
-The `Exceptions` directory contains your application's exception handler and is also a good place to place any exceptions thrown by your application. If you would like to customize how your exceptions are logged or rendered, you should modify the `Handler` class in this directory.
+目錄 `Exceptions` 包含應用程式的異常處理程序且也是放置應用程式拋出例外（throw exception）的好地方。如果你想要自定義如何記錄或呈現異常的方法，你應該修改此目錄中的 `Handler` 類別。
 
 <a name="the-http-directory"></a>
-#### The Http Directory
+#### Http 目錄
 
-The `Http` directory contains your controllers, middleware, and form requests. Almost all of the logic to handle requests entering your application will be placed in this directory.
+`Http` 目錄包含了你的控制器（controller）、中介層（middleware）和表單（form）請求。幾乎所有進入應用程式的請求處理都會放置在這個目錄。
 
 <a name="the-jobs-directory"></a>
-#### The Jobs Directory
+#### Jobs 目錄
 
-This directory does not exist by default, but will be created for you if you execute the `make:job` Artisan command. The `Jobs` directory houses the [queueable jobs](/docs/{{version}}/queues) for your application. Jobs may be queued by your application or run synchronously within the current request lifecycle. Jobs that run synchronously during the current request are sometimes referred to as "commands" since they are an implementation of the [command pattern](https://en.wikipedia.org/wiki/Command_pattern).
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `make:job` 而被建立。目錄 `Jobs` 儲存著應用程式的 [ 佇列任務（queueable job）](/docs/{{version}}/queues)。應用程式中的任務可以被佇列化，也可以在當前請求生命週期內同步執行。同步執行的任務有時也被看作「指令」，因為它們實現了 [ 指令模式 ](https://en.wikipedia.org/wiki/Command_pattern)。
 
 <a name="the-listeners-directory"></a>
-#### The Listeners Directory
+#### Listeners 目錄
 
-This directory does not exist by default, but will be created for you if you execute the `event:generate` or `make:listener` Artisan commands. The `Listeners` directory contains the classes that handle your [events](/docs/{{version}}/events). Event listeners receive an event instance and perform logic in response to the event being fired. For example, a `UserRegistered` event might be handled by a `SendWelcomeEmail` listener.
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `event:generate` 或 `make:listener` 而被建立。目錄 `Listeners` 包含了處理 [ 事件（event） ](/docs/{{version}}/events) 的類別。事件監聽器（listener）接收了一個事件執行個體（instance）並回應（response）執行邏輯到被觸發的事件。舉個例子，一個 `UserRegistered` 事件可能會由 `SendWelcomeEmail` 監聽器處理。
 
 <a name="the-mail-directory"></a>
-#### The Mail Directory
+#### Mail 目錄
 
-This directory does not exist by default, but will be created for you if you execute the `make:mail` Artisan command. The `Mail` directory contains all of your [classes that represent emails](/docs/{{version}}/mail) sent by your application. Mail objects allow you to encapsulate all of the logic of building an email in a single, simple class that may be sent using the `Mail::send` method.
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `make:mail` 而被建立。目錄 `Mail` 包含應用程式發送的 [ 代表電子郵件的類別 ](/docs/{{version}}/mail)，郵件對象允許你將建立郵件的所有邏輯封裝在一個簡單的類別中，該類別可能使用 `Mail::send` 方法寄信。
 
 <a name="the-models-directory"></a>
-#### The Models Directory
+#### Models 目錄
 
-The `Models` directory contains all of your [Eloquent model classes](/docs/{{version}}/eloquent). The Eloquent ORM included with Laravel provides a beautiful, simple ActiveRecord implementation for working with your database. Each database table has a corresponding "Model" which is used to interact with that table. Models allow you to query for data in your tables, as well as insert new records into the table.
+目錄 `Models` 包含了你所有的  [ Eloquent model classes ](/docs/{{version}}/eloquent)。Laravel 中包含的 Eloquent ORM 提供了一個漂亮、簡單的主動紀錄實作（ActiveRecord implementation）來處理你的資料庫。每個資料表（table）都有一個對應的「模型（model）」用來與資料表進行互動。模型允許你查詢表中的資料，也可以插入新的紀錄。
 
 <a name="the-notifications-directory"></a>
-#### The Notifications Directory
+#### Notifications 目錄
 
-This directory does not exist by default, but will be created for you if you execute the `make:notification` Artisan command. The `Notifications` directory contains all of the "transactional" [notifications](/docs/{{version}}/notifications) that are sent by your application, such as simple notifications about events that happen within your application. Laravel's notification feature abstracts sending notifications over a variety of drivers such as email, Slack, SMS, or stored in a database.
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `make:notification` 而被建立。目錄 `Notifications` 包含由應用程式發送的所有「業務性」 [ 通知 ](/docs/{{version}}/notifications)，例如應用程式發生事件的簡易通知。Laravel 的通知特性會將透過驅動程式發送的通知例如電子郵件、Slack、簡訊或資料儲存抽象化。 
 
 <a name="the-policies-directory"></a>
-#### The Policies Directory
+#### Policies 目錄
 
-This directory does not exist by default, but will be created for you if you execute the `make:policy` Artisan command. The `Policies` directory contains the [authorization policy classes](/docs/{{version}}/authorization) for your application. Policies are used to determine if a user can perform a given action against a resource.
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `make:policy` 而被建立。目錄 `Policies` 包含應用程式的 [ 授權原則類別（authorization policy class）](/docs/{{version}}/authorization)。這個類別用於判斷某個使用者是否可以對資源進行給定的操作行為。
 
 <a name="the-providers-directory"></a>
-#### The Providers Directory
+#### Providers 目錄
 
-The `Providers` directory contains all of the [service providers](/docs/{{version}}/providers) for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.
+目錄 `Providers` 包含了應用程式所有的 [ 服務提供者（service providers） ](/docs/{{version}}/providers)。服務提供者啟動應用程式時在服務容器綁定服務、註冊事件或準備執行應用程式的其他傳入請求。
 
-In a fresh Laravel application, this directory will already contain several providers. You are free to add your own providers to this directory as needed.
+在一個新的 Laravel 應用程式，該目錄已經包含數個提供者。你可以根據需要自行新增服務提供者到該目錄。
 
 <a name="the-rules-directory"></a>
-#### The Rules Directory
+#### Rules 目錄
 
-This directory does not exist by default, but will be created for you if you execute the `make:rule` Artisan command. The `Rules` directory contains the custom validation rule objects for your application. Rules are used to encapsulate complicated validation logic in a simple object. For more information, check out the [validation documentation](/docs/{{version}}/validation).
+這個目錄預設並不存在，但會因為你執行 Artisan 指令 `make:rule` 而被建立。目錄 `Rules` 包含應用程式自定義的驗證規則（validation rule）。這些規則用於將複雜的驗證邏輯（validation logic）封裝在一個簡單的物件中。關於更多資訊，可以查看 [ 驗證文件 ](/docs/{{version}}/validation)。

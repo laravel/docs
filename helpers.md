@@ -2,6 +2,8 @@
 
 - [Introduction](#introduction)
 - [Available Methods](#available-methods)
+- [Other Utilities](#other-utilities)
+    - [Benchmarking](#benchmarking)
 
 <a name="introduction"></a>
 ## Introduction
@@ -45,11 +47,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::isList](#method-array-islist)
+[Arr::join](#method-array-join)
 [Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
+[Arr::map](#method-array-map)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
+[Arr::prependKeysWith](#method-array-prependkeyswith)
 [Arr::pull](#method-array-pull)
 [Arr::query](#method-array-query)
 [Arr::random](#method-array-random)
@@ -109,8 +114,10 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
 [Str::headline](#method-str-headline)
+[Str::inlineMarkdown](#method-str-inline-markdown)
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
+[Str::isJson](#method-str-is-json)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
 [Str::lcfirst](#method-str-lcfirst)
@@ -148,6 +155,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
 [Str::upper](#method-str-upper)
+[Str::ulid](#method-str-ulid)
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
 [Str::words](#method-str-words)
@@ -172,6 +180,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [between](#method-fluent-str-between)
 [betweenFirst](#method-fluent-str-between-first)
 [camel](#method-fluent-str-camel)
+[classBasename](#method-fluent-str-class-basename)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
 [dirname](#method-fluent-str-dirname)
@@ -180,10 +189,12 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [exactly](#method-fluent-str-exactly)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
+[inlineMarkdown](#method-fluent-str-inline-markdown)
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
 [isNotEmpty](#method-fluent-str-is-not-empty)
+[isJson](#method-fluent-str-is-json)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
 [lcfirst](#method-fluent-str-lcfirst)
@@ -236,6 +247,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [whenStartsWith](#method-fluent-str-when-starts-with)
 [whenEndsWith](#method-fluent-str-when-ends-with)
 [whenExactly](#method-fluent-str-when-exactly)
+[whenNotExactly](#method-fluent-str-when-not-exactly)
 [whenIs](#method-fluent-str-when-is)
 [whenIsAscii](#method-fluent-str-when-is-ascii)
 [whenIsUuid](#method-fluent-str-when-is-uuid)
@@ -288,6 +300,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [encrypt](#method-encrypt)
 [env](#method-env)
 [event](#method-event)
+[fake](#method-fake)
 [filled](#method-filled)
 [info](#method-info)
 [logger](#method-logger)
@@ -601,13 +614,30 @@ The `Arr::isList` method returns `true` if the given array's keys are sequential
 
     use Illuminate\Support\Arr;
 
-    $isAssoc = Arr::isList(['foo', 'bar', 'baz']);
+    $isList = Arr::isList(['foo', 'bar', 'baz']);
 
     // true
 
-    $isAssoc = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
+    $isList = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 
     // false
+
+<a name="method-array-join"></a>
+#### `Arr::join()` {.collection-method}
+
+The `Arr::join` method joins array elements with a string. Using this method's second argument, you may also specify the joining string for the final element of the array:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['Tailwind', 'Alpine', 'Laravel', 'Livewire'];
+
+    $joined = Arr::join($array, ', ');
+
+    // Tailwind, Alpine, Laravel, Livewire
+
+    $joined = Arr::join($array, ', ', ' and ');
+
+    // Tailwind, Alpine, Laravel and Livewire
 
 <a name="method-array-keyby"></a>
 #### `Arr::keyBy()` {.collection-method}
@@ -650,6 +680,21 @@ A default value may be passed as the third argument to the method. This value wi
     use Illuminate\Support\Arr;
 
     $last = Arr::last($array, $callback, $default);
+
+<a name="method-array-map"></a>
+#### `Arr::map()` {.collection-method}
+
+The `Arr::map` method iterates through the array and passes each value and key to the given callback. The array value is replaced by the value returned by the callback:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['first' => 'james', 'last' => 'kirk'];
+
+    $mapped = Arr::map($array, function ($value, $key) {
+        return ucfirst($value);
+    });
+
+    // ['first' => 'James', 'last' => 'Kirk']
 
 <a name="method-array-only"></a>
 #### `Arr::only()` {.collection-method}
@@ -710,6 +755,27 @@ If needed, you may specify the key that should be used for the value:
     $array = Arr::prepend($array, 'Desk', 'name');
 
     // ['name' => 'Desk', 'price' => 100]
+
+<a name="method-array-prependkeyswith"></a>
+#### `Arr::prependKeysWith()` {.collection-method}
+
+The `Arr::prependKeysWith` prepends all key names of an associative array with the given prefix:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        'name' => 'Desk',
+        'price' => 100,
+    ];
+
+    $keyed = Arr::prependKeysWith($array, 'product.');
+
+    /*
+        [
+            'product.name' => 'Desk',
+            'product.price' => 100,
+        ]
+    */
 
 <a name="method-array-pull"></a>
 #### `Arr::pull()` {.collection-method}
@@ -1386,6 +1452,17 @@ The `Str::headline` method will convert strings delimited by casing, hyphens, or
 
     // Email Notification Sent
 
+<a name="method-str-inline-markdown"></a>
+#### `Str::inlineMarkdown()` {.collection-method}
+
+The `Str::inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/). However, unlike the `markdown` method, it does not wrap all generated HTML in a block-level element:
+
+    use Illuminate\Support\Str;
+
+    $html = Str::inlineMarkdown('**Laravel**');
+
+    // <strong>Laravel</strong>
+
 <a name="method-str-is"></a>
 #### `Str::is()` {.collection-method}
 
@@ -1413,6 +1490,25 @@ The `Str::isAscii` method determines if a given string is 7 bit ASCII:
     // true
 
     $isAscii = Str::isAscii('ü');
+
+    // false
+
+<a name="method-str-is-json"></a>
+#### `Str::isJson()` {.collection-method}
+
+The `Str::isJson` method determines if the given string is valid JSON:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::isJson('[1,2,3]');
+
+    // true
+
+    $result = Str::isJson('{"first": "John", "last": "Doe"}');
+
+    // true
+
+    $result = Str::isJson('{first: "John", last: "Doe"}');
 
     // false
 
@@ -1917,6 +2013,17 @@ The `Str::upper` method converts the given string to uppercase:
 
     // LARAVEL
 
+<a name="method-str-ulid"></a>
+#### `Str::ulid()` {.collection-method}
+
+The `Str::ulid` method generates a ULID:
+
+    use Illuminate\Support\Str;
+
+    return (string) Str::ulid();
+    
+    // 01gd6r360bp37zj17nxb55yv40
+
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
 
@@ -2104,6 +2211,17 @@ The `camel` method converts the given string to `camelCase`:
 
     // fooBar
 
+<a name="method-fluent-str-class-basename"></a>
+#### `classBasename` {.collection-method}
+
+The `classBasename` method returns the class name of the given class with the class's namespace removed:
+
+    use Illuminate\Support\Str;
+
+    $class = Str::of('Foo\Bar\Baz')->classBasename();
+
+    // Baz
+
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
 
@@ -2239,6 +2357,17 @@ The `finish` method adds a single instance of the given value to a string if it 
 
     // this/string/
 
+<a name="method-fluent-str-inline-markdown"></a>
+#### `inlineMarkdown` {.collection-method}
+
+The `inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/). However, unlike the `markdown` method, it does not wrap all generated HTML in a block-level element:
+
+    use Illuminate\Support\Str;
+
+    $html = Str::of('**Laravel**')->inlineMarkdown();
+
+    // <strong>Laravel</strong>
+
 <a name="method-fluent-str-is"></a>
 #### `is` {.collection-method}
 
@@ -2299,6 +2428,25 @@ The `isNotEmpty` method determines if the given string is not empty:
     $result = Str::of('Laravel')->trim()->isNotEmpty();
 
     // true
+
+<a name="method-fluent-str-is-json"></a>
+#### `isJson` {.collection-method}
+
+The `isJson` method determines if a given string is valid JSON:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('[1,2,3]')->isJson();
+
+    // true
+
+    $result = Str::of('{"first": "John", "last": "Doe"}')->isJson();
+
+    // true
+
+    $result = Str::of('{first: "John", last: "Doe"}')->isJson();
+
+    // false
 
 <a name="method-fluent-str-is-uuid"></a>
 #### `isUuid` {.collection-method}
@@ -2833,7 +2981,7 @@ The `tap` method passes the string to the given closure, allowing you to examine
     $string = Str::of('Laravel')
         ->append(' Framework')
         ->tap(function ($string) {
-            dump('String after append: ' . $string);
+            dump('String after append: '.$string);
         })
         ->upper();
 
@@ -3032,6 +3180,19 @@ The `whenExactly` method invokes the given closure if the string exactly matches
     });
 
     // 'Laravel'
+
+<a name="method-fluent-str-when-not-exactly"></a>
+#### `whenNotExactly` {.collection-method}
+
+The `whenNotExactly` method invokes the given closure if the string does not exactly match the given string. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('framework')->whenNotExactly('laravel', function ($string) {
+        return $string->title();
+    });
+
+    // 'Framework'
 
 <a name="method-fluent-str-when-is"></a>
 #### `whenIs` {.collection-method}
@@ -3409,7 +3570,8 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
 
     $env = env('APP_ENV', 'production');
 
-> {note} If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
+> **Warning**  
+> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
 
 <a name="method-event"></a>
 #### `event()` {.collection-method}
@@ -3417,6 +3579,27 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
 The `event` function dispatches the given [event](/docs/{{version}}/events) to its listeners:
 
     event(new UserRegistered($user));
+
+<a name="method-fake"></a>
+#### `fake()` {.collection-method}
+
+The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) singleton from the container, which can be useful when creating fake data in model factories, database seeding, tests, and prototyping views:
+
+```blade
+@for($i = 0; $i < 10; $i++)
+    <dl>
+        <dt>Name</dt>
+        <dd>{{ fake()->name() }}</dd>
+
+        <dt>Email</dt>
+        <dd>{{ fake()->unique()->safeEmail() }}</dd>
+    </dl>
+@endfor
+```
+
+By default, the `fake` function will utilize the `app.faker_locale` configuration option in your `config/app.php` configuration file; however, you may also specify the locale by passing it to the `fake` function. Each locale will resolve an individual singleton:
+
+    fake('nl_NL')->name()
 
 <a name="method-filled"></a>
 #### `filled()` {.collection-method}
@@ -3600,13 +3783,13 @@ If you would like to manually calculate the number of milliseconds to sleep betw
 
     return retry(5, function () {
         // ...
-    }, function ($attempt) {
+    }, function ($attempt, $exception) {
         return $attempt * 100;
     });
 
 For convenience, you may provide an array as the first argument to the `retry` function. This array will be used to determine how many milliseconds to sleep between subsequent attempts:
 
-    return retry([100, 200] function () {
+    return retry([100, 200], function () {
         // Sleep for 100ms on first retry, 200ms on second retry...
     });
 
@@ -3767,3 +3950,29 @@ The `with` function returns the value it is given. If a closure is passed as the
     $result = with(5, null);
 
     // 5
+
+<a name="other-utilities"></a>
+## Other Utilities
+
+<a name="benchmarking"></a>
+### Benchmarking
+
+Sometimes you may wish to quickly test the performance of certain parts of your application. On those occasions, you may utilize the `Benchmark` support class to measure the number of milliseconds it takes for the given callbacks to complete:
+
+    <?php
+
+    use App\Models\User;
+    use Illuminate\Support\Benchmark;
+
+    Benchmark::dd(fn () => User::find(1)); // 0.1 ms
+
+    Benchmark::dd([
+        'Scenario 1' => fn () => User::count(), // 0.5 ms
+        'Scenario 2' => fn () => User::all()->count(), // 20.0 ms
+    ]);
+
+By default, the given callbacks will be executed once (one iteration), and their duration will be displayed in the browser / console.
+
+To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
+
+    Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms

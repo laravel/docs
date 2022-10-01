@@ -57,7 +57,8 @@ php artisan make:test UserTest --pest
 php artisan make:test UserTest --unit --pest
 ```
 
-> {小訣竅} 可以使用 [stub publishing](/docs/{{version}}/artisan#stub-customization) 來客製化測試 stubs 。
+> **Note**
+> 可以使用 [stub publishing](/docs/{{version}}/artisan#stub-customization) 來客製化測試 stubs 。
 
 一旦測試建立好了之後，你可以照一般的方式用 [PHPUnit](https://phpunit.de) 來定義測試方法。在你的終端機執行 `vendor/bin/phpunit` 或 `php artisan test` 指令來運作你的測試：
 
@@ -80,7 +81,8 @@ php artisan make:test UserTest --unit --pest
         }
     }
 
-> {備註} 如果你在測試類別中定義了你自己的 `setUp` / `tearDown` 方法，請記得在父類別去個別呼叫 `parent::setUp()` / `parent::tearDown()` 方法。
+> **Warning**
+> 如果你在測試類別中定義了你自己的 `setUp` / `tearDown` 方法，請記得在父類別去個別呼叫 `parent::setUp()` / `parent::tearDown()` 方法。
 
 <a name="running-tests"></a>
 ## 執行測試
@@ -118,7 +120,8 @@ php artisan test --parallel
 php artisan test --parallel --processes=4
 ```
 
-> {備註} 當執行平行測試的時候，有些 PHPUnit 選項是無效的。（例如 `--do-not-cache-result`）
+> **Warning** 
+> 當執行平行測試的時候，有些 PHPUnit 選項是無效的。（例如 `--do-not-cache-result`）
 
 <a name="parallel-testing-and-databases"></a>
 #### 平行測試與資料庫
@@ -188,7 +191,8 @@ php artisan test --parallel --recreate-databases
 <a name="reporting-test-coverage"></a>
 ### 回報測試覆蓋範圍
 
-> {備註} 這個功能需要安裝 [Xdebug](https://xdebug.org) or [PCOV](https://pecl.php.net/package/pcov) 。
+> **Warning**
+> 這個功能需要安裝 [Xdebug](https://xdebug.org) or [PCOV](https://pecl.php.net/package/pcov) 。
 
 當執行你的應用程式測試時，你可能會想要確定你的測試項目是否真的涵蓋到應用程式，以及多少的應用程式碼被測試使用到。要確認這些資訊，你可以在呼叫 `test` 指令時加上 `--coverage` 選項：
 

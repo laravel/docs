@@ -123,7 +123,8 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
         }
     }
 
-> {note} You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
+> **Warning**  
+> You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
 
 <a name="facade-spies"></a>
 ### Facade Spies
@@ -177,7 +178,7 @@ You may use the `Bus` facade's `fake` method to prevent jobs from being dispatch
             // Assert that a job was dispatched synchronously...
             Bus::assertDispatchedSync(AnotherJob::class);
 
-            // Assert that a job was not dipatched synchronously...
+            // Assert that a job was not dispatched synchronously...
             Bus::assertNotDispatchedSync(AnotherJob::class);
 
             // Assert that a job was dispatched after the response was sent...
@@ -196,6 +197,29 @@ You may pass a closure to the available methods in order to assert that a job wa
     Bus::assertDispatched(function (ShipOrder $job) use ($order) {
         return $job->order->id === $order->id;
     });
+
+<a name="faking-a-subset-of-jobs"></a>
+#### Faking A Subset Of Jobs
+
+If you only want to prevent certain jobs from being dispatched, you may pass the jobs that should be faked to the `fake` method:
+
+    /**
+     * Test order process.
+     */
+    public function test_orders_can_be_shipped()
+    {
+        Bus::fake([
+            ShipOrder::class,
+        ]);
+
+        // ...
+    }
+
+You may fake all jobs except for a set of specified jobs using the `except` method:
+
+    Bus::fake()->except([
+        ShipOrder::class,
+    ]);
 
 <a name="bus-job-chains"></a>
 ### Job Chains
@@ -233,6 +257,18 @@ The `Bus` facade's `assertBatched` method may be used to assert that a [batch of
         return $batch->name == 'import-csv' &&
                $batch->jobs->count() === 10;
     });
+
+<a name="testing-job-batch-interaction"></a>
+#### Testing Job / Batch Interaction
+
+In addition, you may occasionally need to test an individual job's interaction with its underlying batch. For example, you may need to test if a job cancelled further processing for its batch. To accomplish this, you need to assign a fake batch to the job via the `withFakeBatch` method. The `withFakeBatch` method returns a tuple containing the job instance and the fake batch:
+
+    [$job, $batch] = (new ShipOrder)->withFakeBatch();
+
+    $job->handle();
+
+    $this->assertTrue($batch->cancelled());
+    $this->assertEmpty($batch->added);
 
 <a name="event-fake"></a>
 ## Event Fake
@@ -288,7 +324,8 @@ If you would simply like to assert that an event listener is listening to a give
         SendShipmentNotification::class
     );
 
-> {note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
+> **Warning**  
+> After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
 
 <a name="faking-a-subset-of-events"></a>
 #### Faking A Subset Of Events
@@ -311,6 +348,12 @@ If you only want to fake event listeners for a specific set of events, you may p
         // Other events are dispatched as normal...
         $order->update([...]);
     }
+
+You may fake all events except for a set of specified events using the `except` method:
+
+    Event::fake()->except([
+        OrderCreated::class,
+    ]);
 
 <a name="scoped-event-fakes"></a>
 ### Scoped Event Fakes
@@ -406,12 +449,38 @@ You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or 
         return $mail->order->id === $order->id;
     });
 
-When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the recipients of the mailable:
+When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:
 
     Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
         return $mail->hasTo($user->email) &&
                $mail->hasCc('...') &&
-               $mail->hasBcc('...');
+               $mail->hasBcc('...') &&
+               $mail->hasReplyTo('...') &&
+               $mail->hasFrom('...') &&
+               $mail->hasSubject('...');
+    });
+
+The mailable instance also includes several helpful methods for examining the attachments on a mailable:
+
+    Mail::assertSent(OrderShipped::class, function ($mail) {
+        return $mail->hasAttachment('/path/to/file');
+    });
+
+    Mail::assertSent(OrderShipped::class, function ($mail) {
+        return $mail->hasAttachment('/path/to/file', [
+            'as' => 'name.pdf',
+            'mime' => 'application/pdf',
+        ]);
+    });
+
+    Mail::assertSent(OrderShipped::class, function ($mail) {
+        return $mail->hasAttachmentFromStorageDisk('s3', '/path/to/file');
+    });
+
+    Mail::assertSent(OrderShipped::class, function ($mail) use ($pdfData) {
+        return $mail->hasAttachedData($pdfData, 'name.pdf', [
+            'mime' => 'application/pdf'
+        ]);
     });
 
 You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:
@@ -464,6 +533,9 @@ After calling the `Notification` facade's `fake` method, you may then assert tha
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
+
+            // Assert that a given number of notifications were sent...
+            Notification::assertCount(3);
         }
     }
 
@@ -539,6 +611,20 @@ You may pass a closure to the `assertPushed` or `assertNotPushed` methods in ord
         return $job->order->id === $order->id;
     });
 
+If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:
+
+    public function test_orders_can_be_shipped()
+    {
+        Queue::fake([
+            ShipOrder::class,
+        ]);
+        
+        // Perform order shipping...
+
+        // Assert a job was pushed twice...
+        Queue::assertPushed(ShipOrder::class, 2);
+    }
+
 <a name="job-chains"></a>
 ### Job Chains
 
@@ -606,7 +692,8 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
 
 By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads).
 
-> {note} The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php).
+> **Warning**  
+> The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php).
 
 <a name="interacting-with-time"></a>
 ## Interacting With Time

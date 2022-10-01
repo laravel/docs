@@ -38,6 +38,7 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Horizon](https://github.com/laravel/horizon)
 - [Laravel Jetstream](https://github.com/laravel/jetstream)
 - [Laravel Passport](https://github.com/laravel/passport)
+- [Laravel Pint](https://github.com/laravel/pint)
 - [Laravel Sail](https://github.com/laravel/sail)
 - [Laravel Sanctum](https://github.com/laravel/sanctum)
 - [Laravel Scout](https://github.com/laravel/scout)
@@ -74,7 +75,7 @@ Informal discussion regarding bugs, new features, and implementation of existing
 <a name="which-branch"></a>
 ## Which Branch?
 
-**All** bug fixes should be sent to the latest version that supports bug fixes (currently `8.x`). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**All** bug fixes should be sent to the latest version that supports bug fixes (currently `9.x`). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
 
 **Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch (currently `9.x`).
 

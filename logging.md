@@ -59,7 +59,8 @@ Name | Description
 `stack` | A wrapper to facilitate creating "multi-channel" channels
 `syslog` | A `SyslogHandler` based Monolog driver
 
-> {tip} Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
+> **Note**  
+> Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
 <a name="channel-prerequisites"></a>
 ### Channel Prerequisites
@@ -143,7 +144,7 @@ Let's dissect this configuration. First, notice our `stack` channel aggregates t
 <a name="log-levels"></a>
 #### Log Levels
 
-Take note of the `level` configuration option present on the `syslog` and `slack` channel configurations in the example above. This option determines the minimum "level" a message must be in order to be logged by the channel. Monolog, which powers Laravel's logging services, offers all of the log levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info**, and **debug**.
+Take note of the `level` configuration option present on the `syslog` and `slack` channel configurations in the example above. This option determines the minimum "level" a message must be in order to be logged by the channel. Monolog, which powers Laravel's logging services, offers all of the log levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424). In descending order of severity, these log levels are: **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info**, and **debug**.
 
 So, imagine we log a message using the `debug` method:
 
@@ -336,7 +337,8 @@ Once you have configured the `tap` option on your channel, you're ready to defin
         }
     }
 
-> {tip} All of your "tap" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected.
+> **Note**  
+> All of your "tap" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected.
 
 <a name="creating-monolog-handler-channels"></a>
 ### Creating Monolog Handler Channels
@@ -406,6 +408,6 @@ Once you have configured the `custom` driver channel, you're ready to define the
          */
         public function __invoke(array $config)
         {
-            return new Logger(...);
+            return new Logger(/* ... */);
         }
     }
