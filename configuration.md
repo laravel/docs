@@ -113,12 +113,12 @@ APP_NAME="My Application"
 > 目前應用程式環境檢測可以由定義伺服器級（server-level）`APP_ENV` 環境變數去做覆蓋。
 
 <a name="encrypting-environment-files"></a>
-### Encrypting Environment Files
+### 加密環境檔
 
-Unencrypted environment files should never be stored in source control. However, Laravel allows you to encrypt your environment files so that they may be safely be added to source control with the rest of your application.
+未加密環境檔不能被存取在原始碼控制中。不過Laravel 可以加密你的環境檔，因此被加密後的環境檔就可以更安全地加到你部分應用程式上的原始碼控制裡。
 
 <a name="encryption"></a>
-#### Encryption
+#### 加密
 
 To encrypt an environment file, you may use the `env:encrypt` command:
 
