@@ -5,7 +5,7 @@
     - [ 環境變數型態 ](#environment-variable-types)
     - [ 檢索環境設定 ](#retrieving-environment-configuration)
     - [ 判斷目前環境 ](#determining-the-current-environment)
-    - [Encrypting Environment Files](#encrypting-environment-files)
+    - [加密環境檔](#encrypting-environment-files)
 - [ 存取設定值 ](#accessing-configuration-values)
 - [ 快取設定 ](#configuration-caching)
 - [ 除錯模式 ](#debug-mode)
@@ -113,64 +113,64 @@ APP_NAME="My Application"
 > 目前應用程式環境檢測可以由定義伺服器級（server-level）`APP_ENV` 環境變數去做覆蓋。
 
 <a name="encrypting-environment-files"></a>
-### Encrypting Environment Files
+### 加密環境檔
 
-Unencrypted environment files should never be stored in source control. However, Laravel allows you to encrypt your environment files so that they may be safely be added to source control with the rest of your application.
+未加密環境檔不應該被存取到原始碼控制中。不過Laravel 可以加密你的環境檔，因此這些加密過的環境檔可以更安全地加進你的部分應用的原始碼控制中。
 
 <a name="encryption"></a>
-#### Encryption
+#### 加密
 
-To encrypt an environment file, you may use the `env:encrypt` command:
+你可以使用 `env:encrypt` 指令來加密環境檔：
 
 ```shell
 php artisan env:encrypt
 ```
 
-Running the `env:encrypt` command will encrypt your `.env` file and place the encrypted contents in an `.env.encrypted` file. The decryption key is presented in the output of the command and should be stored in a secure password manager. If you would like to provide your own encryption key you may use the `--key` option when invoking the command:
+執行 `env:encrypt` 指令會加密你的 `.env` 檔然後將加密的內容放進 `.env.encrypted` 檔。解密金鑰會顯示在指令的輸出，我們應該要將金鑰儲存在安全的密碼管理器中。如果你想提供自己的加密金鑰你可以在調用指令時使用 `--key` 選項：
 
 ```shell
 php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
 > **Note**  
-> The length of the key provided should match the key length required by the encryption cipher being used. By default, Laravel will use the `AES-256-CBC` cipher which requires a 32 character key. You are free to use any cipher supported by Laravel's [encrypter](/docs/{{version}}/encryption) by passing the `--cipher` option when invoking the command.
+> 被提供的金鑰長度應該和所使用的加密密碼所需的金鑰長度相符。正常情況下，Laravel 會使用需要32個英文字符組成的 `AES-256-CBC` 密碼。在調用指令時通過 `--cipher` 選項，你可以自由的使用任何Laravel [加密器](/docs/{{version}}/encryption)支援的密碼。
 
-If your application has multiple environment files, such as `.env` and `.env.staging`, you may specify the environment file that should be encrypted by providing the environment name via the `--env` option:
+如果你的應用有多個環境檔，例如 `.env` 和 `.env.staging` ，你可以藉由通過 `--env` 選項提供環境名字來指定需要被加密的環境檔：
 
 ```shell
 php artisan env:encrypt --env=staging
 ```
 
 <a name="decryption"></a>
-#### Decryption
+#### 解密
 
-To decrypt an environment file, you may use the `env:decrypt` command. This command requires a decryption key, which Laravel will retrieve from the `LARAVEL_ENV_ENCRYPTION_KEY` environment variable:
+你可以使用 `env:decrypt` 指令來解密環境檔。這個指令需要解密金鑰，Laravel會從 `LARAVEL_ENV_ENCRYPTION_KEY` 這個環境變數中找出金鑰。
 
 ```shell
 php artisan env:decrypt
 ```
-
-Or, the key may be provided directly to the command via the `--key` option:
+或者可以直接通過 `--key` 選項來提供解密金鑰：
 
 ```shell
 php artisan env:decrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
-When the `env:decrypt` command is invoked, Laravel will decrypt the contents of the `.env.encrypted` file and place the decrypted contents in the `.env` file.
+當 `env:decrypt` 指令被調用時，Laravel會解密 `.env.encrypted` 這個檔案，然後把解密後的內容放進 `.env` 檔中。
 
+在 `env:decrypt` 指令後面加上 `--cipher` 選項可以用來自定義加密密碼：
 The `--cipher` option may be provided to the `env:decrypt` command in order to use a custom encryption cipher:
 
 ```shell
 php artisan env:decrypt --key=qUWuNRdfuImXcKxZ --cipher=AES-128-CBC
 ```
 
-If your application has multiple environment files, such as `.env` and `.env.staging`, you may specify the environment file that should be decrypted by providing the environment name via the `--env` option:
+如果你的應用有多個環境檔，例如 `.env` 和 `.env.staging` ，你可以藉由通過 `--env` 選項提供環境名字來指定需要被解密的環境檔：
 
 ```shell
 php artisan env:decrypt --env=staging
 ```
 
-In order to overwrite an existing environment file, you may provide the `--force` option to the `env:decrypt` command:
+為了覆蓋已經存在的環境檔，你可以在 `env:decrypt` 指令後面加上 `--force` 選項。
 
 ```shell
 php artisan env:decrypt --force
