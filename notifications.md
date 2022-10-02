@@ -1104,6 +1104,20 @@ To route Vonage notifications to the proper phone number, define a `routeNotific
         }
     }
 
+### Working directly with the SMS client
+
+In case you need to use SMS messages which are not used by Eloquent Models or notifiable trait, you can access the client directly using the `Vonage` facade:
+
+    <?php
+
+    $message = Vonage::message()->send([
+        'type' => 'unicode',
+        'to' => 'recipient-phone-here',
+        'from' => 'sender-here',
+        'text' => 'Your Message Here'
+    ]);
+
+
 <a name="slack-notifications"></a>
 ## Slack Notifications
 
