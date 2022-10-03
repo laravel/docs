@@ -1938,7 +1938,7 @@ Using the `Checkout::guest` method, you may initiate checkout sessions for guest
         ]);
     });
 
-Similarly to creating checkout sessions with existing users, you may utilize additional methods available on the returned `Laravel\Cashier\CheckoutBuilder` instance to customize the guest checkout session:
+Similarly to when creating checkout sessions for existing users, you may utilize additional methods available on the `Laravel\Cashier\CheckoutBuilder` instance to customize the guest checkout session:
 
     use Illuminate\Http\Request;
     use Laravel\Cashier\Checkout;
@@ -1952,7 +1952,7 @@ Similarly to creating checkout sessions with existing users, you may utilize add
             ]);
     });
 
-After a guest checkout has been completed Stripe will send a `checkout.session.completed` event. Make sure to [configure your Stripe webhook](https://dashboard.stripe.com/webhooks) to send this event to your application. After that you may [handle the webhook with Cashier](#handling-stripe-webhooks). The received object will be [a `checkout` object](https://stripe.com/docs/api/checkout/sessions/object) that you can use to fulfill your customer's order.
+After a guest checkout has been completed, Stripe can dispatch a `checkout.session.completed` webhook event, so make sure to [configure your Stripe webhook](https://dashboard.stripe.com/webhooks) to actually send this event to your application. Once the webhook has been enabled within the Stripe dashboard, you may [handle the webhook with Cashier](#handling-stripe-webhooks). The object contained in the webhook payload will be a [`checkout` object](https://stripe.com/docs/api/checkout/sessions/object) that you may inspect in order to fulfill your customer's order.
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
