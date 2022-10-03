@@ -71,7 +71,7 @@ Laravel 允許你簡單地 "mock" 使用者輸入給你的終端指令使用 `ex
 <a name="confirmation-expectations"></a>
 #### 確認期望值
 
-當寫一個期望確認 "yes" 或 "no" 形式答案的指令, 你可能利用 `expectsConfirmation` 方法:
+當寫一個期望確認 "yes" 或 "no" 形式答案的指令,你可能利用 `expectsConfirmation` 方法:
 
     $this->artisan('module:import')
         ->expectsConfirmation('Do you really wish to run this command?', 'no')
