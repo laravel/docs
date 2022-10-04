@@ -780,7 +780,7 @@ const submit = () => {
 </template>
 ```
 
-The `form` object is still the Inertia form helper, but we have added additional validation functionality.
+The resulting `form` object is the Inertia form helper, with additional precognitive validation features.
 
 We will now use the form helper to implement live validation. To do this we will want to call the `form.validate` function, passing through the input name. We recommend doing this in the `@change` event handler of your inputs:
 
@@ -815,10 +815,17 @@ const submit = () => {
 
 Precognitive validation is now in place for the form. As the form is filled out by a user, precognitive validation requests will be sent to the server and any errors that are return will populate `form.errors`.
 
-You may also like to checkout out:
+<a name="vue-inertia-validation-exposed-state"></a>
+#### Exposed State
 
-- [Exposed State](#vue-validation-exposed-state)
-- [Configuring the Validator](#vue-validation-configuration)
+The Inertia form exposes some additional reactive properties, including:
+
+- `passed`: An array of input names that have passed validation.
+- `processingValidation`: A boolean indicating if a validation request is currently in-flight.
+- `touched`: An array of input names that have been validated.
+- `validating`: The latest input name awaiting.
+
+Also see: [configuring the Validator](#vue-validation-configuration).
 
 <a name="specification"></a>
 ## Specification
