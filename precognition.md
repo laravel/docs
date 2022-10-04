@@ -347,7 +347,7 @@ precognitive.use(client);
 <a name="configuration"></a>
 ### Configuration
 
-The optional `config` argument that the request methods accept is the [Axios' configuration](https://axios-http.com/docs/req_config) object with some additional Precognition options to customize behaviour and also make handling common responses easier.
+The Precognition configuration object is the [Axios' configuration](https://axios-http.com/docs/req_config) object with some additional options to customize behaviour and also make handling common responses easier.
 
 <a name="config-onprecognitionsuccess"></a>
 #### `onPrecognitionSuccess`
@@ -369,13 +369,13 @@ Handle `422 Unprocessable Entity` responses:
 
 ```js
 precognitive.post(url, data, {
-    onValidationError: (response, axiosError) => {
+    onValidationError: (response, error) => {
         emailError = response.data.errors.email[0];
     },
 });
 ```
 
-The Precognition client has lot of [validation features baked in](#validation). If you are not using the baked in validation features and you are managing validation errors manually, you may need to use this option:
+The Precognition client has lot of [validation features baked in](#validation). If you are not using the baked in validation features and you are managing validation errors manually, you may need to use this option.
 
 The function's `response` argument is the [Axios response](https://axios-http.com/docs/res_schema) object and the `error` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
 
@@ -552,6 +552,8 @@ class StoreUserRequest extends FormRequest
 }
 ```
 
+From the frontend of your application, you may specify the input data that you would like to run rules 
+
 <a name="validating-vue"></a>
 ### Working With Vue
 
@@ -593,10 +595,11 @@ const submit = () => {
 </template>
 ```
 
-We will enhance this implementation by adding live validation powered by Laravel Precognition. To achieve this we will create a precognitive form, passing through the method, url, and initial form data. Then we will use:
+We will enhance this implementation by adding live validation powered by Laravel Precognition. To achieve this we will create a precognitive form, passing through the method, url, and initial form data. Then we will:
 
-- `form.errors.username` where we were previously accessing `errors.username?.[0]`.
-- `form.submit()` in place of `axios.post(/* ... */)`.
+- Use `form.errors.username` where we were previously accessing `errors.username?.[0]`.
+- Use `form.submit()` in place of `axios.post(/* ... */)`.
+- Remove our manual error handling, as `form.submit()` handles this for us.
 
 ```vue
 <script setup>
@@ -639,8 +642,6 @@ const submit = () => {
 </template>
 ```
 
-When submitting the form via `form.submit()`, the `form.errors` will automatically be populated with returned validation errors.
-
 We will now use the form helper to implement live validation. To do this we will want to call the `form.validate` function, passing through the input name. We recommend doing this in the `@change` event handler of your inputs:
 
 ```vue
@@ -673,7 +674,7 @@ const submit = () => {
 </template>
 ```
 
-Precognitive validation is now in place for the form. As the form is filled out by a user, precognitive validation requests will be sent to the server and any errors that are returned will populate `form.errors`.
+Precognitive validation is now in place for the form. As the form is filled out by a user, debounced precognitive validation requests will be sent to the server and any errors that are returned will populate `form.errors`.
 
 <a name="vue-validation-exposed-state"></a>
 #### Exposed State
@@ -685,7 +686,7 @@ The form exposes some reactive properties, including:
 - `passed`: An array of input names that have passed validation.
 - `processingValidation`: A boolean indicating if a validation request is currently in-flight.
 - `touched`: An array of input names that have been validated.
-- `validating`: The latest input name awaiting.
+- `validating`: The latest input name awaiting validation.
 
 <a name="vue-validation-configuration"></a>
 #### Configuring The Validation Requests
@@ -696,18 +697,17 @@ You may pass [configuration options](#configuration) to the validator as the las
 let validationRequestCount = 0;
 
 const form = usePrecognitiveForm('post', '/users', {
+    username: '',
     // ...
 }, {
     onBefore:() => { /* ... */ },
 });
 ```
 
-If you would like to change the default debounce timeout for validation requests, you may use the `setValidationTimeout` configuration option:
+If you would like to change the default debounce timeout for validation requests, you may use the form's `setValidationTimeout` function:
 
 ```js
-const form = usePrecognitiveForm(
-    // ...
-).setValidationTimeout({ timeout: { seconds: 2 }});
+form.setValidationTimeout({ seconds: 2 });
 ```
 
 <a name="validating-vue-inertia"></a>
@@ -744,7 +744,7 @@ const submit = () => {
 </template>
 ```
 
-To augment this implementation to add live validation powered by Laravel Precognition, first we will create a precognitive form, passing through the method, url, and initial data. We may also use `form.submit(config)` in place of `form.post(url, config)`:
+To augment this implementation with live validation powered by Laravel Precognition, first we will create a precognitive form, passing through the method, url, and Inertia form. We may also use `form.submit(config)` in place of `form.post(url, config)`:
 
 ```vue
 <script setup>
@@ -813,7 +813,7 @@ const submit = () => {
 </template>
 ```
 
-Precognitive validation is now in place for the form. As the form is filled out by a user, precognitive validation requests will be sent to the server and any errors that are return will populate `form.errors`.
+Precognitive validation is now in place for the form. As the form is filled out by a user, debounced precognitive validation requests will be sent to the server and any errors that are return will populate `form.errors`.
 
 <a name="vue-inertia-validation-exposed-state"></a>
 #### Exposed State
