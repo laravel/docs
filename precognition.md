@@ -29,7 +29,7 @@ Precognition works by executing all middleware and resolving all controller depe
 <a name="installation"></a>
 ## Installation
 
-We have created some frontend helper libraries to make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate library for your project. The Laravel starter kits and skeleton install and configure the library, however if your application does not yet have it installed, you can install it via NPM. There is a vanilla JavaScript and Vue flavoured package available:
+The frontend helper libraries make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate library for your project. There is a vanilla JavaScript and Vue flavoured package available via NPM:
 
 ```sh
 # vanilla JavaScript
@@ -217,19 +217,20 @@ class PostController
 {
     public function update(Request $request, $id)
     {
-        [$post, $payload] = precognitive(function ($bail) use ($request, $id) {
+        [$post, $payload] = precognitive(function ($bail) use ($request, $id) {// [tl! add]
             $post = Post::findOrFail($id);
 
             $this->authorize('update', $post);
 
             if ($this->updateConflicts($request, $post)) {
-                $bail(response('Post has been updated.', 409));
+                return response('Post has been updated.', 409);// [tl! remove]
+                $bail(response('Post has been updated.', 409));// [tl! add]
             }
 
             $payload = $request->validate([ /* ... */ ]);
 
-            return [$post, $payload];
-        });
+            return [$post, $payload];// [tl! add]
+        });// [tl! add]
 
         $post->update($payload);
 
@@ -253,7 +254,7 @@ precognitive.put(url, data, config);
 precognitive.delete(url, config);
 ```
 
-All of these methods return a `Promise` for you to work with as you need:
+The optional `config` argument is a [configuration object](#configuration). All of these methods return a `Promise` for you to work with as you need:
 
 ```js
 precognitive.post(url, data)
@@ -332,7 +333,6 @@ precognitive.post('/projects/5', form.data(), {
 
 The precognitive client uses the default Axios client without any changes. If your application configures an Axios instance, you may use that instance for Precognition requests by passing it to the `use` function:
 
-
 ```js
 import axios from 'axios';
 import precognitive from 'laravel-precognition';
@@ -365,19 +365,19 @@ The function's `response` argument is the [Axios response](https://axios-http.co
 <a name="config-onvalidationerror"></a>
 #### `onValidationError`
 
-The Precognition client has lot of [validation features baked in](#validation). If you are not using the baked in validation features, you may want to use this option to handle validation responses manually:
+Handle `422 Unprocessable Entity` responses:
 
 ```js
 precognitive.post(url, data, {
-    onValidationError: (errors, axiosError) => {
-        emailError = errors.email[0];
+    onValidationError: (response, axiosError) => {
+        emailError = response.data.errors.email[0];
     },
 });
 ```
 
-The function's `errors` argument is the error object from the [Laravel validation response](https://laravel.com/docs/validation#validation-error-response-format) and the `axiosError` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
+The Precognition client has lot of [validation features baked in](#validation). If you are not using the baked in validation features and you are managing validation errors manually, you may need to use this option:
 
-> **Note** Unlike the other error handlers seen below, `onValidationError` does not receive the standard Axios response object as it's first argument, however it is still available via `axiosError.response`.
+The function's `response` argument is the [Axios response](https://axios-http.com/docs/res_schema) object and the `error` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
 
 <a name="config-onunauthorized"></a>
 #### `onUnauthorized`
@@ -445,31 +445,31 @@ precognitive.post(url, data, {
 The function's `response` argument is the [Axios response](https://axios-http.com/docs/res_schema) object and the `error` argument is the [Axios error](https://axios-http.com/docs/handling_errors) object.
 
 <a name="config-before"></a>
-#### `before`
+#### `onBefore`
 
-The before hook allows you to execute some code before the request is sent. This is mostly useful for repeated requests when using [validation](#validation) or [polling](#polling):
+The before hook allows you to execute some code before the request is sent. This is mostly useful for repeated requests when using [validation](#validation) or polling:
 
 ```js
 precognitive.post(url, data, {
-   before: () => { /* ... */ },
+   onBefore: () => { /* ... */ },
 });
 ```
 
 <a name="config-after"></a>
-#### `after`
+#### `onAfter`
 
-The after hook allows you to execute some code after the response is received and all other handlers have run. This is mostly useful for repeated requests when using [validation](#validation) or [polling](#polling):
+The after hook allows you to execute some code after the response is received and all other handlers have run. This is mostly useful for repeated requests when using [validation](#validation) or polling:
 
 ```js
 precognitive.post(url, data, {
-   after: (promise) => promise.then(/* ... */),
+   onAfter: (promise) => promise.then(/* ... */),
 });
 ```
 
 <a name="config-fingerprint"></a>
 #### `fingerprint`
 
-The "fingerprint" to use when [aborting stale requests](#aborting-stale-requests).
+The "fingerprint" to use when to automatically [abort stale requests](#aborting-stale-requests).
 
 ```js
 precognitive.post(url, data, {
@@ -480,7 +480,7 @@ precognitive.post(url, data, {
 <a name="config-validate"></a>
 #### `validate`
 
-The Precognition client has lot of [validation features baked in](#validation). If you are not using the baked in validation features, you may use this option to specify the input fields you would like to have validation rules run against. In the following example, the frontend is requesting that only `name` and `language` validation rules be run and not validation rules for `website`:
+Input names to add to the `Precognition-Validate-Only` header. In the following example, the frontend is requesting that only `name` and `language` validation rules be run and not validation rules for `website`:
 
 ```js
 const data = { 
@@ -491,18 +491,20 @@ const data = {
 
 precognitive.post(url, data, {
     validate: ['name', 'language'],
-    onValidationError: errors => { /* ... */ },
+    onValidationError: response => { /* ... */ },
 });
 ```
 
 This request would include a `Precognition-Validate-Only name,language` header.
 
-When filtering results from the front-end, code execution will stop after the validator has run, even if it was successful.
+The Precognition client has lot of [validation features baked in](#validation). If you are not using the baked in validation features, you may use this option to specify the input fields you would like to have validation rules run against. 
+
+> **Note** When filtering results from the front-end, code execution will stop after the validator has run, even if it was successful.
 
 <a name="validation"></a>
 ## Validation
 
-With Laravel Precognition, you can create realtime validation experiences for your users without having to duplicate validation rules on the frontend. As an example, lets imagine we have an existing form that creates a user in our system. The route that powers this form is using a [form request](/docs/{{version}}/validation#form-request-validation) to house the validation rules:
+With Laravel Precognition, you may create realtime validation experiences for your users without having to duplicate validation rules on the frontend. As an example, lets imagine we have an existing form that creates a user in our system. The route that powers this form is using a [form request](/docs/{{version}}/validation#form-request-validation) to house the validation rules:
 
 ```php
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -550,8 +552,6 @@ class StoreUserRequest extends FormRequest
 }
 ```
 
-You may also find this useful in the form request's `after` validation hook.
-
 <a name="validating-vue"></a>
 ### Working With Vue
 
@@ -573,11 +573,11 @@ const submit = () => {
     axios.post('/users', form.value)
          .then(/* ... */)
          .catch(error => {
-             if (error.response?.status !== 422) {
-                 throw error;
+             if (error.response?.status === 422) {
+                 errors.value = error.response.data.errors;
              }
 
-             errors.value = error.response.data.errors;
+             // ...
          });
 };
 </script>
@@ -593,12 +593,9 @@ const submit = () => {
 </template>
 ```
 
-We will enhance this implementation by adding live validation powered by Laravel Precognition.
-
-To achieve this we will create a precognitive form, passing through the method, url, and initial form data. Then we will use:
+We will enhance this implementation by adding live validation powered by Laravel Precognition. To achieve this we will create a precognitive form, passing through the method, url, and initial form data. Then we will use:
 
 - `form.errors.username` where we were previously accessing `errors.username?.[0]`.
-- `form.setErrors(errors)` in place of setting the `errors.value`.
 - `form.submit()` in place of `axios.post(/* ... */)`.
 
 ```vue
@@ -621,12 +618,11 @@ const submit = () => {
     form.submit()// [tl! add]
          .then(/* ... */)
          .catch(error => {
-             if (error.response?.status !== 422) {
-                 throw error;
+             if (error.response?.status === 422) {// [tl! remove:start]
+                 errors.value = error.response.data.errors;
              }
-
-             errors.value = error.response.data.errors;// [tl! remove]
-             form.setErrors(error.response.data.errors);// [tl! add]
+// [tl! remove:end]
+             // ...
          });
 };
 </script>
@@ -643,6 +639,8 @@ const submit = () => {
 </template>
 ```
 
+When submitting the form via `form.submit()`, the `form.errors` will automatically be populated with returned validation errors.
+
 We will now use the form helper to implement live validation. To do this we will want to call the `form.validate` function, passing through the input name. We recommend doing this in the `@change` event handler of your inputs:
 
 ```vue
@@ -658,11 +656,7 @@ const submit = () => {
     form.submit()
          .then(/* ... */)
          .catch(error => {
-             if (error.response?.status !== 422) {
-                 throw error;
-             }
-
-             form.setErrors(error.response.data.errors);
+             // ...
          });
 };
 </script>
@@ -681,61 +675,39 @@ const submit = () => {
 
 Precognitive validation is now in place for the form. As the form is filled out by a user, precognitive validation requests will be sent to the server and any errors that are returned will populate `form.errors`.
 
-You will note that instead of exposing an array validation errors for a given input, the form only exposes the first validation error. If you would like to retrieve the array of errors for a given input, you may use `form.allErrors(name)` instead.
-
-```vue
-<template>
-    <!-- ... -->
-
-    <InputLabel for="username" />
-    <TextInput id="username" v-model="form.username" />
-    <InputError v-for="message in form.allErrors('username')" :key="message" :message="message" />
-
-    <!-- ... -->
-</template>
-```
-
 <a name="vue-validation-exposed-state"></a>
 #### Exposed State
 
 The form exposes some reactive properties, including:
 
-- `passed`: An array of inputs that have passed validation.
-- `validating`: `null` or, while validating, the last input name passed to `form.validate(name)`.
-
-```vue
-<template>
-    <!-- ... -->
-
-    <InputLabel for="username" />
-    <TextInput id="username" v-model="form.username" />
-    <IsValidIcon v-if="form.passed.includes('username')" /><!-- [tl! add] -->
-    <ValidatingIndicator v-if="form.validating === 'username'" /><!-- [tl! add] -->
-    <InputError :message="form.errors.username" />
-
-    <!-- ... -->
-<template>
-```
+- `errors`: A key / value (string) object of input validation errors.
+- `hasErrors`: A boolean indicating if there are currently validation errors.
+- `passed`: An array of input names that have passed validation.
+- `processingValidation`: A boolean indicating if a validation request is currently in-flight.
+- `touched`: An array of input names that have been validated.
+- `validating`: The latest input name awaiting.
 
 <a name="vue-validation-configuration"></a>
 #### Configuring The Validation Requests
 
-You may pass [configuration options](#configuration) to the validator via the form's `validator.withConfig` function:
+You may pass [configuration options](#configuration) to the validator as the last argument to `usePrecognitiveForm`:
 
 ```js
 let validationRequestCount = 0;
 
-const form = usePrecognitiveForm(/* ... */);
-
-form.validator.withConfig({
-    before: () => validationRequestCount++,
+const form = usePrecognitiveForm('post', '/users', {
+    // ...
+}, {
+    onBefore:() => { /* ... */ },
 });
 ```
 
-If you would like to change the default debounce timeout for validation requests, you may use the `timeout` configuration option:
+If you would like to change the default debounce timeout for validation requests, you may use the `setValidationTimeout` configuration option:
 
 ```js
-form.validator.withConfig({ timeout: { seconds: 2 }});
+const form = usePrecognitiveForm(
+    // ...
+).setValidationTimeout({ timeout: { seconds: 2 }});
 ```
 
 <a name="validating-vue-inertia"></a>
@@ -772,7 +744,7 @@ const submit = () => {
 </template>
 ```
 
-We will augment this implementation to add live validation powered by Laravel Precognition. First we will create a precognitive form, passing through the method, url, and Inertia form. We may also use `form.submit(config)` in place of `form.post(url, config)`:
+To augment this implementation to add live validation powered by Laravel Precognition, first we will create a precognitive form, passing through the method, url, and initial data. We may also use `form.submit(config)` in place of `form.post(url, config)`:
 
 ```vue
 <script setup>
