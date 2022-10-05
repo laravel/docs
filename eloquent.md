@@ -261,6 +261,9 @@ If you wish, you may choose to utilize "ULIDs" instead of UUIDs. ULIDs are simil
 
     $article->id; // "01gd4d3tgrrfqeda94gdbtdk5c"
 
+> **Warning**  
+> [Upserting](#upserts) doesn't work with UUID & ULID Keys, it requires auto-incrementing primary key.
+
 <a name="timestamps"></a>
 ### Timestamps
 
@@ -872,6 +875,9 @@ If you would like to perform multiple "upserts" in a single query, then you shou
     
 > **Warning**  
 > All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the "primary" and "unique" indexes of the table to detect existing records.
+
+> **Warning**  
+> Upserting doesn't work with [UUID & ULID Keys](#uuid-and-ulid-keys), it requires auto-incrementing primary key.
 
 <a name="deleting-models"></a>
 ## Deleting Models
