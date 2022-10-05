@@ -183,6 +183,21 @@ Typically, a 404 HTTP response will be generated if an implicitly bound resource
                 return Redirect::route('photos.index');
             });
 
+<a name="loading-soft-deleted-models"></a>
+### Loading Soft Deleted Models
+
+By default, soft deleted models are not retrieved on your resource routes, and will return a 404 response. You can override this behavior with the `withTrashed` method on your resource route.
+
+    use App\Http\Controllers\PhotoController;
+
+    Route::resource('photos', PhotoController::class)->withTrashed();
+
+Calling `withTrashed` with no arguments will load the soft deleted model for **all** the resource routes. You may specify a subset of the resource routes by passing an array to the method:
+
+    use App\Http\Controllers\PhotoController;
+
+    Route::resource('photos', PhotoController::class)->withTrashed(['show']);
+
 <a name="specifying-the-resource-model"></a>
 #### Specifying The Resource Model
 
