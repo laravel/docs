@@ -192,7 +192,7 @@ By default, soft deleted models are not retrieved on your resource routes, and w
 
     Route::resource('photos', PhotoController::class)->withTrashed();
 
-Calling `withTrashed` with no arguments will load the soft deleted model for **all** the resource routes. You may specify a subset of the resource routes by passing an array to the method:
+Calling `withTrashed` with no arguments will load the soft deleted model for the `show`, `edit`, and `update` resource routes. You may specify a subset of these routes by passing an array to the method:
 
     use App\Http\Controllers\PhotoController;
 
