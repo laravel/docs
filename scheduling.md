@@ -124,7 +124,9 @@ Method  | Description
 `->everySixHours();`  |  Run the task every six hours
 `->daily();`  |  Run the task every day at midnight
 `->dailyAt('13:00');`  |  Run the task every day at 13:00
+`->at('13:00');`  |  Run the task every day at 13:00, method alias of `dailyAt`
 `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
+`->twiceDailyAt(1, 13, 15);`  |  Run the task daily at 1:15 & 13:15
 `->weekly();`  |  Run the task every Sunday at 00:00
 `->weeklyOn(1, '8:00');`  |  Run the task every week on Monday at 8:00
 `->monthly();`  |  Run the task on the first day of every month at 00:00
