@@ -955,6 +955,10 @@ You may also specify additional columns to update during the operation:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
+> **Warning**  
+> increment() and decrement() methods persist change for you to the database, so no need to call the save() or update() method.
+
+
 <a name="delete-statements"></a>
 ## Delete Statements
 
