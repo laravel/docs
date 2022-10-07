@@ -138,7 +138,7 @@ Swoole supports a few additional configuration options that you may add to your 
         'log_file' => storage_path('logs/swoole_http.log'),
         'package_max_length' => 10 * 1024 * 1024,
     ],
-];
+],
 ```
 
 <a name="serving-your-application"></a>

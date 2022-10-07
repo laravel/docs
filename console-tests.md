@@ -79,6 +79,7 @@ Laravel 允許你簡單地 "mock" 使用者輸入給你的終端指令使用 `ex
 
 <a name="table-expectations"></a>
 #### 資料表期望值
+
 如果你的指令陳列一個資運使用 Artisan's `table` 方法的資料表，他整個資料表的輸出期望值可能是繁瑣寫。取而代之，你可能使用 `expectsTable` 方法。這個方法接受資料表的標頭做為第一個引數和資料表的資料最為第二個引數:
 
     $this->artisan('users:all')
