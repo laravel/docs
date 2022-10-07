@@ -1162,7 +1162,7 @@ The `Scope` interface requires you to implement one method: `apply`. The `apply`
 
     <?php
 
-    namespace App\Scopes;
+    namespace App\Models\Scopes;
 
     use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Model;
