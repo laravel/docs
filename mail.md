@@ -12,6 +12,7 @@
     - [Attachments](#attachments)
     - [Inline Attachments](#inline-attachments)
     - [Attachable Objects](#attachable-objects)
+    - [Headers](#headers)
     - [Tags & Metadata](#tags-and-metadata)
     - [Customizing The Symfony Message](#customizing-the-symfony-message)
 - [Markdown Mailables](#markdown-mailables)
@@ -170,7 +171,9 @@ php artisan make:mail OrderShipped
 <a name="writing-mailables"></a>
 ## Writing Mailables
 
-Once you have generated a mailable class, open it up so we can explore its contents. Mailable class configuration is done in several methods, including the `envelope`, `content`, and `attachments` methods. The `envelope` method returns an `Envelope` object that defines the subject and, sometimes, the recipients of the message. The `content` method returns a `Content` object that defines the [Blade template](/docs/{{version}}/blade) that will be used to generate the message content.
+Once you have generated a mailable class, open it up so we can explore its contents. Mailable class configuration is done in several methods, including the `envelope`, `content`, and `attachments` methods.
+
+The `envelope` method returns an `Illuminate\Mail\Mailables\Envelope` object that defines the subject and, sometimes, the recipients of the message. The `content` method returns an `Illuminate\Mail\Mailables\Content` object that defines the [Blade template](/docs/{{version}}/blade) that will be used to generate the message content.
 
 <a name="configuring-the-sender"></a>
 ### Configuring The Sender
@@ -560,6 +563,31 @@ Laravel also provides additional methods that you may use to customize your atta
             ->as('Photo Name')
             ->withMime('image/jpeg');
 
+<a name="headers"></a>
+### Headers
+
+Sometimes you may need to attach additional headers to the outgoing message. For instance, you may need to set a custom `Message-Id` or other arbitrary text headers.
+
+To accomplish this, define a `headers` method on your mailable. The `headers` method should return an `Illuminate\Mail\Mailables\Headers` instance. This class accepts `messageId`, `references`, and `text` parameters. Of course, you may provide only the parameters you need for your particular message:
+
+    use Illuminate\Mail\Mailables\Headers;
+
+    /**
+     * Get the message headers.
+     *
+     * @return \Illuminate\Mail\Mailables\Headers
+     */
+    public function headers()
+    {
+        return new Headers(
+            messageId: 'custom-message-id@example.com',
+            references: ['previous-message@example.com'],
+            text: [
+                'X-Custom-Header' => 'Custom Value',
+            ],
+        );
+    }
+
 <a name="tags-and-metadata"></a>
 ### Tags & Metadata
 
@@ -590,26 +618,26 @@ If your application is using Amazon SES to send emails, you should use the `meta
 <a name="customizing-the-symfony-message"></a>
 ### Customizing The Symfony Message
 
-The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
+Laravel's mail capabilities are powered by Symfony Mailer. Laravel allows you to register custom callbacks that will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is sent. To accomplish this, define a `using` parameter on your `Envelope` definition:
 
+    use Illuminate\Mail\Mailables\Envelope;
     use Symfony\Component\Mime\Email;
     
     /**
-     * Build the message.
+     * Get the message envelope.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function build()
+    public function envelope()
     {
-        $this->view('emails.orders.shipped');
-
-        $this->withSymfonyMessage(function (Email $message) {
-            $message->getHeaders()->addTextHeader(
-                'Custom-Header', 'Header Value'
-            );
-        });
-
-        return $this;
+        return new Envelope(
+            subject: 'Order Shipped',
+            using: [
+                function (Email $message) {
+                    // ...
+                },
+            ]
+        );
     }
 
 <a name="markdown-mailables"></a>
