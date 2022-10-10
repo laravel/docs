@@ -621,7 +621,7 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
 
 Your order has been shipped!
 
-<x-mail::button url="$url">
+<x-mail::button :url="$url">
 View Order
 </x-mail>
 
@@ -639,7 +639,7 @@ Thanks,<br>
 The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `success`, and `error`. You may add as many button components to a message as you wish:
 
 ```blade
-<x-mail::button url="$url" color="success">
+<x-mail::button :url="$url" color="success">
 View Order
 </x-mail::button>
 ```
