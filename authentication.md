@@ -49,6 +49,9 @@ Want to get started fast? Install a [Laravel application starter kit](/docs/{{ve
 
 **Even if you choose not to use a starter kit in your final Laravel application, installing the [Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze) starter kit can be a wonderful opportunity to learn how to implement all of Laravel's authentication functionality in an actual Laravel project.** Since Laravel Breeze creates authentication controllers, routes, and views for you, you can examine the code within these files to learn how Laravel's authentication features may be implemented.
 
+>**Note**
+>If you are using Vagrant with a Windows host, you won't be able to use Starter Kits due to npm issues (links between host and guest). Use laravel/ui ^3.0 as workaround.
+
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
 
