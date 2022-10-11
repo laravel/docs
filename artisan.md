@@ -486,7 +486,7 @@ Sometimes, you may need more manual control over how a progress bar is advanced.
 
     $users = App\Models\User::all();
 
-    $bar = $this->output->createProgressBar(count($users));
+    $bar = $this->output()->createProgressBar(count($users));
 
     $bar->start();
 
