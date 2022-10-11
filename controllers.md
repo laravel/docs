@@ -186,15 +186,13 @@ Typically, a 404 HTTP response will be generated if an implicitly bound resource
 <a name="loading-soft-deleted-models"></a>
 ### Loading Soft Deleted Models
 
-By default, soft deleted models are not retrieved on your resource routes, and will return a 404 response. You can override this behavior with the `withTrashed` method on your resource route.
+By default, [soft deleted](/docs/{{version}}/eloquent#soft-deleting) models are not retrieved on your resource routes, and will return a 404 HTTP response. However, you can instruct the framework to allow soft deleted models by invoking the `withTrashed` method when defining your resource route:
 
     use App\Http\Controllers\PhotoController;
 
     Route::resource('photos', PhotoController::class)->withTrashed();
 
-Calling `withTrashed` with no arguments will load the soft deleted model for the `show`, `edit`, and `update` resource routes. You may specify a subset of these routes by passing an array to the method:
-
-    use App\Http\Controllers\PhotoController;
+Calling `withTrashed` with no arguments will allow soft deleted models for the `show`, `edit`, and `update` resource routes. You may specify a subset of these routes by passing an array to the `withTrashed` method:
 
     Route::resource('photos', PhotoController::class)->withTrashed(['show']);
 
