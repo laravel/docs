@@ -725,18 +725,18 @@ Like all other mail notifications, notifications that use Markdown templates sho
 Markdown mail notifications use a combination of Blade components and Markdown syntax which allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
 
 ```blade
-@component('mail::message')
+<x-mail::message>
 # Invoice Paid
 
 Your invoice has been paid!
 
-@component('mail::button', ['url' => $url])
+<x-mail::button :url="$url">
 View Invoice
-@endcomponent
+</x-mail::button>
 
 Thanks,<br>
 {{ config('app.name') }}
-@endcomponent
+</x-mail::message>
 ```
 
 <a name="button-component"></a>
@@ -745,9 +745,9 @@ Thanks,<br>
 The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `green`, and `red`. You may add as many button components to a notification as you wish:
 
 ```blade
-@component('mail::button', ['url' => $url, 'color' => 'green'])
+<x-mail::button :url="$url" color="green">
 View Invoice
-@endcomponent
+</x-mail::button>
 ```
 
 <a name="panel-component"></a>
@@ -756,9 +756,9 @@ View Invoice
 The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the notification. This allows you to draw attention to a given block of text:
 
 ```blade
-@component('mail::panel')
+<x-mail::panel>
 This is the panel content.
-@endcomponent
+</x-mail::panel>
 ```
 
 <a name="table-component"></a>
@@ -767,12 +767,12 @@ This is the panel content.
 The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:
 
 ```blade
-@component('mail::table')
+<x-mail::table>
 | Laravel       | Table         | Example  |
 | ------------- |:-------------:| --------:|
 | Col 2 is      | Centered      | $10      |
 | Col 3 is      | Right-Aligned | $20      |
-@endcomponent
+</x-mail::table>
 ```
 
 <a name="customizing-the-components"></a>
