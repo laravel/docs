@@ -300,9 +300,9 @@ The `ShouldBroadcast` interface requires our event to define a `broadcastOn` met
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\PrivateChannel
+     * @return array<int, \Illuminate\Broadcasting\Channel>|\Illuminate\Broadcasting\Channel
      */
-    public function broadcastOn()
+    public function broadcastOn(): array|Channel
     {
         return new PrivateChannel('orders.'.$this->order->id);
     }
@@ -378,9 +378,9 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
         /**
          * Get the channels the event should broadcast on.
          *
-         * @return Channel|array
+         * @return array<int, \Illuminate\Broadcasting\Channel>|\Illuminate\Broadcasting\Channel
          */
-        public function broadcastOn()
+        public function broadcastOn(): array|Channel
         {
             return new PrivateChannel('user.'.$this->user->id);
         }
@@ -857,9 +857,9 @@ Presence channels may receive events just like public or private channels. Using
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return array<int, \Illuminate\Broadcasting\Channel>|\Illuminate\Broadcasting\Channel
      */
-    public function broadcastOn()
+    public function broadcastOn(): array|Channel
     {
         return new PresenceChannel('room.'.$this->message->room_id);
     }
