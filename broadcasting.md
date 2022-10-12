@@ -647,12 +647,8 @@ Finally, you may place the authorization logic for your channel in the channel c
 
         /**
          * Authenticate the user's access to the channel.
-         *
-         * @param  \App\Models\User  $user
-         * @param  \App\Models\Order  $order
-         * @return array|bool
          */
-        public function join(User $user, Order $order)
+        public function join(User $user, Order $order): array|bool
         {
             return $user->id === $order->user_id;
         }
