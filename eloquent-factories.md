@@ -34,9 +34,9 @@ To see an example of how to write a factory, take a look at the `database/factor
         /**
          * Define the model's default state.
          *
-         * @return array
+         * @return array<string, mixed>
          */
-        public function definition()
+        public function definition(): array
         {
             return [
                 'name' => fake()->name(),
@@ -459,9 +459,9 @@ To define a relationship within your model factory, you will typically assign a 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => User::factory(),
@@ -475,9 +475,9 @@ If the relationship's columns depend on the factory that defines it you may assi
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => User::factory(),
