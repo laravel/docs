@@ -167,7 +167,13 @@ The latest versions of the Laravel application skeleton include a `Js` facade, w
     var app = {{ Js::from($array) }};
 </script>
 ```
+You can also use the `@js()` directive:
 
+```blade
+<script>
+    var app = {{ @js($array) }};
+</script>
+```
 > **Warning**  
 > You should only use the `Js::from` method to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
