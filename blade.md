@@ -1181,10 +1181,8 @@ For very small components, it may feel cumbersome to manage both the component c
 
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return View|Closure|string
      */
-    public function render()
+    public function render(): View|Closure|string
     {
         return <<<'blade'
             <div class="alert alert-danger">
