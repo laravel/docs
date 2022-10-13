@@ -150,11 +150,8 @@ Laravel finds event listeners by scanning the listener classes using PHP's refle
     {
         /**
          * Handle the given event.
-         *
-         * @param  \App\Events\PodcastProcessed  $event
-         * @return void
          */
-        public function handle(PodcastProcessed $event)
+        public function handle(PodcastProcessed $event): void
         {
             //
         }
@@ -245,8 +242,6 @@ Next, let's take a look at the listener for our example event. Event listeners r
     {
         /**
          * Create the event listener.
-         *
-         * @return void
          */
         public function __construct()
         {
@@ -255,11 +250,8 @@ Next, let's take a look at the listener for our example event. Event listeners r
 
         /**
          * Handle the event.
-         *
-         * @param  \App\Events\OrderShipped  $event
-         * @return void
          */
-        public function handle(OrderShipped $event)
+        public function handle(OrderShipped $event): void
         {
             // Access the order using $event->order...
         }
@@ -368,22 +360,16 @@ Sometimes, you may need to determine whether a listener should be queued based o
     {
         /**
          * Reward a gift card to the customer.
-         *
-         * @param  \App\Events\OrderCreated  $event
-         * @return void
          */
-        public function handle(OrderCreated $event)
+        public function handle(OrderCreated $event): void
         {
             //
         }
 
         /**
          * Determine whether the listener should be queued.
-         *
-         * @param  \App\Events\OrderCreated  $event
-         * @return bool
          */
-        public function shouldQueue(OrderCreated $event)
+        public function shouldQueue(OrderCreated $event): bool
         {
             return $event->order->subtotal >= 5000;
         }
@@ -408,11 +394,8 @@ If you need to manually access the listener's underlying queue job's `delete` an
 
         /**
          * Handle the event.
-         *
-         * @param  \App\Events\OrderShipped  $event
-         * @return void
          */
-        public function handle(OrderShipped $event)
+        public function handle(OrderShipped $event): void
         {
             if (true) {
                 $this->release(30);
@@ -463,11 +446,8 @@ Sometimes your queued event listeners may fail. If the queued listener exceeds t
 
         /**
          * Handle the event.
-         *
-         * @param  \App\Events\OrderShipped  $event
-         * @return void
          */
-        public function handle(OrderShipped $event)
+        public function handle(OrderShipped $event): void
         {
             //
         }

@@ -50,16 +50,11 @@ For example, take a look at this event listener:
     {
         /**
          * The Redis factory implementation.
-         *
-         * @var \Illuminate\Contracts\Redis\Factory
          */
-        protected $redis;
+        protected Factory $redis;
 
         /**
          * Create a new event handler instance.
-         *
-         * @param  \Illuminate\Contracts\Redis\Factory  $redis
-         * @return void
          */
         public function __construct(Factory $redis)
         {
@@ -68,11 +63,8 @@ For example, take a look at this event listener:
 
         /**
          * Handle the event.
-         *
-         * @param  \App\Events\OrderWasPlaced  $event
-         * @return void
          */
-        public function handle(OrderWasPlaced $event)
+        public function handle(OrderWasPlaced $event): void
         {
             //
         }

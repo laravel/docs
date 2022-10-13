@@ -222,9 +222,7 @@ Occasionally, you may wish to specify some contextual information that should be
         /**
          * Handle an incoming request.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \Closure  $next
-         * @return mixed
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
         public function handle($request, Closure $next)
         {

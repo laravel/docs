@@ -571,6 +571,8 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
     {
         /**
          * Handle an incoming request.
+         *
+         * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
          */
         public function handle(Request $request, Closure $next): Response
         {
@@ -1005,11 +1007,8 @@ Both events contain the full payload of the Paddle webhook. For example, if you 
     {
         /**
          * Handle received Paddle webhooks.
-         *
-         * @param  \Laravel\Paddle\Events\WebhookReceived  $event
-         * @return void
          */
-        public function handle(WebhookReceived $event)
+        public function handle(WebhookReceived $event): void
         {
             if ($event->payload['alert_name'] === 'payment_succeeded') {
                 // Handle the incoming event...

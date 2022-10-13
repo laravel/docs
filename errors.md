@@ -210,26 +210,23 @@ Instead of type-checking exceptions in the exception handler's `register` method
     namespace App\Exceptions;
 
     use Exception;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
     class InvalidOrderException extends Exception
     {
         /**
          * Report the exception.
-         *
-         * @return bool|null
          */
-        public function report()
+        public function report(): bool|null
         {
             //
         }
 
         /**
          * Render the exception into an HTTP response.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function render($request)
+        public function render(Request $request): Response
         {
             return response(/* ... */);
         }
@@ -239,11 +236,8 @@ If your exception extends an exception that is already renderable, such as a bui
 
     /**
      * Render the exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function render($request)
+    public function render(Request $request): Response
     {
         // Determine if the exception needs custom rendering...
 
@@ -254,10 +248,8 @@ If your exception contains custom reporting logic that is only necessary when ce
 
     /**
      * Report the exception.
-     *
-     * @return bool|null
      */
-    public function report()
+    public function report(): bool|null
     {
         // Determine if the exception needs custom reporting...
 

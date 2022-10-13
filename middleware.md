@@ -33,17 +33,17 @@ This command will place a new `EnsureTokenIsValid` class within your `app/Http/M
     namespace App\Http\Middleware;
 
     use Closure;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
     class EnsureTokenIsValid
     {
         /**
          * Handle an incoming request.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \Closure  $next
-         * @return mixed
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function handle($request, Closure $next)
+        public function handle(Request $request, Closure $next): Response
         {
             if ($request->input('token') !== 'my-secret-token') {
                 return redirect('home');
@@ -71,10 +71,12 @@ Of course, a middleware can perform tasks before or after passing the request de
     namespace App\Http\Middleware;
 
     use Closure;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
     class BeforeMiddleware
     {
-        public function handle($request, Closure $next)
+        public function handle(Request $request, Closure $next): Response
         {
             // Perform action
 
@@ -89,10 +91,12 @@ However, this middleware would perform its task **after** the request is handled
     namespace App\Http\Middleware;
 
     use Closure;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
     class AfterMiddleware
     {
-        public function handle($request, Closure $next)
+        public function handle(Request $request, Closure $next): Response
         {
             $response = $next($request);
 
@@ -256,18 +260,17 @@ Additional middleware parameters will be passed to the middleware after the `$ne
     namespace App\Http\Middleware;
 
     use Closure;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
     class EnsureUserHasRole
     {
         /**
-         * Handle the incoming request.
+         * Handle an incoming request.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \Closure  $next
-         * @param  string  $role
-         * @return mixed
+         * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
          */
-        public function handle($request, Closure $next, $role)
+        public function handle(Request $request, Closure $next, string $role): Response
         {
             if (! $request->user()->hasRole($role)) {
                 // Redirect...
@@ -294,17 +297,17 @@ Sometimes a middleware may need to do some work after the HTTP response has been
     namespace Illuminate\Session\Middleware;
 
     use Closure;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
     class TerminatingMiddleware
     {
         /**
          * Handle an incoming request.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \Closure  $next
-         * @return mixed
+         * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
          */
-        public function handle($request, Closure $next)
+        public function handle(Request $request, Closure $next): Response
         {
             return $next($request);
         }

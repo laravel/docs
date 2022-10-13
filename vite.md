@@ -613,18 +613,18 @@ If you wish to include a [`nonce` attribute](https://developer.mozilla.org/en-US
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Vite;
+use Symfony\Component\HttpFoundation\Response;
 
 class AddContentSecurityPolicyHeaders
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next, string $role): Response
     {
         Vite::useCspNonce();
 
