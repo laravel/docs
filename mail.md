@@ -188,10 +188,8 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
 
     /**
      * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             from: new Address('jeffrey@example.com', 'Jeffrey Way'),
@@ -227,10 +225,8 @@ Within a mailable class' `content` method, you may define the `view`, or which t
 
     /**
      * Get the message content definition.
-     *
-     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
             view: 'emails.orders.shipped',
@@ -247,10 +243,8 @@ If you would like to define a plain-text version of your email, you may specify 
 
     /**
      * Get the message content definition.
-     *
-     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
             view: 'emails.orders.shipped',
@@ -310,7 +304,7 @@ Typically, you will want to pass some data to your view that you can utilize whe
          *
          * @return \Illuminate\Mail\Mailables\Content
          */
-        public function content()
+        public function content(): Content
         {
             return new Content(
                 view: 'emails.orders.shipped',
@@ -363,10 +357,8 @@ If you would like to customize the format of your email's data before it is sent
 
         /**
          * Get the message content definition.
-         *
-         * @return \Illuminate\Mail\Mailables\Content
          */
-        public function content()
+        public function content(): Content
         {
             return new Content(
                 view: 'emails.orders.shipped',
@@ -394,9 +386,9 @@ To add attachments to an email, you will add attachments to the array returned b
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromPath('/path/to/file'),
@@ -408,9 +400,9 @@ When attaching files to a message, you may also specify the display name and / o
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromPath('/path/to/file')
@@ -427,9 +419,9 @@ If you have stored a file on one of your [filesystem disks](/docs/{{version}}/fi
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromStorage('/path/to/file'),
@@ -441,9 +433,9 @@ Of course, you may also specify the attachment's name and MIME type:
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromStorage('/path/to/file')
@@ -457,9 +449,9 @@ The `fromStorageDisk` method may be used if you need to specify a storage disk o
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromStorageDisk('s3', '/path/to/file')
@@ -476,9 +468,9 @@ The `fromData` attachment method may be used to attach a raw string of bytes as 
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromData(fn () => $this->pdf, 'Report.pdf')
@@ -534,10 +526,8 @@ To get started, implement the `Illuminate\Contracts\Mail\Attachable` interface o
     {
         /**
          * Get the attachable representation of the model.
-         *
-         * @return \Illuminate\Mail\Attachment
          */
-        public function toMailAttachment()
+        public function toMailAttachment(): Attachment
         {
             return Attachment::fromPath('/path/to/file');
         }
@@ -548,9 +538,9 @@ Once you have defined your attachable object, you may return an instance of that
     /**
      * Get the attachments for the message.
      *
-     * @return array
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [$this->photo];
     }
@@ -584,10 +574,8 @@ To accomplish this, define a `headers` method on your mailable. The `headers` me
 
     /**
      * Get the message headers.
-     *
-     * @return \Illuminate\Mail\Mailables\Headers
      */
-    public function headers()
+    public function headers(): Headers
     {
         return new Headers(
             messageId: 'custom-message-id@example.com',
@@ -610,7 +598,7 @@ Some third-party email providers such as Mailgun and Postmark support message "t
      *
      * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'Order Shipped',
@@ -635,10 +623,8 @@ Laravel's mail capabilities are powered by Symfony Mailer. Laravel allows you to
     
     /**
      * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'Order Shipped',
@@ -670,10 +656,8 @@ Then, when configuring the mailable `Content` definition within its `content` me
 
     /**
      * Get the message content definition.
-     *
-     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
             markdown: 'emails.orders.shipped',
@@ -1061,7 +1045,7 @@ Laravel fires two events during the process of sending mail messages. The `Messa
     use App\Listeners\LogSentMessage;
     use Illuminate\Mail\Events\MessageSending;
     use Illuminate\Mail\Events\MessageSent;
-    
+
     /**
      * The event listener mappings for the application.
      *
