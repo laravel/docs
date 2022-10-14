@@ -360,12 +360,8 @@ The `update` method will receive a `User` and a `Post` instance as its arguments
     {
         /**
          * Determine if the given post can be updated by the user.
-         *
-         * @param  \App\Models\User  $user
-         * @param  \App\Models\Post  $post
-         * @return bool
          */
-        public function update(User $user, Post $post)
+        public function update(User $user, Post $post): bool
         {
             return $user->id === $post->user_id;
         }
@@ -389,12 +385,8 @@ So far, we have only examined policy methods that return simple boolean values. 
 
     /**
      * Determine if the given post can be updated by the user.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Auth\Access\Response
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Post $post): Response
     {
         return $user->id === $post->user_id
                     ? Response::allow()
@@ -430,12 +422,8 @@ When an action is denied via a policy method, a `403` HTTP response is returned;
 
     /**
      * Determine if the given post can be updated by the user.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Auth\Access\Response
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Post $post): Response
     {
         return $user->id === $post->user_id
                     ? Response::allow()
@@ -450,12 +438,8 @@ Because hiding resources via a `404` response is such a common pattern for web a
 
     /**
      * Determine if the given post can be updated by the user.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Auth\Access\Response
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Post $post): Response
     {
         return $user->id === $post->user_id
                     ? Response::allow()
@@ -469,11 +453,8 @@ Some policy methods only receive an instance of the currently authenticated user
 
     /**
      * Determine if the given user can create posts.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->role == 'writer';
     }
@@ -494,12 +475,8 @@ By default, all gates and policies automatically return `false` if the incoming 
     {
         /**
          * Determine if the given post can be updated by the user.
-         *
-         * @param  \App\Models\User  $user
-         * @param  \App\Models\Post  $post
-         * @return bool
          */
-        public function update(?User $user, Post $post)
+        public function update(?User $user, Post $post): bool
         {
             return optional($user)->id === $post->user_id;
         }
@@ -514,16 +491,14 @@ For certain users, you may wish to authorize all actions within a given policy. 
 
     /**
      * Perform pre-authorization checks.
-     *
-     * @param  \App\Models\User  $user
-     * @param  string  $ability
-     * @return void|bool
      */
-    public function before(User $user, $ability)
+    public function before(User $user, string $ability): bool|null
     {
         if ($user->isAdministrator()) {
             return true;
         }
+
+        return null;
     }
 
 If you would like to deny all authorization checks for a particular type of user then you may return `false` from the `before` method. If `null` is returned, the authorization check will fall through to the policy method.
@@ -802,13 +777,8 @@ When authorizing actions using policies, you may pass an array as the second arg
 
     /**
      * Determine if the given post can be updated by the user.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
-     * @param  int  $category
-     * @return bool
      */
-    public function update(User $user, Post $post, int $category)
+    public function update(User $user, Post $post, int $category): bool
     {
         return $user->id === $post->user_id &&
                $user->canUpdateCategory($category);
