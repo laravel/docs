@@ -1063,6 +1063,31 @@ You may retrieve a specific attribute's value using the `get` method:
 {{ $attributes->get('class') }}
 ```
 
+<a name="attribute-unpacking"></a>
+####  Attribute Unpacking
+
+You may use PHP's `...` operator in component tag attributes. This unpacks all items in a given array as component attributes:
+
+```blade
+@php
+    $header = [
+        'title' => 'Lorem ipsum',
+        'subtitle' => 'Dolor sit amet',
+    ];
+@endphp
+
+<x-header ...$header />
+```
+
+This is equivalent to:
+
+```blade
+<x-header
+    :title="$header['title']"
+    :subtitle="$header['subtitle']"
+/>
+```
+
 <a name="reserved-keywords"></a>
 ### Reserved Keywords
 
@@ -1178,6 +1203,21 @@ To interact with slot attributes, you may access the `attributes` property of th
         {{ $footer }}
     </footer>
 </div>
+```
+
+You may also use PHP's `...` operator in slot tag attributes. This unpacks all items in a given array as slot attributes:
+
+```blade
+@php
+    $footer = [
+        'class' => 'text-sm',
+        'title' => 'Lorem ipsum',
+    ];
+@endphp
+
+<x-slot:footer ...$footer>
+    Footer
+</x-slot>
 ```
 
 <a name="inline-component-views"></a>
