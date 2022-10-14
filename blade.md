@@ -1072,7 +1072,7 @@ You may use PHP's `...` operator in component tag attributes. This unpacks all i
 @php
     $header = [
         'title' => 'Lorem ipsum',
-        'subtitle' => 'Dolor sit amet',
+        'secondaryTitle' => 'Dolor sit amet',
     ];
 @endphp
 
@@ -1084,7 +1084,7 @@ This is equivalent to:
 ```blade
 <x-header
     :title="$header['title']"
-    :subtitle="$header['subtitle']"
+    :secondary-title="$header['secondaryTitle']"
 />
 ```
 
