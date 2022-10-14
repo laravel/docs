@@ -500,10 +500,8 @@ use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     TrimStrings::skipWhen(function ($request) {
         return $request->is('admin/*');

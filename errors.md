@@ -37,10 +37,8 @@ For example, if you need to report different types of exceptions in different wa
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->reportable(function (InvalidOrderException $e) {
             //
@@ -170,10 +168,8 @@ The closure passed to the `renderable` method should return an instance of `Illu
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->renderable(function (InvalidOrderException $e, $request) {
             return response()->view('errors.invalid-order', [], 500);
@@ -186,10 +182,8 @@ You may also use the `renderable` method to override the rendering behavior for 
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->renderable(function (NotFoundHttpException $e, $request) {
             if ($request->is('api/*')) {

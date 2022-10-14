@@ -303,10 +303,8 @@ If you would like to designate a different file as the default pagination view, 
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             Paginator::defaultView('view-name');
 
@@ -323,10 +321,8 @@ Laravel includes pagination views built using [Bootstrap CSS](https://getbootstr
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Paginator::useBootstrapFive();
         Paginator::useBootstrapFour();

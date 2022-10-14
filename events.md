@@ -73,10 +73,8 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
 
     /**
      * Register any other events for your application.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Event::listen(
             PodcastProcessed::class,
@@ -99,10 +97,8 @@ When registering closure based event listeners manually, you may wrap the listen
 
     /**
      * Register any other events for your application.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Event::listen(queueable(function (PodcastProcessed $event) {
             //

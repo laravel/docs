@@ -333,10 +333,8 @@ When calling the `terminate` method on your middleware, Laravel will resolve a f
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(TerminatingMiddleware::class);
     }

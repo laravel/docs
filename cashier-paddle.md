@@ -101,10 +101,8 @@ If you would like to prevent Cashier's migrations from running entirely, you may
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         Cashier::ignoreMigrations();
     }
@@ -198,10 +196,8 @@ After defining your model, you may instruct Cashier to use your custom model via
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Cashier::useReceiptModel(Receipt::class);
         Cashier::useSubscriptionModel(Subscription::class);
@@ -647,10 +643,8 @@ If you would like subscriptions to still be considered active when they are `pas
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         Cashier::keepPastDueSubscriptionsActive();
     }

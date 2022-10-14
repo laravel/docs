@@ -437,10 +437,8 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
             $this->app->booting(function () {
                  Cache::extend('mongo', function ($app) {
@@ -451,10 +449,8 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             //
         }

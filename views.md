@@ -124,20 +124,16 @@ Occasionally, you may need to share data with all views that are rendered by you
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
             //
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             View::share('key', 'value');
         }
@@ -164,20 +160,16 @@ We'll use the `View` facade's `composer` method to register the view composer. L
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
             //
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             // Using class based composers...
             View::composer('profile', ProfileComposer::class);

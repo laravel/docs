@@ -555,10 +555,8 @@ You may define your own authentication guards using the `extend` method on the `
     {
         /**
          * Register any application authentication / authorization services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             $this->registerPolicies();
 
@@ -592,10 +590,8 @@ To get started, call the `Auth::viaRequest` method within the `boot` method of y
 
     /**
      * Register any application authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -629,10 +625,8 @@ If you are not using a traditional relational database to store your users, you 
     {
         /**
          * Register any application authentication / authorization services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             $this->registerPolicies();
 

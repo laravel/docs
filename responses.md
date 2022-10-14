@@ -330,10 +330,8 @@ If you would like to define a custom response that you can re-use in a variety o
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             Response::macro('caps', function ($value) {
                 return Response::make(strtoupper($value));

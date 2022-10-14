@@ -113,10 +113,8 @@ If you would like to prevent Cashier's migrations from running entirely, you may
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         Cashier::ignoreMigrations();
     }
@@ -146,10 +144,8 @@ Cashier assumes your billable model will be the `App\Models\User` class that shi
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Cashier::useCustomerModel(User::class);
     }
@@ -198,10 +194,8 @@ Thanks to [Stripe Tax](https://stripe.com/tax), it's possible to automatically c
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Cashier::calculateTaxes();
     }
@@ -243,10 +237,8 @@ After defining your model, you may instruct Cashier to use your custom model via
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Cashier::useSubscriptionModel(Subscription::class);
         Cashier::useSubscriptionItemModel(SubscriptionItem::class);
@@ -873,10 +865,8 @@ If you would like the subscription to still be considered active when it's in a 
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         Cashier::keepPastDueSubscriptionsActive();
         Cashier::keepIncompleteSubscriptionsActive();

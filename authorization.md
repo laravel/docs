@@ -51,10 +51,8 @@ In this example, we'll define a gate to determine if a user can update a given `
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -70,10 +68,8 @@ Like controllers, gates may also be defined using a class callback array:
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -312,10 +308,8 @@ The `App\Providers\AuthServiceProvider` included with fresh Laravel applications
 
         /**
          * Register any application authentication / authorization services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             $this->registerPolicies();
 

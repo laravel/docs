@@ -1026,10 +1026,8 @@ Finally, you may specify a global "to" address by invoking the `alwaysTo` method
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->environment('local')) {
             Mail::alwaysTo('taylor@example.com');
@@ -1126,10 +1124,8 @@ Once you've defined your custom transport, you may register it via the `extend` 
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Mail::extend('mailchimp', function (array $config = []) {
             return new MailchimpTransport(/* ... */);
@@ -1166,10 +1162,8 @@ Finally, you may use the `Mail` facade's `extend` method to register the transpo
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Mail::extend('sendinblue', function () {
             return (new SendinblueTransportFactory)->create(

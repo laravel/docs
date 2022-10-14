@@ -715,10 +715,8 @@ use Illuminate\Support\Facades\Validator;
 
 /**
  * Register any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Validator::includeUnvalidatedArrayKeys();
 }

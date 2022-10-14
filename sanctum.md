@@ -110,10 +110,8 @@ Then, you may instruct Sanctum to use your custom model via the `usePersonalAcce
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }

@@ -50,10 +50,8 @@ Let's take a look at a basic service provider. Within any of your service provid
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
             $this->app->singleton(Connection::class, function ($app) {
                 return new Connection(config('riak'));
@@ -117,10 +115,8 @@ So, what if we need to register a [view composer](/docs/{{version}}/views#view-c
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             View::composer('view', function () {
                 //
@@ -182,10 +178,8 @@ To defer the loading of a provider, implement the `\Illuminate\Contracts\Support
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
             $this->app->singleton(Connection::class, function ($app) {
                 return new Connection($app['config']['riak']);

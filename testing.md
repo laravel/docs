@@ -153,10 +153,8 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             ParallelTesting::setUpProcess(function ($token) {
                 // ...

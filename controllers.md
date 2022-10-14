@@ -344,10 +344,8 @@ By default, `Route::resource` will create resource URIs using English verbs and 
 
     /**
      * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Route::resourceVerbs([
             'create' => 'crear',

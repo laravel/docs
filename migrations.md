@@ -1162,10 +1162,8 @@ By default, Laravel uses the `utf8mb4` character set. If you are running a versi
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Schema::defaultStringLength(191);
     }

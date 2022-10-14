@@ -245,10 +245,8 @@ If you would like to share contextual information across _all_ logging channels,
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             Log::shareContext([
                 'invocation-id' => (string) Str::uuid(),

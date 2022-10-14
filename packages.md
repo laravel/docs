@@ -94,10 +94,8 @@ Typically, you will need to publish your package's configuration file to the app
 
     /**
      * Bootstrap any package services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([
             __DIR__.'/../config/courier.php' => config_path('courier.php'),
@@ -120,10 +118,8 @@ The `mergeConfigFrom` method accepts the path to your package's configuration fi
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(
             __DIR__.'/../config/courier.php', 'courier'
@@ -140,10 +136,8 @@ If your package contains routes, you may load them using the `loadRoutesFrom` me
 
     /**
      * Bootstrap any package services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
     }
@@ -155,10 +149,8 @@ If your package contains [database migrations](/docs/{{version}}/migrations), yo
 
     /**
      * Bootstrap any package services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
@@ -172,10 +164,8 @@ If your package contains [translation files](/docs/{{version}}/localization), yo
 
     /**
      * Bootstrap any package services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');
     }
@@ -191,10 +181,8 @@ If you would like to publish your package's translations to the application's `l
 
     /**
      * Bootstrap any package services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');
 
@@ -212,10 +200,8 @@ To register your package's [views](/docs/{{version}}/views) with Laravel, you ne
 
     /**
      * Bootstrap any package services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');
     }
@@ -238,10 +224,8 @@ If you would like to make your views available for publishing to the application
 
     /**
      * Bootstrap the package services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');
 
@@ -262,10 +246,8 @@ If you are building a package that utilizes Blade components or placing componen
 
     /**
      * Bootstrap your package's services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::component('package-alert', AlertComponent::class);
     }
@@ -285,10 +267,8 @@ Alternatively, you may use the `componentNamespace` method to autoload component
 
     /**
      * Bootstrap your package's services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
     }
@@ -320,10 +300,8 @@ Laravel's built-in `about` Artisan command provides a synopsis of the applicatio
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         AboutCommand::add('My Package', fn () => ['Version' => '1.0.0']);
     }
@@ -338,10 +316,8 @@ To register your package's Artisan commands with Laravel, you may use the `comma
 
     /**
      * Bootstrap any package services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -358,10 +334,8 @@ Your package may have assets such as JavaScript, CSS, and images. To publish the
 
     /**
      * Bootstrap any package services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/courier'),
@@ -381,10 +355,8 @@ You may want to publish groups of package assets and resources separately. For i
 
     /**
      * Bootstrap any package services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([
             __DIR__.'/../config/package.php' => config_path('package.php')

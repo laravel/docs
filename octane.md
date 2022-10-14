@@ -312,10 +312,8 @@ use App\Service;
 
 /**
  * Register any application services.
- *
- * @return void
  */
-public function register()
+public function register(): void
 {
     $this->app->singleton(Service::class, function ($app) {
         return new Service($app);
@@ -352,10 +350,8 @@ use App\Service;
 
 /**
  * Register any application services.
- *
- * @return void
  */
-public function register()
+public function register(): void
 {
     $this->app->singleton(Service::class, function ($app) {
         return new Service($app['request']);
@@ -398,10 +394,8 @@ use App\Service;
 
 /**
  * Register any application services.
- *
- * @return void
  */
-public function register()
+public function register(): void
 {
     $this->app->singleton(Service::class, function ($app) {
         return new Service($app->make('config'));

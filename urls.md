@@ -154,10 +154,8 @@ When someone visits a signed URL that has expired, they will receive a generic e
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->renderable(function (InvalidSignatureException $e) {
             return response()->view('error.link-expired', [], 403);

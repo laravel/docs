@@ -326,20 +326,16 @@ Once your driver has been implemented, you are ready to register it with Laravel
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
             //
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             Session::extend('mongo', function ($app) {
                 // Return an implementation of SessionHandlerInterface...

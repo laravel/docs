@@ -78,10 +78,8 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         if ($this->app->environment('local')) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
@@ -181,10 +179,8 @@ You may filter the data that is recorded by Telescope via the `filter` closure t
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->hideSensitiveRequestDetails();
 
@@ -211,10 +207,8 @@ While the `filter` closure filters data for individual entries, you may use the 
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->hideSensitiveRequestDetails();
 
@@ -243,10 +237,8 @@ Telescope allows you to search entries by "tag". Often, tags are Eloquent model 
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->hideSensitiveRequestDetails();
 
@@ -429,10 +421,8 @@ The Telescope dashboard displays the user avatar for the user that was authentic
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         // ...
 

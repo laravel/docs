@@ -1559,10 +1559,8 @@ To register an observer, you need to call the `observe` method on the model you 
 
     /**
      * Register any events for your application.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         User::observe(UserObserver::class);
     }

@@ -349,10 +349,8 @@ If you would like to define a custom browser method that you can re-use in a var
     {
         /**
          * Register Dusk's browser macros.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             Browser::macro('scrollToElement', function ($element = null) {
                 $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");

@@ -77,10 +77,8 @@ You may instruct Laravel's "pluralizer", which is used by Eloquent and other por
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Pluralizer::useLanguage('spanish');     
 

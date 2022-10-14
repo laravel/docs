@@ -351,10 +351,8 @@ If you would like to be notified when one of your queues has a long wait time, y
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 
