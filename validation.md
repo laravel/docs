@@ -307,9 +307,9 @@ As you might have guessed, the `authorize` method is responsible for determining
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'title' => 'required|unique:posts|max:255',
@@ -347,13 +347,12 @@ If validation fails, a redirect response will be generated to send the user back
 
 If you would like to add an "after" validation hook to a form request, you may use the `withValidator` method. This method receives the fully constructed validator, allowing you to call any of its methods before the validation rules are actually evaluated:
 
+    use Illuminate\Validation\Validator;
+
     /**
      * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
      */
-    public function withValidator($validator)
+    public function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator) {
             if ($this->somethingElseIsInvalid()) {
@@ -405,10 +404,8 @@ The form request class also contains an `authorize` method. Within this method, 
 
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         $comment = Comment::find($this->route('comment'));
 
@@ -429,10 +426,8 @@ If you plan to handle authorization logic for the request in another part of you
 
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -448,9 +443,9 @@ You may customize the error messages used by the form request by overriding the 
     /**
      * Get the error messages for the defined validation rules.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'title.required' => 'A title is required',
@@ -466,9 +461,9 @@ Many of Laravel's built-in validation rule error messages contain an `:attribute
     /**
      * Get custom attributes for validator errors.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'email' => 'email address',
@@ -484,10 +479,8 @@ If you need to prepare or sanitize any data from the request before you apply yo
 
     /**
      * Prepare the data for validation.
-     *
-     * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'slug' => Str::slug($this->slug),
