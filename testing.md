@@ -208,3 +208,13 @@ You may use the `--min` option to define a minimum test coverage threshold for y
 ```shell
 php artisan test --coverage --min=80.3
 ```
+<a name="generate-html-report-for-test-coverage"></a>
+#### Generate HTML Report For Test Coverage
+
+You may generate the HTML report too. Here, you'll be able to visualize the lines of code in the HTML view. File would be having .html extension and it'll show you green lines if the code is being covered by the test cases and red in case if its not being covered.
+
+```shell
+php artisan test --coverage-html reports/
+```
+
+You'll get the "reports" folder inside of your project and it will be having .html files of test coverage.
