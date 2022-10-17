@@ -3529,7 +3529,7 @@ To illustrate the usage of this method, imagine an application that submits invo
 
     Invoice::pending()->cursor()
         ->takeUntilTimeout(
-            Carbon::createFromTimestamp(LARAVEL_START)->add(14, 'minutes')
+            now()->add(14, 'minutes')
         )
         ->each(fn ($invoice) => $invoice->submit());
 
