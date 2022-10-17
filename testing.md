@@ -211,7 +211,7 @@ php artisan test --coverage --min=80.3
 <a name="generate-html-report-for-test-coverage"></a>
 #### Generate HTML Report For Test Coverage
 
-You may generate the HTML report too. Here, you'll be able to visualize the lines of code in the HTML view. You'll get a folder within of your project and it'll be having .html files of test coverage. It'll show you green lines if the code is being covered by the test cases and red in case if its not.
+You may generate the HTML report too. Here, you'll be able to visualize the lines of code in the HTML view. You'll get a folder within your project and it'll be having .html files of test coverage. It'll show you green lines if the code is being covered by the test cases and red in case if its not.
 
 ```shell
 php artisan test --coverage-html folder_name/
