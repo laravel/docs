@@ -53,6 +53,7 @@ Before diving into all of the options available to you when writing resources, l
 
     namespace App\Http\Resources;
 
+    use Illuminate\Http\Request;
     use Illuminate\Http\Resources\Json\JsonResource;
 
     class UserResource extends JsonResource
@@ -60,10 +61,9 @@ Before diving into all of the options available to you when writing resources, l
         /**
          * Transform the resource into an array.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @return array
+         * @return array<string, mixed>
          */
-        public function toArray($request)
+        public function toArray(Request $request): array
         {
             return [
                 'id' => $this->id,
@@ -110,6 +110,7 @@ Once the resource collection class has been generated, you may easily define any
 
     namespace App\Http\Resources;
 
+    use Illuminate\Http\Request;
     use Illuminate\Http\Resources\Json\ResourceCollection;
 
     class UserCollection extends ResourceCollection
@@ -117,10 +118,9 @@ Once the resource collection class has been generated, you may easily define any
         /**
          * Transform the resource collection into an array.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @return array
+         * @return array<string, mixed>
          */
-        public function toArray($request)
+        public function toArray(Request $request): array
         {
             return [
                 'data' => $this->collection,
@@ -205,6 +205,7 @@ In essence, resources are simple. They only need to transform a given model into
 
     namespace App\Http\Resources;
 
+    use Illuminate\Http\Request;
     use Illuminate\Http\Resources\Json\JsonResource;
 
     class UserResource extends JsonResource
@@ -212,10 +213,9 @@ In essence, resources are simple. They only need to transform a given model into
         /**
          * Transform the resource into an array.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @return array
+         * @return array<string, mixed>
          */
-        public function toArray($request)
+        public function toArray(Request $request): array
         {
             return [
                 'id' => $this->id,
@@ -242,14 +242,14 @@ Once a resource has been defined, it may be returned directly from a route or co
 If you would like to include related resources in your response, you may add them to the array returned by your resource's `toArray` method. In this example, we will use the `PostResource` resource's `collection` method to add the user's blog posts to the resource response:
 
     use App\Http\Resources\PostResource;
+    use Illuminate\Http\Request;
 
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
@@ -289,10 +289,9 @@ However, if you need to customize the meta data returned with the collection, it
         /**
          * Transform the resource collection into an array.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @return array
+         * @return array<string, mixed>
          */
-        public function toArray($request)
+        public function toArray(Request $request): array
         {
             return [
                 'data' => $this->collection,
@@ -401,10 +400,9 @@ You may be wondering if this will cause your outermost resource to be wrapped in
         /**
          * Transform the resource collection into an array.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @return array
+         * @return array<string, mixed>
          */
-        public function toArray($request)
+        public function toArray(Request $request): array
         {
             return ['data' => $this->collection];
         }
@@ -501,10 +499,9 @@ Sometimes you may wish to only include an attribute in a resource response if a 
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
@@ -536,10 +533,9 @@ Sometimes you may have several attributes that should only be included in the re
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
@@ -571,10 +567,9 @@ The `whenLoaded` method may be used to conditionally load a relationship. In ord
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
@@ -600,10 +595,9 @@ The `whenCounted` method may be used to conditionally include a relationship's c
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
@@ -625,10 +619,9 @@ In addition to conditionally including relationship information in your resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
@@ -650,10 +643,9 @@ If your intermediate table is using an accessor other than `pivot`, you may use 
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
@@ -672,10 +664,9 @@ Some JSON API standards require the addition of meta data to your resource and r
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'data' => $this->collection,
@@ -703,10 +694,9 @@ Sometimes you may wish to only include certain meta data with a resource respons
         /**
          * Transform the resource collection into an array.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @return array
+         * @return array<string, mixed>
          */
-        public function toArray($request)
+        public function toArray(Request $request): array
         {
             return parent::toArray($request);
         }
@@ -714,10 +704,9 @@ Sometimes you may wish to only include certain meta data with a resource respons
         /**
          * Get additional data that should be returned with the resource array.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @return array
+         * @return array<string, mixed>
          */
-        public function with($request)
+        public function with(Request $request): array
         {
             return [
                 'meta' => [
@@ -766,6 +755,8 @@ Alternatively, you may define a `withResponse` method within the resource itself
 
     namespace App\Http\Resources;
 
+    use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
     use Illuminate\Http\Resources\Json\JsonResource;
 
     class UserResource extends JsonResource
@@ -773,10 +764,9 @@ Alternatively, you may define a `withResponse` method within the resource itself
         /**
          * Transform the resource into an array.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @return array
+         * @return array<string, mixed>
          */
-        public function toArray($request)
+        public function toArray(Request $request): array
         {
             return [
                 'id' => $this->id,
@@ -785,12 +775,8 @@ Alternatively, you may define a `withResponse` method within the resource itself
 
         /**
          * Customize the outgoing response for the resource.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \Illuminate\Http\Response  $response
-         * @return void
          */
-        public function withResponse($request, $response)
+        public function withResponse(Request $request, Response $response): void
         {
             $response->header('X-Value', 'True');
         }
