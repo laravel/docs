@@ -966,7 +966,7 @@ As you might expect, the "HTML" assertions assert that the HTML version of your 
     use App\Mail\InvoicePaid;
     use App\Models\User;
 
-    public function test_mailable_content()
+    public function test_mailable_content(): void
     {
         $user = User::factory()->create();
 

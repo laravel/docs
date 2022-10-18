@@ -1216,7 +1216,7 @@ Passport's `actingAs` method may be used to specify the currently authenticated 
     use App\Models\User;
     use Laravel\Passport\Passport;
 
-    public function test_servers_can_be_created()
+    public function test_servers_can_be_created(): void
     {
         Passport::actingAs(
             User::factory()->create(),
@@ -1233,7 +1233,7 @@ Passport's `actingAsClient` method may be used to specify the currently authenti
     use Laravel\Passport\Client;
     use Laravel\Passport\Passport;
 
-    public function test_orders_can_be_retrieved()
+    public function test_orders_can_be_retrieved(): void
     {
         Passport::actingAsClient(
             Client::factory()->create(),

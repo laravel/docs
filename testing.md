@@ -72,10 +72,8 @@ Once the test has been generated, you may define test methods as you normally wo
     {
         /**
          * A basic test example.
-         *
-         * @return void
          */
-        public function test_basic_test()
+        public function test_basic_test(): void
         {
             $this->assertTrue(true);
         }

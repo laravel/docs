@@ -73,10 +73,8 @@ Using Laravel's facade testing methods, we can write the following test to verif
 
     /**
      * A basic functional test example.
-     *
-     * @return void
      */
-    public function testBasicExample()
+    public function test_basic_example(): void
     {
         Cache::shouldReceive('get')
              ->with('key')
@@ -108,10 +106,8 @@ The `cache` helper is going to call the `get` method on the class underlying the
 
     /**
      * A basic functional test example.
-     *
-     * @return void
      */
-    public function testBasicExample()
+    public function test_basic_example(): void
     {
         Cache::shouldReceive('get')
              ->with('key')
@@ -237,10 +233,8 @@ When the real-time facade is used, the publisher implementation will be resolved
 
         /**
          * A test example.
-         *
-         * @return void
          */
-        public function test_podcast_can_be_published()
+        public function test_podcast_can_be_published(): void
         {
             $podcast = Podcast::factory()->create();
 

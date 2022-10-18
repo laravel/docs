@@ -30,10 +30,8 @@ Before proceeding much further, let's discuss how to reset your database after e
 
         /**
          * A basic functional test example.
-         *
-         * @return void
          */
-        public function test_basic_example()
+        public function test_basic_example(): void
         {
             $response = $this->get('/');
 
@@ -54,7 +52,7 @@ To learn more about creating and utilizing model factories to create models, ple
 
     use App\Models\User;
 
-    public function test_models_can_be_instantiated()
+    public function test_models_can_be_instantiated(): void
     {
         $user = User::factory()->create();
 
@@ -82,10 +80,8 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
 
         /**
          * Test creating a new order.
-         *
-         * @return void
          */
-        public function test_orders_can_be_created()
+        public function test_orders_can_be_created(): void
         {
             // Run the DatabaseSeeder...
             $this->seed();

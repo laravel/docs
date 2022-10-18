@@ -434,7 +434,7 @@ While testing, the `Sanctum::actingAs` method may be used to authenticate a user
     use App\Models\User;
     use Laravel\Sanctum\Sanctum;
 
-    public function test_task_list_can_be_retrieved()
+    public function test_task_list_can_be_retrieved(): void
     {
         Sanctum::actingAs(
             User::factory()->create(),

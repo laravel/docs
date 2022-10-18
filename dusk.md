@@ -248,10 +248,8 @@ To get started, let's write a test that verifies we can log into our application
 
         /**
          * A basic browser test example.
-         *
-         * @return void
          */
-        public function test_basic_example()
+        public function test_basic_example(): void
         {
             $user = User::factory()->create([
                 'email' => 'taylor@laravel.com',
@@ -1563,10 +1561,8 @@ You may assert on the state of the Vue component like so:
 
     /**
      * A basic Vue test example.
-     *
-     * @return void
      */
-    public function testVue()
+    public function test_vue(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
@@ -1837,10 +1833,8 @@ Once the component has been defined, we can easily select a date within the date
     {
         /**
          * A basic component test example.
-         *
-         * @return void
          */
-        public function testBasicExample()
+        public function test_basic_example(): void
         {
             $this->browse(function (Browser $browser) {
                 $browser->visit('/')
