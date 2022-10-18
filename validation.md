@@ -1989,19 +1989,15 @@ Once the rule has been created, we are ready to define its behavior. A rule obje
 
     namespace App\Rules;
 
+    use Closure;
     use Illuminate\Contracts\Validation\InvokableRule;
 
     class Uppercase implements InvokableRule
     {
         /**
          * Run the validation rule.
-         *
-         * @param  string  $attribute
-         * @param  mixed  $value
-         * @param  \Closure  $fail
-         * @return void
          */
-        public function __invoke($attribute, $value, $fail)
+        public function __invoke(string $attribute, mixed $value, Closure $fail): void
         {
             if (strtoupper($value) !== $value) {
                 $fail('The :attribute must be uppercase.');
@@ -2047,7 +2043,7 @@ If your custom validation rule class needs to access all of the other data under
         /**
          * All of the data under validation.
          *
-         * @var array
+         * @var array<string, mixed>
          */
         protected $data = [];
 
@@ -2056,10 +2052,10 @@ If your custom validation rule class needs to access all of the other data under
         /**
          * Set the data under validation.
          *
-         * @param  array  $data
+         * @param  array<string, mixed>  $data
          * @return $this
          */
-        public function setData($data)
+        public function setData(array $data): static
         {
             $this->data = $data;
 
@@ -2075,6 +2071,7 @@ Or, if your validation rule requires access to the validator instance performing
 
     use Illuminate\Contracts\Validation\InvokableRule;
     use Illuminate\Contracts\Validation\ValidatorAwareRule;
+    use Illuminate\Validation\Validator;
 
     class Uppercase implements InvokableRule, ValidatorAwareRule
     {
@@ -2089,11 +2086,8 @@ Or, if your validation rule requires access to the validator instance performing
 
         /**
          * Set the current validator.
-         *
-         * @param  \Illuminate\Validation\Validator  $validator
-         * @return $this
          */
-        public function setValidator($validator)
+        public function setValidator(Validator $validator): static
         {
             $this->validator = $validator;
 
