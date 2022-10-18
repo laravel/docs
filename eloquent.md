@@ -1215,12 +1215,8 @@ The `Scope` interface requires you to implement one method: `apply`. The `apply`
     {
         /**
          * Apply the scope to a given Eloquent query builder.
-         *
-         * @param  \Illuminate\Database\Eloquent\Builder  $builder
-         * @param  \Illuminate\Database\Eloquent\Model  $model
-         * @return void
          */
-        public function apply(Builder $builder, Model $model)
+        public function apply(Builder $builder, Model $model): void
         {
             $builder->where('created_at', '<', now()->subYears(2000));
         }
@@ -1245,10 +1241,8 @@ To assign a global scope to a model, you should override the model's `booted` me
     {
         /**
          * The "booted" method of the model.
-         *
-         * @return void
          */
-        protected static function booted()
+        protected static function booted(): void
         {
             static::addGlobalScope(new AncientScope);
         }
@@ -1276,10 +1270,8 @@ Eloquent also allows you to define global scopes using closures, which is partic
     {
         /**
          * The "booted" method of the model.
-         *
-         * @return void
          */
-        protected static function booted()
+        protected static function booted(): void
         {
             static::addGlobalScope('ancient', function (Builder $builder) {
                 $builder->where('created_at', '<', now()->subYears(2000));
@@ -1470,10 +1462,8 @@ Instead of using custom event classes, you may register closures that execute wh
     {
         /**
          * The "booted" method of the model.
-         *
-         * @return void
          */
-        protected static function booted()
+        protected static function booted(): void
         {
             static::created(function ($user) {
                 //
