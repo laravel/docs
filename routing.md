@@ -517,6 +517,12 @@ Or, you may instruct an entire group of route definitions to use scoped bindings
         });
     });
 
+Similarly, you may explicitly instruct Laravel to not scope bindings by invoking the `withoutScopedBindings` method:
+
+    Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
+        return $post;
+    })->withoutScopedBindings();
+
 <a name="customizing-missing-model-behavior"></a>
 #### Customizing Missing Model Behavior
 
