@@ -476,7 +476,7 @@ It is common in JavaScript applications to [create aliases](#aliases) to regular
      */
     public function boot()
     {
-        Vite::macro('image', fn ($asset) => $this->asset("/resources/images/{$asset}"));
+        Vite::macro('image', fn ($asset) => $this->asset("resources/images/{$asset}"));
     }
 
 Once a macro has been defined, it can be invoked within your templates. For example, we can use the `image` macro defined above to reference an asset located at `resources/images/logo.png`:
@@ -551,7 +551,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function setUp(): void// [tl! add:start]
+    protected function setUp(): void// [tl! add:start]
     {
         parent::setUp();
 

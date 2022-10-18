@@ -9,6 +9,7 @@
     - [Timestamps](#timestamps)
     - [Database Connections](#database-connections)
     - [Default Attribute Values](#default-attribute-values)
+    - [Configuring Eloquent Strictness](#configuring-eloquent-strictness)
 - [Retrieving Models](#retrieving-models)
     - [Collections](#collections)
     - [Chunking Results](#chunking-results)
@@ -357,6 +358,48 @@ By default, a newly instantiated model instance will not contain any attribute v
             'delayed' => false,
         ];
     }
+
+<a name="configuring-eloquent-strictness"></a>
+### Configuring Eloquent Strictness
+
+Laravel offers several methods that allow you to configure Eloquent's behavior and "strictness" in a variety of situations.
+
+First, the `preventLazyLoading` method accepts an optional boolean argument that indicates if lazy loading should be prevented. For example, you may wish to only disable lazy loading in non-production environments so that your production environment will continue to function normally even if a lazy loaded relationship is accidentally present in production code. Typically, this method should be invoked in the `boot` method of your application's `AppServiceProvider`:
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Bootstrap any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Model::preventLazyLoading(! $this->app->isProduction());
+}
+```
+
+Also, you may instruct Laravel to throw an exception when attempting to fill an unfillable attribute by invoking the `preventSilentlyDiscardingAttributes` method. This can help prevent unexpected errors during local development when attempting to set an attribute that has not been added to the model's `fillable` array:
+
+```php
+Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
+```
+
+Finally, you may instruct Eloquent to throw an exception if you attempt to access an attribute on a model when that attribute was not actually retrieved from the database or when the attribute does not exist. For example, this may occur when you forget to add an attribute to the `select` clause of an Eloquent query:
+
+```php
+Model::preventAccessingMissingAttributes(! $this->app->isProduction());
+```
+
+<a name="enabling-eloquent-strict-mode"></a>
+#### Enabling Eloquent "Strict Mode"
+
+For convenience, you may enable all three of the methods discussed above by simply invoking the `shouldBeStrict` method:
+
+```php
+Model::shouldBeStrict(! $this->app->isProduction());
+```
 
 <a name="retrieving-models"></a>
 ## Retrieving Models
@@ -1162,7 +1205,7 @@ The `Scope` interface requires you to implement one method: `apply`. The `apply`
 
     <?php
 
-    namespace App\Scopes;
+    namespace App\Models\Scopes;
 
     use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Model;
@@ -1595,7 +1638,7 @@ You may occasionally need to temporarily "mute" all events fired by a model. You
 
     use App\Models\User;
 
-    $user = User::withoutEvents(function () use () {
+    $user = User::withoutEvents(function () {
         User::findOrFail(1)->delete();
 
         return User::find(2);

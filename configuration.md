@@ -5,6 +5,7 @@
     - [ 環境變數型態 ](#environment-variable-types)
     - [ 檢索環境設定 ](#retrieving-environment-configuration)
     - [ 判斷目前環境 ](#determining-the-current-environment)
+    - [ 加密環境檔 ](#encrypting-environment-files)
 - [ 存取設定值 ](#accessing-configuration-values)
 - [ 快取設定 ](#configuration-caching)
 - [ 除錯模式 ](#debug-mode)
@@ -50,6 +51,8 @@ Laravel 預設的 `env` 檔包含一些常見的設定值，這些值可能會�
 #### 環境檔案安全
 
 你的 `.env` 檔不應該提交給你的應用程式版控。因為每個使用應用程式的開發者或伺服器可能需要不同的環境設定。而且，如果入侵者取得你專案原始碼的控制權限將會是個隱憂，因為全部的敏感數據都會暴露出來。
+
+However, it is possible to encrypt your environment file using Laravel's built-in [environment encryption](#encrypting-environment-files). Encrypted environment files may be placed in source control safely.
 
 <a name="additional-environment-files"></a>
 #### 附加環境檔案
@@ -108,6 +111,70 @@ APP_NAME="My Application"
 
 > **Note**  
 > 目前應用程式環境檢測可以由定義伺服器級（server-level）`APP_ENV` 環境變數去做覆蓋。
+
+<a name="encrypting-environment-files"></a>
+### 加密環境檔
+
+未加密環境檔不應該被存取到原始碼控制中。不過Laravel 可以加密你的環境檔，因此這些加密過的環境檔可以更安全地加進你的部分應用的原始碼控制中。
+
+<a name="encryption"></a>
+#### 加密
+
+你可以使用 `env:encrypt` 指令來加密環境檔：
+
+```shell
+php artisan env:encrypt
+```
+
+執行 `env:encrypt` 指令會加密你的 `.env` 檔然後將加密的內容放進 `.env.encrypted` 檔。解密金鑰會顯示在指令的輸出，我們應該要將金鑰儲存在安全的密碼管理器中。如果你想提供自己的加密金鑰你可以在調用指令時使用 `--key` 選項：
+
+```shell
+php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
+```
+
+> **Note**  
+> 被提供的金鑰長度應該和所使用的加密密碼所需的金鑰長度相符。正常情況下，Laravel 會使用需要32個英文字符組成的 `AES-256-CBC` 密碼。在調用指令時通過 `--cipher` 選項，你可以自由的使用任何Laravel [加密器](/docs/{{version}}/encryption)支援的密碼。
+
+如果你的應用有多個環境檔，例如 `.env` 和 `.env.staging` ，你可以藉由通過 `--env` 選項提供環境名字來指定需要被加密的環境檔：
+
+```shell
+php artisan env:encrypt --env=staging
+```
+
+<a name="decryption"></a>
+#### 解密
+
+你可以使用 `env:decrypt` 指令來解密環境檔。這個指令需要解密金鑰，Laravel會從 `LARAVEL_ENV_ENCRYPTION_KEY` 這個環境變數中找出金鑰。
+
+```shell
+php artisan env:decrypt
+```
+或者可以直接通過 `--key` 選項來提供解密金鑰：
+
+```shell
+php artisan env:decrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
+```
+
+當 `env:decrypt` 指令被調用時，Laravel會解密 `.env.encrypted` 這個檔案，然後把解密後的內容放進 `.env` 檔中。
+
+在 `env:decrypt` 指令後面加上 `--cipher` 選項可以用來自定義加密密碼：
+The `--cipher` option may be provided to the `env:decrypt` command in order to use a custom encryption cipher:
+
+```shell
+php artisan env:decrypt --key=qUWuNRdfuImXcKxZ --cipher=AES-128-CBC
+```
+
+如果你的應用有多個環境檔，例如 `.env` 和 `.env.staging` ，你可以藉由通過 `--env` 選項提供環境名字來指定需要被解密的環境檔：
+
+```shell
+php artisan env:decrypt --env=staging
+```
+
+為了覆蓋已經存在的環境檔，你可以在 `env:decrypt` 指令後面加上 `--force` 選項。
+
+```shell
+php artisan env:decrypt --force
+```
 
 <a name="accessing-configuration-values"></a>
 ## 存取設定值
