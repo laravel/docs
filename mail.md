@@ -983,8 +983,8 @@ As you might expect, the "HTML" assertions assert that the HTML version of your 
         $mailable->assertHasCc('abigail@example.com');
         $mailable->assertHasBcc('victoria@example.com');
         $mailable->assertHasReplyTo('tyler@example.com');
-        $mailable->hasTag('example-tag');
-        $mailable->hasMetadata('key', 'value');
+        $mailable->assertHasTag('example-tag');
+        $mailable->assertHasMetadata('key', 'value');
 
         $mailable->assertSeeInHtml($user->email);
         $mailable->assertSeeInHtml('Invoice Paid');
