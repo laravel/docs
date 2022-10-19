@@ -492,7 +492,7 @@ If the relationship's columns depend on the factory that defines it you may assi
 <a name="recycling-an-existing-model-for-relationships"></a>
 ### Recycling An Existing Model For Relationships
 
-If you have models that share a common relationship with another model, you may use the `recycle` method to ensure a single instance of the related model is recycled for all of the relationships.
+If you have models that share a common relationship with another model, you may use the `recycle` method to ensure a single instance of the related model is recycled for all of the relationships created by the factory.
 
 For example, imagine you have `Airline`, `Flight`, and `Ticket` models, where the ticket belongs to an airline and a flight, and the flight also belongs to an airline. When creating tickets, you will probably want the same airline for both the ticket and the flight, so you may pass an airline instance to the `recycle` method:
 
@@ -502,15 +502,8 @@ For example, imagine you have `Airline`, `Flight`, and `Ticket` models, where th
 
 You may find the `recycle` method particularly useful if you have models belonging to a common user or team.
 
-Sometimes you may want to pass already created list of models, you can do that by passing the collection of models, then for each relation, factory class picks a random model from provided collection of models, instead of depending on a single one.
+The `recycle` method also accepts a collection of existing models. When a collection is provided to the `recycle` method, a random model from the collection will be chosen when the factory needs a model of that type:
 
-```
- $users = User::all();
- $companies = Company::all();
-
-    Posts::factory()
-        ->recycle($users)
-        ->recycle($companies)
-        ->count(10)
+    Ticket::factory()
+        ->recycle($airlines)
         ->create();
-```
