@@ -501,3 +501,16 @@ For example, imagine you have `Airline`, `Flight`, and `Ticket` models, where th
         ->create();
 
 You may find the `recycle` method particularly useful if you have models belonging to a common user or team.
+
+Sometimes you may want to pass already created list of models, you can do that by passing the collection of models, then for each relation, factory class picks a random model from provided collection of models, instead of depending on a single one.
+
+```
+ $users = User::all();
+ $companies = Company::all();
+
+    Posts::factory()
+        ->recycle($users)
+        ->recycle($companies)
+        ->count(10)
+        ->create();
+```
