@@ -965,7 +965,7 @@ Once you have implemented the interface, Laravel will automatically use the pref
 <a name="testing-mailables"></a>
 ## Testing Mailables
 
-Laravel provides several convenient methods for testing that your mailable contains the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, `assertSeeInOrderInText`, `assertHasAttachment`, `assertHasAttachedData`, `assertHasAttachmentFromStorage`, and `assertHasAttachmentFromStorageDisk`.
+Laravel provides a variety of methods for inspecting your mailable's structure. In addition, Laravel provides several convenient methods for testing that your mailable contains the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, `assertSeeInOrderInText`, `assertHasAttachment`, `assertHasAttachedData`, `assertHasAttachmentFromStorage`, and `assertHasAttachmentFromStorageDisk`.
 
 As you might expect, the "HTML" assertions assert that the HTML version of your mailable contains a given string, while the "text" assertions assert that the plain-text version of your mailable contains a given string:
 
@@ -977,6 +977,14 @@ As you might expect, the "HTML" assertions assert that the HTML version of your 
         $user = User::factory()->create();
 
         $mailable = new InvoicePaid($user);
+
+        $mailable->assertFrom('jeffrey@example.com');
+        $mailable->assertTo('taylor@example.com');
+        $mailable->assertHasCc('abigail@example.com');
+        $mailable->assertHasBcc('victoria@example.com');
+        $mailable->assertHasReplyTo('tyler@example.com');
+        $mailable->assertHasTag('example-tag');
+        $mailable->assertHasMetadata('key', 'value');
 
         $mailable->assertSeeInHtml($user->email);
         $mailable->assertSeeInHtml('Invoice Paid');
