@@ -166,17 +166,15 @@ Closure based commands provide an alternative to defining console commands as cl
 
     /**
      * Register the closure based commands for the application.
-     *
-     * @return void
      */
-    protected function commands()
+    protected function commands(): void
     {
         require base_path('routes/console.php');
     }
 
 Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your closure based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:
 
-    Artisan::command('mail:send {user}', function ($user) {
+    Artisan::command('mail:send {user}', function (string $user) {
         $this->info("Sending email to: {$user}!");
     });
 
@@ -190,7 +188,7 @@ In addition to receiving your command's arguments and options, command closures 
     use App\Models\User;
     use App\Support\DripEmailer;
 
-    Artisan::command('mail:send {user}', function (DripEmailer $drip, $user) {
+    Artisan::command('mail:send {user}', function (DripEmailer $drip, string $user) {
         $drip->send(User::find($user));
     });
 
@@ -199,7 +197,7 @@ In addition to receiving your command's arguments and options, command closures 
 
 When defining a closure based command, you may use the `purpose` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
 
-    Artisan::command('mail:send {user}', function ($user) {
+    Artisan::command('mail:send {user}', function (string $user) {
         // ...
     })->purpose('Send a marketing email to a user');
 
@@ -527,7 +525,7 @@ For long running tasks, it can be helpful to show a progress bar that informs us
 
     use App\Models\User;
 
-    $users = $this->withProgressBar(User::all(), function ($user) {
+    $users = $this->withProgressBar(User::all(), function (User $user) {
         $this->performTask($user);
     });
 
@@ -557,10 +555,8 @@ All of your console commands are registered within your application's `App\Conso
 
     /**
      * Register the commands for the application.
-     *
-     * @return void
      */
-    protected function commands()
+    protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
         $this->load(__DIR__.'/../Domain/Orders/Commands');
@@ -581,7 +577,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 
     use Illuminate\Support\Facades\Artisan;
 
-    Route::post('/user/{user}/mail', function ($user) {
+    Route::post('/user/{user}/mail', function (string $user) {
         $exitCode = Artisan::call('mail:send', [
             'user' => $user, '--queue' => 'default'
         ]);
@@ -622,7 +618,7 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
 
     use Illuminate\Support\Facades\Artisan;
 
-    Route::post('/user/{user}/mail', function ($user) {
+    Route::post('/user/{user}/mail', function (string $user) {
         Artisan::queue('mail:send', [
             'user' => $user, '--queue' => 'default'
         ]);
@@ -668,16 +664,16 @@ As you may know, operating systems allow signals to be sent to running processes
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
         $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);
 
         while ($this->shouldKeepRunning) {
             // ...
         }
+
+        return 0;
     }
 
 To listen for multiple signals at once, you may provide an array of signals to the `trap` method:
