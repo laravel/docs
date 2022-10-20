@@ -127,7 +127,10 @@ Or, you may find it convenient to specify middleware within your controller's co
 
 Controllers also allow you to register middleware using a closure. This provides a convenient way to define an inline middleware for a single controller without defining an entire middleware class:
 
-    $this->middleware(function ($request, $next) {
+    use Closure;
+    use Illuminate\Http\Request;
+
+    $this->middleware(function (Request $request, Closure $next) {
         return $next($request);
     });
 
