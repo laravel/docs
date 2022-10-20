@@ -133,10 +133,8 @@ To run a basic SELECT query, you may use the `select` method on the `DB` facade:
     {
         /**
          * Show a list of all of the application's users.
-         *
-         * @return \Illuminate\Http\Response
          */
-        public function index()
+        public function index(): TODO
         {
             $users = DB::select('select * from users where active = ?', [1]);
 
