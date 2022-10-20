@@ -43,7 +43,7 @@ Let's take a look at an example of a basic controller. Note that the controller 
          * @param  int  $id
          * @return \Illuminate\View\View
          */
-        public function show($id)
+        public function show(int $id): TODO
         {
             return view('user.profile', [
                 'user' => User::findOrFail($id)
@@ -77,10 +77,8 @@ If a controller action is particularly complex, you might find it convenient to 
     {
         /**
          * Provision a new web server.
-         *
-         * @return \Illuminate\Http\Response
          */
-        public function __invoke()
+        public function __invoke(): TODO
         {
             // ...
         }
@@ -114,8 +112,6 @@ Or, you may find it convenient to specify middleware within your controller's co
     {
         /**
          * Instantiate a new controller instance.
-         *
-         * @return void
          */
         public function __construct()
         {
@@ -469,9 +465,6 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
 
         /**
          * Create a new controller instance.
-         *
-         * @param  \App\Repositories\UserRepository  $users
-         * @return void
          */
         public function __construct(UserRepository $users)
         {
@@ -494,11 +487,8 @@ In addition to constructor injection, you may also type-hint dependencies on you
     {
         /**
          * Store a new user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): TODO
         {
             $name = $request->name;
 
@@ -524,12 +514,8 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
     {
         /**
          * Update the given user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  string  $id
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, $id)
+        public function update(Request $request, int $id): TODO
         {
             //
         }
