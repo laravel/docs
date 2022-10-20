@@ -139,8 +139,6 @@ Occasionally, when converting models to arrays or JSON, you may wish to add attr
     {
         /**
          * Determine if the user is an administrator.
-         *
-         * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
         protected function isAdmin(): Attribute
         {
@@ -189,11 +187,8 @@ You may customize the default serialization format by overriding the `serializeD
 
     /**
      * Prepare a date for array / JSON serialization.
-     *
-     * @param  \DateTimeInterface  $date
-     * @return string
      */
-    protected function serializeDate(DateTimeInterface $date)
+    protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d');
     }
