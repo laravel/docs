@@ -44,22 +44,16 @@ Let's look at a simple example:
 
         /**
          * Create a new controller instance.
-         *
-         * @param  UserRepository  $users
-         * @return void
          */
-        public function __construct(UserRepository $users)
+        public function __construct(UserRepository $users): void
         {
             $this->users = $users;
         }
 
         /**
          * Show the profile for the given user.
-         *
-         * @param  int  $id
-         * @return Response
          */
-        public function show($id)
+        public function show(int $id): TODO
         {
             $user = $this->users->find($id);
 
@@ -196,9 +190,6 @@ This statement tells the container that it should inject the `RedisEventPusher` 
 
     /**
      * Create a new class instance.
-     *
-     * @param  \App\Contracts\EventPusher  $pusher
-     * @return void
      */
     public function __construct(EventPusher $pusher)
     {
@@ -279,10 +270,6 @@ Occasionally, you may have a class that receives an array of typed objects using
 
         /**
          * Create a new class instance.
-         *
-         * @param  \App\Services\Logger  $logger
-         * @param  array  $filters
-         * @return void
          */
         public function __construct(Logger $logger, Filter ...$filters)
         {
@@ -385,9 +372,6 @@ If you would like to have the Laravel container instance itself injected into a 
 
     /**
      * Create a new class instance.
-     *
-     * @param  \Illuminate\Container\Container  $container
-     * @return void
      */
     public function __construct(Container $container)
     {
@@ -418,9 +402,6 @@ For example, you may type-hint a repository defined by your application in a con
 
         /**
          * Create a new controller instance.
-         *
-         * @param  \App\Repositories\UserRepository  $users
-         * @return void
          */
         public function __construct(UserRepository $users)
         {
@@ -429,11 +410,8 @@ For example, you may type-hint a repository defined by your application in a con
 
         /**
          * Show the user with the given ID.
-         *
-         * @param  int  $id
-         * @return \Illuminate\Http\Response
          */
-        public function show($id)
+        public function show(int $id): TODO
         {
             //
         }
@@ -454,11 +432,8 @@ Sometimes you may wish to invoke a method on an object instance while allowing t
     {
         /**
          * Generate a new user report.
-         *
-         * @param  \App\Repositories\UserRepository  $repository
-         * @return array
          */
-        public function generate(UserRepository $repository)
+        public function generate(UserRepository $repository): array
         {
             // ...
         }
