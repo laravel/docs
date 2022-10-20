@@ -444,10 +444,8 @@ Cashier allows you to define some useful defaults for your customers when creati
 
     /**
      * Get the customer's email address to associate with Paddle.
-     *
-     * @return string|null
      */
-    public function paddleEmail()
+    public function paddleEmail(): string|null
     {
         return $this->email;
     }
@@ -457,10 +455,9 @@ Cashier allows you to define some useful defaults for your customers when creati
      *
      * This needs to be a 2 letter code. See the link below for supported countries.
      *
-     * @return string|null
      * @link https://developer.paddle.com/reference/platform-parameters/supported-countries
      */
-    public function paddleCountry()
+    public function paddleCountry(): string|null
     {
         //
     }
@@ -470,10 +467,9 @@ Cashier allows you to define some useful defaults for your customers when creati
      *
      * See the link below for countries which require this.
      *
-     * @return string|null
      * @link https://developer.paddle.com/reference/platform-parameters/supported-countries#countries-requiring-postcode
      */
-    public function paddlePostcode()
+    public function paddlePostcode(): string|null
     {
         //
     }
@@ -1211,10 +1207,9 @@ Alternatively, you can perform more precise customization by catching the [`subs
         /**
          * Handle subscription payment failed.
          *
-         * @param  array  $payload
-         * @return void
+         * @param  array<TODO>  $payload
          */
-        public function handleSubscriptionPaymentFailed($payload)
+        public function handleSubscriptionPaymentFailed(array $payload): void
         {
             // Handle the failed subscription payment...
         }
