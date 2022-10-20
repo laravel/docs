@@ -764,11 +764,8 @@ Component constructor arguments should be specified using `camelCase`, while `ke
 
     /**
      * Create the component instance.
-     *
-     * @param  string  $alertType
-     * @return void
      */
-    public function __construct($alertType)
+    public function __construct(string $alertType)
     {
         $this->alertType = $alertType;
     }
@@ -818,11 +815,8 @@ In addition to public variables being available to your component template, any 
 
     /**
      * Determine if the given option is the currently selected option.
-     *
-     * @param  string  $option
-     * @return bool
      */
-    public function isSelected($option)
+    public function isSelected(string $option): bool
     {
         return $option === $this->selected;
     }
@@ -868,13 +862,8 @@ use App\Services\AlertCreator;
 
 /**
  * Create the component instance.
- *
- * @param  \App\Services\AlertCreator  $creator
- * @param  string  $type
- * @param  string  $message
- * @return void
  */
-public function __construct(AlertCreator $creator, $type, $message)
+public function __construct(AlertCreator $creator, string $type, string $message)
 {
     $this->creator = $creator;
     $this->type = $type;
@@ -1729,7 +1718,7 @@ The following example creates a `@datetime($var)` directive which formats a give
          */
         public function boot(): void
         {
-            Blade::directive('datetime', function ($expression) {
+            Blade::directive('datetime', function (string $expression) {
                 return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
             });
         }
@@ -1780,7 +1769,7 @@ Programming a custom directive is sometimes more complex than necessary when def
      */
     public function boot(): void
     {
-        Blade::if('disk', function ($value) {
+        Blade::if('disk', function (string $value) {
             return config('filesystems.default') === $value;
         });
     }
