@@ -115,7 +115,7 @@ Finally, in your application's `config/auth.php` configuration file, you should 
 <a name="client-uuids"></a>
 #### Client UUIDs
 
-You may also run the `passport:install` command with the `--uuids` option present. This option will instruct Passport that you would like to use UUIDs instead of auto-incrementing integers as the Passport `Client` model's primary key values. After running the `passport:install` command with the `--uuids` option, you will be given additional instructions regarding disabling Passport's default migrations:
+You may also run the `passport:install` command with the `--uuids` option present. This option will instruct Passport that you would like to use UUIDs instead of auto-incrementing integers as the Passport `Client` model's primary key values. After running the `passport:install` command with the `--uuids` option. Passport will automatically update the published migrations and prompt you to optionally rollback and re-run your migrations:
 
 ```shell
 php artisan passport:install --uuids
