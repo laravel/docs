@@ -313,7 +313,7 @@ If you need to customize the names of the columns used to store the timestamps, 
 
 If you would like to perform model operations without the model having its `updated_at` timestamp modified, you may operate on the model within a closure given to the `withoutTimestamps` method:
 
-    Model::withoutTimestamps(fn () => $post->incrememt(['reads']));
+    Model::withoutTimestamps(fn () => $post->increment(['reads']));
 
 <a name="database-connections"></a>
 ### Database Connections
