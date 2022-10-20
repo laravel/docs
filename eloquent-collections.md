@@ -21,9 +21,9 @@ All collections also serve as iterators, allowing you to loop over them as if th
 
 However, as previously mentioned, collections are much more powerful than arrays and expose a variety of map / reduce operations that may be chained using an intuitive interface. For example, we may remove all inactive models and then gather the first name for each remaining user:
 
-    $names = User::all()->reject(function ($user) {
+    $names = User::all()->reject(function (User $user) {
         return $user->active === false;
-    })->map(function ($user) {
+    })->map(function (User $user) {
         return $user->name;
     });
 
@@ -223,6 +223,7 @@ If you would like to use a custom `Collection` object when interacting with a gi
     namespace App\Models;
 
     use App\Support\UserCollection;
+    use Illuminate\Database\Eloquent\Collection;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
@@ -230,10 +231,10 @@ If you would like to use a custom `Collection` object when interacting with a gi
         /**
          * Create a new Eloquent Collection instance.
          *
-         * @param  array  $models
-         * @return \Illuminate\Database\Eloquent\Collection
+         * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models
+         * @return \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Database\Eloquent\Model>
          */
-        public function newCollection(array $models = [])
+        public function newCollection(array $models = []): Collection
         {
             return new UserCollection($models);
         }
