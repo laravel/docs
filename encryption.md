@@ -35,11 +35,8 @@ You may encrypt a value using the `encryptString` method provided by the `Crypt`
     {
         /**
          * Store a DigitalOcean API token for the user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function storeSecret(Request $request)
+        public function storeSecret(Request $request): TODO
         {
             $request->user()->fill([
                 'token' => Crypt::encryptString($request->token),
