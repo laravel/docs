@@ -250,6 +250,7 @@ If you would like to specify a closure that is invoked for each SQL query execut
 
     namespace App\Providers;
 
+    use Illuminate\Database\Events\QueryExecuted;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\ServiceProvider;
 
@@ -268,7 +269,7 @@ If you would like to specify a closure that is invoked for each SQL query execut
          */
         public function boot(): void
         {
-            DB::listen(function ($query) {
+            DB::listen(function (QueryExecuted $query) {
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
