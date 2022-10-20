@@ -82,7 +82,7 @@ Note that we can access model properties directly from the `$this` variable. Thi
     use App\Http\Resources\UserResource;
     use App\Models\User;
 
-    Route::get('/user/{id}', function ($id) {
+    Route::get('/user/{id}', function (int $id) {
         return new UserResource(User::findOrFail($id));
     });
 
@@ -232,7 +232,7 @@ Once a resource has been defined, it may be returned directly from a route or co
     use App\Http\Resources\UserResource;
     use App\Models\User;
 
-    Route::get('/user/{id}', function ($id) {
+    Route::get('/user/{id}', function (int $id) {
         return new UserResource(User::findOrFail($id));
     });
 
@@ -734,7 +734,7 @@ As you have already read, resources may be returned directly from routes and con
     use App\Http\Resources\UserResource;
     use App\Models\User;
 
-    Route::get('/user/{id}', function ($id) {
+    Route::get('/user/{id}', function (int $id) {
         return new UserResource(User::findOrFail($id));
     });
 
