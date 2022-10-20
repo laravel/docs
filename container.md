@@ -121,8 +121,9 @@ Within a service provider, you always have access to the container via the `$thi
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
+    use Illuminate\Contracts\Foundation\Application;
 
-    $this->app->bind(Transistor::class, function ($app) {
+    $this->app->bind(Transistor::class, function (Application $app) {
         return new Transistor($app->make(PodcastParser::class));
     });
 
@@ -131,9 +132,10 @@ Note that we receive the container itself as an argument to the resolver. We can
 As mentioned, you will typically be interacting with the container within service providers; however, if you would like to interact with the container outside of a service provider, you may do so via the `App` [facade](/docs/{{version}}/facades):
 
     use App\Services\Transistor;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Support\Facades\App;
 
-    App::bind(Transistor::class, function ($app) {
+    App::bind(Transistor::class, function (Application $app) {
         // ...
     });
 
@@ -147,8 +149,9 @@ The `singleton` method binds a class or interface into the container that should
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
+    use Illuminate\Contracts\Foundation\Application;
 
-    $this->app->singleton(Transistor::class, function ($app) {
+    $this->app->singleton(Transistor::class, function (Application $app) {
         return new Transistor($app->make(PodcastParser::class));
     });
 
@@ -159,8 +162,9 @@ The `scoped` method binds a class or interface into the container that should on
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
+    use Illuminate\Contracts\Foundation\Application;
 
-    $this->app->scoped(Transistor::class, function ($app) {
+    $this->app->scoped(Transistor::class, function (Application $app) {
         return new Transistor($app->make(PodcastParser::class));
     });
 
@@ -291,7 +295,7 @@ Using contextual binding, you may resolve this dependency by providing the `give
 
     $this->app->when(Firewall::class)
               ->needs(Filter::class)
-              ->give(function ($app) {
+              ->give(function (Application $app) {
                     return [
                         $app->make(NullFilter::class),
                         $app->make(ProfanityFilter::class),
@@ -335,7 +339,7 @@ Occasionally, you may need to resolve all of a certain "category" of binding. Fo
 
 Once the services have been tagged, you may easily resolve them all via the container's `tagged` method:
 
-    $this->app->bind(ReportAnalyzer::class, function ($app) {
+    $this->app->bind(ReportAnalyzer::class, function (Application $app) {
         return new ReportAnalyzer($app->tagged('reports'));
     });
 
@@ -344,7 +348,7 @@ Once the services have been tagged, you may easily resolve them all via the cont
 
 The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts two arguments, the service class you're extending and a closure that should return the modified service. The closure receives the service being resolved and the container instance:
 
-    $this->app->extend(Service::class, function ($service, $app) {
+    $this->app->extend(Service::class, function (Service $service, Application $app) {
         return new DecoratedService($service);
     });
 
@@ -482,12 +486,13 @@ The `call` method accepts any PHP callable. The container's `call` method may ev
 The service container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
 
     use App\Services\Transistor;
+    use Illuminate\Contracts\Foundation\Application;
 
-    $this->app->resolving(Transistor::class, function ($transistor, $app) {
+    $this->app->resolving(Transistor::class, function (Transistor $transistor, Application $app) {
         // Called when container resolves objects of type "Transistor"...
     });
 
-    $this->app->resolving(function ($object, $app) {
+    $this->app->resolving(function (mixed $object, Application $app) {
         // Called when container resolves object of any type...
     });
 
