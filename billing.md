@@ -342,10 +342,8 @@ To automate this, you may define an event listener on your billable model that r
 
     /**
      * The "booted" method of the model.
-     *
-     * @return void
      */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::updated(queueable(function ($customer) {
             if ($customer->hasStripeId()) {
@@ -360,10 +358,8 @@ You may customize the columns used for syncing customer information to Stripe by
 
     /**
      * Get the customer name that should be synced to Stripe.
-     *
-     * @return string|null
      */
-    public function stripeName()
+    public function stripeName(): string|null
     {
         return $this->company_name;
     }
@@ -1187,9 +1183,9 @@ To specify the tax rates a user pays on a subscription, you should implement the
     /**
      * The tax rates that should apply to the customer's subscriptions.
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function taxRates()
+    public function taxRates(): array
     {
         return ['txr_id'];
     }
@@ -1201,9 +1197,9 @@ If you're offering subscriptions with multiple products, you may define differen
     /**
      * The tax rates that should apply to the customer's subscriptions.
      *
-     * @return array
+     * @return array<string, array<int, string>>
      */
-    public function priceTaxRates()
+    public function priceTaxRates(): array
     {
         return [
             'price_monthly' => ['txr_id'],
@@ -1707,7 +1703,7 @@ From within a route or controller, you may use the `downloadInvoice` method to g
 
     use Illuminate\Http\Request;
 
-    Route::get('/user/invoice/{invoice}', function (Request $request, $invoiceId) {
+    Route::get('/user/invoice/{invoice}', function (Request $request, string $invoiceId) {
         return $request->user()->downloadInvoice($invoiceId);
     });
 
@@ -1741,11 +1737,6 @@ Cashier also makes it possible to use a custom invoice renderer. By default, Cas
     {
         /**
          * Render the given invoice and return the raw PDF bytes.
-         *
-         * @param  \Laravel\Cashier\Invoice. $invoice
-         * @param  array  $data
-         * @param  array  $options
-         * @return string
          */
         public function render(Invoice $invoice, array $data = [], array $options = []): string
         {
