@@ -94,12 +94,8 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
     {
         /**
          * Update the given post.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \App\Models\Post  $post
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, Post $post)
+        public function update(Request $request, Post $post): TODO
         {
             if (! Gate::allows('update-post', $post)) {
                 abort(403);
@@ -147,7 +143,7 @@ The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, 
     use App\Models\User;
     use Illuminate\Support\Facades\Gate;
 
-    Gate::define('create-post', function (User $user, Category $category, $pinned) {
+    Gate::define('create-post', function (User $user, Category $category, bool $pinned) {
         if (! $user->canPublishToGroup($category->group)) {
             return false;
         } elseif ($pinned && ! $user->canPinPosts()) {
@@ -520,12 +516,8 @@ The `App\Models\User` model that is included with your Laravel application inclu
     {
         /**
          * Update the given post.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \App\Models\Post  $post
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, Post $post)
+        public function update(Request $request, Post $post): TODO
         {
             if ($request->user()->cannot('update', $post)) {
                 abort(403);
@@ -554,11 +546,8 @@ Remember, some actions may correspond to policy methods like `create` that do no
     {
         /**
          * Create a post.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): TODO
         {
             if ($request->user()->cannot('create', Post::class)) {
                 abort(403);
@@ -588,13 +577,9 @@ Like the `can` method, this method accepts the name of the action you wish to au
         /**
          * Update the given blog post.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \App\Models\Post  $post
-         * @return \Illuminate\Http\Response
-         *
          * @throws \Illuminate\Auth\Access\AuthorizationException
          */
-        public function update(Request $request, Post $post)
+        public function update(Request $request, Post $post): TODO
         {
             $this->authorize('update', $post);
 
@@ -613,12 +598,9 @@ As previously discussed, some policy methods like `create` do not require a mode
     /**
      * Create a new blog post.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Request $request)
+    public function create(Request $request): TODO
     {
         $this->authorize('create', Post::class);
 
@@ -644,8 +626,6 @@ The `authorizeResource` method accepts the model's class name as its first argum
     {
         /**
          * Create the controller instance.
-         *
-         * @return void
          */
         public function __construct()
         {
@@ -783,13 +763,9 @@ When attempting to determine if the authenticated user can update a given post, 
     /**
      * Update the given blog post.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Post $post): TODO
     {
         $this->authorize('update', [$post, $request->category]);
 
