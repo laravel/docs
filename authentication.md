@@ -147,16 +147,14 @@ Alternatively, once a user is authenticated, you may access the authenticated us
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class FlightController extends Controller
     {
         /**
          * Update the flight information for an existing flight.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request)
+        public function update(Request $request): TODO
         {
             // $request->user()
         }
@@ -190,13 +188,12 @@ To determine if the user making the incoming HTTP request is authenticated, you 
 
 When the `auth` middleware detects an unauthenticated user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes). You may modify this behavior by updating the `redirectTo` function in your application's `app/Http/Middleware/Authenticate.php` file:
 
+    use Illuminate\Http\Request;
+
     /**
      * Get the path the user should be redirected to.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string
      */
-    protected function redirectTo($request)
+    protected function redirectTo(Request $request): string
     {
         return route('login');
     }
@@ -236,11 +233,8 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
     {
         /**
          * Handle an authentication attempt.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function authenticate(Request $request)
+        public function authenticate(Request $request): TODO
         {
             $credentials = $request->validate([
                 'email' => ['required', 'email'],
@@ -294,7 +288,7 @@ The `attemptWhen` method, which receives a closure as its second argument, may b
     if (Auth::attemptWhen([
         'email' => $email,
         'password' => $password,
-    ], function ($user) {
+    ], function (User $user) {
         return $user->isNotBanned();
     })) {
         // Authentication was successful...
@@ -439,11 +433,8 @@ In addition to calling the `logout` method, it is recommended that you invalidat
 
     /**
      * Log the user out of the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function logout(Request $request)
+    public function logout(Request $request): TODO
     {
         Auth::logout();
 
@@ -548,6 +539,7 @@ You may define your own authentication guards using the `extend` method on the `
     namespace App\Providers;
 
     use App\Services\Auth\JwtGuard;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
     use Illuminate\Support\Facades\Auth;
 
@@ -560,7 +552,7 @@ You may define your own authentication guards using the `extend` method on the `
         {
             $this->registerPolicies();
 
-            Auth::extend('jwt', function ($app, $name, array $config) {
+            Auth::extend('jwt', function (function (Application $app, string $name, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\Guard...
 
                 return new JwtGuard(Auth::createUserProvider($config['provider']));
@@ -618,6 +610,7 @@ If you are not using a traditional relational database to store your users, you 
     namespace App\Providers;
 
     use App\Extensions\MongoUserProvider;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
     use Illuminate\Support\Facades\Auth;
 
@@ -630,7 +623,7 @@ If you are not using a traditional relational database to store your users, you 
         {
             $this->registerPolicies();
 
-            Auth::provider('mongo', function ($app, array $config) {
+            Auth::provider('mongo', function (Application $app, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\UserProvider...
 
                 return new MongoUserProvider($app->make('mongo.connection'));
@@ -668,9 +661,9 @@ Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
 
     interface UserProvider
     {
-        public function retrieveById($identifier);
-        public function retrieveByToken($identifier, $token);
-        public function updateRememberToken(Authenticatable $user, $token);
+        public function retrieveById(mixed $identifier);
+        public function retrieveByToken(mixed $identifier, string $token);
+        public function updateRememberToken(Authenticatable $user, string $token);
         public function retrieveByCredentials(array $credentials);
         public function validateCredentials(Authenticatable $user, array $credentials);
     }
@@ -700,7 +693,7 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
         public function getAuthIdentifier();
         public function getAuthPassword();
         public function getRememberToken();
-        public function setRememberToken($value);
+        public function setRememberToken(string $value);
         public function getRememberTokenName();
     }
 
