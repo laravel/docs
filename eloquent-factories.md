@@ -76,6 +76,7 @@ Once you have defined your factories, you may use the static `factory` method pr
 
 The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:
 
+    use Illuminate\Database\Eloquent\Factories\Factory;
     use Database\Factories\Administration\FlightFactory;
 
     /**
@@ -83,7 +84,7 @@ The `HasFactory` trait's `factory` method will use conventions to determine the 
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    protected static function newFactory()
+    protected static function newFactory(): Factory
     {
         return FlightFactory::new();
     }
@@ -110,12 +111,12 @@ State manipulation methods allow you to define discrete modifications that can b
 
 State transformation methods typically call the `state` method provided by Laravel's base factory class. The `state` method accepts a closure which will receive the array of raw attributes defined for the factory and should return an array of attributes to modify:
 
+    use Illuminate\Database\Eloquent\Factories\Factory;
+
     /**
      * Indicate that the user is suspended.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function suspended()
+    public function suspended(): Factory
     {
         return $this->state(function (array $attributes) {
             return [
@@ -150,7 +151,7 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
          *
          * @return $this
          */
-        public function configure()
+        public function configure(): static
         {
             return $this->afterMaking(function (User $user) {
                 //
