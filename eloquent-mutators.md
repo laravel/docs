@@ -43,8 +43,6 @@ In this example, we'll define an accessor for the `first_name` attribute. The ac
     {
         /**
          * Get the user's first name.
-         *
-         * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
         protected function firstName(): Attribute
         {
@@ -78,8 +76,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * Interact with the user's address.
- *
- * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
 protected function address(): Attribute
 {
@@ -122,8 +118,6 @@ If you would like to disable the object caching behavior of attributes, you may 
 ```php
 /**
  * Interact with the user's address.
- *
- * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
 protected function address(): Attribute
 {
@@ -152,8 +146,6 @@ A mutator transforms an Eloquent attribute value when it is set. To define a mut
     {
         /**
          * Interact with the user's first name.
-         *
-         * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
         protected function firstName(): Attribute
         {
@@ -185,8 +177,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * Interact with the user's address.
- *
- * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
 protected function address(): Attribute
 {
@@ -397,11 +387,8 @@ You may customize the default serialization format for all of your model's dates
 
     /**
      * Prepare a date for array / JSON serialization.
-     *
-     * @param  \DateTimeInterface  $date
-     * @return string
      */
-    protected function serializeDate(DateTimeInterface $date)
+    protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d');
     }
@@ -606,14 +593,8 @@ Therefore, you may specify that your custom cast class will be responsible for s
 
     /**
      * Get the serialized representation of the value.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  array  $attributes
-     * @return mixed
      */
-    public function serialize($model, string $key, $value, array $attributes)
+    public function serialize(Model $model, string $key, mixed $value, array $attributes): string
     {
         return (string) $value;
     }
@@ -649,11 +630,8 @@ A classic example of an inbound only cast is a "hashing" cast. For example, we m
 
         /**
          * Create a new cast class instance.
-         *
-         * @param  string|null  $algorithm
-         * @return void
          */
-        public function __construct($algorithm = null)
+        public function __construct(string $algorithm = null)
         {
             $this->algorithm = $algorithm;
         }
@@ -701,6 +679,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
     namespace App\Models;
 
     use Illuminate\Contracts\Database\Eloquent\Castable;
+    use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
     use App\Casts\Address as AddressCast;
 
     class Address implements Castable
@@ -708,10 +687,9 @@ Objects that implement the `Castable` interface must define a `castUsing` method
         /**
          * Get the name of the caster class to use when casting from / to this cast target.
          *
-         * @param  array  $arguments
-         * @return string
+         * @param  array<string, mixed>  $arguments
          */
-        public static function castUsing(array $arguments)
+        public static function castUsing(array $arguments): CastsAttributes|string
         {
             return AddressCast::class;
         }
@@ -745,10 +723,9 @@ By combining "castables" with PHP's [anonymous classes](https://www.php.net/manu
         /**
          * Get the caster class to use when casting from / to this cast target.
          *
-         * @param  array  $arguments
-         * @return object|string
+         * @param  array<string, mixed>  $arguments
          */
-        public static function castUsing(array $arguments)
+        public static function castUsing(array $arguments): CastsAttributes|string
         {
             return new class implements CastsAttributes
             {
