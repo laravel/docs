@@ -1076,6 +1076,7 @@ If a notification supports being sent as a Slack message, you should define a `t
 
 You may also add "attachments" to Slack messages. Attachments provide richer formatting options than simple text messages. In this example, we will send an error notification about an exception that occurred in an application, including a link to view more details about the exception:
 
+    use Illuminate\Notifications\Messages\SlackAttachment;
     use Illuminate\Notifications\Messages\SlackMessage;
 
     /**
@@ -1088,7 +1089,7 @@ You may also add "attachments" to Slack messages. Attachments provide richer for
         return (new SlackMessage)
                     ->error()
                     ->content('Whoops! Something went wrong.')
-                    ->attachment(function ($attachment) use ($url) {
+                    ->attachment(function (SlackAttachment $attachment) use ($url) {
                         $attachment->title('Exception: File Not Found', $url)
                                    ->content('File [background.jpg] was not found.');
                     });
@@ -1096,6 +1097,7 @@ You may also add "attachments" to Slack messages. Attachments provide richer for
 
 Attachments also allow you to specify an array of data that should be presented to the user. The given data will be presented in a table-style format for easy reading:
 
+    use Illuminate\Notifications\Messages\SlackAttachment;
     use Illuminate\Notifications\Messages\SlackMessage;
 
     /**
@@ -1108,7 +1110,7 @@ Attachments also allow you to specify an array of data that should be presented 
         return (new SlackMessage)
                     ->success()
                     ->content('One of your invoices has been paid!')
-                    ->attachment(function ($attachment) use ($url) {
+                    ->attachment(function (SlackAttachment $attachment) use ($url) {
                         $attachment->title('Invoice 1322', $url)
                                    ->fields([
                                         'Title' => 'Server Expenses',
@@ -1124,6 +1126,7 @@ Attachments also allow you to specify an array of data that should be presented 
 
 If some of your attachment fields contain Markdown, you may use the `markdown` method to instruct Slack to parse and display the given attachment fields as Markdown formatted text. The values accepted by this method are: `pretext`, `text`, and / or `fields`. For more information about Slack attachment formatting, check out the [Slack API documentation](https://api.slack.com/docs/message-formatting#message_formatting):
 
+    use Illuminate\Notifications\Messages\SlackAttachment;
     use Illuminate\Notifications\Messages\SlackMessage;
 
     /**
@@ -1136,7 +1139,7 @@ If some of your attachment fields contain Markdown, you may use the `markdown` m
         return (new SlackMessage)
                     ->error()
                     ->content('Whoops! Something went wrong.')
-                    ->attachment(function ($attachment) use ($url) {
+                    ->attachment(function (SlackAttachment $attachment) use ($url) {
                         $attachment->title('Exception: File Not Found', $url)
                                    ->content('File [background.jpg] was *not found*.')
                                    ->markdown(['text']);
