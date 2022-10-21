@@ -431,10 +431,8 @@ Sometimes you may wish to skip the authorization prompt, such as when authorizin
     {
         /**
          * Determine if the client should skip the authorization prompt.
-         *
-         * @return bool
          */
-        public function skipsAuthorization()
+        public function skipsAuthorization(): bool
         {
             return $this->firstParty();
         }
