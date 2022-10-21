@@ -128,16 +128,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class UserController extends Controller
 {
     /**
      * Show the profile for a given user.
-     *
-     * @param  int  $id
-     * @return \Inertia\Response
      */
-    public function show($id)
+    public function show(int $id): Response
     {
         return Inertia::render('Users/Profile', [
             'user' => User::findOrFail($id)
