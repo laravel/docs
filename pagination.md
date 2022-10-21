@@ -57,10 +57,8 @@ In this example, the only argument passed to the `paginate` method is the number
     {
         /**
          * Show all application users.
-         *
-         * @return \Illuminate\Http\Response
          */
-        public function index()
+        public function index(): TODO
         {
             return view('user.index', [
                 'users' => DB::table('users')->paginate(15)
