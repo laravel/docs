@@ -222,6 +222,7 @@ If you need advanced customization of this behavior, you may bind implementation
 
 ```php
 use Laravel\Fortify\Contracts\LogoutResponse;
+use Illuminate\Http\Request;
 
 /**
  * Register any application services.
@@ -229,7 +230,7 @@ use Laravel\Fortify\Contracts\LogoutResponse;
 public function register(): void
 {
     $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
-        public function toResponse($request)
+        public function toResponse(Request $request): TODO
         {
             return redirect('/');
         }
@@ -442,13 +443,14 @@ All of Fortify's view rendering logic may be customized using the appropriate me
 
 ```php
 use Laravel\Fortify\Fortify;
+use Illuminate\Http\Request;
 
 /**
  * Bootstrap any application services.
  */
 public function boot(): void
 {
-    Fortify::resetPasswordView(function ($request) {
+    Fortify::resetPasswordView(function (Request $request) {
         return view('auth.reset-password', ['request' => $request]);
     });
 
