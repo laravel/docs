@@ -86,10 +86,8 @@ Unlike traditional static method calls, [facades](/docs/{{version}}/facades) (in
     {
         /**
          * Retrieve a list of all users of the application.
-         *
-         * @return \Illuminate\Http\Response
          */
-        public function index()
+        public function index(): TODO
         {
             $value = Cache::get('key');
 
@@ -451,7 +449,7 @@ You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or 
 
 When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:
 
-    Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
+    Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) {
         return $mail->hasTo($user->email) &&
                $mail->hasCc('...') &&
                $mail->hasBcc('...') &&
@@ -544,7 +542,7 @@ You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in ord
 
     Notification::assertSentTo(
         $user,
-        function (OrderShipped $notification, $channels) use ($order) {
+        function (OrderShipped $notification, array $channels) use ($order) {
             return $notification->order->id === $order->id;
         }
     );
@@ -560,7 +558,7 @@ By passing a closure as the second argument to the `assertSentOnDemand` method, 
 
     Notification::assertSentOnDemand(
         OrderShipped::class,
-        function ($notification, $channels, $notifiable) use ($user) {
+        function (OrderShipped $notification, array $channels, mixed $notifiable) use ($user) {
             return $notifiable->routes['mail'] === $user->email;
         }
     );
