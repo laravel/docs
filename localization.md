@@ -41,7 +41,7 @@ You may modify the default language for a single HTTP request at runtime using t
 
     use Illuminate\Support\Facades\App;
 
-    Route::get('/greeting/{locale}', function ($locale) {
+    Route::get('/greeting/{locale}', function (string $locale) {
         if (! in_array($locale, ['en', 'es', 'fr'])) {
             abort(400);
         }
