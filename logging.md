@@ -184,11 +184,8 @@ You may call any of these methods to log a message for the corresponding level. 
     {
         /**
          * Show the profile for the given user.
-         *
-         * @param  int  $id
-         * @return \Illuminate\Http\Response
          */
-        public function show($id)
+        public function show(int $id): TODO
         {
             Log::info('Showing the user profile for user: '.$id);
 
@@ -214,6 +211,7 @@ Occasionally, you may wish to specify some contextual information that should be
     namespace App\Http\Middleware;
 
     use Closure;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Log;
     use Illuminate\Support\Str;
 
@@ -224,7 +222,7 @@ Occasionally, you may wish to specify some contextual information that should be
          *
          * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function handle($request, Closure $next)
+        public function handle(Request $request, Closure $next): TODO
         {
             $requestId = (string) Str::uuid();
 
@@ -313,17 +311,15 @@ Once you have configured the `tap` option on your channel, you're ready to defin
 
     namespace App\Logging;
 
+    use Illuminate\Log\Logger;
     use Monolog\Formatter\LineFormatter;
 
     class CustomizeFormatter
     {
         /**
          * Customize the given logger instance.
-         *
-         * @param  \Illuminate\Log\Logger  $logger
-         * @return void
          */
-        public function __invoke($logger)
+        public function __invoke(Logger $logger): void
         {
             foreach ($logger->getHandlers() as $handler) {
                 $handler->setFormatter(new LineFormatter(
@@ -398,11 +394,8 @@ Once you have configured the `custom` driver channel, you're ready to define the
     {
         /**
          * Create a custom Monolog instance.
-         *
-         * @param  array  $config
-         * @return \Monolog\Logger
          */
-        public function __invoke(array $config)
+        public function __invoke(array $config): Logger
         {
             return new Logger(/* ... */);
         }
