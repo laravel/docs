@@ -39,11 +39,8 @@ You may hash a password by calling the `make` method on the `Hash` facade:
     {
         /**
          * Update the password for the user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request)
+        public function update(Request $request): TODO
         {
             // Validate the new password length...
 
