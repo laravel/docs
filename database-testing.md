@@ -45,6 +45,27 @@ The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your 
 
 If you would like to totally reset the database using migrations, you may use the `Illuminate\Foundation\Testing\DatabaseMigrations` trait instead. However, the `DatabaseMigrations` trait is significantly slower than the `RefreshDatabase` trait.
 
+In any of the two cases, when resetting the database, if you are [squashing migrations](/docs/{{version}}/migrations#squashing-migrations) Laravel will pick by default the schema file with the name of your database connection. Chances are that you use a different database connection in your `phpunit.xml` file. If you want to use the same schema dump as in your normal database, define a `$dump` property in your base test class with the path to the dump:
+
+    <?php
+
+    namespace Tests;
+
+    use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+    abstract class TestCase extends BaseTestCase
+    {
+        use CreatesApplication;
+        use LazilyRefreshDatabase;
+
+        /**
+         * Indicates which schema file should be used when running migrations.
+         *
+         * @var string
+         */
+        protected $dump = 'database/schema/mysql-schema.dump';
+    }
+
 <a name="model-factories"></a>
 ## Model Factories
 
