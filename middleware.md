@@ -34,16 +34,15 @@ This command will place a new `EnsureTokenIsValid` class within your `app/Http/M
 
     use Closure;
     use Illuminate\Http\Request;
-    use Symfony\Component\HttpFoundation\Response;
 
     class EnsureTokenIsValid
     {
         /**
          * Handle an incoming request.
          *
-         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+         * @param  \Closure(\Illuminate\Http\Request): (TODO)  $next
          */
-        public function handle(Request $request, Closure $next): Response
+        public function handle(Request $request, Closure $next): TODO
         {
             if ($request->input('token') !== 'my-secret-token') {
                 return redirect('home');
@@ -76,7 +75,7 @@ Of course, a middleware can perform tasks before or after passing the request de
 
     class BeforeMiddleware
     {
-        public function handle(Request $request, Closure $next): Response
+        public function handle(Request $request, Closure $next): TODO
         {
             // Perform action
 
@@ -92,11 +91,10 @@ However, this middleware would perform its task **after** the request is handled
 
     use Closure;
     use Illuminate\Http\Request;
-    use Symfony\Component\HttpFoundation\Response;
 
     class AfterMiddleware
     {
-        public function handle(Request $request, Closure $next): Response
+        public function handle(Request $request, Closure $next): TODO
         {
             $response = $next($request);
 
@@ -268,9 +266,9 @@ Additional middleware parameters will be passed to the middleware after the `$ne
         /**
          * Handle an incoming request.
          *
-         * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+         * @param  \Closure(\Illuminate\Http\Request): (TODO)  $next
          */
-        public function handle(Request $request, Closure $next, string $role): Response
+        public function handle(Request $request, Closure $next, string $role): TODO
         {
             if (! $request->user()->hasRole($role)) {
                 // Redirect...
@@ -283,7 +281,7 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 
 Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
 
-    Route::put('/post/{id}', function ($id) {
+    Route::put('/post/{id}', function (int $id) {
         //
     })->middleware('role:editor');
 
@@ -305,21 +303,17 @@ Sometimes a middleware may need to do some work after the HTTP response has been
         /**
          * Handle an incoming request.
          *
-         * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+         * @param  \Closure(\Illuminate\Http\Request): (TODO)  $next
          */
-        public function handle(Request $request, Closure $next): Response
+        public function handle(Request $request, Closure $next): TODO
         {
             return $next($request);
         }
 
         /**
          * Handle tasks after the response has been sent to the browser.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \Illuminate\Http\Response  $response
-         * @return void
          */
-        public function terminate($request, $response)
+        public function terminate(Request $request, TODO $response): void
         {
             // ...
         }
