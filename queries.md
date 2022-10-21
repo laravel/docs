@@ -100,6 +100,10 @@ If you don't need an entire row, you may extract a single value from a record us
 
     $email = DB::table('users')->where('name', 'John')->value('email');
 
+Or get a single value from a SQL raw expression using the `rawValue` method:
+
+    $fullname = DB::table('users')->where('name', 'John')->rawValue('CONCAT(name, " ", surname)');
+
 To retrieve a single row by its `id` column value, use the `find` method:
 
     $user = DB::table('users')->find(3);
