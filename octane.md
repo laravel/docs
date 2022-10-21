@@ -309,13 +309,14 @@ In general, you should avoid injecting the application service container or HTTP
 
 ```php
 use App\Service;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Register any application services.
  */
 public function register(): void
 {
-    $this->app->singleton(Service::class, function ($app) {
+    $this->app->singleton(Service::class, function (Application $app) {
         return new Service($app);
     });
 }
@@ -328,8 +329,9 @@ As a work-around, you could either stop registering the binding as a singleton, 
 ```php
 use App\Service;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Foundation\Application;
 
-$this->app->bind(Service::class, function ($app) {
+$this->app->bind(Service::class, function (Application $app) {
     return new Service($app);
 });
 
@@ -347,13 +349,14 @@ In general, you should avoid injecting the application service container or HTTP
 
 ```php
 use App\Service;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Register any application services.
  */
 public function register(): void
 {
-    $this->app->singleton(Service::class, function ($app) {
+    $this->app->singleton(Service::class, function (Application $app) {
         return new Service($app['request']);
     });
 }
@@ -365,12 +368,13 @@ As a work-around, you could either stop registering the binding as a singleton, 
 
 ```php
 use App\Service;
+use Illuminate\Contracts\Foundation\Application;
 
-$this->app->bind(Service::class, function ($app) {
+$this->app->bind(Service::class, function (Application $app) {
     return new Service($app['request']);
 });
 
-$this->app->singleton(Service::class, function ($app) {
+$this->app->singleton(Service::class, function (Application $app) {
     return new Service(fn () => $app['request']);
 });
 
@@ -391,13 +395,14 @@ In general, you should avoid injecting the configuration repository instance int
 
 ```php
 use App\Service;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Register any application services.
  */
 public function register(): void
 {
-    $this->app->singleton(Service::class, function ($app) {
+    $this->app->singleton(Service::class, function (Application $app) {
         return new Service($app->make('config'));
     });
 }
@@ -410,8 +415,9 @@ As a work-around, you could either stop registering the binding as a singleton, 
 ```php
 use App\Service;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Foundation\Application;
 
-$this->app->bind(Service::class, function ($app) {
+$this->app->bind(Service::class, function (Application $app) {
     return new Service($app->make('config'));
 });
 
@@ -434,11 +440,8 @@ use Illuminate\Support\Str;
 
 /**
  * Handle an incoming request.
- *
- * @param  \Illuminate\Http\Request  $request
- * @return void
  */
-public function index(Request $request)
+public function index(Request $request): TODO
 {
     Service::$data[] = Str::random(10);
 
