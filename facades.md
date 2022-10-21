@@ -136,11 +136,8 @@ The `Facade` base class makes use of the `__callStatic()` magic-method to defer 
     {
         /**
          * Show the profile for the given user.
-         *
-         * @param  int  $id
-         * @return Response
          */
-        public function showProfile($id)
+        public function showProfile(int $id): TODO
         {
             $user = Cache::get('user:'.$id);
 
@@ -156,10 +153,10 @@ If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that the
     {
         /**
          * Get the registered name of the component.
-         *
-         * @return string
          */
-        protected static function getFacadeAccessor() { return 'cache'; }
+        protected static function getFacadeAccessor(): string {
+            return 'cache';
+        }
     }
 
 Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. This method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
@@ -180,11 +177,8 @@ Using real-time facades, you may treat any class in your application as if it wa
     {
         /**
          * Publish the podcast.
-         *
-         * @param  Publisher  $publisher
-         * @return void
          */
-        public function publish(Publisher $publisher)
+        public function publish(Publisher $publisher): void
         {
             $this->update(['publishing' => now()]);
 
@@ -205,10 +199,8 @@ Injecting a publisher implementation into the method allows us to easily test th
     {
         /**
          * Publish the podcast.
-         *
-         * @return void
          */
-        public function publish()
+        public function publish(): void
         {
             $this->update(['publishing' => now()]);
 
