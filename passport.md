@@ -552,11 +552,8 @@ You may also configure a [scheduled job](/docs/{{version}}/scheduling) in your a
 
     /**
      * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
      */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
         $schedule->command('passport:purge')->hourly();
     }
@@ -733,11 +730,8 @@ When authenticating using the password grant, Passport will use the `email` attr
 
         /**
          * Find the user instance for the given username.
-         *
-         * @param  string  $username
-         * @return \App\Models\User
          */
-        public function findForPassport($username)
+        public function findForPassport(string $username): User
         {
             return $this->where('username', $username)->first();
         }
@@ -763,11 +757,8 @@ When authenticating using the password grant, Passport will use the `password` a
 
         /**
          * Validate the password of the user for the Passport password grant.
-         *
-         * @param  string  $password
-         * @return bool
          */
-        public function validateForPassportPasswordGrant($password)
+        public function validateForPassportPasswordGrant(string $password): bool
         {
             return Hash::check($password, $this->password);
         }
