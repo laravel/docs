@@ -290,9 +290,6 @@ Typically, you will want to pass some data to your view that you can utilize whe
 
         /**
          * Create a new message instance.
-         *
-         * @param  \App\Models\Order  $order
-         * @return void
          */
         public function __construct(Order $order)
         {
@@ -346,9 +343,6 @@ If you would like to customize the format of your email's data before it is sent
 
         /**
          * Create a new message instance.
-         *
-         * @param  \App\Models\Order  $order
-         * @return void
          */
         public function __construct(Order $order)
         {
@@ -765,11 +759,8 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
     {
         /**
          * Ship the given order.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): TODO
         {
             $order = Order::findOrFail($request->order_id);
 
@@ -883,8 +874,6 @@ Alternatively, you may call the `afterCommit` method from your mailable's constr
 
         /**
          * Create a new message instance.
-         *
-         * @return void
          */
         public function __construct()
         {
@@ -943,10 +932,8 @@ Sometimes, applications store each user's preferred locale. By implementing the 
     {
         /**
          * Get the user's preferred locale.
-         *
-         * @return string
          */
-        public function preferredLocale()
+        public function preferredLocale(): string
         {
             return $this->locale;
         }
@@ -1080,9 +1067,6 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
 
         /**
          * Create a new Mailchimp transport instance.
-         *
-         * @param  \MailchimpTransactional\ApiClient  $client
-         * @return void
          */
         public function __construct(ApiClient $client)
         {
@@ -1108,8 +1092,6 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
 
         /**
          * Get the string representation of the transport.
-         *
-         * @return string
          */
         public function __toString(): string
         {
