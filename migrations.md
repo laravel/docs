@@ -1005,7 +1005,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
 
 When using the MySQL database, the `after` method may be used to add columns after an existing column in the schema:
 
-    $table->after('password', function ($table) {
+    $table->after('password', function (Blueprint $table) {
         $table->string('address_line1');
         $table->string('address_line2');
         $table->string('city');
