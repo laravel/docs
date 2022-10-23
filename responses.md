@@ -79,6 +79,15 @@ Or, you may use the `withHeaders` method to specify an array of headers to be ad
                     'X-Header-Two' => 'Header Value',
                 ]);
 
+> **Warning**  
+> In middleware, however, you should set headers using the *non-chainable* methods found on the response's `ResponseHeaderBag`, e.g.
+> ```
+> $response->headers->set(...);
+> ```
+> Although the `header` and `cookie` methods are provided as a convenience on `Illuminate\Http\Response` responses,
+> the framework can return other instances of `Symfony\Component\HttpFoundation\Response`, e.g. `BinaryFileResponse` and `StreamedResponse`, on which those chainable methods are undefined.
+
+
 <a name="cache-control-middleware"></a>
 #### Cache Control Middleware
 
