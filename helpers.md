@@ -1103,7 +1103,7 @@ By default, any existing values are overwritten. If you wish to only set a value
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
-    data_set($data, 'products.desk.price', 200, $overwrite = false);
+    data_set($data, 'products.desk.price', 200, overwrite: false);
 
     // ['products' => ['desk' => ['price' => 100]]]
 
