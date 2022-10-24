@@ -79,6 +79,10 @@ Or, you may use the `withHeaders` method to specify an array of headers to be ad
                     'X-Header-Two' => 'Header Value',
                 ]);
 
+> **Warning**  
+> In middleware you should instead set the response headers using the methods on its `ResponseHeaderBag`, e.g. `$response->headers->set(...);`.
+> The framework returns other types of Symfony Responses on which the chainable header methods are undefined, e.g. `BinaryFileResponse` and `StreamedResponse`.
+
 <a name="cache-control-middleware"></a>
 #### Cache Control Middleware
 
