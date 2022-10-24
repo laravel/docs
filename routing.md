@@ -517,6 +517,12 @@ Laravel 會自動解析定義在路由或控制器動作內的 Eloquent 模型�
         });
     });
 
+Similarly, you may explicitly instruct Laravel to not scope bindings by invoking the `withoutScopedBindings` method:
+
+    Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
+        return $post;
+    })->withoutScopedBindings();
+
 <a name="customizing-missing-model-behavior"></a>
 #### 自訂找不到模型時的行為
 
