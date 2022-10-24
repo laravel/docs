@@ -52,7 +52,7 @@ Laravel 預設的 `env` 檔包含一些常見的設定值，這些值可能會�
 
 你的 `.env` 檔不應該提交給你的應用程式版控。因為每個使用應用程式的開發者或伺服器可能需要不同的環境設定。而且，如果入侵者取得你專案原始碼的控制權限將會是個隱憂，因為全部的敏感數據都會暴露出來。
 
-However, it is possible to encrypt your environment file using Laravel's built-in [environment encryption](#encrypting-environment-files). Encrypted environment files may be placed in source control safely.
+不過，使用 Laravel 內建的 [環境加密](#encrypting-environment-files) 來加密環境檔是可行的。加密後的環境檔會安全地放在版本控制中。
 
 <a name="additional-environment-files"></a>
 #### 附加環境檔案
@@ -158,7 +158,6 @@ php artisan env:decrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 當 `env:decrypt` 指令被調用時，Laravel會解密 `.env.encrypted` 這個檔案，然後把解密後的內容放進 `.env` 檔中。
 
 在 `env:decrypt` 指令後面加上 `--cipher` 選項可以用來自定義加密密碼：
-The `--cipher` option may be provided to the `env:decrypt` command in order to use a custom encryption cipher:
 
 ```shell
 php artisan env:decrypt --key=qUWuNRdfuImXcKxZ --cipher=AES-128-CBC
