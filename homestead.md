@@ -733,8 +733,9 @@ When debugging functional tests that make requests to the web server, it is easi
 
 ```ini
 ; If Homestead.yaml contains a different subnet for the IP address, this address may be different...
-xdebug.remote_host = 192.168.10.1
-xdebug.remote_autostart = 1
+xdebug.client_host = 192.168.10.1
+xdebug.mode = debug
+xdebug.start_with_request = yes
 ```
 
 <a name="debugging-cli-applications"></a>
@@ -762,7 +763,7 @@ features:
         client_token: "client_value"
 ```
 
-Blackfire server credentials and client credentials [require a Blackfire account](https://blackfire.io/signup). Blackfire offers various options to profile an application, including a CLI tool and browser extension. Please [review the Blackfire documentation for more details](https://blackfire.io/docs/cookbooks/index).
+Blackfire server credentials and client credentials [require a Blackfire account](https://blackfire.io/signup). Blackfire offers various options to profile an application, including a CLI tool and browser extension. Please [review the Blackfire documentation for more details](https://blackfire.io/docs/php/integrations/laravel/index).
 
 <a name="network-interfaces"></a>
 ## Network Interfaces

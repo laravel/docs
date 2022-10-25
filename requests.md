@@ -388,13 +388,13 @@ The `hasAny` method returns `true` if any of the specified values are present:
         //
     }
 
-If you would like to determine if a value is present on the request and is not empty, you may use the `filled` method:
+If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:
 
     if ($request->filled('name')) {
         //
     }
 
-The `whenFilled` method will execute the given closure if a value is present on the request and is not empty:
+The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:
 
     $request->whenFilled('name', function ($input) {
         //
@@ -480,7 +480,7 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 <a name="input-trimming-and-normalization"></a>
 ## Input Trimming & Normalization
 
-By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `App\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
+By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
 
 #### Disabling Input Normalization
 
@@ -489,8 +489,8 @@ If you would like to disable this behavior for all requests, you may remove the 
 If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`.
 
 ```php
-use App\Http\Middleware\ConvertEmptyStringsToNull;
 use App\Http\Middleware\TrimStrings;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
 /**
  * Bootstrap any application services.

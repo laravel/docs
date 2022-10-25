@@ -24,6 +24,9 @@ Laravel strives to provide an amazing developer experience while providing power
 
 Whether you are new to PHP web frameworks or have years of experience, Laravel is a framework that can grow with you. We'll help you take your first steps as a web developer or give you a boost as you take your expertise to the next level. We can't wait to see what you build.
 
+> **Note**
+> New to Laravel? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com) for a hands-on tour of the framework while we walk you through building your first Laravel application.
+
 <a name="why-laravel"></a>
 ### Why Laravel?
 
@@ -54,6 +57,14 @@ After you have installed PHP and Composer, you may create a new Laravel project 
 
 ```nothing
 composer create-project laravel/laravel example-app
+```
+
+Or, you may create new Laravel projects by globally installing the Laravel installer via Composer:
+
+```nothing
+composer global require laravel/installer
+
+laravel new example-app
 ```
 
 After the project has been created, start Laravel's local development server using the Laravel's Artisan CLI `serve` command:
@@ -250,6 +261,9 @@ Now that you have created your Laravel project, you may be wondering what to lea
 </div>
 
 How you want to use Laravel will also dictate the next steps on your journey. There are a variety of ways to use Laravel, and we'll explore two primary use cases for the framework below.
+
+> **Note**
+> New to Laravel? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com) for a hands-on tour of the framework while we walk you through building your first Laravel application.
 
 <a name="laravel-the-fullstack-framework"></a>
 ### Laravel The Full Stack Framework

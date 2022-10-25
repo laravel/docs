@@ -853,7 +853,7 @@ Below is a list of all available validation rules and their function:
 [MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
 [Min Digits](#rule-min-digits)
-[Multiple Of](#multiple-of)
+[Multiple Of](#rule-multiple-of)
 [Not In](#rule-not-in)
 [Not Regex](#rule-not-regex)
 [Nullable](#rule-nullable)
@@ -978,7 +978,7 @@ The field under validation must be a value preceding or equal to the given date.
 <a name="rule-between"></a>
 #### between:_min_,_max_
 
-The field under validation must have a size between the given _min_ and _max_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+The field under validation must have a size between the given _min_ and _max_ (inclusive). Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
 <a name="rule-boolean"></a>
 #### boolean
@@ -1103,6 +1103,7 @@ The example above will apply the `RFCValidation` and `DNSCheckValidation` valida
 - `dns`: `DNSCheckValidation`
 - `spoof`: `SpoofCheckValidation`
 - `filter`: `FilterEmailValidation`
+- `filter_unicode`: `FilterEmailValidation::unicode()`
 
 </div>
 
@@ -1362,7 +1363,7 @@ The field under validation must have a minimum _value_. Strings, numerics, array
 
 The integer under validation must have a minimum length of _value_.
 
-<a name="multiple-of"></a>
+<a name="rule-multiple-of"></a>
 #### multiple_of:_value_
 
 The field under validation must be a multiple of _value_.

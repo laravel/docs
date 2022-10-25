@@ -31,8 +31,7 @@ Let's take a look at an example of a basic controller. Note that the controller 
     <?php
 
     namespace App\Http\Controllers;
-
-    use App\Http\Controllers\Controller;
+    
     use App\Models\User;
 
     class UserController extends Controller
@@ -70,8 +69,7 @@ If a controller action is particularly complex, you might find it convenient to 
     <?php
 
     namespace App\Http\Controllers;
-
-    use App\Http\Controllers\Controller;
+    
     use App\Models\User;
 
     class ProvisionServer extends Controller
@@ -184,6 +182,19 @@ Typically, a 404 HTTP response will be generated if an implicitly bound resource
             ->missing(function (Request $request) {
                 return Redirect::route('photos.index');
             });
+
+<a name="soft-deleted-models"></a>
+#### Soft Deleted Models
+
+Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/{{version}}/eloquent#soft-deleting), and will instead return a 404 HTTP response. However, you can instruct the framework to allow soft deleted models by invoking the `withTrashed` method when defining your resource route:
+
+    use App\Http\Controllers\PhotoController;
+
+    Route::resource('photos', PhotoController::class)->withTrashed();
+
+Calling `withTrashed` with no arguments will allow soft deleted models for the `show`, `edit`, and `update` resource routes. You may specify a subset of these routes by passing an array to the `withTrashed` method:
+
+    Route::resource('photos', PhotoController::class)->withTrashed(['show']);
 
 <a name="specifying-the-resource-model"></a>
 #### Specifying The Resource Model

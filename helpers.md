@@ -2,6 +2,8 @@
 
 - [Introduction](#introduction)
 - [Available Methods](#available-methods)
+- [Other Utilities](#other-utilities)
+    - [Benchmarking](#benchmarking)
 
 <a name="introduction"></a>
 ## Introduction
@@ -153,6 +155,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
 [Str::upper](#method-str-upper)
+[Str::ulid](#method-str-ulid)
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
 [Str::words](#method-str-words)
@@ -1100,7 +1103,7 @@ By default, any existing values are overwritten. If you wish to only set a value
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
-    data_set($data, 'products.desk.price', 200, $overwrite = false);
+    data_set($data, 'products.desk.price', 200, overwrite: false);
 
     // ['products' => ['desk' => ['price' => 100]]]
 
@@ -2009,6 +2012,17 @@ The `Str::upper` method converts the given string to uppercase:
     $string = Str::upper('laravel');
 
     // LARAVEL
+
+<a name="method-str-ulid"></a>
+#### `Str::ulid()` {.collection-method}
+
+The `Str::ulid` method generates a ULID:
+
+    use Illuminate\Support\Str;
+
+    return (string) Str::ulid();
+    
+    // 01gd6r360bp37zj17nxb55yv40
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
@@ -3936,3 +3950,29 @@ The `with` function returns the value it is given. If a closure is passed as the
     $result = with(5, null);
 
     // 5
+
+<a name="other-utilities"></a>
+## Other Utilities
+
+<a name="benchmarking"></a>
+### Benchmarking
+
+Sometimes you may wish to quickly test the performance of certain parts of your application. On those occasions, you may utilize the `Benchmark` support class to measure the number of milliseconds it takes for the given callbacks to complete:
+
+    <?php
+
+    use App\Models\User;
+    use Illuminate\Support\Benchmark;
+
+    Benchmark::dd(fn () => User::find(1)); // 0.1 ms
+
+    Benchmark::dd([
+        'Scenario 1' => fn () => User::count(), // 0.5 ms
+        'Scenario 2' => fn () => User::all()->count(), // 20.0 ms
+    ]);
+
+By default, the given callbacks will be executed once (one iteration), and their duration will be displayed in the browser / console.
+
+To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
+
+    Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms

@@ -271,7 +271,7 @@ Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guz
             
             return $request;
         })
-    ->get('http://example.com');
+    )->get('http://example.com');
 
 Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withMiddleware` method in combination with Guzzle's `mapResponse` middleware factory:
 

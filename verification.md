@@ -158,13 +158,16 @@ To get started, pass a closure to the `toMailUsing` method provided by the `Illu
 
 When using the [Laravel application starter kits](/docs/{{version}}/starter-kits), Laravel dispatches [events](/docs/{{version}}/events) during the email verification process. If you are manually handling email verification for your application, you may wish to manually dispatch these events after verification is completed. You may attach listeners to these events in your application's `EventServiceProvider`:
 
+    use App\Listeners\LogVerifiedUser;
+    use Illuminate\Auth\Events\Verified;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Auth\Events\Verified' => [
-            'App\Listeners\LogVerifiedUser',
+        Verified::class => [
+            LogVerifiedUser::class,
         ],
     ];
