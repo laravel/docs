@@ -288,10 +288,10 @@ Verb      | URI                                       | Action       | Route Nam
 GET       | `/photos/{photo}/comments`                | index        | photos.comments.index
 GET       | `/photos/{photo}/comments/create`         | create       | photos.comments.create
 POST      | `/photos/{photo}/comments`                | store        | photos.comments.store
-GET       | `/photos/{photo}/comments/{comment}`      | show         | comments.show
-GET       | `/photos/{photo}/comments/{comment}/edit` | edit         | comments.edit
-PUT/PATCH | `/photos/{photo}/comments/{comment}`      | update       | comments.update
-DELETE    | `/photos/{photo}/comments/{comment}`      | destroy      | comments.destroy
+GET       | `/photos/{photo}/comments/{comment}`      | show         | photos.comments.show
+GET       | `/photos/{photo}/comments/{comment}/edit` | edit         | photos.comments.edit
+PUT/PATCH | `/photos/{photo}/comments/{comment}`      | update       | photos.comments.update
+DELETE    | `/photos/{photo}/comments/{comment}`      | destroy      | photos.comments.destroy
 
 <a name="restful-naming-resource-routes"></a>
 ### Naming Resource Routes
