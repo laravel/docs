@@ -217,11 +217,8 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
     {
         /**
          * Show the profile for the given user.
-         *
-         * @param  int  $id
-         * @return \Illuminate\Http\Response
          */
-        public function show($id)
+        public function show(int $id): TODO
         {
             return view('user.profile', [
                 'user' => Redis::get('user:profile:'.$id)
@@ -257,9 +254,10 @@ To obtain an instance of the default Redis connection, you may call the `connect
 
 The `Redis` facade's `transaction` method provides a convenient wrapper around Redis' native `MULTI` and `EXEC` commands. The `transaction` method accepts a closure as its only argument. This closure will receive a Redis connection instance and may issue any commands it would like to this instance. All of the Redis commands issued within the closure will be executed in a single, atomic transaction:
 
-    use Illuminate\Support\Facades\Redis;
+    use Redis;
+    use Illuminate\Support\Facades;
 
-    Redis::transaction(function ($redis) {
+    Facades\Redis::transaction(function (Redis $redis) {
         $redis->incr('user_visits', 1);
         $redis->incr('total_visits', 1);
     });
@@ -293,9 +291,10 @@ In this example, we will increment a counter, inspect its new value, and increme
 
 Sometimes you may need to execute dozens of Redis commands. Instead of making a network trip to your Redis server for each command, you may use the `pipeline` method. The `pipeline` method accepts one argument: a closure that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be sent to the Redis server at the same time to reduce network trips to the server. The commands will still be executed in the order they were issued:
 
-    use Illuminate\Support\Facades\Redis;
+    use Redis;
+    use Illuminate\Support\Facades;
 
-    Redis::pipeline(function ($pipe) {
+    Facades\Redis::pipeline(function (Redis $pipe) {
         for ($i = 0; $i < 1000; $i++) {
             $pipe->set("key:$i", $i);
         }
@@ -333,12 +332,10 @@ First, let's setup a channel listener using the `subscribe` method. We'll place 
 
         /**
          * Execute the console command.
-         *
-         * @return mixed
          */
-        public function handle()
+        public function handle(): void
         {
-            Redis::subscribe(['test-channel'], function ($message) {
+            Redis::subscribe(['test-channel'], function (string $message) {
                 echo $message;
             });
         }
@@ -361,10 +358,10 @@ Now we may publish messages to the channel using the `publish` method:
 
 Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The channel name will be passed as the second argument to the provided closure:
 
-    Redis::psubscribe(['*'], function ($message, $channel) {
+    Redis::psubscribe(['*'], function (string $message, string $channel) {
         echo $message;
     });
 
-    Redis::psubscribe(['users.*'], function ($message, $channel) {
+    Redis::psubscribe(['users.*'], function (string $message, string $channel) {
         echo $message;
     });
