@@ -76,21 +76,16 @@ Next, let's take a look at a simple controller that handles incoming requests to
     {
         /**
          * Show the form to create a new blog post.
-         *
-         * @return \Illuminate\View\View
          */
-        public function create()
+        public function create(): TODO
         {
             return view('post.create');
         }
 
         /**
          * Store a new blog post.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): TODO
         {
             // Validate and store the blog post...
         }
@@ -107,11 +102,8 @@ To get a better understanding of the `validate` method, let's jump back into the
 
     /**
      * Store a new blog post.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): TODO
     {
         $validated = $request->validate([
             'title' => 'required|unique:posts|max:255',
@@ -324,11 +316,8 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
 
     /**
      * Store a new blog post.
-     *
-     * @param  \App\Http\Requests\StorePostRequest  $request
-     * @return Illuminate\Http\Response
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request): TODO
     {
         // The incoming request is valid...
 
@@ -504,11 +493,8 @@ If you do not want to use the `validate` method on the request, you may create a
     {
         /**
          * Store a new blog post.
-         *
-         * @param  Request  $request
-         * @return Response
          */
-        public function store(Request $request)
+        public function store(Request $request): TODO
         {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|unique:posts|max:255',
@@ -615,9 +601,12 @@ Many of Laravel's built-in error messages include an `:attribute` placeholder th
 
 You may also attach callbacks to be run after validation is completed. This allows you to easily perform further validation and even add more error messages to the message collection. To get started, call the `after` method on a validator instance:
 
-    $validator = Validator::make(/* ... */);
+    use Illuminate\Support\Facades;
+    use Illuminate\Validation\Validator;
 
-    $validator->after(function ($validator) {
+    $validator = Facades\Validator::make(/* ... */);
+
+    $validator->after(function (Validator $validator) {
         if ($this->somethingElseIsInvalid()) {
             $validator->errors()->add(
                 'field', 'Something is wrong with this field!'
@@ -1213,13 +1202,14 @@ Instead of specifying the table name directly, you may specify the Eloquent mode
 
 If you would like to customize the query executed by the validation rule, you may use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit them:
 
+    use Illuminate\Database\Query\Builder;
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
 
     Validator::make($data, [
         'email' => [
             'required',
-            Rule::exists('staff')->where(function ($query) {
+            Rule::exists('staff')->where(function (Builder $query) {
                 return $query->where('account_id', 1);
             }),
         ],
@@ -1709,13 +1699,15 @@ Sometimes you may wish to add validation rules based on more complex conditional
 
 Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game resale shop, or maybe they just enjoy collecting games. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
 
-    $validator->sometimes('reason', 'required|max:500', function ($input) {
+    use Illuminate\Support\Fluent;
+
+    $validator->sometimes('reason', 'required|max:500', function (Fluent $input) {
         return $input->games >= 100;
     });
 
 The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is a list of the rules we want to add. If the closure passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
 
-    $validator->sometimes(['reason', 'cost'], 'required', function ($input) {
+    $validator->sometimes(['reason', 'cost'], 'required', function (Fluent $input) {
         return $input->games >= 100;
     });
 
@@ -1740,11 +1732,11 @@ Sometimes you may want to validate a field based on another field in the same ne
         ],
     ];
 
-    $validator->sometimes('channels.*.address', 'email', function ($input, $item) {
+    $validator->sometimes('channels.*.address', 'email', function (Fluent $input, Fluent $item) {
         return $item->type === 'email';
     });
 
-    $validator->sometimes('channels.*.address', 'url', function ($input, $item) {
+    $validator->sometimes('channels.*.address', 'url', function (Fluent $input, Fluent $item) {
         return $item->type !== 'email';
     });
 
@@ -1807,7 +1799,7 @@ Sometimes you may need to access the value for a given nested array element when
     use Illuminate\Validation\Rule;
 
     $validator = Validator::make($request->all(), [
-        'companies.*.id' => Rule::forEach(function ($value, $attribute) {
+        'companies.*.id' => Rule::forEach(function (string|null $value, string $attribute) {
             return [
                 Rule::exists(Company::class, 'id'),
                 new HasPermission('manage-company', $value),
@@ -2106,7 +2098,7 @@ If you only need the functionality of a custom rule once throughout your applica
         'title' => [
             'required',
             'max:255',
-            function ($attribute, $value, $fail) {
+            function (string $attribute, string|null $value, Closure $fail) {
                 if ($value === 'foo') {
                     $fail('The '.$attribute.' is invalid.');
                 }
