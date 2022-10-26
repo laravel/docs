@@ -44,11 +44,8 @@ To obtain an instance of the current HTTP request via dependency injection, you 
     {
         /**
          * Store a new user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): TODO
         {
             $name = $request->input('name');
 
@@ -85,12 +82,8 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` route
     {
         /**
          * Update the specified user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  string  $id
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, $id)
+        public function update(Request $request, string $id): TODO
         {
             //
         }
@@ -245,7 +238,7 @@ Using the `collect` method, you may retrieve all of the incoming request's input
 
 The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:
 
-    $request->collect('users')->each(function ($user) {
+    $request->collect('users')->each(function (string $user) {
         // ...
     });
 
@@ -370,13 +363,13 @@ When given an array, the `has` method will determine if all of the specified val
 
 The `whenHas` method will execute the given closure if a value is present on the request:
 
-    $request->whenHas('name', function ($input) {
+    $request->whenHas('name', function (string $input) {
         //
     });
 
 A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:
 
-    $request->whenHas('name', function ($input) {
+    $request->whenHas('name', function (string $input) {
         // The "name" value is present...
     }, function () {
         // The "name" value is not present...
@@ -396,13 +389,13 @@ If you would like to determine if a value is present on the request and is not a
 
 The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:
 
-    $request->whenFilled('name', function ($input) {
+    $request->whenFilled('name', function (string $input) {
         //
     });
 
 A second closure may be passed to the `whenFilled` method that will be executed if the specified value is not "filled":
 
-    $request->whenFilled('name', function ($input) {
+    $request->whenFilled('name', function (string $input) {
         // The "name" value is filled...
     }, function () {
         // The "name" value is not filled...
@@ -496,6 +489,7 @@ If you would like to disable string trimming and empty string conversion for a s
 
 ```php
 use App\Http\Middleware\TrimStrings;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
 /**
@@ -503,11 +497,11 @@ use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
  */
 public function boot(): void
 {
-    TrimStrings::skipWhen(function ($request) {
+    TrimStrings::skipWhen(function (Request $request) {
         return $request->is('admin/*');
     });
 
-    ConvertEmptyStringsToNull::skipWhen(function ($request) {
+    ConvertEmptyStringsToNull::skipWhen(function (Request $request) {
         // ...
     });
 }
@@ -637,9 +631,9 @@ The `TrustHosts` middleware is already included in the `$middleware` stack of yo
     /**
      * Get the host patterns that should be trusted.
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function hosts()
+    public function hosts(): array
     {
         return [
             'laravel.test',
