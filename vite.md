@@ -471,10 +471,8 @@ It is common in JavaScript applications to [create aliases](#aliases) to regular
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Vite::macro('image', fn ($asset) => $this->asset("resources/images/{$asset}"));
     }
@@ -622,9 +620,9 @@ class AddContentSecurityPolicyHeaders
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param  \Closure(\Illuminate\Http\Request): (TODO)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, string $role): TODO
     {
         Vite::useCspNonce();
 
