@@ -124,16 +124,16 @@ By default, all entries older than 24 hours will be pruned. You may use the `hou
 
 The Telescope dashboard may be accessed at the `/telescope` route. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
 
+    use App\Models\User;
+
     /**
      * Register the Telescope gate.
      *
      * This gate determines who can access Telescope in non-local environments.
-     *
-     * @return void
      */
-    protected function gate()
+    protected function gate(): void
     {
-        Gate::define('viewTelescope', function ($user) {
+        Gate::define('viewTelescope', function (User $user) {
             return in_array($user->email, [
                 'taylor@laravel.com',
             ]);
@@ -203,6 +203,7 @@ You may filter the data that is recorded by Telescope via the `filter` closure t
 While the `filter` closure filters data for individual entries, you may use the `filterBatch` method to register a closure that filters all data for a given request or console command. If the closure returns `true`, all of the entries are recorded by Telescope:
 
     use Illuminate\Support\Collection;
+    use Laravel\Telescope\IncomingEntry;
     use Laravel\Telescope\Telescope;
 
     /**
@@ -217,7 +218,7 @@ While the `filter` closure filters data for individual entries, you may use the 
                 return true;
             }
 
-            return $entries->contains(function ($entry) {
+            return $entries->contains(function (IncomingEntry $entry) {
                 return $entry->isReportableException() ||
                     $entry->isFailedJob() ||
                     $entry->isScheduledTask() ||
@@ -426,7 +427,7 @@ The Telescope dashboard displays the user avatar for the user that was authentic
     {
         // ...
 
-        Telescope::avatar(function ($id, $email) {
+        Telescope::avatar(function (string $id, string $email) {
             return '/avatars/'.User::find($id)->avatar_path;
         });
     }
