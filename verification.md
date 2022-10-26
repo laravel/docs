@@ -140,7 +140,7 @@ To get started, pass a closure to the `toMailUsing` method provided by the `Illu
     {
         // ...
 
-        VerifyEmail::toMailUsing(function ($notifiable, $url) {
+        VerifyEmail::toMailUsing(function (mixed $notifiable, string $url) {
             return (new MailMessage)
                 ->subject('Verify Email Address')
                 ->line('Click the button below to verify your email address.')
