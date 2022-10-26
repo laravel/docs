@@ -169,13 +169,13 @@ php artisan route:list --only-vendor
 
 Sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
 
-    Route::get('/user/{id}', function ($id) {
+    Route::get('/user/{id}', function (string $id) {
         return 'User '.$id;
     });
 
 You may define as many route parameters as required by your route:
 
-    Route::get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
+    Route::get('/posts/{post}/comments/{comment}', function (string $postId, string $commentId) {
         //
     });
 
@@ -188,7 +188,7 @@ If your route has dependencies that you would like the Laravel service container
 
     use Illuminate\Http\Request;
 
-    Route::get('/user/{id}', function (Request $request, $id) {
+    Route::get('/user/{id}', function (Request $request, string $id) {
         return 'User '.$id;
     });
 
@@ -197,11 +197,11 @@ If your route has dependencies that you would like the Laravel service container
 
 Occasionally you may need to specify a route parameter that may not always be present in the URI. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
 
-    Route::get('/user/{name?}', function ($name = null) {
+    Route::get('/user/{name?}', function (string $name = null) {
         return $name;
     });
 
-    Route::get('/user/{name?}', function ($name = 'John') {
+    Route::get('/user/{name?}', function (string $name = 'John') {
         return $name;
     });
 
@@ -210,37 +210,37 @@ Occasionally you may need to specify a route parameter that may not always be pr
 
 You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
 
-    Route::get('/user/{name}', function ($name) {
+    Route::get('/user/{name}', function (string $name) {
         //
     })->where('name', '[A-Za-z]+');
 
-    Route::get('/user/{id}', function ($id) {
+    Route::get('/user/{id}', function (string $id) {
         //
     })->where('id', '[0-9]+');
 
-    Route::get('/user/{id}/{name}', function ($id, $name) {
+    Route::get('/user/{id}/{name}', function (string $id, string $name) {
         //
     })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 
 For convenience, some commonly used regular expression patterns have helper methods that allow you to quickly add pattern constraints to your routes:
 
-    Route::get('/user/{id}/{name}', function ($id, $name) {
+    Route::get('/user/{id}/{name}', function (string $id, string $name) {
         //
     })->whereNumber('id')->whereAlpha('name');
 
-    Route::get('/user/{name}', function ($name) {
+    Route::get('/user/{name}', function (string $name) {
         //
     })->whereAlphaNumeric('name');
 
-    Route::get('/user/{id}', function ($id) {
+    Route::get('/user/{id}', function (string $id) {
         //
     })->whereUuid('id');
 
-    Route::get('/user/{id}', function ($id) {
+    Route::get('/user/{id}', function (string $id) {
         //
     })->whereUlid('id');
 
-    Route::get('/category/{category}', function ($category) {
+    Route::get('/category/{category}', function (string $category) {
         //
     })->whereIn('category', ['movie', 'song', 'painting']);
 
@@ -261,7 +261,7 @@ If you would like a route parameter to always be constrained by a given regular 
 
 Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
 
-    Route::get('/user/{id}', function ($id) {
+    Route::get('/user/{id}', function (string $id) {
         // Only executed if {id} is numeric...
     });
 
@@ -270,7 +270,7 @@ Once the pattern has been defined, it is automatically applied to all routes usi
 
 The Laravel routing component allows all characters except `/` to be present within route parameter values. You must explicitly allow `/` to be part of your placeholder using a `where` condition regular expression:
 
-    Route::get('/search/{search}', function ($search) {
+    Route::get('/search/{search}', function (string $search) {
         return $search;
     })->where('search', '.*');
 
@@ -311,7 +311,7 @@ Once you have assigned a name to a given route, you may use the route's name whe
 
 If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the generated URL in their correct positions:
 
-    Route::get('/user/{id}/profile', function ($id) {
+    Route::get('/user/{id}/profile', function (string $id) {
         //
     })->name('profile');
 
@@ -319,7 +319,7 @@ If the named route defines parameters, you may pass the parameters as the second
 
 If you pass additional parameters in the array, those key / value pairs will automatically be added to the generated URL's query string:
 
-    Route::get('/user/{id}/profile', function ($id) {
+    Route::get('/user/{id}/profile', function (string $id) {
         //
     })->name('profile');
 
@@ -344,7 +344,7 @@ If you would like to determine if the current request was routed to a given name
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next): TODO
     {
         if ($request->route()->named('profile')) {
             //
@@ -393,7 +393,7 @@ If a group of routes all utilize the same [controller](/docs/{{version}}/control
 Route groups may also be used to handle subdomain routing. Subdomains may be assigned route parameters just like route URIs, allowing you to capture a portion of the subdomain for usage in your route or controller. The subdomain may be specified by calling the `domain` method before defining the group:
 
     Route::domain('{account}.example.com')->group(function () {
-        Route::get('user/{id}', function ($account, $id) {
+        Route::get('user/{id}', function (string $account, string $id) {
             //
         });
     });
@@ -482,10 +482,8 @@ If you would like model binding to always use a database column other than `id` 
 
     /**
      * Get the route key for the model.
-     *
-     * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
@@ -613,7 +611,7 @@ If you wish to define your own model binding resolution logic, you may use the `
      */
     public function boot(): void
     {
-        Route::bind('user', function ($value) {
+        Route::bind('user', function (string $value) {
             return User::where('name', $value)->firstOrFail();
         });
 
@@ -624,27 +622,20 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
 
     /**
      * Retrieve the model for a bound value.
-     *
-     * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding(mixed $value, string $field = null): static|null
     {
         return $this->where('name', $value)->firstOrFail();
     }
 
 If a route is utilizing [implicit binding scoping](#implicit-model-binding-scoping), the `resolveChildRouteBinding` method will be used to resolve the child binding of the parent model:
 
+    use Illuminate\Database\Eloquent\Model;
+
     /**
-     * Retrieve the child model for a bound value.
-     *
-     * @param  string  $childType
-     * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * Retrieve the model for a bound value.
      */
-    public function resolveChildRouteBinding($childType, $value, $field)
+    public function resolveChildRouteBinding(string $childType, mixed $value, string $field = null): Model|null
     {
         return parent::resolveChildRouteBinding($childType, $value, $field);
     }
@@ -677,10 +668,8 @@ Rate limiters are defined using the `RateLimiter` facade's `for` method. The `fo
 
     /**
      * Configure the rate limiters for the application.
-     *
-     * @return void
      */
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('global', function (Request $request) {
             return Limit::perMinute(1000);
