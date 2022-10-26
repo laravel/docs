@@ -51,7 +51,7 @@ Laravel allows you to easily "mock" user input for your console commands using t
         $this->line('Your name is '.$name.' and you prefer '.$language.'.');
     });
 
-You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, `doesntExpectOutput`, `expectsOutputToContain`, `doesntExpectOutputToContain`, and `assertExitCode` methods:
+You may test this command with the following test which utilizes the `expectsQuestion`, `expectsChoice`, `expectsOutput`, `doesntExpectOutput`, `expectsOutputToContain`, `doesntExpectOutputToContain`, and `assertExitCode` methods:
 
     /**
      * Test a console command.
@@ -62,13 +62,15 @@ You may test this command with the following test which utilizes the `expectsQue
     {
         $this->artisan('question')
              ->expectsQuestion('What is your name?', 'Taylor Otwell')
-             ->expectsQuestion('Which language do you prefer?', 'PHP')
+             ->expectsChoice('Which language do you prefer?', 'PHP', ['PHP', 'Ruby', 'Python'])
              ->expectsOutput('Your name is Taylor Otwell and you prefer PHP.')
              ->doesntExpectOutput('Your name is Taylor Otwell and you prefer Ruby.')
              ->expectsOutputToContain('Taylor Otwell')
              ->doesntExpectOutputToContain('you prefer Ruby')
              ->assertExitCode(0);
     }
+    
+If you want to test expected choices, use `expectsChoice`. Otherwise, you may use `expectsQuestion`.
 
 <a name="confirmation-expectations"></a>
 #### Confirmation Expectations
