@@ -41,11 +41,8 @@ You may define all of your scheduled tasks in the `schedule` method of your appl
     {
         /**
          * Define the application's command schedule.
-         *
-         * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-         * @return void
          */
-        protected function schedule(Schedule $schedule)
+        protected function schedule(Schedule $schedule): void
         {
             $schedule->call(function () {
                 DB::table('recent_users')->delete();
@@ -240,12 +237,12 @@ Using the `timezone` method, you may specify that a scheduled task's time should
 
 If you are repeatedly assigning the same timezone to all of your scheduled tasks, you may wish to define a `scheduleTimezone` method in your `App\Console\Kernel` class. This method should return the default timezone that should be assigned to all scheduled tasks:
 
+    use DateTimeZone;
+
     /**
      * Get the timezone that should be used by default for scheduled events.
-     *
-     * @return \DateTimeZone|string|null
      */
-    protected function scheduleTimezone()
+    protected function scheduleTimezone(): DateTimeZone|string|null
     {
         return 'America/Chicago';
     }
