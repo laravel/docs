@@ -28,9 +28,11 @@ You may use the `assertNotExitCode` method to assert that the command did not ex
 
     $this->artisan('inspire')->assertNotExitCode(1);
 
-Of course, all terminal commands typically exit with a status code of `0` when they are successful and a non-zero exit code when they are not successful. Therefore, for convenience, you may utilize the `assertSuccessful` and `assertFailed` assertions to assert that a given command exited with a successful exit code or not:
+Of course, all terminal commands typically exit with a status code of `0` when they are successful and a non-zero exit code when they are not successful. Therefore, for convenience, you may utilize the `assertSuccessful`, `assertOk` and `assertFailed` assertions to assert that a given command exited with a successful exit code or not:
 
     $this->artisan('inspire')->assertSuccessful();
+    // or
+    $this->artisan('inspire')->assertOk();
 
     $this->artisan('inspire')->assertFailed();
 
