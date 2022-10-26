@@ -50,7 +50,10 @@ The session `driver` configuration option defines where session data will be sto
 
 When using the `database` session driver, you will need to create a table to contain the session records. An example `Schema` declaration for the table may be found below:
 
-    Schema::create('sessions', function ($table) {
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
+    Schema::create('sessions', function (Blueprint $table) {
         $table->string('id')->primary();
         $table->foreignId('user_id')->nullable()->index();
         $table->string('ip_address', 45)->nullable();
@@ -94,12 +97,8 @@ There are two primary ways of working with session data in Laravel: the global `
     {
         /**
          * Show the profile for the given user.
-         *
-         * @param  Request  $request
-         * @param  int  $id
-         * @return Response
          */
-        public function show(Request $request, $id)
+        public function show(Request $request, string $id): TODO
         {
             $value = $request->session()->get('key');
 
@@ -319,6 +318,7 @@ Once your driver has been implemented, you are ready to register it with Laravel
     namespace App\Providers;
 
     use App\Extensions\MongoSessionHandler;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Support\Facades\Session;
     use Illuminate\Support\ServiceProvider;
 
@@ -337,7 +337,7 @@ Once your driver has been implemented, you are ready to register it with Laravel
          */
         public function boot(): void
         {
-            Session::extend('mongo', function ($app) {
+            Session::extend('mongo', function (Application $app) {
                 // Return an implementation of SessionHandlerInterface...
                 return new MongoSessionHandler;
             });
