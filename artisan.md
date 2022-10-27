@@ -476,7 +476,7 @@ To send output to the console, you may use the `line`, `info`, `comment`, `quest
      */
     public function handle(): void
     {
-        //
+        // ...
 
         $this->info('The command was successful!');
     }
@@ -638,7 +638,7 @@ Sometimes you may wish to call other commands from an existing Artisan command. 
             'user' => 1, '--queue' => 'default'
         ]);
 
-        // ...
+        //
     }
 
 If you would like to call another console command and suppress all of its output, you may use the `callSilently` method. The `callSilently` method has the same signature as the `call` method:
