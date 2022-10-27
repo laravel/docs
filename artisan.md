@@ -148,11 +148,9 @@ Let's take a look at an example command. Note that we are able to request any de
         /**
          * Execute the console command.
          */
-        public function handle(DripEmailer $drip): int
+        public function handle(DripEmailer $drip): void
         {
             $drip->send(User::find($this->argument('user')));
-
-            return 0;
         }
     }
 
@@ -383,11 +381,9 @@ While your command is executing, you will likely need to access the values for t
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle(): void
     {
         $userId = $this->argument('user');
-
-        return 0;
     }
 
 If you need to retrieve all of the arguments as an `array`, call the `arguments` method:
@@ -410,13 +406,11 @@ In addition to displaying output, you may also ask the user to provide input dur
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle(): void
     {
         $name = $this->ask('What is your name?');
 
-        //
-
-        return 0;
+        // ...
     }
 
 The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful when asking for sensitive information such as passwords:
@@ -480,13 +474,11 @@ To send output to the console, you may use the `line`, `info`, `comment`, `quest
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle(): void
     {
         //
 
         $this->info('The command was successful!');
-
-        return 0;
     }
 
 To display an error message, use the `error` method. Error message text is typically displayed in red:
@@ -640,15 +632,13 @@ Sometimes you may wish to call other commands from an existing Artisan command. 
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle(): void
     {
         $this->call('mail:send', [
             'user' => 1, '--queue' => 'default'
         ]);
 
-        //
-
-        return 0;
+        // ...
     }
 
 If you would like to call another console command and suppress all of its output, you may use the `callSilently` method. The `callSilently` method has the same signature as the `call` method:
@@ -665,15 +655,13 @@ As you may know, operating systems allow signals to be sent to running processes
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle(): void
     {
         $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);
 
         while ($this->shouldKeepRunning) {
             // ...
         }
-
-        return 0;
     }
 
 To listen for multiple signals at once, you may provide an array of signals to the `trap` method:
