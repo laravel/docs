@@ -665,9 +665,9 @@ Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
 
     interface UserProvider
     {
-        public function retrieveById(mixed $identifier);
-        public function retrieveByToken(mixed $identifier, string $token);
-        public function updateRememberToken(Authenticatable $user, string $token);
+        public function retrieveById($identifier);
+        public function retrieveByToken($identifier, string $token);
+        public function updateRememberToken(Authenticatable $user, $token);
         public function retrieveByCredentials(array $credentials);
         public function validateCredentials(Authenticatable $user, array $credentials);
     }
