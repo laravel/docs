@@ -10,6 +10,7 @@
     - [Client Secret Hashing](#client-secret-hashing)
     - [Token Lifetimes](#token-lifetimes)
     - [Overriding Default Models](#overriding-default-models)
+    - [Overriding Routes](#overriding-routes)
 - [Issuing Access Tokens](#issuing-access-tokens)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
@@ -248,6 +249,33 @@ After defining your model, you may instruct Passport to use your custom model vi
         Passport::useAuthCodeModel(AuthCode::class);
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
+
+<a name="overriding-routes"></a>
+### Overriding Routes
+
+Sometimes, you may wish to customize the routes of Passport. To achieve this, you first need to ignore the routes registered by Passport by adding `Passport::ignoreRoutes` to the `register` method of your `AppServiceProvider`:
+
+    use Laravel\Passport\Passport;
+    
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Passport::ignoreRoutes();
+    }
+
+After that you may copy the routes found in `routes/web.php` in Passport's package to your own `routes/web.php` file and modify them to your liking:
+
+    Route::group([
+        'as' => 'passport.',
+        'prefix' => config('passport.path', 'oauth'),
+        'namespace' => 'Laravel\Passport\Http\Controllers',
+    ], function () {
+        // Passport routes go here...
+    });
 
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
