@@ -283,7 +283,7 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 
 Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
 
-    Route::put('/post/{id}', function (int $id) {
+    Route::put('/post/{id}', function (string $id) {
         //
     })->middleware('role:editor');
 
@@ -315,7 +315,7 @@ Sometimes a middleware may need to do some work after the HTTP response has been
         /**
          * Handle tasks after the response has been sent to the browser.
          */
-        public function terminate(Request $request, TODO $response): void
+        public function terminate(Request $request, Response $response): void
         {
             // ...
         }

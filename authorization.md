@@ -88,6 +88,7 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
     use App\Http\Controllers\Controller;
     use App\Models\Post;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Gate;
 
     class PostController extends Controller
@@ -95,13 +96,15 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
         /**
          * Update the given post.
          */
-        public function update(Request $request, Post $post): TODO
+        public function update(Request $request, Post $post): Response
         {
             if (! Gate::allows('update-post', $post)) {
                 abort(403);
             }
 
             // Update the post...
+
+            return response(status: 204);
         }
     }
 
@@ -511,19 +514,22 @@ The `App\Models\User` model that is included with your Laravel application inclu
     use App\Http\Controllers\Controller;
     use App\Models\Post;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * Update the given post.
          */
-        public function update(Request $request, Post $post): TODO
+        public function update(Request $request, Post $post): Response
         {
             if ($request->user()->cannot('update', $post)) {
                 abort(403);
             }
 
             // Update the post...
+
+            return response(status: 204);
         }
     }
 
@@ -541,19 +547,22 @@ Remember, some actions may correspond to policy methods like `create` that do no
     use App\Http\Controllers\Controller;
     use App\Models\Post;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * Create a post.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): Response
         {
             if ($request->user()->cannot('create', Post::class)) {
                 abort(403);
             }
 
             // Create the post...
+
+            return response(status: 201);
         }
     }
 
@@ -571,6 +580,7 @@ Like the `can` method, this method accepts the name of the action you wish to au
     use App\Http\Controllers\Controller;
     use App\Models\Post;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
@@ -579,11 +589,13 @@ Like the `can` method, this method accepts the name of the action you wish to au
          *
          * @throws \Illuminate\Auth\Access\AuthorizationException
          */
-        public function update(Request $request, Post $post): TODO
+        public function update(Request $request, Post $post): Response
         {
             $this->authorize('update', $post);
 
             // The current user can update the blog post...
+
+            return response(status: 204);
         }
     }
 
@@ -594,17 +606,20 @@ As previously discussed, some policy methods like `create` do not require a mode
 
     use App\Models\Post;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     /**
      * Create a new blog post.
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Request $request): TODO
+    public function create(Request $request): Response
     {
         $this->authorize('create', Post::class);
 
         // The current user can create blog posts...
+
+        return response(status: 201);
     }
 
 <a name="authorizing-resource-controllers"></a>
@@ -765,9 +780,11 @@ When attempting to determine if the authenticated user can update a given post, 
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Post $post): TODO
+    public function update(Request $request, Post $post): Response
     {
         $this->authorize('update', [$post, $request->category]);
 
         // The current user can update the blog post...
+
+        return response(status: 204);
     }

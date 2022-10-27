@@ -179,13 +179,14 @@ You may call any of these methods to log a message for the corresponding level. 
     use App\Http\Controllers\Controller;
     use App\Models\User;
     use Illuminate\Support\Facades\Log;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show the profile for the given user.
          */
-        public function show(int $id): TODO
+        public function show(string $id): View
         {
             Log::info('Showing the user profile for user: '.$id);
 

@@ -92,17 +92,22 @@ There are two primary ways of working with session data in Laravel: the global `
 
     use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show the profile for the given user.
          */
-        public function show(Request $request, string $id): TODO
+        public function show(Request $request, string $id): View
         {
             $value = $request->session()->get('key');
 
-            //
+            // ...
+
+            $user = $this->users->find($id);
+
+            return view('user.profile', ['user' => $user]);
         }
     }
 

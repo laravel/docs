@@ -441,11 +441,13 @@ use Illuminate\Support\Str;
 /**
  * Handle an incoming request.
  */
-public function index(Request $request): TODO
+public function index(Request $request): array
 {
     Service::$data[] = Str::random(10);
 
-    // ...
+    return [
+        // ...
+    ];
 }
 ```
 

@@ -111,11 +111,13 @@ To obtain a cache store instance, you may use the `Cache` facade, which is what 
         /**
          * Show a list of all users of the application.
          */
-        public function index(): TODO
+        public function index(): array
         {
             $value = Cache::get('key');
 
-            //
+            return [
+                // ...
+            ];
         }
     }
 
@@ -395,7 +397,7 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
 
     use Illuminate\Contracts\Cache\Store;
 
-    class MongoStore implements Store // TODO
+    class MongoStore implements Store
     {
         public function get($key) {}
         public function many(array $keys) {}

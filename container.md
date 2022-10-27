@@ -32,6 +32,7 @@ Let's look at a simple example:
     use App\Http\Controllers\Controller;
     use App\Repositories\UserRepository;
     use App\Models\User;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
@@ -53,7 +54,7 @@ Let's look at a simple example:
         /**
          * Show the profile for the given user.
          */
-        public function show(int $id): TODO
+        public function show(string $id): View
         {
             $user = $this->users->find($id);
 
@@ -390,6 +391,7 @@ For example, you may type-hint a repository defined by your application in a con
     namespace App\Http\Controllers;
 
     use App\Repositories\UserRepository;
+    use App\Models\User;
 
     class UserController extends Controller
     {
@@ -411,9 +413,11 @@ For example, you may type-hint a repository defined by your application in a con
         /**
          * Show the user with the given ID.
          */
-        public function show(int $id): TODO
+        public function show(string $id): User
         {
-            //
+            $user = $this->users->findOrFail($id);
+
+            return $user;
         }
     }
 

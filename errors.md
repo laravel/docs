@@ -207,6 +207,7 @@ Instead of type-checking exceptions in the exception handler's `register` method
 
     use Exception;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class InvalidOrderException extends Exception
     {
@@ -221,7 +222,7 @@ Instead of type-checking exceptions in the exception handler's `register` method
         /**
          * Render the exception into an HTTP response.
          */
-        public function render(Request $request): TODO
+        public function render(Request $request): Response
         {
             return response(/* ... */);
         }
@@ -232,7 +233,7 @@ If your exception extends an exception that is already renderable, such as a bui
     /**
      * Render the exception into an HTTP response.
      */
-    public function render(Request $request): TODO
+    public function render(Request $request): Response|bool
     {
         // Determine if the exception needs custom rendering...
 

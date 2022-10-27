@@ -640,19 +640,22 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * Store a new podcast.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): Response
         {
             $podcast = Podcast::create(/* ... */);
 
             // ...
 
             ProcessPodcast::dispatch($podcast);
+
+            return response(status: 201);
         }
     }
 
@@ -677,13 +680,14 @@ If you would like to specify that a job should not be immediately available for 
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * Store a new podcast.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): Response
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -691,6 +695,8 @@ If you would like to specify that a job should not be immediately available for 
 
             ProcessPodcast::dispatch($podcast)
                         ->delay(now()->addMinutes(10));
+
+            return response(status: 201);
         }
     }
 
@@ -728,19 +734,22 @@ If you would like to dispatch a job immediately (synchronously), you may use the
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * Store a new podcast.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): Response
         {
             $podcast = Podcast::create(/* ... */);
 
             // Create podcast...
 
             ProcessPodcast::dispatchSync($podcast);
+
+            return response(status: 201);
         }
     }
 
@@ -851,19 +860,22 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * Store a new podcast.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): Response
         {
             $podcast = Podcast::create(/* ... */);
 
             // Create podcast...
 
             ProcessPodcast::dispatch($podcast)->onQueue('processing');
+
+            return response(status: 201);
         }
     }
 
@@ -905,19 +917,22 @@ If your application interacts with multiple queue connections, you may specify w
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * Store a new podcast.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): Response
         {
             $podcast = Podcast::create(/* ... */);
 
             // Create podcast...
 
             ProcessPodcast::dispatch($podcast)->onConnection('sqs');
+
+            return response(status: 201);
         }
     }
 

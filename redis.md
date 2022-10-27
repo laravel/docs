@@ -212,13 +212,14 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
 
     use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\Redis;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show the profile for the given user.
          */
-        public function show(int $id): TODO
+        public function show(string $id): View
         {
             return view('user.profile', [
                 'user' => Redis::get('user:profile:'.$id)

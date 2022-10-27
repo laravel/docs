@@ -425,7 +425,7 @@ In web applications, one of the most common use-cases for storing files is stori
         /**
          * Update the avatar for the user.
          */
-        public function update(Request $request): TODO
+        public function update(Request $request): string
         {
             $path = $request->file('avatar')->store('avatars');
 

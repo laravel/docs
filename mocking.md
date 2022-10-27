@@ -87,11 +87,13 @@ Unlike traditional static method calls, [facades](/docs/{{version}}/facades) (in
         /**
          * Retrieve a list of all users of the application.
          */
-        public function index(): TODO
+        public function index(): array
         {
             $value = Cache::get('key');
 
-            //
+            return [
+                // ...
+            ];
         }
     }
 

@@ -623,7 +623,7 @@ If the `ModelNotFoundException` is not caught, a 404 HTTP response is automatica
 
     use App\Models\Flight;
 
-    Route::get('/api/flights/{id}', function (int $id) {
+    Route::get('/api/flights/{id}', function (string $id) {
         return Flight::findOrFail($id);
     });
 
@@ -682,13 +682,14 @@ Of course, when using Eloquent, we don't only need to retrieve models from the d
     use App\Http\Controllers\Controller;
     use App\Models\Flight;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class FlightController extends Controller
     {
         /**
          * Store a new flight in the database.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): Response
         {
             // Validate the request...
 
@@ -697,6 +698,8 @@ Of course, when using Eloquent, we don't only need to retrieve models from the d
             $flight->name = $request->name;
 
             $flight->save();
+
+            return response(status: 204);
         }
     }
 

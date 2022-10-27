@@ -70,14 +70,16 @@ Next, let's take a look at a simple controller that handles incoming requests to
     namespace App\Http\Controllers;
 
     use App\Http\Controllers\Controller;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
+    use Illuminate\View\View;
 
     class PostController extends Controller
     {
         /**
          * Show the form to create a new blog post.
          */
-        public function create(): TODO
+        public function create(): View
         {
             return view('post.create');
         }
@@ -85,9 +87,13 @@ Next, let's take a look at a simple controller that handles incoming requests to
         /**
          * Store a new blog post.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): RedirectResponse
         {
             // Validate and store the blog post...
+
+            $post = /** ... */
+
+            return to_route('post.show', ['post' => $post->id]);
         }
     }
 
@@ -103,7 +109,7 @@ To get a better understanding of the `validate` method, let's jump back into the
     /**
      * Store a new blog post.
      */
-    public function store(Request $request): TODO
+    public function store(Request $request): Response
     {
         $validated = $request->validate([
             'title' => 'required|unique:posts|max:255',
@@ -111,6 +117,8 @@ To get a better understanding of the `validate` method, let's jump back into the
         ]);
 
         // The blog post is valid...
+
+        return response(status: 201);
     }
 
 As you can see, the validation rules are passed into the `validate` method. Don't worry - all available validation rules are [documented](#available-validation-rules). Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
@@ -317,7 +325,7 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
     /**
      * Store a new blog post.
      */
-    public function store(StorePostRequest $request): TODO
+    public function store(StorePostRequest $request): Response
     {
         // The incoming request is valid...
 
@@ -327,6 +335,10 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
         // Retrieve a portion of the validated input data...
         $validated = $request->safe()->only(['name', 'email']);
         $validated = $request->safe()->except(['name', 'email']);
+
+        // Store the blog post...
+
+        return response(status: 201);
     }
 
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a [JSON representation of the validation errors](#validation-error-response-format).
@@ -487,6 +499,7 @@ If you do not want to use the `validate` method on the request, you may create a
 
     use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Validator;
 
     class PostController extends Controller
@@ -494,7 +507,7 @@ If you do not want to use the `validate` method on the request, you may create a
         /**
          * Store a new blog post.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): Response
         {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|unique:posts|max:255',
@@ -515,6 +528,8 @@ If you do not want to use the `validate` method on the request, you may create a
             $validated = $validator->safe()->except(['name', 'email']);
 
             // Store the blog post...
+
+            return response(status: 201);
         }
     }
 

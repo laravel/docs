@@ -128,13 +128,14 @@ To run a basic SELECT query, you may use the `select` method on the `DB` facade:
 
     use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\DB;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show a list of all of the application's users.
          */
-        public function index(): TODO
+        public function index(): View
         {
             $users = DB::select('select * from users where active = ?', [1]);
 

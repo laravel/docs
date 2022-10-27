@@ -34,13 +34,14 @@ Let's take a look at an example of a basic controller. Note that the controller 
     namespace App\Http\Controllers;
     
     use App\Models\User;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show the profile for a given user.
          */
-        public function show(string $id): TODO
+        public function show(string $id): View
         {
             return view('user.profile', [
                 'user' => User::findOrFail($id)
@@ -69,15 +70,18 @@ If a controller action is particularly complex, you might find it convenient to 
     namespace App\Http\Controllers;
     
     use App\Models\User;
+    use Illuminate\Http\Response;
 
     class ProvisionServer extends Controller
     {
         /**
          * Provision a new web server.
          */
-        public function __invoke(): TODO
+        public function __invoke(): Response
         {
             // ...
+
+            return response(status: 200);
         }
     }
 
@@ -479,17 +483,20 @@ In addition to constructor injection, you may also type-hint dependencies on you
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class UserController extends Controller
     {
         /**
          * Store a new user.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): Response
         {
             $name = $request->name;
 
-            //
+            // ...
+
+            return response(status: 201);
         }
     }
 
@@ -512,8 +519,10 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
         /**
          * Update the given user.
          */
-        public function update(Request $request, int $id): TODO
+        public function update(Request $request, string $id): Response
         {
-            //
+            // ...
+
+            return response(status: 204);
         }
     }

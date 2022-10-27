@@ -131,13 +131,14 @@ The `Facade` base class makes use of the `__callStatic()` magic-method to defer 
 
     use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\Cache;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show the profile for the given user.
          */
-        public function showProfile(int $id): TODO
+        public function showProfile(string $id): View
         {
             $user = Cache::get('user:'.$id);
 

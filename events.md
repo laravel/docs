@@ -501,19 +501,22 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
     use App\Http\Controllers\Controller;
     use App\Models\Order;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class OrderShipmentController extends Controller
     {
         /**
          * Ship the given order.
          */
-        public function store(Request $request): TODO
+        public function store(Request $request): Response
         {
             $order = Order::findOrFail($request->order_id);
 
             // Order shipment logic...
 
             OrderShipped::dispatch($order);
+
+            return response(status: 201);
         }
     }
     

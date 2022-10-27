@@ -154,9 +154,11 @@ Alternatively, once a user is authenticated, you may access the authenticated us
         /**
          * Update the flight information for an existing flight.
          */
-        public function update(Request $request): TODO
+        public function update(Request $request): Response
         {
             // $request->user()
+
+            return response(status: 204);
         }
     }
 
@@ -227,6 +229,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Support\Facades\Auth;
 
     class LoginController extends Controller
@@ -234,7 +237,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
         /**
          * Handle an authentication attempt.
          */
-        public function authenticate(Request $request): TODO
+        public function authenticate(Request $request): RedirectResponse
         {
             $credentials = $request->validate([
                 'email' => ['required', 'email'],
@@ -429,12 +432,13 @@ To manually log users out of your application, you may use the `logout` method p
 In addition to calling the `logout` method, it is recommended that you invalidate the user's session and regenerate their [CSRF token](/docs/{{version}}/csrf). After logging the user out, you would typically redirect the user to the root of your application:
 
     use Illuminate\Http\Request;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Support\Facades\Auth;
 
     /**
      * Log the user out of the application.
      */
-    public function logout(Request $request): TODO
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
 
