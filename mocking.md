@@ -452,6 +452,8 @@ You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or 
 When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:
 
     Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
+        $mail->build();
+
         return $mail->hasTo($user->email) &&
                $mail->hasCc('...') &&
                $mail->hasBcc('...') &&
