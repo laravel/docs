@@ -34,7 +34,7 @@
 <a name="upgrade-9.0"></a>
 ## Upgrading To 9.0 From 8.x
 
-<a name="estimated-upgrade-time-10-minutes"></a>
+<a name="estimated-upgrade-time-30-minutes"></a>
 #### Estimated Upgrade Time: 30 Minutes
 
 > **Note**  
