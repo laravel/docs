@@ -253,10 +253,10 @@ After defining your model, you may instruct Passport to use your custom model vi
 <a name="overriding-routes"></a>
 ### Overriding Routes
 
-Sometimes, you may wish to customize the routes of Passport. To achieve this, you first need to ignore the routes registered by Passport by adding `Passport::ignoreRoutes` to the `register` method of your `AppServiceProvider`:
+Sometimes you may wish to customize the routes defined by Passport. To achieve this, you first need to ignore the routes registered by Passport by adding `Passport::ignoreRoutes` to the `register` method of your application's `AppServiceProvider`:
 
     use Laravel\Passport\Passport;
-    
+
     /**
      * Register any application services.
      *
@@ -267,14 +267,14 @@ Sometimes, you may wish to customize the routes of Passport. To achieve this, yo
         Passport::ignoreRoutes();
     }
 
-After that you may copy the routes found in `routes/web.php` in Passport's package to your own `routes/web.php` file and modify them to your liking:
+Then, you may copy the routes defined by Passport in [its routes file](https://github.com/laravel/passport/blob/11.x/routes/web.php) to your application's `routes/web.php` file and modify them to your liking:
 
     Route::group([
         'as' => 'passport.',
         'prefix' => config('passport.path', 'oauth'),
         'namespace' => 'Laravel\Passport\Http\Controllers',
     ], function () {
-        // Passport routes go here...
+        // Passport routes...
     });
 
 <a name="issuing-access-tokens"></a>
