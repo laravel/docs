@@ -557,15 +557,16 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
 
     use Closure;
     use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
     class EnsureUserIsSubscribed
     {
         /**
          * Handle an incoming request.
          *
-         * @param  \Closure(\Illuminate\Http\Request): (TODO)  $next
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function handle(Request $request, Closure $next): TODO
+        public function handle(Request $request, Closure $next): Response
         {
             if ($request->user() && ! $request->user()->subscribed('default')) {
                 // This user is not a paying customer...

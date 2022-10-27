@@ -214,15 +214,16 @@ Occasionally, you may wish to specify some contextual information that should be
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Log;
     use Illuminate\Support\Str;
+    use Symfony\Component\HttpFoundation\Response;
 
     class AssignRequestId
     {
         /**
          * Handle an incoming request.
          *
-         * @param  \Closure(\Illuminate\Http\Request): (TODO)  $next
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function handle(Request $request, Closure $next): TODO
+        public function handle(Request $request, Closure $next): Response
         {
             $requestId = (string) Str::uuid();
 

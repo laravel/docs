@@ -193,15 +193,16 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
     use Closure;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\URL;
+    use Symfony\Component\HttpFoundation\Response;
 
     class SetDefaultLocaleForUrls
     {
         /**
          * Handle an incoming request.
          *
-         * @param  \Closure(\Illuminate\Http\Request): (TODO)  $next
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function handle(Request $request, Closure $next): TODO
+        public function handle(Request $request, Closure $next): Response
         {
             URL::defaults(['locale' => $request->user()->locale]);
 
