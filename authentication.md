@@ -556,7 +556,7 @@ You may define your own authentication guards using the `extend` method on the `
         {
             $this->registerPolicies();
 
-            Auth::extend('jwt', function (function (Application $app, string $name, array $config) {
+            Auth::extend('jwt', function (Application $app, string $name, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\Guard...
 
                 return new JwtGuard(Auth::createUserProvider($config['provider']));
