@@ -697,7 +697,7 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
         public function getAuthIdentifier();
         public function getAuthPassword();
         public function getRememberToken();
-        public function setRememberToken(string $value);
+        public function setRememberToken($value);
         public function getRememberTokenName();
     }
 
