@@ -1346,9 +1346,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     {
         /**
          * Create a new currency instance.
-         *
-         * @param  string  $code
-         * @return void
          */
         function __construct(string $code)
         {
@@ -1665,9 +1662,6 @@ The `pipeInto` method creates a new instance of the given class and passes the c
 
         /**
          * Create a new ResourceCollection instance.
-         *
-         * @param  Collection  $collection
-         * @return void
          */
         public function __construct(Collection $collection)
         {

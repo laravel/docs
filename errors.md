@@ -207,7 +207,6 @@ Instead of type-checking exceptions in the exception handler's `register` method
 
     use Exception;
     use Illuminate\Http\Request;
-    use Symfony\Component\HttpFoundation\Response;
 
     class InvalidOrderException extends Exception
     {

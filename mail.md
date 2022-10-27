@@ -298,8 +298,6 @@ Typically, you will want to pass some data to your view that you can utilize whe
 
         /**
          * Get the message content definition.
-         *
-         * @return \Illuminate\Mail\Mailables\Content
          */
         public function content(): Content
         {
@@ -380,7 +378,7 @@ To add attachments to an email, you will add attachments to the array returned b
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, Attachment>
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {

@@ -228,10 +228,8 @@ You can override the UUID generation process for a given model by defining a `ne
 
     /**
      * Generate a new UUID for the model.
-     *
-     * @return string
      */
-    public function newUniqueId()
+    public function newUniqueId(): string
     {
         return (string) Uuid::uuid4();
     }
@@ -239,9 +237,9 @@ You can override the UUID generation process for a given model by defining a `ne
     /**
      * Get the columns that should receive a unique identifier.
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function uniqueIds()
+    public function uniqueIds(): array
     {
         return ['id', 'discount_code'];
     }
@@ -371,10 +369,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Model::preventLazyLoading(! $this->app->isProduction());
 }
@@ -884,10 +880,8 @@ If you wish, you may instruct Laravel to throw an exception when attempting to f
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Model::preventSilentlyDiscardingAttributes($this->app->isLocal());
     }

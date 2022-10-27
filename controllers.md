@@ -39,11 +39,8 @@ Let's take a look at an example of a basic controller. Note that the controller 
     {
         /**
          * Show the profile for a given user.
-         *
-         * @param  int  $id
-         * @return \Illuminate\View\View
          */
-        public function show(int $id): TODO
+        public function show(string $id): TODO
         {
             return view('user.profile', [
                 'user' => User::findOrFail($id)

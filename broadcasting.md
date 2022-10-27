@@ -425,9 +425,9 @@ However, if you wish to have more fine-grained control over your broadcast paylo
     /**
      * Get the data to broadcast.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function broadcastWith()
+    public function broadcastWith(): array
     {
         return ['id' => $this->user->id];
     }

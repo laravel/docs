@@ -199,7 +199,7 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
         /**
          * Handle an incoming request.
          *
-         * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+         * @param  \Closure(\Illuminate\Http\Request): (TODO)  $next
          */
         public function handle(Request $request, Closure $next): TODO
         {

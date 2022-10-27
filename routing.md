@@ -337,12 +337,11 @@ If you would like to determine if the current request was routed to a given name
 
     use Closure;
     use Illuminate\Http\Request;
-    use Symfony\Component\HttpFoundation\Response;
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Closure(\Illuminate\Http\Request): (TODO)  $next
      */
     public function handle(Request $request, Closure $next): TODO
     {
