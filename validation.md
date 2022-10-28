@@ -630,7 +630,7 @@ You may also attach callbacks to be run after validation is completed. This allo
     });
 
     if ($validator->fails()) {
-        //
+        // ...
     }
 
 <a name="working-with-validated-input"></a>
@@ -654,7 +654,7 @@ In addition, the `Illuminate\Support\ValidatedInput` instance may be iterated ov
 
     // Validated data may be iterated...
     foreach ($request->safe() as $key => $value) {
-        //
+        // ...
     }
 
     // Validated data may be accessed as an array...
@@ -690,13 +690,13 @@ To retrieve the first error message for a given field, use the `first` method:
 If you need to retrieve an array of all the messages for a given field, use the `get` method:
 
     foreach ($errors->get('email') as $message) {
-        //
+        // ...
     }
 
 If you are validating an array form field, you may retrieve all of the messages for each of the array elements using the `*` character:
 
     foreach ($errors->get('attachments.*') as $message) {
-        //
+        // ...
     }
 
 <a name="retrieving-all-error-messages-for-all-fields"></a>
@@ -705,7 +705,7 @@ If you are validating an array form field, you may retrieve all of the messages 
 To retrieve an array of all messages for all fields, use the `all` method:
 
     foreach ($errors->all() as $message) {
-        //
+        // ...
     }
 
 <a name="determining-if-messages-exist-for-a-field"></a>
@@ -714,7 +714,7 @@ To retrieve an array of all messages for all fields, use the `all` method:
 The `has` method may be used to determine if any error messages exist for a given field:
 
     if ($errors->has('email')) {
-        //
+        // ...
     }
 
 <a name="specifying-custom-messages-in-language-files"></a>

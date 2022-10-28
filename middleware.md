@@ -136,13 +136,13 @@ If you would like to assign middleware to specific routes, you should first assi
 Once the middleware has been defined in the HTTP kernel, you may use the `middleware` method to assign middleware to a route:
 
     Route::get('/profile', function () {
-        //
+        // ...
     })->middleware('auth');
 
 You may assign multiple middleware to the route by passing an array of middleware names to the `middleware` method:
 
     Route::get('/', function () {
-        //
+        // ...
     })->middleware(['first', 'second']);
 
 When assigning middleware, you may also pass the fully qualified class name:
@@ -150,7 +150,7 @@ When assigning middleware, you may also pass the fully qualified class name:
     use App\Http\Middleware\EnsureTokenIsValid;
 
     Route::get('/profile', function () {
-        //
+        // ...
     })->middleware(EnsureTokenIsValid::class);
 
 <a name="excluding-middleware"></a>
@@ -213,11 +213,11 @@ Laravel includes predefined `web` and `api` middleware groups that contain commo
 Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware. Again, middleware groups make it more convenient to assign many middleware to a route at once:
 
     Route::get('/', function () {
-        //
+        // ...
     })->middleware('web');
 
     Route::middleware(['web'])->group(function () {
-        //
+        // ...
     });
 
 > **Note**  
@@ -284,7 +284,7 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
 
     Route::put('/post/{id}', function (string $id) {
-        //
+        // ...
     })->middleware('role:editor');
 
 <a name="terminable-middleware"></a>

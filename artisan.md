@@ -423,13 +423,13 @@ The `secret` method is similar to `ask`, but the user's input will not be visibl
 If you need to ask the user for a simple "yes or no" confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` or `yes` in response to the prompt, the method will return `true`.
 
     if ($this->confirm('Do you wish to continue?')) {
-        //
+        // ...
     }
 
 If necessary, you may specify that the confirmation prompt should return `true` by default by passing `true` as the second argument to the `confirm` method:
 
     if ($this->confirm('Do you wish to continue?', true)) {
-        //
+        // ...
     }
 
 <a name="auto-completion"></a>
@@ -574,7 +574,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
             'user' => $user, '--queue' => 'default'
         ]);
 
-        //
+        // ...
     });
 
 Alternatively, you may pass the entire Artisan command to the `call` method as a string:
@@ -615,7 +615,7 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
             'user' => $user, '--queue' => 'default'
         ]);
 
-        //
+        // ...
     });
 
 Using the `onConnection` and `onQueue` methods, you may specify the connection or queue the Artisan command should be dispatched to:
@@ -638,7 +638,7 @@ Sometimes you may wish to call other commands from an existing Artisan command. 
             'user' => 1, '--queue' => 'default'
         ]);
 
-        //
+        // ...
     }
 
 If you would like to call another console command and suppress all of its output, you may use the `callSilently` method. The `callSilently` method has the same signature as the `call` method:

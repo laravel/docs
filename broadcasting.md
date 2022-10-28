@@ -488,7 +488,7 @@ If you would like to broadcast your event using the `sync` queue instead of the 
 
     class OrderShipmentStatusUpdated implements ShouldBroadcastNow
     {
-        //
+        // ...
     }
 
 <a name="broadcast-conditions"></a>
@@ -814,7 +814,7 @@ Alternatively, you may prefix event classes with a `.` when subscribing to them 
 ```js
 Echo.channel('orders')
     .listen('.Namespace\\Event\\Class', (e) => {
-        //
+        // ...
     });
 ```
 
@@ -846,7 +846,7 @@ To join a presence channel, you may use Echo's `join` method. The `join` method 
 ```js
 Echo.join(`chat.${roomId}`)
     .here((users) => {
-        //
+        // ...
     })
     .joining((user) => {
         console.log(user.name);
@@ -892,7 +892,7 @@ Echo.join(`chat.${roomId}`)
     .joining(/* ... */)
     .leaving(/* ... */)
     .listen('NewMessage', (e) => {
-        //
+        // ...
     });
 ```
 

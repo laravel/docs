@@ -151,19 +151,19 @@ If you would like to retrieve all the data in the session, you may use the `all`
 To determine if an item is present in the session, you may use the `has` method. The `has` method returns `true` if the item is present and is not `null`:
 
     if ($request->session()->has('users')) {
-        //
+        // ...
     }
 
 To determine if an item is present in the session, even if its value is `null`, you may use the `exists` method:
 
     if ($request->session()->exists('users')) {
-        //
+        // ...
     }
 
 To determine if an item is not present in the session, you may use the `missing` method. The `missing` method returns `true` if the item is not present:
 
     if ($request->session()->missing('users')) {
-        //
+        // ...
     }
 
 <a name="storing-data"></a>
@@ -258,11 +258,11 @@ By default, Laravel allows requests using the same session to execute concurrent
 To mitigate this, Laravel provides functionality that allows you to limit concurrent requests for a given session. To get started, you may simply chain the `block` method onto your route definition. In this example, an incoming request to the `/profile` endpoint would acquire a session lock. While this lock is being held, any incoming requests to the `/profile` or `/order` endpoints which share the same session ID will wait for the first request to finish executing before continuing their execution:
 
     Route::post('/profile', function () {
-        //
+        // ...
     })->block($lockSeconds = 10, $waitSeconds = 10)
 
     Route::post('/order', function () {
-        //
+        // ...
     })->block($lockSeconds = 10, $waitSeconds = 10)
 
 The `block` method accepts two optional arguments. The first argument accepted by the `block` method is the maximum number of seconds the session lock should be held for before it is released. Of course, if the request finishes executing before this time the lock will be released earlier.
@@ -272,7 +272,7 @@ The second argument accepted by the `block` method is the number of seconds a re
 If neither of these arguments is passed, the lock will be obtained for a maximum of 10 seconds and requests will wait a maximum of 10 seconds while attempting to obtain a lock:
 
     Route::post('/profile', function () {
-        //
+        // ...
     })->block()
 
 <a name="adding-custom-session-drivers"></a>
@@ -334,7 +334,7 @@ Once your driver has been implemented, you are ready to register it with Laravel
          */
         public function register(): void
         {
-            //
+            // ...
         }
 
         /**

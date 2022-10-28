@@ -151,7 +151,7 @@ You may even pass a closure as the default value. The result of the closure will
 The `has` method may be used to determine if an item exists in the cache. This method will also return `false` if the item exists but its value is `null`:
 
     if (Cache::has('key')) {
-        //
+        // ...
     }
 
 <a name="incrementing-decrementing-values"></a>

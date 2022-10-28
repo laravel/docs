@@ -268,7 +268,7 @@ If you would like to perform some additional logic before the exception is throw
     use Illuminate\Http\Client\RequestException;
 
     return Http::post(/* ... */)->throw(function (Response $response, RequestException $e) {
-        //
+        // ...
     })->json();
 
 <a name="guzzle-middleware"></a>

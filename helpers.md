@@ -3943,7 +3943,7 @@ If no closure is passed to the `tap` function, you may call any method on the gi
 To add a `tap` method to a class, you may add the `Illuminate\Support\Traits\Tappable` trait to the class. The `tap` method of this trait accepts a Closure as its only argument. The object instance itself will be passed to the Closure and then be returned by the `tap` method:
 
     return $user->tap(function (User $user) {
-        //
+        // ...
     });
 
 <a name="method-throw-if"></a>

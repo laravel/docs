@@ -149,7 +149,7 @@ To issue a token, you may use the `createToken` method. The `createToken` method
 You may access all of the user's tokens using the `tokens` Eloquent relationship provided by the `HasApiTokens` trait:
 
     foreach ($user->tokens as $token) {
-        //
+        // ...
     }
 
 <a name="token-abilities"></a>
@@ -162,7 +162,7 @@ Sanctum allows you to assign "abilities" to tokens. Abilities serve a similar pu
 When handling an incoming request authenticated by Sanctum, you may determine if the token has a given ability using the `tokenCan` method:
 
     if ($user->tokenCan('server:update')) {
-        //
+        // ...
     }
 
 <a name="token-ability-middleware"></a>

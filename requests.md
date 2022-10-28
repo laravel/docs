@@ -61,7 +61,7 @@ As mentioned, you may also type-hint the `Illuminate\Http\Request` class on a ro
     use Illuminate\Http\Request;
 
     Route::get('/', function (Request $request) {
-        //
+        // ...
     });
 
 <a name="dependency-injection-route-parameters"></a>
@@ -113,13 +113,13 @@ The `path` method returns the request's path information. So, if the incoming re
 The `is` method allows you to verify that the incoming request path matches a given pattern. You may use the `*` character as a wildcard when utilizing this method:
 
     if ($request->is('admin/*')) {
-        //
+        // ...
     }
 
 Using the `routeIs` method, you may determine if the incoming request has matched a [named route](/docs/{{version}}/routing#named-routes):
 
     if ($request->routeIs('admin.*')) {
-        //
+        // ...
     }
 
 <a name="retrieving-the-request-url"></a>
@@ -152,7 +152,7 @@ The `method` method will return the HTTP verb for the request. You may use the `
     $method = $request->method();
 
     if ($request->isMethod('post')) {
-        //
+        // ...
     }
 
 <a name="request-headers"></a>
@@ -167,7 +167,7 @@ You may retrieve a request header from the `Illuminate\Http\Request` instance us
 The `hasHeader` method may be used to determine if the request contains a given header:
 
     if ($request->hasHeader('X-Header-Name')) {
-        //
+        // ...
     }
 
 For convenience, the `bearerToken` method may be used to retrieve a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:
@@ -219,7 +219,7 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
     use Psr\Http\Message\ServerRequestInterface;
 
     Route::get('/', function (ServerRequestInterface $request) {
-        //
+        // ...
     });
 
 > **Note**  
@@ -358,19 +358,19 @@ If you need to retrieve a subset of the input data, you may use the `only` and `
 You may use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present on the request:
 
     if ($request->has('name')) {
-        //
+        // ...
     }
 
 When given an array, the `has` method will determine if all of the specified values are present:
 
     if ($request->has(['name', 'email'])) {
-        //
+        // ...
     }
 
 The `whenHas` method will execute the given closure if a value is present on the request:
 
     $request->whenHas('name', function (string $input) {
-        //
+        // ...
     });
 
 A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:
@@ -384,19 +384,19 @@ A second closure may be passed to the `whenHas` method that will be executed if 
 The `hasAny` method returns `true` if any of the specified values are present:
 
     if ($request->hasAny(['name', 'email'])) {
-        //
+        // ...
     }
 
 If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:
 
     if ($request->filled('name')) {
-        //
+        // ...
     }
 
 The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:
 
     $request->whenFilled('name', function (string $input) {
-        //
+        // ...
     });
 
 A second closure may be passed to the `whenFilled` method that will be executed if the specified value is not "filled":
@@ -410,7 +410,7 @@ A second closure may be passed to the `whenFilled` method that will be executed 
 To determine if a given key is absent from the request, you may use the `missing` and `whenMissing` methods:
 
     if ($request->missing('name')) {
-        //
+        // ...
     }
 
     $request->whenMissing('name', function ($input) {
@@ -528,7 +528,7 @@ You may retrieve uploaded files from an `Illuminate\Http\Request` instance using
 You may determine if a file is present on the request using the `hasFile` method:
 
     if ($request->hasFile('photo')) {
-        //
+        // ...
     }
 
 <a name="validating-successful-uploads"></a>
@@ -537,7 +537,7 @@ You may determine if a file is present on the request using the `hasFile` method
 In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:
 
     if ($request->file('photo')->isValid()) {
-        //
+        // ...
     }
 
 <a name="file-paths-extensions"></a>

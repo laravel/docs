@@ -113,7 +113,7 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
      */
     public function bind($abstract, $concrete = null, $shared = false)
     {
-        //
+        // ...
     }
 
 <a name="styleci"></a>

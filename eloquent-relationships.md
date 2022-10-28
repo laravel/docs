@@ -179,7 +179,7 @@ Once the relationship method has been defined, we can access the [collection](/d
     $comments = Post::find(1)->comments;
 
     foreach ($comments as $comment) {
-        //
+        // ...
     }
 
 Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `comments` method and continuing to chain conditions onto the query:
@@ -556,7 +556,7 @@ Once the relationship is defined, you may access the user's roles using the `rol
     $user = User::find(1);
 
     foreach ($user->roles as $role) {
-        //
+        // ...
     }
 
 Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `roles` method and continuing to chain conditions onto the query:
@@ -715,7 +715,7 @@ When defining the `RoleUser` model, you should extend the `Illuminate\Database\E
 
     class RoleUser extends Pivot
     {
-        //
+        // ...
     }
 
 > **Warning**  
@@ -932,7 +932,7 @@ Once your database table and models are defined, you may access the relationship
     $post = Post::find(1);
 
     foreach ($post->comments as $comment) {
-        //
+        // ...
     }
 
 You may also retrieve the parent of a polymorphic child model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `commentable` method on the `Comment` model. So, we will access that method as a dynamic relationship property in order to access the comment's parent model:
@@ -1085,7 +1085,7 @@ Once your database table and models are defined, you may access the relationship
     $post = Post::find(1);
 
     foreach ($post->tags as $tag) {
-        //
+        // ...
     }
 
 You may retrieve the parent of a polymorphic relation from the polymorphic child model by accessing the name of the method that performs the call to `morphedByMany`. In this case, that is the `posts` or `videos` methods on the `Tag` model:
@@ -1095,11 +1095,11 @@ You may retrieve the parent of a polymorphic relation from the polymorphic child
     $tag = Tag::find(1);
 
     foreach ($tag->posts as $post) {
-        //
+        // ...
     }
 
     foreach ($tag->videos as $video) {
-        //
+        // ...
     }
 
 <a name="custom-polymorphic-types"></a>
@@ -1228,7 +1228,7 @@ If you do not need to add additional constraints to an Eloquent relationship que
     $user = User::find(1);
 
     foreach ($user->posts as $post) {
-        //
+        // ...
     }
 
 Dynamic relationship properties perform "lazy loading", meaning they will only load their relationship data when you actually access them. Because of this, developers often use [eager loading](#eager-loading) to pre-load relationships they know will be accessed after loading the model. Eager loading provides a significant reduction in SQL queries that must be executed to load a model's relations.

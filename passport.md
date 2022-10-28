@@ -369,7 +369,7 @@ This route is used to delete clients:
 ```js
 axios.delete('/oauth/clients/' + clientId)
     .then(response => {
-        //
+        // ...
     });
 ```
 
@@ -959,7 +959,7 @@ axios.delete('/oauth/personal-access-tokens/' + tokenId);
 Passport includes an [authentication guard](/docs/{{version}}/authentication#adding-custom-guards) that will validate access tokens on incoming requests. Once you have configured the `api` guard to use the `passport` driver, you only need to specify the `auth:api` middleware on any routes that should require a valid access token:
 
     Route::get('/user', function () {
-        //
+        // ...
     })->middleware('auth:api');
 
 > **Warning**  
@@ -983,7 +983,7 @@ If your application authenticates different types of users that perhaps use enti
 The following route will utilize the `api-customers` guard, which uses the `customers` user provider, to authenticate incoming requests:
 
     Route::get('/customer', function () {
-        //
+        // ...
     })->middleware('auth:api-customers');
 
 > **Note**  

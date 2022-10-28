@@ -366,7 +366,7 @@ You may pass a boolean value as the second argument to the `loginUsingId` method
 You may use the `once` method to authenticate a user with the application for a single request. No sessions or cookies will be utilized when calling this method:
 
     if (Auth::once($credentials)) {
-        //
+        // ...
     }
 
 <a name="http-basic-authentication"></a>

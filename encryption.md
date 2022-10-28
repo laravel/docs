@@ -58,5 +58,5 @@ You may decrypt values using the `decryptString` method provided by the `Crypt` 
     try {
         $decrypted = Crypt::decryptString($encryptedValue);
     } catch (DecryptException $e) {
-        //
+        // ...
     }

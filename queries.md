@@ -169,7 +169,7 @@ The `lazy` method works similarly to [the `chunk` method](#chunking-results) in 
 use Illuminate\Support\Facades\DB;
 
 DB::table('users')->orderBy('id')->lazy()->each(function (object $user) {
-    //
+    // ...
 });
 ```
 

@@ -459,7 +459,7 @@ Cashier allows you to define some useful defaults for your customers when creati
      */
     public function paddleCountry(): string|null
     {
-        //
+        // ...
     }
 
     /**
@@ -471,7 +471,7 @@ Cashier allows you to define some useful defaults for your customers when creati
      */
     public function paddlePostcode(): string|null
     {
-        //
+        // ...
     }
 
 These defaults will be used for every action in Cashier that generates a [pay link](#pay-links).
@@ -546,7 +546,7 @@ You can also pass an array of metadata using the `withMetadata` method:
 Once a user is subscribed to your application, you may check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an active subscription, even if the subscription is currently within its trial period:
 
     if ($user->subscribed('default')) {
-        //
+        // ...
     }
 
 The `subscribed` method also makes a great candidate for a [route middleware](/docs/{{version}}/middleware), allowing you to filter access to routes and controllers based on the user's subscription status:
@@ -580,25 +580,25 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
 If you would like to determine if a user is still within their trial period, you may use the `onTrial` method. This method can be useful for determining if you should display a warning to the user that they are still on their trial period:
 
     if ($user->subscription('default')->onTrial()) {
-        //
+        // ...
     }
 
 The `subscribedToPlan` method may be used to determine if the user is subscribed to a given plan based on a given Paddle plan ID. In this example, we will determine if the user's `default` subscription is actively subscribed to the monthly plan:
 
     if ($user->subscribedToPlan($monthly = 12345, 'default')) {
-        //
+        // ...
     }
 
 By passing an array to the `subscribedToPlan` method, you may determine if the user's `default` subscription is actively subscribed to the monthly or the yearly plan:
 
     if ($user->subscribedToPlan([$monthly = 12345, $yearly = 54321], 'default')) {
-        //
+        // ...
     }
 
 The `recurring` method may be used to determine if the user is currently subscribed and is no longer within their trial period:
 
     if ($user->subscription('default')->recurring()) {
-        //
+        // ...
     }
 
 <a name="cancelled-subscription-status"></a>
@@ -607,19 +607,19 @@ The `recurring` method may be used to determine if the user is currently subscri
 To determine if the user was once an active subscriber but has cancelled their subscription, you may use the `cancelled` method:
 
     if ($user->subscription('default')->cancelled()) {
-        //
+        // ...
     }
 
 You may also determine if a user has cancelled their subscription, but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time:
 
     if ($user->subscription('default')->onGracePeriod()) {
-        //
+        // ...
     }
 
 To determine if the user has cancelled their subscription and is no longer within their "grace period", you may use the `ended` method:
 
     if ($user->subscription('default')->ended()) {
-        //
+        // ...
     }
 
 <a name="past-due-status"></a>
@@ -628,7 +628,7 @@ To determine if the user has cancelled their subscription and is no longer withi
 If a payment fails for a subscription, it will be marked as `past_due`. When your subscription is in this state it will not be active until the customer has updated their payment information. You may determine if a subscription is past due using the `pastDue` method on the subscription instance:
 
     if ($user->subscription('default')->pastDue()) {
-        //
+        // ...
     }
 
 When a subscription is past due, you should instruct the user to [update their payment information](#updating-payment-information). You may configure how past due subscriptions are handled in your [Paddle subscription settings](https://vendors.paddle.com/subscription-settings).
@@ -813,7 +813,7 @@ When a subscription is paused, Cashier will automatically set the `paused_from` 
 You may determine if a user has paused their subscription but are still on their "grace period" using the `onPausedGracePeriod` method:
 
     if ($user->subscription('default')->onPausedGracePeriod()) {
-        //
+        // ...
     }
 
 To resume a paused a subscription, you may call the `unpause` method on the user's subscription:
@@ -835,7 +835,7 @@ When a subscription is cancelled, Cashier will automatically set the `ends_at` c
 You may determine if a user has cancelled their subscription but are still on their "grace period" using the `onGracePeriod` method:
 
     if ($user->subscription('default')->onGracePeriod()) {
-        //
+        // ...
     }
 
 If you wish to cancel a subscription immediately, you may call the `cancelNow` method on the user's subscription:
@@ -875,21 +875,21 @@ This method will set the trial period ending date on the subscription record wit
 You may determine if the user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
 
     if ($user->onTrial('default')) {
-        //
+        // ...
     }
 
     if ($user->subscription('default')->onTrial()) {
-        //
+        // ...
     }
 
 To determine if an existing trial has expired, you may use the `hasExpiredTrial` methods:
 
     if ($user->hasExpiredTrial('default')) {
-        //
+        // ...
     }
 
     if ($user->subscription('default')->hasExpiredTrial()) {
-        //
+        // ...
     }
 
 <a name="defining-trial-days-in-paddle-cashier"></a>

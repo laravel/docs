@@ -716,7 +716,7 @@ The `each` method iterates over the items in the collection and passes each item
     $collection = collect([1, 2, 3, 4]);
 
     $collection->each(function (int $item, int $key) {
-        //
+        // ...
     });
 
 If you would like to stop iterating through the items, you may return `false` from your closure:
@@ -735,7 +735,7 @@ The `eachSpread` method iterates over the collection's items, passing each neste
     $collection = collect([['John Doe', 35], ['Jane Doe', 33]]);
 
     $collection->eachSpread(function (string $name, int $age) {
-        //
+        // ...
     });
 
 You may stop iterating through the items by returning `false` from the callback:

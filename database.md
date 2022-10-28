@@ -297,7 +297,7 @@ A common performance bottleneck of modern web applications is the amount of time
          */
         public function register(): void
         {
-            //
+            // ...
         }
 
         /**

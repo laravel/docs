@@ -844,7 +844,7 @@ If you have mailable classes that you want to always be queued, you may implemen
 
     class OrderShipped extends Mailable implements ShouldQueue
     {
-        //
+        // ...
     }
 
 <a name="queued-mailables-and-database-transactions"></a>

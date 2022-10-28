@@ -108,7 +108,7 @@ When registering closure based event listeners manually, you may wrap the listen
 Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods to customize the execution of the queued listener:
 
     Event::listen(queueable(function (PodcastProcessed $event) {
-        //
+        // ...
     })->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
 
 If you would like to handle anonymous queued listener failures, you may provide a closure to the `catch` method while defining the `queueable` listener. This closure will receive the event instance and the `Throwable` instance that caused the listener's failure:
@@ -119,7 +119,7 @@ If you would like to handle anonymous queued listener failures, you may provide 
     use Throwable;
 
     Event::listen(queueable(function (PodcastProcessed $event) {
-        //
+        // ...
     })->catch(function (PodcastProcessed $event, Throwable $e) {
         // The queued listener failed...
     }));
@@ -130,7 +130,7 @@ If you would like to handle anonymous queued listener failures, you may provide 
 You may even register listeners using the `*` as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the event name as their first argument and the entire event data array as their second argument:
 
     Event::listen('event.*', function (string $eventName, array $data) {
-        //
+        // ...
     });
 
 <a name="event-discovery"></a>
@@ -272,7 +272,7 @@ To specify that a listener should be queued, add the `ShouldQueue` interface to 
 
     class SendShipmentNotification implements ShouldQueue
     {
-        //
+        // ...
     }
 
 That's it! Now, when an event handled by this listener is dispatched, the listener will automatically be queued by the event dispatcher using Laravel's [queue system](/docs/{{version}}/queues). If no exceptions are thrown when the listener is executed by the queue, the queued job will automatically be deleted after it has finished processing.

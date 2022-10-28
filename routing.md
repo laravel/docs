@@ -67,11 +67,11 @@ The router allows you to register routes that respond to any HTTP verb:
 Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method. Or, you may even register a route that responds to all HTTP verbs using the `any` method:
 
     Route::match(['get', 'post'], '/', function () {
-        //
+        // ...
     });
 
     Route::any('/', function () {
-        //
+        // ...
     });
 
 > **Note**  
@@ -176,7 +176,7 @@ Sometimes you will need to capture segments of the URI within your route. For ex
 You may define as many route parameters as required by your route:
 
     Route::get('/posts/{post}/comments/{comment}', function (string $postId, string $commentId) {
-        //
+        // ...
     });
 
 Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Underscores (`_`) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter.
@@ -211,29 +211,29 @@ Occasionally you may need to specify a route parameter that may not always be pr
 You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
 
     Route::get('/user/{name}', function (string $name) {
-        //
+        // ...
     })->where('name', '[A-Za-z]+');
 
     Route::get('/user/{id}', function (string $id) {
-        //
+        // ...
     })->where('id', '[0-9]+');
 
     Route::get('/user/{id}/{name}', function (string $id, string $name) {
-        //
+        // ...
     })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 
 For convenience, some commonly used regular expression patterns have helper methods that allow you to quickly add pattern constraints to your routes:
 
     Route::get('/user/{id}/{name}', function (string $id, string $name) {
-        //
+        // ...
     })->whereNumber('id')->whereAlpha('name');
 
     Route::get('/user/{name}', function (string $name) {
-        //
+        // ...
     })->whereAlphaNumeric('name');
 
     Route::get('/user/{id}', function (string $id) {
-        //
+        // ...
     })->whereUuid('id');
 
     Route::get('/user/{id}', function (string $id) {
@@ -241,7 +241,7 @@ For convenience, some commonly used regular expression patterns have helper meth
     })->whereUlid('id');
 
     Route::get('/category/{category}', function (string $category) {
-        //
+        // ...
     })->whereIn('category', ['movie', 'song', 'painting']);
 
 If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.
@@ -283,7 +283,7 @@ The Laravel routing component allows all characters except `/` to be present wit
 Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route by chaining the `name` method onto the route definition:
 
     Route::get('/user/profile', function () {
-        //
+        // ...
     })->name('profile');
 
 You may also specify route names for controller actions:
@@ -312,7 +312,7 @@ Once you have assigned a name to a given route, you may use the route's name whe
 If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the generated URL in their correct positions:
 
     Route::get('/user/{id}/profile', function (string $id) {
-        //
+        // ...
     })->name('profile');
 
     $url = route('profile', ['id' => 1]);
@@ -320,7 +320,7 @@ If the named route defines parameters, you may pass the parameters as the second
 If you pass additional parameters in the array, those key / value pairs will automatically be added to the generated URL's query string:
 
     Route::get('/user/{id}/profile', function (string $id) {
-        //
+        // ...
     })->name('profile');
 
     $url = route('profile', ['id' => 1, 'photos' => 'yes']);
@@ -347,7 +347,7 @@ If you would like to determine if the current request was routed to a given name
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->route()->named('profile')) {
-            //
+            // ...
         }
 
         return $next($request);
@@ -394,7 +394,7 @@ Route groups may also be used to handle subdomain routing. Subdomains may be ass
 
     Route::domain('{account}.example.com')->group(function () {
         Route::get('user/{id}', function (string $account, string $id) {
-            //
+            // ...
         });
     });
 
@@ -591,7 +591,7 @@ Next, define a route that contains a `{user}` parameter:
     use App\Models\User;
 
     Route::get('/users/{user}', function (User $user) {
-        //
+        // ...
     });
 
 Since we have bound all `{user}` parameters to the `App\Models\User` model, an instance of that class will be injected into the route. So, for example, a request to `users/1` will inject the `User` instance from the database which has an ID of `1`.
@@ -655,7 +655,7 @@ If a route is utilizing [implicit binding scoping](#implicit-model-binding-scopi
 Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you would typically define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. You are free to add additional middleware to this route as needed:
 
     Route::fallback(function () {
-        //
+        // ...
     });
 
 > **Warning**  

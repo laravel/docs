@@ -91,7 +91,7 @@ If you need to determine if a view exists, you may use the `View` facade. The `e
     use Illuminate\Support\Facades\View;
 
     if (View::exists('emails.customer')) {
-        //
+        // ...
     }
 
 <a name="passing-data-to-views"></a>
@@ -177,11 +177,11 @@ We'll use the `View` facade's `composer` method to register the view composer. L
 
             // Using closure based composers...
             Facades\View::composer('welcome', function (View $view) {
-                //
+                // ...
             });
 
             Facades\View::composer('dashboard', function (View $view) {
-                //
+                // ...
             });
         }
     }
@@ -245,7 +245,7 @@ The `composer` method also accepts the `*` character as a wildcard, allowing you
     use Illuminate\View\View;
 
     Facades\View::composer('*', function (View $view) {
-        //
+        // ...
     });
 
 <a name="view-creators"></a>

@@ -75,7 +75,7 @@ If a class has no dependencies or only depends on other concrete classes (not in
 
     class Service
     {
-        //
+        // ...
     }
 
     Route::get('/', function (Service $service) {
@@ -316,11 +316,11 @@ Sometimes a class may have a variadic dependency that is type-hinted as a given 
 Occasionally, you may need to resolve all of a certain "category" of binding. For example, perhaps you are building a report analyzer that receives an array of many different `Report` interface implementations. After registering the `Report` implementations, you can assign them a tag using the `tag` method:
 
     $this->app->bind(CpuReport::class, function () {
-        //
+        // ...
     });
 
     $this->app->bind(MemoryReport::class, function () {
-        //
+        // ...
     });
 
     $this->app->tag([CpuReport::class, MemoryReport::class], 'reports');
@@ -490,7 +490,7 @@ Laravel's service container implements the [PSR-11](https://github.com/php-fig/f
     Route::get('/', function (ContainerInterface $container) {
         $service = $container->get(Transistor::class);
 
-        //
+        // ...
     });
 
 An exception is thrown if the given identifier can't be resolved. The exception will be an instance of `Psr\Container\NotFoundExceptionInterface` if the identifier was never bound. If the identifier was bound but was unable to be resolved, an instance of `Psr\Container\ContainerExceptionInterface` will be thrown.
