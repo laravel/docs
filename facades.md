@@ -155,7 +155,8 @@ If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that the
         /**
          * Get the registered name of the component.
          */
-        protected static function getFacadeAccessor(): string {
+        protected static function getFacadeAccessor(): string
+        {
             return 'cache';
         }
     }
