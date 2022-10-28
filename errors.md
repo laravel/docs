@@ -41,7 +41,7 @@ For example, if you need to report different types of exceptions in different wa
     public function register(): void
     {
         $this->reportable(function (InvalidOrderException $e) {
-            //
+            // ...
         });
     }
 
@@ -216,7 +216,7 @@ Instead of type-checking exceptions in the exception handler's `register` method
          */
         public function report(): bool|null
         {
-            //
+            // ...
         }
 
         /**

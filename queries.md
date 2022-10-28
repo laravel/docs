@@ -134,7 +134,7 @@ If you need to work with thousands of database records, consider using the `chun
 
     DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {
         foreach ($users as $user) {
-            //
+            // ...
         }
     });
 

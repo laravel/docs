@@ -50,7 +50,7 @@ To obtain an instance of the current HTTP request via dependency injection, you 
         {
             $name = $request->input('name');
 
-            //
+            // ...
 
             return response(status: 201);
         }

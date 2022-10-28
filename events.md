@@ -82,7 +82,7 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
         );
 
         Event::listen(function (PodcastProcessed $event) {
-            //
+            // ...
         });
     }
 
@@ -101,7 +101,7 @@ When registering closure based event listeners manually, you may wrap the listen
     public function boot(): void
     {
         Event::listen(queueable(function (PodcastProcessed $event) {
-            //
+            // ...
         }));
     }
 
@@ -149,7 +149,7 @@ Laravel finds event listeners by scanning the listener classes using PHP's refle
          */
         public function handle(PodcastProcessed $event): void
         {
-            //
+            // ...
         }
     }
 
@@ -236,7 +236,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
          */
         public function __construct()
         {
-            //
+            // ...
         }
 
         /**
@@ -350,7 +350,7 @@ Sometimes, you may need to determine whether a listener should be queued based o
          */
         public function handle(OrderCreated $event): void
         {
-            //
+            // ...
         }
 
         /**
@@ -437,7 +437,7 @@ Sometimes your queued event listeners may fail. If the queued listener exceeds t
          */
         public function handle(OrderShipped $event): void
         {
-            //
+            // ...
         }
 
         /**
@@ -445,7 +445,7 @@ Sometimes your queued event listeners may fail. If the queued listener exceeds t
          */
         public function failed(OrderShipped $event, Throwable $exception): void
         {
-            //
+            // ...
         }
     }
 
@@ -630,7 +630,7 @@ After writing the subscriber, you are ready to register it with the event dispat
          * @var array
          */
         protected $listen = [
-            //
+            // ...
         ];
 
         /**

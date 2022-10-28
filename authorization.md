@@ -312,7 +312,7 @@ The `App\Providers\AuthServiceProvider` included with fresh Laravel applications
         {
             $this->registerPolicies();
 
-            //
+            // ...
         }
     }
 

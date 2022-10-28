@@ -46,7 +46,7 @@ Let's look at a simple example:
         /**
          * Create a new controller instance.
          */
-        public function __construct(UserRepository $users): void
+        public function __construct(UserRepository $users)
         {
             $this->users = $users;
         }
@@ -439,7 +439,9 @@ Sometimes you may wish to invoke a method on an object instance while allowing t
          */
         public function generate(UserRepository $repository): array
         {
-            // ...
+            return [
+                // ...
+            ];
         }
     }
 

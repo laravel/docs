@@ -120,7 +120,7 @@ So, what if we need to register a [view composer](/docs/{{version}}/views#view-c
         public function boot(): void
         {
             View::composer('view', function () {
-                //
+                // ...
             });
         }
     }
@@ -138,7 +138,7 @@ You may type-hint dependencies for your service provider's `boot` method. The [s
     public function boot(ResponseFactory $response): void
     {
         $response->macro('serialized', function (mixed $value) {
-            //
+            // ...
         });
     }
 

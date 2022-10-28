@@ -303,7 +303,7 @@ Horizon allows you to assign “tags” to jobs, including mailables, broadcast 
          */
         public function handle(): void
         {
-            //
+            // ...
         }
     }
 

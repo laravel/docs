@@ -127,7 +127,7 @@ Occasionally, you may need to share data with all views that are rendered by you
          */
         public function register(): void
         {
-            //
+            // ...
         }
 
         /**
@@ -164,7 +164,7 @@ We'll use the `View` facade's `composer` method to register the view composer. L
          */
         public function register(): void
         {
-            //
+            // ...
         }
 
         /**

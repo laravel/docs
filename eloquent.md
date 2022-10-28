@@ -1445,7 +1445,7 @@ Instead of using custom event classes, you may register closures that execute wh
         protected static function booted(): void
         {
             static::created(function (User $user) {
-                //
+                // ...
             });
         }
     }
@@ -1485,7 +1485,7 @@ This command will place the new observer in your `App/Observers` directory. If t
          */
         public function created(User $user): void
         {
-            //
+            // ...
         }
 
         /**
@@ -1493,7 +1493,7 @@ This command will place the new observer in your `App/Observers` directory. If t
          */
         public function updated(User $user): void
         {
-            //
+            // ...
         }
 
         /**
@@ -1501,7 +1501,7 @@ This command will place the new observer in your `App/Observers` directory. If t
          */
         public function deleted(User $user): void
         {
-            //
+            // ...
         }
         
         /**
@@ -1509,7 +1509,7 @@ This command will place the new observer in your `App/Observers` directory. If t
          */
         public function restored(User $user): void
         {
-            //
+            // ...
         }
 
         /**
@@ -1517,7 +1517,7 @@ This command will place the new observer in your `App/Observers` directory. If t
          */
         public function forceDeleted(User $user): void
         {
-            //
+            // ...
         }
     }
 

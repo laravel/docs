@@ -152,9 +152,9 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
         public function configure(): static
         {
             return $this->afterMaking(function (User $user) {
-                //
+                // ...
             })->afterCreating(function (User $user) {
-                //
+                // ...
             });
         }
 

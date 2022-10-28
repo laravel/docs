@@ -654,7 +654,7 @@ Finally, you may place the authorization logic for your channel in the channel c
          */
         public function __construct()
         {
-            //
+            // ...
         }
 
         /**

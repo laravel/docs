@@ -367,7 +367,7 @@ If you would like to disable the wrapping of the outermost resource, you should 
          */
         public function register(): void
         {
-            //
+            // ...
         }
 
         /**

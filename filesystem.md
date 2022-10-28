@@ -624,7 +624,7 @@ Next, you can register the driver within the `boot` method of one of your applic
          */
         public function register(): void
         {
-            //
+            // ...
         }
 
         /**

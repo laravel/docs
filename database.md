@@ -260,7 +260,7 @@ If you would like to specify a closure that is invoked for each SQL query execut
          */
         public function register(): void
         {
-            //
+            // ...
         }
 
         /**

@@ -1107,7 +1107,7 @@ Once an access token authenticated request has entered your application, you may
 
     Route::get('/orders', function (Request $request) {
         if ($request->user()->tokenCan('place-orders')) {
-            //
+            // ...
         }
     });
 

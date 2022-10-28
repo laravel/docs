@@ -453,7 +453,7 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
          */
         public function boot(): void
         {
-            //
+            // ...
         }
     }
 

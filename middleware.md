@@ -162,11 +162,11 @@ When assigning middleware to a group of routes, you may occasionally need to pre
 
     Route::middleware([EnsureTokenIsValid::class])->group(function () {
         Route::get('/', function () {
-            //
+            // ...
         });
 
         Route::get('/profile', function () {
-            //
+            // ...
         })->withoutMiddleware([EnsureTokenIsValid::class]);
     });
 
@@ -176,7 +176,7 @@ You may also exclude a given set of middleware from an entire [group](/docs/{{ve
 
     Route::withoutMiddleware([EnsureTokenIsValid::class])->group(function () {
         Route::get('/profile', function () {
-            //
+            // ...
         });
     });
 

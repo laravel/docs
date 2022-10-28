@@ -1911,7 +1911,7 @@ If you would like to register an event listener that will be invoked when a job 
          */
         public function register(): void
         {
-            //
+            // ...
         }
 
         /**
@@ -2004,7 +2004,7 @@ Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}
          */
         public function register(): void
         {
-            //
+            // ...
         }
 
         /**
