@@ -26,8 +26,8 @@ To see an example of how to write a factory, take a look at the `database/factor
 
     namespace Database\Factories;
 
-    use Illuminate\Database\Eloquent\Factories\Factory;
     use Illuminate\Support\Str;
+    use Illuminate\Database\Eloquent\Factories\Factory;
 
     class UserFactory extends Factory
     {
