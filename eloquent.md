@@ -1358,7 +1358,7 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
          */
         public function scopeOfType(Builder $query, string $type): void
         {
-            return $query->where('type', $type);
+            $query->where('type', $type);
         }
     }
 
