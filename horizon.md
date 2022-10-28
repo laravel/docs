@@ -130,7 +130,7 @@ Horizon exposes a dashboard at the `/horizon` URI. By default, you will only be 
      *
      * This gate determines who can access Horizon in non-local environments.
      */
-    protected function gate()
+    protected function gate(): void
     {
         Gate::define('viewHorizon', function (User $user) {
             return in_array($user->email, [
