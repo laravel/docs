@@ -607,6 +607,8 @@ Therefore, you may specify that your custom cast class will be responsible for s
 
     /**
      * Get the serialized representation of the value.
+     *
+     * @param  array<string, mixed>  $attributes
      */
     public function serialize(Model $model, string $key, mixed $value, array $attributes): string
     {
@@ -695,7 +697,6 @@ Objects that implement the `Castable` interface must define a `castUsing` method
     namespace App\Models;
 
     use Illuminate\Contracts\Database\Eloquent\Castable;
-    use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
     use App\Casts\Address as AddressCast;
 
     class Address implements Castable
@@ -705,7 +706,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
          *
          * @param  array<string, mixed>  $arguments
          */
-        public static function castUsing(array $arguments): CastsAttributes|string
+        public static function castUsing(array $arguments): string
         {
             return AddressCast::class;
         }
@@ -741,7 +742,7 @@ By combining "castables" with PHP's [anonymous classes](https://www.php.net/manu
          *
          * @param  array<string, mixed>  $arguments
          */
-        public static function castUsing(array $arguments): CastsAttributes|string
+        public static function castUsing(array $arguments): CastsAttributes
         {
             return new class implements CastsAttributes
             {
