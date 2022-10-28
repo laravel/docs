@@ -300,9 +300,9 @@ The `ShouldBroadcast` interface requires our event to define a `broadcastOn` met
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>|\Illuminate\Broadcasting\Channel
+     * @return \Illuminate\Broadcasting\Channel|array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array|Channel
+    public function broadcastOn(): Channel|array
     {
         return new PrivateChannel('orders.'.$this->order->id);
     }
