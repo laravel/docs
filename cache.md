@@ -413,8 +413,6 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
 
 We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\Cache\MemcachedStore` in the [Laravel framework source code](https://github.com/laravel/framework). Once our implementation is complete, we can finish our custom driver registration by calling the `Cache` facade's `extend` method:
 
-    use Illuminate\Contracts\Foundation\Application;
-
     Cache::extend('mongo', function (Application $app) {
         return Cache::repository(new MongoStore);
     });
