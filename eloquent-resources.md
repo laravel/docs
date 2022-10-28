@@ -755,8 +755,8 @@ Alternatively, you may define a `withResponse` method within the resource itself
 
     namespace App\Http\Resources;
 
-    use Illuminate\Http\Request;
     use Illuminate\Http\JsonResponse;
+    use Illuminate\Http\Request;
     use Illuminate\Http\Resources\Json\JsonResource;
 
     class UserResource extends JsonResource
