@@ -235,7 +235,10 @@ If your exception extends an exception that is already renderable, such as a bui
      */
     public function render(Request $request): Response|bool
     {
-        // Determine if the exception needs custom rendering...
+        if (/** Determine if the exception needs custom rendering */) {
+
+            return response(/* ... */);
+        }
 
         return false;
     }
@@ -248,6 +251,7 @@ If your exception contains custom reporting logic that is only necessary when ce
     public function report(): bool
     {
         if (/** Determine if the exception needs custom reporting */) {
+
             // ...
 
             return true;
