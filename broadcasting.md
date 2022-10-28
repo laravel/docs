@@ -281,7 +281,6 @@ When a user is viewing one of their orders, we don't want them to have to refres
     use Illuminate\Broadcasting\Channel;
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Broadcasting\PresenceChannel;
-    use Illuminate\Broadcasting\PrivateChannel;
     use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
     use Illuminate\Queue\SerializesModels;
 
@@ -297,14 +296,32 @@ When a user is viewing one of their orders, we don't want them to have to refres
 
 The `ShouldBroadcast` interface requires our event to define a `broadcastOn` method. This method is responsible for returning the channels that the event should broadcast on. An empty stub of this method is already defined on generated event classes, so we only need to fill in its details. We only want the creator of the order to be able to view status updates, so we will broadcast the event on a private channel that is tied to the order:
 
+    use Illuminate\Broadcasting\Channel;
+    use Illuminate\Broadcasting\PrivateChannel;
+
+    /**
+     * Get the channel the event should broadcast on.
+     */
+    public function broadcastOn(): Channel
+    {
+        return new PrivateChannel('orders.'.$this->order->id);
+    }
+
+If you wish the event to broadcast on multiple channels, you may return an `array` instead:
+
+    use Illuminate\Broadcasting\PrivateChannel;
+
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array<int, \Illuminate\Broadcasting\Channel>
+     * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): Channel|array
+    public function broadcastOn(): array
     {
-        return new PrivateChannel('orders.'.$this->order->id);
+        return [
+            new PrivateChannel('orders.'.$this->order->id),
+            // ...
+        ];
     }
 
 <a name="example-application-authorizing-channels"></a>
@@ -376,11 +393,13 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
         /**
          * Get the channels the event should broadcast on.
          *
-         * @return \Illuminate\Broadcasting\Channel|array<int, \Illuminate\Broadcasting\Channel>
+         * @return array<int, \Illuminate\Broadcasting\Channel>
          */
-        public function broadcastOn(): Channel|array
+        public function broadcastOn(): array
         {
-            return new PrivateChannel('user.'.$this->user->id);
+            return [
+                new PrivateChannel('user.'.$this->user->id),
+            ];
         }
     }
 
@@ -850,11 +869,13 @@ Presence channels may receive events just like public or private channels. Using
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array<int, \Illuminate\Broadcasting\Channel>
+     * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): Channel|array
+    public function broadcastOn(): array
     {
-        return new PresenceChannel('room.'.$this->message->room_id);
+        return [
+            new PresenceChannel('room.'.$this->message->room_id),
+        ];
     }
 
 As with other events, you may use the `broadcast` helper and the `toOthers` method to exclude the current user from receiving the broadcast:
@@ -914,9 +935,9 @@ class Post extends Model
     /**
      * Get the channels that model events should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array<int, \Illuminate\Broadcasting\Channel>
+     * @return array<int, \Illuminate\Broadcasting\Channel|\Illuminate\Database\Eloquent\Model>
      */
-    public function broadcastOn(string $event): Channel|array
+    public function broadcastOn(string $event): array
     {
         return [$this, $this->user];
     }
@@ -931,9 +952,9 @@ In addition, you may have noticed that the `broadcastOn` method receives a strin
 /**
  * Get the channels that model events should broadcast on.
  *
- * @return \Illuminate\Broadcasting\Channel|array<int, \Illuminate\Broadcasting\Channel>
+ * @return array<string, array<int, \Illuminate\Broadcasting\Channel|\Illuminate\Database\Eloquent\Model>>
  */
-public function broadcastOn(string $event): Channel|array
+public function broadcastOn(string $event): array
 {
     return match ($event) {
         'deleted' => [],
@@ -977,11 +998,13 @@ use Illuminate\Broadcasting\PrivateChannel;
 /**
  * Get the channels that model events should broadcast on.
  *
- * @return \Illuminate\Broadcasting\Channel|array<int, \Illuminate\Broadcasting\Channel>
+ * @return array<int, \Illuminate\Broadcasting\Channel>
  */
-public function broadcastOn(string $event): Channel|array
+public function broadcastOn(string $event): array
 {
-    return [new PrivateChannel('user.'.$this->id)];
+    return [
+        new PrivateChannel('user.'.$this->id)
+    ];
 }
 ```
 
