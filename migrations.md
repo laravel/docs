@@ -60,10 +60,11 @@ php artisan schema:dump --prune
 
 When you execute this command, Laravel will write a "schema" file to your application's `database/schema` directory. The schema file's name will correspond to the database connection. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute first the SQL statements of the schema file of the database connection you are using. After executing the schema file's statements, Laravel will execute any remaining migrations that were not part of the schema dump.
 
-If your application's tests use a different database connection than the one you typically use during local development, you should ensure you have a dumped a schema file using that database connection so that your tests are able to build your database:
+If your application's tests use a different database connection than the one you typically use during local development, you should ensure you have a dumped a schema file using that database connection so that your tests are able to build your database. You may wish to do this after dumping the database connection you typically use during local development:
 
 ```shell
-php artisan schema:dump --database=testing
+php artisan schema:dump
+php artisan schema:dump --database=testing --prune
 ```
 
 You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
