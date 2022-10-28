@@ -756,7 +756,7 @@ Alternatively, you may define a `withResponse` method within the resource itself
     namespace App\Http\Resources;
 
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
+    use Illuminate\Http\JsonResponse;
     use Illuminate\Http\Resources\Json\JsonResource;
 
     class UserResource extends JsonResource
@@ -776,7 +776,7 @@ Alternatively, you may define a `withResponse` method within the resource itself
         /**
          * Customize the outgoing response for the resource.
          */
-        public function withResponse(Request $request, Response $response): void
+        public function withResponse(Request $request, JsonResponse $response): void
         {
             $response->header('X-Value', 'True');
         }
