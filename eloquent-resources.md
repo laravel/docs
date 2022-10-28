@@ -118,7 +118,7 @@ Once the resource collection class has been generated, you may easily define any
         /**
          * Transform the resource collection into an array.
          *
-         * @return array<string, mixed>
+         * @return array<int|string, mixed>
          */
         public function toArray(Request $request): array
         {
