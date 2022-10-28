@@ -214,7 +214,7 @@ Instead of type-checking exceptions in the exception handler's `register` method
         /**
          * Report the exception.
          */
-        public function report(): bool|null
+        public function report(): void
         {
             // ...
         }
@@ -245,9 +245,13 @@ If your exception contains custom reporting logic that is only necessary when ce
     /**
      * Report the exception.
      */
-    public function report(): bool|null
+    public function report(): bool
     {
-        // Determine if the exception needs custom reporting...
+        if (/** Determine if the exception needs custom reporting */) {
+            // ...
+
+            return true;
+        }
 
         return false;
     }
