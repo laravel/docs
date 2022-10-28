@@ -622,8 +622,12 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
 
     /**
      * Retrieve the model for a bound value.
+     *
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding(mixed $value, string $field = null): static|null
+    public function resolveRouteBinding($value, $field = null)
     {
         return $this->where('name', $value)->firstOrFail();
     }
@@ -633,9 +637,14 @@ If a route is utilizing [implicit binding scoping](#implicit-model-binding-scopi
     use Illuminate\Database\Eloquent\Model;
 
     /**
-     * Retrieve the model for a bound value.
+     * Retrieve the child model for a bound value.
+     *
+     * @param  string  $childType
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveChildRouteBinding(string $childType, mixed $value, string $field = null): Model|null
+    public function resolveChildRouteBinding($childType, $value, $field)
     {
         return parent::resolveChildRouteBinding($childType, $value, $field);
     }
