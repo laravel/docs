@@ -122,9 +122,9 @@ The `via` method receives a `$notifiable` instance, which will be an instance of
     /**
      * Get the notification's delivery channels.
      *
-     * @return array<int, string>|string
+     * @return array<int, string>
      */
-    public function via(mixed $notifiable): array|string
+    public function via(mixed $notifiable): array
     {
         return $notifiable->prefers_sms ? ['vonage'] : ['mail', 'database'];
     }
@@ -421,6 +421,8 @@ When sending notifications via the `mail` channel, the notification system will 
 
         /**
          * Route notifications for the mail channel.
+         *
+         * @return  array<string, string>|string
          */
         public function routeNotificationForMail(Notification $notification): array|string
         {
@@ -1334,12 +1336,10 @@ Once your notification channel class has been defined, you may return the class 
 
         /**
          * Get the notification channels.
-         *
-         * @return array<int, string>|string
          */
-        public function via(mixed $notifiable): array|string
+        public function via(mixed $notifiable): string
         {
-            return [VoiceChannel::class];
+            return VoiceChannel::class;
         }
 
         /**

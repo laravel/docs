@@ -634,8 +634,6 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
 
 If a route is utilizing [implicit binding scoping](#implicit-model-binding-scoping), the `resolveChildRouteBinding` method will be used to resolve the child binding of the parent model:
 
-    use Illuminate\Database\Eloquent\Model;
-
     /**
      * Retrieve the child model for a bound value.
      *
