@@ -195,8 +195,10 @@ You may easily modify the notification class used to send the password reset lin
 
     /**
      * Send a password reset notification to the user.
+     *
+     * @param  string  $token
      */
-    public function sendPasswordResetNotification(string $token): void
+    public function sendPasswordResetNotification($token): void
     {
         $url = 'https://example.com/reset-password?token='.$token;
 
