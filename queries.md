@@ -449,6 +449,8 @@ You may also pass an array of conditions to the `where` function. Each element o
 
 When chaining together calls to the query builder's `where` method, the "where" clauses will be joined together using the `and` operator. However, you may use the `orWhere` method to join a clause to the query using the `or` operator. The `orWhere` method accepts the same arguments as the `where` method:
 
+    use Illuminate\Support\Facades\DB;
+
     $users = DB::table('users')
                         ->where('votes', '>', 100)
                         ->orWhere('name', 'John')
@@ -457,7 +459,6 @@ When chaining together calls to the query builder's `where` method, the "where" 
 If you need to group an "or" condition within parentheses, you may pass a closure as the first argument to the `orWhere` method:
 
     use Illuminate\Database\Query\Builder;
-    use Illuminate\Support\Facades\DB;
 
     $users = DB::table('users')
                 ->where('votes', '>', 100)
@@ -839,6 +840,7 @@ Alternatively, you may use the `limit` and `offset` methods. These methods are f
 
 Sometimes you may want certain query clauses to apply to a query based on another condition. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming HTTP request. You may accomplish this using the `when` method:
 
+    use Illuminate\Support\Facades\DB;
     use Illuminate\Database\Query\Builder;
 
     $role = $request->string('role');
