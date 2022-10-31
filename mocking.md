@@ -560,7 +560,7 @@ By passing a closure as the second argument to the `assertSentOnDemand` method, 
 
     Notification::assertSentOnDemand(
         OrderShipped::class,
-        function (OrderShipped $notification, array $channels, mixed $notifiable) use ($user) {
+        function (OrderShipped $notification, array $channels, object $notifiable) use ($user) {
             return $notifiable->routes['mail'] === $user->email;
         }
     );
