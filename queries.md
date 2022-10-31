@@ -351,9 +351,6 @@ You may use the `crossJoin` method to perform a "cross join". Cross joins genera
 
 You may also specify more advanced join clauses. To get started, pass a closure as the second argument to the `join` method. The closure will receive a `Illuminate\Database\Query\JoinClause` instance which allows you to specify constraints on the "join" clause:
 
-    use Illuminate\Database\Query\JoinClause;
-    use Illuminate\Support\Facades\DB;
-
     DB::table('users')
             ->join('contacts', function (JoinClause $join) {
                 $join->on('users.id', '=', 'contacts.user_id')->orOn(/* ... */);
@@ -449,16 +446,12 @@ You may also pass an array of conditions to the `where` function. Each element o
 
 When chaining together calls to the query builder's `where` method, the "where" clauses will be joined together using the `and` operator. However, you may use the `orWhere` method to join a clause to the query using the `or` operator. The `orWhere` method accepts the same arguments as the `where` method:
 
-    use Illuminate\Support\Facades\DB;
-
     $users = DB::table('users')
                         ->where('votes', '>', 100)
                         ->orWhere('name', 'John')
                         ->get();
 
 If you need to group an "or" condition within parentheses, you may pass a closure as the first argument to the `orWhere` method:
-
-    use Illuminate\Database\Query\Builder;
 
     $users = DB::table('users')
                 ->where('votes', '>', 100)
@@ -481,9 +474,6 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 ### Where Not Clauses
 
 The `whereNot` and `orWhereNot` methods may be used to negate a given group of query constraints. For example, the following query excludes products that are on clearance or which have a price that is less than ten:
-
-    use Illuminate\Database\Query\Builder;
-    use Illuminate\Support\Facades\DB;
 
     $products = DB::table('products')
                     ->whereNot(function (Builder $query) {
@@ -646,9 +636,6 @@ You may also pass an array of column comparisons to the `whereColumn` method. Th
 
 Sometimes you may need to group several "where" clauses within parentheses in order to achieve your query's desired logical grouping. In fact, you should generally always group calls to the `orWhere` method in parentheses in order to avoid unexpected query behavior. To accomplish this, you may pass a closure to the `where` method:
 
-    use Illuminate\Database\Query\Builder;
-    use Illuminate\Support\Facades\DB;
-
     $users = DB::table('users')
                ->where('name', '=', 'John')
                ->where(function (Builder $query) {
@@ -673,9 +660,6 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 ### Where Exists Clauses
 
 The `whereExists` method allows you to write "where exists" SQL clauses. The `whereExists` method accepts a closure which will receive a query builder instance, allowing you to define the query that should be placed inside of the "exists" clause:
-
-    use Illuminate\Database\Query\Builder;
-    use Illuminate\Support\Facades\DB;
 
     $users = DB::table('users')
                ->whereExists(function (Builder $query) {
@@ -840,9 +824,6 @@ Alternatively, you may use the `limit` and `offset` methods. These methods are f
 
 Sometimes you may want certain query clauses to apply to a query based on another condition. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming HTTP request. You may accomplish this using the `when` method:
 
-    use Illuminate\Support\Facades\DB;
-    use Illuminate\Database\Query\Builder;
-
     $role = $request->string('role');
 
     $users = DB::table('users')
@@ -854,9 +835,6 @@ Sometimes you may want certain query clauses to apply to a query based on anothe
 The `when` method only executes the given closure when the first argument is `true`. If the first argument is `false`, the closure will not be executed. So, in the example above, the closure given to the `when` method will only be invoked if the `role` field is present on the incoming request and evaluates to `true`.
 
 You may pass another closure as the third argument to the `when` method. This closure will only execute if the first argument evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default ordering of a query:
-
-    use Illuminate\Database\Query\Builder;
-    use Illuminate\Support\Facades\DB;
 
     $sortByVotes = $request->boolean('sort_by_votes');
 
