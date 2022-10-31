@@ -158,7 +158,7 @@ Alternatively, once a user is authenticated, you may access the authenticated us
         {
             // $request->user()
 
-            return response(status: 204);
+            return response()->noContent();
         }
     }
 

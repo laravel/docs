@@ -52,7 +52,7 @@ To obtain an instance of the current HTTP request via dependency injection, you 
 
             // ...
 
-            return response(status: 201);
+            return response()->noContent();
         }
     }
 
@@ -91,7 +91,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` route
         {
             // ...
 
-            return response(status: 204);
+            return response()->noContent();
         }
     }
 

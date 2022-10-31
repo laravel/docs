@@ -43,7 +43,7 @@ You may encrypt a value using the `encryptString` method provided by the `Crypt`
                 'token' => Crypt::encryptString($request->token),
             ])->save();
 
-            return response(status: 204);
+            return response()->noContent();
         }
     }
 

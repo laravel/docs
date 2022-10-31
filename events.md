@@ -516,7 +516,7 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
 
             OrderShipped::dispatch($order);
 
-            return response(status: 201);
+            return response()->noContent();
         }
     }
     

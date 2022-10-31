@@ -699,7 +699,7 @@ Of course, when using Eloquent, we don't only need to retrieve models from the d
 
             $flight->save();
 
-            return response(status: 204);
+            return response()->noContent();
         }
     }
 

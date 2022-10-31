@@ -104,7 +104,7 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
 
             // Update the post...
 
-            return response(status: 204);
+            return response()->noContent();
         }
     }
 
@@ -529,7 +529,7 @@ The `App\Models\User` model that is included with your Laravel application inclu
 
             // Update the post...
 
-            return response(status: 204);
+            return response()->noContent();
         }
     }
 
@@ -562,7 +562,7 @@ Remember, some actions may correspond to policy methods like `create` that do no
 
             // Create the post...
 
-            return response(status: 201);
+            return response()->noContent();
         }
     }
 
@@ -595,7 +595,7 @@ Like the `can` method, this method accepts the name of the action you wish to au
 
             // The current user can update the blog post...
 
-            return response(status: 204);
+            return response()->noContent();
         }
     }
 
@@ -619,7 +619,7 @@ As previously discussed, some policy methods like `create` do not require a mode
 
         // The current user can create blog posts...
 
-        return response(status: 201);
+        return response()->noContent();
     }
 
 <a name="authorizing-resource-controllers"></a>
@@ -786,5 +786,5 @@ When attempting to determine if the authenticated user can update a given post, 
 
         // The current user can update the blog post...
 
-        return response(status: 204);
+        return response()->noContent();
     }

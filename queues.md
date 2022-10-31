@@ -655,7 +655,7 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
 
             ProcessPodcast::dispatch($podcast);
 
-            return response(status: 201);
+            return response()->noContent();
         }
     }
 
@@ -696,7 +696,7 @@ If you would like to specify that a job should not be immediately available for 
             ProcessPodcast::dispatch($podcast)
                         ->delay(now()->addMinutes(10));
 
-            return response(status: 201);
+            return response()->noContent();
         }
     }
 
@@ -749,7 +749,7 @@ If you would like to dispatch a job immediately (synchronously), you may use the
 
             ProcessPodcast::dispatchSync($podcast);
 
-            return response(status: 201);
+            return response()->noContent();
         }
     }
 
@@ -875,7 +875,7 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
 
             ProcessPodcast::dispatch($podcast)->onQueue('processing');
 
-            return response(status: 201);
+            return response()->noContent();
         }
     }
 
@@ -932,7 +932,7 @@ If your application interacts with multiple queue connections, you may specify w
 
             ProcessPodcast::dispatch($podcast)->onConnection('sqs');
 
-            return response(status: 201);
+            return response()->noContent();
         }
     }
 

@@ -118,7 +118,7 @@ To get a better understanding of the `validate` method, let's jump back into the
 
         // The blog post is valid...
 
-        return response(status: 201);
+        return response()->noContent();
     }
 
 As you can see, the validation rules are passed into the `validate` method. Don't worry - all available validation rules are [documented](#available-validation-rules). Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
@@ -338,7 +338,7 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
 
         // Store the blog post...
 
-        return response(status: 201);
+        return response()->noContent();
     }
 
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a [JSON representation of the validation errors](#validation-error-response-format).
@@ -529,7 +529,7 @@ If you do not want to use the `validate` method on the request, you may create a
 
             // Store the blog post...
 
-            return response(status: 201);
+            return response()->noContent();
         }
     }
 

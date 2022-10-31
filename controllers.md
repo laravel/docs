@@ -81,7 +81,7 @@ If a controller action is particularly complex, you might find it convenient to 
         {
             // ...
 
-            return response(status: 200);
+            return response()->noContent();
         }
     }
 
@@ -496,7 +496,7 @@ In addition to constructor injection, you may also type-hint dependencies on you
 
             // ...
 
-            return response(status: 201);
+            return response()->noContent();
         }
     }
 
@@ -523,6 +523,6 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
         {
             // ...
 
-            return response(status: 204);
+            return response()->noContent();
         }
     }

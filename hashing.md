@@ -49,7 +49,7 @@ You may hash a password by calling the `make` method on the `Hash` facade:
                 'password' => Hash::make($request->newPassword)
             ])->save();
 
-            return response(status: 204);
+            return response()->noContent();
         }
     }
 
