@@ -126,15 +126,13 @@ php artisan test --parallel --processes=4
 <a name="parallel-testing-and-databases"></a>
 #### Parallel Testing & Databases
 
-Laravel automatically handles creating and migrating a test database for each parallel process that is running your tests. The test databases will be suffixed with a process token which is unique per process. For example, if you have two parallel test processes, Laravel will create and use `your_db_test_1` and `your_db_test_2` test databases.
+As long as you have configured a primary database connection, Laravel automatically handles creating and migrating a test database for each parallel process that is running your tests. The test databases will be suffixed with a process token which is unique per process. For example, if you have two parallel test processes, Laravel will create and use `your_db_test_1` and `your_db_test_2` test databases.
 
 By default, test databases persist between calls to the `test` Artisan command so that they can be used again by subsequent `test` invocations. However, you may re-create them using the `--recreate-databases` option:
 
 ```shell
 php artisan test --parallel --recreate-databases
 ```
-
-Note that, in order to create test databases, Laravel still needs a valid database connection to `your_db_test` - the database you regular use in non-parallel testing scenarios.
 
 <a name="parallel-testing-hooks"></a>
 #### Parallel Testing Hooks
