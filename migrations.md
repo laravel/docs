@@ -5,7 +5,7 @@
     - [Squashing Migrations](#squashing-migrations)
 - [Migration Structure](#migration-structure)
 - [Running Migrations](#running-migrations)
-    - [Rolling Back Migrations](#rolling-back-migrations)]
+    - [Rolling Back Migrations](#rolling-back-migrations)
 - [Tables](#tables)
     - [Creating Tables](#creating-tables)
     - [Updating Tables](#updating-tables)
