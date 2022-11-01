@@ -5,7 +5,7 @@
     - [Squashing Migrations](#squashing-migrations)
 - [Migration Structure](#migration-structure)
 - [Running Migrations](#running-migrations)
-    - [Rolling Back Migrations](#rolling-back-migrations)
+    - [Rolling Back Migrations](#rolling-back-migrations)]
 - [Tables](#tables)
     - [Creating Tables](#creating-tables)
     - [Updating Tables](#updating-tables)
@@ -155,6 +155,19 @@ If you would like to see the SQL statements that will be executed by the migrati
 ```shell
 php artisan migrate --pretend
 ```
+
+#### Isolating Migration Execution
+
+If you are deploying your application across multiple servers and running migrations as part of your deployment process, you likely do not want two servers attempting to migrate the database at the same time. To avoid this, you may use the `isolated` option when invoking the `migrate` command.
+
+When the `isolated` option is provided, Laravel will acquire an atomic lock using your application's cache driver before attempting to run your migrations. All other attempts to run the `migrate` command while that lock is held will not execute; however, the command will still exit with a successful exit status code:
+
+```shell
+php artisan migrate --isolated
+```
+
+> **Warning**
+> To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 <a name="forcing-migrations-to-run-in-production"></a>
 #### Forcing Migrations To Run In Production
