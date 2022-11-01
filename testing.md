@@ -134,7 +134,7 @@ By default, test databases persist between calls to the `test` Artisan command s
 php artisan test --parallel --recreate-databases
 ```
 
-Laravel does not create your "main" testing database which holds your migrations, etc. This database still needs to be created up front.
+Note that, in order to create test databases, Laravel still needs a valid database connection to `your_db_test` - the database you regular use in non-parallel testing scenarios.
 
 <a name="parallel-testing-hooks"></a>
 #### Parallel Testing Hooks
