@@ -867,7 +867,7 @@ When a subscription has an incomplete payment, you should direct the user to Cas
 </a>
 ```
 
-If you would like the subscription to still be considered active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `App\Providers\AppServiceProvider`:
+If you would like the subscription to still be considered active when it's in a `past_due` or `incomplete` state, you may use the `keepPastDueSubscriptionsActive` and `keepIncompleteSubscriptionsActive` methods provided by Cashier. Typically, these methods should be called in the `register` method of your `App\Providers\AppServiceProvider`:
 
     use Laravel\Cashier\Cashier;
 
@@ -879,6 +879,7 @@ If you would like the subscription to still be considered active when it's in a 
     public function register()
     {
         Cashier::keepPastDueSubscriptionsActive();
+        Cashier::keepIncompleteSubscriptionsActive();
     }
 
 > **Warning**  
