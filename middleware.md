@@ -232,6 +232,7 @@ Laravel 有著可即用的 `web` 和 `api` 這些含有你想套用在 web 和 A
      * @var string[]
      */
     protected $middlewarePriority = [
+        \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,

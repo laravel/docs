@@ -51,7 +51,7 @@ Laravel 允許你簡單地 "mock" 使用者輸入給你的終端指令使用 `ex
         $this->line('Your name is '.$name.' and you prefer '.$language.'.');
     });
 
-你可能測試這個指令利用下列 `expectsQuestion`， `expectsOutput`， `doesntExpectOutput`， 和  `assertExitCode` 方法來測試:
+你可能測試這個指令利用下列 `expectsQuestion`， `expectsOutput`， `doesntExpectOutput`，`expectsOutputToContain`，`doesntExpectOutputToContain` 和 `assertExitCode` 方法來測試:
 
     /**
      * 測試一個終端指另。
@@ -65,6 +65,8 @@ Laravel 允許你簡單地 "mock" 使用者輸入給你的終端指令使用 `ex
              ->expectsQuestion('Which language do you prefer?', 'PHP')
              ->expectsOutput('Your name is Taylor Otwell and you prefer PHP.')
              ->doesntExpectOutput('Your name is Taylor Otwell and you prefer Ruby.')
+             ->expectsOutputToContain('Taylor Otwell')
+             ->doesntExpectOutputToContain('you prefer Ruby')
              ->assertExitCode(0);
     }
 

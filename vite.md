@@ -143,7 +143,7 @@ export default defineConfig({
     plugins: [
         laravel({
             // ...
-            valetTls: 'my-app.test', // [!tl add]
+            valetTls: 'my-app.test', // [tl! add]
         }),
     ],
 });
@@ -159,14 +159,14 @@ const host = 'my-app.test'; // [tl! add]
 
 export default defineConfig({
     // ...
-    server: { // [!tl add]
-        host, // [!tl add]
-        hmr: { host }, // [!tl add]
-        https: { // [!tl add]
-            key: fs.readFileSync(`/path/to/${host}.key`), // [!tl add]
-            cert: fs.readFileSync(`/path/to/${host}.crt`), // [!tl add]
-        }, // [!tl add]
-    }, // [!tl add]
+    server: { // [tl! add]
+        host, // [tl! add]
+        hmr: { host }, // [tl! add]
+        https: { // [tl! add]
+            key: fs.readFileSync(`/path/to/${host}.key`), // [tl! add]
+            cert: fs.readFileSync(`/path/to/${host}.crt`), // [tl! add]
+        }, // [tl! add]
+    }, // [tl! add]
 });
 ```
 
