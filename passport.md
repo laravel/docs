@@ -10,6 +10,7 @@
     - [Client Secret Hashing](#client-secret-hashing)
     - [Token Lifetimes](#token-lifetimes)
     - [Overriding Default Models](#overriding-default-models)
+    - [Overriding Routes](#overriding-routes)
 - [Issuing Access Tokens](#issuing-access-tokens)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
@@ -249,6 +250,33 @@ After defining your model, you may instruct Passport to use your custom model vi
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
 
+<a name="overriding-routes"></a>
+### Overriding Routes
+
+Sometimes you may wish to customize the routes defined by Passport. To achieve this, you first need to ignore the routes registered by Passport by adding `Passport::ignoreRoutes` to the `register` method of your application's `AppServiceProvider`:
+
+    use Laravel\Passport\Passport;
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Passport::ignoreRoutes();
+    }
+
+Then, you may copy the routes defined by Passport in [its routes file](https://github.com/laravel/passport/blob/11.x/routes/web.php) to your application's `routes/web.php` file and modify them to your liking:
+
+    Route::group([
+        'as' => 'passport.',
+        'prefix' => config('passport.path', 'oauth'),
+        'namespace' => 'Laravel\Passport\Http\Controllers',
+    ], function () {
+        // Passport routes...
+    });
+
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
 
@@ -371,10 +399,17 @@ Once a client has been created, developers may use their client ID and secret to
             'response_type' => 'code',
             'scope' => '',
             'state' => $state,
+            // 'prompt' => '', // "none", "consent", or "login"
         ]);
 
         return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
+
+The `prompt` parameter may be used to specify the authentication behavior of the Passport application.
+
+If the `prompt` value is `none`, Passport will always throw an authentication error if the user is not already authenticated with the Passport application. If the value is `consent`, Passport will always display the authorization approval screen, even if all scopes were previously granted to the consuming application. When the value is `login`, the Passport application will always prompt the user to re-login to the application, even if they already have an existing session.
+
+If no `prompt` value is provided, the user will be prompted for authorization only if they have not previously authorized access to the consuming application for the requested scopes.
 
 > **Note**  
 > Remember, the `/oauth/authorize` route is already defined by Passport. You do not need to manually define this route.
@@ -382,7 +417,7 @@ Once a client has been created, developers may use their client ID and secret to
 <a name="approving-the-request"></a>
 #### Approving The Request
 
-When receiving authorization requests, Passport will automatically display a template to the user allowing them to approve or deny the authorization request. If they approve the request, they will be redirected back to the `redirect_uri` that was specified by the consuming application. The `redirect_uri` must match the `redirect` URL that was specified when the client was created.
+When receiving authorization requests, Passport will automatically respond based on the value of `prompt` parameter (if present) and may display a template to the user allowing them to approve or deny the authorization request. If they approve the request, they will be redirected back to the `redirect_uri` that was specified by the consuming application. The `redirect_uri` must match the `redirect` URL that was specified when the client was created.
 
 If you would like to customize the authorization approval screen, you may publish Passport's views using the `vendor:publish` Artisan command. The published views will be placed in the `resources/views/vendor/passport` directory:
 
@@ -390,7 +425,7 @@ If you would like to customize the authorization approval screen, you may publis
 php artisan vendor:publish --tag=passport-views
 ```
 
-Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately:
+Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately, unless the consuming application has explicitly set the `prompt` parameter when redirecting for authorization:
 
     <?php
 
@@ -591,6 +626,7 @@ Once a client has been created, you may use the client ID and the generated code
             'state' => $state,
             'code_challenge' => $codeChallenge,
             'code_challenge_method' => 'S256',
+            // 'prompt' => '', // "none", "consent", or "login"
         ]);
 
         return redirect('http://passport-app.test/oauth/authorize?'.$query);
@@ -778,6 +814,7 @@ Once the grant has been enabled, developers may use their client ID to request a
             'response_type' => 'token',
             'scope' => '',
             'state' => $state,
+            // 'prompt' => '', // "none", "consent", or "login"
         ]);
 
         return redirect('http://passport-app.test/oauth/authorize?'.$query);

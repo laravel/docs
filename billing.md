@@ -54,6 +54,7 @@
     - [Single Charge Checkouts](#single-charge-checkouts)
     - [Subscription Checkouts](#subscription-checkouts)
     - [Collecting Tax IDs](#collecting-tax-ids)
+    - [Guest Checkouts](#guest-checkouts)
 - [Invoices](#invoices)
     - [Retrieving Invoices](#retrieving-invoices)
     - [Upcoming Invoices](#upcoming-invoices)
@@ -746,7 +747,7 @@ If you would like to add a subscription to a customer who already has a default 
 <a name="creating-subscriptions-from-the-stripe-dashboard"></a>
 #### Creating Subscriptions From The Stripe Dashboard
 
-You may also create subscriptions from the Stripe dashboard itself. When doing so, Cashier will sync newly added subscriptions and assign them a name of `default`. To customize the subscription name that is assigned to dashboard created subscriptions, [extend the `WebhookController`](/docs/{{version}}/billing#defining-webhook-event-handlers) and overwrite the `newSubscriptionName` method.
+You may also create subscriptions from the Stripe dashboard itself. When doing so, Cashier will sync newly added subscriptions and assign them a name of `default`. To customize the subscription name that is assigned to dashboard created subscriptions, [extend the `WebhookController`](#defining-webhook-event-handlers) and overwrite the `newSubscriptionName` method.
 
 In addition, you may only create one type of subscription via the Stripe dashboard. If your application offers multiple subscriptions that use different names, only one type of subscription may be added through the Stripe dashboard.
 
@@ -866,7 +867,7 @@ When a subscription has an incomplete payment, you should direct the user to Cas
 </a>
 ```
 
-If you would like the subscription to still be considered active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `App\Providers\AppServiceProvider`:
+If you would like the subscription to still be considered active when it's in a `past_due` or `incomplete` state, you may use the `keepPastDueSubscriptionsActive` and `keepIncompleteSubscriptionsActive` methods provided by Cashier. Typically, these methods should be called in the `register` method of your `App\Providers\AppServiceProvider`:
 
     use Laravel\Cashier\Cashier;
 
@@ -878,6 +879,7 @@ If you would like the subscription to still be considered active when it's in a 
     public function register()
     {
         Cashier::keepPastDueSubscriptionsActive();
+        Cashier::keepIncompleteSubscriptionsActive();
     }
 
 > **Warning**  
@@ -1921,6 +1923,37 @@ When this method is invoked, a new checkbox will be available to the customer th
 
 > **Warning**  
 > If you have already configured [automatic tax collection](#tax-configuration) in your application's service provider then this feature will be enabled automatically and there is no need to invoke the `collectTaxIds` method.
+
+<a name="guest-checkouts"></a>
+### Guest Checkouts
+
+Using the `Checkout::guest` method, you may initiate checkout sessions for guests of your application that do not have an "account":
+
+    use Illuminate\Http\Request;
+    use Laravel\Cashier\Checkout;
+
+    Route::get('/product-checkout', function (Request $request) {
+        return Checkout::guest()->create('price_tshirt', [
+            'success_url' => route('your-success-route'),
+            'cancel_url' => route('your-cancel-route'),
+        ]);
+    });
+
+Similarly to when creating checkout sessions for existing users, you may utilize additional methods available on the `Laravel\Cashier\CheckoutBuilder` instance to customize the guest checkout session:
+
+    use Illuminate\Http\Request;
+    use Laravel\Cashier\Checkout;
+
+    Route::get('/product-checkout', function (Request $request) {
+        return Checkout::guest()
+            ->withPromotionCode('promo-code')
+            ->create('price_tshirt', [
+                'success_url' => route('your-success-route'),
+                'cancel_url' => route('your-cancel-route'),
+            ]);
+    });
+
+After a guest checkout has been completed, Stripe can dispatch a `checkout.session.completed` webhook event, so make sure to [configure your Stripe webhook](https://dashboard.stripe.com/webhooks) to actually send this event to your application. Once the webhook has been enabled within the Stripe dashboard, you may [handle the webhook with Cashier](#handling-stripe-webhooks). The object contained in the webhook payload will be a [`checkout` object](https://stripe.com/docs/api/checkout/sessions/object) that you may inspect in order to fulfill your customer's order.
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments

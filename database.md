@@ -291,6 +291,7 @@ A common performance bottleneck of modern web applications is the amount of time
     use Illuminate\Database\Connection;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\ServiceProvider;
+    use Illuminate\Database\Events\QueryExecuted;
 
     class AppServiceProvider extends ServiceProvider
     {
@@ -311,7 +312,7 @@ A common performance bottleneck of modern web applications is the amount of time
          */
         public function boot()
         {
-            DB::whenQueryingForLongerThan(500, function (Connection $connection) {
+            DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
                 // Notify development team...
             });
         }

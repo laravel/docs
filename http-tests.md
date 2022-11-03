@@ -644,6 +644,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
 [assertLocation](#assert-location)
+[assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
@@ -942,6 +943,13 @@ Assert the response has any JSON validation errors for the given key:
 Assert that the response has the given URI value in the `Location` header:
 
     $response->assertLocation($uri);
+    
+<a name="assert-content"></a>
+#### assertContent
+
+Assert that the given string matches the response content:
+
+    $response->assertContent($value);
 
 <a name="assert-no-content"></a>
 #### assertNoContent

@@ -125,6 +125,7 @@ Method  | Description
 `->daily();`  |  Run the task every day at midnight
 `->dailyAt('13:00');`  |  Run the task every day at 13:00
 `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
+`->twiceDailyAt(1, 13, 15);`  |  Run the task daily at 1:15 & 13:15
 `->weekly();`  |  Run the task every Sunday at 00:00
 `->weeklyOn(1, '8:00');`  |  Run the task every week on Monday at 8:00
 `->monthly();`  |  Run the task on the first day of every month at 00:00
@@ -132,6 +133,7 @@ Method  | Description
 `->twiceMonthly(1, 16, '13:00');`  |  Run the task monthly on the 1st and 16th at 13:00
 `->lastDayOfMonth('15:00');` | Run the task on the last day of the month at 15:00
 `->quarterly();` |  Run the task on the first day of every quarter at 00:00
+`->quarterlyOn(4, '14:00');` |  Run the task every quarter on the 4th at 14:00
 `->yearly();`  |  Run the task on the first day of every year at 00:00
 `->yearlyOn(6, 1, '17:00');`  |  Run the task every year on June 1st at 17:00
 `->timezone('America/New_York');` | Set the timezone for the task

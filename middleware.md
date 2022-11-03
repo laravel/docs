@@ -232,6 +232,7 @@ Rarely, you may need your middleware to execute in a specific order but not have
      * @var string[]
      */
     protected $middlewarePriority = [
+        \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,

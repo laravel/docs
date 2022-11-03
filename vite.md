@@ -143,7 +143,7 @@ export default defineConfig({
     plugins: [
         laravel({
             // ...
-            valetTls: 'my-app.test', // [!tl add]
+            valetTls: 'my-app.test', // [tl! add]
         }),
     ],
 });
@@ -159,14 +159,14 @@ const host = 'my-app.test'; // [tl! add]
 
 export default defineConfig({
     // ...
-    server: { // [!tl add]
-        host, // [!tl add]
-        hmr: { host }, // [!tl add]
-        https: { // [!tl add]
-            key: fs.readFileSync(`/path/to/${host}.key`), // [!tl add]
-            cert: fs.readFileSync(`/path/to/${host}.crt`), // [!tl add]
-        }, // [!tl add]
-    }, // [!tl add]
+    server: { // [tl! add]
+        host, // [tl! add]
+        hmr: { host }, // [tl! add]
+        https: { // [tl! add]
+            key: fs.readFileSync(`/path/to/${host}.key`), // [tl! add]
+            cert: fs.readFileSync(`/path/to/${host}.crt`), // [tl! add]
+        }, // [tl! add]
+    }, // [tl! add]
 });
 ```
 
@@ -476,7 +476,7 @@ It is common in JavaScript applications to [create aliases](#aliases) to regular
      */
     public function boot()
     {
-        Vite::macro('image', fn ($asset) => $this->asset("/resources/images/{$asset}"));
+        Vite::macro('image', fn ($asset) => $this->asset("resources/images/{$asset}"));
     }
 
 Once a macro has been defined, it can be invoked within your templates. For example, we can use the `image` macro defined above to reference an asset located at `resources/images/logo.png`:
