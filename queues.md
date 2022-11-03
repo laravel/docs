@@ -182,22 +182,12 @@ Job classes are very simple, normally containing only a `handle` method that is 
         use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
         /**
-         * The podcast instance.
-         *
-         * @var \App\Models\Podcast
-         */
-        public $podcast;
-
-        /**
          * Create a new job instance.
          *
          * @param  App\Models\Podcast  $podcast
          * @return void
          */
-        public function __construct(Podcast $podcast)
-        {
-            $this->podcast = $podcast;
-        }
+        public function __construct(public Podcast $podcast){}
 
         /**
          * Execute the job.
