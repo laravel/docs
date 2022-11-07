@@ -479,7 +479,7 @@ Concurrent tasks processed by Octane utilize Swoole's "task workers", and execut
 php artisan octane:start --workers=4 --task-workers=6
 ```
 
-The maximum number of tasks in the array that can be passed to the method is limited to 1024 due to a restriction in [Swoole's Task system](https://openswoole.com/docs/modules/swoole-server-taskWaitMulti#description).
+Please note that the array that you pass into the `concurrently` method cannot contain more than 1024 tasks due to a restriction in [Swoole's Task system](https://openswoole.com/docs/modules/swoole-server-taskWaitMulti#description).
 
 <a name="ticks-and-intervals"></a>
 ## Ticks & Intervals
