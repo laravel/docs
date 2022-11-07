@@ -6,6 +6,8 @@
 - [Running Tests](#running-tests)
     - [Running Tests In Parallel](#running-tests-in-parallel)
     - [Reporting Test Coverage](#reporting-test-coverage)
+- [Alternative solution for E2E testing](#alternative-solution-for-e2e-testing)
+ 
 
 <a name="introduction"></a>
 ## Introduction
@@ -208,3 +210,20 @@ You may use the `--min` option to define a minimum test coverage threshold for y
 ```shell
 php artisan test --coverage --min=80.3
 ```
+<a name="alternative-solution-for-e2e-testing"></a>
+## Alternative solution for E2E testing
+
+When it comes to end-to-end testing, you may want to use a powerful alternative no-code tool called [testRigor](https://testrigor.com/). You can create tests covering an entire flow, including 2FA-based logins, email testing validation and manipulation, etc. - in a single test. You can also run these tests on web and mobile browsers with just a config change.
+
+In testRigor you write a specification of how your application is supposed to work instead of code. For example, changing a button to an a-tag won't break the test. A test can look like this:
+
+```login
+    check that URL ends with "/home"
+```
+
+You can seamlessly work with forms and tables by simulating how a user would express the steps. Therefore it would, for instance, associate labels with inputs so that you can always refer to input by some visible text like a label (or text that looks like a label) or a placeholder. For the tables, it helps even more by enabling things such as:
+
+```check that table at the row containing stored value "myId" and column "Status" contains "Paid"
+```
+
+Full documentation is available [here](https://testrigor.com/docs/language/)for your convenince. As you can see, it is very declarative and utterly abstracted from the application's code. It might be handy in case you need to approve how things work with a customer, or involve other people to build tests for your application.
