@@ -1697,11 +1697,11 @@ When using frontend frameworks such as [Turbo](https://turbo.hotwired.dev/) and 
 
 ```blade
 @fragment('user-list')
-    <li>
+    <ul>
         @foreach ($users as $user)
-            <ul>{{ $user->name }}</ul>
+            <li>{{ $user->name }}</li>
         @endforeach
-    </li>
+    </ul>
 @endfragment
 ```
 
