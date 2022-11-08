@@ -1693,7 +1693,7 @@ return Blade::render(
 <a name="rendering-blade-fragments"></a>
 ## Rendering Blade Fragments
 
-When using frontend frameworks such as [Turbo](https://turbo.hotwired.dev/) and [HTMX](https://htmx.org/), you may occasionally need to return only a portion of a Blade template within your HTTP response. Blade "fragments" allow you to do just that. To get started, place a portion of your Blade template within `@fragment` and `@endfragment` directives:
+When using frontend frameworks such as [Turbo](https://turbo.hotwired.dev/) and [HTMX](https://htmx.org/), you may occasionally need to only return a portion of a Blade template within your HTTP response. Blade "fragments" allow you to do just that. To get started, place a portion of your Blade template within `@fragment` and `@endfragment` directives:
 
 ```blade
 @fragment('user-list')
@@ -1705,7 +1705,7 @@ When using frontend frameworks such as [Turbo](https://turbo.hotwired.dev/) and 
 @endfragment
 ```
 
-Then, when rendering the view that utilizes this template, you may invoke the `fragment` method to specify that only the specified fragment should be returned:
+Then, when rendering the view that utilizes this template, you may invoke the `fragment` method to specify that only the specified fragment should be included in the outgoing HTTP response:
 
 ```php
 return view('dashboard', ['users' => $users])->fragment('user-list');
