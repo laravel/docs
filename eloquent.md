@@ -1567,6 +1567,8 @@ This command will place the new observer in your `App/Observers` directory. If t
         }
     }
 
+On modification, you can get the old value of an object with the function `$user->getOriginal('name'))`
+
 To register an observer, you need to call the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\Providers\EventServiceProvider` service provider:
 
     use App\Models\User;
