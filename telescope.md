@@ -168,6 +168,9 @@ To keep the assets up-to-date and avoid issues in future updates, you may add th
 }
 ```
 
+> **Note**
+> If your `composer.json`’s array of `post-update-cmd` scripts already contains `@php artisan vendor:publish --tag=laravel-assets --ansi --force`, you can omit this.
+
 <a name="filtering"></a>
 ## Filtering
 
