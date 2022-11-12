@@ -846,6 +846,7 @@ Below is a list of all available validation rules and their function:
 [JSON](#rule-json)
 [Less Than](#rule-lt)
 [Less Than Or Equal](#rule-lte)
+[Uppercase](#rule-uppercase)
 [MAC Address](#rule-mac)
 [Max](#rule-max)
 [Max Digits](#rule-max-digits)
@@ -1357,6 +1358,11 @@ Even though you only need to specify the extensions, this rule actually validate
 #### min:_value_
 
 The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+
+<a name="rule-uppercase"></a>
+#### uppercase:_field_
+
+The field under validation must be uppercase.
 
 <a name="rule-min-digits"></a>
 #### min_digits:_value_
