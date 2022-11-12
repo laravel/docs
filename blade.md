@@ -39,6 +39,7 @@
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
 - [Rendering Inline Blade Templates](#rendering-inline-blade-templates)
+- [Rendering Blade Fragments](#rendering-blade-fragments)
 - [Extending Blade](#extending-blade)
     - [Custom Echo Handlers](#custom-echo-handlers)
     - [Custom If Statements](#custom-if-statements)
@@ -1687,6 +1688,27 @@ return Blade::render(
     ['name' => 'Julian Bashir'],
     deleteCachedView: true
 );
+```
+
+<a name="rendering-blade-fragments"></a>
+## Rendering Blade Fragments
+
+When using frontend frameworks such as [Turbo](https://turbo.hotwired.dev/) and [htmx](https://htmx.org/), you may occasionally need to only return a portion of a Blade template within your HTTP response. Blade "fragments" allow you to do just that. To get started, place a portion of your Blade template within `@fragment` and `@endfragment` directives:
+
+```blade
+@fragment('user-list')
+    <ul>
+        @foreach ($users as $user)
+            <li>{{ $user->name }}</li>
+        @endforeach
+    </ul>
+@endfragment
+```
+
+Then, when rendering the view that utilizes this template, you may invoke the `fragment` method to specify that only the specified fragment should be included in the outgoing HTTP response:
+
+```php
+return view('dashboard', ['users' => $users])->fragment('user-list');
 ```
 
 <a name="extending-blade"></a>
