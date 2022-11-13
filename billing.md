@@ -828,7 +828,7 @@ The `recurring` method may be used to determine if the user is currently subscri
 
 To determine if the user was once an active subscriber but has canceled their subscription, you may use the `canceled` method:
 
-    if ($user->subscription('default')->canceled()) {
+    if ($user->subscription('default')->cancelled()) {
         //
     }
 
@@ -894,12 +894,12 @@ Most subscription states are also available as query scopes so that you may easi
     $subscriptions = Subscription::query()->active()->get();
 
     // Get all of the canceled subscriptions for a user...
-    $subscriptions = $user->subscriptions()->canceled()->get();
+    $subscriptions = $user->subscriptions()->cancelled()->get();
 
 A complete list of available scopes is available below:
 
     Subscription::query()->active();
-    Subscription::query()->canceled();
+    Subscription::query()->cancelled();
     Subscription::query()->ended();
     Subscription::query()->incomplete();
     Subscription::query()->notCanceled();
