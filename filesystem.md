@@ -146,13 +146,13 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
 <a name="scoped-and-read-only-filesystems"></a>
 ### Scoped & Read-Only Filesystems
 
-Before creating a scoped filesystem disk, you will need to install an additional Flysystem package via the Composer package manager:
+Scoped disks allow you to define a filesystem where all paths are automatically prefixed with a given path prefix. Before creating a scoped filesystem disk, you will need to install an additional Flysystem package via the Composer package manager:
 
 ```shell
 composer require league/flysystem-path-prefixing "^3.0"
 ```
 
-You may create a path scoped instance of any existing filesystem disk by defining a disk that utilizes the `scoped` driver. Scoped disks allow you to define a filesystem where all paths are automatically prefixed with a given path prefix. For example, you may create a disk which scopes your existing `s3` disk to a specific path prefix, and then every file operation using your scoped disk will utilize the specified prefix:
+You may create a path scoped instance of any existing filesystem disk by defining a disk that utilizes the `scoped` driver. For example, you may create a disk which scopes your existing `s3` disk to a specific path prefix, and then every file operation using your scoped disk will utilize the specified prefix:
 
 ```php
 's3-videos' => [
@@ -162,13 +162,13 @@ You may create a path scoped instance of any existing filesystem disk by definin
 ],
 ```
 
-Before using the `read-only` configuration option, you will need to install an additional Flysystem package via the Composer package manager:
+"Read-only" disks allow you to create filesystem disks that do not allow write operations. Before using the `read-only` configuration option, you will need to install an additional Flysystem package via the Composer package manager:
 
 ```shell
 composer require league/flysystem-read-only "^3.0"
 ```
 
-If you would like to specify that any filesystem disk should be "read-only", you may include the `read-only` configuration option in the disk's configuration array:
+Next, you may include the `read-only` configuration option in one or more of your disk's configuration arrays:
 
 ```php
 's3-videos' => [
