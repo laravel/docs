@@ -496,7 +496,13 @@ You may use `whereJsonContains` to query JSON arrays. This feature is not suppor
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', 'en')
                     ->get();
-
+                    
+In order to query nested array structures, pass the nested structure as value:
+    
+    $users = DB::table('users')
+                    ->whereJsonContains('options', ['languages' => ['code' => 'en']])
+                    ->get();
+        
 If your application uses the MySQL or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
 
     $users = DB::table('users')
