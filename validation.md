@@ -860,6 +860,7 @@ Below is a list of all available validation rules and their function:
 [Numeric](#rule-numeric)
 [Password](#rule-password)
 [Present](#rule-present)
+[Present If](#rule-present-if)
 [Prohibited](#rule-prohibited)
 [Prohibited If](#rule-prohibited-if)
 [Prohibited Unless](#rule-prohibited-unless)
@@ -1417,6 +1418,24 @@ The field under validation must match the authenticated user's password.
 #### present
 
 The field under validation must be present in the input data but can be empty.
+
+<a name="rule-present-if"></a>
+#### present_if:_anotherfield_,_value_,...
+
+The field under validation must be present in the input data but can be empty if the _anotherfield_ field is equal to any _value_.
+
+If you would like to construct a more complex condition for the `present_if` rule, you may use the `Rule::presentIf` method. This method accepts a boolean or a closure. When passed a closure, the closure should return `true` or `false` to indicate if the field under validation must be present:
+
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Rule;
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::presentIf($request->user()->is_admin),
+    ]);
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::presentIf(fn () => $request->user()->is_admin),
+    ]);
 
 <a name="rule-prohibited"></a>
 #### prohibited
