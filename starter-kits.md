@@ -56,6 +56,15 @@ npm run dev
 
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
 
+<a name="dark-mode"></a>
+#### Dark Mode
+
+If you would like Breeze to include "dark mode" support when scaffolding your application's frontend, simply provide the `--dark` directive when executing the `breeze:install` command:
+
+```shell
+php artisan breeze:install --dark
+```
+
 > **Note**  
 > To learn more about compiling your application's CSS and JavaScript, check out Laravel's [Vite documentation](/docs/{{version}}/vite#running-vite).
 
