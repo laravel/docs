@@ -651,6 +651,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
 [assertRedirectContains](#assert-redirect-contains)
+[assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
 [assertSee](#assert-see)
 [assertSeeInOrder](#assert-see-in-order)
@@ -992,6 +993,13 @@ Assert that the response is a redirect to the given URI:
 Assert whether the response is redirecting to a URI that contains the given string:
 
     $response->assertRedirectContains($string);
+
+<a name="assert-redirect-to-route"></a>
+#### assertRedirectToRoute
+
+Assert that the response is a redirect to the given [named route](/docs/{{version}}/routing#named-routes):
+
+    $response->assertRedirectToRoute($name = null, $parameters = []);
 
 <a name="assert-redirect-to-signed-route"></a>
 #### assertRedirectToSignedRoute
