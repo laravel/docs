@@ -684,6 +684,9 @@ If you would like to conditionally dispatch a job, you may use the `dispatchIf` 
 
 In new Laravel applications, the `sync` driver is the default queue driver. This driver executes jobs synchronously in the foreground of the current request, which is often convenient during local development. If you would like to actually begin queueing jobs for background processing, you may specify a different queue driver within your application's `config/queue.php` configuration file.
 
+> **Warning**  
+> The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depends on garbage collection to place the job on the queue. This means that simply invoking the method does not guarantee that the job has been queued.
+
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
 
