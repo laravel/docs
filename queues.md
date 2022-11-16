@@ -1510,6 +1510,12 @@ Alternatively, you may run the `queue:listen` command. When using the `queue:lis
 php artisan queue:listen
 ```
 
+You may also use the `-v` flag if you wish to know specifically the job IDs processed by your queue worker:
+
+```shell
+php artisan queue:work -v
+```
+
 <a name="running-multiple-queue-workers"></a>
 #### Running Multiple Queue Workers
 
