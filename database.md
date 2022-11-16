@@ -331,6 +331,10 @@ You may use the `transaction` method provided by the `DB` facade to run a set of
 
         DB::delete('delete from posts');
     });
+> **Note**  
+> MySQL has several `storage engines` popular ones being `InnoDB` and `MyISAM`. You can change the default storage engine in the server configuration.
+> MySQL’s default storage engine is `InnoDB`. This engine is fully transactional and supports foreign key references. It’s the recommended choice.
+> The main drawbacks of `MyISAM` are that it doesn’t support transactions or enforce foreign-key constraints.
 
 <a name="handling-deadlocks"></a>
 #### Handling Deadlocks
