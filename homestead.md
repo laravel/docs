@@ -622,8 +622,7 @@ A `homestead` database is configured for both MySQL and PostgreSQL out of the bo
 <a name="create-databases"></a>
 ### Create databases
 
-Homestead can automatically create the specified databases needed in your app. If a database service is enable,
-Homestead will make sure each database in the provided list is created if not already available:
+Homestead can automatically create the specified databases needed in your app. If a database service is enable, Homestead will make sure each database in the provided list is created if not already available:
 
 ```yaml
 databases:
@@ -758,7 +757,9 @@ share homestead.test -region=eu -subdomain=laravel
 
 Homestead includes support for step debugging using [Xdebug](https://xdebug.org). For example, you can access a page in your browser and PHP will connect to your IDE to allow inspection and modification of the running code.
 
-By default, Xdebug is already running and ready to accept connections. If you need to enable Xdebug on the CLI, execute the `sudo phpenmod xdebug` command within your Homestead virtual machine. Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
+By default, Xdebug is already running and ready to accept connections. If you need to enable or disable Xdebug on the CLI, execute the `sudo phpenmod xdebug` or `sudo phpdismod xdebug` command within your Homestead virtual machine. Otherwise you can use the convenient `xon`/`xoff` alias commands available in the CLI.
+
+Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
 > **Warning**  
 > Xdebug causes PHP to run significantly slower. To disable Xdebug, run `sudo phpdismod xdebug` within your Homestead virtual machine and restart the FPM service.
