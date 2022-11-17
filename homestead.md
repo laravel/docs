@@ -61,13 +61,6 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Ubuntu 20.04
 - Git
 - PHP 8.1
-- PHP 8.0
-- PHP 7.4
-- PHP 7.3
-- PHP 7.2
-- PHP 7.1
-- PHP 7.0
-- PHP 5.6
 - Nginx
 - MySQL 8.0
 - lmm
@@ -75,7 +68,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - PostgreSQL 13
 - Composer
 - Docker
-- Node (With Yarn, Bower, Grunt, and Gulp)
+- Node 14 (With Yarn, Bower, Grunt, and Gulp)
 - Redis
 - Memcached
 - Beanstalkd
@@ -109,9 +102,11 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Crystal & Lucky Framework
 - Elasticsearch
 - EventStoreDB
+- Flyway
 - Gearman
 - Go
 - Grafana
+- Heroku CLI
 - InfluxDB
 - MariaDB
 - Meilisearch
@@ -120,8 +115,9 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Neo4j
 - Oh My Zsh
 - Open Resty
+- PHP [old versions (v5.6+)](#php-versions)
 - PM2
-- Python
+- Python 3
 - R
 - RabbitMQ
 - RVM (Ruby Version Manager)
@@ -334,9 +330,11 @@ features:
         version: 7.9.0
     - eventstore: true
         version: 21.2.0
+    - flyway: true
     - gearman: true
     - golang: true
     - grafana: true
+    - heroku: true
     - influxdb: true
     - mariadb: true
     - meilisearch: true
@@ -345,6 +343,7 @@ features:
     - neo4j: true
     - ohmyzsh: true
     - openresty: true
+    - php74: true # many versions available
     - pm2: true
     - python: true
     - r-base: true
@@ -368,6 +367,12 @@ You may specify a supported version of Elasticsearch, which must be an exact ver
 #### MariaDB
 
 Enabling MariaDB will remove MySQL and install MariaDB. MariaDB typically serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration.
+
+```yaml
+services:
+    - enabled:
+        - "mariadb"
+```
 
 <a name="mongodb"></a>
 #### MongoDB
@@ -555,13 +560,28 @@ Below is a list of additional Homestead service ports that you may wish to map f
 <a name="php-versions"></a>
 ### PHP Versions
 
-Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0" (the default), and "8.1":
+Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. PHP 8.1 is installed by default, however
+ou can also specify the default PHP version you wish to use:
+
+```yaml
+php: 8.0
+```
+
+If you need additional versions you might specify them in the `features` option list:
+
+```yaml
+features:
+    - php80: true
+    - php74: true
+```
+
+Then you may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", and "8.1" (the default):
 
 ```yaml
 sites:
     - map: homestead.test
       to: /home/vagrant/project1/public
-      php: "7.1"
+      php: "7.4"
 ```
 
 [Within your Homestead virtual machine](#connecting-via-ssh), you may use any of the supported PHP versions via the CLI:
@@ -597,6 +617,23 @@ A `homestead` database is configured for both MySQL and PostgreSQL out of the bo
 
 > **Warning**  
 > You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel application's `database` configuration file since Laravel is running _within_ the virtual machine.
+
+<a name="create-databases"></a>
+
+### Create databases
+
+Homestead can automatically create the specified databases needed in your app. If a database service is enable,
+Homestead will make sure each database in the provided list is created if not already available:
+
+```yaml
+databases:
+  - database_1
+  - database_2
+
+services:
+  - enabled:
+      - "mysql"
+```
 
 <a name="database-backups"></a>
 ### Database Backups
