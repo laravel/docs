@@ -33,10 +33,10 @@ You can instruct Pint to fix code style issues by invoking the `pint` binary tha
 ./vendor/bin/pint
 ```
 
-Pint will display a thorough list of all of the files that it updates. You can view even more detail about Pint's changes by providing the `-V` option when invoking Pint:
+Pint will display a thorough list of all of the files that it updates. You can view even more detail about Pint's changes by providing the `-v` option when invoking Pint:
 
 ```shell
-./vendor/bin/pint -V
+./vendor/bin/pint -v
 ```
 
 If you would like Pint to simply inspect your code for style errors without actually changing the files, you may use the `--test` option:
