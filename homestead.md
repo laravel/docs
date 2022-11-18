@@ -60,7 +60,15 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 
 - Ubuntu 20.04
 - Git
-- PHP 8.1
+- PHP 8.2
+- PHP 8.1 (system default)
+- PHP 8.0
+- PHP 7.4
+- PHP 7.3
+- PHP 7.2
+- PHP 7.1
+- PHP 7.0
+- PHP 5.6
 - Nginx
 - MySQL 8.0
 - lmm
@@ -68,7 +76,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - PostgreSQL 13
 - Composer
 - Docker
-- Node 14 (With Yarn, Bower, Grunt, and Gulp)
+- Node 18 (With Yarn, Bower, Grunt, and Gulp)
 - Redis
 - Memcached
 - Beanstalkd
@@ -115,7 +123,6 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Neo4j
 - Oh My Zsh
 - Open Resty
-- PHP [old versions (v5.6+)](#php-versions)
 - PM2
 - Python 3
 - R
@@ -343,7 +350,6 @@ features:
     - neo4j: true
     - ohmyzsh: true
     - openresty: true
-    - php74: true # many versions available
     - pm2: true
     - python: true
     - r-base: true
@@ -369,9 +375,8 @@ You may specify a supported version of Elasticsearch, which must be an exact ver
 Enabling MariaDB will remove MySQL and install MariaDB. MariaDB typically serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration.
 
 ```yaml
-services:
-    - enabled:
-        - "mariadb"
+features:
+  - mariadb: true
 ```
 
 <a name="mongodb"></a>
@@ -560,21 +565,9 @@ Below is a list of additional Homestead service ports that you may wish to map f
 <a name="php-versions"></a>
 ### PHP Versions
 
-Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. PHP 8.1 is installed by default, however you can also specify the default PHP version you wish to use:
+Homestead currently sets PHP 8.1 as the system version, used by default for both serving sites and run the CLI.
 
-```yaml
-php: 8.0
-```
-
-If you need additional versions you might specify them in the `features` option list:
-
-```yaml
-features:
-    - php80: true
-    - php74: true
-```
-
-Then you may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1" (the default), and "8.2":
+Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1" (the default), and "8.2":
 
 ```yaml
 sites:
@@ -597,7 +590,13 @@ php8.1 artisan list
 php8.2 artisan list
 ```
 
-You may change the default version of PHP used by the CLI by issuing the following commands from within your Homestead virtual machine:
+You can also set the version of PHP used by the CLI in your configuration file
+
+```yaml
+php: 8.0
+```
+
+or you may change it manually by issuing the following commands from within your Homestead virtual machine:
 
 ```shell
 php56
@@ -622,16 +621,12 @@ A `homestead` database is configured for both MySQL and PostgreSQL out of the bo
 <a name="create-databases"></a>
 ### Create databases
 
-Homestead can automatically create the specified databases needed in your app. If a database service is enable, Homestead will make sure each database in the provided list is created if not already available:
+Homestead can automatically create the specified databases needed in your app. If a database service is running, during provisioning Homestead will make sure each database in the provided list is created if it doesn't already exist:
 
 ```yaml
 databases:
   - database_1
   - database_2
-
-services:
-  - enabled:
-      - "mysql"
 ```
 
 <a name="database-backups"></a>
@@ -757,7 +752,7 @@ share homestead.test -region=eu -subdomain=laravel
 
 Homestead includes support for step debugging using [Xdebug](https://xdebug.org). For example, you can access a page in your browser and PHP will connect to your IDE to allow inspection and modification of the running code.
 
-By default, Xdebug is already running and ready to accept connections. If you need to enable or disable Xdebug on the CLI, execute the `sudo phpenmod xdebug` or `sudo phpdismod xdebug` command within your Homestead virtual machine. Otherwise you can use the convenient `xon`/`xoff` alias commands available in the CLI.
+By default, Xdebug is already running and ready to accept connections. If you need to enable or disable Xdebug on the CLI, execute the `sudo phpenmod xdebug` or `sudo phpdismod xdebug` command within your Homestead virtual machine. The convenient `xon` and `xoff` functions are available within the VM to do just that.
 
 Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
