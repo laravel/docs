@@ -28,7 +28,7 @@ Typically, the rate limiter utilizes your default application cache as defined b
 
 The `Illuminate\Support\Facades\RateLimiter` facade may be used to interact with the rate limiter. The simplest method offered by the rate limiter is the `attempt` method, which rate limits a given callback for a given number of seconds.
 
-The `attempt` method returns `false` when the callback has no remaining attempts available; otherwise, the `attempt` method will return the callback's result or `true`. The first argument accepted by the `attempt` method is a rate limiter "key", which may be any string of your choosing that represents the action being rate limited. The second argument is the number of attempts to allow for the duration of the rate limiter. The third argument is the callback, and the fourth, optional argument, is the number of seconds to allow the rate limiting to decay over (defaults to 60).
+The `attempt` method returns `false` when the callback has no remaining attempts available; otherwise, the `attempt` method will return the callback's result or `true`. The first argument accepted by the `attempt` method is a rate limiter "key", which may be any string of your choosing that represents the action being rate limited. The second argument is the number of attempts to allow for the duration of the rate limiter. The third argument is the callback, and the fourth, optional argument, is the decay rate (the duration in seconds to check the attempts against the key, defaults to 60. After the duration expires the amount of available attempts are reset).
 
     use Illuminate\Support\Facades\RateLimiter;
 
