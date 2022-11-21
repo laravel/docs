@@ -300,6 +300,16 @@ $schedule->job(new CheckUptime('https://vapor.laravel.com'))
             ->onOneServer();
 ```
 
+If you are scheduling a closure that should only run on one server, you will also need to provide a name before you call the `onOneServer` method:
+
+```php
+$schedule->call(fn () => User::resetApiRequestCount())
+    ->name('reset-api-request-count')
+    ->daily()
+    ->onOneServer();
+```
+
+
 <a name="background-tasks"></a>
 ### Background Tasks
 
