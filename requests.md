@@ -421,7 +421,7 @@ Sometimes you may need to manually merge additional input into the request's exi
 
     $request->merge(['votes' => 0]);
 
-The `mergeIfMissing` method may be used to merge input into the request if the corresponding keys do not already exist within the request's input data:
+Note that should a key exist, it'll overwite any existing data. The `mergeIfMissing` method may be used to merge input into the request if the corresponding keys do not already exist within the request's input data:
 
     $request->mergeIfMissing(['votes' => 0]);
 
