@@ -414,6 +414,20 @@ To determine if a given key is absent from the request, you may use the `missing
         //
     }
 
+The `whenMissing` method will execute the given closure if a value is absent from the request:
+
+    $request->whenMissing('name', function ($input) {
+        //
+    });
+
+A second closure may be passed to the `whenMissing` method that will be executed if the specified value is absent from the request:
+
+    $request->whenMissing('name', function ($input) {
+        // The "name" value is absent...
+    }, function () {
+        // The "name" value is not absent...
+    });
+
 <a name="merging-additional-input"></a>
 ### Merging Additional Input
 
