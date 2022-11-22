@@ -408,11 +408,17 @@ A second closure may be passed to the `whenFilled` method that will be executed 
         // The "name" value is not filled...
     });
 
-To determine if a given key is absent from the request, you may use the `missing` method:
+To determine if a given key is absent from the request, you may use the `missing` and `whenMissing` methods:
 
     if ($request->missing('name')) {
         //
     }
+
+    $request->whenMissing('name', function ($input) {
+        // The "name" value is missing...
+    }, function () {
+        // The "name" value is present...
+    });
 
 <a name="merging-additional-input"></a>
 ### Merging Additional Input
