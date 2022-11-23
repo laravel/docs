@@ -62,7 +62,7 @@ By default, Laravel includes two server-side broadcasting drivers for you to cho
 
 To get started using Laravel's event broadcasting, we need to do some configuration within the Laravel application as well as install a few packages.
 
-Event broadcasting is accomplished by a server-side broadcasting driver that broadcasts your Laravel events so that Laravel Echo (a JavaScript library) can receive them within the browser client. Don't worry - we'll walk through each part of the installation process step-by-step.
+Event broadcasting is accomplished by a server-side broadcasting driver that broadcasts your Laravel events so that [Laravel Echo](https://www.npmjs.com/package/laravel-echo) (a JavaScript library) can receive them within the browser client. Don't worry - we'll walk through each part of the installation process step-by-step.
 
 <a name="configuration"></a>
 ### Configuration
