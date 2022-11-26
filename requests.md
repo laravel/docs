@@ -414,6 +414,10 @@ To determine if a given key is absent from the request, you may use the `missing
         //
     }
 
+    if ($request->missing(['name', 'email'])) {
+        //
+    }
+
     $request->whenMissing('name', function ($input) {
         // The "name" value is missing...
     }, function () {
