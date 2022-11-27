@@ -184,7 +184,7 @@ By default, the entire `toArray` form of a given model will be persisted to its 
 <a name="configuring-the-model-id"></a>
 ### Configuring The Model ID
 
-By default, Scout will use the primary key of the model as model's unique ID / key that is stored in the search index. If you need to customize this behavior, you may override the `getScoutKey` and the `getScoutKeyName` methods on the model:
+By default, Scout will use the primary key of the model as the model's unique ID / key that is stored in the search index. If you need to customize this behavior, you may override the `getScoutKey` and the `getScoutKeyName` methods on the model:
 
     <?php
 
@@ -553,6 +553,9 @@ Of course, if you would like to retrieve the pagination results as JSON, you may
     Route::get('/orders', function (Request $request) {
         return Order::search($request->input('query'))->paginate(15);
     });
+
+> **Warning**  
+> Since search engines are not aware of your Eloquent model's global scope definitions, you should not utilize global scopes in applications that utilize Scout pagination. Or, you should recreate the global scope's constraints when searching via Scout.
 
 <a name="soft-deleting"></a>
 ### Soft Deleting

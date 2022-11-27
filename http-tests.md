@@ -152,7 +152,7 @@ Laravel provides several helpers for interacting with the session during HTTP te
         }
     }
 
-Laravel's session is typically used to maintain state for the currently authenticated user. Therefore, the `actingAs` helper method provides a simple way to authenticate a given user as the current user. For example, we may use a [model factory](/docs/{{version}}/database-testing#writing-factories) to generate and authenticate a user:
+Laravel's session is typically used to maintain state for the currently authenticated user. Therefore, the `actingAs` helper method provides a simple way to authenticate a given user as the current user. For example, we may use a [model factory](/docs/{{version}}/eloquent-factories) to generate and authenticate a user:
 
     <?php
 
@@ -376,6 +376,8 @@ In the example above, you may have noticed we invoked the `etc` method at the en
 
 The intention behind this behavior is to protect you from unintentionally exposing sensitive information in your JSON responses by forcing you to either explicitly make an assertion against the attribute or explicitly allow additional attributes via the `etc` method.
 
+However, you should be aware that not including the `etc` method in your assertion chain does not ensure that additional attributes are not being added to arrays that are nested within your JSON object. The `etc` method only ensures that no additional attributes exist at the nesting level in which the `etc` method is invoked.
+
 <a name="asserting-json-attribute-presence-and-absence"></a>
 #### Asserting Attribute Presence / Absence
 
@@ -589,7 +591,7 @@ If necessary, you may use the `blade` method to evaluate and render a raw [Blade
 
     $view->assertSee('Taylor');
 
-You may use the `component` method to evaluate and render a [Blade component](/docs/{{version}}/blade#components). Like the `view` method, the `component` method returns an instance of `Illuminate\Testing\TestView`:
+You may use the `component` method to evaluate and render a [Blade component](/docs/{{version}}/blade#components). The `component` method returns an instance of `Illuminate\Testing\TestComponent`:
 
     $view = $this->component(Profile::class, ['name' => 'Taylor']);
 
@@ -642,12 +644,14 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
 [assertLocation](#assert-location)
+[assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
 [assertRedirectContains](#assert-redirect-contains)
+[assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
 [assertSee](#assert-see)
 [assertSeeInOrder](#assert-see-in-order)
@@ -698,7 +702,7 @@ Assert that the response contains the given cookie and it is not expired:
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
-Assert that the response does not contains the given cookie:
+Assert that the response does not contain the given cookie:
 
     $response->assertCookieMissing($cookieName);
 
@@ -828,7 +832,7 @@ Assert that the response contains the given data at the specified path:
 
 For example, if the following JSON response is returned by your application:
 
-```js
+```json
 {
     "user": {
         "name": "Steve Schoger"
@@ -849,7 +853,7 @@ Assert that the response does not contain the given path:
 
 For example, if the following JSON response is returned by your application:
 
-```js
+```json
 {
     "user": {
         "name": "Steve Schoger"
@@ -870,7 +874,7 @@ Assert that the response has a given JSON structure:
 
 For example, if the JSON response returned by your application contains the following data:
 
-```js
+```json
 {
     "user": {
         "name": "Steve Schoger"
@@ -888,7 +892,7 @@ You may assert that the JSON structure matches your expectations like so:
 
 Sometimes, JSON responses returned by your application may contain arrays of objects:
 
-```js
+```json
 {
     "user": [
         {
@@ -940,6 +944,13 @@ Assert the response has any JSON validation errors for the given key:
 Assert that the response has the given URI value in the `Location` header:
 
     $response->assertLocation($uri);
+    
+<a name="assert-content"></a>
+#### assertContent
+
+Assert that the given string matches the response content:
+
+    $response->assertContent($value);
 
 <a name="assert-no-content"></a>
 #### assertNoContent
@@ -982,6 +993,13 @@ Assert that the response is a redirect to the given URI:
 Assert whether the response is redirecting to a URI that contains the given string:
 
     $response->assertRedirectContains($string);
+
+<a name="assert-redirect-to-route"></a>
+#### assertRedirectToRoute
+
+Assert that the response is a redirect to the given [named route](/docs/{{version}}/routing#named-routes):
+
+    $response->assertRedirectToRoute($name = null, $parameters = []);
 
 <a name="assert-redirect-to-signed-route"></a>
 #### assertRedirectToSignedRoute

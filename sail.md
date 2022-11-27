@@ -164,7 +164,7 @@ You may install the application's dependencies by navigating to the application'
 ```shell
 docker run --rm \
     -u "$(id -u):$(id -g)" \
-    -v $(pwd):/var/www/html \
+    -v "$(pwd):/var/www/html" \
     -w /var/www/html \
     laravelsail/php81-composer:latest \
     composer install --ignore-platform-reqs
@@ -271,7 +271,7 @@ The Sail `test` command is equivalent to running the `test` Artisan command:
 sail artisan test
 ```
 
-By default, Sail will create a dedicated `testing` database that your tests do not interfere with the current state of your database. In a default Laravel installation, Sail will also configure your `phpunit.xml` file to use this database when executing your tests:
+By default, Sail will create a dedicated `testing` database so that your tests do not interfere with the current state of your database. In a default Laravel installation, Sail will also configure your `phpunit.xml` file to use this database when executing your tests:
 
 ```xml
 <env name="DB_DATABASE" value="testing"/>

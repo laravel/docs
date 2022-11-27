@@ -229,7 +229,9 @@ Sometimes you may have two classes that utilize the same interface, but you wish
 
 Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:
 
-    $this->app->when('App\Http\Controllers\UserController')
+    use App\Http\Controllers\UserController;
+    
+    $this->app->when(UserController::class)
               ->needs('$variableName')
               ->give($value);
 
@@ -364,12 +366,14 @@ If some of your class' dependencies are not resolvable via the container, you ma
 
     $transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);
 
-If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) to resolve a class instance from the container:
+If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) or the `app` [helper](/docs/{{version}}/helpers#method-app) to resolve a class instance from the container:
 
     use App\Services\Transistor;
     use Illuminate\Support\Facades\App;
 
     $transistor = App::make(Transistor::class);
+
+    $transistor = app(Transistor::class);
 
 If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\Container\Container` class on your class' constructor:
 

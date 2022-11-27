@@ -54,6 +54,7 @@
     - [Single Charge Checkouts](#single-charge-checkouts)
     - [Subscription Checkouts](#subscription-checkouts)
     - [Collecting Tax IDs](#collecting-tax-ids)
+    - [Guest Checkouts](#guest-checkouts)
 - [Invoices](#invoices)
     - [Retrieving Invoices](#retrieving-invoices)
     - [Upcoming Invoices](#upcoming-invoices)
@@ -77,7 +78,7 @@
 When upgrading to a new version of Cashier, it's important that you carefully review [the upgrade guide](https://github.com/laravel/cashier-stripe/blob/master/UPGRADE.md).
 
 > **Warning**  
-> To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 13 utilizes Stripe API version `2020-08-27`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
+> To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 14 utilizes Stripe API version `2022-08-01`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
 
 <a name="installation"></a>
 ## Installation
@@ -296,13 +297,13 @@ Stripe allows you to credit or debit a customer's "balance". Later, this balance
 
     $balance = $user->balance();
 
-To credit a customer's balance, you may provide a negative value to the `applyBalance` method. If you wish, you may also provide a description:
+To credit a customer's balance, you may provide a value to the `creditBalance` method. If you wish, you may also provide a description:
 
-    $user->applyBalance(-500, 'Premium customer top-up.');
+    $user->creditBalance(500, 'Premium customer top-up.');
 
-Providing a positive value to the `applyBalance` method will debit the customer's balance:
+Providing a value to the `debitBalance` method will debit the customer's balance:
 
-    $user->applyBalance(300, 'Bad usage penalty.');
+    $user->debitBalance(300, 'Bad usage penalty.');
 
 The `applyBalance` method will create new customer balance transactions for the customer. You may retrieve these transaction records using the `balanceTransactions` method, which may be useful in order to provide a log of credits and debits for the customer to review:
 
@@ -375,7 +376,7 @@ You may customize the columns used for syncing customer information to Stripe by
         return $this->company_name;
     }
 
-Similarly, you may override the `stripeEmail`, `stripePhone`, and `stripeAddress` methods. These methods will sync information to their corresponding customer parameters when [updating the Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to take total control over the customer information sync process, you may override the `syncStripeCustomerDetails` method.
+Similarly, you may override the `stripeEmail`, `stripePhone`, `stripeAddress`, and `stripePreferredLocales` methods. These methods will sync information to their corresponding customer parameters when [updating the Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to take total control over the customer information sync process, you may override the `syncStripeCustomerDetails` method.
 
 <a name="billing-portal"></a>
 ### Billing Portal
@@ -406,7 +407,7 @@ If you would like to generate the URL to the billing portal without generating a
 <a name="storing-payment-methods"></a>
 ### Storing Payment Methods
 
-In order to create subscriptions or perform "one off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish this differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
+In order to create subscriptions or perform "one-off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish this differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
 
 <a name="payment-methods-for-subscriptions"></a>
 #### Payment Methods For Subscriptions
@@ -649,7 +650,11 @@ Instead of collecting a customer's recurring payments automatically, you may ins
 
     $user->newSubscription('default', 'price_monthly')->createAndSendInvoice();
 
-The amount of time a customer has to pay their invoice before their subscription is canceled is determined by your subscription and invoice settings within the [Stripe dashboard](https://dashboard.stripe.com/settings/billing/automatic).
+The amount of time a customer has to pay their invoice before their subscription is cancelled is determined by the `days_until_due` option. By default, this is 30 days; however, you may provide a specific value for this option if you wish:
+
+    $user->newSubscription('default', 'price_monthly')->createAndSendInvoice([], [
+        'days_until_due' => 30
+    ]);
 
 <a name="subscription-quantities"></a>
 #### Quantities
@@ -742,11 +747,11 @@ If you would like to add a subscription to a customer who already has a default 
 <a name="creating-subscriptions-from-the-stripe-dashboard"></a>
 #### Creating Subscriptions From The Stripe Dashboard
 
-You may also create subscriptions from the Stripe dashboard itself. When doing so, Cashier will sync newly added subscriptions and assign them a name of `default`. To customize the subscription name that is assigned to dashboard created subscriptions, [extend the `WebhookController`](/docs/{{version}}/billing#defining-webhook-event-handlers) and overwrite the `newSubscriptionName` method.
+You may also create subscriptions from the Stripe dashboard itself. When doing so, Cashier will sync newly added subscriptions and assign them a name of `default`. To customize the subscription name that is assigned to dashboard created subscriptions, [extend the `WebhookController`](#defining-webhook-event-handlers) and overwrite the `newSubscriptionName` method.
 
 In addition, you may only create one type of subscription via the Stripe dashboard. If your application offers multiple subscriptions that use different names, only one type of subscription may be added through the Stripe dashboard.
 
-Finally, you should always make sure to only add one active subscription per type of subscription offered by your application. If customer has two `default` subscriptions, only the most recently added subscription will be used by Cashier even though both would be synced with your application's database.
+Finally, you should always make sure to only add one active subscription per type of subscription offered by your application. If a customer has two `default` subscriptions, only the most recently added subscription will be used by Cashier even though both would be synced with your application's database.
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
@@ -862,7 +867,7 @@ When a subscription has an incomplete payment, you should direct the user to Cas
 </a>
 ```
 
-If you would like the subscription to still be considered active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `App\Providers\AppServiceProvider`:
+If you would like the subscription to still be considered active when it's in a `past_due` or `incomplete` state, you may use the `keepPastDueSubscriptionsActive` and `keepIncompleteSubscriptionsActive` methods provided by Cashier. Typically, these methods should be called in the `register` method of your `App\Providers\AppServiceProvider`:
 
     use Laravel\Cashier\Cashier;
 
@@ -874,6 +879,7 @@ If you would like the subscription to still be considered active when it's in a 
     public function register()
     {
         Cashier::keepPastDueSubscriptionsActive();
+        Cashier::keepIncompleteSubscriptionsActive();
     }
 
 > **Warning**  
@@ -1215,7 +1221,7 @@ If you're offering subscriptions with multiple products, you may define differen
     }
 
 > **Warning**  
-> The `taxRates` method only applies to subscription charges. If you use Cashier to make "one off" charges, you will need to manually specify the tax rate at that time.
+> The `taxRates` method only applies to subscription charges. If you use Cashier to make "one-off" charges, you will need to manually specify the tax rate at that time.
 
 <a name="syncing-tax-rates"></a>
 #### Syncing Tax Rates
@@ -1704,18 +1710,21 @@ You may pass an array of prices to the `previewInvoice` method in order to previ
 <a name="generating-invoice-pdfs"></a>
 ### Generating Invoice PDFs
 
+Before generating invoice PDFs, you should use Composer to install the Dompdf library, which is the default invoice renderer for Cashier:
+
+```php
+composer require dompdf/dompdf
+```
+
 From within a route or controller, you may use the `downloadInvoice` method to generate a PDF download of a given invoice. This method will automatically generate the proper HTTP response needed to download the invoice:
 
     use Illuminate\Http\Request;
 
     Route::get('/user/invoice/{invoice}', function (Request $request, $invoiceId) {
-        return $request->user()->downloadInvoice($invoiceId, [
-            'vendor' => 'Your Company',
-            'product' => 'Your Product',
-        ]);
+        return $request->user()->downloadInvoice($invoiceId);
     });
 
-By default, all data on the invoice is derived from the customer and invoice data stored in Stripe. However, you can customize some of this data by providing an array as the second argument to the `downloadInvoice` method. This array allows you to customize information such as your company and product details:
+By default, all data on the invoice is derived from the customer and invoice data stored in Stripe. The filename is based on your `app.name` config value. However, you can customize some of this data by providing an array as the second argument to the `downloadInvoice` method. This array allows you to customize information such as your company and product details:
 
     return $request->user()->downloadInvoice($invoiceId, [
         'vendor' => 'Your Company',
@@ -1726,7 +1735,7 @@ By default, all data on the invoice is derived from the customer and invoice dat
         'email' => 'info@example.com',
         'url' => 'https://example.com',
         'vendorVat' => 'BE123456789',
-    ], 'my-invoice');
+    ]);
 
 The `downloadInvoice` method also allows for a custom filename via its third argument. This filename will automatically be suffixed with `.pdf`:
 
@@ -1914,6 +1923,37 @@ When this method is invoked, a new checkbox will be available to the customer th
 
 > **Warning**  
 > If you have already configured [automatic tax collection](#tax-configuration) in your application's service provider then this feature will be enabled automatically and there is no need to invoke the `collectTaxIds` method.
+
+<a name="guest-checkouts"></a>
+### Guest Checkouts
+
+Using the `Checkout::guest` method, you may initiate checkout sessions for guests of your application that do not have an "account":
+
+    use Illuminate\Http\Request;
+    use Laravel\Cashier\Checkout;
+
+    Route::get('/product-checkout', function (Request $request) {
+        return Checkout::guest()->create('price_tshirt', [
+            'success_url' => route('your-success-route'),
+            'cancel_url' => route('your-cancel-route'),
+        ]);
+    });
+
+Similarly to when creating checkout sessions for existing users, you may utilize additional methods available on the `Laravel\Cashier\CheckoutBuilder` instance to customize the guest checkout session:
+
+    use Illuminate\Http\Request;
+    use Laravel\Cashier\Checkout;
+
+    Route::get('/product-checkout', function (Request $request) {
+        return Checkout::guest()
+            ->withPromotionCode('promo-code')
+            ->create('price_tshirt', [
+                'success_url' => route('your-success-route'),
+                'cancel_url' => route('your-cancel-route'),
+            ]);
+    });
+
+After a guest checkout has been completed, Stripe can dispatch a `checkout.session.completed` webhook event, so make sure to [configure your Stripe webhook](https://dashboard.stripe.com/webhooks) to actually send this event to your application. Once the webhook has been enabled within the Stripe dashboard, you may [handle the webhook with Cashier](#handling-stripe-webhooks). The object contained in the webhook payload will be a [`checkout` object](https://stripe.com/docs/api/checkout/sessions/object) that you may inspect in order to fulfill your customer's order.
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments

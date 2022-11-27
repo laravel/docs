@@ -183,7 +183,7 @@ In addition to the default `scheme`, `host`, `port`, `database`, and `password` 
 <a name="phpredis-serialization"></a>
 #### phpredis Serialization & Compression
 
-The phpredis extension may also be configured to use a variety serialization and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
+The phpredis extension may also be configured to use a variety of serialization and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
 
     'redis' => [
 

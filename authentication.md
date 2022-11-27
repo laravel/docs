@@ -110,7 +110,7 @@ If you are building a single-page application (SPA) that will be powered by a La
 
 Passport may be chosen when your application absolutely needs all of the features provided by the OAuth2 specification.
 
-And, if you would like to get started quickly, we are pleased to recommend [Laravel Jetstream](https://jetstream.laravel.com) as a quick way to start a new Laravel application that already uses our preferred authentication stack of Laravel's built-in authentication services and Laravel Sanctum.
+And, if you would like to get started quickly, we are pleased to recommend [Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze) as a quick way to start a new Laravel application that already uses our preferred authentication stack of Laravel's built-in authentication services and Laravel Sanctum.
 
 <a name="authentication-quickstart"></a>
 ## Authentication Quickstart
@@ -273,6 +273,16 @@ The `intended` method provided by Laravel's redirector will redirect the user to
 If you wish, you may also add extra query conditions to the authentication query in addition to the user's email and password. To accomplish this, we may simply add the query conditions to the array passed to the `attempt` method. For example, we may verify that the user is marked as "active":
 
     if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
+        // Authentication was successful...
+    }
+
+For complex query conditions, you may provide a closure in your array of credentials. This closure will be invoked with the query instance, allowing you to customize the query based on your application's needs:
+
+    if (Auth::attempt([
+        'email' => $email, 
+        'password' => $password, 
+        fn ($query) => $query->has('activeSubscription'),
+    ]) {
         // Authentication was successful...
     }
 

@@ -11,6 +11,7 @@
 - [Many To Many Relationships](#many-to-many)
     - [Retrieving Intermediate Table Columns](#retrieving-intermediate-table-columns)
     - [Filtering Queries Via Intermediate Table Columns](#filtering-queries-via-intermediate-table-columns)
+    - [Ordering Queries Via Intermediate Table Columns](#ordering-queries-via-intermediate-table-columns)
     - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
 - [Polymorphic Relationships](#polymorphic-relationships)
     - [One To One](#one-to-one-polymorphic-relations)
@@ -661,6 +662,15 @@ You can also filter the results returned by `belongsToMany` relationship queries
     return $this->belongsToMany(Podcast::class)
                     ->as('subscriptions')
                     ->wherePivotNotNull('expired_at');
+
+<a name="ordering-queries-via-intermediate-table-columns"></a>
+### Ordering Queries Via Intermediate Table Columns
+
+You can order the results returned by `belongsToMany` relationship queries using the `orderByPivot` method. In the following example, we will retrieve all of the latest badges for the user:
+
+    return $this->belongsToMany(Badge::class)
+                    ->where('rank', 'gold')
+                    ->orderByPivot('created_at', 'desc');
 
 <a name="defining-custom-intermediate-table-models"></a>
 ### Defining Custom Intermediate Table Models
@@ -1660,6 +1670,17 @@ If you are eager loading a `morphTo` relationship, Eloquent will run multiple qu
 
 In this example, Eloquent will only eager load posts that have not been hidden and videos that have a `type` value of "educational".
 
+<a name="constraining-eager-loads-with-relationship-existence"></a>
+#### Constraining Eager Loads With Relationship Existence
+
+You may sometimes find yourself needing to check for the existence of a relationship while simultaneously loading the relationship based on the same conditions. For example, you may wish to only retrieve `User` models that have child `Post` models matching a given query condition while also eager loading the matching posts. You may accomplish this using the `withWhereHas` method:
+
+    use App\Models\User;
+  
+    $users = User::withWhereHas('posts', function ($query) {
+        $query->where('featured', true);
+    })->get();
+
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
 
@@ -1907,6 +1928,13 @@ If you do not want to detach existing IDs that are missing from the given array,
 The many-to-many relationship also provides a `toggle` method which "toggles" the attachment status of the given related model IDs. If the given ID is currently attached, it will be detached. Likewise, if it is currently detached, it will be attached:
 
     $user->roles()->toggle([1, 2, 3]);
+
+You may also pass additional intermediate table values with the IDs:
+
+    $user->roles()->toggle([
+        1 => ['expires' => true],
+        2 => ['expires' => true],
+    ]);
 
 <a name="updating-a-record-on-the-intermediate-table"></a>
 #### Updating A Record On The Intermediate Table

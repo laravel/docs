@@ -5,9 +5,11 @@
 - [Eloquent Model Conventions](#eloquent-model-conventions)
     - [Table Names](#table-names)
     - [Primary Keys](#primary-keys)
+    - [UUID & ULID Keys](#uuid-and-ulid-keys)
     - [Timestamps](#timestamps)
     - [Database Connections](#database-connections)
     - [Default Attribute Values](#default-attribute-values)
+    - [Configuring Eloquent Strictness](#configuring-eloquent-strictness)
 - [Retrieving Models](#retrieving-models)
     - [Collections](#collections)
     - [Chunking Results](#chunking-results)
@@ -43,6 +45,10 @@ Laravel includes Eloquent, an object-relational mapper (ORM) that makes it enjoy
 
 > **Note**  
 > Before getting started, be sure to configure a database connection in your application's `config/database.php` configuration file. For more information on configuring your database, check out [the database configuration documentation](/docs/{{version}}/database#configuration).
+
+#### Laravel Bootcamp
+
+If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://bootcamp.laravel.com). The Laravel Bootcamp will walk you through building your first Laravel application using Eloquent. It's a great way to get a tour of everything the Laravel and Eloquent have to offer.
 
 <a name="generating-model-classes"></a>
 ## Generating Model Classes
@@ -193,6 +199,69 @@ If your model's primary key is not an integer, you should define a protected `$k
 
 Eloquent requires each model to have at least one uniquely identifying "ID" that can serve as its primary key. "Composite" primary keys are not supported by Eloquent models. However, you are free to add additional multi-column, unique indexes to your database tables in addition to the table's uniquely identifying primary key.
 
+<a name="uuid-and-ulid-keys"></a>
+### UUID & ULID Keys
+
+Instead of using auto-incrementing integers as your Eloquent model's primary keys, you may choose to use UUIDs instead. UUIDs are universally unique alpha-numeric identifiers that are 36 characters long.
+
+If you would like a model to use a UUID key instead of an auto-incrementing integer key, you may use the `Illuminate\Database\Eloquent\Concerns\HasUuids` trait on the model. Of course, you should ensure that the model has a [UUID equivalent primary key column](/docs/{{version}}/migrations#column-method-uuid):
+
+    use Illuminate\Database\Eloquent\Concerns\HasUuids;
+    use Illuminate\Database\Eloquent\Model;
+
+    class Article extends Model
+    {
+        use HasUuids;
+
+        // ...
+    }
+
+    $article = Article::create(['title' => 'Traveling to Europe']);
+
+    $article->id; // "8f8e8478-9035-4d23-b9a7-62f4d2612ce5"
+
+By default, The `HasUuids` trait will generate ["ordered" UUIDs](/docs/{{version}}/helpers#method-str-ordered-uuid) for your models. These UUIDs are more efficient for indexed database storage because they can be sorted lexicographically.
+
+You can override the UUID generation process for a given model by defining a `newUniqueId` method on the model. In addition, you may specify which columns should receive UUIDs by defining a `uniqueIds` method on the model:
+
+    use Ramsey\Uuid\Uuid;
+
+    /**
+     * Generate a new UUID for the model.
+     *
+     * @return string
+     */
+    public function newUniqueId()
+    {
+        return (string) Uuid::uuid4();
+    }
+
+    /**
+     * Get the columns that should receive a unique identifier.
+     *
+     * @return array
+     */
+    public function uniqueIds()
+    {
+        return ['id', 'discount_code'];
+    }
+
+If you wish, you may choose to utilize "ULIDs" instead of UUIDs. ULIDs are similar to UUIDs; however, they are only 26 characters in length. Like ordered UUIDs, ULIDs are lexicographically sortable for efficient database indexing. To utilize ULIDs, you should use the `Illuminate\Database\Eloquent\Concerns\HasUlids` trait on your model. You should also ensure that the model has a [ULID equivalent primary key column](/docs/{{version}}/migrations#column-method-ulid):
+
+    use Illuminate\Database\Eloquent\Concerns\HasUlids;
+    use Illuminate\Database\Eloquent\Model;
+
+    class Article extends Model
+    {
+        use HasUlids;
+
+        // ...
+    }
+
+    $article = Article::create(['title' => 'Traveling to Asia']);
+
+    $article->id; // "01gd4d3tgrrfqeda94gdbtdk5c"
+
 <a name="timestamps"></a>
 ### Timestamps
 
@@ -242,6 +311,10 @@ If you need to customize the names of the columns used to store the timestamps, 
         const UPDATED_AT = 'updated_date';
     }
 
+If you would like to perform model operations without the model having its `updated_at` timestamp modified, you may operate on the model within a closure given to the `withoutTimestamps` method:
+
+    Model::withoutTimestamps(fn () => $post->increment(['reads']));
+
 <a name="database-connections"></a>
 ### Database Connections
 
@@ -285,6 +358,48 @@ By default, a newly instantiated model instance will not contain any attribute v
             'delayed' => false,
         ];
     }
+
+<a name="configuring-eloquent-strictness"></a>
+### Configuring Eloquent Strictness
+
+Laravel offers several methods that allow you to configure Eloquent's behavior and "strictness" in a variety of situations.
+
+First, the `preventLazyLoading` method accepts an optional boolean argument that indicates if lazy loading should be prevented. For example, you may wish to only disable lazy loading in non-production environments so that your production environment will continue to function normally even if a lazy loaded relationship is accidentally present in production code. Typically, this method should be invoked in the `boot` method of your application's `AppServiceProvider`:
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Bootstrap any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Model::preventLazyLoading(! $this->app->isProduction());
+}
+```
+
+Also, you may instruct Laravel to throw an exception when attempting to fill an unfillable attribute by invoking the `preventSilentlyDiscardingAttributes` method. This can help prevent unexpected errors during local development when attempting to set an attribute that has not been added to the model's `fillable` array:
+
+```php
+Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
+```
+
+Finally, you may instruct Eloquent to throw an exception if you attempt to access an attribute on a model when that attribute was not actually retrieved from the database or when the attribute does not exist. For example, this may occur when you forget to add an attribute to the `select` clause of an Eloquent query:
+
+```php
+Model::preventAccessingMissingAttributes(! $this->app->isProduction());
+```
+
+<a name="enabling-eloquent-strict-mode"></a>
+#### Enabling Eloquent "Strict Mode"
+
+For convenience, you may enable all three of the methods discussed above by simply invoking the `shouldBeStrict` method:
+
+```php
+Model::shouldBeStrict(! $this->app->isProduction());
+```
 
 <a name="retrieving-models"></a>
 ## Retrieving Models
@@ -760,6 +875,25 @@ If you would like to make all of your attributes mass assignable, you may define
      */
     protected $guarded = [];
 
+<a name="mass-assignment-exceptions"></a>
+#### Mass Assignment Exceptions
+
+By default, attributes that are not included in the `$fillable` array are silently discarded when performing mass-assignment operations. In production, this is expected behavior; however, during local development it can lead to confusion as to why model changes are not taking effect.
+
+If you wish, you may instruct Laravel to throw an exception when attempting to fill an unfillable attribute by invoking the `preventSilentlyDiscardingAttributes` method. Typically, this method should be invoked within the `boot` method of one of your application's service providers:
+
+    use Illuminate\Database\Eloquent\Model;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Model::preventSilentlyDiscardingAttributes($this->app->isLocal());
+    }
+
 <a name="upserts"></a>
 ### Upserts
 
@@ -1071,7 +1205,7 @@ The `Scope` interface requires you to implement one method: `apply`. The `apply`
 
     <?php
 
-    namespace App\Scopes;
+    namespace App\Models\Scopes;
 
     use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Model;
@@ -1104,7 +1238,7 @@ To assign a global scope to a model, you should override the model's `booted` me
 
     namespace App\Models;
 
-    use App\Scopes\AncientScope;
+    use App\Models\Scopes\AncientScope;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
@@ -1299,6 +1433,7 @@ To start listening to model events, define a `$dispatchesEvents` property on you
     use App\Events\UserDeleted;
     use App\Events\UserSaved;
     use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
 
     class User extends Authenticatable
     {
@@ -1503,7 +1638,7 @@ You may occasionally need to temporarily "mute" all events fired by a model. You
 
     use App\Models\User;
 
-    $user = User::withoutEvents(function () use () {
+    $user = User::withoutEvents(function () {
         User::findOrFail(1)->delete();
 
         return User::find(2);

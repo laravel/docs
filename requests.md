@@ -288,7 +288,7 @@ You may call the `query` method without any arguments in order to retrieve all o
 <a name="retrieving-json-input-values"></a>
 #### Retrieving JSON Input Values
 
-When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to retrieve values that are nested within JSON arrays:
+When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to retrieve values that are nested within JSON arrays / objects:
 
     $name = $request->input('user.name');
 
@@ -388,13 +388,13 @@ The `hasAny` method returns `true` if any of the specified values are present:
         //
     }
 
-If you would like to determine if a value is present on the request and is not empty, you may use the `filled` method:
+If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:
 
     if ($request->filled('name')) {
         //
     }
 
-The `whenFilled` method will execute the given closure if a value is present on the request and is not empty:
+The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:
 
     $request->whenFilled('name', function ($input) {
         //
@@ -408,16 +408,22 @@ A second closure may be passed to the `whenFilled` method that will be executed 
         // The "name" value is not filled...
     });
 
-To determine if a given key is absent from the request, you may use the `missing` method:
+To determine if a given key is absent from the request, you may use the `missing` and `whenMissing` methods:
 
     if ($request->missing('name')) {
         //
     }
 
+    $request->whenMissing('name', function ($input) {
+        // The "name" value is missing...
+    }, function () {
+        // The "name" value is present...
+    });
+
 <a name="merging-additional-input"></a>
 ### Merging Additional Input
 
-Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method:
+Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method. If a given input key already exists on the request, it will be overwritten by the data provided to the `merge` method:
 
     $request->merge(['votes' => 0]);
 
@@ -480,7 +486,7 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 <a name="input-trimming-and-normalization"></a>
 ## Input Trimming & Normalization
 
-By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `App\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
+By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
 
 #### Disabling Input Normalization
 
@@ -489,8 +495,8 @@ If you would like to disable this behavior for all requests, you may remove the 
 If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`.
 
 ```php
-use App\Http\Middleware\ConvertEmptyStringsToNull;
 use App\Http\Middleware\TrimStrings;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
 /**
  * Bootstrap any application services.

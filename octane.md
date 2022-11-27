@@ -138,7 +138,7 @@ Swoole supports a few additional configuration options that you may add to your 
         'log_file' => storage_path('logs/swoole_http.log'),
         'package_max_length' => 10 * 1024 * 1024,
     ],
-];
+],
 ```
 
 <a name="serving-your-application"></a>
@@ -478,6 +478,8 @@ Concurrent tasks processed by Octane utilize Swoole's "task workers", and execut
 ```shell
 php artisan octane:start --workers=4 --task-workers=6
 ```
+
+When invoking the `concurrently` method, you should not provide more than 1024 tasks due to limitations imposed by Swoole's task system.
 
 <a name="ticks-and-intervals"></a>
 ## Ticks & Intervals

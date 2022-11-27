@@ -34,7 +34,7 @@
 <a name="upgrade-9.0"></a>
 ## Upgrading To 9.0 From 8.x
 
-<a name="estimated-upgrade-time-10-minutes"></a>
+<a name="estimated-upgrade-time-30-minutes"></a>
 #### Estimated Upgrade Time: 30 Minutes
 
 > **Note**  
@@ -60,7 +60,7 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
-In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your application's `composer.json` file.
+In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` and `pusher/pusher-php-server` (if applicable) with `"pusher/pusher-php-server": "^5.0"` in your application's `composer.json` file.
 
 Furthermore, the following first-party packages have received new major releases to support Laravel 9.x. If applicable, you should read their individual upgrade guides before upgrading:
 

@@ -314,26 +314,19 @@ If your package contains anonymous components, they must be placed within a `com
 <a name="about-artisan-command"></a>
 ### "About" Artisan Command
 
-Laravel's built-in `about` Artisan command provides a synopsis of the application's environment and configuration. Packages may push additional information to this command's output via the `AboutCommand` class. Typically, this information may be added from your package service provider's `register` method:
+Laravel's built-in `about` Artisan command provides a synopsis of the application's environment and configuration. Packages may push additional information to this command's output via the `AboutCommand` class. Typically, this information may be added from your package service provider's `boot` method:
 
     use Illuminate\Foundation\Console\AboutCommand;
 
     /**
-     * Register any application services.
+     * Bootstrap any application services.
      *
      * @return void
      */
-    public function register()
+    public function boot()
     {
-        AboutCommand::add('My Package', 'Version', '1.0.0');
+        AboutCommand::add('My Package', fn () => ['Version' => '1.0.0']);
     }
-
-The `about` command's values may also be provided a closures if deferred execution is desirable:
-
-    AboutCommand::add('My Package', [
-        'Version' => '1.0.0',
-        'Driver' => fn () => config('my-package.driver'),
-    ]);
 
 <a name="commands"></a>
 ## Commands

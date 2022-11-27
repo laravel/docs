@@ -197,7 +197,7 @@ So, in our example, the user will be redirected to our controller's `create` met
 <a name="quick-customizing-the-error-messages"></a>
 #### Customizing The Error Messages
 
-Laravel's built-in validation rules each has an error message that is located in your application's `lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application.
+Laravel's built-in validation rules each have an error message that is located in your application's `lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application.
 
 In addition, you may copy this file to another translation language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
 
@@ -723,7 +723,7 @@ The `has` method may be used to determine if any error messages exist for a give
 <a name="specifying-custom-messages-in-language-files"></a>
 ### Specifying Custom Messages In Language Files
 
-Laravel's built-in validation rules each has an error message that is located in your application's `lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application.
+Laravel's built-in validation rules each have an error message that is located in your application's `lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application.
 
 In addition, you may copy this file to another translation language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
 
@@ -823,6 +823,8 @@ Below is a list of all available validation rules and their function:
 [Digits Between](#rule-digits-between)
 [Dimensions (Image Files)](#rule-dimensions)
 [Distinct](#rule-distinct)
+[Doesnt Start With](#rule-doesnt-start-with)
+[Doesnt End With](#rule-doesnt-end-with)
 [Email](#rule-email)
 [Ends With](#rule-ends-with)
 [Enum](#rule-enum)
@@ -844,12 +846,15 @@ Below is a list of all available validation rules and their function:
 [JSON](#rule-json)
 [Less Than](#rule-lt)
 [Less Than Or Equal](#rule-lte)
+[Lowercase](#rule-lowercase)
 [MAC Address](#rule-mac)
 [Max](#rule-max)
+[Max Digits](#rule-max-digits)
 [MIME Types](#rule-mimetypes)
 [MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
-[Multiple Of](#multiple-of)
+[Min Digits](#rule-min-digits)
+[Multiple Of](#rule-multiple-of)
 [Not In](#rule-not-in)
 [Not Regex](#rule-not-regex)
 [Nullable](#rule-nullable)
@@ -876,6 +881,7 @@ Below is a list of all available validation rules and their function:
 [String](#rule-string)
 [Timezone](#rule-timezone)
 [Unique (Database)](#rule-unique)
+[Uppercase](#rule-uppercase)
 [URL](#rule-url)
 [UUID](#rule-uuid)
 
@@ -974,7 +980,7 @@ The field under validation must be a value preceding or equal to the given date.
 <a name="rule-between"></a>
 #### between:_min_,_max_
 
-The field under validation must have a size between the given _min_ and _max_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+The field under validation must have a size between the given _min_ and _max_ (inclusive). Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
 <a name="rule-boolean"></a>
 #### boolean
@@ -1073,6 +1079,16 @@ You may add `ignore_case` to the validation rule's arguments to make the rule ig
 
     'foo.*.id' => 'distinct:ignore_case'
 
+<a name="rule-doesnt-start-with"></a>
+#### doesnt_start_with:_foo_,_bar_,...
+
+The field under validation must not start with one of the given values.
+
+<a name="rule-doesnt-end-with"></a>
+#### doesnt_end_with:_foo_,_bar_,...
+
+The field under validation must not end with one of the given values.
+
 <a name="rule-email"></a>
 #### email
 
@@ -1089,6 +1105,7 @@ The example above will apply the `RFCValidation` and `DNSCheckValidation` valida
 - `dns`: `DNSCheckValidation`
 - `spoof`: `SpoofCheckValidation`
 - `filter`: `FilterEmailValidation`
+- `filter_unicode`: `FilterEmailValidation::unicode()`
 
 </div>
 
@@ -1300,6 +1317,11 @@ The field under validation must be less than the given _field_. The two fields m
 
 The field under validation must be less than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
 
+<a name="rule-lowercase"></a>
+#### lowercase:_field_
+
+The field under validation must be lowercase.
+
 <a name="rule-mac"></a>
 #### mac_address
 
@@ -1309,6 +1331,11 @@ The field under validation must be a MAC address.
 #### max:_value_
 
 The field under validation must be less than or equal to a maximum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+
+<a name="rule-max-digits"></a>
+#### max_digits:_value_
+
+The integer under validation must have a maximum length of _value_.
 
 <a name="rule-mimetypes"></a>
 #### mimetypes:_text/plain_,...
@@ -1338,7 +1365,12 @@ Even though you only need to specify the extensions, this rule actually validate
 
 The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
-<a name="multiple-of"></a>
+<a name="rule-min-digits"></a>
+#### min_digits:_value_
+
+The integer under validation must have a minimum length of _value_.
+
+<a name="rule-multiple-of"></a>
 #### multiple_of:_value_
 
 The field under validation must be a multiple of _value_.
@@ -1396,12 +1428,12 @@ The field under validation must be present in the input data but can be empty.
 <a name="rule-prohibited"></a>
 #### prohibited
 
-The field under validation must be empty or not present.
+The field under validation must be an empty string or not present.
 
 <a name="rule-prohibited-if"></a>
 #### prohibited_if:_anotherfield_,_value_,...
 
-The field under validation must be empty or not present if the _anotherfield_ field is equal to any _value_.
+The field under validation must be an empty string or not present if the _anotherfield_ field is equal to any _value_.
 
 If complex conditional prohibition logic is required, you may utilize the `Rule::prohibitedIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be prohibited:
 
@@ -1419,7 +1451,7 @@ If complex conditional prohibition logic is required, you may utilize the `Rule:
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_anotherfield_,_value_,...
 
-The field under validation must be empty or not present unless the _anotherfield_ field is equal to any _value_.
+The field under validation must be an empty string or not present unless the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-prohibits"></a>
 #### prohibits:_anotherfield_,...
@@ -1592,6 +1624,11 @@ By default, the `unique` rule will check the uniqueness of the column matching t
 You may specify additional query conditions by customizing the query using the `where` method. For example, let's add a query condition that scopes the query to only search records that have an `account_id` column value of `1`:
 
     'email' => Rule::unique('users')->where(fn ($query) => $query->where('account_id', 1))
+
+<a name="rule-uppercase"></a>
+#### uppercase:_field_
+
+The field under validation must be uppercase.
 
 <a name="rule-url"></a>
 #### url
@@ -2081,9 +2118,7 @@ By default, when an attribute being validated is not present or contains an empt
 
     Validator::make($input, $rules)->passes(); // true
 
-For a custom rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create an "implicit" rule, implement the `Illuminate\Contracts\Validation\ImplicitRule` interface. This interface serves as a "marker interface" for the validator; therefore, it does not contain any additional methods you need to implement beyond the methods required by the typical `Rule` interface.
-
-To generate a new implicit rule object, you may use the `make:rule` Artisan command with the `--implicit` option :
+For a custom rule to run even when an attribute is empty, the rule must imply that the attribute is required. To quickly generate a new implicit rule object, you may use the `make:rule` Artisan command with the `--implicit` option:
 
 ```shell
 php artisan make:rule Uppercase --invokable --implicit
