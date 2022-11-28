@@ -22,6 +22,7 @@
 - [Ticks & Intervals](#ticks-and-intervals)
 - [The Octane Cache](#the-octane-cache)
 - [Tables](#tables)
+- [Swoole Server](#swoole-server)
 
 <a name="introduction"></a>
 ## Introduction
@@ -568,3 +569,14 @@ return Octane::table('example')->get('uuid');
 
 > **Warning**  
 > The column types supported by Swoole tables are: `string`, `int`, and `float`.
+
+<a name="swoole-server"></a>
+## Accessing the Swoole server
+
+The Swoole Server instance is injected in the Service Container. You can access the instance by resolving the `\Swoole\Http\Server\` class through controllers, for example:
+
+```php
+use Swoole\Http\Server;
+
+app(Server::class)->stats();
+```
