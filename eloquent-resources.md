@@ -86,6 +86,15 @@ Note that we can access model properties directly from the `$this` variable. Thi
         return new UserResource(User::findOrFail($id));
     });
 
+Additionally, you can also use the `make` method if you dont't want to instantiate the resource class directly:
+    
+    use App\Http\Resources\UserResource;
+    use App\Models\User;
+    
+    Route::get('/user/{id}', function ($id) {
+        return UserResource::make(User::findOrFail($id));
+    });
+
 <a name="resource-collections"></a>
 ### Resource Collections
 
