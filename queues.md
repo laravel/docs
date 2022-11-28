@@ -1468,6 +1468,10 @@ Sometimes, your `jobs_batches` table may accumulate batch records for batches th
 
     $schedule->command('queue:prune-batches --hours=48 --unfinished=72')->daily();
 
+Likewise, your `jobs_batches` table may also accumulate batch records for cancelled batches. You may instruct the `queue:prune-batches` command to prune these cancelled batch records using the `cancelled` option:
+
+    $schedule->command('queue:prune-batches --hours=48 --cancelled=72')->daily();
+
 <a name="queueing-closures"></a>
 ## Queueing Closures
 
