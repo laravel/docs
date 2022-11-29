@@ -238,6 +238,8 @@ After the user has successfully confirmed their password, the user is redirected
 
 If you are using the `LoginController` class that is shipped with the `laravel/ui` package, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait will already be included in your controller. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address.
 
+> {tip} If you would like to rate limit other routes in your application, check out the [rate limiting documentation](/docs/{{version}}/routing#rate-limiting).
+
 <a name="authenticating-users"></a>
 ## Manually Authenticating Users
 
