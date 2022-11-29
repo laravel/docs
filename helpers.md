@@ -313,6 +313,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [policy](#method-policy)
 [redirect](#method-redirect)
 [report](#method-report)
+[report_if](#method-report-if)
+[report_unless](#method-report-unless)
 [request](#method-request)
 [rescue](#method-rescue)
 [resolve](#method-resolve)
@@ -3740,6 +3742,24 @@ The `report` function will report an exception using your [exception handler](/d
 The `report` function also accepts a string as an argument. When a string is given to the function, the function will create an exception with the given string as its message:
 
     report('Something went wrong.');
+
+<a name="method-report-if"></a>
+#### `report_if()` {.collection-method}
+
+The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler) if the given condition is `true`:
+
+    report_if($shouldReport, $e);
+
+    report_if($shouldReport, 'Something went wrong.');
+
+<a name="method-report-unless"></a>
+#### `report_unless()` {.collection-method}
+
+The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler) if the given condition is `false`:
+
+    report_unless($reportingDisabled, $e);
+
+    report_unless($reportingDisabled, 'Something went wrong.');
 
 <a name="method-request"></a>
 #### `request()` {.collection-method}
