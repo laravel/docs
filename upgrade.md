@@ -117,6 +117,8 @@ All authentication scaffolding has been moved to the `laravel/ui` repository. If
 
     composer require laravel/ui "^2.0"
 
+You can view the list of moved files in the [Github repository](https://github.com/laravel/framework/commit/aebd93d5f67de55473f3f0ff5056abbfc5972102).
+
 #### The `TokenRepositoryInterface`
 
 **Likelihood Of Impact: Low**
