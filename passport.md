@@ -1064,6 +1064,9 @@ If a client does not request any specific scopes, you may configure your Passpor
         'place-orders',
     ]);
 
+> **Note**
+> These default scopes do not apply to personal access tokens.
+
 <a name="assigning-scopes-to-tokens"></a>
 ### Assigning Scopes To Tokens
 
