@@ -236,7 +236,7 @@ After the user has successfully confirmed their password, the user is redirected
 <a name="login-throttling"></a>
 ### Login Throttling
 
-If you are using Laravel's built-in `LoginController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait will already be included in your controller. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address.
+If you are using the `LoginController` class that is shipped with the `laravel/ui` package, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait will already be included in your controller. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address.
 
 <a name="authenticating-users"></a>
 ## Manually Authenticating Users
@@ -313,7 +313,7 @@ If you would like to provide "remember me" functionality in your application, yo
         // The user is being remembered...
     }
 
-> {tip} If you are using the built-in `LoginController` that is shipped with Laravel, the proper logic to "remember" users is already implemented by the traits used by the controller.
+> {tip} If you are using the built-in `LoginController` that is shipped with the `laravel/ui` package, the proper logic to "remember" users is already implemented by the traits used by the controller.
 
 If you are "remembering" users, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
 
