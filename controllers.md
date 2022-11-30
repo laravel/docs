@@ -396,22 +396,6 @@ GET       | `/profile`                        | show         | profile.show
 GET       | `/profile/edit`                   | edit         | profile.edit
 PUT/PATCH | `/profile`                        | update       | profile.update
 
-You may want to use `Route::apiSingleton()`, which will omit the `edit` route.
-
-```php
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-
-Route::apiSingleton('profile', ProfileController::class);
-```
-
-Given the usage of this method, the following routes will be registered:
-Verb      | URI                               | Action       | Route Name
-----------|-----------------------------------|--------------|---------------------
-GET       | `/profile`                        | show         | profile.show
-PUT/PATCH | `/profile`                        | update       | profile.update
-
-
 Singleton resources may also be nested within a standard resource:
 
 ```php
@@ -445,6 +429,21 @@ In this example, the following routes will be registered. As you can see, a `DEL
 | GET       | `/photos/{photo}/thumbnail/edit`   | edit    | photos.thumbnail.edit    |
 | PUT/PATCH | `/photos/{photo}/thumbnail`        | update  | photos.thumbnail.update  |
 | DELETE    | `/photos/{photo}/thumbnail`        | destroy | photos.thumbnail.destroy |
+
+<a name="api-singleton-resources"></a>
+#### API Singleton Resources
+
+The `apiSingleton` method may be used to register a singleton resource that will be manipulated via an API, thus rendering the `create` and `edit` routes unnecessary:
+
+```php
+Route::apiSingleton('profile', ProfileController::class);
+```
+
+Of course, API singleton resources may also be `creatable`, which will register `store` and `destroy` routes for the resource:
+
+```php
+Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
+```
 
 <a name="dependency-injection-and-controllers"></a>
 ## Dependency Injection & Controllers
