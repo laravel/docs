@@ -426,7 +426,6 @@ In this example, the `photos` resource would receive all of the [standard resour
 | GET       | `/photos/{photo}/thumbnail/edit` | edit    | photos.thumbnail.edit    |
 | PUT/PATCH | `/photos/{photo}/thumbnail`      | update  | photos.thumbnail.update  |
 
-
 <a name="creatable-singleton-resources"></a>
 #### Creatable Singleton Resources
 
