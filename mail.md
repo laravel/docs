@@ -210,6 +210,22 @@ In addition, you may define a global "reply_to" address within your `config/mail
 
     'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],
 
+<a name="using-reply-to"></a>
+#### Using `replyTo`
+
+If you would like to specify a `replyTo` address or addresses:
+
+    public function envelope()
+    {
+        return new Envelope(
+            from: new Address('jeffrey@example.com', 'Jeffrey Way'),
+            subject: 'Order Shipped',
+            replyTo: [
+                new Address('taylor@example.com', 'Taylor Otwell'),
+            ],
+        );
+    }
+
 <a name="configuring-the-view"></a>
 ### Configuring The View
 
