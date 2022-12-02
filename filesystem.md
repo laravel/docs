@@ -245,7 +245,7 @@ The `download` method may be used to generate a response that forces the user's 
     return Storage::download('file.jpg', $name, $headers);
 
 > **Warning**
-> When using `s3` driver files won't be streamed by default and instead loaded into memory. To change this behavior, set "stream_reads" to "true". 
+> When using `s3` driver files won't be streamed by default and instead loaded into memory. To change this behavior, set `stream_reads` to `true` in `config/filesystems.php`. 
 
 <a name="file-urls"></a>
 ### File URLs
