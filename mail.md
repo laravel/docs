@@ -203,7 +203,9 @@ If you would like, you may also specify a `replyTo` address:
 
     return new Envelope(
         from: new Address('jeffrey@example.com', 'Jeffrey Way'),
-        replyTo: new Address('taylor@example.com', 'Taylor Otwell'),
+        replyTo: [
+            new Address('taylor@example.com', 'Taylor Otwell'),
+        ],
         subject: 'Order Shipped',
     );
 
