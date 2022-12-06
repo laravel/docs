@@ -181,6 +181,25 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         }
     }
 
+<a name="configuring-filterable-data-for-meilisearch"></a>
+#### Configuring Filterable Data (MeiliSearch)
+
+Unlike Scout's other drivers, MeiliSearch requires you to pre-define the attributes that will be "filterable". Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method. To define your filterable attributes, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
+
+```php
+'meilisearch' => [
+    'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
+    'key' => env('MEILISEARCH_KEY', null),
+    'index-settings' => [
+        'users' => [
+            'filterableAttributes'=> ['id', 'name', 'email'],
+        ],
+        'flights' => [
+            'filterableAttributes'=> ['id', 'destination'],
+        ],
+    ],
+],
+```
 <a name="configuring-the-model-id"></a>
 ### Configuring The Model ID
 
@@ -519,6 +538,9 @@ You may use the `whereIn` method to constrain results against a given set of val
     )->get();
 
 Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
+
+> **Warning**
+> If your application is using MeiliSearch, you must configure your application's [filterable attributes](#configuring-filterable-data-for-meilisearch) before utilizing Scout's "where" clauses.
 
 <a name="pagination"></a>
 ### Pagination
