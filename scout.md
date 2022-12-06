@@ -200,6 +200,13 @@ Unlike Scout's other drivers, MeiliSearch requires you to pre-define the attribu
     ],
 ],
 ```
+
+After configuring your application's filterable attributes, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured filterable attributes. For convenience, you may wish to make this command part of your deployment process:
+
+```shell
+php artisan scout:sync-index-settings
+```
+
 <a name="configuring-the-model-id"></a>
 ### Configuring The Model ID
 
