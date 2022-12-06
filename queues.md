@@ -1260,6 +1260,9 @@ The batch's ID, which may be accessed via the `$batch->id` property, may be used
 > **Warning**  
 > Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks.
 
+> **Warning**  
+> Finally blocks do not work like standard finally blocks. They will only fire if the pending job count gets to zero which will not happen if a job in chain fails and there are jobs after it.
+
 <a name="naming-batches"></a>
 #### Naming Batches
 
