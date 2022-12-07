@@ -181,10 +181,10 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         }
     }
 
-<a name="configuring-filterable-data-for-meilisearch"></a>
-#### Configuring Filterable Data (MeiliSearch)
+<a name="configuring-indexes-settings-for-meilisearch"></a>
+#### Configuring Indexes Settings (MeiliSearch)
 
-Unlike Scout's other drivers, MeiliSearch requires you to pre-define the attributes that will be "filterable". Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method. To define your filterable attributes, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
+Unlike Scout's other drivers, MeiliSearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html). Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method. Sortable attributes are any atributes you plan to sort on when invoking Scout's `orderBy` method.  To define your index settings, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
 
 ```php
 'meilisearch' => [
@@ -192,16 +192,20 @@ Unlike Scout's other drivers, MeiliSearch requires you to pre-define the attribu
     'key' => env('MEILISEARCH_KEY', null),
     'index-settings' => [
         'users' => [
+            'searchableAttributes' => ['name','email'],
             'filterableAttributes'=> ['id', 'name', 'email'],
+            'sortableAttributes' => ['created_at']
+            // Other settings fields
         ],
         'flights' => [
             'filterableAttributes'=> ['id', 'destination'],
+            'sortableAttributes' => ['updated_at']
         ],
     ],
 ],
 ```
 
-After configuring your application's filterable attributes, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured filterable attributes. For convenience, you may wish to make this command part of your deployment process:
+After configuring your scout index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured indexes settings. For convenience, you may wish to make this command part of your deployment process:
 
 ```shell
 php artisan scout:sync-index-settings
@@ -547,7 +551,7 @@ You may use the `whereIn` method to constrain results against a given set of val
 Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
 
 > **Warning**
-> If your application is using MeiliSearch, you must configure your application's [filterable attributes](#configuring-filterable-data-for-meilisearch) before utilizing Scout's "where" clauses.
+> If your application is using MeiliSearch, you must configure your application's [filterable attributes settings](#configuring-indexes-settings-for-meilisearch) before utilizing Scout's "where" clauses.
 
 <a name="pagination"></a>
 ### Pagination
