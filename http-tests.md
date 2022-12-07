@@ -364,6 +364,7 @@ Laravel also offers a beautiful way to fluently test your application's JSON res
             ->assertJson(fn (AssertableJson $json) =>
                 $json->where('id', 1)
                      ->where('name', 'Victoria Faith')
+                     ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
                      ->whereNot('status', 'pending')
                      ->missing('password')
                      ->etc()
@@ -419,6 +420,7 @@ In these situations, we may use the fluent JSON object's `has` method to make as
                  ->first(fn ($json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
+                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
@@ -445,6 +447,7 @@ When testing these routes, you may use the `has` method to assert against the nu
                  ->has('users.0', fn ($json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
+                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
@@ -458,6 +461,7 @@ However, instead of making two separate calls to the `has` method to assert agai
                  ->has('users', 3, fn ($json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
+                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
