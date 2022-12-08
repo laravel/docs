@@ -181,10 +181,12 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         }
     }
 
-<a name="configuring-indexes-settings-for-meilisearch"></a>
-#### Configuring Indexes Settings (MeiliSearch)
+<a name="configuring-filterable-data-for-meilisearch"></a>
+#### Configuring Filterable Data / Index Settings (MeiliSearch)
 
-Unlike Scout's other drivers, MeiliSearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html). Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method. Sortable attributes are any atributes you plan to sort on when invoking Scout's `orderBy` method.  To define your index settings, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
+Unlike Scout's other drivers, MeiliSearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html).
+
+Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method, while sortable attributes are any attributes you plan to sort by when invoking Scout's `orderBy` method. To define your index settings, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
 
 ```php
 'meilisearch' => [
@@ -192,14 +194,13 @@ Unlike Scout's other drivers, MeiliSearch requires you to pre-define index searc
     'key' => env('MEILISEARCH_KEY', null),
     'index-settings' => [
         'users' => [
-            'searchableAttributes' => ['name','email'],
             'filterableAttributes'=> ['id', 'name', 'email'],
-            'sortableAttributes' => ['created_at']
-            // Other settings fields
+            'sortableAttributes' => ['created_at'],
+            // Other settings fields...
         ],
         'flights' => [
             'filterableAttributes'=> ['id', 'destination'],
-            'sortableAttributes' => ['updated_at']
+            'sortableAttributes' => ['updated_at'],
         ],
     ],
 ],
