@@ -182,7 +182,7 @@ By default, the entire `toArray` form of a given model will be persisted to its 
     }
 
 <a name="configuring-filterable-data-for-meilisearch"></a>
-#### Configuring Filterable Data / Index Settings (MeiliSearch)
+#### Configuring Filterable Data & Index Settings (MeiliSearch)
 
 Unlike Scout's other drivers, MeiliSearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html).
 
