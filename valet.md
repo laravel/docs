@@ -424,6 +424,8 @@ The `frontControllerPath` method should return the fully qualified path to your 
 
 If you would like to define a custom Valet driver for a single application, create a `LocalValetDriver.php` file in the application's root directory. Your custom driver may extend the base `ValetDriver` class or extend an existing application specific driver such as the `LaravelValetDriver`:
 
+    use Valet\Drivers\LaravelValetDriver;
+
     class LocalValetDriver extends LaravelValetDriver
     {
         /**
