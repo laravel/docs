@@ -206,7 +206,7 @@ Filterable attributes are any attributes you plan to filter on when invoking Sco
 ],
 ```
 
-After configuring your scout index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured indexes settings. For convenience, you may wish to make this command part of your deployment process:
+After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
 
 ```shell
 php artisan scout:sync-index-settings
@@ -552,7 +552,7 @@ You may use the `whereIn` method to constrain results against a given set of val
 Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
 
 > **Warning**
-> If your application is using MeiliSearch, you must configure your application's [filterable attributes settings](#configuring-indexes-settings-for-meilisearch) before utilizing Scout's "where" clauses.
+> If your application is using MeiliSearch, you must configure your application's [filterable attributes](#configuring-filterable-data-for-meilisearch) before utilizing Scout's "where" clauses.
 
 <a name="pagination"></a>
 ### Pagination
