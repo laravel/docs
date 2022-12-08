@@ -182,9 +182,11 @@ By default, the entire `toArray` form of a given model will be persisted to its 
     }
 
 <a name="configuring-filterable-data-for-meilisearch"></a>
-#### Configuring Filterable Data (MeiliSearch)
+#### Configuring Filterable Data & Index Settings (MeiliSearch)
 
-Unlike Scout's other drivers, MeiliSearch requires you to pre-define the attributes that will be "filterable". Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method. To define your filterable attributes, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
+Unlike Scout's other drivers, MeiliSearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html).
+
+Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method, while sortable attributes are any attributes you plan to sort by when invoking Scout's `orderBy` method. To define your index settings, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
 
 ```php
 'meilisearch' => [
@@ -193,15 +195,18 @@ Unlike Scout's other drivers, MeiliSearch requires you to pre-define the attribu
     'index-settings' => [
         'users' => [
             'filterableAttributes'=> ['id', 'name', 'email'],
+            'sortableAttributes' => ['created_at'],
+            // Other settings fields...
         ],
         'flights' => [
             'filterableAttributes'=> ['id', 'destination'],
+            'sortableAttributes' => ['updated_at'],
         ],
     ],
 ],
 ```
 
-After configuring your application's filterable attributes, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured filterable attributes. For convenience, you may wish to make this command part of your deployment process:
+After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
 
 ```shell
 php artisan scout:sync-index-settings
