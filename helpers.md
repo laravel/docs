@@ -119,6 +119,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
 [Str::isJson](#method-str-is-json)
+[Str::isUlid](#method-str-is-ulid)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
 [Str::lcfirst](#method-str-lcfirst)
@@ -197,6 +198,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isEmpty](#method-fluent-str-is-empty)
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [isJson](#method-fluent-str-is-json)
+[isUlid](#method-fluent-str-is-ulid)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
 [lcfirst](#method-fluent-str-lcfirst)
@@ -252,6 +254,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [whenNotExactly](#method-fluent-str-when-not-exactly)
 [whenIs](#method-fluent-str-when-is)
 [whenIsAscii](#method-fluent-str-when-is-ascii)
+[whenIsUlid](#method-fluent-str-when-is-ulid)
 [whenIsUuid](#method-fluent-str-when-is-uuid)
 [whenTest](#method-fluent-str-when-test)
 [wordCount](#method-fluent-str-word-count)
@@ -1516,6 +1519,21 @@ The `Str::isJson` method determines if the given string is valid JSON:
 
     // false
 
+<a name="method-str-is-ulid"></a>
+#### `Str::isUlid()` {.collection-method}
+
+The `Str::isUlid` method determines if the given string is a valid ULID:
+
+    use Illuminate\Support\Str;
+
+    $isUlid = Str::isUlid('01gd6r360bp37zj17nxb55yv40');
+
+    // true
+
+    $isUlid = Str::isUlid('laravel');
+
+    // false
+
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {.collection-method}
 
@@ -2467,6 +2485,21 @@ The `isJson` method determines if a given string is valid JSON:
 
     // false
 
+<a name="method-fluent-str-is-ulid"></a>
+#### `isUlid` {.collection-method}
+
+The `isUlid` method determines if a given string is a ULID:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('01gd6r360bp37zj17nxb55yv40')->isUlid();
+
+    // true
+
+    $result = Str::of('Taylor')->isUlid();
+
+    // false
+
 <a name="method-fluent-str-is-uuid"></a>
 #### `isUuid` {.collection-method}
 
@@ -3238,6 +3271,19 @@ The `whenIsAscii` method invokes the given closure if the string is 7 bit ASCII.
     });
 
     // 'Laravel'
+
+<a name="method-fluent-str-when-is-ulid"></a>
+#### `whenIsUlid` {.collection-method}
+
+The `whenIsUlid` method invokes the given closure if the string is a valid ULID. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('foo/bar')->whenIsUlid('01gd6r360bp37zj17nxb55yv40', function ($string) {
+        return $string->substr(0, 8);
+    });
+
+    // '01gd6r36'
 
 <a name="method-fluent-str-when-is-uuid"></a>
 #### `whenIsUuid` {.collection-method}
