@@ -1318,7 +1318,7 @@ The field under validation must be less than the given _field_. The two fields m
 The field under validation must be less than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
 
 <a name="rule-lowercase"></a>
-#### lowercase:_field_
+#### lowercase
 
 The field under validation must be lowercase.
 
@@ -1626,7 +1626,7 @@ You may specify additional query conditions by customizing the query using the `
     'email' => Rule::unique('users')->where(fn ($query) => $query->where('account_id', 1))
 
 <a name="rule-uppercase"></a>
-#### uppercase:_field_
+#### uppercase
 
 The field under validation must be uppercase.
 
