@@ -3266,7 +3266,7 @@ The `whenIsAscii` method invokes the given closure if the string is 7 bit ASCII.
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('foo/bar')->whenIsAscii('laravel', function ($string) {
+    $string = Str::of('laravel')->whenIsAscii(function ($string) {
         return $string->title();
     });
 
@@ -3279,7 +3279,7 @@ The `whenIsUlid` method invokes the given closure if the string is a valid ULID.
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('foo/bar')->whenIsUlid('01gd6r360bp37zj17nxb55yv40', function ($string) {
+    $string = Str::of('01gd6r360bp37zj17nxb55yv40')->whenIsUlid(function ($string) {
         return $string->substr(0, 8);
     });
 
@@ -3292,7 +3292,7 @@ The `whenIsUuid` method invokes the given closure if the string is a valid UUID.
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('foo/bar')->whenIsUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de', function ($string) {
+    $string = Str::of('a0a2a2d2-0b87-4a18-83f2-2529882be2de')->whenIsUuid(function ($string) {
         return $string->substr(0, 8);
     });
 
