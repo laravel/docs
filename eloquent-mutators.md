@@ -488,9 +488,17 @@ The `last_posted_at` attribute on the results of this query will be a simple str
 <a name="custom-casts"></a>
 ## Custom Casts
 
-Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. You may accomplish this by defining a class that implements the `CastsAttributes` interface.
+Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types.
 
-Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:
+To create a cast, execute the `make:cast` [Artisan command](/docs/{{version}}/artisan):
+
+```shell
+php artisan make:cast Json
+```
+
+The new cast class will be placed in your `app/Casts` directory.
+
+You may define your cast by creating a class that implements the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:
 
     <?php
 
@@ -644,6 +652,12 @@ Therefore, you may specify that your custom cast class will be responsible for s
 ### Inbound Casting
 
 Occasionally, you may need to write a custom cast that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model. A classic example of an inbound only cast is a "hashing" cast. Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined.
+
+Also you may use the `--inbound` option with `make:cast` command to generate a inbound cast.
+
+```shell
+php artisan make:cast Hash --inbound
+```
 
     <?php
 
