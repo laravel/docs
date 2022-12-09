@@ -812,6 +812,7 @@ Below is a list of all available validation rules and their function:
 [Between](#rule-between)
 [Boolean](#rule-boolean)
 [Confirmed](#rule-confirmed)
+[Contains With](#rule-contains-with)
 [Current Password](#rule-current-password)
 [Date](#rule-date)
 [Date Equals](#rule-date-equals)
@@ -825,6 +826,7 @@ Below is a list of all available validation rules and their function:
 [Distinct](#rule-distinct)
 [Doesnt Start With](#rule-doesnt-start-with)
 [Doesnt End With](#rule-doesnt-end-with)
+[Doesnt Contains With](#rule-doesnt-contains-with)
 [Email](#rule-email)
 [Ends With](#rule-ends-with)
 [Enum](#rule-enum)
@@ -992,6 +994,11 @@ The field under validation must be able to be cast as a boolean. Accepted input 
 
 The field under validation must have a matching field of `{field}_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
 
+<a name="rule-contains-with"></a>
+#### contains_with:foo,bar,...
+
+The field under validation must contain one of the given values.
+
 <a name="rule-current-password"></a>
 #### current_password
 
@@ -1088,6 +1095,11 @@ The field under validation must not start with one of the given values.
 #### doesnt_end_with:_foo_,_bar_,...
 
 The field under validation must not end with one of the given values.
+
+<a name="rule-doesnt-contains-with"></a>
+#### doesnt_contains_with:foo,bar,...
+
+The field under validation must not contain one of the given values.
 
 <a name="rule-email"></a>
 #### email
