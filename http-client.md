@@ -244,6 +244,12 @@ If you have a response instance and would like to throw an instance of `Illumina
 
     return $response['user']['id'];
 
+If you would like to perform some additional logic to determining if an exception should be thrown, you may pass a closure to the `throwIf` method. If the closure returns true, then the exception will be thrown. The closure has access to the returned response, so you can inspect it to determine if an exception should be thrown.
+
+    return Http::post(/* ... */)->throwIf(function ($response) {
+        //
+    })->json();
+
 The `Illuminate\Http\Client\RequestException` instance has a public `$response` property which will allow you to inspect the returned response.
 
 The `throw` method returns the response instance if no error occurred, allowing you to chain other operations onto the `throw` method:
