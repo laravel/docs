@@ -223,6 +223,24 @@ If you would like to specify a specific queue that should be used for each notif
             'slack' => 'slack-queue',
         ];
     }
+    
+<a name="customizing-notification-channel-connections"></a>
+#### Customizing Notification Channel Connections
+
+If you would like to specify a specific connection that should be used for each notification channel supported by the notification, you may define a `viaConnections` method on your notification. This method should return an array of channel name / queue name pairs:
+
+    /**
+     * Determine which connection should be used for each notification channel.
+     *
+     * @return array
+     */
+    public function viaConnections()
+    {
+        return [
+            'mail' => 'redis',
+            'database' => 'sync',
+        ];
+    }
 
 <a name="queued-notifications-and-database-transactions"></a>
 #### Queued Notifications & Database Transactions
