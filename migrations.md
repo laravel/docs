@@ -15,6 +15,7 @@
     - [Available Column Types](#available-column-types)
     - [Column Modifiers](#column-modifiers)
     - [Modifying Columns](#modifying-columns)
+    - [Renaming Columns](#renaming-columns)
     - [Dropping Columns](#dropping-columns)
 - [Indexes](#indexes)
     - [Creating Indexes](#creating-indexes)
@@ -1056,21 +1057,21 @@ We could also modify a column to be nullable:
 > The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.  To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
 
 <a name="renaming-columns"></a>
-#### Renaming Columns
+### Renaming Columns
 
-To rename a column, you may use the `renameColumn` method provided by the schema builder blueprint. Before renaming a column, ensure that you have installed the `doctrine/dbal` library via the Composer package manager:
+To rename a column, you may use the `renameColumn` method provided by the schema builder blueprint:
 
     Schema::table('users', function (Blueprint $table) {
         $table->renameColumn('from', 'to');
     });
 
 > **Warning**  
-> Renaming an `enum` column is not currently supported.
+> If you are running a version of MySQL older than the 8.0.3 release or MariaDB older than the 10.5.2 release or SQLite older than the 3.25.0 release, ensure that you have installed the `doctrine/dbal` library via the Composer package manager, before renaming a column. This package should be used with caution, renaming a column could potentially change its type definition.
 
 <a name="dropping-columns"></a>
 ### Dropping Columns
 
-To drop a column, you may use the `dropColumn` method on the schema builder blueprint. If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used:
+To drop a column, you may use the `dropColumn` method on the schema builder blueprint:
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');
@@ -1083,7 +1084,7 @@ You may drop multiple columns from a table by passing an array of column names t
     });
 
 > **Warning**  
-> Dropping or modifying multiple columns within a single migration while using an SQLite database is not supported.
+> If you are running a version of SQLite older than the 3.35.0 release, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used. Dropping or modifying multiple columns within a single migration while using this package is not supported.
 
 <a name="available-command-aliases"></a>
 #### Available Command Aliases
@@ -1166,6 +1167,10 @@ Alternatively, you may enable the `innodb_large_prefix` option for your database
 To rename an index, you may use the `renameIndex` method provided by the schema builder blueprint. This method accepts the current index name as its first argument and the desired name as its second argument:
 
     $table->renameIndex('from', 'to')
+
+
+> **Warning**  
+> If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package via the Composer package manager before the `renameIndex` method may be used.
 
 <a name="dropping-indexes"></a>
 ### Dropping Indexes
