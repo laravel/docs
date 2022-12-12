@@ -806,6 +806,7 @@ Below is a list of all available validation rules and their function:
 [Alpha Dash](#rule-alpha-dash)
 [Alpha Numeric](#rule-alpha-num)
 [Array](#rule-array)
+[Ascii](#rule-ascii)
 [Bail](#rule-bail)
 [Before (Date)](#rule-before)
 [Before Or Equal (Date)](#rule-before-or-equal)
@@ -883,6 +884,7 @@ Below is a list of all available validation rules and their function:
 [Unique (Database)](#rule-unique)
 [Uppercase](#rule-uppercase)
 [URL](#rule-url)
+[ULID](#rule-ulid)
 [UUID](#rule-uuid)
 
 </div>
@@ -955,6 +957,11 @@ When additional values are provided to the `array` rule, each key in the input a
     ]);
 
 In general, you should always specify the array keys that are allowed to be present within your array.
+
+<a name="rule-ascii"></a>
+#### ascii
+
+The field under validation must be entirely 7 bit ASCII characters.
 
 <a name="rule-bail"></a>
 #### bail
@@ -1634,6 +1641,11 @@ The field under validation must be uppercase.
 #### url
 
 The field under validation must be a valid URL.
+
+<a name="rule-ulid"></a>
+#### ulid
+
+The field under validation must be a valid Universally Unique Lexicographically Sortable Identifier (ULID).
 
 <a name="rule-uuid"></a>
 #### uuid
