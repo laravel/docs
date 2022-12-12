@@ -23,15 +23,15 @@ At this time, PHP's [named arguments](https://www.php.net/manual/en/functions.ar
 <a name="support-policy"></a>
 ## Support Policy
 
-For all Laravel releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
+For all Laravel releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest major release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
 
 | Version | PHP (*) | Release | Bug Fixes Until | Security Fixes Until |
 | --- | --- | --- | --- | --- |
 | 6 (LTS) | 7.2 - 8.0 | September 3rd, 2019 | January 25th, 2022 | September 6th, 2022 |
 | 7 | 7.2 - 8.0 | March 3rd, 2020 | October 6th, 2020 | March 3rd, 2021 |
 | 8 | 7.3 - 8.1 | September 8th, 2020 | July 26th, 2022 | January 24th, 2023 |
-| 9 | 8.0 - 8.1 | February 8th, 2022 | August 8th, 2023 | February 8th, 2024 |
-| 10 | 8.0 - 8.1 | February 7th, 2023 | August 7th, 2024 | February 7th, 2025 |
+| 9 | 8.0 - 8.1 | February 8th, 2022 | August 8th, 2023 | February 6th, 2024 |
+| 10 | 8.1 | February 7th, 2023 | August 6th, 2024 | February 4th, 2025 |
 
 <div class="version-colors">
     <div class="end-of-life">
