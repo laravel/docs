@@ -282,7 +282,7 @@ For complex query conditions, you may provide a closure in your array of credent
         'email' => $email, 
         'password' => $password, 
         fn ($query) => $query->has('activeSubscription'),
-    ]) {
+    ])) {
         // Authentication was successful...
     }
 
