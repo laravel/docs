@@ -46,7 +46,7 @@ Laravel already makes it easy to perform authentication via traditional login fo
 
 To get started, install Passport via the Composer package manager:
 
-    composer require laravel/passport
+    composer require laravel/passport:7.5.1
 
 The Passport service provider registers its own database migration directory with the framework, so you should migrate your database after installing the package. The Passport migrations will create the tables your application needs to store clients and access tokens:
 
