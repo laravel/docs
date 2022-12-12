@@ -181,36 +181,17 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         }
     }
 
-Please note that since Meilisearch filtering can be performed only on numeric data, you also have to specify column type to filter with: `>`, `>=`, `<`, and `<=`.
+Some search engines such as MeiliSearch will only perform filter operations (`>`, `<`, etc.) on data of the correct type. So, when using these search engines and customizing your searchable data, you should ensure that numeric values are cast to their correct type:
 
-```
-<?php
-
-    namespace App\Models;
-
-    use Illuminate\Database\Eloquent\Model;
-    use Laravel\Scout\Searchable;
-
-    class Post extends Model
-    {
-        use Searchable;
-
-        /**
-         * Get the indexable data array for the model.
-         *
-         * @return array
-         */
         public function toSearchableArray()
         {
             return [
                 'id' => (int) $this->id,
-                'name' => (string) $this->name,
+                'name' => $this->name,
                 'price' => (float) $this->price,
             ];
         }
     }
-
-```
 
 <a name="configuring-filterable-data-for-meilisearch"></a>
 #### Configuring Filterable Data & Index Settings (MeiliSearch)
