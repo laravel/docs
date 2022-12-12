@@ -181,6 +181,17 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         }
     }
 
+Some search engines such as MeiliSearch will only perform filter operations (`>`, `<`, etc.) on data of the correct type. So, when using these search engines and customizing your searchable data, you should ensure that numeric values are cast to their correct type:
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => (int) $this->id,
+            'name' => $this->name,
+            'price' => (float) $this->price,
+        ];
+    }
+
 <a name="configuring-filterable-data-for-meilisearch"></a>
 #### Configuring Filterable Data & Index Settings (MeiliSearch)
 
