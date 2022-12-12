@@ -488,17 +488,13 @@ The `last_posted_at` attribute on the results of this query will be a simple str
 <a name="custom-casts"></a>
 ## Custom Casts
 
-Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types.
-
-To create a cast, execute the `make:cast` [Artisan command](/docs/{{version}}/artisan):
+Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. To create a cast, execute the `make:cast` Artisan command. The new cast class will be placed in your `app/Casts` directory:
 
 ```shell
 php artisan make:cast Json
 ```
 
-The new cast class will be placed in your `app/Casts` directory.
-
-You may define your cast by creating a class that implements the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:
+All custom cast classes implement the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:
 
     <?php
 
@@ -651,13 +647,15 @@ Therefore, you may specify that your custom cast class will be responsible for s
 <a name="inbound-casting"></a>
 ### Inbound Casting
 
-Occasionally, you may need to write a custom cast that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model. A classic example of an inbound only cast is a "hashing" cast. Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined.
+Occasionally, you may need to write a custom cast class that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model.
 
-Also you may use the `--inbound` option with `make:cast` command to generate a inbound cast.
+Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined. The `make:cast` Artisan command may be invoked with the `--inbound` option to generate an inbound only cast class:
 
 ```shell
 php artisan make:cast Hash --inbound
 ```
+
+A classic example of an inbound only cast is a "hashing" cast. For example, we may define a cast that hashes inbound values via a given algorithm:
 
     <?php
 
