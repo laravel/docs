@@ -650,6 +650,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertLocation](#assert-location)
 [assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
+[assertStreamedContent](#assert-streamed-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
 [assertPlainCookie](#assert-plain-cookie)
@@ -962,6 +963,13 @@ Assert that the given string matches the response content:
 Assert that the response has the given HTTP status code and no content:
 
     $response->assertNoContent($status = 204);
+
+<a name="assert-streamed-content"></a>
+#### assertStreamedContent
+
+Assert that the given string matches the streamed response content:
+
+    $response->assertStreamedContent($value);
 
 <a name="assert-not-found"></a>
 #### assertNotFound
