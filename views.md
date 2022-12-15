@@ -1,6 +1,7 @@
 # Views
 
 - [Introduction](#introduction)
+    - [Writing Views In React / Vue](#writing-views-in-react-or-vue)
 - [Creating & Rendering Views](#creating-and-rendering-views)
     - [Nested View Directories](#nested-view-directories)
     - [Creating The First Available View](#creating-the-first-available-view)
@@ -14,7 +15,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. A simple view might look something like this:
+Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files.
+
+Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. When using Laravel, view templates are usually written using the [Blade templating language](/docs/{{version}}/blade). A simple view might look something like this:
 
 ```blade
 <!-- View stored in resources/views/greeting.blade.php -->
@@ -34,6 +37,13 @@ Since this view is stored at `resources/views/greeting.blade.php`, we may return
 
 > **Note**  
 > Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
+
+<a name="writing-views-in-react-or-vue"></a>
+### Writing Views In React / Vue
+
+Instead of writing their frontend templates in PHP via Blade, many developers have begun to prefer to write their templates in React or Vue. Laravel makes this painless thanks to [Inertia](https://inertiajs.com/), a library that makes it a cinch to tie your React / Vue frontend to your Laravel backend.
+
+Our Breeze and Jetstream [starter kits](/docs/{{version}}/starter-kits) give you a great starting point for your next Laravel application powered by Inertia. In addition, the [Laravel Bootcamp](https://bootcamp.laravel.com) provides a full demonstration of building a Laravel application powered by Inertia, including examples in Vue and React.
 
 <a name="creating-and-rendering-views"></a>
 ## Creating & Rendering Views
