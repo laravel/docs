@@ -961,7 +961,7 @@ In general, you should always specify the array keys that are allowed to be pres
 <a name="rule-ascii"></a>
 #### ascii
 
-The field under validation must be entirely 7 bit ASCII characters.
+The field under validation must be entirely 7-bit ASCII characters.
 
 <a name="rule-bail"></a>
 #### bail
@@ -1645,7 +1645,7 @@ The field under validation must be a valid URL.
 <a name="rule-ulid"></a>
 #### ulid
 
-The field under validation must be a valid Universally Unique Lexicographically Sortable Identifier (ULID).
+The field under validation must be a valid [Universally Unique Lexicographically Sortable Identifier](https://github.com/ulid/spec) (ULID).
 
 <a name="rule-uuid"></a>
 #### uuid
