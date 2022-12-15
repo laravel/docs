@@ -224,6 +224,21 @@ If you would like to specify a specific queue that should be used for each notif
         ];
     }
 
+Likewise, if you would like to specify a specific queue connection that should be used for each notification channel supported by the notification, you may define a `viaConnections` method on your notification. This method should return an array of channel name / queue connection name pairs:
+
+    /**
+     * Determine which connections should be used for each notification channel.
+     *
+     * @return array
+     */
+    public function viaConnections()
+    {
+        return [
+            'mail' => 'redis',
+            'database' => 'sync',
+        ];
+    }
+
 <a name="queued-notifications-and-database-transactions"></a>
 #### Queued Notifications & Database Transactions
 
