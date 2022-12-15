@@ -200,22 +200,27 @@ Unlike Scout's other drivers, MeiliSearch requires you to pre-define index searc
 Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method, while sortable attributes are any attributes you plan to sort by when invoking Scout's `orderBy` method. To define your index settings, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
 
 ```php
+use App\Models\User;
+use App\Models\Flight;
+
 'meilisearch' => [
     'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
     'key' => env('MEILISEARCH_KEY', null),
     'index-settings' => [
-        'users' => [
+        User::class => [
             'filterableAttributes'=> ['id', 'name', 'email'],
             'sortableAttributes' => ['created_at'],
             // Other settings fields...
         ],
-        'flights' => [
+        Flight::class => [
             'filterableAttributes'=> ['id', 'destination'],
             'sortableAttributes' => ['updated_at'],
         ],
     ],
 ],
 ```
+
+If the model underlying a given index is soft deletable, Scout will automatically include support for filtering on soft deleted models to that index.
 
 After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
 
