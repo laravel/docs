@@ -459,11 +459,11 @@ Choosing good CSS selectors for interacting with elements is one of the hardest 
 
     $browser->click('.login-page .container div > button');
 
-Dusk selectors allow you to focus on writing effective tests rather than remembering CSS selectors. To define a selector, add a `dusk` attribute to your HTML element. Then, when interacting with a Dusk browser, prefix the selector with `@` to manipulate the attached element within your test:
+Dusk selectors allow you to focus on writing effective tests rather than remembering CSS selectors. To define a selector, add a `data-dusk` attribute to your HTML element. Then, when interacting with a Dusk browser, prefix the selector with `@` to manipulate the attached element within your test:
 
     // HTML...
 
-    <button dusk="login-button">Login</button>
+    <button data-dusk="login-button">Login</button>
 
     // Test...
 
@@ -1545,7 +1545,7 @@ Dusk even allows you to make assertions on the state of [Vue component](https://
 
     // HTML...
 
-    <profile dusk="profile-component"></profile>
+    <profile data-dusk="profile-component"></profile>
 
     // Component Definition...
 
