@@ -575,6 +575,15 @@ If necessary, you may manually register commands by adding the command's class n
         Commands\SendEmails::class
     ];
 
+Or if you want, you could register your commands in a service provider in the register method. You then just call the commands property instead of defining all the commands in the `$commands` array in the example above.
+
+    public function register()
+    {
+        $this->commands([
+            Commands\SendEmails::class
+        ]);
+    }
+
 <a name="programmatically-executing-commands"></a>
 ## Programmatically Executing Commands
 
