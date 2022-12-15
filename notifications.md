@@ -206,6 +206,21 @@ By default, queued notifications will be queued using your application's default
      */
     public $connection = 'redis';
 
+Or, if you would like to specify a specific queue connection that should be used for each notification channel supported by the notification, you may define a `viaConnections` method on your notification. This method should return an array of channel name / queue connection name pairs:
+
+    /**
+     * Determine which connections should be used for each notification channel.
+     *
+     * @return array
+     */
+    public function viaConnections()
+    {
+        return [
+            'mail' => 'redis',
+            'database' => 'sync',
+        ];
+    }
+
 <a name="customizing-notification-channel-queues"></a>
 #### Customizing Notification Channel Queues
 
@@ -221,21 +236,6 @@ If you would like to specify a specific queue that should be used for each notif
         return [
             'mail' => 'mail-queue',
             'slack' => 'slack-queue',
-        ];
-    }
-
-Likewise, if you would like to specify a specific queue connection that should be used for each notification channel supported by the notification, you may define a `viaConnections` method on your notification. This method should return an array of channel name / queue connection name pairs:
-
-    /**
-     * Determine which connections should be used for each notification channel.
-     *
-     * @return array
-     */
-    public function viaConnections()
-    {
-        return [
-            'mail' => 'redis',
-            'database' => 'sync',
         ];
     }
 
