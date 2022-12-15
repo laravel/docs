@@ -1,6 +1,7 @@
 # Blade Templates
 
 - [Introduction](#introduction)
+    - [Supercharging Blade With Livewire](#supercharging-blade-with-livewire)
 - [Displaying Data](#displaying-data)
     - [HTML Entity Encoding](#html-entity-encoding)
     - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
@@ -55,8 +56,10 @@ Blade views may be returned from routes or controllers using the global `view` h
         return view('greeting', ['name' => 'Finn']);
     });
 
-> **Note**  
-> Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
+<a name="supercharging-blade-with-livewire"></a>
+### Supercharging Blade With Livewire
+
+Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com). Livewire allows you to write Blade components that are augmented with dynamic functionality that would typically only be possible via frontend frameworks like React or Vue, providing a great approach to building modern, reactive frontends without the complexities, client-side rendering, or build steps of many JavaScript frameworks.
 
 <a name="displaying-data"></a>
 ## Displaying Data
