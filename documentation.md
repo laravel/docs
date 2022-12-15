@@ -4,7 +4,6 @@
     - [Release Notes](/docs/4.2/releases)
     - [Upgrade Guide](/docs/4.2/upgrade)
     - [Contribution Guide](/docs/4.2/contributions)
-    - [API Documentation](/api/4.2/)
 - ## Getting Started
     - [Installation](/docs/4.2/installation)
     - [Configuration](/docs/4.2/configuration)
