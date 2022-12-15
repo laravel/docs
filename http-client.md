@@ -240,13 +240,13 @@ If you have a response instance and would like to throw an instance of `Illumina
     $response->throwIf($condition);
 
     // Throw an exception if an error occurred and the given closure resolves to true...
-    $response->throwIf(fn () => true);
+    $response->throwIf(fn ($response) => true);
 
     // Throw an exception if an error occurred and the given condition is false...
     $response->throwUnless($condition);
 
     // Throw an exception if an error occurred and the given closure resolves to false...
-    $response->throwUnless(fn () => false);
+    $response->throwUnless(fn ($response) => false);
 
     return $response['user']['id'];
 
