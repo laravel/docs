@@ -1232,7 +1232,9 @@ To define a batchable job, you should [create a queueable job](#creating-jobs) a
 <a name="dispatching-batches"></a>
 ### Dispatching Batches
 
-To dispatch a batch of jobs, you should use the `batch` method of the `Bus` facade. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked. In this example, we will imagine we are queueing a batch of jobs that each process a given number of rows from a CSV file:
+To dispatch a batch of jobs, you should use the `batch` method of the `Bus` facade. Batching is primarily useful when combined with completion callbacks. You may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Please note that the `finally` method does not work like standard finally blocks. They have a limitation in that they will only fire if the pending job count gets to zero which will not happen if a job in chain fails and there are jobs in that chain after it. For this reason it is inadvisable to use the finally block when batching chains.
+
+Each of the callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked. In this example, we will imagine we are queueing a batch of jobs that each process a given number of rows from a CSV file:
 
     use App\Jobs\ImportCsv;
     use Illuminate\Bus\Batch;
@@ -1250,7 +1252,8 @@ To dispatch a batch of jobs, you should use the `batch` method of the `Bus` faca
     })->catch(function (Batch $batch, Throwable $e) {
         // First batch job failure detected...
     })->finally(function (Batch $batch) {
-        // The batch has finished executing...
+        // The batch has completed and there are zero pending jobs...
+        // Note again that a chain with failures may result in "pending" jobs that will never complete
     })->dispatch();
 
     return $batch->id;
@@ -1259,9 +1262,6 @@ The batch's ID, which may be accessed via the `$batch->id` property, may be used
 
 > **Warning**  
 > Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks.
-
-> **Warning**  
-> Finally blocks do not work like standard finally blocks. They will only fire if the pending job count gets to zero which will not happen if a job in chain fails and there are jobs after it.
 
 <a name="naming-batches"></a>
 #### Naming Batches
