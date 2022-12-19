@@ -785,9 +785,9 @@ The `wasChanged` method determines if any attributes were changed when the model
         'title' => 'Developer',
     ]);
 
-    $user->title = 'Painter';
-
     $user->save();
+
+    $user->title = 'Painter';
 
     $user->wasChanged(); // true
     $user->wasChanged('title'); // true
