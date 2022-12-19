@@ -430,6 +430,16 @@ After creating job middleware, they may be attached to a job by returning them f
 > **Note**  
 > Job middleware can also be assigned to queueable event listeners, mailables, and notifications.
 
+Alternatively, you may specify the maximum number of workers that may simultaneously process a given job. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time. For example, using the `funnel` method, you may limit jobs of a given type to only be processed by one worker at a time:
+
+    Redis::funnel('key')->limit(1)->then(function () {
+        // Job logic...
+    }, function () {
+        // Could not obtain lock...
+
+        return $this->release(10);
+    });
+    
 <a name="rate-limiting"></a>
 ### Rate Limiting
 
