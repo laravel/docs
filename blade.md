@@ -29,7 +29,7 @@
     - [Anonymous Index Components](#anonymous-index-components)
     - [Data Properties / Attributes](#data-properties-attributes)
     - [Accessing Parent Data](#accessing-parent-data)
-    - [Anonymous Components Namespaces](#anonymous-component-namespaces)
+    - [Anonymous Components Paths](#anonymous-component-paths)
 - [Building Layouts](#building-layouts)
     - [Layouts Using Components](#layouts-using-components)
     - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
@@ -1381,14 +1381,12 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 > **Warning**  
 > The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
 
-<a name="anonymous-component-namespaces"></a>
-### Anonymous Component Namespaces
+<a name="anonymous-component-paths"></a>
+### Anonymous Component Paths
 
 As previously discussed, anonymous components are typically defined by placing a Blade template within your `resources/views/components` directory. However, you may occasionally want to register other anonymous component paths with Laravel in addition to the default path.
 
-For example, when building a vacation booking application, you may wish to place flight booking related anonymous components within a `resources/views/flights/bookings/components` directory. To inform Laravel of this anonymous component location, you may use the `anonymousComponentNamespace` method provided by the `Blade` facade.
-
-The `anonymousComponentNamespace` method accepts the "path" to the anonymous component location as its first argument and the "namespace" that components should be placed under as its second argument. As you will see in the example below, the "namespace" will be prefixed to the component's name when the component is rendered. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
+The `anonymousComponentPath` method accepts the "path" to the anonymous component location as its first argument and an optional "namespace" that components should be placed under as its second argument. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
 
     /**
      * Bootstrap any application services.
@@ -1397,13 +1395,23 @@ The `anonymousComponentNamespace` method accepts the "path" to the anonymous com
      */
     public function boot()
     {
-        Blade::anonymousComponentNamespace('flights.bookings.components', 'flights');
+        Blade::anonymousComponentPath(__DIR__.'/../components');
     }
 
-Given the example above, you may render a `panel` component that exists within the newly registered component directory like so:
+When component paths are registered without a specified prefix as in the example above, they may be rendered in your Blade components without a corresponding prefix as well. For example, if a `panel.blade.php` component exists in the path registered above, it may be rendered like so:
 
 ```blade
-<x-flights::panel :flight="$flight" />
+<x-panel />
+```
+
+Prefix "namespaces" may be provided as the second argument to the `anonymousComponentPath` method:
+
+    Blade::anonymousComponentPath(__DIR__.'/../components', 'dashboard');
+
+When a prefix is provided, components within that "namespace" may be rendered by prefixing to the component's namespace to the component name when the component is rendered:
+
+```blade
+<x-dashboard::panel />
 ```
 
 <a name="building-layouts"></a>
