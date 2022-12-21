@@ -1,6 +1,7 @@
 # Blade Templates
 
 - [Introduction](#introduction)
+    - [Supercharging Blade With Livewire](#supercharging-blade-with-livewire)
 - [Displaying Data](#displaying-data)
     - [HTML Entity Encoding](#html-entity-encoding)
     - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
@@ -28,7 +29,7 @@
     - [Anonymous Index Components](#anonymous-index-components)
     - [Data Properties / Attributes](#data-properties-attributes)
     - [Accessing Parent Data](#accessing-parent-data)
-    - [Anonymous Components Namespaces](#anonymous-component-namespaces)
+    - [Anonymous Components Paths](#anonymous-component-paths)
 - [Building Layouts](#building-layouts)
     - [Layouts Using Components](#layouts-using-components)
     - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
@@ -39,6 +40,7 @@
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
 - [Rendering Inline Blade Templates](#rendering-inline-blade-templates)
+- [Rendering Blade Fragments](#rendering-blade-fragments)
 - [Extending Blade](#extending-blade)
     - [Custom Echo Handlers](#custom-echo-handlers)
     - [Custom If Statements](#custom-if-statements)
@@ -54,8 +56,10 @@ Blade views may be returned from routes or controllers using the global `view` h
         return view('greeting', ['name' => 'Finn']);
     });
 
-> **Note**  
-> Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
+<a name="supercharging-blade-with-livewire"></a>
+### Supercharging Blade With Livewire
+
+Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com). Livewire allows you to write Blade components that are augmented with dynamic functionality that would typically only be possible via frontend frameworks like React or Vue, providing a great approach to building modern, reactive frontends without the complexities, client-side rendering, or build steps of many JavaScript frameworks.
 
 <a name="displaying-data"></a>
 ## Displaying Data
@@ -1377,14 +1381,12 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 > **Warning**  
 > The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
 
-<a name="anonymous-component-namespaces"></a>
-### Anonymous Component Namespaces
+<a name="anonymous-component-paths"></a>
+### Anonymous Component Paths
 
 As previously discussed, anonymous components are typically defined by placing a Blade template within your `resources/views/components` directory. However, you may occasionally want to register other anonymous component paths with Laravel in addition to the default path.
 
-For example, when building a vacation booking application, you may wish to place flight booking related anonymous components within a `resources/views/flights/bookings/components` directory. To inform Laravel of this anonymous component location, you may use the `anonymousComponentNamespace` method provided by the `Blade` facade.
-
-The `anonymousComponentNamespace` method accepts the "path" to the anonymous component location as its first argument and the "namespace" that components should be placed under as its second argument. As you will see in the example below, the "namespace" will be prefixed to the component's name when the component is rendered. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
+The `anonymousComponentPath` method accepts the "path" to the anonymous component location as its first argument and an optional "namespace" that components should be placed under as its second argument. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
 
     /**
      * Bootstrap any application services.
@@ -1393,13 +1395,23 @@ The `anonymousComponentNamespace` method accepts the "path" to the anonymous com
      */
     public function boot()
     {
-        Blade::anonymousComponentNamespace('flights.bookings.components', 'flights');
+        Blade::anonymousComponentPath(__DIR__.'/../components');
     }
 
-Given the example above, you may render a `panel` component that exists within the newly registered component directory like so:
+When component paths are registered without a specified prefix as in the example above, they may be rendered in your Blade components without a corresponding prefix as well. For example, if a `panel.blade.php` component exists in the path registered above, it may be rendered like so:
 
 ```blade
-<x-flights::panel :flight="$flight" />
+<x-panel />
+```
+
+Prefix "namespaces" may be provided as the second argument to the `anonymousComponentPath` method:
+
+    Blade::anonymousComponentPath(__DIR__.'/../components', 'dashboard');
+
+When a prefix is provided, components within that "namespace" may be rendered by prefixing to the component's namespace to the component name when the component is rendered:
+
+```blade
+<x-dashboard::panel />
 ```
 
 <a name="building-layouts"></a>
@@ -1687,6 +1699,27 @@ return Blade::render(
     ['name' => 'Julian Bashir'],
     deleteCachedView: true
 );
+```
+
+<a name="rendering-blade-fragments"></a>
+## Rendering Blade Fragments
+
+When using frontend frameworks such as [Turbo](https://turbo.hotwired.dev/) and [htmx](https://htmx.org/), you may occasionally need to only return a portion of a Blade template within your HTTP response. Blade "fragments" allow you to do just that. To get started, place a portion of your Blade template within `@fragment` and `@endfragment` directives:
+
+```blade
+@fragment('user-list')
+    <ul>
+        @foreach ($users as $user)
+            <li>{{ $user->name }}</li>
+        @endforeach
+    </ul>
+@endfragment
+```
+
+Then, when rendering the view that utilizes this template, you may invoke the `fragment` method to specify that only the specified fragment should be included in the outgoing HTTP response:
+
+```php
+return view('dashboard', ['users' => $users])->fragment('user-list');
 ```
 
 <a name="extending-blade"></a>

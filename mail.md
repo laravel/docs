@@ -199,6 +199,16 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
         );
     }
 
+If you would like, you may also specify a `replyTo` address:
+
+    return new Envelope(
+        from: new Address('jeffrey@example.com', 'Jeffrey Way'),
+        replyTo: [
+            new Address('taylor@example.com', 'Taylor Otwell'),
+        ],
+        subject: 'Order Shipped',
+    );
+
 <a name="using-a-global-from-address"></a>
 #### Using A Global `from` Address
 
@@ -997,8 +1007,8 @@ As you might expect, the "HTML" assertions assert that the HTML version of your 
         $mailable->assertHasAttachment('/path/to/file');
         $mailable->assertHasAttachment(Attachment::fromPath('/path/to/file'));
         $mailable->assertHasAttachedData($pdfData, 'name.pdf', ['mime' => 'application/pdf']);
-        $mailable->assertHasAttachementFromStorage('/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
-        $mailable->assertHasAttachementFromStorageDisk('s3', '/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
+        $mailable->assertHasAttachmentFromStorage('/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
+        $mailable->assertHasAttachmentFromStorageDisk('s3', '/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
     }
 
 <a name="testing-mailable-sending"></a>

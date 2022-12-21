@@ -236,6 +236,10 @@ For convenience, some commonly used regular expression patterns have helper meth
         //
     })->whereUuid('id');
 
+    Route::get('/user/{id}', function ($id) {
+        //
+    })->whereUlid('id');
+
     Route::get('/category/{category}', function ($category) {
         //
     })->whereIn('category', ['movie', 'song', 'painting']);

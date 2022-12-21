@@ -364,6 +364,7 @@ Laravel also offers a beautiful way to fluently test your application's JSON res
             ->assertJson(fn (AssertableJson $json) =>
                 $json->where('id', 1)
                      ->where('name', 'Victoria Faith')
+                     ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
                      ->whereNot('status', 'pending')
                      ->missing('password')
                      ->etc()
@@ -419,6 +420,7 @@ In these situations, we may use the fluent JSON object's `has` method to make as
                  ->first(fn ($json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
+                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
@@ -445,6 +447,7 @@ When testing these routes, you may use the `has` method to assert against the nu
                  ->has('users.0', fn ($json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
+                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
@@ -458,6 +461,7 @@ However, instead of making two separate calls to the `has` method to assert agai
                  ->has('users', 3, fn ($json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
+                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
@@ -644,12 +648,15 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
 [assertLocation](#assert-location)
+[assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
+[assertStreamedContent](#assert-streamed-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
 [assertRedirectContains](#assert-redirect-contains)
+[assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
 [assertSee](#assert-see)
 [assertSeeInOrder](#assert-see-in-order)
@@ -942,6 +949,13 @@ Assert the response has any JSON validation errors for the given key:
 Assert that the response has the given URI value in the `Location` header:
 
     $response->assertLocation($uri);
+    
+<a name="assert-content"></a>
+#### assertContent
+
+Assert that the given string matches the response content:
+
+    $response->assertContent($value);
 
 <a name="assert-no-content"></a>
 #### assertNoContent
@@ -949,6 +963,13 @@ Assert that the response has the given URI value in the `Location` header:
 Assert that the response has the given HTTP status code and no content:
 
     $response->assertNoContent($status = 204);
+
+<a name="assert-streamed-content"></a>
+#### assertStreamedContent
+
+Assert that the given string matches the streamed response content:
+
+    $response->assertStreamedContent($value);
 
 <a name="assert-not-found"></a>
 #### assertNotFound
@@ -984,6 +1005,13 @@ Assert that the response is a redirect to the given URI:
 Assert whether the response is redirecting to a URI that contains the given string:
 
     $response->assertRedirectContains($string);
+
+<a name="assert-redirect-to-route"></a>
+#### assertRedirectToRoute
+
+Assert that the response is a redirect to the given [named route](/docs/{{version}}/routing#named-routes):
+
+    $response->assertRedirectToRoute($name = null, $parameters = []);
 
 <a name="assert-redirect-to-signed-route"></a>
 #### assertRedirectToSignedRoute

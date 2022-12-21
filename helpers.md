@@ -4,6 +4,7 @@
 - [Available Methods](#available-methods)
 - [Other Utilities](#other-utilities)
     - [Benchmarking](#benchmarking)
+    - [Lottery](#lottery)
 
 <a name="introduction"></a>
 ## Introduction
@@ -118,6 +119,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
 [Str::isJson](#method-str-is-json)
+[Str::isUlid](#method-str-is-ulid)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
 [Str::lcfirst](#method-str-lcfirst)
@@ -189,12 +191,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [exactly](#method-fluent-str-exactly)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
+[headline](#method-fluent-str-headline)
 [inlineMarkdown](#method-fluent-str-inline-markdown)
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [isJson](#method-fluent-str-is-json)
+[isUlid](#method-fluent-str-is-ulid)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
 [lcfirst](#method-fluent-str-lcfirst)
@@ -250,6 +254,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [whenNotExactly](#method-fluent-str-when-not-exactly)
 [whenIs](#method-fluent-str-when-is)
 [whenIsAscii](#method-fluent-str-when-is-ascii)
+[whenIsUlid](#method-fluent-str-when-is-ulid)
 [whenIsUuid](#method-fluent-str-when-is-uuid)
 [whenTest](#method-fluent-str-when-test)
 [wordCount](#method-fluent-str-word-count)
@@ -311,6 +316,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [policy](#method-policy)
 [redirect](#method-redirect)
 [report](#method-report)
+[report_if](#method-report-if)
+[report_unless](#method-report-unless)
 [request](#method-request)
 [rescue](#method-rescue)
 [resolve](#method-resolve)
@@ -1512,6 +1519,21 @@ The `Str::isJson` method determines if the given string is valid JSON:
 
     // false
 
+<a name="method-str-is-ulid"></a>
+#### `Str::isUlid()` {.collection-method}
+
+The `Str::isUlid` method determines if the given string is a valid ULID:
+
+    use Illuminate\Support\Str;
+
+    $isUlid = Str::isUlid('01gd6r360bp37zj17nxb55yv40');
+
+    // true
+
+    $isUlid = Str::isUlid('laravel');
+
+    // false
+
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {.collection-method}
 
@@ -2357,6 +2379,21 @@ The `finish` method adds a single instance of the given value to a string if it 
 
     // this/string/
 
+<a name="method-fluent-str-headline"></a>
+#### `headline` {.collection-method}
+
+The `headline` method will convert strings delimited by casing, hyphens, or underscores into a space delimited string with each word's first letter capitalized:
+
+    use Illuminate\Support\Str;
+
+    $headline = Str::of('taylor_otwell')->headline();
+
+    // Taylor Otwell
+
+    $headline = Str::of('EmailNotificationSent')->headline();
+
+    // Email Notification Sent
+
 <a name="method-fluent-str-inline-markdown"></a>
 #### `inlineMarkdown` {.collection-method}
 
@@ -2445,6 +2482,21 @@ The `isJson` method determines if a given string is valid JSON:
     // true
 
     $result = Str::of('{first: "John", last: "Doe"}')->isJson();
+
+    // false
+
+<a name="method-fluent-str-is-ulid"></a>
+#### `isUlid` {.collection-method}
+
+The `isUlid` method determines if a given string is a ULID:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('01gd6r360bp37zj17nxb55yv40')->isUlid();
+
+    // true
+
+    $result = Str::of('Taylor')->isUlid();
 
     // false
 
@@ -3214,11 +3266,24 @@ The `whenIsAscii` method invokes the given closure if the string is 7 bit ASCII.
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('foo/bar')->whenIsAscii('laravel', function ($string) {
+    $string = Str::of('laravel')->whenIsAscii(function ($string) {
         return $string->title();
     });
 
     // 'Laravel'
+
+<a name="method-fluent-str-when-is-ulid"></a>
+#### `whenIsUlid` {.collection-method}
+
+The `whenIsUlid` method invokes the given closure if the string is a valid ULID. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('01gd6r360bp37zj17nxb55yv40')->whenIsUlid(function ($string) {
+        return $string->substr(0, 8);
+    });
+
+    // '01gd6r36'
 
 <a name="method-fluent-str-when-is-uuid"></a>
 #### `whenIsUuid` {.collection-method}
@@ -3227,7 +3292,7 @@ The `whenIsUuid` method invokes the given closure if the string is a valid UUID.
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('foo/bar')->whenIsUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de', function ($string) {
+    $string = Str::of('a0a2a2d2-0b87-4a18-83f2-2529882be2de')->whenIsUuid(function ($string) {
         return $string->substr(0, 8);
     });
 
@@ -3724,6 +3789,24 @@ The `report` function also accepts a string as an argument. When a string is giv
 
     report('Something went wrong.');
 
+<a name="method-report-if"></a>
+#### `report_if()` {.collection-method}
+
+The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler) if the given condition is `true`:
+
+    report_if($shouldReport, $e);
+
+    report_if($shouldReport, 'Something went wrong.');
+
+<a name="method-report-unless"></a>
+#### `report_unless()` {.collection-method}
+
+The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler) if the given condition is `false`:
+
+    report_unless($reportingDisabled, $e);
+
+    report_unless($reportingDisabled, 'Something went wrong.');
+
 <a name="method-request"></a>
 #### `request()` {.collection-method}
 
@@ -3976,3 +4059,43 @@ By default, the given callbacks will be executed once (one iteration), and their
 To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
 
     Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
+
+<a name="lottery"></a>
+### Lottery
+
+Laravel's lottery class may be used to execute callbacks based on a set of given odds. This can be particularly useful when you only want to execute code for a percentage of your incoming requests:
+
+    use Illuminate\Support\Lottery;
+
+    Lottery::odds(1, 20)
+        ->winner(fn () => $user->won())
+        ->loser(fn () => $user->lost())
+        ->choose();
+
+You may combine Laravel's lottery class with other Laravel features. For example, you may wish to only report a small percentage of slow queries to your exception handler. And, since the lottery class is callable, we may pass an instance of the class into any method that accepts callables:
+
+    use Carbon\CarbonInterval;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Lottery;
+
+    DB::whenQueryingForLongerThan(
+        CarbonInterval::seconds(2),
+        Lottery::odds(1, 100)->winner(fn () => report('Querying > 2 seconds.')),
+    );
+
+<a name="testing-lotteries"></a>
+#### Testing Lotteries
+
+Laravel provides some simple methods to allow you to easily test your application's lottery invocations:
+
+    // Lottery will always win...
+    Lottery::alwaysWin();
+
+    // Lottery will always lose...
+    Lottery::alwaysLose();
+
+    // Lottery will win then lose, and finally return to normal behavior...
+    Lottery::fix([true, false]);
+
+    // Lottery will return to normal behavior...
+    Lottery::determineResultsNormally();

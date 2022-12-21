@@ -42,7 +42,7 @@ The cache configuration file also contains various other options, which are docu
 <a name="prerequisites-database"></a>
 #### Database
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
+When using the `database` cache driver, you will need to set up a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
 
     Schema::create('cache', function ($table) {
         $table->string('key')->unique();

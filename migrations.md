@@ -15,6 +15,7 @@
     - [Available Column Types](#available-column-types)
     - [Column Modifiers](#column-modifiers)
     - [Modifying Columns](#modifying-columns)
+    - [Renaming Columns](#renaming-columns)
     - [Dropping Columns](#dropping-columns)
 - [Indexes](#indexes)
     - [Creating Indexes](#creating-indexes)
@@ -58,7 +59,14 @@ php artisan schema:dump
 php artisan schema:dump --prune
 ```
 
-When you execute this command, Laravel will write a "schema" file to your application's `database/schema` directory. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute the schema file's SQL statements first. After executing the schema file's statements, Laravel will execute any remaining migrations that were not part of the schema dump.
+When you execute this command, Laravel will write a "schema" file to your application's `database/schema` directory. The schema file's name will correspond to the database connection. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute first the SQL statements of the schema file of the database connection you are using. After executing the schema file's statements, Laravel will execute any remaining migrations that were not part of the schema dump.
+
+If your application's tests use a different database connection than the one you typically use during local development, you should ensure you have dumped a schema file using that database connection so that your tests are able to build your database. You may wish to do this after dumping the database connection you typically use during local development:
+
+```shell
+php artisan schema:dump
+php artisan schema:dump --database=testing --prune
+```
 
 You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
 
@@ -148,6 +156,19 @@ If you would like to see the SQL statements that will be executed by the migrati
 ```shell
 php artisan migrate --pretend
 ```
+
+#### Isolating Migration Execution
+
+If you are deploying your application across multiple servers and running migrations as part of your deployment process, you likely do not want two servers attempting to migrate the database at the same time. To avoid this, you may use the `isolated` option when invoking the `migrate` command.
+
+When the `isolated` option is provided, Laravel will acquire an atomic lock using your application's cache driver before attempting to run your migrations. All other attempts to run the `migrate` command while that lock is held will not execute; however, the command will still exit with a successful exit status code:
+
+```shell
+php artisan migrate --isolated
+```
+
+> **Warning**
+> To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 <a name="forcing-migrations-to-run-in-production"></a>
 #### Forcing Migrations To Run In Production
@@ -403,6 +424,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [multiPolygon](#column-method-multiPolygon)
 [nullableMorphs](#column-method-nullableMorphs)
 [nullableTimestamps](#column-method-nullableTimestamps)
+[nullableUlidMorphs](#column-method-nullableUlidMorphs)
 [nullableUuidMorphs](#column-method-nullableUuidMorphs)
 [point](#column-method-point)
 [polygon](#column-method-polygon)
@@ -429,6 +451,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [unsignedMediumInteger](#column-method-unsignedMediumInteger)
 [unsignedSmallInteger](#column-method-unsignedSmallInteger)
 [unsignedTinyInteger](#column-method-unsignedTinyInteger)
+[ulidMorphs](#column-method-ulidMorphs)
 [uuidMorphs](#column-method-uuidMorphs)
 [ulid](#column-method-ulid)
 [uuid](#column-method-uuid)
@@ -690,6 +713,13 @@ The method is similar to the [morphs](#column-method-morphs) method; however, th
 
     $table->nullableMorphs('taggable');
 
+<a name="column-method-nullableUlidMorphs"></a>
+#### `nullableUlidMorphs()` {.collection-method}
+
+The method is similar to the [ulidMorphs](#column-method-ulidMorphs) method; however, the columns that are created will be "nullable":
+
+    $table->nullableUlidMorphs('taggable');
+
 <a name="column-method-nullableUuidMorphs"></a>
 #### `nullableUuidMorphs()` {.collection-method}
 
@@ -872,6 +902,15 @@ The `unsignedTinyInteger` method creates an `UNSIGNED TINYINT` equivalent column
 
     $table->unsignedTinyInteger('votes');
 
+<a name="column-method-ulidMorphs"></a>
+#### `ulidMorphs()` {.collection-method}
+
+The `ulidMorphs` method is a convenience method that adds a `{column}_id` `CHAR(26)` equivalent column and a `{column}_type` `VARCHAR` equivalent column.
+
+This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that use ULID identifiers. In the following example, `taggable_id` and `taggable_type` columns would be created:
+
+    $table->ulidMorphs('taggable');
+
 <a name="column-method-uuidMorphs"></a>
 #### `uuidMorphs()` {.collection-method}
 
@@ -1024,21 +1063,31 @@ We could also modify a column to be nullable:
 > The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.  To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
 
 <a name="renaming-columns"></a>
-#### Renaming Columns
+### Renaming Columns
 
-To rename a column, you may use the `renameColumn` method provided by the schema builder blueprint. Before renaming a column, ensure that you have installed the `doctrine/dbal` library via the Composer package manager:
+To rename a column, you may use the `renameColumn` method provided by the schema builder:
 
     Schema::table('users', function (Blueprint $table) {
         $table->renameColumn('from', 'to');
     });
 
-> **Warning**  
-> Renaming an `enum` column is not currently supported.
+<a name="renaming-columns-on-legacy-databases"></a>
+#### Renaming Columns On Legacy Databases
+
+If you are running a database installation older than one of the following releases, you should ensure that you have installed the `doctrine/dbal` library via the Composer package manager before renaming a column:
+
+<div class="content-list" markdown="1">
+
+- MySQL < `8.0.3`
+- MariaDB < `10.5.2`
+- SQLite < `3.25.0`
+
+</div>
 
 <a name="dropping-columns"></a>
 ### Dropping Columns
 
-To drop a column, you may use the `dropColumn` method on the schema builder blueprint. If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used:
+To drop a column, you may use the `dropColumn` method on the schema builder:
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');
@@ -1050,8 +1099,11 @@ You may drop multiple columns from a table by passing an array of column names t
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
-> **Warning**  
-> Dropping or modifying multiple columns within a single migration while using an SQLite database is not supported.
+
+<a name="dropping-columns-on-legacy-databases"></a>
+#### Dropping Columns On Legacy Databases
+
+If you are running a version of SQLite prior to `3.35.0`, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used. Dropping or modifying multiple columns within a single migration while using this package is not supported.
 
 <a name="available-command-aliases"></a>
 #### Available Command Aliases
@@ -1134,6 +1186,9 @@ Alternatively, you may enable the `innodb_large_prefix` option for your database
 To rename an index, you may use the `renameIndex` method provided by the schema builder blueprint. This method accepts the current index name as its first argument and the desired name as its second argument:
 
     $table->renameIndex('from', 'to')
+
+> **Warning**  
+> If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package via the Composer package manager before the `renameIndex` method may be used.
 
 <a name="dropping-indexes"></a>
 ### Dropping Indexes

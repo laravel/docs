@@ -133,6 +133,7 @@ Method  | Description
 `->twiceMonthly(1, 16, '13:00');`  |  Run the task monthly on the 1st and 16th at 13:00
 `->lastDayOfMonth('15:00');` | Run the task on the last day of the month at 15:00
 `->quarterly();` |  Run the task on the first day of every quarter at 00:00
+`->quarterlyOn(4, '14:00');` |  Run the task every quarter on the 4th at 14:00
 `->yearly();`  |  Run the task on the first day of every year at 00:00
 `->yearlyOn(6, 1, '17:00');`  |  Run the task every year on June 1st at 17:00
 `->timezone('America/New_York');` | Set the timezone for the task
@@ -298,6 +299,16 @@ $schedule->job(new CheckUptime('https://vapor.laravel.com'))
             ->everyFiveMinutes()
             ->onOneServer();
 ```
+
+Similarly, scheduled closures must be assigned a name if they are intended to be run on one server:
+
+```php
+$schedule->call(fn () => User::resetApiRequestCount())
+    ->name('reset-api-request-count')
+    ->daily()
+    ->onOneServer();
+```
+
 
 <a name="background-tasks"></a>
 ### Background Tasks

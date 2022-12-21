@@ -143,7 +143,7 @@ export default defineConfig({
     plugins: [
         laravel({
             // ...
-            valetTls: 'my-app.test', // [!tl add]
+            valetTls: 'my-app.test', // [tl! add]
         }),
     ],
 });
@@ -159,14 +159,14 @@ const host = 'my-app.test'; // [tl! add]
 
 export default defineConfig({
     // ...
-    server: { // [!tl add]
-        host, // [!tl add]
-        hmr: { host }, // [!tl add]
-        https: { // [!tl add]
-            key: fs.readFileSync(`/path/to/${host}.key`), // [!tl add]
-            cert: fs.readFileSync(`/path/to/${host}.crt`), // [!tl add]
-        }, // [!tl add]
-    }, // [!tl add]
+    server: { // [tl! add]
+        host, // [tl! add]
+        hmr: { host }, // [tl! add]
+        https: { // [tl! add]
+            key: fs.readFileSync(`/path/to/${host}.key`), // [tl! add]
+            cert: fs.readFileSync(`/path/to/${host}.crt`), // [tl! add]
+        }, // [tl! add]
+    }, // [tl! add]
 });
 ```
 
@@ -336,7 +336,7 @@ createInertiaApp({
 <a name="url-processing"></a>
 ### URL Processing
 
-When using Vite and referencing assets in your application's HTML, CSS, or JS, there are a couple of things to consider. First, if you reference assets with an absolute path, Vite will not include the asset in the build; therefore, you should ensure that the asset is available in your public directory.
+When using Vite and referencing assets in your application's HTML, CSS, or JS, there are a couple of caveats to consider. First, if you reference assets with an absolute path, Vite will not include the asset in the build; therefore, you should ensure that the asset is available in your public directory.
 
 When referencing relative asset paths, you should remember that the paths are relative to the file where they are referenced. Any assets referenced via a relative path will be re-written, versioned, and bundled by Vite.
 
@@ -738,6 +738,7 @@ Out of the box, Laravel's Vite plugin uses sensible conventions that should work
     {{
         Vite::useHotFile(storage_path('vite.hot')) // Customize the "hot" file...
             ->useBuildDirectory('bundle') // Customize the build directory...
+            ->useManifestFilename('assets.json') // Customize the manifest filename...
             ->withEntryPoints(['resources/js/app.js']) // Specify the entry points...
     }}
 </head>
@@ -757,5 +758,8 @@ export default defineConfig({
             input: ['resources/js/app.js'], // Specify the entry points...
         }),
     ],
+    build: {
+      manifest: 'assets.json', // Customize the manifest filename...
+    },
 });
 ```

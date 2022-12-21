@@ -858,6 +858,8 @@ When chaining jobs, you may use the `catch` method to specify a closure that sho
     ])->catch(function (Throwable $e) {
         // A job within the chain has failed...
     })->dispatch();
+    
+> {note} Since chain callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within chain callbacks.
 
 <a name="customizing-the-queue-and-connection"></a>
 ### Customizing The Queue & Connection
@@ -1466,6 +1468,10 @@ Sometimes, your `jobs_batches` table may accumulate batch records for batches th
 
     $schedule->command('queue:prune-batches --hours=48 --unfinished=72')->daily();
 
+Likewise, your `jobs_batches` table may also accumulate batch records for cancelled batches. You may instruct the `queue:prune-batches` command to prune these cancelled batch records using the `cancelled` option:
+
+    $schedule->command('queue:prune-batches --hours=48 --cancelled=72')->daily();
+
 <a name="queueing-closures"></a>
 ## Queueing Closures
 
@@ -1486,6 +1492,8 @@ Using the `catch` method, you may provide a closure that should be executed if t
     })->catch(function (Throwable $e) {
         // This job has failed...
     });
+    
+> {note} Since `catch` callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within `catch` callbacks.
 
 <a name="running-the-queue-worker"></a>
 ## Running The Queue Worker
@@ -1501,6 +1509,12 @@ php artisan queue:work
 
 > **Note**  
 > To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
+
+You may include the `-v` flag when invoking the `queue:work` command if you would like the processed job IDs to be included in the command's output:
+
+```shell
+php artisan queue:work -v
+```
 
 Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment). In addition, remember that any static state created or modified by your application will not be automatically reset between jobs.
 
