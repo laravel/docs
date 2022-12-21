@@ -1819,7 +1819,7 @@ Once the component has been defined, we can easily select a date within the date
         {
             $this->browse(function (Browser $browser) {
                 $browser->visit('/')
-                        ->within(new DatePicker, function ($browser) {
+                        ->within(new DatePicker, function (Browser $browser) {
                             $browser->selectDate(2019, 1, 30);
                         })
                         ->assertSee('January');

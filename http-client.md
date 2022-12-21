@@ -237,6 +237,8 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 
 If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error, you may use the `throw` or `throwIf` methods:
 
+    use Illuminate\Http\Client\Response;
+
     $response = Http::post(/* ... */);
 
     // Throw an exception if a client or server error occurred...
@@ -246,13 +248,13 @@ If you have a response instance and would like to throw an instance of `Illumina
     $response->throwIf($condition);
 
     // Throw an exception if an error occurred and the given closure resolves to true...
-    $response->throwIf(fn ($response) => true);
+    $response->throwIf(fn (Response $response) => true);
 
     // Throw an exception if an error occurred and the given condition is false...
     $response->throwUnless($condition);
 
     // Throw an exception if an error occurred and the given closure resolves to false...
-    $response->throwUnless(fn ($response) => false);
+    $response->throwUnless(fn (Response $response) => false);
 
     return $response['user']['id'];
 

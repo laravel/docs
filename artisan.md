@@ -442,7 +442,7 @@ The `anticipate` method can be used to provide auto-completion for possible choi
 
 Alternatively, you may pass a closure as the second argument to the `anticipate` method. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
 
-    $name = $this->anticipate('What is your address?', function ($input) {
+    $name = $this->anticipate('What is your address?', function (string $input) {
         // Return auto-completion options...
     });
 
@@ -667,7 +667,7 @@ As you may know, operating systems allow signals to be sent to running processes
 
 To listen for multiple signals at once, you may provide an array of signals to the `trap` method:
 
-    $this->trap([SIGTERM, SIGQUIT], function ($signal) {
+    $this->trap([SIGTERM, SIGQUIT], function (int $signal) {
         $this->shouldKeepRunning = false;
 
         dump($signal); // SIGTERM / SIGQUIT

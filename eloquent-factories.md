@@ -241,10 +241,12 @@ In this example, five users will be created with an `admin` value of `Y` and fiv
 
 If necessary, you may include a closure as a sequence value. The closure will be invoked each time the sequence needs a new value:
 
+    use Illuminate\Database\Eloquent\Factories\Sequence;
+
     $users = User::factory()
                     ->count(10)
                     ->state(new Sequence(
-                        fn ($sequence) => ['role' => UserRoles::all()->random()],
+                        fn (Sequence $sequence) => ['role' => UserRoles::all()->random()],
                     ))
                     ->create();
 
@@ -252,7 +254,7 @@ Within a sequence closure, you may access the `$index` or `$count` properties on
 
     $users = User::factory()
                     ->count(10)
-                    ->sequence(fn ($sequence) => ['name' => 'Name '.$sequence->index])
+                    ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])
                     ->create();
 
 <a name="factory-relationships"></a>

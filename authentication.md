@@ -275,10 +275,12 @@ If you wish, you may also add extra query conditions to the authentication query
 
 For complex query conditions, you may provide a closure in your array of credentials. This closure will be invoked with the query instance, allowing you to customize the query based on your application's needs:
 
+    use Illuminate\Database\Eloquent\Builder;
+
     if (Auth::attempt([
         'email' => $email, 
         'password' => $password, 
-        fn ($query) => $query->has('activeSubscription'),
+        fn (Builder $query) => $query->has('activeSubscription'),
     ])) {
         // Authentication was successful...
     }

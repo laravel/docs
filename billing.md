@@ -338,6 +338,7 @@ Typically, when your application's users update their name, email address, or ot
 
 To automate this, you may define an event listener on your billable model that reacts to the model's `updated` event. Then, within your event listener, you may invoke the `syncStripeCustomerDetails` method on the model:
 
+    use App\Models\User;
     use function Illuminate\Events\queueable;
 
     /**
@@ -345,7 +346,7 @@ To automate this, you may define an event listener on your billable model that r
      */
     protected static function booted(): void
     {
-        static::updated(queueable(function ($customer) {
+        static::updated(queueable(function (User $customer) {
             if ($customer->hasStripeId()) {
                 $customer->syncStripeCustomerDetails();
             }

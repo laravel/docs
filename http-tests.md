@@ -326,7 +326,7 @@ If you would like to verify that the JSON response contains the given data at a 
 
 The `assertJsonPath` method also accepts a closure, which may be used to dynamically determine if the assertion should pass:
 
-    $response->assertJsonPath('team.owner.name', fn ($name) => strlen($name) >= 3);
+    $response->assertJsonPath('team.owner.name', fn (string $name) => strlen($name) >= 3);
 
 <a name="fluent-json-testing"></a>
 ### Fluent JSON Testing
@@ -346,7 +346,7 @@ Laravel also offers a beautiful way to fluently test your application's JSON res
             ->assertJson(fn (AssertableJson $json) =>
                 $json->where('id', 1)
                      ->where('name', 'Victoria Faith')
-                     ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
+                     ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
                      ->whereNot('status', 'pending')
                      ->missing('password')
                      ->etc()
@@ -399,10 +399,10 @@ In these situations, we may use the fluent JSON object's `has` method to make as
     $response
         ->assertJson(fn (AssertableJson $json) =>
             $json->has(3)
-                 ->first(fn ($json) =>
+                 ->first(fn (AssertableJson $json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
-                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
+                         ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
@@ -426,10 +426,10 @@ When testing these routes, you may use the `has` method to assert against the nu
         ->assertJson(fn (AssertableJson $json) =>
             $json->has('meta')
                  ->has('users', 3)
-                 ->has('users.0', fn ($json) =>
+                 ->has('users.0', fn (AssertableJson $json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
-                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
+                         ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
@@ -440,10 +440,10 @@ However, instead of making two separate calls to the `has` method to assert agai
     $response
         ->assertJson(fn (AssertableJson $json) =>
             $json->has('meta')
-                 ->has('users', 3, fn ($json) =>
+                 ->has('users', 3, fn (AssertableJson $json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
-                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
+                         ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )

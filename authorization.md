@@ -223,9 +223,10 @@ Because hiding resources via a `404` response is such a common pattern for web a
 
 Sometimes, you may wish to grant all abilities to a specific user. You may use the `before` method to define a closure that is run before all other authorization checks:
 
+    use App\Models\User;
     use Illuminate\Support\Facades\Gate;
 
-    Gate::before(function ($user, $ability) {
+    Gate::before(function (User $user, string $ability) {
         if ($user->isAdministrator()) {
             return true;
         }
@@ -235,7 +236,9 @@ If the `before` closure returns a non-null result that result will be considered
 
 You may use the `after` method to define a closure to be executed after all other authorization checks:
 
-    Gate::after(function ($user, $ability, $result, $arguments) {
+    use App\Models\User;
+
+    Gate::after(function (User $user, string $ability, bool|null $result, mixed $arguments) {
         if ($user->isAdministrator()) {
             return true;
         }
@@ -249,11 +252,12 @@ Similar to the `before` method, if the `after` closure returns a non-null result
 Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicated gate that corresponds to the action. Laravel allows you to perform these types of "inline" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:
 
 ```php
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
-Gate::allowIf(fn ($user) => $user->isAdministrator());
+Gate::allowIf(fn (User $user) => $user->isAdministrator());
 
-Gate::denyIf(fn ($user) => $user->banned());
+Gate::denyIf(fn (User $user) => $user->banned());
 ```
 
 If the action is not authorized or if no user is currently authenticated, Laravel will automatically throw an `Illuminate\Auth\Access\AuthorizationException` exception. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler.
@@ -325,7 +329,7 @@ If you would like to define your own policy discovery logic, you may register a 
 
     use Illuminate\Support\Facades\Gate;
 
-    Gate::guessPolicyNamesUsing(function ($modelClass) {
+    Gate::guessPolicyNamesUsing(function (string $modelClass) {
         // Return the name of the policy class for the given model...
     });
 

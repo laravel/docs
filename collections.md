@@ -759,7 +759,7 @@ If the collection is empty, the `every` method will return true:
 
     $collection = collect([]);
 
-    $collection->every(function ($value, $key) {
+    $collection->every(function (int $value, int $key) {
         return $value > 2;
     });
 
@@ -1873,7 +1873,9 @@ If the collection instance has fewer items than requested, the `random` method w
 
 The `random` method also accepts a closure, which will receive the current collection instance:
 
-    $random = $collection->random(fn ($items) => min(10, count($items)));
+    use Illuminate\Support\Collection;
+
+    $random = $collection->random(fn (Collection $items) => min(10, count($items)));
 
     $random->all();
 
@@ -2356,8 +2358,8 @@ When sorting a collection by multiple attributes, you may also provide closures 
     ]);
 
     $sorted = $collection->sortBy([
-        fn ($a, $b) => $a['name'] <=> $b['name'],
-        fn ($a, $b) => $b['age'] <=> $a['age'],
+        fn (array $a, array $b) => $a['name'] <=> $b['name'],
+        fn (array $a, array $b) => $b['age'] <=> $a['age'],
     ]);
 
     $sorted->values()->all();
@@ -2951,7 +2953,7 @@ The `whenEmpty` method will execute the given callback when the collection is em
 
     $collection = collect();
 
-    $collection->whenEmpty(function ($collection) {
+    $collection->whenEmpty(function (Collection $collection) {
         return $collection->push('Adam');
     });
 
@@ -2982,7 +2984,7 @@ The `whenNotEmpty` method will execute the given callback when the collection is
 
     $collection = collect(['michael', 'tom']);
 
-    $collection->whenNotEmpty(function ($collection) {
+    $collection->whenNotEmpty(function (Collection $collection) {
         return $collection->push('adam');
     });
 
@@ -2993,7 +2995,7 @@ The `whenNotEmpty` method will execute the given callback when the collection is
 
     $collection = collect();
 
-    $collection->whenNotEmpty(function ($collection) {
+    $collection->whenNotEmpty(function (Collection $collection) {
         return $collection->push('adam');
     });
 
@@ -3529,7 +3531,7 @@ To illustrate the usage of this method, imagine an application that submits invo
         ->takeUntilTimeout(
             Carbon::createFromTimestamp(LARAVEL_START)->add(14, 'minutes')
         )
-        ->each(fn ($invoice) => $invoice->submit());
+        ->each(fn (Invoice $invoice) => $invoice->submit());
 
 <a name="method-tapEach"></a>
 #### `tapEach()` {.collection-method}

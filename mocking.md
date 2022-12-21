@@ -464,7 +464,7 @@ The mailable instance also includes several helpful methods for examining the at
 
     use Illuminate\Mail\Mailables\Attachment;
 
-    Mail::assertSent(OrderShipped::class, function ($mail) {
+    Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) {
         return $mail->hasAttachment(
             Attachment::fromPath('/path/to/file')
                     ->as('name.pdf')
@@ -472,13 +472,13 @@ The mailable instance also includes several helpful methods for examining the at
         );
     });
 
-    Mail::assertSent(OrderShipped::class, function ($mail) {
+    Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) {
         return $mail->hasAttachment(
             Attachment::fromStorageDisk('s3', '/path/to/file')
         );
     });
 
-    Mail::assertSent(OrderShipped::class, function ($mail) use ($pdfData) {
+    Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($pdfData) {
         return $mail->hasAttachment(
             Attachment::fromData(fn () => $pdfData, 'name.pdf')
         );

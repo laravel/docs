@@ -648,9 +648,10 @@ After Scout retrieves a list of matching Eloquent models from your application's
 
 ```php
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Builder;
 
 $orders = Order::search('Star Trek')
-    ->query(fn ($query) => $query->with('invoices'))
+    ->query(fn (Builder $query) => $query->with('invoices'))
     ->get();
 ```
 

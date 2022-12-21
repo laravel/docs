@@ -3294,7 +3294,7 @@ The `whenIsUlid` method invokes the given closure if the string is a valid ULID.
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('01gd6r360bp37zj17nxb55yv40')->whenIsUlid(function ($string) {
+    $string = Str::of('01gd6r360bp37zj17nxb55yv40')->whenIsUlid(function (Stringable $string) {
         return $string->substr(0, 8);
     });
 
