@@ -237,12 +237,13 @@ php artisan mail:send 1 --isolated=12
 By default, isolation locks expire after the command is finished. Or, if the command is interrupted and unable to finish, the lock will expire after one hour. However, you may adjust the lock expiration time by defining a `isolationLockExpiresAt` method on your command:
 
 ```php
+use DateTimeInterface;
+use DateInterval;
+
 /**
  * Determine when an isolation lock expires for the command.
- *
- * @return \DateTimeInterface|\DateInterval
  */
-public function isolationLockExpiresAt()
+public function isolationLockExpiresAt(): DateTimeInterface|DateInterval
 {
     return now()->addMinutes(5);
 }
