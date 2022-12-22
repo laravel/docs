@@ -7,6 +7,7 @@
     - [Ignoring Exceptions By Type](#ignoring-exceptions-by-type)
     - [Rendering Exceptions](#rendering-exceptions)
     - [Reportable & Renderable Exceptions](#renderable-exceptions)
+    - [Mapping Exceptions By Type](#mapping-exceptions-by-type)
 - [HTTP Exceptions](#http-exceptions)
     - [Custom HTTP Error Pages](#custom-http-error-pages)
 
@@ -241,6 +242,33 @@ If your exception contains custom reporting logic that is only necessary when ce
     }
 
 > {tip} You may type-hint any required dependencies of the `report` method and they will automatically be injected into the method by Laravel's [service container](/docs/{{version}}/container).
+
+<a name="mapping-exceptions-by-type"></a>
+### Mapping Exceptions By Type
+
+Sometimes, third-party libraries used by your application may throw exceptions that you wish to make [renderable](#renderable-exceptions), but are unable to do so because you do not have control over the definitions of third-party exceptions.
+
+Thankfully, Laravel allows you to conveniently map these exceptions to other exception types that you manage within your application. To accomplish this, call the `map` method from your exception handler's `register` method:
+
+    use League\Flysystem\Exception;
+    use App\Exceptions\FilesystemException;
+
+    /**
+     * Register the exception handling callbacks for the application.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->map(Exception::class, FilesystemException::class);
+    }
+
+If you would like more control over the creation of the target exception, you may pass a closure to the `map` method:
+
+    use League\Flysystem\Exception;
+    use App\Exceptions\FilesystemException;
+
+    $this->map(fn (Exception $e) => new FilesystemException($e));
 
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
