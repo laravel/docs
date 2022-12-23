@@ -1002,7 +1002,7 @@ One approach to specifying the maximum number of times a job may be attempted is
 php artisan queue:work --tries=3
 ```
 
-If a job exceeds its maximum number of attempts, it will be considered a "failed" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs). For example, with `--tries=3` the jobs will be attempted thrice, thus retried twice. But with `--tries=1` the jobs in the worker will not be retried at all. There is one exception, if you specify the attempts to be zero with `--tries=0` the jobs will be retried indefinitely. 
+If a job exceeds its maximum number of attempts, it will be considered a "failed" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs). If `--tries=0` is provided to the `queue:work` command, the job will retried indefinitely.
 
 You may take a more granular approach by defining the maximum number of times a job may be attempted on the job class itself. If the maximum number of attempts is specified on the job, it will take precedence over the `--tries` value provided on the command line:
 
