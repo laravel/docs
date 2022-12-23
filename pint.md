@@ -45,6 +45,16 @@ If you would like Pint to simply inspect your code for style errors without actu
 ./vendor/bin/pint --test
 ```
 
+You can also run pint on selected files or directories by specifying `path` argument:
+
+```shell
+# fix User model
+./vendor/bin/pint app/Models/User.php
+
+# fix all models
+./vendor/bin/pint app/Models
+```
+
 <a name="configuring-pint"></a>
 ## Configuring Pint
 
