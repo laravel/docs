@@ -996,13 +996,13 @@ Alternatively, you may specify the job's connection by calling the `onConnection
 
 If one of your queued jobs is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
 
-One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies a more specific number of times it may be attempted:
+One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies a number of times it may be attempted itself:
 
 ```shell
 php artisan queue:work --tries=3
 ```
 
-If a job exceeds its maximum number of attempts, it will be considered a "failed" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs).
+If a job exceeds its maximum number of attempts, it will be considered a "failed" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs). For example, with `--tries=3` the jobs will be attempted thrice, thus retried twice. But with `--tries=1` the jobs in the worker will not be retried at all. There is one exception, if you specify the attempts to be zero with `--tries=0` the jobs will be retried indefinitely. 
 
 You may take a more granular approach by defining the maximum number of times a job may be attempted on the job class itself. If the maximum number of attempts is specified on the job, it will take precedence over the `--tries` value provided on the command line:
 
