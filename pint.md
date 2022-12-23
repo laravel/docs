@@ -33,6 +33,14 @@ You can instruct Pint to fix code style issues by invoking the `pint` binary tha
 ./vendor/bin/pint
 ```
 
+You may also run Pint on specific files or directories:
+
+```shell
+./vendor/bin/pint app/Models
+
+./vendor/bin/pint app/Models/User.php
+```
+
 Pint will display a thorough list of all of the files that it updates. You can view even more detail about Pint's changes by providing the `-v` option when invoking Pint:
 
 ```shell
