@@ -1630,6 +1630,9 @@ When models are being created within a database transaction, you may want to ins
             //
         }
     }
+	
+> **Note**  
+> If you choose to handle events after transactions are committed, you will not be able to examine attribute changes, such as by using `getOriginal`, in the observer event methods.
 
 <a name="muting-events"></a>
 ### Muting Events
