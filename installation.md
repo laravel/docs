@@ -55,13 +55,13 @@ Before creating your first Laravel project, you should ensure that your local ma
 
 After you have installed PHP and Composer, you may create a new Laravel project via the Composer `create-project` command:
 
-```nothing
+```shell
 composer create-project laravel/laravel example-app
 ```
 
 Or, you may create new Laravel projects by globally installing the Laravel installer via Composer:
 
-```nothing
+```shell
 composer global require laravel/installer
 
 laravel new example-app
@@ -69,7 +69,7 @@ laravel new example-app
 
 After the project has been created, start Laravel's local development server using the Laravel's Artisan CLI `serve` command:
 
-```nothing
+```shell
 cd example-app
 
 php artisan serve
