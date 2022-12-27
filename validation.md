@@ -1018,9 +1018,9 @@ The field under validation must be a valid, non-relative date according to the `
 The field under validation must be equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance.
 
 <a name="rule-date-format"></a>
-#### date_format:_format_
+#### date_format:_format_,...
 
-The field under validation must match the given _format_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
+The field under validation must match one of the given _formats_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
 
 <a name="rule-decimal"></a>
 #### decimal:_min_,_max_
