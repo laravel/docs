@@ -6,6 +6,7 @@
 - [Interacting With The Session](#interacting-with-the-session)
     - [Retrieving Data](#retrieving-data)
     - [Storing Data](#storing-data)
+    - [Replacing Data](#replacing-data)
     - [Flash Data](#flash-data)
     - [Deleting Data](#deleting-data)
     - [Regenerating The Session ID](#regenerating-the-session-id)
@@ -199,6 +200,27 @@ If your session data contains an integer you wish to increment or decrement, you
     $request->session()->decrement('count');
 
     $request->session()->decrement('count', $decrementBy = 2);
+
+
+<a name="replacing-data"></a>
+### Replacing Data
+
+You can use `replace` method To replace the given session value. It also accepts several keys:
+
+    $request->session()->replace([
+      'key1' => 'value1' ,
+      'key2' => 'value2'
+    ]);
+
+As `replace` uses the `put` method, and it's based on the `Arr::set()`  [helper method](/docs/{{version}}/helpers#method-data-set), you can replace session in nested order:
+
+    // Put user's name in nested sessoin
+    $request->session()->put('user', ['name' => 'John']);
+
+    // Replace user's name
+    $request->session()->replace([
+        'user.name' => 'Taylor'
+    ]);
 
 <a name="flash-data"></a>
 ### Flash Data
