@@ -1207,7 +1207,7 @@ Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->forma
 
 Subscription payments fail for various reasons, such as expired cards or a card having insufficient funds. When this happens, we recommend that you let Paddle handle payment failures for you. Specifically, you may [setup Paddle's automatic billing emails](https://vendors.paddle.com/subscription-settings) in your Paddle dashboard.
 
-Alternatively, you can perform more precise customization by listening for the `subscription_payment_failed` alert and enabling the "Subscription Payment Failed" option in the Webhook settings of your Paddle dashboard:
+Alternatively, you can perform more precise customization by [listening](/docs/{{version}}/events) for the `subscription_payment_failed` webhook from Stripe via the `WebhookReceived` event dispatched by Cashier. You should also ensure the "Subscription Payment Failed" option is enabled in the Webhook settings of your Paddle dashboard:
 
     <?php
 
@@ -1226,7 +1226,7 @@ Alternatively, you can perform more precise customization by listening for the `
         public function handle(WebhookReceived $event)
         {
             if ($event->payload['alert_name'] === 'subscription_payment_failed') {
-            // Handle the failed subscription payment...
+                // Handle the failed subscription payment...
             }
         }
     }
