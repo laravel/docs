@@ -32,6 +32,7 @@
     - [Changing Prices](#changing-prices)
     - [Subscription Quantity](#subscription-quantity)
     - [Subscriptions With Multiple Products](#subscriptions-with-multiple-products)
+    - [Multiple Subscriptions](#multiple-subscriptions)
     - [Metered Billing](#metered-billing)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
@@ -1105,7 +1106,6 @@ You can also retrieve a specific price using the `findItemOrFail` method:
     $user = User::find(1);
 
     $subscriptionItem = $user->subscription('default')->findItemOrFail('price_chat');
-
 
 <a name="multiple-subscriptions"></a>
 ### Multiple Subscriptions

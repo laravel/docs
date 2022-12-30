@@ -28,6 +28,7 @@
     - [Subscription Modifiers](#subscription-modifiers)
     - [Pausing Subscriptions](#pausing-subscriptions)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
+    - [Multiple Subscriptions](#multiple-subscriptions)
 - [Subscription Trials](#subscription-trials)
     - [With Payment Method Up Front](#with-payment-method-up-front)
     - [Without Payment Method Up Front](#without-payment-method-up-front)
@@ -854,6 +855,52 @@ If you wish to cancel a subscription immediately, you may call the `cancelNow` m
 
 > **Warning**  
 > Paddle's subscriptions cannot be resumed after cancellation. If your customer wishes to resume their subscription, they will have to subscribe to a new subscription.
+
+<a name="multiple-subscriptions"></a>
+### Multiple Subscriptions
+
+Paddle allows your customers also to have multiple subscriptions. For example, you might run a sports service that offers a swimming subscription and a gym subscription. Depending on how frequently you come you can have different prices for each of these types of subscriptions. Of course, customers should be able to subscribe to either one or both. In you application you can make the differentiation between these two types of subscriptions by making use of the `$name` parameter when referencing subscriptions.
+
+For example, if you want to let the customer start a swimming subscription: 
+
+    use Illuminate\Http\Request;
+
+    Route::post('/swimming/subscribe', function (Request $request) {
+        $request->user()->newSubscription('swimming')
+            ->price($swimmingMonthly = 12345)
+            ->create($request->paymentMethodId);
+
+        // ...
+    });
+
+Notice how the first parameter of `newSubscription` is now `swimming`. This is to differentiate from other types of subscriptions. Usually in most services there's only one type of subscription and then this can stay to its `default` value.
+
+Using a different type of subscription will allow you to handle plan changes separately without affecting the other subscription. Thing such as invoicing and billing cycle will also differ for these two type of subscriptions.
+
+Now let's create a gym subscription as well for the customer:
+
+    use Illuminate\Http\Request;
+
+    Route::post('/gym/subscribe', function (Request $request) {
+        $request->user()->newSubscription('gym')
+            ->price($gymYearly = 67890)
+            ->create($request->paymentMethodId);
+
+        // ...
+    });
+
+In this example, the customer opted to pay for the yearly gym price. Now let's say that after a while the customer decides to also go for a yearly swimming membership. We can simply swap the price on the swimming subscription:
+
+    $user->subscription('swimming')->swap($swimmingYearly = 34567);
+
+Now the customer has two annual billed subscriptions. After a while the customer might decide to cancel their gym membership:
+
+    $user->subscription('gym')->cancel();
+
+And now their gym subscription will end after the grace period while their yearly swimming membership will continue. As you probably already understand you can use any action you like against one subscription without affecting the other one.
+
+> **Note**  
+> When choosing a subscription type which is used as the `$name` parameter it's important to know that you cannot change this afterwards as it's directly saved in the database alongside your subscription.
 
 <a name="subscription-trials"></a>
 ## Subscription Trials
