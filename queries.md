@@ -560,15 +560,15 @@ The `whereNotIn` method verifies that the given column's value is not contained 
                         ->whereNotIn('id', [1, 2, 3])
                         ->get();
 
-You can also pass a query object as the second parameter:
+You may also provide a query object as the `whereIn` method's second argument:
 
-    $query = DB::table('users')->select('id')->where('is_active', 0);
+    $activeUsers = DB::table('users')->select('id')->where('is_active', 0);
 
     $users = DB::table('comments')
-                        ->whereIn('user_id', $query)
+                        ->whereIn('user_id', $activeUsers)
                         ->get();
 
-The query above will produce the following SQL:
+The example above will produce the following SQL:
 
 ```sql
 select * from comments where user_id in (
