@@ -1232,7 +1232,7 @@ The `Scope` interface requires you to implement one method: `apply`. The `apply`
 <a name="applying-global-scopes"></a>
 #### Applying Global Scopes
 
-To assign a global scope to a model, you should override the model's `booted` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:
+To assign a global scope to a model, you should override the model's `boot` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:
 
     <?php
 
@@ -1244,11 +1244,11 @@ To assign a global scope to a model, you should override the model's `booted` me
     class User extends Model
     {
         /**
-         * The "booted" method of the model.
+         * The "boot" method of the model.
          *
          * @return void
          */
-        protected static function booted()
+        protected static function boot()
         {
             static::addGlobalScope(new AncientScope);
         }
@@ -1275,11 +1275,11 @@ Eloquent also allows you to define global scopes using closures, which is partic
     class User extends Model
     {
         /**
-         * The "booted" method of the model.
+         * The "boot" method of the model.
          *
          * @return void
          */
-        protected static function booted()
+        protected static function boot()
         {
             static::addGlobalScope('ancient', function (Builder $builder) {
                 $builder->where('created_at', '<', now()->subYears(2000));
@@ -1458,7 +1458,7 @@ After defining and mapping your Eloquent events, you may use [event listeners](/
 <a name="events-using-closures"></a>
 ### Using Closures
 
-Instead of using custom event classes, you may register closures that execute when various model events are dispatched. Typically, you should register these closures in the `booted` method of your model:
+Instead of using custom event classes, you may register closures that execute when various model events are dispatched. Typically, you should register these closures in the `boot` method of your model:
 
     <?php
 
@@ -1469,11 +1469,11 @@ Instead of using custom event classes, you may register closures that execute wh
     class User extends Model
     {
         /**
-         * The "booted" method of the model.
+         * The "boot" method of the model.
          *
          * @return void
          */
-        protected static function booted()
+        protected static function boot()
         {
             static::created(function ($user) {
                 //
