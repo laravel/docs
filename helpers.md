@@ -1021,7 +1021,7 @@ The `data_fill` function sets a missing value within a nested array or object us
 
     data_fill($data, 'products.desk.price', 200);
 
-    // ['products' => ['desk' => ['price' => 100]]]
+    // ['products' => ['desk' => ['price' => 200]]]
 
     data_fill($data, 'products.desk.discount', 10);
 
