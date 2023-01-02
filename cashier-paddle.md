@@ -875,7 +875,7 @@ For example, if you want to let the customer start a swimming subscription:
 
 Notice how the first parameter of `newSubscription` is now `swimming`. This is to differentiate from other types of subscriptions. Usually in most services there's only one type of subscription and then this can stay to its `default` value.
 
-Using a different type of subscription will allow you to handle plan changes separately without affecting the other subscription. Thing such as invoicing and billing cycle will also differ for these two type of subscriptions.
+Using a different type of subscription will allow you to handle plan changes separately without affecting the other subscription. Tasks such as invoicing and billing cycles will also differ for these two type of subscriptions.
 
 Now let's create a gym subscription as well for the customer:
 
