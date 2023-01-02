@@ -859,7 +859,7 @@ If you wish to cancel a subscription immediately, you may call the `cancelNow` m
 <a name="multiple-subscriptions"></a>
 ### Multiple Subscriptions
 
-Paddle allows your customers also to have multiple subscriptions. For example, you might run a sports service that offers a swimming subscription and a gym subscription. Depending on how frequently you come you can have different prices for each of these types of subscriptions. Of course, customers should be able to subscribe to either one or both. In you application you can make the differentiation between these two types of subscriptions by making use of the `$name` parameter when referencing subscriptions.
+Paddle allows your customers to have multiple subscriptions. For example, you might run a sports service that offers a swimming subscription and a gym subscription. Depending on how frequently you come, you can have different prices for each of these types of subscriptions. Of course, customers should be able to subscribe to either one or both. In your application you can make the differentiation between these two types of subscriptions by making use of the `$name` parameter when referencing subscriptions.
 
 For example, if you want to let the customer start a swimming subscription: 
 
