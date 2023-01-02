@@ -154,3 +154,156 @@ Some seeding operations may cause you to alter or lose data. In order to protect
 ```shell
 php artisan db:seed --force
 ```
+
+## Seeders I/O
+
+While your seeder is executing, you may need to receive input or send output to the console. Since any seeder class extends the abstract `Illuminate\Database\Seeder` that uses the `Illuminate\Console\Command`, you can use almost the same I/O helper methods that a console command offers via `$this->command` property. 
+
+### Prompting For Input
+
+In addition to displaying output, you may also ask the user to provide input during the execution of your command. The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command:
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $name = $this->command->ask('What is your name?');
+    }
+
+The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful when asking for sensitive information such as passwords:
+
+    $password = $this->command->secret('What is the password?');
+
+<a name="asking-for-confirmation"></a>
+#### Asking For Confirmation
+
+If you need to ask the user for a simple "yes or no" confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` or `yes` in response to the prompt, the method will return `true`.
+
+    if ($this->command->confirm('Do you wish to continue?')) {
+        //
+    }
+
+If necessary, you may specify that the confirmation prompt should return `true` by default by passing `true` as the second argument to the `confirm` method:
+
+    if ($this->command->confirm('Do you wish to continue?', true)) {
+        //
+    }
+
+<a name="auto-completion"></a>
+#### Auto-Completion
+
+The `anticipate` method can be used to provide auto-completion for possible choices. The user can still provide any answer, regardless of the auto-completion hints:
+
+    $name = $this->command->anticipate('What is your name?', ['Taylor', 'Dayle']);
+
+Alternatively, you may pass a closure as the second argument to the `anticipate` method. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
+
+    $name = $this->command->anticipate('What is your address?', function ($input) {
+        // Return auto-completion options...
+    });
+
+<a name="multiple-choice-questions"></a>
+#### Multiple Choice Questions
+
+If you need to give the user a predefined set of choices when asking a question, you may use the `choice` method. You may set the array index of the default value to be returned if no option is chosen by passing the index as the third argument to the method:
+
+    $name = $this->command->choice(
+        'What is your name?',
+        ['Taylor', 'Dayle'],
+        $defaultIndex
+    );
+
+In addition, the `choice` method accepts optional fourth and fifth arguments for determining the maximum number of attempts to select a valid response and whether multiple selections are permitted:
+
+    $name = $this->command->choice(
+        'What is your name?',
+        ['Taylor', 'Dayle'],
+        $defaultIndex,
+        $maxAttempts = null,
+        $allowMultipleSelections = false
+    );
+
+<a name="writing-output"></a>
+### Writing Output
+
+To send output to the console, you may use the `line`, `info`, `comment`, `question`, `warn`, and `error` methods. Each of these methods will use appropriate ANSI colors for their purpose. For example, let's display some general information to the user. Typically, the `info` method will display in the console as green colored text:
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        // ...
+
+        $this->command->info('The command was successful!');
+    }
+
+To display an error message, use the `error` method. Error message text is typically displayed in red:
+
+    $this->command->error('Something went wrong!');
+
+You may use the `line` method to display plain, uncolored text:
+
+    $this->command->line('Display this on the screen');
+
+You may use the `newLine` method to display a blank line:
+
+    // Write a single blank line...
+    $this->command->newLine();
+
+    // Write three blank lines...
+    $this->command->newLine(3);
+
+<a name="tables"></a>
+#### Tables
+
+The `table` method makes it easy to correctly format multiple rows / columns of data. All you need to do is provide the column names and the data for the table and Laravel will
+automatically calculate the appropriate width and height of the table for you:
+
+    use App\Models\User;
+
+    $this->command->table(
+        ['Name', 'Email'],
+        User::factory()->count(100)->create()->toArray()
+    );
+
+<a name="progress-bars"></a>
+#### Progress Bars
+
+For long running tasks, it can be helpful to show a progress bar that informs users how complete the task is. Using the `withProgressBar` method, Laravel will display a progress bar and advance its progress for each iteration over a given iterable value:
+
+    use App\Models\User;
+
+    $users = $this->command->withProgressBar(User::factory()->count(100)->create(), function ($user) {
+        $this->command->performTask($user);
+    });
+
+Sometimes, you may need more manual control over how a progress bar is advanced. First, define the total number of steps the process will iterate through. Then, advance the progress bar after processing each item:
+
+    $users = App\Models\User::factory()
+        ->count(100)
+        ->create();
+
+    $bar = $this->command->output->createProgressBar(count($users));
+
+    $bar->start();
+
+    foreach ($users as $user) {
+        $this->command->performTask($user);
+
+        $bar->advance();
+    }
+
+    $bar->finish();
+
+> **Note**  
+> For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/current/components/console/helpers/progressbar.html).
+
+
+
+
