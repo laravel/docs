@@ -471,12 +471,10 @@ It is common in JavaScript applications to [create aliases](#aliases) to regular
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        Vite::macro('image', fn ($asset) => $this->asset("resources/images/{$asset}"));
+        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
     }
 
 Once a macro has been defined, it can be invoked within your templates. For example, we can use the `image` macro defined above to reference an asset located at `resources/images/logo.png`:
@@ -529,7 +527,7 @@ use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    public function test_without_vite_example()
+    public function test_without_vite_example(): void
     {
         $this->withoutVite();
 
@@ -613,18 +611,18 @@ If you wish to include a [`nonce` attribute](https://developer.mozilla.org/en-US
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Vite;
+use Symfony\Component\HttpFoundation\Response;
 
 class AddContentSecurityPolicyHeaders
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next, string $role): Response
     {
         Vite::useCspNonce();
 

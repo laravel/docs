@@ -91,7 +91,7 @@ If you need to determine if a view exists, you may use the `View` facade. The `e
     use Illuminate\Support\Facades\View;
 
     if (View::exists('emails.customer')) {
-        //
+        // ...
     }
 
 <a name="passing-data-to-views"></a>
@@ -124,20 +124,16 @@ Occasionally, you may need to share data with all views that are rendered by you
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            //
+            // ...
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             View::share('key', 'value');
         }
@@ -157,34 +153,35 @@ We'll use the `View` facade's `composer` method to register the view composer. L
     namespace App\Providers;
 
     use App\View\Composers\ProfileComposer;
-    use Illuminate\Support\Facades\View;
+    use Illuminate\Support\Facades;
     use Illuminate\Support\ServiceProvider;
+    use Illuminate\View\View;
 
     class ViewServiceProvider extends ServiceProvider
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            //
+            // ...
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             // Using class based composers...
-            View::composer('profile', ProfileComposer::class);
+            Facades\View::composer('profile', ProfileComposer::class);
 
             // Using closure based composers...
-            View::composer('dashboard', function ($view) {
-                //
+            Facades\View::composer('welcome', function (View $view) {
+                // ...
+            });
+
+            Facades\View::composer('dashboard', function (View $view) {
+                // ...
             });
         }
     }
@@ -212,9 +209,6 @@ Now that we have registered the composer, the `compose` method of the `App\View\
 
         /**
          * Create a new profile composer.
-         *
-         * @param  \App\Repositories\UserRepository  $users
-         * @return void
          */
         public function __construct(UserRepository $users)
         {
@@ -223,11 +217,8 @@ Now that we have registered the composer, the `compose` method of the `App\View\
 
         /**
          * Bind data to the view.
-         *
-         * @param  \Illuminate\View\View  $view
-         * @return void
          */
-        public function compose(View $view)
+        public function compose(View $view): void
         {
             $view->with('count', $this->users->count());
         }
@@ -241,6 +232,7 @@ As you can see, all view composers are resolved via the [service container](/doc
 You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:
 
     use App\Views\Composers\MultiComposer;
+    use Illuminate\Support\Facades\View;
 
     View::composer(
         ['profile', 'dashboard'],
@@ -249,8 +241,11 @@ You may attach a view composer to multiple views at once by passing an array of 
 
 The `composer` method also accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
 
-    View::composer('*', function ($view) {
-        //
+    use Illuminate\Support\Facades;
+    use Illuminate\View\View;
+
+    Facades\View::composer('*', function (View $view) {
+        // ...
     });
 
 <a name="view-creators"></a>

@@ -188,10 +188,8 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
 
     /**
      * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             from: new Address('jeffrey@example.com', 'Jeffrey Way'),
@@ -227,10 +225,8 @@ Within a mailable class' `content` method, you may define the `view`, or which t
 
     /**
      * Get the message content definition.
-     *
-     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
             view: 'emails.orders.shipped',
@@ -247,10 +243,8 @@ If you would like to define a plain-text version of your email, you may specify 
 
     /**
      * Get the message content definition.
-     *
-     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
             view: 'emails.orders.shipped',
@@ -296,9 +290,6 @@ Typically, you will want to pass some data to your view that you can utilize whe
 
         /**
          * Create a new message instance.
-         *
-         * @param  \App\Models\Order  $order
-         * @return void
          */
         public function __construct(Order $order)
         {
@@ -307,10 +298,8 @@ Typically, you will want to pass some data to your view that you can utilize whe
 
         /**
          * Get the message content definition.
-         *
-         * @return \Illuminate\Mail\Mailables\Content
          */
-        public function content()
+        public function content(): Content
         {
             return new Content(
                 view: 'emails.orders.shipped',
@@ -352,9 +341,6 @@ If you would like to customize the format of your email's data before it is sent
 
         /**
          * Create a new message instance.
-         *
-         * @param  \App\Models\Order  $order
-         * @return void
          */
         public function __construct(Order $order)
         {
@@ -363,10 +349,8 @@ If you would like to customize the format of your email's data before it is sent
 
         /**
          * Get the message content definition.
-         *
-         * @return \Illuminate\Mail\Mailables\Content
          */
-        public function content()
+        public function content(): Content
         {
             return new Content(
                 view: 'emails.orders.shipped',
@@ -394,9 +378,9 @@ To add attachments to an email, you will add attachments to the array returned b
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromPath('/path/to/file'),
@@ -408,9 +392,9 @@ When attaching files to a message, you may also specify the display name and / o
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromPath('/path/to/file')
@@ -427,9 +411,9 @@ If you have stored a file on one of your [filesystem disks](/docs/{{version}}/fi
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromStorage('/path/to/file'),
@@ -441,9 +425,9 @@ Of course, you may also specify the attachment's name and MIME type:
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromStorage('/path/to/file')
@@ -457,9 +441,9 @@ The `fromStorageDisk` method may be used if you need to specify a storage disk o
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromStorageDisk('s3', '/path/to/file')
@@ -476,9 +460,9 @@ The `fromData` attachment method may be used to attach a raw string of bytes as 
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [
             Attachment::fromData(fn () => $this->pdf, 'Report.pdf')
@@ -534,10 +518,8 @@ To get started, implement the `Illuminate\Contracts\Mail\Attachable` interface o
     {
         /**
          * Get the attachable representation of the model.
-         *
-         * @return \Illuminate\Mail\Attachment
          */
-        public function toMailAttachment()
+        public function toMailAttachment(): Attachment
         {
             return Attachment::fromPath('/path/to/file');
         }
@@ -548,9 +530,9 @@ Once you have defined your attachable object, you may return an instance of that
     /**
      * Get the attachments for the message.
      *
-     * @return array
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [$this->photo];
     }
@@ -584,10 +566,8 @@ To accomplish this, define a `headers` method on your mailable. The `headers` me
 
     /**
      * Get the message headers.
-     *
-     * @return \Illuminate\Mail\Mailables\Headers
      */
-    public function headers()
+    public function headers(): Headers
     {
         return new Headers(
             messageId: 'custom-message-id@example.com',
@@ -610,7 +590,7 @@ Some third-party email providers such as Mailgun and Postmark support message "t
      *
      * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'Order Shipped',
@@ -635,10 +615,8 @@ Laravel's mail capabilities are powered by Symfony Mailer. Laravel allows you to
     
     /**
      * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'Order Shipped',
@@ -670,10 +648,8 @@ Then, when configuring the mailable `Content` definition within its `content` me
 
     /**
      * Get the message content definition.
-     *
-     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
             markdown: 'emails.orders.shipped',
@@ -775,23 +751,23 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
     use App\Mail\OrderShipped;
     use App\Models\Order;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Mail;
 
     class OrderShipmentController extends Controller
     {
         /**
          * Ship the given order.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): Response
         {
             $order = Order::findOrFail($request->order_id);
 
             // Ship the order...
 
             Mail::to($request->user())->send(new OrderShipped($order));
+
+            return response()->noContent();
         }
     }
 
@@ -868,7 +844,7 @@ If you have mailable classes that you want to always be queued, you may implemen
 
     class OrderShipped extends Mailable implements ShouldQueue
     {
-        //
+        // ...
     }
 
 <a name="queued-mailables-and-database-transactions"></a>
@@ -899,8 +875,6 @@ Alternatively, you may call the `afterCommit` method from your mailable's constr
 
         /**
          * Create a new message instance.
-         *
-         * @return void
          */
         public function __construct()
         {
@@ -959,10 +933,8 @@ Sometimes, applications store each user's preferred locale. By implementing the 
     {
         /**
          * Get the user's preferred locale.
-         *
-         * @return string
          */
-        public function preferredLocale()
+        public function preferredLocale(): string
         {
             return $this->locale;
         }
@@ -982,7 +954,7 @@ As you might expect, the "HTML" assertions assert that the HTML version of your 
     use App\Mail\InvoicePaid;
     use App\Models\User;
 
-    public function test_mailable_content()
+    public function test_mailable_content(): void
     {
         $user = User::factory()->create();
 
@@ -1042,10 +1014,8 @@ Finally, you may specify a global "to" address by invoking the `alwaysTo` method
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->environment('local')) {
             Mail::alwaysTo('taylor@example.com');
@@ -1061,7 +1031,7 @@ Laravel fires two events during the process of sending mail messages. The `Messa
     use App\Listeners\LogSentMessage;
     use Illuminate\Mail\Events\MessageSending;
     use Illuminate\Mail\Events\MessageSent;
-    
+
     /**
      * The event listener mappings for the application.
      *
@@ -1098,9 +1068,6 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
 
         /**
          * Create a new Mailchimp transport instance.
-         *
-         * @param  \MailchimpTransactional\ApiClient  $client
-         * @return void
          */
         public function __construct(ApiClient $client)
         {
@@ -1126,8 +1093,6 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
 
         /**
          * Get the string representation of the transport.
-         *
-         * @return string
          */
         public function __toString(): string
         {
@@ -1142,10 +1107,8 @@ Once you've defined your custom transport, you may register it via the `extend` 
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Mail::extend('mailchimp', function (array $config = []) {
             return new MailchimpTransport(/* ... */);
@@ -1182,10 +1145,8 @@ Finally, you may use the `Mail` facade's `extend` method to register the transpo
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Mail::extend('sendinblue', function () {
             return (new SendinblueTransportFactory)->create(

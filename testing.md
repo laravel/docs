@@ -72,10 +72,8 @@ Once the test has been generated, you may define test methods as you normally wo
     {
         /**
          * A basic test example.
-         *
-         * @return void
          */
-        public function test_basic_test()
+        public function test_basic_test(): void
         {
             $this->assertTrue(true);
         }
@@ -148,34 +146,33 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
     use Illuminate\Support\Facades\Artisan;
     use Illuminate\Support\Facades\ParallelTesting;
     use Illuminate\Support\ServiceProvider;
+    use PHPUnit\Framework\TestCase;
 
     class AppServiceProvider extends ServiceProvider
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            ParallelTesting::setUpProcess(function ($token) {
+            ParallelTesting::setUpProcess(function (int $token) {
                 // ...
             });
 
-            ParallelTesting::setUpTestCase(function ($token, $testCase) {
+            ParallelTesting::setUpTestCase(function (int $token, TestCase $testCase) {
                 // ...
             });
 
             // Executed when a test database is created...
-            ParallelTesting::setUpTestDatabase(function ($database, $token) {
+            ParallelTesting::setUpTestDatabase(function (string $database, int $token) {
                 Artisan::call('db:seed');
             });
 
-            ParallelTesting::tearDownTestCase(function ($token, $testCase) {
+            ParallelTesting::tearDownTestCase(function (int $token, TestCase $testCase) {
                 // ...
             });
 
-            ParallelTesting::tearDownProcess(function ($token) {
+            ParallelTesting::tearDownProcess(function (int $token) {
                 // ...
             });
         }

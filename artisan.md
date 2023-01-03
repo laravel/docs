@@ -147,11 +147,8 @@ Let's take a look at an example command. Note that we are able to request any de
 
         /**
          * Execute the console command.
-         *
-         * @param  \App\Support\DripEmailer  $drip
-         * @return mixed
          */
-        public function handle(DripEmailer $drip)
+        public function handle(DripEmailer $drip): void
         {
             $drip->send(User::find($this->argument('user')));
         }
@@ -167,17 +164,15 @@ Closure based commands provide an alternative to defining console commands as cl
 
     /**
      * Register the closure based commands for the application.
-     *
-     * @return void
      */
-    protected function commands()
+    protected function commands(): void
     {
         require base_path('routes/console.php');
     }
 
 Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your closure based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:
 
-    Artisan::command('mail:send {user}', function ($user) {
+    Artisan::command('mail:send {user}', function (string $user) {
         $this->info("Sending email to: {$user}!");
     });
 
@@ -191,7 +186,7 @@ In addition to receiving your command's arguments and options, command closures 
     use App\Models\User;
     use App\Support\DripEmailer;
 
-    Artisan::command('mail:send {user}', function (DripEmailer $drip, $user) {
+    Artisan::command('mail:send {user}', function (DripEmailer $drip, string $user) {
         $drip->send(User::find($user));
     });
 
@@ -200,7 +195,7 @@ In addition to receiving your command's arguments and options, command closures 
 
 When defining a closure based command, you may use the `purpose` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
 
-    Artisan::command('mail:send {user}', function ($user) {
+    Artisan::command('mail:send {user}', function (string $user) {
         // ...
     })->purpose('Send a marketing email to a user');
 
@@ -242,12 +237,13 @@ php artisan mail:send 1 --isolated=12
 By default, isolation locks expire after the command is finished. Or, if the command is interrupted and unable to finish, the lock will expire after one hour. However, you may adjust the lock expiration time by defining a `isolationLockExpiresAt` method on your command:
 
 ```php
+use DateTimeInterface;
+use DateInterval;
+
 /**
  * Determine when an isolation lock expires for the command.
- *
- * @return \DateTimeInterface|\DateInterval
  */
-public function isolationLockExpiresAt()
+public function isolationLockExpiresAt(): DateTimeInterface|DateInterval
 {
     return now()->addMinutes(5);
 }
@@ -385,14 +381,10 @@ While your command is executing, you will likely need to access the values for t
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): void
     {
         $userId = $this->argument('user');
-
-        //
     }
 
 If you need to retrieve all of the arguments as an `array`, call the `arguments` method:
@@ -414,12 +406,12 @@ In addition to displaying output, you may also ask the user to provide input dur
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $name = $this->ask('What is your name?');
+
+        // ...
     }
 
 The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful when asking for sensitive information such as passwords:
@@ -432,13 +424,13 @@ The `secret` method is similar to `ask`, but the user's input will not be visibl
 If you need to ask the user for a simple "yes or no" confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` or `yes` in response to the prompt, the method will return `true`.
 
     if ($this->confirm('Do you wish to continue?')) {
-        //
+        // ...
     }
 
 If necessary, you may specify that the confirmation prompt should return `true` by default by passing `true` as the second argument to the `confirm` method:
 
     if ($this->confirm('Do you wish to continue?', true)) {
-        //
+        // ...
     }
 
 <a name="auto-completion"></a>
@@ -450,7 +442,7 @@ The `anticipate` method can be used to provide auto-completion for possible choi
 
 Alternatively, you may pass a closure as the second argument to the `anticipate` method. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
 
-    $name = $this->anticipate('What is your address?', function ($input) {
+    $name = $this->anticipate('What is your address?', function (string $input) {
         // Return auto-completion options...
     });
 
@@ -482,10 +474,8 @@ To send output to the console, you may use the `line`, `info`, `comment`, `quest
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         // ...
 
@@ -528,7 +518,7 @@ For long running tasks, it can be helpful to show a progress bar that informs us
 
     use App\Models\User;
 
-    $users = $this->withProgressBar(User::all(), function ($user) {
+    $users = $this->withProgressBar(User::all(), function (User $user) {
         $this->performTask($user);
     });
 
@@ -558,10 +548,8 @@ All of your console commands are registered within your application's `App\Conso
 
     /**
      * Register the commands for the application.
-     *
-     * @return void
      */
-    protected function commands()
+    protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
         $this->load(__DIR__.'/../Domain/Orders/Commands');
@@ -582,12 +570,12 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 
     use Illuminate\Support\Facades\Artisan;
 
-    Route::post('/user/{user}/mail', function ($user) {
+    Route::post('/user/{user}/mail', function (string $user) {
         $exitCode = Artisan::call('mail:send', [
             'user' => $user, '--queue' => 'default'
         ]);
 
-        //
+        // ...
     });
 
 Alternatively, you may pass the entire Artisan command to the `call` method as a string:
@@ -623,12 +611,12 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
 
     use Illuminate\Support\Facades\Artisan;
 
-    Route::post('/user/{user}/mail', function ($user) {
+    Route::post('/user/{user}/mail', function (string $user) {
         Artisan::queue('mail:send', [
             'user' => $user, '--queue' => 'default'
         ]);
 
-        //
+        // ...
     });
 
 Using the `onConnection` and `onQueue` methods, you may specify the connection or queue the Artisan command should be dispatched to:
@@ -644,16 +632,14 @@ Sometimes you may wish to call other commands from an existing Artisan command. 
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $this->call('mail:send', [
             'user' => 1, '--queue' => 'default'
         ]);
 
-        //
+        // ...
     }
 
 If you would like to call another console command and suppress all of its output, you may use the `callSilently` method. The `callSilently` method has the same signature as the `call` method:
@@ -669,10 +655,8 @@ As you may know, operating systems allow signals to be sent to running processes
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);
 
@@ -683,7 +667,7 @@ As you may know, operating systems allow signals to be sent to running processes
 
 To listen for multiple signals at once, you may provide an array of signals to the `trap` method:
 
-    $this->trap([SIGTERM, SIGQUIT], function ($signal) {
+    $this->trap([SIGTERM, SIGQUIT], function (int $signal) {
         $this->shouldKeepRunning = false;
 
         dump($signal); // SIGTERM / SIGQUIT

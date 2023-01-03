@@ -128,15 +128,14 @@ To run a basic SELECT query, you may use the `select` method on the `DB` facade:
 
     use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\DB;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show a list of all of the application's users.
-         *
-         * @return \Illuminate\Http\Response
          */
-        public function index()
+        public function index(): View
         {
             $users = DB::select('select * from users where active = ?', [1]);
 
@@ -250,6 +249,7 @@ If you would like to specify a closure that is invoked for each SQL query execut
 
     namespace App\Providers;
 
+    use Illuminate\Database\Events\QueryExecuted;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\ServiceProvider;
 
@@ -257,22 +257,18 @@ If you would like to specify a closure that is invoked for each SQL query execut
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            //
+            // ...
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            DB::listen(function ($query) {
+            DB::listen(function (QueryExecuted $query) {
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
@@ -298,20 +294,16 @@ A common performance bottleneck of modern web applications is the amount of time
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            //
+            // ...
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
                 // Notify development team...
@@ -431,10 +423,8 @@ use Illuminate\Support\Facades\Notification;
 
 /**
  * Register any other events for your application.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Event::listen(function (DatabaseBusy $event) {
         Notification::route('mail', 'dev@example.com')

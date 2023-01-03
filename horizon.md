@@ -129,12 +129,10 @@ Horizon exposes a dashboard at the `/horizon` URI. By default, you will only be 
      * Register the Horizon gate.
      *
      * This gate determines who can access Horizon in non-local environments.
-     *
-     * @return void
      */
-    protected function gate()
+    protected function gate(): void
     {
-        Gate::define('viewHorizon', function ($user) {
+        Gate::define('viewHorizon', function (User $user) {
             return in_array($user->email, [
                 'taylor@laravel.com',
             ]);
@@ -294,9 +292,6 @@ Horizon allows you to assign “tags” to jobs, including mailables, broadcast 
 
         /**
          * Create a new job instance.
-         *
-         * @param  \App\Models\Video  $video
-         * @return void
          */
         public function __construct(Video $video)
         {
@@ -305,12 +300,10 @@ Horizon allows you to assign “tags” to jobs, including mailables, broadcast 
 
         /**
          * Execute the job.
-         *
-         * @return void
          */
-        public function handle()
+        public function handle(): void
         {
-            //
+            // ...
         }
     }
 
@@ -333,9 +326,9 @@ If you would like to manually define the tags for one of your queueable objects,
         /**
          * Get the tags that should be assigned to the job.
          *
-         * @return array
+         * @return array<int, string>
          */
-        public function tags()
+        public function tags(): array
         {
             return ['render', 'video:'.$this->video->id];
         }
@@ -351,10 +344,8 @@ If you would like to be notified when one of your queues has a long wait time, y
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 
@@ -380,11 +371,8 @@ Horizon includes a metrics dashboard which provides information regarding your j
 
     /**
      * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
      */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
     }

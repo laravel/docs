@@ -109,21 +109,20 @@ To get started, open your `tests/DuskTestCase.php` file, which is the base Dusk 
      * Prepare for Dusk test execution.
      *
      * @beforeClass
-     * @return void
      */
-    public static function prepare()
+    public static function prepare(): void
     {
         // static::startChromeDriver();
     }
 
 Next, you may modify the `driver` method to connect to the URL and port of your choice. In addition, you may modify the "desired capabilities" that should be passed to the WebDriver:
 
+    use Facebook\WebDriver\Remote\RemoteWebDriver;
+
     /**
      * Create the RemoteWebDriver instance.
-     *
-     * @return \Facebook\WebDriver\Remote\RemoteWebDriver
      */
-    protected function driver()
+    protected function driver(): RemoteWebDriver
     {
         return RemoteWebDriver::create(
             'http://localhost:4444/wd/hub', DesiredCapabilities::phantomjs()
@@ -197,21 +196,20 @@ By default, Dusk will automatically attempt to start ChromeDriver. If this does 
      * Prepare for Dusk test execution.
      *
      * @beforeClass
-     * @return void
      */
-    public static function prepare()
+    public static function prepare(): void
     {
         // static::startChromeDriver();
     }
 
 In addition, if you start ChromeDriver on a port other than 9515, you should modify the `driver` method of the same class to reflect the correct port:
 
+    use Facebook\WebDriver\Remote\RemoteWebDriver;
+
     /**
      * Create the RemoteWebDriver instance.
-     *
-     * @return \Facebook\WebDriver\Remote\RemoteWebDriver
      */
-    protected function driver()
+    protected function driver(): RemoteWebDriver
     {
         return RemoteWebDriver::create(
             'http://localhost:9515', DesiredCapabilities::chrome()
@@ -239,6 +237,7 @@ To get started, let's write a test that verifies we can log into our application
 
     use App\Models\User;
     use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Laravel\Dusk\Browser;
     use Laravel\Dusk\Chrome;
     use Tests\DuskTestCase;
 
@@ -248,16 +247,14 @@ To get started, let's write a test that verifies we can log into our application
 
         /**
          * A basic browser test example.
-         *
-         * @return void
          */
-        public function test_basic_example()
+        public function test_basic_example(): void
         {
             $user = User::factory()->create([
                 'email' => 'taylor@laravel.com',
             ]);
 
-            $this->browse(function ($browser) use ($user) {
+            $this->browse(function (Browser $browser) use ($user) {
                 $browser->visit('/login')
                         ->type('email', $user->email)
                         ->type('password', 'password')
@@ -274,7 +271,7 @@ As you can see in the example above, the `browse` method accepts a closure. A br
 
 Sometimes you may need multiple browsers in order to properly carry out a test. For example, multiple browsers may be needed to test a chat screen that interacts with websockets. To create multiple browsers, simply add more browser arguments to the signature of the closure given to the `browse` method:
 
-    $this->browse(function ($first, $second) {
+    $this->browse(function (Browser $first, Browser $second) {
         $first->loginAs(User::find(1))
               ->visit('/home')
               ->waitForText('Message');
@@ -349,12 +346,10 @@ If you would like to define a custom browser method that you can re-use in a var
     {
         /**
          * Register Dusk's browser macros.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            Browser::macro('scrollToElement', function ($element = null) {
+            Browser::macro('scrollToElement', function (string $element = null) {
                 $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");
 
                 return $this;
@@ -364,7 +359,7 @@ If you would like to define a custom browser method that you can re-use in a var
 
 The `macro` function accepts a name as its first argument, and a closure as its second. The macro's closure will be executed when calling the macro as a method on a `Browser` instance:
 
-    $this->browse(function ($browser) use ($user) {
+    $this->browse(function (Browser $browser) use ($user) {
         $browser->visit('/pay')
                 ->scrollToElement('#credit-card-details')
                 ->assertSee('Enter Credit Card Details');
@@ -376,8 +371,9 @@ The `macro` function accepts a name as its first argument, and a closure as its 
 Often, you will be testing pages that require authentication. You can use Dusk's `loginAs` method in order to avoid interacting with your application's login screen during every test. The `loginAs` method accepts a primary key associated with your authenticatable model or an authenticatable model instance:
 
     use App\Models\User;
+    use Laravel\Dusk\Browser;
 
-    $this->browse(function ($browser) {
+    $this->browse(function (Browser $browser) {
         $browser->loginAs(User::find(1))
               ->visit('/home');
     });
@@ -708,22 +704,22 @@ To close an open JavaScript dialog by clicking the "Cancel" button, you may invo
 
 Sometimes you may wish to perform several operations while scoping all of the operations within a given selector. For example, you may wish to assert that some text exists only within a table and then click a button within that table. You may use the `with` method to accomplish this. All operations performed within the closure given to the `with` method will be scoped to the original selector:
 
-    $browser->with('.table', function ($table) {
+    $browser->with('.table', function (Browser $table) {
         $table->assertSee('Hello World')
               ->clickLink('Delete');
     });
 
 You may occasionally need to execute assertions outside of the current scope. You may use the `elsewhere` and `elsewhereWhenAvailable` methods to accomplish this:
 
-     $browser->with('.table', function ($table) {
+     $browser->with('.table', function (Browser $table) {
         // Current scope is `body .table`...
 
-        $browser->elsewhere('.page-title', function ($title) {
+        $browser->elsewhere('.page-title', function (Browser $title) {
             // Current scope is `body .page-title`...
             $title->assertSee('Hello World');
         });
 
-        $browser->elsewhereWhenAvailable('.page-title', function ($title) {
+        $browser->elsewhereWhenAvailable('.page-title', function (Browser $title) {
             // Current scope is `body .page-title`...
             $title->assertSee('Hello World');
         });
@@ -795,7 +791,7 @@ Or, you may wait until the element matching the given selector is enabled or dis
 
 Occasionally, you may wish to wait for an element to appear that matches a given selector and then interact with the element. For example, you may wish to wait until a modal window is available and then press the "OK" button within the modal. The `whenAvailable` method may be used to accomplish this. All element operations performed within the given closure will be scoped to the original selector:
 
-    $browser->whenAvailable('.modal', function ($modal) {
+    $browser->whenAvailable('.modal', function (Browser $modal) {
         $modal->assertSee('Hello World')
               ->press('OK');
     });
@@ -904,7 +900,7 @@ The `waitForEvent` method can be used to pause the execution of a test until a J
 
 The event listener is attached to the current scope, which is the `body` element by default. When using a scoped selector, the event listener will be attached to the matching element:
 
-    $browser->with('iframe', function ($iframe) {
+    $browser->with('iframe', function (Browser $iframe) {
         // Wait for the iframe's load event...
         $iframe->waitForEvent('load');
     });
@@ -1565,10 +1561,8 @@ You may assert on the state of the Vue component like so:
 
     /**
      * A basic Vue test example.
-     *
-     * @return void
      */
-    public function testVue()
+    public function test_vue(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
@@ -1621,10 +1615,8 @@ The `url` method should return the path of the URL that represents the page. Dus
 
     /**
      * Get the URL for the page.
-     *
-     * @return string
      */
-    public function url()
+    public function url(): string
     {
         return '/login';
     }
@@ -1636,10 +1628,8 @@ The `assert` method may make any assertions necessary to verify that the browser
 
     /**
      * Assert that the browser is on the page.
-     *
-     * @return void
      */
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser->assertPathIs($this->url());
     }
@@ -1670,9 +1660,9 @@ The `elements` method within page classes allows you to define quick, easy-to-re
     /**
      * Get the element shortcuts for the page.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function elements()
+    public function elements(): array
     {
         return [
             '@email' => 'input[name=email]',
@@ -1691,9 +1681,9 @@ After installing Dusk, a base `Page` class will be placed in your `tests/Browser
     /**
      * Get the global element shortcuts for the site.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public static function siteElements()
+    public static function siteElements(): array
     {
         return [
             '@element' => '#selector',
@@ -1717,12 +1707,8 @@ In addition to the default methods defined on pages, you may define additional m
 
         /**
          * Create a new playlist.
-         *
-         * @param  \Laravel\Dusk\Browser  $browser
-         * @param  string  $name
-         * @return void
          */
-        public function createPlaylist(Browser $browser, $name)
+        public function createPlaylist(Browser $browser, string $name): void
         {
             $browser->type('name', $name)
                     ->check('share')
@@ -1763,21 +1749,16 @@ As shown above, a "date picker" is an example of a component that might exist th
     {
         /**
          * Get the root selector for the component.
-         *
-         * @return string
          */
-        public function selector()
+        public function selector(): string
         {
             return '.date-picker';
         }
 
         /**
          * Assert that the browser page contains the component.
-         *
-         * @param  Browser  $browser
-         * @return void
          */
-        public function assert(Browser $browser)
+        public function assert(Browser $browser): void
         {
             $browser->assertVisible($this->selector());
         }
@@ -1785,9 +1766,9 @@ As shown above, a "date picker" is an example of a component that might exist th
         /**
          * Get the element shortcuts for the component.
          *
-         * @return array
+         * @return array<string, string>
          */
-        public function elements()
+        public function elements(): array
         {
             return [
                 '@date-field' => 'input.datepicker-input',
@@ -1799,23 +1780,17 @@ As shown above, a "date picker" is an example of a component that might exist th
 
         /**
          * Select the given date.
-         *
-         * @param  \Laravel\Dusk\Browser  $browser
-         * @param  int  $year
-         * @param  int  $month
-         * @param  int  $day
-         * @return void
          */
-        public function selectDate(Browser $browser, $year, $month, $day)
+        public function selectDate(Browser $browser, int $year, int $month, int $day): void
         {
             $browser->click('@date-field')
-                    ->within('@year-list', function ($browser) use ($year) {
+                    ->within('@year-list', function (Browser $browser) use ($year) {
                         $browser->click($year);
                     })
-                    ->within('@month-list', function ($browser) use ($month) {
+                    ->within('@month-list', function (Browser $browser) use ($month) {
                         $browser->click($month);
                     })
-                    ->within('@day-list', function ($browser) use ($day) {
+                    ->within('@day-list', function (Browser $browser) use ($day) {
                         $browser->click($day);
                     });
         }
@@ -1839,14 +1814,12 @@ Once the component has been defined, we can easily select a date within the date
     {
         /**
          * A basic component test example.
-         *
-         * @return void
          */
-        public function testBasicExample()
+        public function test_basic_example(): void
         {
             $this->browse(function (Browser $browser) {
                 $browser->visit('/')
-                        ->within(new DatePicker, function ($browser) {
+                        ->within(new DatePicker, function (Browser $browser) {
                             $browser->selectDate(2019, 1, 30);
                         })
                         ->assertSee('January');

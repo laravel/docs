@@ -281,7 +281,6 @@ When a user is viewing one of their orders, we don't want them to have to refres
     use Illuminate\Broadcasting\Channel;
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Broadcasting\PresenceChannel;
-    use Illuminate\Broadcasting\PrivateChannel;
     use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
     use Illuminate\Queue\SerializesModels;
 
@@ -297,14 +296,32 @@ When a user is viewing one of their orders, we don't want them to have to refres
 
 The `ShouldBroadcast` interface requires our event to define a `broadcastOn` method. This method is responsible for returning the channels that the event should broadcast on. An empty stub of this method is already defined on generated event classes, so we only need to fill in its details. We only want the creator of the order to be able to view status updates, so we will broadcast the event on a private channel that is tied to the order:
 
+    use Illuminate\Broadcasting\Channel;
+    use Illuminate\Broadcasting\PrivateChannel;
+
+    /**
+     * Get the channel the event should broadcast on.
+     */
+    public function broadcastOn(): Channel
+    {
+        return new PrivateChannel('orders.'.$this->order->id);
+    }
+
+If you wish the event to broadcast on multiple channels, you may return an `array` instead:
+
+    use Illuminate\Broadcasting\PrivateChannel;
+
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\PrivateChannel
+     * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
-        return new PrivateChannel('orders.'.$this->order->id);
+        return [
+            new PrivateChannel('orders.'.$this->order->id),
+            // ...
+        ];
     }
 
 <a name="example-application-authorizing-channels"></a>
@@ -313,8 +330,9 @@ The `ShouldBroadcast` interface requires our event to define a `broadcastOn` met
 Remember, users must be authorized to listen on private channels. We may define our channel authorization rules in our application's `routes/channels.php` file. In this example, we need to verify that any user attempting to listen on the private `orders.1` channel is actually the creator of the order:
 
     use App\Models\Order;
+    use App\Models\User;
 
-    Broadcast::channel('orders.{orderId}', function ($user, $orderId) {
+    Broadcast::channel('orders.{orderId}', function (User $user, int $orderId) {
         return $user->id === Order::findOrNew($orderId)->user_id;
     });
 
@@ -366,9 +384,6 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
 
         /**
          * Create a new event instance.
-         *
-         * @param  \App\Models\User  $user
-         * @return void
          */
         public function __construct(User $user)
         {
@@ -378,11 +393,13 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
         /**
          * Get the channels the event should broadcast on.
          *
-         * @return Channel|array
+         * @return array<int, \Illuminate\Broadcasting\Channel>
          */
-        public function broadcastOn()
+        public function broadcastOn(): array
         {
-            return new PrivateChannel('user.'.$this->user->id);
+            return [
+                new PrivateChannel('user.'.$this->user->id),
+            ];
         }
     }
 
@@ -395,10 +412,8 @@ By default, Laravel will broadcast the event using the event's class name. Howev
 
     /**
      * The event's broadcast name.
-     *
-     * @return string
      */
-    public function broadcastAs()
+    public function broadcastAs(): string
     {
         return 'server.created';
     }
@@ -429,9 +444,9 @@ However, if you wish to have more fine-grained control over your broadcast paylo
     /**
      * Get the data to broadcast.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function broadcastWith()
+    public function broadcastWith(): array
     {
         return ['id' => $this->user->id];
     }
@@ -459,10 +474,8 @@ Alternatively, you may customize the queue name by defining a `broadcastQueue` m
 
     /**
      * The name of the queue on which to place the broadcasting job.
-     *
-     * @return string
      */
-    public function broadcastQueue()
+    public function broadcastQueue(): string
     {
         return 'default';
     }
@@ -475,7 +488,7 @@ If you would like to broadcast your event using the `sync` queue instead of the 
 
     class OrderShipmentStatusUpdated implements ShouldBroadcastNow
     {
-        //
+        // ...
     }
 
 <a name="broadcast-conditions"></a>
@@ -485,10 +498,8 @@ Sometimes you want to broadcast your event only if a given condition is true. Yo
 
     /**
      * Determine if this event should broadcast.
-     *
-     * @return bool
      */
-    public function broadcastWhen()
+    public function broadcastWhen(): bool
     {
         return $this->order->value > 100;
     }
@@ -578,7 +589,9 @@ window.Echo = new Echo({
 
 Next, we need to define the logic that will actually determine if the currently authenticated user can listen to a given channel. This is done in the `routes/channels.php` file that is included with your application. In this file, you may use the `Broadcast::channel` method to register channel authorization callbacks:
 
-    Broadcast::channel('orders.{orderId}', function ($user, $orderId) {
+    use App\Models\User;
+
+    Broadcast::channel('orders.{orderId}', function (User $user, int $orderId) {
         return $user->id === Order::findOrNew($orderId)->user_id;
     });
 
@@ -592,8 +605,9 @@ All authorization callbacks receive the currently authenticated user as their fi
 Just like HTTP routes, channel routes may also take advantage of implicit and explicit [route model binding](/docs/{{version}}/routing#route-model-binding). For example, instead of receiving a string or numeric order ID, you may request an actual `Order` model instance:
 
     use App\Models\Order;
+    use App\Models\User;
 
-    Broadcast::channel('orders.{order}', function ($user, Order $order) {
+    Broadcast::channel('orders.{order}', function (User $user, Order $order) {
         return $user->id === $order->user_id;
     });
 
@@ -637,22 +651,16 @@ Finally, you may place the authorization logic for your channel in the channel c
     {
         /**
          * Create a new channel instance.
-         *
-         * @return void
          */
         public function __construct()
         {
-            //
+            // ...
         }
 
         /**
          * Authenticate the user's access to the channel.
-         *
-         * @param  \App\Models\User  $user
-         * @param  \App\Models\Order  $order
-         * @return array|bool
          */
-        public function join(User $user, Order $order)
+        public function join(User $user, Order $order): array|bool
         {
             return $user->id === $order->user_id;
         }
@@ -733,8 +741,6 @@ Alternatively, you may specify the event's broadcast connection by calling the `
 
         /**
          * Create a new event instance.
-         *
-         * @return void
          */
         public function __construct()
         {
@@ -808,7 +814,7 @@ Alternatively, you may prefix event classes with a `.` when subscribing to them 
 ```js
 Echo.channel('orders')
     .listen('.Namespace\\Event\\Class', (e) => {
-        //
+        // ...
     });
 ```
 
@@ -824,7 +830,9 @@ All presence channels are also private channels; therefore, users must be [autho
 
 The data returned by the authorization callback will be made available to the presence channel event listeners in your JavaScript application. If the user is not authorized to join the presence channel, you should return `false` or `null`:
 
-    Broadcast::channel('chat.{roomId}', function ($user, $roomId) {
+    use App\Models\User;
+
+    Broadcast::channel('chat.{roomId}', function (User $user, int $roomId) {
         if ($user->canJoinRoom($roomId)) {
             return ['id' => $user->id, 'name' => $user->name];
         }
@@ -838,7 +846,7 @@ To join a presence channel, you may use Echo's `join` method. The `join` method 
 ```js
 Echo.join(`chat.${roomId}`)
     .here((users) => {
-        //
+        // ...
     })
     .joining((user) => {
         console.log(user.name);
@@ -861,11 +869,13 @@ Presence channels may receive events just like public or private channels. Using
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
-        return new PresenceChannel('room.'.$this->message->room_id);
+        return [
+            new PresenceChannel('room.'.$this->message->room_id),
+        ];
     }
 
 As with other events, you may use the `broadcast` helper and the `toOthers` method to exclude the current user from receiving the broadcast:
@@ -882,7 +892,7 @@ Echo.join(`chat.${roomId}`)
     .joining(/* ... */)
     .leaving(/* ... */)
     .listen('NewMessage', (e) => {
-        //
+        // ...
     });
 ```
 
@@ -903,10 +913,12 @@ To get started, your Eloquent model should use the `Illuminate\Database\Eloquent
 
 namespace App\Models;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
@@ -915,7 +927,7 @@ class Post extends Model
     /**
      * Get the user that the post belongs to.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -923,10 +935,9 @@ class Post extends Model
     /**
      * Get the channels that model events should broadcast on.
      *
-     * @param  string  $event
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return array<int, \Illuminate\Broadcasting\Channel|\Illuminate\Database\Eloquent\Model>
      */
-    public function broadcastOn($event)
+    public function broadcastOn(string $event): array
     {
         return [$this, $this->user];
     }
@@ -941,10 +952,9 @@ In addition, you may have noticed that the `broadcastOn` method receives a strin
 /**
  * Get the channels that model events should broadcast on.
  *
- * @param  string  $event
- * @return \Illuminate\Broadcasting\Channel|array
+ * @return array<string, array<int, \Illuminate\Broadcasting\Channel|\Illuminate\Database\Eloquent\Model>>
  */
-public function broadcastOn($event)
+public function broadcastOn(string $event): array
 {
     return match ($event) {
         'deleted' => [],
@@ -963,11 +973,8 @@ use Illuminate\Database\Eloquent\BroadcastableModelEventOccurred;
 
 /**
  * Create a new broadcastable model event for the model.
- *
- * @param  string  $event
- * @return \Illuminate\Database\Eloquent\BroadcastableModelEventOccurred
  */
-protected function newBroadcastableEvent($event)
+protected function newBroadcastableEvent(string $event): BroadcastableModelEventOccurred
 {
     return (new BroadcastableModelEventOccurred(
         $this, $event
@@ -991,12 +998,13 @@ use Illuminate\Broadcasting\PrivateChannel;
 /**
  * Get the channels that model events should broadcast on.
  *
- * @param  string  $event
- * @return \Illuminate\Broadcasting\Channel|array
+ * @return array<int, \Illuminate\Broadcasting\Channel>
  */
-public function broadcastOn($event)
+public function broadcastOn(string $event): array
 {
-    return [new PrivateChannel('user.'.$this->id)];
+    return [
+        new PrivateChannel('user.'.$this->id)
+    ];
 }
 ```
 
@@ -1038,11 +1046,8 @@ If you would like, you may define a custom broadcast name and payload by adding 
 ```php
 /**
  * The model event's broadcast name.
- *
- * @param  string  $event
- * @return string|null
  */
-public function broadcastAs($event)
+public function broadcastAs(string $event): string|null
 {
     return match ($event) {
         'created' => 'post.created',
@@ -1053,10 +1058,9 @@ public function broadcastAs($event)
 /**
  * Get the data to broadcast for the model.
  *
- * @param  string  $event
- * @return array
+ * @return array<string, mixed>
  */
-public function broadcastWith($event)
+public function broadcastWith(string $event): array
 {
     return match ($event) {
         'created' => ['title' => $this->title],

@@ -54,7 +54,7 @@ Each of these methods may also be accessed via the `URL` [facade](/docs/{{versio
 The `route` helper may be used to generate URLs to [named routes](/docs/{{version}}/routing#named-routes). Named routes allow you to generate URLs without being coupled to the actual URL defined on the route. Therefore, if the route's URL changes, no changes need to be made to your calls to the `route` function. For example, imagine your application contains a route defined like the following:
 
     Route::get('/post/{post}', function (Post $post) {
-        //
+        // ...
     })->name('post.show');
 
 To generate a URL to this route, you may use the `route` helper like so:
@@ -66,7 +66,7 @@ To generate a URL to this route, you may use the `route` helper like so:
 Of course, the `route` helper may also be used to generate URLs for routes with multiple parameters:
 
     Route::get('/post/{post}/comment/{comment}', function (Post $post, Comment $comment) {
-        //
+        // ...
     })->name('comment.show');
 
     echo route('comment.show', ['post' => 1, 'comment' => 3]);
@@ -154,10 +154,8 @@ When someone visits a signed URL that has expired, they will receive a generic e
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->renderable(function (InvalidSignatureException $e) {
             return response()->view('error.link-expired', [], 403);
@@ -183,7 +181,7 @@ If the controller method accepts route parameters, you may pass an associative a
 For some applications, you may wish to specify request-wide default values for certain URL parameters. For example, imagine many of your routes define a `{locale}` parameter:
 
     Route::get('/{locale}/posts', function () {
-        //
+        // ...
     })->name('post.index');
 
 It is cumbersome to always pass the `locale` every time you call the `route` helper. So, you may use the `URL::defaults` method to define a default value for this parameter that will always be applied during the current request. You may wish to call this method from a [route middleware](/docs/{{version}}/middleware#assigning-middleware-to-routes) so that you have access to the current request:
@@ -193,18 +191,18 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
     namespace App\Http\Middleware;
 
     use Closure;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\URL;
+    use Symfony\Component\HttpFoundation\Response;
 
     class SetDefaultLocaleForUrls
     {
         /**
-         * Handle the incoming request.
+         * Handle an incoming request.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \Closure  $next
-         * @return \Illuminate\Http\Response
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function handle($request, Closure $next)
+        public function handle(Request $request, Closure $next): Response
         {
             URL::defaults(['locale' => $request->user()->locale]);
 

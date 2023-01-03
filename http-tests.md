@@ -33,10 +33,8 @@ Laravel provides a very fluent API for making HTTP requests to your application 
     {
         /**
          * A basic test example.
-         *
-         * @return void
          */
-        public function test_a_basic_request()
+        public function test_a_basic_request(): void
         {
             $response = $this->get('/');
 
@@ -65,10 +63,8 @@ Instead of returning an `Illuminate\Http\Response` instance, test request method
     {
         /**
          * A basic test example.
-         *
-         * @return void
          */
-        public function test_a_basic_request()
+        public function test_a_basic_request(): void
         {
             $response = $this->get('/');
 
@@ -96,10 +92,8 @@ You may use the `withHeaders` method to customize the request's headers before i
     {
         /**
          * A basic functional test example.
-         *
-         * @return void
          */
-        public function test_interacting_with_headers()
+        public function test_interacting_with_headers(): void
         {
             $response = $this->withHeaders([
                 'X-Header' => 'Value',
@@ -122,7 +116,7 @@ You may use the `withCookie` or `withCookies` methods to set cookie values befor
 
     class ExampleTest extends TestCase
     {
-        public function test_interacting_with_cookies()
+        public function test_interacting_with_cookies(): void
         {
             $response = $this->withCookie('color', 'blue')->get('/');
 
@@ -146,7 +140,7 @@ Laravel provides several helpers for interacting with the session during HTTP te
 
     class ExampleTest extends TestCase
     {
-        public function test_interacting_with_the_session()
+        public function test_interacting_with_the_session(): void
         {
             $response = $this->withSession(['banned' => false])->get('/');
         }
@@ -163,7 +157,7 @@ Laravel's session is typically used to maintain state for the currently authenti
 
     class ExampleTest extends TestCase
     {
-        public function test_an_action_that_requires_authentication()
+        public function test_an_action_that_requires_authentication(): void
         {
             $user = User::factory()->create();
 
@@ -192,10 +186,8 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
     {
         /**
          * A basic test example.
-         *
-         * @return void
          */
-        public function test_basic_test()
+        public function test_basic_test(): void
         {
             $response = $this->get('/');
 
@@ -219,10 +211,8 @@ Alternatively, you may use the `dd`, `ddHeaders`, and `ddSession` methods to dum
     {
         /**
          * A basic test example.
-         *
-         * @return void
          */
-        public function test_basic_test()
+        public function test_basic_test(): void
         {
             $response = $this->get('/');
 
@@ -260,10 +250,8 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
     {
         /**
          * A basic functional test example.
-         *
-         * @return void
          */
-        public function test_making_an_api_request()
+        public function test_making_an_api_request(): void
         {
             $response = $this->postJson('/api/user', ['name' => 'Sally']);
 
@@ -297,10 +285,8 @@ As previously mentioned, the `assertJson` method may be used to assert that a fr
     {
         /**
          * A basic functional test example.
-         *
-         * @return void
          */
-        public function test_asserting_an_exact_json_match()
+        public function test_asserting_an_exact_json_match(): void
         {
             $response = $this->postJson('/user', ['name' => 'Sally']);
 
@@ -327,10 +313,8 @@ If you would like to verify that the JSON response contains the given data at a 
     {
         /**
          * A basic functional test example.
-         *
-         * @return void
          */
-        public function test_asserting_a_json_paths_value()
+        public function test_asserting_a_json_paths_value(): void
         {
             $response = $this->postJson('/user', ['name' => 'Sally']);
 
@@ -342,7 +326,7 @@ If you would like to verify that the JSON response contains the given data at a 
 
 The `assertJsonPath` method also accepts a closure, which may be used to dynamically determine if the assertion should pass:
 
-    $response->assertJsonPath('team.owner.name', fn ($name) => strlen($name) >= 3);
+    $response->assertJsonPath('team.owner.name', fn (string $name) => strlen($name) >= 3);
 
 <a name="fluent-json-testing"></a>
 ### Fluent JSON Testing
@@ -353,10 +337,8 @@ Laravel also offers a beautiful way to fluently test your application's JSON res
 
     /**
      * A basic functional test example.
-     *
-     * @return void
      */
-    public function test_fluent_json()
+    public function test_fluent_json(): void
     {
         $response = $this->getJson('/users/1');
 
@@ -364,7 +346,7 @@ Laravel also offers a beautiful way to fluently test your application's JSON res
             ->assertJson(fn (AssertableJson $json) =>
                 $json->where('id', 1)
                      ->where('name', 'Victoria Faith')
-                     ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
+                     ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
                      ->whereNot('status', 'pending')
                      ->missing('password')
                      ->etc()
@@ -417,10 +399,10 @@ In these situations, we may use the fluent JSON object's `has` method to make as
     $response
         ->assertJson(fn (AssertableJson $json) =>
             $json->has(3)
-                 ->first(fn ($json) =>
+                 ->first(fn (AssertableJson $json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
-                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
+                         ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
@@ -444,10 +426,10 @@ When testing these routes, you may use the `has` method to assert against the nu
         ->assertJson(fn (AssertableJson $json) =>
             $json->has('meta')
                  ->has('users', 3)
-                 ->has('users.0', fn ($json) =>
+                 ->has('users.0', fn (AssertableJson $json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
-                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
+                         ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
@@ -458,10 +440,10 @@ However, instead of making two separate calls to the `has` method to assert agai
     $response
         ->assertJson(fn (AssertableJson $json) =>
             $json->has('meta')
-                 ->has('users', 3, fn ($json) =>
+                 ->has('users', 3, fn (AssertableJson $json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
-                         ->where('email', fn ($email) => str($email)->is('victoria@gmail.com'))
+                         ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
                          ->missing('password')
                          ->etc()
                  )
@@ -506,7 +488,7 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
 
     class ExampleTest extends TestCase
     {
-        public function test_avatars_can_be_uploaded()
+        public function test_avatars_can_be_uploaded(): void
         {
             Storage::fake('avatars');
 
@@ -558,7 +540,7 @@ Laravel also allows you to render a view without making a simulated HTTP request
 
     class ExampleTest extends TestCase
     {
-        public function test_a_welcome_view_can_be_rendered()
+        public function test_a_welcome_view_can_be_rendered(): void
         {
             $view = $this->view('welcome', ['name' => 'Taylor']);
 

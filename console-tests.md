@@ -16,10 +16,8 @@ To get started, let's explore how to make assertions regarding an Artisan comman
 
     /**
      * Test a console command.
-     *
-     * @return void
      */
-    public function test_console_command()
+    public function test_console_command(): void
     {
         $this->artisan('inspire')->assertExitCode(0);
     }
@@ -55,10 +53,8 @@ You may test this command with the following test which utilizes the `expectsQue
 
     /**
      * Test a console command.
-     *
-     * @return void
      */
-    public function test_console_command()
+    public function test_console_command(): void
     {
         $this->artisan('question')
              ->expectsQuestion('What is your name?', 'Taylor Otwell')

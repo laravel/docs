@@ -41,14 +41,14 @@ You may modify the default language for a single HTTP request at runtime using t
 
     use Illuminate\Support\Facades\App;
 
-    Route::get('/greeting/{locale}', function ($locale) {
+    Route::get('/greeting/{locale}', function (string $locale) {
         if (! in_array($locale, ['en', 'es', 'fr'])) {
             abort(400);
         }
 
         App::setLocale($locale);
 
-        //
+        // ...
     });
 
 You may configure a "fallback language", which will be used when the active language does not contain a given translation string. Like the default language, the fallback language is also configured in the `config/app.php` configuration file:
@@ -65,7 +65,7 @@ You may use the `currentLocale` and `isLocale` methods on the `App` facade to de
     $locale = App::currentLocale();
 
     if (App::isLocale('en')) {
-        //
+        // ...
     }
 
 <a name="pluralization-language"></a>
@@ -77,10 +77,8 @@ You may instruct Laravel's "pluralizer", which is used by Eloquent and other por
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Pluralizer::useLanguage('spanish');     
 

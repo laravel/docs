@@ -135,14 +135,12 @@ To get started, pass a closure to the `toMailUsing` method provided by the `Illu
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // ...
 
-        VerifyEmail::toMailUsing(function ($notifiable, $url) {
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
             return (new MailMessage)
                 ->subject('Verify Email Address')
                 ->line('Click the button below to verify your email address.')

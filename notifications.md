@@ -122,10 +122,9 @@ The `via` method receives a `$notifiable` instance, which will be an instance of
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
-     * @return array
+     * @return array<int, string>
      */
-    public function via($notifiable)
+    public function via(object $notifiable): array
     {
         return $notifiable->prefers_sms ? ['vonage'] : ['mail', 'database'];
     }
@@ -183,10 +182,9 @@ Alternatively, you may define a `withDelay` method on the notification class its
     /**
      * Determine the notification's delivery delay.
      *
-     * @param  mixed  $notifiable
-     * @return array
+     * @return array<string, \Illuminate\Support\Carbon>
      */
-    public function withDelay($notifiable)
+    public function withDelay(object $notifiable): array
     {
         return [
             'mail' => now()->addMinutes(5),
@@ -229,9 +227,9 @@ If you would like to specify a specific queue that should be used for each notif
     /**
      * Determine which queues should be used for each notification channel.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function viaQueues()
+    public function viaQueues(): array
     {
         return [
             'mail' => 'mail-queue',
@@ -266,8 +264,6 @@ Alternatively, you may call the `afterCommit` method from your notification's co
 
         /**
          * Create a new notification instance.
-         *
-         * @return void
          */
         public function __construct()
         {
@@ -287,12 +283,8 @@ However, if you would like to make the final determination on whether the queued
 
     /**
      * Determine if the notification should be sent.
-     *
-     * @param  mixed  $notifiable
-     * @param  string  $channel
-     * @return bool
      */
-    public function shouldSend($notifiable, $channel)
+    public function shouldSend(object $notifiable, string $channel): bool
     {
         return $this->invoice->isPaid();
     }
@@ -328,11 +320,8 @@ The `MailMessage` class contains a few simple methods to help you build transact
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         $url = url('/invoice/'.$this->invoice->id);
 
@@ -361,11 +350,8 @@ Some notifications inform users of errors, such as a failed invoice payment. You
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->error()
@@ -380,11 +366,8 @@ Instead of defining the "lines" of text in the notification class, you may use t
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)->view(
             'emails.name', ['invoice' => $this->invoice]
@@ -395,11 +378,8 @@ You may specify a plain-text view for the mail message by passing the view name 
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)->view(
             ['emails.name.html', 'emails.name.plain'],
@@ -414,11 +394,8 @@ By default, the email's sender / from address is defined in the `config/mail.php
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->from('barrett@example.com', 'Barrett Blair')
@@ -436,6 +413,7 @@ When sending notifications via the `mail` channel, the notification system will 
 
     use Illuminate\Foundation\Auth\User as Authenticatable;
     use Illuminate\Notifications\Notifiable;
+    use Illuminate\Notifications\Notification;
 
     class User extends Authenticatable
     {
@@ -444,10 +422,9 @@ When sending notifications via the `mail` channel, the notification system will 
         /**
          * Route notifications for the mail channel.
          *
-         * @param  \Illuminate\Notifications\Notification  $notification
-         * @return array|string
+         * @return  array<string, string>|string
          */
-        public function routeNotificationForMail($notification)
+        public function routeNotificationForMail(Notification $notification): array|string
         {
             // Return email address only...
             return $this->email_address;
@@ -464,11 +441,8 @@ By default, the email's subject is the class name of the notification formatted 
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->subject('Notification Subject')
@@ -482,11 +456,8 @@ By default, the email notification will be sent using the default mailer defined
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->mailer('postmark')
@@ -509,11 +480,8 @@ To add attachments to an email notification, use the `attach` method while build
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->greeting('Hello!')
@@ -527,11 +495,8 @@ When attaching files to a message, you may also specify the display name and / o
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->greeting('Hello!')
@@ -547,11 +512,8 @@ Unlike attaching files in mailable objects, you may not attach a file directly f
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return Mailable
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): Mailable
     {
         return (new InvoicePaidMailable($this->invoice))
                     ->to($notifiable->email)
@@ -562,11 +524,8 @@ When necessary, multiple files may be attached to a message using the `attachMan
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->greeting('Hello!')
@@ -586,11 +545,8 @@ The `attachData` method may be used to attach a raw string of bytes as an attach
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->greeting('Hello!')
@@ -606,11 +562,8 @@ Some third-party email providers such as Mailgun and Postmark support message "t
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->greeting('Comment Upvoted!')
@@ -631,11 +584,8 @@ The `withSymfonyMessage` method of the `MailMessage` class allows you to registe
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->withSymfonyMessage(function (Email $message) {
@@ -651,14 +601,12 @@ The `withSymfonyMessage` method of the `MailMessage` class allows you to registe
 If needed, you may return a full [mailable object](/docs/{{version}}/mail) from your notification's `toMail` method. When returning a `Mailable` instead of a `MailMessage`, you will need to specify the message recipient using the mailable object's `to` method:
 
     use App\Mail\InvoicePaid as InvoicePaidMailable;
+    use Illuminate\Mail\Mailable;
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return Mailable
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): Mailable
     {
         return (new InvoicePaidMailable($this->invoice))
                     ->to($notifiable->email);
@@ -671,14 +619,12 @@ If you are sending an [on-demand notification](#on-demand-notifications), the `$
 
     use App\Mail\InvoicePaid as InvoicePaidMailable;
     use Illuminate\Notifications\AnonymousNotifiable;
+    use Illuminate\Mail\Mailable;
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return Mailable
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): Mailable
     {
         $address = $notifiable instanceof AnonymousNotifiable
                 ? $notifiable->routeNotificationFor('mail')
@@ -721,11 +667,8 @@ Like all other mail notifications, notifications that use Markdown templates sho
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         $url = url('/invoice/'.$this->invoice->id);
 
@@ -812,11 +755,8 @@ To customize the theme for an individual notification, you may call the `theme` 
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                     ->theme('invoice')
@@ -848,10 +788,9 @@ If a notification supports being stored in a database table, you should define a
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($notifiable)
+    public function toArray(object $notifiable): array
     {
         return [
             'invoice_id' => $this->invoice->id,
@@ -928,11 +867,8 @@ The `broadcast` channel broadcasts notifications using Laravel's [event broadcas
 
     /**
      * Get the broadcastable representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return BroadcastMessage
      */
-    public function toBroadcast($notifiable)
+    public function toBroadcast(object $notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
             'invoice_id' => $this->invoice->id,
@@ -954,14 +890,10 @@ All broadcast notifications are queued for broadcasting. If you would like to co
 
 In addition to the data you specify, all broadcast notifications also have a `type` field containing the full class name of the notification. If you would like to customize the notification `type`, you may define a `broadcastType` method on the notification class:
 
-    use Illuminate\Notifications\Messages\BroadcastMessage;
-
     /**
      * Get the type of the notification being broadcast.
-     *
-     * @return string
      */
-    public function broadcastType()
+    public function broadcastType(): string
     {
         return 'broadcast.message';
     }
@@ -995,10 +927,8 @@ If you would like to customize which channel that an entity's broadcast notifica
 
         /**
          * The channels the user receives notification broadcasts on.
-         *
-         * @return string
          */
-        public function receivesBroadcastNotificationsOn()
+        public function receivesBroadcastNotificationsOn(): string
         {
             return 'users.'.$this->id;
         }
@@ -1025,13 +955,12 @@ After defining your keys, you may set a `VONAGE_SMS_FROM` environment variable t
 
 If a notification supports being sent as an SMS, you should define a `toVonage` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Messages\VonageMessage` instance:
 
+    use Illuminate\Notifications\Messages\VonageMessage;
+
     /**
      * Get the Vonage / SMS representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\VonageMessage
      */
-    public function toVonage($notifiable)
+    public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
                     ->content('Your SMS message content');
@@ -1042,13 +971,12 @@ If a notification supports being sent as an SMS, you should define a `toVonage` 
 
 If your SMS message will contain unicode characters, you should call the `unicode` method when constructing the `VonageMessage` instance:
 
+    use Illuminate\Notifications\Messages\VonageMessage;
+
     /**
      * Get the Vonage / SMS representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\VonageMessage
      */
-    public function toVonage($notifiable)
+    public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
                     ->content('Your unicode message')
@@ -1060,13 +988,12 @@ If your SMS message will contain unicode characters, you should call the `unicod
 
 If you would like to send some notifications from a phone number that is different from the phone number specified by your `VONAGE_SMS_FROM` environment variable, you may call the `from` method on a `VonageMessage` instance:
 
+    use Illuminate\Notifications\Messages\VonageMessage;
+
     /**
      * Get the Vonage / SMS representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\VonageMessage
      */
-    public function toVonage($notifiable)
+    public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
                     ->content('Your SMS message content')
@@ -1078,13 +1005,12 @@ If you would like to send some notifications from a phone number that is differe
 
 If you would like to keep track of costs per user, team, or client, you may add a "client reference" to the notification. Vonage will allow you to generate reports using this client reference so that you can better understand a particular customer's SMS usage. The client reference can be any string up to 40 characters:
 
+    use Illuminate\Notifications\Messages\VonageMessage;
+
     /**
      * Get the Vonage / SMS representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\VonageMessage
      */
-    public function toVonage($notifiable)
+    public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
                     ->clientReference((string) $notifiable->id)
@@ -1102,6 +1028,7 @@ To route Vonage notifications to the proper phone number, define a `routeNotific
 
     use Illuminate\Foundation\Auth\User as Authenticatable;
     use Illuminate\Notifications\Notifiable;
+    use Illuminate\Notifications\Notification;
 
     class User extends Authenticatable
     {
@@ -1109,11 +1036,8 @@ To route Vonage notifications to the proper phone number, define a `routeNotific
 
         /**
          * Route notifications for the Vonage channel.
-         *
-         * @param  \Illuminate\Notifications\Notification  $notification
-         * @return string
          */
-        public function routeNotificationForVonage($notification)
+        public function routeNotificationForVonage(Notification $notification): string
         {
             return $this->phone_number;
         }
@@ -1138,13 +1062,12 @@ You will also need to create a [Slack App](https://api.slack.com/apps?new_app=1)
 
 If a notification supports being sent as a Slack message, you should define a `toSlack` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Messages\SlackMessage` instance. Slack messages may contain text content as well as an "attachment" that formats additional text or an array of fields. Let's take a look at a basic `toSlack` example:
 
+    use Illuminate\Notifications\Messages\SlackMessage;
+
     /**
      * Get the Slack representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
-    public function toSlack($notifiable)
+    public function toSlack(object $notifiable): SlackMessage
     {
         return (new SlackMessage)
                     ->content('One of your invoices has been paid!');
@@ -1155,20 +1078,20 @@ If a notification supports being sent as a Slack message, you should define a `t
 
 You may also add "attachments" to Slack messages. Attachments provide richer formatting options than simple text messages. In this example, we will send an error notification about an exception that occurred in an application, including a link to view more details about the exception:
 
+    use Illuminate\Notifications\Messages\SlackAttachment;
+    use Illuminate\Notifications\Messages\SlackMessage;
+
     /**
      * Get the Slack representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
-    public function toSlack($notifiable)
+    public function toSlack(object $notifiable): SlackMessage
     {
         $url = url('/exceptions/'.$this->exception->id);
 
         return (new SlackMessage)
                     ->error()
                     ->content('Whoops! Something went wrong.')
-                    ->attachment(function ($attachment) use ($url) {
+                    ->attachment(function (SlackAttachment $attachment) use ($url) {
                         $attachment->title('Exception: File Not Found', $url)
                                    ->content('File [background.jpg] was not found.');
                     });
@@ -1176,20 +1099,20 @@ You may also add "attachments" to Slack messages. Attachments provide richer for
 
 Attachments also allow you to specify an array of data that should be presented to the user. The given data will be presented in a table-style format for easy reading:
 
+    use Illuminate\Notifications\Messages\SlackAttachment;
+    use Illuminate\Notifications\Messages\SlackMessage;
+
     /**
      * Get the Slack representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return SlackMessage
      */
-    public function toSlack($notifiable)
+    public function toSlack(object $notifiable): SlackMessage
     {
         $url = url('/invoices/'.$this->invoice->id);
 
         return (new SlackMessage)
                     ->success()
                     ->content('One of your invoices has been paid!')
-                    ->attachment(function ($attachment) use ($url) {
+                    ->attachment(function (SlackAttachment $attachment) use ($url) {
                         $attachment->title('Invoice 1322', $url)
                                    ->fields([
                                         'Title' => 'Server Expenses',
@@ -1205,20 +1128,20 @@ Attachments also allow you to specify an array of data that should be presented 
 
 If some of your attachment fields contain Markdown, you may use the `markdown` method to instruct Slack to parse and display the given attachment fields as Markdown formatted text. The values accepted by this method are: `pretext`, `text`, and / or `fields`. For more information about Slack attachment formatting, check out the [Slack API documentation](https://api.slack.com/docs/message-formatting#message_formatting):
 
+    use Illuminate\Notifications\Messages\SlackAttachment;
+    use Illuminate\Notifications\Messages\SlackMessage;
+
     /**
      * Get the Slack representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return SlackMessage
      */
-    public function toSlack($notifiable)
+    public function toSlack(object $notifiable): SlackMessage
     {
         $url = url('/exceptions/'.$this->exception->id);
 
         return (new SlackMessage)
                     ->error()
                     ->content('Whoops! Something went wrong.')
-                    ->attachment(function ($attachment) use ($url) {
+                    ->attachment(function (SlackAttachment $attachment) use ($url) {
                         $attachment->title('Exception: File Not Found', $url)
                                    ->content('File [background.jpg] was *not found*.')
                                    ->markdown(['text']);
@@ -1236,6 +1159,7 @@ To route Slack notifications to the proper Slack team and channel, define a `rou
 
     use Illuminate\Foundation\Auth\User as Authenticatable;
     use Illuminate\Notifications\Notifiable;
+    use Illuminate\Notifications\Notification;
 
     class User extends Authenticatable
     {
@@ -1243,11 +1167,8 @@ To route Slack notifications to the proper Slack team and channel, define a `rou
 
         /**
          * Route notifications for the Slack channel.
-         *
-         * @param  \Illuminate\Notifications\Notification  $notification
-         * @return string
          */
-        public function routeNotificationForSlack($notification)
+        public function routeNotificationForSlack(Notification $notification): string
         {
             return 'https://hooks.slack.com/services/...';
         }
@@ -1279,10 +1200,8 @@ Sometimes, applications store each user's preferred locale. By implementing the 
     {
         /**
          * Get the user's preferred locale.
-         *
-         * @return string
          */
-        public function preferredLocale()
+        public function preferredLocale(): string
         {
             return $this->locale;
         }
@@ -1320,11 +1239,8 @@ The notification will not be sent if an event listener for the `NotificationSend
 
     /**
      * Handle the event.
-     *
-     * @param  \Illuminate\Notifications\Events\NotificationSending  $event
-     * @return void
      */
-    public function handle(NotificationSending $event)
+    public function handle(NotificationSending $event): void
     {
         return false;
     }
@@ -1333,11 +1249,8 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
 
     /**
      * Handle the event.
-     *
-     * @param  \Illuminate\Notifications\Events\NotificationSending  $event
-     * @return void
      */
-    public function handle(NotificationSending $event)
+    public function handle(NotificationSending $event): void
     {
         // $event->channel
         // $event->notifiable
@@ -1370,11 +1283,8 @@ Within an event listener, you may access the `notifiable`, `notification`, `chan
 
     /**
      * Handle the event.
-     *
-     * @param  \Illuminate\Notifications\Events\NotificationSent  $event
-     * @return void
      */
-    public function handle(NotificationSent $event)
+    public function handle(NotificationSent $event): void
     {
         // $event->channel
         // $event->notifiable
@@ -1399,12 +1309,8 @@ Within the `send` method, you may call methods on the notification to retrieve a
     {
         /**
          * Send the given notification.
-         *
-         * @param  mixed  $notifiable
-         * @param  \Illuminate\Notifications\Notification  $notification
-         * @return void
          */
-        public function send($notifiable, Notification $notification)
+        public function send(object $notifiable, Notification $notification): void
         {
             $message = $notification->toVoice($notifiable);
 
@@ -1430,22 +1336,16 @@ Once your notification channel class has been defined, you may return the class 
 
         /**
          * Get the notification channels.
-         *
-         * @param  mixed  $notifiable
-         * @return array|string
          */
-        public function via($notifiable)
+        public function via(object $notifiable): string
         {
-            return [VoiceChannel::class];
+            return VoiceChannel::class;
         }
 
         /**
          * Get the voice representation of the notification.
-         *
-         * @param  mixed  $notifiable
-         * @return VoiceMessage
          */
-        public function toVoice($notifiable)
+        public function toVoice(object $notifiable): VoiceMessage
         {
             // ...
         }

@@ -41,10 +41,8 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
     {
         /**
          * Run the database seeders.
-         *
-         * @return void
          */
-        public function run()
+        public function run(): void
         {
             DB::table('users')->insert([
                 'name' => Str::random(10),
@@ -68,10 +66,8 @@ For example, let's create 50 users that each has one related post:
 
     /**
      * Run the database seeders.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         User::factory()
                 ->count(50)
@@ -86,10 +82,8 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
 
     /**
      * Run the database seeders.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call([
             UserSeeder::class,
@@ -116,10 +110,8 @@ While running seeds, you may want to prevent models from dispatching events. You
 
         /**
          * Run the database seeders.
-         *
-         * @return void
          */
-        public function run()
+        public function run(): void
         {
             $this->call([
                 UserSeeder::class,

@@ -141,10 +141,8 @@ Each Eloquent model is synced with a given search "index", which contains all of
 
         /**
          * Get the name of the index associated with the model.
-         *
-         * @return string
          */
-        public function searchableAs()
+        public function searchableAs(): string
         {
             return 'posts_index';
         }
@@ -169,9 +167,9 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         /**
          * Get the indexable data array for the model.
          *
-         * @return array
+         * @return array<string, mixed>
          */
-        public function toSearchableArray()
+        public function toSearchableArray(): array
         {
             $array = $this->toArray();
 
@@ -252,20 +250,16 @@ By default, Scout will use the primary key of the model as the model's unique ID
 
         /**
          * Get the value used to index the model.
-         *
-         * @return mixed
          */
-        public function getScoutKey()
+        public function getScoutKey(): mixed
         {
             return $this->email;
         }
 
         /**
          * Get the key name used to index the model.
-         *
-         * @return mixed
          */
-        public function getScoutKeyName()
+        public function getScoutKeyName(): mixed
         {
             return 'email';
         }
@@ -281,6 +275,7 @@ When searching, Scout will typically use the default search engine specified in 
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Laravel\Scout\Engines\Engine;
     use Laravel\Scout\EngineManager;
     use Laravel\Scout\Searchable;
 
@@ -290,10 +285,8 @@ When searching, Scout will typically use the default search engine specified in 
 
         /**
          * Get the engine used to index the model.
-         *
-         * @return \Laravel\Scout\Engines\Engine
          */
-        public function searchableUsing()
+        public function searchableUsing(): Engine
         {
             return app(EngineManager::class)->engine('meilisearch');
         }
@@ -342,11 +335,11 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 /**
  * Get the indexable data array for the model.
  *
- * @return array
+ * @return array<string, mixed>
  */
 #[SearchUsingPrefix(['id', 'email'])]
 #[SearchUsingFullText(['bio'])]
-public function toSearchableArray()
+public function toSearchableArray(): array
 {
     return [
         'id' => $this->id,
@@ -404,11 +397,8 @@ If you would like to modify the query that is used to retrieve all of your model
 
     /**
      * Modify the query used to retrieve models when making all of the models searchable.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function makeAllSearchableUsing($query)
+    protected function makeAllSearchableUsing(Builder $query): Builder
     {
         return $query->with('author');
     }
@@ -512,10 +502,8 @@ Sometimes you may need to only make a model searchable under certain conditions.
 
     /**
      * Determine if the model should be searchable.
-     *
-     * @return bool
      */
-    public function shouldBeSearchable()
+    public function shouldBeSearchable(): bool
     {
         return $this->isPublished();
     }
@@ -660,9 +648,10 @@ After Scout retrieves a list of matching Eloquent models from your application's
 
 ```php
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Builder;
 
 $orders = Order::search('Star Trek')
-    ->query(fn ($query) => $query->with('invoices'))
+    ->query(fn (Builder $query) => $query->with('invoices'))
     ->get();
 ```
 
@@ -694,15 +683,13 @@ You may find it helpful to review the implementations of these methods on the `L
 
 Once you have written your custom engine, you may register it with Scout using the `extend` method of the Scout engine manager. Scout's engine manager may be resolved from the Laravel service container. You should call the `extend` method from the `boot` method of your `App\Providers\AppServiceProvider` class or any other service provider used by your application:
 
-    use App\ScoutExtensions\MySqlSearchEngine
+    use App\ScoutExtensions\MySqlSearchEngine;
     use Laravel\Scout\EngineManager;
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         resolve(EngineManager::class)->extend('mysql', function () {
             return new MySqlSearchEngine;
@@ -724,10 +711,8 @@ If you would like to define a custom Scout search builder method, you may use th
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Builder::macro('count', function () {
             return $this->engine()->getTotalCount(

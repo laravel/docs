@@ -34,16 +34,14 @@ Let's take a look at an example of a basic controller. Note that the controller 
     namespace App\Http\Controllers;
     
     use App\Models\User;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show the profile for a given user.
-         *
-         * @param  int  $id
-         * @return \Illuminate\View\View
          */
-        public function show($id)
+        public function show(string $id): View
         {
             return view('user.profile', [
                 'user' => User::findOrFail($id)
@@ -72,17 +70,18 @@ If a controller action is particularly complex, you might find it convenient to 
     namespace App\Http\Controllers;
     
     use App\Models\User;
+    use Illuminate\Http\Response;
 
     class ProvisionServer extends Controller
     {
         /**
          * Provision a new web server.
-         *
-         * @return \Illuminate\Http\Response
          */
-        public function __invoke()
+        public function __invoke(): Response
         {
             // ...
+
+            return response()->noContent();
         }
     }
 
@@ -114,8 +113,6 @@ Or, you may find it convenient to specify middleware within your controller's co
     {
         /**
          * Instantiate a new controller instance.
-         *
-         * @return void
          */
         public function __construct()
         {
@@ -127,7 +124,10 @@ Or, you may find it convenient to specify middleware within your controller's co
 
 Controllers also allow you to register middleware using a closure. This provides a convenient way to define an inline middleware for a single controller without defining an entire middleware class:
 
-    $this->middleware(function ($request, $next) {
+    use Closure;
+    use Illuminate\Http\Request;
+
+    $this->middleware(function (Request $request, Closure $next) {
         return $next($request);
     });
 
@@ -344,10 +344,8 @@ By default, `Route::resource` will create resource URIs using English verbs and 
 
     /**
      * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Route::resourceVerbs([
             'create' => 'crear',
@@ -468,9 +466,6 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
 
         /**
          * Create a new controller instance.
-         *
-         * @param  \App\Repositories\UserRepository  $users
-         * @return void
          */
         public function __construct(UserRepository $users)
         {
@@ -488,20 +483,20 @@ In addition to constructor injection, you may also type-hint dependencies on you
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class UserController extends Controller
     {
         /**
          * Store a new user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): Response
         {
             $name = $request->name;
 
-            //
+            // ...
+
+            return response()->noContent();
         }
     }
 
@@ -523,13 +518,11 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
     {
         /**
          * Update the given user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  string  $id
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, $id)
+        public function update(Request $request, string $id): Response
         {
-            //
+            // ...
+
+            return response()->noContent();
         }
     }

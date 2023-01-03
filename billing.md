@@ -113,10 +113,8 @@ If you would like to prevent Cashier's migrations from running entirely, you may
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         Cashier::ignoreMigrations();
     }
@@ -146,10 +144,8 @@ Cashier assumes your billable model will be the `App\Models\User` class that shi
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Cashier::useCustomerModel(User::class);
     }
@@ -198,10 +194,8 @@ Thanks to [Stripe Tax](https://stripe.com/tax), it's possible to automatically c
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Cashier::calculateTaxes();
     }
@@ -243,10 +237,8 @@ After defining your model, you may instruct Cashier to use your custom model via
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Cashier::useSubscriptionModel(Subscription::class);
         Cashier::useSubscriptionItemModel(SubscriptionItem::class);
@@ -346,16 +338,15 @@ Typically, when your application's users update their name, email address, or ot
 
 To automate this, you may define an event listener on your billable model that reacts to the model's `updated` event. Then, within your event listener, you may invoke the `syncStripeCustomerDetails` method on the model:
 
+    use App\Models\User;
     use function Illuminate\Events\queueable;
 
     /**
      * The "booted" method of the model.
-     *
-     * @return void
      */
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::updated(queueable(function ($customer) {
+        static::updated(queueable(function (User $customer) {
             if ($customer->hasStripeId()) {
                 $customer->syncStripeCustomerDetails();
             }
@@ -368,10 +359,8 @@ You may customize the columns used for syncing customer information to Stripe by
 
     /**
      * Get the customer name that should be synced to Stripe.
-     *
-     * @return string|null
      */
-    public function stripeName()
+    public function stripeName(): string|null
     {
         return $this->company_name;
     }
@@ -555,19 +544,19 @@ You can retrieve a specific payment method that is attached to the billable mode
 To determine if a billable model has a default payment method attached to their account, invoke the `hasDefaultPaymentMethod` method:
 
     if ($user->hasDefaultPaymentMethod()) {
-        //
+        // ...
     }
 
 You may use the `hasPaymentMethod` method to determine if a billable model has at least one payment method attached to their account:
 
     if ($user->hasPaymentMethod()) {
-        //
+        // ...
     }
 
 This method will determine if the billable model has payment methods of the `card` type. To determine if a payment method of another type exists for the model, you may pass the `type` as an argument to the method:
 
     if ($user->hasPaymentMethod('sepa_debit')) {
-        //
+        // ...
     }
 
 <a name="updating-the-default-payment-method"></a>
@@ -759,7 +748,7 @@ Finally, you should always make sure to only add one active subscription per typ
 Once a customer is subscribed to your application, you may easily check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the customer has an active subscription, even if the subscription is currently within its trial period. The `subscribed` method accepts the name of the subscription as its first argument:
 
     if ($user->subscribed('default')) {
-        //
+        // ...
     }
 
 The `subscribed` method also makes a great candidate for a [route middleware](/docs/{{version}}/middleware), allowing you to filter access to routes and controllers based on the user's subscription status:
@@ -769,17 +758,17 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
     namespace App\Http\Middleware;
 
     use Closure;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
     class EnsureUserIsSubscribed
     {
         /**
          * Handle an incoming request.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \Closure  $next
-         * @return mixed
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function handle($request, Closure $next)
+        public function handle(Request $request, Closure $next): Response
         {
             if ($request->user() && ! $request->user()->subscribed('default')) {
                 // This user is not a paying customer...
@@ -793,31 +782,31 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
 If you would like to determine if a user is still within their trial period, you may use the `onTrial` method. This method can be useful for determining if you should display a warning to the user that they are still on their trial period:
 
     if ($user->subscription('default')->onTrial()) {
-        //
+        // ...
     }
 
 The `subscribedToProduct` method may be used to determine if the user is subscribed to a given product based on a given Stripe product's identifier. In Stripe, products are collections of prices. In this example, we will determine if the user's `default` subscription is actively subscribed to the application's "premium" product. The given Stripe product identifier should correspond to one of your product's identifiers in the Stripe dashboard:
 
     if ($user->subscribedToProduct('prod_premium', 'default')) {
-        //
+        // ...
     }
 
 By passing an array to the `subscribedToProduct` method, you may determine if the user's `default` subscription is actively subscribed to the application's "basic" or "premium" product:
 
     if ($user->subscribedToProduct(['prod_basic', 'prod_premium'], 'default')) {
-        //
+        // ...
     }
 
 The `subscribedToPrice` method may be used to determine if a customer's subscription corresponds to a given price ID:
 
     if ($user->subscribedToPrice('price_basic_monthly', 'default')) {
-        //
+        // ...
     }
 
 The `recurring` method may be used to determine if the user is currently subscribed and is no longer within their trial period:
 
     if ($user->subscription('default')->recurring()) {
-        //
+        // ...
     }
 
 > **Warning**  
@@ -829,19 +818,19 @@ The `recurring` method may be used to determine if the user is currently subscri
 To determine if the user was once an active subscriber but has canceled their subscription, you may use the `canceled` method:
 
     if ($user->subscription('default')->canceled()) {
-        //
+        // ...
     }
 
 You may also determine if a user has canceled their subscription but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time:
 
     if ($user->subscription('default')->onGracePeriod()) {
-        //
+        // ...
     }
 
 To determine if the user has canceled their subscription and is no longer within their "grace period", you may use the `ended` method:
 
     if ($user->subscription('default')->ended()) {
-        //
+        // ...
     }
 
 <a name="incomplete-and-past-due-status"></a>
@@ -852,11 +841,11 @@ If a subscription requires a secondary payment action after creation the subscri
 Similarly, if a secondary payment action is required when swapping prices the subscription will be marked as `past_due`. When your subscription is in either of these states it will not be active until the customer has confirmed their payment. Determining if a subscription has an incomplete payment may be accomplished using the `hasIncompletePayment` method on the billable model or a subscription instance:
 
     if ($user->hasIncompletePayment('default')) {
-        //
+        // ...
     }
 
     if ($user->subscription('default')->hasIncompletePayment()) {
-        //
+        // ...
     }
 
 When a subscription has an incomplete payment, you should direct the user to Cashier's payment confirmation page, passing the `latestPayment` identifier. You may use the `latestPayment` method available on subscription instance to retrieve this identifier:
@@ -873,10 +862,8 @@ If you would like the subscription to still be considered active when it's in a 
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         Cashier::keepPastDueSubscriptionsActive();
         Cashier::keepIncompleteSubscriptionsActive();
@@ -1197,9 +1184,9 @@ To specify the tax rates a user pays on a subscription, you should implement the
     /**
      * The tax rates that should apply to the customer's subscriptions.
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function taxRates()
+    public function taxRates(): array
     {
         return ['txr_id'];
     }
@@ -1211,9 +1198,9 @@ If you're offering subscriptions with multiple products, you may define differen
     /**
      * The tax rates that should apply to the customer's subscriptions.
      *
-     * @return array
+     * @return array<string, array<int, string>>
      */
-    public function priceTaxRates()
+    public function priceTaxRates(): array
     {
         return [
             'price_monthly' => ['txr_id'],
@@ -1281,7 +1268,7 @@ For example, if a customer cancels a subscription on March 1st, but the subscrip
 You may determine if a user has canceled their subscription but are still on their "grace period" using the `onGracePeriod` method:
 
     if ($user->subscription('default')->onGracePeriod()) {
-        //
+        // ...
     }
 
 If you wish to cancel a subscription immediately, call the `cancelNow` method on the user's subscription:
@@ -1341,11 +1328,11 @@ The `trialUntil` method allows you to provide a `DateTime` instance that specifi
 You may determine if a user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
 
     if ($user->onTrial('default')) {
-        //
+        // ...
     }
 
     if ($user->subscription('default')->onTrial()) {
-        //
+        // ...
     }
 
 You may use the `endTrial` method to immediately end a subscription trial:
@@ -1355,11 +1342,11 @@ You may use the `endTrial` method to immediately end a subscription trial:
 To determine if an existing trial has expired, you may use the `hasExpiredTrial` methods:
 
     if ($user->hasExpiredTrial('default')) {
-        //
+        // ...
     }
 
     if ($user->subscription('default')->hasExpiredTrial()) {
-        //
+        // ...
     }
 
 <a name="defining-trial-days-in-stripe-cashier"></a>
@@ -1500,11 +1487,8 @@ Both events contain the full payload of the Stripe webhook. For example, if you 
     {
         /**
          * Handle received Stripe webhooks.
-         *
-         * @param  \Laravel\Cashier\Events\WebhookReceived  $event
-         * @return void
          */
-        public function handle(WebhookReceived $event)
+        public function handle(WebhookReceived $event): void
         {
             if ($event->payload['type'] === 'invoice.payment_succeeded') {
                 // Handle the incoming event...
@@ -1573,7 +1557,7 @@ The `charge` method will throw an exception if the charge fails. If the charge i
     try {
         $payment = $user->charge(100, $paymentMethod);
     } catch (Exception $e) {
-        //
+        // ...
     }
 
 > **Warning**  
@@ -1720,7 +1704,7 @@ From within a route or controller, you may use the `downloadInvoice` method to g
 
     use Illuminate\Http\Request;
 
-    Route::get('/user/invoice/{invoice}', function (Request $request, $invoiceId) {
+    Route::get('/user/invoice/{invoice}', function (Request $request, string $invoiceId) {
         return $request->user()->downloadInvoice($invoiceId);
     });
 
@@ -1754,11 +1738,6 @@ Cashier also makes it possible to use a custom invoice renderer. By default, Cas
     {
         /**
          * Render the given invoice and return the raw PDF bytes.
-         *
-         * @param  \Laravel\Cashier\Invoice. $invoice
-         * @param  array  $data
-         * @param  array  $options
-         * @return string
          */
         public function render(Invoice $invoice, array $data = [], array $options = []): string
         {
@@ -1996,11 +1975,11 @@ Payment exceptions may be thrown for the following methods: `charge`, `invoiceFo
 Determining if an existing subscription has an incomplete payment may be accomplished using the `hasIncompletePayment` method on the billable model or a subscription instance:
 
     if ($user->hasIncompletePayment('default')) {
-        //
+        // ...
     }
 
     if ($user->subscription('default')->hasIncompletePayment()) {
-        //
+        // ...
     }
 
 You can derive the specific status of an incomplete payment by inspecting the `payment` property on the exception instance:

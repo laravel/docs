@@ -110,10 +110,8 @@ Then, you may instruct Sanctum to use your custom model via the `usePersonalAcce
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
@@ -151,7 +149,7 @@ To issue a token, you may use the `createToken` method. The `createToken` method
 You may access all of the user's tokens using the `tokens` Eloquent relationship provided by the `HasApiTokens` trait:
 
     foreach ($user->tokens as $token) {
-        //
+        // ...
     }
 
 <a name="token-abilities"></a>
@@ -164,7 +162,7 @@ Sanctum allows you to assign "abilities" to tokens. Abilities serve a similar pu
 When handling an incoming request authenticated by Sanctum, you may determine if the token has a given ability using the `tokenCan` method:
 
     if ($user->tokenCan('server:update')) {
-        //
+        // ...
     }
 
 <a name="token-ability-middleware"></a>
@@ -436,7 +434,7 @@ While testing, the `Sanctum::actingAs` method may be used to authenticate a user
     use App\Models\User;
     use Laravel\Sanctum\Sanctum;
 
-    public function test_task_list_can_be_retrieved()
+    public function test_task_list_can_be_retrieved(): void
     {
         Sanctum::actingAs(
             User::factory()->create(),

@@ -44,7 +44,7 @@ The cache configuration file also contains various other options, which are docu
 
 When using the `database` cache driver, you will need to set up a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
 
-    Schema::create('cache', function ($table) {
+    Schema::create('cache', function (Blueprint $table) {
         $table->string('key')->unique();
         $table->text('value');
         $table->integer('expiration');
@@ -110,14 +110,14 @@ To obtain a cache store instance, you may use the `Cache` facade, which is what 
     {
         /**
          * Show a list of all users of the application.
-         *
-         * @return Response
          */
-        public function index()
+        public function index(): array
         {
             $value = Cache::get('key');
 
-            //
+            return [
+                // ...
+            ];
         }
     }
 
@@ -151,7 +151,7 @@ You may even pass a closure as the default value. The result of the closure will
 The `has` method may be used to determine if an item exists in the cache. This method will also return `false` if the item exists but its value is `null`:
 
     if (Cache::has('key')) {
-        //
+        // ...
     }
 
 <a name="incrementing-decrementing-values"></a>
@@ -311,7 +311,7 @@ In contrast, this statement would remove only cached values tagged with `authors
 
 When using the `database` cache driver, you will need to setup a table to contain your application's cache locks. You'll find an example `Schema` declaration for the table below:
 
-    Schema::create('cache_locks', function ($table) {
+    Schema::create('cache_locks', function (Blueprint $table) {
         $table->string('key')->primary();
         $table->string('owner');
         $table->integer('expiration');
@@ -413,7 +413,7 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
 
 We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\Cache\MemcachedStore` in the [Laravel framework source code](https://github.com/laravel/framework). Once our implementation is complete, we can finish our custom driver registration by calling the `Cache` facade's `extend` method:
 
-    Cache::extend('mongo', function ($app) {
+    Cache::extend('mongo', function (Application $app) {
         return Cache::repository(new MongoStore);
     });
 
@@ -430,6 +430,7 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
     namespace App\Providers;
 
     use App\Extensions\MongoStore;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Support\Facades\Cache;
     use Illuminate\Support\ServiceProvider;
 
@@ -437,13 +438,11 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
             $this->app->booting(function () {
-                 Cache::extend('mongo', function ($app) {
+                 Cache::extend('mongo', function (Application $app) {
                      return Cache::repository(new MongoStore);
                  });
              });
@@ -451,12 +450,10 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            //
+            // ...
         }
     }
 

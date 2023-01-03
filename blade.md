@@ -101,10 +101,8 @@ By default, Blade (and the Laravel `e` helper) will double encode HTML entities.
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             Blade::withoutDoubleEncoding();
         }
@@ -653,7 +651,7 @@ However, if you are building a package that utilizes Blade components, you will 
     /**
      * Bootstrap your package's services.
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::component('package-alert', Alert::class);
     }
@@ -670,10 +668,8 @@ Alternatively, you may use the `componentNamespace` method to autoload component
 
     /**
      * Bootstrap your package's services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
     }
@@ -720,6 +716,7 @@ You should define all of the component's data attributes in its class constructo
     namespace App\View\Components;
 
     use Illuminate\View\Component;
+    use Illuminate\View\View;
 
     class Alert extends Component
     {
@@ -739,12 +736,8 @@ You should define all of the component's data attributes in its class constructo
 
         /**
          * Create the component instance.
-         *
-         * @param  string  $type
-         * @param  string  $message
-         * @return void
          */
-        public function __construct($type, $message)
+        public function __construct(string $type, string $message)
         {
             $this->type = $type;
             $this->message = $message;
@@ -752,10 +745,8 @@ You should define all of the component's data attributes in its class constructo
 
         /**
          * Get the view / contents that represent the component.
-         *
-         * @return \Illuminate\View\View|\Closure|string
          */
-        public function render()
+        public function render(): View
         {
             return view('components.alert');
         }
@@ -776,11 +767,8 @@ Component constructor arguments should be specified using `camelCase`, while `ke
 
     /**
      * Create the component instance.
-     *
-     * @param  string  $alertType
-     * @return void
      */
-    public function __construct($alertType)
+    public function __construct(string $alertType)
     {
         $this->alertType = $alertType;
     }
@@ -830,11 +818,8 @@ In addition to public variables being available to your component template, any 
 
     /**
      * Determine if the given option is the currently selected option.
-     *
-     * @param  string  $option
-     * @return bool
      */
-    public function isSelected($option)
+    public function isSelected(string $option): bool
     {
         return $option === $this->selected;
     }
@@ -852,12 +837,12 @@ You may execute this method from your component template by invoking the variabl
 
 Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method. The closure will receive a `$data` array as its only argument. This array will contain several elements that provide information about the component:
 
+    use Closure;
+
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\View\View|\Closure|string
      */
-    public function render()
+    public function render(): Closure
     {
         return function (array $data) {
             // $data['componentName'];
@@ -882,13 +867,8 @@ use App\Services\AlertCreator;
 
 /**
  * Create the component instance.
- *
- * @param  \App\Services\AlertCreator  $creator
- * @param  string  $type
- * @param  string  $message
- * @return void
  */
-public function __construct(AlertCreator $creator, $type, $message)
+public function __construct(AlertCreator $creator, string $type, string $message)
 {
     $this->creator = $creator;
     $this->type = $type;
@@ -1032,7 +1012,7 @@ If you would like an attribute other than `class` to have its default value and 
 You may filter attributes using the `filter` method. This method accepts a closure which should return `true` if you wish to retain the attribute in the attribute bag:
 
 ```blade
-{{ $attributes->filter(fn ($value, $key) => $key == 'foo') }}
+{{ $attributes->filter(fn (string $value, string $key) => $key == 'foo') }}
 ```
 
 For convenience, you may use the `whereStartsWith` method to retrieve all attributes whose keys begin with a given string:
@@ -1191,10 +1171,8 @@ For very small components, it may feel cumbersome to manage both the component c
 
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\View\View|\Closure|string
      */
-    public function render()
+    public function render(): string
     {
         return <<<'blade'
             <div class="alert alert-danger">
@@ -1236,10 +1214,8 @@ However, if you are building a package that utilizes Blade components or placing
 
     /**
      * Bootstrap your package's services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::component('package-alert', AlertComponent::class);
     }
@@ -1258,10 +1234,8 @@ Alternatively, you may use the `componentNamespace` method to autoload component
 
     /**
      * Bootstrap your package's services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
     }
@@ -1390,10 +1364,8 @@ The `anonymousComponentPath` method accepts the "path" to the anonymous componen
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::anonymousComponentPath(__DIR__.'/../components');
     }
@@ -1740,22 +1712,18 @@ The following example creates a `@datetime($var)` directive which formats a give
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            //
+            // ...
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            Blade::directive('datetime', function ($expression) {
+            Blade::directive('datetime', function (string $expression) {
                 return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
             });
         }
@@ -1780,10 +1748,8 @@ In these cases, Blade allows you to register a custom echo handler for that part
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::stringable(function (Money $money) {
             return $money->formatTo('en_GB');
@@ -1805,12 +1771,10 @@ Programming a custom directive is sometimes more complex than necessary when def
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        Blade::if('disk', function ($value) {
+        Blade::if('disk', function (string $value) {
             return config('filesystems.default') === $value;
         });
     }

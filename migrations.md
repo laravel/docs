@@ -90,10 +90,8 @@ Within both of these methods, you may use the Laravel schema builder to expressi
     {
         /**
          * Run the migrations.
-         *
-         * @return void
          */
-        public function up()
+        public function up(): void
         {
             Schema::create('flights', function (Blueprint $table) {
                 $table->id();
@@ -105,10 +103,8 @@ Within both of these methods, you may use the Laravel schema builder to expressi
 
         /**
          * Reverse the migrations.
-         *
-         * @return void
          */
-        public function down()
+        public function down(): void
         {
             Schema::drop('flights');
         }
@@ -128,12 +124,10 @@ If your migration will be interacting with a database connection other than your
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        //
+        // ...
     }
 
 <a name="running-migrations"></a>
@@ -992,10 +986,8 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
     {
         /**
          * Run the migrations.
-         *
-         * @return void
          */
-        public function up()
+        public function up(): void
         {
             Schema::create('flights', function (Blueprint $table) {
                 $table->id();
@@ -1013,7 +1005,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
 
 When using the MySQL database, the `after` method may be used to add columns after an existing column in the schema:
 
-    $table->after('password', function ($table) {
+    $table->after('password', function (Blueprint $table) {
         $table->string('address_line1');
         $table->string('address_line2');
         $table->string('city');
@@ -1170,10 +1162,8 @@ By default, Laravel uses the `utf8mb4` character set. If you are running a versi
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Schema::defaultStringLength(191);
     }

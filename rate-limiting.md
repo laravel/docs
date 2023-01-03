@@ -88,11 +88,8 @@ You may reset the number of attempts for a given rate limiter key using the `cle
 
     /**
      * Mark the message as read.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \App\Models\Message
      */
-    public function read(Message $message)
+    public function read(Message $message): Message
     {
         $message->markAsRead();
 

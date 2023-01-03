@@ -333,10 +333,8 @@ Laravel now includes pagination views built using [Bootstrap 5](https://getboots
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Paginator::useBootstrapFive();
     }

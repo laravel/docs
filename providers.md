@@ -44,18 +44,17 @@ Let's take a look at a basic service provider. Within any of your service provid
     namespace App\Providers;
 
     use App\Services\Riak\Connection;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Support\ServiceProvider;
 
     class RiakServiceProvider extends ServiceProvider
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            $this->app->singleton(Connection::class, function ($app) {
+            $this->app->singleton(Connection::class, function (Application $app) {
                 return new Connection(config('riak'));
             });
         }
@@ -117,13 +116,11 @@ So, what if we need to register a [view composer](/docs/{{version}}/views#view-c
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             View::composer('view', function () {
-                //
+                // ...
             });
         }
     }
@@ -137,14 +134,11 @@ You may type-hint dependencies for your service provider's `boot` method. The [s
 
     /**
      * Bootstrap any application services.
-     *
-     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
-     * @return void
      */
-    public function boot(ResponseFactory $response)
+    public function boot(ResponseFactory $response): void
     {
-        $response->macro('serialized', function ($value) {
-            //
+        $response->macro('serialized', function (mixed $value) {
+            // ...
         });
     }
 
@@ -175,6 +169,7 @@ To defer the loading of a provider, implement the `\Illuminate\Contracts\Support
     namespace App\Providers;
 
     use App\Services\Riak\Connection;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Contracts\Support\DeferrableProvider;
     use Illuminate\Support\ServiceProvider;
 
@@ -182,12 +177,10 @@ To defer the loading of a provider, implement the `\Illuminate\Contracts\Support
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            $this->app->singleton(Connection::class, function ($app) {
+            $this->app->singleton(Connection::class, function (Application $app) {
                 return new Connection($app['config']['riak']);
             });
         }
@@ -195,9 +188,9 @@ To defer the loading of a provider, implement the `\Illuminate\Contracts\Support
         /**
          * Get the services provided by the provider.
          *
-         * @return array
+         * @return array<int, string>
          */
-        public function provides()
+        public function provides(): array
         {
             return [Connection::class];
         }

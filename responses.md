@@ -192,10 +192,8 @@ If you would like to customize the value that is placed in the route parameter, 
 
     /**
      * Get the value of the model's route key.
-     *
-     * @return mixed
      */
-    public function getRouteKey()
+    public function getRouteKey(): mixed
     {
         return $this->slug;
     }
@@ -330,12 +328,10 @@ If you would like to define a custom response that you can re-use in a variety o
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            Response::macro('caps', function ($value) {
+            Response::macro('caps', function (string $value) {
                 return Response::make(strtoupper($value));
             });
         }

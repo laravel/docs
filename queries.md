@@ -58,15 +58,14 @@ You may use the `table` method provided by the `DB` facade to begin a query. The
 
     use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\DB;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show a list of all of the application's users.
-         *
-         * @return \Illuminate\Http\Response
          */
-        public function index()
+        public function index(): View
         {
             $users = DB::table('users')->get();
 
@@ -130,17 +129,18 @@ If you would like to retrieve an `Illuminate\Support\Collection` instance contai
 
 If you need to work with thousands of database records, consider using the `chunk` method provided by the `DB` facade. This method retrieves a small chunk of results at a time and feeds each chunk into a closure for processing. For example, let's retrieve the entire `users` table in chunks of 100 records at a time:
 
+    use Illuminate\Support\Collection;
     use Illuminate\Support\Facades\DB;
 
-    DB::table('users')->orderBy('id')->chunk(100, function ($users) {
+    DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {
         foreach ($users as $user) {
-            //
+            // ...
         }
     });
 
 You may stop further chunks from being processed by returning `false` from the closure:
 
-    DB::table('users')->orderBy('id')->chunk(100, function ($users) {
+    DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {
         // Process the records...
 
         return false;
@@ -149,7 +149,7 @@ You may stop further chunks from being processed by returning `false` from the c
 If you are updating database records while chunking results, your chunk results could change in unexpected ways. If you plan to update the retrieved records while chunking, it is always best to use the `chunkById` method instead. This method will automatically paginate the results based on the record's primary key:
 
     DB::table('users')->where('active', false)
-        ->chunkById(100, function ($users) {
+        ->chunkById(100, function (Collection $users) {
             foreach ($users as $user) {
                 DB::table('users')
                     ->where('id', $user->id)
@@ -168,8 +168,8 @@ The `lazy` method works similarly to [the `chunk` method](#chunking-results) in 
 ```php
 use Illuminate\Support\Facades\DB;
 
-DB::table('users')->orderBy('id')->lazy()->each(function ($user) {
-    //
+DB::table('users')->orderBy('id')->lazy()->each(function (object $user) {
+    // ...
 });
 ```
 
@@ -177,7 +177,7 @@ Once again, if you plan to update the retrieved records while iterating over the
 
 ```php
 DB::table('users')->where('active', false)
-    ->lazyById()->each(function ($user) {
+    ->lazyById()->each(function (object $user) {
         DB::table('users')
             ->where('id', $user->id)
             ->update(['active' => true]);
@@ -352,7 +352,7 @@ You may use the `crossJoin` method to perform a "cross join". Cross joins genera
 You may also specify more advanced join clauses. To get started, pass a closure as the second argument to the `join` method. The closure will receive a `Illuminate\Database\Query\JoinClause` instance which allows you to specify constraints on the "join" clause:
 
     DB::table('users')
-            ->join('contacts', function ($join) {
+            ->join('contacts', function (JoinClause $join) {
                 $join->on('users.id', '=', 'contacts.user_id')->orOn(/* ... */);
             })
             ->get();
@@ -360,7 +360,7 @@ You may also specify more advanced join clauses. To get started, pass a closure 
 If you would like to use a "where" clause on your joins, you may use the `where` and `orWhere` methods provided by the `JoinClause` instance. Instead of comparing two columns, these methods will compare the column against a value:
 
     DB::table('users')
-            ->join('contacts', function ($join) {
+            ->join('contacts', function (JoinClause $join) {
                 $join->on('users.id', '=', 'contacts.user_id')
                      ->where('contacts.user_id', '>', 5);
             })
@@ -377,7 +377,7 @@ You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a q
                        ->groupBy('user_id');
 
     $users = DB::table('users')
-            ->joinSub($latestPosts, 'latest_posts', function ($join) {
+            ->joinSub($latestPosts, 'latest_posts', function (JoinClause $join) {
                 $join->on('users.id', '=', 'latest_posts.user_id');
             })->get();
 
@@ -455,7 +455,7 @@ If you need to group an "or" condition within parentheses, you may pass a closur
 
     $users = DB::table('users')
                 ->where('votes', '>', 100)
-                ->orWhere(function($query) {
+                ->orWhere(function(Builder $query) {
                     $query->where('name', 'Abigail')
                           ->where('votes', '>', 50);
                 })
@@ -476,7 +476,7 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 The `whereNot` and `orWhereNot` methods may be used to negate a given group of query constraints. For example, the following query excludes products that are on clearance or which have a price that is less than ten:
 
     $products = DB::table('products')
-                    ->whereNot(function ($query) {
+                    ->whereNot(function (Builder $query) {
                         $query->where('clearance', true)
                               ->orWhere('price', '<', 10);
                     })
@@ -638,7 +638,7 @@ Sometimes you may need to group several "where" clauses within parentheses in or
 
     $users = DB::table('users')
                ->where('name', '=', 'John')
-               ->where(function ($query) {
+               ->where(function (Builder $query) {
                    $query->where('votes', '>', 100)
                          ->orWhere('title', '=', 'Admin');
                })
@@ -662,7 +662,7 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 The `whereExists` method allows you to write "where exists" SQL clauses. The `whereExists` method accepts a closure which will receive a query builder instance, allowing you to define the query that should be placed inside of the "exists" clause:
 
     $users = DB::table('users')
-               ->whereExists(function ($query) {
+               ->whereExists(function (Builder $query) {
                    $query->select(DB::raw(1))
                          ->from('orders')
                          ->whereColumn('orders.user_id', 'users.id');
@@ -686,8 +686,9 @@ where exists (
 Sometimes you may need to construct a "where" clause that compares the results of a subquery to a given value. You may accomplish this by passing a closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent "membership" of a given type;
 
     use App\Models\User;
+    use Illuminate\Database\Query\Builder;
 
-    $users = User::where(function ($query) {
+    $users = User::where(function (Builder $query) {
         $query->select('type')
             ->from('membership')
             ->whereColumn('membership.user_id', 'users.id')
@@ -698,8 +699,9 @@ Sometimes you may need to construct a "where" clause that compares the results o
 Or, you may need to construct a "where" clause that compares a column to the results of a subquery. You may accomplish this by passing a column, operator, and closure to the `where` method. For example, the following query will retrieve all income records where the amount is less than average;
 
     use App\Models\Income;
+    use Illuminate\Database\Query\Builder;
 
-    $incomes = Income::where('amount', '<', function ($query) {
+    $incomes = Income::where('amount', '<', function (Builder $query) {
         $query->selectRaw('avg(i.amount)')->from('incomes as i');
     })->get();
 
@@ -822,10 +824,10 @@ Alternatively, you may use the `limit` and `offset` methods. These methods are f
 
 Sometimes you may want certain query clauses to apply to a query based on another condition. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming HTTP request. You may accomplish this using the `when` method:
 
-    $role = $request->input('role');
+    $role = $request->string('role');
 
     $users = DB::table('users')
-                    ->when($role, function ($query, $role) {
+                    ->when($role, function (Builder $query, string $role) {
                         $query->where('role_id', $role);
                     })
                     ->get();
@@ -834,12 +836,12 @@ The `when` method only executes the given closure when the first argument is `tr
 
 You may pass another closure as the third argument to the `when` method. This closure will only execute if the first argument evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default ordering of a query:
 
-    $sortByVotes = $request->input('sort_by_votes');
+    $sortByVotes = $request->boolean('sort_by_votes');
 
     $users = DB::table('users')
-                    ->when($sortByVotes, function ($query, $sortByVotes) {
+                    ->when($sortByVotes, function (Builder $query, bool $sortByVotes) {
                         $query->orderBy('votes');
-                    }, function ($query) {
+                    }, function (Builder $query) {
                         $query->orderBy('name');
                     })
                     ->get();

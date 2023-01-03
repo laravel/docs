@@ -286,6 +286,7 @@ If you need to customize how temporary URLs are created for a specific storage d
 
     namespace App\Providers;
 
+    use DateTime;
     use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Facades\URL;
     use Illuminate\Support\ServiceProvider;
@@ -294,12 +295,10 @@ If you need to customize how temporary URLs are created for a specific storage d
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            Storage::disk('local')->buildTemporaryUrlsUsing(function ($path, $expiration, $options) {
+            Storage::disk('local')->buildTemporaryUrlsUsing(function (string $path, DateTime $expiration, array $options) {
                 return URL::temporarySignedRoute(
                     'files.download',
                     $expiration,
@@ -425,11 +424,8 @@ In web applications, one of the most common use-cases for storing files is stori
     {
         /**
          * Update the avatar for the user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request)
+        public function update(Request $request): string
         {
             $path = $request->file('avatar')->store('avatars');
 
@@ -613,6 +609,7 @@ Next, you can register the driver within the `boot` method of one of your applic
 
     namespace App\Providers;
 
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Filesystem\FilesystemAdapter;
     use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\ServiceProvider;
@@ -624,22 +621,18 @@ Next, you can register the driver within the `boot` method of one of your applic
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            //
+            // ...
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            Storage::extend('dropbox', function ($app, $config) {
+            Storage::extend('dropbox', function (Application $app, array $config) {
                 $adapter = new DropboxAdapter(new DropboxClient(
                     $config['authorization_token']
                 ));

@@ -26,17 +26,17 @@ To see an example of how to write a factory, take a look at the `database/factor
 
     namespace Database\Factories;
 
-    use Illuminate\Database\Eloquent\Factories\Factory;
     use Illuminate\Support\Str;
+    use Illuminate\Database\Eloquent\Factories\Factory;
 
     class UserFactory extends Factory
     {
         /**
          * Define the model's default state.
          *
-         * @return array
+         * @return array<string, mixed>
          */
-        public function definition()
+        public function definition(): array
         {
             return [
                 'name' => fake()->name(),
@@ -76,14 +76,13 @@ Once you have defined your factories, you may use the static `factory` method pr
 
 The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:
 
+    use Illuminate\Database\Eloquent\Factories\Factory;
     use Database\Factories\Administration\FlightFactory;
 
     /**
      * Create a new factory instance for the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    protected static function newFactory()
+    protected static function newFactory(): Factory
     {
         return FlightFactory::new();
     }
@@ -110,12 +109,12 @@ State manipulation methods allow you to define discrete modifications that can b
 
 State transformation methods typically call the `state` method provided by Laravel's base factory class. The `state` method accepts a closure which will receive the array of raw attributes defined for the factory and should return an array of attributes to modify:
 
+    use Illuminate\Database\Eloquent\Factories\Factory;
+
     /**
      * Indicate that the user is suspended.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function suspended()
+    public function suspended(): Factory
     {
         return $this->state(function (array $attributes) {
             return [
@@ -150,12 +149,12 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
          *
          * @return $this
          */
-        public function configure()
+        public function configure(): static
         {
             return $this->afterMaking(function (User $user) {
-                //
+                // ...
             })->afterCreating(function (User $user) {
-                //
+                // ...
             });
         }
 
@@ -242,10 +241,12 @@ In this example, five users will be created with an `admin` value of `Y` and fiv
 
 If necessary, you may include a closure as a sequence value. The closure will be invoked each time the sequence needs a new value:
 
+    use Illuminate\Database\Eloquent\Factories\Sequence;
+
     $users = User::factory()
                     ->count(10)
                     ->state(new Sequence(
-                        fn ($sequence) => ['role' => UserRoles::all()->random()],
+                        fn (Sequence $sequence) => ['role' => UserRoles::all()->random()],
                     ))
                     ->create();
 
@@ -253,7 +254,7 @@ Within a sequence closure, you may access the `$index` or `$count` properties on
 
     $users = User::factory()
                     ->count(10)
-                    ->sequence(fn ($sequence) => ['name' => 'Name '.$sequence->index])
+                    ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])
                     ->create();
 
 <a name="factory-relationships"></a>
@@ -459,9 +460,9 @@ To define a relationship within your model factory, you will typically assign a 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => User::factory(),
@@ -475,9 +476,9 @@ If the relationship's columns depend on the factory that defines it you may assi
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => User::factory(),

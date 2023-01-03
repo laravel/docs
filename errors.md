@@ -37,20 +37,18 @@ For example, if you need to report different types of exceptions in different wa
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->reportable(function (InvalidOrderException $e) {
-            //
+            // ...
         });
     }
 
 When you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback or return `false` from the callback:
 
     $this->reportable(function (InvalidOrderException $e) {
-        //
+        // ...
     })->stop();
 
     $this->reportable(function (InvalidOrderException $e) {
@@ -68,9 +66,9 @@ If available, Laravel automatically adds the current user's ID to every exceptio
     /**
      * Get the default context variables for logging.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function context()
+    protected function context(): array
     {
         return array_merge(parent::context(), [
             'foo' => 'bar',
@@ -95,9 +93,9 @@ While adding context to every log message can be useful, sometimes a particular 
         /**
          * Get the exception's context information.
          *
-         * @return array
+         * @return array<string, mixed>
          */
-        public function context()
+        public function context(): array
         {
             return ['order_id' => $this->orderId];
         }
@@ -108,7 +106,7 @@ While adding context to every log message can be useful, sometimes a particular 
 
 Sometimes you may need to report an exception but continue handling the current request. The `report` helper function allows you to quickly report an exception via the exception handler without rendering an error page to the user:
 
-    public function isValid($value)
+    public function isValid(string $value): bool
     {
         try {
             // Validate the value...
@@ -167,31 +165,29 @@ By default, the Laravel exception handler will convert exceptions into an HTTP r
 The closure passed to the `renderable` method should return an instance of `Illuminate\Http\Response`, which may be generated via the `response` helper. Laravel will deduce what type of exception the closure renders by examining the type-hint of the closure:
 
     use App\Exceptions\InvalidOrderException;
+    use Illuminate\Http\Request;
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->renderable(function (InvalidOrderException $e, $request) {
+        $this->renderable(function (InvalidOrderException $e, Request $request) {
             return response()->view('errors.invalid-order', [], 500);
         });
     }
 
 You may also use the `renderable` method to override the rendering behavior for built-in Laravel or Symfony exceptions such as `NotFoundHttpException`. If the closure given to the `renderable` method does not return a value, Laravel's default exception rendering will be utilized:
 
+    use Illuminate\Http\Request;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->renderable(function (NotFoundHttpException $e, $request) {
+        $this->renderable(function (NotFoundHttpException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
                     'message' => 'Record not found.'
@@ -210,26 +206,23 @@ Instead of type-checking exceptions in the exception handler's `register` method
     namespace App\Exceptions;
 
     use Exception;
+    use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class InvalidOrderException extends Exception
     {
         /**
          * Report the exception.
-         *
-         * @return bool|null
          */
-        public function report()
+        public function report(): void
         {
-            //
+            // ...
         }
 
         /**
          * Render the exception into an HTTP response.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function render($request)
+        public function render(Request $request): Response
         {
             return response(/* ... */);
         }
@@ -239,13 +232,13 @@ If your exception extends an exception that is already renderable, such as a bui
 
     /**
      * Render the exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function render($request)
+    public function render(Request $request): Response|bool
     {
-        // Determine if the exception needs custom rendering...
+        if (/** Determine if the exception needs custom rendering */) {
+
+            return response(/* ... */);
+        }
 
         return false;
     }
@@ -254,12 +247,15 @@ If your exception contains custom reporting logic that is only necessary when ce
 
     /**
      * Report the exception.
-     *
-     * @return bool|null
      */
-    public function report()
+    public function report(): bool
     {
-        // Determine if the exception needs custom reporting...
+        if (/** Determine if the exception needs custom reporting */) {
+
+            // ...
+
+            return true;
+        }
 
         return false;
     }

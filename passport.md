@@ -135,10 +135,8 @@ If necessary, you may define the path where Passport's keys should be loaded fro
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -201,10 +199,8 @@ By default, Passport issues long-lived access tokens that expire after one year.
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -237,10 +233,8 @@ After defining your model, you may instruct Passport to use your custom model vi
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -375,7 +369,7 @@ This route is used to delete clients:
 ```js
 axios.delete('/oauth/clients/' + clientId)
     .then(response => {
-        //
+        // ...
     });
 ```
 
@@ -437,10 +431,8 @@ Sometimes you may wish to skip the authorization prompt, such as when authorizin
     {
         /**
          * Determine if the client should skip the authorization prompt.
-         *
-         * @return bool
          */
-        public function skipsAuthorization()
+        public function skipsAuthorization(): bool
         {
             return $this->firstParty();
         }
@@ -560,11 +552,8 @@ You may also configure a [scheduled job](/docs/{{version}}/scheduling) in your a
 
     /**
      * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
      */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
         $schedule->command('passport:purge')->hourly();
     }
@@ -741,11 +730,8 @@ When authenticating using the password grant, Passport will use the `email` attr
 
         /**
          * Find the user instance for the given username.
-         *
-         * @param  string  $username
-         * @return \App\Models\User
          */
-        public function findForPassport($username)
+        public function findForPassport(string $username): User
         {
             return $this->where('username', $username)->first();
         }
@@ -771,11 +757,8 @@ When authenticating using the password grant, Passport will use the `password` a
 
         /**
          * Validate the password of the user for the Passport password grant.
-         *
-         * @param  string  $password
-         * @return bool
          */
-        public function validateForPassportPasswordGrant($password)
+        public function validateForPassportPasswordGrant(string $password): bool
         {
             return Hash::check($password, $this->password);
         }
@@ -791,10 +774,8 @@ The implicit grant is similar to the authorization code grant; however, the toke
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -978,7 +959,7 @@ axios.delete('/oauth/personal-access-tokens/' + tokenId);
 Passport includes an [authentication guard](/docs/{{version}}/authentication#adding-custom-guards) that will validate access tokens on incoming requests. Once you have configured the `api` guard to use the `passport` driver, you only need to specify the `auth:api` middleware on any routes that should require a valid access token:
 
     Route::get('/user', function () {
-        //
+        // ...
     })->middleware('auth:api');
 
 > **Warning**  
@@ -1002,7 +983,7 @@ If your application authenticates different types of users that perhaps use enti
 The following route will utilize the `api-customers` guard, which uses the `customers` user provider, to authenticate incoming requests:
 
     Route::get('/customer', function () {
-        //
+        // ...
     })->middleware('auth:api-customers');
 
 > **Note**  
@@ -1034,10 +1015,8 @@ You may define your API's scopes using the `Passport::tokensCan` method in the `
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -1128,7 +1107,7 @@ Once an access token authenticated request has entered your application, you may
 
     Route::get('/orders', function (Request $request) {
         if ($request->user()->tokenCan('place-orders')) {
-            //
+            // ...
         }
     });
 
@@ -1182,10 +1161,8 @@ If needed, you can customize the `laravel_token` cookie's name using the `Passpo
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -1228,7 +1205,7 @@ Passport's `actingAs` method may be used to specify the currently authenticated 
     use App\Models\User;
     use Laravel\Passport\Passport;
 
-    public function test_servers_can_be_created()
+    public function test_servers_can_be_created(): void
     {
         Passport::actingAs(
             User::factory()->create(),
@@ -1245,7 +1222,7 @@ Passport's `actingAsClient` method may be used to specify the currently authenti
     use Laravel\Passport\Client;
     use Laravel\Passport\Passport;
 
-    public function test_orders_can_be_retrieved()
+    public function test_orders_can_be_retrieved(): void
     {
         Passport::actingAsClient(
             Client::factory()->create(),

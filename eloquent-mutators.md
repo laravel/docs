@@ -43,13 +43,11 @@ In this example, we'll define an accessor for the `first_name` attribute. The ac
     {
         /**
          * Get the user's first name.
-         *
-         * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
         protected function firstName(): Attribute
         {
             return Attribute::make(
-                get: fn ($value) => ucfirst($value),
+                get: fn (string $value) => ucfirst($value),
             );
         }
     }
@@ -78,13 +76,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * Interact with the user's address.
- *
- * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
 protected function address(): Attribute
 {
     return Attribute::make(
-        get: fn ($value, $attributes) => new Address(
+        get: fn (mixed $value, array $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
         ),
@@ -112,7 +108,7 @@ However, you may sometimes wish to enable caching for primitive values like stri
 protected function hash(): Attribute
 {
     return Attribute::make(
-        get: fn ($value) => bcrypt(gzuncompress($value)),
+        get: fn (string $value) => bcrypt(gzuncompress($value)),
     )->shouldCache();
 }
 ```
@@ -122,13 +118,11 @@ If you would like to disable the object caching behavior of attributes, you may 
 ```php
 /**
  * Interact with the user's address.
- *
- * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
 protected function address(): Attribute
 {
     return Attribute::make(
-        get: fn ($value, $attributes) => new Address(
+        get: fn (mixed $value, array $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
         ),
@@ -152,14 +146,12 @@ A mutator transforms an Eloquent attribute value when it is set. To define a mut
     {
         /**
          * Interact with the user's first name.
-         *
-         * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
         protected function firstName(): Attribute
         {
             return Attribute::make(
-                get: fn ($value) => ucfirst($value),
-                set: fn ($value) => strtolower($value),
+                get: fn (string $value) => ucfirst($value),
+                set: fn (string $value) => strtolower($value),
             );
         }
     }
@@ -185,13 +177,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * Interact with the user's address.
- *
- * @return  \Illuminate\Database\Eloquent\Casts\Attribute
  */
 protected function address(): Attribute
 {
     return Attribute::make(
-        get: fn ($value, $attributes) => new Address(
+        get: fn (mixed $value, array $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
         ),
@@ -260,7 +250,7 @@ After defining the cast, the `is_admin` attribute will always be cast to a boole
     $user = App\Models\User::find(1);
 
     if ($user->is_admin) {
-        //
+        // ...
     }
 
 If you need to add a new, temporary cast at runtime, you may use the `mergeCasts` method. These cast definitions will be added to any of the casts already defined on the model:
@@ -397,11 +387,8 @@ You may customize the default serialization format for all of your model's dates
 
     /**
      * Prepare a date for array / JSON serialization.
-     *
-     * @param  \DateTimeInterface  $date
-     * @return string
      */
-    protected function serializeDate(DateTimeInterface $date)
+    protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d');
     }
@@ -501,19 +488,17 @@ All custom cast classes implement the `CastsAttributes` interface. Classes that 
     namespace App\Casts;
 
     use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+    use Illuminate\Database\Eloquent\Model;
 
     class Json implements CastsAttributes
     {
         /**
          * Cast the given value.
          *
-         * @param  \Illuminate\Database\Eloquent\Model  $model
-         * @param  string  $key
-         * @param  mixed  $value
-         * @param  array  $attributes
-         * @return array
+         * @param  array<string, mixed>  $attributes
+         * @return array<string, mixed>
          */
-        public function get($model, $key, $value, $attributes)
+        public function get(Model $model, string $key, mixed $value, array $attributes): array
         {
             return json_decode($value, true);
         }
@@ -521,13 +506,9 @@ All custom cast classes implement the `CastsAttributes` interface. Classes that 
         /**
          * Prepare the given value for storage.
          *
-         * @param  \Illuminate\Database\Eloquent\Model  $model
-         * @param  string  $key
-         * @param  array  $value
-         * @param  array  $attributes
-         * @return string
+         * @param  array<string, mixed>  $attributes
          */
-        public function set($model, $key, $value, $attributes)
+        public function set(Model $model, string $key, mixed $value, array $attributes): string
         {
             return json_encode($value);
         }
@@ -567,6 +548,7 @@ As an example, we will define a custom cast class that casts multiple model valu
 
     use App\ValueObjects\Address as AddressValueObject;
     use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+    use Illuminate\Database\Eloquent\Model;
     use InvalidArgumentException;
 
     class Address implements CastsAttributes
@@ -574,13 +556,9 @@ As an example, we will define a custom cast class that casts multiple model valu
         /**
          * Cast the given value.
          *
-         * @param  \Illuminate\Database\Eloquent\Model  $model
-         * @param  string  $key
-         * @param  mixed  $value
-         * @param  array  $attributes
-         * @return \App\ValueObjects\Address
+         * @param  array<string, mixed>  $attributes
          */
-        public function get($model, $key, $value, $attributes)
+        public function get(Model $model, string $key, mixed $value, array $attributes): AddressValueObject
         {
             return new AddressValueObject(
                 $attributes['address_line_one'],
@@ -591,13 +569,10 @@ As an example, we will define a custom cast class that casts multiple model valu
         /**
          * Prepare the given value for storage.
          *
-         * @param  \Illuminate\Database\Eloquent\Model  $model
-         * @param  string  $key
-         * @param  \App\ValueObjects\Address  $value
-         * @param  array  $attributes
-         * @return array
+         * @param  array<string, mixed>  $attributes
+         * @return array<string, string>
          */
-        public function set($model, $key, $value, $attributes)
+        public function set(Model $model, string $key, mixed $value, array $attributes): array
         {
             if (! $value instanceof AddressValueObject) {
                 throw new InvalidArgumentException('The given value is not an Address instance.');
@@ -633,13 +608,9 @@ Therefore, you may specify that your custom cast class will be responsible for s
     /**
      * Get the serialized representation of the value.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  array  $attributes
-     * @return mixed
+     * @param  array<string, mixed>  $attributes
      */
-    public function serialize($model, string $key, $value, array $attributes)
+    public function serialize(Model $model, string $key, mixed $value, array $attributes): string
     {
         return (string) $value;
     }
@@ -662,6 +633,7 @@ A classic example of an inbound only cast is a "hashing" cast. For example, we m
     namespace App\Casts;
 
     use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
+    use Illuminate\Database\Eloquent\Model;
 
     class Hash implements CastsInboundAttributes
     {
@@ -674,11 +646,8 @@ A classic example of an inbound only cast is a "hashing" cast. For example, we m
 
         /**
          * Create a new cast class instance.
-         *
-         * @param  string|null  $algorithm
-         * @return void
          */
-        public function __construct($algorithm = null)
+        public function __construct(string $algorithm = null)
         {
             $this->algorithm = $algorithm;
         }
@@ -686,13 +655,9 @@ A classic example of an inbound only cast is a "hashing" cast. For example, we m
         /**
          * Prepare the given value for storage.
          *
-         * @param  \Illuminate\Database\Eloquent\Model  $model
-         * @param  string  $key
-         * @param  array  $value
-         * @param  array  $attributes
-         * @return string
+         * @param  array<string, mixed>  $attributes
          */
-        public function set($model, $key, $value, $attributes)
+        public function set(Model $model, string $key, mixed $value, array $attributes): string
         {
             return is_null($this->algorithm)
                         ? bcrypt($value)
@@ -739,10 +704,9 @@ Objects that implement the `Castable` interface must define a `castUsing` method
         /**
          * Get the name of the caster class to use when casting from / to this cast target.
          *
-         * @param  array  $arguments
-         * @return string
+         * @param  array<string, mixed>  $arguments
          */
-        public static function castUsing(array $arguments)
+        public static function castUsing(array $arguments): string
         {
             return AddressCast::class;
         }
@@ -767,6 +731,7 @@ By combining "castables" with PHP's [anonymous classes](https://www.php.net/manu
 
     use Illuminate\Contracts\Database\Eloquent\Castable;
     use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+    use Illuminate\Database\Eloquent\Model;
 
     class Address implements Castable
     {
@@ -775,14 +740,13 @@ By combining "castables" with PHP's [anonymous classes](https://www.php.net/manu
         /**
          * Get the caster class to use when casting from / to this cast target.
          *
-         * @param  array  $arguments
-         * @return object|string
+         * @param  array<string, mixed>  $arguments
          */
-        public static function castUsing(array $arguments)
+        public static function castUsing(array $arguments): CastsAttributes
         {
             return new class implements CastsAttributes
             {
-                public function get($model, $key, $value, $attributes)
+                public function get(Model $model, string $key, mixed $value, array $attributes): Address
                 {
                     return new Address(
                         $attributes['address_line_one'],
@@ -790,7 +754,7 @@ By combining "castables" with PHP's [anonymous classes](https://www.php.net/manu
                     );
                 }
 
-                public function set($model, $key, $value, $attributes)
+                public function set(Model $model, string $key, mixed $value, array $attributes): array
                 {
                     return [
                         'address_line_one' => $value->lineOne,

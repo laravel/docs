@@ -134,10 +134,8 @@ All of the authentication view's rendering logic may be customized using the app
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Fortify::loginView(function () {
             return view('auth.login');
@@ -167,10 +165,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::authenticateUsing(function (Request $request) {
         $user = User::where('email', $request->email)->first();
@@ -226,16 +222,16 @@ If you need advanced customization of this behavior, you may bind implementation
 
 ```php
 use Laravel\Fortify\Contracts\LogoutResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 /**
  * Register any application services.
- *
- * @return void
  */
-public function register()
+public function register(): void
 {
     $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
-        public function toResponse($request)
+        public function toResponse(Request $request): RedirectResponse
         {
             return redirect('/');
         }
@@ -334,10 +330,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::twoFactorChallengeView(function () {
         return view('auth.two-factor-challenge');
@@ -370,10 +364,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::registerView(function () {
         return view('auth.register');
@@ -411,10 +403,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::requestPasswordResetLinkView(function () {
         return view('auth.forgot-password');
@@ -454,15 +444,14 @@ All of Fortify's view rendering logic may be customized using the appropriate me
 
 ```php
 use Laravel\Fortify\Fortify;
+use Illuminate\Http\Request;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
-    Fortify::resetPasswordView(function ($request) {
+    Fortify::resetPasswordView(function (Request $request) {
         return view('auth.reset-password', ['request' => $request]);
     });
 
@@ -510,10 +499,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::verifyEmailView(function () {
         return view('auth.verify-email');
@@ -567,10 +554,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::confirmPasswordView(function () {
         return view('auth.confirm-password');

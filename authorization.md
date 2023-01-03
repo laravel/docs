@@ -51,10 +51,8 @@ In this example, we'll define a gate to determine if a user can update a given `
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -70,10 +68,8 @@ Like controllers, gates may also be defined using a class callback array:
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -92,24 +88,23 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
     use App\Http\Controllers\Controller;
     use App\Models\Post;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Gate;
 
     class PostController extends Controller
     {
         /**
          * Update the given post.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \App\Models\Post  $post
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, Post $post)
+        public function update(Request $request, Post $post): Response
         {
             if (! Gate::allows('update-post', $post)) {
                 abort(403);
             }
 
             // Update the post...
+
+            return response()->noContent();
         }
     }
 
@@ -151,7 +146,7 @@ The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, 
     use App\Models\User;
     use Illuminate\Support\Facades\Gate;
 
-    Gate::define('create-post', function (User $user, Category $category, $pinned) {
+    Gate::define('create-post', function (User $user, Category $category, bool $pinned) {
         if (! $user->canPublishToGroup($category->group)) {
             return false;
         } elseif ($pinned && ! $user->canPinPosts()) {
@@ -228,9 +223,10 @@ Because hiding resources via a `404` response is such a common pattern for web a
 
 Sometimes, you may wish to grant all abilities to a specific user. You may use the `before` method to define a closure that is run before all other authorization checks:
 
+    use App\Models\User;
     use Illuminate\Support\Facades\Gate;
 
-    Gate::before(function ($user, $ability) {
+    Gate::before(function (User $user, string $ability) {
         if ($user->isAdministrator()) {
             return true;
         }
@@ -240,7 +236,9 @@ If the `before` closure returns a non-null result that result will be considered
 
 You may use the `after` method to define a closure to be executed after all other authorization checks:
 
-    Gate::after(function ($user, $ability, $result, $arguments) {
+    use App\Models\User;
+
+    Gate::after(function (User $user, string $ability, bool|null $result, mixed $arguments) {
         if ($user->isAdministrator()) {
             return true;
         }
@@ -254,11 +252,12 @@ Similar to the `before` method, if the `after` closure returns a non-null result
 Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicated gate that corresponds to the action. Laravel allows you to perform these types of "inline" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:
 
 ```php
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
-Gate::allowIf(fn ($user) => $user->isAdministrator());
+Gate::allowIf(fn (User $user) => $user->isAdministrator());
 
-Gate::denyIf(fn ($user) => $user->banned());
+Gate::denyIf(fn (User $user) => $user->banned());
 ```
 
 If the action is not authorized or if no user is currently authenticated, Laravel will automatically throw an `Illuminate\Auth\Access\AuthorizationException` exception. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler.
@@ -312,14 +311,12 @@ The `App\Providers\AuthServiceProvider` included with fresh Laravel applications
 
         /**
          * Register any application authentication / authorization services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             $this->registerPolicies();
 
-            //
+            // ...
         }
     }
 
@@ -332,7 +329,7 @@ If you would like to define your own policy discovery logic, you may register a 
 
     use Illuminate\Support\Facades\Gate;
 
-    Gate::guessPolicyNamesUsing(function ($modelClass) {
+    Gate::guessPolicyNamesUsing(function (string $modelClass) {
         // Return the name of the policy class for the given model...
     });
 
@@ -360,12 +357,8 @@ The `update` method will receive a `User` and a `Post` instance as its arguments
     {
         /**
          * Determine if the given post can be updated by the user.
-         *
-         * @param  \App\Models\User  $user
-         * @param  \App\Models\Post  $post
-         * @return bool
          */
-        public function update(User $user, Post $post)
+        public function update(User $user, Post $post): bool
         {
             return $user->id === $post->user_id;
         }
@@ -389,12 +382,8 @@ So far, we have only examined policy methods that return simple boolean values. 
 
     /**
      * Determine if the given post can be updated by the user.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Auth\Access\Response
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Post $post): Response
     {
         return $user->id === $post->user_id
                     ? Response::allow()
@@ -430,12 +419,8 @@ When an action is denied via a policy method, a `403` HTTP response is returned;
 
     /**
      * Determine if the given post can be updated by the user.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Auth\Access\Response
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Post $post): Response
     {
         return $user->id === $post->user_id
                     ? Response::allow()
@@ -450,12 +435,8 @@ Because hiding resources via a `404` response is such a common pattern for web a
 
     /**
      * Determine if the given post can be updated by the user.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Auth\Access\Response
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Post $post): Response
     {
         return $user->id === $post->user_id
                     ? Response::allow()
@@ -469,11 +450,8 @@ Some policy methods only receive an instance of the currently authenticated user
 
     /**
      * Determine if the given user can create posts.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->role == 'writer';
     }
@@ -494,12 +472,8 @@ By default, all gates and policies automatically return `false` if the incoming 
     {
         /**
          * Determine if the given post can be updated by the user.
-         *
-         * @param  \App\Models\User  $user
-         * @param  \App\Models\Post  $post
-         * @return bool
          */
-        public function update(?User $user, Post $post)
+        public function update(?User $user, Post $post): bool
         {
             return optional($user)->id === $post->user_id;
         }
@@ -514,16 +488,14 @@ For certain users, you may wish to authorize all actions within a given policy. 
 
     /**
      * Perform pre-authorization checks.
-     *
-     * @param  \App\Models\User  $user
-     * @param  string  $ability
-     * @return void|bool
      */
-    public function before(User $user, $ability)
+    public function before(User $user, string $ability): bool|null
     {
         if ($user->isAdministrator()) {
             return true;
         }
+
+        return null;
     }
 
 If you would like to deny all authorization checks for a particular type of user then you may return `false` from the `before` method. If `null` is returned, the authorization check will fall through to the policy method.
@@ -546,23 +518,22 @@ The `App\Models\User` model that is included with your Laravel application inclu
     use App\Http\Controllers\Controller;
     use App\Models\Post;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * Update the given post.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \App\Models\Post  $post
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, Post $post)
+        public function update(Request $request, Post $post): Response
         {
             if ($request->user()->cannot('update', $post)) {
                 abort(403);
             }
 
             // Update the post...
+
+            return response()->noContent();
         }
     }
 
@@ -580,22 +551,22 @@ Remember, some actions may correspond to policy methods like `create` that do no
     use App\Http\Controllers\Controller;
     use App\Models\Post;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * Create a post.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): Response
         {
             if ($request->user()->cannot('create', Post::class)) {
                 abort(403);
             }
 
             // Create the post...
+
+            return response()->noContent();
         }
     }
 
@@ -613,23 +584,22 @@ Like the `can` method, this method accepts the name of the action you wish to au
     use App\Http\Controllers\Controller;
     use App\Models\Post;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * Update the given blog post.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \App\Models\Post  $post
-         * @return \Illuminate\Http\Response
-         *
          * @throws \Illuminate\Auth\Access\AuthorizationException
          */
-        public function update(Request $request, Post $post)
+        public function update(Request $request, Post $post): Response
         {
             $this->authorize('update', $post);
 
             // The current user can update the blog post...
+
+            return response()->noContent();
         }
     }
 
@@ -640,20 +610,20 @@ As previously discussed, some policy methods like `create` do not require a mode
 
     use App\Models\Post;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     /**
      * Create a new blog post.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
         $this->authorize('create', Post::class);
 
         // The current user can create blog posts...
+
+        return response()->noContent();
     }
 
 <a name="authorizing-resource-controllers"></a>
@@ -675,8 +645,6 @@ The `authorizeResource` method accepts the model's class name as its first argum
     {
         /**
          * Create the controller instance.
-         *
-         * @return void
          */
         public function __construct()
         {
@@ -802,13 +770,8 @@ When authorizing actions using policies, you may pass an array as the second arg
 
     /**
      * Determine if the given post can be updated by the user.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
-     * @param  int  $category
-     * @return bool
      */
-    public function update(User $user, Post $post, int $category)
+    public function update(User $user, Post $post, int $category): bool
     {
         return $user->id === $post->user_id &&
                $user->canUpdateCategory($category);
@@ -819,15 +782,13 @@ When attempting to determine if the authenticated user can update a given post, 
     /**
      * Update the given blog post.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Post $post): Response
     {
         $this->authorize('update', [$post, $request->category]);
 
         // The current user can update the blog post...
+
+        return response()->noContent();
     }

@@ -183,13 +183,19 @@ If you would like the HTTP client to automatically retry the request if a client
 
 If needed, you may pass a third argument to the `retry` method. The third argument should be a callable that determines if the retries should actually be attempted. For example, you may wish to only retry the request if the initial request encounters an `ConnectionException`:
 
-    $response = Http::retry(3, 100, function ($exception, $request) {
+    use Exception;
+    use Illuminate\Http\Client\PendingRequest;
+
+    $response = Http::retry(3, 100, function (Exception $exception, PendingRequest $request) {
         return $exception instanceof ConnectionException;
     })->post(/* ... */);
 
 If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying the request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:
 
-    $response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {
+    use Exception;
+    use Illuminate\Http\Client\PendingRequest;
+
+    $response = Http::withToken($this->getToken())->retry(2, 0, function (Exception $exception, PendingRequest $request) {
         if (! $exception instanceof RequestException || $exception->response->status() !== 401) {
             return false;
         }
@@ -231,6 +237,8 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 
 If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error, you may use the `throw` or `throwIf` methods:
 
+    use Illuminate\Http\Client\Response;
+
     $response = Http::post(/* ... */);
 
     // Throw an exception if a client or server error occurred...
@@ -240,13 +248,13 @@ If you have a response instance and would like to throw an instance of `Illumina
     $response->throwIf($condition);
 
     // Throw an exception if an error occurred and the given closure resolves to true...
-    $response->throwIf(fn ($response) => true);
+    $response->throwIf(fn (Response $response) => true);
 
     // Throw an exception if an error occurred and the given condition is false...
     $response->throwUnless($condition);
 
     // Throw an exception if an error occurred and the given closure resolves to false...
-    $response->throwUnless(fn ($response) => false);
+    $response->throwUnless(fn (Response $response) => false);
 
     return $response['user']['id'];
 
@@ -258,8 +266,11 @@ The `throw` method returns the response instance if no error occurred, allowing 
 
 If you would like to perform some additional logic before the exception is thrown, you may pass a closure to the `throw` method. The exception will be thrown automatically after the closure is invoked, so you do not need to re-throw the exception from within the closure:
 
-    return Http::post(/* ... */)->throw(function ($response, $e) {
-        //
+    use Illuminate\Http\Client\Response;
+    use Illuminate\Http\Client\RequestException;
+
+    return Http::post(/* ... */)->throw(function (Response $response, RequestException $e) {
+        // ...
     })->json();
 
 <a name="guzzle-middleware"></a>
@@ -347,10 +358,8 @@ use Illuminate\Support\Facades\Http;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Http::macro('github', function () {
         return Http::withHeaders([

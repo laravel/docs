@@ -147,18 +147,18 @@ Alternatively, once a user is authenticated, you may access the authenticated us
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
 
     class FlightController extends Controller
     {
         /**
          * Update the flight information for an existing flight.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request)
+        public function update(Request $request): Response
         {
             // $request->user()
+
+            return response()->noContent();
         }
     }
 
@@ -190,13 +190,12 @@ To determine if the user making the incoming HTTP request is authenticated, you 
 
 When the `auth` middleware detects an unauthenticated user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes). You may modify this behavior by updating the `redirectTo` function in your application's `app/Http/Middleware/Authenticate.php` file:
 
+    use Illuminate\Http\Request;
+
     /**
      * Get the path the user should be redirected to.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string
      */
-    protected function redirectTo($request)
+    protected function redirectTo(Request $request): string
     {
         return route('login');
     }
@@ -230,17 +229,15 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Support\Facades\Auth;
 
     class LoginController extends Controller
     {
         /**
          * Handle an authentication attempt.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function authenticate(Request $request)
+        public function authenticate(Request $request): RedirectResponse
         {
             $credentials = $request->validate([
                 'email' => ['required', 'email'],
@@ -278,10 +275,12 @@ If you wish, you may also add extra query conditions to the authentication query
 
 For complex query conditions, you may provide a closure in your array of credentials. This closure will be invoked with the query instance, allowing you to customize the query based on your application's needs:
 
+    use Illuminate\Database\Eloquent\Builder;
+
     if (Auth::attempt([
         'email' => $email, 
         'password' => $password, 
-        fn ($query) => $query->has('activeSubscription'),
+        fn (Builder $query) => $query->has('activeSubscription'),
     ])) {
         // Authentication was successful...
     }
@@ -294,7 +293,7 @@ The `attemptWhen` method, which receives a closure as its second argument, may b
     if (Auth::attemptWhen([
         'email' => $email,
         'password' => $password,
-    ], function ($user) {
+    ], function (User $user) {
         return $user->isNotBanned();
     })) {
         // Authentication was successful...
@@ -369,7 +368,7 @@ You may pass a boolean value as the second argument to the `loginUsingId` method
 You may use the `once` method to authenticate a user with the application for a single request. No sessions or cookies will be utilized when calling this method:
 
     if (Auth::once($credentials)) {
-        //
+        // ...
     }
 
 <a name="http-basic-authentication"></a>
@@ -402,18 +401,19 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 
     namespace App\Http\Middleware;
 
+    use Closure;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
+    use Symfony\Component\HttpFoundation\Response;
 
     class AuthenticateOnceWithBasicAuth
     {
         /**
          * Handle an incoming request.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \Closure  $next
-         * @return mixed
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function handle($request, $next)
+        public function handle(Request $request, Closure $next): Response
         {
             return Auth::onceBasic() ?: $next($request);
         }
@@ -434,15 +434,13 @@ To manually log users out of your application, you may use the `logout` method p
 In addition to calling the `logout` method, it is recommended that you invalidate the user's session and regenerate their [CSRF token](/docs/{{version}}/csrf). After logging the user out, you would typically redirect the user to the root of your application:
 
     use Illuminate\Http\Request;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Support\Facades\Auth;
 
     /**
      * Log the user out of the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
 
@@ -547,6 +545,7 @@ You may define your own authentication guards using the `extend` method on the `
     namespace App\Providers;
 
     use App\Services\Auth\JwtGuard;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
     use Illuminate\Support\Facades\Auth;
 
@@ -554,14 +553,12 @@ You may define your own authentication guards using the `extend` method on the `
     {
         /**
          * Register any application authentication / authorization services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             $this->registerPolicies();
 
-            Auth::extend('jwt', function ($app, $name, array $config) {
+            Auth::extend('jwt', function (Application $app, string $name, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\Guard...
 
                 return new JwtGuard(Auth::createUserProvider($config['provider']));
@@ -591,10 +588,8 @@ To get started, call the `Auth::viaRequest` method within the `boot` method of y
 
     /**
      * Register any application authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -621,6 +616,7 @@ If you are not using a traditional relational database to store your users, you 
     namespace App\Providers;
 
     use App\Extensions\MongoUserProvider;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
     use Illuminate\Support\Facades\Auth;
 
@@ -628,14 +624,12 @@ If you are not using a traditional relational database to store your users, you 
     {
         /**
          * Register any application authentication / authorization services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             $this->registerPolicies();
 
-            Auth::provider('mongo', function ($app, array $config) {
+            Auth::provider('mongo', function (Application $app, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\UserProvider...
 
                 return new MongoUserProvider($app->make('mongo.connection'));
