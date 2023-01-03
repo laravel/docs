@@ -18,6 +18,13 @@
 
 </div>
 
+<a name="low-impact-changes"></a>
+## Low Impact Changes
+
+<div class="content-list" markdown="1">
+
+</div>
+
 <a name="upgrade-10.0"></a>
 ## Upgrading To 10.0 From 9.x
 
