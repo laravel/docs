@@ -1110,9 +1110,9 @@ You can also retrieve a specific price using the `findItemOrFail` method:
 <a name="multiple-subscriptions"></a>
 ### Multiple Subscriptions
 
-Stripe allows your customers to have multiple subscriptions. For example, you might run a sports service that offers a swimming subscription and a gym subscription. Depending on how frequently you come, you can have different prices for each of these types of subscriptions. Of course, customers should be able to subscribe to either one or both. In your application you can make the differentiation between these two types of subscriptions by making use of the `$name` parameter when referencing subscriptions.
+Stripe allows your customers to have multiple subscriptions simultaneously. For example, you may run a gym that offers a swimming subscription and a weight-lifting subscription, and each subscription may have different pricing. Of course, customers should be able to subscribe to either or both plans.
 
-For example, if you want to let the customer start a swimming subscription: 
+When your application creates subscriptions, you may provide the name of the subscription to the `newSubscription` method. The name may be any string that represents the type of subscription the user is initiating:
 
     use Illuminate\Http\Request;
 
@@ -1124,34 +1124,13 @@ For example, if you want to let the customer start a swimming subscription:
         // ...
     });
 
-Notice how the first parameter of `newSubscription` is now `swimming`. This is to differentiate from other types of subscriptions. Usually in most services there's only one type of subscription and then this can stay to its `default` value.
-
-Using a different type of subscription will allow you to handle plan changes separately without affecting the other subscription. Tasks such as invoicing and billing cycles will also differ for these two type of subscriptions.
-
-Now let's create a gym subscription as well for the customer:
-
-    use Illuminate\Http\Request;
-
-    Route::post('/gym/subscribe', function (Request $request) {
-        $request->user()->newSubscription('gym')
-            ->price('price_gym_yearly')
-            ->create($request->paymentMethodId);
-
-        // ...
-    });
-
-In this example, the customer opted to pay for the yearly gym price. Now let's say that after a while the customer decides to also go for a yearly swimming membership. We can simply swap the price on the swimming subscription:
+In this example, we initiated a monthly swimming subscription for the customer. However, they may want to swap to a yearly subscription at a later time. When adjusting the customer's subscription, we can simply swap the price on the `swimming` subscription:
 
     $user->subscription('swimming')->swap('price_swimming_yearly');
 
-Now the customer has two annual billed subscriptions. After a while the customer might decide to cancel their gym membership:
+Of course, you may also cancel the subscription entirely:
 
-    $user->subscription('gym')->cancel();
-
-And now their gym subscription will end after the grace period while their yearly swimming membership will continue. As you probably already understand you can use any action you like against one subscription without affecting the other one.
-
-> **Note**  
-> When choosing a subscription type which is used as the `$name` parameter it's important to know that you cannot change this afterwards as it's directly saved in the database alongside your subscription.
+    $user->subscription('swimming')->cancel();
 
 <a name="metered-billing"></a>
 ### Metered Billing
