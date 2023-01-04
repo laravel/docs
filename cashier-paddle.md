@@ -866,8 +866,8 @@ When your application creates subscriptions, you may provide the name of the sub
     use Illuminate\Http\Request;
 
     Route::post('/swimming/subscribe', function (Request $request) {
-        $request->user()->newSubscription('swimming')
-            ->price($swimmingMonthly = 12345)
+        $request->user()
+            ->newSubscription('swimming', $swimmingMonthly = 12345)
             ->create($request->paymentMethodId);
 
         // ...
