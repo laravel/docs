@@ -881,9 +881,6 @@ Of course, you may also cancel the subscription entirely:
 
     $user->subscription('swimming')->cancel();
 
-> **Note**  
-> When choosing a subscription type which is used as the `$name` parameter it's important to know that you cannot change this afterwards as it's directly saved in the database alongside your subscription.
-
 <a name="subscription-trials"></a>
 ## Subscription Trials
 
