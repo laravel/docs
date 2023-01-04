@@ -26,6 +26,7 @@
     - [Changing Plans](#changing-plans)
     - [Subscription Quantity](#subscription-quantity)
     - [Subscription Modifiers](#subscription-modifiers)
+    - [Multiple Subscriptions](#multiple-subscriptions)
     - [Pausing Subscriptions](#pausing-subscriptions)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
 - [Subscription Trials](#subscription-trials)
@@ -810,6 +811,31 @@ You may retrieve a list of all modifiers for a subscription via the `modifiers` 
 Modifiers may be deleted by invoking the `delete` method on a `Laravel\Paddle\Modifier` instance:
 
     $modifier->delete();
+
+<a name="multiple-subscriptions"></a>
+### Multiple Subscriptions
+
+Paddle allows your customers to have multiple subscriptions simultaneously. For example, you may run a gym that offers a swimming subscription and a weight-lifting subscription, and each subscription may have different pricing. Of course, customers should be able to subscribe to either or both plans.
+
+When your application creates subscriptions, you may provide the name of the subscription to the `newSubscription` method. The name may be any string that represents the type of subscription the user is initiating:
+
+    use Illuminate\Http\Request;
+
+    Route::post('/swimming/subscribe', function (Request $request) {
+        $request->user()
+            ->newSubscription('swimming', $swimmingMonthly = 12345)
+            ->create($request->paymentMethodId);
+
+        // ...
+    });
+
+In this example, we initiated a monthly swimming subscription for the customer. However, they may want to swap to a yearly subscription at a later time. When adjusting the customer's subscription, we can simply swap the price on the `swimming` subscription:
+
+    $user->subscription('swimming')->swap($swimmingYearly = 34567);
+
+Of course, you may also cancel the subscription entirely:
+
+    $user->subscription('swimming')->cancel();
 
 <a name="pausing-subscriptions"></a>
 ### Pausing Subscriptions
