@@ -590,7 +590,18 @@ If needed, you may provide custom error messages that a validator instance shoul
         'required' => 'The :attribute field is required.',
     ]);
 
-In this example, the `:attribute` placeholder will be replaced by the actual name of the field under validation. You may also utilize other placeholders in validation messages. For example:
+Various placeholders in the validation message will be replaced, including:
+
+<div class="content-list" markdown="1">
+
+- `:attribute` will be replaced by the actual name of the field under validation
+- `:input` will be replaced by the user input of the field under validation
+- `:index` (array input only, [see this section](/docs/{{version}}/validation#error-message-indexes-and-positions))
+- `:position` (array input only, [see this section](/docs/{{version}}/validation#error-message-indexes-and-positions))
+
+</div>
+
+Other placeholders also exist in validation messages. For example, the [size](/docs/{{version}}/validation#rule-size) rule uses `:size` and the [between](/docs/{{version}}/validation#rule-between) rule uses `:min` and `:max` placeholders:
 
     $messages = [
         'same' => 'The :attribute and :other must match.',
@@ -1825,7 +1836,7 @@ Sometimes you may need to access the value for a given nested array element when
 <a name="error-message-indexes-and-positions"></a>
 ### Error Message Indexes & Positions
 
-When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` and `:position` place-holders within your [custom validation message](#manual-customizing-the-error-messages):
+When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` (starting from `0`) and `:position` (starting from `1`) placeholders within your [custom validation message](#manual-customizing-the-error-messages):
 
     use Illuminate\Support\Facades\Validator;
 
