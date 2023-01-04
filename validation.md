@@ -601,7 +601,7 @@ Various placeholders in the validation message will be replaced, including:
 
 </div>
 
-Other placeholders also exist in validation messages. For example, the [size](/docs/{{version}}/validation#rule-size) rule uses `:size` and the [between](/docs/{{version}}/validation#rule-between) rule uses `:min` and `:max` placeholders:
+Other placeholders may also exist in validation messages. For example, the [size](/docs/{{version}}/validation#rule-size) rule uses `:size` and the [between](/docs/{{version}}/validation#rule-between) rule uses `:min` and `:max` placeholders:
 
     $messages = [
         'same' => 'The :attribute and :other must match.',
