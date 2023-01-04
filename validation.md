@@ -1825,7 +1825,7 @@ Sometimes you may need to access the value for a given nested array element when
 <a name="error-message-indexes-and-positions"></a>
 ### Error Message Indexes & Positions
 
-When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` and `:position` place-holders within your [custom validation message](#manual-customizing-the-error-messages):
+When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` (starts from `0`) and `:position` (starts from `1`) placeholders within your [custom validation message](#manual-customizing-the-error-messages):
 
     use Illuminate\Support\Facades\Validator;
 
