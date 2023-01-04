@@ -590,18 +590,7 @@ If needed, you may provide custom error messages that a validator instance shoul
         'required' => 'The :attribute field is required.',
     ]);
 
-Various placeholders in the validation message will be replaced, including:
-
-<div class="content-list" markdown="1">
-
-- `:attribute` will be replaced by the actual name of the field under validation
-- `:input` will be replaced by the user input of the field under validation
-- `:index` (array input only, [see this section](/docs/{{version}}/validation#error-message-indexes-and-positions))
-- `:position` (array input only, [see this section](/docs/{{version}}/validation#error-message-indexes-and-positions))
-
-</div>
-
-Other placeholders may also exist in validation messages. For example, the [size](/docs/{{version}}/validation#rule-size) rule uses `:size` and the [between](/docs/{{version}}/validation#rule-between) rule uses `:min` and `:max` placeholders:
+In this example, the `:attribute` placeholder will be replaced by the actual name of the field under validation. You may also utilize other placeholders in validation messages. For example:
 
     $messages = [
         'same' => 'The :attribute and :other must match.',
