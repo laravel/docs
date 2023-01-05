@@ -562,7 +562,7 @@ The `whereNotIn` method verifies that the given column's value is not contained 
 
 You may also provide a query object as the `whereIn` method's second argument:
 
-    $activeUsers = DB::table('users')->select('id')->where('is_active', 0);
+    $activeUsers = DB::table('users')->select('id')->where('is_active', 1);
 
     $users = DB::table('comments')
                         ->whereIn('user_id', $activeUsers)
@@ -574,7 +574,7 @@ The example above will produce the following SQL:
 select * from comments where user_id in (
     select id
     from users
-    where is_active = 0
+    where is_active = 1
 )
 ```
 
