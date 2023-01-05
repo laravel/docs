@@ -156,6 +156,8 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [merge](#method-merge)
 [mergeRecursive](#method-mergerecursive)
 [min](#method-min)
+[missing](#method-missing)
+[missingAny](#method-missingany)
 [mode](#method-mode)
 [nth](#method-nth)
 [only](#method-only)
@@ -1533,6 +1535,44 @@ The `min` method returns the minimum value of a given key:
     $min = collect([1, 2, 3, 4, 5])->min();
 
     // 1
+
+<a name="method-missing"></a>
+#### `missing()` {.collection-method}
+
+The `missing` method determines if a given key is missing from the collection:
+
+    $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
+
+    $collection->missing('product');
+
+    // false
+
+    $collection->missing(['product', 'amount']);
+
+    // false
+
+    $collection->missing(['category', 'price']);
+
+    // true
+
+<a name="method-missingany"></a>
+#### `missingAny()` {.collection-method}
+
+The `missingAny` method determines whether any of the given keys is missing from the collection:
+
+    $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
+
+    $collection->missingAny(['product', 'price']);
+
+    // true
+
+    $collection->missingAny(['name', 'price']);
+
+    // true
+
+    $collection->missingAny(['product', 'amount']);
+
+    // false
 
 <a name="method-mode"></a>
 #### `mode()` {.collection-method}
@@ -3438,6 +3478,8 @@ Almost all methods available on the `Collection` class are also available on the
 [merge](#method-merge)
 [mergeRecursive](#method-mergerecursive)
 [min](#method-min)
+[missing](#method-missing)
+[missingAny](#method-missingany)
 [mode](#method-mode)
 [nth](#method-nth)
 [only](#method-only)
