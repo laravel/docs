@@ -57,3 +57,5 @@ You should update the following dependencies in your application's `composer.jso
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/9.x...10.x) and choose which updates are important to you.
+
+It's important to note that many of the changes shown by the comparison tool are due to our organization's adoption of PHP native types. However, these changes are backwards compatible and the adoption of them during the migration to Laravel 10 is optional.
