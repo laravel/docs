@@ -266,7 +266,7 @@ When the `cache` function is called without any arguments, it returns an instanc
 ## Cache Tags
 
 > **Warning**  
-> Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+> Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags, performance will be best with a driver such as `memcached`, which automatically purges stale records, instead of `redis` which could end up storing a lot of stale records when expiring tagged cache items do expire.
 
 <a name="storing-tagged-cache-items"></a>
 ### Storing Tagged Cache Items
