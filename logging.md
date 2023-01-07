@@ -46,6 +46,8 @@ By default, Monolog is instantiated with a "channel name" that matches the curre
 
 Each log channel is powered by a "driver". The driver determines how and where the log message is actually recorded. The following log channel drivers are available in every Laravel application. An entry for most of these drivers is already present in your application's `config/logging.php` configuration file, so be sure to review this file to become familiar with its contents:
 
+<div class="overflow-auto">
+
 Name | Description
 ------------- | -------------
 `custom` | A driver that calls a specified factory to create a channel
@@ -59,6 +61,8 @@ Name | Description
 `stack` | A wrapper to facilitate creating "multi-channel" channels
 `syslog` | A `SyslogHandler` based Monolog driver
 
+</div>
+
 > **Note**  
 > Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
@@ -70,17 +74,25 @@ Name | Description
 
 The `single` and `daily` channels have three optional configuration options: `bubble`, `permission`, and `locking`.
 
+<div class="overflow-auto">
+
 Name | Description | Default
 ------------- | ------------- | -------------
 `bubble` | Indicates if messages should bubble up to other channels after being handled | `true`
 `locking` | Attempt to lock the log file before writing to it | `false`
 `permission` | The log file's permissions | `0644`
 
+</div>
+
 Additionally, the retention policy for the `daily` channel can be configured via the `days` option:
+
+<div class="overflow-auto">
 
 Name | Description                                                       | Default
 ------------- |-------------------------------------------------------------------| -------------
 `days` | The number of days that daily log files should be retained | `7`
+
+</div>
 
 <a name="configuring-the-papertrail-channel"></a>
 #### Configuring The Papertrail Channel

@@ -101,6 +101,8 @@ The `exec` method may be used to issue a command to the operating system:
 
 We've already seen a few examples of how you may configure a task to run at specified intervals. However, there are many more task schedule frequencies that you may assign to a task:
 
+<div class="overflow-auto">
+
 Method  | Description
 ------------- | -------------
 `->cron('* * * * *');`  |  Run the task on a custom cron schedule
@@ -135,6 +137,8 @@ Method  | Description
 `->yearlyOn(6, 1, '17:00');`  |  Run the task every year on June 1st at 17:00
 `->timezone('America/New_York');` | Set the timezone for the task
 
+</div>
+
 These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, you may schedule a command to run weekly on Monday:
 
     // Run once per week on Monday at 1 PM...
@@ -150,6 +154,8 @@ These methods may be combined with additional constraints to create even more fi
               ->between('8:00', '17:00');
 
 A list of additional schedule constraints may be found below:
+
+<div class="overflow-auto">
 
 Method  | Description
 ------------- | -------------
@@ -167,6 +173,8 @@ Method  | Description
 `->unlessBetween($startTime, $endTime);`  |  Limit the task to not run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test
 `->environments($env);`  |  Limit the task to specific environments
+
+</div>
 
 <a name="day-constraints"></a>
 #### Day Constraints
