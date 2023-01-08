@@ -212,7 +212,7 @@ Once tax calculation has been enabled, any new subscriptions and any one-off inv
 For this feature to work properly, your customer's billing details, such as the customer's name, address, and tax ID, need to be synced to Stripe. You may use the [customer data synchronization](#syncing-customer-data-with-stripe) and [Tax ID](#tax-ids) methods offered by Cashier to accomplish this.
 
 > **Warning**  
-> Unfortunately, for now, no tax is calculated for [single charges](#single-charges) or [single charge checkouts](#single-charge-checkouts). In addition, Stripe Tax is currently "invite-only" during its beta period. You can request access to Stripe Tax via the [Stripe Tax website](https://stripe.com/tax#request-access).
+> Unfortunately, for now, no tax is calculated for [single charges](#single-charges) or [single charge checkouts](#single-charge-checkouts).
 
 <a name="logging"></a>
 ### Logging
