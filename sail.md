@@ -492,3 +492,6 @@ After running this command, the Dockerfiles and other configuration files used b
 ```shell
 sail build --no-cache
 ```
+
+> **Note**  
+> Whenever you change the image name for your application container in your application's `docker-compose.yml` file, ensure to update the value of `APP_SERVICE` to the new name of your image.
