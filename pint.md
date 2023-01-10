@@ -53,6 +53,12 @@ If you would like Pint to simply inspect your code for style errors without actu
 ./vendor/bin/pint --test
 ```
 
+If you would like Pint to only modify the files that have uncommitted changes according to Git, you may use the `--dirty` option:
+
+```shell
+./vendor/bin/pint --dirty
+```
+
 <a name="configuring-pint"></a>
 ## Configuring Pint
 
