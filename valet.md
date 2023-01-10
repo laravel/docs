@@ -458,6 +458,8 @@ If you would like to define a custom Valet driver for a single application, crea
 <a name="other-valet-commands"></a>
 ## Other Valet Commands
 
+<div class="overflow-auto">
+
 Command  | Description
 ------------- | -------------
 `valet list` | Display a list of all Valet commands.
@@ -469,6 +471,8 @@ Command  | Description
 `valet stop` | Stop the Valet daemons.
 `valet trust` | Add sudoers files for Brew and Valet to allow Valet commands to be run without prompting for your password.
 `valet uninstall` | Uninstall Valet: shows instructions for manual uninstall. Pass the `--force` option to aggressively delete all of Valet's resources.
+
+</div>
 
 <a name="valet-directories-and-files"></a>
 ## Valet Directories & Files

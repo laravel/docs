@@ -654,6 +654,8 @@ The `authorizeResource` method accepts the model's class name as its first argum
 
 The following controller methods will be mapped to their corresponding policy method. When requests are routed to the given controller method, the corresponding policy method will automatically be invoked before the controller method is executed:
 
+<div class="overflow-auto">
+
 | Controller Method | Policy Method |
 | --- | --- |
 | index | viewAny |
@@ -663,6 +665,8 @@ The following controller methods will be mapped to their corresponding policy me
 | edit | update |
 | update | update |
 | destroy | delete |
+
+</div>
 
 > **Note**  
 > You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`.
