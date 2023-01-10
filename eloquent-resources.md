@@ -352,6 +352,9 @@ If you would like to use a custom key instead of `data`, you may define a `$wrap
         public static $wrap = 'user';
     }
 
+> **Warning**  
+> The `$wrap` attribute only affects the response for a single instance of this resource. It does not affect the response when calling the `collection()` method, which will continue to use the default `data` key. If you would like to use a custom key for a collection, you must create a dedicated [resource collection](#resource-collections) class as described above.
+
 If you would like to disable the wrapping of the outermost resource, you should invoke the `withoutWrapping` method on the base `Illuminate\Http\Resources\Json\JsonResource` class. Typically, you should call this method from your `AppServiceProvider` or another [service provider](/docs/{{version}}/providers) that is loaded on every request to your application:
 
     <?php
