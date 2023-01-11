@@ -64,8 +64,6 @@ You should update the following setting in your application's `composer.json` fi
 
 </div>
 
-You can also remove the `prefer-stable` setting, as it is no longer necessary.
-
 <a name="miscellaneous"></a>
 ### Miscellaneous
 
