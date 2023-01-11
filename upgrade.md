@@ -8,6 +8,7 @@
 <div class="content-list" markdown="1">
 
 - [Updating Dependencies](#updating-dependencies)
+- [Updating Minimum Stability](#updating-minimum-stability)
 
 </div>
 
@@ -52,6 +53,18 @@ You should update the following dependencies in your application's `composer.jso
 - `laravel/framework` to `^10.0`
 
 </div>
+
+#### Minimum Stability
+
+You should update the following setting in your application's `composer.json` file:
+
+<div class="content-list" markdown="1">
+
+- `minimum-stability` to `stable`
+
+</div>
+
+You can also remove the `prefer-stable` setting, as it is no longer necessary.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
