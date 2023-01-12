@@ -56,13 +56,11 @@ You should update the following dependencies in your application's `composer.jso
 
 #### Minimum Stability
 
-You should update the following setting in your application's `composer.json` file:
+You should update the `minimum-stability` setting in your application's `composer.json` file to `stable`:
 
-<div class="content-list" markdown="1">
-
-- `minimum-stability` to `stable`
-
-</div>
+```json
+"minimum-stability": "stable",
+```
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
