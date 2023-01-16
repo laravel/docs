@@ -964,7 +964,7 @@ Modifier  |  Description
 `->storedAs($expression)`  |  Create a stored generated column (MySQL / PostgreSQL).
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.
-`->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated.
+`->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated (MySQL).
 `->virtualAs($expression)`  |  Create a virtual generated column (MySQL).
 `->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL).
 `->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL).
@@ -1201,6 +1201,12 @@ If you pass an array of columns into a method that drops indexes, the convention
 
     Schema::table('geo', function (Blueprint $table) {
         $table->dropIndex(['state']); // Drops index 'geo_state_index'
+    });
+    
+Alternatively, you may drop an index by its conventional name when modifying the column. To do so, you should chain the unique method onto the column definition and pass `false` as its argument:
+
+    Schema::table('users', function (Blueprint $table) {
+        $table->string('name', 50)->unique(false)->change(); // Changes the 'name' column definition and drops index 'users_name_unique'
     });
 
 <a name="foreign-key-constraints"></a>
