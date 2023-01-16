@@ -1104,6 +1104,8 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
          */
         public function __construct(ApiClient $client)
         {
+            parent::__construct();
+            
             $this->client = $client;
         }
 
