@@ -1272,6 +1272,10 @@ You may enable or disable foreign key constraints within your migrations by usin
 
     Schema::disableForeignKeyConstraints();
 
+    Schema::withoutForeignKeyConstraints(function () {
+        // Constraints disabled within this closure...
+    });
+
 > **Warning**  
 > SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations. In addition, SQLite only supports foreign keys upon creation of the table and [not when tables are altered](https://www.sqlite.org/omitted.html).
 
