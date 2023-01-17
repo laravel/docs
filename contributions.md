@@ -7,6 +7,7 @@
 - [Compiled Assets](#compiled-assets)
 - [Security Vulnerabilities](#security-vulnerabilities)
 - [Coding Style](#coding-style)
+    - [Types](#types)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
 - [Code of Conduct](#code-of-conduct)
@@ -96,6 +97,13 @@ If you discover a security vulnerability within Laravel, please send an email to
 
 Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
 
+<a name="types"></a>
+### Types
+
+Starting with Laravel 10, we have increased the adoption of native types within the Laravel organization. While new code introduced in the framework may be fully typed, existing code will not be subject to type changes, specially if doing so results in breaking changes.
+
+When it comes to end-user code, such as Laravel's skeleton, starter kits, or stubs, it is recommended to use native types as it can be done without any issue and does not subject to breaking changes.
+
 <a name="phpdoc"></a>
 ### PHPDoc
 
@@ -114,6 +122,30 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
     public function bind($abstract, $concrete = null, $shared = false)
     {
         // ...
+    }
+
+When the `@param` or `@return` attribute are redundant due to the use of native types, they can be removed:
+
+    /**
+     * Execute the job.
+     */
+    public function handle(AudioProcessor $processor): void
+    {
+        //
+    }
+
+However, when the used native type is generic, it is recommended to specify the generic type through the use of the `@param` or `@return` attributes:
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        return [
+            Attachment::fromStorage('/path/to/file'),
+        ];
     }
 
 <a name="styleci"></a>
