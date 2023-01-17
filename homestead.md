@@ -343,6 +343,7 @@ features:
     - meilisearch: true
     - minio: true
     - mongodb: true
+    - mysql: true
     - neo4j: true
     - ohmyzsh: true
     - openresty: true
