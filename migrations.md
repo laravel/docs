@@ -9,7 +9,8 @@
 - [Tables](#tables)
     - [Creating Tables](#creating-tables)
     - [Updating Tables](#updating-tables)
-    - [Renaming / Dropping Tables](#renaming-and-dropping-tables)
+    - [Renaming Tables](#renaming-tables)
+    - [Dropping Tables](#dropping-tables)
 - [Columns](#columns)
     - [Creating Columns](#creating-columns)
     - [Available Column Types](#available-column-types)
@@ -319,14 +320,17 @@ The `table` method on the `Schema` facade may be used to update existing tables.
         $table->integer('votes');
     });
 
-<a name="renaming-and-dropping-tables"></a>
-### Renaming / Dropping Tables
+<a name="renaming-tables"></a>
+### Renaming Tables
 
 To rename an existing database table, use the `rename` method:
 
     use Illuminate\Support\Facades\Schema;
 
     Schema::rename($from, $to);
+
+<a name="dropping-tables"></a>
+### Dropping Tables
 
 To drop an existing table, you may use the `drop` or `dropIfExists` methods:
 
@@ -998,7 +1002,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
     };
 
 > **Warning**  
-> Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation. In addition, it is not possible to combine raw `default` expressions (using `DB::raw`) with column changes via the `change` method.
+> Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
 
 <a name="column-order"></a>
 #### Column Order
@@ -1014,10 +1018,22 @@ When using the MySQL database, the `after` method may be used to add columns aft
 <a name="modifying-columns"></a>
 ### Modifying Columns
 
-<a name="prerequisites"></a>
-#### Prerequisites
+The `change` method allows you to modify the type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50. To accomplish this, we simply define the new state of the column and then call the `change` method:
 
-Before modifying a column, you must install the `doctrine/dbal` package using the Composer package manager. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:
+    Schema::table('users', function (Blueprint $table) {
+        $table->string('name', 50)->change();
+    });
+
+You must include all modifers you want to keep on the column definition explicitly. Any missing attribute will be dropped. For example, to retain nullable, default, and comment attributes, call each modifier explicitly:
+
+    Schema::table('users', function (Blueprint $table) {
+        $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();
+    });
+
+<a name="modifying-columns-on-sqlite"></a>
+#### Modifying Columns On SQLite
+
+If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package using the Composer package manager before modifying a column. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:
 
     composer require doctrine/dbal
 
@@ -1034,25 +1050,7 @@ use Illuminate\Database\DBAL\TimestampType;
 ```
 
 > **Warning**  
-> If your application is using Microsoft SQL Server, please ensure that you install `doctrine/dbal:^3.0`.
-
-<a name="updating-column-attributes"></a>
-#### Updating Column Attributes
-
-The `change` method allows you to modify the type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50. To accomplish this, we simply define the new state of the column and then call the `change` method:
-
-    Schema::table('users', function (Blueprint $table) {
-        $table->string('name', 50)->change();
-    });
-
-We could also modify a column to be nullable:
-
-    Schema::table('users', function (Blueprint $table) {
-        $table->string('name', 50)->nullable()->change();
-    });
-
-> **Warning**  
-> The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.  To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
+> When using `doctrine/dbal` package, the following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, `ulid`, and `uuid`. To modify a `timestamp` column type a Doctrine type must be registered.
 
 <a name="renaming-columns"></a>
 ### Renaming Columns
@@ -1090,7 +1088,6 @@ You may drop multiple columns from a table by passing an array of column names t
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
-
 
 <a name="dropping-columns-on-legacy-databases"></a>
 #### Dropping Columns On Legacy Databases
