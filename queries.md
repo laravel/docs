@@ -975,7 +975,7 @@ If needed, you may also specify additional columns to update during the incremen
 
 In addition, you may increment or decrement multiple columns at once using the `incrementEach` and `decrementEach` methods:
 
-    DB::table('users')->increment([
+    DB::table('users')->incrementEach([
         'votes' => 5,
         'balance' => 100,
     ]);
