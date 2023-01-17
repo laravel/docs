@@ -116,6 +116,30 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
         // ...
     }
 
+When the `@param` or `@return` attributes are redundant due to the use of native types, they can be removed:
+
+    /**
+     * Execute the job.
+     */
+    public function handle(AudioProcessor $processor): void
+    {
+        //
+    }
+
+However, when the native type is generic, please specify the generic type through the use of the `@param` or `@return` attributes:
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        return [
+            Attachment::fromStorage('/path/to/file'),
+        ];
+    }
+
 <a name="styleci"></a>
 ### StyleCI
 
