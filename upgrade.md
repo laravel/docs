@@ -89,7 +89,7 @@ The `Illuminate\Database\QueryException` constructor now accepts a string connec
 
 **Likelihood Of Impact: Medium**
 
-The Eloquent model's deprecated `$dates` property has been removed. Instead, your application should use the `$casts` property:
+The Eloquent model's deprecated `$dates` property has been removed. Your application should now use the `$casts` property:
 
 ```php
 protected $casts = [
