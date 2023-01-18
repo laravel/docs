@@ -248,6 +248,7 @@ After defining your model, you may instruct Passport to use your custom model vi
         Passport::useClientModel(Client::class);
         Passport::useAuthCodeModel(AuthCode::class);
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
+        Passport::useRefreshTokenModel(RefreshToken::class);
     }
 
 <a name="overriding-routes"></a>
