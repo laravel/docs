@@ -233,8 +233,8 @@ After defining your model, you may instruct Passport to use your custom model vi
     use App\Models\Passport\AuthCode;
     use App\Models\Passport\Client;
     use App\Models\Passport\PersonalAccessClient;
-    use App\Models\Passport\Token;
     use App\Models\Passport\RefreshToken;
+    use App\Models\Passport\Token;
 
     /**
      * Register any authentication / authorization services.
@@ -246,10 +246,10 @@ After defining your model, you may instruct Passport to use your custom model vi
         $this->registerPolicies();
 
         Passport::useTokenModel(Token::class);
-        Passport::useClientModel(Client::class);
-        Passport::useAuthCodeModel(AuthCode::class);
-        Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
         Passport::useRefreshTokenModel(RefreshToken::class);
+        Passport::useAuthCodeModel(AuthCode::class);
+        Passport::useClientModel(Client::class);
+        Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
 
 <a name="overriding-routes"></a>
