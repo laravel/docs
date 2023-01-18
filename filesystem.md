@@ -187,6 +187,9 @@ Typically, after updating the disk's credentials to match the credentials of the
 
     'endpoint' => env('AWS_ENDPOINT', 'https://minio:9000'),
 
+<a name="minio"></a>
+#### MinIO
+
 In order for Laravel's Flysystem integration to generate proper URLs when using MinIO, you should define the `AWS_URL` environment variable so that it matches your application's local URL and includes the bucket name in the URL path:
 
 ```ini
