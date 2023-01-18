@@ -199,6 +199,16 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
         );
     }
 
+If you would like, you may also specify a `replyTo` address:
+
+    return new Envelope(
+        from: new Address('jeffrey@example.com', 'Jeffrey Way'),
+        replyTo: [
+            new Address('taylor@example.com', 'Taylor Otwell'),
+        ],
+        subject: 'Order Shipped',
+    );
+
 <a name="using-a-global-from-address"></a>
 #### Using A Global `from` Address
 
@@ -1094,6 +1104,8 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
          */
         public function __construct(ApiClient $client)
         {
+            parent::__construct();
+            
             $this->client = $client;
         }
 

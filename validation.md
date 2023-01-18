@@ -806,6 +806,7 @@ Below is a list of all available validation rules and their function:
 [Alpha Dash](#rule-alpha-dash)
 [Alpha Numeric](#rule-alpha-num)
 [Array](#rule-array)
+[Ascii](#rule-ascii)
 [Bail](#rule-bail)
 [Before (Date)](#rule-before)
 [Before Or Equal (Date)](#rule-before-or-equal)
@@ -816,6 +817,7 @@ Below is a list of all available validation rules and their function:
 [Date](#rule-date)
 [Date Equals](#rule-date-equals)
 [Date Format](#rule-date-format)
+[Decimal](#rule-decimal)
 [Declined](#rule-declined)
 [Declined If](#rule-declined-if)
 [Different](#rule-different)
@@ -883,6 +885,7 @@ Below is a list of all available validation rules and their function:
 [Unique (Database)](#rule-unique)
 [Uppercase](#rule-uppercase)
 [URL](#rule-url)
+[ULID](#rule-ulid)
 [UUID](#rule-uuid)
 
 </div>
@@ -956,6 +959,11 @@ When additional values are provided to the `array` rule, each key in the input a
 
 In general, you should always specify the array keys that are allowed to be present within your array.
 
+<a name="rule-ascii"></a>
+#### ascii
+
+The field under validation must be entirely 7-bit ASCII characters.
+
 <a name="rule-bail"></a>
 #### bail
 
@@ -1010,9 +1018,20 @@ The field under validation must be a valid, non-relative date according to the `
 The field under validation must be equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance.
 
 <a name="rule-date-format"></a>
-#### date_format:_format_
+#### date_format:_format_,...
 
-The field under validation must match the given _format_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
+The field under validation must match one of the given _formats_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
+
+<a name="rule-decimal"></a>
+#### decimal:_min_,_max_
+
+The field under validation must be numeric and must contain the specified number of decimal places:
+
+    // Must have exactly two decimal places (9.99)...
+    'price' => 'decimal:2'
+
+    // Must have between 2 and 4 decimal places...
+    'price' => 'decimal:2,4'
 
 <a name="rule-declined"></a>
 #### declined
@@ -1318,7 +1337,7 @@ The field under validation must be less than the given _field_. The two fields m
 The field under validation must be less than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
 
 <a name="rule-lowercase"></a>
-#### lowercase:_field_
+#### lowercase
 
 The field under validation must be lowercase.
 
@@ -1428,7 +1447,7 @@ The field under validation must be present in the input data but can be empty.
 <a name="rule-prohibited"></a>
 #### prohibited
 
-The field under validation must be an empty string or not present.
+The field under validation may not be present.
 
 <a name="rule-prohibited-if"></a>
 #### prohibited_if:_anotherfield_,_value_,...
@@ -1626,7 +1645,7 @@ You may specify additional query conditions by customizing the query using the `
     'email' => Rule::unique('users')->where(fn ($query) => $query->where('account_id', 1))
 
 <a name="rule-uppercase"></a>
-#### uppercase:_field_
+#### uppercase
 
 The field under validation must be uppercase.
 
@@ -1634,6 +1653,11 @@ The field under validation must be uppercase.
 #### url
 
 The field under validation must be a valid URL.
+
+<a name="rule-ulid"></a>
+#### ulid
+
+The field under validation must be a valid [Universally Unique Lexicographically Sortable Identifier](https://github.com/ulid/spec) (ULID).
 
 <a name="rule-uuid"></a>
 #### uuid
@@ -1801,7 +1825,7 @@ Sometimes you may need to access the value for a given nested array element when
 <a name="error-message-indexes-and-positions"></a>
 ### Error Message Indexes & Positions
 
-When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` and `:position` place-holders within your [custom validation message](#manual-customizing-the-error-messages):
+When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` (starts from `0`) and `:position` (starts from `1`) placeholders within your [custom validation message](#manual-customizing-the-error-messages):
 
     use Illuminate\Support\Facades\Validator;
 

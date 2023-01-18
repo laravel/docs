@@ -5,6 +5,7 @@
     - [Configuration](#configuration)
     - [Balancing Strategies](#balancing-strategies)
     - [Dashboard Authorization](#dashboard-authorization)
+    - [Silenced Jobs](#silenced-jobs)
 - [Upgrading Horizon](#upgrading-horizon)
 - [Running Horizon](#running-horizon)
     - [Deploying Horizon](#deploying-horizon)
@@ -81,7 +82,7 @@ When you start Horizon, it will use the worker process configuration options for
 <a name="supervisors"></a>
 #### Supervisors
 
-As you can see in Horizon's default configuration file. Each environment can contain one or more "supervisors". By default, the configuration file defines this supervisor as `supervisor-1`; however, you are free to name your supervisors whatever you want. Each supervisor is essentially responsible for "supervising" a group of worker processes and takes care of balancing worker processes across queues.
+As you can see in Horizon's default configuration file, each environment can contain one or more "supervisors". By default, the configuration file defines this supervisor as `supervisor-1`; however, you are free to name your supervisors whatever you want. Each supervisor is essentially responsible for "supervising" a group of worker processes and takes care of balancing worker processes across queues.
 
 You may add additional supervisors to a given environment if you would like to define a new group of worker processes that should run in that environment. You may choose to do this if you would like to define a different balancing strategy or worker process count for a given queue used by your application.
 
@@ -145,6 +146,26 @@ Horizon exposes a dashboard at the `/horizon` URI. By default, you will only be 
 #### Alternative Authentication Strategies
 
 Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function ($user)` closure signature above to `function ($user = null)` in order to force Laravel to not require authentication.
+
+<a name="silenced-jobs"></a>
+### Silenced Jobs
+
+Sometimes, you may not be interested in viewing certain jobs dispatched by your application or third-party packages. Instead of these jobs taking up space in your "Completed Jobs" list, you can silence them. To get started, add the job's class name to the `silenced` configuration option in your application's `horizon` configuration file:
+
+    'silenced' => [
+        App\Jobs\ProcessPodcast::class,
+    ],
+
+Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Contracts\Silenced` interface. If a job implements this interface, it will automatically be silenced, even if it is not present in the `silenced` configuration array:
+
+    use Laravel\Horizon\Contracts\Silenced;
+
+    class ProcessPodcast implements ShouldQueue, Silenced
+    {
+        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+        // ...
+    }
 
 <a name="upgrading-horizon"></a>
 ## Upgrading Horizon

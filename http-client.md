@@ -238,9 +238,15 @@ If you have a response instance and would like to throw an instance of `Illumina
 
     // Throw an exception if an error occurred and the given condition is true...
     $response->throwIf($condition);
-    
+
+    // Throw an exception if an error occurred and the given closure resolves to true...
+    $response->throwIf(fn ($response) => true);
+
     // Throw an exception if an error occurred and the given condition is false...
     $response->throwUnless($condition);
+
+    // Throw an exception if an error occurred and the given closure resolves to false...
+    $response->throwUnless(fn ($response) => false);
 
     return $response['user']['id'];
 
@@ -267,7 +273,7 @@ Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guz
 
     $response = Http::withMiddleware(
         Middleware::mapRequest(function (RequestInterface $request) {
-            $request->withHeader('X-Example', 'Value');
+            $request = $request->withHeader('X-Example', 'Value');
             
             return $request;
         })
