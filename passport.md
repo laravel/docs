@@ -234,6 +234,7 @@ After defining your model, you may instruct Passport to use your custom model vi
     use App\Models\Passport\Client;
     use App\Models\Passport\PersonalAccessClient;
     use App\Models\Passport\Token;
+    use App\Models\Passport\RefreshToken;
 
     /**
      * Register any authentication / authorization services.
