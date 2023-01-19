@@ -1473,7 +1473,7 @@ The field under validation must be an empty string or not present unless the _an
 <a name="rule-prohibits"></a>
 #### prohibits:_anotherfield_,...
 
-If the field under validation is present, no fields in _anotherfield_ can be present, even if empty.
+If the field under validation is present and not an empty string, then _anotherfield_ is [prohibited](#rule-prohibited).
 
 <a name="rule-regex"></a>
 #### regex:_pattern_
