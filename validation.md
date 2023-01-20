@@ -1447,7 +1447,7 @@ The field under validation must exist in the input data.
 <a name="rule-prohibited"></a>
 #### prohibited
 
-The field under validation must be missing or "empty". A field is "empty" if it meets one of the following criteria:
+The field under validation must be missing or empty. A field is "empty" if it meets one of the following criteria:
 
 <div class="content-list" markdown="1">
 
@@ -1461,7 +1461,7 @@ The field under validation must be missing or "empty". A field is "empty" if it 
 <a name="rule-prohibited-if"></a>
 #### prohibited_if:_anotherfield_,_value_,...
 
-The field under validation must be missing or "empty" if the _anotherfield_ field is equal to any _value_. A field is "empty" if it meets one of the following criteria:
+The field under validation must be missing or empty if the _anotherfield_ field is equal to any _value_. A field is "empty" if it meets one of the following criteria:
 
 <div class="content-list" markdown="1">
 
@@ -1488,7 +1488,7 @@ If complex conditional prohibition logic is required, you may utilize the `Rule:
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_anotherfield_,_value_,...
 
-The field under validation must be missing or "empty" unless the _anotherfield_ field is equal to any _value_. A field is "empty" if it meets one of the following criteria:
+The field under validation must be missing or empty unless the _anotherfield_ field is equal to any _value_. A field is "empty" if it meets one of the following criteria:
 
 <div class="content-list" markdown="1">
 
@@ -1502,7 +1502,7 @@ The field under validation must be missing or "empty" unless the _anotherfield_ 
 <a name="rule-prohibits"></a>
 #### prohibits:_anotherfield_,...
 
-If the field under validation is not missing or "empty", all fields in _anotherfield_ must be missing or "empty". A field is "empty" if it meets one of the following criteria:
+If the field under validation is not missing or empty, all fields in _anotherfield_ must be missing or empty. A field is "empty" if it meets one of the following criteria:
 
 <div class="content-list" markdown="1">
 
