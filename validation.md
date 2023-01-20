@@ -1526,7 +1526,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-required"></a>
 #### required
 
-The field under validation must be present in the input data and not empty. A field is considered "empty" if one of the following conditions are true:
+The field under validation must be present in the input data and not empty. A field is "empty" if it meets one of the following criteria:
 
 <div class="content-list" markdown="1">
 
