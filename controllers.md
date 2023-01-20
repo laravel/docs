@@ -428,6 +428,12 @@ In this example, the following routes will be registered. As you can see, a `DEL
 | PUT/PATCH | `/photos/{photo}/thumbnail`        | update  | photos.thumbnail.update  |
 | DELETE    | `/photos/{photo}/thumbnail`        | destroy | photos.thumbnail.destroy |
 
+If you would like Laravel to register the `DELETE` route for a singleton resource but not register the creation or storage routes, you may utilize the `destroyable` method:
+
+```php
+Route::singleton(...)->destroyable();
+```
+
 <a name="api-singleton-resources"></a>
 #### API Singleton Resources
 

@@ -284,7 +284,7 @@ Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guz
 
     $response = Http::withMiddleware(
         Middleware::mapRequest(function (RequestInterface $request) {
-            $request->withHeader('X-Example', 'Value');
+            $request = $request->withHeader('X-Example', 'Value');
             
             return $request;
         })

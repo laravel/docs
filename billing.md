@@ -32,6 +32,7 @@
     - [Changing Prices](#changing-prices)
     - [Subscription Quantity](#subscription-quantity)
     - [Subscriptions With Multiple Products](#subscriptions-with-multiple-products)
+    - [Multiple Subscriptions](#multiple-subscriptions)
     - [Metered Billing](#metered-billing)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
@@ -205,7 +206,7 @@ Once tax calculation has been enabled, any new subscriptions and any one-off inv
 For this feature to work properly, your customer's billing details, such as the customer's name, address, and tax ID, need to be synced to Stripe. You may use the [customer data synchronization](#syncing-customer-data-with-stripe) and [Tax ID](#tax-ids) methods offered by Cashier to accomplish this.
 
 > **Warning**  
-> Unfortunately, for now, no tax is calculated for [single charges](#single-charges) or [single charge checkouts](#single-charge-checkouts). In addition, Stripe Tax is currently "invite-only" during its beta period. You can request access to Stripe Tax via the [Stripe Tax website](https://stripe.com/tax#request-access).
+> No tax is calculated for [single charges](#single-charges) or [single charge checkouts](#single-charge-checkouts).
 
 <a name="logging"></a>
 ### Logging
@@ -1093,6 +1094,31 @@ You can also retrieve a specific price using the `findItemOrFail` method:
 
     $subscriptionItem = $user->subscription('default')->findItemOrFail('price_chat');
 
+<a name="multiple-subscriptions"></a>
+### Multiple Subscriptions
+
+Stripe allows your customers to have multiple subscriptions simultaneously. For example, you may run a gym that offers a swimming subscription and a weight-lifting subscription, and each subscription may have different pricing. Of course, customers should be able to subscribe to either or both plans.
+
+When your application creates subscriptions, you may provide the name of the subscription to the `newSubscription` method. The name may be any string that represents the type of subscription the user is initiating:
+
+    use Illuminate\Http\Request;
+
+    Route::post('/swimming/subscribe', function (Request $request) {
+        $request->user()->newSubscription('swimming')
+            ->price('price_swimming_monthly')
+            ->create($request->paymentMethodId);
+
+        // ...
+    });
+
+In this example, we initiated a monthly swimming subscription for the customer. However, they may want to swap to a yearly subscription at a later time. When adjusting the customer's subscription, we can simply swap the price on the `swimming` subscription:
+
+    $user->subscription('swimming')->swap('price_swimming_yearly');
+
+Of course, you may also cancel the subscription entirely:
+
+    $user->subscription('swimming')->cancel();
+
 <a name="metered-billing"></a>
 ### Metered Billing
 
@@ -1429,6 +1455,7 @@ To ensure your application can handle Stripe webhooks, be sure to configure the 
 - `customer.subscription.deleted`
 - `customer.updated`
 - `customer.deleted`
+- `invoice.payment_succeeded`
 - `invoice.payment_action_required`
 
 For convenience, Cashier includes a `cashier:webhook` Artisan command. This command will create a webhook in Stripe that listens to all of the events required by Cashier:

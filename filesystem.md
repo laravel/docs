@@ -187,6 +187,18 @@ Typically, after updating the disk's credentials to match the credentials of the
 
     'endpoint' => env('AWS_ENDPOINT', 'https://minio:9000'),
 
+<a name="minio"></a>
+#### MinIO
+
+In order for Laravel's Flysystem integration to generate proper URLs when using MinIO, you should define the `AWS_URL` environment variable so that it matches your application's local URL and includes the bucket name in the URL path:
+
+```ini
+AWS_URL=http://localhost:9000/local
+```
+
+> **Warning**  
+> Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
+
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances
 
@@ -332,6 +344,10 @@ In addition to reading and writing files, Laravel can also provide information a
 The `lastModified` method returns the UNIX timestamp of the last time the file was modified:
 
     $time = Storage::lastModified('file.jpg');
+
+The MIME type of a given file may be obtained via the `mimeType` method:
+
+    $mime = Storage::mimeType('file.jpg')
 
 <a name="file-paths"></a>
 #### File Paths

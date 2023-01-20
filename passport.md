@@ -229,6 +229,7 @@ After defining your model, you may instruct Passport to use your custom model vi
     use App\Models\Passport\AuthCode;
     use App\Models\Passport\Client;
     use App\Models\Passport\PersonalAccessClient;
+    use App\Models\Passport\RefreshToken;
     use App\Models\Passport\Token;
 
     /**
@@ -239,8 +240,9 @@ After defining your model, you may instruct Passport to use your custom model vi
         $this->registerPolicies();
 
         Passport::useTokenModel(Token::class);
-        Passport::useClientModel(Client::class);
+        Passport::useRefreshTokenModel(RefreshToken::class);
         Passport::useAuthCodeModel(AuthCode::class);
+        Passport::useClientModel(Client::class);
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
 

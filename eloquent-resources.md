@@ -521,6 +521,10 @@ The `when` method also accepts a closure as its second argument, allowing you to
         return 'secret-value';
     }),
 
+The `whenHas` method may be used to include an attribute if it is actually present on the underlying model:
+
+    'name' => $this->whenHas('name'),
+
 Additionally, the `whenNotNull` method may be used to include an attribute in the resource response if the attribute is not null:
 
     'name' => $this->whenNotNull($this->name),

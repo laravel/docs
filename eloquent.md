@@ -1470,7 +1470,7 @@ If you are listening for many events on a given model, you may use observers to 
 php artisan make:observer UserObserver --model=User
 ```
 
-This command will place the new observer in your `App/Observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
+This command will place the new observer in your `app/Observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
 
     <?php
 
