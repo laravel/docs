@@ -723,7 +723,7 @@ If you would like to specify that a job should not be immediately available for 
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
 #### Dispatching After The Response Is Sent To Browser
 
-Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser if your web server is using FastCGI. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:
+Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser if your web server is using FastCGI. This will still allow the user to begin using the application even though a queued job is still executing.
 
     use App\Jobs\SendNotification;
 
@@ -741,7 +741,7 @@ You may also `dispatch` a closure and chain the `afterResponse` method onto the 
 <a name="synchronous-dispatching"></a>
 ### Synchronous Dispatching
 
-If you would like to dispatch a job immediately (synchronously), you may use the `dispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process:
+If you would like to dispatch a job immediately (synchronously), you may use the `dispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:
 
     <?php
 
