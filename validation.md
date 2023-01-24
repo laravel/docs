@@ -1442,17 +1442,35 @@ The field under validation must match the authenticated user's password.
 <a name="rule-present"></a>
 #### present
 
-The field under validation must be present in the input data but can be empty.
+The field under validation must exist in the input data.
 
 <a name="rule-prohibited"></a>
 #### prohibited
 
-The field under validation may not be present.
+The field under validation must be missing or empty. A field is "empty" if it meets one of the following criteria:
+
+<div class="content-list" markdown="1">
+
+- The value is `null`.
+- The value is an empty string.
+- The value is an empty array or empty `Countable` object.
+- The value is an uploaded file with an empty path.
+
+</div>
 
 <a name="rule-prohibited-if"></a>
 #### prohibited_if:_anotherfield_,_value_,...
 
-The field under validation must be an empty string or not present if the _anotherfield_ field is equal to any _value_.
+The field under validation must be missing or empty if the _anotherfield_ field is equal to any _value_. A field is "empty" if it meets one of the following criteria:
+
+<div class="content-list" markdown="1">
+
+- The value is `null`.
+- The value is an empty string.
+- The value is an empty array or empty `Countable` object.
+- The value is an uploaded file with an empty path.
+
+</div>
 
 If complex conditional prohibition logic is required, you may utilize the `Rule::prohibitedIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be prohibited:
 
@@ -1470,12 +1488,30 @@ If complex conditional prohibition logic is required, you may utilize the `Rule:
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_anotherfield_,_value_,...
 
-The field under validation must be an empty string or not present unless the _anotherfield_ field is equal to any _value_.
+The field under validation must be missing or empty unless the _anotherfield_ field is equal to any _value_. A field is "empty" if it meets one of the following criteria:
+
+<div class="content-list" markdown="1">
+
+- The value is `null`.
+- The value is an empty string.
+- The value is an empty array or empty `Countable` object.
+- The value is an uploaded file with an empty path.
+
+</div>
 
 <a name="rule-prohibits"></a>
 #### prohibits:_anotherfield_,...
 
-If the field under validation is present, no fields in _anotherfield_ can be present, even if empty.
+If the field under validation is not missing or empty, all fields in _anotherfield_ must be missing or empty. A field is "empty" if it meets one of the following criteria:
+
+<div class="content-list" markdown="1">
+
+- The value is `null`.
+- The value is an empty string.
+- The value is an empty array or empty `Countable` object.
+- The value is an uploaded file with an empty path.
+
+</div>
 
 <a name="rule-regex"></a>
 #### regex:_pattern_
@@ -1490,7 +1526,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-required"></a>
 #### required
 
-The field under validation must be present in the input data and not empty. A field is considered "empty" if one of the following conditions are true:
+The field under validation must be present in the input data and not empty. A field is "empty" if it meets one of the following criteria:
 
 <div class="content-list" markdown="1">
 
