@@ -494,7 +494,7 @@ If you need to prepare or sanitize any data from the request before you apply yo
         ]);
     }
 
-Likewise, if you need normalize any request data after validation is complete, you may use the `passedValidation` method:
+Likewise, if you need to normalize any request data after validation is complete, you may use the `passedValidation` method:
 
     use Illuminate\Support\Str;
 
