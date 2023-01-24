@@ -14,6 +14,7 @@
     - [Authorizing Form Requests](#authorizing-form-requests)
     - [Customizing The Error Messages](#customizing-the-error-messages)
     - [Preparing Input For Validation](#preparing-input-for-validation)
+    - [Preparing Input After Validation](#preparing-input-after-validation)
 - [Manually Creating Validators](#manually-creating-validators)
     - [Automatic Redirection](#automatic-redirection)
     - [Named Error Bags](#named-error-bags)
@@ -494,6 +495,7 @@ If you need to prepare or sanitize any data from the request before you apply yo
         ]);
     }
 
+<a name="preparing-input-after-validation"></a>
 ### Preparing Input After Validation
 
 If you need to prepare or sanitize any data from the request after you apply your validation rules, you may use the `passedValidation` method:
