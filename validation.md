@@ -507,7 +507,7 @@ If you need to prepare or sanitize any data from the request after you apply you
      *
      * @return void
      */
-    protected function prepareForValidation()
+    protected function passedValidation()
     {
         $this->replace(['name' => 'Taylor']);
     }
