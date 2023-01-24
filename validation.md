@@ -14,7 +14,6 @@
     - [Authorizing Form Requests](#authorizing-form-requests)
     - [Customizing The Error Messages](#customizing-the-error-messages)
     - [Preparing Input For Validation](#preparing-input-for-validation)
-    - [Preparing Input After Validation](#preparing-input-after-validation)
 - [Manually Creating Validators](#manually-creating-validators)
     - [Automatic Redirection](#automatic-redirection)
     - [Named Error Bags](#named-error-bags)
