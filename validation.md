@@ -494,6 +494,22 @@ If you need to prepare or sanitize any data from the request before you apply yo
         ]);
     }
 
+### Preparing Input After Validation
+
+If you need to prepare or sanitize any data from the request after you apply your validation rules, you may use the `passedValidation` method:
+
+    use Illuminate\Support\Str;
+
+    /**
+     * Handle a passed validation attempt.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->replace(['name' => 'Taylor']);
+    }
+
 <a name="manually-creating-validators"></a>
 ## Manually Creating Validators
 
