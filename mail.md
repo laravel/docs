@@ -1176,7 +1176,7 @@ Once the Sendinblue mailer package has been installed, you may add an entry for 
         'key' => 'your-api-key',
     ],
 
-Finally, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:
+Next, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:
 
     use Illuminate\Support\Facades\Mail;
     use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
@@ -1199,11 +1199,10 @@ Finally, you may use the `Mail` facade's `extend` method to register the transpo
             );
         });
     }
-    
-Once your additional transport has been installed and registered, you shold create a mailer definition within your application's config/mail.php configuration file that utilizes the new transport:
+
+Once your transport has been registered, you may create a mailer definition within your application's config/mail.php configuration file that utilizes the new transport:
 
     'sendinblue' => [
         'transport' => 'sendinblue',
         // ...
     ],
-
