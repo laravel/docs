@@ -1,27 +1,45 @@
 # File Storage
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
+- [File Storage](#file-storage)
+  - [Introduction](#introduction)
+  - [Configuration](#configuration)
     - [The Local Driver](#the-local-driver)
     - [The Public Disk](#the-public-disk)
     - [Driver Prerequisites](#driver-prerequisites)
-    - [Scoped & Read-Only Filesystems](#scoped-and-read-only-filesystems)
+      - [S3 Driver Configuration](#s3-driver-configuration)
+      - [FTP Driver Configuration](#ftp-driver-configuration)
+      - [SFTP Driver Configuration](#sftp-driver-configuration)
+    - [Scoped \& Read-Only Filesystems](#scoped--read-only-filesystems)
     - [Amazon S3 Compatible Filesystems](#amazon-s3-compatible-filesystems)
-- [Obtaining Disk Instances](#obtaining-disk-instances)
+      - [MinIO](#minio)
+  - [Obtaining Disk Instances](#obtaining-disk-instances)
     - [On-Demand Disks](#on-demand-disks)
-- [Retrieving Files](#retrieving-files)
+  - [Retrieving Files](#retrieving-files)
     - [Downloading Files](#downloading-files)
     - [File URLs](#file-urls)
+      - [Temporary URLs](#temporary-urls)
+      - [Temporary Upload URLs](#temporary-upload-urls)
+      - [URL Host Customization](#url-host-customization)
     - [File Metadata](#file-metadata)
-- [Storing Files](#storing-files)
-    - [Prepending & Appending To Files](#prepending-appending-to-files)
-    - [Copying & Moving Files](#copying-moving-files)
+      - [File Paths](#file-paths)
+  - [Storing Files](#storing-files)
+      - [Failed Writes](#failed-writes)
+    - [Prepending \& Appending To Files](#prepending--appending-to-files)
+    - [Copying \& Moving Files](#copying--moving-files)
     - [Automatic Streaming](#automatic-streaming)
     - [File Uploads](#file-uploads)
+      - [Specifying A File Name](#specifying-a-file-name)
+      - [Specifying A Disk](#specifying-a-disk)
+      - [Other Uploaded File Information](#other-uploaded-file-information)
     - [File Visibility](#file-visibility)
-- [Deleting Files](#deleting-files)
-- [Directories](#directories)
-- [Custom Filesystems](#custom-filesystems)
+      - [Local Files \& Visibility](#local-files--visibility)
+  - [Deleting Files](#deleting-files)
+  - [Directories](#directories)
+      - [Get All Files Within A Directory](#get-all-files-within-a-directory)
+      - [Get All Directories Within A Directory](#get-all-directories-within-a-directory)
+      - [Create A Directory](#create-a-directory)
+      - [Delete A Directory](#delete-a-directory)
+  - [Custom Filesystems](#custom-filesystems)
 
 <a name="introduction"></a>
 ## Introduction
@@ -320,6 +338,21 @@ If you need to customize how temporary URLs are created for a specific storage d
             });
         }
     }
+
+#### Temporary Upload URLs
+
+If you need to generate a temporary URL that can be used to upload a file to a disk, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
+
+    use Illuminate\Support\Facades\Storage;
+
+    $url = Storage::temporaryUploadUrl(
+        'file.jpg', now()->addMinutes(5)
+    );
+
+This can be useful in serverless environments where you may need to generate a URL that can be used to upload a file to a disk. For example, you may use this method to generate a URL that can be used to upload a file to an S3 bucket from a client-side application. or file uploaders like [Dropzone](https://www.dropzonejs.com/) or [Fine Uploader](https://fineuploader.com/) and [Uppy](https://uppy.io/) etc.
+
+> **Warning**  
+> Generating temporary upload storage URLs via the `temporaryUploadUrl` method is only supported for AWS S3.
 
 <a name="url-host-customization"></a>
 #### URL Host Customization
