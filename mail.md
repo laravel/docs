@@ -1151,7 +1151,7 @@ Once you've defined your custom transport, you may register it via the `extend` 
     {
         Mail::extend('mailchimp', function (array $config = []) {
             return new MailchimpTransport(/* ... */);
-        })
+        });
     }
 
 Once your custom transport has been defined and registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:
