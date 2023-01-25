@@ -489,7 +489,7 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 
     class Project extends Model
     {
-        public function deployments(): HasOneThrough
+        public function deployments(): HasManyThrough
         {
             return $this->hasManyThrough(
                 Deployment::class,
