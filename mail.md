@@ -1199,3 +1199,11 @@ Finally, you may use the `Mail` facade's `extend` method to register the transpo
             );
         });
     }
+    
+Once your additional transport has been installed and registered, you shold create a mailer definition within your application's config/mail.php configuration file that utilizes the new transport:
+
+    'sendinblue' => [
+        'transport' => 'sendinblue',
+        // ...
+    ],
+
