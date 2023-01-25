@@ -938,26 +938,26 @@ The field under validation must be a value after or equal to the given date. For
 <a name="rule-alpha"></a>
 #### alpha
 
-The field under validation must be entirely alphabetic characters.
+The field under validation must be entirely Unicode alphabetic characters contained in `\p{L}` `\p{M}`.
 
 > **Warning**  
-> A wide range of Unicode letters are accepted by default. To restrict it to `a-z` `A-Z` in the ascii range, give the `:ascii` option.
+> To restrict it to `a-z` `A-Z` in the ascii range, give the `:ascii` option.
 
 <a name="rule-alpha-dash"></a>
 #### alpha_dash
 
-The field under validation may have alpha-numeric characters, as well as dashes and underscores.
+The field under validation may have Unicode alpha-numeric characters contained in `\p{L}` `\p{M}` `\p{N}`, as well as ascii dashes `-` and ascii underscores `_`.
 
 > **Warning**  
-> A wide range of Unicode letters and numbers are accepted by default. To restrict it to `a-z` `A-Z` `0-9` `_` `-` in the ascii range, give the `:ascii` option.
+> To restrict it to `a-z` `A-Z` `0-9` `_` `-` in the ascii range, give the `:ascii` option.
 
 <a name="rule-alpha-num"></a>
 #### alpha_num
 
-The field under validation must be entirely alpha-numeric characters.
+The field under validation must be entirely Unicode alpha-numeric characters contained in `\p{L}` `\p{M}` `\p{N}`.
 
 > **Warning**  
-> A wide range of Unicode letters and numbers are accepted by default. To restrict it to `a-z` `A-Z` `0-9` in the ascii range, give the `:ascii` option.
+> To restrict it to `a-z` `A-Z` `0-9` in the ascii range, give the `:ascii` option.
 
 <a name="rule-array"></a>
 #### array
