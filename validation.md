@@ -940,15 +940,24 @@ The field under validation must be a value after or equal to the given date. For
 
 The field under validation must be entirely alphabetic characters.
 
+> **Warning**  
+> A wide range of Unicode letters are accepted by default. To restrict it to `a-z` `A-Z` in ascii range, give `:ascii` option.
+
 <a name="rule-alpha-dash"></a>
 #### alpha_dash
 
 The field under validation may have alpha-numeric characters, as well as dashes and underscores.
 
+> **Warning**  
+> A wide range of Unicode letters and numbers are accepted by default. To restrict it to `a-z` `A-Z` `0-9` `_` `-` in ascii range, give `:ascii` option.
+
 <a name="rule-alpha-num"></a>
 #### alpha_num
 
 The field under validation must be entirely alpha-numeric characters.
+
+> **Warning**  
+> A wide range of Unicode letters and numbers are accepted by default. To restrict it to `a-z` `A-Z` `0-9` in ascii range, give `:ascii` option.
 
 <a name="rule-array"></a>
 #### array
