@@ -116,7 +116,7 @@ The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) and [
 <a name="ably"></a>
 ### Ably
 
-If you plan to broadcast your events using [Ably](https://ably.com), you should install the Ably Laravel Broadcaster using the Composer package manager:
+If you plan to broadcast your events using [Ably](https://ably.com), you should install the [Ably Laravel Broadcaster](https://github.com/ably/laravel-broadcaster) using the Composer package manager:
 
 ```shell
 composer require ably/laravel-broadcaster
@@ -137,7 +137,7 @@ BROADCAST_DRIVER=ably
 
 Finally, you are ready to install and configure [Ably Laravel Echo](#client-ably), which will receive the broadcast events on the client-side.
 
->Note - For more detailed documentation, please take a look at [ably-laravel-broadcaster](https://github.com/ably/laravel-broadcaster).
+>Note - For more detailed documentation, please take a look at [ably-broadcaster-readme](https://github.com/ably/laravel-broadcaster/blob/main/README.md).
 
 <a name="open-source-alternatives"></a>
 ### Open Source Alternatives
@@ -258,7 +258,8 @@ npm run dev
 Additional supported features :
 
 *1. Modify private/presence channel capability. Default: Full capability*
-- Channel access control rights are granted for each individual user separately using `ably-capability`. It defines list of access claims as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations).
+- Channel access control rights are granted for each individual user separately using `ably-capability`.
+- It defines list of access claims as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations).
 
 ```php
   // file - routes/channels.php
