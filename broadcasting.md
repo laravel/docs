@@ -108,6 +108,12 @@ The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) and [
 <a name="ably"></a>
 ### Ably
 
+> **Important Note** 
+>
+> Ably now officially supports native [ably laravel broadcaster](https://github.com/ably/laravel-broadcaster) and [ably laravel echo](https://github.com/ably-forks/laravel-echo).
+>
+> Please refer to the official [ably broadcaster doc](https://github.com/ably/laravel-broadcaster#readme) and [ably echo doc](https://github.com/ably-forks/laravel-echo#readme) instead of below documentation.
+
 If you plan to broadcast your events using [Ably](https://ably.io), you should install the Ably PHP SDK using the Composer package manager:
 
     composer require ably/ably-php
@@ -187,6 +193,12 @@ window.Echo = new Echo({
 
 <a name="client-ably"></a>
 ### Ably
+
+> **Important Note** 
+>
+> Ably now officially supports native [ably laravel broadcaster](https://github.com/ably/laravel-broadcaster) and [ably laravel echo](https://github.com/ably-forks/laravel-echo).
+>
+> Please refer to the official [ably broadcaster doc](https://github.com/ably/laravel-broadcaster#readme) and [ably echo doc](https://github.com/ably-forks/laravel-echo#readme) instead of below documentation.
 
 [Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package.
 
