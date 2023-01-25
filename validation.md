@@ -949,6 +949,9 @@ The field under validation must be entirely Unicode alphabetic characters contai
 The field under validation may have Unicode alpha-numeric characters contained in `\p{L}` `\p{M}` `\p{N}`, as well as ascii dashes `-` and ascii underscores `_`.
 
 > **Warning**  
+> Unicode dashes and underscores such as `―` and `＿` are not accepted.
+
+> **Warning**  
 > To restrict it to `a-z` `A-Z` `0-9` `_` `-` in the ascii range, give the `:ascii` option.
 
 <a name="rule-alpha-num"></a>
