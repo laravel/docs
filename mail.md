@@ -1151,7 +1151,7 @@ Once you've defined your custom transport, you may register it via the `extend` 
     {
         Mail::extend('mailchimp', function (array $config = []) {
             return new MailchimpTransport(/* ... */);
-        })
+        });
     }
 
 Once your custom transport has been defined and registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:
@@ -1167,7 +1167,7 @@ Once your custom transport has been defined and registered, you may create a mai
 Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the "Sendinblue" Symfony mailer:
 
 ```none
-composer require symfony/sendinblue-mailer
+composer require symfony/sendinblue-mailer symfony/http-client
 ```
 
 Once the Sendinblue mailer package has been installed, you may add an entry for your Sendinblue API credentials to your application's `services` configuration file:
@@ -1176,7 +1176,7 @@ Once the Sendinblue mailer package has been installed, you may add an entry for 
         'key' => 'your-api-key',
     ],
 
-Finally, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:
+Next, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:
 
     use Illuminate\Support\Facades\Mail;
     use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
@@ -1199,3 +1199,10 @@ Finally, you may use the `Mail` facade's `extend` method to register the transpo
             );
         });
     }
+
+Once your transport has been registered, you may create a mailer definition within your application's config/mail.php configuration file that utilizes the new transport:
+
+    'sendinblue' => [
+        'transport' => 'sendinblue',
+        // ...
+    ],
