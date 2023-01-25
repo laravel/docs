@@ -240,7 +240,7 @@ You can set additional ably-js [clientOptions](https://ably.com/docs/api/realtim
 
 ```js
     broadcaster: 'ably',
-    authEndpoint: 'http://www.localhost:8000/broadcasting/auth', // absolute or relative url to laravel-server 
+    authEndpoint: '/broadcasting/auth', // relative or absolute url to laravel-server
     realtimeHost: 'realtime.ably.com',
     restHost: 'rest.ably.com',
     port: '80',
@@ -258,8 +258,8 @@ npm run dev
 Additional supported features :
 
 *1. Modify private/presence channel capability. Default: Full capability*
-- Channel access control rights are granted for each individual user separately using `ably-capability`.
-- It defines list of access claims as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations).
+- Channel access control rights are granted for each individual user separately using an `ably-capability` array.
+- Ably capability array defines a list of access claims as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations).
 
 ```php
   // file - routes/channels.php
@@ -267,7 +267,13 @@ Additional supported features :
   
   // for private channel
   Broadcast::channel('channel1', function ($user) {
-      return ['ably-capability' => ["subscribe", "history"]];
+    if ($user->role === 'customer') {
+        return ['ably-capability' => ["subscribe", "history"]];
+    } else if ($user->role === 'admin') {
+        return true; // Default: Full capability access is given when ably-capability is not specified.
+    } else {
+        return false;
+    }
   });
   
   // for presence channel
@@ -289,7 +295,7 @@ ABLY_DISABLE_PUBLIC_CHANNELS=true
             'disable_public_channels' => env('ABLY_DISABLE_PUBLIC_CHANNELS', false)
         ],
 ```
-**Note :** For more information about other features, please take a look at [configure advanced features](https://github.com/ably/laravel-broadcaster#configure-advanced-features).
+**Note :** For more information about other features, see our documentation on how to [configure advanced features](https://github.com/ably/laravel-broadcaster#configure-advanced-features).
 
 <a name="migrate-pusher-to-ably"></a>
 ### Migrating from pusher to ably
