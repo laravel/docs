@@ -137,6 +137,8 @@ BROADCAST_DRIVER=ably
 
 Finally, you are ready to install and configure [Ably Laravel Echo](#client-ably), which will receive the broadcast events on the client-side.
 
+>Note - For more detailed documentation, please take a look at [ably-laravel-broadcaster](https://github.com/ably/laravel-broadcaster).
+
 <a name="open-source-alternatives"></a>
 ### Open Source Alternatives
 
