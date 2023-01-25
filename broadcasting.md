@@ -255,9 +255,9 @@ npm run dev
 > **Note**  
 > To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
 
-### Additional supported features
+Additional supported features :
 
-**1. Modify private/presence channel capability. Default: Full capability**
+*1. Modify private/presence channel capability. Default: Full capability*
 - Channel access control rights are granted for each individual user separately using `ably-capability`. It defines list of access claims as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations).
 
 ```php
@@ -275,7 +275,7 @@ npm run dev
   });
 ```
 
-**2. Disable public channels. Default: false**
+*2. Disable public channels. Default: false*
 - Set `ABLY_DISABLE_PUBLIC_CHANNELS` as `true` in `.env` file.
 ```dotenv
 ABLY_DISABLE_PUBLIC_CHANNELS=true
