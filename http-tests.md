@@ -647,6 +647,8 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
+[assertJsonIsArray](#assert-json-is-array)
+[assertJsonIsObject](#assert-json-is-object)
 [assertLocation](#assert-location)
 [assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
@@ -942,6 +944,20 @@ Assert that the response has the given JSON validation errors for the given keys
 Assert the response has any JSON validation errors for the given key:
 
     $response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');
+
+<a name="assert-json-is-array"></a>
+#### assertJsonIsArray
+
+Assert the response is the JSON Array for the given key:
+
+    $response->assertJsonIsArray(string $key);
+
+<a name="assert-json-is-object"></a>
+#### assertJsonIsObject
+
+Assert the response is the JSON Object for the given key:
+
+    $response->assertJsonIsObject(string $key);
 
 <a name="assert-location"></a>
 #### assertLocation
