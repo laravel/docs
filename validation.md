@@ -938,7 +938,7 @@ The field under validation must be a value after or equal to the given date. For
 <a name="rule-alpha"></a>
 #### alpha
 
-The field under validation must be entirely Unicode alphabetic characters contained in `\p{L}` `\p{M}`.
+The field under validation must be entirely Unicode alphabetic characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=) [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=).
 
 > **Warning**  
 > To restrict it to `a-z` `A-Z` in the ascii range, give the `:ascii` option.
@@ -946,7 +946,7 @@ The field under validation must be entirely Unicode alphabetic characters contai
 <a name="rule-alpha-dash"></a>
 #### alpha_dash
 
-The field under validation may have Unicode alpha-numeric characters contained in `\p{L}` `\p{M}` `\p{N}`, as well as ascii dashes `-` and ascii underscores `_`.
+The field under validation may have Unicode alpha-numeric characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=) [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=) [`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=), as well as ascii dashes `-` and ascii underscores `_`.
 
 > **Warning**  
 > Unicode dashes and underscores such as `―` and `＿` are not accepted.
@@ -957,7 +957,7 @@ The field under validation may have Unicode alpha-numeric characters contained i
 <a name="rule-alpha-num"></a>
 #### alpha_num
 
-The field under validation must be entirely Unicode alpha-numeric characters contained in `\p{L}` `\p{M}` `\p{N}`.
+The field under validation must be entirely Unicode alpha-numeric characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=) [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=) [`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=).
 
 > **Warning**  
 > To restrict it to `a-z` `A-Z` `0-9` in the ascii range, give the `:ascii` option.
