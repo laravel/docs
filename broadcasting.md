@@ -259,13 +259,13 @@ Additional supported features :
 
 *1. Modify private/presence channel capability. Default: Full capability*
 - Channel access control rights are granted for each individual user separately using an `ably-capability` array.
-- Ably capability array defines a list of access claims as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations).
+- Ably capability arrays define a list of access claims as per [Channel Capabilities](https://ably.com/docs/core-features/authentication#capability-operations).
 
 ```php
   // file - routes/channels.php
   // User authentication is allowed for private/presence channel returning truthy values and denied for falsy values.
   
-  // for private channel
+  // for private channels
   Broadcast::channel('channel1', function ($user) {
     if ($user->role === 'customer') {
         return ['ably-capability' => ["subscribe", "history"]];
@@ -276,7 +276,7 @@ Additional supported features :
     }
   });
   
-  // for presence channel
+  // for presence channels
   Broadcast::channel('channel2', function ($user) {
       return ['id' => $user->id, 'name' => $user->name, 'ably-capability' => ["subscribe", "presence"]];
   });
