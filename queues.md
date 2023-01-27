@@ -1496,7 +1496,7 @@ Using the `catch` method, you may provide a closure that should be executed if t
         // This job has failed...
     });
 
-> **Note**  
+> **Warning**  
 > Since `catch` callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within `catch` callbacks.
 
 <a name="running-the-queue-worker"></a>
