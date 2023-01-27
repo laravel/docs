@@ -817,11 +817,11 @@ Before your application can issue tokens via the client credentials grant, you w
 php artisan passport:client --client
 ```
 
-Next, to use this grant type, you need to add the `CheckClientCredentials` middleware to the `$routeMiddleware` property of your `app/Http/Kernel.php` file:
+Next, to use this grant type, you may add the `CheckClientCredentials` middleware to the `$middlewareAliases` property of your application's `app/Http/Kernel.php` file:
 
     use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         'client' => CheckClientCredentials::class,
     ];
 
@@ -1077,7 +1077,7 @@ If you are issuing personal access tokens using the `App\Models\User` model's `c
 <a name="checking-scopes"></a>
 ### Checking Scopes
 
-Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope. To get started, add the following middleware to the `$routeMiddleware` property of your `app/Http/Kernel.php` file:
+Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope. To get started, add the following middleware to the `$middlewareAliases` property of your `app/Http/Kernel.php` file:
 
     'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
     'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,

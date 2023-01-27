@@ -420,11 +420,11 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 
     }
 
-Next, [register the route middleware](/docs/{{version}}/middleware#registering-middleware) and attach it to a route:
+Next, attach the middleware to a route:
 
     Route::get('/api/user', function () {
         // Only authenticated users may access this route...
-    })->middleware('auth.basic.once');
+    })->middleware(AuthenticateOnceWithBasicAuth::class);
 
 <a name="logging-out"></a>
 ## Logging Out
@@ -456,7 +456,7 @@ In addition to calling the `logout` method, it is recommended that you invalidat
 
 Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device. This feature is typically utilized when a user is changing or updating their password and you would like to invalidate sessions on other devices while keeping the current device authenticated.
 
-Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is included on the routes that should receive session authentication. Typically, you should place this middleware on a route group definition so that it can be applied to the majority of your application's routes. By default, the `AuthenticateSession` middleware may be attached to a route using the `auth.session` route middleware key as defined in your application's HTTP kernel:
+Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is included on the routes that should receive session authentication. Typically, you should place this middleware on a route group definition so that it can be applied to the majority of your application's routes. By default, the `AuthenticateSession` middleware may be attached to a route using the `auth.session` route middleware alias as defined in your application's HTTP kernel:
 
     Route::middleware(['auth', 'auth.session'])->group(function () {
         Route::get('/', function () {
