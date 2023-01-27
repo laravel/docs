@@ -34,6 +34,19 @@ Of course, all terminal commands typically exit with a status code of `0` when t
 
     $this->artisan('inspire')->assertFailed();
 
+### Manually Invoking The Command
+
+By default, the `artisan` method won't run the command immediately. 
+This can cause an error if you try to do some data assertions.
+
+In order to run the command, you need to invoke the `execute` method:
+
+    $this->artisan('users:create taylor@laravel.com')
+        ->assertSuccessful()
+        ->execute();
+
+    $this->assertDatabaseHas('users', ['email' => 'taylor@laravel.com']);
+
 <a name="input-output-expectations"></a>
 ## Input / Output Expectations
 
