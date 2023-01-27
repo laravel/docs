@@ -18,7 +18,7 @@
 <div class="content-list" markdown="1">
 
 - [Model "Dates" Property](#model-dates-property)
-- [Service Mocking](#serving-mocking)
+- [Service Mocking](#service-mocking)
 
 </div>
 
