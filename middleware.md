@@ -117,11 +117,25 @@ If you want a middleware to run during every HTTP request to your application, l
 <a name="assigning-middleware-to-routes"></a>
 ### Assigning Middleware To Routes
 
-If you would like to assign middleware to specific routes, you should first assign the middleware a key in your application's `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. You may add your own middleware to this list and assign it a key of your choosing:
+If you would like to assign middleware to specific routes, you may invoke the `middleware` method when defining the route:
+
+    use App\Http\Middleware\Authenticate;
+
+    Route::get('/profile', function () {
+        // ...
+    })->middleware(Authenticate::class);
+
+You may assign multiple middleware to the route by passing an array of middleware names to the `middleware` method:
+
+    Route::get('/', function () {
+        // ...
+    })->middleware([First::class, Second::class]);
+
+For convenience, you may assign aliases to middleware in your application's `app/Http/Kernel.php` file. By default, the `$middlewareAliases` property of this class contains entries for the middleware included with Laravel. You may add your own middleware to this list and assign it an alias of your choosing:
 
     // Within App\Http\Kernel class...
 
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -133,25 +147,11 @@ If you would like to assign middleware to specific routes, you should first assi
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 
-Once the middleware has been defined in the HTTP kernel, you may use the `middleware` method to assign middleware to a route:
+Once the middleware alias has been defined in the HTTP kernel, you may use the alias when assigning middlware to routes:
 
     Route::get('/profile', function () {
         // ...
     })->middleware('auth');
-
-You may assign multiple middleware to the route by passing an array of middleware names to the `middleware` method:
-
-    Route::get('/', function () {
-        // ...
-    })->middleware(['first', 'second']);
-
-When assigning middleware, you may also pass the fully qualified class name:
-
-    use App\Http\Middleware\EnsureTokenIsValid;
-
-    Route::get('/profile', function () {
-        // ...
-    })->middleware(EnsureTokenIsValid::class);
 
 <a name="excluding-middleware"></a>
 #### Excluding Middleware
@@ -205,7 +205,7 @@ Laravel includes predefined `web` and `api` middleware groups that contain commo
         ],
 
         'api' => [
-            'throttle:api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];

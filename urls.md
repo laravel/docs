@@ -126,16 +126,16 @@ Sometimes, you may need to allow your application's frontend to append data to a
         abort(401);
     }
 
-Instead of validating signed URLs using the incoming request instance, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
+Instead of validating signed URLs using the incoming request instance, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you may assign this middleware an alias in your HTTP kernel's `$middlewareAliases` array:
 
     /**
-     * The application's route middleware.
+     * The application's middleware aliases.
      *
-     * These middleware may be assigned to groups or used individually.
+     * Aliases may be used to conveniently assign middleware to routes and groups.
      *
-     * @var array
+     * @var array<string, class-string|string>
      */
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
     ];
 

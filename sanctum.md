@@ -79,7 +79,7 @@ Next, if you plan to utilize Sanctum to authenticate a SPA, you should add Sanct
 
     'api' => [
         \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        'throttle:api',
+        \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
 
@@ -168,7 +168,7 @@ When handling an incoming request authenticated by Sanctum, you may determine if
 <a name="token-ability-middleware"></a>
 #### Token Ability Middleware
 
-Sanctum also includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given ability. To get started, add the following middleware to the `$routeMiddleware` property of your application's `app/Http/Kernel.php` file:
+Sanctum also includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given ability. To get started, add the following middleware to the `$middlewareAliases` property of your application's `app/Http/Kernel.php` file:
 
     'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
     'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
@@ -272,7 +272,7 @@ Next, you should add Sanctum's middleware to your `api` middleware group within 
 
     'api' => [
         \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        'throttle:api',
+        \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
 

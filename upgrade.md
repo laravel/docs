@@ -18,7 +18,7 @@
 <div class="content-list" markdown="1">
 
 - [Model "Dates" Property](#model-dates-property)
-- [Service Mocking](#serving-mocking)
+- [Service Mocking](#service-mocking)
 
 </div>
 
@@ -62,6 +62,7 @@ You should update the following dependencies in your application's `composer.jso
 <div class="content-list" markdown="1">
 
 - `laravel/framework` to `^10.0`
+- `spatie/laravel-ignition` to `^2.0`
 
 </div>
 

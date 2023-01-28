@@ -687,7 +687,17 @@ The `whereExists` method allows you to write "where exists" SQL clauses. The `wh
                })
                ->get();
 
-The query above will produce the following SQL:
+Alternatively, you may provide a query object to the `whereExists` method instead of a closure:
+
+    $orders = DB::table('orders')
+                    ->select(DB::raw(1))
+                    ->whereColumn('orders.user_id', 'users.id');
+
+    $users = DB::table('users')
+                        ->whereExists($orders)
+                        ->get();
+
+Both of the examples above will produce the following SQL:
 
 ```sql
 select * from users

@@ -112,7 +112,7 @@ Sometimes a user may misplace or accidentally delete the email address verificat
 <a name="protecting-routes"></a>
 ### Protecting Routes
 
-[Route middleware](/docs/{{version}}/middleware) may be used to only allow verified users to access a given route. Laravel ships with a `verified` middleware, which references the `Illuminate\Auth\Middleware\EnsureEmailIsVerified` class. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition. Typically, this middleware is paired with the `auth` middleware:
+[Route middleware](/docs/{{version}}/middleware) may be used to only allow verified users to access a given route. Laravel ships with a `verified` middleware alias, which is an alias for the `Illuminate\Auth\Middleware\EnsureEmailIsVerified` class. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition. Typically, this middleware is paired with the `auth` middleware:
 
     Route::get('/profile', function () {
         // Only verified users may access this route...
