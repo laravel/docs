@@ -2622,11 +2622,15 @@ The `mask` method masks a portion of a string with a repeated character, and may
 
     // tay***************
 
-If needed, you provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
+If needed, you may provide negative numbers as the third or fourth argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
 
     $string = Str::of('taylor@example.com')->mask('*', -15, 3);
 
     // tay***@example.com
+
+    $string = Str::of('taylor@example.com')->mask('*', 4, -4);
+
+    // tayl**********.com
 
 <a name="method-fluent-str-match"></a>
 #### `match` {.collection-method}
