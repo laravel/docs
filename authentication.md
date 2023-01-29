@@ -611,6 +611,12 @@ Once your custom authentication driver has been defined, you may configure it as
         ],
     ],
 
+Example of usage in your `routes/api.php` file:
+
+    Route::middleware('auth:api')->group(function () {
+        Route::apiResource('posts', PostController::class);
+    }
+
 <a name="adding-custom-user-providers"></a>
 ## Adding Custom User Providers
 
