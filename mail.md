@@ -935,7 +935,7 @@ When designing a mailable's template, it is convenient to quickly preview the re
     });
 
 > **Warning**  
-> [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [HELO](https://usehelo.com).
+> [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [Mailpit](https://github.com/axllent/mailpit) or [HELO](https://usehelo.com).
 
 <a name="localizing-mailables"></a>
 ## Localizing Mailables
