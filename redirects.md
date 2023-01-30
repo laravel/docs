@@ -35,6 +35,12 @@ If your route has parameters, you may pass them as the second argument to the `r
 
     return redirect()->route('profile', ['id' => 1]);
 
+You can use ```to_route``` helper to redirect by route name.
+
+```
+return to_route('profile');
+```
+
 <a name="populating-parameters-via-eloquent-models"></a>
 #### Populating Parameters Via Eloquent Models
 
