@@ -841,8 +841,9 @@ When chaining jobs, you may use the `catch` method to specify a closure that sho
     ])->catch(function (Throwable $e) {
         // A job within the chain has failed...
     })->dispatch();
-    
-> {note} Since chain callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within chain callbacks.
+
+> **Warning**
+> Since chain callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within chain callbacks.
 
 <a name="customizing-the-queue-and-connection"></a>
 ### Customizing The Queue & Connection
