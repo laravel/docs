@@ -467,7 +467,7 @@ export default defineConfig({
 <a name="blade-aliases"></a>
 ### Aliases
 
-It is common in JavaScript applications to [create aliases](#aliases) to regularly referenced directories. But, you may also create aliases to use in Blade by using the `macro` method on the `Illuminate\Support\Vite` class. Typically, "macros" should be defined within the `boot` method of a [service provider](/docs/{{version}}/providers):
+It is common in JavaScript applications to [create aliases](#aliases) to regularly referenced directories. But, you may also create aliases to use in Blade by using the `macro` method on the `Illuminate\Support\Facades\Vite` class. Typically, "macros" should be defined within the `boot` method of a [service provider](/docs/{{version}}/providers):
 
     /**
      * Bootstrap any application services.
