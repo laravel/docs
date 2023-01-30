@@ -359,6 +359,9 @@ By default, a newly instantiated model instance will not contain any attribute v
         ];
     }
 
+> **Note**  
+> Please note that these should be the values like they would be read from the database, so before [type casting](/docs/{{version}}/eloquent-mutators#attribute-casting).
+
 <a name="configuring-eloquent-strictness"></a>
 ### Configuring Eloquent Strictness
 
