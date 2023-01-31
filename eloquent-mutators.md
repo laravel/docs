@@ -463,7 +463,7 @@ Sometimes you may need your model to store an array of enum values within a sing
      * @var array
      */
     protected $casts = [
-        'statuses' => AsEnumCollection.':'.ServerStatus::class,
+        'statuses' => AsEnumCollection::class.':'.ServerStatus::class,
     ];
 
 <a name="encrypted-casting"></a>
