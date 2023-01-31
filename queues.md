@@ -1415,20 +1415,18 @@ Sometimes you may need to cancel a given batch's execution. This can be accompli
         }
     }
 
-As you may have noticed in previous examples, batched jobs should typically check to see if the batch has been cancelled at the beginning of their `handle` method:
+As you may have noticed in previous examples, batched jobs should typically check to see if the batch has been cancelled in their `handle` method. Alternatively, you may use the `SkipIfBatchCancelled` middelware:
+
+    use Illuminate\Queue\Middleware\SkipIfBatchCancelled;
 
     /**
-     * Execute the job.
+     * Get the middleware the job should pass through.
      *
-     * @return void
+     * @return array
      */
-    public function handle()
+    public function middleware()
     {
-        if ($this->batch()->cancelled()) {
-            return;
-        }
-
-        // Continue processing...
+        return [new SkipIfBatchCancelled];
     }
 
 <a name="batch-failures"></a>
