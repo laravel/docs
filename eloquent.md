@@ -355,6 +355,7 @@ By default, a newly instantiated model instance will not contain any attribute v
          * @var array
          */
         protected $attributes = [
+            'options' => '[]',
             'delayed' => false,
         ];
     }
