@@ -935,7 +935,7 @@ When designing a mailable's template, it is convenient to quickly preview the re
     });
 
 > **Warning**  
-> [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [Mailpit](https://github.com/axllent/mailpit) or [HELO](https://usehelo.com).
+> [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog), [Mailpit](https://github.com/axllent/mailpit), or [HELO](https://usehelo.com).
 
 <a name="localizing-mailables"></a>
 ## Localizing Mailables
@@ -1027,11 +1027,11 @@ When developing an application that sends email, you probably don't want to actu
 Instead of sending your emails, the `log` mail driver will write all email messages to your log files for inspection. Typically, this driver would only be used during local development. For more information on configuring your application per environment, check out the [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="mailtrap"></a>
-#### HELO / Mailtrap / MailHog
+#### HELO / Mailtrap / Mailpit
 
 Alternatively, you may use a service like [HELO](https://usehelo.com) or [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap's message viewer.
 
-If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your messages using [MailHog](https://github.com/mailhog/MailHog). When Sail is running, you may access the MailHog interface at: `http://localhost:8025`.
+If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your messages using [Mailpit](https://github.com/axllent/mailpit). When Sail is running, you may access the Mailpit interface at: `http://localhost:8025`.
 
 <a name="using-a-global-to-address"></a>
 #### Using A Global `to` Address
