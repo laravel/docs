@@ -1415,7 +1415,7 @@ The field under validation must not be present in the input data.
  <a name="rule-missing-unless"></a>
  #### missing_unless:_anotherfield_,_value_
 
-The field under validation must not present if the _anotherfield_ field is equal to any _value_.
+The field under validation must not be present unless the _anotherfield_ field is equal to any _value_.
 
  <a name="rule-missing-with"></a>
  #### missing_with:_foo_,_bar_,...
