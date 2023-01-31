@@ -248,6 +248,12 @@ If you have a response instance and would like to throw an instance of `Illumina
     // Throw an exception if an error occurred and the given closure resolves to false...
     $response->throwUnless(fn ($response) => false);
 
+    // Throw an exception if the response has a specific status code...
+    $response->throwIfStatus(403);
+
+    // Throw an exception unless the response has a specific status code...
+    $response->throwUnlessStatus(200);
+
     return $response['user']['id'];
 
 The `Illuminate\Http\Client\RequestException` instance has a public `$response` property which will allow you to inspect the returned response.
