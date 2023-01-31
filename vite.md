@@ -315,7 +315,7 @@ You may then include the plugin in your `vite.config.js` configuration file:
 ```js
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
     plugins: [
