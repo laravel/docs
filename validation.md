@@ -870,6 +870,11 @@ Below is a list of all available validation rules and their function:
 [MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
 [Min Digits](#rule-min-digits)
+[Missing](#rule-missing)
+[Missing If](#rule-missing-if)
+[Missing Unless](#rule-missing-unless)
+[Missing With](#rule-missing-with)
+[Missing With All](#rule-missing-with-all)
 [Multiple Of](#rule-multiple-of)
 [Not In](#rule-not-in)
 [Not Regex](#rule-not-regex)
@@ -1410,6 +1415,31 @@ The field under validation must be a multiple of _value_.
 
 > **Warning**  
 > The [`bcmath` PHP extension](https://www.php.net/manual/en/book.bc.php) is required in order to use the `multiple_of` rule.
+
+<a name="rule-missing"></a>
+#### missing
+
+The field under validation must not be present in the input data.
+
+ <a name="rule-missing-if"></a>
+ #### missing_if:_anotherfield_,_value_,...
+
+ The field under validation must not be present if the _anotherfield_ field is equal to any _value_.
+
+ <a name="rule-missing-unless"></a>
+ #### missing_unless:_anotherfield_,_value_
+
+The field under validation must not be present unless the _anotherfield_ field is equal to any _value_.
+
+ <a name="rule-missing-with"></a>
+ #### missing_with:_foo_,_bar_,...
+
+ The field under validation must not be present _only if_ any of the other specified fields are present.
+
+ <a name="rule-missing-with-all"></a>
+ #### missing_with_all:_foo_,_bar_,...
+
+ The field under validation must not be present _only if_ all of the other specified fields are present.
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
