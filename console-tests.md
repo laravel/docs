@@ -35,7 +35,7 @@ Of course, all terminal commands typically exit with a status code of `0` when t
     $this->artisan('inspire')->assertFailed();
 
 > **Warning**
-> If you assign the `artisan` to a variable, remember to hit the `$var->execute()` method in order to run the command.
+> If you assign the `artisan` to a variable, remember to hit the `$artisan->execute()` method in order to run the command.
 
 <a name="input-output-expectations"></a>
 ## Input / Output Expectations
