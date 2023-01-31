@@ -339,7 +339,7 @@ By default, all Eloquent models will use the default database connection that is
 <a name="default-attribute-values"></a>
 ### Default Attribute Values
 
-By default, a newly instantiated model instance will not contain any attribute values. If you would like to define the default values for some of your model's attributes, you may define an `$attributes` property on your model:
+By default, a newly instantiated model instance will not contain any attribute values. If you would like to define the default values for some of your model's attributes, you may define an `$attributes` property on your model. Attribute values placed in the `$attributes` array should be in their "storable" format as if they were just read from the database:
 
     <?php
 
@@ -358,9 +358,6 @@ By default, a newly instantiated model instance will not contain any attribute v
             'delayed' => false,
         ];
     }
-
-> **Note**  
-> Please note that these should be the values like they would be read from the database, so before [type casting](/docs/{{version}}/eloquent-mutators#attribute-casting).
 
 <a name="configuring-eloquent-strictness"></a>
 ### Configuring Eloquent Strictness
