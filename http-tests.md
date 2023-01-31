@@ -639,6 +639,8 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJson](#assert-json)
 [assertJsonCount](#assert-json-count)
 [assertJsonFragment](#assert-json-fragment)
+[assertJsonIsArray](#assert-json-is-array)
+[assertJsonIsObject](#assert-json-is-object)
 [assertJsonMissing](#assert-json-missing)
 [assertJsonMissingExact](#assert-json-missing-exact)
 [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
@@ -803,6 +805,20 @@ Assert that the response contains the given JSON data anywhere in the response:
     });
 
     $response->assertJsonFragment(['name' => 'Taylor Otwell']);
+
+<a name="assert-json-is-array"></a>
+#### assertJsonIsArray
+
+Assert that the response JSON is an array:
+
+    $response->assertJsonIsArray();
+
+<a name="assert-json-is-object"></a>
+#### assertJsonIsObject
+
+Assert that the response JSON is an object:
+
+    $response->assertJsonIsObject();
 
 <a name="assert-json-missing"></a>
 #### assertJsonMissing
