@@ -1415,7 +1415,7 @@ Sometimes you may need to cancel a given batch's execution. This can be accompli
         }
     }
 
-As you may have noticed in previous examples, batched jobs should typically check to see if the batch has been cancelled in their `handle` method. Alternatively, you may use the `SkipIfBatchCancelled` middleware:
+As you may have noticed in the previous examples, batched jobs should typically determine if the batch has been cancelled in their `handle` method. However, for convenience, you may assign the `SkipIfBatchCancelled` [middleware](#job-middleware) to the job. As its name indicates, this middleware will instruct Laravel to not process the job if its corresponding batch has been cancelled:
 
     use Illuminate\Queue\Middleware\SkipIfBatchCancelled;
 
