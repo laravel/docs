@@ -684,7 +684,7 @@ Vite::useCspNonce($nonce);
 If your Vite manifest includes `integrity` hashes for your assets, Laravel will automatically add the `integrity` attribute on any script and style tags it generates in order to enforce [Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity). By default, Vite does not include the `integrity` hash in its manifest, but you may enable it by installing the [`vite-plugin-manifest-uri`](https://www.npmjs.com/package/vite-plugin-manifest-sri) NPM plugin:
 
 ```shell
-npm install -D vite-plugin-manifest-sri
+npm install --save-dev vite-plugin-manifest-sri
 ```
 
 You may then enable this plugin in your `vite.config.js` file:
