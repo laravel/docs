@@ -1415,7 +1415,7 @@ Sometimes you may need to cancel a given batch's execution. This can be accompli
         }
     }
 
-As you may have noticed in previous examples, batched jobs should typically check to see if the batch has been cancelled in their `handle` method. Alternatively, you may use the `SkipIfBatchCancelled` middelware:
+As you may have noticed in previous examples, batched jobs should typically check to see if the batch has been cancelled in their `handle` method. Alternatively, you may use the `SkipIfBatchCancelled` middleware:
 
     use Illuminate\Queue\Middleware\SkipIfBatchCancelled;
 
