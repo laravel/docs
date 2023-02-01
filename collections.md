@@ -136,6 +136,9 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [hasAny](#method-hasany)
 [implode](#method-implode)
 [intersect](#method-intersect)
+[intersectUsing](#method-intersectUsing)
+[intersectAssoc](#method-intersectAssoc)
+[intersectAssocUsing](#method-intersectAssocUsing)
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)
@@ -1166,6 +1169,65 @@ The `intersect` method removes any values from the original collection that are 
 
 > **Note**  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-intersect).
+
+<a name="method-intersectUsing"></a>
+#### `intersectUsing` {.collection-method}
+
+The `intersectUsing` method computes the intersection of a collection against another collection or a plain PHP `array` using a callback function. The resulting collection will preserve the original collection's keys:
+
+    $collection = collect(['One', 'two', 'four']);
+
+    $intersect = $collection->intersectUsing(['one', 'three', 'six'], function($a, $b) {
+        return strncasecmp($a, $b, 1);
+    });
+
+    $intersect->all();
+
+    // ['One', 'two']
+
+<a name="method-intersectAssoc"></a>
+#### `intersectAssoc()` {.collection-method}
+
+The `intersectAssoc` method computes the intersection of a collection against another collection or a plain PHP `array` based on its keys and values. This method will return the key / value pairs in the original collection that are present in the given collection:
+
+    $collection = collect([
+        'color' => 'orange',
+        'type' => 'fruit',
+        'remain' => 6,
+    ]);
+
+    $intersect = $collection->intersectAssoc([
+        'color' => 'yellow',
+        'type' => 'fruit',
+        'remain' => 3,
+        'used' => 6,
+    ]);
+    
+    $intersect->all();
+
+    // ['type' => 'fruit']
+
+<a name="method-intersectAssocUsing"></a>
+#### `intersectAssocUsing()` {.collection-method}
+
+The `intersectAssocUsing` method computes the intersection of a collection against another collection or a plain PHP `array` with an additional index check, and compares indexes by a callback function:
+
+    $collection = collect([
+        'color' => 'orange',
+        'type' => 'fruit',
+        'remain' => 6,
+    ]);
+
+    $intersect = $collection->intersectAssocUsing([
+        'color' => 'yellow',
+        'type' => 'fruit',
+        'remain' => 6,
+        'used' => 6,
+    ], 'strcasecmp');
+
+    $intersect->all();
+
+    // ['type' => 'fruit', 'remain' => 6]
 
 <a name="method-intersectbykeys"></a>
 #### `intersectByKeys()` {.collection-method}
@@ -3419,6 +3481,9 @@ Almost all methods available on the `Collection` class are also available on the
 [has](#method-has)
 [implode](#method-implode)
 [intersect](#method-intersect)
+[intersectUsing](#method-intersectUsing)
+[intersectAssoc](#method-intersectAssoc)
+[intersectAssocUsing](#method-intersectAssocUsing)
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)
