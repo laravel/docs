@@ -260,7 +260,13 @@ export default defineConfig({
 <a name="vue"></a>
 ### Vue
 
-There are a few additional options you will need to include in the `vite.config.js` configuration file when using the Vue plugin with the Laravel plugin:
+If you would like to build your front-end using the [Vue](https://vuejs.org/) framework, then you will also need to install the `@vitejs/plugin-vue` plugin:
+
+```sh
+npm install --save-dev @vitejs/plugin-vue
+```
+
+You may then include the plugin in your `vite.config.js` configuration file. There are a few additional options you will need when using the Vue plugin with Laravel:
 
 ```js
 import { defineConfig } from 'vite';
@@ -298,7 +304,30 @@ export default defineConfig({
 <a name="react"></a>
 ### React
 
-When using Vite with React, you will need to ensure that any files containing JSX have a `.jsx` or `.tsx` extension, remembering to update your entry point, if required, as [shown above](#configuring-vite). You will also need to include the additional `@viteReactRefresh` Blade directive alongside your existing `@vite` directive.
+If you would like to build your front-end using the [React](https://reactjs.org/) framework, then you will also need to install the `@vitejs/plugin-react` plugin:
+
+```sh
+npm install --save-dev @vitejs/plugin-react
+```
+
+You may then include the plugin in your `vite.config.js` configuration file:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+    plugins: [
+        laravel(['resources/js/app.jsx']),
+        react(),
+    ],
+});
+```
+
+You will need to ensure that any files containing JSX have a `.jsx` or `.tsx` extension, remembering to update your entry point, if required, as [shown above](#configuring-vite).
+
+You will also need to include the additional `@viteReactRefresh` Blade directive alongside your existing `@vite` directive.
 
 ```blade
 @viteReactRefresh
@@ -655,7 +684,7 @@ Vite::useCspNonce($nonce);
 If your Vite manifest includes `integrity` hashes for your assets, Laravel will automatically add the `integrity` attribute on any script and style tags it generates in order to enforce [Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity). By default, Vite does not include the `integrity` hash in its manifest, but you may enable it by installing the [`vite-plugin-manifest-uri`](https://www.npmjs.com/package/vite-plugin-manifest-sri) NPM plugin:
 
 ```shell
-npm install -D vite-plugin-manifest-sri
+npm install --save-dev vite-plugin-manifest-sri
 ```
 
 You may then enable this plugin in your `vite.config.js` file:
