@@ -249,7 +249,14 @@ If necessary, you may include a closure as a sequence value. The closure will be
                     ))
                     ->create();
 
-Sequences may also be applied by using the `sequence` method. You may provide a closure, or an argument for each sequence with attributes to apply:
+Within a sequence closure, you may access the `$index` or `$count` properties on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far, while the `$count` property contains the total number of times the sequence will be invoked:
+
+    $users = User::factory()
+                    ->count(10)
+                    ->sequence(fn ($sequence) => ['name' => 'Name '.$sequence->index])
+                    ->create();
+
+For convenience, sequences may also be applied using the `sequence` method, which simply invokes the `state` method internally. The `sequence` method accepts a closure or arrays of sequenced attributes:
 
     $users = User::factory()
                     ->count(2)
@@ -257,13 +264,6 @@ Sequences may also be applied by using the `sequence` method. You may provide a 
                         ['name' => 'First User'],
                         ['name' => 'Second User'],
                     )
-                    ->create();
-
-Within a sequence closure, you may access the `$index` or `$count` properties on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far, while the `$count` property contains the total number of times the sequence will be invoked:
-
-    $users = User::factory()
-                    ->count(10)
-                    ->sequence(fn ($sequence) => ['name' => 'Name '.$sequence->index])
                     ->create();
 
 <a name="factory-relationships"></a>
