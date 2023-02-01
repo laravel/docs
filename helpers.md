@@ -4045,6 +4045,14 @@ The `value` function returns the value it is given. However, if you pass a closu
     });
 
     // false
+    
+Further parameters may be passed to the value function and if the first parameter is a closure these additional parameters will be passed to the closure.
+
+    $result = value(function ($parameter) {
+        return $parameter;
+    }, true);
+    
+    // true
 
 <a name="method-view"></a>
 #### `view()` {.collection-method}
