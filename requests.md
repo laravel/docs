@@ -259,6 +259,11 @@ Using a few simple methods, you may access all of the user input from your `Illu
 You may pass a default value as the second argument to the `input` method. This value will be returned if the requested input value is not present on the request:
 
     $name = $request->input('name', 'Sally');
+    
+> **Warning**  
+> Retrieving the input value `someinput` for a url where the key is given but not the value like `https://example.com?someinput=`, the statement `$request->input('someinput', 'somedefault');` will return `null` (if the `ConvertEmptyStringsToNull` middleware is used, else `''`).
+>
+> If you want to fall back to a default value even if the input parameter is given without an explicit value, you should use the null-coalesce operator `$request->input('someinput') ?? 'somedefault'` (in combination with the `ConvertEmptyStringsToNull` middleware).
 
 When working with forms that contain array inputs, use "dot" notation to access the arrays:
 
