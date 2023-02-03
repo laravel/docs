@@ -17,6 +17,7 @@
 
 <div class="content-list" markdown="1">
 
+- [Database Expressions](#database-expressions)
 - [Model "Dates" Property](#model-dates-property)
 - [Redis Cache Tags](#redis-cache-tags)
 - [Service Mocking](#service-mocking)
@@ -35,6 +36,7 @@
 - [Relation `getBaseQuery` Method](#relation-getbasequery-method)
 - [The `Redirect::home` Method](#redirect-home)
 - [The `Bus::dispatchNow` Method](#dispatch-now)
+- [ULID Columns](#ulid-columns)
 
 </div>
 
@@ -90,12 +92,42 @@ However, to properly prune stale cache tag entries, Laravel's new `cache:prune-s
 
 ### Database
 
+<a name="database-expressions"></a>
+#### Database Expressions
+
+**Likelihood Of Impact: Medium**
+
+Database "expressions" (typically generated via `DB::raw`) have been rewritten in Laravel 10.x to offer additional functionality in the future. Notably, the grammar's raw string value must now be retrieved via the expression's `getValue(Grammar $grammar)` method. Casting an expression to a string using `(string)` is no longer supported.
+
+**Typically, this does not affect end-user applications**; however, if your application is manually casting database expressions to strings using `(string)` or invoking the `__toString` method on the expression directly, you should update your code to invoke the `getValue` method instead:
+
+```php
+use Illuminate\Support\Facades\DB;
+
+$expression = DB::raw('select 1');
+
+$string = $expression->getValue(DB::connection()->getQueryGrammar());
+```
+
 <a name="query-exception-constructor"></a>
 #### Query Exception Constructor
 
 **Likelihood Of Impact: Very Low**
 
 The `Illuminate\Database\QueryException` constructor now accepts a string connection name as its first argument. If your application is mainly throwing this exception, you should adjust your code accordingly.
+
+<a name="ulid-columns"></a>
+#### ULID Columns
+
+**Likelihood Of Impact: Low**
+
+When migrations invoke the `ulid` method without any arguments, the column will now be named `ulid`. In previous releases of Laravel, invoking this method without any arguments created a column erroneously named `uuid`:
+
+    $table->ulid();
+
+To explicitly specify a column name when invoking the `ulid` method, you may pass the column name to the method:
+
+    $table->ulid('ulid');
 
 ### Eloquent
 
@@ -138,6 +170,13 @@ Laravel's Monolog dependency has been updated to Monolog 3.x. If you are directl
 The deprecated `Bus::dispatchNow` and `dispatch_now` methods have been removed. Instead, your application should use the `Bus::dispatchSync` and `dispatch_sync` methods, respectively.
 
 ### Routing
+
+<a name="middleware-aliases"></a>
+#### Middleware Aliases
+
+**Likelihood Of Impact: Optional**
+
+In new Laravel applications, the `$routeMiddleware` property of the `App\Http\Kernel` class has been renamed to `$middlewareAliases` to better reflect its purpose. You are welcome to rename this property in your existing applications; however, it is not required.
 
 <a name="rate-limiter-return-values"></a>
 #### Rate Limiter Return Values
