@@ -18,6 +18,7 @@
 <div class="content-list" markdown="1">
 
 - [Model "Dates" Property](#model-dates-property)
+- [Redis Cache Tags](#redis-cache-tags)
 - [Service Mocking](#service-mocking)
 
 </div>
@@ -73,6 +74,19 @@ You should update the `minimum-stability` setting in your application's `compose
 ```json
 "minimum-stability": "stable",
 ```
+
+### Cache
+
+<a name="redis-cache-tags"></a>
+#### Redis Cache Tags
+
+**Likelihood Of Impact: Medium**
+
+Redis [cache tag](/docs/{{version}}/cache#cache-tags) support has been rewritten for better performance and storage efficiency. In previously releases of Laravel, stale cache tags would accumulate in the cache when using Redis as your application's cache driver.
+
+However, to properly prune stale cache tag entries, Laravel's new `cache:prune-stale-tags` Artisan command should be [scheduled](/docs/{{version}}/scheduling) in your application's `App\Console\Kernel` class:
+
+    $schedule->command('cache:prune-stale-tags')->hourly();
 
 ### Database
 

@@ -13,6 +13,7 @@
     - [Storing Tagged Cache Items](#storing-tagged-cache-items)
     - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
     - [Removing Tagged Cache Items](#removing-tagged-cache-items)
+    - [Pruning Stale Cache Tags](#pruning-stale-cache-tags)
 - [Atomic Locks](#atomic-locks)
     - [Driver Prerequisites](#lock-driver-prerequisites)
     - [Managing Locks](#managing-locks)
@@ -296,6 +297,16 @@ You may flush all items that are assigned a tag or list of tags. For example, th
 In contrast, this statement would remove only cached values tagged with `authors`, so `Anne` would be removed, but not `John`:
 
     Cache::tags('authors')->flush();
+
+<a name="pruning-stale-cache-tags"></a>
+### Pruning Stale Cache Tags
+
+> **Warning**
+> Pruning stale cache tags is only necessary when using Redis as your application's cache driver.
+
+In order to properly prune stale cache tag entries when using the Redis cache driver, Laravel's `cache:prune-stale-tags` Artisan command should be [scheduled](/docs/{{version}}/scheduling) in your application's `App\Console\Kernel` class:
+
+    $schedule->command('cache:prune-stale-tags')->hourly();
 
 <a name="atomic-locks"></a>
 ## Atomic Locks
