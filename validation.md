@@ -2150,9 +2150,9 @@ If you only need the functionality of a custom rule once throughout your applica
         'title' => [
             'required',
             'max:255',
-            function (string $attribute, string|null $value, Closure $fail) {
+            function (string $attribute, mixed $value, Closure $fail) {
                 if ($value === 'foo') {
-                    $fail('The '.$attribute.' is invalid.');
+                    $fail("The {$attribute} is invalid.");
                 }
             },
         ],
