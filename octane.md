@@ -103,6 +103,17 @@ If you plan to use the Swoole application server to serve your Laravel Octane ap
 pecl install swoole
 ```
 
+<a name="openswoole"></a>
+#### Open Swoole
+
+If you want to use the Open Swoole application server to serve your Laravel Octane application, you must install the Open Swoole PHP extension. Typically, this can be done via PECL:
+
+```shell
+pecl install openswoole
+```
+
+Using Laravel Octane with Open Swoole grants the same functionality provided by Swoole, such as concurrent tasks, ticks, and intervals.
+
 <a name="swoole-via-laravel-sail"></a>
 #### Swoole Via Laravel Sail
 
@@ -126,17 +137,6 @@ Finally, build your Sail images:
 ```shell
 ./vendor/bin/sail build --no-cache
 ```
-
-<a name="openswoole"></a>
-#### Open Swoole
-
-If you want to use the Open Swoole application server to serve your Laravel Octane application, you must install the Open Swoole PHP extension. Typically, this can be done via PECL:
-
-```shell
-pecl install openswoole
-```
-
-Using Laravel Octane with Open Swoole you will have the same functionality provided by Swoole such as concurrent tasks, ticks and intervals, the Octane cache, and tables.
 
 <a name="swoole-configuration"></a>
 #### Swoole Configuration
