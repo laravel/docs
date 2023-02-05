@@ -2027,21 +2027,21 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
 php artisan make:rule Uppercase
 ```
 
-Once the rule has been created, we are ready to define its behavior. A rule object contains a single method: `__invoke`. This method receives the attribute name, its value, and a callback that should be invoked on failure with the validation error message:
+Once the rule has been created, we are ready to define its behavior. A rule object contains a single method: `validate`. This method receives the attribute name, its value, and a callback that should be invoked on failure with the validation error message:
 
     <?php
 
     namespace App\Rules;
 
     use Closure;
-    use Illuminate\Contracts\Validation\InvokableRule;
+    use Illuminate\Contracts\Validation\ValidationRule;
 
-    class Uppercase implements InvokableRule
+    class Uppercase implements ValidationRule
     {
         /**
          * Run the validation rule.
          */
-        public function __invoke(string $attribute, mixed $value, Closure $fail): void
+        public function validate(string $attribute, mixed $value, Closure $fail): void
         {
             if (strtoupper($value) !== $value) {
                 $fail('The :attribute must be uppercase.');
@@ -2080,9 +2080,9 @@ If your custom validation rule class needs to access all of the other data under
     namespace App\Rules;
 
     use Illuminate\Contracts\Validation\DataAwareRule;
-    use Illuminate\Contracts\Validation\InvokableRule;
+    use Illuminate\Contracts\Validation\ValidationRule;
 
-    class Uppercase implements DataAwareRule, InvokableRule
+    class Uppercase implements DataAwareRule, ValidationRule
     {
         /**
          * All of the data under validation.
@@ -2113,11 +2113,11 @@ Or, if your validation rule requires access to the validator instance performing
 
     namespace App\Rules;
 
-    use Illuminate\Contracts\Validation\InvokableRule;
+    use Illuminate\Contracts\Validation\ValidationRule;
     use Illuminate\Contracts\Validation\ValidatorAwareRule;
     use Illuminate\Validation\Validator;
 
-    class Uppercase implements InvokableRule, ValidatorAwareRule
+    class Uppercase implements ValidationRule, ValidatorAwareRule
     {
         /**
          * The validator instance.
