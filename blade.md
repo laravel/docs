@@ -1722,55 +1722,25 @@ Then, when rendering the view that utilizes this template, you may invoke the `f
 return view('dashboard', ['users' => $users])->fragment('user-list');
 ```
 
-### fragment helpers
-
-#### fragmentIf() Method
-The `fragmentIf()` method allows you to conditionally return a fragment of a view based on a given condition. For example, if you want to only return a fragment of a view when a specific header is present in the request, you can use the `fragmentIf()` method like this:
+The `fragmentIf` method allows you to conditionally return a fragment of a view based on a given condition. Otherwise, the entire view will be returned:
 
 ```php
-return view('products.index')
-    ->fragmentIf(
-        request()->hasHeader('HX-Request'),
-        'products-list'
-    );
-```
-This is much more convenient than the previous way of returning a fragment, which required a separate conditional statement:
-
-```php
-if (request()->hasHeader('HX-Request')) {
-    return view('products.index')->fragment('products-list');
-}
- 
-return view('products.index');
-```
-#### fragments() Method
-
-The `fragments()` method allows you to return multiple fragments of a view in a single call. For example, if you want to return two fragments of a view named welcome, you can use the `fragments()` method like this:
-
-```php
-view('welcome')->fragments(['fragment1', 'fragment2']);
+return view('dashboard', ['users' => $users])
+    ->fragmentIf($request->hasHeader('HX-Request'), 'user-list');
 ```
 
-This is more convenient than the previous way of returning multiple fragments, which required concatenation:
+The `fragments` and `fragmentsIf` methods allow you to return multiple view fragments in the response. The fragments will be concatenated together:
 
 ```php
-view('welcome')->fragment('fragment1') . view('welcome')->fragment('fragment2');
-```
+view('dashboard', ['users' => $users])
+    ->fragments(['user-list', 'comment-list']);
 
-#### fragmentsIf() Method
-The `fragmentsIf()` method allows you to conditionally return an array of fragments of a view based on a given condition.
-
-For example, if you want to only return an array of fragments of a view when a specific header is present in the request, you can use the `fragmentsIf()` method like this:
-
-```php
-view('welcome')
+view('dashboard', ['users' => $users])
     ->fragmentsIf(
-        request()->hasHeader('HX-Request'),
-        ['fragment1', 'fragment2']
+        $request->hasHeader('HX-Request'),
+        ['user-list', 'comment-list']
     );
 ```
-
-This method combines the convenience of the `fragmentIf()` and `fragments()` methods, allowing you to return multiple fragments of a view conditionally in a single call.
 
 <a name="extending-blade"></a>
 ## Extending Blade
