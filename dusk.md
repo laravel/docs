@@ -6,7 +6,7 @@
     - [Using Other Browsers](#using-other-browsers)
 - [Getting Started](#getting-started)
     - [Generating Tests](#generating-tests)
-    - [Database Migrations](#migrations)
+    - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
     - [Running Tests](#running-tests)
     - [Environment Handling](#environment-handling)
 - [Browser Basics](#browser-basics)
@@ -142,10 +142,42 @@ To generate a Dusk test, use the `dusk:make` Artisan command. The generated test
 php artisan dusk:make LoginTest
 ```
 
-<a name="migrations"></a>
-### Database Migrations
+<a name="resetting-the-database-after-each-test"></a>
+### Resetting The Database After Each Test
 
-Most of the tests you write will interact with pages that retrieve data from your application's database; however, your Dusk tests should never use the `RefreshDatabase `trait. The `RefreshDatabase` trait leverages database transactions which will not be applicable or available across HTTP requests. Instead, use the `DatabaseMigrations` trait, which re-migrates the database for each test:
+Most of the tests you write will interact with pages that retrieve data from your application's database; however, your Dusk tests should never use the `RefreshDatabase` trait. The `RefreshDatabase` trait leverages database transactions which will not be applicable or available across HTTP requests. Instead, you have two options; the `DatabaseTruncates` and `DatabaseMigrations` traits.
+
+#### DatabaseTruncates
+
+The `DatabaseTruncates` trait will migrate your database on the first test, then truncate any tables containing data before each subsequent test. 
+
+    <?php
+
+    namespace Tests\Browser;
+
+    use App\Models\User;
+    use Illuminate\Foundation\Testing\DatabaseTruncates;
+    use Laravel\Dusk\Chrome;
+    use Tests\DuskTestCase;
+
+    class ExampleTest extends DuskTestCase
+    {
+        use DatabaseTruncates;
+    }
+
+The `doctorine/dbal` package is required to use this trait. You may install the package using Composer:
+
+    composer require --dev doctrine/dbal
+
+The `migrations` table is excluded by default. If you would like to customize the tables that are excluded, you can use the `$excludeTables` variable.
+
+Foreign key checks will be re-enabled after truncating the tables. If you are not using foreign keys checks, you may disable this behavior by setting the `$useForeignKeyChecks` variable to `false`.
+
+Both of the above options can be set on a per-connection basis. To set which connections should be truncated, you may set the `$connectionsToTruncate` array.  
+
+#### DatabaseMigrations
+
+The `DatabaseMigrations` trait will run your database migrations before each test. However, dropping and re-creating your database tables is slower than truncating in most cases.
 
     <?php
 
