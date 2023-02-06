@@ -107,6 +107,8 @@ This change is entirely backwards compatible with existing applications. Therefo
 <a name="process"></a>
 ### Process Interaction
 
+_The process abstraction layer was contributed by [Nuno Maduro](https://github.com/nunomaduro) and [Taylor Otwell](https://github.com/taylorotwell)_.
+
 Laravel 10.x introduces a beautiful abstraction layer for starting and interacting with external processes via a new `Process` facade:
 
 ```php
