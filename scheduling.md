@@ -262,7 +262,7 @@ By default, scheduled tasks will be run even if the previous instance of the tas
 
 In this example, the `emails:send` [Artisan command](/docs/{{version}}/artisan) will be run every minute if it is not already running. The `withoutOverlapping` method is especially useful if you have tasks that vary drastically in their execution time, preventing you from predicting exactly how long a given task will take.
 
-If needed, you may specify how many minutes must pass before the "without overlapping" lock expires. By default, the lock will expire after 24 hours:
+If needed, you may specify how many minutes must pass before the "without overlapping" lock expires. By default, the lock will expire after 24 minutes:
 
     $schedule->command('emails:send')->withoutOverlapping(10);
 
