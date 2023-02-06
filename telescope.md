@@ -154,13 +154,13 @@ In addition, when upgrading to any new Telescope version, you should re-publish 
 php artisan telescope:publish
 ```
 
-To keep the assets up-to-date and avoid issues in future updates, you may add the `telescope:publish` command to the `post-update-cmd` scripts in your application's `composer.json` file:
+To keep the assets up-to-date and avoid issues in future updates, you may add the `vendor:publish --tag=laravel-assets` command to the `post-update-cmd` scripts in your application's `composer.json` file:
 
 ```json
 {
     "scripts": {
         "post-update-cmd": [
-            "@php artisan telescope:publish --ansi"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ]
     }
 }

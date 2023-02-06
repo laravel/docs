@@ -15,6 +15,7 @@
 - [Available Assertions](#available-assertions)
     - [Response Assertions](#response-assertions)
     - [Authentication Assertions](#authentication-assertions)
+    - [Validation Assertions](#validation-assertions)
 
 <a name="introduction"></a>
 ## Introduction
@@ -621,6 +622,8 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJson](#assert-json)
 [assertJsonCount](#assert-json-count)
 [assertJsonFragment](#assert-json-fragment)
+[assertJsonIsArray](#assert-json-is-array)
+[assertJsonIsObject](#assert-json-is-object)
 [assertJsonMissing](#assert-json-missing)
 [assertJsonMissingExact](#assert-json-missing-exact)
 [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
@@ -785,6 +788,20 @@ Assert that the response contains the given JSON data anywhere in the response:
     });
 
     $response->assertJsonFragment(['name' => 'Taylor Otwell']);
+
+<a name="assert-json-is-array"></a>
+#### assertJsonIsArray
+
+Assert that the response JSON is an array:
+
+    $response->assertJsonIsArray();
+
+<a name="assert-json-is-object"></a>
+#### assertJsonIsObject
+
+Assert that the response JSON is an object:
+
+    $response->assertJsonIsObject();
 
 <a name="assert-json-missing"></a>
 #### assertJsonMissing
@@ -1253,3 +1270,33 @@ Assert that a user is not authenticated:
 Assert that a specific user is authenticated:
 
     $this->assertAuthenticatedAs($user, $guard = null);
+
+<a name="validation-assertions"></a>
+## Validation Assertions
+
+Laravel provides two primary validation related assertions that you may use to ensure the data provided in your request was either valid or invalid.
+
+<a name="validation-assert-valid"></a>
+#### assertValid
+
+Assert that the response has no validation errors for the given keys. This method may be used for asserting against responses where the validation errors are returned as a JSON structure or where the validation errors have been flashed to the session:
+
+    // Assert that no validation errors are present...
+    $response->assertValid();
+
+    // Assert that the given keys do not have validation errors...
+    $response->assertValid(['name', 'email']);
+
+<a name="validation-assert-invalid"></a>
+#### assertInvalid
+
+Assert that the response has validation errors for the given keys. This method may be used for asserting against responses where the validation errors are returned as a JSON structure or where the validation errors have been flashed to the session:
+
+    $response->assertInvalid(['name', 'email']);
+
+You may also assert that a given key has a particular validation error message. When doing so, you may provide the entire message or only a small portion of the message:
+
+    $response->assertInvalid([
+        'name' => 'The name field is required.',
+        'email' => 'valid email address',
+    ]);

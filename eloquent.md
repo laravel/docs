@@ -337,7 +337,7 @@ By default, all Eloquent models will use the default database connection that is
 <a name="default-attribute-values"></a>
 ### Default Attribute Values
 
-By default, a newly instantiated model instance will not contain any attribute values. If you would like to define the default values for some of your model's attributes, you may define an `$attributes` property on your model:
+By default, a newly instantiated model instance will not contain any attribute values. If you would like to define the default values for some of your model's attributes, you may define an `$attributes` property on your model. Attribute values placed in the `$attributes` array should be in their raw, "storable" format as if they were just read from the database:
 
     <?php
 
@@ -353,6 +353,7 @@ By default, a newly instantiated model instance will not contain any attribute v
          * @var array
          */
         protected $attributes = [
+            'options' => '[]',
             'delayed' => false,
         ];
     }
@@ -1391,7 +1392,7 @@ The `is` and `isNot` methods are also available when using the `belongsTo`, `has
 > **Note**  
 > Want to broadcast your Eloquent events directly to your client-side application? Check out Laravel's [model event broadcasting](/docs/{{version}}/broadcasting#model-broadcasting).
 
-Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `trashed`, `forceDeleted`, `restoring`, `restored`, and `replicating`.
+Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `trashed`, `forceDeleting`, `forceDeleted`, `restoring`, `restored`, and `replicating`.
 
 The `retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will dispatch. The `updating` / `updated` events will dispatch when an existing model is modified and the `save` method is called. The `saving` / `saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
 
@@ -1607,5 +1608,5 @@ Sometimes you may wish to "save" a given model without dispatching any events. Y
 You may also "update", "delete", "soft delete", "restore", and "replicate" a given model without dispatching any events:
 
     $user->deleteQuietly();
-
+    $user->forceDeleteQuietly();
     $user->restoreQuietly();

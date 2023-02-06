@@ -909,7 +909,7 @@ When designing a mailable's template, it is convenient to quickly preview the re
     });
 
 > **Warning**  
-> [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [HELO](https://usehelo.com).
+> [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [Mailpit](https://github.com/axllent/mailpit) or [HELO](https://usehelo.com).
 
 <a name="localizing-mailables"></a>
 ## Localizing Mailables
@@ -999,11 +999,11 @@ When developing an application that sends email, you probably don't want to actu
 Instead of sending your emails, the `log` mail driver will write all email messages to your log files for inspection. Typically, this driver would only be used during local development. For more information on configuring your application per environment, check out the [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="mailtrap"></a>
-#### HELO / Mailtrap / MailHog
+#### HELO / Mailtrap / Mailpit
 
 Alternatively, you may use a service like [HELO](https://usehelo.com) or [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap's message viewer.
 
-If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your messages using [MailHog](https://github.com/mailhog/MailHog). When Sail is running, you may access the MailHog interface at: `http://localhost:8025`.
+If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your messages using [Mailpit](https://github.com/axllent/mailpit). When Sail is running, you may access the Mailpit interface at: `http://localhost:8025`.
 
 <a name="using-a-global-to-address"></a>
 #### Using A Global `to` Address
@@ -1114,7 +1114,7 @@ Once you've defined your custom transport, you may register it via the `extend` 
     {
         Mail::extend('mailchimp', function (array $config = []) {
             return new MailchimpTransport(/* ... */);
-        })
+        });
     }
 
 Once your custom transport has been defined and registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:
@@ -1130,7 +1130,7 @@ Once your custom transport has been defined and registered, you may create a mai
 Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the "Sendinblue" Symfony mailer:
 
 ```none
-composer require symfony/sendinblue-mailer
+composer require symfony/sendinblue-mailer symfony/http-client
 ```
 
 Once the Sendinblue mailer package has been installed, you may add an entry for your Sendinblue API credentials to your application's `services` configuration file:
@@ -1139,7 +1139,7 @@ Once the Sendinblue mailer package has been installed, you may add an entry for 
         'key' => 'your-api-key',
     ],
 
-Finally, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:
+Next, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:
 
     use Illuminate\Support\Facades\Mail;
     use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
@@ -1160,3 +1160,10 @@ Finally, you may use the `Mail` facade's `extend` method to register the transpo
             );
         });
     }
+
+Once your transport has been registered, you may create a mailer definition within your application's config/mail.php configuration file that utilizes the new transport:
+
+    'sendinblue' => [
+        'transport' => 'sendinblue',
+        // ...
+    ],

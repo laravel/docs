@@ -488,6 +488,20 @@ If you need to prepare or sanitize any data from the request before you apply yo
         ]);
     }
 
+Likewise, if you need to normalize any request data after validation is complete, you may use the `passedValidation` method:
+
+    use Illuminate\Support\Str;
+
+    /**
+     * Handle a passed validation attempt.
+     *
+     * @return void
+     */
+    protected function passedValidation()
+    {
+        $this->replace(['name' => 'Taylor']);
+    }
+
 <a name="manually-creating-validators"></a>
 ## Manually Creating Validators
 
@@ -853,6 +867,11 @@ Below is a list of all available validation rules and their function:
 [MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
 [Min Digits](#rule-min-digits)
+[Missing](#rule-missing)
+[Missing If](#rule-missing-if)
+[Missing Unless](#rule-missing-unless)
+[Missing With](#rule-missing-with)
+[Missing With All](#rule-missing-with-all)
 [Multiple Of](#rule-multiple-of)
 [Not In](#rule-not-in)
 [Not Regex](#rule-not-regex)
@@ -921,17 +940,35 @@ The field under validation must be a value after or equal to the given date. For
 <a name="rule-alpha"></a>
 #### alpha
 
-The field under validation must be entirely alphabetic characters.
+The field under validation must be entirely Unicode alphabetic characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=) and [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=).
+
+To restrict this validation rule to characters in the ASCII range (`a-z` and `A-Z`), you may provide the `ascii` option to the validation rule:
+
+```php
+'username' => 'alpha:ascii',
+```
 
 <a name="rule-alpha-dash"></a>
 #### alpha_dash
 
-The field under validation may have alpha-numeric characters, as well as dashes and underscores.
+The field under validation must be entirely Unicode alpha-numeric characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=), [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=), [`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=), as well as ASCII dashes (`-`) and ASCII underscores (`_`).
+
+To restrict this validation rule to characters in the ASCII range (`a-z` and `A-Z`), you may provide the `ascii` option to the validation rule:
+
+```php
+'username' => 'alpha_dash:ascii',
+```
 
 <a name="rule-alpha-num"></a>
 #### alpha_num
 
-The field under validation must be entirely alpha-numeric characters.
+The field under validation must be entirely Unicode alpha-numeric characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=), [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=), and [`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=).
+
+To restrict this validation rule to characters in the ASCII range (`a-z` and `A-Z`), you may provide the `ascii` option to the validation rule:
+
+```php
+'username' => 'alpha_num:ascii',
+```
 
 <a name="rule-array"></a>
 #### array
@@ -1394,6 +1431,31 @@ The field under validation must be a multiple of _value_.
 
 > **Warning**  
 > The [`bcmath` PHP extension](https://www.php.net/manual/en/book.bc.php) is required in order to use the `multiple_of` rule.
+
+<a name="rule-missing"></a>
+#### missing
+
+The field under validation must not be present in the input data.
+
+ <a name="rule-missing-if"></a>
+ #### missing_if:_anotherfield_,_value_,...
+
+ The field under validation must not be present if the _anotherfield_ field is equal to any _value_.
+
+ <a name="rule-missing-unless"></a>
+ #### missing_unless:_anotherfield_,_value_
+
+The field under validation must not be present unless the _anotherfield_ field is equal to any _value_.
+
+ <a name="rule-missing-with"></a>
+ #### missing_with:_foo_,_bar_,...
+
+ The field under validation must not be present _only if_ any of the other specified fields are present.
+
+ <a name="rule-missing-with-all"></a>
+ #### missing_with_all:_foo_,_bar_,...
+
+ The field under validation must not be present _only if_ all of the other specified fields are present.
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...

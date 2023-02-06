@@ -257,6 +257,16 @@ Within a sequence closure, you may access the `$index` or `$count` properties on
                     ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])
                     ->create();
 
+For convenience, sequences may also be applied using the `sequence` method, which simply invokes the `state` method internally. The `sequence` method accepts a closure or arrays of sequenced attributes:
+
+    $users = User::factory()
+                    ->count(2)
+                    ->sequence(
+                        ['name' => 'First User'],
+                        ['name' => 'Second User'],
+                    )
+                    ->create();
+
 <a name="factory-relationships"></a>
 ## Factory Relationships
 

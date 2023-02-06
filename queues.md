@@ -104,7 +104,7 @@ In order to use the `redis` queue driver, you should configure a Redis database 
 
 **Redis Cluster**
 
-If your Redis queue connection uses a Redis Cluster, your queue names must contain a [key hash tag](https://redis.io/topics/cluster-spec#keys-hash-tags). This is required in order to ensure all of the Redis keys for a given queue are placed into the same hash slot:
+If your Redis queue connection uses a Redis Cluster, your queue names must contain a [key hash tag](https://redis.io/docs/reference/cluster-spec/#hash-tags). This is required in order to ensure all of the Redis keys for a given queue are placed into the same hash slot:
 
     'redis' => [
         'driver' => 'redis',
@@ -842,7 +842,7 @@ When chaining jobs, you may use the `catch` method to specify a closure that sho
         // A job within the chain has failed...
     })->dispatch();
 
-> **Warning**
+> **Warning**  
 > Since chain callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within chain callbacks.
 
 <a name="customizing-the-queue-and-connection"></a>
@@ -1382,18 +1382,16 @@ Sometimes you may need to cancel a given batch's execution. This can be accompli
         }
     }
 
-As you may have noticed in previous examples, batched jobs should typically check to see if the batch has been cancelled at the beginning of their `handle` method:
+As you may have noticed in the previous examples, batched jobs should typically determine if their corresponding batch has been cancelled before continuing execution. However, for convenience, you may assign the `SkipIfBatchCancelled` [middleware](#job-middleware) to the job instead. As its name indicates, this middleware will instruct Laravel to not process the job if its corresponding batch has been cancelled:
+
+    use Illuminate\Queue\Middleware\SkipIfBatchCancelled;
 
     /**
-     * Execute the job.
+     * Get the middleware the job should pass through.
      */
-    public function handle(): void
+    public function middleware(): array
     {
-        if ($this->batch()->cancelled()) {
-            return;
-        }
-
-        // Continue processing...
+        return [new SkipIfBatchCancelled];
     }
 
 <a name="batch-failures"></a>
@@ -1460,8 +1458,9 @@ Using the `catch` method, you may provide a closure that should be executed if t
     })->catch(function (Throwable $e) {
         // This job has failed...
     });
-    
-> {note} Since `catch` callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within `catch` callbacks.
+
+> **Warning**  
+> Since `catch` callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within `catch` callbacks.
 
 <a name="running-the-queue-worker"></a>
 ## Running The Queue Worker
