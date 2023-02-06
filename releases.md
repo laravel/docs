@@ -103,3 +103,43 @@ class FlightController extends Controller
 ```
 
 This change is entirely backwards compatible with existing applications. Therefore, existing applications that do not have these type-hints will continue to function normally.
+
+<a name="process"></a>
+### Process Interaction
+
+Laravel 10.x introduces a beautiful abstraction layer for starting and interacting with external processes via a new `Process` facade:
+
+```php
+use Illuminate\Support\Facades\Process;
+
+$result = Process::run('ls -la');
+
+return $result->output();
+```
+
+Processes may even be started in pools, allowing for the convenient execution and management of concurrent processes:
+
+```php
+use Illuminate\Console\Process\Pool;
+use Illuminate\Support\Facades\Pool;
+
+[$first, $second, $third] = Process::concurrently(function (Pool $pool) {
+    $pool->command('cat first.txt');
+    $pool->command('cat second.txt');
+    $pool->command('cat third.txt');
+});
+
+return $first->output();
+```
+
+In addition, processes may be faked for convenient testing:
+
+```php
+Process::fake();
+
+// ...
+
+Process::assertRan('ls -la');
+```
+
+For more information on interacting with processes, please consult the [comprehensive process documentation](/docs/{{version}}/processes).
