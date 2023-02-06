@@ -603,6 +603,9 @@ After calling the `Queue` facade's `fake` method, you may then assert that the a
 
             // Assert a job was not pushed...
             Queue::assertNotPushed(AnotherJob::class);
+
+            // Assert that a Closure was pushed to the queue...
+            Queue::assertClosurePushed();
         }
     }
 
