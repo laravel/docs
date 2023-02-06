@@ -145,39 +145,12 @@ php artisan dusk:make LoginTest
 <a name="resetting-the-database-after-each-test"></a>
 ### Resetting The Database After Each Test
 
-Most of the tests you write will interact with pages that retrieve data from your application's database; however, your Dusk tests should never use the `RefreshDatabase` trait. The `RefreshDatabase` trait leverages database transactions which will not be applicable or available across HTTP requests. Instead, you have two options; the `DatabaseTruncates` and `DatabaseMigrations` traits.
+Most of the tests you write will interact with pages that retrieve data from your application's database; however, your Dusk tests should never use the `RefreshDatabase` trait. The `RefreshDatabase` trait leverages database transactions which will not be applicable or available across HTTP requests. Instead, you have two options: the `DatabaseMigrations` trait and the `DatabaseTruncation` trait.
 
-#### DatabaseTruncates
+<a name="reset-migrations"></a>
+#### Using Database Migrations
 
-The `DatabaseTruncates` trait will migrate your database on the first test, then truncate any tables containing data before each subsequent test. 
-
-    <?php
-
-    namespace Tests\Browser;
-
-    use App\Models\User;
-    use Illuminate\Foundation\Testing\DatabaseTruncates;
-    use Laravel\Dusk\Chrome;
-    use Tests\DuskTestCase;
-
-    class ExampleTest extends DuskTestCase
-    {
-        use DatabaseTruncates;
-    }
-
-The `doctorine/dbal` package is required to use this trait. You may install the package using Composer:
-
-    composer require --dev doctrine/dbal
-
-The `migrations` table is excluded by default. If you would like to customize the tables that are excluded, you can use the `$excludeTables` variable.
-
-Foreign key checks will be re-enabled after truncating the tables. If you are not using foreign keys checks, you may disable this behavior by setting the `$useForeignKeyChecks` variable to `false`.
-
-Both of the above options can be set on a per-connection basis. To set which connections should be truncated, you may set the `$connectionsToTruncate` array.  
-
-#### DatabaseMigrations
-
-The `DatabaseMigrations` trait will run your database migrations before each test. However, dropping and re-creating your database tables is slower than truncating in most cases.
+The `DatabaseMigrations` trait will run your database migrations before each test. However, dropping and re-creating your database tables for each test is typically slower than truncating the tables:
 
     <?php
 
@@ -195,6 +168,49 @@ The `DatabaseMigrations` trait will run your database migrations before each tes
 
 > **Warning**
 > SQLite in-memory databases may not be used when executing Dusk tests. Since the browser executes within its own process, it will not be able to access the in-memory databases of other processes.
+
+<a name="reset-truncation"></a>
+#### Using Database Truncation
+
+Before using the `DatabaseTruncation` trait, you must install the `doctrine/dbal` package using the Composer package manager:
+
+```shell
+composer require --dev doctrine/dbal
+```
+
+The `DatabaseTruncation` trait will migrate your database on the first test in order to ensure your database tables have been properly created. However, on subsequent tests, the database's tables will simply be truncated - providing a speed boost over re-running all of your database migrations:
+
+    <?php
+
+    namespace Tests\Browser;
+
+    use App\Models\User;
+    use Illuminate\Foundation\Testing\DatabaseTruncation;
+    use Laravel\Dusk\Chrome;
+    use Tests\DuskTestCase;
+
+    class ExampleTest extends DuskTestCase
+    {
+        use DatabaseTruncation;
+    }
+
+By default, this trait will not truncate the `migrations` table. If you would like to further customize the tables that are excluded from truncation, you may define an `$exceptTables` property on your test class:
+
+    /**
+     * Indicates which tables should be excluded from truncation.
+     *
+     * @var array
+     */
+    protected $exceptTables = ['users'];
+
+To specify the database connections that should have their tables truncated, you may define a `$connectionsToTruncate` property on your test class:
+
+    /**
+     * Indicates which connections should have their tables truncated.
+     *
+     * @var array
+     */
+    protected $connectionsToTruncate = ['mysql'];
 
 <a name="running-tests"></a>
 ### Running Tests
