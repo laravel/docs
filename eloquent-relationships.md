@@ -411,6 +411,16 @@ Now that we have examined the table structure for the relationship, let's define
 
 The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
+Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-one-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Mechanic` model has a `cars` relationship and the `Car` model has an `owner` relationship, you may define a "has-one-through" relationship connecting the mechanic and the owner like so:
+
+```php
+// String based syntax...
+return $this->through('cars')->has('owner');
+
+// Dynamic syntax...
+return $this->throughCars()->hasOwner();
+```
+
 <a name="has-one-through-key-conventions"></a>
 #### Key Conventions
 
@@ -433,6 +443,16 @@ Typical Eloquent foreign key conventions will be used when performing the relati
             );
         }
     }
+
+Or, as discussed earlier, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-one-through" relationship by invoking the `through` method and supplying the names of those relationships. This approach offers the advantage of reusing the key conventions already defined on the existing relationships:
+
+```php
+// String based syntax...
+return $this->through('cars')->has('owner');
+
+// Dynamic syntax...
+return $this->throughCars()->hasOwner();
+```
 
 <a name="has-many-through"></a>
 ### Has Many Through
@@ -474,6 +494,16 @@ Now that we have examined the table structure for the relationship, let's define
 
 The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
+Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-many-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Project` model has a `environments` relationship and the `Environment` model has a `deployments` relationship, you may define a "has-many-through" relationship connecting the project and the deployments like so:
+
+```php
+// String based syntax...
+return $this->through('environments')->has('deployments');
+
+// Dynamic syntax...
+return $this->throughEnvironments()->hasDeployments();
+```
+
 Though the `Deployment` model's table does not contain a `project_id` column, the `hasManyThrough` relation provides access to a project's deployments via `$project->deployments`. To retrieve these models, Eloquent inspects the `project_id` column on the intermediate `Environment` model's table. After finding the relevant environment IDs, they are used to query the `Deployment` model's table.
 
 <a name="has-many-through-key-conventions"></a>
@@ -495,6 +525,16 @@ Typical Eloquent foreign key conventions will be used when performing the relati
             );
         }
     }
+
+Or, as discussed earlier, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-many-through" relationship by invoking the `through` method and supplying the names of those relationships. This approach offers the advantage of reusing the key conventions already defined on the existing relationships:
+
+```php
+// String based syntax...
+return $this->through('environments')->has('deployments');
+
+// Dynamic syntax...
+return $this->throughEnvironments()->hasDeployments();
+```
 
 <a name="many-to-many"></a>
 ## Many To Many Relationships
