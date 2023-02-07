@@ -69,7 +69,7 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
-Optionally, if you wish to use [PHPUnit 10](https://phpunit.de/announcements/phpunit-10.html), you should delete the `processUncoveredFiles` attribute from the `<coverage>` in the `phpunit.xml` configuration file, and update the following dependencies in your application's `composer.json` file:
+Optionally, if you wish to use [PHPUnit 10](https://phpunit.de/announcements/phpunit-10.html), you should delete the `processUncoveredFiles` attribute from the `<coverage>` section of your application's `phpunit.xml` configuration file. Then, update the following dependencies in your application's `composer.json` file:
 
 <div class="content-list" markdown="1">
 
