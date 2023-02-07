@@ -69,6 +69,7 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
+<a name="updating-minimum-stability"></a>
 #### Minimum Stability
 
 You should update the `minimum-stability` setting in your application's `composer.json` file to `stable`:
