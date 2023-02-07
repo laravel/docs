@@ -620,7 +620,7 @@ Then, to build and start the SSR server, you may run the following commands:
 
 ```sh
 npm run build
-node bootstrap/ssr/ssr.mjs
+node .laravel/ssr/ssr.mjs
 ```
 
 > **Note**  
