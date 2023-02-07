@@ -104,6 +104,44 @@ class FlightController extends Controller
 
 This change is entirely backwards compatible with existing applications. Therefore, existing applications that do not have these type-hints will continue to function normally.
 
+<a name="laravel-pennant"></a>
+### Laravel Pennant
+
+_Laravel Pennant was developed by [Tim MacDonald](https://github.com/timacdonald)_.
+
+A new first-party package, Laravel Pennant, has been released. Laravel Pennant offers a light-weight, streamlined approach to managing your application's feature flags. Out of the box, Pennant includes an in-memory `array` driver and a `database` driver for persistent feature storage.
+
+Features can be easily defined via the `Feature::define` method:
+
+```php
+use Laravel\Pennant\Feature;
+use Illuminate\Support\Lottery;
+
+Feature::define('new-onboarding-flow', function () {
+    return Lottery::odds(1, 10);
+});
+```
+
+Once a feature has been defined, you may easily determine if the current user has access to the given feature:
+
+```php
+if (Feature::active('new-onboarding-flow')) {
+    // ...
+}
+```
+
+Of course, for convenience, Blade directives are also available:
+
+```blade
+@feature('new-onboarding-flow')
+    <div>
+        <!-- ... -->
+    </div>
+@endfeature
+```
+
+Pennant offers a variety of more advanced features and APIs. For more information, please consult the [comprehensive Pennant documentation](/docs/{{version}}/pennant).
+
 <a name="process"></a>
 ### Process Interaction
 
@@ -162,3 +200,23 @@ For convenience, the slowest tests will be displayed directly within the CLI out
 <p align="center">
     <img width="100%" src="https://user-images.githubusercontent.com/5457236/217328439-d8d983ec-d0fc-4cde-93d9-ae5bccf5df14.png"/>
 </p>
+
+<a name="pest-scaffolding"></a>
+### Pest Scaffolding
+
+New Laravel projects may now be created with Pest test scaffolding by default. To opt-in to this feature, provide the `--pest` flag when creating a new application via the Laravel installer:
+
+```shell
+laravel new example-application --pest
+```
+
+<a name="generator-cli-prompts"></a>
+### Generator CLI Prompts
+
+_Generator CLI prompts were contributed by [Jess Archer](https://github.com/jessarcher)_.
+
+To improve the framework's developer experience, all of Laravel's built-in `make` commands no longer require any input. If the commands are invoked without input, you will be prompted for the required arguments:
+
+```shell
+php artisan make:controller
+```
