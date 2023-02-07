@@ -6,14 +6,13 @@
     - [Facade Spies](#facade-spies)
 - [Bus Fake](#bus-fake)
     - [Job Chains](#bus-job-chains)
-    - [Job Batches](#job-batches)
+    - [Job Batches](#bus-job-batches)
 - [Event Fake](#event-fake)
     - [Scoped Event Fakes](#scoped-event-fakes)
 - [HTTP Fake](#http-fake)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
-    - [Job Chains](#job-chains)
 - [Storage Fake](#storage-fake)
 - [Interacting With Time](#interacting-with-time)
 
@@ -245,7 +244,11 @@ As you can see in the example above, the array of chained jobs may be an array o
         new UpdateInventory,
     ]);
 
-<a name="job-batches"></a>
+You may use the `assertDispatchedWithoutChain` method to assert that a job was pushed without a chain of jobs:
+
+    Bus::assertDispatchedWithoutChain(ShipOrder::class);
+
+<a name="bus-job-batches"></a>
 ### Job Batches
 
 The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batching) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\Bus\PendingBatch`, which may be used to inspect the jobs within the batch:
@@ -629,31 +632,8 @@ If you only need to fake specific jobs while allowing your other jobs to execute
         Queue::assertPushed(ShipOrder::class, 2);
     }
 
-<a name="job-chains"></a>
-### Job Chains
-
-The `Queue` facade's `assertPushedWithChain` and `assertPushedWithoutChain` methods may be used to inspect the job chain of a pushed job. The `assertPushedWithChain` method accepts the primary job as its first argument and an array of chained jobs as its second argument:
-
-    use App\Jobs\RecordShipment;
-    use App\Jobs\ShipOrder;
-    use App\Jobs\UpdateInventory;
-    use Illuminate\Support\Facades\Queue;
-
-    Queue::assertPushedWithChain(ShipOrder::class, [
-        RecordShipment::class,
-        UpdateInventory::class
-    ]);
-
-As you can see in the example above, the array of chained jobs may be an array of the job's class names. However, you may also provide an array of actual job instances. When doing so, Laravel will ensure that the job instances are of the same class and have the same property values of the chained jobs dispatched by your application:
-
-    Queue::assertPushedWithChain(ShipOrder::class, [
-        new RecordShipment,
-        new UpdateInventory,
-    ]);
-
-You may use the `assertPushedWithoutChain` method to assert that a job was pushed without a chain of jobs:
-
-    Queue::assertPushedWithoutChain(ShipOrder::class);
+> **Note**
+> To test jobs that are batched or chained via the `Bus` facade, consult the documentation on utilizing the `Bus` facade's [batch assertions](#bus-job-batches) and [chain assertions](#bus-job-chains)
 
 <a name="storage-fake"></a>
 ## Storage Fake
