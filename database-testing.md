@@ -41,7 +41,7 @@ Before proceeding much further, let's discuss how to reset your database after e
 
 The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database.
 
-If you would like to totally reset the database using migrations, you may use the `Illuminate\Foundation\Testing\DatabaseMigrations` trait instead. However, the `DatabaseMigrations` trait is significantly slower than the `RefreshDatabase` trait.
+If you would like to totally reset the database, you may use the `Illuminate\Foundation\Testing\DatabaseMigrations` or `Illuminate\Foundation\Testing\DatabaseTruncation` traits instead. However, both of these options are significantly slower than the `RefreshDatabase` trait.
 
 <a name="model-factories"></a>
 ## Model Factories
@@ -198,3 +198,12 @@ Assert that a given model does not exist in the database:
     $user->delete();
 
     $this->assertModelMissing($user);
+
+<a name="expects-database-query-count"></a>
+#### expectsDatabaseQueryCount
+
+The `expectsDatabaseQueryCount` method may be invoked at the beginning of your test to specify the total number of database queries that you expect to be run during the test. If the actual number of executed queries does not exactly match this expectation, the test will fail:
+
+    $this->expectsDatabaseQueryCount(5);
+
+    // Test...

@@ -424,7 +424,7 @@ The `$loop` variable also contains a variety of other useful properties:
 | `$loop->parent`    | When in a nested loop, the parent's loop variable.     |
 
 <a name="conditional-classes"></a>
-### Conditional Classes
+### Conditional Classes & Styles
 
 The `@class` directive conditionally compiles a CSS class string. The directive accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
@@ -442,6 +442,21 @@ The `@class` directive conditionally compiles a CSS class string. The directive 
 ])></span>
 
 <span class="p-4 text-gray-500 bg-red"></span>
+```
+
+Likewise, the `@style` directive may be used to conditionally add inline CSS styles to an HTML element:
+
+```blade
+@php
+    $isActive = true;
+@endphp
+
+<span @style([
+    'background-color: red',
+    'font-weight: bold' => $isActive,
+])></span>
+
+<span style="background-color: red; font-weight: bold;"></span>
 ```
 
 <a name="additional-attributes"></a>

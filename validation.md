@@ -1429,9 +1429,6 @@ The integer under validation must have a minimum length of _value_.
 
 The field under validation must be a multiple of _value_.
 
-> **Warning**  
-> The [`bcmath` PHP extension](https://www.php.net/manual/en/book.bc.php) is required in order to use the `multiple_of` rule.
-
 <a name="rule-missing"></a>
 #### missing
 
