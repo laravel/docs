@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -34,3 +35,42 @@ php artisan migrate
 ## Configuration
 
 After publishing Pennant's assets, its configuration file will be located at `config/pennant.php`. This configuration file allows you to select the default driver and configure the individual drivers.
+
+<a name="events"></a>
+## Events
+
+There are a few events that are fired which may be useful in tracking the usage of active feature flags throughout your application.
+
+- `Illuminate\Pennant\Events\RetrievingKnownFeature` is dispatched
+
+
+- Defining features
+    - string based
+    - class based
+    - dynamic class based
+
+- events
+    - known
+    - unknown
+    - dynamic
+
+- helpers
+    - global
+    - blade
+
+- bulk updates
+    - purge
+
+- customising an objects scope
+- default scope
+
+- eager loading + loadMissing
+
+- attaching feature to objects (this should be improved)
+ $user->feature('foo')->active();
+
+- using the array driver for lottery based features.
+- using the array driver for package features
+
+- array driver for testing
+- custom drivers
