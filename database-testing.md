@@ -202,3 +202,10 @@ Assert that a given model does not exist in the database:
     $user->delete();
 
     $this->assertModelMissing($user);
+
+<a name="expect-database-query-count"></a>
+#### expectsDatabaseQueryCount
+
+Expect that the given number of database queries are to be executed in the test:
+
+    $this->expectsDatabaseQueryCount(2)
