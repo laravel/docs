@@ -145,3 +145,20 @@ Process::assertRan('ls -la');
 ```
 
 For more information on interacting with processes, please consult the [comprehensive process documentation](/docs/{{version}}/processes).
+
+<a name="test-profiling"></a>
+### Test Profiling
+
+_Test profiling was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
+
+The Artisan `test` command has received a new `--profile` option that allows you to easily identify the slowest tests in your application:
+
+```shell
+php artisan test --profile
+```
+
+For convenience, the slowest tests will be displayed directly within the CLI output:
+
+<p align="center">
+    <img width="100%" src="https://user-images.githubusercontent.com/5457236/217328439-d8d983ec-d0fc-4cde-93d9-ae5bccf5df14.png"/>
+</p>
