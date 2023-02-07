@@ -62,6 +62,15 @@ Finally, you may start Sail. To continue learning how to use Sail, please contin
 ./vendor/bin/sail up
 ```
 
+<a name="adding-additional-services"></a>
+#### Adding Additional Services
+
+If you would like to add an additional service to your existing Sail installation, you may run the `sail:add` Artisan command:
+
+```shell
+php artisan sail:add
+```
+
 <a name="using-devcontainers"></a>
 #### Using Devcontainers
 
