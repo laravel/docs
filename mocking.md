@@ -12,6 +12,7 @@
 - [HTTP Fake](#http-fake)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
+- [Process Fake](#process-fake)
 - [Queue Fake](#queue-fake)
 - [Storage Fake](#storage-fake)
 - [Interacting With Time](#interacting-with-time)
@@ -102,8 +103,6 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
 
     namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Support\Facades\Cache;
     use Tests\TestCase;
 
@@ -155,8 +154,6 @@ You may use the `Bus` facade's `fake` method to prevent jobs from being dispatch
     namespace Tests\Feature;
 
     use App\Jobs\ShipOrder;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Support\Facades\Bus;
     use Tests\TestCase;
 
@@ -284,8 +281,6 @@ When testing code that dispatches events, you may wish to instruct Laravel to no
 
     use App\Events\OrderFailedToShip;
     use App\Events\OrderShipped;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Support\Facades\Event;
     use Tests\TestCase;
 
@@ -369,9 +364,7 @@ If you only want to fake event listeners for a portion of your test, you may use
 
     use App\Events\OrderCreated;
     use App\Models\Order;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Support\Facades\Event;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -411,8 +404,6 @@ After calling the `Mail` facade's `fake` method, you may then assert that [maila
     namespace Tests\Feature;
 
     use App\Mail\OrderShipped;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Support\Facades\Mail;
     use Tests\TestCase;
 
@@ -512,8 +503,6 @@ After calling the `Notification` facade's `fake` method, you may then assert tha
     namespace Tests\Feature;
 
     use App\Notifications\OrderShipped;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Support\Facades\Notification;
     use Tests\TestCase;
 
@@ -568,6 +557,11 @@ By passing a closure as the second argument to the `assertSentOnDemand` method, 
         }
     );
 
+<a name="process-fake"></a>
+## Process Fake
+
+The `Process` facade's `fake` method allows you to instruct the Laravel process services to return stubbed / dummy results when processes are invoked. For more information on faking processes, please consult the [process testing documentation](/docs/{{version}}/processes#testing).
+
 <a name="queue-fake"></a>
 ## Queue Fake
 
@@ -582,8 +576,6 @@ After calling the `Queue` facade's `fake` method, you may then assert that the a
     use App\Jobs\AnotherJob;
     use App\Jobs\FinalJob;
     use App\Jobs\ShipOrder;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Support\Facades\Queue;
     use Tests\TestCase;
 
@@ -644,8 +636,6 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
 
     namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Http\UploadedFile;
     use Illuminate\Support\Facades\Storage;
     use Tests\TestCase;
