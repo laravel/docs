@@ -69,6 +69,17 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
+Optionally, if you wish to use [PHPUnit 10](https://phpunit.de/announcements/phpunit-10.html), you should delete the `processUncoveredFiles` attribute from the `<coverage>` in the `phpunit.xml` configuration file, and update the following dependencies in your application's `composer.json` file:
+
+<div class="content-list" markdown="1">
+
+- `nunomaduro/collision` to `^7.0`
+- `phpunit/phpunit` to `^10.0`
+
+</div>
+
+Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 10 support.
+
 <a name="updating-minimum-stability"></a>
 #### Minimum Stability
 
