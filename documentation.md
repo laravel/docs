@@ -43,6 +43,7 @@
     - [Mail](/docs/{{version}}/mail)
     - [Notifications](/docs/{{version}}/notifications)
     - [Package Development](/docs/{{version}}/packages)
+    - [Processes](/docs/{{version}}/processes)
     - [Queues](/docs/{{version}}/queues)
     - [Rate Limiting](/docs/{{version}}/rate-limiting)
     - [Task Scheduling](/docs/{{version}}/scheduling)
