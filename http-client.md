@@ -58,6 +58,20 @@ The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAcces
 
     return Http::get('http://example.com/users/1')['name'];
 
+<a name="uri-templates"></a>
+#### URI Templates
+
+The HTTP client also allows you to construct request URLs using the [URI template specification](https://www.rfc-editor.org/rfc/rfc6570). To define the URL parameters that can be expanded by your URI template, you may use the `withUrlParameters` method:
+
+```php
+Http::withUrlParameters([
+    'endpoint' => 'https://laravel.com',
+    'page' => 'docs',
+    'version' => '9.x',
+    'topic' => 'validation',
+])->get('{+endpoint}/{page}/{version}/{topic}');
+```
+
 <a name="dumping-requests"></a>
 #### Dumping Requests
 
