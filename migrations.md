@@ -1155,6 +1155,8 @@ Command  |  Description
 `$table->fullText('body')->language('english');`  |  Adds a full text index of the specified language (PostgreSQL).
 `$table->spatialIndex('location');`  |  Adds a spatial index (except SQLite).
 
+**Note:** Eloquent models (and therefore also route model binding), does not support composite primary keys!
+
 <a name="index-lengths-mysql-mariadb"></a>
 #### Index Lengths & MySQL / MariaDB
 
