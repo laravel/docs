@@ -571,7 +571,7 @@ By passing a closure as the second argument to the `assertSentOnDemand` method, 
 <a name="queue-fake"></a>
 ## Queue Fake
 
-You may use the `Queue` facade's `fake` method to prevent queued jobs from being pushed to the queue. Most likely, it is sufficient to simply assert that Laravel was instructed to push a given job to the queue since the queued jobs themselves may be tested in another test class.
+You may use the `Queue` facade's `fake` method to prevent queued jobs from being pushed to the [queue](/docs/{{version}}/queues). Most likely, it is sufficient to simply assert that Laravel was instructed to push a given job to the queue since the queued jobs themselves may be tested in another test class.
 
 After calling the `Queue` facade's `fake` method, you may then assert that the application attempted to push jobs to the queue:
 
