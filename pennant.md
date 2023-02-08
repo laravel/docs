@@ -39,9 +39,39 @@ After publishing Pennant's assets, its configuration file will be located at `co
 <a name="events"></a>
 ## Events
 
-There are a few events that are fired which may be useful in tracking the usage of active feature flags throughout your application.
+### `Illuminate\Pennant\Events\RetrievingKnownFeature` 
 
-- `Illuminate\Pennant\Events\RetrievingKnownFeature` is dispatched
+This event is dispatched the first time a known feature is resolved during a request for the given scope. This may be useful to track and create metrics against the in-use feature flags throughout your application.
+
+### `Illuminate\Pennant\Events\RetrievingUnknownFeature` 
+
+This event is dispatched the first time an unknown feature is resolved during a request for the given scope. This may be useful if you have intented to remove a feature flag from your system, but left some stray references to it throughout your application.
+
+You may also use this event to restrict unknown feature from being referenced.
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Pennant\Events\RetrievingUnknownFeature;
+use Illuminate\Support\Facades\Event;
+use RuntimeException;
+
+class EventServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any other events for your application.
+     */
+    public function boot(): void
+    {
+        Event::listen(fn (RetrievingUnknownFeature $event) => report("Resolving unknown feature [{$event->feature}]."));
+    }
+}
+```
+- `Illuminate\Pennant\Events\RetrievingUnknownFeature` is dispatched the first time an unknown feature is resolved for the given scope.
+- `Illuminate\Pennant\Events\RetrievingUnknownFeature` is dispatched the first time an unknown feature is resolved for the given scope.
 
 
 - Defining features
