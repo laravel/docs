@@ -4,6 +4,7 @@
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Defining Features](#defining-features)
+    - [Class Based Feature](#class-based-features)
 - [Checking Features](#checking-features)
 - [Events](#events)
 
@@ -82,8 +83,41 @@ As you can see, we have set the following rules for our feature definition:
 - Any high traffic customers should not be using the new API.
 - Otherwise the feature should be randomly assigned to users with a 1 in 100 chance of being activated.
 
+<a name="class-based-features"></a>
+### Class Based Features
+
+You may also create class based features. Class based features should implement a `define` method:
+
+```php
+<?php
+
+namespace App\Features;
+
+use Illuminate\Support\Lottery;
+
+class NewApi
+{
+    public function define(User $user)
+    {
+        if ($user->isInternalTeamMember()) {
+            return true;
+        }
+
+        if ($user->isHighTrafficCustomer()) {
+            return false;
+        }
+
+        return Lottery::odds(1 / 100);
+    }
+}
+```
+
+There is no need to register class based features in a service provider.
+
 <a name="checking-features"></a>
 ## Checking Features
+
+
 
 The state of a feature flag may be resolved via the `Feature` facade. By default, features are checked against the currently authenticated user.
 
