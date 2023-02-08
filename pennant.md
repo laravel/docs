@@ -8,7 +8,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Pennant](https://github.com/laravel/pennant) is a simple and lightweight feature flagging package, without the fluff. Feature flags enable you to incrementally roll out new application features with confidence, A/B test new interface designs, compliment a trunk-based development strategy, and much more.
+[Laravel Pennant](https://github.com/laravel/pennant) is a simple and lightweight feature flag package, without any cruft. Feature flags enable you to incrementally roll out new application features with confidence, A/B test new interface designs, compliment a trunk-based development strategy, and much more.
 
 <a name="installation"></a>
 ## Installation
@@ -41,13 +41,13 @@ After publishing Pennant's assets, its configuration file will be located at `co
 
 ### `Illuminate\Pennant\Events\RetrievingKnownFeature` 
 
-This event is dispatched the first time a known feature is resolved during a request for the given scope. This may be useful to track and create metrics against the in-use feature flags throughout your application.
+This event is dispatched the first time a known feature is resolved during a request for the given scope. This may be useful to create and track metrics against the feature flags that are in-use throughout your application.
 
 ### `Illuminate\Pennant\Events\RetrievingUnknownFeature` 
 
-This event is dispatched the first time an unknown feature is resolved during a request for the given scope. This may be useful if you have intented to remove a feature flag from your system, but left some stray references to it throughout your application.
+This event is dispatched thefirst time an unknown feature is resolved during a request for the given scope. This may be useful if you have intended to remove a feature flag, but left some stray references to it throughout your application.
 
-You may also use this event to restrict unknown feature from being referenced.
+You may like to listen for this event and report or throw an exception when it occurs.
 
 ```php
 <?php
@@ -57,7 +57,6 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Pennant\Events\RetrievingUnknownFeature;
 use Illuminate\Support\Facades\Event;
-use RuntimeException;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -66,12 +65,16 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Event::listen(fn (RetrievingUnknownFeature $event) => report("Resolving unknown feature [{$event->feature}]."));
+        Event::listen(function (RetrievingUnknownFeature $event) {
+            report("Resolving unknown feature [{$event->feature}]."));
+        });
     }
 }
 ```
-- `Illuminate\Pennant\Events\RetrievingUnknownFeature` is dispatched the first time an unknown feature is resolved for the given scope.
-- `Illuminate\Pennant\Events\RetrievingUnknownFeature` is dispatched the first time an unknown feature is resolved for the given scope.
+
+### `Illuminate\Pennant\Events\DynamicallyDefiningFeature`
+
+This event is dispatched whenever a feature is being dynamically defined for the first time during a request.
 
 
 - Defining features
