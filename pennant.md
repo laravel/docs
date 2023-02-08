@@ -93,11 +93,15 @@ The state of a feature flag may be resolved via the `Feature` facade. By default
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Laravel\Pennant\Feature;
 
 class PodcastController
 {
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request): Response
     {
         if (Feature::isActive('new-api')) {
             return $this->resolveNewApiResponse($request);
@@ -105,6 +109,8 @@ class PodcastController
 
         return $this->resolveLegacyApiResponse($request);
     }
+
+    // ...
 }
 ```
 
