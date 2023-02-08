@@ -78,7 +78,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-As you can see, we have set the following rules for our feature definition:
+As you can see, we have the following rules for our feature definition:
 
 - All internal team members should be using the new API.
 - Any high traffic customers should not be using the new API.
@@ -115,12 +115,12 @@ class NewApi
 }
 ```
 
-> **Note** Feature classes are resolved via the container, so you may inject dependencies into the classes constructor when needed.
+> **Note** Feature classes are resolved via the container, so you may inject dependencies into the class's constructor when needed.
 
 <a name="checking-features"></a>
 ## Checking Features
 
-The state of a feature flag may be resolved via the `Feature` facade using the features name. By default, features are checked against the currently authenticated user.
+To check if a feature is active, you should use the `isActive` method on the `Feature` facade. By default, features are checked against the currently authenticated user.
 
 ```php
 <?php
@@ -149,7 +149,7 @@ class PodcastController
 }
 ```
 
-If you are using a class based feature, you should use class name when checking the features state:
+For class based features, you should use class name when checking the features state:
 
 ```php
 <?php
@@ -181,6 +181,13 @@ class PodcastController
 
 <a name="in-memory-cache"></a>
 ### In-Memory Cache
+
+When checking the state of a feature, Pennant will create a in-memory cache of the result. If you are using the database driver, this means that re-checking the same feature flag throughout a single request will not trigger subsequent database queries. It also ensures you have a consistent result for the duration of the request.
+
+If you need to manually flush the in-memory cache, you may use the `flushCache` method on the `Feature` facade.
+
+    Feature::flushCache();
+
 
 - Defining features
     - string based
