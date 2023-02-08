@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Defining Features](#defining-features)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -35,6 +36,79 @@ php artisan migrate
 ## Configuration
 
 After publishing Pennant's assets, its configuration file will be located at `config/pennant.php`. This configuration file allows you to select the default driver and configure the individual drivers.
+
+<a name="defining-features"></a>
+## Defining Features
+
+A feature definition is simply a Closure that returns the initial value for the specific feature. Typically, features are defined in a service provider using the `Feature` facade. The Closure will be passed the "scope" for the feature flag check, which would commonly be the current user.
+
+In this example, we will define a feature for rolling out a new API implementation incrementally to our application's users.
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Lottery;
+use Laravel\Pennat\Feature;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Feature::define('new-api', function (User $user) {
+            if ($user->isInternalTeamMember()) {
+                return true;
+            }
+
+            if ($user->isHighTrafficCustomer()) {
+                return false;
+            }
+
+            return Lottery::odds(1 / 100);
+        });
+    }
+}
+```
+
+As you can see, we have set the following rules for our feature definition:
+
+- All internal team members should be using the new API.
+- Any high traffic customers should not be using the new API.
+- Otherwise the feature should be randomly assigned to users with a 1 in 100 chance of being activated.
+
+You may then check the value of this feature flag:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Laravel\Pennant\Feature;
+
+class PodcastController
+{
+    public function index(Request $request)
+    {
+        if (Feature::isActive('new-api')) {
+            return $this->resolveNewApiResponse($request);
+        }
+
+        return $this->resolveLegacyApiResponse($request);
+    }
+}
+```
+
+- Defining features
+    - string based
+    - class based
+    - dynamic class based (event is fired)
+
 
 <a name="events"></a>
 ## Events
@@ -77,10 +151,6 @@ class EventServiceProvider extends ServiceProvider
 This event is dispatched whenever a feature is being dynamically defined for the first time during a request.
 
 
-- Defining features
-    - string based
-    - class based
-    - dynamic class based
 
 - events
     - known
