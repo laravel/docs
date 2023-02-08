@@ -41,7 +41,7 @@ To make requests, you may use the `head`, `get`, `post`, `put`, `patch`, and `de
 The `get` method returns an instance of `Illuminate\Http\Client\Response`, which provides a variety of methods that may be used to inspect the response:
 
     $response->body() : string;
-    $response->json($key = null, $default = null) : mixed;
+    $response->json($key = null, $default = null) : array|mixed;
     $response->object() : object;
     $response->collect($key = null) : Illuminate\Support\Collection;
     $response->status() : int;
