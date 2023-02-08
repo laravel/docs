@@ -84,12 +84,18 @@ As you can see, we have the following rules for our feature definition:
 - Any high traffic customers should not be using the new API.
 - Otherwise the feature should be randomly assigned to users with a 1 in 100 chance of being activated.
 
+The first time the `new-api` feature is checked for a given user, the result of the definition Closure will be persisted by the underlying driver. This means that the next time the feature is check against the same user, the value will be retrieved from storage rather than decided by the feature's definition.
+
+If your feature definition only returns a lottery, you may omit the Closure completely.
+
+    Feature::define('site-redesign', Lottery::odds(1, 1000));
+
 <a name="class-based-features"></a>
 ### Class Based Features
 
 You may also create class based features. Unlike Closure based definitions, there is no need to register class based features in a service provider.
 
-When create a feature class you will need to implement the `define` method:
+When create a feature class you will need to implement the `resolve` method:
 
 ```php
 <?php
@@ -100,7 +106,7 @@ use Illuminate\Support\Lottery;
 
 class NewApi
 {
-    public function define(User $user)
+    public function resolve(User $user)
     {
         if ($user->isInternalTeamMember()) {
             return true;
@@ -188,23 +194,18 @@ If you need to manually flush the in-memory cache, you may use the `flushCache` 
 
     Feature::flushCache();
 
-
-- Defining features
-    - string based
-    - class based
-    - dynamic class based (event is fired)
-
-
 <a name="events"></a>
 ## Events
 
+Pennant dispatches a few events that may be useful for tracking the feature flags throughout your application.
+
 ### `Illuminate\Pennant\Events\RetrievingKnownFeature` 
 
-This event is dispatched the first time a known feature is resolved during a request for the given scope. This may be useful to create and track metrics against the feature flags that are in-use throughout your application.
+This event is dispatched the first time a known feature is resolved during a request for a specific scope. This may be useful to create and track metrics against the feature flags that are in-use throughout your application.
 
 ### `Illuminate\Pennant\Events\RetrievingUnknownFeature` 
 
-This event is dispatched thefirst time an unknown feature is resolved during a request for the given scope. This may be useful if you have intended to remove a feature flag, but left some stray references to it throughout your application.
+This event is dispatched the first time an unknown feature is resolved during a request for the specific scope. This may be useful if you have intended to remove a feature flag, but left some stray references to it throughout your application.
 
 You may like to listen for this event and report or throw an exception when it occurs.
 
@@ -233,7 +234,7 @@ class EventServiceProvider extends ServiceProvider
 
 ### `Illuminate\Pennant\Events\DynamicallyDefiningFeature`
 
-This event is dispatched whenever a feature is being dynamically defined for the first time during a request.
+This event is dispatched whenever an unregistered class based feature is being dynamically defined for the first time during a request.
 
 
 
