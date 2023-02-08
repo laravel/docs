@@ -155,12 +155,12 @@ if (Process::run('ls -la')->seeInOutput('laravel')) {
 <a name="disabling-process-output"></a>
 #### Disabling Process Output
 
-If your process is writing a significant amount of output that you are not interested in, you can conserve memory by disabling output retrieval entirely. To accomplish this, invoke the `withoutOutput` method while building the process:
+If your process is writing a significant amount of output that you are not interested in, you can conserve memory by disabling output retrieval entirely. To accomplish this, invoke the `quietly` method while building the process:
 
 ```php
 use Illuminate\Support\Facades\Process;
 
-$result = Process::withoutOutput()->run('bash import.sh');
+$result = Process::quietly()->run('bash import.sh');
 ```
 
 <a name="asynchronous-processes"></a>
