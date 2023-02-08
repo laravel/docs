@@ -1220,6 +1220,9 @@ The `lang_path` function returns the fully qualified path to your application's 
 
     $path = lang_path('en/messages.php');
 
+> **Note**
+> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
+
 <a name="method-mix"></a>
 #### `mix()` {.collection-method}
 
@@ -1260,7 +1263,7 @@ The `storage_path` function returns the fully qualified path to your application
 <a name="method-__"></a>
 #### `__()` {.collection-method}
 
-The `__` function translates the given translation string or translation key using your [localization files](/docs/{{version}}/localization):
+The `__` function translates the given translation string or translation key using your [language files](/docs/{{version}}/localization):
 
     echo __('Welcome to our application');
 
@@ -2131,7 +2134,7 @@ If no argument is provided to the `str` function, the function returns an instan
 <a name="method-trans"></a>
 #### `trans()` {.collection-method}
 
-The `trans` function translates the given translation key using your [localization files](/docs/{{version}}/localization):
+The `trans` function translates the given translation key using your [language files](/docs/{{version}}/localization):
 
     echo trans('messages.welcome');
 
