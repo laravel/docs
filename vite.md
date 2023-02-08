@@ -27,6 +27,7 @@
   - [Subresource Integrity (SRI)](#subresource-integrity-sri)
   - [Arbitrary Attributes](#arbitrary-attributes)
 - [Advanced Customization](#advanced-customization)
+  - [Correcting Dev Server URLs](#correcting-dev-server-urls)
 
 <a name="introduction"></a>
 ## Introduction
@@ -790,3 +791,42 @@ export default defineConfig({
     },
 });
 ```
+
+<a name="correcting-dev-server-urls"></a>
+### Correcting Dev Server URLs
+
+Some plugins within the Vite ecosystem assume that URLs which begin with a forward-slash will always point to the Vite dev server. However, due to the nature of the Laravel integration, this is not the case.
+
+For example, the `vite-imagetools` plugin outputs URLs like the following while Vite is serving your assets:
+
+```html
+<img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520">
+```
+
+The `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option. 
+
+In this particular example, we will append the dev server URL to all occurrences of `/@imagetools` within the generated code:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import { imagetools } from 'vite-imagetools';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            // ...
+            transformOnServe: (code, devServerUrl) => code.replaceAll('/@imagetools', devServerUrl+'/@imagetools'),
+        }),
+        imagetools(),
+    ],
+});
+```
+
+Now, while Vite is serving Assets, it will output URLs that point to the Vite dev server:
+
+```html
+- <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! remove] -->
++ <img src="http://[::1]:5173/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! add] -->
+```
+

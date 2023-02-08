@@ -49,6 +49,7 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
     $response->successful() : bool;
     $response->redirect(): bool;
     $response->failed() : bool;
+    $response->notFound() : bool;
     $response->serverError() : bool;
     $response->clientError() : bool;
     $response->header($header) : string;
