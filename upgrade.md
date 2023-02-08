@@ -21,6 +21,7 @@
 - [Model "Dates" Property](#model-dates-property)
 - [Redis Cache Tags](#redis-cache-tags)
 - [Service Mocking](#service-mocking)
+- [The Language Directory](#language-directory)
 
 </div>
 
@@ -162,6 +163,19 @@ protected $casts = [
 **Likelihood Of Impact: Very Low**
 
 The `getBaseQuery` method on the `Illuminate\Database\Eloquent\Relations\Relation` class has been renamed to `toBase`.
+
+### Localization
+
+<a name="language-directory"></a>
+#### The Language Directory
+
+**Likelihood Of Impact: None**
+
+Though not relevant to existing applications, the Laravel application skeleton no longer contains the `lang` directory by default. Instead, when writing new Laravel applications, it may be published using the `lang:publish` Artisan command:
+
+```shell
+php artisan lang:publish
+```
 
 ### Logging
 
