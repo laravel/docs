@@ -52,7 +52,11 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
     $response->header($header) : string;
     $response->headers() : array;
 
-And the status code checkers:
+The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
+
+    return Http::get('http://example.com/users/1')['name'];
+
+In addition to the response methods listed above, the following methods may be used to determine if the respones has a given status code:
 
     $response->ok() : bool;                    // 200 OK
     $response->created() : bool;               // 201 Created
@@ -70,10 +74,6 @@ And the status code checkers:
     $response->unprocessableEntity() : bool;   // 422 Unprocessable Entity
     $response->tooManyRequests() : bool;       // 429 Too Many Requests
     $response->serverError() : bool;           // 500 Internal Server Error
-
-The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
-
-    return Http::get('http://example.com/users/1')['name'];
 
 <a name="uri-templates"></a>
 #### URI Templates
