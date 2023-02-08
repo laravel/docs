@@ -86,7 +86,9 @@ As you can see, we have set the following rules for our feature definition:
 <a name="class-based-features"></a>
 ### Class Based Features
 
-You may also create class based features. Class based features should implement a `define` method:
+You may also create class based features. Unlike Closure based definitions, there is no need to register class based features in a service provider.
+
+To create a feature class you should implement the `define` method:
 
 ```php
 <?php
@@ -112,7 +114,6 @@ class NewApi
 }
 ```
 
-There is no need to register class based features in a service provider.
 
 <a name="checking-features"></a>
 ## Checking Features
