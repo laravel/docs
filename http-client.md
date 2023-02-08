@@ -56,7 +56,7 @@ The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAcces
 
     return Http::get('http://example.com/users/1')['name'];
 
-In addition to the response methods listed above, the following methods may be used to determine if the respones has a given status code:
+In addition to the response methods listed above, the following methods may be used to determine if the response has a given status code:
 
     $response->ok() : bool;                  // 200 OK
     $response->created() : bool;             // 201 Created
