@@ -199,7 +199,10 @@ So, in our example, the user will be redirected to our controller's `create` met
 
 Laravel's built-in validation rules each have an error message that is located in your application's `lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application.
 
-In addition, you may copy this file to another translation language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
+In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
+
+> **Warning**
+> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 <a name="quick-xhr-requests-and-validation"></a>
 #### XHR Requests & Validation
@@ -736,7 +739,10 @@ The `has` method may be used to determine if any error messages exist for a give
 
 Laravel's built-in validation rules each have an error message that is located in your application's `lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application.
 
-In addition, you may copy this file to another translation language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
+In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
+
+> **Warning**
+> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 <a name="custom-messages-for-specific-attributes"></a>
 #### Custom Messages For Specific Attributes
@@ -758,6 +764,9 @@ Many of Laravel's built-in error messages include an `:attribute` placeholder th
     'attributes' => [
         'email' => 'email address',
     ],
+
+> **Warning**
+> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 <a name="specifying-values-in-language-files"></a>
 ### Specifying Values In Language Files
@@ -781,6 +790,9 @@ Instead of displaying `cc` as the payment type value, you may specify a more use
             'cc' => 'credit card'
         ],
     ],
+
+> **Warning**
+> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 After defining this value, the validation rule will produce the following error message:
 

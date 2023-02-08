@@ -8,7 +8,7 @@
     - [Configuration](#configuration)
     - [Migrations](#migrations)
     - [Routes](#routes)
-    - [Translations](#translations)
+    - [Language Files](#language-files)
     - [Views](#views)
     - [View Components](#view-components)
     - ["About" Artisan Command](#about-artisan-command)
@@ -80,7 +80,7 @@ You may disable package discovery for all packages using the `*` character insid
 <a name="service-providers"></a>
 ## Service Providers
 
-[Service providers](/docs/{{version}}/providers) are the connection point between your package and Laravel. A service provider is responsible for binding things into Laravel's [service container](/docs/{{version}}/container) and informing Laravel where to load package resources such as views, configuration, and localization files.
+[Service providers](/docs/{{version}}/providers) are the connection point between your package and Laravel. A service provider is responsible for binding things into Laravel's [service container](/docs/{{version}}/container) and informing Laravel where to load package resources such as views, configuration, and language files.
 
 A service provider extends the `Illuminate\Support\ServiceProvider` class and contains two methods: `register` and `boot`. The base `ServiceProvider` class is located in the `illuminate/support` Composer package, which you should add to your own package's dependencies. To learn more about the structure and purpose of service providers, check out [their documentation](/docs/{{version}}/providers).
 
@@ -157,10 +157,10 @@ If your package contains [database migrations](/docs/{{version}}/migrations), yo
 
 Once your package's migrations have been registered, they will automatically be run when the `php artisan migrate` command is executed. You do not need to export them to the application's `database/migrations` directory.
 
-<a name="translations"></a>
-### Translations
+<a name="language-files"></a>
+### Language Files
 
-If your package contains [translation files](/docs/{{version}}/localization), you may use the `loadTranslationsFrom` method to inform Laravel how to load them. For example, if your package is named `courier`, you should add the following to your service provider's `boot` method:
+If your package contains [language files](/docs/{{version}}/localization), you may use the `loadTranslationsFrom` method to inform Laravel how to load them. For example, if your package is named `courier`, you should add the following to your service provider's `boot` method:
 
     /**
      * Bootstrap any package services.
@@ -170,14 +170,14 @@ If your package contains [translation files](/docs/{{version}}/localization), yo
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');
     }
 
-Package translations are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:
+Package translation lines are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:
 
     echo trans('courier::messages.welcome');
 
-<a name="publishing-translations"></a>
-#### Publishing Translations
+<a name="publishing-language-files"></a>
+#### Publishing Language Files
 
-If you would like to publish your package's translations to the application's `lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:
+If you would like to publish your package's language files to the application's `lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the language files for the `courier` package, you may do the following:
 
     /**
      * Bootstrap any package services.
@@ -191,7 +191,7 @@ If you would like to publish your package's translations to the application's `l
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's translations will be published to the specified publish location.
+Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's language files will be published to the specified publish location.
 
 <a name="views"></a>
 ### Views
