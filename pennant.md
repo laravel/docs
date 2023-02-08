@@ -6,6 +6,7 @@
 - [Defining Features](#defining-features)
     - [Class Based Feature](#class-based-features)
 - [Checking Features](#checking-features)
+    - [In-Memory Cache](#in-memory-cache)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -88,7 +89,7 @@ As you can see, we have set the following rules for our feature definition:
 
 You may also create class based features. Unlike Closure based definitions, there is no need to register class based features in a service provider.
 
-To create a feature class you should implement the `define` method:
+When create a feature class you will need to implement the `define` method:
 
 ```php
 <?php
@@ -114,13 +115,12 @@ class NewApi
 }
 ```
 
+> **Note** Feature classes are resolved via the container, so you may inject dependencies into the classes constructor when needed.
 
 <a name="checking-features"></a>
 ## Checking Features
 
-
-
-The state of a feature flag may be resolved via the `Feature` facade. By default, features are checked against the currently authenticated user.
+The state of a feature flag may be resolved via the `Feature` facade using the features name. By default, features are checked against the currently authenticated user.
 
 ```php
 <?php
@@ -148,6 +148,39 @@ class PodcastController
     // ...
 }
 ```
+
+If you are using a class based feature, you should use class name when checking the features state:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Features\NewApi;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Laravel\Pennant\Feature;
+
+class PodcastController
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request): Response
+    {
+        if (Feature::isActive(NewApi::class)) {
+            return $this->resolveNewApiResponse($request);
+        }
+
+        return $this->resolveLegacyApiResponse($request);
+    }
+
+    // ...
+}
+```
+
+<a name="in-memory-cache"></a>
+### In-Memory Cache
 
 - Defining features
     - string based
