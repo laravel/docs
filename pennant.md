@@ -4,6 +4,7 @@
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Defining Features](#defining-features)
+- [Checking Features](#checking-features)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -81,7 +82,10 @@ As you can see, we have set the following rules for our feature definition:
 - Any high traffic customers should not be using the new API.
 - Otherwise the feature should be randomly assigned to users with a 1 in 100 chance of being activated.
 
-You may then check the value of this feature flag:
+<a name="checking-features"></a>
+## Checking Features
+
+The state of a feature flag may be resolved via the `Feature` facade. By default, features are checked against the currently authenticated user.
 
 ```php
 <?php
