@@ -41,7 +41,7 @@ Of course, the `Illuminate\Contracts\Console\Process\ProcessResult` instance ret
 ```php
 $result = Process::run('ls -la');
 
-$result->successful():
+$result->successful();
 $result->failed();
 $result->exitCode();
 $result->output();
@@ -224,7 +224,7 @@ while ($process->running()) {
 Like the `run` method, output may also be gathered in real-time from asynchronous processes by passing a closure as the second argument to the `start` method. The closure will receive two arguments: the "type" of output (`stdout` or `stderr`) and the output string itself:
 
 ```php
-$process = Process::start('bash import.sh', function ($type, $output) {
+$process = Process::start('bash import.sh', function (string $type, string $output) {
     echo $output;
 });
 
@@ -246,7 +246,7 @@ $pool = Process::pool(function (Pool $pool) {
     $pool->path(__DIR__)->command('bash import-1.sh');
     $pool->path(__DIR__)->command('bash import-2.sh');
     $pool->path(__DIR__)->command('bash import-3.sh');
-})->start(function ($type, $output, $key) {
+})->start(function (string $type, string $output, int $key) {
     // ...
 });
 
@@ -280,14 +280,14 @@ echo $first->output();
 <a name="naming-pool-processes"></a>
 ### Naming Pool Processes
 
-Accessing process pool results via a numeric key is not very expressive; therefore, Laravel allows you to assign string keys to each process within a pool via the `as` method. This key will also be passed to the closure provided to the `start` method, allowing you to determine which process the real-time output belongs to:
+Accessing process pool results via a numeric key is not very expressive; therefore, Laravel allows you to assign string keys to each process within a pool via the `as` method. This key will also be passed to the closure provided to the `start` method, allowing you to determine which process the output belongs to:
 
 ```php
 $pool = Process::pool(function (Pool $pool) {
     $pool->as('first')->command('bash import-1.sh');
     $pool->as('second')->command('bash import-2.sh');
     $pool->as('third')->command('bash import-3.sh');
-})->start(function ($type, $output, $key) {
+})->start(function (string $type, string $output, string $key) {
     // ...
 });
 
@@ -339,6 +339,8 @@ When testing this route, we can instruct Laravel to return a fake, successful pr
 
 namespace Tests\Feature;
 
+use Illuminate\Console\Process\PendingProcess;
+use Illuminate\Contracts\Console\Process\ProcessResult;
 use Illuminate\Support\Facades\Process;
 use Tests\TestCase;
 
@@ -354,7 +356,7 @@ class ExampleTest extends TestCase
         Process::assertRan('bash import.sh');
 
         // Or, inspecting the process configuration...
-        Process::assertRan(function ($process, $result) {
+        Process::assertRan(function (PendingProcess $process, ProcessResult $result) {
             return $process->command === 'bash import.sh' &&
                    $process->timeout === 60;
         });
@@ -494,7 +496,7 @@ Process::assertDidntRun('ls -la');
 Like the `assertRan` method, the `assertDidntRun` method also accepts a closure, which will receive an instance of a process and a process result, allowing you to inspect the process' configured options. If this closure returns `true`, the assertion will "fail":
 
 ```php
-Process::assertDidntRun(fn ($process, $result) =>
+Process::assertDidntRun(fn (PendingProcess $process, ProcessResult $result) =>
     $process->command === 'ls -la'
 );
 ```
@@ -513,7 +515,7 @@ Process::assertRanTimes('ls -la', times: 3);
 The `assertRanTimes` method also accepts a closure, which will receive an instance of a process and a process result, allowing you to inspect the process' configured options. If this closure returns `true` and the process was invoked the specified number of times, the assertion will "pass":
 
 ```php
-Process::assertRanTimes(function ($process, $result) {
+Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result) {
     return $process->command === 'ls -la';
 }, times: 3);
 ```
