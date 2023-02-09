@@ -340,7 +340,7 @@ When calling the `terminate` method on your middleware, Laravel will resolve a f
 
 ## Disable All Middleware
 
-If you want to disable all middleware, You can use IOC Container.
+If you want to disable all middleware, You can use <a href="https://laravel.com/docs/10.x/container">IOC Container</a>.
 
 ```
 /**
