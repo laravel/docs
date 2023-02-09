@@ -337,3 +337,6 @@ When calling the `terminate` method on your middleware, Laravel will resolve a f
     {
         $this->app->singleton(TerminatingMiddleware::class);
     }
+
+## Disable All Middleware
+
