@@ -10,6 +10,7 @@
     - [Blade Directive](#blade-directive)
     - [In-Memory Cache](#in-memory-cache)
 - [Scope](#scope)
+    - [Specifying The Scope](#specifying-the-scope)
     - [Default Scope](#default-scope)
     - [Identifying Scope](#identifying-scope)
 - [Rich Feature Values](#rich-feature-values)
@@ -159,6 +160,14 @@ class PodcastController
 }
 ```
 
+Although features are checked against the currently authenticated user by default, you may easily check the feature against another user or scope. To accomplish this, use the `for` method offered by the `Feature` facade:
+
+```php
+return Feature::for($user)->active('new-api')
+        ? $this->resolveNewApiResponse($request)
+        : $this->resolveLegacyApiResponse($request);
+```
+
 For class based features, you should provide the class name when checking the feature:
 
 ```php
@@ -266,13 +275,23 @@ If you need to manually flush the in-memory cache, you may use the `flushCache` 
 <a name="scope"></a>
 ## Scope
 
-As previously discussed, features are typically checked against the currently authenticated user. However, this may not always suit your needs. Therefore, it is possible to specify the scope you would like to check a given feature against.
+<a name="specifying-the-scope"></a>
+### Specifying The Scope
 
-Imagine you have built a new billing experience that you are rolling out to entire teams at once, rather than individual users. You would like the oldest teams to have a slower rollout than the newer teams. Your feature resolution closure might look something like the following:
+As discussed, features are typically checked against the currently authenticated user. However, this may not always suit your needs. Therefore, it is possible to specify the scope you would like to check a given feature against via the `Feature` facade's `for` method:
+
+```php
+return Feature::for($user)->active('new-api')
+        ? $this->resolveNewApiResponse($request)
+        : $this->resolveLegacyApiResponse($request);
+```
+
+Of course, feature scopes are not limited to "users". Imagine you have built a new billing experience that you are rolling out to entire teams rather than individual users. Perhaps you would like the oldest teams to have a slower rollout than the newer teams. Your feature resolution closure might look something like the following:
 
     use App\Models\Team;
     use Carbon\Carbon;
     use Illuminate\Support\Lottery;
+    use Laravel\Pennant\Feature;
 
     Feature::define('billing-v2', function (Team $team) {
         if ($team->created_at->isAfter(new Carbon('1st Jan, 2023'))) {
@@ -288,8 +307,6 @@ Imagine you have built a new billing experience that you are rolling out to enti
 
 You will notice that the closure we have defined is not expecting a `User`, but is instead expecting a `Team` model. To determine if this feature is active for a user's team, you should pass the team to the `for` method offered by the `Feature` facade:
 
-    use Laravel\Pennant\Feature;
-
     if (Feature::for($user->team)->active('billing-v2')) {
         return redirect()->to('/billing/v2');
     }
@@ -299,7 +316,7 @@ You will notice that the closure we have defined is not expecting a `User`, but 
 <a name="default-scope"></a>
 ### Default Scope
 
-It is also possible to customize the default scope used when checking features. Suppose all of your features are checked against the currently authenticated user's team. Instead of having to call `Feature::for($user->team)` every time you check a feature, you may instead specify the team as the default scope. Typically, this should be done in one of your application's service providers:
+It is also possible to customize the default scope Pennant uses to check features. For example, maybe all of your features are checked against the currently authenticated user's team instead of the user. Instead of having to call `Feature::for($user->team)` every time you check a feature, you may instead specify the team as the default scope. Typically, this should be done in one of your application's service providers:
 
 ```php
 <?php
@@ -325,7 +342,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-If no explicit scope is provided via the `for` method, the feature check will now use the currently authenticated user's team as the default scope:
+If no scope is explicitly provided via the `for` method, the feature check will now use the currently authenticated user's team as the default scope:
 
     Feature::active('billing-v2');
 
@@ -336,7 +353,7 @@ If no explicit scope is provided via the `for` method, the feature check will no
 <a name="identifying-scope"></a>
 ### Identifying Scope
 
-Pennant's built-in `array` and `database` storage drivers know how to properly store scope identifiers for all PHP primitive as well as Eloquent models. However, if your application implements a third-party Pennant driver, that driver may not know how to properly store an identifier for an Eloquent model or other custom types in your application.
+Pennant's built-in `array` and `database` storage drivers know how to properly store scope identifiers for all PHP data types as well as Eloquent models. However, if your application utilizes a third-party Pennant driver, that driver may not know how to properly store an identifier for an Eloquent model or other custom types in your application.
 
 In light of this, Pennant allows you to format scope values for storage by implementing the `FeatureScopeable` contract on the objects in your application that are used as Pennant scopes.
 
