@@ -219,7 +219,7 @@ In addition, the first time the MySQL container starts, it will create two datab
 
 Once you have started your containers, you may connect to the MySQL instance within your application by setting your `DB_HOST` environment variable within your application's `.env` file to `mysql`.
 
-To connect to your application's MySQL database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the MySQL database is accessible at `localhost` port 3306. You may connect using the values of your `DB_USERNAME` and `DB_PASSWORD` environment variables, or as the `root` user and value of your `DB_PASSWORD` environment variable for full privileges.
+To connect to your application's MySQL database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the MySQL database is accessible at `localhost` port 3306 and the access credentials correspond to the values of your `DB_USERNAME` and `DB_PASSWORD` environment variables. Or, you may connect as the `root` user, which also utilizes the value of your `DB_PASSWORD` environment variable as its password.
 
 <a name="redis"></a>
 ### Redis
