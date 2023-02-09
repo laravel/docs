@@ -278,7 +278,7 @@ Imagine you have built a new billing experience that you are rolling out to enti
     use Carbon\Carbon;
     use Illuminate\Support\Lottery;
 
-    Feature::define('billing-v2', function (Team $team) {
+    Feature::define('billing-v2', function (Team $team): mixed {
         if ($team->created_at->isAfter(new Carbon('1st Jan, 2023'))) {
             return true;
         }
@@ -419,7 +419,7 @@ Imagine that we are checking if a feature is active within a loop:
 
 Assuming we are using the database driver, we are going to be hitting the database for every user in the loop - potentially hundreds of queries. With eager loading we can remove this potential performance bottleneck.
 
-    Feature::for($users)->load('notifications-beta');
+    Feature::for($users)->load(['notifications-beta']);
 
     foreach ($users as $user) {
         if (Feature::for($user)->active('notifications-beta')) {
