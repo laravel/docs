@@ -388,9 +388,19 @@ You may retrieve the value of the `'checkout-button'` feature using the `value` 
 
     $color = Feature::value('checkout-button');
 
-- Blade
+The Blade directive also makes it easy to conditionally render content based on the current value of the feature.
 
-> **Note** You may return an array as a rich value. The value returned will be JSON encoded when stored and JSON decoded when retrieved.
+```blade
+@feature('checkout-button', 'blue-sapphire')
+    <!-- ... -->
+@elsefeature('checkout-button', 'seafoam-green')
+    <!-- ... -->
+@elsefeature('checkout-button', 'tart-orange')
+    <!-- ... -->
+@endfeature
+```
+
+> **Note** When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
 
 <a name="events"></a>
 ## Events
