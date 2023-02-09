@@ -376,19 +376,11 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
         use SerializesModels;
 
         /**
-         * The user that created the server.
-         *
-         * @var \App\Models\User
-         */
-        public $user;
-
-        /**
          * Create a new event instance.
          */
-        public function __construct(User $user)
-        {
-            $this->user = $user;
-        }
+        public function __construct(
+            public User $user,
+        ) {}
 
         /**
          * Get the channels the event should broadcast on.

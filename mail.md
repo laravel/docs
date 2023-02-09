@@ -282,19 +282,11 @@ Typically, you will want to pass some data to your view that you can utilize whe
         use Queueable, SerializesModels;
 
         /**
-         * The order instance.
-         *
-         * @var \App\Models\Order
-         */
-        public $order;
-
-        /**
          * Create a new message instance.
          */
-        public function __construct(Order $order)
-        {
-            $this->order = $order;
-        }
+        public function __construct(
+            public Order $order,
+        ) {}
 
         /**
          * Get the message content definition.
@@ -333,19 +325,11 @@ If you would like to customize the format of your email's data before it is sent
         use Queueable, SerializesModels;
 
         /**
-         * The order instance.
-         *
-         * @var \App\Models\Order
-         */
-        protected $order;
-
-        /**
          * Create a new message instance.
          */
-        public function __construct(Order $order)
-        {
-            $this->order = $order;
-        }
+        public function __construct(
+            protected Order $order,
+        ) {}
 
         /**
          * Get the message content definition.
@@ -1060,20 +1044,12 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
     class MailchimpTransport extends AbstractTransport
     {
         /**
-         * The Mailchimp API client.
-         *
-         * @var \MailchimpTransactional\ApiClient
-         */
-        protected $client;
-
-        /**
          * Create a new Mailchimp transport instance.
          */
-        public function __construct(ApiClient $client)
-        {
+        public function __construct(
+            protected ApiClient $client,
+        ) {
             parent::__construct();
-            
-            $this->client = $client;
         }
 
         /**
