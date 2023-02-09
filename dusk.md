@@ -193,7 +193,16 @@ The `DatabaseTruncation` trait will migrate your database on the first test in o
         use DatabaseTruncation;
     }
 
-By default, this trait will not truncate the `migrations` table. If you would like to further customize the tables that are excluded from truncation, you may define an `$exceptTables` property on your test class:
+By default, this trait will truncate all tables except the `migrations` table. If you would like to customize the tables that should be truncated, you may define a `$tablesToTruncate` property on your test class:
+
+    /**
+     * Indicates which tables should be truncated.
+     *
+     * @var array
+     */
+    protected $tablesToTruncate = ['users'];
+
+Alternatively, you may define an `$exceptTables` property on your test class to specify which tables should be excluded from truncation:
 
     /**
      * Indicates which tables should be excluded from truncation.
