@@ -446,6 +446,22 @@ Alternatively, if you are having issues with a feature rollout and need to disab
 <a name="purging-features"></a>
 ### Purging Features
 
+It can be useful to purge an entire feature from storage, whether you have removed the feature from your system or you need have made adjustments to the features definition that you would like to rollout to all users.
+
+You may completely remove all persisted values for a feature using the `purge` method on the `Feature` facade.
+
+    Feature::purge('new-api');
+
+If you would like to purge _all_ features from storage, you may do so by calling `purge` without any arguments.
+
+    Feature::purge();
+
+As it can be useful to do this as part of your deployment pipeline, we have also included an artisan command to help out.
+
+```sh
+php artisan pennant:purge new-api
+```
+
 <a name="eager-loading"></a>
 ## Eager Loading
 
