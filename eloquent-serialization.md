@@ -183,6 +183,9 @@ At runtime, you may instruct a model instance to append additional attributes us
 
     return $user->setAppends(['is_admin'])->toArray();
 
+> **Note**
+> It is recommended to be _very_ selective of which attributes you place in your `$appends` property, and to generally prefer run-time configuration. If you are using `select()` to limit the number of fields you retrieve for a Model, and using [`Model::preventAccessingMissingAttributes()`](https://laravel.com/docs/9.x/eloquent#configuring-eloquent-strictness) it's very possible you will run into exceptions in unexpected places.
+
 <a name="date-serialization"></a>
 ## Date Serialization
 
