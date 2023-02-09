@@ -248,20 +248,20 @@ Pennant offers the ability to conditionally execute a specific code block in a f
 <a name="blade-directive"></a>
 ### Blade Directive
 
-To make checking features in Blade files a seamless experience, Pennant also offers a `@feature` directive.
+To make checking features in Blade a seamless experience, Pennant also offers a `@feature` directive.
 
 ```blade
 @feature('site-redesign')
-    <!-- ... -->
+    <!-- 'site-redesign' is active -->
 @else
-    <!-- ... -->
+    <!-- 'site-redesign' is inactive -->
 @endfeature
 ```
 
 <a name="in-memory-cache"></a>
 ### In-Memory Cache
 
-When checking a feature, Pennant will create a in-memory cache of the result. If you are using the database driver, this means that re-checking the same feature flag throughout a single request will not trigger subsequent database queries. It also ensures you have a consistent result for the duration of the request.
+When checking a feature, Pennant will create an in-memory cache of the result. If you are using the database driver, this means that re-checking the same feature flag throughout a single request will not trigger additional database queries. It also ensures you have a consistent result for the duration of the request.
 
 If you need to manually flush the in-memory cache, you may use the `flushCache` method on the `Feature` facade.
 
@@ -270,9 +270,9 @@ If you need to manually flush the in-memory cache, you may use the `flushCache` 
 <a name="scope"></a>
 ## Scope
 
-As previous mentioned, features are checked against the currently authenticated user by default. This may not always suit your needs. For one off feature checks, it is possible to specify the scope you would like to check the feature against.
+As previously mentioned, features are checked against the currently authenticated user by default. This may not always suit your needs. For one off feature checks, it is possible to specify the scope you would like to check the feature against.
 
-Imagine you have built a new billing experience that you are rolling out to entire teams at once, rather than individual users. You want our oldest teams have a slower rollout than the newer teams. Your feature Closure might look something like the following:
+Imagine you have built a new billing experience that you are rolling out to entire teams at once, rather than individual users. You want the oldest teams have a slower rollout than the newer teams. Your feature Closure might look something like the following:
 
     use App\Models\Team;
     use Carbon\Carbon;
@@ -290,7 +290,7 @@ Imagine you have built a new billing experience that you are rolling out to enti
         return Lottery::odds(1 / 1000);
     });
 
-You will notice that the Closure we have defined is not expecting a `User`, but is instead expecting a `Team` model. To check if this feature is active for a user's team, you should pass the team to the `for` method before calling `active`.
+You will notice that the Closure we have defined is not expecting a `User`, but is instead expecting a `Team` model. To check if this feature is active for a user's team, you should pass the team to the `for` method.
 
     use Laravel\Pennant\Feature;
 
@@ -303,7 +303,7 @@ You will notice that the Closure we have defined is not expecting a `User`, but 
 <a name="default-scope"></a>
 ### Default Scope
 
-It is also possible to customize the default scope used when checking features. Suppose all your features are checked against the currently authenticated user's team; rather than having the call `Feature::for($user->team)` on every feature check, you may instead specify the default scope to use in a service provider.
+It is also possible to customize the default scope used when checking features. Suppose all your features are checked against the currently authenticated user's team; rather than having to call `Feature::for($user->team)` on every feature check, you may instead specify the default scope to use in a service provider.
 
 ```php
 <?php
@@ -329,7 +329,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-If no scope is provided via the `for` method, all feature checks will now be against the currently authenticated user's team.
+If no scope is provided via the `for` method, a feature check will now use the currently authenticated user's team.
 
     Feature::active('billing-v2');
 
@@ -340,9 +340,9 @@ If no scope is provided via the `for` method, all feature checks will now be aga
 <a name="identifying-scope"></a>
 ### Identifying Scope
 
-Implementing the `FeatureScopeable` contract on your scope objects allows you to customize how the scope is resolved for the underlying Pennant drivers.
+Implementing the `FeatureScopeable` contract on your scope objects allows you to customize what is passed to the underlying Pennant drivers.
 
-Imagine you are using two different feature drivers in a single application, perhaps the built-in database driver and a 3rd party "Flag Rocket" driver. The "Flag Rocket" driver requires a `FlagRocketUser` to identify a user while the database driver can handle an Eloquent model. Implementing the `toFeatureIdentifier` method allows you to customize the scope passed to each driver.
+Imagine you are using two different feature drivers in a single application, perhaps the built-in database driver and a 3rd party "Flag Rocket" driver. The "Flag Rocket" driver requires a `FlagRocketUser` to identify a user. The database driver, however, can handle an Eloquent model. Implementing the `toFeatureIdentifier` method allows you to customize the scope passed to each driver.
 
 ```php
 <?php
@@ -394,11 +394,11 @@ The Blade directive also makes it easy to conditionally render content based on 
 
 ```blade
 @feature('purchase-button', 'blue-sapphire')
-    <!-- ... -->
+    <!-- 'blue-sapphire' is active -->
 @elsefeature('purchase-button', 'seafoam-green')
-    <!-- ... -->
+    <!-- 'seafoam-green' is active -->
 @elsefeature('purchase-button', 'tart-orange')
-    <!-- ... -->
+    <!-- 'tart-oranage' is active -->
 @endfeature
 ```
 
@@ -431,7 +431,11 @@ Once in place we no longer trigger any database queries inside the loop.
 
 To load values only when it has not already been loaded, use the `loadMissing` method:
 
-    Feature::for($users)->loadMissing('notifications-beta');
+    Feature::for($users)->loadMissing([
+        'new-api',
+        'purchase-button',
+        'notifications-beta',
+    ]);
 
 <a name="updating-values"></a>
 ## Updating Values
@@ -450,7 +454,7 @@ It is also possible to manually set rich value for a feature by passing through 
 
     Feature::activate('purchase-button', 'seafoam-green');
 
-If you just wish to forget the current value for a feature, so that the next time it is checked the value is resolved from the feature definition, you may use the `forget` method.
+If you wish to forget the stored value for a feature, so that the next time it is checked the value is resolved from the feature definition, you may use the `forget` method.
 
     Feature::forget('purchase-button');
 
@@ -475,7 +479,7 @@ Alternatively, if you are having issues with a feature rollout you may need to d
 <a name="purging-features"></a>
 ### Purging Features
 
-It can be useful to purge an entire feature from storage, whether you have removed the feature from your system or you have made adjustments to the features definition that you would like to freshly rollout to all users.
+It can be useful to purge an entire feature from storage, whether you have removed the feature from your system or you have made adjustments to the features definition that you would like to rollout fresh to all users.
 
 You may completely remove all stored values for a feature using the `purge` method.
 
