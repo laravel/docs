@@ -9,6 +9,7 @@
     - [Sorting Middleware](#sorting-middleware)
 - [Middleware Parameters](#middleware-parameters)
 - [Terminable Middleware](#terminable-middleware)
+- [Disable All Middleware](#disable-all-middleware)
 
 <a name="introduction"></a>
 ## Introduction
