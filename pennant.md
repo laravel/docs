@@ -15,6 +15,8 @@
 - [Rich Feature Values](#rich-feature-values)
 - [Updating Values](#updating-values)
     - [Bulk Updates](#bulk-updates)
+    - [Purging Features](#purging-features)
+- [Eager Loading](#eager-loading)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -407,7 +409,7 @@ The Blade directive also makes it easy to conditionally render content based on 
 <a name="updating-values"></a>
 ## Updating Values
 
-When a feature's value is resolved for the first time, the underlying driver will persist the result. This is handy to ensure a consistent experience for your users across requests, but often you will need to make changes to the feature's persisted value. You may use the `activate` and `deactivate` methods to toggle a feature on or off.
+When a feature's value is resolved for the first time, the underlying driver will persist the result. This is handy to ensure a consistent experience for your users across requests, but you may want to manually update the feature's persisted value. To achieve this you can use the `activate` and `deactivate` methods to toggle a feature on or off.
 
     // Activate the feature for the default scope...
     Feature::activate('new-api');
@@ -419,10 +421,59 @@ It is also possible to manually set rich value for a feature by passing through 
 
     Feature::activate('purchase-button', 'seafoam-green');
 
+If you just wish to forget the current value for a feature, so that the next time it is checked the value is resolved from the feature definition, you may use the `forget` method.
+
+    Feature::forget('purchase-button');
+
 <a name="bulk-updates"></a>
 ### Bulk Updates
 
+To make bulk updates you may use the `activateForEveryone` and `deactivateForEveryone` methods. 
 
+Say you are now confident in the `'new-api'` features stability and the best `'purchase-button'` color to be using, you can update the stored value for all users:
+
+    Feature::activateForEveryone('new-api');
+
+    Feature::activateForEveryone('purchase-button', 'seafoam-green');
+
+
+Alternatively, if you are having issues with a feature rollout and need to disable to feature for all users, you can disable to feature for all users:
+
+    Feature::deactivateForEveryone('new-api');
+
+> **Note** This will only update the stored values. You may also need to update the feature definition.
+
+<a name="purging-features"></a>
+### Purging Features
+
+<a name="eager-loading"></a>
+## Eager Loading
+
+Although Pennant keeps an in-memory cache of all resolved feature values for a single request, it is still possible to run into performance issues. To alleviate this, Pennant offers the ability to eager load feature values.
+
+Imagine that we are checking if a feature is active within a loop:
+
+    foreach ($users as $user) {
+        if (Feature::for($user)->active('notifications-beta')) {
+            $user->notify(new RegistrationSuccess);
+        }
+    }
+
+Assuming we are using the database driver, we are going to be hitting the database for every user in the loop - potentially hundreds of times. With eager loading we can remove this potential performance bottleneck.
+
+    Feature::for($users)->load('notifications-beta');
+
+    foreach ($users as $user) {
+        if (Feature::for($user)->active('notifications-beta')) {
+            $user->notify(new RegistrationSuccess);
+        }
+    }
+
+Once in place we no longer trigger any database queries inside the loop.
+
+To load values only when it has not already been loaded, use the `loadMissing` method:
+
+    Feature::for($users)->loadMissing('notifications-beta');
 
 <a name="events"></a>
 ## Events
@@ -465,25 +516,3 @@ class EventServiceProvider extends ServiceProvider
 ### `Illuminate\Pennant\Events\DynamicallyDefiningFeature`
 
 This event is dispatched whenever a class based feature is being dynamically checked for the first time during a request.
-
-
-- helpers
-    - global
-    - blade
-
-- bulk updates
-    - purge
-
-- customising an objects scope
-- default scope
-
-- eager loading + loadMissing
-
-- attaching feature to objects (this should be improved)
- $user->feature('foo')->active();
-
-- using the array driver for lottery based features.
-- using the array driver for package features
-
-- array driver for testing
-- custom drivers
