@@ -206,11 +206,11 @@ By default, this trait will truncate all tables besides for the `migrations` tab
 Alternatively, you may define an `$exceptTables` property on your test class to specify which tables should be excluded from truncation:
 
     /**
-     * Indicates which tables should be truncated.
+     * Indicates which tables should be excluded from truncation.
      *
      * @var array
      */
-    protected $onlyTables = ['users'];
+    protected $exceptTables = ['users'];
 
 To specify the database connections that should have their tables truncated, you may define a `$connectionsToTruncate` property on your test class:
 
