@@ -215,6 +215,8 @@ Feature::allAreInactive(['new-api', 'site-redesign']);
 Feature::someAreInactive(['new-api', 'site-redesign']);
 ```
 
+> **Note** When using Pennant outside of a HTTP context, e.g. in an Artisan command or a queued job, you should manually [specify the scope](#specifying-the-scope) when checking a feature or set the [default scope](#default-scope).
+
 <a name="conditional-execution"></a>
 ### Conditional Execution
 
@@ -329,6 +331,7 @@ It is also possible to customize the default scope Pennant uses to check feature
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pennant\Feature;
 
@@ -339,9 +342,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Feature::resolveScopeUsing(function ($driver) {
-            return request()->user()->team;
-        });
+        Feature::resolveScopeUsing(fn ($driver) => Auth::user()->team);
 
         // ...
     }
