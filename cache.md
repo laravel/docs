@@ -334,8 +334,8 @@ Atomic locks allow for the manipulation of distributed locks without worrying ab
 
 The `get` method also accepts a closure. After the closure is executed, Laravel will automatically release the lock:
 
-    Cache::lock('foo')->get(function () {
-        // Lock acquired indefinitely and automatically released...
+    Cache::lock('foo', 10)->get(function () {
+        // Lock acquired for 10 seconds and automatically released...
     });
 
 If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
