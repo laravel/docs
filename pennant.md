@@ -278,7 +278,7 @@ Imagine you have built a new billing experience that you are rolling out to enti
     use Carbon\Carbon;
     use Illuminate\Support\Lottery;
 
-    Feature::define('billing-v2', function (Team $team): mixed {
+    Feature::define('billing-v2', function (Team $team) {
         if ($team->created_at->isAfter(new Carbon('1st Jan, 2023'))) {
             return true;
         }
@@ -386,7 +386,7 @@ Imagine you are testing 3 new colors for the "Buy now" button of your applicatio
         ]);
     });
 
-You may retrieve the value of the `'purchase-button'` feature using the `value` method.
+You may retrieve the value of the `purchase-button` feature using the `value` method.
 
     $color = Feature::value('purchase-button');
 
@@ -463,7 +463,7 @@ If you wish to forget the stored value for a feature, so that the next time it i
 
 To make bulk updates you may use the `activateForEveryone` and `deactivateForEveryone` methods. 
 
-Say you are now confident in the `'new-api'` feature's stability and have landed on the best `'purchase-button'` color to be using, you can update the stored value for all users accordingly.
+Say you are now confident in the `new-api` feature's stability and have landed on the best `'purchase-button'` color to be using, you can update the stored value for all users accordingly.
 
     Feature::activateForEveryone('new-api');
 
