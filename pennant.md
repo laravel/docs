@@ -13,6 +13,7 @@
     - [Default Scope](#default-scope)
     - [Identifying Scope](#identifying-scope)
 - [Rich Feature Values](#rich-feature-values)
+- [Updating Values](#updating-values)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -401,6 +402,9 @@ The Blade directive also makes it easy to conditionally render content based on 
 ```
 
 > **Note** When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
+
+<a name="updating-values"></a>
+## Updating Values
 
 <a name="events"></a>
 ## Events
