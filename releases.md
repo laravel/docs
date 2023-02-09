@@ -160,7 +160,7 @@ return $result->output();
 Processes may even be started in pools, allowing for the convenient execution and management of concurrent processes:
 
 ```php
-use Illuminate\Console\Process\Pool;
+use Illuminate\Process\Pool;
 use Illuminate\Support\Facades\Pool;
 
 [$first, $second, $third] = Process::concurrently(function (Pool $pool) {

@@ -36,7 +36,7 @@ $result = Process::run('ls -la');
 return $result->output();
 ```
 
-Of course, the `Illuminate\Contracts\Console\Process\ProcessResult` instance returned by the `run` method offers a variety of helpful methods that may be used to inspect the process result:
+Of course, the `Illuminate\Contracts\Process\ProcessResult` instance returned by the `run` method offers a variety of helpful methods that may be used to inspect the process result:
 
 ```php
 $result = Process::run('ls -la');
@@ -51,7 +51,7 @@ $result->errorOutput();
 <a name="throwing-exceptions"></a>
 #### Throwing Exceptions
 
-If you have a process result and would like to throw an instance of `Illuminate\Console\Process\Exceptions\ProcessFailedException` if the exit code is greater than zero (thus indicating failure), you may use the `throw` and `throwIf` methods. If the process did not fail, the process result instance will be returned:
+If you have a process result and would like to throw an instance of `Illuminate\Process\Exceptions\ProcessFailedException` if the exit code is greater than zero (thus indicating failure), you may use the `throw` and `throwIf` methods. If the process did not fail, the process result instance will be returned:
 
 ```php
 $result = Process::run('ls -la')->throw();
@@ -76,7 +76,7 @@ $result = Process::path(__DIR__)->run('ls -la');
 <a name="timeouts"></a>
 #### Timeouts
 
-By default, processes will throw an instance of `Illuminate\Console\Process\Exceptions\ProcessTimedOutException` after executing for more than 60 seconds. However, you can customize this behavior via the `timeout` method:
+By default, processes will throw an instance of `Illuminate\Process\Exceptions\ProcessTimedOutException` after executing for more than 60 seconds. However, you can customize this behavior via the `timeout` method:
 
 ```php
 $result = Process::timeout(120)->run('bash import.sh');
@@ -234,12 +234,12 @@ $result = $process->wait();
 <a name="concurrent-processes"></a>
 ## Concurrent Processes
 
-Laravel also makes it a breeze to manage a pool of concurrent, asynchronous processes, allowing you to easily execute many tasks simultaneously. To get started, invoke the `pool` method, which accepts a closure that receives an instance of `Illuminate\Console\Process\Pool`.
+Laravel also makes it a breeze to manage a pool of concurrent, asynchronous processes, allowing you to easily execute many tasks simultaneously. To get started, invoke the `pool` method, which accepts a closure that receives an instance of `Illuminate\Process\Pool`.
 
 Within this closure, you may define the processes that belong to the pool. Once a process pool is started via the `start` method, you may access the [collection](/docs/{{version}}/collections) of running processes via the `running` method:
 
 ```php
-use Illuminate\Console\Process\Pool;
+use Illuminate\Process\Pool;
 use Illuminate\Support\Facades\Process;
 
 $pool = Process::pool(function (Pool $pool) {
@@ -339,8 +339,8 @@ When testing this route, we can instruct Laravel to return a fake, successful pr
 
 namespace Tests\Feature;
 
-use Illuminate\Console\Process\PendingProcess;
-use Illuminate\Contracts\Console\Process\ProcessResult;
+use Illuminate\Process\PendingProcess;
+use Illuminate\Contracts\Process\ProcessResult;
 use Illuminate\Support\Facades\Process;
 use Tests\TestCase;
 
@@ -480,7 +480,7 @@ Process::assertRan(fn ($process, $result) =>
 );
 ```
 
-The `$process` passed to the `assertRan` closure is an instance of `Illuminate\Console\Process\PendingProcess`, while the `$result` is an instance of `Illuminate\Contracts\Console\Process\ProcessResult`.
+The `$process` passed to the `assertRan` closure is an instance of `Illuminate\Process\PendingProcess`, while the `$result` is an instance of `Illuminate\Contracts\Process\ProcessResult`.
 
 <a name="assert-process-didnt-run"></a>
 #### assertDidntRun
