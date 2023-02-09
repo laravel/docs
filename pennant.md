@@ -55,7 +55,7 @@ After publishing Pennant's assets, its configuration file will be located at `co
 
 When creating a feature you will need to provide a name and a Closure. The Closure should return the initial value for the feature. Typically, features are defined in a service provider using the `Feature` facade. The Closure will be passed the "scope" for the feature check, which would commonly be the currently authenticated user.
 
-In this example, we will define a feature for rolling out a new API implementation incrementally to our application's users.
+In this example, we will define a feature for incrementally rolling out a new API to our application's users.
 
 ```php
 <?php
@@ -209,10 +209,10 @@ There are some additional methods that may come in handy when checking if a feat
     // Check if a feature is inactive...
     Feature::inactive('new-api');
 
-    // Check if all the features are active...
+    // Check if all the features are inactive...
     Feature::allAreInactive(['new-api', 'site-redesign']);
 
-    // Check if any of the features are active...
+    // Check if any of the features are inactive...
     Feature::someAreInactive(['new-api', 'site-redesign']);
 
 <a name="conditional-execution"></a>
