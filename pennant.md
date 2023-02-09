@@ -14,6 +14,7 @@
     - [Identifying Scope](#identifying-scope)
 - [Rich Feature Values](#rich-feature-values)
 - [Updating Values](#updating-values)
+    - [Bulk Updates](#bulk-updates)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -198,19 +199,19 @@ class PodcastController
 There are some additional methods that may be handy when checking if a feature is active or not:
 
     // Check if all the features are active...
-    Feature::allAreActive(['billing-v2', 'payments-v2']);
+    Feature::allAreActive(['new-api', 'new-admin-design']);
 
     // Check if any of the features are active...
-    Feature::someAreActive(['billing-v2', 'payments-v2']);
+    Feature::someAreActive(['new-api', 'new-admin-design']);
 
     // Check if a feature is inactive...
-    Feature::inactive('billing-v2');
+    Feature::inactive('new-api');
 
     // Check if all the features are active...
-    Feature::allAreInactive(['billing-v2', 'payments-v2']);
+    Feature::allAreInactive(['new-api', 'new-admin-design']);
 
     // Check if any of the features are active...
-    Feature::someAreInactive(['billing-v2', 'payments-v2']);
+    Feature::someAreInactive(['new-api', 'new-admin-design']);
 
 <a name="conditional-execution"></a>
 ### Conditional Execution
@@ -377,7 +378,7 @@ Imagine you are testing 3 new colors for the "Buy now" button of your applicatio
     use Illuminate\Support\Arr;
     use Laravel\Pennant\Feature;
 
-    Feature::define('checkout-button', function (User $user) {
+    Feature::define('purchase-button', function (User $user) {
         return Arr::random([
             'blue-sapphire',
             'seafoam-green',
@@ -385,18 +386,18 @@ Imagine you are testing 3 new colors for the "Buy now" button of your applicatio
         ]);
     });
 
-You may retrieve the value of the `'checkout-button'` feature using the `value` method on the `Feature` facade.
+You may retrieve the value of the `'purchase-button'` feature using the `value` method on the `Feature` facade.
 
-    $color = Feature::value('checkout-button');
+    $color = Feature::value('purchase-button');
 
 The Blade directive also makes it easy to conditionally render content based on the current value of the feature.
 
 ```blade
-@feature('checkout-button', 'blue-sapphire')
+@feature('purchase-button', 'blue-sapphire')
     <!-- ... -->
-@elsefeature('checkout-button', 'seafoam-green')
+@elsefeature('purchase-button', 'seafoam-green')
     <!-- ... -->
-@elsefeature('checkout-button', 'tart-orange')
+@elsefeature('purchase-button', 'tart-orange')
     <!-- ... -->
 @endfeature
 ```
@@ -405,6 +406,23 @@ The Blade directive also makes it easy to conditionally render content based on 
 
 <a name="updating-values"></a>
 ## Updating Values
+
+When a feature's value is resolved for the first time, the underlying driver will persist the result. This is handy to ensure a consistent experience for your users across requests, but often you will need to make changes to the feature's persisted value. You may use the `activate` and `deactivate` methods to toggle a feature on or off.
+
+    // Activate the feature for the default scope...
+    Feature::activate('new-api');
+
+    // Deactivate the feature for the given scope...
+    Feature::for($user->team)->deactivate('billing-v2');
+
+It is also possible to manually set rich value for a feature by passing through a second argument to the `activate` method.
+
+    Feature::activate('purchase-button', 'seafoam-green');
+
+<a name="bulk-updates"></a>
+### Bulk Updates
+
+
 
 <a name="events"></a>
 ## Events
