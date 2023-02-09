@@ -94,7 +94,7 @@ As you can see, we have the following rules for our feature:
 - Any high traffic customers should not be using the new API.
 - Otherwise the feature should be randomly assigned to users with a 1 in 100 chance of being active.
 
-The first time the `new-api` feature is checked for a given user, the result of the Closure will be persisted by the underlying driver. The next time the feature is checked against the same user, the value will be retrieved from storage and the Closure will not be invoked.
+The first time the `new-api` feature is checked for a given user, the result of the Closure will be stored by the underlying driver. The next time the feature is checked against the same user, the value will be retrieved from storage and the Closure will not be invoked.
 
 If a feature definition only returns a lottery, you may omit the Closure completely.
 
@@ -436,7 +436,7 @@ To load values only when it has not already been loaded, use the `loadMissing` m
 <a name="updating-values"></a>
 ## Updating Values
 
-When a feature's value is resolved for the first time, the underlying driver will persist the result. This is handy to ensure a consistent experience for your users across requests, but you may also want to manually update the feature's persisted value.
+When a feature's value is resolved for the first time, the underlying driver will store the result. This is handy to ensure a consistent experience for your users across requests, but you may also want to manually update the feature's stored value.
 
 To achieve this you can use the `activate` and `deactivate` methods to toggle a feature on or off.
 
@@ -475,9 +475,9 @@ Alternatively, if you are having issues with a feature rollout you may need to d
 <a name="purging-features"></a>
 ### Purging Features
 
-It can be useful to purge an entire feature from storage, whether you have removed the feature from your system or you need have made adjustments to the features definition that you would like to rollout to all users.
+It can be useful to purge an entire feature from storage, whether you have removed the feature from your system or you have made adjustments to the features definition that you would like to freshly rollout to all users.
 
-You may completely remove all persisted values for a feature using the `purge` method on the `Feature` facade.
+You may completely remove all stored values for a feature using the `purge` method.
 
     Feature::purge('new-api');
 
@@ -485,7 +485,7 @@ If you would like to purge _all_ features from storage, you may do so by calling
 
     Feature::purge();
 
-As it can be useful to do this as part of your deployment pipeline, we have also included an artisan command to help out.
+As it can be useful to do this as part of your deployment pipeline, we have also included a handy Artisan.
 
 ```sh
 php artisan pennant:purge new-api
@@ -494,7 +494,7 @@ php artisan pennant:purge new-api
 <a name="events"></a>
 ## Events
 
-Pennant dispatches a few events that may be useful for tracking the feature flags throughout your application.
+Pennant dispatches a few events that may be useful for tracking feature flags throughout your application.
 
 ### `Illuminate\Pennant\Events\RetrievingKnownFeature` 
 
