@@ -1024,7 +1024,7 @@ The `change` method allows you to modify the type and attributes of existing col
         $table->string('name', 50)->change();
     });
 
-You must include all modifers you want to keep on the column definition explicitly. Any missing attribute will be dropped. For example, to retain nullable, default, and comment attributes, call each modifier explicitly:
+You must include all modifers you want to keep on the column definition explicitly. Any missing attribute will be dropped. For example, to retain unsigned, default, and comment attributes, call each modifier explicitly:
 
     Schema::table('users', function (Blueprint $table) {
         $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();
