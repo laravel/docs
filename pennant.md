@@ -272,7 +272,7 @@ If you need to manually flush the in-memory cache, you may use the `flushCache` 
 
 As previously mentioned, features are checked against the currently authenticated user by default. This may not always suit your needs. For one off feature checks, it is possible to specify the scope you would like to check the feature against.
 
-Imagine you have built a new billing experience that you are rolling out to entire teams at once, rather than individual users. You want the oldest teams have a slower rollout than the newer teams. Your feature Closure might look something like the following:
+Imagine you have built a new billing experience that you are rolling out to entire teams at once, rather than individual users. You want the oldest teams to have a slower rollout than the newer teams. Your feature Closure might look something like the following:
 
     use App\Models\Team;
     use Carbon\Carbon;
