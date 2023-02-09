@@ -102,7 +102,7 @@ For convenience, if a feature definition only returns a lottery, you may omit th
 
 Pennant also allows you to define class based features. Unlike closure based feature definitions, there is no need to register a class based feature in a service provider.
 
-When writing a feature class, you only need to define a `resolve` method, which will be invoked to resolve the feature's initial value for a given scope. Again, typically, the scope will be the currently authenticated user:
+When writing a feature class, you only need to define a `resolve` method, which will be invoked to resolve the feature's initial value for a given scope. Again, the scope will typically be the currently authenticated user:
 
 ```php
 <?php
