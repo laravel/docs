@@ -48,12 +48,12 @@ php artisan migrate
 <a name="configuration"></a>
 ## Configuration
 
-After publishing Pennant's assets, its configuration file will be located at `config/pennant.php`. This configuration file allows you to select the default driver and configure the individual drivers.
+After publishing Pennant's assets, its configuration file will be located at `config/pennant.php`. This configuration file allows you to select the default driver and more.
 
 <a name="creating-features"></a>
 ## Creating Features
 
-When creating a feature you will want to provide a name and a Closure that returns the initial value for the specific feature. Typically, features are defined in a service provider using the `Feature` facade. The Closure will be passed the "scope" for the feature check, which would commonly be the currently authenticated user.
+When creating a feature you will need to provide a name and a Closure. The Closure should return the initial value for the feature. Typically, features are defined in a service provider using the `Feature` facade. The Closure will be passed the "scope" for the feature check, which would commonly be the currently authenticated user.
 
 In this example, we will define a feature for rolling out a new API implementation incrementally to our application's users.
 
@@ -498,11 +498,11 @@ Pennant dispatches a few events that may be useful for tracking feature flags th
 
 ### `Illuminate\Pennant\Events\RetrievingKnownFeature` 
 
-This event is dispatched the first time a known feature is resolved during a request for a specific scope. This event can be useful to create and track metrics against the feature flags that are in-use throughout your application.
+This event is dispatched the first time a known feature is retrieved during a request for a specific scope. This event can be useful to create and track metrics against the feature flags that are in-use throughout your application.
 
 ### `Illuminate\Pennant\Events\RetrievingUnknownFeature` 
 
-This event is dispatched the first time an unknown feature is resolved during a request for the specific scope. This event can be useful if you have intended to remove a feature flag, but left some stray references to it throughout your application.
+This event is dispatched the first time an unknown feature is retrieved during a request for the specific scope. This event can be useful if you have intended to remove a feature flag, but left some stray references to it throughout your application.
 
 You may like to listen for this event and report or throw an exception when it occurs.
 
