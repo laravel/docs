@@ -12,6 +12,7 @@
 - [Scope](#scope)
     - [Specifying The Scope](#specifying-the-scope)
     - [Default Scope](#default-scope)
+    - [Nullable Scope](#nullable-scope)
     - [Identifying Scope](#identifying-scope)
 - [Rich Feature Values](#rich-feature-values)
 - [Eager Loading](#eager-loading)
@@ -357,6 +358,26 @@ Feature::active('billing-v2');
 
 Feature::for($user->team)->active('billing-v2');
 ```
+
+<a name="nullable-scope"></a>
+### Nullable Scope
+
+If the scope you are passing to a feature is potentially `null` you should ensure you account for that in your feature's definition. This may include making the scope's type nullable and also handling the `null` value in your definition logic.
+
+```php
+use App\Models\User;
+use Illuminate\Support\Lottery;
+use Laravel\Pennant\Feature;
+
+Feature::define('new-api', fn (User $user) => match (true) {// [tl! remove]
+Feature::define('new-api', fn (User|null $user) => match (true) {// [tl! add]
+    $user === null => true,// [tl! add]
+    $user->isInternalTeamMember() => true,
+    $user->isHighTrafficCustomer() => false,
+    default => Lottery::odds(1 / 100),
+});
+```
+
 
 <a name="identifying-scope"></a>
 ### Identifying Scope
