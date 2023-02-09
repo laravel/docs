@@ -7,10 +7,12 @@
     - [Class Based Features](#class-based-features)
 - [Checking Features](#checking-features)
     - [Conditional Execution](#conditional-execution)
+    - [Blade Directive](#blade-directive)
     - [In-Memory Cache](#in-memory-cache)
 - [Scope](#scope)
     - [Default Scope](#default-scope)
     - [Identifying Scope](#identifying-scope)
+- [Rich Feature Values](#rich-feature-values)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -239,6 +241,19 @@ Pennant offers the ability to conditionally execute a specific code block in a f
         // ...
     }
 
+<a name="blade-directive"></a>
+### Blade Directive
+
+To make checking features in Blade files a seamless experience, Pennant also offers a `@feature` directive.
+
+```blade
+@feature('billing-2.0')
+    <!-- ... -->
+@else
+    <!-- ... -->
+@endfeature
+```
+
 <a name="in-memory-cache"></a>
 ### In-Memory Cache
 
@@ -350,6 +365,32 @@ class User extends Model implements FeatureScopeable
 ```
 
 The Flag Rocket driver will now receive an instance of the `FlagRocketUser` to handle it as needed.
+
+<a name="rich-feature-values"></a>
+## Rich Feature Values
+
+Until now, we have shown features as being in a binary state, that is they are either active or inactive, but Pennant allows you to store rich values as well.
+
+Imagine you are testing 3 new colors for the "Buy now" button of your application. Instead of returning `true` or `false` from the feature definition, you may instead return a string.
+
+    use Illuminate\Support\Arr;
+    use Laravel\Pennant\Feature;
+
+    Feature::define('checkout-button', function (User $user) {
+        return Arr::random([
+            'blue-sapphire',
+            'seafoam-green',
+            'tart-orange',
+        ]);
+    });
+
+You may retrieve the value of the `'checkout-button'` feature using the `value` method on the `Feature` facade.
+
+    $color = Feature::value('checkout-button');
+
+- Blade
+
+> **Note** You may return an array as a rich value. The value returned will be JSON encoded when stored and JSON decoded when retrieved.
 
 <a name="events"></a>
 ## Events
