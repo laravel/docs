@@ -169,6 +169,12 @@ return Feature::for($user)->active('new-api')
         : $this->resolveLegacyApiResponse($request);
 ```
 
+> **Note** 
+> When using Pennant outside of an HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts.
+
+<a name="checking-class-based-features"></a>
+#### Checking Class Based Features
+
 For class based features, you should provide the class name when checking the feature:
 
 ```php
@@ -330,6 +336,7 @@ It is also possible to customize the default scope Pennant uses to check feature
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pennant\Feature;
 
@@ -340,9 +347,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Feature::resolveScopeUsing(function ($driver) {
-            return request()->user()->team;
-        });
+        Feature::resolveScopeUsing(fn ($driver) => Auth::user()?->team);
 
         // ...
     }
