@@ -559,7 +559,11 @@ Sometimes, it can be useful to purge an entire feature from storage. This is typ
 You may remove all stored values for a feature using the `purge` method:
 
 ```php
+// Purging a single feature...
 Feature::purge('new-api');
+
+// Purging multiple features...
+Feature::purge(['new-api', 'purchase-button']);
 ```
 
 If you would like to purge _all_ features from storage, you may invoke the `purge` method without any arguments:
@@ -572,6 +576,8 @@ As it can be useful to purge features as part of your application's deployment p
 
 ```sh
 php artisan pennant:purge new-api
+
+php artisan pennant:purge new-api purchase-button
 ```
 
 <a name="events"></a>
