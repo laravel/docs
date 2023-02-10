@@ -6,6 +6,7 @@
 - [Running Tests](#running-tests)
     - [Running Tests In Parallel](#running-tests-in-parallel)
     - [Reporting Test Coverage](#reporting-test-coverage)
+    - [Profiling Tests](#profiling-tests)
 
 <a name="introduction"></a>
 ## Introduction
@@ -204,4 +205,13 @@ You may use the `--min` option to define a minimum test coverage threshold for y
 
 ```shell
 php artisan test --coverage --min=80.3
+```
+
+<a name="profiling-tests"></a>
+### Profiling Tests
+
+Sometimes, you may wish to investigate the reason for your test suite's slow performance. To do so, you can use the `--profile` option, which will present you with a list of the top ten slowest tests:
+
+```shell
+php artisan test --profile
 ```
