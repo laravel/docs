@@ -8,6 +8,7 @@
 - [Checking Features](#checking-features)
     - [Conditional Execution](#conditional-execution)
     - [Blade Directive](#blade-directive)
+    - [Middleware](#middleware)
     - [In-Memory Cache](#in-memory-cache)
 - [Scope](#scope)
     - [Specifying The Scope](#specifying-the-scope)
@@ -274,6 +275,53 @@ To make checking features in Blade a seamless experience, Pennant offers a `@fea
 @else
     <!-- 'site-redesign' is inactive -->
 @endfeature
+```
+
+<a name="middleware"></a>
+### Middleware
+
+Pennant also includes a [middleware](/docs/{{version}}/middleware) that may be used to verify the currently authenticated user has access to a feature before a route is even invoked. To get started, you should add a middleware alias for the `EnsureFeaturesAreActive` middleware to your application's `app/Http/Kernel.php` file:
+
+```php
+use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
+
+protected $middlewareAliases = [
+    // ...
+    'features' => EnsureFeaturesAreActive::class,
+];
+```
+
+Next, you may assign the middleware to a route and specify the features that are required to access the route. If any of the specified features are inactive for the currently authenticated user, a `400 Bad Request` HTTP response will be returned by the route. Multiple features may be specified using a comma-delimited list:
+
+```php
+Route::get('/api/servers', function () {
+    // ...
+})->middleware(['features:new-api,servers-api']);
+```
+
+<a name="customizing-the-response"></a>
+#### Customizing The Response
+
+If you would like to customize the response that is returned by the middleware when one of the listed features is inactive, you may use the `whenInvalid` method provided by the `EnsureFeaturesAreActive` middleware. Typically, this method should be invoked within the `boot` method of one of your application's service providers:
+
+```php
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    EnsureFeaturesAreActive::whenInactive(
+        function (Request $request, array $features) {
+            return new Response(status: 403);
+        }
+    );
+
+    // ...
+}
 ```
 
 <a name="in-memory-cache"></a>
