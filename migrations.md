@@ -319,6 +319,44 @@ The `table` method on the `Schema` facade may be used to update existing tables.
         $table->integer('votes');
     });
 
+In addition, you can create a migration for updating a table having `table` and table name included using:
+
+```shell
+php artisan create:migration update_to_users_table
+```
+A migration file for updating users table is created as:
+
+    use Illuminate\Database\Migrations\Migration;
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
+    class UpdateToUsersTable extends Migration
+    {
+        /**
+        * Run the migrations.
+        *
+        * @return void
+        */
+        public function up()
+        {
+            Schema::table('users', function (Blueprint $table) {
+                //
+            });
+        }
+
+        /**
+        * Reverse the migrations.
+        *
+        * @return void
+        */
+        public function down()
+        {
+            Schema::table('users', function (Blueprint $table) {
+                //
+            });
+        }
+    }
+
 <a name="renaming-and-dropping-tables"></a>
 ### Renaming / Dropping Tables
 
