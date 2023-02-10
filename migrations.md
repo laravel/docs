@@ -9,8 +9,7 @@
 - [Tables](#tables)
     - [Creating Tables](#creating-tables)
     - [Updating Tables](#updating-tables)
-    - [Renaming Tables](#renaming-tables)
-    - [Dropping Tables](#dropping-tables)
+    - [Renaming / Dropping Tables](#renaming-and-dropping-tables)
 - [Columns](#columns)
     - [Creating Columns](#creating-columns)
     - [Available Column Types](#available-column-types)
@@ -320,17 +319,14 @@ The `table` method on the `Schema` facade may be used to update existing tables.
         $table->integer('votes');
     });
 
-<a name="renaming-tables"></a>
-### Renaming Tables
+<a name="renaming-and-dropping-tables"></a>
+### Renaming / Dropping Tables
 
 To rename an existing database table, use the `rename` method:
 
     use Illuminate\Support\Facades\Schema;
 
     Schema::rename($from, $to);
-
-<a name="dropping-tables"></a>
-### Dropping Tables
 
 To drop an existing table, you may use the `drop` or `dropIfExists` methods:
 
@@ -1024,7 +1020,7 @@ The `change` method allows you to modify the type and attributes of existing col
         $table->string('name', 50)->change();
     });
 
-You must include all modifers you want to keep on the column definition explicitly. Any missing attribute will be dropped. For example, to retain unsigned, default, and comment attributes, call each modifier explicitly:
+When modifying a column, you must explicitly include all of the modifiers you want to keep on the column definition - any missing attribute will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column:
 
     Schema::table('users', function (Blueprint $table) {
         $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();
@@ -1050,7 +1046,7 @@ use Illuminate\Database\DBAL\TimestampType;
 ```
 
 > **Warning**  
-> When using `doctrine/dbal` package, the following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, `ulid`, and `uuid`. To modify a `timestamp` column type a Doctrine type must be registered.
+> When using the `doctrine/dbal` package, the following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, `ulid`, and `uuid`.
 
 <a name="renaming-columns"></a>
 ### Renaming Columns
