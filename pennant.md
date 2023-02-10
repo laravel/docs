@@ -346,7 +346,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Feature::resolveScopeUsing(fn ($driver) => Auth::user()->team);
+        Feature::resolveScopeUsing(fn ($driver) => Auth::user()?->team);
 
         // ...
     }
