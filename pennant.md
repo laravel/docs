@@ -168,6 +168,12 @@ return Feature::for($user)->active('new-api')
         : $this->resolveLegacyApiResponse($request);
 ```
 
+> **Note** 
+> When using Pennant outside of a HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts.
+
+<a name="checking-class-based-features"></a>
+#### Checking Class Based Features
+
 For class based features, you should provide the class name when checking the feature:
 
 ```php
@@ -214,8 +220,6 @@ Feature::allAreInactive(['new-api', 'site-redesign']);
 // Determine if any of the given features are inactive...
 Feature::someAreInactive(['new-api', 'site-redesign']);
 ```
-
-> **Note** When using Pennant outside of a HTTP context, e.g. in an Artisan command or a queued job, you should manually [specify the scope](#specifying-the-scope) when checking a feature or set the [default scope](#default-scope).
 
 <a name="conditional-execution"></a>
 ### Conditional Execution
