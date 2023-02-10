@@ -37,19 +37,11 @@ Let's look at a simple example:
     class UserController extends Controller
     {
         /**
-         * The user repository implementation.
-         *
-         * @var UserRepository
-         */
-        protected $users;
-
-        /**
          * Create a new controller instance.
          */
-        public function __construct(UserRepository $users)
-        {
-            $this->users = $users;
-        }
+        public function __construct(
+            protected UserRepository $users,
+        ) {}
 
         /**
          * Show the profile for the given user.
@@ -396,19 +388,11 @@ For example, you may type-hint a repository defined by your application in a con
     class UserController extends Controller
     {
         /**
-         * The user repository instance.
-         *
-         * @var \App\Repositories\UserRepository
-         */
-        protected $users;
-
-        /**
          * Create a new controller instance.
          */
-        public function __construct(UserRepository $users)
-        {
-            $this->users = $users;
-        }
+        public function __construct(
+            protected UserRepository $users,
+        ) {}
 
         /**
          * Show the user with the given ID.

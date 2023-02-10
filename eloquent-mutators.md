@@ -655,19 +655,11 @@ A classic example of an inbound only cast is a "hashing" cast. For example, we m
     class Hash implements CastsInboundAttributes
     {
         /**
-         * The hashing algorithm.
-         *
-         * @var string
-         */
-        protected $algorithm;
-
-        /**
          * Create a new cast class instance.
          */
-        public function __construct(string $algorithm = null)
-        {
-            $this->algorithm = $algorithm;
-        }
+        public function __construct(
+            protected string $algorithm = null,
+        ) {}
 
         /**
          * Prepare the given value for storage.

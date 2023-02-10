@@ -201,19 +201,11 @@ Now that we have registered the composer, the `compose` method of the `App\View\
     class ProfileComposer
     {
         /**
-         * The user repository implementation.
-         *
-         * @var \App\Repositories\UserRepository
-         */
-        protected $users;
-
-        /**
          * Create a new profile composer.
          */
-        public function __construct(UserRepository $users)
-        {
-            $this->users = $users;
-        }
+        public function __construct(
+            protected UserRepository $users,
+        ) {}
 
         /**
          * Bind data to the view.

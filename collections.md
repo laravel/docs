@@ -1656,17 +1656,11 @@ The `pipeInto` method creates a new instance of the given class and passes the c
     class ResourceCollection
     {
         /**
-         * The Collection instance.
-         */
-        public $collection;
-
-        /**
          * Create a new ResourceCollection instance.
          */
-        public function __construct(Collection $collection)
-        {
-            $this->collection = $collection;
-        }
+        public function __construct(
+          public Collection $collection,
+        ) {}
     }
 
     $collection = collect([1, 2, 3]);

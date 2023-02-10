@@ -736,27 +736,12 @@ You should define all of the component's data attributes in its class constructo
     class Alert extends Component
     {
         /**
-         * The alert type.
-         *
-         * @var string
-         */
-        public $type;
-
-        /**
-         * The alert message.
-         *
-         * @var string
-         */
-        public $message;
-
-        /**
          * Create the component instance.
          */
-        public function __construct(string $type, string $message)
-        {
-            $this->type = $type;
-            $this->message = $message;
-        }
+        public function __construct(
+            public string $type,
+            public string $message,
+        ) {}
 
         /**
          * Get the view / contents that represent the component.

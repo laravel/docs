@@ -49,19 +49,11 @@ For example, take a look at this event listener:
     class CacheOrderInformation
     {
         /**
-         * The Redis factory implementation.
-         *
-         * @var \Illuminate\Contracts\Redis\Factory
-         */
-        protected $redis;
-
-        /**
          * Create a new event handler instance.
          */
-        public function __construct(Factory $redis)
-        {
-            $this->redis = $redis;
-        }
+        public function __construct(
+            protected Factory $redis,
+        ) {}
 
         /**
          * Handle the event.

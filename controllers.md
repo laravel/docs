@@ -466,17 +466,11 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
     class UserController extends Controller
     {
         /**
-         * The user repository instance.
-         */
-        protected $users;
-
-        /**
          * Create a new controller instance.
          */
-        public function __construct(UserRepository $users)
-        {
-            $this->users = $users;
-        }
+        public function __construct(
+            protected UserRepository $users,
+        ) {}
     }
 
 <a name="method-injection"></a>

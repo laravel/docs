@@ -305,19 +305,11 @@ Horizon allows you to assign “tags” to jobs, including mailables, broadcast 
         use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
         /**
-         * The video instance.
-         *
-         * @var \App\Models\Video
-         */
-        public $video;
-
-        /**
          * Create a new job instance.
          */
-        public function __construct(Video $video)
-        {
-            $this->video = $video;
-        }
+        public function __construct(
+            public Video $video,
+        ) {}
 
         /**
          * Execute the job.
