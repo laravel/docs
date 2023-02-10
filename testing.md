@@ -210,7 +210,7 @@ php artisan test --coverage --min=80.3
 <a name="profiling-tests"></a>
 ### Profiling Tests
 
-Sometimes, you may wish to investigate the reason for your test suite's slow performance. To do so, you can use the `--profile` option, which will present you with a list of the top ten slowest tests:
+The Artisan test runner also includes a convenient mechanism for listing your application's slowest tests. Invoke the `test` command with the `--profile` option to be presented with a list of your ten slowest tests, allowing you to easily investigate which tests can be improved to speed up your test suite:
 
 ```shell
 php artisan test --profile
