@@ -12,6 +12,7 @@
 - [Scope](#scope)
     - [Specifying The Scope](#specifying-the-scope)
     - [Default Scope](#default-scope)
+    - [Nullable Scope](#nullable-scope)
     - [Identifying Scope](#identifying-scope)
 - [Rich Feature Values](#rich-feature-values)
 - [Eager Loading](#eager-loading)
@@ -356,6 +357,25 @@ Feature::active('billing-v2');
 // Is now equivalent to...
 
 Feature::for($user->team)->active('billing-v2');
+```
+
+<a name="nullable-scope"></a>
+### Nullable Scope
+
+If the scope you are passing to a feature is potentially `null`, you should account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is usually not an authenticated user in these contexts, the default scope will be `null`. If you do not always [explictly specify your feature scope](#specifying-the-scope), you should ensure the scope's type is nullable and handle the `null` scope value in your feature definition logic:
+
+```php
+use App\Models\User;
+use Illuminate\Support\Lottery;
+use Laravel\Pennant\Feature;
+
+Feature::define('new-api', fn (User $user) => match (true) {// [tl! remove]
+Feature::define('new-api', fn (User|null $user) => match (true) {// [tl! add]
+    $user === null => true,// [tl! add]
+    $user->isInternalTeamMember() => true,
+    $user->isHighTrafficCustomer() => false,
+    default => Lottery::odds(1 / 100),
+});
 ```
 
 <a name="identifying-scope"></a>
