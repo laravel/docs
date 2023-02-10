@@ -433,11 +433,11 @@ For example, imagine you are testing three new colors for the "Buy now" button o
 use Illuminate\Support\Arr;
 use Laravel\Pennant\Feature;
 
-Feature::define('purchase-button', fn (User $user) => Arr::random(
+Feature::define('purchase-button', fn (User $user) => Arr::random([
     'blue-sapphire',
     'seafoam-green',
     'tart-orange',
-));
+]));
 ```
 
 You may retrieve the value of the `purchase-button` feature using the `value` method:
