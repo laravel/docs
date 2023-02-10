@@ -1039,6 +1039,7 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
     use MailchimpTransactional\ApiClient;
     use Symfony\Component\Mailer\SentMessage;
     use Symfony\Component\Mailer\Transport\AbstractTransport;
+    use Symfony\Component\Mime\Address;
     use Symfony\Component\Mime\MessageConverter;
 
     class MailchimpTransport extends AbstractTransport
@@ -1061,7 +1062,7 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
 
             $this->client->messages->send(['message' => [
                 'from_email' => $email->getFrom(),
-                'to' => collect($email->getTo())->map(function ($email) {
+                'to' => collect($email->getTo())->map(function (Address $email) {
                     return ['email' => $email->getAddress(), 'type' => 'to'];
                 })->all(),
                 'subject' => $email->getSubject(),

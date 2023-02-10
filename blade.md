@@ -768,10 +768,9 @@ Component constructor arguments should be specified using `camelCase`, while `ke
     /**
      * Create the component instance.
      */
-    public function __construct(string $alertType)
-    {
-        $this->alertType = $alertType;
-    }
+    public function __construct(
+        public string $alertType,
+    ) {}
 
 The `$alertType` argument may be provided to the component like so:
 
@@ -868,12 +867,11 @@ use App\Services\AlertCreator;
 /**
  * Create the component instance.
  */
-public function __construct(AlertCreator $creator, string $type, string $message)
-{
-    $this->creator = $creator;
-    $this->type = $type;
-    $this->message = $message;
-}
+public function __construct(
+    public AlertCreator $creator,
+    public string $type,
+    public string $message,
+) {}
 ```
 
 <a name="hiding-attributes-and-methods"></a>
@@ -890,18 +888,18 @@ If you would like to prevent some public methods or properties from being expose
     class Alert extends Component
     {
         /**
-         * The alert type.
-         *
-         * @var string
-         */
-        public $type;
-
-        /**
          * The properties / methods that should not be exposed to the component template.
          *
          * @var array
          */
         protected $except = ['type'];
+
+        /**
+         * Create the component instance.
+         */
+        public function __construct(
+            public string $type,
+        ) {}
     }
 
 <a name="component-attributes"></a>

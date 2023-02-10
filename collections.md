@@ -1347,10 +1347,9 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
         /**
          * Create a new currency instance.
          */
-        function __construct(string $code)
-        {
-            $this->code = $code;
-        }
+        function __construct(
+            public string $code
+        ) {}
     }
 
     $collection = collect(['USD', 'EUR', 'GBP']);
@@ -1934,7 +1933,7 @@ The `reduceSpread` method reduces the collection to an array of values, passing 
 
     [$creditsRemaining, $batch] = Image::where('status', 'unprocessed')
         ->get()
-        ->reduceSpread(function ($creditsRemaining, $batch, $image) {
+        ->reduceSpread(function (int $creditsRemaining, Collection $batch, Image $image) {
             if ($creditsRemaining >= $image->creditsRequired()) {
                 $batch->push($image);
 

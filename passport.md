@@ -255,10 +255,8 @@ Sometimes you may wish to customize the routes defined by Passport. To achieve t
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         Passport::ignoreRoutes();
     }

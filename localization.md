@@ -192,10 +192,8 @@ In these cases, Laravel allows you to register a custom formatting handler for t
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Lang::stringable(function (Money $money) {
             return $money->formatTo('en_GB');

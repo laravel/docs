@@ -1232,11 +1232,8 @@ Alternatively, you can perform more precise customization by [listening](/docs/{
     {
         /**
          * Handle received Paddle webhooks.
-         *
-         * @param  \Laravel\Paddle\Events\WebhookReceived  $event
-         * @return void
          */
-        public function handle(WebhookReceived $event)
+        public function handle(WebhookReceived $event): void
         {
             if ($event->payload['alert_name'] === 'subscription_payment_failed') {
                 // Handle the failed subscription payment...
