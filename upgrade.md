@@ -38,6 +38,7 @@
 - [The `Redirect::home` Method](#redirect-home)
 - [The `Bus::dispatchNow` Method](#dispatch-now)
 - [ULID Columns](#ulid-columns)
+- [Contract type hints](#contract-type-hints)
 
 </div>
 
@@ -259,6 +260,22 @@ public function rules()
         },
     ],
 }
+```
+
+<a name="contract-type-hints"></a>
+### Contract Type Hints
+
+#### Attribute Cast Contracts
+**Likelihood Of Impact: Low**
+
+The `CastsAttributes`, `CastsInboundAttributes`, and `SerializesCastableAttributes` contracts now type-hint the `$model` and `$value` parameters. If you have a custom cast class implementing methods of these contracts, be sure to add type-hints for these parameters:
+
+```php
+public function get(Model $model, string $key, mixed $value, array $attributes);
+
+public function set(Model $model, string $key, mixed $value, array $attributes);
+
+public function serialize(Model $model, string $key, mixed $value, array $attributes);
 ```
 
 <a name="miscellaneous"></a>
