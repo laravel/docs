@@ -362,7 +362,7 @@ Feature::for($user->team)->active('billing-v2');
 <a name="nullable-scope"></a>
 ### Nullable Scope
 
-If the scope you are passing to a feature is potentially `null`, you should account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is often not an authenticated user in these contexts, the default scope will be `null`. If you do not always [explictly specify your feature scope](#specifying-the-scope), you should ensure the scope's type is nullable and handle the `null` scope value in your feature definition logic:
+If the scope you are passing to a feature is potentially `null`, you should account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is usually not an authenticated user in these contexts, the default scope will be `null`. If you do not always [explictly specify your feature scope](#specifying-the-scope), you should ensure the scope's type is nullable and handle the `null` scope value in your feature definition logic:
 
 ```php
 use App\Models\User;
