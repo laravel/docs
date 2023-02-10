@@ -502,7 +502,7 @@ Pennant's included Blade directive also makes it easy to conditionally render co
 @elsefeature('purchase-button', 'seafoam-green')
     <!-- 'seafoam-green' is active -->
 @elsefeature('purchase-button', 'tart-orange')
-    <!-- 'tart-oranage' is active -->
+    <!-- 'tart-orange' is active -->
 @endfeature
 ```
 
