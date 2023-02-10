@@ -169,7 +169,7 @@ return Feature::for($user)->active('new-api')
 ```
 
 > **Note** 
-> When using Pennant outside of a HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts.
+> When using Pennant outside of an HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts.
 
 <a name="checking-class-based-features"></a>
 #### Checking Class Based Features
