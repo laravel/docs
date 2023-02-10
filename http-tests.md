@@ -1056,7 +1056,7 @@ Assert that the session contains the given piece of data:
 
 If needed, a closure can be provided as the second argument to the `assertSessionHas` method. The assertion will pass if the closure returns `true`:
 
-    $response->assertSessionHas($key, function ($value) {
+    $response->assertSessionHas($key, function (User $value) {
         return $value->name === 'Taylor Otwell';
     });
 
@@ -1069,7 +1069,7 @@ Assert that the session has a given value in the [flashed input array](/docs/{{v
 
 If needed, a closure can be provided as the second argument to the `assertSessionHasInput` method. The assertion will pass if the closure returns `true`:
 
-    $response->assertSessionHasInput($key, function ($value) {
+    $response->assertSessionHasInput($key, function (string $value) {
         return Crypt::decryptString($value) === 'secret';
     });
 

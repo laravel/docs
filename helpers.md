@@ -928,7 +928,7 @@ You may also sort the array by the results of a given closure:
         ['name' => 'Chair'],
     ];
 
-    $sorted = array_values(Arr::sortDesc($array, function ($value) {
+    $sorted = array_values(Arr::sortDesc($array, function (array $value) {
         return $value['name'];
     }));
 
@@ -4072,8 +4072,8 @@ The `value` function returns the value it is given. However, if you pass a closu
     
 Additional arguments may be passed to the `value` function. If the first argument is a closure then the additional parameters will be passed to the closure as arguments, otherwise they will be ignored:
 
-    $result = value(function ($name) {
-        return $parameter;
+    $result = value(function (string $name) {
+        return $name;
     }, 'Taylor');
     
     // 'Taylor'

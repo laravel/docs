@@ -954,7 +954,7 @@ Alternatively, you may specify the job's connection by calling the `onConnection
         /**
          * Create a new job instance.
          */
-        public function __construct(): void
+        public function __construct()
         {
             $this->onConnection('sqs');
         }

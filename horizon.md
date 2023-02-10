@@ -143,7 +143,7 @@ Horizon exposes a dashboard at the `/horizon` URI. By default, you will only be 
 <a name="alternative-authentication-strategies"></a>
 #### Alternative Authentication Strategies
 
-Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function ($user)` closure signature above to `function ($user = null)` in order to force Laravel to not require authentication.
+Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function (User $user)` closure signature above to `function (User $user = null)` in order to force Laravel to not require authentication.
 
 <a name="silenced-jobs"></a>
 ### Silenced Jobs

@@ -184,10 +184,9 @@ This statement tells the container that it should inject the `RedisEventPusher` 
     /**
      * Create a new class instance.
      */
-    public function __construct(EventPusher $pusher)
-    {
-        $this->pusher = $pusher;
-    }
+    public function __construct(
+        protected EventPusher $pusher
+    ) {}
 
 <a name="contextual-binding"></a>
 ### Contextual Binding
@@ -248,13 +247,6 @@ Occasionally, you may have a class that receives an array of typed objects using
     class Firewall
     {
         /**
-         * The logger instance.
-         *
-         * @var \App\Services\Logger
-         */
-        protected $logger;
-
-        /**
          * The filter instances.
          *
          * @var array
@@ -264,9 +256,10 @@ Occasionally, you may have a class that receives an array of typed objects using
         /**
          * Create a new class instance.
          */
-        public function __construct(Logger $logger, Filter ...$filters)
-        {
-            $this->logger = $logger;
+        public function __construct(
+            protected Logger $logger,
+            Filter ...$filters,
+        ) {
             $this->filters = $filters;
         }
     }
@@ -366,10 +359,9 @@ If you would like to have the Laravel container instance itself injected into a 
     /**
      * Create a new class instance.
      */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
+    public function __construct(
+        protected Container $container
+    ) {}
 
 <a name="automatic-injection"></a>
 ### Automatic Injection

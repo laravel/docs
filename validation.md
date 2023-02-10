@@ -497,10 +497,8 @@ Likewise, if you need to normalize any request data after validation is complete
 
     /**
      * Handle a passed validation attempt.
-     *
-     * @return void
      */
-    protected function passedValidation()
+    protected function passedValidation(): void
     {
         $this->replace(['name' => 'Taylor']);
     }

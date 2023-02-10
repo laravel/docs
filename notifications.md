@@ -209,9 +209,9 @@ Or, if you would like to specify a specific queue connection that should be used
     /**
      * Determine which connections should be used for each notification channel.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function viaConnections()
+    public function viaConnections(): array
     {
         return [
             'mail' => 'redis',
