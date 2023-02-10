@@ -104,13 +104,42 @@ For convenience, if a feature definition only returns a lottery, you may omit th
 
 Pennant also allows you to define class based features. Unlike closure based feature definitions, there is no need to register a class based feature in a service provider.
 
-When writing a feature class, you only need to define a `resolve` method, which will be invoked to resolve the feature's initial value for a given scope. Again, the scope will typically be the currently authenticated user:
+
+You may generate a feature class using the `pennant:feature` Artisan command. The generated feature will be placed in the `app/Features` directory. If this directory does not exist in your application, Laravel will create it for you:
+
+```sh
+php artisan pennant:feature NewApi
+```
+
+The `pennant:feature` command will generate an empty feature class.
 
 ```php
 <?php
 
 namespace App\Features;
 
+use Illuminate\Support\Lottery;
+
+class NewApi
+{
+    /**
+     * Resolve the feature's initial value.
+     */
+    public function resolve(mixed $scope): mixed
+    {
+        return false;
+    }
+}
+```
+
+The feature class's `resolve` method will be invoked to resolve the feature's initial value for a given scope. Again, the scope will typically be the currently authenticated user:
+
+```php
+<?php
+
+namespace App\Features;
+
+use App\Models\User;
 use Illuminate\Support\Lottery;
 
 class NewApi
@@ -426,6 +455,7 @@ Until now, we have primarily shown features as being in a binary state, meaning 
 For example, imagine you are testing three new colors for the "Buy now" button of your application. Instead of returning `true` or `false` from the feature definition, you may instead return a string:
 
 ```php
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Laravel\Pennant\Feature;
 
