@@ -302,7 +302,7 @@ Route::get('/api/servers', function () {
 <a name="customizing-the-response"></a>
 #### Customizing The Response
 
-If you would like to customize the response that is returned by the middleware when one of the listed features is inactive, you may use the `whenInvalid` method provided by the `EnsureFeaturesAreActive` middleware. Typically, this method should be invoked within the `boot` method of one of your application's service providers:
+If you would like to customize the response that is returned by the middleware when one of the listed features is inactive, you may use the `whenInactive` method provided by the `EnsureFeaturesAreActive` middleware. Typically, this method should be invoked within the `boot` method of one of your application's service providers:
 
 ```php
 use Illuminate\Http\Request;
