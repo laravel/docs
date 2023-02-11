@@ -810,6 +810,12 @@ You may refer to the API documentation for both the [underlying class of the Rou
 ## Get Middleware Of Route
 You may use the ```controllerMiddleware```, ```gatherMiddleware```, and ```middleware``` methods on the Route facade to access information about the middleware of set on the route:
 
+```
+Route::getCurrentRoute()->gatherMiddleware();
+Route::getCurrentRoute()->middleware();
+Route::getCurrentRoute()->controllerMiddleware();
+```
+
 <a name="cors"></a>
 ## Cross-Origin Resource Sharing (CORS)
 
