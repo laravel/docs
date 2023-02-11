@@ -816,6 +816,10 @@ Route::getCurrentRoute()->gatherMiddleware(); // array
 Route::getCurrentRoute()->middleware(); // array
 Route::getCurrentRoute()->controllerMiddleware(); // array
 ```
+Or you can use property of current route:
+```
+Route::getCurrentRoute()->computedMiddleware;
+```
 
 <a name="cors"></a>
 ## Cross-Origin Resource Sharing (CORS)
