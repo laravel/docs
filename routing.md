@@ -25,6 +25,7 @@
     - [Attaching Rate Limiters To Routes](#attaching-rate-limiters-to-routes)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing The Current Route](#accessing-the-current-route)
+- [Get Middleware Of Route](#get-middleware-of-route)
 - [Cross-Origin Resource Sharing (CORS)](#cors)
 - [Route Caching](#route-caching)
 
