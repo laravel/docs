@@ -548,6 +548,14 @@ You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in ord
             return $notification->order->id === $order->id;
         }
     );
+    
+You also can test anonymous notifiables:
+
+    use Illuminate\Notifications\AnonymousNotifiable;
+    
+    Notification::assertSentTo(new AnonymousNotifiable(), Notification::class, function($notification, $channels, $notifiable) {
+        return $notifiable->routes['mail'] == 'mail@example.com';
+    });
 
 <a name="on-demand-notifications"></a>
 #### On-Demand Notifications
