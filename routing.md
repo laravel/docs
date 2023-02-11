@@ -807,6 +807,9 @@ You may use the `current`, `currentRouteName`, and `currentRouteAction` methods 
 
 You may refer to the API documentation for both the [underlying class of the Route facade](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) and [Route instance](https://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) to review all of the methods that are available on the router and route classes.
 
+## Get Middleware Of Route
+You may use the ```controllerMiddleware```, ```gatherMiddleware```, and ```middleware``` methods on the Route facade to access information about the middleware of set on the route:
+
 <a name="cors"></a>
 ## Cross-Origin Resource Sharing (CORS)
 
