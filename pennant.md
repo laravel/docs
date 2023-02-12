@@ -508,6 +508,23 @@ Pennant's included Blade directive also makes it easy to conditionally render co
 
 > **Note** When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
 
+You may even return arrays from the feature. For example, imagine you are rolling out new ways of logging into your application and want to restrict the new auth providers to internal team members only. You can return the available providers as an array:
+
+```php
+use Laravel\Pennant\Feature;
+
+Feature::define('auth-providers', fn (User $user) => match(true) {
+    $user->isInternalTeamMember() => ['email', 'facebook', 'twitter'],
+    default => ['email', 'facebook'],
+});
+```
+
+You may retrieve the list of the `auth-providers` feature using the `value` method, which will return an array:
+
+```php
+$authProviders = Feature::value('auth-providers');
+```
+
 <a name="eager-loading"></a>
 ## Eager Loading
 
