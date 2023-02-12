@@ -166,6 +166,12 @@ php artisan route:list --only-vendor
 ### Extending Routes
 Routes are "macroable", which allows you to add additional methods to the ```Route``` class at run time.The Illuminate\Routing\Route class' macro method accepts a closure that will be executed when your macro is called.
 
+Typically, you should declare collection macros in the ```boot``` method of a <a href="https://laravel.com/docs/9.x/providers">service provider</a>.
+
+```
+
+```
+
 <a name="route-parameters"></a>
 ## Route Parameters
 
