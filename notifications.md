@@ -1019,10 +1019,6 @@ The package includes a [configuration file](https://github.com/laravel/vonage-no
 After defining your keys, you should set a `VONAGE_SMS_FROM` environment variable that defines the phone number that your SMS messages should be sent from by default. You may generate this phone number within the Vonage control panel:
 
     VONAGE_SMS_FROM=15556666666
-    
-Alternatively, you can use a string that will be displayed as the sender :
-
-    VONAGE_SMS_FROM="My Laravel App"
 
 <a name="formatting-sms-notifications"></a>
 ### Formatting SMS Notifications
