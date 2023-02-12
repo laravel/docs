@@ -169,7 +169,17 @@ Routes are "macroable", which allows you to add additional methods to the ```Rou
 Typically, you should declare collection macros in the ```boot``` method of a <a href="https://laravel.com/docs/9.x/providers">service provider</a>.
 
 ```
+Route::macro('laravel', function ($prefix = '/') {
+    Route::group(['prefix' => $prefix], function () {
+        $this->get('milwad', function () {
+            return 'milwad';
+        });
+    });
+});
 
+// routes/web.php
+
+Route::laravel();
 ```
 
 <a name="route-parameters"></a>
