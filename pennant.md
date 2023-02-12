@@ -21,6 +21,9 @@
     - [Bulk Updates](#bulk-updates)
     - [Purging Features](#purging-features)
 - [Events](#events)
+- [Adding Custom Drivers](#adding-custom-drivers)
+    - [Implementing The Driver](#implementing-the-driver)
+    - [Registering The Driver](#registering-the-driver)
 
 <a name="introduction"></a>
 ## Introduction
@@ -669,3 +672,73 @@ class EventServiceProvider extends ServiceProvider
 ### `Laravel\Pennant\Events\DynamicallyDefiningFeature`
 
 This event is dispatched when a class based feature is being dynamically checked for the first time during a request.
+
+<a name="adding-custom-drivers"></a>
+## Adding Custom Drivers
+
+<a name="implementing-the-driver"></a>
+#### Implementing The Driver
+
+If none of the existing feature storage drivers fit your application's needs, its possible to write your own driver. Your custom driver should implement the `Laravel\Pennant\Contracts\Driver` [contract](/docs/{{version}}/contracts). A stubbed Redis implementation may look like the following:
+
+```php
+<?php
+
+namespace App\Extensions;
+    
+use Laravel\Pennant\Contracts\Driver;
+
+class RedisFeatureDriver implements Driver
+{
+    public function define(string $feature, callable $resolver) {}
+    public function defined() {}
+    public function get(string $feature, mixed $scope) {}
+    public function set(string $feature, mixed $scope, mixed $value) {}
+    public function setForAllScopes(string $feature, mixed $value) {}
+    public function delete(string $feature, mixed $scope) {}
+    public function purge(array|null $features) {}
+    public function load(array $features) {}
+}
+```
+
+> **Note**  
+> Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`.
+
+<a name="registering-the-driver"></a>
+#### Registering The Driver
+
+Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Pennant, you may use the `extend` method provided by the `Feature` [facade](/docs/{{version}}/facades). You should call the `extend` method from the `boot` method of a [service provider](/docs/{{version}}/providers). You may do this from the existing `App\Providers\AppServiceProvider`:
+
+```php
+<?php
+
+namespace App\Providers;
+
+use App\Extensions\RedisFeatureDriver;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Pennant\Feature;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        // ...
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Feature::extend('redis', function (Application $app) {
+            return new RedisFeatureDriver($app->make('redis'), $app->make('events'), []);
+        });
+    }
+}
+```
+
+Once the driver has been registered, you may use the `redis` driver in your `config/pennant.php` configuration file.
