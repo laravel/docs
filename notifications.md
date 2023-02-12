@@ -1016,9 +1016,13 @@ Sending SMS notifications in Laravel is powered by [Vonage](https://www.vonage.c
 
 The package includes a [configuration file](https://github.com/laravel/vonage-notification-channel/blob/3.x/config/vonage.php). However, you are not required to export this configuration file to your own application. You can simply use the `VONAGE_KEY` and `VONAGE_SECRET` environment variables to define your Vonage public and secret keys.
 
-After defining your keys, you may set a `VONAGE_SMS_FROM` environment variable that defines the phone number that your SMS messages should be sent from by default. You may generate this phone number within the Vonage control panel:
+After defining your keys, you should set a `VONAGE_SMS_FROM` environment variable that defines the phone number that your SMS messages should be sent from by default. You may generate this phone number within the Vonage control panel:
 
     VONAGE_SMS_FROM=15556666666
+    
+Alternatively, you can use a string that will be displayed as the sender :
+
+    VONAGE_SMS_FROM="My Laravel App"
 
 <a name="formatting-sms-notifications"></a>
 ### Formatting SMS Notifications
