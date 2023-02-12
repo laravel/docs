@@ -162,6 +162,7 @@ Likewise, you may also instruct Laravel to only show routes that are defined by 
 php artisan route:list --only-vendor
 ```
 
+<a name="extending-routes"></a>
 ## Extending Routes
 
 <a name="route-parameters"></a>
