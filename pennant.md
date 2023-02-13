@@ -296,8 +296,10 @@ Next, you may assign the middleware to a route and specify the features that are
 ```php
 Route::get('/api/servers', function () {
     // ...
-})->middleware(['features:new-api,servers-api']);
+})->middleware(['auth', 'features:new-api,servers-api']);
 ```
+
+> **Note** As the `feature` middleware will check against the currently authenticated user, you should ensure that any authentication related middleware is applied _before_ the `feature` middleware.
 
 <a name="customizing-the-response"></a>
 #### Customizing The Response
