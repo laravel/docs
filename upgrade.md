@@ -55,6 +55,10 @@
 
 **Likelihood Of Impact: High**
 
+#### Composer 2.2 Required
+
+Laravel now requires Composer 2.2 or greater.
+
 #### PHP 8.1.0 Required
 
 Laravel now requires PHP 8.1.0 or greater.
