@@ -44,6 +44,10 @@
     - [Failed Job Events](#failed-job-events)
 - [Clearing Jobs From Queues](#clearing-jobs-from-queues)
 - [Monitoring Your Queues](#monitoring-your-queues)
+- [Testing](#testing)
+    - [Faking A Subset Of Jobs](#faking-a-subset-of-jobs)
+    - [Testing Job Chains](#testing-job-chains)
+    - [Testing Job Batches](#testing-job-batches)
 - [Job Events](#job-events)
 
 <a name="introduction"></a>
@@ -1968,6 +1972,138 @@ public function boot(): void
     });
 }
 ```
+
+<a name="testing"></a>
+## Testing
+
+When testing code that dispatches jobs, you may wish to instruct Laravel to not actually execute the job itself, since the job's code can be tested directly and separately of the code that dispatches it. Of course, to test the job itself, you may instantiate a job instance and invoke the `handle` method directly in your test.
+
+You may use the `Queue` facade's `fake` method to prevent queued jobs from actually being pushed to the queue. After calling the `Queue` facade's `fake` method, you may then assert that the application attempted to push jobs to the queue:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use App\Jobs\AnotherJob;
+    use App\Jobs\FinalJob;
+    use App\Jobs\ShipOrder;
+    use Illuminate\Support\Facades\Queue;
+    use Tests\TestCase;
+
+    class ExampleTest extends TestCase
+    {
+        public function test_orders_can_be_shipped(): void
+        {
+            Queue::fake();
+
+            // Perform order shipping...
+
+            // Assert that no jobs were pushed...
+            Queue::assertNothingPushed();
+
+            // Assert a job was pushed to a given queue...
+            Queue::assertPushedOn('queue-name', ShipOrder::class);
+
+            // Assert a job was pushed twice...
+            Queue::assertPushed(ShipOrder::class, 2);
+
+            // Assert a job was not pushed...
+            Queue::assertNotPushed(AnotherJob::class);
+
+            // Assert that a Closure was pushed to the queue...
+            Queue::assertClosurePushed();
+        }
+    }
+
+You may pass a closure to the `assertPushed` or `assertNotPushed` methods in order to assert that a job was pushed that passes a given "truth test". If at least one job was pushed that passes the given truth test then the assertion will be successful:
+
+    Queue::assertPushed(function (ShipOrder $job) use ($order) {
+        return $job->order->id === $order->id;
+    });
+
+<a name="faking-a-subset-of-jobs"></a>
+### Faking A Subset Of Jobs
+
+If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:
+
+    public function test_orders_can_be_shipped(): void
+    {
+        Queue::fake([
+            ShipOrder::class,
+        ]);
+
+        // Perform order shipping...
+
+        // Assert a job was pushed twice...
+        Queue::assertPushed(ShipOrder::class, 2);
+    }
+
+You may fake all jobs except for a set of specified jobs using the `except` method:
+
+    Queue::fake()->except([
+        ShipOrder::class,
+    ]);
+
+<a name="testing-job-chains"></a>
+### Testing Job Chains
+
+To test job chains, you will need to utilize the `Bus` facade's faking capabilities. The `Bus` facade's `assertChained` method may be used to assert that a [chain of jobs](/docs/{{version}}/queues#job-chaining) was dispatched. The `assertChained` method accepts an array of chained jobs as its first argument:
+
+    use App\Jobs\RecordShipment;
+    use App\Jobs\ShipOrder;
+    use App\Jobs\UpdateInventory;
+    use Illuminate\Support\Facades\Bus;
+
+    Bus::fake();
+
+    // ...
+
+    Bus::assertChained([
+        ShipOrder::class,
+        RecordShipment::class,
+        UpdateInventory::class
+    ]);
+
+As you can see in the example above, the array of chained jobs may be an array of the job's class names. However, you may also provide an array of actual job instances. When doing so, Laravel will ensure that the job instances are of the same class and have the same property values of the chained jobs dispatched by your application:
+
+    Bus::assertChained([
+        new ShipOrder,
+        new RecordShipment,
+        new UpdateInventory,
+    ]);
+
+You may use the `assertDispatchedWithoutChain` method to assert that a job was pushed without a chain of jobs:
+
+    Bus::assertDispatchedWithoutChain(ShipOrder::class);
+
+<a name="testing-job-batches"></a>
+### Testing Job Batches
+
+The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batching) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\Bus\PendingBatch`, which may be used to inspect the jobs within the batch:
+
+    use Illuminate\Bus\PendingBatch;
+    use Illuminate\Support\Facades\Bus;
+
+    Bus::fake();
+
+    // ...
+
+    Bus::assertBatched(function (PendingBatch $batch) {
+        return $batch->name == 'import-csv' &&
+               $batch->jobs->count() === 10;
+    });
+
+<a name="testing-job-batch-interaction"></a>
+#### Testing Job / Batch Interaction
+
+In addition, you may occasionally need to test an individual job's interaction with its underlying batch. For example, you may need to test if a job cancelled further processing for its batch. To accomplish this, you need to assign a fake batch to the job via the `withFakeBatch` method. The `withFakeBatch` method returns a tuple containing the job instance and the fake batch:
+
+    [$job, $batch] = (new ShipOrder)->withFakeBatch();
+
+    $job->handle();
+
+    $this->assertTrue($batch->cancelled());
+    $this->assertEmpty($batch->added);
 
 <a name="job-events"></a>
 ## Job Events

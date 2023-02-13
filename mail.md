@@ -24,7 +24,9 @@
 - [Rendering Mailables](#rendering-mailables)
     - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
 - [Localizing Mailables](#localizing-mailables)
-- [Testing Mailables](#testing-mailables)
+- [Testing](#testing-mailables)
+    - [Testing Mailable Content](#testing-mailable-content)
+    - [Testing Mailable Sending](#testing-mailable-sending)
 - [Mail & Local Development](#mail-and-local-development)
 - [Events](#events)
 - [Custom Transports](#custom-transports)
@@ -929,7 +931,10 @@ Once you have implemented the interface, Laravel will automatically use the pref
     Mail::to($request->user())->send(new OrderShipped($order));
 
 <a name="testing-mailables"></a>
-## Testing Mailables
+## Testing
+
+<a name="testing-mailable-content"></a>
+### Testing Mailable Content
 
 Laravel provides a variety of methods for inspecting your mailable's structure. In addition, Laravel provides several convenient methods for testing that your mailable contains the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, `assertSeeInOrderInText`, `assertHasAttachment`, `assertHasAttachedData`, `assertHasAttachmentFromStorage`, and `assertHasAttachmentFromStorageDisk`.
 
@@ -968,9 +973,98 @@ As you might expect, the "HTML" assertions assert that the HTML version of your 
     }
 
 <a name="testing-mailable-sending"></a>
-#### Testing Mailable Sending
+### Testing Mailable Sending
 
-We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. To learn how to test that mailables were sent, check out our documentation on the [Mail fake](/docs/{{version}}/mocking#mail-fake).
+We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. Typically, the content of mailables it not relevant to the code you are testing, and it is sufficient to simply assert that Laravel was instructed to send a given mailable.
+
+You may use the `Mail` facade's `fake` method to prevent mail from being sent. After calling the `Mail` facade's `fake` method, you may then assert that mailables were instructed to be sent to users and even inspect the data the mailables received:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use App\Mail\OrderShipped;
+    use Illuminate\Support\Facades\Mail;
+    use Tests\TestCase;
+
+    class ExampleTest extends TestCase
+    {
+        public function test_orders_can_be_shipped(): void
+        {
+            Mail::fake();
+
+            // Perform order shipping...
+
+            // Assert that no mailables were sent...
+            Mail::assertNothingSent();
+
+            // Assert that a mailable was sent...
+            Mail::assertSent(OrderShipped::class);
+
+            // Assert a mailable was sent twice...
+            Mail::assertSent(OrderShipped::class, 2);
+
+            // Assert a mailable was not sent...
+            Mail::assertNotSent(AnotherMailable::class);
+        }
+    }
+
+If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:
+
+    Mail::assertQueued(OrderShipped::class);
+
+    Mail::assertNotQueued(OrderShipped::class);
+
+    Mail::assertNothingQueued();
+
+You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
+
+    Mail::assertSent(function (OrderShipped $mail) use ($order) {
+        return $mail->order->id === $order->id;
+    });
+
+When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:
+
+    Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) {
+        return $mail->hasTo($user->email) &&
+               $mail->hasCc('...') &&
+               $mail->hasBcc('...') &&
+               $mail->hasReplyTo('...') &&
+               $mail->hasFrom('...') &&
+               $mail->hasSubject('...');
+    });
+
+The mailable instance also includes several helpful methods for examining the attachments on a mailable:
+
+    use Illuminate\Mail\Mailables\Attachment;
+
+    Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) {
+        return $mail->hasAttachment(
+            Attachment::fromPath('/path/to/file')
+                    ->as('name.pdf')
+                    ->withMime('application/pdf')
+        );
+    });
+
+    Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) {
+        return $mail->hasAttachment(
+            Attachment::fromStorageDisk('s3', '/path/to/file')
+        );
+    });
+
+    Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($pdfData) {
+        return $mail->hasAttachment(
+            Attachment::fromData(fn () => $pdfData, 'name.pdf')
+        );
+    });
+
+You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:
+
+    Mail::assertNothingOutgoing();
+
+    Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {
+        return $mail->order->id === $order->id;
+    });
 
 <a name="mail-and-local-development"></a>
 ## Mail & Local Development

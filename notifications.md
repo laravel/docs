@@ -46,6 +46,7 @@
     - [Slack Attachments](#slack-attachments)
     - [Routing Slack Notifications](#routing-slack-notifications)
 - [Localizing Notifications](#localizing-notifications)
+- [Testing](#testing)
 - [Notification Events](#notification-events)
 - [Custom Channels](#custom-channels)
 
@@ -1210,6 +1211,72 @@ Sometimes, applications store each user's preferred locale. By implementing the 
 Once you have implemented the interface, Laravel will automatically use the preferred locale when sending notifications and mailables to the model. Therefore, there is no need to call the `locale` method when using this interface:
 
     $user->notify(new InvoicePaid($invoice));
+
+<a name="testing"></a>
+## Testing
+
+You may use the `Notification` facade's `fake` method to prevent notifications from being sent. Typically, sending notifications is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given notification.
+
+After calling the `Notification` facade's `fake` method, you may then assert that notifications were instructed to be sent to users and even inspect the data the notifications received:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use App\Notifications\OrderShipped;
+    use Illuminate\Support\Facades\Notification;
+    use Tests\TestCase;
+
+    class ExampleTest extends TestCase
+    {
+        public function test_orders_can_be_shipped(): void
+        {
+            Notification::fake();
+
+            // Perform order shipping...
+
+            // Assert that no notifications were sent...
+            Notification::assertNothingSent();
+
+            // Assert a notification was sent to the given users...
+            Notification::assertSentTo(
+                [$user], OrderShipped::class
+            );
+
+            // Assert a notification was not sent...
+            Notification::assertNotSentTo(
+                [$user], AnotherNotification::class
+            );
+
+            // Assert that a given number of notifications were sent...
+            Notification::assertCount(3);
+        }
+    }
+
+You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in order to assert that a notification was sent that passes a given "truth test". If at least one notification was sent that passes the given truth test then the assertion will be successful:
+
+    Notification::assertSentTo(
+        $user,
+        function (OrderShipped $notification, array $channels) use ($order) {
+            return $notification->order->id === $order->id;
+        }
+    );
+
+<a name="on-demand-notifications"></a>
+#### On-Demand Notifications
+
+If the code you are testing sends [on-demand notifications](#on-demand-notifications), you can test that the on-demand notification was sent via the `assertSentOnDemand` method:
+
+    Notification::assertSentOnDemand(OrderShipped::class);
+
+By passing a closure as the second argument to the `assertSentOnDemand` method, you may determine if an on-demand notification was sent to the correct "route" address:
+
+    Notification::assertSentOnDemand(
+        OrderShipped::class,
+        function (OrderShipped $notification, array $channels, object $notifiable) use ($user) {
+            return $notifiable->routes['mail'] === $user->email;
+        }
+    );
 
 <a name="notification-events"></a>
 ## Notification Events
