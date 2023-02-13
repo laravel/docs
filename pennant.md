@@ -20,10 +20,11 @@
 - [Updating Values](#updating-values)
     - [Bulk Updates](#bulk-updates)
     - [Purging Features](#purging-features)
-- [Events](#events)
-- [Adding Custom Drivers](#adding-custom-drivers)
+- [Testing](#testing)
+- [Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)
     - [Implementing The Driver](#implementing-the-driver)
     - [Registering The Driver](#registering-the-driver)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -177,7 +178,7 @@ return Feature::for($user)->active('new-api')
         : $this->resolveLegacyApiResponse($request);
 ```
 
-> **Note** 
+> **Note**
 > When using Pennant outside of an HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts.
 
 <a name="checking-class-based-features"></a>
@@ -256,7 +257,7 @@ The `when` method may be used to fluently execute a given closure if a feature i
                 fn () => $this->resolveLegacyApiResponse($request),
             );
         }
-     
+
         // ...
     }
 
@@ -631,6 +632,134 @@ php artisan pennant:purge new-api
 php artisan pennant:purge new-api purchase-button
 ```
 
+<a name="testing"></a>
+## Testing
+
+When testing code that interacts with feature flags, the easiest way to control the feature flag's returned value in your tests is to simply re-define the feature. For example, imagine you have the following feature defined in one of your application's service provider:
+
+```php
+use Illuminate\Support\Arr;
+use Laravel\Pennant\Feature;
+
+Feature::define('purchase-button', fn () => Arr::random([
+    'blue-sapphire',
+    'seafoam-green',
+    'tart-orange',
+]));
+```
+
+To modify the feature's returned value in your tests, you may re-define the feature at the beginning of the test. The following test will always pass, even though the `Arr::random()` implementation is still present in the service provider:
+
+```php
+use Laravel\Pennant\Feature;
+
+public function test_it_can_control_feature_values()
+{
+    Feature::define('purchase-button', 'seafoam-green');
+
+    $this->assertSame('seafoam-green', Feature::value('purchase-button'));
+}
+```
+
+The same approach may be used for class based features:
+
+```php
+use App\Features\NewApi;
+use Laravel\Pennant\Feature;
+
+public function test_it_can_control_feature_values()
+{
+    Feature::define(NewApi::class, true);
+
+    $this->assertTrue(Feature::value(NewApi::class));
+}
+```
+
+If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
+
+<a name="adding-custom-pennant-drivers"></a>
+## Adding Custom Pennant Drivers
+
+<a name="implementing-the-driver"></a>
+#### Implementing The Driver
+
+If none of Pennant's existing storage drivers fit your application's needs, you may write your own storage driver. Your custom driver should implement the `Laravel\Pennant\Contracts\Driver` interface:
+
+```php
+<?php
+
+namespace App\Extensions;
+
+use Laravel\Pennant\Contracts\Driver;
+
+class RedisFeatureDriver implements Driver
+{
+    public function define(string $feature, callable $resolver): void {}
+    public function defined(): array {}
+    public function getAll(array $features): array {}
+    public function get(string $feature, mixed $scope): mixed {}
+    public function set(string $feature, mixed $scope, mixed $value): void {}
+    public function setForAllScopes(string $feature, mixed $value): void {}
+    public function delete(string $feature, mixed $scope): void {}
+    public function purge(array|null $features): void {}
+}
+```
+
+Now, we just need to implement each of these methods using a Redis connection. For an example of how to implement each of these methods, take a look at the `Laravel\Pennant\Drivers\DatabaseDriver` in the [Pennant source code](https://github.com/laravel/pennant/blob/1.x/src/Drivers/DatabaseDriver.php)
+
+> **Note**
+> Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`.
+
+<a name="registering-the-driver"></a>
+#### Registering The Driver
+
+Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Pennant, you may use the `extend` method provided by the `Feature` facade. You should call the `extend` method from the `boot` method of one of your application's [service provider](/docs/{{version}}/providers):
+
+```php
+<?php
+
+namespace App\Providers;
+
+use App\Extensions\RedisFeatureDriver;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Pennant\Feature;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        // ...
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Feature::extend('redis', function (Application $app) {
+            return new RedisFeatureDriver($app->make('redis'), $app->make('events'), []);
+        });
+    }
+}
+```
+
+Once the driver has been registered, you may use the `redis` driver in your application's `config/pennant.php` configuration file:
+
+    'stores' => [
+
+        'redis' => [
+            'driver' => 'redis',
+            'connection' => null,
+        ],
+
+        // ...
+
+    ],
+
 <a name="events"></a>
 ## Events
 
@@ -673,72 +802,48 @@ class EventServiceProvider extends ServiceProvider
 
 This event is dispatched when a class based feature is being dynamically checked for the first time during a request.
 
-<a name="adding-custom-drivers"></a>
-## Adding Custom Drivers
+<a name="testing"></a>
+## Testing
 
-<a name="implementing-the-driver"></a>
-#### Implementing The Driver
-
-If none of the existing feature storage drivers fit your application's needs, its possible to write your own driver. Your custom driver should implement the `Laravel\Pennant\Contracts\Driver` [contract](/docs/{{version}}/contracts). A stubbed Redis implementation may look like the following:
+When testing code that interacts with feature flags, the easiest way to control the feature flag's returned value in your tests is to simply re-define the feature. For example, imagine you have the following feature defined in one of your application's service provider:
 
 ```php
-<?php
-
-namespace App\Extensions;
-    
-use Laravel\Pennant\Contracts\Driver;
-
-class RedisFeatureDriver implements Driver
-{
-    public function define(string $feature, callable $resolver) {}
-    public function defined() {}
-    public function get(string $feature, mixed $scope) {}
-    public function set(string $feature, mixed $scope, mixed $value) {}
-    public function setForAllScopes(string $feature, mixed $value) {}
-    public function delete(string $feature, mixed $scope) {}
-    public function purge(array|null $features) {}
-    public function load(array $features) {}
-}
-```
-
-> **Note**  
-> Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`.
-
-<a name="registering-the-driver"></a>
-#### Registering The Driver
-
-Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Pennant, you may use the `extend` method provided by the `Feature` [facade](/docs/{{version}}/facades). You should call the `extend` method from the `boot` method of a [service provider](/docs/{{version}}/providers). You may do this from the existing `App\Providers\AppServiceProvider`:
-
-```php
-<?php
-
-namespace App\Providers;
-
-use App\Extensions\RedisFeatureDriver;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Arr;
 use Laravel\Pennant\Feature;
 
-class AppServiceProvider extends ServiceProvider
-{
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        // ...
-    }
+Feature::define('purchase-button', fn () => Arr::random([
+    'blue-sapphire',
+    'seafoam-green',
+    'tart-orange',
+]));
+```
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Feature::extend('redis', function (Application $app) {
-            return new RedisFeatureDriver($app->make('redis'), $app->make('events'), []);
-        });
-    }
+To modify the feature's returned value in your tests, you may re-define the feature at the beginning of the test. The following test will always pass, even though the `Arr::random()` implementation is still present in the service provider:
+
+```php
+use Laravel\Pennant\Feature;
+
+public function test_it_can_control_feature_values()
+{
+    Feature::define('purchase-button', 'seafoam-green');
+
+    $this->assertSame('seafoam-green', Feature::value('purchase-button'));
 }
 ```
 
-Once the driver has been registered, you may use the `redis` driver in your `config/pennant.php` configuration file.
+The same approach may be used for class based features:
+
+```php
+use App\Features\NewApi;
+use Laravel\Pennant\Feature;
+
+public function test_it_can_control_feature_values()
+{
+    Feature::define(NewApi::class, true);
+
+    $this->assertTrue(Feature::value(NewApi::class));
+}
+```
+
+If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
+>>>>>>> 10.x

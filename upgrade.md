@@ -59,6 +59,10 @@
 
 Laravel now requires PHP 8.1.0 or greater.
 
+#### Composer 2.2.0 Required
+
+Laravel now requires [Composer](https://getcomposer.org) 2.2.0 or greater.
+
 #### Composer Dependencies
 
 You should update the following dependencies in your application's `composer.json` file:
