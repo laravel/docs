@@ -316,7 +316,7 @@ public function boot(): void
 {
     EnsureFeaturesAreActive::whenInactive(
         function (Request $request, array $features) {
-            return new Response(status: 403);
+            return new Response('', 403);
         }
     );
 

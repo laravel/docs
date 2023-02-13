@@ -571,7 +571,7 @@ You may use the `recorded` method to gather all requests and their corresponding
 
 ```php
 Http::fake([
-    'https://laravel.com' => Http::response(status: 500),
+    'https://laravel.com' => Http::response('', 500),
     'https://nova.laravel.com/' => Http::response(),
 ]);
 
@@ -590,7 +590,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Http\Client\Response;
 
 Http::fake([
-    'https://laravel.com' => Http::response(status: 500),
+    'https://laravel.com' => Http::response('', 500),
     'https://nova.laravel.com/' => Http::response(),
 ]);
 
