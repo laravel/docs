@@ -20,6 +20,7 @@
 - [Updating Values](#updating-values)
     - [Bulk Updates](#bulk-updates)
     - [Purging Features](#purging-features)
+- [Testing](#testing)
 - [Events](#events)
 - [Testing](#testing)
 
@@ -175,7 +176,7 @@ return Feature::for($user)->active('new-api')
         : $this->resolveLegacyApiResponse($request);
 ```
 
-> **Note** 
+> **Note**
 > When using Pennant outside of an HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts.
 
 <a name="checking-class-based-features"></a>
@@ -254,7 +255,7 @@ The `when` method may be used to fluently execute a given closure if a feature i
                 fn () => $this->resolveLegacyApiResponse($request),
             );
         }
-     
+
         // ...
     }
 
@@ -297,10 +298,8 @@ Next, you may assign the middleware to a route and specify the features that are
 ```php
 Route::get('/api/servers', function () {
     // ...
-})->middleware(['auth', 'features:new-api,servers-api']);
+})->middleware(['features:new-api,servers-api']);
 ```
-
-> **Note** As the `feature` middleware will check against the currently authenticated user, you should ensure that any authentication related middleware is applied _before_ the `feature` middleware.
 
 <a name="customizing-the-response"></a>
 #### Customizing The Response
@@ -381,25 +380,10 @@ if (Feature::for($user->team)->active('billing-v2')) {
 // ...
 ```
 
-The `for` method also accepts an array of scopes, which will check that the feature is active for all of the provided scopes:
-
-```php
-Feature::define('improved-notifications', function (string $email) {
-    return str_ends_with($email, '@example.com');
-});
-
-Feature::for([
-    'anthony@example.com',
-    'taylor@laravel.com',
-])->active('improved-notifications');
-
-// false
-```
-
 <a name="default-scope"></a>
 ### Default Scope
 
-Sometimes, you may need to customize the default scope Pennant uses to check features. For example, maybe all of your features are checked against the currently authenticated user's team instead of the user. Instead of having to call `Feature::for($user->team)` every time you check a feature, you may instead specify the team as the default scope. Typically, this should be done in one of your application's service providers:
+It is also possible to customize the default scope Pennant uses to check features. For example, maybe all of your features are checked against the currently authenticated user's team instead of the user. Instead of having to call `Feature::for($user->team)` every time you check a feature, you may instead specify the team as the default scope. Typically, this should be done in one of your application's service providers:
 
 ```php
 <?php
@@ -524,17 +508,6 @@ Pennant's included Blade directive also makes it easy to conditionally render co
 @endfeature
 ```
 
-If you would like to retrieve multiple feature values at once for a single scope, you may use the `values` method:
-
-```php
-Feature::values(['new-api', 'purchase-button']);
-
-// [
-//     'new-api' => false,
-//     'purchase-button' => 'tart-orange',
-// ]
-```
-
 > **Note** When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
 
 <a name="eager-loading"></a>
@@ -657,22 +630,63 @@ php artisan pennant:purge new-api
 php artisan pennant:purge new-api purchase-button
 ```
 
+<a name="testing"></a>
+## Testing
+
+When testing code that interacts with feature flags, the easiest way to control the feature flag's returned value in your tests is to simply re-define the feature. For example, imagine you have the following feature defined in one of your application's service provider:
+
+```php
+use Illuminate\Support\Arr;
+use Laravel\Pennant\Feature;
+
+Feature::define('purchase-button', fn () => Arr::random([
+    'blue-sapphire',
+    'seafoam-green',
+    'tart-orange',
+]));
+```
+
+To modify the feature's returned value in your tests, you may re-define the feature at the beginning of the test. The following test will always pass, even though the `Arr::random()` implementation is still present in the service provider:
+
+```php
+use Laravel\Pennant\Feature;
+
+public function test_it_can_control_feature_values()
+{
+    Feature::define('purchase-button', 'seafoam-green');
+
+    $this->assertSame('seafoam-green', Feature::value('purchase-button'));
+}
+```
+
+The same approach may be used for class based features:
+
+```php
+use App\Features\NewApi;
+use Laravel\Pennant\Feature;
+
+public function test_it_can_control_feature_values()
+{
+    Feature::define(NewApi::class, true);
+
+    $this->assertTrue(Feature::value(NewApi::class));
+}
+```
+
+If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
+
 <a name="events"></a>
 ## Events
 
 Pennant dispatches a variety of events that can be useful when tracking feature flags throughout your application.
 
-### `Laravel\Pennant\Events\FeatureRetrieved`
+### `Laravel\Pennant\Events\RetrievingKnownFeature`
 
-This event is dispatched whenever a feature is retrieved and can be useful for creating and tracking metrics against a feature flag's usage throughout your application.
+This event is dispatched the first time a known feature is retrieved during a request for a specific scope. This event can be useful to create and track metrics against the feature flags that are being used throughout your application.
 
-### `Laravel\Pennant\Events\FeatureResolved`
+### `Laravel\Pennant\Events\RetrievingUnknownFeature`
 
-This event is dispatched the first time a feature's value is resolved for a specific scope from it's definition or feature class resolver.
-
-### `Laravel\Pennant\Events\UnknownFeatureResolved`
-
-This event is dispatched the first time an unknown feature is resolved for a specific scope. This event can be useful if you have intended to remove a feature flag, but may have accidentally left some stray references to it throughout your application.
+This event is dispatched the first time an unknown feature is retrieved during a request for a specific scope. This event can be useful if you have intended to remove a feature flag, but may have accidentally left some stray references to it throughout your application.
 
 For example, you may find it useful to listen for this event and `report` or throw an exception when it occurs:
 
@@ -683,7 +697,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use Laravel\Pennant\Events\UnknownFeatureResolved;
+use Laravel\Pennant\Events\RetrievingUnknownFeature;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -692,14 +706,14 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Event::listen(function (UnknownFeatureResolved $event) {
-            report("Unknown feature resolved [{$event->feature}].");
+        Event::listen(function (RetrievingUnknownFeature $event) {
+            report("Resolving unknown feature [{$event->feature}].");
         });
     }
 }
 ```
 
-### `Laravel\Pennant\Events\DynamicallyRegisteringFeatureClass`
+### `Laravel\Pennant\Events\DynamicallyDefiningFeature`
 
 This event is dispatched when a class based feature is being dynamically checked for the first time during a request.
 
