@@ -380,10 +380,25 @@ if (Feature::for($user->team)->active('billing-v2')) {
 // ...
 ```
 
+The `for` method also accepts an array of scopes, which will check that the feature is active for all of the provided scopes:
+
+```php
+Feature::define('improved-notifications', function (string $email) {
+    return str_ends_with($email, '@example.com');
+});
+
+Feature::for([
+    'anthony@example.com',
+    'taylor@laravel.com',
+])->active('improved-notifications');
+
+// false
+```
+
 <a name="default-scope"></a>
 ### Default Scope
 
-It is also possible to customize the default scope Pennant uses to check features. For example, maybe all of your features are checked against the currently authenticated user's team instead of the user. Instead of having to call `Feature::for($user->team)` every time you check a feature, you may instead specify the team as the default scope. Typically, this should be done in one of your application's service providers:
+Sometimes, you may need to customize the default scope Pennant uses to check features. For example, maybe all of your features are checked against the currently authenticated user's team instead of the user. Instead of having to call `Feature::for($user->team)` every time you check a feature, you may instead specify the team as the default scope. Typically, this should be done in one of your application's service providers:
 
 ```php
 <?php
