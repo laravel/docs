@@ -21,8 +21,10 @@
     - [Bulk Updates](#bulk-updates)
     - [Purging Features](#purging-features)
 - [Testing](#testing)
+- [Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)
+    - [Implementing The Driver](#implementing-the-driver)
+    - [Registering The Driver](#registering-the-driver)
 - [Events](#events)
-- [Testing](#testing)
 
 <a name="introduction"></a>
 ## Introduction
@@ -674,6 +676,89 @@ public function test_it_can_control_feature_values()
 ```
 
 If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
+
+<a name="adding-custom-pennant-drivers"></a>
+## Adding Custom Pennant Drivers
+
+<a name="implementing-the-driver"></a>
+#### Implementing The Driver
+
+If none of Pennant's existing storage drivers fit your application's needs, you may write your own storage driver. Your custom driver should implement the `Laravel\Pennant\Contracts\Driver` interface:
+
+```php
+<?php
+
+namespace App\Extensions;
+
+use Laravel\Pennant\Contracts\Driver;
+
+class RedisFeatureDriver implements Driver
+{
+    public function define(string $feature, callable $resolver): void {}
+    public function defined(): array {}
+    public function getAll(array $features): array {}
+    public function get(string $feature, mixed $scope): mixed {}
+    public function set(string $feature, mixed $scope, mixed $value): void {}
+    public function setForAllScopes(string $feature, mixed $value): void {}
+    public function delete(string $feature, mixed $scope): void {}
+    public function purge(array|null $features): void {}
+}
+```
+
+Now, we just need to implement each of these methods using a Redis connection. For an example of how to implement each of these methods, take a look at the `Laravel\Pennant\Drivers\DatabaseDriver` in the [Pennant source code](https://github.com/laravel/pennant/blob/1.x/src/Drivers/DatabaseDriver.php)
+
+> **Note**
+> Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`.
+
+<a name="registering-the-driver"></a>
+#### Registering The Driver
+
+Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Pennant, you may use the `extend` method provided by the `Feature` facade. You should call the `extend` method from the `boot` method of one of your application's [service provider](/docs/{{version}}/providers):
+
+```php
+<?php
+
+namespace App\Providers;
+
+use App\Extensions\RedisFeatureDriver;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Pennant\Feature;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        // ...
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Feature::extend('redis', function (Application $app) {
+            return new RedisFeatureDriver($app->make('redis'), $app->make('events'), []);
+        });
+    }
+}
+```
+
+Once the driver has been registered, you may use the `redis` driver in your application's `config/pennant.php` configuration file:
+
+    'stores' => [
+
+        'redis' => [
+            'driver' => 'redis',
+            'connection' => null,
+        ],
+
+        // ...
+
+    ],
 
 <a name="events"></a>
 ## Events
