@@ -21,6 +21,7 @@
     - [Bulk Updates](#bulk-updates)
     - [Purging Features](#purging-features)
 - [Events](#events)
+- [Testing](#testing)
 
 <a name="introduction"></a>
 ## Introduction
@@ -669,3 +670,48 @@ class EventServiceProvider extends ServiceProvider
 ### `Laravel\Pennant\Events\DynamicallyDefiningFeature`
 
 This event is dispatched when a class based feature is being dynamically checked for the first time during a request.
+
+<a name="testing"></a>
+## Testing
+
+When testing code paths that include feature flags, gaining control of those flags in your tests is vital. The easiest way to control feature flags in your tests is to override their returned value. Say you have the following feature definition in your service provider:
+
+```php
+use Illuminate\Support\Arr;
+use Laravel\Pennant\Feature;
+
+Feature::define('purchase-button', fn () => Arr::random([
+    'blue-sapphire',
+    'seafoam-green',
+    'tart-orange',
+]));
+```
+
+To ensure you can control the value returned for this feature within a test, it is possible to re-define a feature at the start of your test. The following test will always pass, even though the `Arr::random()` implementation is still in the service provider.
+
+```php
+use Laravel\Pennant\Feature;
+
+public function testItCanControlFeatureValues()
+{
+    Feature::define('purchase-button', 'seafoam-green');
+
+    $this->assertSame('seafoam-green', Feature::value('purchase-button'));
+}
+```
+
+The same approach may be used for class based features.
+
+```php
+use App\Features\NewApi;
+use Laravel\Pennant\Feature;
+
+public function testItCanControlFeatureValues()
+{
+    Feature::define(NewApi::class, true);
+
+    $this->assertTrue(Feature::value(NewApi::class));
+}
+```
+
+If your feature is returning a `Lottery` class, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
