@@ -165,6 +165,21 @@ php artisan route:list --only-vendor
 <a name="checking-route-name"></a>
 ### Checking Route Name
 
+If you want to check if a route has a name, you can use the ```has``` method.
+```
+Route::get('/', function () {
+    return view('welcome');
+})->name('welcome');
+
+Route::has('welcome'); // true
+```
+
+You can send array for check routes name.
+
+```
+Route::has(['welcome', 'taylor']);
+```
+
 <a name="route-parameters"></a>
 ## Route Parameters
 
