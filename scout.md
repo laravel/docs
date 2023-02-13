@@ -395,6 +395,8 @@ php artisan scout:flush "App\Models\Post"
 
 If you would like to modify the query that is used to retrieve all of your models for batch importing, you may define a `makeAllSearchableUsing` method on your model. This is a great place to add any eager relationship loading that may be necessary before importing your models:
 
+    use Illuminate\Database\Eloquent\Builder;
+
     /**
      * Modify the query used to retrieve models when making all of the models searchable.
      */
