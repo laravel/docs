@@ -674,7 +674,7 @@ This event is dispatched when a class based feature is being dynamically checked
 <a name="testing"></a>
 ## Testing
 
-When testing code paths that include feature flags, gaining control of those flags in your tests is vital. The easiest way to control feature flags in your tests is to override their returned value. Say you have the following feature definition in your service provider:
+When testing code that interacts with feature flags, the easiest way to control the feature flag's returned value in your tests is to simply re-define the feature. For example, imagine you have the following feature defined in one of your application's service provider:
 
 ```php
 use Illuminate\Support\Arr;
@@ -687,12 +687,12 @@ Feature::define('purchase-button', fn () => Arr::random([
 ]));
 ```
 
-To ensure you can control the value returned for this feature within a test, it is possible to re-define a feature at the start of your test. The following test will always pass, even though the `Arr::random()` implementation is still in the service provider.
+To modify the feature's returned value in your tests, you may re-define the feature at the beginning of the test. The following test will always pass, even though the `Arr::random()` implementation is still present in the service provider:
 
 ```php
 use Laravel\Pennant\Feature;
 
-public function testItCanControlFeatureValues()
+public function test_it_can_control_feature_values()
 {
     Feature::define('purchase-button', 'seafoam-green');
 
@@ -700,13 +700,13 @@ public function testItCanControlFeatureValues()
 }
 ```
 
-The same approach may be used for class based features.
+The same approach may be used for class based features:
 
 ```php
 use App\Features\NewApi;
 use Laravel\Pennant\Feature;
 
-public function testItCanControlFeatureValues()
+public function test_it_can_control_feature_values()
 {
     Feature::define(NewApi::class, true);
 
@@ -714,4 +714,4 @@ public function testItCanControlFeatureValues()
 }
 ```
 
-If your feature is returning a `Lottery` class, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
+If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
