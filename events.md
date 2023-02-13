@@ -15,6 +15,9 @@
 - [Event Subscribers](#event-subscribers)
     - [Writing Event Subscribers](#writing-event-subscribers)
     - [Registering Event Subscribers](#registering-event-subscribers)
+- [Testing](#testing)
+    - [Faking A Subset Of Events](#faking-a-subset-of-events)
+    - [Scoped Events Fakes](#scoped-event-fakes)
 
 <a name="introduction"></a>
 ## Introduction
@@ -519,7 +522,7 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
     OrderShipped::dispatchUnless($condition, $order);
 
 > **Note**  
-> When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#event-fake) makes it a cinch.
+> When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) makes it a cinch.
 
 <a name="event-subscribers"></a>
 ## Event Subscribers
@@ -633,4 +636,121 @@ After writing the subscriber, you are ready to register it with the event dispat
         protected $subscribe = [
             UserEventSubscriber::class,
         ];
+    }
+
+<a name="testing"></a>
+## Testing
+
+When testing code that dispatches events, you may wish to instruct Laravel to not actually execute the event's listeners. Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched`, `assertNotDispatched`, and `assertNothingDispatched` methods:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use App\Events\OrderFailedToShip;
+    use App\Events\OrderShipped;
+    use Illuminate\Support\Facades\Event;
+    use Tests\TestCase;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * Test order shipping.
+         */
+        public function test_orders_can_be_shipped(): void
+        {
+            Event::fake();
+
+            // Perform order shipping...
+
+            // Assert that an event was dispatched...
+            Event::assertDispatched(OrderShipped::class);
+
+            // Assert an event was dispatched twice...
+            Event::assertDispatched(OrderShipped::class, 2);
+
+            // Assert an event was not dispatched...
+            Event::assertNotDispatched(OrderFailedToShip::class);
+
+            // Assert that no events were dispatched...
+            Event::assertNothingDispatched();
+        }
+    }
+
+You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that an event was dispatched that passes a given "truth test". If at least one event was dispatched that passes the given truth test then the assertion will be successful:
+
+    Event::assertDispatched(function (OrderShipped $event) use ($order) {
+        return $event->order->id === $order->id;
+    });
+
+If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:
+
+    Event::assertListening(
+        OrderShipped::class,
+        SendShipmentNotification::class
+    );
+
+> **Warning**
+> After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
+
+<a name="faking-a-subset-of-events"></a>
+### Faking A Subset Of Events
+
+If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:
+
+    /**
+     * Test order process.
+     */
+    public function test_orders_can_be_processed(): void
+    {
+        Event::fake([
+            OrderCreated::class,
+        ]);
+
+        $order = Order::factory()->create();
+
+        Event::assertDispatched(OrderCreated::class);
+
+        // Other events are dispatched as normal...
+        $order->update([...]);
+    }
+
+You may fake all events except for a set of specified events using the `except` method:
+
+    Event::fake()->except([
+        OrderCreated::class,
+    ]);
+
+<a name="scoped-event-fakes"></a>
+### Scoped Event Fakes
+
+If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use App\Events\OrderCreated;
+    use App\Models\Order;
+    use Illuminate\Support\Facades\Event;
+    use Tests\TestCase;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * Test order process.
+         */
+        public function test_orders_can_be_processed(): void
+        {
+            $order = Event::fakeFor(function () {
+                $order = Order::factory()->create();
+
+                Event::assertDispatched(OrderCreated::class);
+
+                return $order;
+            });
+
+            // Events are dispatched as normal and observers will run ...
+            $order->update([...]);
+        }
     }
