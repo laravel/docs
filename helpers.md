@@ -133,6 +133,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
 [Str::padRight](#method-str-padright)
+[Str::password](#method-str-password)
 [Str::plural](#method-str-plural)
 [Str::pluralStudly](#method-str-plural-studly)
 [Str::random](#method-str-random)
@@ -1738,6 +1739,21 @@ The `Str::padRight` method wraps PHP's `str_pad` function, padding the right sid
     $padded = Str::padRight('James', 10);
 
     // 'James     '
+
+<a name="method-str-password"></a>
+#### `Str::password()` {.collection-method}
+
+The `Str::password` method may be used to generate a secure, random password of a given length. The password will consist of a combination of letters, numbers, symbols, and spaces. By default, passwords are 32 characters long:
+
+    use Illuminate\Support\Str;
+
+    $password = Str::password();
+
+    // 'EbJo2vE-AS:U,$%_gkrV4n,q~1xy/-_4'
+
+    $password = Str::password(12);
+
+    // 'qwuar>#V|i]N'
 
 <a name="method-str-plural"></a>
 #### `Str::plural()` {.collection-method}
