@@ -633,13 +633,17 @@ php artisan pennant:purge new-api purchase-button
 
 Pennant dispatches a variety of events that can be useful when tracking feature flags throughout your application.
 
-### `Laravel\Pennant\Events\RetrievingKnownFeature`
+### `Laravel\Pennant\Events\FeatureRetrieved`
 
-This event is dispatched the first time a known feature is retrieved during a request for a specific scope. This event can be useful to create and track metrics against the feature flags that are being used throughout your application.
+This event is dispatched whenever a feature is retrieved and can be useful for creating and tracking metrics against a feature flag's usage throughout your application.
 
-### `Laravel\Pennant\Events\RetrievingUnknownFeature`
+### `Laravel\Pennant\Events\FeatureResolved`
 
-This event is dispatched the first time an unknown feature is retrieved during a request for a specific scope. This event can be useful if you have intended to remove a feature flag, but may have accidentally left some stray references to it throughout your application.
+This event is dispatched the first time a feature's value is resolved for a specific scope from it's definition or feature class resolver.
+
+### `Laravel\Pennant\Events\UnknownFeatureResolved`
+
+This event is dispatched the first time an unknown feature is resolved for a specific scope. This event can be useful if you have intended to remove a feature flag, but may have accidentally left some stray references to it throughout your application.
 
 For example, you may find it useful to listen for this event and `report` or throw an exception when it occurs:
 
@@ -650,7 +654,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use Laravel\Pennant\Events\RetrievingUnknownFeature;
+use Laravel\Pennant\Events\UnknownFeatureResolved;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -659,13 +663,13 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Event::listen(function (RetrievingUnknownFeature $event) {
-            report("Resolving unknown feature [{$event->feature}].");
+        Event::listen(function (UnknownFeatureResolved $event) {
+            report("Unknown feature resolved [{$event->feature}].");
         });
     }
 }
 ```
 
-### `Laravel\Pennant\Events\DynamicallyDefiningFeature`
+### `Laravel\Pennant\Events\DynamicallyRegisteringFeatureClass`
 
 This event is dispatched when a class based feature is being dynamically checked for the first time during a request.
