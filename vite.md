@@ -407,6 +407,9 @@ module.exports = {
 };
 ```
 
+> **Note**
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Tailwind, PostCSS, and Vite configuration. Or, if you would like to use Tailwind and Laravel without using one of our starter kits, check out [Tailwind's installation guide for Laravel](https://tailwindcss.com/docs/guides/laravel).
+
 <a name="working-with-blade-and-routes"></a>
 ## Working With Blade & Routes
 
