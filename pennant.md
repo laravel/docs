@@ -506,7 +506,7 @@ Pennant's included Blade directive also makes it easy to conditionally render co
 @endfeature
 ```
 
-If you would like to retrieve multiple feature values at once for a single scope, you may use the `values` method.
+If you would like to retrieve multiple feature values at once for a single scope, you may use the `values` method:
 
 ```php
 Feature::values(['new-api', 'purchase-button']);
