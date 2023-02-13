@@ -506,6 +506,17 @@ Pennant's included Blade directive also makes it easy to conditionally render co
 @endfeature
 ```
 
+If you would like to retrieve multiple feature values at once for a single scope, you may use the `values` method.
+
+```php
+Feature::values(['new-api', 'purchase-button']);
+
+// [
+//     'new-api' => false,
+//     'purchase-button' => 'tart-orange',
+// ]
+```
+
 > **Note** When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
 
 <a name="eager-loading"></a>
