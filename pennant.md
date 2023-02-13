@@ -7,6 +7,7 @@
     - [Class Based Features](#class-based-features)
 - [Checking Features](#checking-features)
     - [Conditional Execution](#conditional-execution)
+    - [The `HasFeatures` Trait](#the-has-features-trait)
     - [Blade Directive](#blade-directive)
     - [Middleware](#middleware)
     - [In-Memory Cache](#in-memory-cache)
@@ -178,6 +179,25 @@ return Feature::for($user)->active('new-api')
         : $this->resolveLegacyApiResponse($request);
 ```
 
+Pennant also offers some additional convenience methods that may prove useful when determining if a feature is active or not:
+
+```php
+// Determine if all of the given features are active...
+Feature::allAreActive(['new-api', 'site-redesign']);
+
+// Determine if any of the given features are active...
+Feature::someAreActive(['new-api', 'site-redesign']);
+
+// Determine if a feature is inactive...
+Feature::inactive('new-api');
+
+// Determine if all of the given features are inactive...
+Feature::allAreInactive(['new-api', 'site-redesign']);
+
+// Determine if any of the given features are inactive...
+Feature::someAreInactive(['new-api', 'site-redesign']);
+```
+
 > **Note**
 > When using Pennant outside of an HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts.
 
@@ -210,25 +230,6 @@ class PodcastController
 
     // ...
 }
-```
-
-Pennant also offers some additional convenience methods that may prove useful when determining if a feature is active or not:
-
-```php
-// Determine if all of the given features are active...
-Feature::allAreActive(['new-api', 'site-redesign']);
-
-// Determine if any of the given features are active...
-Feature::someAreActive(['new-api', 'site-redesign']);
-
-// Determine if a feature is inactive...
-Feature::inactive('new-api');
-
-// Determine if all of the given features are inactive...
-Feature::allAreInactive(['new-api', 'site-redesign']);
-
-// Determine if any of the given features are inactive...
-Feature::someAreInactive(['new-api', 'site-redesign']);
 ```
 
 <a name="conditional-execution"></a>
@@ -267,6 +268,63 @@ The `unless` method serves as the inverse of the `when` method, executing the fi
         fn () => $this->resolveLegacyApiResponse($request),
         fn () => $this->resolveNewApiResponse($request),
     );
+
+<a name="the-has-features-trait"></a>
+### The `HasFeatures` Trait
+
+Pennant's `HasFeatures` trait may be added to your application's `User` model (or any other model that has features) to provide a fluent, convenient way to check features directly from the model:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Pennant\Concerns\HasFeatures;
+
+class User extends Authenticatable
+{
+    use HasFeatures;
+
+    // ...
+}
+```
+
+Once the trait has been added to your model, you may easily check features by invoking the `features` method:
+
+```php
+if ($user->features()->active('new-api')) {
+    // ...
+}
+```
+
+Of course, the `features` method provides access to many other convenient methods for interacting with features:
+
+```php
+// Values...
+$value = $user->features()->value('purchase-button')
+$values = $user->features()->values(['new-api', 'purchase-button']);
+
+// State...
+$user->features()->active('new-api');
+$user->features()->allAreActive(['new-api', 'server-api']);
+$user->features()->someAreActive(['new-api', 'server-api']);
+
+$user->features()->inactive('new-api');
+$user->features()->allAreInactive(['new-api', 'server-api']);
+$user->features()->someAreInactive(['new-api', 'server-api']);
+
+// Conditional execution...
+$user->features()->when('new-api',
+    fn () => /* ... */,
+    fn () => /* ... */,
+);
+
+$user->features()->unless('new-api',
+    fn () => /* ... */,
+    fn () => /* ... */,
+);
+```
 
 <a name="blade-directive"></a>
 ### Blade Directive
