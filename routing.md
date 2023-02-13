@@ -4,6 +4,7 @@
     - [Redirect Routes](#redirect-routes)
     - [View Routes](#view-routes)
     - [The Route List](#the-route-list)
+    - [Checking Route Name](#checking-route-name)
 - [Route Parameters](#route-parameters)
     - [Required Parameters](#required-parameters)
     - [Optional Parameters](#parameters-optional-parameters)
@@ -160,6 +161,9 @@ Likewise, you may also instruct Laravel to only show routes that are defined by 
 ```shell
 php artisan route:list --only-vendor
 ```
+
+<a name="checking-route-name"></a>
+### Checking Route Name
 
 <a name="route-parameters"></a>
 ## Route Parameters
