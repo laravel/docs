@@ -378,6 +378,21 @@ if (Feature::for($user->team)->active('billing-v2')) {
 // ...
 ```
 
+The `for` method also accepts an array of scopes. Passing an array will check that the feature is active for all the provided scopes in the list.
+
+```php
+Feature::define('improved-notifications', function (string $email) {
+    return str_ends_with($email, '@example.com');
+});
+
+Feature::for([
+    'anthony@example.com',
+    'taylor@laravel.com',
+])->active('improved-notifications');
+
+// false
+```
+
 <a name="default-scope"></a>
 ### Default Scope
 
