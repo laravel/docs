@@ -846,4 +846,3 @@ public function test_it_can_control_feature_values()
 ```
 
 If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
->>>>>>> 10.x
