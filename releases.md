@@ -220,3 +220,10 @@ To improve the framework's developer experience, all of Laravel's built-in `make
 ```shell
 php artisan make:controller
 ```
+
+<a name="horizon-telescope-facelift"></a>
+### Horizon / Telescope Facelift
+
+[Horizon](/docs/{{version}}/horizon) and [Telescope](/docs/{{version}}/telescope) have been updated with a fresh, modern look including improved typography, spacing, and design:
+
+<img src="https://laravel.com/img/docs/horizon-example.png">
