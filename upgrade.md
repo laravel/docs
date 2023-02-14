@@ -32,6 +32,7 @@
 
 - [Closure Validation Rule Messages](#closure-validation-rule-messages)
 - [Monolog 3](#monolog-3)
+- [Public Path Binding](#public-path-binding)
 - [Query Exception Constructor](#query-exception-constructor)
 - [Rate Limiter Return Values](#rate-limiter-return-values)
 - [Relation `getBaseQuery` Method](#relation-getbasequery-method)
@@ -92,6 +93,19 @@ You should update the `minimum-stability` setting in your application's `compose
 
 ```json
 "minimum-stability": "stable",
+```
+
+### Application
+
+<a name="public-path-binding"></a>
+#### Public Path Binding
+
+**Likelihood Of Impact: Low**
+
+If your application is customizing its "public path" by binding `path.public` into the container, you should instead update your code to invoke the `usePublicPath` method offered by the `Illuminate\Foundation\Application` object:
+
+```php
+app()->usePublicPath(__DIR__.'/public');
 ```
 
 ### Cache
