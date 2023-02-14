@@ -345,9 +345,14 @@ If you need to generate a temporary URL that can be used to upload a file to a d
 
     use Illuminate\Support\Facades\Storage;
 
-    $url = Storage::temporaryUploadUrl(
+    $temporaryUpload = Storage::temporaryUploadUrl(
         'file.jpg', now()->addMinutes(5)
     );
+    
+    // the temporaryUploadUrl() will return an array. containing 'url' and 'headers'
+    
+    $url = $temporaryUpload['url'];
+    $requiredHeaders = $temporaryUpload['headers'];
 
 This can be useful in serverless environments where you may need to generate a URL that can be used to upload a file to a disk. For example, you may use this method to generate a URL that can be used to upload a file to an S3 bucket from a client-side application. or file uploaders like [Dropzone](https://www.dropzonejs.com/) or [Fine Uploader](https://fineuploader.com/) and [Uppy](https://uppy.io/) etc.
 
