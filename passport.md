@@ -871,13 +871,6 @@ Before your application can issue personal access tokens, you will need to creat
 php artisan passport:client --personal
 ```
 
-After creating your personal access client, place the client's ID and plain-text secret value in your application's `.env` file:
-
-```ini
-PASSPORT_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
-PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
-```
-
 <a name="managing-personal-access-tokens"></a>
 ### Managing Personal Access Tokens
 
