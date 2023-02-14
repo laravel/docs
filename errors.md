@@ -164,6 +164,8 @@ Internally, Laravel already ignores some types of errors for you, such as except
     public function register(): void
     {
         $this->stopIgnoring(HttpException::class);
+
+        // ...
     }
 
 <a name="rendering-exceptions"></a>
