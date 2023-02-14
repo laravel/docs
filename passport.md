@@ -541,6 +541,9 @@ When tokens have been revoked or expired, you might want to purge them from the 
 # Purge revoked and expired tokens and auth codes...
 php artisan passport:purge
 
+# Only purge tokens expired for more than 6 hours...
+php artisan passport:purge --hours=6
+
 # Only purge revoked tokens and auth codes...
 php artisan passport:purge --revoked
 

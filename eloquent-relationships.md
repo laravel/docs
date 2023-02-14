@@ -1889,6 +1889,10 @@ If you would like to `save` your model and all of its associated relationships, 
 
     $post->push();
 
+The `pushQuietly` method may be used to save a model and its associated relationships without raising any events:
+
+    $post->pushQuietly();
+
 <a name="the-create-method"></a>
 ### The `create` Method
 
