@@ -145,7 +145,7 @@ $string = $expression->getValue(DB::connection()->getQueryGrammar());
 
 **Likelihood Of Impact: Very Low**
 
-The `Illuminate\Database\QueryException` constructor now accepts a string connection name as its first argument. If your application is mainly throwing this exception, you should adjust your code accordingly.
+The `Illuminate\Database\QueryException` constructor now accepts a string connection name as its first argument. If your application is manually throwing this exception, you should adjust your code accordingly.
 
 <a name="ulid-columns"></a>
 #### ULID Columns
