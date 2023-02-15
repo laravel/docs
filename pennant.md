@@ -584,8 +584,6 @@ Likewise, when calling the conditional `unless` method, the feature's rich value
         fn ($color) => /* ... */,
     );
 
-
-
 <a name="eager-loading"></a>
 ## Eager Loading
 
