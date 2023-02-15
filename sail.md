@@ -62,6 +62,7 @@ To choose multiple sail services, you can specify them as comma separated string
 0,3,5,7
 ```
 or
+
 ```shell
 mysql,redis,meilisearch,selenium
 ```
