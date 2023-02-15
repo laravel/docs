@@ -481,21 +481,32 @@ Feature::for($user->team)->active('billing-v2');
 <a name="nullable-scope"></a>
 ### Nullable Scope
 
-If the scope you are passing to a feature is potentially `null`, you should account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is usually not an authenticated user in these contexts, the default scope will be `null`.
+If the scope you are passing to a feature is potentially `null`, you may want account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is usually not an authenticated user in these contexts, the default scope will be `null`.
 
-If you do not always [explictly specify your feature scope](#specifying-the-scope) then you should ensure the scope's type is "nullable" and handle the `null` scope value within your feature definition logic:
+If a feature is not expecting a `null` value for the scope, it may use a type-hint that does not allow `null`:
 
 ```php
 use App\Models\User;
-use Illuminate\Support\Lottery;
 use Laravel\Pennant\Feature;
 
-Feature::define('new-api', fn (User $user) => match (true) {// [tl! remove]
-Feature::define('new-api', fn (User|null $user) => match (true) {// [tl! add]
-    $user === null => true,// [tl! add]
-    $user->isInternalTeamMember() => true,
-    $user->isHighTrafficCustomer() => false,
-    default => Lottery::odds(1 / 100),
+Feature::define('new-api', function (User $user) {
+    // ...
+});
+```
+
+With a type-hint in place that does not allow for `null`, if this feature was checked against a `null` scope the feature definition would not be executed, the feature would be considered inactive, and Pennant's [`UnexpectedNullScopeEncountered`](#) event would be dispatched.
+
+On the other hand, if `null` is a valid scope for a feature it should ensure the scope's type declaration allows for `null`. This may be achieved by using the `mixed` type-hint or declaring the type-hint as "optional".
+
+In the following example, the feature definition is updated to allow for `null` by making the type-hint "optional":
+
+```php
+use App\Models\User;
+use Laravel\Pennant\Feature;
+
+Feature::define('new-api', function (User $user) {//[tl! remove]
+Feature::define('new-api', function (?User $user) {//[tl! add]
+    // ...
 });
 ```
 
