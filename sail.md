@@ -56,6 +56,16 @@ After Sail has been installed, you may run the `sail:install` Artisan command. T
 php artisan sail:install
 ```
 
+To choose multiple sail services, you can specify them as comma separated string like this:
+
+```shell
+0,3,5,7
+```
+or
+```shell
+mysql,redis,meilisearch,selenium
+```
+
 Finally, you may start Sail. To continue learning how to use Sail, please continue reading the remainder of this documentation:
 
 ```shell
