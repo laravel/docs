@@ -17,7 +17,7 @@
     - [Nullable Scope](#nullable-scope)
     - [Identifying Scope](#identifying-scope)
 - [Rich Feature Values](#rich-feature-values)
-- [Retrieving All Features](#retrieving-all-features)
+- [Retrieving Multiple Features](#retrieving-multiple-features)
 - [Eager Loading](#eager-loading)
 - [Updating Values](#updating-values)
     - [Bulk Updates](#bulk-updates)
@@ -587,8 +587,19 @@ Likewise, when calling the conditional `unless` method, the feature's rich value
         fn ($color) => /* ... */,
     );
 
-<a name="retrieving-all-features"></a>
-## Retrieving All Features
+<a name="retrieving-multiple-features"></a>
+## Retrieving Multiple Features
+
+The `values` method allows the retrieval of multiple features for a scope:
+
+```php
+Feature::values(['billing-v2', 'purchase-button']);
+
+// [
+//     'billing-v2' => false,
+//     'purchase-button' => 'blue-sapphire',
+// ]
+```
 
 Via the `all` method, Pennant offers the ability to retrieve the values of all defined features for a scope:
 
@@ -597,6 +608,7 @@ Feature::all();
 
 // [
 //     'site-redesign' => true,
+//     'billing-v2' => false,
 //     'purchase-button' => 'blue-sapphire',
 // ]
 ```
@@ -632,6 +644,7 @@ Feature::all();
 
 // [
 //     'site-redesign' => true,
+//     'billing-v2' => false,
 //     'purchase-button' => 'blue-sapphire',
 //     'App\Features\NewApi' => true,
 // ]
