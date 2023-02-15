@@ -19,6 +19,7 @@
 
 - [Database Expressions](#database-expressions)
 - [Model "Dates" Property](#model-dates-property)
+- [Monolog 3](#monolog-3)
 - [Redis Cache Tags](#redis-cache-tags)
 - [Service Mocking](#service-mocking)
 - [The Language Directory](#language-directory)
@@ -31,7 +32,6 @@
 <div class="content-list" markdown="1">
 
 - [Closure Validation Rule Messages](#closure-validation-rule-messages)
-- [Monolog 3](#monolog-3)
 - [Public Path Binding](#public-path-binding)
 - [Query Exception Constructor](#query-exception-constructor)
 - [Rate Limiter Return Values](#rate-limiter-return-values)
