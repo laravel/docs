@@ -570,6 +570,22 @@ Pennant's included Blade directive also makes it easy to conditionally render co
 
 > **Note** When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
 
+When calling the [conditional `when`](#conditional-execution) method, the feature's rich value will be provided to the first closure:
+
+    Feature::when('purchase-button',
+        fn ($color) => /* ... */,
+        fn () => /* ... */,
+    );
+
+Likewise, when calling the conditional `unless` method, the feature's rich value will be provided to the optional second closure:
+
+    Feature::unless('purchase-button',
+        fn () => /* ... */,
+        fn ($color) => /* ... */,
+    );
+
+
+
 <a name="eager-loading"></a>
 ## Eager Loading
 
