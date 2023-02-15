@@ -870,3 +870,7 @@ class EventServiceProvider extends ServiceProvider
 ### `Laravel\Pennant\Events\DynamicallyDefiningFeature`
 
 This event is dispatched when a class based feature is being dynamically checked for the first time during a request.
+
+### `Laravel\Pennant\Events\UnexpectedNullScopeEncountered`
+
+This event is dispatched when a feature is checked against a `null` scope but the feature's type-hint does not allow for `null` scope values. Learn more about [nullable scope](#nullable-scope).
