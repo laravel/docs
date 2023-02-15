@@ -750,6 +750,14 @@ You should define all of the component's data attributes in its class constructo
         {
             return view('components.alert');
         }
+
+        /**
+         * Whether the component should be rendered.
+         */
+        public function shouldRender(): bool
+        {
+            return true;
+        }
     }
 
 When your component is rendered, you may display the contents of your component's public variables by echoing the variables by name:
