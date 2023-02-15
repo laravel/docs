@@ -200,9 +200,11 @@ php artisan lang:publish
 <a name="monolog-3"></a>
 #### Monolog 3
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Medium**
 
 Laravel's Monolog dependency has been updated to Monolog 3.x. If you are directly interacting with Monolog within your application, you should review Monolog's [upgrade guide](https://github.com/Seldaek/monolog/blob/main/UPGRADE.md).
+
+Those using 3rd-party logging services (such as BugSnag, Rollbar, etc) may need to update their dependency on that 3rd-party's package to a version that also supports Monolog 3.x and Laravel 10.x.
 
 ### Queues
 
