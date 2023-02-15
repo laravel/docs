@@ -496,7 +496,7 @@ Feature::define('new-api', function (User $user) {
 
 With a type-hint in place that does not allow for `null`, if this feature was checked against a `null` scope the feature definition would not be executed, the feature would be considered inactive, and Pennant's [`UnexpectedNullScopeEncountered`](#) event would be dispatched.
 
-On the other hand, if `null` is a valid scope for a feature it should ensure the scope's type declaration allows for `null`. This may be achieved by using the `mixed` type-hint or declaring the type-hint as "optional".
+On the other hand, if `null` is a valid scope for a feature your should ensure the scope's type declaration allows for `null`. This may be achieved by using the `mixed` type-hint, declaring the type-hint as "optional", or removing the type-hint entirely.
 
 In the following example, the feature definition is updated to allow for `null` by making the type-hint "optional":
 
