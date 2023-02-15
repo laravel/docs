@@ -1052,6 +1052,9 @@ Finally, you may specify a global "to" address by invoking the `alwaysTo` method
         }
     }
 
+> **Warning**  
+> When using the `alwaysTo` method, CC (Carbon Copy) and BCC (Blind Carbon Copy) recipients will also be ignored.
+
 <a name="events"></a>
 ## Events
 
