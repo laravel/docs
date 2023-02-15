@@ -22,7 +22,6 @@
 - [Updating Values](#updating-values)
     - [Bulk Updates](#bulk-updates)
     - [Purging Features](#purging-features)
-- [Retrieving All Features](#retrieving-all-features)
 - [Testing](#testing)
 - [Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)
     - [Implementing The Driver](#implementing-the-driver)
