@@ -21,6 +21,7 @@
 - [Updating Values](#updating-values)
     - [Bulk Updates](#bulk-updates)
     - [Purging Features](#purging-features)
+- [Retrieving All Features](#retrieving-all-features)
 - [Testing](#testing)
 - [Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)
     - [Implementing The Driver](#implementing-the-driver)
@@ -688,6 +689,58 @@ As it can be useful to purge features as part of your application's deployment p
 php artisan pennant:purge new-api
 
 php artisan pennant:purge new-api purchase-button
+```
+
+<a name="retrieving-all-features"></a>
+## Retrieving All Features
+
+Pennant offers the ability to retrieve the value of all defined features for a scope via the `all` method:
+
+```php
+Feature::all();
+
+// [
+//     'site-redesign' => true,
+//     'purchase-button' => 'blue-sapphire',
+// ]
+```
+
+One thing to keep in mind, however, is that feature classes are dynamically registered and are not known about until they have been checked. This means your application's feature classes may not appear in the result.
+
+If you would like to ensure that feature classes are consistency included when using the `all` method, we recommend adding feature discovery to your application's service provider:
+
+    <?php
+
+    namespace App\Providers;
+
+    use App\Models\User;
+    use Illuminate\Support\Lottery;
+    use Illuminate\Support\ServiceProvider;
+    use Laravel\Pennant\Feature;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         */
+        public function boot(): void
+        {
+            Feature::discover();
+
+            // ...
+        }
+    }
+
+Discovery will register all the feature classes in your application's `app/Features` directory. The `all` method will now include these classes in the result:
+
+```php
+Feature::all();
+
+// [
+//     'site-redesign' => true,
+//     'purchase-button' => 'blue-sapphire',
+//     '\App\Features\NewApi' => true,
+// ]
 ```
 
 <a name="testing"></a>
