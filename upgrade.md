@@ -39,6 +39,7 @@
 - [The `Redirect::home` Method](#redirect-home)
 - [The `Bus::dispatchNow` Method](#dispatch-now)
 - [ULID Columns](#ulid-columns)
+- [The `registerPolicy` Method](#register-policy)
 
 </div>
 
@@ -280,6 +281,13 @@ public function rules()
     ],
 }
 ```
+
+<a name="register-policy"></a>
+### The `registerPolicy` Method
+
+**Likelihood Of Impact: Very Low**
+
+Now the policies are automatically registered. You may simply delete the `registerPolicies` call from `App\Providers\AuthServiceProvider`.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
