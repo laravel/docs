@@ -19,6 +19,7 @@
 
 - [Database Expressions](#database-expressions)
 - [Model "Dates" Property](#model-dates-property)
+- [Monolog 3](#monolog-3)
 - [Redis Cache Tags](#redis-cache-tags)
 - [Service Mocking](#service-mocking)
 - [The Language Directory](#language-directory)
@@ -31,7 +32,6 @@
 <div class="content-list" markdown="1">
 
 - [Closure Validation Rule Messages](#closure-validation-rule-messages)
-- [Monolog 3](#monolog-3)
 - [Public Path Binding](#public-path-binding)
 - [Query Exception Constructor](#query-exception-constructor)
 - [Rate Limiter Return Values](#rate-limiter-return-values)
@@ -200,9 +200,11 @@ php artisan lang:publish
 <a name="monolog-3"></a>
 #### Monolog 3
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Medium**
 
 Laravel's Monolog dependency has been updated to Monolog 3.x. If you are directly interacting with Monolog within your application, you should review Monolog's [upgrade guide](https://github.com/Seldaek/monolog/blob/main/UPGRADE.md).
+
+If you are using third-party logging services such as BugSnag or Rollbar, you may need to upgrade those third-party packages to a version that supports Monolog 3.x and Laravel 10.x.
 
 ### Queues
 
