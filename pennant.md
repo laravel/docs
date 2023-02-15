@@ -11,6 +11,7 @@
     - [Blade Directive](#blade-directive)
     - [Middleware](#middleware)
     - [In-Memory Cache](#in-memory-cache)
+- [Retrieving All Features](#retrieving-all-features)
 - [Scope](#scope)
     - [Specifying The Scope](#specifying-the-scope)
     - [Default Scope](#default-scope)
@@ -396,6 +397,56 @@ If you need to manually flush the in-memory cache, you may use the `flushCache` 
 
     Feature::flushCache();
 
+<a name="retrieving-all-features"></a>
+## Retrieving All Features
+
+Via the `all` method, Pennant offers the ability to retrieve the values of all defined features for a scope:
+
+```php
+Feature::all();
+
+// [
+//     'site-redesign' => true,
+//     'purchase-button' => 'blue-sapphire',
+// ]
+```
+
+However, class based features are dynamically registered and are not known by Pennant until they are explicitly checked. This means your application's class based features may not appear in the results returned by the `all` method if they have not already been checked during the current request.
+
+If you would like to ensure that feature classes are always included when using the `all` method, you may use Pennant's feature discovery capabilities. To get started, invoke the `discover` method in one of your application's service providers:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\ServiceProvider;
+    use Laravel\Pennant\Feature;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         */
+        public function boot(): void
+        {
+            Feature::discover();
+
+            // ...
+        }
+    }
+
+The `discover` method will register all of the feature classes in your application's `app/Features` directory. The `all` method will now include these classes in its results, regardless of whether they have been checked during the current request:
+
+```php
+Feature::all();
+
+// [
+//     'site-redesign' => true,
+//     'purchase-button' => 'blue-sapphire',
+//     'App\Features\NewApi' => true,
+// ]
+```
+
 <a name="scope"></a>
 ## Scope
 
@@ -689,56 +740,6 @@ As it can be useful to purge features as part of your application's deployment p
 php artisan pennant:purge new-api
 
 php artisan pennant:purge new-api purchase-button
-```
-
-<a name="retrieving-all-features"></a>
-## Retrieving All Features
-
-Via the `all` method, Pennant offers the ability to retrieve the values of all defined features for a scope:
-
-```php
-Feature::all();
-
-// [
-//     'site-redesign' => true,
-//     'purchase-button' => 'blue-sapphire',
-// ]
-```
-
-However, class based features are dynamically registered and are not known by Pennant until they are explicitly checked. This means your application's class based features may not appear in the results returned by the `all` method if they have not already been checked during the current request.
-
-If you would like to ensure that feature classes are always included when using the `all` method, we recommend adding feature discovery to your application's service provider:
-
-    <?php
-
-    namespace App\Providers;
-
-    use Illuminate\Support\ServiceProvider;
-    use Laravel\Pennant\Feature;
-
-    class AppServiceProvider extends ServiceProvider
-    {
-        /**
-         * Bootstrap any application services.
-         */
-        public function boot(): void
-        {
-            Feature::discover();
-
-            // ...
-        }
-    }
-
-The `discover` method will register all of the feature classes in your application's `app/Features` directory. The `all` method will now include these classes in the result, regardless of whether they have been checked during the current request:
-
-```php
-Feature::all();
-
-// [
-//     'site-redesign' => true,
-//     'purchase-button' => 'blue-sapphire',
-//     'App\Features\NewApi' => true,
-// ]
 ```
 
 <a name="testing"></a>
