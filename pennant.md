@@ -483,7 +483,7 @@ Feature::for($user->team)->active('billing-v2');
 
 If the scope you are passing to a feature is potentially `null`, you may want account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is usually not an authenticated user in these contexts, the default scope will be `null`.
 
-If a feature is not expecting a `null` value for the scope, it may use a type-hint that does not allow `null`:
+If a feature is not expecting a `null` value for the scope, it may use a non-nullable type-hint:
 
 ```php
 use App\Models\User;
