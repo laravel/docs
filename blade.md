@@ -760,6 +760,18 @@ When your component is rendered, you may display the contents of your component'
 </div>
 ```
 
+If you want to render your component only in some cases you can define `shouldRender` method:
+
+    /**
+     * Whether the component should be rendered
+     */
+    public function shouldRender(): bool
+    {
+        return Str::length($this->message) > 0;
+    }
+
+If `shouldRender` returns false component will not be rendered.
+
 <a name="casing"></a>
 #### Casing
 
