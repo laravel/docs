@@ -715,6 +715,18 @@ If the component class is nested deeper within the `app/View/Components` directo
 <x-inputs.button/>
 ```
 
+If you would like to conditionally render your component, you may define a `shouldRender` method on your component class. If the `shouldRender` method returns `false` the component will not be rendered:
+
+    use Illuminate\Support\Str;
+
+    /**
+     * Whether the component should be rendered
+     */
+    public function shouldRender(): bool
+    {
+        return Str::length($this->message) > 0;
+    }
+
 <a name="passing-data-to-components"></a>
 ### Passing Data To Components
 
