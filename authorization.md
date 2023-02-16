@@ -54,8 +54,6 @@ In this example, we'll define a gate to determine if a user can update a given `
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Gate::define('update-post', function (User $user, Post $post) {
             return $user->id === $post->user_id;
         });
@@ -71,8 +69,6 @@ Like controllers, gates may also be defined using a class callback array:
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Gate::define('update-post', [PostPolicy::class, 'update']);
     }
 
@@ -314,8 +310,6 @@ The `App\Providers\AuthServiceProvider` included with fresh Laravel applications
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             // ...
         }
     }

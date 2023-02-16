@@ -556,8 +556,6 @@ You may define your own authentication guards using the `extend` method on the `
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             Auth::extend('jwt', function (Application $app, string $name, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\Guard...
 
@@ -591,8 +589,6 @@ To get started, call the `Auth::viaRequest` method within the `boot` method of y
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Auth::viaRequest('custom-token', function (Request $request) {
             return User::where('token', $request->token)->first();
         });
@@ -633,8 +629,6 @@ If you are not using a traditional relational database to store your users, you 
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             Auth::provider('mongo', function (Application $app, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\UserProvider...
 
