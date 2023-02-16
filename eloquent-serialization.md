@@ -154,7 +154,7 @@ Occasionally, when converting models to arrays or JSON, you may wish to add attr
         }
     }
 
-If you would like the accessor **always** appended to your model's array and JSON representations, you *may* add the attribute name to the `appends` property of your model. Note that attribute names are typically referenced using their "snake case" serialized representation, even though the accessor's PHP method is defined using "camel case":
+If you would like the accessor to always be appended to your model's array and JSON representations, you may add the attribute name to the `appends` property of your model. Note that attribute names are typically referenced using their "snake case" serialized representation, even though the accessor's PHP method is defined using "camel case":
 
     <?php
 
