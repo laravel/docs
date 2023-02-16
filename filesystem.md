@@ -12,6 +12,7 @@
 - [Retrieving Files](#retrieving-files)
     - [Downloading Files](#downloading-files)
     - [File URLs](#file-urls)
+    - [Temporary URLs](#temporary-urls)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
     - [Prepending & Appending To Files](#prepending-appending-to-files)
@@ -271,8 +272,20 @@ When using the `local` driver, all files that should be publicly accessible shou
 > **Warning**  
 > When using the `local` driver, the return value of `url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
 
+<a name="url-host-customization"></a>
+#### URL Host Customization
+
+If you would like to pre-define the host for URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:
+
+    'public' => [
+        'driver' => 'local',
+        'root' => storage_path('app/public'),
+        'url' => env('APP_URL').'/storage',
+        'visibility' => 'public',
+    ],
+
 <a name="temporary-urls"></a>
-#### Temporary URLs
+### Temporary URLs
 
 Using the `temporaryUrl` method, you may create temporary URLs to files stored using the `s3` driver. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
 
@@ -311,27 +324,33 @@ If you need to customize how temporary URLs are created for a specific storage d
          */
         public function boot(): void
         {
-            Storage::disk('local')->buildTemporaryUrlsUsing(function (string $path, DateTime $expiration, array $options) {
-                return URL::temporarySignedRoute(
-                    'files.download',
-                    $expiration,
-                    array_merge($options, ['path' => $path])
-                );
-            });
+            Storage::disk('local')->buildTemporaryUrlsUsing(
+                function (string $path, DateTime $expiration, array $options) {
+                    return URL::temporarySignedRoute(
+                        'files.download',
+                        $expiration,
+                        array_merge($options, ['path' => $path])
+                    );
+                }
+            );
         }
     }
 
-<a name="url-host-customization"></a>
-#### URL Host Customization
+<a name="temporary-upload-urls"></a>
+#### Temporary Upload URLs
 
-If you would like to pre-define the host for URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:
+> **Warning**
+> The ability to generate temporary upload URLs is only supported by the `s3` driver.
 
-    'public' => [
-        'driver' => 'local',
-        'root' => storage_path('app/public'),
-        'url' => env('APP_URL').'/storage',
-        'visibility' => 'public',
-    ],
+If you need to generate a temporary URL that can be used to upload a file directly from your client-side application, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire. The `temporaryUploadUrl` method returns an associative array which may be destructured into the upload URL and the headers that should be included with the upload request:
+
+    use Illuminate\Support\Facades\Storage;
+
+    ['url' => $url, 'headers' => $headers] = Storage::temporaryUploadUrl(
+        'file.jpg', now()->addMinutes(5)
+    );
+
+This method is primarily useful in serverless environments that require the client-side application to directly upload files to a cloud storage system such as Amazon S3.
 
 <a name="file-metadata"></a>
 ### File Metadata
