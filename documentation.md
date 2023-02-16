@@ -2,6 +2,7 @@
     - [Release Notes](/docs/{{version}}/releases)
     - [Upgrade Guide](/docs/{{version}}/upgrade)
     - [Contribution Guide](/docs/{{version}}/contributions)
+    - [Deprecations](/docs/{{version}}/deprecations)
 - ## Getting Started
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
