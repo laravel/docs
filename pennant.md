@@ -590,7 +590,7 @@ Likewise, when calling the conditional `unless` method, the feature's rich value
 <a name="retrieving-multiple-features"></a>
 ## Retrieving Multiple Features
 
-The `values` method allows the retrieval of multiple features for a scope:
+The `values` method allows the retrieval of multiple features for a given scope:
 
 ```php
 Feature::values(['billing-v2', 'purchase-button']);
@@ -601,15 +601,15 @@ Feature::values(['billing-v2', 'purchase-button']);
 // ]
 ```
 
-Via the `all` method, Pennant offers the ability to retrieve the values of all defined features for a scope:
+Or, you may use the `all` method to retrieve the values of all defined features for a given scope:
 
 ```php
 Feature::all();
 
 // [
-//     'site-redesign' => true,
 //     'billing-v2' => false,
 //     'purchase-button' => 'blue-sapphire',
+//     'site-redesign' => true,
 // ]
 ```
 
@@ -643,10 +643,10 @@ The `discover` method will register all of the feature classes in your applicati
 Feature::all();
 
 // [
-//     'site-redesign' => true,
+//     'App\Features\NewApi' => true,
 //     'billing-v2' => false,
 //     'purchase-button' => 'blue-sapphire',
-//     'App\Features\NewApi' => true,
+//     'site-redesign' => true,
 // ]
 ```
 
