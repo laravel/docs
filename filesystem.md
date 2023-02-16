@@ -12,6 +12,7 @@
 - [Retrieving Files](#retrieving-files)
     - [Downloading Files](#downloading-files)
     - [File URLs](#file-urls)
+    - [Temporary URLs](#temporary-urls)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
     - [Prepending & Appending To Files](#prepending-appending-to-files)
@@ -270,8 +271,20 @@ When using the `local` driver, all files that should be publicly accessible shou
 > **Warning**  
 > When using the `local` driver, the return value of `url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
 
+<a name="url-host-customization"></a>
+#### URL Host Customization
+
+If you would like to pre-define the host for URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:
+
+    'public' => [
+        'driver' => 'local',
+        'root' => storage_path('app/public'),
+        'url' => env('APP_URL').'/storage',
+        'visibility' => 'public',
+    ],
+
 <a name="temporary-urls"></a>
-#### Temporary URLs
+### Temporary URLs
 
 Using the `temporaryUrl` method, you may create temporary URLs to files stored using the `s3` driver. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
 
@@ -321,37 +334,21 @@ If you need to customize how temporary URLs are created for a specific storage d
         }
     }
 
+<a name="temporary-upload-urls"></a>
 #### Temporary Upload URLs
 
-If you need to generate a temporary URL that can be used to upload a file to a disk, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
+> **Warning**
+> The ability to generate temporary upload URLs is only supported by the `s3` driver.
+
+If you need to generate a temporary URL that can be used to upload a file directly from your client-side application, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire. The `temporaryUploadUrl` method returns an associative array which may be destructured into the upload URL and the headers that should be included with the upload request:
 
     use Illuminate\Support\Facades\Storage;
 
-    $temporaryUpload = Storage::temporaryUploadUrl(
+    ['url' => $url, 'headers' => $headers] = Storage::temporaryUploadUrl(
         'file.jpg', now()->addMinutes(5)
     );
-    
-    // the temporaryUploadUrl() will return an array. containing 'url' and 'headers'
-    
-    $url = $temporaryUpload['url'];
-    $requiredHeaders = $temporaryUpload['headers'];
 
-This can be useful in serverless environments where you may need to generate a URL that can be used to upload a file to a disk. For example, you may use this method to generate a URL that can be used to upload a file to an S3 bucket from a client-side application. or file uploaders like [Dropzone](https://www.dropzonejs.com/) or [Fine Uploader](https://fineuploader.com/) and [Uppy](https://uppy.io/) etc.
-
-> **Warning**  
-> Generating temporary upload storage URLs via the `temporaryUploadUrl` method is only supported for AWS S3.
-
-<a name="url-host-customization"></a>
-#### URL Host Customization
-
-If you would like to pre-define the host for URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:
-
-    'public' => [
-        'driver' => 'local',
-        'root' => storage_path('app/public'),
-        'url' => env('APP_URL').'/storage',
-        'visibility' => 'public',
-    ],
+This method is primarily useful in serverless environments that require the client-side application to directly upload files to a cloud storage system such as Amazon S3.
 
 <a name="file-metadata"></a>
 ### File Metadata
