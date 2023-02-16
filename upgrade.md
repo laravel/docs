@@ -38,8 +38,8 @@
 - [Relation `getBaseQuery` Method](#relation-getbasequery-method)
 - [The `Redirect::home` Method](#redirect-home)
 - [The `Bus::dispatchNow` Method](#dispatch-now)
-- [ULID Columns](#ulid-columns)
 - [The `registerPolicy` Method](#register-policy)
+- [ULID Columns](#ulid-columns)
 
 </div>
 
@@ -108,6 +108,15 @@ If your application is customizing its "public path" by binding `path.public` in
 ```php
 app()->usePublicPath(__DIR__.'/public');
 ```
+
+### Authorization
+
+<a name="register-policy"></a>
+### The `registerPolicy` Method
+
+**Likelihood Of Impact: Low**
+
+The `registerPolicies` method of the `AuthServiceProvider` is now invoked automatically by the framework. Therefore, you may remove the call to this method from the `boot` method of your application's `AuthServiceProvider`.
 
 ### Cache
 
@@ -281,13 +290,6 @@ public function rules()
     ],
 }
 ```
-
-<a name="register-policy"></a>
-### The `registerPolicy` Method
-
-**Likelihood Of Impact: Very Low**
-
-Now the policies are automatically registered. You may simply delete the `registerPolicies` call from `App\Providers\AuthServiceProvider`.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
