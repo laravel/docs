@@ -161,7 +161,7 @@ Processes may even be started in pools, allowing for the convenient execution an
 
 ```php
 use Illuminate\Process\Pool;
-use Illuminate\Support\Facades\Pool;
+use Illuminate\Support\Facades\Process;
 
 [$first, $second, $third] = Process::concurrently(function (Pool $pool) {
     $pool->command('cat first.txt');
