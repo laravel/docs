@@ -38,7 +38,7 @@
 - [Relation `getBaseQuery` Method](#relation-getbasequery-method)
 - [The `Redirect::home` Method](#redirect-home)
 - [The `Bus::dispatchNow` Method](#dispatch-now)
-- [The `registerPolicy` Method](#register-policy)
+- [The `registerPolicies` Method](#register-policies)
 - [ULID Columns](#ulid-columns)
 
 </div>
@@ -111,8 +111,8 @@ app()->usePublicPath(__DIR__.'/public');
 
 ### Authorization
 
-<a name="register-policy"></a>
-### The `registerPolicy` Method
+<a name="register-policies"></a>
+### The `registerPolicies` Method
 
 **Likelihood Of Impact: Low**
 
