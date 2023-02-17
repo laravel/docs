@@ -97,7 +97,7 @@ PUSHER_APP_SECRET=your-pusher-secret
 PUSHER_APP_CLUSTER=mt1
 ```
 
-The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster.
+The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the disableStats.
 
 Next, you will need to change your broadcast driver to `pusher` in your `.env` file:
 
@@ -239,6 +239,7 @@ window.Echo = new Echo({
     wsPort: 443,
     disableStats: true,
     encrypted: true,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? '',
 });
 ```
 
