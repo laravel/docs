@@ -56,7 +56,7 @@ Before creating your first Laravel project, you should ensure that your local ma
 After you have installed PHP and Composer, you may create a new Laravel project via the Composer `create-project` command:
 
 ```nothing
-composer create-project laravel/laravel example-app
+composer create-project laravel/laravel:^9.0 example-app
 ```
 
 Or, you may create new Laravel projects by globally installing the Laravel installer via Composer:
