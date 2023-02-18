@@ -198,7 +198,7 @@ To give your application a speed boost, you should cache all of your configurati
 You should typically run the `php artisan config:cache` command as part of your production deployment process. The command should not be run during local development as configuration options will frequently need to be changed during the course of your application's development.
 
 > **Warning**  
-> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables.
+> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables. Instead, you should define your config options in files in the `config/` folder, and access them using the `config` function described above.
 
 <a name="debug-mode"></a>
 ## Debug Mode
