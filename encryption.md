@@ -28,8 +28,8 @@ You may encrypt a value using the `encryptString` method provided by the `Crypt`
 
     use App\Http\Controllers\Controller;
     use App\Models\User;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Crypt;
 
     class DigitalOceanTokenController extends Controller
@@ -37,13 +37,13 @@ You may encrypt a value using the `encryptString` method provided by the `Crypt`
         /**
          * Store a DigitalOcean API token for the user.
          */
-        public function storeSecret(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $request->user()->fill([
                 'token' => Crypt::encryptString($request->token),
             ])->save();
 
-            return response()->noContent();
+            return redirect('/secrets');
         }
     }
 

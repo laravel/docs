@@ -146,19 +146,21 @@ Alternatively, once a user is authenticated, you may access the authenticated us
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class FlightController extends Controller
     {
         /**
          * Update the flight information for an existing flight.
          */
-        public function update(Request $request): Response
+        public function update(Request $request): RedirectResponse
         {
-            // $request->user()
+            $user = $request->user();
 
-            return response()->noContent();
+            // ...
+
+            return redirect('/flights');
         }
     }
 

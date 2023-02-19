@@ -495,15 +495,15 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
     use App\Events\OrderShipped;
     use App\Http\Controllers\Controller;
     use App\Models\Order;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class OrderShipmentController extends Controller
     {
         /**
          * Ship the given order.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $order = Order::findOrFail($request->order_id);
 
@@ -511,7 +511,7 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
 
             OrderShipped::dispatch($order);
 
-            return response()->noContent();
+            return redirect('/orders');
         }
     }
     

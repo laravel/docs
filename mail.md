@@ -736,8 +736,8 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
     use App\Http\Controllers\Controller;
     use App\Mail\OrderShipped;
     use App\Models\Order;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Mail;
 
     class OrderShipmentController extends Controller
@@ -745,7 +745,7 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
         /**
          * Ship the given order.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $order = Order::findOrFail($request->order_id);
 
@@ -753,7 +753,7 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
 
             Mail::to($request->user())->send(new OrderShipped($order));
 
-            return response()->noContent();
+            return redirect('/orders');
         }
     }
 

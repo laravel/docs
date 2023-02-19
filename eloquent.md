@@ -682,15 +682,15 @@ Of course, when using Eloquent, we don't only need to retrieve models from the d
 
     use App\Http\Controllers\Controller;
     use App\Models\Flight;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class FlightController extends Controller
     {
         /**
          * Store a new flight in the database.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             // Validate the request...
 
@@ -700,7 +700,7 @@ Of course, when using Eloquent, we don't only need to retrieve models from the d
 
             $flight->save();
 
-            return response()->noContent();
+            return redirect('/flights');
         }
     }
 

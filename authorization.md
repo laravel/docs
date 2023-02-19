@@ -83,8 +83,8 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Gate;
 
     class PostController extends Controller
@@ -92,7 +92,7 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
         /**
          * Update the given post.
          */
-        public function update(Request $request, Post $post): Response
+        public function update(Request $request, Post $post): RedirectResponse
         {
             if (! Gate::allows('update-post', $post)) {
                 abort(403);
@@ -100,7 +100,7 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
 
             // Update the post...
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -511,15 +511,15 @@ The `App\Models\User` model that is included with your Laravel application inclu
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * Update the given post.
          */
-        public function update(Request $request, Post $post): Response
+        public function update(Request $request, Post $post): RedirectResponse
         {
             if ($request->user()->cannot('update', $post)) {
                 abort(403);
@@ -527,7 +527,7 @@ The `App\Models\User` model that is included with your Laravel application inclu
 
             // Update the post...
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -544,15 +544,15 @@ Remember, some actions may correspond to policy methods like `create` that do no
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * Create a post.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             if ($request->user()->cannot('create', Post::class)) {
                 abort(403);
@@ -560,7 +560,7 @@ Remember, some actions may correspond to policy methods like `create` that do no
 
             // Create the post...
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -577,8 +577,8 @@ Like the `can` method, this method accepts the name of the action you wish to au
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
@@ -587,13 +587,13 @@ Like the `can` method, this method accepts the name of the action you wish to au
          *
          * @throws \Illuminate\Auth\Access\AuthorizationException
          */
-        public function update(Request $request, Post $post): Response
+        public function update(Request $request, Post $post): RedirectResponse
         {
             $this->authorize('update', $post);
 
             // The current user can update the blog post...
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -603,21 +603,21 @@ Like the `can` method, this method accepts the name of the action you wish to au
 As previously discussed, some policy methods like `create` do not require a model instance. In these situations, you should pass a class name to the `authorize` method. The class name will be used to determine which policy to use when authorizing the action:
 
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     /**
      * Create a new blog post.
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Request $request): Response
+    public function create(Request $request): RedirectResponse
     {
         $this->authorize('create', Post::class);
 
         // The current user can create blog posts...
 
-        return response()->noContent();
+        return redirect('/posts');
     }
 
 <a name="authorizing-resource-controllers"></a>
@@ -782,11 +782,11 @@ When attempting to determine if the authenticated user can update a given post, 
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Post $post): Response
+    public function update(Request $request, Post $post): RedirectResponse
     {
         $this->authorize('update', [$post, $request->category]);
 
         // The current user can update the blog post...
 
-        return response()->noContent();
+        return redirect('/posts');
     }

@@ -635,15 +635,15 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * Store a new podcast.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -651,7 +651,7 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
 
             ProcessPodcast::dispatch($podcast);
 
-            return response()->noContent();
+            return redirect('/podcasts');
         }
     }
 
@@ -675,15 +675,15 @@ If you would like to specify that a job should not be immediately available for 
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * Store a new podcast.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -692,7 +692,7 @@ If you would like to specify that a job should not be immediately available for 
             ProcessPodcast::dispatch($podcast)
                         ->delay(now()->addMinutes(10));
 
-            return response()->noContent();
+            return redirect('/podcasts');
         }
     }
 
@@ -729,15 +729,15 @@ If you would like to dispatch a job immediately (synchronously), you may use the
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * Store a new podcast.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -745,7 +745,7 @@ If you would like to dispatch a job immediately (synchronously), you may use the
 
             ProcessPodcast::dispatchSync($podcast);
 
-            return response()->noContent();
+            return redirect('/podcasts');
         }
     }
 
@@ -856,15 +856,15 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * Store a new podcast.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -872,7 +872,7 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
 
             ProcessPodcast::dispatch($podcast)->onQueue('processing');
 
-            return response()->noContent();
+            return redirect('/podcasts');
         }
     }
 
@@ -913,15 +913,15 @@ If your application interacts with multiple queue connections, you may specify w
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * Store a new podcast.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -929,7 +929,7 @@ If your application interacts with multiple queue connections, you may specify w
 
             ProcessPodcast::dispatch($podcast)->onConnection('sqs');
 
-            return response()->noContent();
+            return redirect('/podcasts');
         }
     }
 

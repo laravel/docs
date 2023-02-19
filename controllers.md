@@ -77,11 +77,9 @@ If a controller action is particularly complex, you might find it convenient to 
         /**
          * Provision a new web server.
          */
-        public function __invoke(): Response
+        public function __invoke()
         {
             // ...
-
-            return response()->noContent();
         }
     }
 
@@ -482,21 +480,21 @@ In addition to constructor injection, you may also type-hint dependencies on you
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class UserController extends Controller
     {
         /**
          * Store a new user.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $name = $request->name;
 
-            // ...
+            // Store the user...
 
-            return response()->noContent();
+            return redirect('/users');
         }
     }
 
@@ -512,6 +510,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
 
     class UserController extends Controller
@@ -519,10 +518,10 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
         /**
          * Update the given user.
          */
-        public function update(Request $request, string $id): Response
+        public function update(Request $request, string $id): RedirectResponse
         {
-            // ...
+            // Update the user...
 
-            return response()->noContent();
+            return redirect('/users');
         }
     }

@@ -67,40 +67,7 @@ _Application skeleton and stub type-hints were contributed by [Nuno Maduro](http
 
 On its initial release, Laravel utilized all of the type-hinting features available in PHP at the time. However, many new features have been added to PHP in the subsequent years, including additional primitive type-hints, return types, and union types.
 
-Laravel 10.x thoroughly updates the application skeleton and all stubs utilized by the framework to introduce argument and return types to all method signatures. In addition, extraneous "doc block" type-hint information has been deleted:
-
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Models\Flight;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-
-class FlightController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(): Response
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Flight $flight): Response
-    {
-        //
-    }
-
-    // ...
-
-}
-```
+Laravel 10.x thoroughly updates the application skeleton and all stubs utilized by the framework to introduce argument and return types to all method signatures. In addition, extraneous "doc block" type-hint information has been deleted.
 
 This change is entirely backwards compatible with existing applications. Therefore, existing applications that do not have these type-hints will continue to function normally.
 
