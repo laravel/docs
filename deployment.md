@@ -41,6 +41,18 @@ The Laravel framework has a few system requirements. You should ensure that your
 
 </div>
 
+<br>
+For the database connection you also need one of the following extensions:
+
+<div class="content-list" markdown="1">
+
+- MySQL PHP Extension
+- Pqsql PHP Extension
+- SQLite PHP Extension
+
+</div>
+<br>
+
 <a name="server-configuration"></a>
 ## Server Configuration
 
