@@ -146,8 +146,6 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
     {
         /**
          * Configure the model factory.
-         *
-         * @return $this
          */
         public function configure(): static
         {
