@@ -20,7 +20,7 @@ However, if you file a bug report, your issue should contain a title and a clear
 
 Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem. If you want to chip in, you can help out by fixing [any bugs listed in our issue trackers](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel). You must be authenticated with GitHub to view all of Laravel's issues.
 
-Please remember that we don't consider reports about DocBlock/PHPStan/IDE warnings to be bugs. Please send in a PR for those instead.
+If you notice improper DocBlock, PHPStan, or IDE warnings while using Laravel, do not create a GitHub issue. Instead, please submit a pull request to fix the problem.
 
 The Laravel source code is managed on GitHub, and there are repositories for each of the Laravel projects:
 
