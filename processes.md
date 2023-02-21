@@ -191,12 +191,12 @@ $result = $process->wait();
 <a name="process-ids-and-signals"></a>
 ### Process IDs & Signals
 
-The `pid` method may be used to retrieve the operating system assigned process ID of the running process:
+The `id` method may be used to retrieve the operating system assigned process ID of the running process:
 
 ```php
 $process = Process::start('bash import.sh');
 
-return $process->pid();
+return $process->id();
 ```
 
 You may use the `signal` method to send a "signal" to the running process. A list of predefined signal constants can be found within the [PHP documentation](https://www.php.net/manual/en/pcntl.constants.php):
@@ -302,7 +302,7 @@ return $results['first']->output();
 Since the process pool's `running` method provides a collection of all invoked processes within the pool, you may easily access the underlying pool process IDs:
 
 ```php
-$processIds = $pool->running()->each->pid();
+$processIds = $pool->running()->each->id();
 ```
 
 And, for convenience, you may invoke the `signal` method on a process pool to send a signal to every process within the pool:
