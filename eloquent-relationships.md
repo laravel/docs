@@ -1915,6 +1915,19 @@ You may use the `createMany` method to create multiple related models:
         ['message' => 'Another new comment.'],
     ]);
 
+The `createQuietly` and `createManyQuietly` methods may be used to create a model(s) without dispatching any events:
+
+    $user = User::find(1);
+
+    $user->posts()->createQuietly([
+        'title' => 'Post title.',
+    ]);
+    
+    $user->posts()->createManyQuietly([
+        ['title' => 'First post.'],
+        ['title' => 'Second post.'],
+    ]);
+
 You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](/docs/{{version}}/eloquent#upserts).
 
 > **Note**  
