@@ -815,7 +815,10 @@ public function test_it_can_control_feature_values()
 
 If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
 
-The default store to use within your tests may be configured to use the `array` driver via the `PENNANT_STORE` environment variable.
+<a name="storage-configuration"></a>
+#### Store Configuration
+
+You may configure the store that Pennant will use during testing by defining the `PENNANT_STORE` environment variable in your application's `phpunit.xml` file:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
