@@ -561,11 +561,6 @@ Event subscribers are classes that may subscribe to multiple events from within 
                 Login::class,
                 [UserEventSubscriber::class, 'handleUserLogin']
             );
-
-            $events->listen(
-                Logout::class,
-                [UserEventSubscriber::class, 'handleUserLogout']
-            );
         }
     }
 
