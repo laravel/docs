@@ -2166,7 +2166,6 @@ If your custom validation rule class needs to access all of the other data under
          * Set the data under validation.
          *
          * @param  array<string, mixed>  $data
-         * @return $this
          */
         public function setData(array $data): static
         {
