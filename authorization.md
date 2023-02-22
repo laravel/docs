@@ -469,7 +469,7 @@ By default, all gates and policies automatically return `false` if the incoming 
          */
         public function update(?User $user, Post $post): bool
         {
-            return optional($user)->id === $post->user_id;
+            return $user?->id === $post->user_id;
         }
     }
 
