@@ -453,8 +453,7 @@ Some policy methods only receive an instance of the currently authenticated user
 <a name="guest-users"></a>
 ### Guest Users
 
-By default, all gates and policies automatically return `false` if the incoming HTTP request was not initiated by an authenticated user. However, you may allow these authorization checks to pass through to your gates and policies by declaring an "
-" type-hint or supplying a `null` default value for the user argument definition:
+By default, all gates and policies automatically return `false` if the incoming HTTP request was not initiated by an authenticated user. However, you may allow these authorization checks to pass through to your gates and policies by declaring an "optional" type-hint or supplying a `null` default value for the user argument definition:
 
     <?php
 
