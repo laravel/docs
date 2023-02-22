@@ -362,7 +362,7 @@ If the lock is not available at the moment you request it, you may instruct Lara
     } catch (LockTimeoutException $e) {
         // Unable to acquire lock...
     } finally {
-        optional($lock)->release();
+        $lock?->release();
     }
 
 The example above may be simplified by passing a closure to the `block` method. When a closure is passed to this method, Laravel will attempt to acquire the lock for the specified number of seconds and will automatically release the lock once the closure has been executed:
