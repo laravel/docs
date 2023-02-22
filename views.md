@@ -240,6 +240,13 @@ The `composer` method also accepts the `*` character as a wildcard, allowing you
         // ...
     });
 
+Also, you can use ```View Composer``` by helper:
+```
+view()->composer('welcome', static function (View $view) {
+    // ...
+});
+```
+
 <a name="view-creators"></a>
 ### View Creators
 
