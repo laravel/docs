@@ -973,6 +973,21 @@ In addition to actually removing records from your database, Eloquent can also "
 > **Note**  
 > The `SoftDeletes` trait will automatically cast the `deleted_at` attribute to a `DateTime` / `Carbon` instance for you.
 
+If you want to set column `deleted_at` for migration, You can use this const:
+
+```
+class Flight extends Model
+{
+    use SoftDeletes;
+
+     * The name of the "deleted at" column.
+     *
+     * @var string
+     */
+    const DELETED_AT = 'is_deleted';
+}
+```
+
 You should also add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
     use Illuminate\Database\Schema\Blueprint;
