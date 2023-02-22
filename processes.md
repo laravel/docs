@@ -73,6 +73,15 @@ You may use the `path` method to specify the working directory of the process. I
 $result = Process::path(__DIR__)->run('ls -la');
 ```
 
+<a name="input"></a>
+#### Input
+
+You may provide input via the "standard input" of the process using the `input` method:
+
+```php
+$result = Process::input('Hello World')->run('cat');
+```
+
 <a name="timeouts"></a>
 #### Timeouts
 
