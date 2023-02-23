@@ -73,6 +73,7 @@ You should update the following dependencies in your application's `composer.jso
 
 - `laravel/framework` to `^10.0`
 - `laravel/sanctum` to `^3.2`
+- `doctrine/dbal` to `^3.0`
 - `spatie/laravel-ignition` to `^2.0`
 
 </div>
