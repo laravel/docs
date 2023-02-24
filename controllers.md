@@ -63,14 +63,23 @@ Once you have written a controller class and method, you may define a route to t
 
 When an incoming request matches the specified route URI, the `show` method on the `App\Http\Controllers\UserController` class will be invoked and the route parameters will be passed to the method.
 
+> **Note**  
+> Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods.
+
+
 If you want to make controller with more options you can run this command:
 ```shell
 php artisan make:controller
 ```
+After, It asks you for the name of the controller, For example `UserController`. For the next step ask about type of controller:
+- empty - Is a simple class with extend base class.
+- api - Make a class with extend base class with 5 function (index, store, show, update, destroy).
+- invokable - Make a class with extend base class with just one magic method called `__invoke`.
+- resource - Make a class with extend base class with 7 function (index, create, store, show, edit, update, delete).
+- singleton - Make a class with extend base class with 7 function, but just (show, edit, update) functions are work.
 
-
-> **Note**  
-> Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods.
+> **Note**
+> For some type of controller, After select type ask you about the model. If you want to make controller with <a href="https://laravel.com/docs/10.x/routing#route-model-binding">Route Model Binding</a>, You can write you model name.
 
 <a name="single-action-controllers"></a>
 ### Single Action Controllers
