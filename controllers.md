@@ -27,6 +27,12 @@ Instead of defining all of your request handling logic as closures in your route
 <a name="basic-controllers"></a>
 ### Basic Controllers
 
+For make a basic controller you should run this command:
+```
+php artisan make:controller UserController
+```
+After you can see controller is available in this path: `App\Http\Controllers`.
+
 Let's take a look at an example of a basic controller. Note that the controller extends the base controller class included with Laravel: `App\Http\Controllers\Controller`:
 
     <?php
