@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Writing Controllers](#writing-controllers)
     - [Basic Controllers](#basic-controllers)
+    - [Make Controller With More Options](#make-controller-with-more-options)
     - [Single Action Controllers](#single-action-controllers)
 - [Controller Middleware](#controller-middleware)
 - [Resource Controllers](#resource-controllers)
@@ -66,11 +67,14 @@ When an incoming request matches the specified route URI, the `show` method on t
 > **Note**  
 > Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods.
 
+<a name="make-controller-with-more-options"></a>
+### Make Controller With More Options
 
 If you want to make controller with more options you can run this command:
 ```shell
 php artisan make:controller
 ```
+
 After, It asks you for the name of the controller, For example `UserController`. For the next step ask about type of controller:
 - empty - Is a simple class with extend base class.
 - api - Make a class with extend base class with 5 function (index, store, show, update, destroy).
