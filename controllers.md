@@ -27,7 +27,13 @@ Instead of defining all of your request handling logic as closures in your route
 <a name="basic-controllers"></a>
 ### Basic Controllers
 
-Let's take a look at an example of a basic controller. Note that the controller extends the base controller class included with Laravel: `App\Http\Controllers\Controller`:
+To quickly generate a new controller, you may run the `make:controller` Artisan command. By default, all of the controllers for your application are stored in the `app/Http/Controllers` directory:
+
+```shell
+php artisan make:controller UserController
+```
+
+Let's take a look at an example of a basic controller. A controller may have any number of public methods which will respond to incoming HTTP requests:
 
     <?php
 
@@ -49,7 +55,7 @@ Let's take a look at an example of a basic controller. Note that the controller 
         }
     }
 
-You can define a route to this controller method like so:
+Once you have written a controller class and method, you may define a route to the controller method like so:
 
     use App\Http\Controllers\UserController;
 
