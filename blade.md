@@ -293,7 +293,7 @@ You may determine if a template inheritance section has content using the `@hasS
 @endif
 ```
 
-You may use the `sectionMissing` directive to determine if a section does not have content:
+You may use the `@sectionMissing` directive to determine if a section does not have content:
 
 ```blade
 @sectionMissing('navigation')
@@ -547,7 +547,7 @@ If you would like to `@include` a view if a given boolean expression evaluates t
 @includeUnless($boolean, 'view.name', ['status' => 'complete'])
 ```
 
-To include the first view that exists from a given array of views, you may use the `includeFirst` directive:
+To include the first view that exists from a given array of views, you may use the `@includeFirst` directive:
 
 ```blade
 @includeFirst(['custom.admin', 'admin'], ['status' => 'complete'])
