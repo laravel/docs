@@ -247,13 +247,13 @@ If you already have a query builder instance and you wish to add a column to its
 Sometimes you may need to insert an arbitrary string into a query. To create a raw string expression, you may use the `raw` method provided by the `DB` facade:
 
     $users = DB::table('users')
-                 ->select(DB::raw('count(*) as user_count, status'))
+                 ->select(DB::raw('count(*) as user_count, status')->getValue(DB::connection()->getQueryGrammar()))
                  ->where('status', '<>', 1)
                  ->groupBy('status')
                  ->get();
 
 > **Warning**  
-> Raw statements will be injected into the query as strings, so you should be extremely careful to avoid creating SQL injection vulnerabilities.
+> Raw statements will be injected into the query as strings, so you should be extremely careful to avoid creating SQL injection vulnerabilities. You must chain the `getQuery()` method when using `DB::raw()` in Laravel >10.
 
 <a name="raw-methods"></a>
 ### Raw Methods
@@ -263,7 +263,7 @@ Instead of using the `DB::raw` method, you may also use the following methods to
 <a name="selectraw"></a>
 #### `selectRaw`
 
-The `selectRaw` method can be used in place of `addSelect(DB::raw(/* ... */))`. This method accepts an optional array of bindings as its second argument:
+The `selectRaw` method can be used in place of `addSelect(DB::raw(/* ... */)->getValue(DB::connection()->getQueryGrammar()))`. This method accepts an optional array of bindings as its second argument:
 
     $orders = DB::table('orders')
                     ->selectRaw('price * ? as price_with_tax', [1.0825])
@@ -284,7 +284,7 @@ The `whereRaw` and `orWhereRaw` methods can be used to inject a raw "where" clau
 The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as the value of the "having" clause. These methods accept an optional array of bindings as their second argument:
 
     $orders = DB::table('orders')
-                    ->select('department', DB::raw('SUM(price) as total_sales'))
+                    ->select('department', DB::raw('SUM(price) as total_sales')->getValue(DB::connection()->getQueryGrammar()))
                     ->groupBy('department')
                     ->havingRaw('SUM(price) > ?', [2500])
                     ->get();
@@ -372,7 +372,7 @@ If you would like to use a "where" clause on your joins, you may use the `where`
 You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receives three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:
 
     $latestPosts = DB::table('posts')
-                       ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
+                       ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at')->getValue(DB::connection()->getQueryGrammar()))
                        ->where('is_published', true)
                        ->groupBy('user_id');
 
@@ -681,7 +681,7 @@ The `whereExists` method allows you to write "where exists" SQL clauses. The `wh
 
     $users = DB::table('users')
                ->whereExists(function (Builder $query) {
-                   $query->select(DB::raw(1))
+                   $query->select(DB::raw(1)->getValue(DB::connection()->getQueryGrammar()))
                          ->from('orders')
                          ->whereColumn('orders.user_id', 'users.id');
                })
@@ -690,7 +690,7 @@ The `whereExists` method allows you to write "where exists" SQL clauses. The `wh
 Alternatively, you may provide a query object to the `whereExists` method instead of a closure:
 
     $orders = DB::table('orders')
-                    ->select(DB::raw(1))
+                    ->select(DB::raw(1)->getValue(DB::connection()->getQueryGrammar()))
                     ->whereColumn('orders.user_id', 'users.id');
 
     $users = DB::table('users')
