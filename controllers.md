@@ -392,11 +392,11 @@ Route::singleton('profile', ProfileController::class);
 
 The singleton resource definition above will register the following routes. As you can see, "creation" routes are not registered for singleton resources, and the registered routes do not accept an identifier since only one instance of the resource may exist:
 
-Verb      | URI                               | Action       | Route Name
-----------|-----------------------------------|--------------|---------------------
-GET       | `/profile`                        | show         | profile.show
-GET       | `/profile/edit`                   | edit         | profile.edit
-PUT/PATCH | `/profile`                        | update       | profile.update
+| Verb      | URI             | Action | Route Name     |
+|-----------|-----------------|--------|----------------|
+| GET       | `/profile`      | show   | profile.show   |
+| GET       | `/profile/edit` | edit   | profile.edit   |
+| PUT/PATCH | `/profile`      | update | profile.update |
 
 Singleton resources may also be nested within a standard resource:
 
