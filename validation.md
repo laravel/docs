@@ -1194,9 +1194,6 @@ The `Enum` rule is a class based rule that validates whether the field under val
         'status' => [new Enum(ServerStatus::class)],
     ]);
 
-> **Warning**  
-> Enums are only available on PHP 8.1+.
-
 <a name="rule-exclude"></a>
 #### exclude
 
