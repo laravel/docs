@@ -155,7 +155,7 @@ Alternatively, you may execute a callback while the time is frozen, like traveli
     $this->travel(5)->days(function () {
         // Test something five days into the future...
     });
-
+    
     $this->travelTo(now()->subDays(10), function () {
         // Test something during a given moment...
     });
@@ -163,12 +163,12 @@ Alternatively, you may execute a callback while the time is frozen, like traveli
 You can also use `freeze()` to stop the current time, or use `freezeSecond()` to do the same but rewinding the time to the start of the current second for less-granular comparisons.
 
     use Illuminate\Support\Carbon;
-
+    
     // Freeze time and resume normal time after executing closure...
     $this->freezeTime(function (Carbon $time) {
         // ...
     });
-
+    
     // Freeze the current second and resume normal time after executing closure...
     $this->freezeSecond(function (Carbon $time) {
         // ...
@@ -202,7 +202,7 @@ Imagine that the forum thread receives a reply three days after it was created. 
         // One week later after creation, the thread should not be locked.
         $this->travel(1)->week();
         $this->assertFalse($thread->isLockedByInactivity());
-
+        
         // A week later from the last reply, it becomes locked.
         $this->travel(3)->days();
         $this->assertTrue($thread->isLockedByInactivity());
