@@ -187,7 +187,7 @@ To give a concrete example, imagine that forum threads save internally their mom
         $this->assertTrue($thread->isLockedByInactivity());
     }
 
-Imagine that the forum thread receives a reply three days after it was created. Logically, the thread would become locked after a week of that last reply. That reply can be created in using the convenient _wormhole_ callback.
+Imagine that the forum thread receives a reply three days after it was created. Logically, the thread would become locked after a week of that last reply. That reply can be created using the convenient _wormhole_ callback.
 
     use App\Models\Thread;
     use App\Models\Post;
