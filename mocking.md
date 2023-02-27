@@ -174,7 +174,7 @@ You can also use `freeze()` to stop the current time, or use `freezeSecond()` to
         // ...
     })
 
-To give a concrete example, imagine that forums threads save internally their moment of last activity. We need to test that a thread becomes locked for inactivity after one week. We can move the time forward after the thread is created to test that.
+To give a concrete example, imagine that forum threads save internally their moment of last activity. We need to test that a thread becomes locked for inactivity after one week. We can move the time forward after the thread is created to test that.
 
     use App\Models\Thread;
     
