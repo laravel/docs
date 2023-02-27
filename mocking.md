@@ -136,7 +136,7 @@ If you would like to [spy](http://docs.mockery.io/en/latest/reference/spies.html
 
 When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\Support\Carbon::now()`, or some of Laravel's generated timestamps like on Eloquent Models. Thankfully, Laravel's base feature test class includes helpers that allow you to manipulate the current time.
 
-The `travel()` method can be used to freeze the time into the future or the past, and resume the current flow of time using `back()`.
+The `travel()` method can be used to freeze time into the future or the past, and resume the current flow of time using `back()`.
 
     // Go 10 days into the future.
     $this->travel(10)->days();
