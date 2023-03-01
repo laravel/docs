@@ -327,6 +327,12 @@ When invoking the command on your terminal, option shortcuts should be prefixed 
 php artisan mail:send 1 -Q
 ```
 
+When passing a value, the `=` character between the option shortcut and the provided value must be omitted:
+
+```shell
+php artisan mail:send 1 -Qdefault
+```
+
 <a name="input-arrays"></a>
 ### Input Arrays
 
