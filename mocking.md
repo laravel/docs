@@ -134,23 +134,32 @@ If you would like to [spy](http://docs.mockery.io/en/latest/reference/spies.html
 <a name="interacting-with-time"></a>
 ## Interacting With Time
 
-When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\Support\Carbon::now()`, or some of Laravel's generated timestamps like on Eloquent Models. Thankfully, Laravel's base feature test class includes helpers that allow you to manipulate the current time.
+When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\Support\Carbon::now()`. Thankfully, Laravel's base feature test class includes helpers that allow you to manipulate the current time:
 
-The `travel()` method can be used to freeze time into the future or the past, and resume the current flow of time using `back()`.
+    use Illuminate\Support\Carbon;
 
-    // Go 10 days into the future.
-    $this->travel(10)->days();
-    
-    // Go one month into the past.
-    $this->travel(-1)->month();
-    
-    // Set an explicit moment.
-    $this->travelTo('2015-07-04 20:00:00');
-    
-    // Resume the normal flow of time.
-    $this->travel()->back();
+    public function test_time_can_be_manipulated(): void
+    {
+        // Travel into the future...
+        $this->travel(5)->milliseconds();
+        $this->travel(5)->seconds();
+        $this->travel(5)->minutes();
+        $this->travel(5)->hours();
+        $this->travel(5)->days();
+        $this->travel(5)->weeks();
+        $this->travel(5)->years();
 
-Alternatively, you may execute a callback while the time is frozen, like traveling into a _wormhole_ and then returning back. After the callback ends, the time will resume as normal.
+        // Travel into the past...
+        $this->travel(-5)->hours();
+
+        // Travel to an explicit time...
+        $this->travelTo(now()->subHours(6));
+
+        // Return back to the present time...
+        $this->travelBack();
+    }
+
+You may also provide a closure to the various time travel methods. The closure will be invoked with time frozen at the specified time. Once the closure has executed, time will resume as normal:
 
     $this->travel(5)->days(function () {
         // Test something five days into the future...
@@ -160,50 +169,29 @@ Alternatively, you may execute a callback while the time is frozen, like traveli
         // Test something during a given moment...
     });
 
-You can also use `freeze()` to stop the current time, or use `freezeSecond()` to do the same but rewinding the time to the start of the current second for less-granular comparisons.
+The `freezeTime` method may be used to freeze the current time. Similarly, the `freezeSecond` method will freeze the current time but at the start of the current second:
 
     use Illuminate\Support\Carbon;
-    
+
     // Freeze time and resume normal time after executing closure...
     $this->freezeTime(function (Carbon $time) {
         // ...
     });
-    
-    // Freeze the current second and resume normal time after executing closure...
+
+    // Freeze time at the current second and resume normal time after executing closure...
     $this->freezeSecond(function (Carbon $time) {
         // ...
     })
 
-To give a concrete example, imagine that forum threads save internally their moment of last activity. We need to test that a thread becomes locked for inactivity after one week. We can move the time forward after the thread is created to test that.
+As you would expect, all of the methods discussed above are primarily useful for testing time sensitive application behavior, such as locking inactive posts on a discussion forum:
 
     use App\Models\Thread;
     
-    public function test_forum_threads_locks_after_one_week_of_inactivity()
+    public function test_forum_threads_lock_after_one_week_of_inactivity()
     {
         $thread = Thread::factory()->create();
         
         $this->travel(1)->week();
         
-        $this->assertTrue($thread->isLockedByInactivity());
-    }
-
-Imagine that the forum thread receives a reply three days after it was created. Logically, the thread would become locked after a week of that last reply. That reply can be created using the convenient _wormhole_ callback.
-
-    use App\Models\Thread;
-    use App\Models\Post;
-    
-    public function test_forum_threads_locks_after_one_week_of_last_post()
-    {
-        $thread = Thread::factory()->create();
-        
-        // Travel three days forward, post a reply, and come back.
-        $this->travel(3)->days(fn () => Post::factory()->for($thread)->create());
-        
-        // One week later after creation, the thread should not be locked.
-        $this->travel(1)->week();
-        $this->assertFalse($thread->isLockedByInactivity());
-        
-        // A week later from the last reply, it becomes locked.
-        $this->travel(3)->days();
         $this->assertTrue($thread->isLockedByInactivity());
     }
