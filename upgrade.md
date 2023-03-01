@@ -129,7 +129,7 @@ The `registerPolicies` method of the `AuthServiceProvider` is now invoked automa
 
 **Likelihood Of Impact: Medium**
 
-Redis [cache tag](/docs/{{version}}/cache#cache-tags) support has been rewritten for better performance and storage efficiency. In previously releases of Laravel, stale cache tags would accumulate in the cache when using Redis as your application's cache driver.
+Redis [cache tag](/docs/{{version}}/cache#cache-tags) support has been rewritten for better performance and storage efficiency. In previous releases of Laravel, stale cache tags would accumulate in the cache when using Redis as your application's cache driver.
 
 However, to properly prune stale cache tag entries, Laravel's new `cache:prune-stale-tags` Artisan command should be [scheduled](/docs/{{version}}/scheduling) in your application's `App\Console\Kernel` class:
 
