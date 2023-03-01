@@ -1173,7 +1173,7 @@ The `intersect` method removes any values from the original collection that are 
 <a name="method-intersectAssoc"></a>
 #### `intersectAssoc()` {.collection-method}
 
-The `intersectAssoc` method compares the collection against another collection `array`, returning the key / value pairs that . This method will return the key / value pairs that are present in all of the given collections:
+The `intersectAssoc` method compares the original collection against another collection or `array`, returning the key / value pairs that are present in all of the given collections:
 
     $collection = collect([
         'color' => 'red',
