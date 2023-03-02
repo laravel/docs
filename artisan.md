@@ -321,13 +321,7 @@ To assign a shortcut when defining an option, you may specify it before the opti
 
     'mail:send {user} {--Q|queue}'
 
-When invoking the command on your terminal, option shortcuts should be prefixed with a single hyphen:
-
-```shell
-php artisan mail:send 1 -Q
-```
-
-When passing a value, the `=` character between the option shortcut and the provided value must be omitted:
+When invoking the command on your terminal, option shortcuts should be prefixed with a single hyphen and no `=` character should be included when specifying a value for the option:
 
 ```shell
 php artisan mail:send 1 -Qdefault
