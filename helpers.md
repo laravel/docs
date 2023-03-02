@@ -212,6 +212,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
+[isMatch](#method-fluent-str-is-match)
 [newLine](#method-fluent-str-new-line)
 [padBoth](#method-fluent-str-padboth)
 [padLeft](#method-fluent-str-padleft)
@@ -2722,6 +2723,21 @@ If you specify a matching group within the expression, Laravel will return a col
     // collect(['un', 'ly']);
 
 If no matches are found, an empty collection will be returned.
+
+<a name="method-fluent-str-is-match"></a>
+#### `isMatch` {.collection-method}
+
+The `isMatch` method will return `true` if the string matches a given regular expression:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('foo bar')->isMatch('/foo (.*)/');
+
+    // true
+
+    $result = Str::of('laravel')->match('/foo (.*)/');
+
+    // false
 
 <a name="method-fluent-str-new-line"></a>
 #### `newLine` {.collection-method}
