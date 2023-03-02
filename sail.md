@@ -13,7 +13,7 @@
 - [Interacting With Databases](#interacting-with-sail-databases)
     - [MySQL](#mysql)
     - [Redis](#redis)
-    - [MeiliSearch](#meilisearch)
+    - [Meilisearch](#meilisearch)
 - [File Storage](#file-storage)
 - [Running Tests](#running-tests)
     - [Laravel Dusk](#laravel-dusk)
@@ -229,11 +229,11 @@ Your application's `docker-compose.yml` file also contains an entry for a [Redis
 To connect to your application's Redis database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the Redis database is accessible at `localhost` port 6379.
 
 <a name="meilisearch"></a>
-### MeiliSearch
+### Meilisearch
 
-If you chose to install the [MeiliSearch](https://www.meilisearch.com) service when installing Sail, your application's `docker-compose.yml` file will contain an entry for this powerful search-engine that is [compatible](https://github.com/meilisearch/meilisearch-laravel-scout) with [Laravel Scout](/docs/{{version}}/scout). Once you have started your containers, you may connect to the MeiliSearch instance within your application by setting your `MEILISEARCH_HOST` environment variable to `http://meilisearch:7700`.
+If you chose to install the [Meilisearch](https://www.meilisearch.com) service when installing Sail, your application's `docker-compose.yml` file will contain an entry for this powerful search-engine that is [compatible](https://github.com/meilisearch/meilisearch-laravel-scout) with [Laravel Scout](/docs/{{version}}/scout). Once you have started your containers, you may connect to the Meilisearch instance within your application by setting your `MEILISEARCH_HOST` environment variable to `http://meilisearch:7700`.
 
-From your local machine, you may access MeiliSearch's web based administration panel by navigating to `http://localhost:7700` in your web browser.
+From your local machine, you may access Meilisearch's web based administration panel by navigating to `http://localhost:7700` in your web browser.
 
 <a name="file-storage"></a>
 ## File Storage
