@@ -402,9 +402,9 @@ Storage::extend('dropbox', function ($app, $config) {
 });
 ```
 
-#### Replacing SFTP Ambigious Config Key
+#### SFTP Private-Public Key Passphrase
 
-In the old implementation of Flysystem's SFTP Adapter, the config key `password` was used for both plain-text and private-public key authentication. With Laravel 9.x and Flysystem 3.x, private-public key authentication uses the `passphrase` instead of `password` config key to decrypt the private key. In case the application uses private-public key authentication for SFTP connections, you have to use the `passphrase` config key.
+If your application is using Flysystem's SFTP adapter and private-public key authentication, the `password` configuration item that is used to decrypt the private key should be renamed to `passphrase`.
 
 ### Helpers
 
