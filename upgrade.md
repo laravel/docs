@@ -402,6 +402,10 @@ Storage::extend('dropbox', function ($app, $config) {
 });
 ```
 
+#### SFTP Private-Public Key Passphrase
+
+If your application is using Flysystem's SFTP adapter and private-public key authentication, the `password` configuration item that is used to decrypt the private key should be renamed to `passphrase`.
+
 ### Helpers
 
 <a name="data-get-function"></a>
