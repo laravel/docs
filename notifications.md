@@ -296,6 +296,7 @@ However, if you would like to make the final determination on whether the queued
 Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the `Notification` facade's `route` method, you may specify ad-hoc notification routing information before sending the notification:
 
     use Illuminate\Broadcasting\Channel;
+    use Illuminate\Support\Facades\Notification;
 
     Notification::route('mail', 'taylor@example.com')
                 ->route('vonage', '5555555555')
