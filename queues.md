@@ -769,6 +769,9 @@ If a transaction is rolled back due to an exception that occurs during the trans
 > **Note**  
 > Setting the `after_commit` configuration option to `true` will also cause any queued event listeners, mailables, notifications, and broadcast events to be dispatched after all open database transactions have been committed.
 
+> **Warning**  
+> The `after_commit` configuration option is not supported when using the ```sync``` queue driver, as all jobs are dispatched immediately.
+
 <a name="specifying-commit-dispatch-behavior-inline"></a>
 #### Specifying Commit Dispatch Behavior Inline
 
