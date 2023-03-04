@@ -726,6 +726,9 @@ When using `Castable` classes, you may still provide arguments in the `$casts` d
         'address' => Address::class.':argument',
     ];
 
+> **Warning**  
+> Using ```casts``` on primary key fields is NOT supported.
+  
 <a name="anonymous-cast-classes"></a>
 #### Castables & Anonymous Cast Classes
 
