@@ -28,10 +28,13 @@ In the past, most PHP applications rendered HTML to the browser using simple HTM
 ```blade
 <div>
     <?php foreach ($users as $user): ?>
-        Hello, <?php echo $user->name; ?> <br />
+        Hello, <?php echo htmlspecialchars($user->name); ?> <br />
     <?php endforeach; ?>
 </div>
 ```
+
+> **Note**  
+> Notice the call to `htmlspecialchars()` to avoid XSS issues. This is something that will be done automatically for us when we switch to a proper template engine like [Blade](/docs/{{version}}/blade).
 
 In Laravel, this approach to rendering HTML can still be achieved using [views](/docs/{{version}}/views) and [Blade](/docs/{{version}}/blade). Blade is an extremely light-weight templating language that provides convenient, short syntax for displaying data, iterating over data, and more:
 
