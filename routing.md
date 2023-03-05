@@ -379,11 +379,11 @@ Also, To [excluded middleware](/docs/{{version}}/middleware#excluding-middleware
 
     Route::withoutMiddleware(['first', 'second'])->group(function () {
         Route::get('/', function () {
-            // Uses first & second middleware...
+            // Does not uses first & second middleware...
         });
 
         Route::get('/user/profile', function () {
-            // Uses first & second middleware...
+            // Does not uses first & second middleware...
         });
     });
 
