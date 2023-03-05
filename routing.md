@@ -375,6 +375,18 @@ To assign [middleware](/docs/{{version}}/middleware) to all routes within a grou
         });
     });
 
+Also, To [excluded middleware](/docs/{{version}}/middleware#excluding-middleware) to all routes within a group, you may use the `withoutMiddleware` method before defining the group:
+
+    Route::withoutMiddleware(['first', 'second'])->group(function () {
+        Route::get('/', function () {
+            // Uses first & second middleware...
+        });
+
+        Route::get('/user/profile', function () {
+            // Uses first & second middleware...
+        });
+    });
+
 <a name="route-group-controllers"></a>
 ### Controllers
 
