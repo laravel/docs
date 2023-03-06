@@ -134,6 +134,28 @@ Adjusting this value based on your queue load can be more efficient than continu
 > **Warning**  
 > Setting `block_for` to `0` will cause queue workers to block indefinitely until a job is available. This will also prevent signals such as `SIGTERM` from being handled until the next job has been processed.
 
+<a name="sqs"></a>
+#### SQS
+
+In order to use AWS SQS, first you need to install `aws/aws-sdk-php ~3.0`.
+AWS SQS has two types of Queue, one is Standard and the other is FIFO. You can change the type inside `queue/config` file. By default, it is set to `standard` and you can change it to `fifo` if you want to use FIFO queue. Also FIFO needs `.fifo` suffix for each queue name which is handle by Laravel Framework, so no need to worry about this. For more information about FIFO, please check [AWS SQS FIFO Queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html).
+
+**Local Development**
+
+[ElasticMQ](https://github.com/softwaremill/elasticmq) and [LocalStack](https://github.com/localstack/localstack) are two popular tools that can be used to emulate SQS locally. ElasticMQ is a lightweight, in-memory SQS implementation that is easy to install and run. LocalStack is a more full-featured tool that can emulate many AWS services, including SQS.
+Here's a sample config for using ElasticMQ:
+
+    'sqs' => [
+        'driver' => 'sqs',
+        'type' => 'fifo',
+        'key' => mull,
+        'secret' => mull,
+        'credentials' => false,
+        'prefix' => 'http://localhost:9324/queue', // ElasticMQ
+        'message_group_id' => 'default',
+        'message_deduplication_id' => 'default',
+    ],
+
 <a name="other-driver-prerequisites"></a>
 #### Other Driver Prerequisites
 
@@ -141,7 +163,6 @@ The following dependencies are needed for the listed queue drivers. These depend
 
 <div class="content-list" markdown="1">
 
-- Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~4.0`
 - Redis: `predis/predis ~1.0` or phpredis PHP extension
 
@@ -697,7 +718,7 @@ If you would like to specify that a job should not be immediately available for 
     }
 
 > **Warning**  
-> The Amazon SQS queue service has a maximum delay time of 15 minutes.
+> The AWS SQS queue has a maximum delay time of 15 minutes. If you try to delay a job for longer than the maximum delay time, the job will be released immediately. Also in FIFO you can set `delay` just per queue and not per message, which is configurable via AWS SQS console or API and make sure `allow_delay` in `config/queue.php` is set to `true`.
 
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
 #### Dispatching After The Response Is Sent To Browser
@@ -900,6 +921,9 @@ Alternatively, you may specify the job's queue by calling the `onQueue` method w
             $this->onQueue('processing');
         }
     }
+
+> **Note**  
+> FIFO type of AWS SQS has a default config for `message_group_id` and `message_deduplication_id`. Also you can set these value per message by defining `public $messageGroupId` and `public $messageDeduplicationId` inside the job class.
 
 <a name="dispatching-to-a-particular-connection"></a>
 #### Dispatching To A Particular Connection
