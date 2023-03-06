@@ -409,6 +409,12 @@ Once you have created a model and [its associated database table](/docs/{{versio
         echo $flight->name;
     }
 
+You can also use the `find` or `findMany` methods to obtain the records with specific IDs.
+
+    Flight::find([1, 2, 3]);
+
+    Flight::findMany([1, 2, 3]);
+
 <a name="building-queries"></a>
 #### Building Queries
 
