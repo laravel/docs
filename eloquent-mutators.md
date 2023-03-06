@@ -261,7 +261,7 @@ If you need to add a new, temporary cast at runtime, you may use the `mergeCasts
     ]);
 
 > **Warning**  
-> Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship.
+> Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship or assign a cast to the model's primary key.
 
 <a name="stringable-casting"></a>
 #### Stringable Casting
