@@ -108,6 +108,7 @@ When using the `auto` strategy, you may define the `minProcesses` and `maxProces
                 'connection' => 'redis',
                 'queue' => ['default'],
                 'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
                 'minProcesses' => 1,
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
@@ -116,6 +117,8 @@ When using the `auto` strategy, you may define the `minProcesses` and `maxProces
             ],
         ],
     ],
+
+The `autoScalingStrategy` configuration value determines if Horizon will assign more worker processes to queues based on the total amount of time it will take to clear the queue (`time` strategy) or by the total number of jobs on the queue (`size` strategy).
 
 The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
 
