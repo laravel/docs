@@ -597,6 +597,12 @@ The `channel` method accepts two arguments: the name of the channel and a callba
 
 All authorization callbacks receive the currently authenticated user as their first argument and any additional wildcard parameters as their subsequent arguments. In this example, we are using the `{orderId}` placeholder to indicate that the "ID" portion of the channel name is a wildcard.
 
+You may view a list of your application's broadcast authorization callbacks using the `channel:list` Artisan command:
+
+```shell
+php artisan channel:list
+```
+
 <a name="authorization-callback-model-binding"></a>
 #### Authorization Callback Model Binding
 
