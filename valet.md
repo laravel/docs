@@ -110,6 +110,9 @@ valet use php@8.1
 valet use php
 ```
 
+> **Warning**  
+> You probably want to use `valet isolate` instead of this command, especially if you have any globally installed Composer packages.
+
 You may also create a `.valetphprc` file in the root of your project. The `.valetphprc` file should contain the PHP version the site should use:
 
 ```shell
