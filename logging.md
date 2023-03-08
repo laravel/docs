@@ -384,6 +384,33 @@ If you are using a Monolog handler that is capable of providing its own formatte
         'formatter' => 'default',
     ],
 
+
+ <a name="monolog-processors"></a>
+ #### Monolog Processors
+
+ Monolog can also process messages before logging them. You can create your own processors or use the [existing processors offered by Monolog](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor).
+
+ If you would like to customize the processors for a `monolog` driver, add a `processors` configuration value to your channel's configuration:
+
+     'memory' => [
+         'driver' => 'monolog',
+         'handler' => Monolog\Handler\StreamHandler::class,
+         'with' => [
+             'stream' => 'php://stderr',
+         ],
+         'processors' => [
+             // Simple syntax...
+             Monolog\Processor\MemoryUsageProcessor::class,
+
+             // With options...
+             [
+                'processor' => Monolog\Processor\PsrLogMessageProcessor::class,
+                'with' => ['removeUsedContextFields' => true],
+            ],
+         ],
+     ],
+
+
 <a name="creating-custom-channels-via-factories"></a>
 ### Creating Custom Channels Via Factories
 
