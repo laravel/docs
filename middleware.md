@@ -157,7 +157,7 @@ Also, you can pass guard to middleware:
 
     Route::get('/profile', function () {
         // ...
-    })->middleware('auth:sanctum'); // User must be login with sanctum guar
+    })->middleware('auth:sanctum'); // User must be login with sanctum guard
 
 <a name="excluding-middleware"></a>
 #### Excluding Middleware
