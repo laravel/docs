@@ -27,7 +27,7 @@ During local development, you should set the `APP_DEBUG` environment variable to
 <a name="error-theme"></a>
 ### Error Theme
 
-If you want to change error theme you can add `IGNITION_THEME` into `.env` file:
+The default Laravel theme is `dark`. If you want to change error theme you can add `IGNITION_THEME` into `.env` file:
 
 ```dotenv
 IGNITION_THEME=light
