@@ -153,6 +153,12 @@ Once the middleware alias has been defined in the HTTP kernel, you may use the a
         // ...
     })->middleware('auth');
 
+Also, you can pass guard to middleware:
+
+    Route::get('/profile', function () {
+        // ...
+    })->middleware('auth:sanctum'); // User must be login with sanctum guar
+
 <a name="excluding-middleware"></a>
 #### Excluding Middleware
 
