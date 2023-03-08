@@ -4,6 +4,7 @@
 - [Available Methods](#available-methods)
 - [Other Utilities](#other-utilities)
     - [Benchmarking](#benchmarking)
+    - [Pipeline](#pipeline)
     - [Lottery](#lottery)
 
 <a name="introduction"></a>
@@ -4163,6 +4164,48 @@ By default, the given callbacks will be executed once (one iteration), and their
 To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
 
     Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
+
+<a name="pipeline"></a>
+### Pipeline
+
+Laravel's `Pipeline` facade provides a convenient way to "pipe" a given input through a series of invokable classes, closures, or callables, giving each class the opportunity to inspect or modify the input and invoke the next callable in the pipeline:
+
+```php
+use Closure;
+use App\Models\User;
+use Illuminate\Support\Facades\Pipeline;
+
+$user = Pipeline::send($user)
+            ->through([
+                function (User $user, Closure $next) {
+                    // ...
+
+                    return $next($user);
+                },
+                function (User $user, Closure $next) {
+                    // ...
+
+                    return $next($user);
+                },
+            ])
+            ->then(fn (User $user) => $user);
+```
+
+As you can see, each invokable class or closure in the pipeline is provided the input and a `$next` closure. Invoking the `$next` closure will invoke the next callable in the pipeline. As you may have noticed, this is very similar to [middleware](/docs/{{version}}/middleware).
+
+When the last callable in the pipeline invokes the `$next` closure, the callable provided to the `then` method will be invoked. Typically, this callable will simply return the given input.
+
+Of course, as discussed previously, you are not limited to providing closures to your pipeline. You may also provide invokable classes. If a class name if provided, the class will be instantiated via Laravel's [service container](/docs/{{version}}/container), allowing dependencies to be injected into the invokable class:
+
+```php
+$user = Pipeline::send($user)
+            ->through([
+                GenerateProfilePhoto::class,
+                ActivateSubscription::class,
+                SendWelcomeEmail::class,
+            ])
+            ->then(fn (User $user) => $user);
+```
 
 <a name="lottery"></a>
 ### Lottery
