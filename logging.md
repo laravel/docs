@@ -69,6 +69,13 @@ Name | Description
 <a name="channel-prerequisites"></a>
 ### Channel Prerequisites
 
+<a name="configuring-the-replace-placeholders-option"></a>
+#### Configuring The Replace Placeholders Option
+
+All channels have the `replace_placeholders` configuration option.
+When set to `true` (which is highly recommended), log messages can contain placeholders (wrap the placeholder name with braces).
+These placeholders are useful for logging tools, which can aggregate log messages that are the same except for some variable values inside them, for translation systems in order to create localized messages, and for security because escaping can then be done by the implementation in a context-aware fashion.
+
 <a name="configuring-the-single-and-daily-channels"></a>
 #### Configuring The Single and Daily Channels
 
@@ -200,7 +207,8 @@ You may call any of these methods to log a message for the corresponding level. 
          */
         public function show(string $id): View
         {
-            Log::info('Showing the user profile for user: '.$id);
+            // Make sure "replace_placeholders" configuration option is set to true for all log channels.
+            Log::info('Showing the user profile for user: {userId}', ['userId' => $id]);
 
             return view('user.profile', [
                 'user' => User::findOrFail($id)
@@ -382,6 +390,27 @@ If you are using a Monolog handler that is capable of providing its own formatte
         'driver' => 'monolog',
         'handler' => Monolog\Handler\NewRelicHandler::class,
         'formatter' => 'default',
+    ],
+
+<a name="monolog-processors"></a>
+#### Monolog Processors
+
+Monolog can process messages before logging them to add extra data to them. You can create your own or use the [existing ones](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor). A particular one is already used when you use the `replace_placeholders` configuration option: the `PsrLogMessageProcessor`.
+
+If you want to customize the processors for a `monolog` driver, use the following configuration:
+
+    'memory' => [
+        'driver' => 'monolog',
+        'handler' => Monolog\Handler\StreamHandler::class,
+        'with' => [
+            'stream' => 'php://stderr',
+        ],
+        'processors' => [
+            // simple syntax
+            Monolog\Processor\MemoryUsageProcessor::class,
+            // complex syntax
+            ['processor' => Monolog\Processor\PsrLogMessageProcessor::class, 'with' => ['removeUsedContextFields' => true]],
+        ],
     ],
 
 <a name="creating-custom-channels-via-factories"></a>
