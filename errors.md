@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
+    - [Error Theme](#error-theme) 
 - [The Exception Handler](#the-exception-handler)
     - [Reporting Exceptions](#reporting-exceptions)
     - [Exception Log Levels](#exception-log-levels)
@@ -22,6 +23,15 @@ When you start a new Laravel project, error and exception handling is already co
 The `debug` option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your `.env` file.
 
 During local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the value is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
+
+<a name="error-theme"></a>
+### Error Theme
+
+If you want to change error theme you can add `IGNITION_THEME` into `.env` file:
+
+```dotenv
+IGNITION_THEME=light
+```
 
 <a name="the-exception-handler"></a>
 ## The Exception Handler
