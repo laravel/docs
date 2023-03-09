@@ -22,7 +22,7 @@
 - [Updating Values](#updating-values)
     - [Bulk Updates](#bulk-updates)
     - [Purging Features](#purging-features)
-- [Feature Helper Method](#feature-helper-method)
+- [Feature Helper Function](#feature-helper-function)
 - [Testing](#testing)
 - [Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)
     - [Implementing The Driver](#implementing-the-driver)
@@ -771,10 +771,10 @@ php artisan pennant:purge new-api
 php artisan pennant:purge new-api purchase-button
 ```
 
-<a name="feature-helper-method"></a>
-## Feature Helper Method
+<a name="feature-helper-function"></a>
+## Feature Helper Function
 
-Pennant offers a `feature` helper method that is globally available and provides a convenient way to interact with the "features".
+Pennant offers a `feature` helper function that is globally available and provides a convenient way to interact with the "features".
 
 For example, given the following feature definition:
 
