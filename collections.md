@@ -667,35 +667,13 @@ The `doesntContain` method uses "loose" comparisons when checking item values, m
 
 The `dot` method flattens a multi-dimensional collection into a single level collection that uses "dot" notation to indicate depth:
 
-    $person = collect([
-            "name" => [
-                "first_name" => "Marie",
-                "last_name" => "Valentine",
-            ],
-            "address" => [
-                "line_1" => "2992 Eagle Drive",
-                "line_2" => "",
-                "suburb" => "Detroit",
-                "state" => "MI",
-                "postcode" => "48219",
-            ],
-        ]);
+    $collection = collect(['products' => ['desk' => ['price' => 100]]]);
 
-    $person = $person->dot();
+    $flattened = $collection->dot();
 
-    $person->toArray();
+    $flattened->all();
 
-    /*
-        [
-            'name.first_name' => 'Marie',
-            'name.last_name' => 'Valentine',
-            'address.line_1' => '2992 Eagle Drive',
-            'address.line_2' => '',
-            'address.suburb' => 'Detroit',
-            'address.state' => 'MI',
-            'address.postcode' => '48219'
-        ]
-    */
+    // ['products.desk.price' => 100]
 
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}
