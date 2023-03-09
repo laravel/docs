@@ -22,6 +22,7 @@
 - [Updating Values](#updating-values)
     - [Bulk Updates](#bulk-updates)
     - [Purging Features](#purging-features)
+- [Feature Helper Method](#feature-helper-method)
 - [Testing](#testing)
 - [Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)
     - [Implementing The Driver](#implementing-the-driver)
@@ -769,6 +770,28 @@ php artisan pennant:purge new-api
 
 php artisan pennant:purge new-api purchase-button
 ```
+
+<a name="feature-helper-method"></a>
+## Feature Helper Method
+
+Pennant offers a `feature` helper method that is globally available and provides a convenient way to interact with the "features".
+
+For example, given the following feature definition:
+
+```php
+Feature::define('model-version', fn () => Arr::random([
+    'ada',
+    'babbage',
+    'curie',
+]));
+```
+You may get the rich value of the feature using the `feature` helper in your blade file:
+
+```blade
+You have access to the {{ feature('model-version') }} model.
+```
+
+You can also pass a closure as the second argument to the `feature` helper that will be executed if the given feature is active. You can pass an additional closure that will be executed if the feature is inactive. When using rich values, a feature is considered "active" when it has any value other than `false`.
 
 <a name="testing"></a>
 ## Testing
