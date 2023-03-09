@@ -94,7 +94,7 @@ Finally, examine any other third-party packages consumed by your application and
 <a name="updating-minimum-stability"></a>
 #### Minimum Stability
 
-You should update the `minimum-stability` setting in your application's `composer.json` file to `stable`:
+You should update the `minimum-stability` setting in your application's `composer.json` file to `stable`. Or, since the default value of `minimum-stability` is `stable`, you may delete this setting from your application's `composer.json` file:
 
 ```json
 "minimum-stability": "stable",
