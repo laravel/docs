@@ -1704,6 +1704,7 @@ If you would like to override all items within the `$with` property for a single
 Sometimes you may wish to eager load a relationship but also specify additional query conditions for the eager loading query. You can accomplish this by passing an array of relationships to the `with` method where the array key is a relationship name and the array value is a closure that adds additional constraints to the eager loading query:
 
     use App\Models\User;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     $users = User::with(['posts' => function (Builder $query) {
         $query->where('title', 'like', '%code%');
