@@ -422,6 +422,11 @@ The Eloquent `all` method will return all of the results in the model's table. H
 > **Note**  
 > Since Eloquent models are query builders, you should review all of the methods provided by Laravel's [query builder](/docs/{{version}}/queries). You may use any of these methods when writing your Eloquent queries.
 
+<a name="change-connection-model"></a>
+#### Change Model Connection
+
+Laravel default connection is MySQL if you want to change connection you can use `on` method in model:
+
 <a name="refreshing-models"></a>
 #### Refreshing Models
 
