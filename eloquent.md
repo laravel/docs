@@ -425,7 +425,7 @@ The Eloquent `all` method will return all of the results in the model's table. H
 <a name="change-connection-model"></a>
 #### Change Model Connection
 
-Laravel default connection is MySQL if you want to change connection you can use `on` method in model:
+Laravel default connection is MySQL, if you want to change connection you can use `on` method in model:
 
 ```php
 $flights = Flight::on('pgsql') // Postgresql
