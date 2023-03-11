@@ -427,6 +427,13 @@ The Eloquent `all` method will return all of the results in the model's table. H
 
 Laravel default connection is MySQL if you want to change connection you can use `on` method in model:
 
+```php
+$flights = Flight::on('pgsql') // Postgresql
+                   ->orderBy('name')
+                   ->take(10)
+                   ->get();
+```
+
 <a name="refreshing-models"></a>
 #### Refreshing Models
 
