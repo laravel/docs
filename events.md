@@ -517,7 +517,7 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
 
 For convenience, you can use `event` helper for dispatch event:
 
-```
+```php
 event(new OrderShipped($order));
 ```
 
