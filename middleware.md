@@ -147,7 +147,7 @@ For convenience, you may assign aliases to middleware in your application's `app
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 
-Once the middleware alias has been defined in the HTTP kernel, you may use the alias when assigning middlware to routes:
+Once the middleware alias has been defined in the HTTP kernel, you may use the alias when assigning middleware to routes:
 
     Route::get('/profile', function () {
         // ...
