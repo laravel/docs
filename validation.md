@@ -2210,6 +2210,7 @@ Or, if your validation rule requires access to the validator instance performing
 If you only need the functionality of a custom rule once throughout your application, you may use a closure instead of a rule object. The closure receives the attribute's name, the attribute's value, and a `$fail` callback that should be called if validation fails:
 
     use Illuminate\Support\Facades\Validator;
+    use Closure;
 
     $validator = Validator::make($request->all(), [
         'title' => [
