@@ -75,6 +75,7 @@ You should update the following dependencies in your application's `composer.jso
 - `laravel/sanctum` to `^3.2`
 - `doctrine/dbal` to `^3.0`
 - `spatie/laravel-ignition` to `^2.0`
+- `laravel/passport` to `^11.0` ([Upgrade Guide](https://github.com/laravel/passport/blob/11.x/UPGRADE.md))
 
 </div>
 
