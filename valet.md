@@ -113,11 +113,13 @@ valet use php@8.1
 valet use php
 ```
 
-You may also create a `.valetphprc` file in the root of your project. The `.valetphprc` file should contain the PHP version the site should use:
+You may also create a `.valetrc` file in the root of your project. The `.valetrc` file should contain the PHP version the site should use:
 
 ```shell
-php@8.1
+php=php@8.1
 ```
+> **Note**
+> In Valet 4, `.valetphprc`, a file that contained only the PHP version, has been replaced by `.valetrc`, a broader configuration file. `.valetphprc` files are still supported but that support is deprecated and will go away in the next major version.
 
 Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
 
@@ -138,6 +140,14 @@ If you are having trouble getting your Valet installation to run properly, execu
 ### Upgrading Valet
 
 You may update your Valet installation by executing the `composer global require laravel/valet` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
+
+#### Upgrading to Valet 4
+
+If you're upgrading from Valet 3 to Valet 4, take the following steps to upgrade your installation:
+
+- Replace all `.valetphprc` files with `.valetrc` files, and prepend `php=` to the existing content of your `.valetphprc` files when you rename them
+- Update any custom drivers to match the namespace, extension, and type hints and return hints of the new driver system; see the [v4 SampleValetDriver](https://github.com/laravel/valet/blob/d7787c025e60abc24a5195dc7d4c5c6f2d984339/cli/stubs/SampleValetDriver.php) as an example
+- If you use PHP 7.1-7.4 to serve your sites, make sure you still use Homebrew to install a version of PHP that's 8.0 or higher; Valet will use this version, even if it's not your primary linked version, to run some of its scripts
 
 <a name="serving-sites"></a>
 ## Serving Sites
@@ -262,8 +272,9 @@ valet unisolate
 
 Valet even includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
 
-<a name="sharing-sites-via-ngrok"></a>
-### Sharing Sites Via Ngrok
+Valet comes with out-of-the-box support for ngrok and Expose. When you're ready to share a site, update your Valet configuration by running either `valet share-tool ngrok` or `valet-share-tool expose`. If you don't have the tool you've chosen installed, Valet will prompt you to install it automatically.
+
+You can share with both tools the same way, but please take a look at the instructions below to see the setup process for each tool. Once you're set up, you share the same way:
 
 To share a site, navigate to the site's directory in your terminal and run Valet's `share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser or share with your team:
 
@@ -273,7 +284,19 @@ cd ~/Sites/laravel
 valet share
 ```
 
-To stop sharing your site, you may press `Control + C`. Sharing your site using Ngrok requires you to [create an Ngrok account](https://dashboard.ngrok.com/signup) and [setup an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken).
+To stop sharing your site, you may press `Control + C`.
+
+> **Note**
+> If you're using a custom DNS server (like `1.1.1.1`), you may find ngrok shares won't work correctly. In this case, open your Mac's system settings, go to the Network settings, open the Advanced settings, then go the DNS tab, and add `127.0.0.1` as your first DNS server.
+
+<a name="sharing-sites-via-ngrok"></a>
+### Sharing Sites Via Ngrok
+
+Sharing your site using Ngrok requires you to [create an Ngrok account](https://dashboard.ngrok.com/signup) and [set up an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken). Once you have an auth token, you can update your Valet configuration with that token:
+
+```shell
+valet set-ngrok-token YOUR_TOKEN_HERE
+```
 
 > **Note**  
 > You may pass additional Ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
@@ -281,15 +304,9 @@ To stop sharing your site, you may press `Control + C`. Sharing your site using 
 <a name="sharing-sites-via-expose"></a>
 ### Sharing Sites Via Expose
 
-If you have [Expose](https://expose.dev) installed, you can share your site by navigating to the site's directory in your terminal and running the `expose` command. Consult the [Expose documentation](https://expose.dev/docs) for information regarding the additional command-line parameters it supports. After sharing the site, Expose will display the sharable URL that you may use on your other devices or amongst team members:
+Sharing your site using Expose requires you to [create an Expose account](https://expose.dev/register) and [authenticate Expose with your authentication token](https://expose.dev/docs/getting-started/getting-your-token).
 
-```shell
-cd ~/Sites/laravel
-
-expose
-```
-
-To stop sharing your site, you may press `Control + C`.
+Consult the [Expose documentation](https://expose.dev/docs) for information regarding the additional command-line parameters it supports. 
 
 <a name="sharing-sites-on-your-local-network"></a>
 ### Sharing Sites On Your Local Network
@@ -368,13 +385,8 @@ For example, let's imagine we are writing a `WordPressValetDriver`. Our `serves`
 
     /**
      * Determine if the driver serves the request.
-     *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
-     * @return bool
      */
-    public function serves($sitePath, $siteName, $uri)
+    public function serves(string $sitePath, string $siteName, string $uri): bool
     {
         return is_dir($sitePath.'/wp-admin');
     }
@@ -387,12 +399,9 @@ The `isStaticFile` should determine if the incoming request is for a file that i
     /**
      * Determine if the incoming request is for a static file.
      *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
      * @return string|false
      */
-    public function isStaticFile($sitePath, $siteName, $uri)
+    public function isStaticFile(string $sitePath, string $siteName, string $uri)
     {
         if (file_exists($staticFilePath = $sitePath.'/public/'.$uri)) {
             return $staticFilePath;
@@ -411,13 +420,8 @@ The `frontControllerPath` method should return the fully qualified path to your 
 
     /**
      * Get the fully resolved path to the application's front controller.
-     *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
-     * @return string
      */
-    public function frontControllerPath($sitePath, $siteName, $uri)
+    public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
     {
         return $sitePath.'/public/index.php';
     }
@@ -433,26 +437,16 @@ If you would like to define a custom Valet driver for a single application, crea
     {
         /**
          * Determine if the driver serves the request.
-         *
-         * @param  string  $sitePath
-         * @param  string  $siteName
-         * @param  string  $uri
-         * @return bool
          */
-        public function serves($sitePath, $siteName, $uri)
+        public function serves(string $sitePath, string $siteName, string $uri): bool
         {
             return true;
         }
 
         /**
          * Get the fully resolved path to the application's front controller.
-         *
-         * @param  string  $sitePath
-         * @param  string  $siteName
-         * @param  string  $uri
-         * @return string
          */
-        public function frontControllerPath($sitePath, $siteName, $uri)
+        public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
         {
             return $sitePath.'/public_html/index.php';
         }
@@ -466,6 +460,8 @@ If you would like to define a custom Valet driver for a single application, crea
 Command  | Description
 ------------- | -------------
 `valet list` | Display a list of all Valet commands.
+`valet diagnose` | Output diagnostics to aid in debugging Valet.
+`valet directory-listing` | Determine directory-listing behavior. Default is off, which means a 404 will display.
 `valet forget` | Run this command from a "parked" directory to remove it from the parked directory list.
 `valet log` | View a list of logs which are written by Valet's services.
 `valet paths` | View all of your "parked" paths.
@@ -493,10 +489,6 @@ This directory contains DNSMasq's configuration.
 #### `~/.config/valet/Drivers/`
 
 This directory contains Valet's drivers. Drivers determine how a particular framework / CMS is served.
-
-#### `~/.config/valet/Extensions/`
-
-This directory contains custom Valet extensions / commands.
 
 #### `~/.config/valet/Nginx/`
 
