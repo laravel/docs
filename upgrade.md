@@ -40,7 +40,6 @@
 - [The `Bus::dispatchNow` Method](#dispatch-now)
 - [The `registerPolicies` Method](#register-policies)
 - [ULID Columns](#ulid-columns)
-- [Laravel Passport](#routes-passport-method)
 
 </div>
 
@@ -76,7 +75,7 @@ You should update the following dependencies in your application's `composer.jso
 - `laravel/sanctum` to `^3.2`
 - `doctrine/dbal` to `^3.0`
 - `spatie/laravel-ignition` to `^2.0`
-- `laravel/passport` to `^11.0`
+- `laravel/passport` to `^11.0` ([Upgrade Guide](https://github.com/laravel/passport/blob/11.x/UPGRADE.md))
 
 </div>
 
@@ -303,12 +302,3 @@ public function rules()
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be.
 
 You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/9.x...10.x) and choose which updates are important to you. However, many of the changes shown by the GitHub comparison tool are due to our organization's adoption of PHP native types. These changes are backwards compatible and the adoption of them during the migration to Laravel 10 is optional.
-
-### Passport
-
-<a name="routes-passport-method"></a>
-#### Passport::routes() method
-
-**Likelihood Of Impact: Low**
-
-Since `laravel/passport: "^11.0"` removed the static *routes()* method, you should remove it from *AuthServiceProvider.php*.
