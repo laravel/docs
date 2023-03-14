@@ -213,7 +213,7 @@ Since many of Laravel's configuration option values may vary depending on whethe
 Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
 
 > **Note**  
-> For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
+> For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration.md#environment-configuration).
 
 <a name="databases-and-migrations"></a>
 ### Databases & Migrations
