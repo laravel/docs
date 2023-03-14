@@ -311,4 +311,4 @@ You can easily view the changes with the [GitHub comparison tool](https://github
 
 **Likelihood Of Impact: Low**
 
-Since `laravel/passport: "^11.0"` removed the static *routes()* method, you should remove it from *RouteServiceProvider.php*.
+Since `laravel/passport: "^11.0"` removed the static *routes()* method, you should remove it from *AuthServiceProvider.php*.
