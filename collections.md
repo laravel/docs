@@ -1928,7 +1928,7 @@ The `reduce` method reduces the collection to a single value, passing the result
 
     $collection = collect([1, 2, 3]);
 
-    $total = $collection->reduce(function (int $carry, int $item) {
+    $total = $collection->reduce(function (?int $carry, int $item) {
         return $carry + $item;
     });
 
