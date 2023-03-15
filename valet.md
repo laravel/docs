@@ -144,7 +144,7 @@ If you're upgrading from Valet 3 to Valet 4, take the following steps to properl
 
 <div class="content-list" markdown="1">
 
-- If you've added `.valetphprc` files to customize your site's PHP version, replace each `.valetphprc` file with a `.valetrc` file, and prepend `php=` to the existing content of your `.valetphprc` file when you rename it.
+- If you've added `.valetphprc` files to customize your site's PHP version, rename each `.valetphprc` file to `.valetrc`. Then, prepend `php=` to the existing content of the `.valetrc` file.
 - Update any custom drivers to match the namespace, extension, type-hints, and return type-hints of the new driver system. You may consult Valet's [SampleValetDriver](https://github.com/laravel/valet/blob/d7787c025e60abc24a5195dc7d4c5c6f2d984339/cli/stubs/SampleValetDriver.php) as an example.
 - If you use PHP 7.1 - 7.4 to serve your sites, make sure you still use Homebrew to install a version of PHP that's 8.0 or higher, as Valet will use this version, even if it's not your primary linked version, to run some of its scripts.
 
