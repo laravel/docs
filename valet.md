@@ -10,8 +10,6 @@
     - [Serving a Default Site](#serving-a-default-site)
     - [Per-Site PHP Versions](#per-site-php-versions)
 - [Sharing Sites](#sharing-sites)
-    - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
-    - [Sharing Sites Via Expose](#sharing-sites-via-expose)
     - [Sharing Sites On Your Local Network](#sharing-sites-on-your-local-network)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Proxying Services](#proxying-services)
@@ -118,8 +116,6 @@ You may also create a `.valetrc` file in the root of your project. The `.valetrc
 ```shell
 php=php@8.1
 ```
-> **Note**
-> In Valet 4, `.valetphprc`, a file that contained only the PHP version, has been replaced by `.valetrc`, a broader configuration file. `.valetphprc` files are still supported but that support is deprecated and will go away in the next major version.
 
 Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
 
@@ -141,13 +137,18 @@ If you are having trouble getting your Valet installation to run properly, execu
 
 You may update your Valet installation by executing the `composer global require laravel/valet` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
 
-#### Upgrading to Valet 4
+<a name="upgrading-to-valet-4"></a>
+#### Upgrading To Valet 4
 
-If you're upgrading from Valet 3 to Valet 4, take the following steps to upgrade your installation:
+If you're upgrading from Valet 3 to Valet 4, take the following steps to properly upgrade your Valet installation:
 
-- Replace all `.valetphprc` files with `.valetrc` files, and prepend `php=` to the existing content of your `.valetphprc` files when you rename them
-- Update any custom drivers to match the namespace, extension, and type hints and return hints of the new driver system; see the [v4 SampleValetDriver](https://github.com/laravel/valet/blob/d7787c025e60abc24a5195dc7d4c5c6f2d984339/cli/stubs/SampleValetDriver.php) as an example
-- If you use PHP 7.1-7.4 to serve your sites, make sure you still use Homebrew to install a version of PHP that's 8.0 or higher; Valet will use this version, even if it's not your primary linked version, to run some of its scripts
+<div class="content-list" markdown="1">
+
+- Replace all `.valetphprc` files with `.valetrc` files, and prepend `php=` to the existing content of your `.valetphprc` files when you rename them.
+- Update any custom drivers to match the namespace, extension, type-hints, and return type-hints of the new driver system. You may consult Valet's [SampleValetDriver](https://github.com/laravel/valet/blob/d7787c025e60abc24a5195dc7d4c5c6f2d984339/cli/stubs/SampleValetDriver.php) as an example.
+- If you use PHP 7.1 - 7.4 to serve your sites, make sure you still use Homebrew to install a version of PHP that's 8.0 or higher, as Valet will use this version, even if it's not your primary linked version, to run some of its scripts.
+
+</div>
 
 <a name="serving-sites"></a>
 ## Serving Sites
@@ -270,19 +271,17 @@ valet unisolate
 <a name="sharing-sites"></a>
 ## Sharing Sites
 
-Valet even includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
+Valet includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
 
-Out of the box, Valet supports using either ngrok or Expose to share your sites. Before you first try to share a site, you'll need to update your Valet config with the `share-tool` command, passing it either `ngrok` or `expose`:
+Out of the box, Valet supports sharing your sites via ngrok or Expose. Before sharing a site, you should update your Valet configuration using the `share-tool` command, specifying either `ngrok` or `expose`:
 
 ```shell
 valet share-tool ngrok
 ```
 
-If you choose a tool and don't have it installed via Homebrew (for ngrok) or Composer (for Expose) yet, Valet will prompt you to install it automatically.
+If you choose a tool and don't have it installed via Homebrew (for ngrok) or Composer (for Expose), Valet will automatically prompt you to install it. Of course, both tools require you to authenticate your ngrok or Expose account before you can start sharing sites.
 
-Both tools require you to authenticate your accounts before you can share with them. See the notes below for instructions for authenticating.
-
-To share a site, once you've authenticated your share tool, navigate to the site's directory in your terminal and run Valet's `share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser or share with your team:
+To share a site, navigate to the site's directory in your terminal and run Valet's `share` command. A publicly accessible URL will be placed into your clipboard and is ready to paste directly into your browser or to be shared with your team:
 
 ```shell
 cd ~/Sites/laravel
@@ -292,27 +291,27 @@ valet share
 
 To stop sharing your site, you may press `Control + C`.
 
-> **Note**
-> If you're using a custom DNS server (like `1.1.1.1`), you may find ngrok shares won't work correctly. In this case, open your Mac's system settings, go to the Network settings, open the Advanced settings, then go the DNS tab, and add `127.0.0.1` as your first DNS server.
+> **Warning**
+> If you're using a custom DNS server (like `1.1.1.1`), ngrok sharing may not work correctly. If this is the case on your machine, open your Mac's system settings, go to the Network settings, open the Advanced settings, then go the DNS tab and add `127.0.0.1` as your first DNS server.
 
 <a name="sharing-sites-via-ngrok"></a>
-### Sharing Sites Via Ngrok
+#### Sharing Sites Via Ngrok
 
-Sharing your site using Ngrok requires you to [create an Ngrok account](https://dashboard.ngrok.com/signup) and [set up an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken). Once you have an auth token, you can update your Valet configuration with that token:
+Sharing your site using ngrok requires you to [create an ngrok account](https://dashboard.ngrok.com/signup) and [set up an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken). Once you have an authentication token, you can update your Valet configuration with that token:
 
 ```shell
 valet set-ngrok-token YOUR_TOKEN_HERE
 ```
 
 > **Note**  
-> You may pass additional Ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
+> You may pass additional ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
 
 <a name="sharing-sites-via-expose"></a>
-### Sharing Sites Via Expose
+#### Sharing Sites Via Expose
 
-Sharing your site using Expose requires you to [create an Expose account](https://expose.dev/register) and [authenticate Expose with your authentication token](https://expose.dev/docs/getting-started/getting-your-token).
+Sharing your site using Expose requires you to [create an Expose account](https://expose.dev/register) and [authenticate with Expose via your authentication token](https://expose.dev/docs/getting-started/getting-your-token).
 
-Consult the [Expose documentation](https://expose.dev/docs) for information regarding the additional command-line parameters it supports. 
+You may consult the [Expose documentation](https://expose.dev/docs) for information regarding the additional command-line parameters it supports.
 
 <a name="sharing-sites-on-your-local-network"></a>
 ### Sharing Sites On Your Local Network
@@ -467,7 +466,7 @@ Command  | Description
 ------------- | -------------
 `valet list` | Display a list of all Valet commands.
 `valet diagnose` | Output diagnostics to aid in debugging Valet.
-`valet directory-listing` | Determine directory-listing behavior. Default is off, which means a 404 will display.
+`valet directory-listing` | Determine directory-listing behavior. Default is "off", which renders a 404 page for directories.
 `valet forget` | Run this command from a "parked" directory to remove it from the parked directory list.
 `valet log` | View a list of logs which are written by Valet's services.
 `valet paths` | View all of your "parked" paths.
