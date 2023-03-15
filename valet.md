@@ -272,11 +272,17 @@ valet unisolate
 
 Valet even includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
 
-Valet comes with out-of-the-box support for ngrok and Expose. When you're ready to share a site, update your Valet configuration by running either `valet share-tool ngrok` or `valet-share-tool expose`. If you don't have the tool you've chosen installed, Valet will prompt you to install it automatically.
+Out of the box, Valet supports using either ngrok or Expose to share your sites. Before you first try to share a site, you'll need to update your Valet config with the `share-tool` command, passing it either `ngrok` or `expose`:
 
-You can share with both tools the same way, but please take a look at the instructions below to see the setup process for each tool. Once you're set up, you share the same way:
+```shell
+valet share-tool ngrok
+```
 
-To share a site, navigate to the site's directory in your terminal and run Valet's `share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser or share with your team:
+If you choose a tool and don't have it installed via Homebrew (for ngrok) or Composer (for Expose) yet, Valet will prompt you to install it automatically.
+
+Both tools require you to authenticate your accounts before you can share with them. See the notes below for instructions for authenticating.
+
+To share a site, once you've authenticated your share tool, navigate to the site's directory in your terminal and run Valet's `share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser or share with your team:
 
 ```shell
 cd ~/Sites/laravel
