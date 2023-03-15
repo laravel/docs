@@ -74,7 +74,7 @@ php artisan telescope:install
 php artisan migrate
 ```
 
-After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your application's `config/app.php` configuration file. Instead, manually register Telescope's service providers in the `register` method of your `App\Providers\AppServiceProvider` class. We will ensure the current environment is `local` before registering the providers:
+After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your application's `config/app.php` configuration file. Instead, manually register Telescope service provider in the `register` method of your `App\Providers\AppServiceProvider` class. We will ensure the current environment is `local` before registering the provider:
 
     /**
      * Register any application services.
@@ -83,7 +83,6 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
     {
         if ($this->app->environment('local')) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
         }
     }
 
