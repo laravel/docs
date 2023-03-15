@@ -381,7 +381,7 @@ Instead of rate limiting in the handle method, we could define a job middleware 
         {
             Redis::throttle('key')
                     ->block(0)->allow(1)->every(5)
-                    ->then(function () use (object $job, Closure $next) {
+                    ->then(function () use ($job, $next) {
                         // Lock obtained...
 
                         $next($job);
