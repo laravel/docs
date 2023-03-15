@@ -2911,8 +2911,8 @@ The `replaceMatches` method also accepts a closure that will be invoked with eac
     use Illuminate\Support\Str;
     use Illuminate\Support\Stringable;
 
-    $replaced = Str::of('123')->replaceMatches('/\d/', function (Stringable $match) {
-        return '['.$match[0].']';
+    $replaced = Str::of('123')->replaceMatches('/\d/', function (array $matches) {
+        return '['.$matches[0].']';
     });
 
     // '[1][2][3]'
