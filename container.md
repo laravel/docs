@@ -337,7 +337,7 @@ You may use the `make` method to resolve a class instance from the container. Th
 
     $transistor = $this->app->make(Transistor::class);
 
-If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:
+If some of your class's dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:
 
     use App\Services\Transistor;
 
@@ -352,7 +352,7 @@ If you are outside of a service provider in a location of your code that does no
 
     $transistor = app(Transistor::class);
 
-If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\Container\Container` class on your class' constructor:
+If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\Container\Container` class on your class's constructor:
 
     use Illuminate\Container\Container;
 
