@@ -328,7 +328,7 @@ If you pass additional parameters in the array, those key / value pairs will aut
     // /user/1/profile?photos=yes
 
 > **Note**  
-> Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values).
+> Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults`](/docs/{{version}}/urls#default-values) method.
 
 <a name="inspecting-the-current-route"></a>
 #### Inspecting The Current Route
