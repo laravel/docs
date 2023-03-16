@@ -140,9 +140,9 @@ If you would like to append query string data to the current URL, you may call t
 
 You may retrieve the "host" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:
 
-    $request->host();
-    $request->httpHost();
-    $request->schemeAndHttpHost();
+    $request->host(); 
+    $request->httpHost(); // returns example.com
+    $request->schemeAndHttpHost(); // returns http://example.com or https://example.com based on scheme
 
 <a name="retrieving-the-request-method"></a>
 #### Retrieving The Request Method
