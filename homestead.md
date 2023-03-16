@@ -60,7 +60,6 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 
 - Ubuntu 20.04
 - Git
-- PHP 8.2
 - PHP 8.1 (system default)
 - PHP 8.0
 - PHP 7.4
@@ -567,7 +566,7 @@ Below is a list of additional Homestead service ports that you may wish to map f
 
 Homestead currently sets PHP 8.1 as the system version, used by default for both serving sites and run the CLI.
 
-Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1" (the default), and "8.2":
+Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", and "8.1" (the default):
 
 ```yaml
 sites:
@@ -587,7 +586,6 @@ php7.3 artisan list
 php7.4 artisan list
 php8.0 artisan list
 php8.1 artisan list
-php8.2 artisan list
 ```
 
 You can also set the version of PHP used by the CLI in your configuration file
@@ -607,7 +605,6 @@ php73
 php74
 php80
 php81
-php82
 ```
 
 <a name="connecting-to-databases"></a>
