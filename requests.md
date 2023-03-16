@@ -242,7 +242,7 @@ Using the `collect` method, you may retrieve all of the incoming request's input
 
     $input = $request->collect();
 
-The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:
+The `collect` method also allows you to retrieve a subset of the incoming request's input as a collection:
 
     $request->collect('users')->each(function (string $user) {
         // ...
