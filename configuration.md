@@ -115,7 +115,7 @@ You may also pass arguments to the `environment` method to determine if the envi
 <a name="encrypting-environment-files"></a>
 ### Encrypting Environment Files
 
-Unencrypted environment files should never be stored in source control. However, Laravel allows you to encrypt your environment files so that they may be safely be added to source control with the rest of your application.
+Unencrypted environment files should never be stored in source control. However, Laravel allows you to encrypt your environment files so that they may safely be added to source control with the rest of your application.
 
 <a name="encryption"></a>
 #### Encryption

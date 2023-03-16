@@ -28,7 +28,7 @@ Breeze provides a wonderful starting point for beginning a fresh Laravel applica
 
 #### Laravel Bootcamp
 
-If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://bootcamp.laravel.com). The Laravel Bootcamp will walk you through building your first Laravel application using Breeze. It's a great way to get a tour of everything the Laravel and Breeze have to offer.
+If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://bootcamp.laravel.com). The Laravel Bootcamp will walk you through building your first Laravel application using Breeze. It's a great way to get a tour of everything that Laravel and Breeze have to offer.
 
 <a name="laravel-breeze-installation"></a>
 ### Installation
@@ -67,7 +67,7 @@ If you would like Breeze to include "dark mode" support when scaffolding your ap
 php artisan breeze:install --dark
 ```
 
-> **Note**  
+> **Note**
 > To learn more about compiling your application's CSS and JavaScript, check out Laravel's [Vite documentation](/docs/{{version}}/vite#running-vite).
 
 <a name="breeze-and-inertia"></a>

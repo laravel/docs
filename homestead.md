@@ -60,7 +60,8 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 
 - Ubuntu 20.04
 - Git
-- PHP 8.1 (system default)
+- PHP 8.2 (system default)
+- PHP 8.1
 - PHP 8.0
 - PHP 7.4
 - PHP 7.3
@@ -72,7 +73,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - MySQL 8.0
 - lmm
 - Sqlite3
-- PostgreSQL 13
+- PostgreSQL 15
 - Composer
 - Docker
 - Node 18 (With Yarn, Bower, Grunt, and Gulp)
@@ -140,7 +141,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 <a name="first-steps"></a>
 ### First Steps
 
-Before launching your Homestead environment, you must install [Vagrant](https://www.vagrantup.com/downloads.html) as well as one of the following supported providers:
+Before launching your Homestead environment, you must install [Vagrant](https://developer.hashicorp.com/vagrant/downloads) as well as one of the following supported providers:
 
 - [VirtualBox 6.1.x](https://www.virtualbox.org/wiki/Downloads)
 - [Parallels](https://www.parallels.com/products/desktop/)
@@ -346,6 +347,7 @@ features:
     - meilisearch: true
     - minio: true
     - mongodb: true
+    - mysql: true
     - neo4j: true
     - ohmyzsh: true
     - openresty: true
@@ -564,9 +566,8 @@ Below is a list of additional Homestead service ports that you may wish to map f
 <a name="php-versions"></a>
 ### PHP Versions
 
-Homestead currently sets PHP 8.1 as the system version, used by default for both serving sites and run the CLI.
-
-Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", and "8.1" (the default):
+Homestead currently sets PHP 8.2 as the system version, used by default for both serving sites and run the CLI.
+Homestead supports running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", and "8.2" (the default):
 
 ```yaml
 sites:
@@ -586,6 +587,7 @@ php7.3 artisan list
 php7.4 artisan list
 php8.0 artisan list
 php8.1 artisan list
+php8.2 artisan list
 ```
 
 You can also set the version of PHP used by the CLI in your configuration file
@@ -605,6 +607,7 @@ php73
 php74
 php80
 php81
+php82
 ```
 
 <a name="connecting-to-databases"></a>

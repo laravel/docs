@@ -300,6 +300,16 @@ $schedule->job(new CheckUptime('https://vapor.laravel.com'))
             ->onOneServer();
 ```
 
+Similarly, scheduled closures must be assigned a name if they are intended to be run on one server:
+
+```php
+$schedule->call(fn () => User::resetApiRequestCount())
+    ->name('reset-api-request-count')
+    ->daily()
+    ->onOneServer();
+```
+
+
 <a name="background-tasks"></a>
 ### Background Tasks
 

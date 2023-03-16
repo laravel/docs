@@ -75,6 +75,8 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [makeVisible](#method-makeVisible)
 [makeHidden](#method-makeHidden)
 [only](#method-only)
+[setVisible](#method-setVisible)
+[setHidden](#method-setHidden)
 [toQuery](#method-toquery)
 [unique](#method-unique)
 
@@ -192,6 +194,20 @@ The `makeHidden` method [hides attributes](/docs/{{version}}/eloquent-serializat
 The `only` method returns all of the models that have the given primary keys:
 
     $users = $users->only([1, 2, 3]);
+
+<a name="method-setVisible"></a>
+#### `setVisible($attributes)` {.collection-method}
+
+The `setVisible` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the visible attributes on each model in the collection:
+
+    $users = $users->setVisible(['id', 'name']);
+
+<a name="method-setHidden"></a>
+#### `setHidden($attributes)` {.collection-method}
+
+The `setHidden` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the hidden attributes on each model in the collection:
+
+    $users = $users->setHidden(['email', 'password', 'remember_token']);
 
 <a name="method-toquery"></a>
 #### `toQuery()` {.collection-method}

@@ -42,7 +42,7 @@ The cache configuration file also contains various other options, which are docu
 <a name="prerequisites-database"></a>
 #### Database
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
+When using the `database` cache driver, you will need to set up a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
 
     Schema::create('cache', function ($table) {
         $table->string('key')->unique();
@@ -271,7 +271,7 @@ When the `cache` function is called without any arguments, it returns an instanc
 <a name="storing-tagged-cache-items"></a>
 ### Storing Tagged Cache Items
 
-Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. Items stored via tags may not be accessed without also providing the tags that were used to store the value. For example, let's access a tagged cache and `put` a value into the cache:
+Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` a value into the cache:
 
     Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
 
@@ -280,7 +280,7 @@ Cache tags allow you to tag related items in the cache and then flush all cached
 <a name="accessing-tagged-cache-items"></a>
 ### Accessing Tagged Cache Items
 
-To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:
+Items stored via tags may not be accessed without also providing the tags that were used to store the value. To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:
 
     $john = Cache::tags(['people', 'artists'])->get('John');
 
@@ -334,8 +334,8 @@ Atomic locks allow for the manipulation of distributed locks without worrying ab
 
 The `get` method also accepts a closure. After the closure is executed, Laravel will automatically release the lock:
 
-    Cache::lock('foo')->get(function () {
-        // Lock acquired indefinitely and automatically released...
+    Cache::lock('foo', 10)->get(function () {
+        // Lock acquired for 10 seconds and automatically released...
     });
 
 If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:

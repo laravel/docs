@@ -282,7 +282,7 @@ For complex query conditions, you may provide a closure in your array of credent
         'email' => $email, 
         'password' => $password, 
         fn ($query) => $query->has('activeSubscription'),
-    ]) {
+    ])) {
         // Authentication was successful...
     }
 
@@ -610,6 +610,12 @@ Once your custom authentication driver has been defined, you may configure it as
             'driver' => 'custom-token',
         ],
     ],
+
+Finally, you may reference the guard when assigning the authentication middleware to a route:
+
+    Route::middleware('auth:api')->group(function () {
+        // ...
+    }
 
 <a name="adding-custom-user-providers"></a>
 ## Adding Custom User Providers
