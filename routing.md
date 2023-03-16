@@ -179,7 +179,7 @@ You may define as many route parameters as required by your route:
         // ...
     });
 
-Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Underscores (`_`) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter.
+Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Underscores (`_`) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter (except in the case of [route model binding](/docs/{{version}}/routing#route-model-binding)).
 
 <a name="parameters-and-dependency-injection"></a>
 #### Parameters & Dependency Injection
@@ -415,7 +415,7 @@ The `prefix` method may be used to prefix each route in the group with a given U
 <a name="route-group-name-prefixes"></a>
 ### Route Name Prefixes
 
-The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix all of the grouped route's names with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
+The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix all of the grouped routes' names with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
 
     Route::name('admin.')->group(function () {
         Route::get('/users', function () {
