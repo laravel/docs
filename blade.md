@@ -979,7 +979,7 @@ If you need to merge other attributes onto your component, you can chain the `me
 ```
 
 > **Note**  
-> If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [`@class` directive](#conditional-classes).
+> If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [`@class`](#conditional-classes) directive.
 
 <a name="non-class-attribute-merging"></a>
 #### Non-Class Attribute Merging
