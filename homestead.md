@@ -60,7 +60,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 
 - Ubuntu 20.04
 - Git
-- PHP 8.2 (system default)
+- PHP 8.2 (Default)
 - PHP 8.1
 - PHP 8.0
 - PHP 7.4
