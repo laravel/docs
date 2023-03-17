@@ -491,8 +491,10 @@ Paginated responses always contain `meta` and `links` keys with information abou
 }
 ```
 
-#### Customizing pagination information
-If you wish to customize the pagination information, you can add a `paginationInformation` method to the resource:
+<a name="customizing-the-pagination-information"></a>
+#### Customizing The Pagination Information
+
+If you would like to customize the information included in the `links` or `meta` keys of the pagination response, you may define a `paginationInformation` method on the resource. This method will receive the `$paginated` data and the array of `$default` information, which is an array containing the `links` and `meta` keys:
 
     /**
      * Customize the pagination information for the resource.
@@ -504,7 +506,9 @@ If you wish to customize the pagination information, you can add a `paginationIn
      */
     public function paginationInformation($request, $paginated, $default)
     {
-        return Arr::except($default, 'links');
+        $default['links']['custom'] = 'https://example.com';
+
+        return $default;
     }
     
 In this example, the response will no longer contain the `links` array.
