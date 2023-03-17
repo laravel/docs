@@ -975,7 +975,7 @@ As you might expect, the "HTML" assertions assert that the HTML version of your 
 <a name="testing-mailable-sending"></a>
 ### Testing Mailable Sending
 
-We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. Typically, the content of mailables it not relevant to the code you are testing, and it is sufficient to simply assert that Laravel was instructed to send a given mailable.
+We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. Typically, the content of mailables is not relevant to the code you are testing, and it is sufficient to simply assert that Laravel was instructed to send a given mailable.
 
 You may use the `Mail` facade's `fake` method to prevent mail from being sent. After calling the `Mail` facade's `fake` method, you may then assert that mailables were instructed to be sent to users and even inspect the data the mailables received:
 
