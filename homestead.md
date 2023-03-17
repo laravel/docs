@@ -18,6 +18,7 @@
     - [Ports](#ports)
     - [PHP Versions](#php-versions)
     - [Connecting To Databases](#connecting-to-databases)
+    - [Creating Databases](#creating-databases)
     - [Database Backups](#database-backups)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Configuring MailHog](#configuring-mailhog)
@@ -373,7 +374,7 @@ You may specify a supported version of Elasticsearch, which must be an exact ver
 <a name="mariadb"></a>
 #### MariaDB
 
-Enabling MariaDB will remove MySQL and install MariaDB. MariaDB typically serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration.
+Enabling MariaDB will remove MySQL and install MariaDB. MariaDB typically serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration:
 
 ```yaml
 features:
@@ -566,7 +567,6 @@ Below is a list of additional Homestead service ports that you may wish to map f
 <a name="php-versions"></a>
 ### PHP Versions
 
-Homestead currently sets PHP 8.2 as the system version, used by default for both serving sites and run the CLI.
 Homestead supports running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", and "8.2" (the default):
 
 ```yaml
@@ -590,13 +590,13 @@ php8.1 artisan list
 php8.2 artisan list
 ```
 
-You can also set the version of PHP used by the CLI in your configuration file
+You may also specify the version of PHP that should be used by the CLI in your `Homestead.yaml` file:
 
 ```yaml
 php: 8.0
 ```
 
-or you may change it manually by issuing the following commands from within your Homestead virtual machine:
+Or, you may change it manually by issuing the following commands from within your Homestead virtual machine:
 
 ```shell
 php56
@@ -618,10 +618,10 @@ A `homestead` database is configured for both MySQL and PostgreSQL out of the bo
 > **Warning**  
 > You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel application's `database` configuration file since Laravel is running _within_ the virtual machine.
 
-<a name="create-databases"></a>
-### Create databases
+<a name="creating-databases"></a>
+### Creating Databases
 
-Homestead can automatically create the specified databases needed in your app. If a database service is running, during provisioning Homestead will make sure each database in the provided list is created if it doesn't already exist:
+Homestead can automatically create any databases needed by your application. If a database service is running during the provisioning process, Homestead will ensure each database in your `Homestead.yaml` configuration file is created if it doesn't already exist:
 
 ```yaml
 databases:
@@ -752,7 +752,7 @@ share homestead.test -region=eu -subdomain=laravel
 
 Homestead includes support for step debugging using [Xdebug](https://xdebug.org). For example, you can access a page in your browser and PHP will connect to your IDE to allow inspection and modification of the running code.
 
-By default, Xdebug is already running and ready to accept connections. If you need to enable or disable Xdebug on the CLI, execute the `sudo phpenmod xdebug` or `sudo phpdismod xdebug` command within your Homestead virtual machine. The convenient `xon` and `xoff` functions are available within the VM to do just that.
+By default, Xdebug is already running and ready to accept connections. If you need to enable or disable Xdebug on the CLI, execute the `sudo phpenmod xdebug` or `sudo phpdismod xdebug` commands within your Homestead virtual machine.
 
 Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
