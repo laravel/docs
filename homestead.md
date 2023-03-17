@@ -18,6 +18,7 @@
     - [Ports](#ports)
     - [PHP Versions](#php-versions)
     - [Connecting To Databases](#connecting-to-databases)
+    - [Creating Databases](#creating-databases)
     - [Database Backups](#database-backups)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Configuring MailHog](#configuring-mailhog)
@@ -60,7 +61,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 
 - Ubuntu 20.04
 - Git
-- PHP 8.2
+- PHP 8.2 (Default)
 - PHP 8.1
 - PHP 8.0
 - PHP 7.4
@@ -76,7 +77,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - PostgreSQL 15
 - Composer
 - Docker
-- Node (With Yarn, Bower, Grunt, and Gulp)
+- Node 18 (With Yarn, Bower, Grunt, and Gulp)
 - Redis
 - Memcached
 - Beanstalkd
@@ -110,9 +111,11 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Crystal & Lucky Framework
 - Elasticsearch
 - EventStoreDB
+- Flyway
 - Gearman
 - Go
 - Grafana
+- Heroku CLI
 - InfluxDB
 - MariaDB
 - Meilisearch
@@ -122,7 +125,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Oh My Zsh
 - Open Resty
 - PM2
-- Python
+- Python 3
 - R
 - RabbitMQ
 - RVM (Ruby Version Manager)
@@ -335,9 +338,11 @@ features:
         version: 7.9.0
     - eventstore: true
         version: 21.2.0
+    - flyway: true
     - gearman: true
     - golang: true
     - grafana: true
+    - heroku: true
     - influxdb: true
     - mariadb: true
     - meilisearch: true
@@ -369,7 +374,12 @@ You may specify a supported version of Elasticsearch, which must be an exact ver
 <a name="mariadb"></a>
 #### MariaDB
 
-Enabling MariaDB will remove MySQL and install MariaDB. MariaDB typically serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration.
+Enabling MariaDB will remove MySQL and install MariaDB. MariaDB typically serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration:
+
+```yaml
+features:
+  - mariadb: true
+```
 
 <a name="mongodb"></a>
 #### MongoDB
@@ -563,7 +573,7 @@ Homestead supports running multiple versions of PHP on the same virtual machine.
 sites:
     - map: homestead.test
       to: /home/vagrant/project1/public
-      php: "7.1"
+      php: "7.4"
 ```
 
 [Within your Homestead virtual machine](#connecting-via-ssh), you may use any of the supported PHP versions via the CLI:
@@ -580,7 +590,13 @@ php8.1 artisan list
 php8.2 artisan list
 ```
 
-You may change the default version of PHP used by the CLI by issuing the following commands from within your Homestead virtual machine:
+You may also specify the version of PHP that should be used by the CLI in your `Homestead.yaml` file:
+
+```yaml
+php: 8.0
+```
+
+Or, you may change it manually by issuing the following commands from within your Homestead virtual machine:
 
 ```shell
 php56
@@ -601,6 +617,17 @@ A `homestead` database is configured for both MySQL and PostgreSQL out of the bo
 
 > **Warning**  
 > You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel application's `database` configuration file since Laravel is running _within_ the virtual machine.
+
+<a name="creating-databases"></a>
+### Creating Databases
+
+Homestead can automatically create any databases needed by your application. If a database service is running during the provisioning process, Homestead will ensure each database in your `Homestead.yaml` configuration file is created if it doesn't already exist:
+
+```yaml
+databases:
+  - database_1
+  - database_2
+```
 
 <a name="database-backups"></a>
 ### Database Backups
@@ -725,7 +752,9 @@ share homestead.test -region=eu -subdomain=laravel
 
 Homestead includes support for step debugging using [Xdebug](https://xdebug.org). For example, you can access a page in your browser and PHP will connect to your IDE to allow inspection and modification of the running code.
 
-By default, Xdebug is already running and ready to accept connections. If you need to enable Xdebug on the CLI, execute the `sudo phpenmod xdebug` command within your Homestead virtual machine. Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
+By default, Xdebug is already running and ready to accept connections. If you need to enable or disable Xdebug on the CLI, execute the `sudo phpenmod xdebug` or `sudo phpdismod xdebug` commands within your Homestead virtual machine.
+
+Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
 > **Warning**  
 > Xdebug causes PHP to run significantly slower. To disable Xdebug, run `sudo phpdismod xdebug` within your Homestead virtual machine and restart the FPM service.
