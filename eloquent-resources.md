@@ -491,6 +491,24 @@ Paginated responses always contain `meta` and `links` keys with information abou
 }
 ```
 
+#### Customizing pagination information
+If you wish to customize the pagination information, you can add a `paginationInformation` method to the resource:
+
+    /**
+     * Customize the pagination information for the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array $paginated
+     * @param  array $default
+     * @return array
+     */
+    public function paginationInformation($request, $paginated, $default)
+    {
+        return Arr::except($default, 'links');
+    }
+    
+In this example, the response will no longer contain the `links` array.
+
 <a name="conditional-attributes"></a>
 ### Conditional Attributes
 
