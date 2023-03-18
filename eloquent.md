@@ -383,21 +383,6 @@ Also, you may instruct Laravel to throw an exception when attempting to fill an 
 Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
 ```
 
-Finally, you may instruct Eloquent to throw an exception if you attempt to access an attribute on a model when that attribute was not actually retrieved from the database or when the attribute does not exist. For example, this may occur when you forget to add an attribute to the `select` clause of an Eloquent query:
-
-```php
-Model::preventAccessingMissingAttributes(! $this->app->isProduction());
-```
-
-<a name="enabling-eloquent-strict-mode"></a>
-#### Enabling Eloquent "Strict Mode"
-
-For convenience, you may enable all three of the methods discussed above by simply invoking the `shouldBeStrict` method:
-
-```php
-Model::shouldBeStrict(! $this->app->isProduction());
-```
-
 <a name="retrieving-models"></a>
 ## Retrieving Models
 
