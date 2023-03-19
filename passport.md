@@ -260,7 +260,7 @@ Then, you may copy the routes defined by Passport in [its routes file](https://g
     Route::group([
         'as' => 'passport.',
         'prefix' => config('passport.path', 'oauth'),
-        'namespace' => 'Laravel\Passport\Http\Controllers',
+        'namespace' => '\Laravel\Passport\Http\Controllers',
     ], function () {
         // Passport routes...
     });
