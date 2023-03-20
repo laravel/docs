@@ -445,7 +445,8 @@ If the user approves the authorization request, they will be redirected back to 
 
         throw_unless(
             strlen($state) > 0 && $state === $request->state,
-            InvalidArgumentException::class
+            InvalidArgumentException::class,
+            'Invalid state value.'
         );
 
         $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
