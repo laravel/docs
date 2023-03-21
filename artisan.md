@@ -619,7 +619,7 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
         // ...
     });
 
-Using the `onConnection` and `onQueue` methods, you may specify the connection or queue the Artisan command should be dispatched to:
+Using the `onConnection` and `onQueue` methods, you may specify the connection or the queue, that the Artisan command should be dispatched to:
 
     Artisan::queue('mail:send', [
         'user' => 1, '--queue' => 'default'
