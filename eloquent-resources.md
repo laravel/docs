@@ -511,8 +511,6 @@ If you would like to customize the information included in the `links` or `meta`
         return $default;
     }
     
-In this example, the response will no longer contain the `links` array.
-
 <a name="conditional-attributes"></a>
 ### Conditional Attributes
 
