@@ -195,7 +195,7 @@ If you would like to quickly add a bearer token to the request's `Authorization`
 <a name="timeout"></a>
 ### Timeout
 
-The `timeout` method may be used to specify the maximum number of seconds to wait for a response:
+The `timeout` method may be used to specify the maximum number of seconds to wait for a response. By default, the HTTP client will timeout after 30 seconds:
 
     $response = Http::timeout(3)->get(/* ... */);
 
