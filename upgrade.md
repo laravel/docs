@@ -101,6 +101,12 @@ You should update the `minimum-stability` setting in your application's `compose
 "minimum-stability": "stable",
 ```
 
+### Http Kernel
+
+**Likelihood Of Impact: High**
+
+You should update the following `App\Http\Kernel.php` file middleware property `Fruitcake\Cors\HandleCors::class` to `\App\Http\Middleware\TrustProxies::class`,
+
 ### Application
 
 <a name="public-path-binding"></a>
