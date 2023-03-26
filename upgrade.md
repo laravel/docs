@@ -12,6 +12,15 @@
 
 </div>
 
+<a name="low-impact-changes"></a>
+## Low Impact Changes
+
+<div class="content-list" markdown="1">
+
+- [The `paginate` Method](#paginate)
+
+</div>
+
 <a name="upgrade-11.0"></a>
 ## Upgrading To 11.0 From 10.x
 
@@ -39,3 +48,10 @@ You should update the following dependencies in your application's `composer.jso
 - `laravel/framework` to `^11.0`
 
 </div>
+
+<a name="paginate"></a>
+#### The `paginate` Method
+
+**Likelihood Of Impact: Low**
+
+The `paginate` method of the `Builder` now accepts a nullable `total` parameter. If you are overriding this method, you may need to adjust your definition. See [PR #46410](https://github.com/laravel/framework/pull/46410) for full details.
