@@ -241,6 +241,10 @@ The `get` method may be used to retrieve the contents of a file. The raw string 
 
     $contents = Storage::get('file.jpg');
 
+If the file you are retrieving contains JSON, you may use the `json` method to retrieve the file and decode its contents:
+
+    $orders = Storage::json('orders.json');
+
 The `exists` method may be used to determine if a file exists on the disk:
 
     if (Storage::disk('s3')->exists('file.jpg')) {
