@@ -70,6 +70,9 @@ php artisan session:table
 php artisan migrate
 ```
 
+> **Note**  
+> Ensure that the `user_id` column type matches the `id` column type in the `users` table. You can use the `$table->foreignUuid('user_id')->nullable()->index();` method in the example above if using UUIDs as user IDs.
+
 <a name="redis"></a>
 #### Redis
 
