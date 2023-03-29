@@ -360,7 +360,7 @@ Often, when retrieving a single model using the `latestOfMany`, `oldestOfMany`, 
 /**
  * Get the user's orders.
  */
-public function largestOrder(): HasMany
+public function orders(): HasMany
 {
     return $this->hasMany(Order::class);
 }
