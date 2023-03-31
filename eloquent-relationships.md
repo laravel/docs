@@ -716,7 +716,7 @@ return $this->belongsToMany(Role::class)
 ```
 
 > **Note**
-> When using the `withPivotValue` method, it will define a `wherePivot` statement behind the scenes.
+> When using the `withPivotValue` method, it defines a `wherePivot` statement behind the scenes.
 
 <a name="filtering-queries-via-intermediate-table-columns"></a>
 ### Filtering Queries Via Intermediate Table Columns
