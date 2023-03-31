@@ -87,7 +87,7 @@ The `HasFactory` trait's `factory` method will use conventions to determine the 
         return FlightFactory::new();
     }
 
-Next, define a `model` property on the corresponding factory:
+Then, define a `model` property on the corresponding factory:
 
     use App\Administration\Flight;
     use Illuminate\Database\Eloquent\Factories\Factory;
@@ -101,8 +101,6 @@ Next, define a `model` property on the corresponding factory:
          */
         protected $model = Flight::class;
     }
-
-Note that setting the $model property is only required in cases where Laravel cannot automatically resolve the name from the Factory Class, when normal naming conventions were not followed.
 
 <a name="factory-states"></a>
 ### Factory States
