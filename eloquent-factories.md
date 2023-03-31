@@ -102,6 +102,8 @@ Next, define a `model` property on the corresponding factory:
         protected $model = Flight::class;
     }
 
+You can omit setting the $model property if Laravel can automatically resolve the model class from the Factory name by following conventions.
+
 <a name="factory-states"></a>
 ### Factory States
 
