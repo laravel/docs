@@ -10,6 +10,7 @@
     - [Has Many Through](#has-many-through)
 - [Many To Many Relationships](#many-to-many)
     - [Retrieving Intermediate Table Columns](#retrieving-intermediate-table-columns)
+    - [Defining Default Intermediate Table Column Values](#defining-default-intermediate-table-column-values)
     - [Filtering Queries Via Intermediate Table Columns](#filtering-queries-via-intermediate-table-columns)
     - [Ordering Queries Via Intermediate Table Columns](#ordering-queries-via-intermediate-table-columns)
     - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
