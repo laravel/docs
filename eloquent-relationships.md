@@ -704,6 +704,19 @@ Once the custom intermediate table attribute has been specified, you may access 
         echo $podcast->subscription->created_at;
     }
 
+<a name="defining-default-intermediate-table-column-values"></a>
+### Defining Default Intermediate Table Column Values
+
+You can also define default pivot values using the `withPivotValue` method:
+
+```php
+return $this->belongsToMany(Role::class)
+            ->withPivotValue('approved', 1);
+```
+
+> **Note**
+> When using the `withPivotValue` method, it will define a `wherePivot` statement behind the scenes.
+
 <a name="filtering-queries-via-intermediate-table-columns"></a>
 ### Filtering Queries Via Intermediate Table Columns
 
