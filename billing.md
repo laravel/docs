@@ -62,6 +62,7 @@
     - [Previewing Subscription Invoices](#previewing-subscription-invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
 - [Handling Failed Payments](#handling-failed-payments)
+    - [Confirming Payments](#confirming-payments)
 - [Strong Customer Authentication (SCA)](#strong-customer-authentication)
     - [Payments Requiring Additional Confirmation](#payments-requiring-additional-confirmation)
     - [Off-session Payment Notifications](#off-session-payment-notifications)
@@ -2026,6 +2027,15 @@ You can derive the specific status of an incomplete payment by inspecting the `p
             // ...
         }
     }
+
+<a name="confirming-payments"></a>
+### Confirming Payments
+
+For some payment methods, when performing subscription changes, you'll need to pass along extra data to confirm the payment. For example, for the SEPA payment method you'll need to pass extra mandata data before performing the plan change:
+
+    $subscription->withPaymentConfirmOptions(['mandate_data' => ...])->swap('price_xxx');
+    
+Behind the scenes, Cashier will detect when a payment method needs confirmation and perform the action for you. See [the Stripe API](https://stripe.com/docs/api/payment_intents/confirm) docs for all the options you can pass when confirming payment methods.
 
 <a name="strong-customer-authentication"></a>
 ## Strong Customer Authentication
