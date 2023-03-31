@@ -2033,7 +2033,7 @@ You can derive the specific status of an incomplete payment by inspecting the `p
 
 For some payment methods, when performing subscription changes, you'll need to pass along extra data to confirm the payment. For example, for the SEPA payment method you'll need to pass extra mandata data before performing the plan change:
 
-    $subscription->withPaymentConfirmOptions(['mandate_data' => ...])->swap('price_xxx');
+    $subscription->withPaymentConfirmationOptions(['mandate_data' => ...])->swap('price_xxx');
     
 Behind the scenes, Cashier will detect when a payment method needs confirmation and perform the action for you. See [the Stripe API](https://stripe.com/docs/api/payment_intents/confirm) docs for all the options you can pass when confirming payment methods.
 
