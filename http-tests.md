@@ -1169,6 +1169,13 @@ Assert that the response has an unprocessable entity (422) HTTP status code:
 
     $response->assertUnprocessable();
 
+<a name="assert-unsupported-media-type"></a>
+#### assertUnsupportedMediaType
+
+Assert that the response has an unprocessable entity (422) HTTP status code:
+
+    $response->assertUnsupportedMediaType();
+
 <a name="assert-valid"></a>
 #### assertValid
 
