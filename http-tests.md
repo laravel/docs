@@ -659,6 +659,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSuccessful](#assert-successful)
 [assertUnauthorized](#assert-unauthorized)
 [assertUnprocessable](#assert-unprocessable)
+[assertUnsupportedMediaType](#assert-unsupported-media-type)
 [assertValid](#assert-valid)
 [assertInvalid](#assert-invalid)
 [assertViewHas](#assert-view-has)
