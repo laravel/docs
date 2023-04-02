@@ -216,7 +216,7 @@ However, if your application uses the same "from" address for all of its emails,
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name'    => env('MAIL_FROM_NAME', 'Example'),
+        'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
 In addition, you may define a global "reply_to" address within your `config/mail.php` configuration file:
