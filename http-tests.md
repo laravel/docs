@@ -671,6 +671,13 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 </div>
 
+<a name="assert-accepted"></a>
+#### assertAccepted
+
+Assert that the response has a conflict (409) HTTP status code:
+
+    $response->assertConflict();
+
 <a name="assert-conflict"></a>
 #### assertConflict
 
