@@ -673,7 +673,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 <a name="assert-confilit"></a>
 #### assertConflict
 
-Assert that the response has a conflict (403) HTTP status code:
+Assert that the response has a conflict (409) HTTP status code:
 
     $response->assertConflict();
 
