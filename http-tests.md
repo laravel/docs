@@ -761,6 +761,13 @@ Assert that the response has a forbidden (403) HTTP status code:
 
     $response->assertForbidden();
 
+<a name="assert-found"></a>
+#### assertFound
+
+Assert that the response has a found (302) HTTP status code:
+
+    $response->assertFound();
+
 <a name="assert-header"></a>
 #### assertHeader
 
