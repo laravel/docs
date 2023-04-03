@@ -607,6 +607,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 <div class="collection-method-list" markdown="1">
 
+[assertAccepted](#assert-accepted)
 [assertConflict](#assert-conflict)
 [assertCookie](#assert-cookie)
 [assertCookieExpired](#assert-cookie-expired)
@@ -669,6 +670,13 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertViewMissing](#assert-view-missing)
 
 </div>
+
+<a name="assert-accepted"></a>
+#### assertAccepted
+
+Assert that the response has an accepted (202) HTTP status code:
+
+    $response->assertAccepted();
 
 <a name="assert-conflict"></a>
 #### assertConflict
