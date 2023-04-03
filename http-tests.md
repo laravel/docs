@@ -649,6 +649,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertRedirectContains](#assert-redirect-contains)
 [assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
+[assertRequestTimeout](#assert-request-timeout)
 [assertSee](#assert-see)
 [assertSeeInOrder](#assert-see-in-order)
 [assertSeeText](#assert-see-text)
