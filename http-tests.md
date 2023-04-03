@@ -670,6 +670,13 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 </div>
 
+<a name="assert-confilit"></a>
+#### assertConflict
+
+Assert that the response has a conflict (403) HTTP status code:
+
+    $response->assertConflict();
+
 <a name="assert-cookie"></a>
 #### assertCookie
 
