@@ -1069,6 +1069,13 @@ Assert that the response is a redirect to the given [signed route](/docs/{{versi
 
     $response->assertRedirectToSignedRoute($name = null, $parameters = []);
 
+<a name="assert-request-timeout"></a>
+#### assertRequestTimeout
+
+Assert that the response has a request timeout (408) HTTP status code:
+
+    $response->assertRequestTimeout();
+
 <a name="assert-see"></a>
 #### assertSee
 
