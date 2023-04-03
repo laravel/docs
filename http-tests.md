@@ -1212,6 +1212,13 @@ Assert that the response has a successful (>= 200 and < 300) HTTP status code:
 
     $response->assertSuccessful();
 
+<a name="assert-too-many-requests"></a>
+#### assertTooManyRequests
+
+Assert that the response has a too many requests (429) HTTP status code:
+
+    $response->assertTooManyRequests();
+
 <a name="assert-unauthorized"></a>
 #### assertUnauthorized
 
