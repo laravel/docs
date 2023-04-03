@@ -608,6 +608,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 <div class="collection-method-list" markdown="1">
 
 [assertAccepted](#assert-accepted)
+[assertBadRequest](#assert-bad-request)
 [assertConflict](#assert-conflict)
 [assertCookie](#assert-cookie)
 [assertCookieExpired](#assert-cookie-expired)
