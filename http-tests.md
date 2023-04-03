@@ -608,6 +608,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 <div class="collection-method-list" markdown="1">
 
 [assertAccepted](#assert-accepted)
+[assertBadRequest](#assert-bad-request)
 [assertConflict](#assert-conflict)
 [assertCookie](#assert-cookie)
 [assertCookieExpired](#assert-cookie-expired)
@@ -619,6 +620,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertDownload](#assert-download)
 [assertExactJson](#assert-exact-json)
 [assertForbidden](#assert-forbidden)
+[assertFound](#assert-found)
 [assertHeader](#assert-header)
 [assertHeaderMissing](#assert-header-missing)
 [assertJson](#assert-json)
@@ -635,16 +637,19 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
 [assertLocation](#assert-location)
+[assertMovedPermanently](#assert-moved-permanently)
 [assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
 [assertStreamedContent](#assert-streamed-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
+[assertPaymentRequired](#assert-payment-required)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
 [assertRedirectContains](#assert-redirect-contains)
 [assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
+[assertRequestTimeout](#assert-request-timeout)
 [assertSee](#assert-see)
 [assertSeeInOrder](#assert-see-in-order)
 [assertSeeText](#assert-see-text)
@@ -659,6 +664,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSessionMissing](#assert-session-missing)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
+[assertTooManyRequests](#assert-too-many-requests)
 [assertUnauthorized](#assert-unauthorized)
 [assertUnprocessable](#assert-unprocessable)
 [assertUnsupportedMediaType](#assert-unsupported-media-type)
@@ -670,6 +676,13 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertViewMissing](#assert-view-missing)
 
 </div>
+
+<a name="assert-bad-request"></a>
+#### assertBadRequest
+
+Assert that the response has a bad request (400) HTTP status code:
+
+    $response->assertBadRequest();
 
 <a name="assert-accepted"></a>
 #### assertAccepted
@@ -758,6 +771,13 @@ Assert that the response contains an exact match of the given JSON data:
 Assert that the response has a forbidden (403) HTTP status code:
 
     $response->assertForbidden();
+
+<a name="assert-found"></a>
+#### assertFound
+
+Assert that the response has a found (302) HTTP status code:
+
+    $response->assertFound();
 
 <a name="assert-header"></a>
 #### assertHeader
@@ -959,6 +979,13 @@ Assert the response has any JSON validation errors for the given key:
 
     $response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');
 
+<a name="assert-moved-permanently"></a>
+#### assertMovedPermanently
+
+Assert that the response has a moved permanently (301) HTTP status code:
+
+    $response->assertMovedPermanently();
+
 <a name="assert-location"></a>
 #### assertLocation
 
@@ -1001,6 +1028,13 @@ Assert that the response has a 200 HTTP status code:
 
     $response->assertOk();
 
+<a name="assert-payment-required"></a>
+#### assertPaymentRequired
+
+Assert that the response has a payment required (402) HTTP status code:
+
+    $response->assertPaymentRequired();
+
 <a name="assert-plain-cookie"></a>
 #### assertPlainCookie
 
@@ -1035,6 +1069,13 @@ Assert that the response is a redirect to the given [named route](/docs/{{versio
 Assert that the response is a redirect to the given [signed route](/docs/{{version}}/urls#signed-urls):
 
     $response->assertRedirectToSignedRoute($name = null, $parameters = []);
+
+<a name="assert-request-timeout"></a>
+#### assertRequestTimeout
+
+Assert that the response has a request timeout (408) HTTP status code:
+
+    $response->assertRequestTimeout();
 
 <a name="assert-see"></a>
 #### assertSee
@@ -1170,6 +1211,13 @@ Assert that the response has a given HTTP status code:
 Assert that the response has a successful (>= 200 and < 300) HTTP status code:
 
     $response->assertSuccessful();
+
+<a name="assert-too-many-requests"></a>
+#### assertTooManyRequests
+
+Assert that the response has a too many requests (429) HTTP status code:
+
+    $response->assertTooManyRequests();
 
 <a name="assert-unauthorized"></a>
 #### assertUnauthorized
