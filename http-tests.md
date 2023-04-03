@@ -664,6 +664,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSessionMissing](#assert-session-missing)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
+[assertTooManyRequests](#assert-too-many-requests)
 [assertUnauthorized](#assert-unauthorized)
 [assertUnprocessable](#assert-unprocessable)
 [assertUnsupportedMediaType](#assert-unsupported-media-type)
