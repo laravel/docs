@@ -659,6 +659,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSuccessful](#assert-successful)
 [assertUnauthorized](#assert-unauthorized)
 [assertUnprocessable](#assert-unprocessable)
+[assertUnsupportedMediaType](#assert-unsupported-media-type)
 [assertValid](#assert-valid)
 [assertInvalid](#assert-invalid)
 [assertViewHas](#assert-view-has)
@@ -1167,6 +1168,13 @@ Assert that the response has an unauthorized (401) HTTP status code:
 Assert that the response has an unprocessable entity (422) HTTP status code:
 
     $response->assertUnprocessable();
+
+<a name="assert-unsupported-media-type"></a>
+#### assertUnsupportedMediaType
+
+Assert that the response has an unsupported media type (415) HTTP status code:
+
+    $response->assertUnsupportedMediaType();
 
 <a name="assert-valid"></a>
 #### assertValid
