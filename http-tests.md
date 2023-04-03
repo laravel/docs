@@ -960,6 +960,13 @@ Assert the response has any JSON validation errors for the given key:
 
     $response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');
 
+<a name="assert-moved-permanently"></a>
+#### assertMovedPermanently
+
+Assert that the response has a not found (404) HTTP status code:
+
+    $response->assertMovedPermanently();
+
 <a name="assert-location"></a>
 #### assertLocation
 
