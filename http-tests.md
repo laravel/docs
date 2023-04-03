@@ -619,6 +619,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertDownload](#assert-download)
 [assertExactJson](#assert-exact-json)
 [assertForbidden](#assert-forbidden)
+[assertFound](#assert-found)
 [assertHeader](#assert-header)
 [assertHeaderMissing](#assert-header-missing)
 [assertJson](#assert-json)
