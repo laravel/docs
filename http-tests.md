@@ -1026,6 +1026,13 @@ Assert that the response has a 200 HTTP status code:
 
     $response->assertOk();
 
+<a name="assert-payment-required"></a>
+#### assertPaymentRequired
+
+Assert that the response has a payment required (402) HTTP status code:
+
+    $response->assertPaymentRequired();
+
 <a name="assert-plain-cookie"></a>
 #### assertPlainCookie
 
