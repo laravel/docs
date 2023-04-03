@@ -963,7 +963,7 @@ Assert the response has any JSON validation errors for the given key:
 <a name="assert-moved-permanently"></a>
 #### assertMovedPermanently
 
-Assert that the response has a not found (404) HTTP status code:
+Assert that the response has a moved permanently (301) HTTP status code:
 
     $response->assertMovedPermanently();
 
