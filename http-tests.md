@@ -607,7 +607,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 <div class="collection-method-list" markdown="1">
 
-[assertConflict](#assert-confilit)
+[assertConflict](#assert-conflict)
 [assertCookie](#assert-cookie)
 [assertCookieExpired](#assert-cookie-expired)
 [assertCookieNotExpired](#assert-cookie-not-expired)
@@ -670,7 +670,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 </div>
 
-<a name="assert-confilit"></a>
+<a name="assert-conflict"></a>
 #### assertConflict
 
 Assert that the response has a conflict (409) HTTP status code:
