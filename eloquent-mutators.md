@@ -365,6 +365,20 @@ Similarly, Laravel offers an `AsCollection` cast that casts your JSON attribute 
         'options' => AsCollection::class,
     ];
 
+If you would like the `AsCollection` cast to instantiate a custom collection class instead of Laravel's base collection class, you may provide the collection class name as a cast argument:
+
+    use App\Collections\OptionCollection;
+    use Illuminate\Database\Eloquent\Casts\AsCollection;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'options' => AsCollection::class.':'.OptionCollection::class,
+    ];
+
 <a name="date-casting"></a>
 ### Date Casting
 
