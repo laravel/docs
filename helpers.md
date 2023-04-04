@@ -1848,6 +1848,10 @@ The `Str::replace` method replaces a given string within the string:
 
     // Laravel 9.x
 
+The `replace` method also accepts a `caseSensitive` argument. By default, the `replace` method is case sensitive:
+
+    Str::replace('Framework', 'Laravel', caseSensitive: false);
+
 <a name="method-str-replace-array"></a>
 #### `Str::replaceArray()` {.collection-method}
 
@@ -2876,6 +2880,12 @@ The `replace` method replaces a given string within the string:
     $replaced = Str::of('Laravel 6.x')->replace('6.x', '7.x');
 
     // Laravel 7.x
+
+The `replace` method also accepts a `caseSensitive` argument. By default, the `replace` method is case sensitive:
+
+    $replaced = Str::of('Laravel 6.x')->replace(
+        '6.x', '7.x', caseSensitive: false
+    );
 
 <a name="method-fluent-str-replace-array"></a>
 #### `replaceArray` {.collection-method}
