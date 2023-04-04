@@ -1973,6 +1973,12 @@ public function boot(): void
 }
 ```
 
+Also, you can monitor multiple connection with this command:
+
+```shell
+php artisan queue:monitor redis:events,database:events
+```
+
 <a name="testing"></a>
 ## Testing
 
