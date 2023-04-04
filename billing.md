@@ -62,6 +62,7 @@
     - [Previewing Subscription Invoices](#previewing-subscription-invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
 - [Handling Failed Payments](#handling-failed-payments)
+    - [Confirming Payments](#confirming-payments)
 - [Strong Customer Authentication (SCA)](#strong-customer-authentication)
     - [Payments Requiring Additional Confirmation](#payments-requiring-additional-confirmation)
     - [Off-session Payment Notifications](#off-session-payment-notifications)
@@ -2026,6 +2027,17 @@ You can derive the specific status of an incomplete payment by inspecting the `p
             // ...
         }
     }
+
+<a name="confirming-payments"></a>
+### Confirming Payments
+
+Some payment methods require additional data in order to confirm payments. For example, SEPA payment methods require additional "mandate" data during the payment process. You may provide this data to Cashier using the `withPaymentConfirmationOptions` method:
+
+    $subscription->withPaymentConfirmationOptions([
+        'mandate_data' => '...',
+    ])->swap('price_xxx');
+    
+You may consult the [Stripe API documentation](https://stripe.com/docs/api/payment_intents/confirm) to review all of the options accepted when confirming payments.
 
 <a name="strong-customer-authentication"></a>
 ## Strong Customer Authentication
