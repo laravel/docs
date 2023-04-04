@@ -164,6 +164,15 @@ Sometimes your database query may result in a single, scalar value. Instead of b
         "select count(case when food = 'burger' then 1 end) as burgers from menu"
     );
 
+<a name="selecting-multiple-result-sets"></a>
+#### Selecting Multiple Result Sets
+
+If your application calls stored procedures that return multiple result sets, you may use the `selectResultSets` method to retrieve all of the result sets returned by the stored procedure:
+
+    [$options, $notifications] = DB::selectResultSets(
+        "CALL get_user_options_and_notifications(?)", $request->user()->id
+    );
+
 <a name="using-named-bindings"></a>
 #### Using Named Bindings
 
