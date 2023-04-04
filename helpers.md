@@ -2883,8 +2883,8 @@ The `replace` method replaces a given string within the string:
 
 The `replace` method also accepts a `caseSensitive` argument. By default, the `replace` method is case sensitive:
 
-    $replaced = Str::of('Laravel 6.x')->replace(
-        '6.x', '7.x', caseSensitive: false
+    $replaced = Str::of('macOS 13.x')->replace(
+        'macOS', 'iOS', caseSensitive: false
     );
 
 <a name="method-fluent-str-replace-array"></a>
