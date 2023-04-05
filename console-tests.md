@@ -93,13 +93,16 @@ If your command displays a table of information using Artisan's `table` method, 
 <a name="console-events"></a>
 ## Console Events
 
-Console events is not loaded by default to improve performance while running tests. However, you can enable it on specific test class by adding the following trait:
+By default, the `Illuminate\Console\Events\CommandStarting` and `Illuminate\Console\Events\CommandFinished` events are not dispatched while running your application's tests. However, you can enable these events for a given test class by adding the `Illuminate\Foundation\Testing\WithConsoleEvents` trait to the class:
 
     <?php
     
+    namespace Tests\Feature;
+
     use Illuminate\Foundation\Testing\WithConsoleEvents;
+    use Tests\TestCase;
     
-    class ConsoleEvent extends TestCase 
+    class ConsoleEventTest extends TestCase
     {
         use WithConsoleEvents;
     
