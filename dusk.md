@@ -47,6 +47,7 @@
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
     - [GitHub Actions](#running-tests-on-github-actions)
+    - [Chipper CI](#running-tests-on-chipper-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1992,7 +1993,7 @@ jobs:
 <a name="running-tests-on-chipper-ci"></a>
 ### Chipper CI
 
-If you are using [Chipper CI](https://chipperci.com) to run your Dusk tests, you may use the following configuration file as a starting point. We use the PHP built-in server to run Laravel so we can listen for requests on the private network:
+If you are using [Chipper CI](https://chipperci.com) to run your Dusk tests, you may use the following configuration file as a starting point. We will use PHP's built-in server to run Laravel so we can listen for requests:
 
 ```yaml
 # file .chipperci.yml
@@ -2035,4 +2036,4 @@ pipeline:
       php artisan dusk --env=ci
 ```
 
-Further details, such as using databases, when running Dusk tests in Chipper CI are found [here](https://chipperci.com/docs/testing/laravel-dusk-new/).
+To learn more about running Dusk tests on Chipper CI, including how to use databases, consult the [official Chipper CI documentation](https://chipperci.com/docs/testing/laravel-dusk-new/).
