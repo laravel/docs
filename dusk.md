@@ -47,6 +47,7 @@
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
     - [GitHub Actions](#running-tests-on-github-actions)
+    - [Chipper CI](#running-tests-on-chipper-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1988,3 +1989,51 @@ jobs:
           name: console
           path: tests/Browser/console
 ```
+
+<a name="running-tests-on-chipper-ci"></a>
+### Chipper CI
+
+If you are using [Chipper CI](https://chipperci.com) to run your Dusk tests, you may use the following configuration file as a starting point. We will use PHP's built-in server to run Laravel so we can listen for requests:
+
+```yaml
+# file .chipperci.yml
+version: 1
+
+environment:
+  php: 8.2
+  node: 16
+
+# Include Chrome in the build environment
+services:
+  - dusk
+
+# Build all commits
+on:
+   push:
+      branches: .*
+
+pipeline:
+  - name: Setup
+    cmd: |
+      cp -v .env.example .env
+      composer install --no-interaction --prefer-dist --optimize-autoloader
+      php artisan key:generate
+      
+      # Create a dusk env file, ensuring APP_URL uses BUILD_HOST
+      cp -v .env .env.dusk.ci
+      sed -i "s@APP_URL=.*@APP_URL=http://$BUILD_HOST:8000@g" .env.dusk.ci
+
+  - name: Compile Assets
+    cmd: |
+      npm ci --no-audit
+      npm run build
+
+  - name: Browser Tests
+    cmd: |
+      php -S [::0]:8000 -t public 2>server.log &
+      sleep 2
+      php artisan dusk:chrome-driver $CHROME_DRIVER
+      php artisan dusk --env=ci
+```
+
+To learn more about running Dusk tests on Chipper CI, including how to use databases, consult the [official Chipper CI documentation](https://chipperci.com/docs/testing/laravel-dusk-new/).
