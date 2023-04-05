@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Success / Failure Expectations](#success-failure-expectations)
 - [Input / Output Expectations](#input-output-expectations)
+- [Console Events](#console-events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -88,3 +89,19 @@ If your command displays a table of information using Artisan's `table` method, 
             [1, 'taylor@example.com'],
             [2, 'abigail@example.com'],
         ]);
+
+<a name="console-events"></a>
+## Console Events
+
+Console events is not loaded by default to improve performance while running tests. However, you can enable it on specific test class by adding the following trait:
+
+    <?php
+    
+    use Illuminate\Foundation\Testing\WithConsoleEvents;
+    
+    class ConsoleEvent extends TestCase 
+    {
+        use WithConsoleEvents;
+    
+        // ...
+    }
