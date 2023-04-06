@@ -1561,21 +1561,6 @@ The `Str::isJson` method determines if the given string is valid JSON:
 
     // false
 
-<a name="method-str-is-ulid"></a>
-#### `Str::isUlid()` {.collection-method}
-
-The `Str::isUlid` method determines if the given string is a valid ULID:
-
-    use Illuminate\Support\Str;
-
-    $isUlid = Str::isUlid('01gd6r360bp37zj17nxb55yv40');
-
-    // true
-
-    $isUlid = Str::isUlid('laravel');
-
-    // false
-
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {.collection-method}
 
