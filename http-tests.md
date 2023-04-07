@@ -1061,7 +1061,7 @@ Assert whether the response is redirecting to a URI that contains the given stri
 
 Assert that the response is a redirect to the given [named route](/docs/{{version}}/routing#named-routes):
 
-    $response->assertRedirectToRoute($name = null, $parameters = []);
+    $response->assertRedirectToRoute($name, $parameters = []);
 
 <a name="assert-redirect-to-signed-route"></a>
 #### assertRedirectToSignedRoute
