@@ -43,6 +43,8 @@ The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your 
 
 If you would like to totally reset the database, you may use the `Illuminate\Foundation\Testing\DatabaseMigrations` or `Illuminate\Foundation\Testing\DatabaseTruncation` traits instead. However, both of these options are significantly slower than the `RefreshDatabase` trait.
 
+If you want to keep the current data in place, you may need to try `Illuminate\Foundation\Testing\DatabaseTransactions` trait.
+
 <a name="model-factories"></a>
 ## Model Factories
 
