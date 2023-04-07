@@ -536,6 +536,9 @@ Since Scout searches return a collection of Eloquent models, you may even return
 If you would like to get the raw search results before they are converted to Eloquent models, you may use the `raw` method:
 
     $orders = Order::search('Star Trek')->raw();
+    
+> **Note**  
+> When searching, the amount of results may be limited by your search engine to a max number of items. For example, Meilisearch limits this by [`maxTotalHits`](https://docs.meilisearch.com/reference/api/settings.html#pagination) which is set to a maximum of 1000 items by default.
 
 <a name="custom-indexes"></a>
 #### Custom Indexes
