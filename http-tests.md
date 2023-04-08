@@ -798,7 +798,7 @@ Assert that the given header is not present on the response:
 
 Assert that the response contains the given JSON data:
 
-    $response->assertJson(array $data, $strict = false);
+    $response->assertJson($value, $strict = false);
 
 The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
