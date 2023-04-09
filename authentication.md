@@ -578,7 +578,7 @@ As you can see in the example above, the callback passed to the `extend` method 
 
 The simplest way to implement a custom, HTTP request based authentication system is by using the `Auth::viaRequest` method. This method allows you to quickly define your authentication process using a single closure.
 
-To get started, call the `Auth::viaRequest` method within the `boot` method of your `AuthServiceProvider`. The `viaRequest` method accepts an authentication driver name as its first argument. This name can be any string that describes your custom guard. The second argument passed to the method should be a closure that receives the incoming HTTP request and returns a user instance or, if authentication fails, `null`:
+To get started, call the `Auth::viaRequest` method within the `register` method of your `AuthServiceProvider`. The `viaRequest` method accepts an authentication driver name as its first argument. This name can be any string that describes your custom guard. The second argument passed to the method should be a closure that receives the incoming HTTP request and returns a user instance or, if authentication fails, `null`:
 
     use App\Models\User;
     use Illuminate\Http\Request;
@@ -587,7 +587,7 @@ To get started, call the `Auth::viaRequest` method within the `boot` method of y
     /**
      * Register any application authentication / authorization services.
      */
-    public function boot(): void
+    public function register(): void
     {
         Auth::viaRequest('custom-token', function (Request $request) {
             return User::where('token', $request->token)->first();
