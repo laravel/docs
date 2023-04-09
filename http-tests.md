@@ -654,6 +654,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSeeInOrder](#assert-see-in-order)
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
+[assertServerError](#assert-server-error)
 [assertSessionHas](#assert-session-has)
 [assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
@@ -1104,6 +1105,13 @@ Assert that the given string is contained within the response text. This asserti
 Assert that the given strings are contained in order within the response text. This assertion will automatically escape the given strings unless you pass a second argument of `false`. The response content will be passed to the `strip_tags` PHP function before the assertion is made:
 
     $response->assertSeeTextInOrder(array $values, $escaped = true);
+
+<a name="assert-server-error"></a>
+#### assertServerError
+
+Assert that the response has a server error (>= 500 , < 600) HTTP status code:
+
+    $response->assertServerError();
 
 <a name="assert-session-has"></a>
 #### assertSessionHas
