@@ -44,6 +44,17 @@ The `attempt` method returns `false` when the callback has no remaining attempts
       return 'Too many messages sent!';
     }
 
+If necessary, you may provide a fourth argument to the `attempt` method, which is the "decay rate", or the number of seconds until the available attempts are reset. For example, we can modify the example above to allow five attempts every two minutes:
+
+    $executed = RateLimiter::attempt(
+        'send-message:'.$user->id,
+        $perTwoMinutes = 5,
+        function() {
+            // Send message...
+        }
+        $decayRate = 120,
+    );
+
 <a name="manually-incrementing-attempts"></a>
 ### Manually Incrementing Attempts
 
