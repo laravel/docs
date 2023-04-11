@@ -6,11 +6,11 @@
     - [Nginx](#nginx)
 - [Optimization](#optimization)
     - [Autoloader Optimization](#autoloader-optimization)
-    - [Optimizing Configuration Loading](#optimizing-configuration-loading)
-    - [Optimizing Route Loading](#optimizing-route-loading)
-    - [Optimizing View Loading](#optimizing-view-loading)
+    - [Caching Configuration](#optimizing-configuration-loading)
+    - [Caching Routes](#optimizing-route-loading)
+    - [Caching Views](#optimizing-view-loading)
 - [Debug Mode](#debug-mode)
-- [Deploying With Forge / Vapor](#deploying-with-forge-or-vapor)
+- [Easy Deployment With Forge / Vapor](#deploying-with-forge-or-vapor)
 
 <a name="introduction"></a>
 ## Introduction
@@ -102,7 +102,7 @@ composer install --optimize-autoloader --no-dev
 > In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present.
 
 <a name="optimizing-configuration-loading"></a>
-### Optimizing Configuration Loading
+### Caching Configuration
 
 When deploying your application to production, you should make sure that you run the `config:cache` Artisan command during your deployment process:
 
@@ -116,7 +116,7 @@ This command will combine all of Laravel's configuration files into a single, ca
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function for `.env` variables will return `null`.
 
 <a name="optimizing-route-loading"></a>
-### Optimizing Route Loading
+### Caching Routes
 
 If you are building a large application with many routes, you should make sure that you are running the `route:cache` Artisan command during your deployment process:
 
@@ -127,7 +127,7 @@ php artisan route:cache
 This command reduces all of your route registrations into a single method call within a cached file, improving the performance of route registration when registering hundreds of routes.
 
 <a name="optimizing-view-loading"></a>
-### Optimizing View Loading
+### Caching Views
 
 When deploying your application to production, you should make sure that you run the `view:cache` Artisan command during your deployment process:
 
@@ -145,7 +145,7 @@ The debug option in your config/app.php configuration file determines how much i
 **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
 
 <a name="deploying-with-forge-or-vapor"></a>
-## Deploying With Forge / Vapor
+## Easy Deployment With Forge / Vapor
 
 <a name="laravel-forge"></a>
 #### Laravel Forge
