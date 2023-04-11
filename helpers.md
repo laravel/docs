@@ -3819,6 +3819,18 @@ A [logger](/docs/{{version}}/errors#logging) instance will be returned if no val
 <a name="method-logs"></a>
 ### `method-logs()` {.collection-method}
 
+Get a log driver instance.
+
+```php
+logs($driver = null);
+```
+
+If you want to create a log with `logs` helper, you can follow below:
+
+```php
+logs()->info('Laravel framework');
+```
+
 <a name="method-method-field"></a>
 #### `method_field()` {.collection-method}
 
