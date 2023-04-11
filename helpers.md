@@ -313,6 +313,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [filled](#method-filled)
 [info](#method-info)
 [logger](#method-logger)
+[logs](#method-logs)
 [method_field](#method-method-field)
 [now](#method-now)
 [old](#method-old)
@@ -3814,6 +3815,9 @@ An array of contextual data may also be passed to the function:
 A [logger](/docs/{{version}}/errors#logging) instance will be returned if no value is passed to the function:
 
     logger()->error('You are not allowed here.');
+
+<a name="method-logs"></a>
+### `method-logs()` {.collection-method}
 
 <a name="method-method-field"></a>
 #### `method_field()` {.collection-method}
