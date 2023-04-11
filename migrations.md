@@ -1236,6 +1236,7 @@ Method  |  Description
 `$table->cascadeOnDelete();` | Deletes should cascade.
 `$table->restrictOnDelete();`| Deletes should be restricted.
 `$table->nullOnDelete();`    | Deletes should set the foreign key value to null.
+`$table->noActionOnDelete();`| Deletes no need any action.
 
 Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:
 
