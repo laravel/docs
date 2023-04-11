@@ -183,8 +183,8 @@ use Illuminate\Process\Pipe;
 use Illuminate\Support\Facades\Process;
 
 $result = Process::pipe(function (Pipe $pipe) {
-    $pipe->command('cat example.txt'),
-    $pipe->command('grep -i "laravel"'),
+    $pipe->command('cat example.txt');
+    $pipe->command('grep -i "laravel"');
 });
 
 if ($result->successful()) {
@@ -196,8 +196,8 @@ The process output may be gathered in real-time by passing a closure as the seco
 
 ```php
 $result = Process::pipe(function (Pipe $pipe) {
-    $pipe->command('cat example.txt'),
-    $pipe->command('grep -i "laravel"'),
+    $pipe->command('cat example.txt');
+    $pipe->command('grep -i "laravel"');
 }, function (string $type, string $output) {
     echo $output;
 });
@@ -207,8 +207,8 @@ Laravel also allows you to assign string keys to each process within a pipeline 
 
 ```php
 $result = Process::pipe(function (Pipe $pipe) {
-    $pipe->as('first')->command('cat example.txt'),
-    $pipe->as('second')->command('grep -i "laravel"'),
+    $pipe->as('first')->command('cat example.txt');
+    $pipe->as('second')->command('grep -i "laravel"');
 })->start(function (string $type, string $output, string $key) {
     // ...
 });
