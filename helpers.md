@@ -3715,7 +3715,7 @@ The `dispatch` function pushes the given [job](/docs/{{version}}/queues#creating
 <a name="method-dispatch-sync"></a>
 #### `dispatch_sync()` {.collection-method}
 
-Dispatch a command to its appropriate handler in the current process.Queueable jobs will be dispatched to the [sync](/docs/{{version}}/queues#synchronous-dispatching) queue.
+The `dispatch_sync` function pushes the given job to the [sync](/docs/{{version}}/queues#synchronous-dispatching) queue so that it is processed immediately:
 
     dispatch_sync(new App\Jobs\SendEmails);
 
