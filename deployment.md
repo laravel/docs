@@ -7,6 +7,7 @@
 - [Optimization](#optimization)
     - [Autoloader Optimization](#autoloader-optimization)
     - [Caching Configuration](#optimizing-configuration-loading)
+    - [Caching Events](#caching-events)
     - [Caching Routes](#optimizing-route-loading)
     - [Caching Views](#optimizing-view-loading)
 - [Debug Mode](#debug-mode)
@@ -114,6 +115,15 @@ This command will combine all of Laravel's configuration files into a single, ca
 
 > **Warning**  
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function for `.env` variables will return `null`.
+
+<a name="caching-events"></a>
+### Caching Events
+
+If your application is utilizing [event discovery](/docs/{{version}}/events#event-discovery), you should cache your application's event to listener mappings during your deployment process. This can be accomplished by invoking the `event:cache` Artisan command during deployment:
+
+```shell
+php artisan event:cache
+```
 
 <a name="optimizing-route-loading"></a>
 ### Caching Routes
