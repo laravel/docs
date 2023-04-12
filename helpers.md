@@ -305,6 +305,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [decrypt](#method-decrypt)
 [dd](#method-dd)
 [dispatch](#method-dispatch)
+[dispatch_sync](#method-dispatch-sync)
 [dump](#method-dump)
 [encrypt](#method-encrypt)
 [env](#method-env)
@@ -3710,6 +3711,13 @@ If you do not want to halt the execution of your script, use the [`dump`](#metho
 The `dispatch` function pushes the given [job](/docs/{{version}}/queues#creating-jobs) onto the Laravel [job queue](/docs/{{version}}/queues):
 
     dispatch(new App\Jobs\SendEmails);
+
+<a name="method-dispatch-sync"></a>
+#### `dispatch_sync()` {.collection-method}
+
+The `dispatch_sync` function pushes the given job to the [sync](/docs/{{version}}/queues#synchronous-dispatching) queue so that it is processed immediately:
+
+    dispatch_sync(new App\Jobs\SendEmails);
 
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}
