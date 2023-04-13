@@ -5,6 +5,7 @@
     - [Configuration](#configuration)
     - [Balancing Strategies](#balancing-strategies)
     - [Dashboard Authorization](#dashboard-authorization)
+    - [Trimming Jobs](#trimming-jobs)
     - [Silenced Jobs](#silenced-jobs)
 - [Upgrading Horizon](#upgrading-horizon)
 - [Running Horizon](#running-horizon)
@@ -148,6 +149,7 @@ Horizon exposes a dashboard at the `/horizon` URI. By default, you will only be 
 
 Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function (User $user)` closure signature above to `function (User $user = null)` in order to force Laravel to not require authentication.
 
+
 <a name="silenced-jobs"></a>
 ### Silenced Jobs
 
@@ -167,6 +169,15 @@ Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Co
 
         // ...
     }
+
+<a name="trimming-jobs"></a>
+### Trimming Jobs
+
+To prevent Horizon's job lists from continually growing, these lists will be "trimmed" according to the relevant `trim` option in the `horizon` configuration file. Typically, recent jobs are kept for one hour while all failed jobs are stored for an entire week, however you may adjust these periods as required.
+
+> **Note**
+> 
+> It is possible that `pending` jobs are trimmed from the queue before they are handled by your application. Therefore, if your application uses [delayed dispatching](#delayed-dispatching) or [low-priority queues](queue-priorities), you should ensure the `trim.pending` period is large enough to accomodate your use-case.
 
 <a name="upgrading-horizon"></a>
 ## Upgrading Horizon
