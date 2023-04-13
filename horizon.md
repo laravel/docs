@@ -177,7 +177,7 @@ To prevent Horizon's job lists from continually growing, these lists will be "tr
 
 > **Note**
 > 
-> It is possible that `pending` jobs are trimmed from the queue before they are handled by your application. Therefore, if your application uses [delayed dispatching](#delayed-dispatching) or [low-priority queues](queue-priorities), you should ensure the `trim.pending` period is large enough to accomodate your use-case.
+> It is possible that `pending` jobs are trimmed from the queue before they are handled by your application. Therefore, if your application uses [delayed dispatching](/docs/{{version}}/queues#delayed-dispatching) or [low-priority queues](/docs/{{version}}/queues#queue-priorities), you should ensure the `trim.pending` period is large enough to accomodate your use-case.
 
 <a name="upgrading-horizon"></a>
 ## Upgrading Horizon
