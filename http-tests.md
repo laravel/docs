@@ -663,6 +663,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSessionHasNoErrors](#assert-session-has-no-errors)
 [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors)
 [assertSessionMissing](#assert-session-missing)
+[assertSimilarJson](#assert-similar-json)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
 [assertTooManyRequests](#assert-too-many-requests)
@@ -1205,6 +1206,13 @@ Assert that the session has no validation errors for the given keys:
 Assert that the session does not contain the given key:
 
     $response->assertSessionMissing($key);
+
+<a name="assert-similar-json"></a>
+#### assertSimilarJson
+
+Assert that the response has the similar JSON as given.
+
+    $response->assertSimilarJson(array $data);
 
 <a name="assert-status"></a>
 #### assertStatus
