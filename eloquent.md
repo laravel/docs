@@ -1170,6 +1170,17 @@ To exclude one or more attributes from being replicated to the new model, you ma
 
 Global scopes allow you to add constraints to all queries for a given model. Laravel's own [soft delete](#soft-deleting) functionality utilizes global scopes to only retrieve "non-deleted" models from the database. Writing your own global scopes can provide a convenient, easy way to make sure every query for a given model receives certain constraints.
 
+<a name="generate-scopes"></a>
+#### Generate Scopes
+
+If you want to generate a scope you can use artisan:
+
+```shell
+php artisan make:scope AncientScope
+```
+
+After, you can see that scope is exists in this path: `App\Models\Scope`.
+
 <a name="writing-global-scopes"></a>
 #### Writing Global Scopes
 
