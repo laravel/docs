@@ -11,6 +11,7 @@
     - [Binding Typed Variadics](#binding-typed-variadics)
     - [Tagging](#tagging)
     - [Extending Bindings](#extending-bindings)
+    - [Bound Binding](#bound-binding)
 - [Resolving](#resolving)
     - [The Make Method](#the-make-method)
     - [Automatic Injection](#automatic-injection)
@@ -324,6 +325,9 @@ The `extend` method allows the modification of resolved services. For example, w
     $this->app->extend(Service::class, function (Service $service, Application $app) {
         return new DecoratedService($service);
     });
+
+<a name="bound-binding"></a>
+### Bound Binding
 
 <a name="resolving"></a>
 ## Resolving
