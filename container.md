@@ -329,6 +329,12 @@ The `extend` method allows the modification of resolved services. For example, w
 <a name="bound-binding"></a>
 ### Bound Binding
 
+The `bound` method allows to check abstract is bound or not and return boolean:
+
+```php
+$this->app->bound(Service::class);
+```
+
 <a name="resolving"></a>
 ## Resolving
 
