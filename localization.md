@@ -11,6 +11,7 @@
     - [Replacing Parameters In Translation Strings](#replacing-parameters-in-translation-strings)
     - [Pluralization](#pluralization)
 - [Overriding Package Language Files](#overriding-package-language-files)
+- [Built-in Feature Translations](#built-in-feature-translations)
 
 <a name="introduction"></a>
 ## Introduction
@@ -20,7 +21,7 @@
 
 Laravel's localization features provide a convenient way to retrieve strings in various languages, allowing you to easily support multiple languages within your application.
 
-Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the application's `lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:
+Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the application's `lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for [built-in Laravel features](#built-in-feature-translations) such as validation error messages:
 
     /lang
         /en
@@ -237,5 +238,13 @@ If you would like to display the integer value that was passed to the `trans_cho
 ## Overriding Package Language Files
 
 Some packages may ship with their own language files. Instead of changing the package's core files to tweak these lines, you may override them by placing files in the `lang/vendor/{package}/{locale}` directory.
+
+<a name="built-in-feature-translations"></a>
+## Built-in Feature Translations
+A number of Laravel's features use translations, such as validation error messages. By default, Laravel only includes the English strings.
+
+To translate these, you may use the `lang:publish` Artisan command mentioned earlier and then manually translate into your desired languages.
+
+Alternatively, you can source community maintained translations. One such example is the the [Laravel Lang](https://laravel-lang.com) package which provides translations in a variety of languages.
 
 So, for example, if you need to override the English translation strings in `messages.php` for a package named `skyrim/hearthfire`, you should place a language file at: `lang/vendor/hearthfire/en/messages.php`. Within this file, you should only define the translation strings you wish to override. Any translation strings you don't override will still be loaded from the package's original language files.
