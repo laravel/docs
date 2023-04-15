@@ -1815,11 +1815,22 @@ You may provide an integer as a second argument to the function to retrieve the 
 <a name="method-str-random"></a>
 #### `Str::random()` {.collection-method}
 
-The `Str::random` method generates a random string of the specified length. This function uses PHP's `random_bytes` function:
+The `Str::random` method generates a random string of the 16 length. This function uses PHP's `random_bytes` function:
 
     use Illuminate\Support\Str;
 
-    $random = Str::random(40);
+    $random = Str::random();
+
+    // QRKHwqp94mo6VO9n - (retrieved randomly)
+
+You may pass an integer to specify how many length you would like to randomly retrieve:
+
+    use Illuminate\Support\Str;
+
+    $random = Str::random(8);
+
+    // rnOHwlZP - (retrieved randomly)
+
 
 <a name="method-str-remove"></a>
 #### `Str::remove()` {.collection-method}
