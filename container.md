@@ -142,6 +142,15 @@ The `singleton` method binds a class or interface into the container that should
         return new Transistor($app->make(PodcastParser::class));
     });
 
+<a name="binding-a-alias"></a>
+#### Binding A Alias
+
+In Laravel, the alias method can be used to create an alias or shortcut for a class or interface. This can be useful when you want to use a different name for a class or interface, or when you want to refer to a class or interface by a shorter name.
+
+```php
+$this->app->alias(Transistor::class, 'my_transistor');
+```
+
 <a name="binding-scoped"></a>
 #### Binding Scoped Singletons
 
