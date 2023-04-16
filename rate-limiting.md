@@ -51,7 +51,7 @@ If necessary, you may provide a fourth argument to the `attempt` method, which i
         $perTwoMinutes = 5,
         function() {
             // Send message...
-        }
+        },
         $decayRate = 120,
     );
 
