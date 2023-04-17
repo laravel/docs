@@ -328,6 +328,9 @@ When using the `database` cache driver, you will need to setup a table to contai
         $table->integer('expiration');
     });
 
+> **Note**
+> If you used the `cache:table` Artisan command to create the database driver's cache table, the migration created by that command already includes a definition for the `cache_locks` table.
+
 <a name="managing-locks"></a>
 ### Managing Locks
 
