@@ -579,6 +579,28 @@ Again, if the given condition is `false`, these attributes will be removed from 
 > **Warning**  
 > The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially.
 
+The `unless` method is work upside down of `when` method, if condition is not true show the items:
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            $this->unless($request->user()->isAdmin(), [
+                'first-secret' => 'value',
+                'second-secret' => 'value',
+            ]),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
+
 <a name="conditional-relationships"></a>
 ### Conditional Relationships
 
