@@ -1214,10 +1214,12 @@ Since this syntax is rather verbose, Laravel provides additional, terser methods
         $table->foreignId('user_id')->constrained();
     });
 
-The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, while the `constrained` method will use conventions to determine the table and column name being referenced. If your table name does not match Laravel's conventions, you may specify the table name by passing it as an argument to the `constrained` method:
+The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, while the `constrained` method will use conventions to determine the table and column name being referenced. If your table name does not match Laravel's conventions, you may specify the table name and index name by passing them as arguments to the `constrained` method:
 
     Schema::table('posts', function (Blueprint $table) {
-        $table->foreignId('user_id')->constrained('users');
+        $table->foreignId('user_id')->constrained(
+            table: 'users', indexName: 'posts_user_id'
+        );
     });
 
 You may also specify the desired action for the "on delete" and "on update" properties of the constraint:
