@@ -192,6 +192,15 @@ if ($result->successful()) {
 }
 ```
 
+If you do not need to customize the individual processes that make up the pipeline, you may simply pass an array of command strings to the `pipe` method:
+
+```php
+$result = Process::pipe([
+    'cat example.txt',
+    'grep -i "laravel"',
+]);
+```
+
 The process output may be gathered in real-time by passing a closure as the second argument to the `pipe` method. The closure will receive two arguments: the "type" of output (`stdout` or `stderr`) and the output string itself:
 
 ```php
