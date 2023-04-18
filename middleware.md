@@ -223,6 +223,18 @@ Middleware groups may be assigned to routes and controller actions using the sam
 > **Note**  
 > Out of the box, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `App\Providers\RouteServiceProvider`.
 
+<a name="register-middleware-with-service-provider"></a>
+### Register middleware With Service Provider
+
+If you want to register middleware via [Service Provider](https://laravel.com/docs/{{version}}/providers), you can use `aliasMiddleware` method.
+
+```php
+public function boot()
+{
+    $this->app['router']->aliasMiddleware('first', First::class);
+}
+```
+
 <a name="sorting-middleware"></a>
 ### Sorting Middleware
 
