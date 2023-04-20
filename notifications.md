@@ -782,6 +782,9 @@ php artisan notifications:table
 php artisan migrate
 ```
 
+> **Note**  
+> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you will need to replace the `morphs()` method with [`uuidMorphs()`](docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the generated migration.
+
 <a name="formatting-database-notifications"></a>
 ### Formatting Database Notifications
 
