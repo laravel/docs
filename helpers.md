@@ -130,6 +130,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::lower](#method-str-lower)
 [Str::markdown](#method-str-markdown)
 [Str::mask](#method-str-mask)
+[Str::isMatch](#method-str-is-match)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
@@ -1688,6 +1689,21 @@ If needed, you provide a negative number as the third argument to the `mask` met
     $string = Str::mask('taylor@example.com', '*', -15, 3);
 
     // tay***@example.com
+
+<a name="method-str-is-match"></a>
+#### `Str::isMatch()` {.collection-method}
+
+The `Str::isMatch` method will return `true` if the string matches a given regular expression:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::isMatch('/foo (.*)/', 'foo bar');
+
+    // true
+
+    $result = Str::isMatch('/foo (.*)/', 'laravel');
+
+    // false
 
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {.collection-method}
