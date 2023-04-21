@@ -320,9 +320,17 @@ By default, `Route::resource` will create the route parameters for your resource
         'users' => 'admin_user'
     ]);
 
- The example above generates the following URI for the resource's `show` route:
+ The example above generates the following URI for the resource's `show, edit, update, destroy` route:
 
-    /users/{admin_user}
+Verb      | URI                    | Action       | Route Name
+----------|------------------------|--------------|---------------------
+GET       | `/users`              | index        | users.index
+GET       | `/users/create`       | create       | users.create
+POST      | `/users`              | store        | users.store
+GET       | `/users/{admin_user}`      | show         | users.show
+GET       | `/users/{admin_user}/edit` | edit         | users.edit
+PUT/PATCH | `/users/{admin_user}`      | update       | users.update
+DELETE    | `/users/{admin_user}`      | destroy      | users.destroy
 
 <a name="restful-scoping-resource-routes"></a>
 ### Scoping Resource Routes
