@@ -129,6 +129,18 @@ As mentioned, you will typically be interacting with the container within servic
 > **Note**  
 > There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.
 
+<a name="binding-if"></a>
+#### Binding If Not Bound
+
+If you want to check binding it hasn't already been registered, you can use `bindIf` method:
+
+```php
+$this->app->bindIf(Transistor::class, function (Application $app) {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
+
+
 <a name="binding-a-singleton"></a>
 #### Binding A Singleton
 
