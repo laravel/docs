@@ -357,6 +357,14 @@ The `bound` method may be used to determine if a class or interface has been exp
         // ...
     }
 
+The `resolved` method may be used to determine if the given abstract type has been resolved.
+
+```php
+if ($this->app->resolved(Transistor::class)) {
+    // ...
+}
+```
+
 If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) or the `app` [helper](/docs/{{version}}/helpers#method-app) to resolve a class instance from the container:
 
     use App\Services\Transistor;
