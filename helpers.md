@@ -2741,7 +2741,7 @@ The `isMatch` method will return `true` if the string matches a given regular ex
 
     // true
 
-    $result = Str::of('laravel')->match('/foo (.*)/');
+    $result = Str::of('laravel')->isMatch('/foo (.*)/');
 
     // false
 

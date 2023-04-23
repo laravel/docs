@@ -126,6 +126,14 @@ As mentioned, you will typically be interacting with the container within servic
         // ...
     });
 
+You may use the `bindIf` method to register a container binding only if a binding has not already been registered for the given type:
+
+```php
+$this->app->bindIf(Transistor::class, function (Application $app) {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
+
 > **Note**  
 > There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.
 
