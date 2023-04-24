@@ -200,7 +200,7 @@ You may call any of these methods to log a message for the corresponding level. 
          */
         public function show(string $id): View
         {
-            Log::info('Showing the user profile for user: '.$id);
+            Log::info('Showing the user profile for user: {id}', ['id' => $id]);
 
             return view('user.profile', [
                 'user' => User::findOrFail($id)
@@ -215,7 +215,7 @@ An array of contextual data may be passed to the log methods. This contextual da
 
     use Illuminate\Support\Facades\Log;
 
-    Log::info('User failed to login.', ['id' => $user->id]);
+    Log::info('User {id} failed to login.', ['id' => $user->id]);
 
 Occasionally, you may wish to specify some contextual information that should be included with all subsequent log entries in a particular channel. For example, you may wish to log a request ID that is associated with each incoming request to your application. To accomplish this, you may call the `Log` facade's `withContext` method:
 
