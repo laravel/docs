@@ -18,6 +18,7 @@
     - [Request Injection](#request-injection)
     - [Configuration Repository Injection](#configuration-repository-injection)
 - [Managing Memory Leaks](#managing-memory-leaks)
+- [Managing Global Scopes](#managing-global-scopes)
 - [Concurrent Tasks](#concurrent-tasks)
 - [Ticks & Intervals](#ticks-and-intervals)
 - [The Octane Cache](#the-octane-cache)
@@ -440,7 +441,7 @@ $this->app->singleton(Service::class, function () {
 The global `config` will always return the latest version of the configuration repository and is therefore safe to use within your application.
 
 <a name="managing-memory-leaks"></a>
-### Managing Memory Leaks
+## Managing Memory Leaks
 
 Remember, Octane keeps your application in memory between requests; therefore, adding data to a statically maintained array will result in a memory leak. For example, the following controller has a memory leak since each request to the application will continue to add data to the static `$data` array:
 
@@ -463,6 +464,89 @@ public function index(Request $request): array
 ```
 
 While building your application, you should take special care to avoid creating these types of memory leaks. It is recommended that you monitor your application's memory usage during local development to ensure you are not introducing new memory leaks into your application.
+
+<a name="managing-global-scopes"></a>
+## Managing Global Scopes
+
+You should avoid relying on [Global Scopes](/docs/{{version}}/eloquent#global-scopes) state. Both list of registered Global Scopes and scope instances are static, and will persist across requests.
+
+For example, registering a Global Scope outside the application or model booting will also make it available for the next request:
+
+```php
+use Illuminate\Support\Facades\Route;
+use App\Scopes\ShowPrivatePhotos;
+use App\Model\Post;
+
+Route::get('posts', function () {
+    if (auth()->check()) {
+        Post::addGlobalScope(new ShowPrivatePhotos);
+    }
+
+    // ...
+})
+```
+
+To avoid this, you should [register Global Scopes](/docs/{{version}}/eloquent#applying-global-scopes) at the Model booting, or during the application booting.
+
+In another example, we could create a Global Scope that would filter all photos by the authenticated user id.
+
+```php
+namespace App\Models\Scopes;
+ 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
+ 
+class FilterByUser implements Scope
+{
+    /**
+     * Create a new instance.
+     */
+    public function __construct()
+    {
+        if (auth()->check()) {
+            $this->userId = auth()->user->id;
+        }
+    }
+
+    /**
+     * Apply the scope to a given Eloquent query builder.
+     */
+    public function apply(Builder $builder, Model $model): void
+    {
+        if ($this->userId) {
+            $builder->where('user_id', $this->userId);
+        }
+    }
+}
+```
+
+After registering inside an hypothetical `Post` model, the query would apply the scope automatically on a request:
+
+```php
+use Illuminate\Support\Facades\Route;
+use App\Scopes\FilterByUser;
+use App\Repositories\PostRepository;
+
+Route::get('posts', function () {
+
+    return Post::query()->paginate();
+
+})
+```
+
+The problem with that approach is that **the scope state will be kept in subsequent requests**. In this case, the ID of the user will _bleed_ into the next request, regardless of the authentication state.
+
+A way to mitigate this problem is to not rely on the Global Scopes state, and handle any state exclusively on the `apply()` method:
+
+```php
+public function apply(Builder $builder, Model $model): void
+{
+    if (auth()->check()) {
+        $builder->where('user_id', auth()->user()->id);
+    }
+}
+```
 
 <a name="concurrent-tasks"></a>
 ## Concurrent Tasks
