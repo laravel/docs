@@ -1331,7 +1331,7 @@ Combining multiple Eloquent model scopes via an `or` query operator may require 
 
 However, since this can be cumbersome, Laravel provides a "higher order" `orWhere` method that allows you to fluently chain scopes together without the use of closures:
 
-    $users = App\Models\User::popular()->orWhere->active()->get();
+    $users = User::popular()->orWhere->active()->get();
 
 <a name="dynamic-scopes"></a>
 #### Dynamic Scopes
