@@ -17,6 +17,7 @@
     - [Batch Import](#batch-import)
     - [Adding Records](#adding-records)
     - [Updating Records](#updating-records)
+    - [Modifying Records Before Importing](#modifying-records-before-importing)
     - [Removing Records](#removing-records)
     - [Pausing Indexing](#pausing-indexing)
     - [Conditionally Searchable Model Instances](#conditionally-searchable-model-instances)
@@ -461,6 +462,21 @@ If you would like to update the search index records for all of the models in a 
 Or, if you already have a collection of Eloquent models in memory, you may call the `searchable` method on the collection instance to update the model instances in their corresponding index:
 
     $orders->searchable();
+
+<a name="modifying-records-before-importing"></a>
+#### Modifying Records Before Importing
+
+If you would like to modify the models being made searchable, you may define a `makeSearchableUsing` method on your model. This is a great place to add any eager relationship loading that may be necessary before importing those models:
+
+    use Illuminate\Database\Eloquent\Collection;
+
+    /**
+     * Modify the collection of models being made searchable.
+     */
+    protected function makeSearchableUsing(Collection $models): Collection
+    {
+        return $query->load('author');
+    }
 
 <a name="removing-records"></a>
 ### Removing Records
