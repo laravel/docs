@@ -131,14 +131,25 @@ You may assign multiple middleware to the route by passing an array of middlewar
         // ...
     })->middleware([First::class, Second::class]);
 
-Also, you can set guard for middleware using `using` method:
+Also, you can use `using` method for set guards, set relative or absolute URL, set redirect and set rate limiter name for middleware:
 
 ```php
 Route::get('/', function () {
     // ...
 })->middleware([
-    First::using('web'),
-    First::using('web', 'another'), // specify multiple guards
+     First::using('web'), // specify a guard
+     First::using('web', 'another'), // specify multiple guards
+    
+     Second::using('web', 'field'), // specify field
+     
+     Third::redirectTo('route.name'), // specify a redirect.
+     
+     Forth::relative(), // relative URL.
+     Forth::absolute(), // absolute URL. This is the default, but provided a named method for completeness.
+        
+     Fifth::using('gold-tier'), // named rate limiter
+     Fifth::with(100, 1, 'foo'), // custom with attempts, decay, and prefix
+     Fifth::with(prefix: 'foo'), // supports named arguments.
 ]);
 ```
 
