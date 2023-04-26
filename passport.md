@@ -510,6 +510,9 @@ If your application issues short-lived access tokens, users will need to refresh
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
 
+> **Warning**  
+> If your authorization and resource server are the same there is little to no benefit in issuing refresh tokens, you might as well use long-lived access tokens.
+
 <a name="revoking-tokens"></a>
 ### Revoking Tokens
 
