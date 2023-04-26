@@ -1128,9 +1128,8 @@ Sometimes you may wish to manually release a job back onto the queue so that it 
 By default, the `release` method will release the job back onto the queue for immediate processing. However, by passing an integer or date instance to the `release` method you may instruct the queue to not make the job available for processing until a given number of seconds has elapsed:
 
     $this->release(10);
-    
-    // Using date instance
-    $this->release(now()->addMinutes(2));
+
+    $this->release(now()->addSeconds(10));
 
 <a name="manually-failing-a-job"></a>
 #### Manually Failing A Job
