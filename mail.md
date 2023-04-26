@@ -226,7 +226,7 @@ In addition, you may define a global "reply_to" address within your `config/mail
 <a name="configuring-the-view"></a>
 ### Configuring The View
 
-Within a mailable class' `content` method, you may define the `view`, or which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/docs/{{version}}/blade) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:
+Within a mailable class's `content` method, you may define the `view`, or which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/docs/{{version}}/blade) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:
 
     /**
      * Get the message content definition.
