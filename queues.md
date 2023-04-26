@@ -1125,7 +1125,7 @@ Sometimes you may wish to manually release a job back onto the queue so that it 
         $this->release();
     }
 
-By default, the `release` method will release the job back onto the queue for immediate processing. However, by passing an integer or date instance to the `release` method you may instruct the queue to not make the job available for processing until a given number of seconds has elapsed:
+By default, the `release` method will release the job back onto the queue for immediate processing. However, you may instruct the queue to not make the job available for processing until a given number of seconds has elapsed by passing an integer or date instance to the `release` method:
 
     $this->release(10);
 
