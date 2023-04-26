@@ -76,6 +76,7 @@ server {
     error_page 404 /index.php;
 
     location ~ \.php$ {
+        try_files /index.php @error;
         fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
@@ -84,6 +85,10 @@ server {
     location ~ /\.(?!well-known).* {
         deny all;
     }
+
+    location @error {
+        return 404;
+    }    
 }
 ```
 

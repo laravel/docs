@@ -73,6 +73,9 @@ You may configure additional symbolic links in your `filesystems` configuration 
         public_path('images') => storage_path('app/images'),
     ],
 
+> **Warning**  
+> Be very careful when uploading files to a public path, you should always validate such files as you can be susceptible to an Unrestricted File Upload attack. Especially make sure to restrict `php` file extensions when uploading files to a public path.
+
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
