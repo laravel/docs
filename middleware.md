@@ -131,6 +131,17 @@ You may assign multiple middleware to the route by passing an array of middlewar
         // ...
     })->middleware([First::class, Second::class]);
 
+Also, you can set guard for middleware using `using` method:
+
+```php
+Route::get('/', function () {
+    // ...
+})->middleware([
+    First::using('web'),
+    First::using('web', 'another'), // specify multiple guards
+]);
+```
+
 For convenience, you may assign aliases to middleware in your application's `app/Http/Kernel.php` file. By default, the `$middlewareAliases` property of this class contains entries for the middleware included with Laravel. You may add your own middleware to this list and assign it an alias of your choosing:
 
     // Within App\Http\Kernel class...
