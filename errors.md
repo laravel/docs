@@ -124,7 +124,7 @@ When messages are written to your application's [logs](/docs/{{version}}/logging
 
 As noted above, even when you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at.
 
-To accomplish this, you may define an array of exception types and their associated log levels within the `$levels` property of your application's exception handler:
+To accomplish this, you may define a `$levels` property on your application's exception handler. This property should contain an array of exception types and their associated log levels:
 
     use PDOException;
     use Psr\Log\LogLevel;
@@ -141,7 +141,7 @@ To accomplish this, you may define an array of exception types and their associa
 <a name="ignoring-exceptions-by-type"></a>
 ### Ignoring Exceptions By Type
 
-When building your application, there will be some types of exceptions you simply want to ignore and never report. Your application's exception handler contains a `$dontReport` property which is initialized to an empty array. Any classes that you add to this property will never be reported; however, they may still have custom rendering logic:
+When building your application, there will be some types of exceptions you simply want to ignore and never report. To ignore these exceptions, define a `$dontReport` property on your application's exception handler. Any classes that you add to this property will never be reported; however, they may still have custom rendering logic:
 
     use App\Exceptions\InvalidOrderException;
 
