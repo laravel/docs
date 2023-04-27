@@ -590,12 +590,6 @@ The `subscribedToPlan` method may be used to determine if the user is subscribed
         // ...
     }
 
-By passing an array to the `subscribedToPlan` method, you may determine if the user's `default` subscription is actively subscribed to the monthly or the yearly plan:
-
-    if ($user->subscribedToPlan([$monthly = 12345, $yearly = 54321], 'default')) {
-        // ...
-    }
-
 The `recurring` method may be used to determine if the user is currently subscribed and is no longer within their trial period:
 
     if ($user->subscription('default')->recurring()) {
