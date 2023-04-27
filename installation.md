@@ -11,6 +11,7 @@
 - [Initial Configuration](#initial-configuration)
     - [Environment Based Configuration](#environment-based-configuration)
     - [Databases & Migrations](#databases-and-migrations)
+    - [Directory Configuration](#directory-configuration)
 - [Next Steps](#next-steps)
     - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
     - [Laravel The API Backend](#laravel-the-api-backend)
@@ -243,6 +244,11 @@ Once you have configured your SQLite database, you may run your application's [d
 ```shell
 php artisan migrate
 ```
+
+<a name="directory-configuration"></a>
+### Directory Configuration
+
+Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
 
 <a name="next-steps"></a>
 ## Next Steps
