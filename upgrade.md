@@ -177,6 +177,16 @@ The `reduceMany` method has been renamed to `reduceSpread` for naming consistenc
 
 The `Illuminate\Contracts\Container\Container` contract has received two method definitions: `scoped` and `scopedIf`. If you are manually implementing this contract, you should update your implementation to reflect these new methods.
 
+#### The `Guard` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `Illuminate\Contracts\Auth\Guard` contract now defines a `hasUser` method. If you are manually implementing this contract, you should update your implementation to reflect this new method:
+
+```php
+public function hasUser();
+```
+
 #### The `ContextualBindingBuilder` Contract
 
 **Likelihood Of Impact: Very Low**
