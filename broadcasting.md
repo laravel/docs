@@ -878,7 +878,7 @@ Presence channels may receive events just like public or private channels. Using
     public function broadcastOn(): array
     {
         return [
-            new PresenceChannel('room.'.$this->message->room_id),
+            new PresenceChannel('chat.'.$this->message->room_id),
         ];
     }
 
