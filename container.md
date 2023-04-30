@@ -11,6 +11,7 @@
     - [Binding Typed Variadics](#binding-typed-variadics)
     - [Tagging](#tagging)
     - [Extending Bindings](#extending-bindings)
+    - [Flush the container](#flush-container)
 - [Resolving](#resolving)
     - [The Make Method](#the-make-method)
     - [Automatic Injection](#automatic-injection)
@@ -332,6 +333,15 @@ The `extend` method allows the modification of resolved services. For example, w
     $this->app->extend(Service::class, function (Service $service, Application $app) {
         return new DecoratedService($service);
     });
+
+<a name="flush-the-contanier"></a>
+### Flush the Container
+
+If you want to flush all binding on container, you can use `flush` method:
+
+```php
+$this->app->flush();
+```
 
 <a name="resolving"></a>
 ## Resolving
