@@ -204,6 +204,12 @@ For this reason, you should ensure you are only calling the `env` function from 
 > **Warning**  
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables.
 
+You may use the `config:clear` command to clear the config cache:
+
+```shell
+php artisan config:clear
+```
+
 <a name="debug-mode"></a>
 ## Debug Mode
 
