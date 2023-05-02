@@ -7,6 +7,7 @@
     - [Session / Authentication](#session-and-authentication)
     - [Debugging Responses](#debugging-responses)
     - [Exception Handling](#exception-handling)
+    - [Disable Middleware](#disable-middleware)
 - [Testing JSON APIs](#testing-json-apis)
     - [Fluent JSON Testing](#fluent-json-testing)
 - [Testing File Uploads](#testing-file-uploads)
@@ -235,6 +236,15 @@ Sometimes you may want to test that your application is throwing a specific exce
 In addition, if you would like to ensure that your application is not utilizing features that have been deprecated by the PHP language or the libraries your application is using, you may invoke the `withoutDeprecationHandling` method before making your request. When deprecation handling is disabled, deprecation warnings will be converted to exceptions, thus causing your test to fail:
 
     $response = $this->withoutDeprecationHandling()->get('/');
+
+<a name="disable-middleware"></a>
+### Disable Middleware
+
+Sometimes you may want to disable middleware for http-tests. For this, you can use `withoutMiddleware` method:
+
+```php
+$response = $this->withoutMiddleware()->get('/');
+```
 
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
