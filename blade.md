@@ -1205,6 +1205,10 @@ php artisan make:component Alert --inline
 
 Sometimes you may need to render a component but not know which component should be rendered until runtime. In this situation, you may use Laravel's built-in `dynamic-component` component to render the component based on a runtime value or variable:
 
+```php
+$componentName = "secondary-button";
+```
+
 ```blade
 <x-dynamic-component :component="$componentName" class="mt-4" />
 ```
