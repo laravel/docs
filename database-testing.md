@@ -161,6 +161,13 @@ Assert that a table in the database does not contain records matching the given 
         'email' => 'sally@example.com',
     ]);
 
+<a name="assert-database-empty"></a>
+#### assertDatabaseEmpty
+
+Assert that the given table has no entries.
+
+    $this->assertDatabaseEmpty('users');
+
 <a name="assert-deleted"></a>
 #### assertSoftDeleted
 
