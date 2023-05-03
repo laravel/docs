@@ -1120,7 +1120,7 @@ Assert that the given strings are contained in order within the response text. T
 <a name="assert-server-error"></a>
 #### assertServerError
 
-Assert that the response has a request timeout (503) HTTP status code:
+Assert that the response has a server error (>= 500 , < 600) HTTP status code:
 
     $response->assertServerError();
 
