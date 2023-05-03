@@ -625,6 +625,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertFound](#assert-found)
 [assertHeader](#assert-header)
 [assertHeaderMissing](#assert-header-missing)
+[assertInternalServerError](#assert-internal-server-error)
 [assertJson](#assert-json)
 [assertJsonCount](#assert-json-count)
 [assertJsonFragment](#assert-json-fragment)
@@ -795,6 +796,13 @@ Assert that the given header and value is present on the response:
 Assert that the given header is not present on the response:
 
     $response->assertHeaderMissing($headerName);
+
+<a name="assert-internal-server-error"></a>
+#### assertInternalServerError
+
+Assert that the response has a found (500) HTTP status code:
+
+    $response->assertInternalServerError();
 
 <a name="assert-json"></a>
 #### assertJson
