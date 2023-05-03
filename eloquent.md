@@ -95,6 +95,10 @@ php artisan make:model Flight --all
 
 # Generate a pivot model...
 php artisan make:model Member --pivot
+
+# Generate a form requests...
+php artisan make:model Member --Requests
+php artisan make:model Member -R
 ```
 
 <a name="inspecting-models"></a>
