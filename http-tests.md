@@ -786,7 +786,7 @@ Assert that the response has a found (302) HTTP status code:
 <a name="assert-gone"></a>
 #### assertGone
 
-Assert that the response has a found (410) HTTP status code:
+Assert that the response has a gone (410) HTTP status code:
 
     $response->assertGone();
 
