@@ -658,6 +658,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
 [assertServerError](#assert-server-error)
+[assertServiceUnavailable](#assert-server-unavailable)
 [assertSessionHas](#assert-session-has)
 [assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
@@ -1119,9 +1120,16 @@ Assert that the given strings are contained in order within the response text. T
 <a name="assert-server-error"></a>
 #### assertServerError
 
-Assert that the response has a server error (>= 500 , < 600) HTTP status code:
+Assert that the response has a request timeout (503) HTTP status code:
 
     $response->assertServerError();
+
+<a name="assert-server-unavailable"></a>
+#### assertServiceUnavailable
+
+Assert that the response has a server error (>= 500 , < 600) HTTP status code:
+
+    $response->assertServiceUnavailable();
 
 <a name="assert-session-has"></a>
 #### assertSessionHas
