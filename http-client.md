@@ -385,6 +385,26 @@ As you can see, each response instance can be accessed based on the order it was
 
     return $responses['first']->ok();
 
+<a name="customizing-concurrent-requests"></a>
+#### Customizing Concurrent Requests
+
+The `pool` method cannot be chained with other HTTP client methods such as the `withHeaders` or `middleware` methods. If you want to apply custom headers or middleware to pooled requests, you should configure those options on each request in the pool:
+
+```php
+use Illuminate\Http\Client\Pool;
+use Illuminate\Support\Facades\Http;
+
+$headers = [
+    'X-Example' => 'example',
+];
+
+$responses = Http::pool(fn (Pool $pool) => [
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+]);
+```
+
 <a name="macros"></a>
 ## Macros
 
