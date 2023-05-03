@@ -626,6 +626,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertGone](#assert-gone)
 [assertHeader](#assert-header)
 [assertHeaderMissing](#assert-header-missing)
+[assertInternalServerError](#assert-internal-server-error)
 [assertJson](#assert-json)
 [assertJsonCount](#assert-json-count)
 [assertJsonFragment](#assert-json-fragment)
@@ -658,6 +659,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
 [assertServerError](#assert-server-error)
+[assertServiceUnavailable](#assert-server-unavailable)
 [assertSessionHas](#assert-session-has)
 [assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
@@ -803,6 +805,13 @@ Assert that the given header and value is present on the response:
 Assert that the given header is not present on the response:
 
     $response->assertHeaderMissing($headerName);
+
+<a name="assert-internal-server-error"></a>
+#### assertInternalServerError
+
+Assert that the response has an "Internal Server Error" (500) HTTP status code:
+
+    $response->assertInternalServerError();
 
 <a name="assert-json"></a>
 #### assertJson
@@ -1122,6 +1131,13 @@ Assert that the given strings are contained in order within the response text. T
 Assert that the response has a server error (>= 500 , < 600) HTTP status code:
 
     $response->assertServerError();
+
+<a name="assert-server-unavailable"></a>
+#### assertServiceUnavailable
+
+Assert that the response has a "Service Unavailable" (503) HTTP status code:
+
+    $response->assertServiceUnavailable();
 
 <a name="assert-session-has"></a>
 #### assertSessionHas
