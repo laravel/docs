@@ -199,7 +199,7 @@ For example, `UserCollection` will attempt to map the given user instances into 
 > **Note**  
 > If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation.
 
-In essence, resources are simple. They only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:
+Resources only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:
 
     <?php
 
