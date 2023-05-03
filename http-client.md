@@ -384,6 +384,9 @@ As you can see, each response instance can be accessed based on the order it was
     ]);
 
     return $responses['first']->ok();
+> **Warning**  
+> Http::pool() cannot be chained with other Http methods.  If you want to apply middleware or add headers, you must do so on each `Pool` element returned from your closure.
+
 
 <a name="macros"></a>
 ## Macros
