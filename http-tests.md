@@ -801,7 +801,7 @@ Assert that the given header is not present on the response:
 <a name="assert-internal-server-error"></a>
 #### assertInternalServerError
 
-Assert that the response has a found (500) HTTP status code:
+Assert that the response has an "Internal Server Error" (500) HTTP status code:
 
     $response->assertInternalServerError();
 
@@ -1127,7 +1127,7 @@ Assert that the response has a request timeout (503) HTTP status code:
 <a name="assert-server-unavailable"></a>
 #### assertServiceUnavailable
 
-Assert that the response has a server error (>= 500 , < 600) HTTP status code:
+Assert that the response has a "Service Unavailable" (503) HTTP status code:
 
     $response->assertServiceUnavailable();
 
