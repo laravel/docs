@@ -97,7 +97,7 @@ php artisan make:model Flight --all
 php artisan make:model Member --pivot
 
 # Generate a form requests...
-php artisan make:model Member --Requests
+php artisan make:model Member --requests
 php artisan make:model Member -R
 ```
 
