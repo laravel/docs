@@ -1067,7 +1067,7 @@ Assert that the response contains the given unencrypted cookie:
 
 Assert that the response is a redirect to the given URI:
 
-    $response->assertRedirect($uri);
+    $response->assertRedirect($uri = null);
 
 <a name="assert-redirect-contains"></a>
 #### assertRedirectContains
