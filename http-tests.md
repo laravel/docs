@@ -623,6 +623,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertExactJson](#assert-exact-json)
 [assertForbidden](#assert-forbidden)
 [assertFound](#assert-found)
+[assertGone](#assert-gone)
 [assertHeader](#assert-header)
 [assertHeaderMissing](#assert-header-missing)
 [assertJson](#assert-json)
@@ -781,6 +782,13 @@ Assert that the response has a forbidden (403) HTTP status code:
 Assert that the response has a found (302) HTTP status code:
 
     $response->assertFound();
+
+<a name="assert-gone"></a>
+#### assertGone
+
+Assert that the response has a gone (410) HTTP status code:
+
+    $response->assertGone();
 
 <a name="assert-header"></a>
 #### assertHeader
