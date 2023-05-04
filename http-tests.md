@@ -1067,7 +1067,7 @@ Assert that the response contains the given unencrypted cookie:
 
 Assert that the response is a redirect to the given URI:
 
-    $response->assertRedirect($uri);
+    $response->assertRedirect($uri = null);
 
 <a name="assert-redirect-contains"></a>
 #### assertRedirectContains
@@ -1185,7 +1185,7 @@ For example, if your application's session contains `name` and `status` keys, yo
 Assert that the session contains an error for the given `$keys`. If `$keys` is an associative array, assert that the session contains a specific error message (value) for each field (key). This method should be used when testing routes that flash validation errors to the session instead of returning them as a JSON structure:
 
     $response->assertSessionHasErrors(
-        array $keys, $format = null, $errorBag = 'default'
+        array $keys = [], $format = null, $errorBag = 'default'
     );
 
 For example, to assert that the `name` and `email` fields have validation error messages that were flashed to the session, you may invoke the `assertSessionHasErrors` method like so:
