@@ -851,7 +851,7 @@ Assert that the response contains the given JSON data anywhere in the response:
 
 Assert that the response JSON is an array:
 
-    $response->assertJsonIsArray();
+    $response->assertJsonIsArray($key = null);
 
 <a name="assert-json-is-object"></a>
 #### assertJsonIsObject
