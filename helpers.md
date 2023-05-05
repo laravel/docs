@@ -4367,3 +4367,5 @@ There some additional assertions that may come in handy:
     // Assert that, even if Sleep was called, no execution paused occurred.
     // Useful if you are computing sleep durations that may be negative...
     Sleep::assertInsomniac();
+
+Laravel uses the `Sleep` class under the hood whenever it is pausing execution, for example, the [`retry`](https://laravel.com/docs/10.x/helpers#method-retry) uses it when sleeping allowing for improve testibility within your application.
