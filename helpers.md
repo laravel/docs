@@ -4364,6 +4364,6 @@ There some additional assertions that may come in handy:
     // Assert that Sleep was never called.
     Sleep::assertNeverSlept();
 
-    // Assert that, even if Sleep was called, no sleeping occurred.
+    // Assert that, even if Sleep was called, no execution paused occurred.
     // Useful if you are computing sleep durations that may be negative...
     Sleep::assertInsomniac();
