@@ -808,7 +808,7 @@ For example, the `vite-imagetools` plugin outputs URLs like the following while 
 
 The `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option. 
 
-In this particular example, we will append the dev server URL to all occurrences of `/@imagetools` within the generated code:
+In this particular example, we will prepend the dev server URL to all occurrences of `/@imagetools` within the generated code:
 
 ```js
 import { defineConfig } from 'vite';
