@@ -597,6 +597,16 @@ Sometimes you may wish to perform some other action if no results are found. The
         // ...
     });
 
+<a name="get-a-single-column-from-first-result"></a>
+#### Get a Single Column From First Result
+
+If you want to get a single column from `first` result, you can use `value` method in eloquent:
+
+```php
+$flightTitle = Flight::value('title');
+```
+
+
 <a name="not-found-exceptions"></a>
 #### Not Found Exceptions
 
