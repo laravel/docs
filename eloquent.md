@@ -550,6 +550,9 @@ If you want to sort your eloquent rows by specific column, you can use `orderBy`
 Flight::orderBy('created_at', 'desc')->get();
 ```
 
+> **Note**  
+> You must write `asc` or `desc` for second params in `orderBy` method.
+
 <a name="advanced-subqueries"></a>
 ### Advanced Subqueries
 
