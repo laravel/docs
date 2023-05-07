@@ -15,6 +15,7 @@
     - [Chunking Results](#chunking-results)
     - [Chunk Using Lazy Collections](#chunking-using-lazy-collections)
     - [Cursors](#cursors)
+    - [Sorting Rows](#sorting-rows)
     - [Advanced Subqueries](#advanced-subqueries)
 - [Retrieving Single Models / Aggregates](#retrieving-single-models)
     - [Retrieving Or Creating Models](#retrieving-or-creating-models)
@@ -539,6 +540,15 @@ foreach ($users as $user) {
 ```
 
 Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with a very large number of Eloquent records, consider using [the `lazy` method](#chunking-using-lazy-collections) instead.
+
+<a name="sorting-rows"></a>
+### Sorting Rows
+
+If you want to sort your eloquent rows by specific column, you can use `orderBy` method in Model:
+
+```php
+Flight::orderBy('created_at', 'desc')->get();
+```
 
 <a name="advanced-subqueries"></a>
 ### Advanced Subqueries
