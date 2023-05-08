@@ -1552,6 +1552,15 @@ When jobs are available on the queue, the worker will keep processing jobs with 
 php artisan queue:work --sleep=3
 ```
 
+<a name="worker-rest-duration"></a>
+#### Worker Rest Duration
+
+In order to override the default behaviour and wait a number of seconds in between jobs, the `rest` option may be used. This is useful in cases where, for example, sending out emails is rate limited by the web hosting service used:
+
+```shell
+php artisan queue:work --rest=5
+```
+
 <a name="resource-considerations"></a>
 #### Resource Considerations
 
