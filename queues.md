@@ -33,7 +33,9 @@
     - [Queue Priorities](#queue-priorities)
     - [Queue Workers & Deployment](#queue-workers-and-deployment)
     - [Job Expirations & Timeouts](#job-expirations-and-timeouts)
-- [Supervisor Configuration](#supervisor-configuration)
+- [Using A Process Manager] (#using-a-process-manager)
+    - [Supervisor Configuration](#supervisor-configuration)
+    - [Systemd Configuration](#systemd-configuration)
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
     - [Retrying Failed Jobs](#retrying-failed-jobs)
@@ -1063,7 +1065,7 @@ In this example, the job is released for ten seconds if the application is unabl
 > **Warning**  
 > The `pcntl` PHP extension must be installed in order to specify job timeouts.
 
-Often, you know roughly how long you expect your queued jobs to take. For this reason, Laravel allows you to specify a "timeout" value. By default, the timeout value is 60 seconds. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration).
+Often, you know roughly how long you expect your queued jobs to take. For this reason, Laravel allows you to specify a "timeout" value. By default, the timeout value is 60 seconds. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#using-a-process-manager).
 
 The maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
 
@@ -1473,7 +1475,7 @@ php artisan queue:work
 ```
 
 > **Note**  
-> To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
+> To keep the `queue:work` process running permanently in the background, you should use a [process manager](#using-a-process-manager) to ensure that the queue worker does not stop running.
 
 You may include the `-v` flag when invoking the `queue:work` command if you would like the processed job IDs to be included in the command's output:
 
@@ -1492,7 +1494,7 @@ php artisan queue:listen
 <a name="running-multiple-queue-workers"></a>
 #### Running Multiple Queue Workers
 
-To assign multiple workers to a queue and process jobs concurrently, you should simply start multiple `queue:work` processes. This can either be done locally via multiple tabs in your terminal or in production using your process manager's configuration settings. [When using Supervisor](#supervisor-configuration), you may use the `numprocs` configuration value.
+To assign multiple workers to a queue and process jobs concurrently, you should simply start multiple `queue:work` processes. This can either be done locally via multiple tabs in your terminal or in production using your process manager's configuration settings. [When using a process manager](#using-a-process-manager), you may use the `numprocs` configuration value.
 
 <a name="specifying-the-connection-queue"></a>
 #### Specifying The Connection & Queue
@@ -1518,7 +1520,7 @@ The `--once` option may be used to instruct the worker to only process a single 
 php artisan queue:work --once
 ```
 
-The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing a given number of jobs, releasing any memory they may have accumulated:
+The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with a [process manager](#using-a-process-manager) so that your workers are automatically restarted after processing a given number of jobs, releasing any memory they may have accumulated:
 
 ```shell
 php artisan queue:work --max-jobs=1000
@@ -1536,7 +1538,7 @@ php artisan queue:work --stop-when-empty
 <a name="processing-jobs-for-a-given-number-of-seconds"></a>
 #### Processing Jobs For A Given Number Of Seconds
 
-The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing jobs for a given amount of time, releasing any memory they may have accumulated:
+The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with a [process manager](#using-a-process-manager) so that your workers are automatically restarted after processing jobs for a given amount of time, releasing any memory they may have accumulated:
 
 ```shell
 # Process jobs for one hour and then exit...
@@ -1579,7 +1581,7 @@ Since queue workers are long-lived processes, they will not notice changes to yo
 php artisan queue:restart
 ```
 
-This command will instruct all queue workers to gracefully exit after they finish processing their current job so that no existing jobs are lost. Since the queue workers will exit when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
+This command will instruct all queue workers to gracefully exit after they finish processing their current job so that no existing jobs are lost. Since the queue workers will exit when the `queue:restart` command is executed, you should be running a [process manager](#using-a-process-manager) to automatically restart the queue workers.
 
 > **Note**  
 > The queue uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
@@ -1598,7 +1600,7 @@ In your `config/queue.php` configuration file, each queue connection defines a `
 <a name="worker-timeouts"></a>
 #### Worker Timeouts
 
-The `queue:work` Artisan command exposes a `--timeout` option. By default, the `--timeout` value is 60 seconds. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):
+The `queue:work` Artisan command exposes a `--timeout` option. By default, the `--timeout` value is 60 seconds. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#using-a-process-manager):
 
 ```shell
 php artisan queue:work --timeout=60
@@ -1609,12 +1611,17 @@ The `retry_after` configuration option and the `--timeout` CLI option are differ
 > **Warning**  
 > The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a frozen job is always terminated before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice.
 
-<a name="supervisor-configuration"></a>
-## Supervisor Configuration
+<a name="using-a-process-manager"></a>
+## Using a Process Manager
 
 In production, you need a way to keep your `queue:work` processes running. A `queue:work` process may stop running for a variety of reasons, such as an exceeded worker timeout or the execution of the `queue:restart` command.
 
-For this reason, you need to configure a process monitor that can detect when your `queue:work` processes exit and automatically restart them. In addition, process monitors can allow you to specify how many `queue:work` processes you would like to run concurrently. Supervisor is a process monitor commonly used in Linux environments and we will discuss how to configure it in the following documentation.
+For this reason, you need to configure a process monitor that can detect when your `queue:work` processes exit and automatically restart them. In addition, process monitors can allow you to specify how many `queue:work` processes you would like to run concurrently. 
+
+<a name="supervisor-configuration"></a>
+## Supervisor Configuration
+
+Supervisor is a process monitor commonly used in Linux environments and we will discuss how to configure it in the following documentation.
 
 <a name="installing-supervisor"></a>
 #### Installing Supervisor
@@ -1667,6 +1674,34 @@ sudo supervisorctl start laravel-worker:*
 ```
 
 For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
+
+<a name="systemd-configuration"></a>
+## Systemd configuration
+
+Systemd comes already shipped with most linux flavours already. to configure you would need to create a new `service`. Examine output of `systemctl status` command to figure out where `*.service` files are located. Then create a new file of your own.
+
+```
+[Unit]
+Description=Laravel Worker
+
+[Service]
+WorkingDirectory=/path/to/laravel/
+ExecStart=/bin/php artisan queue:work --timeout=300 --memory=1024
+PrivateTmp=true
+Restart=on-failure
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target
+```
+
+once you create this file run following commands:
+```
+systemctl daemon-reload
+systemctl start laravel-worker.service
+systemctl status laravel-worker.service
+```
+
 
 <a name="dealing-with-failed-jobs"></a>
 ## Dealing With Failed Jobs
