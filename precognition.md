@@ -53,9 +53,17 @@ To use Precognition on the route, we must include the `HandlePrecognitiveRequest
 
 ```php
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+use Illuminate\Http\Request;
 
-Route::post('/users', [UserController::class, 'store'])
-    ->middleware(HandlePrecognitiveRequests::class);
+Route::post('/users', function (Request $request) {
+    $request->validate([
+        'username' => 'required|string|unique:users',
+        'name' => 'required|string',
+        'email' => 'required|email|unique:users',
+    ]);
+
+    // ...
+})->middleware(HandlePrecognitiveRequests::class);
 ```
 
 Next up, we can create the front-end form that will collect and submit our input. We create our form object via the `useForm` helper. When creating the form we pass through:
@@ -70,7 +78,8 @@ import { useForm } from 'laravel-precognition-vue';
 
 const form = useForm('post', '/users', {
     username: '',
-    // ...
+    name: '',
+    email: '',
 });
 
 const submit = () => {
@@ -89,7 +98,7 @@ const submit = () => {
 </template>
 ```
 
-With our script and base form in place, we can add a live-validating `username` field. For our application we want to provide live validation whenever the input's `change` event fires.
+With our script and base form in place, we can add a live-validating inputs. For our application we want to provide live validation whenever an input's `change` event fires.
 
 ```vue
 <script setup>
@@ -97,11 +106,14 @@ import { useForm } from 'laravel-precognition-vue';
 
 const form = useForm('post', '/users', {
     username: '',
-    // ...
+    name: '',
+    email: '',
 });
 
 const submit = () => {
-    form.submit();
+    form.submit({
+        onSuccess:
+    })
 };
 </script>
 
@@ -116,6 +128,27 @@ const submit = () => {
         />
         <div v-if="form.errors.username" class="text-red-500">
             {{ form.errors.username }}
+        </div>
+
+        <label for="name">Name</label>
+        <input
+            id="name"
+            v-model="form.name"
+            @change="form.validate('name')"
+        />
+        <div v-if="form.errors.name" class="text-red-500">
+            {{ form.errors.name }}
+        </div>
+
+        <label for="email">Email</label>
+        <input
+            id="email"
+            type="email"
+            v-model="form.email"
+            @change="form.validate('email')"
+        />
+        <div v-if="form.errors.email" class="text-red-500">
+            {{ form.errors.email }}
         </div><!-- [tl! add:end] -->
 
         <button :disabled="form.processing">
@@ -124,6 +157,8 @@ const submit = () => {
     </form>
 </template>
 ```
+
+Our live validation is now complete. When the ``
 
 
 Precognition may be used to enhance an existing form with "live" validation all completely powered by Laravel.
