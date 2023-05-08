@@ -1678,7 +1678,7 @@ For more information on Supervisor, consult the [Supervisor documentation](http:
 <a name="systemd-configuration"></a>
 ## Systemd configuration
 
-Systemd comes already shipped with most linux flavours already. to configure you would need to create a new `service`. Examine output of `systemctl status` command to figure out where `*.service` files are located. Then create a new file of your own.
+Systemd comes shipped with most linux flavours already. to configure you would need to create a new `service`. Examine output of `systemctl status` command to figure out where `*.service` files are located. Then create a new file of your own.
 
 ```
 [Unit]
