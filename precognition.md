@@ -18,18 +18,14 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Precognition allows you to anticipate the outcome of a future request. Some ways Precognition may be used include:
+    Laravel Precognition allows you to anticipate the outcome of a future request. One of the primary uses of Precognition is providing "live" validation in your front-end application. Additionally, it may be used to notify users that a resource they are editing has been updated since it was retrieved or notifying users their session has expired.
 
-- Live validation of forms, powered by Laravel validation rules.
-- Notifying users that a resource they are editing has been updated since it was retrieved.
-- Notifying users their session has expired.
-
-Precognition works by executing all middleware and resolving all controller dependencies (including form requests) of a particular route, but not executing the route's controller. You will also see that Precognition is part feature and part pattern.
+As we will see, Precognition works by executing all middleware and resolving all controller dependencies, including form requests, of a particular route - but not executing the route's controller logic.
 
 <a name="installation"></a>
 ## Installation
 
-The frontend helper libraries make working with Precognition a dreamy delight. If you are going to use Precognition, we recommend installing the appropriate library for your project. There is a vanilla JavaScript and Vue flavoured package available via NPM:
+Laravel provides front-end libraries to make working with Precognition a delight. There is a vanilla JavaScript and Vue flavoured package available via NPM:
 
 ```sh
 # vanilla JavaScript
@@ -39,10 +35,11 @@ npm install laravel-precognition
 npm install laravel-precognition-vue
 ```
 
-If you are using vanilla JavaScript, you should also import Precognition into `resources/js/bootstrap.js` and attach the Precognition client to the `window`, making it globally available in your Blade views:
+If you are using vanilla JavaScript, you should import Precognition into `resources/js/bootstrap.js` and attach the Precognition client to the `window`, making it globally available in your Blade views:
 
 ```js
 import precognition from 'laravel-precognition';
+
 window.precognition = precognition;
 ```
 
