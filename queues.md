@@ -1702,6 +1702,7 @@ systemctl start laravel-worker.service
 systemctl status laravel-worker.service
 ```
 
+If you need to create multiple workers, then you need to create multiple service files.
 
 <a name="dealing-with-failed-jobs"></a>
 ## Dealing With Failed Jobs
