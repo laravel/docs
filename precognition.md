@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
+- [Live Validation](#live-validation)
 - [Making Routes Precognitive](#making-routes-precognitive)
     - [Handling Precognitive Requests](#handling-precognitive-requests)
     - [Executing Code In A Controller](#executing-controller)
@@ -18,9 +19,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-    Laravel Precognition allows you to anticipate the outcome of a future request. One of the primary uses of Precognition is providing "live" validation in your front-end application. Additionally, it may be used to notify users that a resource they are editing has been updated since it was retrieved or notifying users their session has expired.
+Laravel Precognition allows you to anticipate the outcome of a future request. One of the primary uses of Precognition is providing real-time validation in your front-end application. Additionally, it may be used to notify users that a resource they are editing has been updated since it was retrieved or notifying users their session has expired, as a few examples.
 
-As we will see, Precognition works by executing all middleware and resolving all controller dependencies, including form requests, of a particular route - but not executing the route's controller logic.
+As we will see, Precognition works on a route by route basis. When Precognition is active it will execute all the route's middleware and resolve all the route's controller dependencies, including form requests - but it will not execute the route's controller.
 
 <a name="installation"></a>
 ## Installation
@@ -42,6 +43,90 @@ import precognition from 'laravel-precognition';
 
 window.precognition = precognition;
 ```
+
+<a name="live-validation"></a>
+## Live Validation
+
+With Laravel Precognition, you can create real-time validation experiences for your application's front end without having to duplicate validation rules or logic. As an example, let's imagine we are building a form that stores a user in our system.
+
+To use Precognition on the route, we must include the `HandlePrecognitiveRequests` middleware in the route definition.
+
+```php
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+
+Route::post('/users', [UserController::class, 'store'])
+    ->middleware(HandlePrecognitiveRequests::class);
+```
+
+Next up, we can create the front-end form that will collect and submit our input. We create our form object via the `useForm` helper. When creating the form we pass through:
+
+- the HTTP method: `post`
+- the form submission endpoint: `/users`
+- and finally the initial form data
+
+```vue
+<script setup>
+import { useForm } from 'laravel-precognition-vue';
+
+const form = useForm('post', '/users', {
+    username: '',
+    // ...
+});
+
+const submit = () => {
+    form.submit();
+};
+</script>
+
+<template>
+    <form @submit.prevent="submit">
+        <!-- ... -->
+
+        <button :disabled="form.processing">
+            Create User
+        </button>
+    </form>
+</template>
+```
+
+With our script and base form in place, we can add a live-validating `username` field. For our application we want to provide live validation whenever the input's `change` event fires.
+
+```vue
+<script setup>
+import { useForm } from 'laravel-precognition-vue';
+
+const form = useForm('post', '/users', {
+    username: '',
+    // ...
+});
+
+const submit = () => {
+    form.submit();
+};
+</script>
+
+<template>
+    <form @submit.prevent="submit">
+
+        <label for="username">Username</label><!-- [tl! add:start] -->
+        <input
+            id="username"
+            v-model="form.username"
+            @change="form.validate('username')"
+        />
+        <div v-if="form.errors.username" class="text-red-500">
+            {{ form.errors.username }}
+        </div><!-- [tl! add:end] -->
+
+        <button :disabled="form.processing">
+            Create User
+        </button>
+    </form>
+</template>
+```
+
+
+Precognition may be used to enhance an existing form with "live" validation all completely powered by Laravel.
 
 <a name="making-routes-precognitive"></a>
 ## Making Routes Precognitive
