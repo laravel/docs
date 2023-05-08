@@ -33,7 +33,7 @@
     - [Queue Priorities](#queue-priorities)
     - [Queue Workers & Deployment](#queue-workers-and-deployment)
     - [Job Expirations & Timeouts](#job-expirations-and-timeouts)
-- [Using A Process Manager] (#using-a-process-manager)
+- [Using A Process Manager](#using-a-process-manager)
     - [Supervisor Configuration](#supervisor-configuration)
     - [Systemd Configuration](#systemd-configuration)
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
