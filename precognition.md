@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Real-time Validation with Vue](#real-time-validation-vue)
+    - [Working with Inertia](#working-with-inertia)
 - [Making Routes Precognitive](#making-routes-precognitive)
     - [Handling Precognitive Requests](#handling-precognitive-requests)
     - [Executing Code In A Controller](#executing-controller)
@@ -171,7 +172,7 @@ You may also check if an input has passed or failed validation by passing the in
 
 > **Note** A form input will only appear as valid or invalid if it has been validated via the form's `validated` function. In the above example once the input has _changed_ will it appear as valid or invalid.
 
-The form's `submit` function will return an Axios promise. This can be handy if you would like to reset the form inputs or handle failed form submissions.
+The form's `submit` function will return an Axios promise. This can be handy if you would like to access the response data, reset the form inputs on successful submission, or handle failed form submission.
 
 ```js
 const submit = form.submit()
@@ -181,6 +182,29 @@ const submit = form.submit()
         alert('User created.');
     })
     .catch(error => /* ... */);
+```
+
+<a name="working-with-inertia"></a>
+### Working With Inertia
+
+Precognition will automatically detect applications using Inertia and the `useForm` function will return an Inertia form helper with all the added validation features shown above.
+
+Instead of using any of the Inertia form helpers named submission methods, i.e., `get`, `post`, `put`, `patch`, or `delete`, you should instead use the form helpers `submit` function. Additionally, the method, url, and options are passed to `useForm` rather than the `submit` function.
+
+```vue
+<script setup>
+import { useForm } from 'laravel-precognition-vue';
+
+const form = useForm('post', '/users', {
+    name: '',
+    email: '',
+}, {
+    preserveScroll: true,
+    onSuccess: () => form.reset(),
+});
+
+const submit = () => form.submit()
+</script>
 ```
 
 
