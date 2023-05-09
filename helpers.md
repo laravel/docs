@@ -65,6 +65,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::sortRecursiveDesc](#method-array-sort-recursive-desc)
 [Arr::toCssClasses](#method-array-to-css-classes)
 [Arr::undot](#method-array-undot)
 [Arr::where](#method-array-where)
@@ -966,6 +967,10 @@ The `Arr::sortRecursive` method recursively sorts an array using the `sort` func
             ['Li', 'Roman', 'Taylor'],
         ]
     */
+
+If you would like the results sorted in descending order, you may use the `Arr::sortRecursiveDesc` method.
+
+    $sorted = Arr::sortRecursiveDesc($array);
 
 <a name="method-array-to-css-classes"></a>
 #### `Arr::toCssClasses()` {.collection-method}
