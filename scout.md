@@ -462,6 +462,21 @@ Or, if you already have a collection of Eloquent models in memory, you may call 
 
     $orders->searchable();
 
+<a name="modifying-records-before-importing"></a>
+#### Modifying Records Before Importing
+
+Sometimes you may need to prepare the collection of models before they are made searchable. For instance, you may want to eager load a relationship so that the relationship data can be efficiently added to your search index. To accomplish this, define a `makeSearchableUsing` method on the corresponding model:
+
+    use Illuminate\Database\Eloquent\Collection;
+
+    /**
+     * Modify the collection of models being made searchable.
+     */
+    protected function makeSearchableUsing(Collection $models): Collection
+    {
+        return $query->load('author');
+    }
+
 <a name="removing-records"></a>
 ### Removing Records
 
