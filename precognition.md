@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-- [Real-time Validation](#real-time-validation)
+- [Real-time Validation with Vue](#real-time-validation-vue)
 - [Making Routes Precognitive](#making-routes-precognitive)
     - [Handling Precognitive Requests](#handling-precognitive-requests)
     - [Executing Code In A Controller](#executing-controller)
@@ -21,7 +21,7 @@
 
 Laravel Precognition allows you to anticipate the outcome of a future request. One of the primary uses of Precognition is providing real-time validation in your front-end application.
 
-As we will see, Precognition works on a route by route basis. When Precognition is active it will execute all the route's middleware and resolve all the route's controller dependencies, including form requests - but it will not execute the route's controller.
+As we will see, Precognition works on a route by route basis. When Laravel receives a "precognitive request" it will execute all the route's middleware and resolve the route's controller dependencies, including form requests - but it will not execute the route's controller.
 
 <a name="installation"></a>
 ## Installation
@@ -29,11 +29,11 @@ As we will see, Precognition works on a route by route basis. When Precognition 
 Laravel provides front-end libraries to make working with Precognition a delight. There is a vanilla JavaScript and Vue flavoured package available via NPM:
 
 ```sh
-# vanilla JavaScript
-npm install laravel-precognition
-
 # Vue
 npm install laravel-precognition-vue
+
+# vanilla JavaScript
+npm install laravel-precognition
 ```
 
 If you are using vanilla JavaScript, you should import Precognition into `resources/js/bootstrap.js` and attach the Precognition client to the `window`, making it globally available in your Blade views:
@@ -44,8 +44,8 @@ import precognition from 'laravel-precognition';
 window.precognition = precognition;
 ```
 
-<a name="real-time-validation"></a>
-## Real-time Validation
+<a name="real-time-validation-vue"></a>
+## Real-time Validation with Vue
 
 With Laravel Precognition, you can create real-time validation experiences for your users without having to duplicate validation rules or logic. As an example, let's imagine we are building a form that stores a user in our system.
 
@@ -60,7 +60,7 @@ Route::post('/users', function (CreateUserRequest $request) {
 })->middleware(HandlePrecognitiveRequests::class);
 ```
 
-Next up, we will create the front-end form. We will create our form object by calling the `useForm` function, passing through:
+Next up, we create the front-end form object by calling the `useForm` function, passing through:
 
 - the HTTP method: `post`
 - the form submission endpoint: `/users`
@@ -128,13 +128,21 @@ const submit = () => form.submit();
 </template>
 ```
 
-A debounced Precognition request will be sent to the server whenever a form input is changed. If you would like to configure the debounce timeout yourself, you may call the form's `setValidationTimeout` function:
+A debounced "precognitive" validation request will be sent to the server whenever a form input is changed. If you would like to configure the debounce timeout yourself, you may call the form's `setValidationTimeout` function.
 
 ```js
 form.setValidationTimeout({ seconds: 3 });
 ```
 
-Any validation errors returned during a Precognition request or a normal form submission will automatically populate in form's `errors` object.
+Whenever a validation request is in-flight, the form's `processingValidation` property will be `true`.
+
+```html
+<div v-if="form.processingValidation">
+    Validating...
+</div>
+```
+
+Any validation errors returned during a validation request or a normal form submission will automatically populate in form's `errors` object.
 
 ```html
 <div v-if="form.errors.email">
@@ -150,31 +158,30 @@ You can determine if the form has any errors with the form's `hasErrors` propert
 </div>
 ```
 
-The form's `submit` function will return the Axios promise. This can be handy if you would like to rest the form inputs or handle failed form submissions.
+You may also check if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions respectively.
+
+```html
+<span v-if="form.valid('email')">
+    ✅
+</span>
+<span v-else-if="form.invalid('email')">
+    ❌
+</span>
+```
+
+> **Note** A form input will only appear as valid or invalid if it has been validated via the form's `validated` function. In the above example once the input has _changed_ will it appear as valid or invalid.
+
+The form's `submit` function will return an Axios promise. This can be handy if you would like to reset the form inputs or handle failed form submissions.
 
 ```js
-const submit = () => {
-    const response = await form.submit().catch(error => /* ... */);
+const submit = form.submit()
+    .then(response => {
+        form.reset();
 
-    form.reset();
-
-    alert('User created.');
-};
+        alert('User created.');
+    })
+    .catch(error => /* ... */);
 ```
-
-The form's `validating` function can be used to determine if there are inputs pending validation.
-
-```html
-<div v-if="form.validating()">Validating...</div>
-```
-
-You may also pass an input's `name` to determine if a particular input is pending validation.
-
-```html
-<div v-if="form.validating('email')">Validating email</div>
-```
-
-When the form is finally submitted, any validation errors will automatically be populated for us.
 
 
 <a name="making-routes-precognitive"></a>
