@@ -17,7 +17,6 @@
     - [Batch Import](#batch-import)
     - [Adding Records](#adding-records)
     - [Updating Records](#updating-records)
-    - [Modifying Records Before Importing](#modifying-records-before-importing)
     - [Removing Records](#removing-records)
     - [Pausing Indexing](#pausing-indexing)
     - [Conditionally Searchable Model Instances](#conditionally-searchable-model-instances)
@@ -466,7 +465,7 @@ Or, if you already have a collection of Eloquent models in memory, you may call 
 <a name="modifying-records-before-importing"></a>
 #### Modifying Records Before Importing
 
-If you would like to modify the models being made searchable, you may define a `makeSearchableUsing` method on your model. This is a great place to add any eager relationship loading that may be necessary before importing those models:
+Sometimes you may need to prepare the collection of models before they are made searchable. For instance, you may want to eager load a relationship so that the relationship data can be efficiently added to your search index. To accomplish this, define a `makeSearchableUsing` method on the corresponding model:
 
     use Illuminate\Database\Eloquent\Collection;
 
