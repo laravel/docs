@@ -4,8 +4,8 @@
 - [Available Methods](#available-methods)
 - [Other Utilities](#other-utilities)
     - [Benchmarking](#benchmarking)
-    - [Pipeline](#pipeline)
     - [Lottery](#lottery)
+    - [Pipeline](#pipeline)
     - [Sleep](#sleep)
 
 <a name="introduction"></a>
@@ -4184,6 +4184,46 @@ To invoke a callback more than once, you may specify the number of iterations th
 
     Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
 
+<a name="lottery"></a>
+### Lottery
+
+Laravel's lottery class may be used to execute callbacks based on a set of given odds. This can be particularly useful when you only want to execute code for a percentage of your incoming requests:
+
+    use Illuminate\Support\Lottery;
+
+    Lottery::odds(1, 20)
+        ->winner(fn () => $user->won())
+        ->loser(fn () => $user->lost())
+        ->choose();
+
+You may combine Laravel's lottery class with other Laravel features. For example, you may wish to only report a small percentage of slow queries to your exception handler. And, since the lottery class is callable, we may pass an instance of the class into any method that accepts callables:
+
+    use Carbon\CarbonInterval;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Lottery;
+
+    DB::whenQueryingForLongerThan(
+        CarbonInterval::seconds(2),
+        Lottery::odds(1, 100)->winner(fn () => report('Querying > 2 seconds.')),
+    );
+
+<a name="testing-lotteries"></a>
+#### Testing Lotteries
+
+Laravel provides some simple methods to allow you to easily test your application's lottery invocations:
+
+    // Lottery will always win...
+    Lottery::alwaysWin();
+
+    // Lottery will always lose...
+    Lottery::alwaysLose();
+
+    // Lottery will win then lose, and finally return to normal behavior...
+    Lottery::fix([true, false]);
+
+    // Lottery will return to normal behavior...
+    Lottery::determineResultsNormally();
+
 <a name="pipeline"></a>
 ### Pipeline
 
@@ -4226,50 +4266,10 @@ $user = Pipeline::send($user)
             ->then(fn (User $user) => $user);
 ```
 
-<a name="lottery"></a>
-### Lottery
-
-Laravel's lottery class may be used to execute callbacks based on a set of given odds. This can be particularly useful when you only want to execute code for a percentage of your incoming requests:
-
-    use Illuminate\Support\Lottery;
-
-    Lottery::odds(1, 20)
-        ->winner(fn () => $user->won())
-        ->loser(fn () => $user->lost())
-        ->choose();
-
-You may combine Laravel's lottery class with other Laravel features. For example, you may wish to only report a small percentage of slow queries to your exception handler. And, since the lottery class is callable, we may pass an instance of the class into any method that accepts callables:
-
-    use Carbon\CarbonInterval;
-    use Illuminate\Support\Facades\DB;
-    use Illuminate\Support\Lottery;
-
-    DB::whenQueryingForLongerThan(
-        CarbonInterval::seconds(2),
-        Lottery::odds(1, 100)->winner(fn () => report('Querying > 2 seconds.')),
-    );
-
-<a name="testing-lotteries"></a>
-#### Testing Lotteries
-
-Laravel provides some simple methods to allow you to easily test your application's lottery invocations:
-
-    // Lottery will always win...
-    Lottery::alwaysWin();
-
-    // Lottery will always lose...
-    Lottery::alwaysLose();
-
-    // Lottery will win then lose, and finally return to normal behavior...
-    Lottery::fix([true, false]);
-
-    // Lottery will return to normal behavior...
-    Lottery::determineResultsNormally();
-
 <a name="sleep"></a>
 ### Sleep
 
-Laravel's `Sleep` class is a lightweight wrapper around PHP's native `sleep` and `usleep` functions. It brings testibility to these methods while also exposing a nicer API for working with time.
+Laravel's `Sleep` class is a light-weight wrapper around PHP's native `sleep` and `usleep` functions, offering greater testability while also exposing a developer friendly API for working with time:
 
     use Illuminate\Support\Sleep;
 
@@ -4281,21 +4281,21 @@ Laravel's `Sleep` class is a lightweight wrapper around PHP's native `sleep` and
         $waiting = /* ... */;
     }
 
-The class exposes a handful of methods that allow you to work with different units of time.
+The `Sleep` class offers a variety of methods that allow you to work with different units of time:
 
-    // Pause exection for 90 seconds...
+    // Pause execution for 90 seconds...
     Sleep::for(1.5)->minutes();
 
-    // Pause exection for 2 seconds...
+    // Pause execution for 2 seconds...
     Sleep::for(2)->seconds();
 
-    // Pause exection for 500 milliseconds...
+    // Pause execution for 500 milliseconds...
     Sleep::for(500)->milliseconds();
 
-    // Pause exection for 5,000 microseconds...
+    // Pause execution for 5,000 microseconds...
     Sleep::for(5000)->microseconds();
 
-    // Pause exection until a given time...
+    // Pause execution until a given time...
     Sleep::until(now()->addMinute());
 
     // Alias of PHP's native "sleep" function...
@@ -4304,16 +4304,17 @@ The class exposes a handful of methods that allow you to work with different uni
     // Alias of PHP's native "usleep" function...
     Sleep::usleep(5000);
 
-To make it easier to combine units of time, you may also chain calls to add additional time.
+To easily combine units of time, you may use the `and` method:
 
     Sleep::for(1)->second()->and(10)->milliseconds();
 
 <a name="testing-sleep"></a>
 #### Testing Sleep
 
-When testing code that utilises the `Sleep` class, your test will also pause execution. Imagine you are testing the following code path:
+When testing code that utilizes the `Sleep` class or PHP's native sleep functions, your test will pause execution. As you might expect, this makes your test suite significantly slower. For example, imagine you are testing the following code:
 
     $waiting = /* ... */;
+
     $seconds = 1;
 
     while ($waiting) {
@@ -4322,20 +4323,20 @@ When testing code that utilises the `Sleep` class, your test will also pause exe
         $waiting = /* ... */;
     }
 
-Any test that executes the `while` loop seen above would take _at least_ one second, due to the execution pause. Luckily, the `Sleep` class allows us to "fake" the execution pause in our tests.
+Typically, testing this code would take _at least_ one second. Luckily, the `Sleep` class allows us to "fake" sleeping so that our test suite stays fast:
 
-    public function testItWaitsUntilReady()
+    public function test_it_waits_until_ready()
     {
         Sleep::fake();
 
         // ...
     }
 
-Now when we run our test, the actual execution pause is by-passed leading to a substantially faster test.
+When faking the `Sleep` class, the actual execution pause is by-passed, leading to a substantially faster test.
 
-It is also possible to make assertions against the expected execution pauses that should have occurred. Imagine we are testing that the code will pause execution 3 times, with each pause increasing by a single second.
+Once the `Sleep` class has been faked, it is possible to make assertions against the expected "sleeps" that should have occurred. To illustrate this, let's imagine we are testing code that pauses execution three times, with each pause increasing by a single second. Using the `assertSequence` method, we can assert that our code "slept" for the proper amount of time while keeping our test fast:
 
-    public function testItChecksIfReadyFourTimes()
+    public function test_it_checks_if_ready_four_times()
     {
         Sleep::fake();
 
@@ -4348,24 +4349,23 @@ It is also possible to make assertions against the expected execution pauses tha
         ]);
     }
 
-There some additional assertions that may come in handy:
+Of course, the `Sleep` class offers a variety of other assertions you may use when testing:
 
     use Carbon\CarbonInterval as Duration;
     use Illuminate\Support\Sleep;
 
-    // Assert against the duration of the execution pause...
+    // Assert that sleep was called 3 times...
+    Sleep::assertSleptTimes(3);
+
+    // Assert against the duration of sleep...
     Sleep::assertSlept(function (Duration $duration): bool {
         return /* ... */;
     }, times: 1);
 
-    // Assert that Sleep was called 3 times...
-    Sleep::assertSleptTimes(3);
-
-    // Assert that Sleep was never called.
+    // Assert that the Sleep class was never invoked...
     Sleep::assertNeverSlept();
 
-    // Assert that, even if Sleep was called, no execution paused occurred.
-    // Useful if you are computing sleep durations that may be negative...
+    // Assert that, even if Sleep was called, no execution paused occurred...
     Sleep::assertInsomniac();
 
-Laravel uses the `Sleep` class under the hood whenever it is pausing execution, for example, the [`retry`](https://laravel.com/docs/10.x/helpers#method-retry) uses it when sleeping allowing for improve testibility within your application.
+Laravel uses the `Sleep` class under the hood whenever it is pausing execution. For example, the [`retry`](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.
