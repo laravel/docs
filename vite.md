@@ -261,7 +261,7 @@ export default defineConfig({
 <a name="vue"></a>
 ### Vue
 
-If you would like to build your front-end using the [Vue](https://vuejs.org/) framework, then you will also need to install the `@vitejs/plugin-vue` plugin:
+If you would like to build your frontend using the [Vue](https://vuejs.org/) framework, then you will also need to install the `@vitejs/plugin-vue` plugin:
 
 ```sh
 npm install --save-dev @vitejs/plugin-vue
@@ -305,7 +305,7 @@ export default defineConfig({
 <a name="react"></a>
 ### React
 
-If you would like to build your front-end using the [React](https://reactjs.org/) framework, then you will also need to install the `@vitejs/plugin-react` plugin:
+If you would like to build your frontend using the [React](https://reactjs.org/) framework, then you will also need to install the `@vitejs/plugin-react` plugin:
 
 ```sh
 npm install --save-dev @vitejs/plugin-react
