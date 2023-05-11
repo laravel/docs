@@ -300,7 +300,7 @@ Scout also allows you to auto identify users when using [Algolia](https://algoli
 SCOUT_IDENTIFY=true
 ```
 
-Enabling this feature this will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
+Enabling this feature will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
 
 <a name="database-and-collection-engines"></a>
 ## Database / Collection Engines
