@@ -934,6 +934,9 @@ All of the attributes that are not part of the component's constructor will auto
 > **Warning**  
 > Using directives such as `@env` within component tags is not supported at this time. For example, `<x-alert :live="@env('production')"/>` will not be compiled.
 
+> **Warning**  
+> Because of limitations on how slots are named, it is not possible to use `name` as the first attribute when specifying attributes. If you want to pass this attribute to the underlying component, you must provide it as the second or third element. For instance, you can use `<x-slot:input class="text-input-lg" name="my_field">...`.
+
 <a name="default-merged-attributes"></a>
 #### Default / Merged Attributes
 
