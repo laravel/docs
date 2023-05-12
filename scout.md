@@ -83,7 +83,7 @@ composer require algolia/algoliasearch-client-php
 When using the Meilisearch driver you will need to install the Meilisearch PHP SDK via the Composer package manager:
 
 ```shell
-composer require meilisearch/meilisearch-php
+composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
 ```
 
 Then, set the `SCOUT_DRIVER` environment variable as well as your Meilisearch `host` and `key` credentials within your application's `.env` file:
