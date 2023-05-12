@@ -83,7 +83,7 @@ composer require algolia/algoliasearch-client-php
 When using the Meilisearch driver you will need to install the Meilisearch PHP SDK via the Composer package manager:
 
 ```shell
-composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
+composer require meilisearch/meilisearch-php
 ```
 
 Then, set the `SCOUT_DRIVER` environment variable as well as your Meilisearch `host` and `key` credentials within your application's `.env` file:
@@ -467,12 +467,12 @@ Or, if you already have a collection of Eloquent models in memory, you may call 
 
 Sometimes you may need to prepare the collection of models before they are made searchable. For instance, you may want to eager load a relationship so that the relationship data can be efficiently added to your search index. To accomplish this, define a `makeSearchableUsing` method on the corresponding model:
 
-    use Illuminate\Database\Eloquent\Collection;
+    use Illuminate\Database\Eloquent\Builder;
 
     /**
      * Modify the collection of models being made searchable.
      */
-    public function makeSearchableUsing(Collection $models): Collection
+    public function makeSearchableUsing(Builder $query): Builder
     {
         return $query->load('author');
     }
