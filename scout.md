@@ -472,7 +472,7 @@ Sometimes you may need to prepare the collection of models before they are made 
     /**
      * Modify the collection of models being made searchable.
      */
-    public function makeSearchableUsing(Collection $models): Builder
+    public function makeSearchableUsing(Collection $models): Collection
     {
         return $models->load('author');
     }
