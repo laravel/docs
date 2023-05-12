@@ -474,7 +474,7 @@ Sometimes you may need to prepare the collection of models before they are made 
      */
     public function makeSearchableUsing(Collection $models): Collection
     {
-        return $query->load('author');
+        return $models->load('author');
     }
 
 <a name="removing-records"></a>
