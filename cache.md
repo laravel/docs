@@ -146,6 +146,16 @@ You may even pass a closure as the default value. The result of the closure will
         return DB::table(/* ... */)->get();
     });
 
+Maybe you want to get an item from the cache, or execute the given Closure and store the result forever, you can use `sear` method:
+
+```php
+$value = Cache::sear('key', function () {
+    return 'value';
+});
+```
+
+In this example, the key value is searched in the cache. If this key is available in the cache, the corresponding value is assigned to the value variable and this value is then used for printing. If the key is not available in the cache, the callback function is sent as the second parameter to the Sear method and is executed to calculate and return the corresponding value. The return value from the function is then stored in the cache as the key value and also assigned to the value variable to be used for printing.
+
 <a name="checking-for-item-existence"></a>
 #### Checking For Item Existence
 
