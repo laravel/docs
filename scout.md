@@ -404,6 +404,9 @@ If you would like to modify the query that is used to retrieve all of your model
         return $query->with('author');
     }
 
+> **Warning**  
+> The `makeAllSearchableUsing` method may not be applicable when using a queue to batch import models. Relationships are [not restored](/docs/{{version}}/queues#handling-relationships) when model collections are processed by jobs.
+
 <a name="adding-records"></a>
 ### Adding Records
 
