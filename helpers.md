@@ -4,6 +4,7 @@
 - [Available Methods](#available-methods)
 - [Other Utilities](#other-utilities)
     - [Benchmarking](#benchmarking)
+    - [Dates](#dates)
     - [Lottery](#lottery)
     - [Pipeline](#pipeline)
     - [Sleep](#sleep)
@@ -4188,6 +4189,25 @@ By default, the given callbacks will be executed once (one iteration), and their
 To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
 
     Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
+
+<a name="dates"></a>
+### Dates
+
+Laravel includes [Carbon](https://carbon.nesbot.com/docs/), a powerful date and time manipulation library. To create a new `Carbon` instance, you may invoke the `now` function. This function is globally available within your Laravel application:
+
+```php
+$now = now();
+```
+
+Or, you may create a new `Carbon` instance using the `Illuminate\Support\Carbon` class:
+
+```php
+use Illuminate\Support\Carbon;
+
+$now = Carbon::now();
+```
+
+For a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/docs/).
 
 <a name="lottery"></a>
 ### Lottery
