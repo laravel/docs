@@ -2139,13 +2139,22 @@ The `Str::upper` method converts the given string to uppercase:
 <a name="method-str-ulid"></a>
 #### `Str::ulid()` {.collection-method}
 
-The `Str::ulid` method generates a ULID:
+The `Str::ulid` method generates a ULID, which is a compact, time-ordered unique identifier:
 
     use Illuminate\Support\Str;
 
     return (string) Str::ulid();
     
     // 01gd6r360bp37zj17nxb55yv40
+
+If you would like to retrieve a `Illuminate\Support\Carbon` date instance representing the date and time that a given ULID was created, you may use the `createFromId` method provided by Laravel's Carbon integration:
+
+```php
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+
+$date = Carbon::createFromId((string) Str::ulid());
+```
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
