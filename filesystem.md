@@ -139,7 +139,7 @@ Typically, after updating the disk's credentials to match the credentials of the
 <a name="caching"></a>
 ### Caching
 
-To enable caching for a given disk, you may add a `cache` directive to the disk's configuration options. The `cache` option should be an array of caching options containing the `disk` name, the `expire` time in seconds, and the cache `prefix`:
+To enable caching for a given disk, you may add a `cache` directive to the disk's configuration options. The `cache` option should be an array of caching options containing the cache `store` name, the `expire` time in seconds, and the cache `prefix`:
 
     's3' => [
         'driver' => 's3',
