@@ -57,7 +57,7 @@ server {
     listen 80;
     listen [::]:80;
     server_name example.com;
-    root /srv/example.com/public;
+    root /srv/www/example.com/public;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
