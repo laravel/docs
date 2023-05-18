@@ -241,8 +241,6 @@ In addition, if you would like to ensure that your application is not utilizing 
 Sometimes you may want to ensure that an exception is thrown, you may need to use `assertThrows` method:
 
 ```php
-$response = $this->get('/');
-
 $this->assertThrows(fn () => throw Exception('Throw'));
 ```
 
