@@ -12,6 +12,15 @@
 
 </div>
 
+<a name="low-impact-changes"></a>
+## Low Impact Changes
+
+<div class="content-list" markdown="1">
+
+- [The `Enumerable` Contract](#the-enumerable-contract)
+
+</div>
+
 <a name="upgrade-11.0"></a>
 ## Upgrading To 11.0 From 10.x
 
@@ -39,3 +48,16 @@ You should update the following dependencies in your application's `composer.jso
 - `laravel/framework` to `^11.0`
 
 </div>
+
+### Collections
+
+<a name="the-enumerable-contract"></a>
+#### The `Enumerable` Contract
+
+**Likelihood Of Impact:Low**
+
+The `dump` method of the `Illuminate\Support\Enumerable` contract has been updated to accept the variadic `...$args` argument. If you are implementing this interface you should update your implementation accordingly:
+
+```php
+public function dump(...$args);
+```
