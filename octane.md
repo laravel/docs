@@ -62,7 +62,7 @@ If you plan to develop your application using [Laravel Sail](/docs/{{version}}/s
 ```shell
 ./vendor/bin/sail up
 
-./vendor/bin/sail composer require laravel/octane spiral/roadrunner
+./vendor/bin/sail composer require laravel/octane spiral/roadrunner-cli spiral/roadrunner-http 
 ```
 
 Next, you should start a Sail shell and use the `rr` executable to retrieve the latest Linux based build of the RoadRunner binary:
