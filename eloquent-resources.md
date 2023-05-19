@@ -541,6 +541,10 @@ The `when` method also accepts a closure as its second argument, allowing you to
         return 'secret-value';
     }),
 
+For convenience, you can use `unless` method:
+
+    'name' => $this->unless($request->user()->isAdmin(), $this->name),
+
 The `whenHas` method may be used to include an attribute if it is actually present on the underlying model:
 
     'name' => $this->whenHas('name'),
