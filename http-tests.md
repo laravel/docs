@@ -238,18 +238,12 @@ In addition, if you would like to ensure that your application is not utilizing 
 
     $response = $this->withoutDeprecationHandling()->get('/');
 
-Sometimes you may want to ensure that an exception is thrown, you may need to use `assertThrows` method:
-
-```php
-$this->assertThrows(fn () => throw Exception('Throw'));
-```
-
-Also, you want to ensure that a specific type of exception is thrown:
+The `assertThrows` method may be used to assert that code within a given closure throws an exception of the specified type:
 
 ```php
 $this->assertThrows(
-    fn () => (new SomeActionThatThrowsExceptions)->execute(),
-    CustomException::class
+    fn () => (new ProcessOrder)->execute(),
+    OrderInvalid::class
 );
 ```
 
