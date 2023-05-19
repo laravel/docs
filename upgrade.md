@@ -49,14 +49,15 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
+<a name="collections"></a>
 ### Collections
 
 <a name="the-enumerable-contract"></a>
 #### The `Enumerable` Contract
 
-**Likelihood Of Impact:Low**
+**Likelihood Of Impact: Low**
 
-The `dump` method of the `Illuminate\Support\Enumerable` contract has been updated to accept the variadic `...$args` argument. If you are implementing this interface you should update your implementation accordingly:
+The `dump` method of the `Illuminate\Support\Enumerable` contract has been updated to accept a variadic `...$args` argument. If you are implementing this interface you should update your implementation accordingly:
 
 ```php
 public function dump(...$args);
