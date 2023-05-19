@@ -238,6 +238,15 @@ In addition, if you would like to ensure that your application is not utilizing 
 
     $response = $this->withoutDeprecationHandling()->get('/');
 
+The `assertThrows` method may be used to assert that code within a given closure throws an exception of the specified type:
+
+```php
+$this->assertThrows(
+    fn () => (new ProcessOrder)->execute(),
+    OrderInvalid::class
+);
+```
+
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
 
