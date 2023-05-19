@@ -1468,8 +1468,9 @@ To ensure your application can handle Stripe webhooks, be sure to configure the 
 - `customer.subscription.deleted`
 - `customer.updated`
 - `customer.deleted`
-- `invoice.payment_succeeded`
+- `payment_method.automatically_updated`
 - `invoice.payment_action_required`
+- `invoice.payment_succeeded`
 
 For convenience, Cashier includes a `cashier:webhook` Artisan command. This command will create a webhook in Stripe that listens to all of the events required by Cashier:
 
