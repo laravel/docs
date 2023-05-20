@@ -1847,6 +1847,25 @@ In the example above, the `email` field will only be validated if it is present 
 > **Note**  
 > If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields).
 
+<a name="conditionally-modifying-rules-using-when"></a>
+#### Adding or Modifying Rules Using When
+
+You may wish to modify or add a ruleset depending on another field or value. You may accomplish this using the `when` validation rule. In this example, both the `start_hour` and `start_minute` fields can be any integer greater than or equal to 0. When the `start_hour` field is equal to 0, the `start_minute` field needs to be greater than or equal to 1 instead:
+
+    $request->validate([
+        'start_hour' => 'integer|gte:0',
+        'start_minute' => [
+            'integer',
+            Rule::when(fn (Fluent $input) => (int) $input->start_hour === 0, ['gte:1'], ['gte:0']),
+        ],
+    ]);
+    
+The first argument passed to the `when` method is a variable or closure that evaluates to `true` or `false`. The second argument is the ruleset that is added when the first argument evaluates as `true`. The third argument is the ruleset that is added when the first argument evaluates as `false` and is not a required parameter.
+
+> **Note**  
+> The `$input` parameter passed to your closure will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files under validation.
+    
+
 <a name="complex-conditional-validation"></a>
 #### Complex Conditional Validation
 
