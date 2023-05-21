@@ -2155,6 +2155,7 @@ Once the rule has been created, we are ready to define its behavior. A rule obje
         {
             if (strtoupper($value) !== $value) {
                 $fail('The :attribute must be uppercase.');
+                return;
             }
         }
     }
