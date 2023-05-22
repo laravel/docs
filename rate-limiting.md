@@ -66,6 +66,10 @@ If you would like to manually interact with the rate limiter, a variety of other
         return 'Too many attempts!';
     }
 
+    RateLimiter::hit('send-message:'.$user->id);
+
+    // Send message...
+
 Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `hit` method to increment the number of total attempts:
 
     use Illuminate\Support\Facades\RateLimiter;
@@ -88,6 +92,10 @@ When a key has no more attempts left, the `availableIn` method returns the numbe
 
         return 'You may try again in '.$seconds.' seconds.';
     }
+
+    RateLimiter::hit('send-message:'.$user->id);
+
+    // Send message...
 
 <a name="clearing-attempts"></a>
 ### Clearing Attempts
