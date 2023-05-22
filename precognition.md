@@ -91,10 +91,10 @@ Now, as the form is filled by the user, Precognition will provide live validatio
 form.setValidationTimeout({ seconds: 3 });
 ```
 
-When a validation request is in-flight, the form's `processingValidation` property will be `true`:
+When a validation request is in-flight, the form's `validating` property will be `true`:
 
 ```html
-<div v-if="form.processingValidation">
+<div v-if="form.validating">
     Validating...
 </div>
 ```
@@ -216,10 +216,8 @@ export default function Form() {
             <input
                 id="name"
                 value={form.data.name}
-                onChange={(e) => {
-                    form.setData('name', e.target.value)
-                    form.validate('name')
-                }}
+                onChange={(e) => form.setData('name', e.target.value)}
+                onBlur={() => form.validate('name')}
             />
             {form.errors.name ? (<div>{form.errors.name}</div>) : null}
 
@@ -227,10 +225,8 @@ export default function Form() {
             <input
                 id="email"
                 value={form.data.email}
-                onChange={(e) => {
-                    form.setData('name', e.target.value)
-                    form.validate('name')
-                }}
+                onChange={(e) => form.setData('name', e.target.value)}
+                onBlur={() => form.validate('name')}
             />
             {form.errors.email ? (<div>{form.errors.email}</div>) : null}
 
@@ -246,10 +242,10 @@ Now, as the form is filled by the user, Precognition will provide live validatio
 form.setValidationTimeout({ seconds: 3 });
 ```
 
-When a validation request is in-flight, the form's `processingValidation` property will be `true`:
+When a validation request is in-flight, the form's `validating` property will be `true`:
 
 ```jsx
-{form.processingValidation ? (<div>Validating...</div>) : null}
+{form.validating ? (<div>Validating...</div>) : null}
 ```
 
 Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
