@@ -1523,6 +1523,24 @@ When defining a child view, use the `@extends` Blade directive to specify which 
 
 In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
+Also, you use `@extendsFirst` Blade directive to get two views, first check is views exists extend that view but if not exists extend second view:
+
+```php
+@extendsFirst(['layouts.app', 'master.app'])
+
+@section('title', 'Page Title')
+
+@section('sidebar')
+    @@parent
+
+    <p>This is appended to the master sidebar.</p>
+@endsection
+
+@section('content')
+    <p>This is my body content.</p>
+@endsection
+```
+
 > **Note**  
 > Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
 
