@@ -150,13 +150,19 @@ const submit = () => form.submit()
 > **Note**
 > If you would like a head start when developing your Laravel application with Vue and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
-Precognition's `useForm` function will automatically detect applications using [Inertia](https://inertiajs.com) and will return an Inertia form helper augmented with the validation features discussed above.
+When using Vue with Inertia, you will need to install the Inertia library via NPM:
+
+```shell
+npm install laravel-precognition-vue
+```
+
+Precognition's `useForm` function will now return an Inertia form helper augmented with the validation features discussed above.
 
 The form helper's `submit` method has been streamlined, removing the need to specify the HTTP method or URL. Instead, you may pass Inertia's [visit options](https://inertiajs.com/manual-visits) as the first and only argument. In addition, the `submit` method does not return a Promise as seen in the Vue example above. Instead, you may provide any of Inertia's supported [event callbacks](https://inertiajs.com/manual-visits#event-callbacks) in the visit options given to the `submit` method:
 
 ```vue
 <script setup>
-import { useForm } from 'laravel-precognition-vue';
+import { useForm } from 'laravel-precognition-vue-inertia';
 
 const form = useForm('post', '/users', {
     name: '',
@@ -295,12 +301,18 @@ const submit = (e) => {
 > **Note**
 > If you would like a head start when developing your Laravel application with React and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
-Precognition's `useForm` function will automatically detect applications using [Inertia](https://inertiajs.com) and will return an Inertia form helper augmented with the validation features discussed above.
+When using Vue with Inertia, you will need to install the Inertia library via NPM:
+
+```shell
+npm install laravel-precognition-react
+```
+
+Precognition's `useForm` function will now return an Inertia form helper augmented with the validation features discussed above.
 
 The form helper's `submit` method has been streamlined, removing the need to specify the HTTP method or URL. Instead, you may pass Inertia's [visit options](https://inertiajs.com/manual-visits) as the first and only argument. In addition, the `submit` method does not return a Promise as seen in the React example above. Instead, you may provide any of Inertia's supported [event callbacks](https://inertiajs.com/manual-visits#event-callbacks) in the visit options given to the `submit` method:
 
 ```js
-import { useForm } from 'laravel-precognition-react';
+import { useForm } from 'laravel-precognition-react-inertia';
 
 const form = useForm('post', '/users', {
     name: '',
