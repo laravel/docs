@@ -305,7 +305,7 @@ const submit = (e) => {
 Before using Precognition with React and Inertia, be sure to review our general documentation on [using Precognition with React](#using-react). When using React with Inertia, you will need to install the Inertia compatible Precognition library via NPM:
 
 ```shell
-npm install laravel-precognition-react
+npm install laravel-precognition-react-inertia
 ```
 
 Once installed, Precognition's `useForm` function will return an Inertia [form helper](https://inertiajs.com/forms#form-helper) augmented with the validation features discussed above.
