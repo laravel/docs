@@ -232,8 +232,8 @@ export default function Form() {
             <input
                 id="email"
                 value={form.data.email}
-                onChange={(e) => form.setData('name', e.target.value)}
-                onBlur={() => form.validate('name')}
+                onChange={(e) => form.setData('email', e.target.value)}
+                onBlur={() => form.validate('email')}
             />
             {form.invalid('email') ? (<div>{form.errors.email}</div>) : null}
 
