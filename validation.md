@@ -348,6 +348,9 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
 
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a [JSON representation of the validation errors](#validation-error-response-format).
 
+> **Note**
+> Need to add real-time form request validation to your Inertia powered Laravel frontend? Check out [Laravel Precognition](/docs/{{version}}/precognition).
+
 <a name="performing-additional-validation-on-form-requests"></a>
 #### Performing Additional Validation
 
