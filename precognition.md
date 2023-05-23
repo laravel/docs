@@ -65,7 +65,7 @@ const submit = () => form.submit();
             v-model="form.name"
             @change="form.validate('name')"
         />
-        <div v-if="form.errors.name">
+        <div v-if="form.invalid('name')">
             {{ form.errors.name }}
         </div>
 
@@ -76,7 +76,7 @@ const submit = () => form.submit();
             v-model="form.email"
             @change="form.validate('email')"
         />
-        <div v-if="form.errors.email">
+        <div v-if="form.invalid('email')">
             {{ form.errors.email }}
         </div>
 
@@ -88,7 +88,7 @@ const submit = () => form.submit();
 Now, as the form is filled by the user, Precognition will provide live validation output powered by the validation rules in the route's form request. When the form's inputs are changed, a debounced "precognitive" validation request will be sent to your Laravel application. You may configure the debounce timeout by calling the form's `setValidationTimeout` function:
 
 ```js
-form.setValidationTimeout({ seconds: 3 });
+form.setValidationTimeout(3000);
 ```
 
 When a validation request is in-flight, the form's `validating` property will be `true`:
@@ -102,7 +102,7 @@ When a validation request is in-flight, the form's `validating` property will be
 Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
 
 ```html
-<div v-if="form.errors.email">
+<div v-if="form.invalid('email')">
     {{ form.errors.email }}
 </div>
 ```
@@ -153,7 +153,7 @@ const submit = () => form.submit()
 When using Vue with Inertia, you will need to install the Inertia library via NPM:
 
 ```shell
-npm install laravel-precognition-vue
+npm install laravel-precognition-vue-inertia
 ```
 
 Precognition's `useForm` function will now return an Inertia form helper augmented with the validation features discussed above.
@@ -200,7 +200,7 @@ npm install laravel-precognition-react
 
 With the Laravel Precognition package installed, you can now create a form object using Precognition's `useForm` function, providing the HTTP method (`post`), the target URL (`/users`), and the initial form data.
 
-Then, to enable live validation, you should listen to each input's `change` event. In the event's handler, you should set the form's data with the `setData` function, passing the input's name and new value. Then, invoke the form's `validate` method, providing the input's name:
+Then, to enable live validation, you should listen to each input's `change` and `blur` event. In the `change` event handler, you should set the form's data with the `setData` function, passing the input's name and new value. Then, in the `blur` event handler invoke the form's `validate` method, providing the input's name:
 
 ```jsx
 import { useForm } from 'laravel-precognition-react';
@@ -213,6 +213,7 @@ export default function Form() {
 
     const submit = (e) => {
         e.preventDefault();
+
         form.submit();
     };
 
@@ -225,7 +226,7 @@ export default function Form() {
                 onChange={(e) => form.setData('name', e.target.value)}
                 onBlur={() => form.validate('name')}
             />
-            {form.errors.name ? (<div>{form.errors.name}</div>) : null}
+            {form.invalid('name') ? (<div>{form.errors.name}</div>) : null}
 
             <label for="email">Email</label>
             <input
@@ -234,7 +235,7 @@ export default function Form() {
                 onChange={(e) => form.setData('name', e.target.value)}
                 onBlur={() => form.validate('name')}
             />
-            {form.errors.email ? (<div>{form.errors.email}</div>) : null}
+            {form.invalid('email') ? (<div>{form.errors.email}</div>) : null}
 
             <button>Create User</button>
         </form>
@@ -245,7 +246,7 @@ export default function Form() {
 Now, as the form is filled by the user, Precognition will provide live validation output powered by the validation rules in the route's form request. When the form's inputs are changed, a debounced "precognitive" validation request will be sent to your Laravel application. You may configure the debounce timeout by calling the form's `setValidationTimeout` function:
 
 ```js
-form.setValidationTimeout({ seconds: 3 });
+form.setValidationTimeout(3000);
 ```
 
 When a validation request is in-flight, the form's `validating` property will be `true`:
@@ -257,7 +258,7 @@ When a validation request is in-flight, the form's `validating` property will be
 Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
 
 ```jsx
-{form.errors.email ? (<div>{form.errors.email}</div>) : null}
+{form.invalid('email') ? (<div>{form.errors.email}</div>) : null}
 ```
 
 You can determine if the form has _any_ errors with the form's `hasErrors` property:
@@ -268,7 +269,7 @@ You can determine if the form has _any_ errors with the form's `hasErrors` prope
 
 You may also determine if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions, respectively:
 
-```html
+```jsx
 {form.valid('email') ? (<span>✅</span>) : null}
 
 {form.invalid('email') ? (<span>❌</span>) : null}
