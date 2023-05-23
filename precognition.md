@@ -302,7 +302,7 @@ const submit = (e) => {
 > **Note**
 > If you would like a head start when developing your Laravel application with React and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
-When using Vue with Inertia, you will need to install the Inertia library via NPM:
+When using React with Inertia, you will need to install the Inertia library via NPM:
 
 ```shell
 npm install laravel-precognition-react
