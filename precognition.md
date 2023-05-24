@@ -448,7 +448,10 @@ You may also determine if an input has passed or failed validation by passing th
 > **Warning**
 > A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
-In our example, we are using Precognition to perform live validation, however we are performing a traditional server-side form submission to submit the form. In this case, we will want to populate the form with any "old" input and any validation errors returned from the form submission:
+<a name="repopulating-old-form-data"></a>
+#### Repopulating Old Form Data
+
+In the user creation example discussed above, we are using Precognition to perform live validation; however, we are performing a traditional server-side form submission to submit the form. So, the form should be populated with any "old" input and validation errors returned from the server-side form submission:
 
 ```html
 <form x-data="{
@@ -459,7 +462,7 @@ In our example, we are using Precognition to perform live validation, however we
 }">
 ```
 
-Alternatively, if you would like to submit the form via AJAX you may use the form's `submit` function which returns an Axios request promise.
+Alternatively, if you would like to submit the form via XHR you may use the form's `submit` function, which returns an Axios request promise:
 
 ```html
 <form 
