@@ -6,7 +6,7 @@
     - [Using Vue & Inertia](#using-vue-and-inertia)
     - [Using React](#using-react)
     - [Using React & Inertia](#using-react-and-inertia)
-    - [Using Alpine with Blade](#using-alpine)
+    - [Using Alpine & Blade](#using-alpine)
 - [Customizing Validation Rules](#customizing-validation-rules)
 - [Managing Side-Effects](#managing-side-effects)
 
@@ -332,7 +332,7 @@ const submit = (e) => {
 ```
 
 <a name="using-alpine"></a>
-### Using Alpine With Blade
+### Using Alpine & Blade
 
 Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend Alpine application. To illustrate how it works, let's build a form for creating new users within our application.
 
