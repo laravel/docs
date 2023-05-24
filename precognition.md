@@ -464,7 +464,10 @@ Alternatively, if you would like to submit the form via AJAX you may use the for
 ```html
 <form 
     x-data="{
-        form: $form(/* ... */),
+        form: $form('post', '/register', {
+            name: '',
+            email: '',
+        }),
         submit() {
             this.form.submit()
                 .then(response => {
