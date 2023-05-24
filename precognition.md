@@ -453,7 +453,7 @@ In our example, we are using Precognition to perform live validation, however we
     form: $form('post', '/register', {
         name: '{{ old('name') }}',
         email: '{{ old('email') }}',
-    }).setErrors({{ JS::from($errors) }}),
+    }).setErrors({{ Js::from($errors->messages()) }}),
 }">
 ```
 
