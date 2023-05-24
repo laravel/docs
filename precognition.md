@@ -376,6 +376,7 @@ To enable live validation, you should bind the form's data to it's relevant inpu
         email: '',
     }),
 }">
+    @csrf
     <label for="name">Name</label>
     <input
         id="name"
