@@ -353,7 +353,7 @@ Next, you should install the Laravel Precognition frontend helpers for Alpine vi
 npm install laravel-precognition-alpine
 ```
 
-Then, register the Precognition plugin with Alpine via `Alpine.plugin` function:
+Then, register the Precognition plugin with Alpine:
 
 ```js
 import Alpine from 'alpinejs';
@@ -461,7 +461,7 @@ Alternatively, if you would like to submit the form via AJAX you may use the for
 ```html
 <form 
     x-data="{
-        form: { /* ... */ },
+        form: $form(/* ... */),
         submit() {
             this.form.submit()
                 .then(response => {
