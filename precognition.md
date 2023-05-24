@@ -63,6 +63,7 @@ const submit = () => form.submit();
         <label for="name">Name</label>
         <input
             id="name"
+            name="name"
             v-model="form.name"
             @change="form.validate('name')"
         />
@@ -73,6 +74,7 @@ const submit = () => form.submit();
         <label for="email">Email</label>
         <input
             id="email"
+            name="email"
             type="email"
             v-model="form.email"
             @change="form.validate('email')"
