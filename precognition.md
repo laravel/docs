@@ -459,23 +459,23 @@ In our example we are using Precognition to perform live validation, however we 
 Alternatively, if you would like to submit the form via AJAX you may use the form's `submit` function which returns an Axios request promise.
 
 ```html
-<form x-data="{
-    form: $form('post', '/register', {
-        name: '{{ old('name') }}',
-        email: '{{ old('email') }}',
-    }).setErrors({{ JS::from($errors) }}),
-    submit() {
-        this.form.submit()
-            .then(response => {
-                form.reset();
+<form 
+    x-data="{
+        form: { /* ... */ },
+        submit() {
+            this.form.submit()
+                .then(response => {
+                    form.reset();
 
-                alert('User created.')
-            })
-            .catch(error => {
-                alert('An error occurred.');
-            });
-    }
-}">
+                    alert('User created.')
+                })
+                .catch(error => {
+                    alert('An error occurred.');
+                });
+        },
+    }"
+    @submit.prevent="submit"
+>
 ```
 
 <a name="customizing-validation-rules"></a>
