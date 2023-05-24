@@ -6,7 +6,7 @@
     - [Using Vue & Inertia](#using-vue-and-inertia)
     - [Using React](#using-react)
     - [Using React & Inertia](#using-react-and-inertia)
-    - [Using Alpine](#using-alpine)
+    - [Using Alpine with Blade](#using-alpine)
 - [Customizing Validation Rules](#customizing-validation-rules)
 - [Managing Side-Effects](#managing-side-effects)
 
@@ -332,7 +332,7 @@ const submit = (e) => {
 ```
 
 <a name="using-alpine"></a>
-### Using Alpine
+### Using Alpine With Blade
 
 Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend Alpine application. To illustrate how it works, let's build a form for creating new users within our application.
 
@@ -370,15 +370,12 @@ With the Laravel Precognition package installed and registered, you can now crea
 To enable live validation, you should bind the form's data to it's relevant input and then listen to each input's `change` event. In the `change` event handler, you should invoke the form's `validate` method, providing the input's name:
 
 ```html
-<form 
-    method="POST" 
-    action="{{ route('register') }}"
-    x-data="{
-        form: $form('post', '/register', {
-            name: '',
-            email: '',
-        })
-    }">
+<form x-data="{
+    form: $form('post', '/register', {
+        name: '',
+        email: '',
+    }),
+}">
     <label for="name">Name</label>
     <input
         id="name"
@@ -448,22 +445,37 @@ You may also determine if an input has passed or failed validation by passing th
 > **Warning**
 > A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
-Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form's inputs on a successful form submission, or handle a failed request:
+In our example we are using Precognition to perform live validation, however we are performing a traditional server-side form submission to submit the form. In this case, we will want to populate the form with any "old" input and any validation errors returned from the form submission:
 
-```js
-const submit = (e) => {
-    e.preventDefault();
+```html
+<form x-data="{
+    form: $form('post', '/register', {
+        name: '{{ old('name') }}',
+        email: '{{ old('email') }}',
+    }).setErrors({{ JS::from($errors) }}),
+}">
+```
 
-    form.submit()
-        .then(response => {
-            form.reset();
+Alternatively, if you would like to submit the form via AJAX you may use the form's `submit` function which returns an Axios request promise.
 
-            alert('User created.');
-        })
-        .catch(error => {
-            alert('An error occurred.');
-        });
-};
+```html
+<form x-data="{
+    form: $form('post', '/register', {
+        name: '{{ old('name') }}',
+        email: '{{ old('email') }}',
+    }).setErrors({{ JS::from($errors) }}),
+    submit() {
+        this.form.submit()
+            .then(response => {
+                form.reset();
+
+                alert('User created.')
+            })
+            .catch(error => {
+                alert('An error occurred.');
+            });
+    }
+}">
 ```
 
 <a name="customizing-validation-rules"></a>
