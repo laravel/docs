@@ -357,7 +357,7 @@ Then, register the Precognition plugin with Alpine:
 
 ```js
 import Alpine from 'alpinejs';
-import Precognition from 'laravel-precognition-alphine';
+import Precognition from 'laravel-precognition-alpine';
 
 window.Alpine = Alpine;
 
@@ -445,7 +445,7 @@ You may also determine if an input has passed or failed validation by passing th
 > **Warning**
 > A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
-In our example we are using Precognition to perform live validation, however we are performing a traditional server-side form submission to submit the form. In this case, we will want to populate the form with any "old" input and any validation errors returned from the form submission:
+In our example, we are using Precognition to perform live validation, however we are performing a traditional server-side form submission to submit the form. In this case, we will want to populate the form with any "old" input and any validation errors returned from the form submission:
 
 ```html
 <form x-data="{
