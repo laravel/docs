@@ -24,7 +24,7 @@ When Laravel receives a "precognitive request", it will execute all of the route
 
 Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend Vue application. To illustrate how it works, let's build a form for creating new users within our application.
 
-First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{version}/validation#form-request-validation) to house the route's validation rules:
+First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{{version}}/validation#form-request-validation) to house the route's validation rules:
 
 ```php
 use App\Http\Requests\CreateUserRequest;
