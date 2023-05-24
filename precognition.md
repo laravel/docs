@@ -63,7 +63,6 @@ const submit = () => form.submit();
         <label for="name">Name</label>
         <input
             id="name"
-            name="name"
             v-model="form.name"
             @change="form.validate('name')"
         />
@@ -74,7 +73,6 @@ const submit = () => form.submit();
         <label for="email">Email</label>
         <input
             id="email"
-            name="email"
             type="email"
             v-model="form.email"
             @change="form.validate('email')"
@@ -382,6 +380,7 @@ To enable live validation, you should bind the form's data to it's relevant inpu
     <label for="name">Name</label>
     <input
         id="name"
+        name="name"
         x-model="form.name"
         @change="form.validate('name')"
     />
@@ -392,6 +391,7 @@ To enable live validation, you should bind the form's data to it's relevant inpu
     <label for="email">Email</label>
     <input
         id="email"
+        name="email"
         x-model="form.email"
         @change="form.validate('email')"
     />
