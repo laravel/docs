@@ -7,6 +7,7 @@
     - [Using React](#using-react)
     - [Using React & Inertia](#using-react-and-inertia)
 - [Customizing Validation Rules](#customizing-validation-rules)
+- [Handling File Uploads](#handling-file-uploads)
 - [Managing Side-Effects](#managing-side-effects)
 
 <a name="introduction"></a>
@@ -365,6 +366,39 @@ class StoreUserRequest extends FormRequest
         ];
     }
 }
+```
+
+<a name="handling-file-uploads"></a>
+## Handling File Uploads
+
+Out of the box, Laravel Precognition will not include files during a validation request. This ensures that potentially large files are not transferred on every request.
+
+If a form contains a file, it will be replaced with `null` during precognitive validation requests. To acommodate this in your application, we recommend [customizing the validation rules](#customizing-validation-rules) to ensure the field is only required for form submissions.
+
+```php
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array
+ */
+protected function rules()
+{
+    return [
+        'avatar' => [
+            ...$this->isPrecognitive() ? [] : ['required'],
+            'image',
+            'mimes:jpg,png'
+            'dimensions:ratio=3/2',
+        ],
+        // ...
+    ];
+}
+```
+
+If you would instead like to include files in every validation request, you may call the `validateFiles` function on your form instance.
+
+```js
+form.validateFiles();
 ```
 
 <a name="managing-side-effects"></a>
