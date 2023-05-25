@@ -27,10 +27,10 @@ Using Laravel Precognition, you can offer live validation experiences to your us
 First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{{version}}/validation#form-request-validation) to house the route's validation rules:
 
 ```php
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 
-Route::post('/users', function (CreateUserRequest $request) {
+Route::post('/users', function (StoreUserRequest $request) {
     // ...
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
@@ -184,10 +184,10 @@ Using Laravel Precognition, you can offer live validation experiences to your us
 First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{version}/validation#form-request-validation) to house the route's validation rules:
 
 ```php
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 
-Route::post('/users', function (CreateUserRequest $request) {
+Route::post('/users', function (StoreUserRequest $request) {
     // ...
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
