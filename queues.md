@@ -440,7 +440,7 @@ In the example above, we defined an hourly rate limit; however, you may easily d
 
     return Limit::perMinute(50)->by($job->user->id);
 
-Once you have defined your rate limit, you may attach the rate limiter to your backup job using the `Illuminate\Queue\Middleware\RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration.
+Once you have defined your rate limit, you may attach the rate limiter to your job using the `Illuminate\Queue\Middleware\RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration.
 
     use Illuminate\Queue\Middleware\RateLimited;
 
