@@ -1018,6 +1018,9 @@ When using the MySQL database, the `after` method may be used to add columns aft
 
 The `change` method allows you to modify the type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50. To accomplish this, we simply define the new state of the column and then call the `change` method:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->change();
     });
@@ -1055,6 +1058,9 @@ use Illuminate\Database\DBAL\TimestampType;
 
 To rename a column, you may use the `renameColumn` method provided by the schema builder:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('users', function (Blueprint $table) {
         $table->renameColumn('from', 'to');
     });
@@ -1076,6 +1082,9 @@ If you are running a database installation older than one of the following relea
 ### Dropping Columns
 
 To drop a column, you may use the `dropColumn` method on the schema builder:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');
