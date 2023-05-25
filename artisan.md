@@ -176,7 +176,7 @@ Even though this file does not define HTTP routes, it defines console based entr
         $this->info("Sending email to: {$user}!");
     });
 
-The closure is bound to the underlying command instance, so you have full access to all of the helper methods you would typically be able to access on a full command class.
+The closure is bound to the underlying command instance, so you have full access to all the helper methods you would typically be able to access in a full command class.
 
 <a name="type-hinting-dependencies"></a>
 #### Type-Hinting Dependencies
@@ -387,11 +387,11 @@ While your command is executing, you will likely need to access the values for t
         $userId = $this->argument('user');
     }
 
-If you need to retrieve all of the arguments as an `array`, call the `arguments` method:
+If you need to retrieve all the arguments as an `array`, call the `arguments` method:
 
     $arguments = $this->arguments();
 
-Options may be retrieved just as easily as arguments using the `option` method. To retrieve all of the options as an array, call the `options` method:
+Options may be retrieved just as easily as arguments using the `option` method. To retrieve all the options as an array, call the `options` method:
 
     // Retrieve a specific option...
     $queueName = $this->option('queue');
@@ -514,7 +514,7 @@ automatically calculate the appropriate width and height of the table for you:
 <a name="progress-bars"></a>
 #### Progress Bars
 
-For long running tasks, it can be helpful to show a progress bar that informs users how complete the task is. Using the `withProgressBar` method, Laravel will display a progress bar and advance its progress for each iteration over a given iterable value:
+For long-running tasks, it can be helpful to show a progress bar that informs users how complete the task is. Using the `withProgressBar` method, Laravel will display a progress bar and advance its progress for each iteration over a given iterable value:
 
     use App\Models\User;
 
@@ -566,7 +566,7 @@ If necessary, you may manually register commands by adding the command's class n
 <a name="programmatically-executing-commands"></a>
 ## Programmatically Executing Commands
 
-Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to execute an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts either the command's signature name or class name as its first argument, and an array of command parameters as the second argument. The exit code will be returned:
+Sometimes you may wish to execute an Artisan command outside the CLI. For example, you may wish to execute an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts either the command's signature name or class name as its first argument, and an array of command parameters as the second argument. The exit code will be returned:
 
     use Illuminate\Support\Facades\Artisan;
 
@@ -607,7 +607,7 @@ If you need to specify the value of an option that does not accept string values
 <a name="queueing-artisan-commands"></a>
 #### Queueing Artisan Commands
 
-Using the `queue` method on the `Artisan` facade, you may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/{{version}}/queues). Before using this method, make sure you have configured your queue and are running a queue listener:
+Using the `queue` method on the `Artisan` facade, you may even queue Artisan commands, so they are processed in the background by your [queue workers](/docs/{{version}}/queues). Before using this method, make sure you have configured your queue and are running a queue listener:
 
     use Illuminate\Support\Facades\Artisan;
 
