@@ -2,26 +2,26 @@
 
 - [Introduction](#introduction)
 - [Generating Migrations](#generating-migrations)
-    - [Squashing Migrations](#squashing-migrations)
+  - [Squashing Migrations](#squashing-migrations)
 - [Migration Structure](#migration-structure)
 - [Running Migrations](#running-migrations)
-    - [Rolling Back Migrations](#rolling-back-migrations)
+  - [Rolling Back Migrations](#rolling-back-migrations)
 - [Tables](#tables)
-    - [Creating Tables](#creating-tables)
-    - [Updating Tables](#updating-tables)
-    - [Renaming / Dropping Tables](#renaming-and-dropping-tables)
+  - [Creating Tables](#creating-tables)
+  - [Updating Tables](#updating-tables)
+  - [Renaming / Dropping Tables](#renaming-and-dropping-tables)
 - [Columns](#columns)
-    - [Creating Columns](#creating-columns)
-    - [Available Column Types](#available-column-types)
-    - [Column Modifiers](#column-modifiers)
-    - [Modifying Columns](#modifying-columns)
-    - [Renaming Columns](#renaming-columns)
-    - [Dropping Columns](#dropping-columns)
+  - [Creating Columns](#creating-columns)
+  - [Available Column Types](#available-column-types)
+  - [Column Modifiers](#column-modifiers)
+  - [Modifying Columns](#modifying-columns)
+  - [Renaming Columns](#renaming-columns)
+  - [Dropping Columns](#dropping-columns)
 - [Indexes](#indexes)
-    - [Creating Indexes](#creating-indexes)
-    - [Renaming Indexes](#renaming-indexes)
-    - [Dropping Indexes](#dropping-indexes)
-    - [Foreign Key Constraints](#foreign-key-constraints)
+  - [Creating Indexes](#creating-indexes)
+  - [Renaming Indexes](#renaming-indexes)
+  - [Dropping Indexes](#dropping-indexes)
+  - [Foreign Key Constraints](#foreign-key-constraints)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -606,7 +606,7 @@ The `integer` method creates an `INTEGER` equivalent column:
 The `ipAddress` method creates a `VARCHAR` equivalent column:
 
     $table->ipAddress('visitor');
-    
+
 When using Postgres, an `INET` column will be created.
 
 <a name="column-method-json"></a>
@@ -1018,6 +1018,9 @@ When using the MySQL database, the `after` method may be used to add columns aft
 
 The `change` method allows you to modify the type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50. To accomplish this, we simply define the new state of the column and then call the `change` method:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->change();
     });
@@ -1055,6 +1058,9 @@ use Illuminate\Database\DBAL\TimestampType;
 
 To rename a column, you may use the `renameColumn` method provided by the schema builder:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('users', function (Blueprint $table) {
         $table->renameColumn('from', 'to');
     });
@@ -1076,6 +1082,9 @@ If you are running a database installation older than one of the following relea
 ### Dropping Columns
 
 To drop a column, you may use the `dropColumn` method on the schema builder:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');
