@@ -373,7 +373,7 @@ class StoreUserRequest extends FormRequest
 
 Out of the box, Laravel Precognition will not include files during a validation request. This ensures that potentially large files are not transferred on every request.
 
-If a form contains a file, it will be replaced with `null` during precognitive validation requests. To acommodate this in your application, we recommend [customizing the validation rules](#customizing-validation-rules) to ensure the field is only required for form submissions.
+When a form contains a file, it will be replaced with `null` during precognitive validation requests. To acommodate this in your application, we recommend [customizing the validation rules](#customizing-validation-rules) to ensure the field is only required for form submissions.
 
 ```php
 /**
