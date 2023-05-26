@@ -302,7 +302,7 @@ public function rules()
 
 **Likelihood Of Impact: Very Low**
 
-The `after` method in a form request now has special meaning, due to https://github.com/laravel/framework/pull/46757. Any existing use of `after` should be renamed or inlined if it is not intended to be used with this new functionality that expects a list of rules to be returned.
+Within form requests, the `after` method is now [reserved by Laravel](https://github.com/laravel/framework/pull/46757). If your form requests define an `after` method, the method should be renamed or modified to utilize the new "after validation" feature of Laravel's form requests.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
