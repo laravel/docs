@@ -251,6 +251,12 @@ View "creators" are very similar to view composers; however, they are executed i
     View::creator('profile', ProfileCreator::class);
 
 <a name="optimizing-views"></a>
+
+> **Note**  
+> There are two main differences between composers and creators:
+> 1. Composers can overwrite the data passed to them, while data set inside a creator can be overwritten by passing data to the view
+> 2. Creators bubble up to where the view is created. So if you want to throw errors that should be handled there, creators got you covered
+
 ## Optimizing Views
 
 By default, Blade template views are compiled on demand. When a request is executed that renders a view, Laravel will determine if a compiled version of the view exists. If the file exists, Laravel will then determine if the uncompiled view has been modified more recently than the compiled view. If the compiled view either does not exist, or the uncompiled view has been modified, Laravel will recompile the view.
