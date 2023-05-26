@@ -131,6 +131,20 @@ You may also determine if an input has passed or failed validation by passing th
 > **Warning**
 > A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
+If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:
+
+```html
+<input
+    id="avatar"
+    type="file"
+    @change="(e) => {
+        form.avatar = e.target.files[0]
+
+        form.forgetError('avatar')
+    }"
+>
+```
+
 Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form inputs on successful submission, or handle a failed request:
 
 ```js
@@ -279,6 +293,20 @@ You may also determine if an input has passed or failed validation by passing th
 > **Warning**
 > A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
+If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:
+
+```jsx
+<input
+    id="avatar"
+    type="file"
+    onChange={(e) => 
+        form.setData('avatar', e.target.value);
+
+        form.forgetError('avatar');
+    }
+>
+```
+
 Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form's inputs on a successful form submission, or handle a failed request:
 
 ```js
@@ -371,7 +399,7 @@ class StoreUserRequest extends FormRequest
 <a name="handling-file-uploads"></a>
 ## Handling File Uploads
 
-Out of the box, Laravel Precognition will not include files during a validation request. This ensures that potentially large files are not transferred on every request. To acommodate this in your application, we recommend [customizing the validation rules](#customizing-validation-rules) to ensure the field is only required for form submissions.
+Out of the box, Laravel Precognition will not include files during a validation request. This ensures that potentially large files are not unnecessarily uploaded mulitple times. To acommodate this in your application, we recommend [customizing the validation rules](#customizing-validation-rules) to ensure the field is only required for form submissions.
 
 ```php
 /**
