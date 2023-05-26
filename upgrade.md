@@ -32,6 +32,7 @@
 <div class="content-list" markdown="1">
 
 - [Closure Validation Rule Messages](#closure-validation-rule-messages)
+- [Form Request After Method](#form-request-after-method)
 - [Public Path Binding](#public-path-binding)
 - [Query Exception Constructor](#query-exception-constructor)
 - [Rate Limiter Return Values](#rate-limiter-return-values)
@@ -295,6 +296,13 @@ public function rules()
     ],
 }
 ```
+
+<a name="form-request-after-method"></a>
+#### Form Request After Method
+
+**Likelihood Of Impact: Very Low**
+
+The `after` method in a form request now has special meaning, due to https://github.com/laravel/framework/pull/46757. Any existing use of `after` should be renamed or inlined if it is not intended to be used with this new functionality that expects a list of rules to be returned.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
