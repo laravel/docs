@@ -32,7 +32,7 @@
 <div class="content-list" markdown="1">
 
 - [Closure Validation Rule Messages](#closure-validation-rule-messages)
-- [Form Request After Method](#form-request-after-method)
+- [Form Request `after` Method](#form-request-after-method)
 - [Public Path Binding](#public-path-binding)
 - [Query Exception Constructor](#query-exception-constructor)
 - [Rate Limiter Return Values](#rate-limiter-return-values)
