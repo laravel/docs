@@ -384,6 +384,15 @@ Also, you may instruct Laravel to throw an exception when attempting to fill an 
 Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
 ```
 
+Third method you can use to configure Eloquent "strictness" is `preventAccessingMissingAttributes`. When it's enabled Eloquent throws `MissingAttributeException` every time you try to access model attribute that doesn't exist or was not retrieved from database. It is especially convenient when you use `select` method to query specific columns from database and forget to add new column to `select` call. 
+
+```php
+Model::preventAccessingMissingAttributes(! $this->app->isProduction());
+
+$user = User::select("id", "name")->first();
+$user->email; // throws MissingAttributeException instead of returning null
+```
+
 <a name="retrieving-models"></a>
 ## Retrieving Models
 
