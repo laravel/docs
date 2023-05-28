@@ -681,9 +681,11 @@ Using the `Event` facade's `fake` method, you may prevent listeners from executi
 
 You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that an event was dispatched that passes a given "truth test". If at least one event was dispatched that passes the given truth test then the assertion will be successful:
 
-    Event::assertDispatched(function (OrderShipped $event) use ($order) {
-        return $event->order->id === $order->id;
-    });
+    Event::assertDispatched(fn (OrderShipped $event) => $event->order->id === $order->id);
+
+or if the event is of type string:
+
+    Event::assertDispatched('orderShipped', function (string $event, $payload) => $payload['order']->id === $order->id);
 
 If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:
 
