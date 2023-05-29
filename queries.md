@@ -99,7 +99,7 @@ If you don't need an entire row, you may extract a single value from a record us
 
     $email = DB::table('users')->where('name', 'John')->value('email');
 
-Furthermore, we can obtain a single record or the value of one of it's fields using the `sole` and `soleValue` methods. The returned result must be exactly one. If the result is empty, an `\Illuminate\Database\RecordsNotFoundException` exception will be thrown. If the result contains numerous records, an `\Illuminate\Database\MultipleRecordsFoundException` will be thrown:
+Furthermore, we can obtain a single record or the value of one of it's fields using the `sole` and `soleValue` methods. The returned result must be exactly one. If the result is empty, an `\Illuminate\Database\RecordsNotFoundException` exception will be thrown. If the result contains numerous records, an `\Illuminate\Database\MultipleRecordsFoundException` exception will be thrown:
 
     $cto = DB::table('employees')->where('position', 'Chief Technology Officer')->sole();
 
