@@ -33,6 +33,7 @@
 - [Delete Statements](#delete-statements)
 - [Pessimistic Locking](#pessimistic-locking)
 - [Debugging](#debugging)
+- [Explaining](#explaining)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1035,3 +1036,13 @@ You may use the `dd` and `dump` methods while building a query to dump the curre
     DB::table('users')->where('votes', '>', 100)->dd();
 
     DB::table('users')->where('votes', '>', 100)->dump();
+
+<a name="explaining"></a>
+## Explaining
+
+You can use the `explain` method to obtain information about how the database drivers execute queries.
+
+    DB::table('books')->whereYear('published_at', 2015)
+            ->orderByDesc('votes')
+            ->limit(10)
+            ->explain();
