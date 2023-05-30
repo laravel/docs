@@ -7,6 +7,7 @@
     - [Using React](#using-react)
     - [Using React & Inertia](#using-react-and-inertia)
 - [Customizing Validation Rules](#customizing-validation-rules)
+- [Handling File Uploads](#handling-file-uploads)
 - [Managing Side-Effects](#managing-side-effects)
 
 <a name="introduction"></a>
@@ -129,6 +130,20 @@ You may also determine if an input has passed or failed validation by passing th
 
 > **Warning**
 > A form input will only appear as valid or invalid once it has changed and a validation response has been received.
+
+If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:
+
+```html
+<input
+    id="avatar"
+    type="file"
+    @change="(e) => {
+        form.avatar = e.target.files[0]
+
+        form.forgetError('avatar')
+    }"
+>
+```
 
 Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form inputs on successful submission, or handle a failed request:
 
@@ -278,6 +293,20 @@ You may also determine if an input has passed or failed validation by passing th
 > **Warning**
 > A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
+If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:
+
+```jsx
+<input
+    id="avatar"
+    type="file"
+    onChange={(e) => 
+        form.setData('avatar', e.target.value);
+
+        form.forgetError('avatar');
+    }
+>
+```
+
 Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form's inputs on a successful form submission, or handle a failed request:
 
 ```js
@@ -365,6 +394,39 @@ class StoreUserRequest extends FormRequest
         ];
     }
 }
+```
+
+<a name="handling-file-uploads"></a>
+## Handling File Uploads
+
+By default, Laravel Precognition does not upload or validate files during a precognitive validation request. This ensure that large files are not unnecessarily uploaded multiple times.
+
+Because of this behavior, you should ensure that your application [customizes the corresponding form request's validation rules](#customizing-validation-rules) to specify the field is only required for full form submissions:
+
+```php
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array
+ */
+protected function rules()
+{
+    return [
+        'avatar' => [
+            ...$this->isPrecognitive() ? [] : ['required'],
+            'image',
+            'mimes:jpg,png'
+            'dimensions:ratio=3/2',
+        ],
+        // ...
+    ];
+}
+```
+
+If you would like to include files in every validation request, you may invoke the `validateFiles` function on your client-side form instance:
+
+```js
+form.validateFiles();
 ```
 
 <a name="managing-side-effects"></a>
