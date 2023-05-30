@@ -1731,7 +1731,15 @@ The field under validation must be a string. If you would like to allow the fiel
 <a name="rule-timezone"></a>
 #### timezone
 
-The field under validation must be a valid timezone identifier according to the `timezone_identifiers_list` PHP function.
+The field under validation must be a valid timezone identifier according to the `DateTimeZone::listIdentifiers` method.
+
+The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://www.php.net/manual/en/datetimezone.listidentifiers.php) may also be provided to this validation rule:
+
+    'timezone' => 'required|timezone:all';
+
+    'timezone' => 'required|timezone:Africa';
+
+    'timezone' => 'required|timezone:per_country,US';
 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_
