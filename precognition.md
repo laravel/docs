@@ -399,7 +399,9 @@ class StoreUserRequest extends FormRequest
 <a name="handling-file-uploads"></a>
 ## Handling File Uploads
 
-Out of the box, Laravel Precognition will not include files during a validation request. This ensures that potentially large files are not unnecessarily uploaded mulitple times. To acommodate this in your application, we recommend [customizing the validation rules](#customizing-validation-rules) to ensure the field is only required for form submissions.
+By default, Laravel Precognition does not upload or validate files during a precognitive validation request in order to ensure that large files are not unnecessarily uploaded multiple times.
+
+Because of this behavior, you should ensure that your application [customizes the corresponding form request's validation rules](#customizing-validation-rules) to specify the field is only required for full form submissions:
 
 ```php
 /**
@@ -421,7 +423,7 @@ protected function rules()
 }
 ```
 
-If you would like to include files in every validation request, you may call the `validateFiles` function on your form instance.
+If you would like to include files in every validation request, you may invoke the `validateFiles` function on your client-side form instance:
 
 ```js
 form.validateFiles();
