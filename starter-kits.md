@@ -104,7 +104,7 @@ php artisan breeze:install react --ssr
 <a name="typescript"></a>
 #### TypeScript
 
-To install the Breeze starter kit with TypeScript support, provide the `--typescript` option when invoking the `breeze:install` command:
+When using the Vue or React stacks, you may provide the `--typescript` option to generate scaffolding that includes TypeScript support:
 
 ```shell
 php artisan breeze:install vue --typescript
