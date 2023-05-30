@@ -102,7 +102,7 @@ php artisan breeze:install react --ssr
 ```
 
 <a name="typescript"></a>
-#### Typescript
+#### TypeScript
 
 To install the Breeze starter kit with TypeScript support, provide the `--typescript` option when invoking the `breeze:install` command:
 
