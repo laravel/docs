@@ -101,6 +101,16 @@ php artisan breeze:install vue --ssr
 php artisan breeze:install react --ssr
 ```
 
+<a name="typescript"></a>
+#### TypeScript
+
+When using the Vue or React stacks, you may provide the `--typescript` option to generate scaffolding that includes TypeScript support:
+
+```shell
+php artisan breeze:install vue --typescript
+php artisan breeze:install react --typescript
+```
+
 <a name="breeze-and-next"></a>
 ### Breeze & Next.js / API
 
