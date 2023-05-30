@@ -732,7 +732,7 @@ The `Arr::mapWithKeys` method iterates through the array and passes each value t
         ]
     ];
 
-    $mapped = Arr::mapWithKeys(function (array $item, int $key) {
+    $mapped = Arr::mapWithKeys($array, function (array $item, int $key) {
         return [$item['email'] => $item['name']];
     });
 
