@@ -1239,6 +1239,8 @@ Method  |  Description
 `$table->restrictOnDelete();`| Deletes should be restricted.
 `$table->nullOnDelete();`    | Deletes should set the foreign key value to null.
 
+When using the `nullOnDelete()` method, make sure to include the `nullable()` column modifier before the `constrained()` method. This will allow the foreign key column to be nullable in the database schema.
+
 Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:
 
     $table->foreignId('user_id')
