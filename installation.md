@@ -193,7 +193,7 @@ curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
 
 If you do not specify which services you would like configured, a default stack of `mysql`, `redis`, `meilisearch`, `mailpit`, and `selenium` will be configured. 
 
-To exclude additional services you must specify `none` as a value for the `with` query string:
+To exclude additional services, you must specify `none` as a value for the `with` query string:
 
 ```shell
 curl -s "https://laravel.build/example-app?with=none" | bash
