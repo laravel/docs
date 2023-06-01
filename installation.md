@@ -191,7 +191,13 @@ When creating a new Laravel application via Sail, you may use the `with` query s
 curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
 ```
 
-If you do not specify which services you would like configured, a default stack of `mysql`, `redis`, `meilisearch`, `mailpit`, and `selenium` will be configured.
+If you do not specify which services you would like configured, a default stack of `mysql`, `redis`, `meilisearch`, `mailpit`, and `selenium` will be configured. 
+
+To exclude additinal services you must exclicity use `none` as a value for the `with` query string:
+
+```shell
+curl -s "https://laravel.build/example-app?with=none" | bash
+```
 
 You may instruct Sail to install a default [Devcontainer](/docs/{{version}}/sail#using-devcontainers) by adding the `devcontainer` parameter to the URL:
 
