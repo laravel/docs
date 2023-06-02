@@ -173,6 +173,24 @@ export default defineConfig({
 
 If you are unable to generate a trusted certificate for your system, you may install and configure the [`@vitejs/plugin-basic-ssl` plugin](https://github.com/vitejs/vite-plugin-basic-ssl). When using untrusted certificates, you will need to accept the certificate warning for Vite's development server in your browser by following the "Local" link in your console when running the `npm run dev` command.
 
+<a name="configuring-hmr-in-sail-on-wsl2"></a>
+#### Running The Dev Server Within Sail on Windows WSL
+
+When running the Vite dev server within [Laravel Sail](/docs/{{version}}/sail) on Windows WSL, you should add the following configuration to ensure the browser can communicate with the dev server:
+
+```js
+// ...
+
+export default defineConfig({
+    // ...
+    server: { // [tl! add:start]
+        hmr: {
+            host: 'localhost',
+        },
+    }, // [tl! add:end]
+});
+```
+
 <a name="loading-your-scripts-and-styles"></a>
 ### Loading Your Scripts And Styles
 
