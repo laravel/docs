@@ -176,7 +176,7 @@ If you are unable to generate a trusted certificate for your system, you may ins
 <a name="configuring-hmr-in-sail-on-wsl2"></a>
 #### Running The Development Server In Sail On WSL2
 
-When running the Vite development server within [Laravel Sail](/docs/{{version}}/sail) on Windows Subsystem for Linux 2 (WSL2), you should add the following configuration to ensure the browser can communicate with the development server:
+When running the Vite development server within [Laravel Sail](/docs/{{version}}/sail) on Windows Subsystem for Linux 2 (WSL2), you should add the following configuration to your `vite.config.js` file to ensure the browser can communicate with the development server:
 
 ```js
 // ...
