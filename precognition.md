@@ -353,7 +353,7 @@ Next, you should install the Laravel Precognition frontend helpers for Alpine vi
 npm install laravel-precognition-alpine
 ```
 
-Then, register the Precognition plugin with Alpine:
+Then, register the Precognition plugin with Alpine in your `resources/js/app.js` file:
 
 ```js
 import Alpine from 'alpinejs';
