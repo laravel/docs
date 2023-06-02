@@ -773,6 +773,17 @@ Rate limiters may be attached to routes or route groups using the `throttle` [mi
 Typically, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. This mapping is defined in your application's HTTP kernel (`App\Http\Kernel`). However, if you are using Redis as your application's cache driver, you may wish to change this mapping to use the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` class. This class is more efficient at managing rate limiting using Redis:
 
     'throttle' => \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
+Alternatively, you can bind the implementation within the boot() method of the RouteServiceProvider:
+
+    use Illuminate\Routing\Middleware\ThrottleRequests;
+    use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
+    
+    public function boot()
+    {
+        if ($this->app->get('cache.store')?->getStore() instanceof RedisStore) {
+            $this->app->bind(ThrottleRequests::class, ThrottleRequestsWithRedis::class);
+        }
+    }
 
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
