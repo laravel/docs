@@ -176,7 +176,7 @@ If you are unable to generate a trusted certificate for your system, you may ins
 <a name="configuring-hmr-in-sail-on-wsl2"></a>
 #### Running The Dev Server Within Sail on Windows WSL
 
-When running the Vite dev server within [Laravel Sail](/docs/{{version}}/sail) on Windows WSL, you should add the following configuration to ensure the browser can communicate with the dev server:
+When running the Vite dev server within [Laravel Sail](/docs/{{version}}/sail) on Windows WSL, you may need to add the following configuration to ensure the browser can communicate with the dev server:
 
 ```js
 // ...
@@ -243,6 +243,8 @@ npm run dev
 # Build and version the assets for production...
 npm run build
 ```
+
+If you are running the development server in [Sail](/docs/{{version}}/sail) on Windows WSL2, you may need some [additional configuration](configuring-hmr-in-sail-on-wsl2) options.
 
 <a name="working-with-scripts"></a>
 ## Working With JavaScript
