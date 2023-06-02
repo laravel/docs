@@ -6,6 +6,7 @@
     - [Using Vue & Inertia](#using-vue-and-inertia)
     - [Using React](#using-react)
     - [Using React & Inertia](#using-react-and-inertia)
+    - [Using Alpine & Blade](#using-alpine)
 - [Customizing Validation Rules](#customizing-validation-rules)
 - [Handling File Uploads](#handling-file-uploads)
 - [Managing Side-Effects](#managing-side-effects)
@@ -357,6 +358,162 @@ const submit = (e) => {
         onSuccess: () => form.reset(),
     });
 };
+```
+
+<a name="using-alpine"></a>
+### Using Alpine & Blade
+
+Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend Alpine application. To illustrate how it works, let's build a form for creating new users within our application.
+
+First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{version}/validation#form-request-validation) to house the route's validation rules:
+
+```php
+use App\Http\Requests\CreateUserRequest;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+
+Route::post('/users', function (CreateUserRequest $request) {
+    // ...
+})->middleware([HandlePrecognitiveRequests::class]);
+```
+
+Next, you should install the Laravel Precognition frontend helpers for Alpine via NPM:
+
+```shell
+npm install laravel-precognition-alpine
+```
+
+Then, register the Precognition plugin with Alpine in your `resources/js/app.js` file:
+
+```js
+import Alpine from 'alpinejs';
+import Precognition from 'laravel-precognition-alpine';
+
+window.Alpine = Alpine;
+
+Alpine.plugin(Precognition);
+Alpine.start();
+```
+
+With the Laravel Precognition package installed and registered, you can now create a form object using Precognition's `$form` "magic", providing the HTTP method (`post`), the target URL (`/users`), and the initial form data.
+
+To enable live validation, you should bind the form's data to it's relevant input and then listen to each input's `change` event. In the `change` event handler, you should invoke the form's `validate` method, providing the input's name:
+
+```html
+<form x-data="{
+    form: $form('post', '/register', {
+        name: '',
+        email: '',
+    }),
+}">
+    @csrf
+    <label for="name">Name</label>
+    <input
+        id="name"
+        name="name"
+        x-model="form.name"
+        @change="form.validate('name')"
+    />
+    <template x-if="form.invalid('name')">
+        <div x-text="form.errors.name"></div>
+    </template>
+
+    <label for="email">Email</label>
+    <input
+        id="email"
+        name="email"
+        x-model="form.email"
+        @change="form.validate('email')"
+    />
+    <template x-if="form.invalid('email')">
+        <div x-text="form.errors.email"></div>
+    </template>
+
+    <button>Create User</button>
+</form>
+```
+
+Now, as the form is filled by the user, Precognition will provide live validation output powered by the validation rules in the route's form request. When the form's inputs are changed, a debounced "precognitive" validation request will be sent to your Laravel application. You may configure the debounce timeout by calling the form's `setValidationTimeout` function:
+
+```js
+form.setValidationTimeout(3000);
+```
+
+When a validation request is in-flight, the form's `validating` property will be `true`:
+
+```html
+<template x-if="form.validating">
+    <div>Validating...</div>
+</template>
+```
+
+Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
+
+```html
+<template x-if="form.invalid('email')">
+    <div x-text="form.errors.email"></div>
+</template>
+```
+
+You can determine if the form has any errors using the form's `hasErrors` property:
+
+```html
+<template x-if="form.hasErrors">
+    <div><!-- ... --></div>
+</template>
+```
+
+You may also determine if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions, respectively:
+
+```html
+<template x-if="form.valid('email')">
+    <span>✅</span>
+</template>
+
+<template x-if="form.invalid('email')">
+    <span>❌</span>
+</template>
+```
+
+> **Warning**
+> A form input will only appear as valid or invalid once it has changed and a validation response has been received.
+
+<a name="repopulating-old-form-data"></a>
+#### Repopulating Old Form Data
+
+In the user creation example discussed above, we are using Precognition to perform live validation; however, we are performing a traditional server-side form submission to submit the form. So, the form should be populated with any "old" input and validation errors returned from the server-side form submission:
+
+```html
+<form x-data="{
+    form: $form('post', '/register', {
+        name: '{{ old('name') }}',
+        email: '{{ old('email') }}',
+    }).setErrors({{ Js::from($errors->messages()) }}),
+}">
+```
+
+Alternatively, if you would like to submit the form via XHR you may use the form's `submit` function, which returns an Axios request promise:
+
+```html
+<form 
+    x-data="{
+        form: $form('post', '/register', {
+            name: '',
+            email: '',
+        }),
+        submit() {
+            this.form.submit()
+                .then(response => {
+                    form.reset();
+
+                    alert('User created.')
+                })
+                .catch(error => {
+                    alert('An error occurred.');
+                });
+        },
+    }"
+    @submit.prevent="submit"
+>
 ```
 
 <a name="customizing-validation-rules"></a>
