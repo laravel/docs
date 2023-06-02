@@ -174,9 +174,9 @@ export default defineConfig({
 If you are unable to generate a trusted certificate for your system, you may install and configure the [`@vitejs/plugin-basic-ssl` plugin](https://github.com/vitejs/vite-plugin-basic-ssl). When using untrusted certificates, you will need to accept the certificate warning for Vite's development server in your browser by following the "Local" link in your console when running the `npm run dev` command.
 
 <a name="configuring-hmr-in-sail-on-wsl2"></a>
-#### Running The Dev Server Within Sail on Windows WSL
+#### Running The Development Server In Sail On Windows WSL2
 
-When running the Vite dev server within [Laravel Sail](/docs/{{version}}/sail) on Windows WSL, you may need to add the following configuration to ensure the browser can communicate with the dev server:
+When running the Vite dev server within [Laravel Sail](/docs/{{version}}/sail) on Windows Subsystem for Linux 2 (WSL2), you should add the following configuration to ensure the browser can communicate with the dev server:
 
 ```js
 // ...
@@ -190,6 +190,8 @@ export default defineConfig({
     }, // [tl! add:end]
 });
 ```
+
+If file changes are not being reflected in the browser while the development server is running, you may need to configure Vite's [`server.watch.usePolling` option](https://vitejs.dev/config/server-options.html#server-watch).
 
 <a name="loading-your-scripts-and-styles"></a>
 ### Loading Your Scripts And Styles
@@ -244,7 +246,7 @@ npm run dev
 npm run build
 ```
 
-If you are running the development server in [Sail](/docs/{{version}}/sail) on Windows WSL2, you may need some [additional configuration](configuring-hmr-in-sail-on-wsl2) options.
+If you are running the development server in [Sail](/docs/{{version}}/sail) on Windows WSL2, you may need some [additional configuration](#configuring-hmr-in-sail-on-wsl2) options.
 
 <a name="working-with-scripts"></a>
 ## Working With JavaScript
