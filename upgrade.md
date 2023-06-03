@@ -121,7 +121,7 @@ If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should up
 
 **Likelihood Of Impact: Medium**
 
-The default Redis client has changed from `predis` to `phpredis`. In order to keep using `predis`, ensure the `redis.client` configuration option is set to `predis` in your `config/database.php` configuration file.
+The default Redis client has changed from `predis` to `phpredis`. In order to keep using `predis`, ensure the `redis.client` configuration option is set to `phpredis` in your `config/database.php` configuration file.
 
 <a name="dynamodb-cache-store"></a>
 #### DynamoDB Cache Store
