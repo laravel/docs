@@ -30,7 +30,7 @@ You may configure your application's Redis settings via the `config/database.php
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'default' => [
             'host' => env('REDIS_HOST', '127.0.0.1'),
@@ -52,7 +52,7 @@ Each Redis server defined in your configuration file is required to have a name,
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'default' => [
             'url' => 'tcp://127.0.0.1:6379?database=0',
@@ -71,7 +71,7 @@ By default, Redis clients will use the `tcp` scheme when connecting to your Redi
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'default' => [
             'scheme' => 'tls',
@@ -90,7 +90,7 @@ If your application is utilizing a cluster of Redis servers, you should define t
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'clusters' => [
             'default' => [
@@ -111,7 +111,7 @@ If you would like to use native Redis clustering instead of client-side sharding
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
@@ -161,7 +161,7 @@ By default, Laravel will use the phpredis extension to communicate with Redis. T
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         // Rest of Redis configuration...
     ],
@@ -187,7 +187,7 @@ The phpredis extension may also be configured to use a variety of serialization 
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'options' => [
             'serializer' => Redis::SERIALIZER_MSGPACK,
