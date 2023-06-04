@@ -116,6 +116,12 @@ $.ajaxSetup({
 });
 ```
 
+If you're making AJAX requests using  Axios, you may want to manually include the CSRF token in the request headers:
+
+```js
+axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+```
+
 <a name="csrf-x-xsrf-token"></a>
 ## X-XSRF-TOKEN
 
