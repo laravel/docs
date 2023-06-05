@@ -196,7 +196,7 @@ If your file changes are not being reflected in the browser while the developmen
 <a name="loading-your-scripts-and-styles"></a>
 ### Loading Your Scripts And Styles
 
-With your Vite entry points configured, you only need reference them in a `@vite()` Blade directive that you add to the `<head>` of your application's root template:
+With your Vite entry points configured, you may now reference them in a `@vite()` Blade directive that you add to the `<head>` of your application's root template:
 
 ```blade
 <!doctype html>
