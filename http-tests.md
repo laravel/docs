@@ -644,6 +644,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
 [assertLocation](#assert-location)
+[assertMethodNotAllowed](#assert-method-not-allowed)
 [assertMovedPermanently](#assert-moved-permanently)
 [assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
@@ -1001,6 +1002,13 @@ Assert that the response has the given JSON validation errors for the given keys
 Assert the response has any JSON validation errors for the given key:
 
     $response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');
+
+<a name="assert-method-not-allowed"></a>
+#### assertMethodNotAllowed
+
+Assert that the response has a method not allowed (405) HTTP status code:
+
+    $response->assertMethodNotAllowed();
 
 <a name="assert-moved-permanently"></a>
 #### assertMovedPermanently
