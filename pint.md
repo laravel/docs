@@ -5,6 +5,7 @@
 - [Running Pint](#running-pint)
 - [Configuring Pint](#configuring-pint)
     - [Presets](#presets)
+        - [Laravel Preset](#laravel-preset)
     - [Rules](#rules)
     - [Excluding Files / Folders](#excluding-files-or-folders)
 
@@ -94,6 +95,21 @@ If you wish, you may also set the preset in your project's `pint.json` file:
 ```
 
 Pint's currently supported presets are: `laravel`, `psr12`, and `symfony`.
+
+<a name="laravel-preset"></a>
+### Laravel preset
+
+The Laravel preset differs from PSR-12 in the following key ways.
+
+1. Array Indentation: The Laravel preset enforces array indentation.
+2. Array Syntax: The Laravel preset enforces the short array syntax.
+3. Single Quote: The Laravel preset enforces single quotes for string literals.
+4. PHPDoc alignment: The Laravel preset enforces 2 spaces after @param and type definitions.
+5. Control Structure Braces: The Laravel preset allows control braces to be on the same line as the control structure.
+6. Curly Braces Position: The Laravel preset allows for opening curly braces for control structures and classes can be on the same line or the next line.
+7. Function Declaration: The Laravel preset does not enforce a space between the function keyword and the opening parenthesis of the parameter list.
+8. Line Ending: The Laravel preset does not enforce specific line endings. PSR-12 enforces Linux line endings (LF).
+9. Whitespace After Comma in Array: The Laravel preset does not enforce whitespace after commas in an array
 
 <a name="rules"></a>
 ### Rules
