@@ -46,7 +46,7 @@ In this example, we'll define an accessor for the `first_name` attribute. The ac
          */
         protected function firstName(): Attribute
         {
-            return Attribute::make(
+            return new Attribute(
                 get: fn (string $value) => ucfirst($value),
             );
         }
@@ -79,7 +79,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 protected function address(): Attribute
 {
-    return Attribute::make(
+    return new Attribute(
         get: fn (mixed $value, array $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
@@ -107,7 +107,7 @@ However, you may sometimes wish to enable caching for primitive values like stri
 ```php
 protected function hash(): Attribute
 {
-    return Attribute::make(
+    return new Attribute(
         get: fn (string $value) => bcrypt(gzuncompress($value)),
     )->shouldCache();
 }
@@ -121,7 +121,7 @@ If you would like to disable the object caching behavior of attributes, you may 
  */
 protected function address(): Attribute
 {
-    return Attribute::make(
+    return new Attribute(
         get: fn (mixed $value, array $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
@@ -149,7 +149,7 @@ A mutator transforms an Eloquent attribute value when it is set. To define a mut
          */
         protected function firstName(): Attribute
         {
-            return Attribute::make(
+            return new Attribute(
                 get: fn (string $value) => ucfirst($value),
                 set: fn (string $value) => strtolower($value),
             );
@@ -180,7 +180,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 protected function address(): Attribute
 {
-    return Attribute::make(
+    return new Attribute(
         get: fn (mixed $value, array $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
