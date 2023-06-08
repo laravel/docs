@@ -194,6 +194,12 @@ You may roll back a specific "batch" of migrations by providing the `batch` opti
  php artisan migrate:rollback --batch=3
  ```
 
+If you would like to see the SQL statements that will be executed by the migrations without actually running them, you may provide the `--pretend` flag to the `migrate:rollback` command:
+
+```shell
+php artisan migrate:rollback --pretend
+```
+
 The `migrate:reset` command will roll back all of your application's migrations:
 
 ```shell
