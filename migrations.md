@@ -182,12 +182,6 @@ To roll back the latest migration operation, you may use the `rollback` Artisan 
 php artisan migrate:rollback
 ```
 
-You may only dump the migrations to rollback by providing the `pretend` option:
-
-```shell
-php artisan migrate:rollback --pretend
-```
-
 You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:
 
 ```shell
@@ -199,6 +193,12 @@ You may roll back a specific "batch" of migrations by providing the `batch` opti
  ```shell
  php artisan migrate:rollback --batch=3
  ```
+
+If you would like to see the SQL statements that will be executed by the migrations without actually running them, you may provide the `--pretend` flag to the `migrate:rollback` command:
+
+```shell
+php artisan migrate:rollback --pretend
+```
 
 The `migrate:reset` command will roll back all of your application's migrations:
 
