@@ -174,6 +174,18 @@ For convenience, you may use the `acceptJson` method to quickly specify that you
 
     $response = Http::acceptJson()->get('http://example.com/users');
 
+The `withHeaders` method merges new headers into the request's existing headers. If needed, you may replace all of the headers entirely using the `replaceHeaders` method:
+
+```php
+$response = Http::withHeaders([
+    'X-Original' => 'foo',
+])->replaceHeaders([
+    'X-Replacement' => 'bar',
+])->post('http://example.com/users', [
+    'name' => 'Taylor',
+]);
+```
+
 <a name="authentication"></a>
 ### Authentication
 
