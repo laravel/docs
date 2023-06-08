@@ -178,9 +178,9 @@ The `withHeaders` method merges new headers into the request's existing headers.
 
 ```php
 $response = Http::withHeaders([
-    'X-Test-Header' => 'foo',
+    'X-Original' => 'foo',
 ])->replaceHeaders([
-    'X-Test-Header' => 'bar',
+    'X-Replacement' => 'bar',
 ])->post('http://example.com/users', [
     'name' => 'Taylor',
 ]);
