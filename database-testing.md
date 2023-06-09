@@ -21,7 +21,6 @@ Before proceeding much further, let's discuss how to reset your database after e
     namespace Tests\Feature;
 
     use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -71,7 +70,6 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
     use Database\Seeders\OrderStatusSeeder;
     use Database\Seeders\TransactionStatusSeeder;
     use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
