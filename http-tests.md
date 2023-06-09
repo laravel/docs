@@ -1172,6 +1172,8 @@ Assert that the session has a given value in the [flashed input array](/docs/{{v
 
 If needed, a closure can be provided as the second argument to the `assertSessionHasInput` method. The assertion will pass if the closure returns `true`:
 
+    use Illuminate\Support\Facades\Crypt;
+
     $response->assertSessionHasInput($key, function (string $value) {
         return Crypt::decryptString($value) === 'secret';
     });
