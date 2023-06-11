@@ -91,6 +91,16 @@ Furthermore, if you wish to use [PHPUnit 10](https://phpunit.de/announcements/ph
 
 </div>
 
+If you are using [PEST](https://pestphp.com) you can follow bellow to upgrade PEST.
+
+<div class="content-list" markdown="1">
+
+- `pestphp/pest` to `^2.0`
+- `pestphp/pest-plugin-laravel` to `^2.0`
+- `pestphp/pest-plugin-faker` to `^2.0`
+
+</div>
+
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 10 support.
 
 <a name="updating-minimum-stability"></a>
