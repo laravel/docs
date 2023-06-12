@@ -429,6 +429,17 @@ module.exports = {
 };
 ```
 
+If the `type` in your `package.json` is set to module you'd need to use ESM exports:
+
+```js
+export default {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+};
+```
+
 > **Note**
 > Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Tailwind, PostCSS, and Vite configuration. Or, if you would like to use Tailwind and Laravel without using one of our starter kits, check out [Tailwind's installation guide for Laravel](https://tailwindcss.com/docs/guides/laravel).
 
