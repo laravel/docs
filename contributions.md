@@ -75,9 +75,9 @@ Informal discussion regarding bugs, new features, and implementation of existing
 <a name="which-branch"></a>
 ## Which Branch?
 
-**All** bug fixes should be sent to the latest version that supports bug fixes (currently `9.x`). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**All** bug fixes should be sent to the latest version that supports bug fixes (currently `10.x`). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
 
-**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch (currently `9.x`).
+**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch (currently `10.x`).
 
 **Major** new features or features with breaking changes should always be sent to the `master` branch, which contains the upcoming release.
 
