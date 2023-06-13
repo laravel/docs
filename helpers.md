@@ -1840,11 +1840,11 @@ The `Str::replace` method replaces a given string within the string:
 
     use Illuminate\Support\Str;
 
-    $string = 'Laravel 9.x';
+    $string = 'Laravel 10.x';
 
-    $replaced = Str::replace('9.x', '10.x', $string);
+    $replaced = Str::replace('10.x', '11.x', $string);
 
-    // Laravel 10.x
+    // Laravel 11.x
 
 <a name="method-str-replace-array"></a>
 #### `Str::replaceArray()` {.collection-method}
