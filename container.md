@@ -150,6 +150,14 @@ The `singleton` method binds a class or interface into the container that should
         return new Transistor($app->make(PodcastParser::class));
     });
 
+You may use the `singletonIf` method to register a singleton container binding only if a binding has not already been registered for the given type:
+
+```php
+$this->app->singletonIf(Transistor::class, function (Application $app) {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
+
 <a name="binding-scoped"></a>
 #### Binding Scoped Singletons
 
