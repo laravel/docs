@@ -102,7 +102,7 @@ If you would like to generate a temporary signed route URL that expires after a 
     use Illuminate\Support\Facades\URL;
 
     return URL::temporarySignedRoute(
-        'unsubscribe', now()->addMinutes(30), ['user' => 1]
+        'unsubscribe', ['user' => 1], now()->addMinutes(30)
     );
 
 <a name="validating-signed-route-requests"></a>
