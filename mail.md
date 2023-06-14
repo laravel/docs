@@ -544,6 +544,40 @@ Laravel also provides additional methods that you may use to customize your atta
             ->as('Photo Name')
             ->withMime('image/jpeg');
 
+#### Macros
+
+To configure common attachment, The Laravel Attachment allows you to define "macros". To get started, you may define the macro within the boot method of your application's `App\Providers\AppServiceProvider` class:
+
+    use Illuminate\Mail\Mailables\Attachment;
+ 
+    /**
+    * Bootstrap any application services.
+    */
+    public function boot(): void
+    {
+        Attachment::macro('laravelImage', function () {
+            return Attachment::fromPath('/path/to/file')
+                ->as('Laravel')
+                ->withMime('image/jpeg');
+        });
+    }
+
+Once your macro has been configured, you can invoke it from anywhere to create an attachment with the specified configuration:
+
+    use Illuminate\Mail\Mailables\Attachment;
+
+    /**
+    * Get the attachments for the message.
+    *
+    * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+    */
+    public function attachments(): array
+    {
+        return [
+            Attachment::laravelImage(),
+        ];
+    }
+
 <a name="headers"></a>
 ### Headers
 
