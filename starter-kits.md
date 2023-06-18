@@ -49,7 +49,7 @@ After Composer has installed the Laravel Breeze package, you may run the `breeze
 The default Breeze "stack" is the Blade stack, which utilizes simple [Blade templates](/docs/{{version}}/blade) to render your application's frontend. The Blade stack may be installed by invoking the `breeze:install` command with no other additional arguments. After Breeze's scaffolding is installed, you should also compile your application's frontend assets:
 
 ```shell
-php artisan breeze:install
+php artisan breeze:install blade
 
 php artisan migrate
 npm install
