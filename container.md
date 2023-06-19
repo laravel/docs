@@ -171,6 +171,14 @@ The `scoped` method binds a class or interface into the container that should on
         return new Transistor($app->make(PodcastParser::class));
     });
 
+You may use the `scopedIf` method to register a scope on container:
+
+```php
+$this->app->scopedIf(Transistor::class, function (Application $app) {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
+
 <a name="binding-instances"></a>
 #### Binding Instances
 
