@@ -16,6 +16,7 @@
     - [Default Scope](#default-scope)
     - [Nullable Scope](#nullable-scope)
     - [Identifying Scope](#identifying-scope)
+    - [Serializing Scope](#serializing-scope)
 - [Rich Feature Values](#rich-feature-values)
 - [Retrieving Multiple Features](#retrieving-multiple-features)
 - [Eager Loading](#eager-loading)
@@ -534,6 +535,26 @@ class User extends Model implements FeatureScopeable
     }
 }
 ```
+
+<a name="serializing-scope"></a>
+### Serializing Scope
+
+By default, Pennant will use a fully qualified class name when storing a feature for an Eloquent model. If you are already using a [morph map](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types) with Eloquent, you may like to have Pennant also use the morph map to decouple the stored feature from your application structure.
+
+To achieve this, after defining your morph map in a service provider you may call the Feature facade's `useMorphMap` method.
+
+```php
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Laravel\Pennant\Feature;
+
+Relation::enforceMorphMap([
+    'post' => 'App\Models\Post',
+    'video' => 'App\Models\Video',
+]);
+
+Feature::useMorphMap();
+```
+
 
 <a name="rich-feature-values"></a>
 ## Rich Feature Values
