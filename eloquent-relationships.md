@@ -1747,15 +1747,14 @@ In this example, Eloquent will only eager load posts where the post's `title` co
 
 If you are eager loading a `morphTo` relationship, Eloquent will run multiple queries to fetch each type of related model. You may add additional constraints to each of these queries using the `MorphTo` relation's `constrain` method:
 
-    use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Relations\MorphTo;
 
     $comments = Comment::with(['commentable' => function (MorphTo $morphTo) {
         $morphTo->constrain([
-            Post::class => function (Builder $query) {
+            Post::class => function ($query) {
                 $query->whereNull('hidden_at');
             },
-            Video::class => function (Builder $query) {
+            Video::class => function ($query) {
                 $query->where('type', 'educational');
             },
         ]);
@@ -1769,9 +1768,8 @@ In this example, Eloquent will only eager load posts that have not been hidden a
 You may sometimes find yourself needing to check for the existence of a relationship while simultaneously loading the relationship based on the same conditions. For example, you may wish to only retrieve `User` models that have child `Post` models matching a given query condition while also eager loading the matching posts. You may accomplish this using the `withWhereHas` method:
 
     use App\Models\User;
-    use Illuminate\Database\Eloquent\Builder;
 
-    $users = User::withWhereHas('posts', function (Builder $query) {
+    $users = User::withWhereHas('posts', function ($query) {
         $query->where('featured', true);
     })->get();
 
