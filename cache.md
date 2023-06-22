@@ -452,7 +452,7 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
     use Illuminate\Support\Facades\Cache;
     use Illuminate\Support\ServiceProvider;
 
-    class CacheServiceProvider extends ServiceProvider
+    class AppServiceProvider extends ServiceProvider
     {
         /**
          * Register any application services.
