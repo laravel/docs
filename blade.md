@@ -337,8 +337,9 @@ In addition to conditional statements, Blade provides simple directives for work
 
 @forelse ($users as $user)
     <li>{{ $user->name }}</li>
-@empty
+@empty($user)
     <p>No users</p>
+@endempty
 @endforelse
 
 @while (true)
