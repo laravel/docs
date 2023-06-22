@@ -132,6 +132,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [forget](#method-forget)
 [forPage](#method-forpage)
 [get](#method-get)
+[getOrPut](#method-getOrPut)
 [groupBy](#method-groupby)
 [has](#method-has)
 [hasAny](#method-hasany)
@@ -1020,6 +1021,19 @@ You may even pass a callback as the method's default value. The result of the ca
     });
 
     // taylor@example.com
+
+<a name="method-getOrPut"></a>
+#### `getOrPut()` {.collection-method}
+
+The `getOrPut` method, returns the item at a given key or add it to collection if it does not exist:
+
+```php
+$collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+
+$value = $collection->getOrPut('author', 'milwad');
+
+// ['name' => 'taylor', 'framework' => 'laravel', 'author' => 'milwad']
+```
 
 <a name="method-groupby"></a>
 #### `groupBy()` {.collection-method}
