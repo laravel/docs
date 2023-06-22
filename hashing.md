@@ -6,6 +6,9 @@
     - [Hashing Passwords](#hashing-passwords)
     - [Verifying That A Password Matches A Hash](#verifying-that-a-password-matches-a-hash)
     - [Determining If A Password Needs To Be Rehashed](#determining-if-a-password-needs-to-be-rehashed)
+- [Adding Custom Hash Drivers](#adding-custom-hash-drivers)
+    - [Writing The Driver](#writing-the-driver)
+    - [Registering The Driver](#registering-the-driver)
 
 <a name="introduction"></a>
 ## Introduction
@@ -92,3 +95,75 @@ The `needsRehash` method provided by the `Hash` facade allows you to determine i
     if (Hash::needsRehash($hashed)) {
         $hashed = Hash::make('plain-text');
     }
+
+<a name="adding-custom-hash-drivers"></a>
+## Adding Custom Hash Drivers
+
+<a name="writing-the-driver"></a>
+### Writing The Driver
+
+To create our custom hash driver, we first need to implement the `Illuminate\Contracts\Hashing\Hasher` [contract](/docs/{{version}}/contracts). For example, a md5 hash implementation might look something like this:
+
+    <?php
+
+    namespace App\Extensions\Hashers;
+
+    use Illuminate\Contracts\Hashing\Hasher;
+
+    class Md5Hasher implements Hasher
+    {
+        public function info($hashedValue) {};
+
+        public function make($value, array $options = []) {};
+
+        public function check($value, $hashedValue, array $options = []) {};
+
+        public function needsRehash($hashedValue, array $options = []) {};
+    }
+
+We just need to implement each of these methods using a md5 hashes.
+
+<a name="registering-the-driver"></a>
+### Registering The Driver
+
+To register the custom hash driver with Laravel, we will use the `extend` method on the `Hash` facade within the `register` method of our application's `App\Providers\AppServiceProvider` class:
+
+    <?php
+
+    namespace App\Providers;
+
+    use App\Extensions\Hashers\Md5Hasher;
+    use Illuminate\Contracts\Foundation\Application;
+    use Illuminate\Support\Facades\Hash;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         */
+        public function register(): void
+        {
+            Hash::extend('md5', function (Application $app) {
+                return new Md5Hasher();
+            });
+        }
+
+        /**
+         * Bootstrap any application services.
+         */
+        public function boot(): void
+        {
+            // ...
+        }
+    }
+
+The first argument passed to the `extend` method is the name of the driver. The second argument is a closure that should return an instance of your custom hasher. In this example, it's `App\Extensions\Hashers\Md5Hasher` instance. The closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
+
+Once your extension is registered, you can use by:
+
+    <?php
+
+    use Illuminate\Support\Facades\Hash;
+
+    Hash::driver('md5');
