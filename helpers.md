@@ -8,6 +8,7 @@
     - [Lottery](#lottery)
     - [Pipeline](#pipeline)
     - [Sleep](#sleep)
+- [Create Your Own Helpers](#create-helpers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -4450,3 +4451,88 @@ Sleep::whenFakingSleep(function (Duration $duration) {
 ```
 
 Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [`retry`](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.
+
+<a name="create-helpers"></a>
+
+### Create Your Own Helpers
+If you want to create your own helpers, you can use a package that standardizes the creation and usage of functions within your Laravel application.
+
+Run the setup from Composer.
+
+```bash
+composer require rmunate/laravel_helpers
+```
+
+Once you have installed the dependency within your project, you can start the structure of your helpers using the following command:
+
+```bash
+php artisan generate:helpers
+```
+
+This will create a folder named `Helpers` within `App/` where you will find the suggested standard classes for creating your own helpers. It is recommended to create helpers depending on their category of use.
+
+```css
+app/
+└── Helpers/ 
+    └── General.php
+    └── Strings.php
+    └── Arrays.php
+    //..
+```
+
+For example, if you are going to create a function that adjusts text strings according to some application-specific requirement, you should create the method inside the `Strings` class.
+
+The methods you create within the chosen class should always have their method name starting with the first word in lowercase and from the second word in uppercase (camelCase).
+
+```php
+<?php
+
+namespace App\Helpers;
+
+use Rmunate\LaravelHelpers\BaseHelpers;
+
+class Strings extends BaseHelpers
+{
+    public function myMethod() {
+        // Your Code…
+    }
+}
+```
+
+Now that you have defined the methods, you can call them from anywhere in your application using the following syntax: start with the word `Helper`, followed by the static call `::`, then write the lowercase name of the helper category, in this case, `strings`, and finally the method name in `PascalCase`.
+
+Example of using the `myMethod` method:
+
+Controllers or Classes:
+
+```php
+// Strings is the class, so we'll write its full name in lowercase.
+// From the second word onwards, we'll use PascalCase.
+Helper::stringsMyMethod();
+```
+
+Views or Components:
+
+```php
+{{ Helper::stringsMyMethod() }}
+```
+
+Similarly, since the place where you write the helpers is a class, you can directly call the class that needs to be extended or imported for use. For this purpose, the `instance()` method is included, and you can use it as follows:
+
+```php
+// Import the usage of the class.
+use App\Helpers\Strings;
+
+// You can directly call the methods through this static call.
+Strings::instance()->myMethod();
+```
+
+If you want a category that is not provided by the existing classes, no problem! Just execute the following command to create the new category:
+
+```bash
+# Replace "Category" with the name you require
+php artisan create:helper Category
+```
+
+An efficient, clear, clean, and elegant way to create and manage your own functions.
+
