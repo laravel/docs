@@ -65,6 +65,12 @@ php artisan make:event PodcastProcessed
 php artisan make:listener SendPodcastNotification --event=PodcastProcessed
 ```
 
+Alternatively, you may use the `--queued` option in `make:listener` Artisan command to generate queued listener:
+
+```shell
+php artisan make:listener SendPodcastNotification --event=PodcastProcessed --queued
+```
+
 <a name="manually-registering-events"></a>
 ### Manually Registering Events
 
