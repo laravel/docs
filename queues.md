@@ -699,7 +699,7 @@ If you would like to specify that a job should not be immediately available for 
     }
 
 > **Warning**  
-> The Amazon SQS queue service has a maximum delay time of 15 minutes.
+> The Amazon SQS queue service has a maximum delay time of 12 hours.
 
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
 #### Dispatching After The Response Is Sent To Browser
