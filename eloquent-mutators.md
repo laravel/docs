@@ -670,7 +670,7 @@ A classic example of an inbound only cast is a "hashing" cast. For example, we m
          * Create a new cast class instance.
          */
         public function __construct(
-            protected string $algorithm = null,
+            protected string|null $algorithm = null,
         ) {}
 
         /**
