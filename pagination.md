@@ -375,4 +375,5 @@ Method  |  Description
 `$paginator->previousCursor()`  |  Get the cursor instance for the previous set of items.
 `$paginator->previousPageUrl()`  |  Get the URL for the previous page.
 `$paginator->setCursorName()`  |  Set the query string variable used to store the cursor.
+`$paginator->through()`  |  Transform each item in the slice of items using a callback.
 `$paginator->url($cursor)`  |  Get the URL for a given cursor instance.
