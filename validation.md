@@ -2113,11 +2113,10 @@ use Illuminate\Validation\Rules\Password;
 public function boot(): void
 {
     Password::defaults(function () {
-        $rule = Password::min(8);
 
-        return $this->app->isProduction()
-                    ? $rule->mixedCase()->uncompromised()
-                    : $rule;
+        return Password::min(8)->when($this->app->isProduction(), function ($password) {
+            return $password->mixedCase()->uncompromised();
+        });
     });
 }
 ```
