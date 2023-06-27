@@ -367,6 +367,12 @@ When given an array, the `has` method will determine if all of the specified val
         // ...
     }
 
+The `hasAny` method returns `true` if any of the specified values are present:
+
+    if ($request->hasAny(['name', 'email'])) {
+        // ...
+    }
+
 The `whenHas` method will execute the given closure if a value is present on the request:
 
     $request->whenHas('name', function (string $input) {
@@ -381,15 +387,15 @@ A second closure may be passed to the `whenHas` method that will be executed if 
         // The "name" value is not present...
     });
 
-The `hasAny` method returns `true` if any of the specified values are present:
-
-    if ($request->hasAny(['name', 'email'])) {
-        // ...
-    }
-
 If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:
 
     if ($request->filled('name')) {
+        // ...
+    }
+
+The `anyFilled` method returns `true` if any of the specified values is not an empty string.
+
+    if ($request->anyFilled(['name', 'email'])) {
         // ...
     }
 
@@ -406,12 +412,6 @@ A second closure may be passed to the `whenFilled` method that will be executed 
     }, function () {
         // The "name" value is not filled...
     });
-
-The `anyFilled` method returns `true` if any of the specified values is not an empty string.
-
-    if ($request->anyFilled(['name', 'email'])) {
-        // ...
-    }
 
 To determine if a given key is absent from the request, you may use the `missing` and `whenMissing` methods:
 
