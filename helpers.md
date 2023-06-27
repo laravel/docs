@@ -70,6 +70,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::sortRecursive](#method-array-sort-recursive)
 [Arr::sortRecursiveDesc](#method-array-sort-recursive-desc)
 [Arr::toCssClasses](#method-array-to-css-classes)
+[Arr::toCssStyles](#method-array-to-css-styles)
 [Arr::undot](#method-array-undot)
 [Arr::where](#method-array-where)
 [Arr::whereNotNull](#method-array-where-not-null)
@@ -1023,6 +1024,23 @@ The `Arr::toCssClasses` conditionally compiles a CSS class string. The method ac
     /*
         'p-4 bg-red'
     */
+
+<a name="method-array-to-css-styles"></a>
+#### `Arr::toCssStyles()` {.collection-method}
+
+The `Arr::toCssStyles` conditionally compiles a CSS style string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
+
+```php
+$hasColor = true;
+
+$array = ['background-color: blue', 'color: blue' => $hasColor];
+
+$classes = Arr::toCssStyles($array);
+
+/*
+    'background-color: blue; color: blue;'
+*/
+```
 
 This method powers Laravel's functionality allowing [merging classes with a Blade component's attribute bag](/docs/{{version}}/blade#conditionally-merge-classes) as well as the `@class` [Blade directive](/docs/{{version}}/blade#conditional-classes).
 
