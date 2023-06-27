@@ -635,6 +635,15 @@ The `whenCounted` method may be used to conditionally include a relationship's c
 
 In this example, if the `posts` relationship's count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client.
 
+Other types of aggregates, such as `avg`, `sum`, `min`, and `max` may also be conditionally loaded using the `whenAggregated` method:
+
+```php
+'words_avg' => $this->whenAggregated('posts', 'words', 'avg'),
+'words_sum' => $this->whenAggregated('posts', 'words', 'sum'),
+'words_min' => $this->whenAggregated('posts', 'words', 'min'),
+'words_max' => $this->whenAggregated('posts', 'words', 'max'),
+```
+
 <a name="conditional-pivot-information"></a>
 #### Conditional Pivot Information
 
