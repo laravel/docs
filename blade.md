@@ -1051,6 +1051,14 @@ If you would like to check if an attribute is present on the component, you may 
 @endif
 ```
 
+The `hasAny` method may be used to determine if any of the given attributes are present on the component:
+
+```blade
+@if ($attributes->hasAny(['href', ':href', 'v-bind:href']))
+    <div>One of the attributes is present</div>
+@endif
+```
+
 You may retrieve a specific attribute's value using the `get` method:
 
 ```blade
