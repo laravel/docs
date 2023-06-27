@@ -633,7 +633,6 @@ The `authorizeResource` method accepts the model's class name as its first argum
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
-    use Illuminate\Http\Request;
 
     class PostController extends Controller
     {
