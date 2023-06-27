@@ -625,6 +625,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 <div class="collection-method-list" markdown="1">
 
+[assertConflict](#assert-conflict)
 [assertCookie](#assert-cookie)
 [assertCookieExpired](#assert-cookie-expired)
 [assertCookieNotExpired](#assert-cookie-not-expired)
@@ -685,6 +686,13 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertViewMissing](#assert-view-missing)
 
 </div>
+
+<a name="assert-conflict"></a>
+#### assertConflict
+
+Assert that the response has a 409 HTTP status code:
+
+    $response->assertConflict();
 
 <a name="assert-cookie"></a>
 #### assertCookie
