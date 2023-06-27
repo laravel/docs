@@ -393,7 +393,7 @@ If you would like to determine if a value is present on the request and is not a
         // ...
     }
 
-The `anyFilled` method returns `true` if any of the specified values is not an empty string.
+The `anyFilled` method returns `true` if any of the specified values is not an empty string:
 
     if ($request->anyFilled(['name', 'email'])) {
         // ...
