@@ -12,7 +12,6 @@
     - [Query Time Casting](#query-time-casting)
 - [Custom Casts](#custom-casts)
     - [Value Object Casting](#value-object-casting)
-    - [Value Object Caching](#value-object-caching)
     - [Array / JSON Serialization](#array-json-serialization)
     - [Inbound Casting](#inbound-casting)
     - [Cast Parameters](#cast-parameters)
@@ -631,13 +630,15 @@ When casting to value objects, any changes made to the value object will automat
 <a name="value-object-caching"></a>
 #### Value Object Caching
 
-By default, value objects are cached when set and so the `get` method is not executed if the cached object exists.
-If you would like to disable the object caching behavior of custom cast classes, you may declare the public `withoutObjectCaching` property when defining the class:
+When attributes that are cast to value objects are resolved, they are cached by Eloquent. Therefore, the same object instance will be returned if the attribute is accessed again.
+
+If you would like to disable the object caching behavior of custom cast classes, you may declare a public `withoutObjectCaching` property on your custom cast class:
 
 ```php
 class Address implements CastsAttributes
 {
     public bool $withoutObjectCaching = true;
+
     // ...
 }
 ```
