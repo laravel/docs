@@ -1051,6 +1051,14 @@ If you would like to check if an attribute is present on the component, you may 
 @endif
 ```
 
+If an array is passed to the `has` method, the method will determine if all of the given attributes are present on the component:
+
+```blade
+@if ($attributes->has(['name', 'class']))
+    <div>All of the attributes are present</div>
+@endif
+```
+
 The `hasAny` method may be used to determine if any of the given attributes are present on the component:
 
 ```blade
