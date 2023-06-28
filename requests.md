@@ -135,6 +135,12 @@ If you would like to append query string data to the current URL, you may call t
 
     $request->fullUrlWithQuery(['type' => 'phone']);
 
+If you would like to get current URL without query string, you may call the `fullUrlWithoutQuery` method.
+
+```php
+$request->fullUrlWithoutQuery(['type']);
+```
+
 <a name="retrieving-the-request-host"></a>
 #### Retrieving The Request Host
 
