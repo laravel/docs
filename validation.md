@@ -880,6 +880,7 @@ Below is a list of all available validation rules and their function:
 [Before Or Equal (Date)](#rule-before-or-equal)
 [Between](#rule-between)
 [Boolean](#rule-boolean)
+[Can](#rule-can)
 [Confirmed](#rule-confirmed)
 [Current Password](#rule-current-password)
 [Date](#rule-date)
@@ -1085,6 +1086,15 @@ The field under validation must have a size between the given _min_ and _max_ (i
 #### boolean
 
 The field under validation must be able to be cast as a boolean. Accepted input are `true`, `false`, `1`, `0`, `"1"`, and `"0"`.
+
+<a name="rule-can"></a>
+#### can
+
+The field under validation that user has ability:
+
+```php
+'author' => Rule::can('update-author', Post::class, $this->route('post')),
+```
 
 <a name="rule-confirmed"></a>
 #### confirmed
