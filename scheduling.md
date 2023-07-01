@@ -106,6 +106,13 @@ We've already seen a few examples of how you may configure a task to run at spec
 Method  | Description
 ------------- | -------------
 `->cron('* * * * *');`  |  Run the task on a custom cron schedule
+`->everySecond();`  |  Run the task every second
+`->everyTwoSeconds();`  |  Run the task every two seconds
+`->everyFiveSeconds();`  |  Run the task every five seconds
+`->everyTenSeconds();`  |  Run the task every ten seconds
+`->everyFifteenSeconds();`  |  Run the task every fifteen seconds
+`->everyTwentySeconds();`  |  Run the task every twenty seconds
+`->everyThirtySeconds();`  |  Run the task every thirty seconds
 `->everyMinute();`  |  Run the task every minute
 `->everyTwoMinutes();`  |  Run the task every two minutes
 `->everyThreeMinutes();`  |  Run the task every three minutes
