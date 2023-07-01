@@ -122,15 +122,6 @@ Using the `routeIs` method, you may determine if the incoming request has matche
         // ...
     }
 
-Using the `fullUrlIs` method, you may determine if the incoming request has matched a full url, like: `http://example.com/milwad:
-
-```php
-if ($request->fullUrlIs('http://example.com/milwad')) {
-    // ...
-}
-```
-
-
 <a name="retrieving-the-request-url"></a>
 #### Retrieving The Request URL
 
