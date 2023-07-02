@@ -215,6 +215,7 @@ The `$casts` property should be an array where the key is the name of the attrib
 - `encrypted`
 - `encrypted:array`
 - `encrypted:collection`
+- `encrypted:json`
 - `encrypted:object`
 - `float`
 - `hashed`
