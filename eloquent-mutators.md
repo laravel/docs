@@ -220,6 +220,7 @@ The `$casts` property should be an array where the key is the name of the attrib
 - `float`
 - `hashed`
 - `integer`
+- `json`
 - `object`
 - `real`
 - `string`
