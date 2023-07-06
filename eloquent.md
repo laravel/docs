@@ -1343,6 +1343,7 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
 
     namespace App\Models;
 
+    use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
