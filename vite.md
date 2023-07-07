@@ -649,6 +649,12 @@ npm run build
 node bootstrap/ssr/ssr.js
 ```
 
+If you are using [server-side rendering with Inertia](https://inertiajs.com/server-side-rendering), you may instead use the `inertia:start-ssr` Artisan command to start the SSR server:
+
+```sh
+php artisan inertia:start-ssr
+```
+
 > **Note**  
 > Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia SSR, and Vite.
 
