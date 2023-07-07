@@ -212,7 +212,7 @@ If you would like, you may also specify a `replyTo` address:
 <a name="using-a-global-from-address"></a>
 #### Using A Global `from` Address
 
-However, if your application uses the same "from" address for all of its emails, it can become cumbersome to call the `from` method in each mailable class you generate. Instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
+However, if your application uses the same "from" address for all of its emails, it can become cumbersome to pass the `from` parameter in each mailable class you generate. Instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
