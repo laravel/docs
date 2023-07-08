@@ -3003,10 +3003,9 @@ The `replaceMatches` method replaces all portions of a string matching a pattern
 The `replaceMatches` method also accepts a closure that will be invoked with each portion of the string matching the given pattern, allowing you to perform the replacement logic within the closure and return the replaced value:
 
     use Illuminate\Support\Str;
-    use Illuminate\Support\Stringable;
 
-    $replaced = Str::of('123')->replaceMatches('/\d/', function (Stringable $match) {
-        return '['.$match[0].']';
+    $replaced = Str::of('123')->replaceMatches('/\d/', function (array $matches) {
+        return '['.$matches[0].']';
     });
 
     // '[1][2][3]'
