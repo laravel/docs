@@ -62,6 +62,9 @@ Finally, you may start Sail. To continue learning how to use Sail, please contin
 ./vendor/bin/sail up
 ```
 
+> **Warning**  
+> Docker Desktop for Linux users are advised to switch to the `default` docker context `docker context use default` to prevent file permission issues.
+
 <a name="adding-additional-services"></a>
 #### Adding Additional Services
 
