@@ -159,7 +159,15 @@ Once these tools are installed, you may open any Laravel project by executing th
 <a name="getting-started-on-linux"></a>
 ### Getting Started On Linux
 
-If you're developing on Linux and [Docker Compose](https://docs.docker.com/compose/install/) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
+If you're developing on Linux and [Docker Compose](https://docs.docker.com/compose/install/) is already installed, you can use a simple terminal command to create a new Laravel project.
+
+First, if you are using Docker Desktop for Linux, you should execute the following command. If you are not using Docker Desktop for Linux, you may skip this step:
+
+```shell
+docker context use default
+```
+
+Then, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
 ```shell
 curl -s https://laravel.build/example-app | bash
