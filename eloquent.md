@@ -563,7 +563,7 @@ Using the subquery functionality available to the query builder's `select` and `
 <a name="retrieving-multiple-models"></a>
 ### Retrieving Multiple Models
 
-If you want to get a list of entity, you can use `findMany` method:
+If you want to get a list of entities by ids, you can use `findMany` method:
 
 ```php
 $flights = Flight::findMany([1, 2, 3]);
