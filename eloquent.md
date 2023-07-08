@@ -16,10 +16,10 @@
     - [Chunk Using Lazy Collections](#chunking-using-lazy-collections)
     - [Cursors](#cursors)
     - [Advanced Subqueries](#advanced-subqueries)
+    - [Retrieving Multiple Models](#retrieving-multiple-models)
 - [Retrieving Single Models / Aggregates](#retrieving-single-models)
     - [Retrieving Or Creating Models](#retrieving-or-creating-models)
     - [Retrieving Aggregates](#retrieving-aggregates)
-- [Retrieving Multiple Models](#retrieving-multiple-models) 
 - [Inserting & Updating Models](#inserting-and-updating-models)
     - [Inserts](#inserts)
     - [Updates](#updates)
@@ -560,6 +560,17 @@ Using the subquery functionality available to the query builder's `select` and `
         ->limit(1)
     ])->get();
 
+<a name="retrieving-multiple-models"></a>
+### Retrieving Multiple Models
+
+If you want to get a list of entity, you can use `findMany` method:
+
+```php
+$flights = Flight::findMany([1, 2, 3]);
+```
+
+The `findMany` method returns a [Collection](/docs/{{version}}/collections) instance.
+
 <a name="subquery-ordering"></a>
 #### Subquery Ordering
 
@@ -654,17 +665,6 @@ When interacting with Eloquent models, you may also use the `count`, `sum`, `max
     $count = Flight::where('active', 1)->count();
 
     $max = Flight::where('active', 1)->max('price');
-
-<a name="retrieving-multiple-models"></a>
-## Retrieving Multiple Models 
-
-If you want to get a list of entity, you can use `findMany` method:
-
-```php
-$flights = Flight::findMany([1, 2, 3]);
-```
-
-The `findMany` method returns a [Collection](/docs/{{version}}/collections) instance.
 
 <a name="inserting-and-updating-models"></a>
 ## Inserting & Updating Models
