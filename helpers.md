@@ -228,6 +228,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [remove](#method-fluent-str-remove)
+[repeat](#method-fluent-str-repeat)
 [replace](#method-fluent-str-replace)
 [replaceArray](#method-fluent-str-replace-array)
 [replaceFirst](#method-fluent-str-replace-first)
@@ -2952,6 +2953,19 @@ The `remove` method removes the given value or array of values from the string:
     // Arkansas is beautiful!
 
 You may also pass `false` as a second parameter to ignore case when removing strings.
+
+<a name="method-fluent-str-repeat"></a>
+#### `repeat` {.collection-method}
+
+The `repeat` method repeat a given string:
+
+```php
+use Illuminate\Support\Str;
+
+$repeated = Str::of('Milwad-')->repeat(4);
+
+// Milwad-Milwad-Milwad-Milwad-
+```
 
 <a name="method-fluent-str-replace"></a>
 #### `replace` {.collection-method}
