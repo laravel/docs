@@ -310,6 +310,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [decrypt](#method-decrypt)
 [dd](#method-dd)
 [dispatch](#method-dispatch)
+[dispatch_if](#method-dispatch-if)
+[dispatch_unless](#method-dispatch-unless)
 [dispatch_sync](#method-dispatch-sync)
 [dump](#method-dump)
 [encrypt](#method-encrypt)
@@ -3776,6 +3778,20 @@ If you do not want to halt the execution of your script, use the [`dump`](#metho
 The `dispatch` function pushes the given [job](/docs/{{version}}/queues#creating-jobs) onto the Laravel [job queue](/docs/{{version}}/queues):
 
     dispatch(new App\Jobs\SendEmails);
+
+<a name="method-dispatch-if"></a>
+#### `dispatch_if()` {.collection-method}
+
+The `dispatch_if` function pushes the given [job](/docs/{{version}}/queues#creating-jobs) onto the Laravel [job queue](/docs/{{version}}/queues) if the given condition is true:
+
+    dispatch_if(true, new App\Jobs\SendEmails);
+
+<a name="method-dispatch-unless"></a>
+#### `dispatch_unless()` {.collection-method}
+
+The `dispatch_unless` function pushes the given [job](/docs/{{version}}/queues#creating-jobs) onto the Laravel [job queue](/docs/{{version}}/queues) unless the given condition is true:
+
+    dispatch_unless(false, new App\Jobs\SendEmails);
 
 <a name="method-dispatch-sync"></a>
 #### `dispatch_sync()` {.collection-method}
