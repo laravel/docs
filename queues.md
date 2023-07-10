@@ -299,24 +299,6 @@ In the example above, the `UpdateSearchIndex` job is unique by a product ID. So,
 > **Warning**  
 > If your application dispatches jobs from multiple web servers or containers, you should ensure that all of your servers are communicating with the same central cache server so that Laravel can accurately determine if a job is unique.
 
-<a name="encrypted-jobs"></a>
-
-### Encrypted Jobs
-
-Sometimes, you may want to ensure the security of the data of your job by protecting with an encryption. You may do so by implementing the `ShouldBeEcrypted` interface on your job class:
-
-    <?php
-
-    use Illuminate\Contracts\Queue\ShouldQueue;
-    use Illuminate\Contracts\Queue\ShouldBeEncrypted;
-
-    class UpdateSearchIndex implements ShouldQueue, ShouldBeEncrypted
-    {
-        ...
-    }
-
-With this, the job payload will be encrypted using the default [Laravel Encryption](/docs/{{version}}/encryption).
-
 <a name="keeping-jobs-unique-until-processing-begins"></a>
 #### Keeping Jobs Unique Until Processing Begins
 
@@ -356,6 +338,21 @@ Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts t
 
 > **Note**  
 > If you only need to limit the concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
+
+<a name="encrypted-jobs"></a>
+### Encrypted Jobs
+
+Laravel allows you to ensure the privacy and integrity of a job's data via [encryption](/docs/{{version}}/encryption). To get started, simply add the `ShouldBeEncrypted` interface to the job class. Once this interface has been added to the class, Laravel will automatically encrypt your job before pushing it onto a queue:
+
+    <?php
+
+    use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+
+    class UpdateSearchIndex implements ShouldQueue, ShouldBeEncrypted
+    {
+        // ...
+    }
 
 <a name="job-middleware"></a>
 ## Job Middleware
