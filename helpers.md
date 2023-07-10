@@ -144,6 +144,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::pluralStudly](#method-str-plural-studly)
 [Str::random](#method-str-random)
 [Str::remove](#method-str-remove)
+[Str::repeat](#method-str-repeat)
 [Str::replace](#method-str-replace)
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
@@ -227,6 +228,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [remove](#method-fluent-str-remove)
+[repeat](#method-fluent-str-repeat)
 [replace](#method-fluent-str-replace)
 [replaceArray](#method-fluent-str-replace-array)
 [replaceFirst](#method-fluent-str-replace-first)
@@ -1893,6 +1895,21 @@ The `Str::remove` method removes the given value or array of values from the str
 
 You may also pass `false` as a third argument to the `remove` method to ignore case when removing strings.
 
+<a name="method-str-repeat"></a>
+#### `Str::repeat()` {.collection-method}
+
+The `Str::repeat` method repeats the given string:
+
+```php
+use Illuminate\Support\Str;
+
+$string = 'a';
+
+$repeat = Str::repeat($string, 5);
+
+// aaaaa
+```
+
 <a name="method-str-replace"></a>
 #### `Str::replace()` {.collection-method}
 
@@ -2936,6 +2953,19 @@ The `remove` method removes the given value or array of values from the string:
     // Arkansas is beautiful!
 
 You may also pass `false` as a second parameter to ignore case when removing strings.
+
+<a name="method-fluent-str-repeat"></a>
+#### `repeat` {.collection-method}
+
+The `repeat` method repeats the given string:
+
+```php
+use Illuminate\Support\Str;
+
+$repeated = Str::of('a')->repeat(5);
+
+// aaaaa
+```
 
 <a name="method-fluent-str-replace"></a>
 #### `replace` {.collection-method}
