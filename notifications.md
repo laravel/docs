@@ -44,7 +44,6 @@
     - [Prerequisites](#slack-prerequisites)
     - [Formatting Slack Notifications](#formatting-slack-notifications)
     - [Slack Interactivity](#slack-interactivity)
-    - [Inspecting Slack Blocks](#inspecting-slack-blocks)
     - [Routing Slack Notifications](#routing-slack-notifications)
 - [Localizing Notifications](#localizing-notifications)
 - [Testing](#testing)
@@ -1055,13 +1054,13 @@ To route Vonage notifications to the proper phone number, define a `routeNotific
 <a name="slack-prerequisites"></a>
 ### Prerequisites
 
-To begin with Slack notifications, you first need to install the Slack notification channel via Composer:
+Before sending Slack notifications, you first need to install the Slack notification channel via Composer:
 
 ```shell
 composer require laravel/slack-notification-channel
 ```
 
-Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your team. Ensure that your App has the `chat:write` and `chat:write.customize` scopes. Once the App is created, copy the "Bot User OAuth Token" and set it in your `services.php` configuration:
+Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your team. You should ensure that your App has the `chat:write` and `chat:write.customize` scopes. Once the App has been created, copy the "Bot User OAuth Token" and place it within a `slack` configuration array in your application's `services.php` configuration file:
 
     'slack' => [
         'notifications' => [
@@ -1073,7 +1072,7 @@ Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1
 <a name="formatting-slack-notifications"></a>
 ### Formatting Slack Notifications
 
-If a notification is designed to be sent as a Slack message, you should define a `toSlack` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Slack\SlackMessage` instance. You can construct rich notifications using [Slack's Block Kit API](https://api.slack.com/block-kit). Here's an example ([see preview in Slack's Block Kit builder](https://app.slack.com/block-kit-builder/T01KWS6K23Z#%7B%22blocks%22:%5B%7B%22type%22:%22header%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Invoice%20Paid%22%7D%7D,%7B%22type%22:%22context%22,%22elements%22:%5B%7B%22type%22:%22plain_text%22,%22text%22:%22Customer%20%231234%22%7D%5D%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22An%20invoice%20has%20been%20paid.%22%7D,%22fields%22:%5B%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20No:*%5Cn1000%22%7D,%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20Recipient:*%5Cntaylor@laravel.com%22%7D%5D%7D,%7B%22type%22:%22divider%22%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Congratulations!%22%7D%7D%5D%7D)) of a `toSlack` method.
+If a notification supports being sent as a Slack message, you should define a `toSlack` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Slack\SlackMessage` instance. You can construct rich notifications using [Slack's Block Kit API](https://api.slack.com/block-kit). The following example may be previewed in [Slack's Block Kit builder](https://app.slack.com/block-kit-builder/T01KWS6K23Z#%7B%22blocks%22:%5B%7B%22type%22:%22header%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Invoice%20Paid%22%7D%7D,%7B%22type%22:%22context%22,%22elements%22:%5B%7B%22type%22:%22plain_text%22,%22text%22:%22Customer%20%231234%22%7D%5D%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22An%20invoice%20has%20been%20paid.%22%7D,%22fields%22:%5B%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20No:*%5Cn1000%22%7D,%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20Recipient:*%5Cntaylor@laravel.com%22%7D%5D%7D,%7B%22type%22:%22divider%22%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Congratulations!%22%7D%7D%5D%7D):
 
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
     use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
@@ -1105,9 +1104,9 @@ If a notification is designed to be sent as a Slack message, you should define a
 <a name="slack-interactivity"></a>
 ### Slack Interactivity
 
-Slack's Block Kit notification system provides a powerful feature to [handle user interaction](https://api.slack.com/interactivity/handling). Your Slack App should have "Interactivity" enabled and a "Request URL" configured that points to an endpoint on your application. Slack will send a `POST` request to your "Request URL" with a payload containing the Slack user who clicked the button, the ID of the clicked button, and more. Your application can then determine the action to take based on the payload. You should [verify the request](https://api.slack.com/authentication/verifying-requests-from-slack) was made by Slack.
+Slack's Block Kit notification system provides powerful features to [handle user interaction](https://api.slack.com/interactivity/handling). To utilize these features, your Slack App should have "Interactivity" enabled and a "Request URL" configured that points to a URL served by your application.
 
-To set up buttons within your notification, you can configure an `actionsBlock` callback:
+In the following example, which utilizes the `actiosnBlock` method, Slack will send a `POST` request to your "Request URL" with a payload containing the Slack user who clicked the button, the ID of the clicked button, and more. Your application can then determine the action to take based on the payload. You should also [verify the request](https://api.slack.com/authentication/verifying-requests-from-slack) was made by Slack:
 
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ActionsBlock;
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
@@ -1129,17 +1128,18 @@ To set up buttons within your notification, you can configure an `actionsBlock` 
                     $block->text('An invoice has been paid.');
                 })
                 ->actionsBlock(function (ActionsBlock $block) {
-                     // ID defaults to "button_acknowledge_invoice"
+                     // ID defaults to "button_acknowledge_invoice"...
                     $block->button('Acknowledge Invoice')->primary();
-                    // Manually configure the ID
+
+                    // Manually configure the ID...
                     $block->button('Deny')->danger()->id('deny_invoice');
                 });
     }
 
 <a name="slack-confirmation-modals"></a>
-### Confirmation Modals
+#### Confirmation Modals
 
-If you would like to confirm an action before it is taken, you may use the `confirm()` method when defining your button. The `confirm()` method accepts a `ConfirmObject` instance or a callback that receives a `ConfirmObject` instance:
+If you would like to confirm an action before it is taken, you may invoke the `confirm` method when defining your button. The `confirm` method accepts a message and a closure which receives a `ConfirmObject` instance:
 
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ActionsBlock;
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
@@ -1164,24 +1164,32 @@ If you would like to confirm an action before it is taken, you may use the `conf
                 ->actionsBlock(function (ActionsBlock $block) {
                     $block->button('Acknowledge Invoice')
                         ->primary()
-                        ->confirm('Acknowledge the payment and send a thank you email?', function (ConfirmObject $dialog) {
-                            $dialog->confirm('Yes');
-                            $dialog->deny('Never mind');
-                        });
+                        ->confirm(
+                            'Acknowledge the payment and send a thank you email?',
+                            function (ConfirmObject $dialog) {
+                                $dialog->confirm('Yes');
+                                $dialog->deny('No');
+                            }
+                        );
                 });
     }
 
 <a name="inspecting-slack-blocks"></a>
-### Inspecting Slack Blocks
+#### Inspecting Slack Blocks
 
-If you want to quickly inspect the blocks you've been building, you can append a `dd()` call to the `SlackNotification` instance. This will generate and dump a URL to Slack's [BlockKitBuilder](https://app.slack.com/block-kit-builder/), which displays a preview of the payload and notification in your browser. You can also pass `true` to `dd()` to dump the raw payload.
+If you would like to quickly inspect the blocks you've been building, you can invoke the `dd` method on the `SlackMessage` instance. The `dd` method will generate and dump a URL to Slack's [BlockKitBuilder](https://app.slack.com/block-kit-builder/), which displays a preview of the payload and notification in your browser. You may pass `true` to `dd` to dump the raw payload:
+
+    return (new SlackMessage)
+            ->text('One of your invoices has been paid!')
+            ->headerBlock('Invoice Paid')
+            ->dd();
 
 <a name="routing-slack-notifications"></a>
 ### Routing Slack Notifications
 
 To direct Slack notifications to the appropriate Slack team and channel, define a `routeNotificationForSlack` method on your notifiable model. This can return one of three values:
 
-- `null` - which uses the channel configured in the notification itself. You may use the `to()` method to configure the channel within the notification.
+- `null` - which defers routing to the channel configured in the notification itself. You may use the `to` method when building your `SlackMessage` to configure the channel within the notification.
 - A string specifying the Slack channel to send the notification to, e.g. `#support-channel`
 - A `SlackRoute` instance, which allows you to specify a dynamic token and channel name, e.g. `SlackRoute::make($this->slack_channel, $this->slack_token)`
 
