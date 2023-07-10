@@ -2957,14 +2957,14 @@ You may also pass `false` as a second parameter to ignore case when removing str
 <a name="method-fluent-str-repeat"></a>
 #### `repeat` {.collection-method}
 
-The `repeat` method repeat a given string:
+The `repeat` method repeats the given string:
 
 ```php
 use Illuminate\Support\Str;
 
-$repeated = Str::of('Milwad-')->repeat(4);
+$repeated = Str::of('a')->repeat(5);
 
-// Milwad-Milwad-Milwad-Milwad-
+// aaaaa
 ```
 
 <a name="method-fluent-str-replace"></a>
