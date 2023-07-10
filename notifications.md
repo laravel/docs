@@ -1073,7 +1073,7 @@ Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1
 <a name="formatting-slack-notifications"></a>
 ### Formatting Slack Notifications
 
-If a notification is designed to be sent as a Slack message, you should define a `toSlack` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Slack\SlackMessage` instance. You can construct rich notifications using [Slack's Block Kit API](https://api.slack.com/block-kit). Here's an example of a `toSlack` method:
+If a notification is designed to be sent as a Slack message, you should define a `toSlack` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Slack\SlackMessage` instance. You can construct rich notifications using [Slack's Block Kit API](https://api.slack.com/block-kit). Here's an example ([see preview in Slack's Block Kit builder](https://app.slack.com/block-kit-builder/T01KWS6K23Z#%7B%22blocks%22:%5B%7B%22type%22:%22header%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Invoice%20Paid%22%7D%7D,%7B%22type%22:%22context%22,%22elements%22:%5B%7B%22type%22:%22plain_text%22,%22text%22:%22Customer%20%231234%22%7D%5D%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22An%20invoice%20has%20been%20paid.%22%7D,%22fields%22:%5B%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20No:*%5Cn1000%22%7D,%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20Recipient:*%5Cntaylor@laravel.com%22%7D%5D%7D,%7B%22type%22:%22divider%22%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Congratulations!%22%7D%7D%5D%7D)) of a `toSlack` method.
 
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
     use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
@@ -1093,15 +1093,53 @@ If a notification is designed to be sent as a Slack message, you should define a
                 })
                 ->sectionBlock(function (SectionBlock $block) {
                     $block->text('An invoice has been paid.');
+                    $block->field("*Invoice No:*\n1000")->markdown();
+                    $block->field("*Invoice Recipient:*\ntaylor@laravel.com")->markdown();
+                })
+                ->dividerBlock()
+                ->sectionBlock(function (SectionBlock $block) {
+                    $block->text('Congratulations!');
                 });
     }
 
 <a name="slack-interactivity"></a>
 ### Slack Interactivity
 
-Slack's Block Kit notification system provides a powerful feature to [handle user interaction](https://api.slack.com/interactivity/handling). Your Slack App should have "Interactivity" enabled and a "Request URL" configured that points to an endpoint on your application. Slack will send a `POST` request to your "Request URL" with details like the user who clicked the button, the button clicked, and more.
+Slack's Block Kit notification system provides a powerful feature to [handle user interaction](https://api.slack.com/interactivity/handling). Your Slack App should have "Interactivity" enabled and a "Request URL" configured that points to an endpoint on your application. Slack will send a `POST` request to your "Request URL" with a payload containing the Slack user who clicked the button, the ID of the clicked button, and more. Your application can then determine the action to take based on the payload. You should [verify the request](https://api.slack.com/authentication/verifying-requests-from-slack) was made by Slack.
 
 To set up buttons within your notification, you can configure an `actionsBlock` callback:
+
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\ActionsBlock;
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
+    use Illuminate\Notifications\Slack\SlackMessage;
+
+    /**
+     * Get the Slack representation of the notification.
+     */
+    public function toSlack(object $notifiable): SlackMessage
+    {
+        return (new SlackMessage)
+                ->text('One of your invoices has been paid!')
+                ->headerBlock('Invoice Paid')
+                ->contextBlock(function (ContextBlock $block) {
+                    $block->text('Customer #1234');
+                })
+                ->sectionBlock(function (SectionBlock $block) {
+                    $block->text('An invoice has been paid.');
+                })
+                ->actionsBlock(function (ActionsBlock $block) {
+                     // ID defaults to "button_acknowledge_invoice"
+                    $block->button('Acknowledge Invoice')->primary();
+                    // Manually configure the ID
+                    $block->button('Deny')->danger()->id('deny_invoice');
+                });
+    }
+
+<a name="slack-confirmation-modals"></a>
+### Confirmation Modals
+
+If you would like to confirm an action before it is taken, you may use the `confirm()` method when defining your button. The `confirm()` method accepts a `ConfirmObject` instance or a callback that receives a `ConfirmObject` instance:
 
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ActionsBlock;
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
@@ -1124,8 +1162,12 @@ To set up buttons within your notification, you can configure an `actionsBlock` 
                     $block->text('An invoice has been paid.');
                 })
                 ->actionsBlock(function (ActionsBlock $block) {
-                    $block->button('Acknowledge')->primary();
-                    $block->button('Deny')->danger();
+                    $block->button('Acknowledge Invoice')
+                        ->primary()
+                        ->confirm('Acknowledge the payment and send a thank you email?', function (ConfirmObject $dialog) {
+                            $dialog->confirm('Yes');
+                            $dialog->deny('Never mind');
+                        });
                 });
     }
 
