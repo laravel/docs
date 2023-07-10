@@ -7,6 +7,7 @@
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
     - [Unique Jobs](#unique-jobs)
+    - [Encrypted Jobs](#encrypted-jobs)
 - [Job Middleware](#job-middleware)
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
@@ -297,6 +298,24 @@ In the example above, the `UpdateSearchIndex` job is unique by a product ID. So,
 
 > **Warning**  
 > If your application dispatches jobs from multiple web servers or containers, you should ensure that all of your servers are communicating with the same central cache server so that Laravel can accurately determine if a job is unique.
+
+<a name="encrypted-jobs"></a>
+
+### Encrypted Jobs
+
+Sometimes, you may want to ensure the security of the data of your job by protecting with an encryption. You may do so by implementing the `ShouldBeEcrypted` interface on your job class:
+
+    <?php
+
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+
+    class UpdateSearchIndex implements ShouldQueue, ShouldBeEncrypted
+    {
+        ...
+    }
+
+With this, the job payload will be encrypted using the default [Laravel Encryption](/docs/{{version}}/encryption).
 
 <a name="keeping-jobs-unique-until-processing-begins"></a>
 #### Keeping Jobs Unique Until Processing Begins
