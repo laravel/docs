@@ -1898,16 +1898,16 @@ You may also pass `false` as a third argument to the `remove` method to ignore c
 <a name="method-str-repeat"></a>
 #### `Str::repeat()` {.collection-method}
 
-The `Str::repeat` method repeat the given string:
+The `Str::repeat` method repeats the given string:
 
 ```php
 use Illuminate\Support\Str;
 
-$string = 'Milwad-';
+$string = 'a';
 
-$repeat = Str::repeat($string, 4);
+$repeat = Str::repeat($string, 5);
 
-// Milwad-Milwad-Milwad-Milwad
+// aaaaa
 ```
 
 <a name="method-str-replace"></a>
