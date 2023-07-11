@@ -12,7 +12,7 @@
     - [Background Tasks](#background-tasks)
     - [Maintenance Mode](#maintenance-mode)
 - [Running The Scheduler](#running-the-scheduler)
-    - [Sub-Minute Schedule Tasks](#sub-minute-scheduled-tasks)
+    - [Sub-Minute Scheduled Tasks](#sub-minute-scheduled-tasks)
     - [Running The Scheduler Locally](#running-the-scheduler-locally)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
