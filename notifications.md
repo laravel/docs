@@ -1177,7 +1177,7 @@ If you would like to confirm an action before it is taken, you may invoke the `c
 <a name="inspecting-slack-blocks"></a>
 #### Inspecting Slack Blocks
 
-If you would like to quickly inspect the blocks you've been building, you can invoke the `dd` method on the `SlackMessage` instance. The `dd` method will generate and dump a URL to Slack's [BlockKitBuilder](https://app.slack.com/block-kit-builder/), which displays a preview of the payload and notification in your browser. You may pass `true` to `dd` to dump the raw payload:
+If you would like to quickly inspect the blocks you've been building, you can invoke the `dd` method on the `SlackMessage` instance. The `dd` method will generate and dump a URL to Slack's [Block Kit Builder](https://app.slack.com/block-kit-builder/), which displays a preview of the payload and notification in your browser. You may pass `true` to `dd` to dump the raw payload:
 
     return (new SlackMessage)
             ->text('One of your invoices has been paid!')
