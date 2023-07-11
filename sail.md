@@ -297,6 +297,8 @@ By default, Sail will create a dedicated `testing` database so that your tests d
 ```yaml
 selenium:
     image: 'selenium/standalone-chrome'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     volumes:
         - '/dev/shm:/dev/shm'
     networks:
