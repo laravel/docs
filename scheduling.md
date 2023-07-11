@@ -364,11 +364,13 @@ On most operating systems, cron jobs are limited to running a maximum of once pe
 
 When sub-minute tasks are defined within your application, the `schedule:run` command will continue running until the end of the current minute instead of exiting immediately. This allows the command to invoke all required sub-minute tasks throughout the minute.
 
-Since sub-minute tasks that take longer than expected to run could delay the execution of later sub-minute tasks, it is recommend that all sub-minute tasks dispatch queued jobs to handle the actual task processing:
+Since sub-minute tasks that take longer than expected to run could delay the execution of later sub-minute tasks, it is recommend that all sub-minute tasks dispatch queued jobs or background commands to handle the actual task processing:
 
     use App\Jobs\DeleteRecentUsers;
 
     $schedule->job(new DeleteRecentUsers)->everyTenSeconds();
+
+    $schedule->command('users:delete')->everyTenSeconds()->runInBackground();
 
 <a name="interrupting-sub-minute-tasks"></a>
 #### Interrupting Sub-Minute Tasks
