@@ -78,6 +78,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [data_fill](#method-data-fill)
 [data_get](#method-data-get)
 [data_set](#method-data-set)
+[data_forget](#method-data-forget)
 [head](#method-head)
 [last](#method-last)
 </div>
@@ -1214,6 +1215,37 @@ By default, any existing values are overwritten. If you wish to only set a value
     data_set($data, 'products.desk.price', 200, overwrite: false);
 
     // ['products' => ['desk' => ['price' => 100]]]
+
+<a name="method-data-forget"></a>
+#### `data_forget()` {.collection-method}
+
+The `data_forget` function removes a value within a nested array or object using "dot" notation:
+
+    $data = ['products' => ['desk' => ['price' => 100]]];
+
+    data_forget($data, 'products.desk.price');
+
+    // ['products' => ['desk' => []]]
+
+This function also accepts wildcards using asterisks and will remove values on the target accordingly:
+
+    $data = [
+        'products' => [
+            ['name' => 'Desk 1', 'price' => 100],
+            ['name' => 'Desk 2', 'price' => 150],
+        ],
+    ];
+
+    data_forget($data, 'products.*.price');
+
+    /*
+        [
+            'products' => [
+                ['name' => 'Desk 1'],
+                ['name' => 'Desk 2'],
+            ],
+        ]
+    */
 
 <a name="method-head"></a>
 #### `head()` {.collection-method}
