@@ -1216,6 +1216,35 @@ For instance, you may want to always route a User's slack notification to `#supp
         }
     }
 
+<a name="notifying-external-slack-workspaces"></a>
+#### Notifying External Slack Workspaces
+
+In order to send notifications to an external Slack Workspace, it is necessary to generate an OAuth Token specifically for your application's user. [Laravel Socialite](/docs/{{version}}/socialite) provides a Slack driver for user authentication.
+
+Once you have obtained the OAuth Token, you can utilize it to send notifications to a different workspace:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Notifications\Notification;
+    use Illuminate\Notifications\Slack\SlackRoute;
+
+    class User extends Authenticatable
+    {
+        use Notifiable;
+
+        /**
+         * Route notifications for the Slack channel.
+         */
+        public function routeNotificationForSlack(Notification $notification): mixed
+        {
+            return SlackRoute::make($this->slack_token, $this->slack_channel);
+        }
+    }
+
 <a name="localizing-notifications"></a>
 ## Localizing Notifications
 
