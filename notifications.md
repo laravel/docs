@@ -1190,10 +1190,10 @@ If you would like to quickly inspect the blocks you've been building, you can in
 To direct Slack notifications to the appropriate Slack team and channel, define a `routeNotificationForSlack` method on your notifiable model. This can return one of three values:
 
 - `null` - which defers routing to the channel configured in the notification itself. You may use the `to` method when building your `SlackMessage` to configure the channel within the notification.
-- A string specifying the Slack channel to send the notification to, e.g. `#support-channel`
-- A `SlackRoute` instance, which allows you to specify a dynamic token and channel name, e.g. `SlackRoute::make($this->slack_channel, $this->slack_token)`
+- A string specifying the Slack channel to send the notification to, e.g. `#support-channel`.
+- A `SlackRoute` instance, which allows you to specify a dynamic token and channel name, e.g. `SlackRoute::make($this->slack_channel, $this->slack_token)`.
 
-For instance, you may want to always route a User's slack notification to `#support-channel`:
+For instance, returning `#support-channel` from the `routeNotificationForSlack` method will send the notification to the `#support-channel` channel in the workspace associated with the Bot User OAuth token located in your application's `services.php` configuration file:
  
     <?php
 
@@ -1219,9 +1219,9 @@ For instance, you may want to always route a User's slack notification to `#supp
 <a name="notifying-external-slack-workspaces"></a>
 #### Notifying External Slack Workspaces
 
-In order to send notifications to an external Slack Workspace, it is necessary to generate an OAuth Token specifically for your application's user. [Laravel Socialite](/docs/{{version}}/socialite) provides a Slack driver for user authentication.
+Of course, you will often want to send notifications to the Slack Workspaces owned by your application's users. To do so, you will need to obtain a Slack OAuth token for the user. Thankfully, [Laravel Socialite](/docs/{{version}}/socialite) includes a Slack driver that will allow you to easily authenticate your application's users with Slack and obtain a token.
 
-Once you have obtained the OAuth Token, you can utilize it to send notifications to a different workspace:
+Once you have obtained the OAuth token and stored it , you may utilize the `SlackRoute::make` method to route a notification to the user's workspace:
 
     <?php
 
