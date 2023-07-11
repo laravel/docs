@@ -127,6 +127,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::isAscii](#method-str-is-ascii)
 [Str::isJson](#method-str-is-json)
 [Str::isUlid](#method-str-is-ulid)
+[Str::isUrl](#method-str-is-url)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
 [Str::lcfirst](#method-str-lcfirst)
@@ -208,6 +209,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [isJson](#method-fluent-str-is-json)
 [isUlid](#method-fluent-str-is-ulid)
+[isUrl](#method-fluent-str-is-url)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
 [lcfirst](#method-fluent-str-lcfirst)
@@ -1621,6 +1623,21 @@ The `Str::isJson` method determines if the given string is valid JSON:
 
     // false
 
+<a name="method-str-is-url"></a>
+#### `Str::isUrl()` {.collection-method}
+
+The `Str::isUrl` method determines if the given string is a valid URL:
+
+    use Illuminate\Support\Str;
+
+    $isUrl = Str::isUrl('http://example.com');
+
+    // true
+
+    $isUrl = Str::isUrl('laravel');
+
+    // false
+
 <a name="method-str-is-ulid"></a>
 #### `Str::isUlid()` {.collection-method}
 
@@ -2642,6 +2659,21 @@ The `isUlid` method determines if a given string is a ULID:
     // true
 
     $result = Str::of('Taylor')->isUlid();
+
+    // false
+
+<a name="method-fluent-str-is-url"></a>
+#### `isUrl` {.collection-method}
+
+The `isUrl` method determines if a given string is a URL:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('http://example.com')->isUrl();
+
+    // true
+
+    $result = Str::of('Taylor')->isUrl();
 
     // false
 
