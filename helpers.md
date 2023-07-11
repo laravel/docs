@@ -76,7 +76,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::whereNotNull](#method-array-where-not-null)
 [Arr::wrap](#method-array-wrap)
 [data_fill](#method-data-fill)
-[data_forgot](#method-data-forgot)
+[data_forget](#method-data-forget)
 [data_get](#method-data-get)
 [data_set](#method-data-set)
 [head](#method-head)
@@ -1127,10 +1127,10 @@ The `data_fill` function sets a missing value within a nested array or object us
 
     // ['products' => ['desk' => ['price' => 100, 'discount' => 10]]]
 
-<a name="method-data-forgot"></a>
-#### `data_forgot()` {.collection-method}
+<a name="method-data-forget"></a>
+#### `data_forget()` {.collection-method}
 
-The `data_fill` function unset an item from an array or object using "dot" notation:
+The `data_forget` function unset an item from an array or object using "dot" notation:
 
 ```php
 $data = [
@@ -1142,7 +1142,7 @@ $data = [
     ],
 ];
 
-data_forgot($data, 'products.categories.*.status');
+data_forget($data, 'products.categories.*.status');
 
 /*
     'products' => [
