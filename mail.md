@@ -1030,16 +1030,18 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. A
 
             // Assert a mailable was not sent...
             Mail::assertNotSent(AnotherMailable::class);
+
+            // Assert 3 total mailables were sent...
+            Mail::assertSentCount(3);
         }
     }
 
 If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:
 
     Mail::assertQueued(OrderShipped::class);
-
     Mail::assertNotQueued(OrderShipped::class);
-
     Mail::assertNothingQueued();
+    Mail::assertQueuedCount(3);
 
 You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
 
