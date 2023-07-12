@@ -8,6 +8,7 @@
     - [Routing](#routing)
     - [Authentication & Storage](#authentication-and-storage)
     - [Access Scopes](#access-scopes)
+    - [Slack Bot Scopes](#slack-bot-scopes)
     - [Optional Parameters](#optional-parameters)
 - [Retrieving User Details](#retrieving-user-details)
 
@@ -116,6 +117,24 @@ You can overwrite all existing scopes on the authentication request using the `s
     return Socialite::driver('github')
         ->setScopes(['read:user', 'public_repo'])
         ->redirect();
+
+<a name="slack-bot-scopes"></a>
+### Slack Bot Scopes
+
+Slack's API provides [different types of access tokens](https://api.slack.com/authentication/token-types), each with their own set of [permission scopes](https://api.slack.com/scopes). Socialite is compatible with two types of Slack access tokens:
+
+- Bot (prefixed with `xoxb-`)
+- User (prefixed with `xoxp-`)
+
+By default, the `slack` driver will generate a user token and calls to `user()` will return the user's details. To generate a bot token, you may chain the `asBotUser()` method:
+
+    return Socialite::driver('slack')
+        ->asBotUser()
+        ->setScopes(['chat:write', 'chat:write.public', 'chat:write.customize'])
+        ->redirect();
+
+> **Warning**
+> When generating a bot token, `user()` will continue to return a `Laravel\Socialite\Two\User` instance however, only the `token` property will be filled.
 
 <a name="optional-parameters"></a>
 ### Optional Parameters
