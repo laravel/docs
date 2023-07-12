@@ -1862,6 +1862,9 @@ Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation)
 });
 ```
 
+> **Warning**  
+> When retrieving only a single model, fetching relationships which have **not** been eager-loaded do not throw a LazyLoadingViolationException.
+
 <a name="inserting-and-updating-related-models"></a>
 ## Inserting & Updating Related Models
 
