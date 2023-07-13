@@ -1060,7 +1060,9 @@ Before sending Slack notifications, you first need to install the Slack notifica
 composer require laravel/slack-notification-channel
 ```
 
-Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your team. You should ensure that your App has the `chat:write` and `chat:write.customize` scopes. Once the App has been created, copy the "Bot User OAuth Token" and place it within a `slack` configuration array in your application's `services.php` configuration file:
+Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your Slack Workspace. 
+
+If you are sending notifications to the same Slack Workspace the App is created in, you will need to ensure that your App has the `chat:write`, `chat:write.public` and `chat:write.customize` scopes. Once the App has been created, copy the "Bot User OAuth Token" and place it within a `slack` configuration array in your application's `services.php` configuration file:
 
     'slack' => [
         'notifications' => [
@@ -1068,6 +1070,8 @@ Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+
+Alternatively, if you are sending notifications to a Slack Workspace that you do not own, you will need to go through the Slack App distribution process and use [Socialite](/docs/{{version}}/socialite) to generate a [Slack Bot Token](/docs/{{version}}/socialite#slack-bot-scopes).
 
 <a name="formatting-slack-notifications"></a>
 ### Formatting Slack Notifications
@@ -1219,9 +1223,9 @@ For instance, returning `#support-channel` from the `routeNotificationForSlack` 
 <a name="notifying-external-slack-workspaces"></a>
 #### Notifying External Slack Workspaces
 
-Of course, you will often want to send notifications to the Slack Workspaces owned by your application's users. To do so, you will need to obtain a Slack OAuth token for the user. Thankfully, [Laravel Socialite](/docs/{{version}}/socialite) includes a Slack driver that will allow you to easily authenticate your application's users with Slack and obtain a token.
+Of course, you will often want to send notifications to the Slack Workspaces owned by your application's users. To do so, you will need to obtain a Slack OAuth token for the user. Thankfully, [Laravel Socialite](/docs/{{version}}/socialite) includes a Slack driver that will allow you to easily authenticate your application's users with Slack and obtain a bot token.
 
-Once you have obtained the OAuth token and stored it , you may utilize the `SlackRoute::make` method to route a notification to the user's workspace:
+Once you have obtained the OAuth token and stored it, you may utilize the `SlackRoute::make` method to route a notification to the user's workspace:
 
     <?php
 
@@ -1241,9 +1245,12 @@ Once you have obtained the OAuth token and stored it , you may utilize the `Slac
          */
         public function routeNotificationForSlack(Notification $notification): mixed
         {
-            return SlackRoute::make($this->slack_token, $this->slack_channel);
+            return SlackRoute::make($this->slack_channel, $this->slack_token);
         }
     }
+
+> {{note}}
+> Your Slack App must be distributed in the Slack Marketplace before you can send notifications to other Slack Workspaces.
 
 <a name="localizing-notifications"></a>
 ## Localizing Notifications

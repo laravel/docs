@@ -133,7 +133,10 @@ By default, the `slack` driver will generate a user token and calls to `user()` 
         ->setScopes(['chat:write', 'chat:write.public', 'chat:write.customize'])
         ->redirect();
 
-> **Warning**
+You must also chain the `asBotUser()` method when fetching the OAuth user:
+
+    $user = Socialite::driver('slack')->asBotUser()->user();
+
 > When generating a bot token, `user()` will continue to return a `Laravel\Socialite\Two\User` instance however, only the `token` property will be filled.
 
 <a name="optional-parameters"></a>
