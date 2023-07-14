@@ -45,6 +45,7 @@
     - [Formatting Slack Notifications](#formatting-slack-notifications)
     - [Slack Interactivity](#slack-interactivity)
     - [Routing Slack Notifications](#routing-slack-notifications)
+    - [Notifying External Slack Workspaces](#notifying-external-slack-workspaces)
 - [Localizing Notifications](#localizing-notifications)
 - [Testing](#testing)
 - [Notification Events](#notification-events)
@@ -1054,15 +1055,17 @@ To route Vonage notifications to the proper phone number, define a `routeNotific
 <a name="slack-prerequisites"></a>
 ### Prerequisites
 
-Before sending Slack notifications, you first need to install the Slack notification channel via Composer:
+Before sending Slack notifications, you should install the Slack notification channel via Composer:
 
 ```shell
 composer require laravel/slack-notification-channel
 ```
 
-Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your Slack Workspace. 
+Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your Slack workspace.
 
-If you are sending notifications to the same Slack Workspace the App is created in, you will need to ensure that your App has the `chat:write`, `chat:write.public` and `chat:write.customize` scopes. Once the App has been created, copy the "Bot User OAuth Token" and place it within a `slack` configuration array in your application's `services.php` configuration file:
+If you only need to send notifications to the same Slack workspace that the App is created in, you should ensure that your App has the `chat:write`, `chat:write.public`, and `chat:write.customize` scopes. These scopes can be added from the "OAuth & Permissions" App management tab within Slack.
+
+Next, copy the App's "Bot User OAuth Token" and place it within a `slack` configuration array in your application's `services.php` configuration file. This token can be found on the "OAuth & Permissions" tab within Slack:
 
     'slack' => [
         'notifications' => [
@@ -1071,7 +1074,10 @@ If you are sending notifications to the same Slack Workspace the App is created 
         ],
     ],
 
-Alternatively, if you are sending notifications to a Slack Workspace that you do not own, you will need to go through the Slack App distribution process and use [Socialite](/docs/{{version}}/socialite) to generate a [Slack Bot Token](/docs/{{version}}/socialite#slack-bot-scopes).
+<a name="slack-app-distribution"></a>
+#### App Distribution
+
+If your application will be sending notifications to external Slack workspaces that are owned by your application's users, you will need to "distribute" your App via Slack. App distribution can be managed from your App's "Manage Distribution" tab within Slack. Once your App has been distributed, you may use [Socialite](/docs/{{version}}/socialite) to [obtain Slack Bot tokens](/docs/{{version}}/socialite#slack-bot-scopes) on behalf of your application's users.
 
 <a name="formatting-slack-notifications"></a>
 ### Formatting Slack Notifications
@@ -1108,7 +1114,7 @@ If a notification supports being sent as a Slack message, you should define a `t
 <a name="slack-interactivity"></a>
 ### Slack Interactivity
 
-Slack's Block Kit notification system provides powerful features to [handle user interaction](https://api.slack.com/interactivity/handling). To utilize these features, your Slack App should have "Interactivity" enabled and a "Request URL" configured that points to a URL served by your application.
+Slack's Block Kit notification system provides powerful features to [handle user interaction](https://api.slack.com/interactivity/handling). To utilize these features, your Slack App should have "Interactivity" enabled and a "Request URL" configured that points to a URL served by your application. These settings can be managed from the "Interactivity & Shortcuts" App management tab within Slack.
 
 In the following example, which utilizes the `actiosnBlock` method, Slack will send a `POST` request to your "Request URL" with a payload containing the Slack user who clicked the button, the ID of the clicked button, and more. Your application can then determine the action to take based on the payload. You should also [verify the request](https://api.slack.com/authentication/verifying-requests-from-slack) was made by Slack:
 
@@ -1143,7 +1149,7 @@ In the following example, which utilizes the `actiosnBlock` method, Slack will s
 <a name="slack-confirmation-modals"></a>
 #### Confirmation Modals
 
-If you would like to confirm an action before it is taken, you may invoke the `confirm` method when defining your button. The `confirm` method accepts a message and a closure which receives a `ConfirmObject` instance:
+If you would like users to be required to confirm an action before it is performed, you may invoke the `confirm` method when defining your button. The `confirm` method accepts a message and a closure which receives a `ConfirmObject` instance:
 
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ActionsBlock;
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
@@ -1181,7 +1187,7 @@ If you would like to confirm an action before it is taken, you may invoke the `c
 <a name="inspecting-slack-blocks"></a>
 #### Inspecting Slack Blocks
 
-If you would like to quickly inspect the blocks you've been building, you can invoke the `dd` method on the `SlackMessage` instance. The `dd` method will generate and dump a URL to Slack's [Block Kit Builder](https://app.slack.com/block-kit-builder/), which displays a preview of the payload and notification in your browser. You may pass `true` to `dd` to dump the raw payload:
+If you would like to quickly inspect the blocks you've been building, you can invoke the `dd` method on the `SlackMessage` instance. The `dd` method will generate and dump a URL to Slack's [Block Kit Builder](https://app.slack.com/block-kit-builder/), which displays a preview of the payload and notification in your browser. You may pass `true` to the `dd` method to dump the raw payload:
 
     return (new SlackMessage)
             ->text('One of your invoices has been paid!')
@@ -1191,11 +1197,11 @@ If you would like to quickly inspect the blocks you've been building, you can in
 <a name="routing-slack-notifications"></a>
 ### Routing Slack Notifications
 
-To direct Slack notifications to the appropriate Slack team and channel, define a `routeNotificationForSlack` method on your notifiable model. This can return one of three values:
+To direct Slack notifications to the appropriate Slack team and channel, define a `routeNotificationForSlack` method on your notifiable model. This method can return one of three values:
 
 - `null` - which defers routing to the channel configured in the notification itself. You may use the `to` method when building your `SlackMessage` to configure the channel within the notification.
 - A string specifying the Slack channel to send the notification to, e.g. `#support-channel`.
-- A `SlackRoute` instance, which allows you to specify a dynamic token and channel name, e.g. `SlackRoute::make($this->slack_channel, $this->slack_token)`.
+- A `SlackRoute` instance, which allows you to specify an OAuth token and channel name, e.g. `SlackRoute::make($this->slack_channel, $this->slack_token)`. This method should be used to send notifications to external workspaces.
 
 For instance, returning `#support-channel` from the `routeNotificationForSlack` method will send the notification to the `#support-channel` channel in the workspace associated with the Bot User OAuth token located in your application's `services.php` configuration file:
  
@@ -1221,11 +1227,14 @@ For instance, returning `#support-channel` from the `routeNotificationForSlack` 
     }
 
 <a name="notifying-external-slack-workspaces"></a>
-#### Notifying External Slack Workspaces
+### Notifying External Slack Workspaces
 
-Of course, you will often want to send notifications to the Slack Workspaces owned by your application's users. To do so, you will need to obtain a Slack OAuth token for the user. Thankfully, [Laravel Socialite](/docs/{{version}}/socialite) includes a Slack driver that will allow you to easily authenticate your application's users with Slack and obtain a bot token.
+> **Note**
+> Before sending notifications to external Slack workspaces, your Slack App must be [distributed](#slack-app-distribution).
 
-Once you have obtained the OAuth token and stored it, you may utilize the `SlackRoute::make` method to route a notification to the user's workspace:
+Of course, you will often want to send notifications to the Slack workspaces owned by your application's users. To do so, you will first need to obtain a Slack OAuth token for the user. Thankfully, [Laravel Socialite](/docs/{{version}}/socialite) includes a Slack driver that will allow you to easily authenticate your application's users with Slack and [obtain a bot token](/docs/{{version}}/socialite#slack-bot-scopes).
+
+Once you have obtained the bot token and stored it within your application's database, you may utilize the `SlackRoute::make` method to route a notification to the user's workspace. In addition, your application will likely need to offer an opportunity for the user to specify which channel notifications should be sent to:
 
     <?php
 
@@ -1248,9 +1257,6 @@ Once you have obtained the OAuth token and stored it, you may utilize the `Slack
             return SlackRoute::make($this->slack_channel, $this->slack_token);
         }
     }
-
-> {{note}}
-> Your Slack App must be distributed in the Slack Marketplace before you can send notifications to other Slack Workspaces.
 
 <a name="localizing-notifications"></a>
 ## Localizing Notifications

@@ -121,23 +121,29 @@ You can overwrite all existing scopes on the authentication request using the `s
 <a name="slack-bot-scopes"></a>
 ### Slack Bot Scopes
 
-Slack's API provides [different types of access tokens](https://api.slack.com/authentication/token-types), each with their own set of [permission scopes](https://api.slack.com/scopes). Socialite is compatible with two types of Slack access tokens:
+Slack's API provides [different types of access tokens](https://api.slack.com/authentication/token-types), each with their own set of [permission scopes](https://api.slack.com/scopes). Socialite is compatible with both of the following Slack access tokens types:
+
+<div class="content-list" markdown="1">
 
 - Bot (prefixed with `xoxb-`)
 - User (prefixed with `xoxp-`)
 
-By default, the `slack` driver will generate a user token and calls to `user()` will return the user's details. To generate a bot token, you may chain the `asBotUser()` method:
+</div>
+
+By default, the `slack` driver will generate a `user` token and invoking the the driver's `user` method will return the user's details.
+
+Bot tokens are primarily useful if your application will be sending notifications to external Slack workspaces that are owned by your application's users. To generate a bot token, invoke the `asBotUser` method before redirecting the user to Slack for authentication:
 
     return Socialite::driver('slack')
         ->asBotUser()
         ->setScopes(['chat:write', 'chat:write.public', 'chat:write.customize'])
         ->redirect();
 
-You must also chain the `asBotUser()` method when fetching the OAuth user:
+In addition, you must invoke the `asBotUser` method before invoking the `user` method after Slack redirects the user back to your application after authentication:
 
     $user = Socialite::driver('slack')->asBotUser()->user();
 
-> When generating a bot token, `user()` will continue to return a `Laravel\Socialite\Two\User` instance however, only the `token` property will be filled.
+When generating a bot token, the `user` method will still return a `Laravel\Socialite\Two\User` instance; however, only the `token` property will be hydrated. This token may be stored in order to [send notifications to the authenticated user's Slack workspaces](/docs/{{version}}/notifications#notifying-external-slack-workspaces).
 
 <a name="optional-parameters"></a>
 ### Optional Parameters
