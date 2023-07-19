@@ -97,7 +97,7 @@ Then, define a `model` property on the corresponding factory:
         /**
          * The name of the factory's corresponding model.
          *
-         * @var string
+         * @var class-string<\Illuminate\Database\Eloquent\Model>
          */
         protected $model = Flight::class;
     }
