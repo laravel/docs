@@ -275,6 +275,19 @@ The deprecated `MocksApplicationServices` trait has been removed from the framew
 
 If your application uses these methods, we recommend you transition to `Event::fake`, `Bus::fake`, and `Notification::fake`, respectively. You can learn more about mocking via fakes in the corresponding documentation for the component you are attempting to fake.
 
+<a name="assert-times-sent"></a>
+#### Notifcations: The `assertTimesSent` Method
+
+**Likelihood Of Impact: Medium**
+
+The deprecated `Notification::assertTimesSent` method has been removed. If your application uses this method, we recommend you to replace this with `Notfication::assertSentTimes`. You may also have to change the parameter ordering to suit the expected parameters of this new method:
+
+    // Before
+    Notification::assertTimesSent(1, ExampleNotification::class);
+
+    // After
+    Notification::assertSentTimes(ExampleNotification::class, 1);
+
 ### Validation
 
 <a name="closure-validation-rule-messages"></a>
