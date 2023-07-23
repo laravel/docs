@@ -540,6 +540,21 @@ foreach ($users as $user) {
 
 Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with a very large number of Eloquent records, consider using [the `lazy` method](#chunking-using-lazy-collections) instead.
 
+> **Warning**  
+> Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load relationships and you not ready consider using [the `lazy` method](#chunking-using-lazy-collections) instead, consider using current code.
+
+```php
+use App\Models\User;
+
+$users = User::with('post')->cursor()->map(function ($model) {
+            return $this->eagerLoadRelations([$model])[0];
+});
+
+foreach ($users as $user) {
+    echo $user->post->id;
+}
+```
+
 <a name="advanced-subqueries"></a>
 ### Advanced Subqueries
 
