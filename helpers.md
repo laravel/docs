@@ -2275,17 +2275,17 @@ The `Str::words` method limits the number of words in a string. An additional st
 <a name="method-str-wrap"></a>
 #### `Str::wrap()` {.collection-method}
 
-The `Str::wrap` method wraps the string with the given strings:
+The `Str::wrap` method wraps the given string with an additional string or pair of strings:
 
     use Illuminate\Support\Str;
-
-    Str::wrap('is', 'This ', ' me!');
-
-    // This is me!
 
     Str::wrap('Laravel', '"');
 
     // "Laravel"
+
+    Str::wrap('is', before: 'This ', after: ' Laravel!');
+
+    // This is Laravel!
 
 <a name="method-str"></a>
 #### `str()` {.collection-method}
