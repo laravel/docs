@@ -136,7 +136,7 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
         'passphrase' => env('SFTP_PASSPHRASE'),
 
         // Settings for file / directory permissions...
-        'visibility' => 'private', // `private` = 0600, `public` = 0700
+        'visibility' => 'private', // `private` = 0600, `public` = 0644
         'directory_visibility' => 'private', // `private` = 0700, `public` = 0755
 
         // Optional SFTP Settings...
