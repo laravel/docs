@@ -172,6 +172,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
 [Str::words](#method-str-words)
+[Str::wrap](#method-str-wrap)
 [str](#method-str)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
@@ -2270,6 +2271,21 @@ The `Str::words` method limits the number of words in a string. An additional st
     return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
 
     // Perfectly balanced, as >>>
+
+<a name="method-str-wrap"></a>
+#### `Str::wrap()` {.collection-method}
+
+The `Str::wrap` method wraps the given string with an additional string or pair of strings:
+
+    use Illuminate\Support\Str;
+
+    Str::wrap('Laravel', '"');
+
+    // "Laravel"
+
+    Str::wrap('is', before: 'This ', after: ' Laravel!');
+
+    // This is Laravel!
 
 <a name="method-str"></a>
 #### `str()` {.collection-method}
