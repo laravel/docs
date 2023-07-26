@@ -402,6 +402,9 @@ Options may be retrieved just as easily as arguments using the `option` method. 
 <a name="prompting-for-input"></a>
 ### Prompting For Input
 
+> **Note**  
+> [Laravel Prompts](/docs/{{version}}/prompts) is a new PHP package for adding beautiful and user-friendly forms to your command-line applications, complete with browser-like features including placeholder text and validation.
+
 In addition to displaying output, you may also ask the user to provide input during the execution of your command. The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command:
 
     /**
