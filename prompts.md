@@ -16,17 +16,17 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Prompts is a PHP package for adding beautiful and user-friendly forms to your command-line applications, complete with browser-like features including placeholder text and validation.
+Laravel Prompts is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
 
 Laravel Prompts is perfect for accepting user input in your [Artisan Console Commands](/docs/{{version}}/artisan#writing-commands), but it may also be used in any command-line PHP project!
 
 > **Note**  
-> Laravel Prompts supports macOS, Linux, and Windows with WSL. Please see the section on [Unsupported Environments & Fallbacks](#fallbacks) for more information.
+> Laravel Prompts supports macOS, Linux, and Windows with WSL. For more information, please see the [Unsupported Environments & Fallbacks](#fallbacks) section.
 
 <a name="installation"></a>
 ## Installation
 
-Laravel Prompts already comes installed and configured with the latest version of Laravel.
+Laravel Prompts already come installed and configured with the latest version of Laravel.
 
 Laravel Prompts may also be installed in plain PHP projects by using the Composer package manager:
 
@@ -95,7 +95,7 @@ $name = text(
 );
 ```
 
-The callback will receive the value that has been entered, and may return an error message, or `null` if the validation passes.
+The callback will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
 <a name="password"></a>
 ### Password
@@ -153,7 +153,7 @@ $name = password(
 );
 ```
 
-The callback will receive the value that has been entered, and may return an error message, or `null` if the validation passes.
+The callback will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
 <a name="confirm"></a>
 ### Confirm
@@ -166,7 +166,7 @@ use function Laravel\Prompts\confirm;
 $confirmed = confirm('Do you accept the terms?');
 ```
 
-By default, the "Yes" answer will be preselected. However, you may configure the default to be "No" by passing `false` to the `default` argument:
+By default, the "Yes" answer will be pre-selected. However, you may configure the default to be "No" by passing `false` to the `default` argument:
 
 ```php
 $confirmed = confirm(
@@ -230,7 +230,7 @@ $role = select(
 );
 ```
 
-You may also pass an associative array to the `options` argument to have the selected key returned, instead of its value:
+You may also pass an associative array to the `options` argument to have the selected key returned instead of its value:
 
 ```php
 $role = select(
@@ -244,7 +244,7 @@ $role = select(
 );
 ```
 
-By default, up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
 
 ```php
 $role = select(
@@ -275,7 +275,7 @@ $role = select(
 )
 ```
 
-If the `options` argument is an associative array then the callback will receive the selected key, otherwise it will receive the selected value. The callback may return an error message, or `null` if the validation passes.
+If the `options` argument is an associative array, then the callback will receive the selected key, otherwise it will receive the selected value. The callback may return an error message, or `null` if the validation passes.
 
 <a name="multiselect"></a>
 ### Multi-select
@@ -291,7 +291,7 @@ $permissions = multiselect(
 );
 ```
 
-You may also specify options that should be preselected by passing an array to the `default` argument:
+You may also specify options that should be pre-selected by passing an array to the `default` argument:
 
 ```php
 use function Laravel\Prompts\multiselect;
@@ -303,7 +303,7 @@ $permissions = multiselect(
 );
 ```
 
-You may also pass an associative array to the `options` argument to return the selected options' keys, instead of their values:
+You may also pass an associative array to the `options` argument to return the selected options' keys instead of their values:
 
 ```
 $permissions = multiselect(
@@ -318,7 +318,7 @@ $permissions = multiselect(
 );
 ```
 
-By default, up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
 
 ```php
 $role = multiselect(
@@ -375,7 +375,7 @@ use function Laravel\Prompts\suggest;
 $name = suggest('What is your name?', ['Taylor', 'Dayle']);
 ```
 
-Alternatively, you may pass a closure as the second argument to the `suggest` function. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
+Alternatively, you may pass a closure as the second argument to the `suggest` function. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far and return an array of options for auto-completion:
 
 ```php
 $name = suggest(
@@ -436,7 +436,7 @@ $name = suggest(
 );
 ```
 
-The callback will receive the value that has been entered, and may return an error message, or `null` if the validation passes.
+The callback will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
 <a name="search"></a>
 ### Search
@@ -468,7 +468,7 @@ $id = search(
 );
 ```
 
-By default, up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
 
 ```php
 $id = search(
@@ -501,7 +501,7 @@ $id = search(
 );
 ```
 
-If the `options` callback returns an associative array then the callback will receive the selected key, otherwise it will receive the selected value. The callback may return an error message, or `null` if the validation passes.
+If the `options` callback returns an associative array, then the callback will receive the selected key, otherwise, it will receive the selected value. The callback may return an error message, or `null` if the validation passes.
 
 <a name="terminal-considerations"></a>
 ### Terminal Considerations
@@ -509,12 +509,12 @@ If the `options` callback returns an associative array then the callback will re
 <a name="terminal-width"></a>
 #### Terminal Width
 
-If the length of any label, option, or validation message exceeds the number of "columns" in the user's terminal, it will be automatically truncated to fit. You may wish to consider minimizing the length of these strings if your users may be using narrower terminals. A typically safe maximum length is 74 characters to support an 80-character terminal.
+If the length of any label, option, or validation message exceeds the number of "columns" in the user's terminal, it will be automatically truncated to fit. Consider minimizing the length of these strings if your users may be using narrower terminals. A typically safe maximum length is 74 characters to support an 80-character terminal.
 
 <a name="terminal-height"></a>
 #### Terminal Height
 
-For any prompts that accept the `scroll` argument, the configured value will automatically be reduced to fit the height of the users terminal, including space for a validation message.
+For any prompts that accept the `scroll` argument, the configured value will automatically be reduced to fit the height of the user's terminal, including space for a validation message.
 
 <a name="fallbacks"></a>
 ### Unsupported Environments & Fallbacks
@@ -572,4 +572,4 @@ TextPrompt::fallbackUsing(function (TextPrompt $prompt) use ($input, $output) {
 });
 ```
 
-Fallbacks must be configured individually for each prompt class. The callback will receive an instance of the prompt class, and must return an appropriate type for the prompt.
+Fallbacks must be configured individually for each prompt class. The callback will receive an instance of the prompt class and must return an appropriate type for the prompt.

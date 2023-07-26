@@ -416,7 +416,7 @@ You may also provide placeholder text by using a tuple containing the question a
         'user' => ['Which user ID should receive the mail?', 'E.g. 123'],
     ];
 
-If you would like full control over the prompt, you may use a callback function that should prompt the user and return their answer:
+If you would like complete control over the prompt, you may use a callback function that should prompt the user and return their answer:
 
     use App\Models\User;
     use function Laravel\Prompts\search;
@@ -436,7 +436,7 @@ If you would like full control over the prompt, you may use a callback function 
 > **Note**  
 See the [Laravel Prompts](/docs/{{version}}/prompts) documentation for more information on the available prompts and their usage.
 
-If you wish to prompt the user to select or enter [options](#options), you may include prompts in the `handle` method of your command. However, if you only wish to prompt the user when they have been prompted for missing arguments, then you may implement the `afterPromptingForMissingArguments` method:
+If you wish to prompt the user to select or enter [options](#options), you may include prompts in your command's `handle` method. However, if you only wish to prompt the user when they have been prompted for missing arguments, then you may implement the `afterPromptingForMissingArguments` method:
 
     use Symfony\Component\Console\Input\InputInterface;
     use Symfony\Component\Console\Output\OutputInterface;
@@ -491,7 +491,7 @@ Options may be retrieved just as easily as arguments using the `option` method. 
 ### Prompting For Input
 
 > **Note**  
-> [Laravel Prompts](/docs/{{version}}/prompts) is a new PHP package for adding beautiful and user-friendly forms to your command-line applications, complete with browser-like features including placeholder text and validation.
+> [Laravel Prompts](/docs/{{version}}/prompts) is a new PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
 
 In addition to displaying output, you may also ask the user to provide input during the execution of your command. The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command:
 
