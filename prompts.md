@@ -18,17 +18,17 @@
 
 Laravel Prompts is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
 
-Laravel Prompts is perfect for accepting user input in your [Artisan Console Commands](/docs/{{version}}/artisan#writing-commands), but it may also be used in any command-line PHP project!
+Laravel Prompts is perfect for accepting user input in your [Artisan console commands](/docs/{{version}}/artisan#writing-commands), but it may also be used in any command-line PHP project.
 
 > **Note**  
-> Laravel Prompts supports macOS, Linux, and Windows with WSL. For more information, please see the [Unsupported Environments & Fallbacks](#fallbacks) section.
+> Laravel Prompts supports macOS, Linux, and Windows with WSL. For more information, please see our documentation on [unsupported environments & fallbacks](#fallbacks).
 
 <a name="installation"></a>
 ## Installation
 
-Laravel Prompts already come installed and configured with the latest version of Laravel.
+Laravel Prompts is already included with the latest release of Laravel.
 
-Laravel Prompts may also be installed in plain PHP projects by using the Composer package manager:
+Laravel Prompts may also be installed in your other PHP projects by using the Composer package manager:
 
 ```shell
 composer require laravel/prompts
@@ -82,7 +82,7 @@ $name = text(
 <a name="text-validation"></a>
 #### Additional Validation
 
-Finally, if you would like to perform additional validation logic, you may pass a callback to the `validate` argument:
+Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
 
 ```php
 $name = text(
@@ -95,7 +95,7 @@ $name = text(
 );
 ```
 
-The callback will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
 <a name="password"></a>
 ### Password
@@ -141,7 +141,7 @@ $name = password(
 <a name="password-validation"></a>
 #### Additional Validation
 
-Finally, if you would like to perform additional validation logic, you may pass a callback to the `validate` argument:
+Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
 
 ```php
 $name = password(
@@ -153,7 +153,7 @@ $name = password(
 );
 ```
 
-The callback will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
 <a name="confirm"></a>
 ### Confirm
@@ -257,7 +257,7 @@ $role = select(
 <a name="select-validation"></a>
 #### Validation
 
-Unlike other prompt functions, the `select` function doesn't accept the `required` argument because it is not possible to select nothing. However, you may pass a callback function to the `validate` argument if you need to present an option but prevent it from being selected:
+Unlike other prompt functions, the `select` function doesn't accept the `required` argument because it is not possible to select nothing. However, you may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
 
 ```php
 $role = select(
@@ -275,7 +275,7 @@ $role = select(
 )
 ```
 
-If the `options` argument is an associative array, then the callback will receive the selected key, otherwise it will receive the selected value. The callback may return an error message, or `null` if the validation passes.
+If the `options` argument is an associative array, then the closure will receive the selected key, otherwise it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
 
 <a name="multiselect"></a>
 ### Multi-select
@@ -344,7 +344,7 @@ $role = multiselect(
 <a name="multiselect-validation"></a>
 #### Validation
 
-You may pass a callback function to the `validate` argument if you need to present an option but prevent it from being selected:
+You may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
 
 ```
 $permissions = select(
@@ -362,7 +362,7 @@ $permissions = select(
 );
 ```
 
-If the `options` argument is an associative array then the callback will receive the selected keys, otherwise it will receive the selected values. The callback may return an error message, or `null` if the validation passes.
+If the `options` argument is an associative array then the closure will receive the selected keys, otherwise it will receive the selected values. The closure may return an error message, or `null` if the validation passes.
 
 <a name="suggest"></a>
 ### Suggest
@@ -422,7 +422,7 @@ $name = suggest(
 <a name="suggest-validation"></a>
 #### Additional Validation
 
-Finally, if you would like to perform additional validation logic, you may pass a callback to the `validate` argument:
+Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
 
 ```php
 $name = suggest(
@@ -436,7 +436,7 @@ $name = suggest(
 );
 ```
 
-The callback will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
 <a name="search"></a>
 ### Search
@@ -454,7 +454,7 @@ $id = search(
 );
 ```
 
-The callback function will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
+The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
 
 You may also include placeholder text:
 
@@ -483,7 +483,7 @@ $id = search(
 <a name="search-validation"></a>
 #### Validation
 
-If you would like to perform additional validation logic, you may pass a callback to the `validate` argument:
+If you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
 
 ```php
 $id = search(
@@ -501,7 +501,7 @@ $id = search(
 );
 ```
 
-If the `options` callback returns an associative array, then the callback will receive the selected key, otherwise, it will receive the selected value. The callback may return an error message, or `null` if the validation passes.
+If the `options` closure returns an associative array, then the closure will receive the selected key, otherwise, it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
 
 <a name="terminal-considerations"></a>
 ### Terminal Considerations
@@ -524,12 +524,12 @@ Laravel Prompts supports macOS, Linux, and Windows with WSL. Due to limitations 
 For this reason, Laravel Prompts supports falling back to an alternative implementation such as the [Symfony Console Question Helper](https://symfony.com/doc/current/components/console/helpers/questionhelper.html).
 
 > **Note**  
-> When using Laravel Prompts with the Laravel Framework, fallbacks for each prompt have been configured for you and will be automatically enabled in unsupported environments.
+> When using Laravel Prompts with the Laravel framework, fallbacks for each prompt have been configured for you and will be automatically enabled in unsupported environments.
 
 <a name="fallback-conditions"></a>
 #### Fallback Conditions
 
-If you are not using the Laravel Framework or need to customize when the fallback behavior is used, you may pass a boolean to the `fallbackWhen` static method on the `Prompt` class:
+If you are not using Laravel or need to customize when the fallback behavior is used, you may pass a boolean to the `fallbackWhen` static method on the `Prompt` class:
 
 ```php
 use Laravel\Prompts\Prompt;
@@ -542,7 +542,7 @@ Prompt::fallbackWhen(
 <a name="fallback-behavior"></a>
 #### Fallback Behavior
 
-If you are not using the Laravel Framework or need to customize the fallback behavior, you may pass a callback to the `fallbackUsing` static method on each prompt class:
+If you are not using Laravel or need to customize the fallback behavior, you may pass a closure to the `fallbackUsing` static method on each prompt class:
 
 ```php
 use Laravel\Prompts\TextPrompt;
@@ -572,4 +572,4 @@ TextPrompt::fallbackUsing(function (TextPrompt $prompt) use ($input, $output) {
 });
 ```
 
-Fallbacks must be configured individually for each prompt class. The callback will receive an instance of the prompt class and must return an appropriate type for the prompt.
+Fallbacks must be configured individually for each prompt class. The closure will receive an instance of the prompt class and must return an appropriate type for the prompt.
