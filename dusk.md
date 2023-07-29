@@ -24,6 +24,7 @@
     - [Dusk Selectors](#dusk-selectors)
     - [Text, Values, & Attributes](#text-values-and-attributes)
     - [Interacting With Forms](#interacting-with-forms)
+    - [Elements within an iframe](#elements-within-an-iframe)
     - [Attaching Files](#attaching-files)
     - [Pressing Buttons](#pressing-buttons)
     - [Clicking Links](#clicking-links)
@@ -619,6 +620,19 @@ The `uncheck` method may be used to "uncheck" a checkbox input:
 To "select" a `radio` input option, you may use the `radio` method. Like many other input related methods, a full CSS selector is not required. If a CSS selector match can't be found, Dusk will search for a `radio` input with matching `name` and `value` attributes:
 
     $browser->radio('size', 'large');
+
+<a name="elements-within-an-iframe"></a>
+### Elements within an iframe
+
+If you need to interact with elements inside an iframe, you can use the `withinFrame` function. This function allows you to run Dusk commands within the context of the specified iframe:
+
+    $browser->withinFrame('#credit-card-details', function ($browser) {
+
+        $browser->type('input[name="cardnumber"]', '4242424242424242')
+            ->type('input[name="exp-date"]', '12/24')
+            ->type('input[name="cvc"]', '123');
+        })
+        ->press('Pay')
 
 <a name="attaching-files"></a>
 ### Attaching Files
