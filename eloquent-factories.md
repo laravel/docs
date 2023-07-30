@@ -140,7 +140,6 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
 
     use App\Models\User;
     use Illuminate\Database\Eloquent\Factories\Factory;
-    use Illuminate\Support\Str;
 
     class UserFactory extends Factory
     {
@@ -157,6 +156,27 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
         }
 
         // ...
+    }
+
+You can also use factory callbacks in combination with states to only perform additional tasks when required.
+
+    use App\Models\User;
+    use Illuminate\Database\Eloquent\Factories\Factory;
+
+    /**
+     * Indicate that the user is suspended.
+     */
+    public function suspended(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'account_status' => 'suspended',
+            ];
+        })->afterMaking(function (User $user) {
+            // ...
+        })->afterCreating(function (User $user) {
+            // ...
+        });
     }
 
 <a name="creating-models-using-factories"></a>
