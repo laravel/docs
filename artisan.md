@@ -582,6 +582,17 @@ Alternatively, you may pass the entire Artisan command to the `call` method as a
 
     Artisan::call('mail:send 1 --queue=default');
 
+<a name="passing-command-class-directly"></a>
+#### Passing Command Class Directly
+
+You can pass command class directly to the `call` method:
+
+```php
+use Illuminate\Cache\Console\ClearCommand;
+
+Artisan::call(ClearCommand::class);
+```
+
 <a name="passing-array-values"></a>
 #### Passing Array Values
 
