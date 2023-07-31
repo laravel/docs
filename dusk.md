@@ -30,6 +30,7 @@
     - [Using The Keyboard](#using-the-keyboard)
     - [Using The Mouse](#using-the-mouse)
     - [JavaScript Dialogs](#javascript-dialogs)
+    - [Interacting With Inline Frames](#interacting-with-iframes)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
     - [Scrolling An Element Into View](#scrolling-an-element-into-view)
@@ -756,6 +757,18 @@ To close an open JavaScript dialog by clicking the "OK" button, you may invoke t
 To close an open JavaScript dialog by clicking the "Cancel" button, you may invoke the `dismissDialog` method:
 
     $browser->dismissDialog();
+
+<a name="interacting-with-iframes"></a>
+### Interacting With Inline Frames
+
+If you need to interact with elements within an iframe, you may use the `withinFrame` method. All element interactions that take place within the closure provided to the `withinFrame` method will be scoped to the context of the specified iframe:
+
+    $browser->withinFrame('#credit-card-details', function ($browser) {
+        $browser->type('input[name="cardnumber"]', '4242424242424242')
+            ->type('input[name="exp-date"]', '12/24')
+            ->type('input[name="cvc"]', '123');
+        })->press('Pay');
+    });
 
 <a name="scoping-selectors"></a>
 ### Scoping Selectors
