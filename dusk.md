@@ -24,13 +24,13 @@
     - [Dusk Selectors](#dusk-selectors)
     - [Text, Values, & Attributes](#text-values-and-attributes)
     - [Interacting With Forms](#interacting-with-forms)
-    - [Elements within an iframe](#elements-within-an-iframe)
     - [Attaching Files](#attaching-files)
     - [Pressing Buttons](#pressing-buttons)
     - [Clicking Links](#clicking-links)
     - [Using The Keyboard](#using-the-keyboard)
     - [Using The Mouse](#using-the-mouse)
     - [JavaScript Dialogs](#javascript-dialogs)
+    - [Interacting With Inline Frames](#interacting-with-iframes)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
     - [Scrolling An Element Into View](#scrolling-an-element-into-view)
@@ -621,19 +621,6 @@ To "select" a `radio` input option, you may use the `radio` method. Like many ot
 
     $browser->radio('size', 'large');
 
-<a name="elements-within-an-iframe"></a>
-### Elements within an iframe
-
-If you need to interact with elements inside an iframe, you can use the `withinFrame` function. This function allows you to run Dusk commands within the context of the specified iframe:
-
-    $browser->withinFrame('#credit-card-details', function ($browser) {
-
-        $browser->type('input[name="cardnumber"]', '4242424242424242')
-            ->type('input[name="exp-date"]', '12/24')
-            ->type('input[name="cvc"]', '123');
-        })
-        ->press('Pay')
-
 <a name="attaching-files"></a>
 ### Attaching Files
 
@@ -770,6 +757,18 @@ To close an open JavaScript dialog by clicking the "OK" button, you may invoke t
 To close an open JavaScript dialog by clicking the "Cancel" button, you may invoke the `dismissDialog` method:
 
     $browser->dismissDialog();
+
+<a name="interacting-with-iframes"></a>
+### Interacting With Inline Frames
+
+If you need to interact with elements within an iframe, you may use the `withinFrame` function. This function allows you to run Dusk commands within the context of the specified iframe:
+
+    $browser->withinFrame('#credit-card-details', function ($browser) {
+        $browser->type('input[name="cardnumber"]', '4242424242424242')
+            ->type('input[name="exp-date"]', '12/24')
+            ->type('input[name="cvc"]', '123');
+        })->press('Pay');
+    });
 
 <a name="scoping-selectors"></a>
 ### Scoping Selectors
