@@ -12,6 +12,7 @@
     - [Options](#options)
     - [Input Arrays](#input-arrays)
     - [Input Descriptions](#input-descriptions)
+    - [Prompting For Missing Input](#prompting-for-missing-input)
 - [Command I/O](#command-io)
     - [Retrieving Input](#retrieving-input)
     - [Prompting For Input](#prompting-for-input)
@@ -371,6 +372,93 @@ You may assign descriptions to input arguments and options by separating the arg
                             {user : The ID of the user}
                             {--queue : Whether the job should be queued}';
 
+<a name="prompting-for-missing-input"></a>
+### Prompting For Missing Input
+
+If your command contains required arguments, the user will receive an error message when they are not provided. Alternatively, you may configure your command to automatically prompt the user when required arguments are missing by implementing the `PromptsForMissingInput` interface:
+
+    <?php
+
+    namespace App\Console\Commands;
+
+    use Illuminate\Console\Command;
+    use Illuminate\Contracts\Console\PromptsForMissingInput;
+
+    class SendEmails extends Command implements PromptsForMissingInput
+    {
+        /**
+         * The name and signature of the console command.
+         *
+         * @var string
+         */
+        protected $signature = 'mail:send {user}';
+
+        // ...
+    }
+
+If Laravel needs to gather a required argument from the user, it will automatically ask the user for the argument by intelligently phrasing the question using either the argument name or description. If you wish to customize the question used to gather the required argument, you may implement the `promptForMissingArgumentsUsing` method, returning an array of questions keyed by the argument names:
+
+    /**
+     * Prompt for missing input arguments using the returned questions.
+     *
+     * @return array
+     */
+    protected function promptForMissingArgumentsUsing()
+    {
+        return [
+            'user' => 'Which user ID should receive the mail?',
+        ];
+    }
+
+You may also provide placeholder text by using a tuple containing the question and placeholder:
+
+    return [
+        'user' => ['Which user ID should receive the mail?', 'E.g. 123'],
+    ];
+
+If you would like complete control over the prompt, you may provide a closure that should prompt the user and return their answer:
+
+    use App\Models\User;
+    use function Laravel\Prompts\search;
+
+    // ...
+
+    return [
+        'user' => fn () => search(
+            label: 'Search for a user:',
+            placeholder: 'E.g. Taylor Otwell',
+            options: fn ($value) => strlen($value) > 0
+                ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')
+                : []
+        ),
+    ];
+
+> **Note**  
+The comprehensive [Laravel Prompts](/docs/{{version}}/prompts) documentation includes additional information on the available prompts and their usage.
+
+If you wish to prompt the user to select or enter [options](#options), you may include prompts in your command's `handle` method. However, if you only wish to prompt the user when they have also been automatically prompted for missing arguments, then you may implement the `afterPromptingForMissingArguments` method:
+
+    use Symfony\Component\Console\Input\InputInterface;
+    use Symfony\Component\Console\Output\OutputInterface;
+    use function Laravel\Prompts\confirm;
+
+    // ...
+
+    /**
+     * Perform actions after the user was prompted for missing arguments.
+     *
+     * @param  \Symfony\Component\Console\Input\InputInterface  $input
+     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     * @return void
+     */
+    protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)
+    {
+        $input->setOption('queue', confirm(
+            label: 'Would you like to queue the mail?',
+            default: $this->option('queue')
+        ));
+    }
+
 <a name="command-io"></a>
 ## Command I/O
 
@@ -401,6 +489,9 @@ Options may be retrieved just as easily as arguments using the `option` method. 
 
 <a name="prompting-for-input"></a>
 ### Prompting For Input
+
+> **Note**  
+> [Laravel Prompts](/docs/{{version}}/prompts) is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
 
 In addition to displaying output, you may also ask the user to provide input during the execution of your command. The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command:
 

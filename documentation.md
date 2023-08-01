@@ -92,6 +92,7 @@
     - [Pennant](/docs/{{version}}/pennant)
     - [Pint](/docs/{{version}}/pint)
     - [Precognition](/docs/{{version}}/precognition)
+    - [Prompts](/docs/{{version}}/prompts)
     - [Sail](/docs/{{version}}/sail)
     - [Sanctum](/docs/{{version}}/sanctum)
     - [Scout](/docs/{{version}}/scout)
