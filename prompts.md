@@ -355,7 +355,7 @@ $permissions = select(
         'update' => 'Update',
         'delete' => 'Delete'
     ],
-    validate: fn (array $values) => ! in_array('read', $values) =>
+    validate: fn (array $values) => ! in_array('read', $values)
         ? 'All users require the read permission.'
         : null
     }
