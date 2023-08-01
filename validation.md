@@ -1809,6 +1809,14 @@ The field under validation must be uppercase.
 
 The field under validation must be a valid URL.
 
+If you would like to specify the URL protocols that should be considered valid, you may pass the protocols as validation rule parameters:
+
+```php
+'url' => 'url:http,https',
+
+'game' => 'url:minecraft,steam',
+```
+
 <a name="rule-ulid"></a>
 #### ulid
 
