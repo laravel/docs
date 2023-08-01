@@ -33,6 +33,12 @@ If you're only interested in a particular section of the application overview ou
 php artisan about --only=environment
 ```
 
+Or, to explore a specific configuration file's values, you may use the `config:show` Artisan command:
+
+```shell
+php artisan config:show database
+```
+
 <a name="environment-configuration"></a>
 ## Environment Configuration
 
