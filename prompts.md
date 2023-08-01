@@ -449,7 +449,7 @@ use function Laravel\Prompts\search;
 $id = search(
     'Search for the user that should receive the mail',
     fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->toArray()
         : []
 );
 ```
@@ -463,7 +463,7 @@ $id = search(
     label: 'Search for the user that should receive the mail',
     placeholder: 'E.g. Taylor Otwell',
     options: fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->toArray()
         : []
 );
 ```
@@ -474,7 +474,7 @@ Up to five options will be displayed before the list begins to scroll. You may c
 $id = search(
     label: 'Search for the user that should receive the mail',
     options: fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->toArray()
         : [],
     scroll: 10
 );
@@ -489,7 +489,7 @@ If you would like to perform additional validation logic, you may pass a closure
 $id = search(
     label: 'Search for the user that should receive the mail',
     options: fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->toArray()
         : []
     validate: function (int|string $value) {
         $user = User::findOrFail($value);
