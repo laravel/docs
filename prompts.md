@@ -286,7 +286,7 @@ If you need to the user to be able to select multiple options, you may use the `
 use function Laravel\Prompts\multiselect;
 
 $permissions = multiselect(
-    'What permissions should be assigned?'
+    'What permissions should be assigned?',
     ['Read', 'Create', 'Update', 'Delete']
 );
 ```
