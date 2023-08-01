@@ -771,6 +771,9 @@ Primitive types such as `string`, `int`, `float`, `bool`, and `array` may also b
 
     return $collection->ensure('int');
 
+> **Warning**
+> The `ensure` method does not guarantee that elements of different types will not be added to the collection at a later time.
+
 <a name="method-every"></a>
 #### `every()` {.collection-method}
 
