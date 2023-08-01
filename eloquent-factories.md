@@ -158,7 +158,7 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
         // ...
     }
 
-You can also use factory callbacks in combination with states to only perform additional tasks when required.
+You may also register factory callbacks within state methods to perform additional tasks after making or creating a model that are specific to a given state:
 
     use App\Models\User;
     use Illuminate\Database\Eloquent\Factories\Factory;
