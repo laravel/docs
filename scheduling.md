@@ -124,11 +124,11 @@ Method  | Description
 `->everyThirtyMinutes();`  |  Run the task every thirty minutes
 `->hourly();`  |  Run the task every hour
 `->hourlyAt(17);`  |  Run the task every hour at 17 minutes past the hour
-`->everyOddHour();`  |  Run the task every odd hour
-`->everyTwoHours();`  |  Run the task every two hours
-`->everyThreeHours();`  |  Run the task every three hours
-`->everyFourHours();`  |  Run the task every four hours
-`->everySixHours();`  |  Run the task every six hours
+`->everyOddHour($minutes = 0);`  |  Run the task every odd hour
+`->everyTwoHours($minutes = 0);`  |  Run the task every two hours
+`->everyThreeHours($minutes = 0);`  |  Run the task every three hours
+`->everyFourHours($minutes = 0);`  |  Run the task every four hours
+`->everySixHours($minutes = 0);`  |  Run the task every six hours
 `->daily();`  |  Run the task every day at midnight
 `->dailyAt('13:00');`  |  Run the task every day at 13:00
 `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
