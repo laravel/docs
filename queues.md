@@ -286,7 +286,7 @@ In certain cases, you may want to define a specific "key" that makes the job uni
         public $uniqueFor = 3600;
 
         /**
-         * The unique ID of the job.
+         * Get the unique ID for the job.
          */
         public function uniqueId(): string
         {

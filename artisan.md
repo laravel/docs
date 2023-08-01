@@ -232,6 +232,21 @@ If you would like to specify the exit status code that the command should return
 php artisan mail:send 1 --isolated=12
 ```
 
+<a name="lock-id"></a>
+#### Lock ID
+
+By default, Laravel will use the command's name to generate the string key that is used to acquire the atomic lock in your application's cache. However, you may customize this key by defining an `isolatableId` method on your Artisan command class, allowing you to integrate the command's arguments or options into the key:
+
+```php
+/**
+ * Get the isolatable ID for the command.
+ */
+public function isolatableId(): string
+{
+    return $this->argument('user');
+}
+```
+
 <a name="lock-expiration-time"></a>
 #### Lock Expiration Time
 
