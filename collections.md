@@ -120,6 +120,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [duplicatesStrict](#method-duplicatesstrict)
 [each](#method-each)
 [eachSpread](#method-eachspread)
+[ensure](#method-ensure)
 [every](#method-every)
 [except](#method-except)
 [filter](#method-filter)
@@ -758,6 +759,17 @@ You may stop iterating through the items by returning `false` from the callback:
     $collection->eachSpread(function (string $name, int $age) {
         return false;
     });
+
+<a name="method-ensure"></a>
+#### `ensure()` {.collection-method}
+
+The `ensure` method may be used to verify that all elements of a collection are of a given type. Otherwise, an `UnexpectedValueException` will be thrown:
+
+    return $collection->ensure(User::class);
+
+Primitive types such as `string`, `int`, `float`, `bool`, and `array` may also be specified:
+
+    return $collection->ensure('int');
 
 <a name="method-every"></a>
 #### `every()` {.collection-method}
