@@ -2051,6 +2051,17 @@ If your application accepts images uploaded by your users, you may use the `File
 > **Note**  
 > More information regarding validating image dimensions may be found in the [dimension rule documentation](#rule-dimensions).
 
+<a name="validating-files-file-sizes"></a>
+#### File Sizes
+
+For convenience, minimum and maximum file sizes may be specified as a string with a suffix indicating the file size units. The `kb`, `mb`, `gb`, and `tb` suffixes are supported:
+
+```php
+File::image()
+    ->min('1kb')
+    ->max('10mb')
+```
+
 <a name="validating-files-file-types"></a>
 #### File Types
 
