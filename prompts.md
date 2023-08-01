@@ -358,7 +358,6 @@ $permissions = select(
     validate: fn (array $values) => ! in_array('read', $values)
         ? 'All users require the read permission.'
         : null
-    }
 );
 ```
 
