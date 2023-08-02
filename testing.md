@@ -83,6 +83,14 @@ Once the test has been generated, you may define test methods as you normally wo
 > **Warning**  
 > If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class.
 
+### Generating Matching Test Cases
+
+Matching test cases can be generated when using the `make` command by adding either the `--test` or `--pest` option. 
+Generated tests are placed in the `tests/Feature` directory matching the path of the generated class. For example, `make:controller UserController --test` creates `UserControllerTest` in `tests/Feature/Http/Controllers`
+
+> **Warning**  
+> The `--test` and `--pest` options are supported for the following `make` commands: `make:command` `make:job` `make:listener` `make:mail` `make:model` `make:notification` `make:controller` `make:middleware`
+
 <a name="running-tests"></a>
 ## Running Tests
 
