@@ -103,7 +103,7 @@ The closure will receive the value that has been entered and may return an error
 The `password` function is similar to the `text` function, but the user's input will be masked as they type in the console. This is useful when asking for sensitive information such as passwords:
 
 ```php
-use function Laravel\Prompts\text;
+use function Laravel\Prompts\password;
 
 $password = password('What is your password?');
 ```
