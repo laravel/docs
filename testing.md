@@ -83,6 +83,7 @@ Once the test has been generated, you may define test methods as you normally wo
 > **Warning**  
 > If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class.
 
+<a name="generating-matching-test-cases"></a>
 #### Generating Matching Test Cases
 
 Matching test cases can be generated when using the `make` command by adding either the `--test` or `--pest` option. 
