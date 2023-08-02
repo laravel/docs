@@ -87,6 +87,7 @@ Once the test has been generated, you may define test methods as you normally wo
 #### Generating Matching Test Cases
 
 Matching test cases can be generated when using the `make` command by adding either the `--test` or `--pest` option. 
+
 Generated tests are placed in the `tests/Feature` directory matching the path of the generated class. For example, `make:controller UserController --test` creates `UserControllerTest` in `tests/Feature/Http/Controllers`
 
 > **Warning**  
