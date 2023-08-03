@@ -1720,7 +1720,34 @@ If you would like to remove an item from the `$with` property for a single query
 If you would like to override all items within the `$with` property for a single query, you may use the `withOnly` method:
 
     $books = Book::withOnly('genre')->get();
+#### Eager Loading Relationship Count By Default
 
+Sometimes you might want to always load some relationship counts when retrieving a model. To accomplish this, you may define a `$withCount` property on the model:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+    class Course extends Model
+    {
+        /**
+         * The relationship counts that should be eager loaded on every query.
+         *
+         * @var array
+         */
+        protected $withCount = ['ratings'];
+
+       /**
+         * Get the ratings for a course.
+         */
+       public function ratings()
+       {
+         return $this->hasMany(Rating::class);
+       }
+    
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
 
