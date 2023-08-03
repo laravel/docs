@@ -1041,3 +1041,6 @@ The `dumpRawSql` and `ddRawSql` methods may be invoked on a query to dump the qu
     DB::table('users')->where('votes', '>', 100)->dumpRawSql();
 
     DB::table('users')->where('votes', '>', 100)->ddRawSql();
+
+> **Note**  
+> Sometimes you don't need to import DB class,For example You don't need to import DB inside Migration class,So since the Migration class isn't in a defined namespace.
