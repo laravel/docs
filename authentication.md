@@ -592,7 +592,7 @@ To get started, call the `Auth::viaRequest` method within the `boot` method of y
     public function boot(): void
     {
         Auth::viaRequest('custom-token', function (Request $request) {
-            return User::where('token', $request->token)->first();
+            return User::where('token', (string) $request->token)->first();
         });
     }
 
