@@ -191,6 +191,8 @@ protected $casts = [
 ];
 ```
 
+In the previous version, the Eloquent `getDates()` method was returning a list of attributes including timestamps and all attributes defined in `$dates` property. After moving dates to the `$casts` you should expect only two timestamps or an empty array.
+
 <a name="relation-getbasequery-method"></a>
 #### Relation `getBaseQuery` Method
 
