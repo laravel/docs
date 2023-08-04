@@ -170,7 +170,7 @@ By default, the "Yes" answer will be pre-selected. However, you may configure th
 
 ```php
 $confirmed = confirm(
-    label: 'Do you accept the terms?'
+    label: 'Do you accept the terms?',
     default: false,
 );
 ```
