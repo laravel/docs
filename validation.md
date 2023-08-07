@@ -1144,6 +1144,8 @@ The field under validation must have a different value than _field_.
 
 The integer under validation must have an exact length of _value_.
 
+When used in combination with the `decimal` rule, the _value_ determines the number of digits that the number must contain, including decimal places.
+
 <a name="rule-digits-between"></a>
 #### digits_between:_min_,_max_
 
@@ -1445,6 +1447,8 @@ The field under validation must be less than or equal to a maximum _value_. Stri
 
 The integer under validation must have a maximum length of _value_.
 
+When used in combination with the `decimal` rule, the _value_ determines the maximum number of digits that the number can contain, including decimal places.
+
 <a name="rule-mimetypes"></a>
 #### mimetypes:_text/plain_,...
 
@@ -1477,6 +1481,8 @@ The field under validation must have a minimum _value_. Strings, numerics, array
 #### min_digits:_value_
 
 The integer under validation must have a minimum length of _value_.
+
+When used in combination with the `decimal` rule, the _value_ determines the minimum number of digits that the number can contain, including decimal places.
 
 <a name="rule-multiple-of"></a>
 #### multiple_of:_value_
