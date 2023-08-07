@@ -278,7 +278,7 @@ Below, you can review an example of the JSON response format for validation erro
     "errors": {
         "team_name": [
             "The team name must be a string.",
-            "The team name must be at least 1 characters."
+            "The team name must be at least 1 character."
         ],
         "authorization.role": [
             "The selected authorization.role is invalid."
