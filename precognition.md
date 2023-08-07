@@ -7,6 +7,7 @@
     - [Using React](#using-react)
     - [Using React & Inertia](#using-react-and-inertia)
     - [Using Alpine & Blade](#using-alpine)
+    - [Configuring Axios](#configuring-axios)
 - [Customizing Validation Rules](#customizing-validation-rules)
 - [Handling File Uploads](#handling-file-uploads)
 - [Managing Side-Effects](#managing-side-effects)
@@ -515,6 +516,32 @@ Alternatively, if you would like to submit the form via XHR you may use the form
     @submit.prevent="submit"
 >
 ```
+
+<a name="configuring-axios"></a>
+### Configuring Axios
+
+The validation libraries use the [Axios](https://github.com/axios/axios) HTTP client to send requests. Each flavor of library, i.e., Vue, React, and Alpine, allows customization of the Axios instance. For example, when using the `laravel-precognition-vue` library, you may add addition request headers to each outgoing request in the `resources/js/app.js`.
+
+```js
+import { client } from 'laravel-precognition-vue';
+
+client.axios().defaults.headers.common['Authorization'] = authToken;
+```
+
+If you already have a configured Axios instance for your application, you may tell Precognition to use that instance instead:
+
+```js
+import Axios from 'axios';
+import { client } from 'laravel-precognition-vue';
+
+window.axios = Axios.create()
+window.axios.defaults.headers.common['Authorization'] = authToken;
+
+client.use(window.axios)
+```
+
+> **Note**
+> The Inertia flavored libraries will only use the configured Axios instance for validation requests. Form submissions will always be sent by Inertia.
 
 <a name="customizing-validation-rules"></a>
 ## Customizing Validation Rules
