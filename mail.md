@@ -1224,22 +1224,22 @@ Once your custom transport has been defined and registered, you may create a mai
 <a name="additional-symfony-transports"></a>
 ### Additional Symfony Transports
 
-Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the "Sendinblue" Symfony mailer:
+Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the "Brevo" (formerly "Sendinblue") Symfony mailer:
 
 ```none
-composer require symfony/sendinblue-mailer symfony/http-client
+composer require symfony/brevo-mailer symfony/http-client
 ```
 
-Once the Sendinblue mailer package has been installed, you may add an entry for your Sendinblue API credentials to your application's `services` configuration file:
+Once the Brevo mailer package has been installed, you may add an entry for your Brevo API credentials to your application's `services` configuration file:
 
-    'sendinblue' => [
+    'brevo' => [
         'key' => 'your-api-key',
     ],
 
 Next, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:
 
     use Illuminate\Support\Facades\Mail;
-    use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
+    use Symfony\Component\Mailer\Bridge\Brevo\Transport\BrevoTransportFactory;
     use Symfony\Component\Mailer\Transport\Dsn;
 
     /**
@@ -1247,12 +1247,12 @@ Next, you may use the `Mail` facade's `extend` method to register the transport 
      */
     public function boot(): void
     {
-        Mail::extend('sendinblue', function () {
-            return (new SendinblueTransportFactory)->create(
+        Mail::extend('brevo', function () {
+            return (new BrevoTransportFactory)->create(
                 new Dsn(
-                    'sendinblue+api',
+                    'brevo+api',
                     'default',
-                    config('services.sendinblue.key')
+                    config('services.brevo.key')
                 )
             );
         });
@@ -1260,7 +1260,7 @@ Next, you may use the `Mail` facade's `extend` method to register the transport 
 
 Once your transport has been registered, you may create a mailer definition within your application's config/mail.php configuration file that utilizes the new transport:
 
-    'sendinblue' => [
-        'transport' => 'sendinblue',
+    'brevo' => [
+        'transport' => 'brevo',
         // ...
     ],
