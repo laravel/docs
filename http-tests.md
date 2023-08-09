@@ -1315,7 +1315,7 @@ You may also assert that a given key has a particular validation error message. 
 <a name="assert-view-has"></a>
 #### assertViewHas
 
-Assert that the response view contains given a piece of data:
+Assert that the response view contains a given piece of data:
 
     $response->assertViewHas($key, $value = null);
 
