@@ -170,7 +170,7 @@ Laravel's job batching feature allows you to easily execute a batch of jobs and 
 The new `batch` method of the `Bus` facade may be used to dispatch a batch of jobs. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked:
 
     use App\Jobs\ProcessPodcast;
-    use App\Podcast;
+    use App\Models\Podcast;
     use Illuminate\Bus\Batch;
     use Illuminate\Support\Facades\Bus;
     use Throwable;
