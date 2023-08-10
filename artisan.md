@@ -250,7 +250,7 @@ public function isolatableId(): string
 <a name="lock-expiration-time"></a>
 #### Lock Expiration Time
 
-By default, isolation locks expire after the command is finished. Or, if the command is interrupted and unable to finish, the lock will expire after one hour. However, you may adjust the lock expiration time by defining a `isolationLockExpiresAt` method on your command:
+By default, isolation locks expire after the command is finished. Or, if the command is interrupted and unable to finish, the lock will expire after one hour. However, you may adjust the lock expiration time by defining an `isolationLockExpiresAt` method on your command:
 
 ```php
 use DateTimeInterface;
