@@ -338,9 +338,8 @@ You may delete a tax ID using the `deleteTaxId` method:
 
 Typically, when your application's users update their name, email address, or other information that is also stored by Stripe, you should inform Stripe of the updates. By doing so, Stripe's copy of the information will be in sync with your application's.
 
-To automate this, you may define an event listener on your billable model that reacts to the model's `updated` event. Then, within your event listener, you may invoke the `syncStripeCustomerDetails` method on the model:
+To automate this, you may define an event listener on your billable model that reacts to the model's `updated` event. Then, within your event listener, you may invoke the `syncStripeCustomerDetails` method on the model. You may also use a closure directly on your Billable model:
 
-    use App\Models\User;
     use function Illuminate\Events\queueable;
 
     /**
