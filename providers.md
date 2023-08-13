@@ -100,6 +100,13 @@ If your service provider registers many simple bindings, you may wish to use the
         ];
     }
 
+To register simple bindings in the `singletons` property for the same object, you can use
+
+    public $singletons = [
+        Service::class,
+        Connection::class,
+    ];
+
 <a name="the-boot-method"></a>
 ### The Boot Method
 
