@@ -55,6 +55,20 @@ In addition to scheduling using closures, you may also schedule [invokable objec
 
     $schedule->call(new DeleteRecentUsers)->daily();
 
+Optional second argument may be provided to the `call` method with an associative array, containing arguments to pass to the named parameters of the `__invoke` method:
+
+    $schedule->call(new DeleteOldComments, ['before' => '6 months'])->monthly();
+
+    // DeleteOldComments class
+    class DeleteOldComments {
+
+        public function __invoke(string $before = '1 month')
+        {
+            // ...
+        }
+    
+    }
+
 If you would like to view an overview of your scheduled tasks and the next time they are scheduled to run, you may use the `schedule:list` Artisan command:
 
 ```bash
