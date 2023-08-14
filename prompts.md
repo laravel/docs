@@ -123,7 +123,7 @@ $password = password(
 If you require a value to be entered, you may pass the `required` argument:
 
 ```php
-$name = password(
+$password = password(
     label: 'What is your password?',
     required: true
 );
@@ -132,7 +132,7 @@ $name = password(
 If you would like to customize the validation message, you may also pass a string:
 
 ```php
-$name = password(
+$password = password(
     label: 'What is your password?',
     required: 'The password is required.'
 );
@@ -144,7 +144,7 @@ $name = password(
 Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
 
 ```php
-$name = password(
+$password = password(
     label: 'What is your password?',
     validate: fn (string $value) => match (true) {
         strlen($value) < 8 => 'The password must be at least 8 characters.',
