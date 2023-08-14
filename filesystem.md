@@ -7,6 +7,7 @@
     - [Driver Prerequisites](#driver-prerequisites)
     - [Scoped & Read-Only Filesystems](#scoped-and-read-only-filesystems)
     - [Amazon S3 Compatible Filesystems](#amazon-s3-compatible-filesystems)
+    - [Error handling](#error-handling)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
     - [On-Demand Disks](#on-demand-disks)
 - [Retrieving Files](#retrieving-files)
@@ -204,6 +205,11 @@ AWS_URL=http://localhost:9000/local
 
 > **Warning**  
 > Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
+
+<a name="error-handling"></a>
+### Error handling 
+
+By default the various "disks" are configured to return a `false` value when an operation fails. However, it is possible to have the filesystem API throw the underlying exception by setting the corresponding disk's `throw` configuration to `true`. This can be particularly useful when troubleshooting filesystem-related problems.
 
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances
