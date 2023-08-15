@@ -2015,6 +2015,35 @@ When validating arrays, you may want to reference the index or position of a par
 
 Given the example above, validation will fail and the user will be presented with the following error of _"Please describe photo #2."_
 
+You may also access deeper nested indexes / positions can be accessed via `second-index`, `third-index`, `fourth-index`, etc:
+
+    $data = [
+        'users' => [
+            [
+                'name' => 'Taylor Otwell',
+                'attributes' => [
+                    'foo',
+                ],
+            ],
+            [
+                'name' => '',
+                'attributes' => [
+                    'foo',
+                    'bar',
+                    1,
+                ],
+            ],
+        ]
+    ];
+
+    $validator = Validator::make($data, [
+        'users.*.name' => 'required|string',
+        'users.*.attributes.*' => 'string',
+    ], [
+        'users.*.name.required' => ':index :position',
+        'users.*.attributes.*.string' => ':first-index :first-position :second-index :second-position',
+    ]);
+
 <a name="validating-files"></a>
 ## Validating Files
 
