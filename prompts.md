@@ -272,7 +272,7 @@ $role = select(
             ? 'An owner already exists.'
             : null
     }
-)
+);
 ```
 
 If the `options` argument is an associative array, then the closure will receive the selected key, otherwise it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
