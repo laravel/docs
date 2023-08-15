@@ -10,6 +10,7 @@
     - [Multi-select](#multiselect)
     - [Suggest](#suggest)
     - [Search](#search)
+- [Informational Messages](#informational-messages)
 - [Hint Text](#hint-text)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments & Fallbacks](#fallbacks)
@@ -502,6 +503,17 @@ $id = search(
 ```
 
 If the `options` closure returns an associative array, then the closure will receive the selected key, otherwise, it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
+
+<a name="informational-messages"></a>
+### Informational Messages
+
+The `note`, `info`, `warning`, `error`, and `alert` functions may be used to display informational messages:
+
+```php
+use function Laravel\Prompts\info;
+
+info('Package installed successfully.');
+```
 
 <a name="hint-text"></a>
 ### Hint Text
