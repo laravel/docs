@@ -10,6 +10,7 @@
     - [Multi-select](#multiselect)
     - [Suggest](#suggest)
     - [Search](#search)
+- [Hint Text](#hint-text)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments & Fallbacks](#fallbacks)
 
@@ -501,6 +502,18 @@ $id = search(
 ```
 
 If the `options` closure returns an associative array, then the closure will receive the selected key, otherwise, it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
+
+<a name="hint-text"></a>
+### Hint Text
+
+All prompt functions also support "hint text". This text will be displayed underneath the prompt to give the user information or instructions regarding the prompt:
+
+```php
+$email = text(
+    label: 'What is your email address?',
+    hint: 'We will never share your email address with anyone.',
+);
+```
 
 <a name="terminal-considerations"></a>
 ### Terminal Considerations
