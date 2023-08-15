@@ -2015,6 +2015,10 @@ When validating arrays, you may want to reference the index or position of a par
 
 Given the example above, validation will fail and the user will be presented with the following error of _"Please describe photo #2."_
 
+If necessary, you may reference more deeply nested indexes and positions via `second-index`, `second-position`, `third-index`, `third-position`, etc.
+
+    'photos.*.attributes.*.string' => 'Invalid attribute for photo #:second-position.',
+
 <a name="validating-files"></a>
 ## Validating Files
 
