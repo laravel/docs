@@ -164,6 +164,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [only](#method-only)
 [pad](#method-pad)
 [partition](#method-partition)
+[percentage](#method-percentage)
 [pipe](#method-pipe)
 [pipeInto](#method-pipeinto)
 [pipeThrough](#method-pipethrough)
@@ -1684,6 +1685,27 @@ The `partition` method may be combined with PHP array destructuring to separate 
     $equalOrAboveThree->all();
 
     // [3, 4, 5, 6]
+
+<a name="method-percentage"></a>
+#### `percentage()` {.collection-method}
+
+The `percentage` method may be used to quickly determine the percentage of items in the collection that pass a given truth test:
+
+```php
+$collection = collect([1, 1, 2, 2, 2, 3]);
+
+$percentage = $collection->percentage(fn ($value) => $value === 1);
+
+// 33.33
+```
+
+By default, the percentage will be rounded to two decimal places. However, you may customize this behavior by providing a second argument to the method:
+
+```php
+$percentage = $collection->percentage(fn ($value) => $value === 1, precision: 3);
+
+// 33.333
+```
 
 <a name="method-pipe"></a>
 #### `pipe()` {.collection-method}
