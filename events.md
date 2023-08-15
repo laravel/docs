@@ -308,7 +308,7 @@ If you would like to customize the queue connection, queue name, or queue delay 
         public $delay = 60;
     }
 
-If you would like to define the listener's queue connection, queue name, or delay at runtime, you may define `viaConnection`, `viaQueue`, and `withDelay` methods on the listener:
+If you would like to define the listener's queue connection, queue name, or delay at runtime, you may define `viaConnection`, `viaQueue`, or `withDelay` methods on the listener:
 
     /**
      * Get the name of the listener's queue connection.
