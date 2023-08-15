@@ -272,10 +272,10 @@ To specify that a listener should be queued, add the `ShouldQueue` interface to 
 
 That's it! Now, when an event handled by this listener is dispatched, the listener will automatically be queued by the event dispatcher using Laravel's [queue system](/docs/{{version}}/queues). If no exceptions are thrown when the listener is executed by the queue, the queued job will automatically be deleted after it has finished processing.
 
-<a name="customizing-the-queue-connection-queue-name-queue-delay-time"></a>
-#### Customizing The Queue Connection, Queue Name, & Queue Delay Time
+<a name="customizing-the-queue-connection-queue-name"></a>
+#### Customizing The Queue Connection, Name, & Delay
 
-If you would like to customize the queue connection, queue name, or queue delay time of an event listener, you may define the `$connection`, `$queue`, or `$delay` properties on your listener class:
+If you would like to customize the queue connection, queue name, or delay time of an event listener, you may define the `$connection`, `$queue`, or `$delay` properties on your listener class:
 
     <?php
 
@@ -308,7 +308,7 @@ If you would like to customize the queue connection, queue name, or queue delay 
         public $delay = 60;
     }
 
-If you would like to define the listener's queue connection or queue name at runtime, you may define `viaConnection`, `viaQueue`, or `withDelay` methods (which can accept the event as a parameter) on the listener:
+If you would like to define the listener's queue connection, queue name, or delay at runtime, you may define `viaConnection`, `viaQueue`, and `withDelay` methods on the listener:
 
     /**
      * Get the name of the listener's queue connection.
@@ -327,9 +327,9 @@ If you would like to define the listener's queue connection or queue name at run
     }
 
     /**
-     * Get the time (seconds) of the listener's queue delay.
+     * Get the number of seconds the queued listener should be delayed.
      */
-    public function withDelay(SomeEvent $event): int
+    public function withDelay(SendShipmentNotification $event): int
     {
         return $event->highPriority ? 0 : 60;
     }
