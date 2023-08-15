@@ -327,7 +327,7 @@ If you would like to define the listener's queue connection, queue name, or dela
     }
 
     /**
-     * Get the number of seconds the queued listener should be delayed.
+     * Get the number of seconds before the job should be processed.
      */
     public function withDelay(SendShipmentNotification $event): int
     {
