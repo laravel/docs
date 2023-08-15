@@ -275,7 +275,7 @@ That's it! Now, when an event handled by this listener is dispatched, the listen
 <a name="customizing-the-queue-connection-queue-name"></a>
 #### Customizing The Queue Connection, Name, & Delay
 
-If you would like to customize the queue connection, queue name, or delay time of an event listener, you may define the `$connection`, `$queue`, or `$delay` properties on your listener class:
+If you would like to customize the queue connection, queue name, or queue delay time of an event listener, you may define the `$connection`, `$queue`, or `$delay` properties on your listener class:
 
     <?php
 
