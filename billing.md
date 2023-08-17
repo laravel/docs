@@ -1590,7 +1590,7 @@ The `charge` method will throw an exception if the charge fails. If the charge i
     }
 
 > **Warning**  
-> The `charge` method accepts the payment amount in the lowest denominator of the currency used by your application. For example, if customers are paying in United States Dollars, amounts should be specified in pennies.
+> The `charge` method accepts the payment amount in the lowest denominator of the currency used by your application. For example, if customers are paying in United States Dollars, amounts should be specified in pennies. The minimum amount is $0.50 US or equivalent in charge currency.
 
 <a name="charge-with-invoice"></a>
 ### Charge With Invoice
