@@ -4123,12 +4123,12 @@ You may also pass a second argument to the `rescue` function. This argument will
         return $this->failure();
     });
 
-A third argument may determine if a report should be created. This is done by providing a closure that will return truthy if the exception should be reported.
+A third argument may be provided to the `rescue` function to determine if the exception should be reported via the `report` function:
 
     return rescue(function () {
         return $this->method();
     }, null, function (Throwable $throwable) {
-        return $throwable instanceof \InvalidArgument;
+        return $throwable instanceof InvalidArgumentException;
     });
 
 <a name="method-resolve"></a>
