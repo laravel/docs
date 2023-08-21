@@ -4123,6 +4123,14 @@ You may also pass a second argument to the `rescue` function. This argument will
         return $this->failure();
     });
 
+A `report` argument may be provided to the `rescue` function to determine if the exception should be reported via the `report` function:
+
+    return rescue(function () {
+        return $this->method();
+    }, report: function (Throwable $throwable) {
+        return $throwable instanceof InvalidArgumentException;
+    });
+
 <a name="method-resolve"></a>
 #### `resolve()` {.collection-method}
 
