@@ -36,7 +36,6 @@
 - [Public Path Binding](#public-path-binding)
 - [Query Exception Constructor](#query-exception-constructor)
 - [Rate Limiter Return Values](#rate-limiter-return-values)
-- [Relation `getBaseQuery` Method](#relation-getbasequery-method)
 - [The `Redirect::home` Method](#redirect-home)
 - [The `Bus::dispatchNow` Method](#dispatch-now)
 - [The `registerPolicies` Method](#register-policies)
@@ -190,13 +189,6 @@ protected $casts = [
     'deployed_at' => 'datetime',
 ];
 ```
-
-<a name="relation-getbasequery-method"></a>
-#### Relation `getBaseQuery` Method
-
-**Likelihood Of Impact: Very Low**
-
-The `getBaseQuery` method on the `Illuminate\Database\Eloquent\Relations\Relation` class has been renamed to `toBase`.
 
 ### Localization
 
