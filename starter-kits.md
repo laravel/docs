@@ -91,7 +91,7 @@ Next, you may navigate to your application's `/login` or `/register` URLs in you
 <a name="breeze-and-next"></a>
 ### Breeze & Next.js / API
 
-Laravel Breeze can also scaffold an authentication API that is ready to authenticate modern JavaScript applications such as those powered by [Next](https://nextjs.org), [Nuxt](https://nuxtjs.org), and others. To get started, select the API stack as your desired stack when executing the `breeze:install` Artisan command:
+Laravel Breeze can also scaffold an authentication API that is ready to authenticate modern JavaScript applications such as those powered by [Next](https://nextjs.org), [Nuxt](https://nuxt.com), and others. To get started, select the API stack as your desired stack when executing the `breeze:install` Artisan command:
 
 ```shell
 php artisan breeze:install
