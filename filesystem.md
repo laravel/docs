@@ -202,9 +202,6 @@ In order for Laravel's Flysystem integration to generate proper URLs when using 
 AWS_URL=http://localhost:9000/local
 ```
 
-> **Warning**  
-> Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
-
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances
 
