@@ -227,7 +227,9 @@ If you would like to take total control over how the container injects dependenc
 <a name="handling-relationships"></a>
 #### Queued Relationships
 
-Because loaded relationships also get serialized, the serialized job string can sometimes become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model without its loaded relationships:
+Because all loaded Eloquent model relationships also get serialized when a job is queued, the serialized job string can sometimes become quite large. Furthermore, when a job is deserialized and model relationships are re-retrieved from the database, they will be retrieved in their entirety. Any previous relationship constraints that were applied before the model was serialized during the job queueing process will not be applied when the job is deserialized. Therefore, if you wish to work with a subset of a given relationship, you should re-constrain that relationship within your queued job.
+
+Or, to prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model without its loaded relationships:
 
     /**
      * Create a new job instance.
@@ -237,7 +239,18 @@ Because loaded relationships also get serialized, the serialized job string can 
         $this->podcast = $podcast->withoutRelations();
     }
 
-Furthermore, when a job is deserialized and model relationships are re-retrieved from the database, they will be retrieved in their entirety. Any previous relationship constraints that were applied before the model was serialized during the job queueing process will not be applied when the job is deserialized. Therefore, if you wish to work with a subset of a given relationship, you should re-constrain that relationship within your queued job.
+If you are using PHP constructor property promotion and would like to indicate that an Eloquent model should not have its relations serialized, you may use the `WithoutRelations` attribute:
+
+    use Illuminate\Queue\Attributes\WithoutRelations;
+
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(
+        #[WithoutRelations]
+        public Podcast $podcast
+    ) {
+    }
 
 If a job receives a collection or array of Eloquent models instead of a single model, the models within that collection will not have their relationships restored when the job is deserialized and executed. This is to prevent excessive resource usage on jobs that deal with large numbers of models.
 

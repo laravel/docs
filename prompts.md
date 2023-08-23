@@ -10,13 +10,17 @@
     - [Multi-select](#multiselect)
     - [Suggest](#suggest)
     - [Search](#search)
+- [Informational Messages](#informational-messages)
+- [Hint Text](#hint-text)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments & Fallbacks](#fallbacks)
 
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Prompts is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
+[Laravel Prompts](https://github.com/laravel/prompts) is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
+
+<img src="https://laravel.com/img/docs/prompts-example.png">
 
 Laravel Prompts is perfect for accepting user input in your [Artisan console commands](/docs/{{version}}/artisan#writing-commands), but it may also be used in any command-line PHP project.
 
@@ -123,7 +127,7 @@ $password = password(
 If you require a value to be entered, you may pass the `required` argument:
 
 ```php
-$name = password(
+$password = password(
     label: 'What is your password?',
     required: true
 );
@@ -132,7 +136,7 @@ $name = password(
 If you would like to customize the validation message, you may also pass a string:
 
 ```php
-$name = password(
+$password = password(
     label: 'What is your password?',
     required: 'The password is required.'
 );
@@ -144,7 +148,7 @@ $name = password(
 Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
 
 ```php
-$name = password(
+$password = password(
     label: 'What is your password?',
     validate: fn (string $value) => match (true) {
         strlen($value) < 8 => 'The password must be at least 8 characters.',
@@ -272,7 +276,7 @@ $role = select(
             ? 'An owner already exists.'
             : null
     }
-)
+);
 ```
 
 If the `options` argument is an associative array, then the closure will receive the selected key, otherwise it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
@@ -501,6 +505,29 @@ $id = search(
 ```
 
 If the `options` closure returns an associative array, then the closure will receive the selected key, otherwise, it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
+
+<a name="informational-messages"></a>
+### Informational Messages
+
+The `note`, `info`, `warning`, `error`, and `alert` functions may be used to display informational messages:
+
+```php
+use function Laravel\Prompts\info;
+
+info('Package installed successfully.');
+```
+
+<a name="hint-text"></a>
+### Hint Text
+
+All prompt functions also support "hint text". This text will be displayed underneath the prompt to give the user information or instructions regarding the prompt:
+
+```php
+$email = text(
+    label: 'What is your email address?',
+    hint: 'We will never share your email address with anyone.',
+);
+```
 
 <a name="terminal-considerations"></a>
 ### Terminal Considerations

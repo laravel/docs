@@ -4123,6 +4123,14 @@ You may also pass a second argument to the `rescue` function. This argument will
         return $this->failure();
     });
 
+A `report` argument may be provided to the `rescue` function to determine if the exception should be reported via the `report` function:
+
+    return rescue(function () {
+        return $this->method();
+    }, report: function (Throwable $throwable) {
+        return $throwable instanceof InvalidArgumentException;
+    });
+
 <a name="method-resolve"></a>
 #### `resolve()` {.collection-method}
 
@@ -4357,6 +4365,10 @@ By default, the given callbacks will be executed once (one iteration), and their
 To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
 
     Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
+
+Sometimes, you may want to benchmark the execution of a callback while still obtaining the value returned by the callback. The `value` method will return a tuple containing the value returned by the callback and the amount of milliseconds it took to execute the callback:
+
+    [$count, $duration] = Benchmark::value(fn () => User::count());
 
 <a name="dates"></a>
 ### Dates
