@@ -896,6 +896,7 @@ Below is a list of all available validation rules and their function:
 [Doesnt Start With](#rule-doesnt-start-with)
 [Doesnt End With](#rule-doesnt-end-with)
 [Email](#rule-email)
+[Encoding](#rule-encoding)
 [Ends With](#rule-ends-with)
 [Enum](#rule-enum)
 [Exclude](#rule-exclude)
@@ -1223,6 +1224,15 @@ The `filter` validator, which uses PHP's `filter_var` function, ships with Larav
 
 > **Warning**  
 > The `dns` and `spoof` validators require the PHP `intl` extension.
+
+<a name="rule-encoding"></a>
+#### encoding:_encoding_
+
+The field under validation must be a valid representation in _encoding_:
+
+    'name' => 'encoding:UTF-8'
+
+The encoding must be [supported by the PHP `mbstring` extension](https://www.php.net/manual/en/function.mb-list-encodings.php).
 
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...
