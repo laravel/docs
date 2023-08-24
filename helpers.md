@@ -149,8 +149,10 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::repeat](#method-str-repeat)
 [Str::replace](#method-str-replace)
 [Str::replaceArray](#method-str-replace-array)
+[Str::replaceEnd](#method-str-replace-end)
 [Str::replaceFirst](#method-str-replace-first)
 [Str::replaceLast](#method-str-replace-last)
+[Str::replaceStart](#method-str-replace-start)
 [Str::reverse](#method-str-reverse)
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
@@ -235,9 +237,11 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [repeat](#method-fluent-str-repeat)
 [replace](#method-fluent-str-replace)
 [replaceArray](#method-fluent-str-replace-array)
+[replaceEnd](#method-fluent-str-replace-end)
 [replaceFirst](#method-fluent-str-replace-first)
 [replaceLast](#method-fluent-str-replace-last)
 [replaceMatches](#method-fluent-str-replace-matches)
+[replaceStart](#method-fluent-str-replace-start)
 [rtrim](#method-fluent-str-rtrim)
 [scan](#method-fluent-str-scan)
 [singular](#method-fluent-str-singular)
@@ -1990,6 +1994,21 @@ The `Str::replaceArray` method replaces a given value in the string sequentially
 
     // The event will take place between 8:30 and 9:00
 
+<a name="method-str-replace-end"></a>
+#### `Str::replaceEnd()` {.collection-method}
+
+The `Str::replaceEnd` method replaces a given value if it appears at the end of a string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceEnd('example.com', 'laravel.com', 'home/forge/example.com');
+
+    // home/forge/laravel.com
+
+    $replaced = Str::replaceEnd('example.com', 'laravel.com', 'home/forge/example.com/public');
+
+    // home/forge/example.com/public
+
 <a name="method-str-replace-first"></a>
 #### `Str::replaceFirst()` {.collection-method}
 
@@ -2011,6 +2030,21 @@ The `Str::replaceLast` method replaces the last occurrence of a given value in a
     $replaced = Str::replaceLast('the', 'a', 'the quick brown fox jumps over the lazy dog');
 
     // the quick brown fox jumps over a lazy dog
+
+<a name="method-str-replace-start"></a>
+#### `Str::replaceStart()` {.collection-method}
+
+The `Str::replaceStart` method replaces a given value if it appears at the start of a string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceStart('home/forge/', '', 'home/forge/laravel.com');
+
+    // laravel.com
+
+    $replaced = Str::replaceStart('forge/', '', 'home/forge/laravel.com');
+
+    // home/forge/laravel.com
 
 
 <a name="method-str-reverse"></a>
@@ -3077,6 +3111,21 @@ The `replaceArray` method replaces a given value in the string sequentially usin
 
     // The event will take place between 8:30 and 9:00
 
+<a name="method-fluent-str-replace-end"></a>
+#### `replaceEnd` {.collection-method}
+
+The `replaceEnd` method replaces a given value if it appears at the end of a string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::of('home/forge/example.com')->replaceEnd('example.com', 'laravel.com');
+
+    // home/forge/laravel.com
+
+    $replaced = Str::of('home/forge/example.com/public')->replaceEnd('example.com', 'laravel.com');
+
+    // home/forge/example.com/public
+
 <a name="method-fluent-str-replace-first"></a>
 #### `replaceFirst` {.collection-method}
 
@@ -3119,6 +3168,21 @@ The `replaceMatches` method also accepts a closure that will be invoked with eac
     });
 
     // '[1][2][3]'
+
+<a name="method-fluent-str-replace-start"></a>
+#### `replaceStart` {.collection-method}
+
+The `replaceStart` method replaces a given value if it appears at the start of a string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::of('home/forge/laravel.com')->replaceStart('home/forge/', '');
+
+    // laravel.com
+
+    $replaced = Str::of('home/forge/laravel.com')->replaceStart('forge/', '');
+
+    // home/forge/laravel.com
 
 <a name="method-fluent-str-rtrim"></a>
 #### `rtrim` {.collection-method}
