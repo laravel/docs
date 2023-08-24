@@ -41,6 +41,7 @@
     - [Assigning Scopes To Tokens](#assigning-scopes-to-tokens)
     - [Checking Scopes](#checking-scopes)
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
+- [Limiting access to certain scopes](#limiting-access-to-certain-scopes)
 - [Events](#events)
 - [Testing](#testing)
 
@@ -1168,6 +1169,16 @@ When using this method of authentication, you will need to ensure a valid CSRF t
 
 > **Note**  
 > If you choose to send the `X-CSRF-TOKEN` header instead of `X-XSRF-TOKEN`, you will need to use the unencrypted token provided by `csrf_token()`.
+
+<a name="limiting-access-to-certain-scopes"></a>
+## Limiting access to certain scopes
+
+Passport allows you to limit which clients request certain scopes from your users, this feature is off by default.
+
+To enable it you will need to create a migration that adds a `scopes` column to your `oauth_clients` table, the column must be able to store a JSON array of permitted scopes. Everytime a user authorizes a client, Passport will check if the scope if present on the client.
+
+> **Warning**  
+> This feature does not affect previously granted access tokens, if you take a scope away from a client you should revoke all of its active tokens!
 
 <a name="events"></a>
 ## Events
