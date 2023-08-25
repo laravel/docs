@@ -195,7 +195,7 @@ Injecting a publisher implementation into the method allows us to easily test th
     namespace App\Models;
 
     use App\Contracts\Publisher; // [tl! remove]
-    use Facades\App\Contracts\Publisher; // // [tl! add]
+    use Facades\App\Contracts\Publisher; // [tl! add]
     use Illuminate\Database\Eloquent\Model;
 
     class Podcast extends Model
