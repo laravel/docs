@@ -323,7 +323,7 @@ Sometimes a middleware may need to do some work after the HTTP response has been
 
 The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of routes or global middleware in the `app/Http/Kernel.php` file.
 
-When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `scoped` method. Typically this should be done in the `register` method of your `AppServiceProvider`:
+When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method. Typically this should be done in the `register` method of your `AppServiceProvider`:
 
     use App\Http\Middleware\TerminatingMiddleware;
 
@@ -332,5 +332,5 @@ When calling the `terminate` method on your middleware, Laravel will resolve a f
      */
     public function register(): void
     {
-        $this->app->scoped(TerminatingMiddleware::class);
+        $this->app->singleton(TerminatingMiddleware::class);
     }
