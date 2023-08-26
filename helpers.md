@@ -2299,10 +2299,12 @@ The `Str::wordWrap` method splits strings within a string based on a specified c
 
     Str::wordWrap(string: $text, characters: 8);
 
-    // A very
-    // long
-    // wooooooo
-    // ooooord.
+    /*
+    A very
+    long
+    wooooooo
+    ooooord.
+    */
 
 
 <a name="method-str"></a>
