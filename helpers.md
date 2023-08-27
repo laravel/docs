@@ -171,9 +171,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::ulid](#method-str-ulid)
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
+[Str::wordWrap](#method-str-word-wrap)
 [Str::words](#method-str-words)
 [Str::wrap](#method-str-wrap)
-[Str::wordWrap](#method-str-word-wrap)
 [str](#method-str)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
@@ -2262,6 +2262,23 @@ use Illuminate\Support\Str;
 Str::wordCount('Hello, world!'); // 2
 ```
 
+<a name="method-str-word-wrap"></a>
+#### `Str::wordWrap()` {.collection-method}
+
+The `Str::wordWrap` method wraps a string to a given number of characters:
+
+    use Illuminate\Support\Str;
+
+    $text = "The quick brown fox jumped over the lazy dog."
+
+    Str::wordWrap($text, characters: 20, break: "<br />\n");
+
+    /*
+    The quick brown fox<br />
+    jumped over the lazy<br />
+    dog.
+    */
+
 <a name="method-str-words"></a>
 #### `Str::words()` {.collection-method}
 
@@ -2287,25 +2304,6 @@ The `Str::wrap` method wraps the given string with an additional string or pair 
     Str::wrap('is', before: 'This ', after: ' Laravel!');
 
     // This is Laravel!
-
-<a name="method-str-word-wrap"></a>
-#### `Str::wordWrap()` {.collection-method}
-
-The `Str::wordWrap` method splits strings within a string based on a specified character limit:
-
-    use Illuminate\Support\Str;
-
-    $text = "A very long woooooooooooord."
-
-    Str::wordWrap(string: $text, characters: 8);
-
-    /*
-    A very
-    long
-    wooooooo
-    ooooord.
-    */
-
 
 <a name="method-str"></a>
 #### `str()` {.collection-method}
