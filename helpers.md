@@ -171,6 +171,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::ulid](#method-str-ulid)
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
+[Str::wordWrap](#method-str-word-wrap)
 [Str::words](#method-str-words)
 [Str::wrap](#method-str-wrap)
 [str](#method-str)
@@ -2260,6 +2261,23 @@ use Illuminate\Support\Str;
 
 Str::wordCount('Hello, world!'); // 2
 ```
+
+<a name="method-str-word-wrap"></a>
+#### `Str::wordWrap()` {.collection-method}
+
+The `Str::wordWrap` method wraps a string to a given number of characters:
+
+    use Illuminate\Support\Str;
+
+    $text = "The quick brown fox jumped over the lazy dog."
+
+    Str::wordWrap($text, characters: 20, break: "<br />\n");
+
+    /*
+    The quick brown fox<br />
+    jumped over the lazy<br />
+    dog.
+    */
 
 <a name="method-str-words"></a>
 #### `Str::words()` {.collection-method}
