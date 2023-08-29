@@ -84,7 +84,7 @@ Before moving on, let's examine this route in more detail. First, the request's 
 
 The `sendResetLink` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
 
-It is important to note that this endpoint will always return a success message even if the password entered is invalid. This is by design, so that an attacker cannot brute force the endpoint to determine if an email address is valid.
+It is important to note that this endpoint will always return a success message even if the email address entered is invalid. This is by design, so that an attacker cannot brute force the endpoint to determine if an email address is valid.
 
 > **Note**
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
