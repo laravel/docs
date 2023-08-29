@@ -151,6 +151,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
 [Str::replaceLast](#method-str-replace-last)
+[Str::replaceStart](#method-str-replace-start)
+[Str::replaceEnd](#method-str-replace-end)
 [Str::reverse](#method-str-reverse)
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
@@ -2013,6 +2015,36 @@ The `Str::replaceLast` method replaces the last occurrence of a given value in a
 
     // the quick brown fox jumps over a lazy dog
 
+
+<a name="method-str-replace-start"></a>
+#### `Str::replaceStart()` {.collection-method}
+
+The `Str::replaceStart` replaces the first occurrence of the given value only if the value appears at the start of the string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceStart('Hello World', 'Hello', 'Laravel');
+
+    // Laravel World
+
+    $replaced = Str::replaceStart('Hello World', 'World', 'Laravel');
+
+    // Hello World
+
+<a name="method-str-replace-end"></a>
+#### `Str::replaceEnd()` {.collection-method}
+
+The `Str::replaceEnd` replaces the first occurrence of the given value only if the value appears at the end of the string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceEnd('Hello World', 'World', 'Laravel');
+
+    // Hello Laravel
+
+    $replaced = Str::replaceEnd('Hello World', 'Hello', 'Laravel');
+
+    // Hello World
 
 <a name="method-str-reverse"></a>
 #### `Str::reverse()` {.collection-method}
