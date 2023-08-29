@@ -117,6 +117,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::between](#method-str-between)
 [Str::betweenFirst](#method-str-between-first)
 [Str::camel](#method-camel-case)
+[Str::convertCase](#method-convert-case)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
@@ -1490,6 +1491,26 @@ The `Str::camel` method converts the given string to `camelCase`:
     $converted = Str::camel('foo_bar');
 
     // fooBar
+
+<a name="method-convert-case"></a>
+#### `Str::convertCase()` {.collection-method}
+
+The `Str::convertCase` method converts the given string in the supplied mode, additionally it allows you to define the encoding under which you want to do the treatment, by default it uses 'UTF-8', the arguments are `(string: $text, int $mode, ?string $encoding)`:
+
+    use Illuminate\Support\Str;
+    
+    // Convert to uppercase, including special characters.
+    $upper = Str::convertCase("The framework that brought PHP to life!", MB_CASE_UPPER);
+
+    // Convert to lowercase, including special characters.
+    $lower = Str::convertCase("The framework that brought PHP to life!", MB_CASE_LOWER);
+
+    // Convert to title case, only the first letter of each word is uppercase.
+    $title = Str::convertCase("The framework that brought PHP to life!", MB_CASE_TITLE);
+
+    // Use a different or custom encoding. (Default 'UTF-8')
+    $iso_8859_1_lower = Str::convertCase("The framework that brought PHP to life!", MB_CASE_LOWER, "ISO-8859-1");
+    $windows_1252_title = Str::convertCase("The framework that brought PHP to life!", MB_CASE_TITLE, "Windows-1252");
 
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
