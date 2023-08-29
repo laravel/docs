@@ -151,6 +151,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
 [Str::replaceLast](#method-str-replace-last)
+[Str::replaceStart](#method-str-replace-start)
+[Str::replaceEnd](#method-str-replace-end)
 [Str::reverse](#method-str-reverse)
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
@@ -239,6 +241,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [replaceFirst](#method-fluent-str-replace-first)
 [replaceLast](#method-fluent-str-replace-last)
 [replaceMatches](#method-fluent-str-replace-matches)
+[replaceStart](#method-fluent-str-replace-start)
+[replaceEnd](#method-fluent-str-replace-end)
 [rtrim](#method-fluent-str-rtrim)
 [scan](#method-fluent-str-scan)
 [singular](#method-fluent-str-singular)
@@ -2014,6 +2018,36 @@ The `Str::replaceLast` method replaces the last occurrence of a given value in a
     // the quick brown fox jumps over a lazy dog
 
 
+<a name="method-str-replace-start"></a>
+#### `Str::replaceStart()` {.collection-method}
+
+The `Str::replaceStart` method replaces the first occurrence of the given value only if the value appears at the start of the string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceStart('Hello', 'Laravel', 'Hello World');
+
+    // Laravel World
+
+    $replaced = Str::replaceStart('World', 'Laravel', 'Hello World');
+
+    // Hello World
+
+<a name="method-str-replace-end"></a>
+#### `Str::replaceEnd()` {.collection-method}
+
+The `Str::replaceEnd` method replaces the last occurrence of the given value only if the value appears at the end of the string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceEnd('World', 'Laravel', 'Hello World');
+
+    // Hello Laravel
+
+    $replaced = Str::replaceEnd('Hello', 'Laravel', 'Hello World');
+
+    // Hello World
+
 <a name="method-str-reverse"></a>
 #### `Str::reverse()` {.collection-method}
 
@@ -3137,6 +3171,36 @@ The `replaceMatches` method also accepts a closure that will be invoked with eac
     });
 
     // '[1][2][3]'
+
+<a name="method-fluent-str-replace-start"></a>
+#### `replaceStart` {.collection-method}
+
+The `replaceStart` method replaces the first occurrence of the given value only if the value appears at the start of the string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::of('Hello World')->replaceStart('Hello', 'Laravel');
+
+    // Laravel World
+
+    $replaced = Str::of('Hello World')->replaceStart('World', 'Laravel');
+
+    // Hello World
+
+<a name="method-fluent-str-replace-end"></a>
+#### `replaceEnd` {.collection-method}
+
+The `replaceEnd` method replaces the last occurrence of the given value only if the value appears at the end of the string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::of('Hello World')->replaceEnd('World', 'Laravel');
+
+    // Hello Laravel
+
+    $replaced = Str::of('Hello World')->replaceEnd('Hello', 'Laravel');
+
+    // Hello World
 
 <a name="method-fluent-str-rtrim"></a>
 #### `rtrim` {.collection-method}
