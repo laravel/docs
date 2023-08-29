@@ -85,6 +85,8 @@ Before using Redis sessions with Laravel, you will need to either install the Ph
 ### Retrieving Data
 
 There are two primary ways of working with session data in Laravel: the global `session` helper and via a `Request` instance. First, let's look at accessing the session via a `Request` instance, which can be type-hinted on a route closure or controller method. Remember, controller method dependencies are automatically injected via the Laravel [service container](/docs/{{version}}/container):
+#### Via a Request Instance
+
 
     <?php
 
