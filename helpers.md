@@ -2025,11 +2025,11 @@ The `Str::replaceStart` method replaces the first occurrence of the given value 
 
     use Illuminate\Support\Str;
 
-    $replaced = Str::replaceStart('Hello World', 'Hello', 'Laravel');
+    $replaced = Str::replaceStart('Hello', 'Laravel', 'Hello World');
 
     // Laravel World
 
-    $replaced = Str::replaceStart('Hello World', 'World', 'Laravel');
+    $replaced = Str::replaceStart('World', 'Laravel', 'Hello World');
 
     // Hello World
 
@@ -2040,11 +2040,11 @@ The `Str::replaceEnd` method replaces the last occurrence of the given value onl
 
     use Illuminate\Support\Str;
 
-    $replaced = Str::replaceEnd('Hello World', 'World', 'Laravel');
+    $replaced = Str::replaceEnd('World', 'Laravel', 'Hello World');
 
     // Hello Laravel
 
-    $replaced = Str::replaceEnd('Hello World', 'Hello', 'Laravel');
+    $replaced = Str::replaceEnd('Hello', 'Laravel', 'Hello World');
 
     // Hello World
 
