@@ -1501,12 +1501,15 @@ The `Str::convertCase` method converts the given string in the supplied mode, ad
     
     // Convert to uppercase, including special characters.
     $upper = Str::convertCase("The framework that brought PHP to life!", MB_CASE_UPPER);
+    // 'THE FRAMEWORK THAT BROUGHT PHP TO LIFE!'
 
     // Convert to lowercase, including special characters.
     $lower = Str::convertCase("The framework that brought PHP to life!", MB_CASE_LOWER);
+    // 'the framework that brought php to life!'
 
     // Convert to title case, only the first letter of each word is uppercase.
     $title = Str::convertCase("The framework that brought PHP to life!", MB_CASE_TITLE);
+    // 'The Framework That Brought Php To Life!'
 
     // Use a different or custom encoding. (Default 'UTF-8')
     $iso_8859_1_lower = Str::convertCase("The framework that brought PHP to life!", MB_CASE_LOWER, "ISO-8859-1");
