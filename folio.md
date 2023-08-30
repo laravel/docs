@@ -8,10 +8,10 @@
     - [Nested Routes](#nested-routes)
     - [Index Routes](#index-routes)
 - [Route Parameters](#route-parameters)
-- [Route Response](#route-response)
 - [Named Routes](#named-routes)
 - [Route Model Binding](#route-model-binding)
     - [Soft Deleted Models](#soft-deleted-models)
+- [Render Hooks](#render-hooks)
 - [Middleware](#middleware)
 - [Route Caching](#route-caching)
 
@@ -164,37 +164,6 @@ When capturing multiple segments, the captured segments will be injected into th
 </ul>
 ```
 
-<a name="route-response"></a>
-## Route Response
-
-By default, Folio will return the contents of the page's Blade template as the response to the incoming request. However, you may customize the response by invoking the `render` function within the page's template:
-
-```php
-<?php
-
-use Illuminate\View\View;
-
-use function Laravel\Folio\render;
-
-render(function (View $view) {
-    if (! Auth::user()->can('view-posts', $user)) {
-        return response('Unauthorized', 403);
-    }
- 
-    $posts = auth()->user()->posts;
-
-    return $view->with('posts', $posts);
-}); ?>
-
-@foreach ($posts as $post)
-    <div>
-        {{ $post->title }}
-    </div>
-@endforeach
-```
-
-The `render` function accepts a closure which should return a response instance or a view instance. If you return a view instance, it will be used as the response to the incoming request. If you return a response instance, it will be sent back to the browser as-is.
-
 <a name="named-routes"></a>
 ## Named Routes
 
@@ -274,8 +243,38 @@ withTrashed();
 </div>
 ```
 
-<a name="rendered-content-response"></a>
-## Rendered content / response
+<a name="render-hooks"></a>
+## Render Hooks
+
+By default, Folio will return the content of the page's Blade template as the response to the incoming request. However, you may customize the response by invoking the `render` function within the page's template.
+
+The `render` function accepts a closure which will receive the `View` instance being rendered by Folio, allowing you to add additional data to the view or customize the entire response if necessary. In addition to receiving the `View` instance, any additional route parameters or model bindings will also be provided to the `render` closure:
+
+```php
+<?php
+
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+
+use function Laravel\Folio\render;
+
+render(function (View $view, Post $post) {
+    if (! Auth::user()->can('view', $post)) {
+        return response('Unauthorized', 403);
+    }
+
+    return $view->with('photos', $post->author->photos);
+}); ?>
+
+<div>
+    {{ $post->content }}
+</div>
+
+<div>
+    This author has also taken {{ count($photos) }} photos.
+</div>
+```
 
 <a name="middleware"></a>
 ## Middleware
