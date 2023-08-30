@@ -301,7 +301,7 @@ Sometimes you may need to send a notification to someone who is not stored as a 
 
     Notification::route('mail', 'taylor@example.com')
                 ->route('vonage', '5555555555')
-                ->route('slack', 'https://hooks.slack.com/services/...')
+                ->route('slack', '#slack-channel')
                 ->route('broadcast', [new Channel('channel-name')])
                 ->notify(new InvoicePaid($invoice));
 
