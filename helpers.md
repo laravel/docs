@@ -1495,7 +1495,7 @@ The `Str::camel` method converts the given string to `camelCase`:
 <a name="method-convert-case"></a>
 #### `Str::convertCase()` {.collection-method}
 
-The `Str::convertCase` method converts the given string in the supplied mode, additionally it allows you to define the encoding under which you want to do the treatment, by default it uses 'UTF-8', the arguments are `(string: $text, int $mode, ?string $encoding)`:
+The `Str::convertCase` method converts the given string in the supplied mode, additionally it allows you to define the encoding under which you want to do the treatment, by default it uses 'UTF-8', the arguments are `(string: $text, int: $mode, ?string: $encoding)`:
 
     use Illuminate\Support\Str;
     
