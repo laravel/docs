@@ -248,7 +248,7 @@ withTrashed();
 
 By default, Folio will return the content of the page's Blade template as the response to the incoming request. However, you may customize the response by invoking the `render` function within the page's template.
 
-The `render` function accepts a closure which will receive the `View` instance being rendered by Folio, allowing you to add additional data to the view or customize the entire response if necessary. In addition to receiving the `View` instance, any additional route parameters or model bindings will also be provided to the `render` closure:
+The `render` function accepts a closure which will receive the `View` instance being rendered by Folio, allowing you to add additional data to the view or customize the entire response. In addition to receiving the `View` instance, any additional route parameters or model bindings will also be provided to the `render` closure:
 
 ```php
 <?php
