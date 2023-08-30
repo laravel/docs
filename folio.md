@@ -13,7 +13,6 @@
 - [Route Model Binding](#route-model-binding)
     - [Soft Deleted Models](#soft-deleted-models)
 - [Middleware](#middleware)
-]
 - [Route Caching](#route-caching)
 
 <a name="introduction"></a>
