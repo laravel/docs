@@ -8,11 +8,12 @@
     - [Nested Routes](#nested-routes)
     - [Index Routes](#index-routes)
 - [Route Parameters](#route-parameters)
+- [Route Response](#route-response)
 - [Named Routes](#named-routes)
 - [Route Model Binding](#route-model-binding)
     - [Soft Deleted Models](#soft-deleted-models)
 - [Middleware](#middleware)
-- [PHP Blocks](#php-blocks)
+]
 - [Route Caching](#route-caching)
 
 <a name="introduction"></a>
@@ -164,6 +165,31 @@ When capturing multiple segments, the captured segments will be injected into th
 </ul>
 ```
 
+<a name="route-response"></a>
+## Route Response
+
+By default, Folio will return the contents of the page's Blade template as the response to the incoming request. However, you may customize the response by invoking the `render` function within the page's template:
+
+```php
+<?php
+
+use Illuminate\View\View;
+
+use function Laravel\Folio\render;
+
+render(function (View $view) {
+    if (! Auth::user()->can('view-posts', $user)) {
+        return response('Unauthorized', 403);
+    }
+ 
+    $posts = auth()->user()->posts;
+
+    return $view->with('posts', $posts);
+});
+```
+
+The `render` function accepts a closure which should return a response instance or a view instance. If you return a view instance, it will be used as the response to the incoming request. If you return a response instance, it will be sent back to the browser as-is.
+
 <a name="named-routes"></a>
 ## Named Routes
 
@@ -243,6 +269,9 @@ withTrashed();
 </div>
 ```
 
+<a name="rendered-content-response"></a>
+## Rendered content / response
+
 <a name="middleware"></a>
 ## Middleware
 
@@ -298,29 +327,6 @@ Folio::path(resource_path('views/pages'))->middleware([
         },
     ],
 ]);
-```
-
-<a name="php-blocks"></a>
-## PHP Blocks
-
-When using Folio, the `<?php` and `?>` tags are reserved for the Folio page definition functions such as `middleware` and `withTrashed`.
-
-Therefore, if you need to write PHP code that should be executed within your Blade template, you should use the `@php` Blade directive:
-
-```php
-@php
-    if (! Auth::user()->can('view-posts', $user)) {
-        abort(403);
-    }
-
-    $posts = $user->posts;
-@endphp
-
-@foreach ($posts as $post)
-    <div>
-        {{ $post->title }}
-    </div>
-@endforeach
 ```
 
 <a name="route-caching"></a>
