@@ -1226,6 +1226,10 @@ For instance, returning `#support-channel` from the `routeNotificationForSlack` 
         }
     }
 
+#### Note for people upgrading from laravel 9.x to 10.x
+
+If you are migrating from the old version of laravel and end up updating the `laravel/slack-notification-channel` package to the new version, and you want to use the block notation format, then you will have to replace your Slack channel routes from the `https://hooks.slack.com/services/...` format to the `#channel` format.
+
 <a name="notifying-external-slack-workspaces"></a>
 ### Notifying External Slack Workspaces
 
