@@ -184,7 +184,13 @@ render(function (View $view) {
     $posts = auth()->user()->posts;
 
     return $view->with('posts', $posts);
-});
+}); ?>
+
+@foreach ($posts as $post)
+    <div>
+        {{ $post->title }}
+    </div>
+@endforeach
 ```
 
 The `render` function accepts a closure which should return a response instance or a view instance. If you return a view instance, it will be used as the response to the incoming request. If you return a response instance, it will be sent back to the browser as-is.
