@@ -8,10 +8,10 @@
     - [Nested Routes](#nested-routes)
     - [Index Routes](#index-routes)
 - [Route Parameters](#route-parameters)
-- [Named Routes](#named-routes)
 - [Route Model Binding](#route-model-binding)
     - [Soft Deleted Models](#soft-deleted-models)
 - [Render Hooks](#render-hooks)
+- [Named Routes](#named-routes)
 - [Middleware](#middleware)
 - [Route Caching](#route-caching)
 
@@ -164,33 +164,6 @@ When capturing multiple segments, the captured segments will be injected into th
 </ul>
 ```
 
-<a name="named-routes"></a>
-## Named Routes
-
-You may specify a name for a given page's route using the `name` function:
-
-```php
-<?php
-
-use function Laravel\Folio\name;
-
-name('users.index');
-```
-
-Just like Laravel's named routes, you may use the `route` function to generate URLs to Folio pages that have been assigned a name:
-
-```php
-<a href="{{ route('users.index') }}">
-    All Users
-</a>
-```
-
-If the page has parameters, you may simply pass their values to the `route` function:
-
-```php
-route('users.show', ['user' => $user]);
-```
-
 <a name="route-model-binding"></a>
 ## Route Model Binding
 
@@ -274,6 +247,33 @@ render(function (View $view, Post $post) {
 <div>
     This author has also taken {{ count($photos) }} photos.
 </div>
+```
+
+<a name="named-routes"></a>
+## Named Routes
+
+You may specify a name for a given page's route using the `name` function:
+
+```php
+<?php
+
+use function Laravel\Folio\name;
+
+name('users.index');
+```
+
+Just like Laravel's named routes, you may use the `route` function to generate URLs to Folio pages that have been assigned a name:
+
+```php
+<a href="{{ route('users.index') }}">
+    All Users
+</a>
+```
+
+If the page has parameters, you may simply pass their values to the `route` function:
+
+```php
+route('users.show', ['user' => $user]);
 ```
 
 <a name="middleware"></a>
