@@ -8,11 +8,11 @@
     - [Nested Routes](#nested-routes)
     - [Index Routes](#index-routes)
 - [Route Parameters](#route-parameters)
-- [Named Routes](#named-routes)
 - [Route Model Binding](#route-model-binding)
     - [Soft Deleted Models](#soft-deleted-models)
+- [Render Hooks](#render-hooks)
+- [Named Routes](#named-routes)
 - [Middleware](#middleware)
-- [PHP Blocks](#php-blocks)
 - [Route Caching](#route-caching)
 
 <a name="introduction"></a>
@@ -164,33 +164,6 @@ When capturing multiple segments, the captured segments will be injected into th
 </ul>
 ```
 
-<a name="named-routes"></a>
-## Named Routes
-
-You may specify a name for a given page's route using the `name` function:
-
-```php
-<?php
-
-use function Laravel\Folio\name;
-
-name('users.index');
-```
-
-Just like Laravel's named routes, you may use the `route` function to generate URLs to Folio pages that have been assigned a name:
-
-```php
-<a href="{{ route('users.index') }}">
-    All Users
-</a>
-```
-
-If the page has parameters, you may simply pass their values to the `route` function:
-
-```php
-route('users.show', ['user' => $user]);
-```
-
 <a name="route-model-binding"></a>
 ## Route Model Binding
 
@@ -241,6 +214,66 @@ withTrashed();
 <div>
     User {{ $user->id }}
 </div>
+```
+
+<a name="render-hooks"></a>
+## Render Hooks
+
+By default, Folio will return the content of the page's Blade template as the response to the incoming request. However, you may customize the response by invoking the `render` function within the page's template.
+
+The `render` function accepts a closure which will receive the `View` instance being rendered by Folio, allowing you to add additional data to the view or customize the entire response. In addition to receiving the `View` instance, any additional route parameters or model bindings will also be provided to the `render` closure:
+
+```php
+<?php
+
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+
+use function Laravel\Folio\render;
+
+render(function (View $view, Post $post) {
+    if (! Auth::user()->can('view', $post)) {
+        return response('Unauthorized', 403);
+    }
+
+    return $view->with('photos', $post->author->photos);
+}); ?>
+
+<div>
+    {{ $post->content }}
+</div>
+
+<div>
+    This author has also taken {{ count($photos) }} photos.
+</div>
+```
+
+<a name="named-routes"></a>
+## Named Routes
+
+You may specify a name for a given page's route using the `name` function:
+
+```php
+<?php
+
+use function Laravel\Folio\name;
+
+name('users.index');
+```
+
+Just like Laravel's named routes, you may use the `route` function to generate URLs to Folio pages that have been assigned a name:
+
+```php
+<a href="{{ route('users.index') }}">
+    All Users
+</a>
+```
+
+If the page has parameters, you may simply pass their values to the `route` function:
+
+```php
+route('users.show', ['user' => $user]);
 ```
 
 <a name="middleware"></a>
@@ -298,29 +331,6 @@ Folio::path(resource_path('views/pages'))->middleware([
         },
     ],
 ]);
-```
-
-<a name="php-blocks"></a>
-## PHP Blocks
-
-When using Folio, the `<?php` and `?>` tags are reserved for the Folio page definition functions such as `middleware` and `withTrashed`.
-
-Therefore, if you need to write PHP code that should be executed within your Blade template, you should use the `@php` Blade directive:
-
-```php
-@php
-    if (! Auth::user()->can('view-posts', $user)) {
-        abort(403);
-    }
-
-    $posts = $user->posts;
-@endphp
-
-@foreach ($posts as $post)
-    <div>
-        {{ $post->title }}
-    </div>
-@endforeach
 ```
 
 <a name="route-caching"></a>
