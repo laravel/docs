@@ -108,7 +108,7 @@ Finally, don't forget to instruct your application to use the `database` driver 
 In order to use the `redis` queue driver, you should configure a Redis database connection in your `config/database.php` configuration file.
 
 > **Warning**  
-> The options `serializer` and `compression` are not supported by the `redis` queue driver.
+> The `serializer` and `compression` Redis options are not supported by the `redis` queue driver.
 
 **Redis Cluster**
 
