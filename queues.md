@@ -107,6 +107,9 @@ Finally, don't forget to instruct your application to use the `database` driver 
 
 In order to use the `redis` queue driver, you should configure a Redis database connection in your `config/database.php` configuration file.
 
+> **Warning**  
+> The `serializer` and `compression` Redis options are not supported by the `redis` queue driver.
+
 **Redis Cluster**
 
 If your Redis queue connection uses a Redis Cluster, your queue names must contain a [key hash tag](https://redis.io/docs/reference/cluster-spec/#hash-tags). This is required in order to ensure all of the Redis keys for a given queue are placed into the same hash slot:
