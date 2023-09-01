@@ -163,7 +163,7 @@ const submit = () => form.submit()
     });
 ```
 
-You may determine if a submission request is in-flight by checking the form's `processing` property:
+You may determine if a form submission request is in-flight by inspecting the form's `processing` property:
 
 ```html
 <button :disabled="form.processing">
