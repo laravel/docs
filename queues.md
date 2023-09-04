@@ -1697,7 +1697,7 @@ sudo supervisorctl reread
 
 sudo supervisorctl update
 
-sudo supervisorctl start laravel-worker:*
+sudo supervisorctl start "laravel-worker:*"
 ```
 
 For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
