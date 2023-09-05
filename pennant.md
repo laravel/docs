@@ -363,6 +363,14 @@ Route::get('/api/servers', function () {
 })->middleware(['features:new-api,servers-api']);
 ```
 
+The `EnsureFeaturesAreActive` middleware also provides a static `all` method which may be used to assign to the middleware to routes:
+
+```php
+Route::get('/api/servers', function () {
+    // ...
+})->middleware([EnsureFeaturesAreActive::all(['new-api', 'servers-api'])]);
+```
+
 <a name="customizing-the-response"></a>
 #### Customizing The Response
 
