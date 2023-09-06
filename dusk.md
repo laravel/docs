@@ -676,6 +676,20 @@ Another valuable use case for the `keys` method is sending a "keyboard shortcut"
 > **Note**
 > All modifier keys such as `{command}` are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php).
 
+<a name="advanced-keyboard-interactions"></a>
+#### Advanced Keyboard Interactions
+
+Dusk also include `withKeyboard` method to allow you to use complex keyboard interactions such as `press`, `release` using `Laravel\Dusk\Keyboard` class:
+
+    use Laravel\Dusk\Keyboard;
+
+    $browser->withKeyboard(function (Keyboard $keyboard) {
+        $keyboard->press('c')
+            ->pause(1000)
+            ->release('c');
+    });
+
+
 <a name="using-the-mouse"></a>
 ### Using The Mouse
 
@@ -709,6 +723,10 @@ The `clickAndHold` method may be used to simulate a mouse button being clicked a
     $browser->clickAndHold()
             ->pause(1000)
             ->releaseMouse();
+
+The `controlClick` method may be used to simulate `ctrl+click` event to the browser: 
+
+    $browser->controlClick();
 
 <a name="mouseover"></a>
 #### Mouseover
