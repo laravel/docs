@@ -770,7 +770,7 @@ The `clickAndHold` method may be used to simulate a mouse button being clicked a
             ->pause(1000)
             ->releaseMouse();
 
-The `controlClick` method may be used to simulate `ctrl+click` event to the browser: 
+The `controlClick` method may be used to simulate the `ctrl+click` event within the browser:
 
     $browser->controlClick();
 
