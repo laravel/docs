@@ -97,20 +97,16 @@ For example, you might use signed URLs to implement a public "unsubscribe" link 
 
     return URL::signedRoute('unsubscribe', ['user' => 1]);
 
+You may exclude the domain from the signed URL hash by providing the `absolute` argument to the `signedRoute` method:
+
+    return URL::signedRoute('unsubscribe', ['user' => 1], absolute: false);
+
 If you would like to generate a temporary signed route URL that expires after a specified amount of time, you may use the `temporarySignedRoute` method. When Laravel validates a temporary signed route URL, it will ensure that the expiration timestamp that is encoded into the signed URL has not elapsed:
 
     use Illuminate\Support\Facades\URL;
 
     return URL::temporarySignedRoute(
         'unsubscribe', now()->addMinutes(30), ['user' => 1]
-    );
-
-If you would like to exclude the domain from the signature, you may provide an additional parameter to set `absolute` to false. The signature will be based on the relative part of the url only, and you will can prefix with an alternate domain if required:
-
-    use Illuminate\Support\Facades\URL;
-
-    return URL::temporarySignedRoute(
-        'unsubscribe', now()->addMinutes(30), ['user' => 1], false
     );
 
 <a name="validating-signed-route-requests"></a>
@@ -153,12 +149,11 @@ Once you have registered the middleware in your kernel, you may attach it to a r
         // ...
     })->name('unsubscribe')->middleware('signed');
 
-If your signatures do not include the domain (i.e. `absolute` is set to false), the middleware must be modified to verify just the relative part of the url:
+If your signed URLs do not include the domain in the URL hash, you should provide the `relative` argument to the middleware:
 
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
     })->name('unsubscribe')->middleware('signed:relative');
-
 
 <a name="responding-to-invalid-signed-routes"></a>
 #### Responding To Invalid Signed Routes
