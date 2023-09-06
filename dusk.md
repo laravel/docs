@@ -676,9 +676,6 @@ Another valuable use case for the `keys` method is sending a "keyboard shortcut"
 > **Note**
 > All modifier keys such as `{command}` are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php).
 
-<a name="advanced-keyboard-interactions"></a>
-#### Advanced Keyboard Interactions
-
 Dusk also include `withKeyboard` method to allow you to use complex keyboard interactions such as `press`, `release` using `Laravel\Dusk\Keyboard` class:
 
     use Laravel\Dusk\Keyboard;
@@ -689,6 +686,52 @@ Dusk also include `withKeyboard` method to allow you to use complex keyboard int
             ->release('c');
     });
 
+<a name="keyboard-macros"></a>
+#### Keyboard Macros
+
+If you would like to define a custom keyboard method that you can re-use in a variety of your tests, you may use the `macro` method on the `Keyboard` class. Typically, you should call this method from a [service provider's](/docs/{{version}}/providers) `boot` method:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Facebook\WebDriver\WebDriverKeys;
+    use Illuminate\Support\ServiceProvider;
+    use Laravel\Dusk\Keyboard;
+    use Laravel\Dusk\OperatingSystem;
+
+    class DuskServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register Dusk's browser macros.
+         */
+        public function boot(): void
+        {
+            Keyboard::macro('copy', function (string $element = null) {
+                $this->type([
+                    OperatingSystem::onMac() ? WebDriverKeys::META : WebDriverKeys::CONTROL, 'c',
+                ]);
+
+                return $this;
+            });
+
+            Keyboard::macro('paste', function (string $element = null) {
+                $this->type([
+                    OperatingSystem::onMac() ? WebDriverKeys::META : WebDriverKeys::CONTROL, 'v',
+                ]);
+
+                return $this;
+            });
+        }
+    }
+
+The `macro` function accepts a name as its first argument, and a closure as its second. The macro's closure will be executed when calling the macro as a method on a `Keyboard` instance:
+
+    $browser->click('@textarea')
+        ->withKeyboard(fn (Keyboard $keyboard) => $keyboard->copy())
+        ->click('@another-textarea')
+        ->withKeyboard(fn (Keyboard $keyboard) => $keyboard->paste());
+    });
 
 <a name="using-the-mouse"></a>
 ### Using The Mouse
