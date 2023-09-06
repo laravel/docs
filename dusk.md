@@ -731,7 +731,6 @@ The `macro` function accepts a name as its first argument, and a closure as its 
         ->withKeyboard(fn (Keyboard $keyboard) => $keyboard->copy())
         ->click('@another-textarea')
         ->withKeyboard(fn (Keyboard $keyboard) => $keyboard->paste());
-    });
 
 <a name="using-the-mouse"></a>
 ### Using The Mouse
