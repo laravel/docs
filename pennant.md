@@ -344,31 +344,15 @@ To make checking features in Blade a seamless experience, Pennant offers a `@fea
 <a name="middleware"></a>
 ### Middleware
 
-Pennant also includes a [middleware](/docs/{{version}}/middleware) that may be used to verify the currently authenticated user has access to a feature before a route is even invoked. To get started, you should add a middleware alias for the `EnsureFeaturesAreActive` middleware to your application's `app/Http/Kernel.php` file:
+Pennant also includes a [middleware](/docs/{{version}}/middleware) that may be used to verify the currently authenticated user has access to a feature before a route is even invoked. You may assign the middleware to a route and specify the features that are required to access the route. If any of the specified features are inactive for the currently authenticated user, a `400 Bad Request` HTTP response will be returned by the route. Multiple features may be passed to the static `using` method.
 
 ```php
+use Illuminate\Support\Facades\Route;
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 
-protected $middlewareAliases = [
-    // ...
-    'features' => EnsureFeaturesAreActive::class,
-];
-```
-
-Next, you may assign the middleware to a route and specify the features that are required to access the route. If any of the specified features are inactive for the currently authenticated user, a `400 Bad Request` HTTP response will be returned by the route. Multiple features may be specified using a comma-delimited list:
-
-```php
 Route::get('/api/servers', function () {
     // ...
-})->middleware(['features:new-api,servers-api']);
-```
-
-The `EnsureFeaturesAreActive` middleware also provides a static `all` method which may be used to assign to the middleware to routes:
-
-```php
-Route::get('/api/servers', function () {
-    // ...
-})->middleware([EnsureFeaturesAreActive::all(['new-api', 'servers-api'])]);
+})->middleware(EnsureFeaturesAreActive::using('new-api', 'servers-api'));
 ```
 
 <a name="customizing-the-response"></a>
