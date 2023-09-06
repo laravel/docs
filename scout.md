@@ -572,12 +572,10 @@ Scout allows you to add simple "where" clauses to your search queries. Currently
 
     $orders = Order::search('Star Trek')->where('user_id', 1)->get();
 
-**whereIn / whereNotIn**
-
-The `whereIn` method verifies that a given column's value is contained within the given array:
+In addition, the `whereIn` method may be used to verify that a given column's value is contained within the given array:
 
     $orders = Order::search('Star Trek')->whereIn(
-        'status', ['paid', 'open']
+        'status', ['open', 'paid']
     )->get();
 
 The `whereNotIn` method verifies that the given column's value is not contained in the given array:
