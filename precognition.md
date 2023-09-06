@@ -11,6 +11,7 @@
 - [Customizing Validation Rules](#customizing-validation-rules)
 - [Handling File Uploads](#handling-file-uploads)
 - [Managing Side-Effects](#managing-side-effects)
+- [Testing](#testing)
 
 <a name="introduction"></a>
 ## Introduction
@@ -672,5 +673,25 @@ class InteractionMiddleware
 
         return $next($request);
     }
+}
+```
+
+<a name="testing"></a>
+## Testing
+
+If you would like to make precognitive requests in your tests, Laravel's `TestCase` includes a `withPrecognition` helper which will add the `Precognition` request header.
+
+Additionally, if you would like to assert that a precognitive request was successful, e.g., did not return any validation errors, you may use the `assertSuccessfulPrecognition` method on the response:
+
+```php
+public function test_it_validates_registration_form_with_precognition()
+{
+    $response = $this->withPrecognition()
+        ->post('/register', [
+            'name' => 'Taylor Otwell',
+        ]);
+
+    $response->assertSuccessfulPrecognition();
+    $this->assertSame(0, User::count());
 }
 ```
