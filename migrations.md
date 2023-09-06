@@ -1034,12 +1034,15 @@ When modifying a column, you must explicitly include all of the modifiers you wa
         $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();
     });
 
-<a name="modifying-columns-on-sqlite"></a>
-#### Modifying Columns On SQLite
+<a name="the-doctrine-dbal-library"></a>
+#### The Doctrine DBAL library
 
-If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package using the Composer package manager before modifying a column. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:
+The package is required if your application is utilizing an **SQLite database** or if you want to change type of a column. You must install the `doctrine/dbal` package using the Composer package manager to change most types. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:
 
-    composer require doctrine/dbal
+	composer require doctrine/dbal
+
+> **Warning**
+> When using the `doctrine/dbal` package, the following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, `ulid`, and `uuid`.
 
 If you plan to modify columns created using the `timestamp` method, you must also add the following configuration to your application's `config/database.php` configuration file:
 
@@ -1052,9 +1055,6 @@ use Illuminate\Database\DBAL\TimestampType;
     ],
 ],
 ```
-
-> **Warning**  
-> When using the `doctrine/dbal` package, the following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, `ulid`, and `uuid`.
 
 <a name="renaming-columns"></a>
 ### Renaming Columns
