@@ -12,6 +12,7 @@
     - [Environment Based Configuration](#environment-based-configuration)
     - [Databases & Migrations](#databases-and-migrations)
     - [Directory Configuration](#directory-configuration)
+- [IDE Support](#ide-support)
 - [Next Steps](#next-steps)
     - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
     - [Laravel The API Backend](#laravel-the-api-backend)
@@ -257,6 +258,13 @@ php artisan migrate
 ### Directory Configuration
 
 Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
+
+<a name="ide-support"></a>
+## IDE Support
+
+You are free to use any code editor you wish when developing Laravel applications; however, [PhpStorm](https://www.jetbrains.com/phpstorm/laravel/) offers extensive support for Laravel and its ecosystem, including [Laravel Pint](https://www.jetbrains.com/help/phpstorm/using-laravel-pint.html).
+
+In addition, the community maintained [Laravel Idea](https://laravel-idea.com/) PhpStorm plugin offers a variety of helpful IDE augmentations, including code generation, Eloquent syntax completion, validation rule completion, and more.
 
 <a name="next-steps"></a>
 ## Next Steps
