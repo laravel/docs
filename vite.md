@@ -6,8 +6,6 @@
   - [Installing Vite And The Laravel Plugin](#installing-vite-and-laravel-plugin)
   - [Configuring Vite](#configuring-vite)
   - [Loading Your Scripts And Styles](#loading-your-scripts-and-styles)
-  - [Inlining Assets](#inlining-assets)
-####
 - [Running Vite](#running-vite)
 - [Working With JavaScript](#working-with-scripts)
   - [Aliases](#aliases)
@@ -233,14 +231,16 @@ If needed, you may also specify the build path of your compiled assets when invo
 </head>
 ```
 
-<a name="inlining-assets"></a>
-#### Inlining Assets
+<a name="inline-assets"></a>
+#### Inline Assets
 
-Sometimes it may be necessary to output the content of assets served with Vite, rather than just the versioned URL to the asset. For example, you may need to include asset content directly when passing HTML content to a PDF generator, to avoid making a network request.
-
-You may output the content of Vite assets by calling `Vite::content()`:
+Sometimes it may be necessary to include the raw content of assets rather than linking to the versioned URL of the asset. For example, you may need to include asset content directly into your page when passing HTML content to a PDF generator. You may output the content of Vite assets using the `content` method provided by the `Vite` facade:
 
 ```blade
+@php
+use Illuminate\Support\Facades\Vite;
+@endphp
+
 <!doctype html>
 <head>
     {{-- ... --}}
