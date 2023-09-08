@@ -898,6 +898,20 @@ If you would like to perform multiple "upserts" in a single query, then you shou
 > **Warning**  
 > All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the "primary" and "unique" indexes of the table to detect existing records.
 
+### Save / Update or Fail
+
+If you wish to be able to handle updates to a model within a transaction, you may call `updateOrFail()` on a model with the attributes you would like to update.
+
+    use App\Models\Flight;
+
+    $flight = Flight::find(1);
+    
+    $flight->updateOrFail(['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99]]);
+
+The method `saveOrFail()` may also be used if you have already changed the model's attributes.
+
+    $flight->saveOrFail();
+
 <a name="deleting-models"></a>
 ## Deleting Models
 
@@ -912,6 +926,16 @@ To delete a model, you may call the `delete` method on the model instance:
 You may call the `truncate` method to delete all of the model's associated database records. The `truncate` operation will also reset any auto-incrementing IDs on the model's associated table:
 
     Flight::truncate();
+
+#### Delete or Fail
+
+You may call upon `deleteOrFail()` on a model to delete a model within a transaction.
+
+    use App\Models\Flight;
+
+    $flight = Flight::find(1);
+
+    $flight->deleteOrFail();
 
 <a name="deleting-an-existing-model-by-its-primary-key"></a>
 #### Deleting An Existing Model By Its Primary Key
