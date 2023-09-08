@@ -1125,6 +1125,9 @@ You may also define the maximum number of seconds a job should be allowed to run
 
 Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value.
 
+> **Note**
+> If the [retry_after](#job-expiration) value for your queue connection is lower than the jobs timeout, the job might be re-attempted before it has finished executing or timed out.
+
 <a name="failing-on-timeout"></a>
 #### Failing On Timeout
 
