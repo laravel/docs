@@ -47,8 +47,8 @@
 <a name="introduction"></a>
 ## Introduction
 
-> **Warning**  
-> Cashier Paddle only works with Paddle Classic which is not available to new Paddle customers unless you reach out to their support team.
+> **Warning**
+> At this time, Cashier Paddle only supports Paddle Classic, which is not available to new Paddle customers unless you contact Paddle support.
 
 [Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle) provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods, and more.
 z
