@@ -182,6 +182,8 @@ You may use the `rememberForever` method to retrieve an item from the cache or s
         return DB::table('users')->get();
     });
 
+Laravel also offers a `sear` method, which has the same functionality as `rememberForever`.
+
 <a name="retrieve-delete"></a>
 #### Retrieve & Delete
 
