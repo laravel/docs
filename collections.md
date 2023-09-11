@@ -606,7 +606,7 @@ The `diffAssoc` method compares the collection against another collection or a p
 <a name="method-diffassocusing"></a>
 #### `diffAssocUsing()` {.collection-method}
 
-Unlike `diffAssoc`, `diffAssocUsing` takes a user supplied callback function for the indices comparison:
+Unlike `diffAssoc`, `diffAssocUsing` accepts a user supplied callback function for the indices comparison:
 
     $collection = collect([
         'color' => 'orange',
@@ -624,7 +624,7 @@ Unlike `diffAssoc`, `diffAssocUsing` takes a user supplied callback function for
 
     // ['color' => 'orange', 'remain' => 6]
 
-The callback must be a comparison function that returns an integer less than, equal to, or greater than zero. For more information, refer to the PHP documentation on [`array_diff_uassoc`](https://www.php.net/array_diff_uassoc#refsect1-function.array-diff-uassoc-parameters), which is the PHP function that `diffAssocUsing` method utilizes internally.
+The callback must be a comparison function that returns an integer less than, equal to, or greater than zero. For more information, refer to the PHP documentation on [`array_diff_uassoc`](https://www.php.net/array_diff_uassoc#refsect1-function.array-diff-uassoc-parameters), which is the PHP function that the `diffAssocUsing` method utilizes internally.
 
 <a name="method-diffkeys"></a>
 #### `diffKeys()` {.collection-method}
