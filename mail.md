@@ -919,8 +919,8 @@ When designing a mailable's template, it is convenient to quickly preview the re
         return new App\Mail\InvoicePaid($invoice);
     });
 
-> **Warning**  
-> [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [Mailpit](https://github.com/axllent/mailpit) or [HELO](https://usehelo.com).
+> **Note**  
+> [Inline attachments](#inline-attachments) will be rendered a data urls when a mailable is previewed in your browser.
 
 <a name="localizing-mailables"></a>
 ## Localizing Mailables
