@@ -9,11 +9,6 @@
     - [Storing Items In The Cache](#storing-items-in-the-cache)
     - [Removing Items From The Cache](#removing-items-from-the-cache)
     - [The Cache Helper](#the-cache-helper)
-- [Cache Tags](#cache-tags)
-    - [Storing Tagged Cache Items](#storing-tagged-cache-items)
-    - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
-    - [Removing Tagged Cache Items](#removing-tagged-cache-items)
-    - [Pruning Stale Cache Tags](#pruning-stale-cache-tags)
 - [Atomic Locks](#atomic-locks)
     - [Driver Prerequisites](#lock-driver-prerequisites)
     - [Managing Locks](#managing-locks)
@@ -266,51 +261,6 @@ When the `cache` function is called without any arguments, it returns an instanc
 
 > **Note**  
 > When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing the facade](/docs/{{version}}/mocking#mocking-facades).
-
-<a name="cache-tags"></a>
-## Cache Tags
-
-> **Warning**  
-> Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
-
-<a name="storing-tagged-cache-items"></a>
-### Storing Tagged Cache Items
-
-Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` a value into the cache:
-
-    Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
-
-    Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
-
-<a name="accessing-tagged-cache-items"></a>
-### Accessing Tagged Cache Items
-
-Items stored via tags may not be accessed without also providing the tags that were used to store the value. To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:
-
-    $john = Cache::tags(['people', 'artists'])->get('John');
-
-    $anne = Cache::tags(['people', 'authors'])->get('Anne');
-
-<a name="removing-tagged-cache-items"></a>
-### Removing Tagged Cache Items
-
-You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:
-
-    Cache::tags(['people', 'authors'])->flush();
-
-In contrast, this statement would remove only cached values tagged with `authors`, so `Anne` would be removed, but not `John`:
-
-    Cache::tags('authors')->flush();
-
-<a name="pruning-stale-cache-tags"></a>
-### Pruning Stale Cache Tags
-
-> **Warning**
-> Pruning stale cache tags is only necessary when using Redis as your application's cache driver.
-
-In order to properly prune stale cache tag entries when using the Redis cache driver, Laravel's `cache:prune-stale-tags` Artisan command should be [scheduled](/docs/{{version}}/scheduling) in your application's `App\Console\Kernel` class:
-
-    $schedule->command('cache:prune-stale-tags')->hourly();
 
 <a name="atomic-locks"></a>
 ## Atomic Locks
