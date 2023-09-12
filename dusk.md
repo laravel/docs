@@ -222,6 +222,24 @@ To specify the database connections that should have their tables truncated, you
      */
     protected $connectionsToTruncate = ['mysql'];
 
+If you would like to execute code before or after database truncation is performed, you may define `beforeTruncatingDatabase` or `afterTruncatingDatabase` methods on your test class:
+
+    /**
+     * Perform any work that should take place before the database has started truncating.
+     */
+    protected function beforeTruncatingDatabase(): void
+    {
+        //
+    }
+
+    /**
+     * Perform any work that should take place after the database has finished truncating.
+     */
+    protected function afterTruncatingDatabase(): void
+    {
+        //
+    }
+
 <a name="running-tests"></a>
 ### Running Tests
 
