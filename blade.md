@@ -88,7 +88,7 @@ The current UNIX timestamp is {{ time() }}.
 <a name="html-entity-encoding"></a>
 ### HTML Entity Encoding
 
-By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
+By default, Blade (and the Laravel `e` function) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
 
     <?php
 
