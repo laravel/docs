@@ -919,9 +919,6 @@ When designing a mailable's template, it is convenient to quickly preview the re
         return new App\Mail\InvoicePaid($invoice);
     });
 
-> **Note**  
-> [Inline attachments](#inline-attachments) will be rendered a data urls when a mailable is previewed in your browser.
-
 <a name="localizing-mailables"></a>
 ## Localizing Mailables
 
