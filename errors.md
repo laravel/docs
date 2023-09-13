@@ -117,6 +117,42 @@ Sometimes you may need to report an exception but continue handling the current 
         }
     }
 
+<a name="deduplicating-reported-exceptions"></a>
+#### Deduplicating Reported Exceptions
+
+Everytime the `report` helper is called with an exception it will be reported. This means you may wind up reporting the same exception multiple times throughout your application. 
+
+If you would like to ensure that a single instance of an exception is only every reported once you may call the exception handler's `dontReportDuplicates` method in the `boot` method of your service provider.
+
+```php
+use Illuminate\Contracts\Debug\ExceptionHandler;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    $this->app[ExceptionHandler::class]->dontReportDuplicates();
+}
+```
+
+When the `report` helper is called with the same instance of an exception, only the first call will be reported.
+
+```php
+$original = new RuntimeException('Whoops!');
+
+report($original); // reported
+
+try {
+    throw $original;
+} catch (Throwable $caught) {
+    report($caught); // ignored
+}
+
+report($original); // ignored
+report($caught); // ignored
+```
+
 <a name="exception-log-levels"></a>
 ### Exception Log Levels
 
