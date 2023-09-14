@@ -538,7 +538,7 @@ use function Laravel\Prompts\spin;
 use Illuminate\Support\Facades\Http;
 
 $response = spin(
-    fn () => http::get('http://example.com'),
+    fn () => Http::get('http://example.com'),
     'Fetching response...'
 );
 
