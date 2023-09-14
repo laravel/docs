@@ -10,9 +10,9 @@
     - [Multi-select](#multiselect)
     - [Suggest](#suggest)
     - [Search](#search)
-    - [Spin](#spin)
 - [Informational Messages](#informational-messages)
 - [Hint Text](#hint-text)
+- [Spin](#spin)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments & Fallbacks](#fallbacks)
 
