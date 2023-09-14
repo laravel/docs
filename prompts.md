@@ -541,8 +541,6 @@ $response = spin(
     fn () => Http::get('http://example.com'),
     'Fetching response...'
 );
-
-return $response;
 ```
 
 <a name="terminal-considerations"></a>
