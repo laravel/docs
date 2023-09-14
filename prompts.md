@@ -274,8 +274,7 @@ $role = select(
     validate: fn (string $value) =>
         $value === 'owner' && User::where('role', 'owner')->exists()
             ? 'An owner already exists.'
-            : null
-    }
+            : null    
 );
 ```
 
