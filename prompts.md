@@ -10,6 +10,7 @@
     - [Multi-select](#multiselect)
     - [Suggest](#suggest)
     - [Search](#search)
+    - [Spin](#spin)
 - [Informational Messages](#informational-messages)
 - [Hint Text](#hint-text)
 - [Terminal Considerations](#terminal-considerations)
@@ -526,6 +527,22 @@ $email = text(
     label: 'What is your email address?',
     hint: 'We will never share your email address with anyone.',
 );
+```
+
+<a name="spin"></a>
+### Spin
+The `spin` function displays a spinner and a custom message during the execution of a specified callback. It's useful for indicating ongoing processes and returns the callback's results upon completion:
+
+```php
+use function Laravel\Prompts\spin;
+use Illuminate\Support\Facades\Http;
+
+$response = spin(fn () =>
+    Http::get('http://example.com'),
+    'Fetching response...'
+);
+
+return $response;
 ```
 
 <a name="terminal-considerations"></a>
