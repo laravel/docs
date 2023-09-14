@@ -537,8 +537,8 @@ The `spin` function displays a spinner and an optional custom message during the
 use function Laravel\Prompts\spin;
 use Illuminate\Support\Facades\Http;
 
-$response = spin(fn () =>
-    Http::get('http://example.com'),
+$response = spin(
+    fn () => http::get('http://example.com'),
     'Fetching response...'
 );
 
