@@ -265,7 +265,7 @@ Unlike other prompt functions, the `select` function doesn't accept the `require
 
 ```php
 $role = select(
-    label: 'What role should the user have?'
+    label: 'What role should the user have?',
     options: [
         'member' => 'Member',
         'contributor' => 'Contributor',
@@ -274,8 +274,7 @@ $role = select(
     validate: fn (string $value) =>
         $value === 'owner' && User::where('role', 'owner')->exists()
             ? 'An owner already exists.'
-            : null
-    }
+            : null    
 );
 ```
 
@@ -352,7 +351,7 @@ You may pass a closure to the `validate` argument if you need to present an opti
 
 ```
 $permissions = select(
-    label: 'What permissions should the user have?'
+    label: 'What permissions should the user have?',
     options: [
         'read' => 'Read',
         'create' => 'Create',
