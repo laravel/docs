@@ -531,7 +531,7 @@ $email = text(
 
 <a name="spin"></a>
 ### Spin
-The `spin` function displays a spinner and an optional custom message during the execution of a specified callback. It's useful for indicating ongoing processes and returns the callback's results upon completion:
+The `spin` function displays a spinner along with an optional custom message while executing a specified callback. It serves to indicate ongoing processes and returns the callback's results upon completion:
 
 ```php
 use function Laravel\Prompts\spin;
