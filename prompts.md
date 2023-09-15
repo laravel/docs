@@ -11,6 +11,7 @@
     - [Suggest](#suggest)
     - [Search](#search)
 - [Informational Messages](#informational-messages)
+- [Tables](#tables)
 - [Spin](#spin)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments & Fallbacks](#fallbacks)
@@ -513,6 +514,20 @@ The `note`, `info`, `warning`, `error`, and `alert` functions may be used to dis
 use function Laravel\Prompts\info;
 
 info('Package installed successfully.');
+```
+
+<a name="tables"></a>
+### Tables
+
+The `table` function makes it easy to display multiple rows and columns of data. All you need to do is provide the column names and the data for the table:
+
+```php
+use function Laravel\Prompts\table;
+
+table(
+    ['Name', 'Email'],
+    User::all(['name', 'email'])
+);
 ```
 
 <a name="spin"></a>
