@@ -132,11 +132,11 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 class Handler extends ExceptionHandler
 {
     /**
-     * Indicates that exception reporting should be deduplicated.
+     * Indicates that an exception instance should only be reported once.
      *
      * @var bool
      */
-    protected $deduplicateReporting = true;
+    protected $withoutDuplicates = true;
 
     // ...
 }
