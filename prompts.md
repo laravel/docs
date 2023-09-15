@@ -11,7 +11,6 @@
     - [Suggest](#suggest)
     - [Search](#search)
 - [Informational Messages](#informational-messages)
-- [Hint Text](#hint-text)
 - [Spin](#spin)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments & Fallbacks](#fallbacks)
@@ -53,13 +52,14 @@ use function Laravel\Prompts\text;
 $name = text('What is your name?');
 ```
 
-You may also include placeholder text and a default value:
+You may also include placeholder text, a default value, and an informational hint:
 
 ```php
 $name = text(
     label: 'What is your name?',
     placeholder: 'E.g. Taylor Otwell',
-    default: $user?->name
+    default: $user?->name,
+    hint: 'This will be displayed on your profile.'
 );
 ```
 
@@ -113,12 +113,13 @@ use function Laravel\Prompts\password;
 $password = password('What is your password?');
 ```
 
-You may also include placeholder text:
+You may also include placeholder text and an informational hint:
 
 ```php
 $password = password(
     label: 'What is your password?',
-    placeholder: 'Minimum 8 characters...'
+    placeholder: 'password',
+    hint: 'Minimum 8 characters.'
 );
 ```
 
@@ -171,22 +172,15 @@ use function Laravel\Prompts\confirm;
 $confirmed = confirm('Do you accept the terms?');
 ```
 
-By default, the "Yes" answer will be pre-selected. However, you may configure the default to be "No" by passing `false` to the `default` argument:
+You may also include a default value, customized wording for the "Yes" and "No" labels, and an informational hint:
 
 ```php
 $confirmed = confirm(
     label: 'Do you accept the terms?',
     default: false,
-);
-```
-
-You may also customize the wording used for the "Yes" and "No" labels by passing the `yes` and `no` arguments:
-
-```php
-$confirmed = confirm(
-    label: 'Do you accept the terms?',
     yes: 'I accept',
-    no: 'I decline'
+    no: 'I decline',
+    hint: 'The terms must be accepted to continue.'
 );
 ```
 
@@ -225,13 +219,14 @@ $role = select(
 );
 ```
 
-You may also specify the default choice by passing the `default` argument:
+You may also specify the default choice and an informational hint:
 
 ```php
 $role = select(
     label: 'What role should the user have?',
     options: ['Member', 'Contributor', 'Owner'],
-    default: 'Owner'
+    default: 'Owner',
+    hint: 'The role may be changed at any time.'
 );
 ```
 
@@ -275,7 +270,7 @@ $role = select(
     validate: fn (string $value) =>
         $value === 'owner' && User::where('role', 'owner')->exists()
             ? 'An owner already exists.'
-            : null    
+            : null
 );
 ```
 
@@ -295,7 +290,7 @@ $permissions = multiselect(
 );
 ```
 
-You may also specify options that should be pre-selected by passing an array to the `default` argument:
+You may also specify default choices and an informational hint:
 
 ```php
 use function Laravel\Prompts\multiselect;
@@ -303,7 +298,8 @@ use function Laravel\Prompts\multiselect;
 $permissions = multiselect(
     label: 'What permissions should be assigned?',
     options: ['Read', 'Create', 'Update', 'Delete'],
-    default: ['Read', 'Create']
+    default: ['Read', 'Create'],
+    hint: 'Permissions may be updated at any time.'
 );
 ```
 
@@ -388,14 +384,15 @@ $name = suggest(
 )
 ```
 
-You may also include placeholder text and a default value:
+You may also include placeholder text, a default value, and an informational hint:
 
 ```php
 $name = suggest(
     label: 'What is your name?',
     options: ['Taylor', 'Dayle'],
     placeholder: 'E.g. Taylor',
-    default: $user?->name
+    default: $user?->name,
+    hint: 'This will be displayed on your profile.'
 );
 ```
 
@@ -459,7 +456,7 @@ $id = search(
 
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
 
-You may also include placeholder text:
+You may also include placeholder text and an informational hint:
 
 ```php
 $id = search(
@@ -467,7 +464,8 @@ $id = search(
     placeholder: 'E.g. Taylor Otwell',
     options: fn (string $value) => strlen($value) > 0
         ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
-        : []
+        : [],
+    hint: 'The user will receive an email immediately.'
 );
 ```
 
@@ -515,18 +513,6 @@ The `note`, `info`, `warning`, `error`, and `alert` functions may be used to dis
 use function Laravel\Prompts\info;
 
 info('Package installed successfully.');
-```
-
-<a name="hint-text"></a>
-### Hint Text
-
-All prompt functions also support "hint text". This text will be displayed underneath the prompt to give the user information or instructions regarding the prompt:
-
-```php
-$email = text(
-    label: 'What is your email address?',
-    hint: 'We will never share your email address with anyone.',
-);
 ```
 
 <a name="spin"></a>
