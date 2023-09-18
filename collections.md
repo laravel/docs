@@ -1493,7 +1493,7 @@ The `mapToGroups` method groups the collection's items by the given closure. The
 <a name="method-mapwithkeys"></a>
 #### `mapWithKeys()` {.collection-method}
 
-The `mapWithKeys` method iterates through the collection and passes each value to the given callback. The callback should return an associative array containing a single key / value pair:
+The `mapWithKeys` method iterates through the collection and passes each value to the given callback. The callback should return an associative array containing a single key / value pair or an empty array. Returning null will raise an error:
 
     $collection = collect([
         [
