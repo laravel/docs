@@ -34,6 +34,7 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle)
 - [Laravel Echo](https://github.com/laravel/echo)
 - [Laravel Envoy](https://github.com/laravel/envoy)
+- [Laravel Folio](https://github.com/laravel/folio)
 - [Laravel Framework](https://github.com/laravel/framework)
 - [Laravel Homestead](https://github.com/laravel/homestead)
 - [Laravel Homestead Build Scripts](https://github.com/laravel/settler)
