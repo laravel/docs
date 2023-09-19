@@ -521,7 +521,6 @@ The `spin` function displays a spinner along with an optional message while exec
 
 ```php
 use function Laravel\Prompts\spin;
-use Illuminate\Support\Facades\Http;
 
 $response = spin(
     fn () => Http::get('http://example.com'),
