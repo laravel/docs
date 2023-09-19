@@ -11,6 +11,7 @@
     - [Suggest](#suggest)
     - [Search](#search)
 - [Informational Messages](#informational-messages)
+- [Spin](#spin)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments & Fallbacks](#fallbacks)
 
@@ -513,6 +514,23 @@ use function Laravel\Prompts\info;
 
 info('Package installed successfully.');
 ```
+
+<a name="spin"></a>
+### Spin
+
+The `spin` function displays a spinner along with an optional message while executing a specified callback. It serves to indicate ongoing processes and returns the callback's results upon completion:
+
+```php
+use function Laravel\Prompts\spin;
+
+$response = spin(
+    fn () => Http::get('http://example.com'),
+    'Fetching response...'
+);
+```
+
+> **Warning**  
+> The `spin` function requires the `pcntl` PHP extension to animate the spinner. When this extension is not available, a static version of the spinner will appear instead.
 
 <a name="terminal-considerations"></a>
 ### Terminal Considerations
