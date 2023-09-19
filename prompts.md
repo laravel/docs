@@ -529,6 +529,9 @@ $response = spin(
 );
 ```
 
+> **Note**  
+> The `spin` function requires the `pcntl` PHP extension to animate the spinner. When this extension is not available, a static version of the spinner will appear instead.
+
 <a name="terminal-considerations"></a>
 ### Terminal Considerations
 
