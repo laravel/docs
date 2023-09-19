@@ -149,7 +149,7 @@ An Inertia page corresponds to a Vue or React component, typically stored within
 ```vue
 <script setup>
 import Layout from '@/Layouts/Authenticated.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head } from '@inertiajs/vue3';
 
 const props = defineProps(['user']);
 </script>
