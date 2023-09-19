@@ -197,14 +197,29 @@ Alternatively, you may define a `withDelay` method on the notification class its
 <a name="customizing-the-notification-queue-connection"></a>
 #### Customizing The Notification Queue Connection
 
-By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may define a `$connection` property on the notification class:
+By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may call the `onConnection` method from your notification's constructor:
 
-    /**
-     * The name of the queue connection to use when queueing the notification.
-     *
-     * @var string
-     */
-    public $connection = 'redis';
+
+    <?php
+
+    namespace App\Notifications;
+
+    use Illuminate\Bus\Queueable;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Notifications\Notification;
+
+    class InvoicePaid extends Notification implements ShouldQueue
+    {
+        use Queueable;
+
+        /**
+         * Create a new notification instance.
+         */
+        public function __construct()
+        {
+            $this->onConnection('redis');
+        }
+    }
 
 Or, if you would like to specify a specific queue connection that should be used for each notification channel supported by the notification, you may define a `viaConnections` method on your notification. This method should return an array of channel name / queue connection name pairs:
 
