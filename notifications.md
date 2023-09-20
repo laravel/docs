@@ -1404,7 +1404,7 @@ The notification will not be sent if an event listener for the `NotificationSend
     /**
      * Handle the event.
      */
-    public function handle(NotificationSending $event): void
+    public function handle(NotificationSending $event): bool
     {
         return false;
     }
