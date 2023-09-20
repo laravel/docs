@@ -199,7 +199,6 @@ Alternatively, you may define a `withDelay` method on the notification class its
 
 By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may call the `onConnection` method from your notification's constructor:
 
-
     <?php
 
     namespace App\Notifications;
