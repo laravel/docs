@@ -553,7 +553,7 @@ The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column:
 <a name="column-method-foreignIdFor"></a>
 #### `foreignIdFor()` {.collection-method}
 
-The `foreignIdFor` method adds a `{column}_id UNSIGNED BIGINT` equivalent column for a given model class:
+The `foreignIdFor` method adds a `{column}_id` equivalent column for a given model class. The column type will be `UNSIGNED BIGINT`, `CHAR(36)` or `CHAR(26)` depending on the model key type:
 
     $table->foreignIdFor(User::class);
 
