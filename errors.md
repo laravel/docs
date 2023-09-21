@@ -122,17 +122,23 @@ Sometimes you may need to report an exception but continue handling the current 
 
 If you are using the `report` function throughout your application, you may occasionally report the same exception multiple times, creating duplicate entries in your logs.
 
-If you would like to ensure that a single instance of an exception is only ever reported once, you may call the exception handler's `dontReportDuplicates` method. Typically, this method should be invoked from the `boot` method of your application's `AppServiceProvider`:
+If you would like to ensure that a single instance of an exception is only ever reported once, you may set the `$withoutDuplicates` property to `true` within your application's `App\Exceptions\Handler` class:
 
 ```php
-use Illuminate\Contracts\Debug\ExceptionHandler;
+namespace App\Exceptions;
 
-/**
- * Bootstrap any application services.
- */
-public function boot(ExceptionHandler $exceptionHandler): void
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+
+class Handler extends ExceptionHandler
 {
-    $exceptionHandler->dontReportDuplicates();
+    /**
+     * Indicates that an exception instance should only be reported once.
+     *
+     * @var bool
+     */
+    protected $withoutDuplicates = true;
+
+    // ...
 }
 ```
 
