@@ -122,7 +122,7 @@ Sometimes you may need to report an exception but continue handling the current 
 
 If you are using the `report` function throughout your application, you may occasionally report the same exception multiple times, creating duplicate entries in your logs.
 
-If you would like to ensure that a single instance of an exception is only ever reported once, you may set the exception handler's `$deduplicateReporting` property to `true`.
+If you would like to ensure that a single instance of an exception is only ever reported once, you may set the `$withoutDuplicates` property to `true` within your application's `App\Exceptions\Handler` class:
 
 ```php
 namespace App\Exceptions;
