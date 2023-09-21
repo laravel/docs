@@ -553,7 +553,7 @@ The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column:
 <a name="column-method-foreignIdFor"></a>
 #### `foreignIdFor()` {.collection-method}
 
-The `foreignIdFor` method adds a `{column}_id UNSIGNED BIGINT` equivalent column for a given model class:
+The `foreignIdFor` method adds a `{column}_id` equivalent column for a given model class. The column type will be `UNSIGNED BIGINT`, `CHAR(36)`, or `CHAR(26)` depending on the model key type:
 
     $table->foreignIdFor(User::class);
 
@@ -674,7 +674,7 @@ The `mediumText` method creates a `MEDIUMTEXT` equivalent column:
 <a name="column-method-morphs"></a>
 #### `morphs()` {.collection-method}
 
-The `morphs` method is a convenience method that adds a `{column}_id` `UNSIGNED BIGINT` equivalent column and a `{column}_type` `VARCHAR` equivalent column.
+The `morphs` method is a convenience method that adds a `{column}_id` equivalent column and a `{column}_type` `VARCHAR` equivalent column. The column type for the `{column}_id` will be `UNSIGNED BIGINT`, `CHAR(36)`, or `CHAR(26)` depending on the model key type.
 
 This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships). In the following example, `taggable_id` and `taggable_type` columns would be created:
 
