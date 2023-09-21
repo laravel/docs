@@ -542,6 +542,10 @@ Dusk selectors allow you to focus on writing effective tests rather than remembe
 
     $browser->click('@login-button');
 
+You may change the HTML attribute that the Dusk selector uses by adding the following to the `boot()` method of your `AppServiceProvider`:
+
+    \Laravel\Dusk\Dusk::selectorHtmlAttribute('data-dusk');
+
 <a name="text-values-and-attributes"></a>
 ### Text, Values, & Attributes
 
