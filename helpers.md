@@ -100,8 +100,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 </div>
 
-</div>
-
 <a name="urls-method-list"></a>
 ### URLs
 
