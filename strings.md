@@ -318,13 +318,24 @@ The `Str::between` method returns the portion of a string between two values:
 <a name="method-str-between-first"></a>
 #### `Str::betweenFirst()` {.collection-method}
 
-The `Str::betweenFirst` method returns the smallest possible portion of a string between two values:
+The `Str::betweenFirst` method returns the portion of a string between two given values, starting at the first occurence of the $from and ending at the first occurence of the $to:
 
     use Illuminate\Support\Str;
 
     $slice = Str::betweenFirst('[a] bc [d]', '[', ']');
 
     // 'a'
+
+<a name="method-str-between-last"></a>
+#### `Str::betweenLast()` {.collection-method}
+
+The `Str::betweenLast` method returns the portion of a string between two given values, starting at the last occurence of the $from and ending at the first occurence of the $to:
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::betweenLast('[a] bc [d]', '[', ']');
+
+    // 'd'
 
 <a name="method-camel-case"></a>
 #### `Str::camel()` {.collection-method}
