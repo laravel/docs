@@ -332,6 +332,8 @@ By default, multiple tasks scheduled at the same time will execute sequentially 
              ->daily()
              ->runInBackground();
 
+Note that the schedule() method of Kernel executes top-down, so all background tasks need to be declared toward the top, otherwise they may still run after long-running tasks.
+
 > **Warning**  
 > The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods.
 
