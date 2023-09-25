@@ -518,7 +518,7 @@ The `date` method creates a `DATE` equivalent column:
 <a name="column-method-decimal"></a>
 #### `decimal()` {.collection-method}
 
-The `decimal` method creates a `DECIMAL` equivalent column with the given precision (total digits) and scale (decimal digits), allowing you to specify whether the column should be unsigned or not:
+The `decimal` method creates a `DECIMAL` equivalent column with the given precision (total digits) and scale (decimal digits):
 
     $table->decimal('amount', $precision = 8, $scale = 2, $unsigned = false);
 
