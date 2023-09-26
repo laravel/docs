@@ -89,6 +89,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::substrCount](#method-str-substrcount)
 [Str::substrReplace](#method-str-substrreplace)
 [Str::swap](#method-str-swap)
+[Str::take](#method-take)
 [Str::title](#method-title-case)
 [Str::toHtmlString](#method-str-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
@@ -180,6 +181,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [substr](#method-fluent-str-substr)
 [substrReplace](#method-fluent-str-substrreplace)
 [swap](#method-fluent-str-swap)
+[take](#method-fluent-str-take)
 [tap](#method-fluent-str-tap)
 [test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
@@ -1048,6 +1050,17 @@ The `Str::swap` method replaces multiple values in the given string using PHP's 
     ], 'Tacos are great!');
 
     // Burritos are fantastic!
+
+<a name="method-take"></a>
+#### `Str::take()` {.collection-method}
+
+The `Str::take` method returns a specified number of characters from the beginning of a string:
+
+    use Illuminate\Support\Str;
+
+    $taken = Str::take('Build something amazing!', 5);
+
+    // Build
 
 <a name="method-title-case"></a>
 #### `Str::title()` {.collection-method}
@@ -2214,6 +2227,17 @@ The `swap` method replaces multiple values in the string using PHP's `strtr` fun
         ]);
 
     // Burritos are fantastic!
+
+<a name="method-fluent-str-take"></a>
+#### `take` {.collection-method}
+
+The `take` method returns a specified number of characters from the beginning of the string:
+
+    use Illuminate\Support\Str;
+
+    $taken = Str::of('Build something amazing!')->take(5);
+
+    // Build
 
 <a name="method-fluent-str-tap"></a>
 #### `tap` {.collection-method}
