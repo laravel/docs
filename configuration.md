@@ -36,7 +36,7 @@ php artisan about --only=environment
 Or, to explore a specific configuration file's values in detail, you may use the `config:show` Artisan command:
 
 ```shell
-php artisan config:show database
+php artisan db:show
 ```
 
 <a name="environment-configuration"></a>
