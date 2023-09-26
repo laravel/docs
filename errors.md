@@ -346,7 +346,7 @@ use Throwable;
 /**
  * Throttle incoming exceptions.
  */
-protected function throttle(Throwable $e): Lottery
+protected function throttle(Throwable $e): mixed
 {
     if ($e instanceof ApiMonitoringException) {
         return Lottery::odds(1, 1000);
