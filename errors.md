@@ -320,7 +320,7 @@ If your exception contains custom reporting logic that is only necessary when ce
 <a name="throttling-reported-exceptions"></a>
 ### Throttling Reported Exceptions
 
-If your application reports a very large number of exceptions, you may want to throttle how may exceptions are actually logged or sent to your application's external error tracking service.
+If your application reports a very large number of exceptions, you may want to throttle how many exceptions are actually logged or sent to your application's external error tracking service.
 
 To take a random sample rate of exceptions, you can return a `Lottery` instance from your exception handler's `throttle` method. If your `App\Exceptions\Handler` class does not contain this method, you may simply add it to the class:
 
