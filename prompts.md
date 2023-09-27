@@ -470,7 +470,7 @@ $id = search(
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
 
 > **Warning**  
-> When returning a list of searchable items, you should always return an associative array by invoking the `array_values` function on the returned array or the `values` method on a returned collection instance.
+> When returning an array of searchable items, you should always return a non-associative array by invoking the `array_values` function on the returned array or the `values` method on a returned collection instance.
 
 You may also include placeholder text and an informational hint:
 
@@ -539,7 +539,7 @@ $ids = multisearch(
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected options' keys will be returned; otherwise, their values will be returned instead.
 
 > **Warning**  
-> When returning a list of searchable items, you should always return an associative array by invoking the `array_values` function on the returned array or the `values` method on a returned collection instance.
+> When returning an array of searchable items, you should always return a non-associative array by invoking the `array_values` function on the returned array or the `values` method on a returned collection instance.
 
 You may also include placeholder text and an informational hint:
 
