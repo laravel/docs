@@ -505,7 +505,7 @@ $id = search(
     label: 'Search for the user that should receive the mail',
     options: fn (string $value) => strlen($value) > 0
         ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
-        : []
+        : [],
     validate: function (int|string $value) {
         $user = User::findOrFail($value);
 
