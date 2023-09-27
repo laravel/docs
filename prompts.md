@@ -467,6 +467,9 @@ $id = search(
 
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
 
+> **Warning**  
+> When filtering a list (i.e. a non-associative array), you must use the `array_values` function or the `values` method on a collection to ensure you always return a list.
+
 You may also include placeholder text and an informational hint:
 
 ```php
