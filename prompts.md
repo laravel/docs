@@ -322,7 +322,7 @@ $permissions = multiselect(
 Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
 
 ```php
-$role = multiselect(
+$categories = multiselect(
     label: 'What categories should be assigned?',
     options: Category::pluck('name', 'id'),
     scroll: 10
@@ -335,10 +335,20 @@ $role = multiselect(
 By default, the user may select zero or more options. You may pass the `required` argument to enforce one or more options instead:
 
 ```php
-$role = multiselect(
+$categories = multiselect(
     label: 'What categories should be assigned?',
     options: Category::pluck('name', 'id'),
     required: true,
+);
+```
+
+If you would like to customize the validation message, you may also pass a string:
+
+```php
+$categories = multiselect(
+    label: 'What categories should be assigned?',
+    options: Category::pluck('name', 'id'),
+    required: 'You must select at least one category',
 );
 ```
 
