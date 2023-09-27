@@ -470,7 +470,7 @@ $id = search(
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
 
 > **Warning**  
-> When filtering a list (i.e. a non-associative array), you must use the `array_values` function or the `values` method on a collection to ensure you always return a list.
+> When returning a list of searchable items, you should always return an associative array by invoking the `array_values` function on the returned array or the `values` method on a returned collection instance.
 
 You may also include placeholder text and an informational hint:
 
@@ -523,7 +523,7 @@ If the `options` closure returns an associative array, then the closure will rec
 <a name="multisearch"></a>
 ### Multi-search
 
-If you have a lot of options and need the user to be able to select multiple items, the `multisearch` function allows the user to type a search query to filter the results before using the arrow keys and space-bar to select options:
+If you have a lot of searchable options and need the user to be able to select multiple items, the `multisearch` function allows the user to type a search query to filter the results before using the arrow keys and space-bar to select options:
 
 ```php
 use function Laravel\Prompts\multisearch;
@@ -536,10 +536,10 @@ $ids = multisearch(
 );
 ```
 
-The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected options' keys will be returned, otherwise their values will be returned instead.
+The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected options' keys will be returned; otherwise, their values will be returned instead.
 
 > **Warning**  
-> When filtering a list (i.e. a non-associative array), you must use the `array_values` function or the `values` method on a collection to ensure you always return a list.
+> When returning a list of searchable items, you should always return an associative array by invoking the `array_values` function on the returned array or the `values` method on a returned collection instance.
 
 You may also include placeholder text and an informational hint:
 
@@ -554,7 +554,7 @@ $ids = multisearch(
 );
 ```
 
-Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+Up to five options will be displayed before the list begins to scroll. You may customize this by providing the `scroll` argument:
 
 ```php
 $ids = multisearch(
@@ -581,7 +581,7 @@ $ids = multisearch(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+If you would like to customize the validation message, you may also provide a string to the `required` argument:
 
 ```php
 $ids = multisearch(
@@ -614,7 +614,7 @@ $ids = multisearch(
 );
 ```
 
-If the `options` closure returns an associative array, then the closure will receive the selected keys, otherwise, it will receive the selected values. The closure may return an error message, or `null` if the validation passes.
+If the `options` closure returns an associative array, then the closure will receive the selected keys; otherwise, it will receive the selected values. The closure may return an error message, or `null` if the validation passes.
 
 <a name="informational-messages"></a>
 ### Informational Messages
@@ -675,17 +675,6 @@ $users = progress(
 
 The `progress` function acts like a map function and will return an array containing the return value of each iteration of your callback.
 
-You may also an informational hint:
-
-```php
-$users = progress(
-    label: 'Updating users',
-    steps: User::all(),
-    callback: fn ($user) => $this->performTask($user),
-    hint: 'This may take some time.',
-);
-```
-
 The callback may also accept the `\Laravel\Prompts\Progress` instance, allowing you to modify the label and hint on each iteration:
 
 ```php
@@ -703,7 +692,7 @@ $users = progress(
 );
 ```
 
-Sometimes, you may need more manual control over how a progress bar is advanced. First, define the total number of steps the process will iterate through. Then, advance the progress bar after processing each item:
+Sometimes, you may need more manual control over how a progress bar is advanced. First, define the total number of steps the process will iterate through. Then, advance the progress bar via the `advance` method after processing each item:
 
 ```php
 $progress = progress(label: 'Updating users', steps: 10);
