@@ -10,6 +10,7 @@
     - [Multi-select](#multiselect)
     - [Suggest](#suggest)
     - [Search](#search)
+    - [Multi-search](#multisearch)
 - [Informational Messages](#informational-messages)
 - [Tables](#tables)
 - [Spin](#spin)
@@ -517,6 +518,102 @@ $id = search(
 ```
 
 If the `options` closure returns an associative array, then the closure will receive the selected key, otherwise, it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
+
+<a name="multisearch"></a>
+### Multi-search
+
+If you have a lot of options and need the user to be able to select multiple items, the `multisearch` function allows the user to type a search query to filter the results before using the arrow keys and space-bar to select options:
+
+```php
+use function Laravel\Prompts\multisearch;
+
+$ids = multisearch(
+    'Search for the users that should receive the mail',
+    fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : []
+);
+```
+
+The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
+
+> **Warning**  
+> When filtering a list (i.e. a non-associative array), you must use the `array_values` function or the `values` method on a collection to ensure you always return a list.
+
+You may also include placeholder text and an informational hint:
+
+```php
+$ids = multisearch(
+    label: 'Search for the users that should receive the mail',
+    placeholder: 'E.g. Taylor Otwell',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    hint: 'The user will receive an email immediately.'
+);
+```
+
+Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+
+```php
+$ids = multisearch(
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    scroll: 10
+);
+```
+
+<a name="multisearch-required"></a>
+#### Requiring a Value
+
+By default, the user may select zero or more options. You may pass the `required` argument to enforce one or more options instead:
+
+```php
+$ids = multisearch(
+    'Search for the users that should receive the mail',
+    fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    required: true,
+);
+```
+
+If you would like to customize the validation message, you may also pass a string:
+
+```php
+$ids = multisearch(
+    'Search for the users that should receive the mail',
+    fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    required: 'You must select at least one user.'
+);
+```
+
+<a name="multisearch-validation"></a>
+#### Validation
+
+If you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+
+```php
+$ids = multisearch(
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    validate: function (array $values) {
+        $optedOut = User::where('name', 'like', '%a%')->findMany($values);
+
+        if ($optedOut->isNotEmpty()) {
+            return $optedOut->pluck('name')->join(', ', ', and ').' have opted out.';
+        }
+    }
+);
+```
+
+If the `options` closure returns an associative array, then the closure will receive the selected keys, otherwise, it will receive the selected values. The closure may return an error message, or `null` if the validation passes.
 
 <a name="informational-messages"></a>
 ### Informational Messages
