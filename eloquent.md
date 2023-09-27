@@ -1575,6 +1575,49 @@ When models are being created within a database transaction, you may want to ins
         }
     }
 
+<a name="custom-model-events"></a>
+### Custom Model Events
+
+In addition to the built-in Eloquent model events, Laravel allows you to define and use custom model events for more fine-grained control over your application's behavior. Custom model events are especially useful when you want to respond to specific actions or state changes within your models.
+
+<a name="defining-custom-model-events"></a>
+#### Defining Custom Model Events
+
+In your Eloquent model, you can define custom model events by adding them to the `$observables` property. This property is an array that lists the names of the custom events you want to create:
+
+
+    /**
+     * The custom events for the model.
+     */
+    protected $observables = ['published'];
+
+
+You can then trigger the custom model event within your model's methods or wherever it's appropriate. To trigger the event, use the fireModelEvent method with the event name:
+
+    /**
+     * Mark the model as published.
+     */
+    public function markAsPublished() : void
+    { 
+        $this->update(['published_at' => now()]);
+        $this->fireModelEvent('published', false);
+    }
+
+The fireModelEvent method accepts the event name as its first argument (in this case, "published"). The second argument (false) specifies that the event should not be canceled if an event listener returns false. This method is protected, so it should typically be called from within the model itself.
+
+<a name="listening-to-custom-model-events"></a>
+#### Listening to Custom Model Events
+
+Once you've defined your custom model event, you can listen to it in an observer class. Simply implement a method that corresponds to the custom model event you want to listen to. The method should expect an instance of the affected model as its argument.
+
+    /**
+     * Handle the Post "published" event.
+     */
+    public function published(Post $post) : void
+    {
+          $post->user->notify(new PostPublished($post));
+    }
+
 <a name="muting-events"></a>
 ### Muting Events
 
