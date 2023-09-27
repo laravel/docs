@@ -344,7 +344,7 @@ $categories = multiselect(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+If you would like to customize the validation message, you may provide a string to the `required` argument:
 
 ```php
 $categories = multiselect(
