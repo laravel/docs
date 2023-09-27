@@ -14,6 +14,7 @@
 - [Informational Messages](#informational-messages)
 - [Tables](#tables)
 - [Spin](#spin)
+- [Progress Bar](#progress)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments & Fallbacks](#fallbacks)
 
@@ -656,6 +657,69 @@ $response = spin(
 
 > **Warning**  
 > The `spin` function requires the `pcntl` PHP extension to animate the spinner. When this extension is not available, a static version of the spinner will appear instead.
+
+<a name="progress"></a>
+## Progress Bars
+
+For long running tasks, it can be helpful to show a progress bar that informs users how complete the task is. Using the `progress` function, Laravel will display a progress bar and advance its progress for each iteration over a given iterable value:
+
+```php
+use function Laravel\Prompts\progress;
+
+$users = progress(
+    label: 'Updating users',
+    steps: User::all(),
+    callback: fn ($user) => $this->performTask($user),
+);
+```
+
+The `progress` function acts like a map function and will return an array containing the return value of each iteration of your callback.
+
+You may also an informational hint:
+
+```php
+$users = progress(
+    label: 'Updating users',
+    steps: User::all(),
+    callback: fn ($user) => $this->performTask($user),
+    hint: 'This may take some time.',
+);
+```
+
+The callback may also accept the `\Laravel\Prompts\Progress` instance, allowing you to modify the label and hint on each iteration:
+
+```php
+$users = progress(
+    label: 'Updating users',
+    steps: User::all(),
+    callback: function ($user, $progress) {
+        $progress
+            ->label("Updating {$user->name}")
+            ->hint("Created on {$user->created_at}");
+
+        return $this->performTask($user);
+    },
+    hint: 'This may take some time.',
+);
+```
+
+Sometimes, you may need more manual control over how a progress bar is advanced. First, define the total number of steps the process will iterate through. Then, advance the progress bar after processing each item:
+
+```php
+$progress = progress(label: 'Updating users', steps: 10);
+
+$users = User::all();
+
+$progress->start();
+
+foreach ($users as $user) {
+    $this->performTask($user);
+
+    $progress->advance();
+}
+
+$progress->finish();
+```
 
 <a name="terminal-considerations"></a>
 ### Terminal Considerations
