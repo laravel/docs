@@ -151,6 +151,16 @@ If you would like to see the SQL statements that will be executed by the migrati
 php artisan migrate --pretend
 ```
 
+> **Note**
+> If your application has multiple database connections, for `--pretend` to work correctly you need to ensure that your migrations on the non-default database(s) have declared their `$connection` property as shown below
+
+```shell
+return new class extends Migration
+{
+    protected $connection = 'second-database';
+   ...
+```
+
 #### Isolating Migration Execution
 
 If you are deploying your application across multiple servers and running migrations as part of your deployment process, you likely do not want two servers attempting to migrate the database at the same time. To avoid this, you may use the `isolated` option when invoking the `migrate` command.
