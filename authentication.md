@@ -608,7 +608,7 @@ Finally, you may reference the guard when assigning the authentication middlewar
 
     Route::middleware('auth:api')->group(function () {
         // ...
-    }
+    });
 
 <a name="adding-custom-user-providers"></a>
 ## Adding Custom User Providers
