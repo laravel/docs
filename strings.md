@@ -1422,9 +1422,9 @@ The `containsAll` method determines if the given string contains all of the valu
     // true
 
 <a name="method-fluent-str-convert-case"></a>
-#### `containsAll` {.collection-method}
+#### `convertCase` {.collection-method}
 
-The `containsAll` method was introduced to the framework to provide greater flexibility when converting text strings to specific case formats. It also allows the use of specific or custom encodings:
+The `convertCase` method was introduced to the framework to provide greater flexibility when converting text strings to specific case formats. It also allows the use of specific or custom encodings:
 
     use Illuminate\Support\Str;
 
