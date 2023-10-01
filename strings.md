@@ -43,6 +43,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
+[Str::convertCase](#method-str-convert-case)
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
@@ -125,6 +126,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [classBasename](#method-fluent-str-class-basename)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
+[convertCase](#method-fluent-str-convert-case)
 [dirname](#method-fluent-str-dirname)
 [endsWith](#method-fluent-str-ends-with)
 [excerpt](#method-fluent-str-excerpt)
@@ -368,6 +370,30 @@ The `Str::containsAll` method determines if the given string contains all of the
     $containsAll = Str::containsAll('This is my name', ['my', 'name']);
 
     // true
+
+<a name="method-str-convert-case"></a>
+#### `Str::convertCase()` {.collection-method}
+
+The `Str::convertCase` method was introduced to the framework to provide greater flexibility when converting text strings to specific case formats. It also allows the use of specific or custom encodings:
+
+    use Illuminate\Support\Str;
+
+    $text = "On July 20, 1969, man first walked on the Moon.";
+
+    $lowercase = Str::convertCase($text, MB_CASE_LOWER);
+    // "on july 20, 1969, man first walked on the moon."
+
+    $uppercase = Str::convertCase($text, MB_CASE_UPPER);
+    // "ON JULY 20, 1969, MAN FIRST WALKED ON THE MOON."
+
+    $titlecase = Str::convertCase($text, MB_CASE_TITLE);
+    // "On July 20, 1969, Man First Walked On The Moon."
+    
+    $initial_caps_words = Str::convertCase($text, MB_CASE_TITLE_WORDS, "UTF-8");
+    // "On July 20, 1969, Man First Walked On The Moon."
+    
+    $initial_lower_words = Str::convertCase($text, MB_CASE_UPPER_WORDS, "UTF-8");
+    // "ON JULY 20, 1969, MAN FIRST WALKED ON THE MOON."
 
 <a name="method-ends-with"></a>
 #### `Str::endsWith()` {.collection-method}
@@ -1394,6 +1420,28 @@ The `containsAll` method determines if the given string contains all of the valu
     $containsAll = Str::of('This is my name')->containsAll(['my', 'name']);
 
     // true
+
+<a name="method-fluent-str-convert-case"></a>
+#### `containsAll` {.collection-method}
+
+The `containsAll` method was introduced to the framework to provide greater flexibility when converting text strings to specific case formats. It also allows the use of specific or custom encodings:
+
+    use Illuminate\Support\Str;
+
+    $lowercase = Str::of("Laravel Framework")->convertCase(MB_CASE_LOWER);
+    // "laravel framework"
+
+    $uppercase = Str::of("Laravel Framework")->convertCase(MB_CASE_UPPER);1
+    // "LARAVEL FRAMEWORK"
+
+    $titlecase = Str::of("laravel framework")->convertCase(MB_CASE_TITLE);
+    // "Laravel Framework"
+
+    $initial_caps_words = Str::of("laravel framework")->convertCase(MB_CASE_TITLE_WORDS, "UTF-8");
+    // "Laravel Framework"
+
+    $initial_lower_words = Str::of("Laravel Framework")->convertCase(MB_CASE_UPPER_WORDS, "UTF-8");
+    // "LARAVEL FRAMEWORK"
 
 <a name="method-fluent-str-dirname"></a>
 #### `dirname` {.collection-method}
