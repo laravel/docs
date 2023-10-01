@@ -74,9 +74,6 @@ If a controller action is particularly complex, you might find it convenient to 
     <?php
 
     namespace App\Http\Controllers;
-    
-    use App\Models\User;
-    use Illuminate\Http\Response;
 
     class ProvisionServer extends Controller
     {
