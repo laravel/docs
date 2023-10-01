@@ -722,6 +722,21 @@ The `Str::password` method may be used to generate a secure, random password of 
 
     // 'qwuar>#V|i]N'
 
+<a name="method-str-plural"></a>
+#### `Str::plural()` {.collection-method}
+
+The `Str::plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+
+    use Illuminate\Support\Str;
+
+    $plural = Str::plural('car');
+
+    // cars
+
+    $plural = Str::plural('child');
+
+    // children
+
 <a name="method-str-position"></a>
 #### `Str::position()` {.collection-method}
 
@@ -737,21 +752,6 @@ The `Str::position` method  that determines the position of the first occurrence
 
     Str::position('Hello, World!', 'Hello');
     // 0
-
-<a name="method-str-plural"></a>
-#### `Str::plural()` {.collection-method}
-
-The `Str::plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
-
-    use Illuminate\Support\Str;
-
-    $plural = Str::plural('car');
-
-    // cars
-
-    $plural = Str::plural('child');
-
-    // children
 
 You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
 
@@ -1894,22 +1894,6 @@ The `padRight` method wraps PHP's `str_pad` function, padding the right side of 
 
     // 'James     '
 
-<a name="method-fluent-str-position"></a>
-#### `position` {.collection-method}
-
-The `position` method  that determines the position of the first occurrence of a substring in a string:
-
-    use Illuminate\Support\Str;
-
-    Str::of('Hello, World!')->position('W');
-    // 7
-
-    Str::of('This is a test string, test again.')->position('test', 15);
-    // 23
-
-    Str::of('Hello, World!')->position('Hello');
-    // 0
-
 <a name="method-fluent-str-pipe"></a>
 #### `pipe` {.collection-method}
 
@@ -1965,6 +1949,22 @@ The `prepend` method prepends the given values onto the string:
     $string = Str::of('Framework')->prepend('Laravel ');
 
     // Laravel Framework
+
+<a name="method-fluent-str-position"></a>
+#### `position` {.collection-method}
+
+The `position` method  that determines the position of the first occurrence of a substring in a string:
+
+    use Illuminate\Support\Str;
+
+    Str::of('Hello, World!')->position('W');
+    // 7
+
+    Str::of('This is a test string, test again.')->position('test', 15);
+    // 23
+
+    Str::of('Hello, World!')->position('Hello');
+    // 0
 
 <a name="method-fluent-str-remove"></a>
 #### `remove` {.collection-method}
