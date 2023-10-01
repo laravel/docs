@@ -66,6 +66,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::padLeft](#method-str-padleft)
 [Str::padRight](#method-str-padright)
 [Str::password](#method-str-password)
+[Str::position](#method-str-position)
 [Str::plural](#method-str-plural)
 [Str::pluralStudly](#method-str-plural-studly)
 [Str::random](#method-str-random)
@@ -156,6 +157,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [padBoth](#method-fluent-str-padboth)
 [padLeft](#method-fluent-str-padleft)
 [padRight](#method-fluent-str-padright)
+[position](#method-fluent-str-position)
 [pipe](#method-fluent-str-pipe)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
@@ -719,6 +721,22 @@ The `Str::password` method may be used to generate a secure, random password of 
     $password = Str::password(12);
 
     // 'qwuar>#V|i]N'
+
+<a name="method-str-position"></a>
+#### `Str::position()` {.collection-method}
+
+The `Str::position` method  that determines the position of the first occurrence of a substring in a string:
+
+    use Illuminate\Support\Str;
+
+    Str::position('Hello, World!', 'W');
+    // 7
+
+    Str::position('This is a test string, test again.', 'test', 15);
+    // 23
+
+    Str::position('Hello, World!', 'Hello');
+    // 0
 
 <a name="method-str-plural"></a>
 #### `Str::plural()` {.collection-method}
@@ -1875,6 +1893,22 @@ The `padRight` method wraps PHP's `str_pad` function, padding the right side of 
     $padded = Str::of('James')->padRight(10);
 
     // 'James     '
+
+<a name="method-fluent-str-position"></a>
+#### `position` {.collection-method}
+
+The `position` method  that determines the position of the first occurrence of a substring in a string:
+
+    use Illuminate\Support\Str;
+
+    Str::of('Hello, World!')->position('W');
+    // 7
+
+    Str::of('This is a test string, test again.')->position('test', 15);
+    // 23
+
+    Str::of('Hello, World!')->position('Hello');
+    // 0
 
 <a name="method-fluent-str-pipe"></a>
 #### `pipe` {.collection-method}
