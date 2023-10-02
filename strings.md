@@ -68,6 +68,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::password](#method-str-password)
 [Str::plural](#method-str-plural)
 [Str::pluralStudly](#method-str-plural-studly)
+[Str::position](#method-str-position)
 [Str::random](#method-str-random)
 [Str::remove](#method-str-remove)
 [Str::repeat](#method-str-repeat)
@@ -158,6 +159,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [padRight](#method-fluent-str-padright)
 [pipe](#method-fluent-str-pipe)
 [plural](#method-fluent-str-plural)
+[position](#method-fluent-str-position)
 [prepend](#method-fluent-str-prepend)
 [remove](#method-fluent-str-remove)
 [repeat](#method-fluent-str-repeat)
@@ -773,6 +775,21 @@ You may provide an integer as a second argument to the function to retrieve the 
     $singular = Str::pluralStudly('VerifiedHuman', 1);
 
     // VerifiedHuman
+
+<a name="method-str-position"></a>
+#### `Str::position()` {.collection-method}
+
+The `Str::position` method returns the position of the first occurrence of a substring in a string. If the substring does not exist in the given string, `false` is returned:
+
+    use Illuminate\Support\Str;
+
+    $position = Str::position('Hello, World!', 'Hello');
+
+    // 0
+
+    $position = Str::position('Hello, World!', 'W');
+
+    // 7
 
 <a name="method-str-random"></a>
 #### `Str::random()` {.collection-method}
@@ -1920,6 +1937,21 @@ You may provide an integer as a second argument to the function to retrieve the 
     $plural = Str::of('child')->plural(1);
 
     // child
+
+<a name="method-fluent-str-position"></a>
+#### `position` {.collection-method}
+
+The `position` method returns the position of the first occurrence of a substring in a string. If the substring does not exist within the string, `false` is returned:
+
+    use Illuminate\Support\Str;
+
+    $position = Str::of('Hello, World!')->position('Hello');
+
+    // 0
+
+    $position = Str::of('Hello, World!')->position('W');
+
+    // 7
 
 <a name="method-fluent-str-prepend"></a>
 #### `prepend` {.collection-method}
