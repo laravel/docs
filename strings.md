@@ -67,8 +67,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::padRight](#method-str-padright)
 [Str::password](#method-str-password)
 [Str::plural](#method-str-plural)
-[Str::position](#method-str-position)
 [Str::pluralStudly](#method-str-plural-studly)
+[Str::position](#method-str-position)
 [Str::random](#method-str-random)
 [Str::remove](#method-str-remove)
 [Str::repeat](#method-str-repeat)
@@ -737,22 +737,6 @@ The `Str::plural` method converts a singular word string to its plural form. Thi
 
     // children
 
-<a name="method-str-position"></a>
-#### `Str::position()` {.collection-method}
-
-The `Str::position` method  that determines the position of the first occurrence of a substring in a string:
-
-    use Illuminate\Support\Str;
-
-    Str::position('Hello, World!', 'W');
-    // 7
-
-    Str::position('This is a test string, test again.', 'test', 15);
-    // 23
-
-    Str::position('Hello, World!', 'Hello');
-    // 0
-
 You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
 
     use Illuminate\Support\Str;
@@ -791,6 +775,21 @@ You may provide an integer as a second argument to the function to retrieve the 
     $singular = Str::pluralStudly('VerifiedHuman', 1);
 
     // VerifiedHuman
+
+<a name="method-str-position"></a>
+#### `Str::position()` {.collection-method}
+
+The `Str::position` method returns the position of the first occurrence of a substring in a string. If the substring does not exist in the given string, `false` is returned:
+
+    use Illuminate\Support\Str;
+
+    $position = Str::position('Hello, World!', 'Hello');
+
+    // 0
+
+    $position = Str::position('Hello, World!', 'W');
+
+    // 7
 
 <a name="method-str-random"></a>
 #### `Str::random()` {.collection-method}
@@ -1939,6 +1938,21 @@ You may provide an integer as a second argument to the function to retrieve the 
 
     // child
 
+<a name="method-fluent-str-position"></a>
+#### `position` {.collection-method}
+
+The `position` method returns the position of the first occurrence of a substring in a string. If the substring does not exist within the string, `false` is returned:
+
+    use Illuminate\Support\Str;
+
+    $position = Str::of('Hello, World!')->position('Hello');
+
+    // 0
+
+    $position = Str::of('Hello, World!')->position('W');
+
+    // 7
+
 <a name="method-fluent-str-prepend"></a>
 #### `prepend` {.collection-method}
 
@@ -1949,22 +1963,6 @@ The `prepend` method prepends the given values onto the string:
     $string = Str::of('Framework')->prepend('Laravel ');
 
     // Laravel Framework
-
-<a name="method-fluent-str-position"></a>
-#### `position` {.collection-method}
-
-The `position` method  that determines the position of the first occurrence of a substring in a string:
-
-    use Illuminate\Support\Str;
-
-    Str::of('Hello, World!')->position('W');
-    // 7
-
-    Str::of('This is a test string, test again.')->position('test', 15);
-    // 23
-
-    Str::of('Hello, World!')->position('Hello');
-    // 0
 
 <a name="method-fluent-str-remove"></a>
 #### `remove` {.collection-method}
