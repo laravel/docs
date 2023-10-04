@@ -267,7 +267,7 @@ If you need to add a new, temporary cast at runtime, you may use the `mergeCasts
 <a name="stringable-casting"></a>
 #### Stringable Casting
 
-You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\Support\Stringable` object](/docs/{{version}}/helpers#fluent-strings-method-list):
+You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\Support\Stringable` object](/docs/{{version}}/strings#fluent-strings-method-list):
 
     <?php
 
