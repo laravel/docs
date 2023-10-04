@@ -123,6 +123,7 @@ State transformation methods typically call the `state` method provided by Larav
         });
     }
 
+<a name="trashed-state"></a>
 #### "Trashed" State
 
 If your Eloquent model can be [soft deleted](/docs/{{version}}/eloquent#soft-deleting), you may invoke the built-in `trashed` state method to indicate that the created model should already be "soft deleted". You do not need to manually define the `trashed` state as it is automatically available to all factories:
