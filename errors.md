@@ -331,7 +331,7 @@ use Throwable;
 /**
  * Throttle incoming exceptions.
  */
-protected function throttle(Throwable $e): Lottery
+protected function throttle(Throwable $e): mixed
 {
     return Lottery::odds(1, 1000);
 }
@@ -341,6 +341,7 @@ It is also possible to conditionally sample based on the exception type. If you 
 
 ```php
 use App\Exceptions\ApiMonitoringException;
+use Illuminate\Support\Lottery;
 use Throwable;
 
 /**
@@ -396,6 +397,7 @@ Of course, you may return a mixture of `Lottery` and `Limit` instances for diffe
 use App\Exceptions\ApiMonitoringException;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Lottery;
 use Throwable;
 
 /**
