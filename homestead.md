@@ -485,7 +485,7 @@ sites:
       type: "statamic"
 ```
 
-The available site types are: `apache`, `apigility`, `expressive`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, `symfony4`, and `zf`.
+The available site types are: `apache`, `apache-proxy`, `apigility`, `expressive`, `laravel` (the default), `proxy` (for nginx), `silverstripe`, `statamic`, `symfony2`, `symfony4`, and `zf`.
 
 <a name="site-parameters"></a>
 #### Site Parameters
@@ -715,6 +715,8 @@ After running the command, you will see an Ngrok screen appear which contains th
 ```shell
 share homestead.test -region=eu -subdomain=laravel
 ```
+
+If you need to share content over HTTPS rather than HTTP, using the `sshare` command instead of `share` will enable you to do so.
 
 > **Warning**  
 > Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the Internet when running the `share` command.
