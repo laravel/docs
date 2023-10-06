@@ -542,6 +542,10 @@ The `Broadcast::routes` method will automatically place its routes within the `w
 
     Broadcast::routes($attributes);
 
+> **Note**  
+> If you are using Laravel Sanctum, you might want to move the routes to your `api`route file and use the `auth:santum` middleware.
+
+
 <a name="customizing-the-authorization-endpoint"></a>
 #### Customizing The Authorization Endpoint
 
