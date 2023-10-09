@@ -1667,7 +1667,8 @@ If you would like to construct a more complex condition for the `required_if` ru
 
 <a name="rule-required-if-accepted"></a>
 #### required_if_accepted:_anotherfield,...
-The field under validation must be present and not empty if the _anotherfield_ field is equal to `yes`, `on`, `1`, `"1"`, `true` or `"true"`.
+
+The field under validation must be present and not empty if the _anotherfield_ field is equal to `yes`, `on`, `1`, `"1"`, `true`, or `"true"`.
 
 <a name="rule-required-unless"></a>
 #### required_unless:_anotherfield_,_value_,...
