@@ -143,6 +143,12 @@ By default, the route middleware that are assigned to each route will not be dis
 php artisan route:list -v
 ```
 
+If you prefer to display the middleware assigned by a group instead of the group name, you can instruct Laravel to do so by adding `-vv` to the command:
+
+```shell
+php artisan route:list -vv
+```
+
 You may also instruct Laravel to only show routes that begin with a given URI:
 
 ```shell
