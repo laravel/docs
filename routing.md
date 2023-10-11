@@ -144,6 +144,7 @@ php artisan route:list -v
 ```
 
 If you prefer to display the middleware assigned by a group, rather than the group name, you can instruct Laravel to do so by adding `-vv` to the command:
+
 ```shell
 php artisan route:list -vv
 ```
