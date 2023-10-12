@@ -451,6 +451,9 @@ When sending notifications via the `mail` channel, the notification system will 
         }
     }
 
+> **Note**
+> When using a `MailMessage`, the system will automatically fetch the recipient's email address from the notifiable entity. However, if you're working with a `Mailable` entity, you'll need to explicitly specify the 'to' address in the Notification.
+
 <a name="customizing-the-subject"></a>
 ### Customizing The Subject
 
