@@ -372,6 +372,22 @@ The `Str::containsAll` method determines if the given string contains all of the
     // true
 
 <a name="method-ends-with"></a>
+#### `Str::convertCase()` {.collection-method}
+
+The `Str::convertCase` method allows you to convert the case of the given string according to the specified mode.
+
+    use Illuminate\Support\Str;
+    
+    // Convert to upper case
+    $upperCase = Str::convertCase('hello world', MB_CASE_UPPER); // 'HELLO WORLD'
+    
+    // Convert to lower case
+    $lowerCase = Str::convertCase('HELLO WORLD', MB_CASE_LOWER); // 'hello world'
+    
+    // Perform case folding (default mode)
+    $caseFolded = Str::convertCase('HeLLo WoRLD'); // 'hello world'
+
+<a name="method-convert-case"></a>
 #### `Str::endsWith()` {.collection-method}
 
 The `Str::endsWith` method determines if the given string ends with the given value:
