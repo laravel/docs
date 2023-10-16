@@ -459,7 +459,7 @@ In addition, Pail provides a set of useful filters to help you find what you're 
 ### Installation
 
 > **Warning**
-> Laravel Octane requires [PHP 8.2+](https://php.net/releases/) with [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
+> Laravel Pail requires [PHP 8.2+](https://php.net/releases/) with [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
 
 To get started, install Pail into your project using the Composer package manager:
 
