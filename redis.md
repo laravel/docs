@@ -129,6 +129,47 @@ If you would like to use native Redis clustering instead of client-side sharding
 
 When using phpredis, native Redis clustering is always used.
 
+#### Specifying connection options
+
+You can pass options for cluster connections in different places.
+
+    'redis' => [
+
+        'options' => [
+            // Options for all redis connections, including clusters.
+        ],
+
+        'default' => [
+            'options' => [
+                // Options for connection 'default'. 
+                // Takes precedence over options, defined above.
+            ],
+            'host' => env('REDIS_HOST', 'localhost'),
+            'port' => env('REDIS_PORT', 6379),
+        ]        
+
+        'clusters' => [
+            
+            'options' => [
+                // Options for all cluster connections.
+                // Takes precedence over options, defined in redis.options.
+            ],
+
+            'default-cluster' => [
+                'options' => [
+                    // Options for connection 'default-cluster'.
+                    // Takes precedence over options, defined above.
+                ],
+                [
+                    'host' => env('REDIS_HOST', 'localhost'),
+                    'port' => env('REDIS_PORT', 6379),
+                ],
+            ],
+
+        ],
+
+    ],
+
 <a name="predis"></a>
 ### Predis
 
