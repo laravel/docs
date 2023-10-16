@@ -13,7 +13,7 @@
     - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
     - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
     - [Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)
-- [Tailing Log messages](#tailing-log-messages)
+- [Tailing Log Messages](#tailing-log-messages)
     - [Installation](#pail-installation)
     - [Usage](#pail-usage)
     - [Filtering Logs](#pail-filtering-logs)
@@ -447,7 +447,7 @@ Once you have configured the `custom` driver channel, you're ready to define the
     }
 
 <a name="tailing-log-messages"></a>
-## Tailing Log messages
+## Tailing Log Messages
 
 Sometimes, you may wish to tail your application's logs in real time. For example, you may wish to do this when debugging an issue or when monitoring your application's logs for specific types of errors.
 
