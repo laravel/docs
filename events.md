@@ -553,12 +553,12 @@ Event subscribers are classes that may subscribe to multiple events from within 
         /**
          * Handle user login events.
          */
-        public function handleUserLogin(string $event): void {}
+        public function handleUserLogin(Login $event): void {}
 
         /**
          * Handle user logout events.
          */
-        public function handleUserLogout(string $event): void {}
+        public function handleUserLogout(Logout $event): void {}
 
         /**
          * Register the listeners for the subscriber.
@@ -592,12 +592,12 @@ If your event listener methods are defined within the subscriber itself, you may
         /**
          * Handle user login events.
          */
-        public function handleUserLogin(string $event): void {}
+        public function handleUserLogin(Login $event): void {}
 
         /**
          * Handle user logout events.
          */
-        public function handleUserLogout(string $event): void {}
+        public function handleUserLogout(Logout $event): void {}
 
         /**
          * Register the listeners for the subscriber.
