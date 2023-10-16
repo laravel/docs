@@ -453,7 +453,7 @@ Sometimes, you may wish to tail your application's logs in real time. For exampl
 
 Laravel Pail is a package that allows you to easily dive into your Laravel application's log files directly from the command line. Unlike other log tailing packages or the regular "tail" command, Pail is designed to work with any log driver, including Sentry or Flare.
 
-In addition, Pail provies a set of useful filters to help you find what you're looking for.
+In addition, Pail provides a set of useful filters to help you find what you're looking for.
 
 <a name="pail-installation"></a>
 ### Installation
