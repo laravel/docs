@@ -105,16 +105,18 @@ If your application is utilizing a cluster of Redis servers, you should define t
 
     ],
 
-By default, clusters will perform client-side sharding across your nodes, allowing you to pool nodes and create a large amount of available RAM. However, client-side sharding does not handle failover; therefore, it is primarily suited for transient cached data that is available from another primary data store.
+#### Clusters with Predis
+
+When using Predis, by default, clusters will perform client-side sharding across your nodes, allowing you to pool nodes and create a large amount of available RAM. However, client-side sharding does not handle failover; therefore, it is primarily suited for transient cached data that is available from another primary data store.
 
 If you would like to use native Redis clustering instead of client-side sharding, you may specify this by setting the `options.cluster` configuration value to `redis` within your application's `config/database.php` configuration file:
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'options' => [
-            'cluster' => env('REDIS_CLUSTER', 'redis'),
+            'cluster' => env('REDIS_CLUSTER', 'redis'),  // Option only for predis.
         ],
 
         'clusters' => [
@@ -122,6 +124,10 @@ If you would like to use native Redis clustering instead of client-side sharding
         ],
 
     ],
+
+#### Clusters with phpredis
+
+When using phpredis, native Redis clustering is always used.
 
 <a name="predis"></a>
 ### Predis
