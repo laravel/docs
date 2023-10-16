@@ -585,7 +585,6 @@ If your event listener methods are defined within the subscriber itself, you may
 
     use Illuminate\Auth\Events\Login;
     use Illuminate\Auth\Events\Logout;
-    use Illuminate\Events\Dispatcher;
 
     class UserEventSubscriber
     {
@@ -604,7 +603,7 @@ If your event listener methods are defined within the subscriber itself, you may
          *
          * @return array<string, string>
          */
-        public function subscribe(Dispatcher $events): array
+        public function subscribe(): array
         {
             return [
                 Login::class => 'handleUserLogin',
