@@ -2058,7 +2058,7 @@ jobs:
       DB_PASSWORD: root
       MAIL_MAILER: log
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Prepare The Environment
         run: cp .env.example .env
       - name: Create Database
