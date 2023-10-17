@@ -2030,6 +2030,10 @@ If you do not want to detach existing IDs that are missing from the given array,
 
     $user->roles()->syncWithoutDetaching([1, 2, 3]);
 
+You can achieve the same behavior as `syncWithoutDetaching` with pivot values by passing `false` as a third argument to the `syncWithPivotValues` method:
+
+    $user->roles()->syncWithPivotValues([1, 2, 3], ['active' => true], false);
+
 <a name="toggling-associations"></a>
 #### Toggling Associations
 
