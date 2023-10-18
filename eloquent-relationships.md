@@ -1856,7 +1856,7 @@ You may customize the behavior of lazy loading violations using the `handleLazyL
 
 ```php
 Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {
-    $class = get_class($model);
+    $class = $model::class;
 
     info("Attempted to lazy load [{$relation}] on model [{$class}].");
 });
