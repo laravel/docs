@@ -801,7 +801,8 @@ networks:
       bridge: "en1: Wi-Fi (AirPort)"
 ```
 
-To update what `device` the `network` is using, configure a `dev` setting for the network. By default this is `eth0`.
+To update what device the network, you may add a `dev` option to the network's configuration. The default `dev` value is `eth0`:
+
 ```yaml
 networks:
     - type: "public_network"
