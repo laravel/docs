@@ -366,7 +366,7 @@ The `collect` method is primarily useful for converting [lazy collections](#lazy
 
     $collection = $lazyCollection->collect();
 
-    get_class($collection);
+    $collection::class;
 
     // 'Illuminate\Support\Collection'
 
@@ -1367,7 +1367,7 @@ The `lazy` method returns a new [`LazyCollection`](#lazy-collections) instance f
 
     $lazyCollection = collect([1, 2, 3, 4])->lazy();
 
-    get_class($lazyCollection);
+    $lazyCollection::class;
 
     // Illuminate\Support\LazyCollection
 
