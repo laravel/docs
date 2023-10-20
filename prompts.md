@@ -613,12 +613,12 @@ If the `options` closure returns an associative array, then the closure will rec
 <a name="informational-messages"></a>
 ### Informational Messages
 
-The `note`, `info`, `warning`, `error`, and `alert` functions may be used to display informational messages:
+The `intro`, `outro`, `note`, `warning`, `error`, and `alert` functions may be used to display informational messages:
 
 ```php
-use function Laravel\Prompts\info;
+use function Laravel\Prompts\note;
 
-info('Package installed successfully.');
+note('Package installed successfully.');
 ```
 
 <a name="tables"></a>
