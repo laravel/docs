@@ -118,6 +118,8 @@ php artisan pennant:feature NewApi
 
 When writing a feature class, you only need to define a `resolve` method, which will be invoked to resolve the feature's initial value for a given scope. Again, the scope will typically be the currently authenticated user:
 
+The class FQN is the name used to reference the feature, optionally a `$name` property can be used. This allows for using the same naming convention as when manually defining inline features.
+
 ```php
 <?php
 
@@ -127,6 +129,14 @@ use Illuminate\Support\Lottery;
 
 class NewApi
 {
+
+    /**
+     * Custom name for the feature.
+     *
+     * @var string
+     */
+     public $name = 'new-api';
+    
     /**
      * Resolve the feature's initial value.
      */
@@ -335,6 +345,16 @@ To make checking features in Blade a seamless experience, Pennant offers a `@fea
 
 ```blade
 @feature('site-redesign')
+    <!-- 'site-redesign' is active -->
+@else
+    <!-- 'site-redesign' is inactive -->
+@endfeature
+```
+
+When using class based features, then the FQN can also be used to check for the feature.
+
+```blade
+@feature(\App\Features\SiteRedesign::class)
     <!-- 'site-redesign' is active -->
 @else
     <!-- 'site-redesign' is inactive -->
