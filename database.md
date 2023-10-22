@@ -285,7 +285,8 @@ If you would like to specify a closure that is invoked for each SQL query execut
         }
     }
 
-Inside `DB::listen` you should not perform any `INSERT` operations otherwise the Eloquent `save` method will not work correctly when saving new models in the database.
+> **Warning**  
+> Inside `DB::listen` you should not perform any `INSERT` operations otherwise the Eloquent `save` method will not work correctly when saving new models in the database.
 
 <a name="monitoring-cumulative-query-time"></a>
 ### Monitoring Cumulative Query Time
