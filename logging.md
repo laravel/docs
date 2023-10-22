@@ -54,7 +54,6 @@ Name | Description
 `daily` | A `RotatingFileHandler` based Monolog driver which rotates daily
 `errorlog` | An `ErrorLogHandler` based Monolog driver
 `monolog` | A Monolog factory driver that may use any supported Monolog handler
-`null` | A driver that discards all log messages
 `papertrail` | A `SyslogUdpHandler` based Monolog driver
 `single` | A single file or path based logger channel (`StreamHandler`)
 `slack` | A `SlackWebhookHandler` based Monolog driver
