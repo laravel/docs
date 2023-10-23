@@ -827,6 +827,9 @@ The `timestamp` method creates a `TIMESTAMP` equivalent column with an optional 
 
     $table->timestamp('added_at', $precision = 0);
 
+> **Warning**  
+> Please note, that if you do not make a `timestamp` nullable, MySQL will add `on update CURRENT_TIMESTAMP` clause to the field.
+
 <a name="column-method-timestampsTz"></a>
 #### `timestampsTz()` {.collection-method}
 
