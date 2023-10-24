@@ -76,6 +76,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
 [Str::replaceLast](#method-str-replace-last)
+[Str::replaceMatches](#method-str-replace-matches)
 [Str::replaceStart](#method-str-replace-start)
 [Str::replaceEnd](#method-str-replace-end)
 [Str::reverse](#method-str-reverse)
@@ -882,6 +883,30 @@ The `Str::replaceLast` method replaces the last occurrence of a given value in a
 
     // the quick brown fox jumps over a lazy dog
 
+<a name="method-str-replace-matches"></a>
+#### `Str::replaceMatches()` {.collection-method}
+
+The `Str::replaceMatches` method replaces all portions of a string matching a pattern with the given replacement string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceMatches(
+        pattern: '/[^A-Za-z0-9]++/',
+        replace: '',
+        subject: '(+1) 501-555-1000'
+    )
+
+    // '15015551000'
+
+The `replaceMatches` method also accepts a closure that will be invoked with each portion of the string matching the given pattern, allowing you to perform the replacement logic within the closure and return the replaced value:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceMatches('/\d/', function (array $matches) {
+        return '['.$matches[0].']';
+    }, '123');
+
+    // '[1][2][3]'
 
 <a name="method-str-replace-start"></a>
 #### `Str::replaceStart()` {.collection-method}
