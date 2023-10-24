@@ -973,7 +973,7 @@ Modifier  |  Description
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.
 `->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated (MySQL).
-`->virtualAs($expression)`  |  Create a virtual generated column (MySQL).
+`->virtualAs($expression)`  |  Create a virtual generated column (MySQL / PostgreSQL / SQLite).
 `->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL).
 `->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL).
 `->isGeometry()`  |  Set spatial column type to `geometry` - the default type is `geography` (PostgreSQL).
