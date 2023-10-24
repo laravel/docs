@@ -188,7 +188,7 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
     provider: virtualbox
 
 > **Warning**  
-> If you are using Apple Silicon, you should add `box: laravel/homestead-arm` to your `Homestead.yaml` file. Apple Silicon requires the Parallels provider.
+> If you are using Apple Silicon the Parallels provider is required.
 
 <a name="configuring-shared-folders"></a>
 #### Configuring Shared Folders
