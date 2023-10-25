@@ -187,6 +187,8 @@ Captured models can be accessed as variables within your Blade template. The mod
 
 Sometimes you may wish to resolve bound Eloquent models using a column other than `id`. To do so, you may specify the column in the page's filename. For example, a page with the filename `[Post:slug].blade.php` will attempt to resolve the bound model via the `slug` column instead of the `id` column.
 
+On Windows, you should use `-` to separate the model name from the key: `[Post-slug].blade.php`.
+
 #### Model Location
 
 By default, Folio will search for your model within your application's `app/Models` directory. However, if needed, you may specify the fully-qualified model class name in your template's filename:
