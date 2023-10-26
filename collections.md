@@ -2581,6 +2581,9 @@ In addition, you may pass a third argument containing the new items to replace t
 
     // [1, 2, 10, 11, 4, 5]
 
+> **Warning**  
+> Unlike most other collection methods, `splice` modifies the collection itself. If you wish to create a new collection instead, use the [`slice`](#method-slice) method.
+
 <a name="method-split"></a>
 #### `split()` {.collection-method}
 
