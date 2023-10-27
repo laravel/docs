@@ -130,7 +130,7 @@ Slack's API provides [different types of access tokens](https://api.slack.com/au
 
 </div>
 
-By default, the `slack` driver will generate a `user` token and invoking the the driver's `user` method will return the user's details.
+By default, the `slack` driver will generate a `user` token and invoking the driver's `user` method will return the user's details.
 
 Bot tokens are primarily useful if your application will be sending notifications to external Slack workspaces that are owned by your application's users. To generate a bot token, invoke the `asBotUser` method before redirecting the user to Slack for authentication:
 
