@@ -569,8 +569,8 @@ Whenever you're dealing with database transactions, you might want the events to
         use Dispatchable, InteractsWithSockets, SerializesModels;
     
         /**
-        * Create a new event instance.
-        */
+         * Create a new event instance.
+         */
         public function __construct(
             public Order $order,
         ) {}

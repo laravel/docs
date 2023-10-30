@@ -820,6 +820,7 @@ Likewise, if the `after_commit` configuration option is set to `true`, you may i
 #### Specifying Commit Dispatch Behavior On The Job Class
 
 Alternatively, if you want to specify the commit dispatch behavior inside the job class, you can do so by implementing the `ShouldQueueAfterCommit` interface instead of `ShouldQueue`:
+
     <?php
     
     namespace App\Jobs;
@@ -837,15 +838,15 @@ Alternatively, if you want to specify the commit dispatch behavior inside the jo
         use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     
         /**
-        * Create a new job instance.
-        */
+         * Create a new job instance.
+         */
         public function __construct(
             public Podcast $podcast,
         ) {}
     
         /**
-        * Execute the job.
-        */
+         * Execute the job.
+         */
         public function handle(AudioProcessor $processor): void
         {
             // Process uploaded podcast...
