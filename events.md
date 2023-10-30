@@ -12,6 +12,7 @@
     - [Queued Event Listeners & Database Transactions](#queued-event-listeners-and-database-transactions)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
+    - [Interacting with Database Transactions](#interacting-with-database-transactions)
 - [Event Subscribers](#event-subscribers)
     - [Writing Event Subscribers](#writing-event-subscribers)
     - [Registering Event Subscribers](#registering-event-subscribers)
@@ -549,6 +550,44 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
 
 > **Note**  
 > When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
+
+<a name="interacting-with-database-transactions"></a>
+### Interacting with Database Transactions
+
+Whenever you dispatch events within a database transaction, you might want to instruct the framework to only dispatch the events once the transaction is commited. To do so, you can implement the `ShouldDispatchAfterCommit` interface on the Event class:
+
+    <?php
+    
+    namespace App\Listeners;
+    
+    use App\Events\OrderShipped;
+    use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Queue\InteractsWithQueue;
+    
+    class SendShipmentNotification implements ShouldDispatchAfterCommit
+    {
+        use InteractsWithQueue;
+    }
+
+If your event is meant to be queued, you can also implement `ShouldQueue` and `ShouldDispatchAfterCommit` simultaneously, and the framework will only queue the event once the transaction is commited:
+
+
+    <?php
+    
+    namespace App\Listeners;
+    
+    use App\Events\OrderShipped;
+    use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Queue\InteractsWithQueue;
+    
+    class SendShipmentNotification implements ShouldQueue, ShouldDispatchAfterCommit
+    {
+        use InteractsWithQueue;
+    }
+
+Each database transaction's events are isolated. If the transaction fails, the events will be discard and it will not affect the parent transaction.
 
 <a name="event-subscribers"></a>
 ## Event Subscribers
