@@ -816,6 +816,42 @@ Likewise, if the `after_commit` configuration option is set to `true`, you may i
 
     ProcessPodcast::dispatch($podcast)->beforeCommit();
 
+<a name="specifying-commit-dispatch-behavior-on-the-job-class"></a>
+#### Specifying Commit Dispatch Behavior On The Job Class
+
+Alternatively, if you want to specify the commit dispatch behavior inside the job class, you can do so by implementing the `ShouldQueueAfterCommit` interface instead of `ShouldQueue`:
+    <?php
+    
+    namespace App\Jobs;
+    
+    use App\Models\Podcast;
+    use App\Services\AudioProcessor;
+    use Illuminate\Bus\Queueable;
+    use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+    use Illuminate\Foundation\Bus\Dispatchable;
+    use Illuminate\Queue\InteractsWithQueue;
+    use Illuminate\Queue\SerializesModels;
+    
+    class ProcessPodcast implements ShouldQueueAfterCommit
+    {
+        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    
+        /**
+        * Create a new job instance.
+        */
+        public function __construct(
+            public Podcast $podcast,
+        ) {}
+    
+        /**
+        * Execute the job.
+        */
+        public function handle(AudioProcessor $processor): void
+        {
+            // Process uploaded podcast...
+        }
+    }
+
 <a name="job-chaining"></a>
 ### Job Chaining
 
