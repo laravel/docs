@@ -576,7 +576,7 @@ Whenever you're dealing with database transactions, you might want the events to
         ) {}
     }
 
->Each database transaction's events are isolated. If a transaction fails, the events will be discarded and it will not affect the parent transaction.
+>Each database transaction's events are isolated. If a transaction fails, its events will be discarded and it will not affect the parent transaction.
 
 <a name="event-subscribers"></a>
 ## Event Subscribers
