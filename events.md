@@ -428,8 +428,6 @@ Alternatively, you might also implement the `ShouldHandleEventsAfterCommit` inte
     class SendShipmentNotification implements ShouldQueue, ShouldHandleEventsAfterCommit
     {
         use InteractsWithQueue;
-
-        public $afterCommit = true;
     }
 
 
