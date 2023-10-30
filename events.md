@@ -414,6 +414,24 @@ If your queue connection's `after_commit` configuration option is set to `false`
         public $afterCommit = true;
     }
 
+Alternatively, you might also implement the `ShouldHandleEventsAfterCommit` interface:
+
+    <?php
+
+    namespace App\Listeners;
+
+    use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Queue\InteractsWithQueue;
+
+    class SendShipmentNotification implements ShouldQueue, ShouldHandleEventsAfterCommit
+    {
+        use InteractsWithQueue;
+
+        public $afterCommit = true;
+    }
+
+
 > **Note**  
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
