@@ -377,8 +377,8 @@ You may configure how many seconds are considered a "long wait" within your appl
 
     'waits' => [
         'redis:critical' => 30,
-        'redis:default'  => 60,
-        'redis:batch'    => 120,
+        'redis:default' => 60,
+        'redis:batch' => 120,
     ],
 
 <a name="metrics"></a>
