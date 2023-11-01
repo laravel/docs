@@ -373,11 +373,12 @@ If you would like to be notified when one of your queues has a long wait time, y
 <a name="configuring-notification-wait-time-thresholds"></a>
 #### Configuring Notification Wait Time Thresholds
 
-You may configure how many seconds are considered a "long wait" within your application's `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination:
+You may configure how many seconds are considered a "long wait" within your application's `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination. Any undefined connection / queue combinations will default to a long wait threshold of 60 seconds:
 
     'waits' => [
+        'redis:critical' => 30,
         'redis:default' => 60,
-        'redis:critical,high' => 90,
+        'redis:batch' => 120,
     ],
 
 <a name="metrics"></a>
