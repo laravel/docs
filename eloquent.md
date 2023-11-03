@@ -1549,23 +1549,17 @@ Alternatively, you may list your observers within an `$observers` property of yo
 <a name="observers-and-database-transactions"></a>
 #### Observers & Database Transactions
 
-When models are being created within a database transaction, you may want to instruct an observer to only execute its event handlers after the database transaction is committed. You may accomplish this by defining an `$afterCommit` property on the observer. If a database transaction is not in progress, the event handlers will execute immediately:
+When models are being created within a database transaction, you may want to instruct an observer to only execute its event handlers after the database transaction is committed. You may accomplish this by implementing the `ShouldHandleEventsAfterCommit` interface on your observer. If a database transaction is not in progress, the event handlers will execute immediately:
 
     <?php
 
     namespace App\Observers;
 
     use App\Models\User;
+    use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 
-    class UserObserver
+    class UserObserver implements ShouldHandleEventsAfterCommit
     {
-        /**
-         * Handle events after all transactions are committed.
-         *
-         * @var bool
-         */
-        public $afterCommit = true;
-
         /**
          * Handle the User "created" event.
          */

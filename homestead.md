@@ -110,6 +110,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Crystal & Lucky Framework
 - Elasticsearch
 - EventStoreDB
+- Flyway
 - Gearman
 - Go
 - Grafana
@@ -127,6 +128,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Python
 - R
 - RabbitMQ
+- Rust
 - RVM (Ruby Version Manager)
 - Solr
 - TimescaleDB
@@ -337,10 +339,13 @@ features:
         version: 7.9.0
     - eventstore: true
         version: 21.2.0
+    - flyway: true
     - gearman: true
     - golang: true
     - grafana: true
     - influxdb: true
+    - logstash: true
+    - mailpit: true
     - mariadb: true
     - meilisearch: true
     - minio: true
@@ -353,6 +358,7 @@ features:
     - python: true
     - r-base: true
     - rabbitmq: true
+    - rustc: true
     - rvm: true
     - solr: true
     - timescaledb: true
