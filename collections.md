@@ -94,28 +94,41 @@ For the majority of the remaining collection documentation, we'll discuss each m
 
 <div class="collection-method-list" markdown="1">
 
-## Data Retrieval
-# Description: Returns a new collection with all of the data in the original collection.
-Methods:
+### Data Retrieval/Transformers
+#### Returns the data from the original collection.
+
 [all](#method-all)
 [get](#method-get)
 [toArray](#method-toarray)
 [toJson](#method-tojson)
 [values](#method-values)
+[collect](#method-collect)
+[make](#method-make)
+[lazy](#method-lazy)
+[wrap](#method-wrap)
 
 
+### Data Inspection
+#### Provides true/false/exception results by inspecting and checking the collection's contents without changing it.
 
+[contains](#method-contains)
+[some](#method-some)
+[containsOneItem](#method-containsoneitem)
+[containsStrict](#method-containsstrict)
+[count](#method-count)
+[countBy](#method-countBy)
+[has](#method-has)
+[isEmpty](#method-isempty)
+[isNotEmpty](#method-isnotempty)
+[every](#method-every)
+[doesntContain](#method-doesntcontain)
+[ensure](#method-ensure)
 
-## Data Inspection
-Description: Provides true/false results by inspecting and checking the collection's contents without changing it.
+### Data Filtering
+#### Returns a new collection containing only the items that match the specified conditions.
 
-Methods: [contains](#method-contains), [count](#method-count), [countBy](#method-countBy), [has](#method-has),[isEmpty](#method-isempty),[isNotEmpty](#method-isnotempty)
-
-
-## Data Filtering
-Description: Returns a new collection containing only the items that match the specified conditions.
-
-Methods: [filter](#method-filter)
+[filter](#method-filter)
+[reject](#method-reject)
 [where](#method-where)
 [whereStrict](#method-wherestrict)
 [whereBetween](#method-wherebetween)
@@ -127,10 +140,27 @@ Methods: [filter](#method-filter)
 [whereNotInStrict](#method-wherenotinstrict)
 [whereNotNull](#method-wherenotnull)
 [whereNull](#method-wherenull)
+[hasAny](#method-hasany)
+[unless](#method-unless)
+[unlessEmpty](#method-unlessempty)
+[unlessNotEmpty](#method-unlessnotempty)
+[value](#method-value)
+[when](#method-when)
+[whenEmpty](#method-whenempty)
+[whenNotEmpty](#method-whennotempty)
+[nth](#method-nth)
+[partition](#method-partition)
+[skip](#method-skip)
+[skipUntil](#method-skipuntil)
+[skipWhile](#method-skipwhile)
+[take](#method-take)
+[takeUntil](#method-takeuntil)
+[takeWhile](#method-takewhile)
+[search](#method-search)
 
-Data Transformation (Mapping)
-Description: Returns a new collection with the data changed or organized using various methods.
-Methods:
+### Data Transformation (Mapping)
+#### Returns a new collection with the data changed or organized using various methods.
+
 [flatMap](#method-flatmap)
 [flatten](#method-flatten)
 [flip](#method-flip)
@@ -146,14 +176,20 @@ Methods:
 [only](#method-only)
 [pluck](#method-pluck)
 [transform](#method-transform)
+[dot](#method-dot)
 [undot](#method-undot)
 [unique](#method-unique)
 [uniqueStrict](#method-uniquestrict)
 [unwrap](#method-unwrap)
+[keyBy](#method-keyby)
+[keys](#method-keys)
+[reduceSpread](#method-reduce-spread)
 
-Data Combining and Joining
-Description: Returns a new collection by combining, merging, or joining the original collection with other collections.
-Methods:
+
+
+### Data Combining and Joining
+#### Returns a new collection by combining, merging, or joining the original collection with other collections.
+
 [chunk](#method-chunk)
 [chunkWhile](#method-chunkwhile)
 [collapse](#method-collapse)
@@ -163,14 +199,24 @@ Methods:
 [mergeRecursive](#method-mergerecursive)
 [union](#method-union)
 [zip](#method-zip)
+[join](#method-join)
+[crossJoin](#method-crossjoin)
+[pad](#method-pad)
+[times](#method-times)
+[split](#method-split)
+[splitIn](#method-splitin)
+[intersect](#method-intersect)
+[intersectAssoc](#method-intersectAssoc)
+[intersectByKeys](#method-intersectbykeys)
 
-Data Rearrangement
-Description: Returns a new collection with the items reorganized or removed using various methods.
-Methods:
+### Data Rearrangement
+#### Returns a new collection with the items reorganized or removed using various methods.
+
 [diff](#method-diff)
 [diffAssoc](#method-diffassoc)
 [diffAssocUsing](#method-diffassocusing)
 [diffKeys](#method-diffkeys)
+[except](#method-except)
 [reverse](#method-reverse)
 [sliding](#method-sliding)[sort](#method-sort)
 [sortBy](#method-sortby)
@@ -180,10 +226,18 @@ Methods:
 [sortKeysDesc](#method-sortkeysdesc)
 [sortKeysUsing](#method-sortkeysusing)
 [splice](#method-splice)
+[duplicates](#method-duplicates)
+[duplicatesStrict](#method-duplicatesstrict)
+[random](#method-random)
+[slice](#method-slice)
+[shuffle](#method-shuffle)
 
-Data Element Manipulation
-Description: Changes the existing collection by adding, removing, or updating elements.
-Methods:[push](#method-push)
+
+
+### Data Element Manipulation
+#### Changes the existing collection by adding, removing, updating or running over the elements.
+
+[push](#method-push)
 [prepend](#method-prepend)
 [pull](#method-pull)
 [put](#method-put)
@@ -191,118 +245,44 @@ Methods:[push](#method-push)
 [replaceRecursive](#method-replacerecursive)
 [pop](#method-pop)
 [shift](#method-shift)
+[each](#method-each)
+[eachSpread](#method-eachspread)
 
 
 
+### Math manipulation 
+#### Performs various mathematical operations on the collection elements.
 
 [average](#method-average)
 [avg](#method-avg)
+[min](#method-min)
+[mode](#method-mode)
+[sum](#method-sum)
+[max](#method-max)
+[median](#method-median)
+[reduce](#method-reduce)
+[range](#method-range)
+[percentage](#method-percentage)
 
-[collect](#method-collect)
+### Tools/Helpers
+#### Provides helper functions for debugging, logging, and manipulating collections.
 
-
-
-[containsOneItem](#method-containsoneitem)
-[containsStrict](#method-containsstrict)
-
-
-[crossJoin](#method-crossjoin)
 [dd](#method-dd)
-
-
-[doesntContain](#method-doesntcontain)
-[dot](#method-dot)
 [dump](#method-dump)
-[duplicates](#method-duplicates)
-[duplicatesStrict](#method-duplicatesstrict)
-[each](#method-each)
-[eachSpread](#method-eachspread)
-[ensure](#method-ensure)
-[every](#method-every)
-[except](#method-except)
+[tap](#method-tap)
+[macro](#method-macro)
+[pipeInto](#method-pipeinto)
+[pipe](#method-pipe)
+[pipeThrough](#method-pipethrough)
+
+### returing value (not collection)
+#### Returns a single value, rather than a collection.
 
 [first](#method-first)
 [firstOrFail](#method-first-or-fail)
 [firstWhere](#method-first-where)
-
-
-
-[hasAny](#method-hasany)
-
-[intersect](#method-intersect)
-[intersectAssoc](#method-intersectAssoc)
-[intersectByKeys](#method-intersectbykeys)
-
-[join](#method-join)
-[keyBy](#method-keyby)
-[keys](#method-keys)
-[last](#method-last)
-[lazy](#method-lazy)
-[macro](#method-macro)
-[make](#method-make)
-
-
-[max](#method-max)
-[median](#method-median)
-
-
-[min](#method-min)
-[mode](#method-mode)
-[nth](#method-nth)
-
-[pad](#method-pad)
-[partition](#method-partition)
-[percentage](#method-percentage)
-[pipe](#method-pipe)
-[pipeInto](#method-pipeinto)
-[pipeThrough](#method-pipethrough)
-
-
-
-[random](#method-random)
-[range](#method-range)
-[reduce](#method-reduce)
-[reduceSpread](#method-reduce-spread)
-[reject](#method-reject)
-
-[search](#method-search)
-
-[shuffle](#method-shuffle)
-[skip](#method-skip)
-[skipUntil](#method-skipuntil)
-[skipWhile](#method-skipwhile)
-[slice](#method-slice)
-
 [sole](#method-sole)
-[some](#method-some)
-
-
-[split](#method-split)
-[splitIn](#method-splitin)
-[sum](#method-sum)
-[take](#method-take)
-[takeUntil](#method-takeuntil)
-[takeWhile](#method-takewhile)
-[tap](#method-tap)
-[times](#method-times)
-
-
-
-
-[unless](#method-unless)
-[unlessEmpty](#method-unlessempty)
-[unlessNotEmpty](#method-unlessnotempty)
-[value](#method-value)
-
-[when](#method-when)
-[whenEmpty](#method-whenempty)
-[whenNotEmpty](#method-whennotempty)
-
-
-
-
-
-[wrap](#method-wrap)
+[last](#method-last)
 
 
 </div>
@@ -790,13 +770,13 @@ If you want to stop executing the script after dumping the collection, use the [
 <a name="method-duplicates"></a>
 #### `duplicates()` {.collection-method}
 
-The `duplicates` method retrieves and returns duplicate values from the collection:
+The `duplicates` method retrieves and returns new collection of duplicate values from the collection:
 
-    $collection = collect(['a', 'b', 'a', 'c', 'b']);
+    $collection = collect([5,'a', 'b', 'a', 'c', 'b','5']);
 
-    $collection->duplicates();
+    $duplicated = $collection->duplicates();
 
-    // [2 => 'a', 4 => 'b']
+    // [2 => 'a', 4 => 'b',6 => '5']
 
 If the collection contains arrays or objects, you can pass the key of the attributes that you wish to check for duplicate values:
 
