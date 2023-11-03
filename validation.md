@@ -1234,10 +1234,10 @@ The field under validation must end with one of the given values.
 The `Enum` rule is a class based rule that validates whether the field under validation contains a valid enum value. The `Enum` rule accepts the name of the enum as its only constructor argument:
 
     use App\Enums\ServerStatus;
-    use Illuminate\Validation\Rules\Enum;
+    use Illuminate\Validation\Rule;
 
     $request->validate([
-        'status' => [new Enum(ServerStatus::class)],
+        'status' => [Rule::enum(ServerStatus::class)],
     ]);
 
 <a name="rule-exclude"></a>
