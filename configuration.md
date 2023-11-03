@@ -213,7 +213,7 @@ The `config:clear` command may be used to purge the cached configuration:
 php artisan config:clear
 ```
 
-> **Warning**  
+> **Warning**
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables.
 
 <a name="debug-mode"></a>
@@ -221,7 +221,8 @@ php artisan config:clear
 
 The `debug` option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your `.env` file.
 
-For local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
+> **Warning**
+> For local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
 
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
