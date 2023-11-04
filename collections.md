@@ -111,16 +111,14 @@ For the majority of the remaining collection documentation, we'll discuss each m
 ### Data Inspection
 #### Provides true / false / exception result by inspecting and checking the collection's contents without changing it.
 
-[contains](#method-contains)|[some](#method-some)
+[contains](#method-contains)|[some](#method-some) / [doesntContain](#method-doesntcontain)
 [containsOneItem](#method-containsoneitem)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
 [countBy](#method-countBy)
 [has](#method-has)
-[isEmpty](#method-isempty)
-[isNotEmpty](#method-isnotempty)
+[isEmpty](#method-isempty)/[isNotEmpty](#method-isnotempty)
 [every](#method-every)
-[doesntContain](#method-doesntcontain)
 [ensure](#method-ensure)
 
 ### Data Filtering
@@ -168,7 +166,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [pluck](#method-pluck)
 [transform](#method-transform)
 [dot](#method-dot)/[undot](#method-undot)
-
 [unique](#method-unique)
 [uniqueStrict](#method-uniquestrict)
 [unwrap](#method-unwrap)
