@@ -126,19 +126,14 @@ For the majority of the remaining collection documentation, we'll discuss each m
 ### Data Filtering
 #### Returns a new collection containing only the items that match the specified conditions.
 
-[filter](#method-filter)
-[reject](#method-reject)
+[filter](#method-filter)/[reject](#method-reject)
 [where](#method-where)
 [whereStrict](#method-wherestrict)
-[whereBetween](#method-wherebetween)
-[whereIn](#method-wherein)
-[whereInStrict](#method-whereinstrict)
+[whereBetween](#method-wherebetween)/[whereNotBetween](#method-wherenotbetween)
+[whereIn](#method-wherein)/[whereNotIn](#method-wherenotin)
+[whereInStrict](#method-whereinstrict)/[whereNotInStrict](#method-wherenotinstrict)
 [whereInstanceOf](#method-whereinstanceof)
-[whereNotBetween](#method-wherenotbetween)
-[whereNotIn](#method-wherenotin)
-[whereNotInStrict](#method-wherenotinstrict)
-[whereNotNull](#method-wherenotnull)
-[whereNull](#method-wherenull)
+[whereNull](#method-wherenull)/[whereNotNull](#method-wherenotnull)
 [hasAny](#method-hasany)
 [unless](#method-unless)
 [value](#method-value)
@@ -201,8 +196,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [times](#method-times)
 [split](#method-split)
 [splitIn](#method-splitin)
-[intersect](#method-intersect)
-[intersectAssoc](#method-intersectAssoc)
+[intersect](#method-intersect)/[intersectAssoc](#method-intersectAssoc)
 [intersectByKeys](#method-intersectbykeys)
 
 ### Data Rearrangement
