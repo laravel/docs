@@ -109,10 +109,9 @@ For the majority of the remaining collection documentation, we'll discuss each m
 
 
 ### Data Inspection
-#### Provides true/false/exception results by inspecting and checking the collection's contents without changing it.
+#### Provides true / false / exception result by inspecting and checking the collection's contents without changing it.
 
-[contains](#method-contains)
-[some](#method-some)
+[contains](#method-contains)|[some](#method-some)
 [containsOneItem](#method-containsoneitem)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
@@ -142,12 +141,10 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [whereNull](#method-wherenull)
 [hasAny](#method-hasany)
 [unless](#method-unless)
-[unlessEmpty](#method-unlessempty)
-[unlessNotEmpty](#method-unlessnotempty)
 [value](#method-value)
 [when](#method-when)
-[whenEmpty](#method-whenempty)
-[whenNotEmpty](#method-whennotempty)
+[whenEmpty](#method-whenempty)|[unlessNotEmpty](#method-unlessnotempty)
+[whenNotEmpty](#method-whennotempty)|[unlessEmpty](#method-unlessempty)
 [nth](#method-nth)
 [partition](#method-partition)
 [skip](#method-skip)
@@ -157,6 +154,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [takeUntil](#method-takeuntil)
 [takeWhile](#method-takewhile)
 [search](#method-search)
+[only](#method-only)/[except](#method-except)
 
 ### Data Transformation (Mapping)
 #### Returns a new collection with the data changed or organized using various methods.
@@ -164,7 +162,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [flatMap](#method-flatmap)
 [flatten](#method-flatten)
 [flip](#method-flip)
-[forget](#method-forget)
 [forPage](#method-forpage)
 [groupBy](#method-groupby)
 [implode](#method-implode)
@@ -173,11 +170,10 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [mapSpread](#method-mapspread)
 [mapToGroups](#method-maptogroups)
 [mapWithKeys](#method-mapwithkeys)
-[only](#method-only)
 [pluck](#method-pluck)
 [transform](#method-transform)
-[dot](#method-dot)
-[undot](#method-undot)
+[dot](#method-dot)/[undot](#method-undot)
+
 [unique](#method-unique)
 [uniqueStrict](#method-uniquestrict)
 [unwrap](#method-unwrap)
@@ -216,14 +212,12 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [diffAssoc](#method-diffassoc)
 [diffAssocUsing](#method-diffassocusing)
 [diffKeys](#method-diffkeys)
-[except](#method-except)
+[forget](#method-forget)
 [reverse](#method-reverse)
-[sliding](#method-sliding)[sort](#method-sort)
-[sortBy](#method-sortby)
-[sortByDesc](#method-sortbydesc)
-[sortDesc](#method-sortdesc)
-[sortKeys](#method-sortkeys)
-[sortKeysDesc](#method-sortkeysdesc)
+[sliding](#method-sliding)
+[sort](#method-sort) / [sortDesc](#method-sortdesc)
+[sortBy](#method-sortby) / [sortByDesc](#method-sortbydesc)
+[sortKeys](#method-sortkeys) / [sortKeysDesc](#method-sortkeysdesc)
 [sortKeysUsing](#method-sortkeysusing)
 [splice](#method-splice)
 [duplicates](#method-duplicates)
@@ -237,28 +231,25 @@ For the majority of the remaining collection documentation, we'll discuss each m
 ### Data Element Manipulation
 #### Changes the existing collection by adding, removing, updating or running over the elements.
 
-[push](#method-push)
-[prepend](#method-prepend)
+[push](#method-push)/[pop](#method-pop)
 [pull](#method-pull)
+[prepend](#method-prepend)
 [put](#method-put)
 [replace](#method-replace)
 [replaceRecursive](#method-replacerecursive)
-[pop](#method-pop)
 [shift](#method-shift)
 [each](#method-each)
 [eachSpread](#method-eachspread)
 
 
 
-### Math manipulation 
+### Math Functions 
 #### Performs various mathematical operations on the collection elements.
 
-[average](#method-average)
-[avg](#method-avg)
-[min](#method-min)
+[avg](#method-avg)|[average](#method-average)
+[max](#method-max)/[min](#method-min)
 [mode](#method-mode)
 [sum](#method-sum)
-[max](#method-max)
 [median](#method-median)
 [reduce](#method-reduce)
 [range](#method-range)
@@ -278,11 +269,11 @@ For the majority of the remaining collection documentation, we'll discuss each m
 ### returing value (not collection)
 #### Returns a single value, rather than a collection.
 
-[first](#method-first)
+[first](#method-first)/[last](#method-last)
 [firstOrFail](#method-first-or-fail)
 [firstWhere](#method-first-where)
 [sole](#method-sole)
-[last](#method-last)
+
 
 
 </div>
