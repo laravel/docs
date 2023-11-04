@@ -118,7 +118,7 @@ During installation, Breeze will add a `FRONTEND_URL` environment variable to yo
 <a name="next-reference-implementation"></a>
 #### Next.js Reference Implementation
 
-Finally, you are ready to pair this backend with the frontend of your choice. A Next reference implementation of the Breeze frontend is [available on GitHub](https://github.com/laravel/breeze-next). This frontend is maintained by Laravel and contains the same user interface as the traditional Blade and Inertia stacks provided by Breeze.
+Finally, you are ready to pair this backend with the frontend of your choice. A Next reference implementation of the Breeze frontend is [available on GitHub](https://github.com/laravel/breeze-next). This frontend is maintained by Laravel and contains the same user interface as the traditional Blade and Inertia stacks provided by Breeze. You can find a reference implementation of the Breeze frontend using React and Vite on GitHub at [this repository](https://github.com/Nilanth/laravel-breeze-react).
 
 <a name="laravel-jetstream"></a>
 ## Laravel Jetstream
