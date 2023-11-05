@@ -2132,7 +2132,11 @@ The `Bus` facade's `assertBatched` method may be used to assert that a [batch of
 You may use the `assertBatchCount` method to assert that a given number of batches were dispatched:
 
     Bus::assertBatchCount(3);
-    
+
+You may use `assertNothingBatched` to assert that no batches were dispatched:
+
+    Bus::assertNothingBatched();
+
 <a name="testing-job-batch-interaction"></a>
 #### Testing Job / Batch Interaction
 
