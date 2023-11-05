@@ -97,41 +97,41 @@ For the majority of the remaining collection documentation, we'll discuss each m
 ### Data Retrieval/Transformers
 #### Returns the data from the original collection.
 
-[all](#method-all)
-[get](#method-get)
-[toArray](#method-toarray)
-[toJson](#method-tojson)
-[values](#method-values)
-[collect](#method-collect)
-[make](#method-make)
-[lazy](#method-lazy)
-[wrap](#method-wrap)
+[all](#method-all)  
+[get](#method-get)  
+[toArray](#method-toarray)  
+[toJson](#method-tojson)  
+[values](#method-values)  
+[collect](#method-collect)  
+[make](#method-make)  
+[lazy](#method-lazy)  
+[wrap](#method-wrap)  
 
 
 ### Data Inspection
 #### Provides true / false / exception result by inspecting and checking the collection's contents without changing it.
 
-[contains](#method-contains)([some](#method-some)) <> [doesntContain](#method-doesntcontain)   
+[contains](#method-contains)([some](#method-some)) 🗘 [doesntContain](#method-doesntcontain)   
 [containsOneItem](#method-containsoneitem)  
 [containsStrict](#method-containsstrict)  
 [count](#method-count)  
 [countBy](#method-countBy)  
 [has](#method-has)  
-[isEmpty](#method-isempty) <> [isNotEmpty](#method-isnotempty)  
+[isEmpty](#method-isempty) 🗘 [isNotEmpty](#method-isnotempty)  
 [every](#method-every)  
 [ensure](#method-ensure)  
 
 ### Data Filtering
 #### Returns a new collection containing only the items that match the specified conditions.
 
-[filter](#method-filter) <> [reject](#method-reject)  
+[filter](#method-filter) 🗘 [reject](#method-reject)  
 [where](#method-where)  
 [whereStrict](#method-wherestrict)  
-[whereBetween](#method-wherebetween) <> [whereNotBetween](#method-wherenotbetween)  
-[whereIn](#method-wherein) <> [whereNotIn](#method-wherenotin)  
-[whereInStrict](#method-whereinstrict) <> [whereNotInStrict](#method-wherenotinstrict)  
+[whereBetween](#method-wherebetween) 🗘 [whereNotBetween](#method-wherenotbetween)  
+[whereIn](#method-wherein) 🗘 [whereNotIn](#method-wherenotin)  
+[whereInStrict](#method-whereinstrict) 🗘 [whereNotInStrict](#method-wherenotinstrict)  
 [whereInstanceOf](#method-whereinstanceof)  
-[whereNull](#method-wherenull) <> [whereNotNull](#method-wherenotnull)  
+[whereNull](#method-wherenull) 🗘 [whereNotNull](#method-wherenotnull)  
 [hasAny](#method-hasany)  
 [unless](#method-unless)  
 [value](#method-value)  
@@ -147,7 +147,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [takeUntil](#method-takeuntil)  
 [takeWhile](#method-takewhile)  
 [search](#method-search)  
-[only](#method-only) <> [except](#method-except)  
+[only](#method-only) 🗘 [except](#method-except)  
 
 ### Data Transformation (Mapping)
 #### Returns a new collection with the data changed or organized using various methods.
@@ -165,7 +165,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [mapWithKeys](#method-mapwithkeys)  
 [pluck](#method-pluck)  
 [transform](#method-transform)  
-[dot](#method-dot) <> [undot](#method-undot)  
+[dot](#method-dot) 🗘 [undot](#method-undot)  
 [unique](#method-unique)  
 [uniqueStrict](#method-uniquestrict)  
 [unwrap](#method-unwrap)  
@@ -193,7 +193,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [times](#method-times)  
 [split](#method-split)  
 [splitIn](#method-splitin)  
-[intersect](#method-intersect) <> [intersectAssoc](#method-intersectAssoc)  
+[intersect](#method-intersect) 🗘 [intersectAssoc](#method-intersectAssoc)  
 [intersectByKeys](#method-intersectbykeys)  
 
 ### Data Rearrangement
@@ -206,9 +206,9 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [forget](#method-forget)  
 [reverse](#method-reverse)  
 [sliding](#method-sliding)  
-[sort](#method-sort) <> [sortDesc](#method-sortdesc)  
-[sortBy](#method-sortby) <> [sortByDesc](#method-sortbydesc)  
-[sortKeys](#method-sortkeys) <> [sortKeysDesc](#method-sortkeysdesc)  
+[sort](#method-sort) 🗘 [sortDesc](#method-sortdesc)  
+[sortBy](#method-sortby) 🗘 [sortByDesc](#method-sortbydesc)  
+[sortKeys](#method-sortkeys) 🗘 [sortKeysDesc](#method-sortkeysdesc)  
 [sortKeysUsing](#method-sortkeysusing)  
 [splice](#method-splice)  
 [duplicates](#method-duplicates)   
@@ -222,7 +222,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 ### Data Element Manipulation
 #### Changes the existing collection by adding, removing, updating or running over the elements.
 
-[push](#method-push) <> [pop](#method-pop)  
+[push](#method-push) 🗘 [pop](#method-pop)  
 [pull](#method-pull)  
 [prepend](#method-prepend)  
 [put](#method-put)  
@@ -237,7 +237,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 #### Performs various mathematical operations on the collection elements.
 
 [avg](#method-avg)([average](#method-average))  
-[max](#method-max) <> [min](#method-min)  
+[max](#method-max) 🗘 [min](#method-min)  
 [mode](#method-mode)  
 [sum](#method-sum)  
 [median](#method-median)  
@@ -259,7 +259,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 ### returing value (not collection)
 #### Returns a single value, rather than a collection.
 
-[first](#method-first) <> [last](#method-last)  
+[first](#method-first) 🗘 [last](#method-last)  
 [firstOrFail](#method-first-or-fail)  
 [firstWhere](#method-first-where)  
 [sole](#method-sole)  
