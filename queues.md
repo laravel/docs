@@ -2129,6 +2129,10 @@ The `Bus` facade's `assertBatched` method may be used to assert that a [batch of
                $batch->jobs->count() === 10;
     });
 
+You may use the `assertBatchCount` method to assert that a given number of batches were dispatched:
+
+    Bus::assertBatchCount(3);
+    
 <a name="testing-job-batch-interaction"></a>
 #### Testing Job / Batch Interaction
 
