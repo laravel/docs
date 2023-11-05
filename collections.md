@@ -136,7 +136,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [unless](#method-unless)  
 [value](#method-value)  
 [when](#method-when)  
-[whenEmpty](#method-whenempty)|[unlessNotEmpty](#method-unlessnotempty)  
+[whenEmpty](#method-whenempty)([unlessNotEmpty](#method-unlessnotempty))  
 [whenNotEmpty](#method-whennotempty)([unlessEmpty](#method-unlessempty))  
 [nth](#method-nth)  
 [partition](#method-partition)  
