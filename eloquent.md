@@ -221,7 +221,7 @@ If you would like a model to use a UUID key instead of an auto-incrementing inte
 
     $article->id; // "8f8e8478-9035-4d23-b9a7-62f4d2612ce5"
 
-By default, The `HasUuids` trait will generate ["ordered" UUIDs](/docs/{{version}}/helpers#method-str-ordered-uuid) for your models. These UUIDs are more efficient for indexed database storage because they can be sorted lexicographically.
+By default, The `HasUuids` trait will generate ["ordered" UUIDs](/docs/{{version}}/strings#method-str-ordered-uuid) for your models. These UUIDs are more efficient for indexed database storage because they can be sorted lexicographically.
 
 You can override the UUID generation process for a given model by defining a `newUniqueId` method on the model. In addition, you may specify which columns should receive UUIDs by defining a `uniqueIds` method on the model:
 
