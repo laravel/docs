@@ -1288,8 +1288,8 @@ If you would like to specify the connection and queue that should be used for th
         // All jobs completed successfully...
     })->onConnection('redis')->onQueue('imports')->dispatch();
 
-<a name="chains-within-batches"></a>
-#### Chains Within Batches
+<a name="mixing-chains-and-batches"></a>
+#### Mixing Chains and Batches
 
 You may define a set of [chained jobs](#job-chaining) within a batch by placing the chained jobs within an array. For example, we may execute two job chains in parallel and execute a callback when both job chains have finished processing:
 
