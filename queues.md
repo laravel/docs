@@ -1317,7 +1317,6 @@ Conversely, you may run batches of jobs within a [chain](#job-chaining) by defin
     use App\Jobs\FlushPodcastCache;
     use App\Jobs\ReleasePodcast;
     use App\Jobs\SendPodcastReleaseNotification;
-    use Illuminate\Bus\Batch;
     use Illuminate\Support\Facades\Bus;
 
     Bus::chain([
