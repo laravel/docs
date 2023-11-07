@@ -23,6 +23,7 @@
 - [Job Batching](#job-batching)
     - [Defining Batchable Jobs](#defining-batchable-jobs)
     - [Dispatching Batches](#dispatching-batches)
+    - [Chains & Batches](#chains-and-batches)
     - [Adding Jobs To Batches](#adding-jobs-to-batches)
     - [Inspecting Batches](#inspecting-batches)
     - [Cancelling Batches](#cancelling-batches)
@@ -1288,8 +1289,8 @@ If you would like to specify the connection and queue that should be used for th
         // All jobs completed successfully...
     })->onConnection('redis')->onQueue('imports')->dispatch();
 
-<a name="mixing-chains-and-batches"></a>
-#### Mixing Chains and Batches
+<a name="chains-and-batches"></a>
+### Chains & Batches
 
 You may define a set of [chained jobs](#job-chaining) within a batch by placing the chained jobs within an array. For example, we may execute two job chains in parallel and execute a callback when both job chains have finished processing:
 
@@ -1311,14 +1312,16 @@ You may define a set of [chained jobs](#job-chaining) within a batch by placing 
         // ...
     })->dispatch();
 
-Conversely, you can run batches of jobs in a [chain](#job-chaining) by placing batches on a chain. So you could first run a batch to release both podcasts and then a batch to send the notifications:
+Conversely, you may run batches of jobs within a [chain](#job-chaining) by defining batches within the chain. For example, you could first run a batch of jobs to release multiple podcasts then a batch of jobs to send the release notifications:
 
+    use App\Jobs\FlushPodcastCache;
     use App\Jobs\ReleasePodcast;
     use App\Jobs\SendPodcastReleaseNotification;
     use Illuminate\Bus\Batch;
     use Illuminate\Support\Facades\Bus;
 
     Bus::chain([
+        new FlushPodcastCache,
         Bus::batch([
             new ReleasePodcast(1),
             new ReleasePodcast(2),
@@ -1330,7 +1333,6 @@ Conversely, you can run batches of jobs in a [chain](#job-chaining) by placing b
     ])->then(function () {
         // ...
     })->dispatch();
-
 
 <a name="adding-jobs-to-batches"></a>
 ### Adding Jobs To Batches
