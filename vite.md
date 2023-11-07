@@ -144,7 +144,7 @@ export default defineConfig({
     plugins: [
         laravel({
             // ...
-            detectTls: 'my-app.test', // [tl! add]
+            valetTls: 'my-app.test', // [tl! add]
         }),
     ],
 });
