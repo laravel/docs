@@ -13,6 +13,10 @@
     - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
     - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
     - [Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)
+- [Tailing Log Messages Using Pail](#tailing-log-messages-using-pail)
+    - [Installation](#pail-installation)
+    - [Usage](#pail-usage)
+    - [Filtering Logs](#pail-filtering-logs)
 
 <a name="introduction"></a>
 ## Introduction
@@ -444,3 +448,86 @@ Once you have configured the `custom` driver channel, you're ready to define the
             return new Logger(/* ... */);
         }
     }
+
+<a name="tailing-log-messages-using-pail"></a>
+## Tailing Log Messages Using Pail
+
+Often you may need to tail your application's logs in real time. For example, when debugging an issue or when monitoring your application's logs for specific types of errors.
+
+Laravel Pail is a package that allows you to easily dive into your Laravel application's log files directly from the command line. Unlike the standard `tail` command, Pail is designed to work with any log driver, including Sentry or Flare. In addition, Pail provides a set of useful filters to help you quickly find what you're looking for.
+
+<img src="https://laravel.com/img/docs/pail-example.png">
+
+<a name="pail-installation"></a>
+### Installation
+
+> **Warning**
+> Laravel Pail requires [PHP 8.2+](https://php.net/releases/) and the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
+
+To get started, install Pail into your project using the Composer package manager:
+
+```bash
+composer require laravel/pail
+```
+
+<a name="pail-usage"></a>
+### Usage
+
+To start tailing logs, run the `pail` command:
+
+```bash
+php artisan pail
+```
+
+To increase the verbosity of the output and avoid truncation (…), use the `-v` option:
+
+```bash
+php artisan pail -v
+```
+
+For maximum verbosity and to display exception stack traces, use the `-vv` option:
+
+```bash
+php artisan pail -vv
+```
+
+To stop tailing logs, press `Ctrl+C` at any time.
+
+<a name="pail-filtering-logs"></a>
+### Filtering Logs
+
+<a name="pail-filtering-logs-filter-option"></a>
+#### `--filter`
+
+You may use the `--filter` option to filter logs by their type, file, message, and stack trace content:
+
+```bash
+php artisan pail --filter="QueryException"
+```
+
+<a name="pail-filtering-logs-message-option"></a>
+#### `--message`
+
+To filter logs by only their message, you may use the `--message` option:
+
+```bash
+php artisan pail --message="User created"
+```
+
+<a name="pail-filtering-logs-level-option"></a>
+#### `--level`
+
+The `--level` option may be used to filter logs by their [log level](#log-levels):
+
+```bash
+php artisan pail --level=error
+```
+
+<a name="pail-filtering-logs-user-option"></a>
+#### `--user`
+
+To only display logs that were written while a given user was authenticated, you may provide the user's ID to the `--user` option:
+
+```bash
+php artisan pail --user=1
+```
