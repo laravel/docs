@@ -443,7 +443,7 @@ If you would like complete control over the prompt, you may provide a closure th
             label: 'Search for a user:',
             placeholder: 'E.g. Taylor Otwell',
             options: fn ($value) => strlen($value) > 0
-                ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')
+                ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
                 : []
         ),
     ];
