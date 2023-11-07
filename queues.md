@@ -23,6 +23,7 @@
 - [Job Batching](#job-batching)
     - [Defining Batchable Jobs](#defining-batchable-jobs)
     - [Dispatching Batches](#dispatching-batches)
+    - [Chains & Batches](#chains-and-batches)
     - [Adding Jobs To Batches](#adding-jobs-to-batches)
     - [Inspecting Batches](#inspecting-batches)
     - [Cancelling Batches](#cancelling-batches)
@@ -1288,8 +1289,8 @@ If you would like to specify the connection and queue that should be used for th
         // All jobs completed successfully...
     })->onConnection('redis')->onQueue('imports')->dispatch();
 
-<a name="chains-within-batches"></a>
-#### Chains Within Batches
+<a name="chains-and-batches"></a>
+### Chains & Batches
 
 You may define a set of [chained jobs](#job-chaining) within a batch by placing the chained jobs within an array. For example, we may execute two job chains in parallel and execute a callback when both job chains have finished processing:
 
@@ -1308,6 +1309,27 @@ You may define a set of [chained jobs](#job-chaining) within a batch by placing 
             new SendPodcastReleaseNotification(2),
         ],
     ])->then(function (Batch $batch) {
+        // ...
+    })->dispatch();
+
+Conversely, you may run batches of jobs within a [chain](#job-chaining) by defining batches within the chain. For example, you could first run a batch of jobs to release multiple podcasts then a batch of jobs to send the release notifications:
+
+    use App\Jobs\FlushPodcastCache;
+    use App\Jobs\ReleasePodcast;
+    use App\Jobs\SendPodcastReleaseNotification;
+    use Illuminate\Support\Facades\Bus;
+
+    Bus::chain([
+        new FlushPodcastCache,
+        Bus::batch([
+            new ReleasePodcast(1),
+            new ReleasePodcast(2),
+        ]),
+        Bus::batch([
+            new SendPodcastReleaseNotification(1),
+            new SendPodcastReleaseNotification(2),
+        ]),
+    ])->then(function () {
         // ...
     })->dispatch();
 
