@@ -13,7 +13,7 @@
     - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
     - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
     - [Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)
-- [Tailing Log Messages](#tailing-log-messages)
+- [Tailing Log Messages Using Pail](#tailing-log-messages-using-pail)
     - [Installation](#pail-installation)
     - [Usage](#pail-usage)
     - [Filtering Logs](#pail-filtering-logs)
@@ -446,22 +446,20 @@ Once you have configured the `custom` driver channel, you're ready to define the
         }
     }
 
-<a name="tailing-log-messages"></a>
-## Tailing Log Messages
+<a name="tailing-log-messages-using-pail"></a>
+## Tailing Log Messages Using Pail
 
-Sometimes, you may wish to tail your application's logs in real time. For example, you may wish to do this when debugging an issue or when monitoring your application's logs for specific types of errors.
+Often you may need to tail your application's logs in real time. For example, when debugging an issue or when monitoring your application's logs for specific types of errors.
 
-Laravel Pail is a package that allows you to easily dive into your Laravel application's log files directly from the command line. Unlike other log tailing packages or the regular "tail" command, Pail is designed to work with any log driver, including Sentry or Flare.
+Laravel Pail is a package that allows you to easily dive into your Laravel application's log files directly from the command line. Unlike the standard `tail` command, Pail is designed to work with any log driver, including Sentry or Flare. In addition, Pail provides a set of useful filters to help you quickly find what you're looking for.
 
-<img src="https://laravel.com/img/docs/pail-example.png">
-
-In addition, Pail provides a set of useful filters to help you find what you're looking for.
+<img src="https://laravel.com/img/docs/pail-example.jpg">
 
 <a name="pail-installation"></a>
 ### Installation
 
 > **Warning**
-> Laravel Pail requires [PHP 8.2+](https://php.net/releases/) with [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
+> Laravel Pail requires [PHP 8.2+](https://php.net/releases/) and the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
 
 To get started, install Pail into your project using the Composer package manager:
 
@@ -478,7 +476,7 @@ To start tailing logs, run the `pail` command:
 php artisan pail
 ```
 
-To increase the verbosity of the output, avoiding truncation (…), use the `-v` option:
+To increase the verbosity of the output and avoid truncation (…), use the `-v` option:
 
 ```bash
 php artisan pail -v
@@ -516,7 +514,7 @@ php artisan pail --message="User created"
 <a name="pail-filtering-logs-level-option"></a>
 #### `--level`
 
-The `--level` option may be used to filter logs by their log level:
+The `--level` option may be used to filter logs by their [log level](#log-levels):
 
 ```bash
 php artisan pail --level=error
@@ -525,7 +523,7 @@ php artisan pail --level=error
 <a name="pail-filtering-logs-user-option"></a>
 #### `--user`
 
-To only display logs that were written while a given user was authenticated, you may use the `--user` option:
+To only display logs that were written while a given user was authenticated, you may provide the user's ID to the `--user` option:
 
 ```bash
 php artisan pail --user=1
