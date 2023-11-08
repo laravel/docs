@@ -1329,9 +1329,7 @@ Conversely, you may run batches of jobs within a [chain](#job-chaining) by defin
             new SendPodcastReleaseNotification(1),
             new SendPodcastReleaseNotification(2),
         ]),
-    ])->then(function () {
-        // ...
-    })->dispatch();
+    ])->dispatch();
 
 <a name="adding-jobs-to-batches"></a>
 ### Adding Jobs To Batches
