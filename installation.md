@@ -248,7 +248,7 @@ Once you have configured your SQLite database, you may run your application's [d
 php artisan migrate
 ```
 
-Laravel will ask to create a SQLite database by creating an SQLite file for you. Typically, this file will be placed in `database/database.sqlite` path of your Laravel application.
+If an SQLite database does not exist for your application, Laravel will ask you if you would like the database to be created. Typically, the SQLite database file will be created at `database/database.sqlite`.
 
 <a name="directory-configuration"></a>
 ### Directory Configuration
