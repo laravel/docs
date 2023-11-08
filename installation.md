@@ -230,13 +230,7 @@ Your `.env` file should not be committed to your application's source control, s
 
 Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with a MySQL database and will access the database at `127.0.0.1`. If you are developing on macOS and need to install MySQL, Postgres, or Redis locally, you may find it convenient to utilize [DBngin](https://dbngin.com/).
 
-If you do not want to install MySQL or Postgres on your local machine, you can always use a [SQLite](https://www.sqlite.org/index.html) database. SQLite is a small, fast, self-contained database engine. To get started, create a SQLite database by creating an empty SQLite file. Typically, this file will exist within the `database` directory of your Laravel application:
-
-```shell
-touch database/database.sqlite
-```
-
-Next, update your `.env` configuration file to use Laravel's `sqlite` database driver. You may remove the other database configuration options:
+If you do not want to install MySQL or Postgres on your local machine, you can always use a [SQLite](https://www.sqlite.org/index.html) database. SQLite is a small, fast, self-contained database engine. To get started, update your `.env` configuration file to use Laravel's `sqlite` database driver. You may remove the other database configuration options:
 
 ```ini
 DB_CONNECTION=sqlite # [tl! add]
@@ -253,6 +247,8 @@ Once you have configured your SQLite database, you may run your application's [d
 ```shell
 php artisan migrate
 ```
+
+If an SQLite database does not exist for your application, Laravel will ask you if you would like the database to be created. Typically, the SQLite database file will be created at `database/database.sqlite`.
 
 <a name="directory-configuration"></a>
 ### Directory Configuration
