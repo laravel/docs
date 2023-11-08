@@ -820,7 +820,7 @@ So, to get started, you should define which model attributes you want to make ma
         /**
          * The attributes that are mass assignable.
          *
-         * @var array
+         * @var array<int, string>
          */
         protected $fillable = ['name'];
     }
@@ -841,7 +841,7 @@ When assigning JSON columns, each column's mass assignable key must be specified
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'options->enabled',
