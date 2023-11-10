@@ -349,18 +349,18 @@ In addition to conditional statements, Blade provides simple directives for work
 > **Note**  
 > While iterating through a `foreach` loop, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
 
-When using loops you may also skip the current iteration or end the loop using the `@continue` and `@break` directives:
+You may skip the current iteration or end the loop using the `@continue` and `@break` directives when using loops. These directives accept an optional numeric argument. For `@continue` this value instructs the directive how many levels of enclosing loops it should skip to the end of. For `@break` this value instructs the directive how many levels of enclosing loops should be broken. The default value is 1, meaning only the immediate enclosing structure is considered.
 
 ```blade
 @foreach ($users as $user)
     @if ($user->type == 1)
-        @continue
+        @continue {-- The same as writing @continue(1). --}
     @endif
 
     <li>{{ $user->name }}</li>
 
     @if ($user->number == 5)
-        @break
+        @break {-- The same as writing @break(1). --}
     @endif
 @endforeach
 ```
