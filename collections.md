@@ -1400,7 +1400,7 @@ This is especially useful when you need to perform transformations on a huge `Co
         ->where('balance', '>', '100')
         ->count();
 
-By converting the collection to a `LazyCollection`, we avoid having to allocate a ton of additional memory. Though the original collection still keeps _its_ values in memory, the subsequent filters will not. Therefore, virtually no additional memory will be allocated when filtering the collection's results.
+By converting a collection to a `LazyCollection` can save a lot of memory, especially when working with large `collection`. This is because a `LazyCollection` only loads the items in the collection as needed, rather than loading all at once.
 
 <a name="method-macro"></a>
 #### `macro()` {.collection-method}
