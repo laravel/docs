@@ -2761,7 +2761,7 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
 
     $collection = collect(['name' => 'Desk', 'price' => 200]);
 
-    $arr = $collection->toArray();
+    $array = $collection->toArray();
 
     /*
         [
