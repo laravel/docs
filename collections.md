@@ -79,19 +79,6 @@ If necessary, you may define macros that accept additional arguments:
 
 Let's explore each powerful method available on the `Collection` class. Remember, all of these methods may be chained to fluently manipulate the array source. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary:
 
-<style>
-    .collection-method-list > p {
-        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
-    }
-
-    .collection-method-list a {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-</style>
-
 <div>
 
 ### Data Retrieval/Transformers
