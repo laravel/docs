@@ -105,7 +105,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [collect](#method-collect)  
 [make](#method-make)  
 [lazy](#method-lazy)  
-[wrap](#method-wrap)  
+[wrap](#method-wrap) 🗘 [unwrap](#method-unwrap)
 
 
 ### Data Inspection
@@ -133,11 +133,10 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [whereInstanceOf](#method-whereinstanceof)  
 [whereNull](#method-wherenull) 🗘 [whereNotNull](#method-wherenotnull)  
 [hasAny](#method-hasany)  
-[unless](#method-unless)  
 [value](#method-value)  
-[when](#method-when)  
-[whenEmpty](#method-whenempty)([unlessNotEmpty](#method-unlessnotempty))  
-[whenNotEmpty](#method-whennotempty)([unlessEmpty](#method-unlessempty))  
+[when](#method-when) 🗘 [unless](#method-unless)  
+[whenEmpty](#method-whenempty)( [unlessNotEmpty](#method-unlessnotempty) )  
+[whenNotEmpty](#method-whennotempty)( [unlessEmpty](#method-unlessempty) )  
 [nth](#method-nth)  
 [partition](#method-partition)  
 [skip](#method-skip)  
@@ -168,7 +167,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [dot](#method-dot) 🗘 [undot](#method-undot)  
 [unique](#method-unique)  
 [uniqueStrict](#method-uniquestrict)  
-[unwrap](#method-unwrap)  
 [keyBy](#method-keyby)  
 [keys](#method-keys)  
 [reduceSpread](#method-reduce-spread)  
@@ -176,7 +174,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 
 
 ### Data Combining and Joining
-#### Returns a new collection by combining, merging, or joining the original collection with other collections.
+#### Returns a new collection by combining, merging, or joining the original collection with other sources.
 
 [chunk](#method-chunk)  
 [chunkWhile](#method-chunkwhile)  
@@ -236,7 +234,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 ### Math Functions 
 #### Performs various mathematical operations on the collection elements.
 
-[avg](#method-avg)([average](#method-average))  
+[avg](#method-avg) ( [average](#method-average) )  
 [max](#method-max) 🗘 [min](#method-min)  
 [mode](#method-mode)  
 [sum](#method-sum)  
@@ -256,7 +254,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [pipe](#method-pipe)  
 [pipeThrough](#method-pipethrough)  
 
-### returing value (not collection)
+### returning value (not collection)
 #### Returns a single value, rather than a collection.
 
 [first](#method-first) 🗘 [last](#method-last)  
