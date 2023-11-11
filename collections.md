@@ -743,11 +743,11 @@ If you want to stop executing the script after dumping the collection, use the [
 
 The `duplicates` method retrieves and returns new collection of duplicate values from the collection:
 
-    $collection = collect([5,'a', 'b', 'a', 'c', 'b','5']);
+    $collection = collect([5, 'a', 'b', 'a', 'c', 'b', '5']);
 
     $duplicated = $collection->duplicates();
 
-    // [2 => 'a', 4 => 'b',6 => '5']
+    // [2 => 'a', 4 => 'b', 6 => '5']
 
 If the collection contains arrays or objects, you can pass the key of the attributes that you wish to check for duplicate values:
 
