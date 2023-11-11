@@ -107,9 +107,16 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [lazy](#method-lazy)  
 [wrap](#method-wrap) 🗘 [unwrap](#method-unwrap)
 
+### Returning single item/value
+#### Returns a single value or item, rather than a collection.
+
+[first](#method-first) 🗘 [last](#method-last)  
+[firstOrFail](#method-first-or-fail)  
+[firstWhere](#method-first-where)  
+[sole](#method-sole)
 
 ### Data Inspection
-#### Provides true / false / exception result by inspecting and checking the collection's contents without changing it.
+#### Provides single result by inspecting and checking the collection's contents without changing it.
 
 [contains](#method-contains)([some](#method-some)) 🗘 [doesntContain](#method-doesntcontain)   
 [containsOneItem](#method-containsoneitem)  
@@ -171,8 +178,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [keys](#method-keys)  
 [reduceSpread](#method-reduce-spread)  
 
-
-
 ### Data Combining and Joining
 #### Returns a new collection by combining, merging, or joining the original collection with other sources.
 
@@ -215,8 +220,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [slice](#method-slice)  
 [shuffle](#method-shuffle)  
 
-
-
 ### Data Element Manipulation
 #### Changes the existing collection by adding, removing, updating or running over the elements.
 
@@ -229,7 +232,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [shift](#method-shift)  
 [each](#method-each)  
 [eachSpread](#method-eachspread)  
-
 
 ### Math Functions 
 #### Performs various mathematical operations on the collection elements.
@@ -253,14 +255,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [pipeInto](#method-pipeinto)  
 [pipe](#method-pipe)  
 [pipeThrough](#method-pipethrough)  
-
-### returning value (not collection)
-#### Returns a single value, rather than a collection.
-
-[first](#method-first) 🗘 [last](#method-last)  
-[firstOrFail](#method-first-or-fail)  
-[firstWhere](#method-first-where)  
-[sole](#method-sole)  
 
 </div>
 
@@ -2767,7 +2761,7 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
 
     $collection = collect(['name' => 'Desk', 'price' => 200]);
 
-    $collection->toArray();
+    $arr = $collection->toArray();
 
     /*
         [
@@ -2785,7 +2779,7 @@ The `toJson` method converts the collection into a JSON serialized string:
 
     $collection = collect(['name' => 'Desk', 'price' => 200]);
 
-    $collection->toJson();
+    $json = $collection->toJson();
 
     // '{"name":"Desk", "price":200}'
 
