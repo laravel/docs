@@ -945,7 +945,7 @@ Like the [where](#method-where) method, you may pass one argument to the `firstW
 <a name="method-flatmap"></a>
 #### `flatMap()` {.collection-method}
 
-The `flatMap` method iterates through the collection and passes each value to the given closure. The closure is free to modify the item and return it, thus forming a new collection of modified items. Then, the array is flattened by one level:
+The `flatMap` method lets you change each item in a collection and flatten the result into a new collection, without changing the original collection:
 
     $collection = collect([
         ['name' => 'Sally'],
