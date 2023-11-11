@@ -22,7 +22,7 @@ The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper 
         return empty($name);
     });
 
-As you can see, the `Collection` class allows you to chain its methods to perform fluent mapping and reducing of the underlying array. In general, collections are immutable, meaning every `Collection` method returns an entirely new `Collection` instance.
+As you can see, the `Collection` class allows you to chain its methods to perform fluent mapping and reducing of the array source. In general, collections are immutable, meaning every `Collection` method returns an entirely new `Collection` instance.
 
 <a name="creating-collections"></a>
 ### Creating Collections
@@ -77,7 +77,7 @@ If necessary, you may define macros that accept additional arguments:
 <a name="available-methods"></a>
 ## Available Methods
 
-For the majority of the remaining collection documentation, we'll discuss each method available on the `Collection` class. Remember, all of these methods may be chained to fluently manipulate the underlying array. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary:
+Let's explore each powerful method available on the `Collection` class. Remember, all of these methods may be chained to fluently manipulate the array source. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary:
 
 <style>
     .collection-method-list > p {
@@ -274,7 +274,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 <a name="method-all"></a>
 #### `all()` {.collection-method .first-collection-method}
 
-The `all` method returns the underlying array represented by the collection:
+The `all` method returns the array source represented by the collection:
 
     collect([1, 2, 3])->all();
 
@@ -1380,7 +1380,7 @@ You may also call the `last` method with no arguments to get the last element in
 <a name="method-lazy"></a>
 #### `lazy()` {.collection-method}
 
-The `lazy` method returns a new [`LazyCollection`](#lazy-collections) instance from the underlying array of items:
+The `lazy` method returns a new [`LazyCollection`](#lazy-collections) instance from the array source of items:
 
     $lazyCollection = collect([1, 2, 3, 4])->lazy();
 
@@ -2503,7 +2503,7 @@ Unlike `sort`, you may not pass a closure to `sortDesc`. Instead, you should use
 <a name="method-sortkeys"></a>
 #### `sortKeys()` {.collection-method}
 
-The `sortKeys` method sorts the collection by the keys of the underlying associative array:
+The `sortKeys` method sorts the collection by the keys of the associative array source:
 
     $collection = collect([
         'id' => 22345,
@@ -2531,7 +2531,7 @@ This method has the same signature as the [`sortKeys`](#method-sortkeys) method,
 <a name="method-sortkeysusing"></a>
 #### `sortKeysUsing()` {.collection-method}
 
-The `sortKeysUsing` method sorts the collection by the keys of the underlying associative array using a callback:
+The `sortKeysUsing` method sorts the collection by the keys of the associative array source using a callback:
 
     $collection = collect([
         'ID' => 22345,
@@ -2770,7 +2770,7 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
     */
 
 > **Warning**  
-> `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw array underlying the collection, use the [`all`](#method-all) method instead.
+> `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw array source of the collection, use the [`all`](#method-all) method instead.
 
 <a name="method-tojson"></a>
 #### `toJson()` {.collection-method}
@@ -2958,7 +2958,7 @@ Alias for the [`whenEmpty`](#method-whenempty) method.
 <a name="method-unwrap"></a>
 #### `unwrap()` {.collection-method}
 
-The static `unwrap` method returns the collection's underlying items from the given value when applicable:
+The static `unwrap` method returns the collection's source items from the given value when applicable:
 
     Collection::unwrap(collect('John Doe'));
 
