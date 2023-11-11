@@ -420,7 +420,7 @@ The `concat` method appends the given `array` or collection's values onto the en
 
     // ['John Doe', 'Jane Doe', 'Johnny Doe']
 
-The `concat` method numerically reindexes keys for items concatenated onto the original collection. To maintain keys in associative collections, see the [merge](#method-merge) method.
+The `concat` method renumbers the keys of the items added to the collection. To keep the keys in associative collections, see the [merge](#method-merge) method.
 
 <a name="method-contains"></a>
 #### `contains()` {.collection-method}
@@ -501,7 +501,7 @@ The `count` method returns the total number of items in the collection:
 <a name="method-countBy"></a>
 #### `countBy()` {.collection-method}
 
-The `countBy` method counts the occurrences of values in the collection. By default, the method counts the occurrences of every element, allowing you to count certain "types" of elements in the collection:
+The `countBy` method counts how often each value appears in the collection. It can also count certain "types" of elements in the collection:
 
     $collection = collect([1, 2, 2, 2, 3]);
 
@@ -526,7 +526,7 @@ You pass a closure to the `countBy` method to count all items by a custom value:
 <a name="method-crossjoin"></a>
 #### `crossJoin()` {.collection-method}
 
-The `crossJoin` method cross joins the collection's values among the given arrays or collections, returning a Cartesian product with all possible permutations:
+The `crossJoin` method combines the collection's values with the values of the given arrays or collections in all possible ways:
 
     $collection = collect([1, 2]);
 
