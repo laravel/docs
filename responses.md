@@ -34,7 +34,7 @@ In addition to returning strings from your routes and controllers, you may also 
         return [1, 2, 3];
     });
 
-> **Note**  
+> **Note**
 > Did you know you can also return [Eloquent collections](/docs/{{version}}/eloquent-collections) from your routes or controllers? They will automatically be converted to JSON. Give it a shot!
 
 <a name="response-objects"></a>
@@ -272,7 +272,7 @@ The `json` method will automatically set the `Content-Type` header to `applicati
         'state' => 'CA',
     ]);
 
-If you would like to create a JSONP response, you may use the `json` method in combination with the `withCallback` method:
+If you would like to create a JSON response, you may use the `json` method in combination with the `withCallback` method:
 
     return response()
                 ->json(['name' => 'Abigail', 'state' => 'CA'])
@@ -287,7 +287,7 @@ The `download` method may be used to generate a response that forces the user's 
 
     return response()->download($pathToFile, $name, $headers);
 
-> **Warning**  
+> **Warning**
 > Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII filename.
 
 <a name="streamed-downloads"></a>
