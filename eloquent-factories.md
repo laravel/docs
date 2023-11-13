@@ -256,7 +256,7 @@ Sometimes you may wish to alternate the value of a given model attribute for eac
                     ))
                     ->create();
 
-In this example, five users will be created with an `admin` value of `Y` and five users will be created with an `admin` value of `N`.
+In this example, ten users will be created with an `admin` value of `Y` and five users will be created with an `admin` value of `N`.
 
 If necessary, you may include a closure as a sequence value. The closure will be invoked each time the sequence needs a new value:
 
