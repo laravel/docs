@@ -310,6 +310,15 @@ If you need to customize the names of the columns used to store the timestamps, 
         const UPDATED_AT = 'updated_date';
     }
 
+If you need to store only one timestamp for your model, for example `CREATED_AT`, you may define `UPDATED_AT` as `null`
+
+    <?php
+
+    class Flight extends Model
+    {
+        const UPDATED_AT = null;
+    }
+
 If you would like to perform model operations without the model having its `updated_at` timestamp modified, you may operate on the model within a closure given to the `withoutTimestamps` method:
 
     Model::withoutTimestamps(fn () => $post->increment(['reads']));
