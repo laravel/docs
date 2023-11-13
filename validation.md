@@ -458,7 +458,7 @@ Therefore, if your application is taking advantage of [route model binding](/doc
 
 If the `authorize` method returns `false`, an HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
 
-If you plan to handle authorization logic for the request in another part of your application, you may simply return `true` from the `authorize` method:
+If you plan to handle authorization logic for the request in another part of your application, you may remove the `authorize` method completely, or simply return `true`:
 
     /**
      * Determine if the user is authorized to make this request.
