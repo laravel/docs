@@ -721,7 +721,7 @@ When attaching a custom cast to a model, cast parameters may be specified by sep
 
 You may want to allow your application's value objects to define their own custom cast classes. Instead of attaching the custom cast class to your model, you may alternatively attach a value object class that implements the `Illuminate\Contracts\Database\Eloquent\Castable` interface:
 
-    use App\Models\Address;
+    use App\ValueObjects\Address;
 
     protected $casts = [
         'address' => Address::class,
@@ -731,7 +731,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
 
     <?php
 
-    namespace App\Models;
+    namespace App\ValueObjects;
 
     use Illuminate\Contracts\Database\Eloquent\Castable;
     use App\Casts\Address as AddressCast;
@@ -751,7 +751,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
 
 When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed to the `castUsing` method:
 
-    use App\Models\Address;
+    use App\ValueObjects\Address;
 
     protected $casts = [
         'address' => Address::class.':argument',
