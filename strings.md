@@ -342,19 +342,19 @@ The `Str::camel` method converts the given string to `camelCase`:
 
     $converted = Str::camel('foo_bar');
 
-    // fooBar
+    // 'fooBar'
 
 <a name="method-char-at"></a>
 
 #### `Str::charAt()` {.collection-method}
 
-The `Str::charAt` method retrieves the the character at the specified index. If the index is out of bounds, `false` is returned:
+The `Str::charAt` method returns the character at the specified index. If the index is out of bounds, `false` is returned:
 
     use Illuminate\Support\Str;
 
-    $character = Str::charAt('This is my name', 6);
+    $character = Str::charAt('This is my name.', 6);
 
-    // s
+    // 's'
 
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
@@ -1408,18 +1408,18 @@ The `camel` method converts the given string to `camelCase`:
 
     $converted = Str::of('foo_bar')->camel();
 
-    // fooBar
+    // 'fooBar'
 
 <a name="method-fluent-str-char-at"></a>
 #### `charAt` {.collection-method}
 
-The `charAt` method retrieves the the character at the specified index. If the index is out of bounds, `false` is returned:
+The `charAt` method returns the character at the specified index. If the index is out of bounds, `false` is returned:
 
     use Illuminate\Support\Str;
 
-    $character = Str::of('This is my name')->charAt(6);
+    $character = Str::of('This is my name.')->charAt(6);
 
-    // s
+    // 's'
 
 <a name="method-fluent-str-class-basename"></a>
 #### `classBasename` {.collection-method}
@@ -1430,7 +1430,7 @@ The `classBasename` method returns the class name of the given class with the cl
 
     $class = Str::of('Foo\Bar\Baz')->classBasename();
 
-    // Baz
+    // 'Baz'
 
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
