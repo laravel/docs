@@ -41,6 +41,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::between](#method-str-between)
 [Str::betweenFirst](#method-str-between-first)
 [Str::camel](#method-camel-case)
+[Str::charAt](#method-char-at)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
@@ -124,6 +125,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [between](#method-fluent-str-between)
 [betweenFirst](#method-fluent-str-between-first)
 [camel](#method-fluent-str-camel)
+[charAt](#method-fluent-str-char-at)
 [classBasename](#method-fluent-str-class-basename)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
@@ -341,6 +343,18 @@ The `Str::camel` method converts the given string to `camelCase`:
     $converted = Str::camel('foo_bar');
 
     // fooBar
+
+<a name="method-char-at"></a>
+
+#### `Str::charAt()` {.collection-method}
+
+The `Str::charAt` method retrieves the the character at the specified index. If the index is out of bounds, `false` is returned:
+
+    use Illuminate\Support\Str;
+
+    $character = Str::charAt('This is my name', 6);
+
+    // s
 
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
@@ -1395,6 +1409,17 @@ The `camel` method converts the given string to `camelCase`:
     $converted = Str::of('foo_bar')->camel();
 
     // fooBar
+
+<a name="method-fluent-str-char-at"></a>
+#### `charAt` {.collection-method}
+
+The `charAt` method retrieves the the character at the specified index. If the index is out of bounds, `false` is returned:
+
+    use Illuminate\Support\Str;
+
+    $character = Str::of('This is my name')->charAt(6);
+
+    // s
 
 <a name="method-fluent-str-class-basename"></a>
 #### `classBasename` {.collection-method}
