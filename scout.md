@@ -189,6 +189,10 @@ Some search engines such as Meilisearch will only perform filter operations (`>`
         ];
     }
 
+
+> **Warning**  
+> The database engine uses keys of the toSearchableArray to filter the searched columns. Original, not modified values, will be searched by the database driver.
+
 <a name="configuring-filterable-data-for-meilisearch"></a>
 #### Configuring Filterable Data & Index Settings (Meilisearch)
 
