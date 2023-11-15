@@ -119,7 +119,7 @@ By default, all entries older than 24 hours will be pruned. You may use the `hou
 
     $schedule->command('telescope:prune --hours=48')->daily();
 
-When running prune from cron, you may want to suppress output to reduce noise, which can be done by adding the `--quiet` option to the command:
+The `--quiet` option may be used to suppress output during pruning:
 
     $schedule->command('telescope:prune --hours=48 --quiet')->daily();
 
