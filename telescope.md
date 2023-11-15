@@ -119,6 +119,10 @@ By default, all entries older than 24 hours will be pruned. You may use the `hou
 
     $schedule->command('telescope:prune --hours=48')->daily();
 
+The `--quiet` option may be used to suppress output during pruning:
+
+    $schedule->command('telescope:prune --hours=48 --quiet')->daily();
+
 <a name="dashboard-authorization"></a>
 ### Dashboard Authorization
 
