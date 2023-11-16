@@ -4,6 +4,7 @@
 - [Invoking Processes](#invoking-processes)
     - [Process Options](#process-options)
     - [Process Output](#process-output)
+    - [Pipelines](#process-pipelines)
 - [Asynchronous Processes](#asynchronous-processes)
     - [Process IDs & Signals](#process-ids-and-signals)
     - [Asynchronous Process Output](#asynchronous-process-output)
@@ -71,6 +72,15 @@ You may use the `path` method to specify the working directory of the process. I
 
 ```php
 $result = Process::path(__DIR__)->run('ls -la');
+```
+
+<a name="input"></a>
+#### Input
+
+You may provide input via the "standard input" of the process using the `input` method:
+
+```php
+$result = Process::input('Hello World')->run('cat');
 ```
 
 <a name="timeouts"></a>
@@ -163,6 +173,56 @@ use Illuminate\Support\Facades\Process;
 $result = Process::quietly()->run('bash import.sh');
 ```
 
+<a name="process-pipelines"></a>
+### Pipelines
+
+Sometimes you may want to make the output of one process the input of another process. This is often referred to as "piping" the output of a process into another. The `pipe` method provided by the `Process` facades makes this easy to accomplish. The `pipe` method will execute the piped processes synchronously and return the process result for the last process in the pipeline:
+
+```php
+use Illuminate\Process\Pipe;
+use Illuminate\Support\Facades\Process;
+
+$result = Process::pipe(function (Pipe $pipe) {
+    $pipe->command('cat example.txt');
+    $pipe->command('grep -i "laravel"');
+});
+
+if ($result->successful()) {
+    // ...
+}
+```
+
+If you do not need to customize the individual processes that make up the pipeline, you may simply pass an array of command strings to the `pipe` method:
+
+```php
+$result = Process::pipe([
+    'cat example.txt',
+    'grep -i "laravel"',
+]);
+```
+
+The process output may be gathered in real-time by passing a closure as the second argument to the `pipe` method. The closure will receive two arguments: the "type" of output (`stdout` or `stderr`) and the output string itself:
+
+```php
+$result = Process::pipe(function (Pipe $pipe) {
+    $pipe->command('cat example.txt');
+    $pipe->command('grep -i "laravel"');
+}, function (string $type, string $output) {
+    echo $output;
+});
+```
+
+Laravel also allows you to assign string keys to each process within a pipeline via the `as` method. This key will also be passed to the output closure provided to the `pipe` method, allowing you to determine which process the output belongs to:
+
+```php
+$result = Process::pipe(function (Pipe $pipe) {
+    $pipe->as('first')->command('cat example.txt');
+    $pipe->as('second')->command('grep -i "laravel"');
+})->start(function (string $type, string $output, string $key) {
+    // ...
+});
+```
+
 <a name="asynchronous-processes"></a>
 ## Asynchronous Processes
 
@@ -191,12 +251,12 @@ $result = $process->wait();
 <a name="process-ids-and-signals"></a>
 ### Process IDs & Signals
 
-The `pid` method may be used to retrieve the operating system assigned process ID of the running process:
+The `id` method may be used to retrieve the operating system assigned process ID of the running process:
 
 ```php
 $process = Process::start('bash import.sh');
 
-return $process->pid();
+return $process->id();
 ```
 
 You may use the `signal` method to send a "signal" to the running process. A list of predefined signal constants can be found within the [PHP documentation](https://www.php.net/manual/en/pcntl.constants.php):
@@ -302,7 +362,7 @@ return $results['first']->output();
 Since the process pool's `running` method provides a collection of all invoked processes within the pool, you may easily access the underlying pool process IDs:
 
 ```php
-$processIds = $pool->running()->each->pid();
+$processIds = $pool->running()->each->id();
 ```
 
 And, for convenience, you may invoke the `signal` method on a process pool to send a signal to every process within the pool:
@@ -332,7 +392,7 @@ Route::get('/import', function () {
 });
 ```
 
-When testing this route, we can instruct Laravel to return a fake, successful process result for every invoked process by calling the `fake` method on the `Process` facade with no arguments. In addition, we can even [assert](#available-assertions) that a given process was "ran":
+When testing this route, we can instruct Laravel to return a fake, successful process result for every invoked process by calling the `fake` method on the `Process` facade with no arguments. In addition, we can even [assert](#available-assertions) that a given process was "run":
 
 ```php
 <?php

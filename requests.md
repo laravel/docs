@@ -38,21 +38,21 @@ To obtain an instance of the current HTTP request via dependency injection, you 
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class UserController extends Controller
     {
         /**
          * Store a new user.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $name = $request->input('name');
 
-            // ...
+            // Store the user...
 
-            return response()->noContent();
+            return redirect('/users');
         }
     }
 
@@ -79,19 +79,19 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` route
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class UserController extends Controller
     {
         /**
          * Update the specified user.
          */
-        public function update(Request $request, string $id): Response
+        public function update(Request $request, string $id): RedirectResponse
         {
-            // ...
+            // Update the user...
 
-            return response()->noContent();
+            return redirect('/users');
         }
     }
 
@@ -134,6 +134,12 @@ To retrieve the full URL for the incoming request you may use the `url` or `full
 If you would like to append query string data to the current URL, you may call the `fullUrlWithQuery` method. This method merges the given array of query string variables with the current query string:
 
     $request->fullUrlWithQuery(['type' => 'phone']);
+
+If you would like to get the current URL without a given query string parameter, you may utilize the `fullUrlWithoutQuery` method:
+
+```php
+$request->fullUrlWithoutQuery(['type']);
+```
 
 <a name="retrieving-the-request-host"></a>
 #### Retrieving The Request Host
@@ -242,7 +248,7 @@ Using the `collect` method, you may retrieve all of the incoming request's input
 
     $input = $request->collect();
 
-The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:
+The `collect` method also allows you to retrieve a subset of the incoming request's input as a collection:
 
     $request->collect('users')->each(function (string $user) {
         // ...
@@ -367,6 +373,12 @@ When given an array, the `has` method will determine if all of the specified val
         // ...
     }
 
+The `hasAny` method returns `true` if any of the specified values are present:
+
+    if ($request->hasAny(['name', 'email'])) {
+        // ...
+    }
+
 The `whenHas` method will execute the given closure if a value is present on the request:
 
     $request->whenHas('name', function (string $input) {
@@ -381,15 +393,15 @@ A second closure may be passed to the `whenHas` method that will be executed if 
         // The "name" value is not present...
     });
 
-The `hasAny` method returns `true` if any of the specified values are present:
-
-    if ($request->hasAny(['name', 'email'])) {
-        // ...
-    }
-
 If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:
 
     if ($request->filled('name')) {
+        // ...
+    }
+
+The `anyFilled` method returns `true` if any of the specified values is not an empty string:
+
+    if ($request->anyFilled(['name', 'email'])) {
         // ...
     }
 

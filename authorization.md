@@ -54,8 +54,6 @@ In this example, we'll define a gate to determine if a user can update a given `
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Gate::define('update-post', function (User $user, Post $post) {
             return $user->id === $post->user_id;
         });
@@ -71,8 +69,6 @@ Like controllers, gates may also be defined using a class callback array:
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Gate::define('update-post', [PostPolicy::class, 'update']);
     }
 
@@ -87,8 +83,8 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Gate;
 
     class PostController extends Controller
@@ -96,7 +92,7 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
         /**
          * Update the given post.
          */
-        public function update(Request $request, Post $post): Response
+        public function update(Request $request, Post $post): RedirectResponse
         {
             if (! Gate::allows('update-post', $post)) {
                 abort(403);
@@ -104,7 +100,7 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
 
             // Update the post...
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -268,7 +264,7 @@ If the action is not authorized or if no user is currently authenticated, Larave
 <a name="generating-policies"></a>
 ### Generating Policies
 
-Policies are classes that organize authorization logic around a particular model or resource. For example, if your application is a blog, you may have a `App\Models\Post` model and a corresponding `App\Policies\PostPolicy` to authorize user actions such as creating or updating posts.
+Policies are classes that organize authorization logic around a particular model or resource. For example, if your application is a blog, you may have an `App\Models\Post` model and a corresponding `App\Policies\PostPolicy` to authorize user actions such as creating or updating posts.
 
 You may generate a policy using the `make:policy` Artisan command. The generated policy will be placed in the `app/Policies` directory. If this directory does not exist in your application, Laravel will create it for you:
 
@@ -314,8 +310,6 @@ The `App\Providers\AuthServiceProvider` included with fresh Laravel applications
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             // ...
         }
     }
@@ -475,7 +469,7 @@ By default, all gates and policies automatically return `false` if the incoming 
          */
         public function update(?User $user, Post $post): bool
         {
-            return optional($user)->id === $post->user_id;
+            return $user?->id === $post->user_id;
         }
     }
 
@@ -517,15 +511,15 @@ The `App\Models\User` model that is included with your Laravel application inclu
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * Update the given post.
          */
-        public function update(Request $request, Post $post): Response
+        public function update(Request $request, Post $post): RedirectResponse
         {
             if ($request->user()->cannot('update', $post)) {
                 abort(403);
@@ -533,7 +527,7 @@ The `App\Models\User` model that is included with your Laravel application inclu
 
             // Update the post...
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -550,15 +544,15 @@ Remember, some actions may correspond to policy methods like `create` that do no
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * Create a post.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             if ($request->user()->cannot('create', Post::class)) {
                 abort(403);
@@ -566,7 +560,7 @@ Remember, some actions may correspond to policy methods like `create` that do no
 
             // Create the post...
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -583,8 +577,8 @@ Like the `can` method, this method accepts the name of the action you wish to au
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
@@ -593,13 +587,13 @@ Like the `can` method, this method accepts the name of the action you wish to au
          *
          * @throws \Illuminate\Auth\Access\AuthorizationException
          */
-        public function update(Request $request, Post $post): Response
+        public function update(Request $request, Post $post): RedirectResponse
         {
             $this->authorize('update', $post);
 
             // The current user can update the blog post...
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -609,21 +603,21 @@ Like the `can` method, this method accepts the name of the action you wish to au
 As previously discussed, some policy methods like `create` do not require a model instance. In these situations, you should pass a class name to the `authorize` method. The class name will be used to determine which policy to use when authorizing the action:
 
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     /**
      * Create a new blog post.
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Request $request): Response
+    public function create(Request $request): RedirectResponse
     {
         $this->authorize('create', Post::class);
 
         // The current user can create blog posts...
 
-        return response()->noContent();
+        return redirect('/posts');
     }
 
 <a name="authorizing-resource-controllers"></a>
@@ -639,7 +633,6 @@ The `authorizeResource` method accepts the model's class name as its first argum
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
-    use Illuminate\Http\Request;
 
     class PostController extends Controller
     {
@@ -682,7 +675,7 @@ Laravel includes a middleware that can authorize actions before the incoming req
         // The current user may update the post...
     })->middleware('can:update,post');
 
-In this example, we're passing the `can` middleware two arguments. The first is the name of the action we wish to authorize and the second is the route parameter we wish to pass to the policy method. In this case, since we are using [implicit model binding](/docs/{{version}}/routing#implicit-binding), a `App\Models\Post` model will be passed to the policy method. If the user is not authorized to perform the given action, an HTTP response with a 403 status code will be returned by the middleware.
+In this example, we're passing the `can` middleware two arguments. The first is the name of the action we wish to authorize and the second is the route parameter we wish to pass to the policy method. In this case, since we are using [implicit model binding](/docs/{{version}}/routing#implicit-binding), an `App\Models\Post` model will be passed to the policy method. If the user is not authorized to perform the given action, an HTTP response with a 403 status code will be returned by the middleware.
 
 For convenience, you may also attach the `can` middleware to your route using the `can` method:
 
@@ -788,11 +781,11 @@ When attempting to determine if the authenticated user can update a given post, 
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Post $post): Response
+    public function update(Request $request, Post $post): RedirectResponse
     {
         $this->authorize('update', [$post, $request->category]);
 
         // The current user can update the blog post...
 
-        return response()->noContent();
+        return redirect('/posts');
     }

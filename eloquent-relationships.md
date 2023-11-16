@@ -351,6 +351,29 @@ public function largestOrder(): HasOne
 > **Warning**  
 > Because PostgreSQL does not support executing the `MAX` function against UUID columns, it is not currently possible to use one-of-many relationships in combination with PostgreSQL UUID columns.
 
+<a name="converting-many-relationships-to-has-one-relationships"></a>
+#### Converting "Many" Relationships To Has One Relationships
+
+Often, when retrieving a single model using the `latestOfMany`, `oldestOfMany`, or `ofMany` methods, you already have a "has many" relationship defined for the same model. For convenience, Laravel allows you to easily convert this relationship into a "has one" relationship by invoking the `one` method on the relationship:
+
+```php
+/**
+ * Get the user's orders.
+ */
+public function orders(): HasMany
+{
+    return $this->hasMany(Order::class);
+}
+
+/**
+ * Get the user's largest order.
+ */
+public function largestOrder(): HasOne
+{
+    return $this->orders()->one()->ofMany('price', 'max');
+}
+```
+
 <a name="advanced-has-one-of-many-relationships"></a>
 #### Advanced Has One Of Many Relationships
 
@@ -1231,7 +1254,7 @@ As demonstrated in the example above, you are free to add additional constraints
             ->orWhere('votes', '>=', 100)
             ->get();
 
-The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return _any_ user with greater than 100 votes. The query is no longer constrained to a specific user:
+The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return _any_ post with greater than 100 votes. The query is no longer constrained to a specific user:
 
 ```sql
 select *
@@ -1704,6 +1727,7 @@ If you would like to override all items within the `$with` property for a single
 Sometimes you may wish to eager load a relationship but also specify additional query conditions for the eager loading query. You can accomplish this by passing an array of relationships to the `with` method where the array key is a relationship name and the array value is a closure that adds additional constraints to the eager loading query:
 
     use App\Models\User;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     $users = User::with(['posts' => function (Builder $query) {
         $query->where('title', 'like', '%code%');
@@ -1723,15 +1747,14 @@ In this example, Eloquent will only eager load posts where the post's `title` co
 
 If you are eager loading a `morphTo` relationship, Eloquent will run multiple queries to fetch each type of related model. You may add additional constraints to each of these queries using the `MorphTo` relation's `constrain` method:
 
-    use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Relations\MorphTo;
 
     $comments = Comment::with(['commentable' => function (MorphTo $morphTo) {
         $morphTo->constrain([
-            Post::class => function (Builder $query) {
+            Post::class => function ($query) {
                 $query->whereNull('hidden_at');
             },
-            Video::class => function (Builder $query) {
+            Video::class => function ($query) {
                 $query->where('type', 'educational');
             },
         ]);
@@ -1745,9 +1768,8 @@ In this example, Eloquent will only eager load posts that have not been hidden a
 You may sometimes find yourself needing to check for the existence of a relationship while simultaneously loading the relationship based on the same conditions. For example, you may wish to only retrieve `User` models that have child `Post` models matching a given query condition while also eager loading the matching posts. You may accomplish this using the `withWhereHas` method:
 
     use App\Models\User;
-    use Illuminate\Database\Eloquent\Builder;
 
-    $users = User::withWhereHas('posts', function (Builder $query) {
+    $users = User::withWhereHas('posts', function ($query) {
         $query->where('featured', true);
     })->get();
 
@@ -1834,7 +1856,7 @@ You may customize the behavior of lazy loading violations using the `handleLazyL
 
 ```php
 Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {
-    $class = get_class($model);
+    $class = $model::class;
 
     info("Attempted to lazy load [{$relation}] on model [{$class}].");
 });
@@ -1913,6 +1935,19 @@ You may use the `createMany` method to create multiple related models:
     $post->comments()->createMany([
         ['message' => 'A new comment.'],
         ['message' => 'Another new comment.'],
+    ]);
+
+The `createQuietly` and `createManyQuietly` methods may be used to create a model(s) without dispatching any events:
+
+    $user = User::find(1);
+
+    $user->posts()->createQuietly([
+        'title' => 'Post title.',
+    ]);
+    
+    $user->posts()->createManyQuietly([
+        ['title' => 'First post.'],
+        ['title' => 'Second post.'],
     ]);
 
 You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](/docs/{{version}}/eloquent#upserts).

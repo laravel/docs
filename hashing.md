@@ -31,9 +31,8 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 
     namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Hash;
 
     class PasswordController extends Controller
@@ -41,7 +40,7 @@ You may hash a password by calling the `make` method on the `Hash` facade:
         /**
          * Update the password for the user.
          */
-        public function update(Request $request): Response
+        public function update(Request $request): RedirectResponse
         {
             // Validate the new password length...
 
@@ -49,7 +48,7 @@ You may hash a password by calling the `make` method on the `Hash` facade:
                 'password' => Hash::make($request->newPassword)
             ])->save();
 
-            return response()->noContent();
+            return redirect('/profile');
         }
     }
 

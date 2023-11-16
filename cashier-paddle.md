@@ -47,6 +47,9 @@
 <a name="introduction"></a>
 ## Introduction
 
+> **Warning**
+> At this time, Cashier Paddle only supports Paddle Classic, which is not available to new Paddle customers unless you contact Paddle support.
+
 [Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle) provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods, and more.
 
 While working with Cashier we recommend you also review Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference).
@@ -587,12 +590,6 @@ If you would like to determine if a user is still within their trial period, you
 The `subscribedToPlan` method may be used to determine if the user is subscribed to a given plan based on a given Paddle plan ID. In this example, we will determine if the user's `default` subscription is actively subscribed to the monthly plan:
 
     if ($user->subscribedToPlan($monthly = 12345, 'default')) {
-        // ...
-    }
-
-By passing an array to the `subscribedToPlan` method, you may determine if the user's `default` subscription is actively subscribed to the monthly or the yearly plan:
-
-    if ($user->subscribedToPlan([$monthly = 12345, $yearly = 54321], 'default')) {
         // ...
     }
 

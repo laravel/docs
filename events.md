@@ -12,6 +12,7 @@
     - [Queued Event Listeners & Database Transactions](#queued-event-listeners-and-database-transactions)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
+    - [Dispatching Events After Database Transactions](#dispatching-events-after-database-transactions)
 - [Event Subscribers](#event-subscribers)
     - [Writing Event Subscribers](#writing-event-subscribers)
     - [Registering Event Subscribers](#registering-event-subscribers)
@@ -37,7 +38,7 @@ The `App\Providers\EventServiceProvider` included with your Laravel application 
     /**
      * The event listener mappings for the application.
      *
-     * @var array
+     * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
         OrderShipped::class => [
@@ -81,7 +82,7 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
     {
         Event::listen(
             PodcastProcessed::class,
-            [SendPodcastNotification::class, 'handle']
+            SendPodcastNotification::class,
         );
 
         Event::listen(function (PodcastProcessed $event) {
@@ -273,7 +274,7 @@ To specify that a listener should be queued, add the `ShouldQueue` interface to 
 That's it! Now, when an event handled by this listener is dispatched, the listener will automatically be queued by the event dispatcher using Laravel's [queue system](/docs/{{version}}/queues). If no exceptions are thrown when the listener is executed by the queue, the queued job will automatically be deleted after it has finished processing.
 
 <a name="customizing-the-queue-connection-queue-name"></a>
-#### Customizing The Queue Connection & Queue Name
+#### Customizing The Queue Connection, Name, & Delay
 
 If you would like to customize the queue connection, queue name, or queue delay time of an event listener, you may define the `$connection`, `$queue`, or `$delay` properties on your listener class:
 
@@ -308,7 +309,7 @@ If you would like to customize the queue connection, queue name, or queue delay 
         public $delay = 60;
     }
 
-If you would like to define the listener's queue connection or queue name at runtime, you may define `viaConnection` or `viaQueue` methods on the listener:
+If you would like to define the listener's queue connection, queue name, or delay at runtime, you may define `viaConnection`, `viaQueue`, or `withDelay` methods on the listener:
 
     /**
      * Get the name of the listener's queue connection.
@@ -324,6 +325,14 @@ If you would like to define the listener's queue connection or queue name at run
     public function viaQueue(): string
     {
         return 'listeners';
+    }
+
+    /**
+     * Get the number of seconds before the job should be processed.
+     */
+    public function withDelay(OrderShipped $event): int
+    {
+        return $event->highPriority ? 0 : 60;
     }
 
 <a name="conditionally-queueing-listeners"></a>
@@ -390,20 +399,19 @@ If you need to manually access the listener's underlying queue job's `delete` an
 
 When queued listeners are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can occur when the job that dispatches the queued listener is processed.
 
-If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued listener should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the listener class:
+If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued listener should be dispatched after all open database transactions have been committed by implementing the `ShouldHandleEventsAfterCommit` interface on the listener class:
 
     <?php
 
     namespace App\Listeners;
 
+    use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Queue\InteractsWithQueue;
 
-    class SendShipmentNotification implements ShouldQueue
+    class SendShipmentNotification implements ShouldQueue, ShouldHandleEventsAfterCommit
     {
         use InteractsWithQueue;
-
-        public $afterCommit = true;
     }
 
 > **Note**  
@@ -495,15 +503,15 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
     use App\Events\OrderShipped;
     use App\Http\Controllers\Controller;
     use App\Models\Order;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class OrderShipmentController extends Controller
     {
         /**
          * Ship the given order.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $order = Order::findOrFail($request->order_id);
 
@@ -511,7 +519,7 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
 
             OrderShipped::dispatch($order);
 
-            return response()->noContent();
+            return redirect('/orders');
         }
     }
     
@@ -522,7 +530,36 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
     OrderShipped::dispatchUnless($condition, $order);
 
 > **Note**  
-> When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) makes it a cinch.
+> When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
+
+<a name="dispatching-events-after-database-transactions"></a>
+### Dispatching Events After Database Transactions
+
+Sometimes, you may want to instruct Laravel to only dispatch an event after the active database transaction has committed. To do so, you may implement the `ShouldDispatchAfterCommit` interface on the event class.
+
+This interface instructs Laravel to not dispatch the event until the current database transaction is committed. If the transaction fails, the event will be discarded. If no database transaction is in progress when the event is dispatched, the event will be dispatched immediately:
+
+    <?php
+
+    namespace App\Events;
+
+    use App\Models\Order;
+    use Illuminate\Broadcasting\InteractsWithSockets;
+    use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
+    use Illuminate\Foundation\Events\Dispatchable;
+    use Illuminate\Queue\SerializesModels;
+
+    class OrderShipped implements ShouldDispatchAfterCommit
+    {
+        use Dispatchable, InteractsWithSockets, SerializesModels;
+
+        /**
+         * Create a new event instance.
+         */
+        public function __construct(
+            public Order $order,
+        ) {}
+    }
 
 <a name="event-subscribers"></a>
 ## Event Subscribers
@@ -545,12 +582,12 @@ Event subscribers are classes that may subscribe to multiple events from within 
         /**
          * Handle user login events.
          */
-        public function handleUserLogin(string $event): void {}
+        public function handleUserLogin(Login $event): void {}
 
         /**
          * Handle user logout events.
          */
-        public function handleUserLogout(string $event): void {}
+        public function handleUserLogout(Logout $event): void {}
 
         /**
          * Register the listeners for the subscriber.
@@ -584,12 +621,12 @@ If your event listener methods are defined within the subscriber itself, you may
         /**
          * Handle user login events.
          */
-        public function handleUserLogin(string $event): void {}
+        public function handleUserLogin(Login $event): void {}
 
         /**
          * Handle user logout events.
          */
-        public function handleUserLogout(string $event): void {}
+        public function handleUserLogout(Logout $event): void {}
 
         /**
          * Register the listeners for the subscriber.

@@ -6,11 +6,12 @@
     - [Nginx](#nginx)
 - [Optimization](#optimization)
     - [Autoloader Optimization](#autoloader-optimization)
-    - [Optimizing Configuration Loading](#optimizing-configuration-loading)
-    - [Optimizing Route Loading](#optimizing-route-loading)
-    - [Optimizing View Loading](#optimizing-view-loading)
+    - [Caching Configuration](#optimizing-configuration-loading)
+    - [Caching Events](#caching-events)
+    - [Caching Routes](#optimizing-route-loading)
+    - [Caching Views](#optimizing-view-loading)
 - [Debug Mode](#debug-mode)
-- [Deploying With Forge / Vapor](#deploying-with-forge-or-vapor)
+- [Easy Deployment With Forge / Vapor](#deploying-with-forge-or-vapor)
 
 <a name="introduction"></a>
 ## Introduction
@@ -75,7 +76,7 @@ server {
     error_page 404 /index.php;
 
     location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
     }
@@ -102,7 +103,7 @@ composer install --optimize-autoloader --no-dev
 > In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present.
 
 <a name="optimizing-configuration-loading"></a>
-### Optimizing Configuration Loading
+### Caching Configuration
 
 When deploying your application to production, you should make sure that you run the `config:cache` Artisan command during your deployment process:
 
@@ -115,8 +116,17 @@ This command will combine all of Laravel's configuration files into a single, ca
 > **Warning**  
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function for `.env` variables will return `null`.
 
+<a name="caching-events"></a>
+### Caching Events
+
+If your application is utilizing [event discovery](/docs/{{version}}/events#event-discovery), you should cache your application's event to listener mappings during your deployment process. This can be accomplished by invoking the `event:cache` Artisan command during deployment:
+
+```shell
+php artisan event:cache
+```
+
 <a name="optimizing-route-loading"></a>
-### Optimizing Route Loading
+### Caching Routes
 
 If you are building a large application with many routes, you should make sure that you are running the `route:cache` Artisan command during your deployment process:
 
@@ -127,7 +137,7 @@ php artisan route:cache
 This command reduces all of your route registrations into a single method call within a cached file, improving the performance of route registration when registering hundreds of routes.
 
 <a name="optimizing-view-loading"></a>
-### Optimizing View Loading
+### Caching Views
 
 When deploying your application to production, you should make sure that you run the `view:cache` Artisan command during your deployment process:
 
@@ -142,10 +152,11 @@ This command precompiles all your Blade views so they are not compiled on demand
 
 The debug option in your config/app.php configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your application's `.env` file.
 
-**In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
+> **Warning**
+> **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
 
 <a name="deploying-with-forge-or-vapor"></a>
-## Deploying With Forge / Vapor
+## Easy Deployment With Forge / Vapor
 
 <a name="laravel-forge"></a>
 #### Laravel Forge

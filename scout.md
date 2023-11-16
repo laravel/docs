@@ -26,14 +26,13 @@
     - [Soft Deleting](#soft-deleting)
     - [Customizing Engine Searches](#customizing-engine-searches)
 - [Custom Engines](#custom-engines)
-- [Builder Macros](#builder-macros)
 
 <a name="introduction"></a>
 ## Introduction
 
 [Laravel Scout](https://github.com/laravel/scout) provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
-Currently, Scout ships with [Algolia](https://www.algolia.com/), [MeiliSearch](https://www.meilisearch.com), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
+Currently, Scout ships with [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
 <a name="installation"></a>
 ## Installation
@@ -77,17 +76,17 @@ composer require algolia/algoliasearch-client-php
 ```
 
 <a name="meilisearch"></a>
-#### MeiliSearch
+#### Meilisearch
 
-[MeiliSearch](https://www.meilisearch.com) is a blazingly fast and open source search engine. If you aren't sure how to install MeiliSearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
+[Meilisearch](https://www.meilisearch.com) is a blazingly fast and open source search engine. If you aren't sure how to install Meilisearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
 
-When using the MeiliSearch driver you will need to install the MeiliSearch PHP SDK via the Composer package manager:
+When using the Meilisearch driver you will need to install the Meilisearch PHP SDK via the Composer package manager:
 
 ```shell
 composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
 ```
 
-Then, set the `SCOUT_DRIVER` environment variable as well as your MeiliSearch `host` and `key` credentials within your application's `.env` file:
+Then, set the `SCOUT_DRIVER` environment variable as well as your Meilisearch `host` and `key` credentials within your application's `.env` file:
 
 ```ini
 SCOUT_DRIVER=meilisearch
@@ -95,12 +94,12 @@ MEILISEARCH_HOST=http://127.0.0.1:7700
 MEILISEARCH_KEY=masterKey
 ```
 
-For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
+For more information regarding Meilisearch, please consult the [Meilisearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
 
-In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
+In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your Meilisearch binary version by reviewing [Meilisearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
 
 > **Warning**  
-> When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself.
+> When upgrading Scout on an application that utilizes Meilisearch, you should always [review any additional breaking changes](https://github.com/meilisearch/Meilisearch/releases) to the Meilisearch service itself.
 
 <a name="queueing"></a>
 ### Queueing
@@ -179,7 +178,7 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         }
     }
 
-Some search engines such as MeiliSearch will only perform filter operations (`>`, `<`, etc.) on data of the correct type. So, when using these search engines and customizing your searchable data, you should ensure that numeric values are cast to their correct type:
+Some search engines such as Meilisearch will only perform filter operations (`>`, `<`, etc.) on data of the correct type. So, when using these search engines and customizing your searchable data, you should ensure that numeric values are cast to their correct type:
 
     public function toSearchableArray()
     {
@@ -191,9 +190,9 @@ Some search engines such as MeiliSearch will only perform filter operations (`>`
     }
 
 <a name="configuring-filterable-data-for-meilisearch"></a>
-#### Configuring Filterable Data & Index Settings (MeiliSearch)
+#### Configuring Filterable Data & Index Settings (Meilisearch)
 
-Unlike Scout's other drivers, MeiliSearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html).
+Unlike Scout's other drivers, Meilisearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html).
 
 Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method, while sortable attributes are any attributes you plan to sort by when invoking Scout's `orderBy` method. To define your index settings, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
 
@@ -226,7 +225,7 @@ If the model underlying a given index is soft deletable and is included in the `
 ],
 ```
 
-After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
+After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform Meilisearch of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
 
 ```shell
 php artisan scout:sync-index-settings
@@ -301,7 +300,7 @@ Scout also allows you to auto identify users when using [Algolia](https://algoli
 SCOUT_IDENTIFY=true
 ```
 
-Enabling this feature this will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
+Enabling this feature will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
 
 <a name="database-and-collection-engines"></a>
 ## Database / Collection Engines
@@ -320,7 +319,7 @@ To use the database engine, you may simply set the value of the `SCOUT_DRIVER` e
 SCOUT_DRIVER=database
 ```
 
-Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the database engine.
+Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or Meilisearch indexes, is unnecessary when using the database engine.
 
 #### Customizing Database Searching Strategies
 
@@ -356,7 +355,7 @@ public function toSearchableArray(): array
 <a name="collection-engine"></a>
 ### Collection Engine
 
-While you are free to use the Algolia or MeiliSearch search engines during local development, you may find it more convenient to get started with the "collection" engine. The collection engine will use "where" clauses and collection filtering on results from your existing database to determine the applicable search results for your query. When using this engine, it is not necessary to "index" your searchable models, as they will simply be retrieved from your local database.
+While you are free to use the Algolia or Meilisearch search engines during local development, you may find it more convenient to get started with the "collection" engine. The collection engine will use "where" clauses and collection filtering on results from your existing database to determine the applicable search results for your query. When using this engine, it is not necessary to "index" your searchable models, as they will simply be retrieved from your local database.
 
 To use the collection engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `collection`, or specify the `collection` driver directly in your application's `scout` configuration file:
 
@@ -364,7 +363,7 @@ To use the collection engine, you may simply set the value of the `SCOUT_DRIVER`
 SCOUT_DRIVER=collection
 ```
 
-Once you have specified the collection driver as your preferred driver, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the collection engine.
+Once you have specified the collection driver as your preferred driver, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or Meilisearch indexes, is unnecessary when using the collection engine.
 
 #### Differences From Database Engine
 
@@ -404,6 +403,9 @@ If you would like to modify the query that is used to retrieve all of your model
     {
         return $query->with('author');
     }
+
+> **Warning**  
+> The `makeAllSearchableUsing` method may not be applicable when using a queue to batch import models. Relationships are [not restored](/docs/{{version}}/queues#handling-relationships) when model collections are processed by jobs.
 
 <a name="adding-records"></a>
 ### Adding Records
@@ -462,6 +464,21 @@ If you would like to update the search index records for all of the models in a 
 Or, if you already have a collection of Eloquent models in memory, you may call the `searchable` method on the collection instance to update the model instances in their corresponding index:
 
     $orders->searchable();
+
+<a name="modifying-records-before-importing"></a>
+#### Modifying Records Before Importing
+
+Sometimes you may need to prepare the collection of models before they are made searchable. For instance, you may want to eager load a relationship so that the relationship data can be efficiently added to your search index. To accomplish this, define a `makeSearchableUsing` method on the corresponding model:
+
+    use Illuminate\Database\Eloquent\Collection;
+
+    /**
+     * Modify the collection of models being made searchable.
+     */
+    public function makeSearchableUsing(Collection $models): Collection
+    {
+        return $models->load('author');
+    }
 
 <a name="removing-records"></a>
 ### Removing Records
@@ -555,16 +572,22 @@ Scout allows you to add simple "where" clauses to your search queries. Currently
 
     $orders = Order::search('Star Trek')->where('user_id', 1)->get();
 
-You may use the `whereIn` method to constrain results against a given set of values:
+In addition, the `whereIn` method may be used to verify that a given column's value is contained within the given array:
 
     $orders = Order::search('Star Trek')->whereIn(
-        'status', ['paid', 'open']
+        'status', ['open', 'paid']
+    )->get();
+
+The `whereNotIn` method verifies that the given column's value is not contained in the given array:
+
+    $orders = Order::search('Star Trek')->whereNotIn(
+        'status', ['closed']
     )->get();
 
 Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
 
 > **Warning**
-> If your application is using MeiliSearch, you must configure your application's [filterable attributes](#configuring-filterable-data-for-meilisearch) before utilizing Scout's "where" clauses.
+> If your application is using Meilisearch, you must configure your application's [filterable attributes](#configuring-filterable-data-for-meilisearch) before utilizing Scout's "where" clauses.
 
 <a name="pagination"></a>
 ### Pagination
@@ -701,30 +724,3 @@ Once you have written your custom engine, you may register it with Scout using t
 Once your engine has been registered, you may specify it as your default Scout `driver` in your application's `config/scout.php` configuration file:
 
     'driver' => 'mysql',
-
-<a name="builder-macros"></a>
-## Builder Macros
-
-If you would like to define a custom Scout search builder method, you may use the `macro` method on the `Laravel\Scout\Builder` class. Typically, "macros" should be defined within a [service provider's](/docs/{{version}}/providers) `boot` method:
-
-    use Illuminate\Support\Facades\Response;
-    use Illuminate\Support\ServiceProvider;
-    use Laravel\Scout\Builder;
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Builder::macro('count', function () {
-            return $this->engine()->getTotalCount(
-                $this->engine()->search($this)
-            );
-        });
-    }
-
-The `macro` function accepts a macro name as its first argument and a closure as its second argument. The macro's closure will be executed when calling the macro name from a `Laravel\Scout\Builder` implementation:
-
-    use App\Models\Order;
-
-    Order::search('Star Trek')->count();

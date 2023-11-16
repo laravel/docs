@@ -80,7 +80,7 @@ _Laravel Breeze_ is a simple, minimal implementation of all of Laravel's authent
 
 _Laravel Fortify_ is a headless authentication backend for Laravel that implements many of the features found in this documentation, including cookie-based authentication as well as other features such as two-factor authentication and email verification. Fortify provides the authentication backend for Laravel Jetstream or may be used independently in combination with [Laravel Sanctum](/docs/{{version}}/sanctum) to provide authentication for an SPA that needs to authenticate with Laravel.
 
-_[Laravel Jetstream](https://jetstream.laravel.com)_ is a robust application starter kit that consumes and exposes Laravel Fortify's authentication services with a beautiful, modern UI powered by [Tailwind CSS](https://tailwindcss.com), [Livewire](https://laravel-livewire.com), and / or [Inertia](https://inertiajs.com). Laravel Jetstream includes optional support for two-factor authentication, team support, browser session management, profile management, and built-in integration with [Laravel Sanctum](/docs/{{version}}/sanctum) to offer API token authentication. Laravel's API authentication offerings are discussed below.
+_[Laravel Jetstream](https://jetstream.laravel.com)_ is a robust application starter kit that consumes and exposes Laravel Fortify's authentication services with a beautiful, modern UI powered by [Tailwind CSS](https://tailwindcss.com), [Livewire](https://livewire.laravel.com), and / or [Inertia](https://inertiajs.com). Laravel Jetstream includes optional support for two-factor authentication, team support, browser session management, profile management, and built-in integration with [Laravel Sanctum](/docs/{{version}}/sanctum) to offer API token authentication. Laravel's API authentication offerings are discussed below.
 
 <a name="laravels-api-authentication-services"></a>
 #### Laravel's API Authentication Services
@@ -123,9 +123,9 @@ And, if you would like to get started quickly, we are pleased to recommend [Lara
 
 First, you should [install a Laravel application starter kit](/docs/{{version}}/starter-kits). Our current starter kits, Laravel Breeze and Laravel Jetstream, offer beautifully designed starting points for incorporating authentication into your fresh Laravel application.
 
-Laravel Breeze is a minimal, simple implementation of all of Laravel's authentication features, including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](https://tailwindcss.com). Breeze also offers an [Inertia](https://inertiajs.com) based scaffolding option using Vue or React.
+Laravel Breeze is a minimal, simple implementation of all of Laravel's authentication features, including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](https://tailwindcss.com). Additionally, Breeze provides scaffolding options based on [Livewire](https://livewire.laravel.com) or [Inertia](https://inertiajs.com), with the choice of using Vue or React for the Inertia-based scaffolding.
 
-[Laravel Jetstream](https://jetstream.laravel.com) is a more robust application starter kit that includes support for scaffolding your application with [Livewire](https://laravel-livewire.com) or [Inertia and Vue](https://inertiajs.com). In addition, Jetstream features optional support for two-factor authentication, teams, profile management, browser session management, API support via [Laravel Sanctum](/docs/{{version}}/sanctum), account deletion, and more.
+[Laravel Jetstream](https://jetstream.laravel.com) is a more robust application starter kit that includes support for scaffolding your application with [Livewire](https://livewire.laravel.com) or [Inertia and Vue](https://inertiajs.com). In addition, Jetstream features optional support for two-factor authentication, teams, profile management, browser session management, API support via [Laravel Sanctum](/docs/{{version}}/sanctum), account deletion, and more.
 
 <a name="retrieving-the-authenticated-user"></a>
 ### Retrieving The Authenticated User
@@ -146,19 +146,21 @@ Alternatively, once a user is authenticated, you may access the authenticated us
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class FlightController extends Controller
     {
         /**
          * Update the flight information for an existing flight.
          */
-        public function update(Request $request): Response
+        public function update(Request $request): RedirectResponse
         {
-            // $request->user()
+            $user = $request->user();
 
-            return response()->noContent();
+            // ...
+
+            return redirect('/flights');
         }
     }
 
@@ -556,8 +558,6 @@ You may define your own authentication guards using the `extend` method on the `
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             Auth::extend('jwt', function (Application $app, string $name, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\Guard...
 
@@ -591,10 +591,8 @@ To get started, call the `Auth::viaRequest` method within the `boot` method of y
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Auth::viaRequest('custom-token', function (Request $request) {
-            return User::where('token', $request->token)->first();
+            return User::where('token', (string) $request->token)->first();
         });
     }
 
@@ -610,7 +608,7 @@ Finally, you may reference the guard when assigning the authentication middlewar
 
     Route::middleware('auth:api')->group(function () {
         // ...
-    }
+    });
 
 <a name="adding-custom-user-providers"></a>
 ## Adding Custom User Providers
@@ -633,8 +631,6 @@ If you are not using a traditional relational database to store your users, you 
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             Auth::provider('mongo', function (Application $app, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\UserProvider...
 
@@ -711,7 +707,7 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
 
 This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" field of the user and the `getAuthIdentifier` method should return the "primary key" of the user. When using a MySQL back-end, this would likely be the auto-incrementing primary key assigned to the user record. The `getAuthPassword` method should return the user's hashed password.
 
-This interface allows the authentication system to work with any "user" class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `App\Models\User` class in the `app/Models` directory which implements this interface.
+This interface allows the authentication system to work with any "user" class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes an `App\Models\User` class in the `app/Models` directory which implements this interface.
 
 <a name="events"></a>
 ## Events

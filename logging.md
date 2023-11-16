@@ -13,6 +13,10 @@
     - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
     - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
     - [Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)
+- [Tailing Log Messages Using Pail](#tailing-log-messages-using-pail)
+    - [Installation](#pail-installation)
+    - [Usage](#pail-usage)
+    - [Filtering Logs](#pail-filtering-logs)
 
 <a name="introduction"></a>
 ## Introduction
@@ -26,7 +30,7 @@ Under the hood, Laravel utilizes the [Monolog](https://github.com/Seldaek/monolo
 <a name="configuration"></a>
 ## Configuration
 
-All of the configuration options for your application's logging behavior is housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below.
+All of the configuration options for your application's logging behavior are housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below.
 
 By default, Laravel will use the `stack` channel when logging messages. The `stack` channel is used to aggregate multiple log channels into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
 
@@ -54,7 +58,6 @@ Name | Description
 `daily` | A `RotatingFileHandler` based Monolog driver which rotates daily
 `errorlog` | An `ErrorLogHandler` based Monolog driver
 `monolog` | A Monolog factory driver that may use any supported Monolog handler
-`null` | A driver that discards all log messages
 `papertrail` | A `SyslogUdpHandler` based Monolog driver
 `single` | A single file or path based logger channel (`StreamHandler`)
 `slack` | A `SlackWebhookHandler` based Monolog driver
@@ -200,7 +203,7 @@ You may call any of these methods to log a message for the corresponding level. 
          */
         public function show(string $id): View
         {
-            Log::info('Showing the user profile for user: '.$id);
+            Log::info('Showing the user profile for user: {id}', ['id' => $id]);
 
             return view('user.profile', [
                 'user' => User::findOrFail($id)
@@ -215,7 +218,7 @@ An array of contextual data may be passed to the log methods. This contextual da
 
     use Illuminate\Support\Facades\Log;
 
-    Log::info('User failed to login.', ['id' => $user->id]);
+    Log::info('User {id} failed to login.', ['id' => $user->id]);
 
 Occasionally, you may wish to specify some contextual information that should be included with all subsequent log entries in a particular channel. For example, you may wish to log a request ID that is associated with each incoming request to your application. To accomplish this, you may call the `Log` facade's `withContext` method:
 
@@ -244,7 +247,11 @@ Occasionally, you may wish to specify some contextual information that should be
                 'request-id' => $requestId
             ]);
 
-            return $next($request)->header('Request-Id', $requestId);
+            $response = $next($request);
+
+            $response->headers->set('Request-Id', $requestId);
+
+            return $response;
         }
     }
 
@@ -384,6 +391,33 @@ If you are using a Monolog handler that is capable of providing its own formatte
         'formatter' => 'default',
     ],
 
+
+ <a name="monolog-processors"></a>
+ #### Monolog Processors
+
+ Monolog can also process messages before logging them. You can create your own processors or use the [existing processors offered by Monolog](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor).
+
+ If you would like to customize the processors for a `monolog` driver, add a `processors` configuration value to your channel's configuration:
+
+     'memory' => [
+         'driver' => 'monolog',
+         'handler' => Monolog\Handler\StreamHandler::class,
+         'with' => [
+             'stream' => 'php://stderr',
+         ],
+         'processors' => [
+             // Simple syntax...
+             Monolog\Processor\MemoryUsageProcessor::class,
+
+             // With options...
+             [
+                'processor' => Monolog\Processor\PsrLogMessageProcessor::class,
+                'with' => ['removeUsedContextFields' => true],
+            ],
+         ],
+     ],
+
+
 <a name="creating-custom-channels-via-factories"></a>
 ### Creating Custom Channels Via Factories
 
@@ -414,3 +448,86 @@ Once you have configured the `custom` driver channel, you're ready to define the
             return new Logger(/* ... */);
         }
     }
+
+<a name="tailing-log-messages-using-pail"></a>
+## Tailing Log Messages Using Pail
+
+Often you may need to tail your application's logs in real time. For example, when debugging an issue or when monitoring your application's logs for specific types of errors.
+
+Laravel Pail is a package that allows you to easily dive into your Laravel application's log files directly from the command line. Unlike the standard `tail` command, Pail is designed to work with any log driver, including Sentry or Flare. In addition, Pail provides a set of useful filters to help you quickly find what you're looking for.
+
+<img src="https://laravel.com/img/docs/pail-example.png">
+
+<a name="pail-installation"></a>
+### Installation
+
+> **Warning**
+> Laravel Pail requires [PHP 8.2+](https://php.net/releases/) and the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
+
+To get started, install Pail into your project using the Composer package manager:
+
+```bash
+composer require laravel/pail
+```
+
+<a name="pail-usage"></a>
+### Usage
+
+To start tailing logs, run the `pail` command:
+
+```bash
+php artisan pail
+```
+
+To increase the verbosity of the output and avoid truncation (…), use the `-v` option:
+
+```bash
+php artisan pail -v
+```
+
+For maximum verbosity and to display exception stack traces, use the `-vv` option:
+
+```bash
+php artisan pail -vv
+```
+
+To stop tailing logs, press `Ctrl+C` at any time.
+
+<a name="pail-filtering-logs"></a>
+### Filtering Logs
+
+<a name="pail-filtering-logs-filter-option"></a>
+#### `--filter`
+
+You may use the `--filter` option to filter logs by their type, file, message, and stack trace content:
+
+```bash
+php artisan pail --filter="QueryException"
+```
+
+<a name="pail-filtering-logs-message-option"></a>
+#### `--message`
+
+To filter logs by only their message, you may use the `--message` option:
+
+```bash
+php artisan pail --message="User created"
+```
+
+<a name="pail-filtering-logs-level-option"></a>
+#### `--level`
+
+The `--level` option may be used to filter logs by their [log level](#log-levels):
+
+```bash
+php artisan pail --level=error
+```
+
+<a name="pail-filtering-logs-user-option"></a>
+#### `--user`
+
+To only display logs that were written while a given user was authenticated, you may provide the user's ID to the `--user` option:
+
+```bash
+php artisan pail --user=1
+```

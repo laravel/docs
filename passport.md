@@ -138,8 +138,6 @@ If necessary, you may define the path where Passport's keys should be loaded fro
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');
     }
 
@@ -202,8 +200,6 @@ By default, Passport issues long-lived access tokens that expire after one year.
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::tokensExpireIn(now()->addDays(15));
         Passport::refreshTokensExpireIn(now()->addDays(30));
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
@@ -237,8 +233,6 @@ After defining your model, you may instruct Passport to use your custom model vi
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::useTokenModel(Token::class);
         Passport::useRefreshTokenModel(RefreshToken::class);
         Passport::useAuthCodeModel(AuthCode::class);
@@ -266,7 +260,7 @@ Then, you may copy the routes defined by Passport in [its routes file](https://g
     Route::group([
         'as' => 'passport.',
         'prefix' => config('passport.path', 'oauth'),
-        'namespace' => 'Laravel\Passport\Http\Controllers',
+        'namespace' => '\Laravel\Passport\Http\Controllers',
     ], function () {
         // Passport routes...
     });
@@ -451,7 +445,8 @@ If the user approves the authorization request, they will be redirected back to 
 
         throw_unless(
             strlen($state) > 0 && $state === $request->state,
-            InvalidArgumentException::class
+            InvalidArgumentException::class,
+            'Invalid state value.'
         );
 
         $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
@@ -780,8 +775,6 @@ The implicit grant is similar to the authorization code grant; however, the toke
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::enableImplicitGrant();
     }
 
@@ -1021,8 +1014,6 @@ You may define your API's scopes using the `Passport::tokensCan` method in the `
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::tokensCan([
             'place-orders' => 'Place orders',
             'check-status' => 'Check order status',
@@ -1167,8 +1158,6 @@ If needed, you can customize the `laravel_token` cookie's name using the `Passpo
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::cookie('custom_name');
     }
 

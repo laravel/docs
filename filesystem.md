@@ -12,6 +12,7 @@
 - [Retrieving Files](#retrieving-files)
     - [Downloading Files](#downloading-files)
     - [File URLs](#file-urls)
+    - [Temporary URLs](#temporary-urls)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
     - [Prepending & Appending To Files](#prepending-appending-to-files)
@@ -81,7 +82,7 @@ You may configure additional symbolic links in your `filesystems` configuration 
 Before using the S3 driver, you will need to install the Flysystem S3 package via the Composer package manager:
 
 ```shell
-composer require league/flysystem-aws-s3-v3 "^3.0"
+composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
 ```
 
 The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI.
@@ -133,6 +134,10 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
         // Settings for SSH key based authentication with encryption password...
         'privateKey' => env('SFTP_PRIVATE_KEY'),
         'passphrase' => env('SFTP_PASSPHRASE'),
+
+        // Settings for file / directory permissions...
+        'visibility' => 'private', // `private` = 0600, `public` = 0644
+        'directory_visibility' => 'private', // `private` = 0700, `public` = 0755
 
         // Optional SFTP Settings...
         // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
@@ -236,6 +241,10 @@ The `get` method may be used to retrieve the contents of a file. The raw string 
 
     $contents = Storage::get('file.jpg');
 
+If the file you are retrieving contains JSON, you may use the `json` method to retrieve the file and decode its contents:
+
+    $orders = Storage::json('orders.json');
+
 The `exists` method may be used to determine if a file exists on the disk:
 
     if (Storage::disk('s3')->exists('file.jpg')) {
@@ -271,8 +280,20 @@ When using the `local` driver, all files that should be publicly accessible shou
 > **Warning**  
 > When using the `local` driver, the return value of `url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
 
+<a name="url-host-customization"></a>
+#### URL Host Customization
+
+If you would like to pre-define the host for URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:
+
+    'public' => [
+        'driver' => 'local',
+        'root' => storage_path('app/public'),
+        'url' => env('APP_URL').'/storage',
+        'visibility' => 'public',
+    ],
+
 <a name="temporary-urls"></a>
-#### Temporary URLs
+### Temporary URLs
 
 Using the `temporaryUrl` method, you may create temporary URLs to files stored using the `s3` driver. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
 
@@ -311,27 +332,33 @@ If you need to customize how temporary URLs are created for a specific storage d
          */
         public function boot(): void
         {
-            Storage::disk('local')->buildTemporaryUrlsUsing(function (string $path, DateTime $expiration, array $options) {
-                return URL::temporarySignedRoute(
-                    'files.download',
-                    $expiration,
-                    array_merge($options, ['path' => $path])
-                );
-            });
+            Storage::disk('local')->buildTemporaryUrlsUsing(
+                function (string $path, DateTime $expiration, array $options) {
+                    return URL::temporarySignedRoute(
+                        'files.download',
+                        $expiration,
+                        array_merge($options, ['path' => $path])
+                    );
+                }
+            );
         }
     }
 
-<a name="url-host-customization"></a>
-#### URL Host Customization
+<a name="temporary-upload-urls"></a>
+#### Temporary Upload URLs
 
-If you would like to pre-define the host for URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:
+> **Warning**
+> The ability to generate temporary upload URLs is only supported by the `s3` driver.
 
-    'public' => [
-        'driver' => 'local',
-        'root' => storage_path('app/public'),
-        'url' => env('APP_URL').'/storage',
-        'visibility' => 'public',
-    ],
+If you need to generate a temporary URL that can be used to upload a file directly from your client-side application, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire. The `temporaryUploadUrl` method returns an associative array which may be destructured into the upload URL and the headers that should be included with the upload request:
+
+    use Illuminate\Support\Facades\Storage;
+
+    ['url' => $url, 'headers' => $headers] = Storage::temporaryUploadUrl(
+        'file.jpg', now()->addMinutes(5)
+    );
+
+This method is primarily useful in serverless environments that require the client-side application to directly upload files to a cloud storage system such as Amazon S3.
 
 <a name="file-metadata"></a>
 ### File Metadata
@@ -348,7 +375,7 @@ The `lastModified` method returns the UNIX timestamp of the last time the file w
 
 The MIME type of a given file may be obtained via the `mimeType` method:
 
-    $mime = Storage::mimeType('file.jpg')
+    $mime = Storage::mimeType('file.jpg');
 
 <a name="file-paths"></a>
 #### File Paths

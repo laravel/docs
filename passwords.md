@@ -182,8 +182,6 @@ You may customize the password reset link URL using the `createUrlUsing` method 
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         ResetPassword::createUrlUsing(function (User $user, string $token) {
             return 'https://example.com/reset-password?token='.$token;
         });

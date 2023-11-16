@@ -217,6 +217,7 @@ The `$casts` property should be an array where the key is the name of the attrib
 - `encrypted:collection`
 - `encrypted:object`
 - `float`
+- `hashed`
 - `integer`
 - `object`
 - `real`
@@ -261,12 +262,12 @@ If you need to add a new, temporary cast at runtime, you may use the `mergeCasts
     ]);
 
 > **Warning**  
-> Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship.
+> Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship or assign a cast to the model's primary key.
 
 <a name="stringable-casting"></a>
 #### Stringable Casting
 
-You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\Support\Stringable` object](/docs/{{version}}/helpers#fluent-strings-method-list):
+You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\Support\Stringable` object](/docs/{{version}}/strings#fluent-strings-method-list):
 
     <?php
 
@@ -365,6 +366,20 @@ Similarly, Laravel offers an `AsCollection` cast that casts your JSON attribute 
         'options' => AsCollection::class,
     ];
 
+If you would like the `AsCollection` cast to instantiate a custom collection class instead of Laravel's base collection class, you may provide the collection class name as a cast argument:
+
+    use App\Collections\OptionCollection;
+    use Illuminate\Database\Eloquent\Casts\AsCollection;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'options' => AsCollection::class.':'.OptionCollection::class,
+    ];
+
 <a name="date-casting"></a>
 ### Date Casting
 
@@ -405,15 +420,12 @@ To specify the format that should be used when actually storing a model's dates 
 <a name="date-casting-and-timezones"></a>
 #### Date Casting, Serialization, & Timezones
 
-By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`1986-05-28T21:05:54.000000Z`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript.
+By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`YYYY-MM-DDTHH:MM:SS.uuuuuuZ`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript.
 
 If a custom format is applied to the `date` or `datetime` cast, such as `datetime:Y-m-d H:i:s`, the inner timezone of the Carbon instance will be used during date serialization. Typically, this will be the timezone specified in your application's `timezone` configuration option.
 
 <a name="enum-casting"></a>
 ### Enum Casting
-
-> **Warning**  
-> Enum casting is only available for PHP 8.1+.
 
 Eloquent also allows you to cast your attribute values to PHP [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 
@@ -615,6 +627,22 @@ When casting to value objects, any changes made to the value object will automat
 > **Note**  
 > If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces on the value object.
 
+<a name="value-object-caching"></a>
+#### Value Object Caching
+
+When attributes that are cast to value objects are resolved, they are cached by Eloquent. Therefore, the same object instance will be returned if the attribute is accessed again.
+
+If you would like to disable the object caching behavior of custom cast classes, you may declare a public `withoutObjectCaching` property on your custom cast class:
+
+```php
+class Address implements CastsAttributes
+{
+    public bool $withoutObjectCaching = true;
+
+    // ...
+}
+```
+
 <a name="array-json-serialization"></a>
 ### Array / JSON Serialization
 
@@ -658,7 +686,7 @@ A classic example of an inbound only cast is a "hashing" cast. For example, we m
          * Create a new cast class instance.
          */
         public function __construct(
-            protected string $algorithm = null,
+            protected string|null $algorithm = null,
         ) {}
 
         /**
@@ -693,7 +721,7 @@ When attaching a custom cast to a model, cast parameters may be specified by sep
 
 You may want to allow your application's value objects to define their own custom cast classes. Instead of attaching the custom cast class to your model, you may alternatively attach a value object class that implements the `Illuminate\Contracts\Database\Eloquent\Castable` interface:
 
-    use App\Models\Address;
+    use App\ValueObjects\Address;
 
     protected $casts = [
         'address' => Address::class,
@@ -703,7 +731,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
 
     <?php
 
-    namespace App\Models;
+    namespace App\ValueObjects;
 
     use Illuminate\Contracts\Database\Eloquent\Castable;
     use App\Casts\Address as AddressCast;
@@ -723,7 +751,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
 
 When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed to the `castUsing` method:
 
-    use App\Models\Address;
+    use App\ValueObjects\Address;
 
     protected $casts = [
         'address' => Address::class.':argument',

@@ -90,7 +90,6 @@ There are two primary ways of working with session data in Laravel: the global `
 
     namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
     use Illuminate\View\View;
 
@@ -251,7 +250,7 @@ If you need to regenerate the session ID and remove all data from the session in
 ## Session Blocking
 
 > **Warning**  
-> To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, and `database` drivers. In addition, you may not use the `cookie` session driver.
+> To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, `database`, `file`, and `array` drivers. In addition, you may not use the `cookie` session driver.
 
 By default, Laravel allows requests using the same session to execute concurrently. So, for example, if you use a JavaScript HTTP library to make two HTTP requests to your application, they will both execute at the same time. For many applications, this is not a problem; however, session data loss can occur in a small subset of applications that make concurrent requests to two different application endpoints which both write data to the session.
 

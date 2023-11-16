@@ -118,6 +118,13 @@ When making `GET` requests, you may either append a query string to the URL dire
         'page' => 1,
     ]);
 
+Alternatively, the `withQueryParameters` method may be used:
+
+    Http::retry(3, 100)->withQueryParameters([
+        'name' => 'Taylor',
+        'page' => 1,
+    ])->get('http://example.com/users')
+
 <a name="sending-form-url-encoded-requests"></a>
 #### Sending Form URL Encoded Requests
 
@@ -174,6 +181,18 @@ For convenience, you may use the `acceptJson` method to quickly specify that you
 
     $response = Http::acceptJson()->get('http://example.com/users');
 
+The `withHeaders` method merges new headers into the request's existing headers. If needed, you may replace all of the headers entirely using the `replaceHeaders` method:
+
+```php
+$response = Http::withHeaders([
+    'X-Original' => 'foo',
+])->replaceHeaders([
+    'X-Replacement' => 'bar',
+])->post('http://example.com/users', [
+    'name' => 'Taylor',
+]);
+```
+
 <a name="authentication"></a>
 ### Authentication
 
@@ -195,7 +214,7 @@ If you would like to quickly add a bearer token to the request's `Authorization`
 <a name="timeout"></a>
 ### Timeout
 
-The `timeout` method may be used to specify the maximum number of seconds to wait for a response:
+The `timeout` method may be used to specify the maximum number of seconds to wait for a response. By default, the HTTP client will timeout after 30 seconds:
 
     $response = Http::timeout(3)->get(/* ... */);
 
@@ -225,6 +244,7 @@ If a request attempt fails, you may wish to make a change to the request before 
 
     use Exception;
     use Illuminate\Http\Client\PendingRequest;
+    use Illuminate\Http\Client\RequestException;
 
     $response = Http::withToken($this->getToken())->retry(2, 0, function (Exception $exception, PendingRequest $request) {
         if (! $exception instanceof RequestException || $exception->response->status() !== 401) {
@@ -313,35 +333,48 @@ If you would like to perform some additional logic before the exception is throw
 <a name="guzzle-middleware"></a>
 ### Guzzle Middleware
 
-Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withMiddleware` method in combination with Guzzle's `mapRequest` middleware factory:
+Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withRequestMiddleware` method:
 
-    use GuzzleHttp\Middleware;
     use Illuminate\Support\Facades\Http;
     use Psr\Http\Message\RequestInterface;
 
-    $response = Http::withMiddleware(
-        Middleware::mapRequest(function (RequestInterface $request) {
-            $request = $request->withHeader('X-Example', 'Value');
-            
-            return $request;
-        })
+    $response = Http::withRequestMiddleware(
+        function (RequestInterface $request) {
+            return $request->withHeader('X-Example', 'Value');
+        }
     )->get('http://example.com');
 
-Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withMiddleware` method in combination with Guzzle's `mapResponse` middleware factory:
+Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withResponseMiddleware` method:
 
-    use GuzzleHttp\Middleware;
     use Illuminate\Support\Facades\Http;
     use Psr\Http\Message\ResponseInterface;
 
-    $response = Http::withMiddleware(
-        Middleware::mapResponse(function (ResponseInterface $response) {
+    $response = Http::withResponseMiddleware(
+        function (ResponseInterface $response) {
             $header = $response->getHeader('X-Example');
 
             // ...
-            
+
             return $response;
-        })
+        }
     )->get('http://example.com');
+
+<a name="global-middleware"></a>
+#### Global Middleware
+
+Sometimes, you may want to register a middleware that applies to every outgoing request and incoming response. To accomplish this, you may use the `globalRequestMiddleware` and `globalResponseMiddleware` methods. Typically, these methods should be invoked in the `boot` method of your application's `AppServiceProvider`:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+Http::globalRequestMiddleware(fn ($request) => $request->withHeader(
+    'User-Agent', 'Example Application/1.0'
+));
+
+Http::globalResponseMiddleware(fn ($response) => $response->withHeader(
+    'X-Finished-At', now()->toDateTimeString()
+));
+```
 
 <a name="guzzle-options"></a>
 ### Guzzle Options
@@ -384,6 +417,26 @@ As you can see, each response instance can be accessed based on the order it was
     ]);
 
     return $responses['first']->ok();
+
+<a name="customizing-concurrent-requests"></a>
+#### Customizing Concurrent Requests
+
+The `pool` method cannot be chained with other HTTP client methods such as the `withHeaders` or `middleware` methods. If you want to apply custom headers or middleware to pooled requests, you should configure those options on each request in the pool:
+
+```php
+use Illuminate\Http\Client\Pool;
+use Illuminate\Support\Facades\Http;
+
+$headers = [
+    'X-Example' => 'example',
+];
+
+$responses = Http::pool(fn (Pool $pool) => [
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+]);
+```
 
 <a name="macros"></a>
 ## Macros

@@ -352,6 +352,7 @@ Method  |  Description
 `$paginator->url($page)`  |  Get the URL for a given page number.
 `$paginator->getPageName()`  |  Get the query string variable used to store the page.
 `$paginator->setPageName($name)`  |  Set the query string variable used to store the page.
+`$paginator->through($callback)`  |  Transform each item using a callback.
 
 <a name="cursor-paginator-instance-methods"></a>
 ## Cursor Paginator Instance Methods

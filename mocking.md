@@ -149,11 +149,6 @@ When testing, you may occasionally need to modify the time returned by helpers s
         $this->travel(5)->weeks();
         $this->travel(5)->years();
 
-        // Freeze time and resume normal time after executing closure...
-        $this->freezeTime(function (Carbon $time) {
-            // ...
-        });
-
         // Travel into the past...
         $this->travel(-5)->hours();
 
@@ -162,4 +157,41 @@ When testing, you may occasionally need to modify the time returned by helpers s
 
         // Return back to the present time...
         $this->travelBack();
+    }
+
+You may also provide a closure to the various time travel methods. The closure will be invoked with time frozen at the specified time. Once the closure has executed, time will resume as normal:
+
+    $this->travel(5)->days(function () {
+        // Test something five days into the future...
+    });
+    
+    $this->travelTo(now()->subDays(10), function () {
+        // Test something during a given moment...
+    });
+
+The `freezeTime` method may be used to freeze the current time. Similarly, the `freezeSecond` method will freeze the current time but at the start of the current second:
+
+    use Illuminate\Support\Carbon;
+
+    // Freeze time and resume normal time after executing closure...
+    $this->freezeTime(function (Carbon $time) {
+        // ...
+    });
+
+    // Freeze time at the current second and resume normal time after executing closure...
+    $this->freezeSecond(function (Carbon $time) {
+        // ...
+    })
+
+As you would expect, all of the methods discussed above are primarily useful for testing time sensitive application behavior, such as locking inactive posts on a discussion forum:
+
+    use App\Models\Thread;
+    
+    public function test_forum_threads_lock_after_one_week_of_inactivity()
+    {
+        $thread = Thread::factory()->create();
+        
+        $this->travel(1)->week();
+        
+        $this->assertTrue($thread->isLockedByInactivity());
     }

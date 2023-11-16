@@ -87,7 +87,7 @@ The `HasFactory` trait's `factory` method will use conventions to determine the 
         return FlightFactory::new();
     }
 
-Next, define a `model` property on the corresponding factory:
+Then, define a `model` property on the corresponding factory:
 
     use App\Administration\Flight;
     use Illuminate\Database\Eloquent\Factories\Factory;
@@ -97,7 +97,7 @@ Next, define a `model` property on the corresponding factory:
         /**
          * The name of the factory's corresponding model.
          *
-         * @var string
+         * @var class-string<\Illuminate\Database\Eloquent\Model>
          */
         protected $model = Flight::class;
     }
@@ -123,6 +123,7 @@ State transformation methods typically call the `state` method provided by Larav
         });
     }
 
+<a name="trashed-state"></a>
 #### "Trashed" State
 
 If your Eloquent model can be [soft deleted](/docs/{{version}}/eloquent#soft-deleting), you may invoke the built-in `trashed` state method to indicate that the created model should already be "soft deleted". You do not need to manually define the `trashed` state as it is automatically available to all factories:
@@ -140,14 +141,11 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
 
     use App\Models\User;
     use Illuminate\Database\Eloquent\Factories\Factory;
-    use Illuminate\Support\Str;
 
     class UserFactory extends Factory
     {
         /**
          * Configure the model factory.
-         *
-         * @return $this
          */
         public function configure(): static
         {
@@ -159,6 +157,27 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
         }
 
         // ...
+    }
+
+You may also register factory callbacks within state methods to perform additional tasks that are specific to a given state:
+
+    use App\Models\User;
+    use Illuminate\Database\Eloquent\Factories\Factory;
+
+    /**
+     * Indicate that the user is suspended.
+     */
+    public function suspended(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'account_status' => 'suspended',
+            ];
+        })->afterMaking(function (User $user) {
+            // ...
+        })->afterCreating(function (User $user) {
+            // ...
+        });
     }
 
 <a name="creating-models-using-factories"></a>
@@ -424,7 +443,7 @@ For convenience, you may use Laravel's magic factory relationship methods to def
 <a name="polymorphic-relationships"></a>
 ### Polymorphic Relationships
 
-[Polymorphic relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) may also be created using factories. Polymorphic "morph many" relationships are created in the same way as typical "has many" relationships. For example, if a `App\Models\Post` model has a `morphMany` relationship with a `App\Models\Comment` model:
+[Polymorphic relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) may also be created using factories. Polymorphic "morph many" relationships are created in the same way as typical "has many" relationships. For example, if an `App\Models\Post` model has a `morphMany` relationship with an `App\Models\Comment` model:
 
     use App\Models\Post;
 

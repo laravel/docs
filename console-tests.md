@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Success / Failure Expectations](#success-failure-expectations)
 - [Input / Output Expectations](#input-output-expectations)
+- [Console Events](#console-events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -88,3 +89,22 @@ If your command displays a table of information using Artisan's `table` method, 
             [1, 'taylor@example.com'],
             [2, 'abigail@example.com'],
         ]);
+
+<a name="console-events"></a>
+## Console Events
+
+By default, the `Illuminate\Console\Events\CommandStarting` and `Illuminate\Console\Events\CommandFinished` events are not dispatched while running your application's tests. However, you can enable these events for a given test class by adding the `Illuminate\Foundation\Testing\WithConsoleEvents` trait to the class:
+
+    <?php
+    
+    namespace Tests\Feature;
+
+    use Illuminate\Foundation\Testing\WithConsoleEvents;
+    use Tests\TestCase;
+    
+    class ConsoleEventTest extends TestCase
+    {
+        use WithConsoleEvents;
+    
+        // ...
+    }

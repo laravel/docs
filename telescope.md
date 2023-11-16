@@ -337,6 +337,17 @@ The job watcher records the data and status of any [jobs](/docs/{{version}}/queu
 
 The log watcher records the [log data](/docs/{{version}}/logging) for any logs written by your application.
 
+By default, Telescope will only record logs at the `error` level and above. However, you can modify the `level` option in your application's `config/telescope.php` configuration file to modify this behavior:
+
+    'watchers' => [
+        Watchers\LogWatcher::class => [
+            'enabled' => env('TELESCOPE_LOG_WATCHER', true),
+            'level' => 'debug',
+        ],
+
+        // ...
+    ],
+
 <a name="mail-watcher"></a>
 ### Mail Watcher
 

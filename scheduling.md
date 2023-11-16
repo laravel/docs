@@ -12,6 +12,7 @@
     - [Background Tasks](#background-tasks)
     - [Maintenance Mode](#maintenance-mode)
 - [Running The Scheduler](#running-the-scheduler)
+    - [Sub-Minute Scheduled Tasks](#sub-minute-scheduled-tasks)
     - [Running The Scheduler Locally](#running-the-scheduler-locally)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
@@ -106,6 +107,13 @@ We've already seen a few examples of how you may configure a task to run at spec
 Method  | Description
 ------------- | -------------
 `->cron('* * * * *');`  |  Run the task on a custom cron schedule
+`->everySecond();`  |  Run the task every second
+`->everyTwoSeconds();`  |  Run the task every two seconds
+`->everyFiveSeconds();`  |  Run the task every five seconds
+`->everyTenSeconds();`  |  Run the task every ten seconds
+`->everyFifteenSeconds();`  |  Run the task every fifteen seconds
+`->everyTwentySeconds();`  |  Run the task every twenty seconds
+`->everyThirtySeconds();`  |  Run the task every thirty seconds
 `->everyMinute();`  |  Run the task every minute
 `->everyTwoMinutes();`  |  Run the task every two minutes
 `->everyThreeMinutes();`  |  Run the task every three minutes
@@ -116,11 +124,11 @@ Method  | Description
 `->everyThirtyMinutes();`  |  Run the task every thirty minutes
 `->hourly();`  |  Run the task every hour
 `->hourlyAt(17);`  |  Run the task every hour at 17 minutes past the hour
-`->everyOddHour();`  |  Run the task every odd hour
-`->everyTwoHours();`  |  Run the task every two hours
-`->everyThreeHours();`  |  Run the task every three hours
-`->everyFourHours();`  |  Run the task every four hours
-`->everySixHours();`  |  Run the task every six hours
+`->everyOddHour($minutes = 0);`  |  Run the task every odd hour
+`->everyTwoHours($minutes = 0);`  |  Run the task every two hours
+`->everyThreeHours($minutes = 0);`  |  Run the task every three hours
+`->everyFourHours($minutes = 0);`  |  Run the task every four hours
+`->everySixHours($minutes = 0);`  |  Run the task every six hours
 `->daily();`  |  Run the task every day at midnight
 `->dailyAt('13:00');`  |  Run the task every day at 13:00
 `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
@@ -345,8 +353,38 @@ So, when using Laravel's scheduler, we only need to add a single cron configurat
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
+<a name="sub-minute-scheduled-tasks"></a>
+### Sub-Minute Scheduled Tasks
+
+On most operating systems, cron jobs are limited to running a maximum of once per minute. However, Laravel's scheduler allows you to schedule tasks to run at more frequent intervals, even as often as once per second:
+
+    $schedule->call(function () {
+        DB::table('recent_users')->delete();
+    })->everySecond();
+
+When sub-minute tasks are defined within your application, the `schedule:run` command will continue running until the end of the current minute instead of exiting immediately. This allows the command to invoke all required sub-minute tasks throughout the minute.
+
+Since sub-minute tasks that take longer than expected to run could delay the execution of later sub-minute tasks, it is recommend that all sub-minute tasks dispatch queued jobs or background commands to handle the actual task processing:
+
+    use App\Jobs\DeleteRecentUsers;
+
+    $schedule->job(new DeleteRecentUsers)->everyTenSeconds();
+
+    $schedule->command('users:delete')->everyTenSeconds()->runInBackground();
+
+<a name="interrupting-sub-minute-tasks"></a>
+#### Interrupting Sub-Minute Tasks
+
+As the `schedule:run` command runs for the entire minute of invocation when sub-minute tasks are defined, you may sometimes need to interrupt the command when deploying your application. Otherwise, an instance of the `schedule:run` command that is already running would continue using your application's previously deployed code until the current minute ends.
+
+To interrupt in-progress `schedule:run` invocations, you may add the `schedule:interrupt` command to your application's deployment script. This command should be invoked after your application is finished deploying:
+
+```shell
+php artisan schedule:interrupt
+```
+
 <a name="running-the-scheduler-locally"></a>
-## Running The Scheduler Locally
+### Running The Scheduler Locally
 
 Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command:
 

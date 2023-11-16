@@ -112,13 +112,16 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [dd](#method-dd)
 [diff](#method-diff)
 [diffAssoc](#method-diffassoc)
+[diffAssocUsing](#method-diffassocusing)
 [diffKeys](#method-diffkeys)
 [doesntContain](#method-doesntcontain)
+[dot](#method-dot)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
 [duplicatesStrict](#method-duplicatesstrict)
 [each](#method-each)
 [eachSpread](#method-eachspread)
+[ensure](#method-ensure)
 [every](#method-every)
 [except](#method-except)
 [filter](#method-filter)
@@ -136,6 +139,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [hasAny](#method-hasany)
 [implode](#method-implode)
 [intersect](#method-intersect)
+[intersectAssoc](#method-intersectAssoc)
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)
@@ -161,6 +165,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [only](#method-only)
 [pad](#method-pad)
 [partition](#method-partition)
+[percentage](#method-percentage)
 [pipe](#method-pipe)
 [pipeInto](#method-pipeinto)
 [pipeThrough](#method-pipethrough)
@@ -361,7 +366,7 @@ The `collect` method is primarily useful for converting [lazy collections](#lazy
 
     $collection = $lazyCollection->collect();
 
-    get_class($collection);
+    $collection::class;
 
     // 'Illuminate\Support\Collection'
 
@@ -598,6 +603,29 @@ The `diffAssoc` method compares the collection against another collection or a p
 
     // ['color' => 'orange', 'remain' => 6]
 
+<a name="method-diffassocusing"></a>
+#### `diffAssocUsing()` {.collection-method}
+
+Unlike `diffAssoc`, `diffAssocUsing` accepts a user supplied callback function for the indices comparison:
+
+    $collection = collect([
+        'color' => 'orange',
+        'type' => 'fruit',
+        'remain' => 6,
+    ]);
+
+    $diff = $collection->diffAssocUsing([
+        'Color' => 'yellow',
+        'Type' => 'fruit',
+        'Remain' => 3,
+    ], 'strnatcasecmp');
+
+    $diff->all();
+
+    // ['color' => 'orange', 'remain' => 6]
+
+The callback must be a comparison function that returns an integer less than, equal to, or greater than zero. For more information, refer to the PHP documentation on [`array_diff_uassoc`](https://www.php.net/array_diff_uassoc#refsect1-function.array-diff-uassoc-parameters), which is the PHP function that the `diffAssocUsing` method utilizes internally.
+
 <a name="method-diffkeys"></a>
 #### `diffKeys()` {.collection-method}
 
@@ -659,6 +687,19 @@ You may also pass a key / value pair to the `doesntContain` method, which will d
     // true
 
 The `doesntContain` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value.
+
+<a name="method-dot"></a>
+#### `dot()` {.collection-method}
+
+The `dot` method flattens a multi-dimensional collection into a single level collection that uses "dot" notation to indicate depth:
+
+    $collection = collect(['products' => ['desk' => ['price' => 100]]]);
+
+    $flattened = $collection->dot();
+
+    $flattened->all();
+
+    // ['products.desk.price' => 100]
 
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}
@@ -743,6 +784,20 @@ You may stop iterating through the items by returning `false` from the callback:
     $collection->eachSpread(function (string $name, int $age) {
         return false;
     });
+
+<a name="method-ensure"></a>
+#### `ensure()` {.collection-method}
+
+The `ensure` method may be used to verify that all elements of a collection are of a given type. Otherwise, an `UnexpectedValueException` will be thrown:
+
+    return $collection->ensure(User::class);
+
+Primitive types such as `string`, `int`, `float`, `bool`, and `array` may also be specified:
+
+    return $collection->ensure('int');
+
+> **Warning**
+> The `ensure` method does not guarantee that elements of different types will not be added to the collection at a later time.
 
 <a name="method-every"></a>
 #### `every()` {.collection-method}
@@ -1169,6 +1224,27 @@ The `intersect` method removes any values from the original collection that are 
 > **Note**  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-intersect).
 
+<a name="method-intersectAssoc"></a>
+#### `intersectAssoc()` {.collection-method}
+
+The `intersectAssoc` method compares the original collection against another collection or `array`, returning the key / value pairs that are present in all of the given collections:
+
+    $collection = collect([
+        'color' => 'red',
+        'size' => 'M',
+        'material' => 'cotton'
+    ]);
+
+    $intersect = $collection->intersectAssoc([
+        'color' => 'blue',
+        'size' => 'M',
+        'material' => 'polyester'
+    ]);
+
+    $intersect->all();
+
+    // ['size' => 'M']
+
 <a name="method-intersectbykeys"></a>
 #### `intersectByKeys()` {.collection-method}
 
@@ -1291,7 +1367,7 @@ The `lazy` method returns a new [`LazyCollection`](#lazy-collections) instance f
 
     $lazyCollection = collect([1, 2, 3, 4])->lazy();
 
-    get_class($lazyCollection);
+    $lazyCollection::class;
 
     // Illuminate\Support\LazyCollection
 
@@ -1634,6 +1710,27 @@ The `partition` method may be combined with PHP array destructuring to separate 
 
     // [3, 4, 5, 6]
 
+<a name="method-percentage"></a>
+#### `percentage()` {.collection-method}
+
+The `percentage` method may be used to quickly determine the percentage of items in the collection that pass a given truth test:
+
+```php
+$collection = collect([1, 1, 2, 2, 2, 3]);
+
+$percentage = $collection->percentage(fn ($value) => $value === 1);
+
+// 33.33
+```
+
+By default, the percentage will be rounded to two decimal places. However, you may customize this behavior by providing a second argument to the method:
+
+```php
+$percentage = $collection->percentage(fn ($value) => $value === 1, precision: 3);
+
+// 33.333
+```
+
 <a name="method-pipe"></a>
 #### `pipe()` {.collection-method}
 
@@ -1892,7 +1989,7 @@ The `reduce` method reduces the collection to a single value, passing the result
 
     $collection = collect([1, 2, 3]);
 
-    $total = $collection->reduce(function (int $carry, int $item) {
+    $total = $collection->reduce(function (?int $carry, int $item) {
         return $carry + $item;
     });
 
@@ -3412,6 +3509,7 @@ Almost all methods available on the `Collection` class are also available on the
 [has](#method-has)
 [implode](#method-implode)
 [intersect](#method-intersect)
+[intersectAssoc](#method-intersectAssoc)
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)

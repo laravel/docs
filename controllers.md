@@ -27,7 +27,13 @@ Instead of defining all of your request handling logic as closures in your route
 <a name="basic-controllers"></a>
 ### Basic Controllers
 
-Let's take a look at an example of a basic controller. Note that the controller extends the base controller class included with Laravel: `App\Http\Controllers\Controller`:
+To quickly generate a new controller, you may run the `make:controller` Artisan command. By default, all of the controllers for your application are stored in the `app/Http/Controllers` directory:
+
+```shell
+php artisan make:controller UserController
+```
+
+Let's take a look at an example of a basic controller. A controller may have any number of public methods which will respond to incoming HTTP requests:
 
     <?php
 
@@ -49,7 +55,7 @@ Let's take a look at an example of a basic controller. Note that the controller 
         }
     }
 
-You can define a route to this controller method like so:
+Once you have written a controller class and method, you may define a route to the controller method like so:
 
     use App\Http\Controllers\UserController;
 
@@ -68,20 +74,15 @@ If a controller action is particularly complex, you might find it convenient to 
     <?php
 
     namespace App\Http\Controllers;
-    
-    use App\Models\User;
-    use Illuminate\Http\Response;
 
     class ProvisionServer extends Controller
     {
         /**
          * Provision a new web server.
          */
-        public function __invoke(): Response
+        public function __invoke()
         {
             // ...
-
-            return response()->noContent();
         }
     }
 
@@ -482,21 +483,21 @@ In addition to constructor injection, you may also type-hint dependencies on you
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class UserController extends Controller
     {
         /**
          * Store a new user.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $name = $request->name;
 
-            // ...
+            // Store the user...
 
-            return response()->noContent();
+            return redirect('/users');
         }
     }
 
@@ -512,6 +513,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
 
     class UserController extends Controller
@@ -519,10 +521,10 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
         /**
          * Update the given user.
          */
-        public function update(Request $request, string $id): Response
+        public function update(Request $request, string $id): RedirectResponse
         {
-            // ...
+            // Update the user...
 
-            return response()->noContent();
+            return redirect('/users');
         }
     }

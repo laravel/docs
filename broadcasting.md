@@ -43,7 +43,7 @@
 
 In many modern web applications, WebSockets are used to implement realtime, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a WebSocket connection to be handled by the client. WebSockets provide a more efficient alternative to continually polling your application's server for data changes that should be reflected in your UI.
 
-For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch a `App\Events\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page.
+For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch an `App\Events\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page.
 
 To assist you in building these types of features, Laravel makes it easy to "broadcast" your server-side Laravel [events](/docs/{{version}}/events) over a WebSocket connection. Broadcasting your Laravel events allows you to share the same event names and data between your server-side Laravel application and your client-side JavaScript application.
 
@@ -116,7 +116,7 @@ The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) and [
 ### Ably
 
 > **Note**
-> The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
+> The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team recommends and maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
 
 If you plan to broadcast your events using [Ably](https://ably.com), you should install the Ably PHP SDK using the Composer package manager:
 
@@ -212,7 +212,7 @@ window.Echo = new Echo({
 ### Ably
 
 > **Note**
-> The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
+> The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team recommends and maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
 
 [Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package.
 
@@ -507,20 +507,19 @@ Sometimes you want to broadcast your event only if a given condition is true. Yo
 
 When broadcast events are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your event depends on these models, unexpected errors can occur when the job that broadcasts the event is processed.
 
-If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the event class:
+If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by implementing the `ShouldDispatchAfterCommit` interface on the event class:
 
     <?php
 
     namespace App\Events;
 
     use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+    use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
     use Illuminate\Queue\SerializesModels;
 
-    class ServerCreated implements ShouldBroadcast
+    class ServerCreated implements ShouldBroadcast, ShouldDispatchAfterCommit
     {
         use SerializesModels;
-
-        public $afterCommit = true;
     }
 
 > **Note**  
@@ -596,6 +595,12 @@ Next, we need to define the logic that will actually determine if the currently 
 The `channel` method accepts two arguments: the name of the channel and a callback which returns `true` or `false` indicating whether the user is authorized to listen on the channel.
 
 All authorization callbacks receive the currently authenticated user as their first argument and any additional wildcard parameters as their subsequent arguments. In this example, we are using the `{orderId}` placeholder to indicate that the "ID" portion of the channel name is a wildcard.
+
+You may view a list of your application's broadcast authorization callbacks using the `channel:list` Artisan command:
+
+```shell
+php artisan channel:list
+```
 
 <a name="authorization-callback-model-binding"></a>
 #### Authorization Callback Model Binding
@@ -872,7 +877,7 @@ Presence channels may receive events just like public or private channels. Using
     public function broadcastOn(): array
     {
         return [
-            new PresenceChannel('room.'.$this->message->room_id),
+            new PresenceChannel('chat.'.$this->message->room_id),
         ];
     }
 
@@ -1012,7 +1017,7 @@ If you plan to explicitly return a channel instance from your model's `broadcast
 return [new Channel($this->user)];
 ```
 
-If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for a `App\Models\User` model with an `id` of `1`:
+If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for an `App\Models\User` model with an `id` of `1`:
 
 ```php
 $user->broadcastChannel()

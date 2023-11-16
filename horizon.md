@@ -94,11 +94,11 @@ Within Horizon's default configuration file, you will notice a `defaults` config
 <a name="balancing-strategies"></a>
 ### Balancing Strategies
 
-Unlike Laravel's default queue system, Horizon allows you to choose from three worker balancing strategies: `simple`, `auto`, and `false`. The `simple` strategy, which is the configuration file's default, splits incoming jobs evenly between worker processes:
+Unlike Laravel's default queue system, Horizon allows you to choose from three worker balancing strategies: `simple`, `auto`, and `false`. The `simple` strategy splits incoming jobs evenly between worker processes:
 
     'balance' => 'simple',
 
-The `auto` strategy adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
+The `auto` strategy, which is the configuration file's default, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
 
 When using the `auto` strategy, you may define the `minProcesses` and `maxProcesses` configuration options to control the minimum and the maximum number of worker processes Horizon should scale up and down to:
 
@@ -108,6 +108,7 @@ When using the `auto` strategy, you may define the `minProcesses` and `maxProces
                 'connection' => 'redis',
                 'queue' => ['default'],
                 'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
                 'minProcesses' => 1,
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
@@ -116,6 +117,8 @@ When using the `auto` strategy, you may define the `minProcesses` and `maxProces
             ],
         ],
     ],
+
+The `autoScalingStrategy` configuration value determines if Horizon will assign more worker processes to queues based on the total amount of time it will take to clear the queue (`time` strategy) or by the total number of jobs on the queue (`size` strategy).
 
 The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
 
@@ -370,11 +373,12 @@ If you would like to be notified when one of your queues has a long wait time, y
 <a name="configuring-notification-wait-time-thresholds"></a>
 #### Configuring Notification Wait Time Thresholds
 
-You may configure how many seconds are considered a "long wait" within your application's `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination:
+You may configure how many seconds are considered a "long wait" within your application's `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination. Any undefined connection / queue combinations will default to a long wait threshold of 60 seconds:
 
     'waits' => [
+        'redis:critical' => 30,
         'redis:default' => 60,
-        'redis:critical,high' => 90,
+        'redis:batch' => 120,
     ],
 
 <a name="metrics"></a>

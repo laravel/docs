@@ -35,7 +35,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [Symfony Mailer](https://symfony.com/doc/6.0/mailer.html) component. Laravel and Symfony Mailer provide drivers for sending email via SMTP, Mailgun, Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
+Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [Symfony Mailer](https://symfony.com/doc/6.2/mailer.html) component. Laravel and Symfony Mailer provide drivers for sending email via SMTP, Mailgun, Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
 
 <a name="configuration"></a>
 ### Configuration
@@ -47,7 +47,7 @@ Within your `mail` configuration file, you will find a `mailers` configuration a
 <a name="driver-prerequisites"></a>
 ### Driver / Transport Prerequisites
 
-The API based drivers such as Mailgun and Postmark are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
+The API based drivers such as Mailgun, Postmark, and MailerSend are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
 
 <a name="mailgun-driver"></a>
 #### Mailgun Driver
@@ -61,6 +61,7 @@ composer require symfony/mailgun-mailer symfony/http-client
 Next, set the `default` option in your application's `config/mail.php` configuration file to `mailgun`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:
 
     'mailgun' => [
+        'transport' => 'mailgun',
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
     ],
@@ -137,6 +138,27 @@ If you would like to define [additional options](https://docs.aws.amazon.com/aws
         ],
     ],
 
+<a name="mailersend-driver"></a>
+#### MailerSend Driver
+
+[MailerSend](https://www.mailersend.com/), a transactional email and SMS service, maintains their own API based mail driver for Laravel. The package containing the driver may be installed via the Composer package manager:
+
+```shell
+composer require mailersend/laravel-driver
+```
+
+Once the package is installed, add the `MAILERSEND_API_KEY` environment variable to your application's `.env` file. In addition, the `MAIL_MAILER` environment variable should be defined as `mailersend`:
+
+```shell
+MAIL_MAILER=mailersend
+MAIL_FROM_ADDRESS=app@yourdomain.com
+MAIL_FROM_NAME="App Name"
+
+MAILERSEND_API_KEY=your-api-key
+```
+
+To learn more about MailerSend, including how to use hosted templates, consult the [MailerSend driver documentation](https://github.com/mailersend/mailersend-laravel-driver#usage).
+
 <a name="failover-configuration"></a>
 ### Failover Configuration
 
@@ -212,9 +234,12 @@ If you would like, you may also specify a `replyTo` address:
 <a name="using-a-global-from-address"></a>
 #### Using A Global `from` Address
 
-However, if your application uses the same "from" address for all of its emails, it can become cumbersome to call the `from` method in each mailable class you generate. Instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
+However, if your application uses the same "from" address for all of its emails, it can become cumbersome to add it to each mailable class you generate. Instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
 
-    'from' => ['address' => 'example@example.com', 'name' => 'App Name'],
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'name' => env('MAIL_FROM_NAME', 'Example'),
+    ],
 
 In addition, you may define a global "reply_to" address within your `config/mail.php` configuration file:
 
@@ -223,7 +248,7 @@ In addition, you may define a global "reply_to" address within your `config/mail
 <a name="configuring-the-view"></a>
 ### Configuring The View
 
-Within a mailable class' `content` method, you may define the `view`, or which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/docs/{{version}}/blade) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:
+Within a mailable class's `content` method, you may define the `view`, or which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/docs/{{version}}/blade) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:
 
     /**
      * Get the message content definition.
@@ -267,7 +292,7 @@ For clarity, the `html` parameter may be used as an alias of the `view` paramete
 <a name="via-public-properties"></a>
 #### Via Public Properties
 
-Typically, you will want to pass some data to your view that you can utilize when rendering the email's HTML. There are two ways you may make data available to your view. First, any public property defined on your mailable class will automatically be made available to the view. So, for example, you may pass data into your mailable class' constructor and set that data to public properties defined on the class:
+Typically, you will want to pass some data to your view that you can utilize when rendering the email's HTML. There are two ways you may make data available to your view. First, any public property defined on your mailable class will automatically be made available to the view. So, for example, you may pass data into your mailable class's constructor and set that data to public properties defined on the class:
 
     <?php
 
@@ -310,7 +335,7 @@ Once the data has been set to a public property, it will automatically be availa
 <a name="via-the-with-parameter"></a>
 #### Via The `with` Parameter:
 
-If you would like to customize the format of your email's data before it is sent to the template, you may manually pass your data to the view via the `Content` definition's `with` parameter. Typically, you will still pass data via the mailable class' constructor; however, you should set this data to `protected` or `private` properties so the data is not automatically made available to the template:
+If you would like to customize the format of your email's data before it is sent to the template, you may manually pass your data to the view via the `Content` definition's `with` parameter. Typically, you will still pass data via the mailable class's constructor; however, you should set this data to `protected` or `private` properties so the data is not automatically made available to the template:
 
     <?php
 
@@ -736,8 +761,8 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
     use App\Http\Controllers\Controller;
     use App\Mail\OrderShipped;
     use App\Models\Order;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Mail;
 
     class OrderShipmentController extends Controller
@@ -745,7 +770,7 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
         /**
          * Ship the given order.
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $order = Order::findOrFail($request->order_id);
 
@@ -753,7 +778,7 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
 
             Mail::to($request->user())->send(new OrderShipped($order));
 
-            return response()->noContent();
+            return redirect('/orders');
         }
     }
 
@@ -894,9 +919,6 @@ When designing a mailable's template, it is convenient to quickly preview the re
         return new App\Mail\InvoicePaid($invoice);
     });
 
-> **Warning**  
-> [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [Mailpit](https://github.com/axllent/mailpit) or [HELO](https://usehelo.com).
-
 <a name="localizing-mailables"></a>
 ## Localizing Mailables
 
@@ -975,7 +997,7 @@ As you might expect, the "HTML" assertions assert that the HTML version of your 
 <a name="testing-mailable-sending"></a>
 ### Testing Mailable Sending
 
-We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. Typically, the content of mailables it not relevant to the code you are testing, and it is sufficient to simply assert that Laravel was instructed to send a given mailable.
+We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. Typically, the content of mailables is not relevant to the code you are testing, and it is sufficient to simply assert that Laravel was instructed to send a given mailable.
 
 You may use the `Mail` facade's `fake` method to prevent mail from being sent. After calling the `Mail` facade's `fake` method, you may then assert that mailables were instructed to be sent to users and even inspect the data the mailables received:
 
@@ -1006,16 +1028,18 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. A
 
             // Assert a mailable was not sent...
             Mail::assertNotSent(AnotherMailable::class);
+
+            // Assert 3 total mailables were sent...
+            Mail::assertSentCount(3);
         }
     }
 
 If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:
 
     Mail::assertQueued(OrderShipped::class);
-
     Mail::assertNotQueued(OrderShipped::class);
-
     Mail::assertNothingQueued();
+    Mail::assertQueuedCount(3);
 
 You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
 
@@ -1198,22 +1222,22 @@ Once your custom transport has been defined and registered, you may create a mai
 <a name="additional-symfony-transports"></a>
 ### Additional Symfony Transports
 
-Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the "Sendinblue" Symfony mailer:
+Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the "Brevo" (formerly "Sendinblue") Symfony mailer:
 
 ```none
-composer require symfony/sendinblue-mailer symfony/http-client
+composer require symfony/brevo-mailer symfony/http-client
 ```
 
-Once the Sendinblue mailer package has been installed, you may add an entry for your Sendinblue API credentials to your application's `services` configuration file:
+Once the Brevo mailer package has been installed, you may add an entry for your Brevo API credentials to your application's `services` configuration file:
 
-    'sendinblue' => [
+    'brevo' => [
         'key' => 'your-api-key',
     ],
 
 Next, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:
 
     use Illuminate\Support\Facades\Mail;
-    use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
+    use Symfony\Component\Mailer\Bridge\Brevo\Transport\BrevoTransportFactory;
     use Symfony\Component\Mailer\Transport\Dsn;
 
     /**
@@ -1221,12 +1245,12 @@ Next, you may use the `Mail` facade's `extend` method to register the transport 
      */
     public function boot(): void
     {
-        Mail::extend('sendinblue', function () {
-            return (new SendinblueTransportFactory)->create(
+        Mail::extend('brevo', function () {
+            return (new BrevoTransportFactory)->create(
                 new Dsn(
-                    'sendinblue+api',
+                    'brevo+api',
                     'default',
-                    config('services.sendinblue.key')
+                    config('services.brevo.key')
                 )
             );
         });
@@ -1234,7 +1258,7 @@ Next, you may use the `Mail` facade's `extend` method to register the transport 
 
 Once your transport has been registered, you may create a mailer definition within your application's config/mail.php configuration file that utilizes the new transport:
 
-    'sendinblue' => [
-        'transport' => 'sendinblue',
+    'brevo' => [
+        'transport' => 'brevo',
         // ...
     ],

@@ -44,6 +44,17 @@ The `attempt` method returns `false` when the callback has no remaining attempts
       return 'Too many messages sent!';
     }
 
+If necessary, you may provide a fourth argument to the `attempt` method, which is the "decay rate", or the number of seconds until the available attempts are reset. For example, we can modify the example above to allow five attempts every two minutes:
+
+    $executed = RateLimiter::attempt(
+        'send-message:'.$user->id,
+        $perTwoMinutes = 5,
+        function() {
+            // Send message...
+        },
+        $decayRate = 120,
+    );
+
 <a name="manually-incrementing-attempts"></a>
 ### Manually Incrementing Attempts
 
@@ -54,6 +65,10 @@ If you would like to manually interact with the rate limiter, a variety of other
     if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
         return 'Too many attempts!';
     }
+
+    RateLimiter::hit('send-message:'.$user->id);
+
+    // Send message...
 
 Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `hit` method to increment the number of total attempts:
 
@@ -77,6 +92,10 @@ When a key has no more attempts left, the `availableIn` method returns the numbe
 
         return 'You may try again in '.$seconds.' seconds.';
     }
+
+    RateLimiter::hit('send-message:'.$user->id);
+
+    // Send message...
 
 <a name="clearing-attempts"></a>
 ### Clearing Attempts

@@ -8,13 +8,14 @@
     - [Routing](#routing)
     - [Authentication & Storage](#authentication-and-storage)
     - [Access Scopes](#access-scopes)
+    - [Slack Bot Scopes](#slack-bot-scopes)
     - [Optional Parameters](#optional-parameters)
 - [Retrieving User Details](#retrieving-user-details)
 
 <a name="introduction"></a>
 ## Introduction
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, Twitter, LinkedIn, Google, GitHub, GitLab, and Bitbucket.
+In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, Twitter, LinkedIn, Google, GitHub, GitLab, Bitbucket, and Slack.
 
 > **Note**  
 > Adapters for other platforms are available via the community driven [Socialite Providers](https://socialiteproviders.com/) website.
@@ -38,7 +39,7 @@ When upgrading to a new major version of Socialite, it's important that you care
 
 Before using Socialite, you will need to add credentials for the OAuth providers your application utilizes. Typically, these credentials may be retrieved by creating a "developer application" within the dashboard of the service you will be authenticating with.
 
-These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `twitter` (OAuth 1.0), `twitter-oauth-2` (OAuth 2.0), `linkedin`, `google`, `github`, `gitlab`, or `bitbucket`, depending on the providers your application requires:
+These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `twitter` (OAuth 1.0), `twitter-oauth-2` (OAuth 2.0), `linkedin-openid`, `google`, `github`, `gitlab`, `bitbucket`, or `slack`, depending on the providers your application requires:
 
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),
@@ -116,6 +117,33 @@ You can overwrite all existing scopes on the authentication request using the `s
     return Socialite::driver('github')
         ->setScopes(['read:user', 'public_repo'])
         ->redirect();
+
+<a name="slack-bot-scopes"></a>
+### Slack Bot Scopes
+
+Slack's API provides [different types of access tokens](https://api.slack.com/authentication/token-types), each with their own set of [permission scopes](https://api.slack.com/scopes). Socialite is compatible with both of the following Slack access tokens types:
+
+<div class="content-list" markdown="1">
+
+- Bot (prefixed with `xoxb-`)
+- User (prefixed with `xoxp-`)
+
+</div>
+
+By default, the `slack` driver will generate a `user` token and invoking the driver's `user` method will return the user's details.
+
+Bot tokens are primarily useful if your application will be sending notifications to external Slack workspaces that are owned by your application's users. To generate a bot token, invoke the `asBotUser` method before redirecting the user to Slack for authentication:
+
+    return Socialite::driver('slack')
+        ->asBotUser()
+        ->setScopes(['chat:write', 'chat:write.public', 'chat:write.customize'])
+        ->redirect();
+
+In addition, you must invoke the `asBotUser` method before invoking the `user` method after Slack redirects the user back to your application after authentication:
+
+    $user = Socialite::driver('slack')->asBotUser()->user();
+
+When generating a bot token, the `user` method will still return a `Laravel\Socialite\Two\User` instance; however, only the `token` property will be hydrated. This token may be stored in order to [send notifications to the authenticated user's Slack workspaces](/docs/{{version}}/notifications#notifying-external-slack-workspaces).
 
 <a name="optional-parameters"></a>
 ### Optional Parameters

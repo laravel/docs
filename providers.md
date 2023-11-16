@@ -145,15 +145,15 @@ You may type-hint dependencies for your service provider's `boot` method. The [s
 <a name="registering-providers"></a>
 ## Registering Providers
 
-All service providers are registered in the `config/app.php` configuration file. This file contains a `providers` array where you can list the class names of your service providers. By default, a set of Laravel core service providers are listed in this array. These providers bootstrap the core Laravel components, such as the mailer, queue, cache, and others.
+All service providers are registered in the `config/app.php` configuration file. This file contains a `providers` array where you can list the class names of your service providers. By default, a set of Laravel core service providers are registered in this array. The default providers bootstrap the core Laravel components, such as the mailer, queue, cache, and others.
 
 To register your provider, add it to the array:
 
-    'providers' => [
+    'providers' => ServiceProvider::defaultProviders()->merge([
         // Other Service Providers
 
         App\Providers\ComposerServiceProvider::class,
-    ],
+    ])->toArray(),
 
 <a name="deferred-providers"></a>
 ## Deferred Providers

@@ -71,7 +71,7 @@ If a class has no dependencies or only depends on other concrete classes (not in
     }
 
     Route::get('/', function (Service $service) {
-        die(get_class($service));
+        die($service::class);
     });
 
 In this example, hitting your application's `/` route will automatically resolve the `Service` class and inject it into your route's handler. This is game changing. It means you can develop your application and take advantage of dependency injection without worrying about bloated configuration files.
@@ -126,6 +126,14 @@ As mentioned, you will typically be interacting with the container within servic
         // ...
     });
 
+You may use the `bindIf` method to register a container binding only if a binding has not already been registered for the given type:
+
+```php
+$this->app->bindIf(Transistor::class, function (Application $app) {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
+
 > **Note**  
 > There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.
 
@@ -141,6 +149,14 @@ The `singleton` method binds a class or interface into the container that should
     $this->app->singleton(Transistor::class, function (Application $app) {
         return new Transistor($app->make(PodcastParser::class));
     });
+
+You may use the `singletonIf` method to register a singleton container binding only if a binding has not already been registered for the given type:
+
+```php
+$this->app->singletonIf(Transistor::class, function (Application $app) {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
 
 <a name="binding-scoped"></a>
 #### Binding Scoped Singletons
@@ -337,11 +353,17 @@ You may use the `make` method to resolve a class instance from the container. Th
 
     $transistor = $this->app->make(Transistor::class);
 
-If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:
+If some of your class's dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:
 
     use App\Services\Transistor;
 
     $transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);
+
+The `bound` method may be used to determine if a class or interface has been explicitly bound in the container:
+
+    if ($this->app->bound(Transistor::class)) {
+        // ...
+    }
 
 If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) or the `app` [helper](/docs/{{version}}/helpers#method-app) to resolve a class instance from the container:
 
@@ -352,7 +374,7 @@ If you are outside of a service provider in a location of your code that does no
 
     $transistor = app(Transistor::class);
 
-If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\Container\Container` class on your class' constructor:
+If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\Container\Container` class on your class's constructor:
 
     use Illuminate\Container\Container;
 

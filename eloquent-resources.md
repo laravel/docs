@@ -199,7 +199,7 @@ For example, `UserCollection` will attempt to map the given user instances into 
 > **Note**  
 > If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation.
 
-In essence, resources are simple. They only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:
+Resources only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:
 
     <?php
 
@@ -282,6 +282,7 @@ However, if you need to customize the meta data returned with the collection, it
 
     namespace App\Http\Resources;
 
+    use Illuminate\Http\Request;
     use Illuminate\Http\Resources\Json\ResourceCollection;
 
     class UserCollection extends ResourceCollection
@@ -428,8 +429,8 @@ When returning paginated collections via a resource response, Laravel will wrap 
         }
     ],
     "links":{
-        "first": "http://example.com/pagination?page=1",
-        "last": "http://example.com/pagination?page=1",
+        "first": "http://example.com/users?page=1",
+        "last": "http://example.com/users?page=1",
         "prev": null,
         "next": null
     },
@@ -437,7 +438,7 @@ When returning paginated collections via a resource response, Laravel will wrap 
         "current_page": 1,
         "from": 1,
         "last_page": 1,
-        "path": "http://example.com/pagination",
+        "path": "http://example.com/users",
         "per_page": 15,
         "to": 10,
         "total": 10
@@ -474,8 +475,8 @@ Paginated responses always contain `meta` and `links` keys with information abou
         }
     ],
     "links":{
-        "first": "http://example.com/pagination?page=1",
-        "last": "http://example.com/pagination?page=1",
+        "first": "http://example.com/users?page=1",
+        "last": "http://example.com/users?page=1",
         "prev": null,
         "next": null
     },
@@ -483,7 +484,7 @@ Paginated responses always contain `meta` and `links` keys with information abou
         "current_page": 1,
         "from": 1,
         "last_page": 1,
-        "path": "http://example.com/pagination",
+        "path": "http://example.com/users",
         "per_page": 15,
         "to": 10,
         "total": 10
@@ -491,6 +492,26 @@ Paginated responses always contain `meta` and `links` keys with information abou
 }
 ```
 
+<a name="customizing-the-pagination-information"></a>
+#### Customizing The Pagination Information
+
+If you would like to customize the information included in the `links` or `meta` keys of the pagination response, you may define a `paginationInformation` method on the resource. This method will receive the `$paginated` data and the array of `$default` information, which is an array containing the `links` and `meta` keys:
+
+    /**
+     * Customize the pagination information for the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array $paginated
+     * @param  array $default
+     * @return array
+     */
+    public function paginationInformation($request, $paginated, $default)
+    {
+        $default['links']['custom'] = 'https://example.com';
+
+        return $default;
+    }
+    
 <a name="conditional-attributes"></a>
 ### Conditional Attributes
 
@@ -614,6 +635,15 @@ The `whenCounted` method may be used to conditionally include a relationship's c
     }
 
 In this example, if the `posts` relationship's count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client.
+
+Other types of aggregates, such as `avg`, `sum`, `min`, and `max` may also be conditionally loaded using the `whenAggregated` method:
+
+```php
+'words_avg' => $this->whenAggregated('posts', 'words', 'avg'),
+'words_sum' => $this->whenAggregated('posts', 'words', 'sum'),
+'words_min' => $this->whenAggregated('posts', 'words', 'min'),
+'words_max' => $this->whenAggregated('posts', 'words', 'max'),
+```
 
 <a name="conditional-pivot-information"></a>
 #### Conditional Pivot Information

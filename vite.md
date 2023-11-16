@@ -44,7 +44,7 @@ Laravel integrates seamlessly with Vite by providing an official plugin and Blad
 
 Before transitioning to Vite, new Laravel applications utilized [Mix](https://laravel-mix.com/), which is powered by [webpack](https://webpack.js.org/), when bundling assets. Vite focuses on providing a faster and more productive experience when building rich JavaScript applications. If you are developing a Single Page Application (SPA), including those developed with tools like [Inertia](https://inertiajs.com), Vite will be the perfect fit.
 
-Vite also works well with traditional server-side rendered applications with JavaScript "sprinkles", including those using [Livewire](https://laravel-livewire.com). However, it lacks some features that Laravel Mix supports, such as the ability to copy arbitrary assets into the build that are not referenced directly in your JavaScript application.
+Vite also works well with traditional server-side rendered applications with JavaScript "sprinkles", including those using [Livewire](https://livewire.laravel.com). However, it lacks some features that Laravel Mix supports, such as the ability to copy arbitrary assets into the build that are not referenced directly in your JavaScript application.
 
 <a name="migrating-back-to-mix"></a>
 #### Migrating Back To Mix
@@ -134,7 +134,7 @@ The Laravel plugin also supports multiple entry points and advanced configuratio
 
 If your local development web server is serving your application via HTTPS, you may run into issues connecting to the Vite development server.
 
-If you are using [Laravel Valet](/docs/{{version}}/valet) for local development and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may configure the Vite development server to automatically use Valet's generated TLS certificates:
+If you are using [Laravel Herd](https://herd.laravel.com) and have secured the site or you are using [Laravel Valet](/docs/{{version}}/valet) and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may configure the Vite development server to automatically use the generated TLS certificates:
 
 ```js
 import { defineConfig } from 'vite';
@@ -144,7 +144,7 @@ export default defineConfig({
     plugins: [
         laravel({
             // ...
-            valetTls: 'my-app.test', // [tl! add]
+            detectTls: 'my-app.test', // [tl! add]
         }),
     ],
 });
@@ -173,10 +173,30 @@ export default defineConfig({
 
 If you are unable to generate a trusted certificate for your system, you may install and configure the [`@vitejs/plugin-basic-ssl` plugin](https://github.com/vitejs/vite-plugin-basic-ssl). When using untrusted certificates, you will need to accept the certificate warning for Vite's development server in your browser by following the "Local" link in your console when running the `npm run dev` command.
 
+<a name="configuring-hmr-in-sail-on-wsl2"></a>
+#### Running The Development Server In Sail On WSL2
+
+When running the Vite development server within [Laravel Sail](/docs/{{version}}/sail) on Windows Subsystem for Linux 2 (WSL2), you should add the following configuration to your `vite.config.js` file to ensure the browser can communicate with the development server:
+
+```js
+// ...
+
+export default defineConfig({
+    // ...
+    server: { // [tl! add:start]
+        hmr: {
+            host: 'localhost',
+        },
+    }, // [tl! add:end]
+});
+```
+
+If your file changes are not being reflected in the browser while the development server is running, you may also need to configure Vite's [`server.watch.usePolling` option](https://vitejs.dev/config/server-options.html#server-watch).
+
 <a name="loading-your-scripts-and-styles"></a>
 ### Loading Your Scripts And Styles
 
-With your Vite entry points configured, you only need reference them in a `@vite()` Blade directive that you add to the `<head>` of your application's root template:
+With your Vite entry points configured, you may now reference them in a `@vite()` Blade directive that you add to the `<head>` of your application's root template:
 
 ```blade
 <!doctype html>
@@ -211,6 +231,29 @@ If needed, you may also specify the build path of your compiled assets when invo
 </head>
 ```
 
+<a name="inline-assets"></a>
+#### Inline Assets
+
+Sometimes it may be necessary to include the raw content of assets rather than linking to the versioned URL of the asset. For example, you may need to include asset content directly into your page when passing HTML content to a PDF generator. You may output the content of Vite assets using the `content` method provided by the `Vite` facade:
+
+```blade
+@php
+use Illuminate\Support\Facades\Vite;
+@endphp
+
+<!doctype html>
+<head>
+    {{-- ... --}}
+
+    <style>
+        {!! Vite::content('resources/css/app.css') !!}
+    </style>
+    <script>
+        {!! Vite::content('resources/js/app.js') !!}
+    </script>
+</head>
+```
+
 <a name="running-vite"></a>
 ## Running Vite
 
@@ -225,6 +268,8 @@ npm run dev
 # Build and version the assets for production...
 npm run build
 ```
+
+If you are running the development server in [Sail](/docs/{{version}}/sail) on WSL2, you may need some [additional configuration](#configuring-hmr-in-sail-on-wsl2) options.
 
 <a name="working-with-scripts"></a>
 ## Working With JavaScript
@@ -261,7 +306,7 @@ export default defineConfig({
 <a name="vue"></a>
 ### Vue
 
-If you would like to build your front-end using the [Vue](https://vuejs.org/) framework, then you will also need to install the `@vitejs/plugin-vue` plugin:
+If you would like to build your frontend using the [Vue](https://vuejs.org/) framework, then you will also need to install the `@vitejs/plugin-vue` plugin:
 
 ```sh
 npm install --save-dev @vitejs/plugin-vue
@@ -305,7 +350,7 @@ export default defineConfig({
 <a name="react"></a>
 ### React
 
-If you would like to build your front-end using the [React](https://reactjs.org/) framework, then you will also need to install the `@vitejs/plugin-react` plugin:
+If you would like to build your frontend using the [React](https://reactjs.org/) framework, then you will also need to install the `@vitejs/plugin-react` plugin:
 
 ```sh
 npm install --save-dev @vitejs/plugin-react
@@ -399,7 +444,7 @@ The following example demonstrates how Vite will treat relative and absolute URL
 You can learn more about Vite's CSS support within the [Vite documentation](https://vitejs.dev/guide/features.html#css). If you are using PostCSS plugins such as [Tailwind](https://tailwindcss.com), you may create a `postcss.config.js` file in the root of your project and Vite will automatically apply it:
 
 ```js
-module.exports = {
+export default {
     plugins: {
         tailwindcss: {},
         autoprefixer: {},
@@ -624,7 +669,13 @@ Then, to build and start the SSR server, you may run the following commands:
 
 ```sh
 npm run build
-node bootstrap/ssr/ssr.mjs
+node bootstrap/ssr/ssr.js
+```
+
+If you are using [SSR with Inertia](https://inertiajs.com/server-side-rendering), you may instead use the `inertia:start-ssr` Artisan command to start the SSR server:
+
+```sh
+php artisan inertia:start-ssr
 ```
 
 > **Note**  
@@ -655,7 +706,7 @@ class AddContentSecurityPolicyHeaders
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next): Response
     {
         Vite::useCspNonce();
 
@@ -808,7 +859,7 @@ For example, the `vite-imagetools` plugin outputs URLs like the following while 
 
 The `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option. 
 
-In this particular example, we will append the dev server URL to all occurrences of `/@imagetools` within the generated code:
+In this particular example, we will prepend the dev server URL to all occurrences of `/@imagetools` within the generated code:
 
 ```js
 import { defineConfig } from 'vite';

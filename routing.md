@@ -137,10 +137,13 @@ The `route:list` Artisan command can easily provide an overview of all of the ro
 php artisan route:list
 ```
 
-By default, the route middleware that are assigned to each route will not be displayed in the `route:list` output; however, you can instruct Laravel to display the route middleware by adding the `-v` option to the command:
+By default, the route middleware that are assigned to each route will not be displayed in the `route:list` output; however, you can instruct Laravel to display the route middleware and middleware group names by adding the `-v` option to the command:
 
 ```shell
 php artisan route:list -v
+
+# Expand middleware groups...
+php artisan route:list -vv
 ```
 
 You may also instruct Laravel to only show routes that begin with a given URI:
@@ -197,11 +200,11 @@ If your route has dependencies that you would like the Laravel service container
 
 Occasionally you may need to specify a route parameter that may not always be present in the URI. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
 
-    Route::get('/user/{name?}', function (string $name = null) {
+    Route::get('/user/{name?}', function (?string $name = null) {
         return $name;
     });
 
-    Route::get('/user/{name?}', function (string $name = 'John') {
+    Route::get('/user/{name?}', function (?string $name = 'John') {
         return $name;
     });
 
@@ -415,7 +418,7 @@ The `prefix` method may be used to prefix each route in the group with a given U
 <a name="route-group-name-prefixes"></a>
 ### Route Name Prefixes
 
-The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix all of the grouped route's names with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
+The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix the names of all of the routes in the group with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
 
     Route::name('admin.')->group(function () {
         Route::get('/users', function () {
@@ -665,7 +668,9 @@ Using the `Route::fallback` method, you may define a route that will be executed
 <a name="defining-rate-limiters"></a>
 ### Defining Rate Limiters
 
-Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `App\Providers\RouteServiceProvider` class, which already includes a rate limiter definition that is applied to the routes in your application's `routes/api.php` file:
+Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs.
+
+Typically, rate limiters are defined within the `boot` method of your application's `App\Providers\RouteServiceProvider` class. In fact, this class already includes a rate limiter definition that is applied to the routes in your application's `routes/api.php` file:
 
 ```php
 use Illuminate\Cache\RateLimiting\Limit;
@@ -673,13 +678,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 
 /**
- * Configure the rate limiters for the application.
+ * Define your route model bindings, pattern filters, and other route configuration.
  */
-protected function configureRateLimiting(): void
+protected function boot(): void
 {
     RateLimiter::for('api', function (Request $request) {
         return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
     });
+
+    // ...
 }
 ```
 
@@ -690,13 +697,15 @@ Rate limiters are defined using the `RateLimiter` facade's `for` method. The `fo
     use Illuminate\Support\Facades\RateLimiter;
 
     /**
-     * Configure the rate limiters for the application.
+     * Define your route model bindings, pattern filters, and other route configuration.
      */
-    protected function configureRateLimiting(): void
+    protected function boot(): void
     {
         RateLimiter::for('global', function (Request $request) {
             return Limit::perMinute(1000);
         });
+
+        // ...
     }
 
 If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Laravel. If you would like to define your own response that should be returned by a rate limit, you may use the `response` method:
