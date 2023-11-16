@@ -1172,7 +1172,7 @@ The `Number::toFileSize` method returns the file size representation of the give
 
     // 1.00 KB
 
-<a name="mmethod-number-for-humans"></a>
+<a name="method-number-for-humans"></a>
 #### `Number::forHumans()` {.collection-method}
 
 The `Number::forHumans()` method returns the human-readable format of a provided numberical value:
