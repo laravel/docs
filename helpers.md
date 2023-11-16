@@ -83,6 +83,20 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [last](#method-last)
 </div>
 
+<a name="numbers-method-list"></a>
+### Numbers
+
+<div class="collection-method-list" markdown="1">
+
+[Number::format](#method-number-format)
+[Number::toPercentage](#method-number-to-percentage)
+[Number::toCurrency](#method-number-to-currency)
+[Number::toFileSize](#method-number-to-file-size)
+[Number::forHumans](#method-number-for-humans)
+
+</div>
+
+
 <a name="paths-method-list"></a>
 ### Paths
 
@@ -1079,6 +1093,105 @@ The `last` function returns the last element in the given array:
     $last = last($array);
 
     // 300
+
+<a name="numbers"></a>
+## Numbers
+
+> **Warning**
+> Several of the `Number` methods require the PHP `intl` extension.
+
+<a name="method-number-format"></a>
+#### `Number::format()` {.collection-method}
+
+The `Number::format` method determines the formatting of a value by grouped thousands:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::format(100000);
+
+    // 100,000
+
+    $number = Number::format(100000, 'de');
+
+    // 100.000
+
+<a name="method-number-to-percentage"></a>
+#### `Number::toPercentage()` {.collection-method}
+
+The `Number::toPercentage` method returns the percentage representation of the given value:
+
+    use Illuminate\Support\Number;
+
+    $percentage = Number::toPercentage(10);
+
+    // 10%
+
+    $percentage = Number::toPercentage(10, 2);
+
+    // 10.00%
+
+You may pass a third argument to the method to specify the percentage locale:
+
+    $percentage = Number::toPercentage(10, 2, 'de');
+
+    // 10,00%
+
+<a name="method-number-to-currency"></a>
+#### `Number::toCurrency()` {.collection-method}
+
+The `Number::toCurrency` method returns the currency representation of the provided numerical value:
+
+    use Illuminate\Support\Number;
+
+    $currency = Number::toCurrency(1000);
+
+    // $1,000
+
+    $currency = Number::toCurrency(1000, 'EUR');
+
+    // €1,000
+
+You may pass a third argument to the method to specify the currency locale:
+
+    $currency = Number::toCurrency(1000, 'EUR', 'de');
+
+    // 1.000 €
+
+<a name="method-number-to-file-size"></a>
+#### `Number::toFileSize()` {.collection-method}
+
+The `Number::toFileSize` method returns the file size representation of the given numerical value in bytes:
+
+    use Illuminate\Support\Number;
+
+    $size = Number::toFileSize(1024);
+
+    // 1 KB
+
+    $size = Number::toFileSize(1024, 2);
+
+    // 1.00 KB
+
+<a name="mmethod-number-for-humans"></a>
+#### `Number::forHumans()` {.collection-method}
+
+The `Number::forHumans()` method returns the human-readable format of a provided numberical value:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::forHumans(1000);
+
+    // 1 thousand
+
+    $number = Number::forHumans(489939);
+
+    // 490 thousand
+
+You may pass a second argument to the method to specify the number of decimal places:
+
+    $number = Number::forHumans(1000, 2);
+
+    // 1.00 thousand
 
 <a name="paths"></a>
 ## Paths
