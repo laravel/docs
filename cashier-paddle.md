@@ -48,11 +48,11 @@
 ## Introduction
 
 > **Warning**
-> At this time, Cashier Paddle only supports Paddle Classic, which is not available to new Paddle customers unless you contact Paddle support.
+> These docs are for Cashier Paddle v2's integration with Paddle Billing. If you're still using Paddle Classic, you can use [Cashier Paddle v1](https://github.com/laravel/cashier-paddle/tree/1.x).
 
-[Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle) provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods, and more.
+[Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle) provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: swapping subscription, subscription "quantities", subscription pausing, cancellation grace periods, and more.
 
-While working with Cashier we recommend you also review Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference).
+While working with Cashier we recommend you also review Paddle's [concept guides](https://developer.paddle.com/concepts/overview) and [API documentation](https://developer.paddle.com/api-reference/overview).
 
 <a name="upgrading-cashier"></a>
 ## Upgrading Cashier
@@ -74,7 +74,7 @@ composer require laravel/cashier-paddle
 <a name="paddle-sandbox"></a>
 ### Paddle Sandbox
 
-During local and staging development, you should [register a Paddle Sandbox account](https://developer.paddle.com/getting-started/sandbox). This account will give you a sandboxed environment to test and develop your applications without making actual payments. You may use Paddle's [test card numbers](https://developer.paddle.com/getting-started/sandbox#test-cards) to simulate various payment scenarios.
+During local and staging development, you should [register a Paddle Sandbox account](https://sandbox-login.paddle.com/signup). This account will give you a sandboxed environment to test and develop your applications without making actual payments. You may use Paddle's [test card numbers](https://developer.paddle.com/concepts/payment-methods/credit-debit-card) to simulate various payment scenarios.
 
 When using the Paddle Sandbox environment, you should set the `PADDLE_SANDBOX` environment variable to `true` within your application's `.env` file:
 
@@ -87,7 +87,7 @@ After you have finished developing your application you may [apply for a Paddle 
 <a name="database-migrations"></a>
 ### Database Migrations
 
-The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table. In addition, a new `subscriptions` table will be created to store all of your customer's subscriptions. Finally, a new `receipts` table will be created to store all of your application's receipt information:
+The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table. In addition, a new `subscriptions` table and `subscription_items` will be created to store all of your customer's subscriptions. Finally, a new `transactions` table will be created to store all of Paddle's transactions for your customers:
 
 ```shell
 php artisan migrate
@@ -117,7 +117,7 @@ If you would like to prevent Cashier's migrations from running entirely, you may
 <a name="billable-model"></a>
 ### Billable Model
 
-Before using Cashier, you must add the `Billable` trait to your user model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons and updating payment method information:
+Before using Cashier, you must add the `Billable` trait to your user model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions and updating payment method information:
 
     use Laravel\Paddle\Billable;
 
@@ -142,13 +142,16 @@ If you have billable entities that are not users, you may also add the trait to 
 Next, you should configure your Paddle keys in your application's `.env` file. You can retrieve your Paddle API keys from the Paddle control panel:
 
 ```ini
-PADDLE_VENDOR_ID=your-paddle-vendor-id
-PADDLE_VENDOR_AUTH_CODE=your-paddle-vendor-auth-code
-PADDLE_PUBLIC_KEY="your-paddle-public-key"
+PADDLE_SELLER_ID=your-paddle-seller-id
+PADDLE_AUTH_CODE=your-paddle-auth-code
+PADDLE_RETAIN_KEY=your-paddle-retain-key
+PADDLE_WEBHOOK_SECRET="your-paddle-webhook-secret"
 PADDLE_SANDBOX=true
 ```
 
 The `PADDLE_SANDBOX` environment variable should be set to `true` when you are using [Paddle's Sandbox environment](#paddle-sandbox). The `PADDLE_SANDBOX` variable should be set to `false` if you are deploying your application to production and are using Paddle's live vendor environment.
+
+The `PADDLE_RETAIN_KEY` is optional and should only be set if you're using Paddle with [Retain](https://developer.paddle.com/paddlejs/retain).
 
 <a name="paddle-js"></a>
 ### Paddle JS
@@ -195,248 +198,168 @@ You are free to extend the models used internally by Cashier by defining your ow
 
 After defining your model, you may instruct Cashier to use your custom model via the `Laravel\Paddle\Cashier` class. Typically, you should inform Cashier about your custom models in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
-    use App\Models\Cashier\Receipt;
     use App\Models\Cashier\Subscription;
+    use App\Models\Cashier\Transaction;
 
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
-        Cashier::useReceiptModel(Receipt::class);
         Cashier::useSubscriptionModel(Subscription::class);
+        Cashier::useTransactionModel(Transaction::class);
     }
 
 <a name="core-concepts"></a>
 ## Core Concepts
 
-<a name="pay-links"></a>
-### Pay Links
+Most operations to bill customers are performed through Checkouts. There's two ways to perform these: through a [checkout overlay widget](https://developer.paddle.com/build/checkout/build-overlay-checkout) or an [inline checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout).
 
-Paddle lacks an extensive CRUD API to perform subscription state changes. Therefore, most interactions with Paddle are done through its [checkout widget](https://developer.paddle.com/guides/how-tos/checkout/paddle-checkout). Before we can display the checkout widget, we must generate a "pay link" using Cashier. A "pay link" will inform the checkout widget of the billing operation we wish to perform:
+<a name="overlay-checkout"></a>
+### Overlay Checkout
 
-    use App\Models\User;
+Before we can display the overlay checkout overlay widget, we must generate a checkout session using Cashier. A checkout session will inform the checkout widget of the billing operation we wish to perform:
+
     use Illuminate\Http\Request;
 
-    Route::get('/user/subscribe', function (Request $request) {
-        $payLink = $request->user()->newSubscription('default', $premium = 34567)
-            ->returnTo(route('home'))
-            ->create();
+    Route::get('/buy', function (Request $request) {
+        $checkout = $user->checkout('pri_34567')
+            ->returnTo(route('dashboard'));
 
-        return view('billing', ['payLink' => $payLink]);
+        return view('billing', ['checkout' => $checkout]);
     });
 
-Cashier includes a `paddle-button` [Blade component](/docs/{{version}}/blade#components). We may pass the pay link URL to this component as a "prop". When this button is clicked, Paddle's checkout widget will be displayed:
+Cashier includes a `paddle-button` [Blade component](/docs/{{version}}/blade#components). We may pass the checkout session to this component as a "prop". When this button is clicked, Paddle's checkout widget will be displayed:
 
 ```html
-<x-paddle-button :url="$payLink" class="px-8 py-4">
+<x-paddle-button :checkout="$checkout" class="px-8 py-4">
     Subscribe
 </x-paddle-button>
 ```
 
-By default, this will display a button with the standard Paddle styling. You can remove all Paddle styling by adding the `data-theme="none"` attribute to the component:
+By default, this will display the widget with the standard Paddle styling. You can customize the wdiget by adding attributes like the  `data-theme='light'` attribute to the component:
 
 ```html
-<x-paddle-button :url="$payLink" class="px-8 py-4" data-theme="none">
+<x-paddle-button :url="$payLink" class="px-8 py-4" data-theme="light">
     Subscribe
 </x-paddle-button>
 ```
 
-The Paddle checkout widget is asynchronous. Once the user creates or updates a subscription within the widget, Paddle will send your application webhooks so that you may properly update the subscription state in our own database. Therefore, it's important that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
-
-For more information on pay links, you may review [the Paddle API documentation on pay link generation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink).
+The Paddle checkout widget is asynchronous. Once the user creates a subscription within the widget, Paddle will send your application a webhook so that you may properly update the subscription state in our own database. Therefore, it's important that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
 
 > **Warning**  
 > After a subscription state change, the delay for receiving the corresponding webhook is typically minimal but you should account for this in your application by considering that your user's subscription might not be immediately available after completing the checkout.
-
-<a name="manually-rendering-pay-links"></a>
-#### Manually Rendering Pay Links
-
-You may also manually render a pay link without using Laravel's built-in Blade components. To get started, generate the pay link URL as demonstrated in previous examples:
-
-    $payLink = $request->user()->newSubscription('default', $premium = 34567)
-        ->returnTo(route('home'))
-        ->create();
-
-Next, simply attach the pay link URL to an `a` element in your HTML:
-
-    <a href="#!" class="ml-4 paddle_button" data-override="{{ $payLink }}">
-        Paddle Checkout
-    </a>
-
-<a name="payments-requiring-additional-confirmation"></a>
-#### Payments Requiring Additional Confirmation
-
-Sometimes additional verification is required in order to confirm and process a payment. When this happens, Paddle will present a payment confirmation screen. Payment confirmation screens presented by Paddle or Cashier may be tailored to a specific bank or card issuer's payment flow and can include additional card confirmation, a temporary small charge, separate device authentication, or other forms of verification.
 
 <a name="inline-checkout"></a>
 ### Inline Checkout
 
 If you don't want to make use of Paddle's "overlay" style checkout widget, Paddle also provides the option to display the widget inline. While this approach does not allow you to adjust any of the checkout's HTML fields, it allows you to embed the widget within your application.
 
-To make it easy for you to get started with inline checkout, Cashier includes a `paddle-checkout` Blade component. To get started, you should [generate a pay link](#pay-links) and pass the pay link to the component's `override` attribute:
+To make it easy for you to get started with inline checkout, Cashier includes a `paddle-checkout` Blade component. To get started, you should [generate a checkout session](#overlay-checkout) and pass the checkout session to the component's `checkout` attribute:
 
 ```blade
-<x-paddle-checkout :override="$payLink" class="w-full" />
+<x-paddle-checkout :checkout="$checkout" class="w-full" />
 ```
 
 To adjust the height of the inline checkout component, you may pass the `height` attribute to the Blade component:
 
 ```blade
-<x-paddle-checkout :override="$payLink" class="w-full" height="500" />
+<x-paddle-checkout :checkout="$checkout" class="w-full" height="500" />
 ```
 
-<a name="inline-checkout-without-pay-links"></a>
-#### Inline Checkout Without Pay Links
-
-Alternatively, you may customize the widget with custom options instead of using a pay link:
-
-```blade
-@php
-$options = [
-    'product' => $productId,
-    'title' => 'Product Title',
-];
-@endphp
-
-<x-paddle-checkout :options="$options" class="w-full" />
-```
-
-Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/guides/how-tos/checkout/inline-checkout) as well as their [parameter reference](https://developer.paddle.com/reference/paddle-js/parameters) for further details on the inline checkout's available options.
+Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout) as well as their [checkout settings](https://developer.paddle.com/build/checkout/set-up-checkout-default-settings) for further details on the inline checkout's available options.
 
 > **Warning**  
-> If you would like to also use the `passthrough` option when specifying custom options, you should provide a key / value array as its value. Cashier will automatically handle converting the array to a JSON string. In addition, the `customer_id` passthrough option is reserved for internal Cashier usage.
+> If you would like to also use the `custom_data` option when specifying custom options, you should provide a key / value array as its value. In addition, the `subscription_type` custom data key is reserved for internal Cashier usage.
 
-<a name="manually-rendering-an-inline-checkout"></a>
-#### Manually Rendering An Inline Checkout
+<a name="guest-checkouts"></a>
+### Guest Checkouts
 
-You may also manually render an inline checkout without using Laravel's built-in Blade components. To get started, generate the pay link URL [as demonstrated in previous examples](#pay-links).
+Alternatively, you may create a guest checkout for customers who don't need an account on your site:
 
-Next, you may use Paddle.js to initialize the checkout. To keep this example simple, we will demonstrate this using [Alpine.js](https://github.com/alpinejs/alpine); however, you are free to translate this example to your own frontend stack:
+    use Illuminate\Http\Request;
+    use Laravel\Paddle\Checkout;
 
-```alpine
-<div class="paddle-checkout" x-data="{}" x-init="
-    Paddle.Checkout.open({
-        override: {{ $payLink }},
-        method: 'inline',
-        frameTarget: 'paddle-checkout',
-        frameInitialHeight: 366,
-        frameStyle: 'width: 100%; background-color: transparent; border: none;'
+    Route::get('/buy', function (Request $request) {
+        $checkout = Checkout::guest('pri_34567')
+            ->returnTo(route('home'));
+
+        return view('billing', ['checkout' => $checkout]);
     });
-">
-</div>
-```
 
-<a name="user-identification"></a>
-### User Identification
+Then use the checkout session with the paddle button or inline checkout Blade components as demonstrated above.
 
-In contrast to Stripe, Paddle users are unique across all of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to update a user's details such as their email address. When generating pay links, Paddle identifies users using the `customer_email` parameter. When creating a subscription, Paddle will try to match the user provided email to an existing Paddle user.
+<a name="price-previews"></a>
+## Price Previews
 
-In light of this behavior, there are some important things to keep in mind when using Cashier and Paddle. First, you should be aware that even though subscriptions in Cashier are tied to the same application user, **they could be tied to different users within Paddle's internal systems**. Secondly, each subscription has its own connected payment method information and could also have different email addresses within Paddle's internal systems (depending on which email was assigned to the user when the subscription was created).
-
-Therefore, when displaying subscriptions you should always inform the user which email address or payment method information is connected to the subscription on a per-subscription basis. Retrieving this information can be done with the following methods provided by the `Laravel\Paddle\Subscription` model:
-
-    $subscription = $user->subscription('default');
-
-    $subscription->paddleEmail();
-    $subscription->paymentMethod();
-    $subscription->cardBrand();
-    $subscription->cardLastFour();
-    $subscription->cardExpirationDate();
-
-There is currently no way to modify a user's email address through the Paddle API. When a user wants to update their email address within Paddle, the only way for them to do so is to contact Paddle customer support. When communicating with Paddle, they need to provide the `paddleEmail` value of the subscription to assist Paddle in updating the correct user.
-
-<a name="prices"></a>
-## Prices
-
-Paddle allows you to customize prices per currency, essentially allowing you to configure different prices for different countries. Cashier Paddle allows you to retrieve all of the prices for a given product using the `productPrices` method. This method accepts the product IDs of the products you wish to retrieve prices for:
+Paddle allows you to customize prices per currency, essentially allowing you to configure different prices for different countries. Cashier Paddle allows you to retrieve all of these prices using the `previewPrices` method. This method accepts the price IDs you wish to retrieve prices for:
 
     use Laravel\Paddle\Cashier;
 
-    $prices = Cashier::productPrices([123, 456]);
+    $prices = Cashier::previewPrices(['pri_123', 'pri_456']);
 
 The currency will be determined based on the IP address of the request; however, you may optionally provide a specific country to retrieve prices for:
 
     use Laravel\Paddle\Cashier;
 
-    $prices = Cashier::productPrices([123, 456], ['customer_country' => 'BE']);
+    $prices = Cashier::productPrices(['pri_123', 'pri_456'], ['address' => [
+        'country_code' => 'BE',
+        'postal_code' => '1234',
+    ]]);
 
 After retrieving the prices you may display them however you wish:
 
 ```blade
 <ul>
     @foreach ($prices as $price)
-        <li>{{ $price->product_title }} - {{ $price->price()->gross() }}</li>
+        <li>{{ $price->product['name'] }} - {{ $price->total() }}</li>
     @endforeach
 </ul>
 ```
 
-You may also display the net price (excludes tax) and display the tax amount separately:
+You may also display the subtotal price and display the tax amount separately:
 
 ```blade
 <ul>
     @foreach ($prices as $price)
-        <li>{{ $price->product_title }} - {{ $price->price()->net() }} (+ {{ $price->price()->tax() }} tax)</li>
+        <li>{{ $price->product_title }} - {{ $price->subtotal() }} (+ {{ $price->tax() }} tax)</li>
     @endforeach
 </ul>
 ```
 
-If you retrieved prices for subscription plans you can display their initial and recurring price separately:
+For more information, [check Paddle's API documentation on price previews](https://developer.paddle.com/api-reference/pricing-preview/preview-prices).
 
-```blade
-<ul>
-    @foreach ($prices as $price)
-        <li>{{ $price->product_title }} - Initial: {{ $price->initialPrice()->gross() }} - Recurring: {{ $price->recurringPrice()->gross() }}</li>
-    @endforeach
-</ul>
-```
-
-For more information, [check Paddle's API documentation on prices](https://developer.paddle.com/api-reference/checkout-api/prices/getprices).
-
-<a name="prices-customers"></a>
-#### Customers
+<a name="customer-price-previews"></a>
+### Customer Price Previews
 
 If a user is already a customer and you would like to display the prices that apply to that customer, you may do so by retrieving the prices directly from the customer instance:
 
     use App\Models\User;
 
-    $prices = User::find(1)->productPrices([123, 456]);
+    $prices = User::find(1)->previewPrices(['pri_123', 'pri_456']);
 
-Internally, Cashier will use the user's [`paddleCountry` method](#customer-defaults) to retrieve the prices in their currency. So, for example, a user living in the United States will see prices in USD while a user in Belgium will see prices in EUR. If no matching currency can be found the default currency of the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
+Please note that the billable instance must already be a customer within Paddle. Internally, Cashier will use the user's customer ID to retrieve the prices in their currency. So, for example, a user living in the United States will see prices in USD while a user in Belgium will see prices in EUR. If no matching currency can be found the default currency of the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
 
 <a name="prices-coupons"></a>
-#### Coupons
+### Coupons
 
-You may also choose to display prices after a coupon reduction. When calling the `productPrices` method, coupons may be passed as a comma delimited string:
+You may also choose to display prices after a coupon reduction. When calling the `previewPrices` method, one coupon ID may be passed like this:
 
     use Laravel\Paddle\Cashier;
 
-    $prices = Cashier::productPrices([123, 456], [
-        'coupons' => 'SUMMERSALE,20PERCENTOFF'
+    $prices = Cashier::previewPrices(['pri_123', 'pri_456'], [
+        'discount_id' => 'dsc_123'
     ]);
 
-Then, display the calculated prices using the `price` method:
+Then, display the calculated prices:
 
 ```blade
 <ul>
     @foreach ($prices as $price)
-        <li>{{ $price->product_title }} - {{ $price->price()->gross() }}</li>
+        <li>{{ $price->product['name'] }} - {{ $price->total() }}</li>
     @endforeach
 </ul>
 ```
-
-You may display the original listed prices (without coupon discounts) using the `listPrice` method:
-
-```blade
-<ul>
-    @foreach ($prices as $price)
-        <li>{{ $price->product_title }} - {{ $price->listPrice()->gross() }}</li>
-    @endforeach
-</ul>
-```
-
-> **Warning**  
-> When using the prices API, Paddle only allows applying coupons to one-time purchase products and not to subscription plans.
 
 <a name="customers"></a>
 ## Customers
@@ -479,6 +402,26 @@ Cashier allows you to define some useful defaults for your customers when creati
     }
 
 These defaults will be used for every action in Cashier that generates a [pay link](#pay-links).
+
+<a name="retrieving-customers"></a>
+### Retrieving Customers
+
+You can retrieve a customer by their Stripe ID using the `Cashier::findBillable` method. This method will return an instance of the billable model:
+
+    use Laravel\Cashier\Cashier;
+
+    $user = Cashier::findBillable($stripeId);
+
+<a name="creating-customers"></a>
+### Creating Customers
+
+Occasionally, you may wish to create a Stripe customer without beginning a subscription. You may accomplish this using the `createAsStripeCustomer` method:
+
+    $stripeCustomer = $user->createAsStripeCustomer();
+
+Once the customer has been created in Stripe, you may begin a subscription at a later date. You may provide an optional `$options` array to pass in any additional [customer creation parameters that are supported by the Stripe API](https://stripe.com/docs/api/customers/create):
+
+    $stripeCustomer = $user->createAsStripeCustomer($options);
 
 <a name="subscriptions"></a>
 ## Subscriptions
