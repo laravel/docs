@@ -11,13 +11,17 @@
     - [Paddle JS](#paddle-js)
     - [Currency Configuration](#currency-configuration)
     - [Overriding Default Models](#overriding-default-models)
-- [Core Concepts](#core-concepts)
-    - [Pay Links](#pay-links)
+- [Checkout Sessions](#checkout-sessions)
+    - [Overlay Checkout](#overlay-checkout)
     - [Inline Checkout](#inline-checkout)
-    - [User Identification](#user-identification)
-- [Prices](#prices)
+    - [Guest Checkouts](#guest-checkouts)
+- [Price Previews](#price-previews)
+    - [Customer Price Previews](#customer-price-previews)
+    - [Discounts](#price-discounts)
 - [Customers](#customers)
     - [Customer Defaults](#customer-defaults)
+    - [Retrieving Customers](#retrieving-customers)
+    - [Creating Customers](#creating-customers)
 - [Subscriptions](#subscriptions)
     - [Creating Subscriptions](#creating-subscriptions)
     - [Checking Subscription Status](#checking-subscription-status)
@@ -25,23 +29,23 @@
     - [Updating Payment Information](#updating-payment-information)
     - [Changing Plans](#changing-plans)
     - [Subscription Quantity](#subscription-quantity)
-    - [Subscription Modifiers](#subscription-modifiers)
+    - [Subscriptions With Multiple Products](#subscriptions-with-multiple-products)
     - [Multiple Subscriptions](#multiple-subscriptions)
     - [Pausing Subscriptions](#pausing-subscriptions)
     - [Canceling Subscriptions](#canceling-subscriptions)
 - [Subscription Trials](#subscription-trials)
     - [With Payment Method Up Front](#with-payment-method-up-front)
     - [Without Payment Method Up Front](#without-payment-method-up-front)
+    - [Extend Or Activate A Trial](#extend-or-activate-a-trial)
 - [Handling Paddle Webhooks](#handling-paddle-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Verifying Webhook Signatures](#verifying-webhook-signatures)
 - [Single Charges](#single-charges)
-    - [Simple Charge](#simple-charge)
     - [Charging Products](#charging-products)
-    - [Refunding Orders](#refunding-orders)
-- [Receipts](#receipts)
-    - [Past & Upcoming Payments](#past-and-upcoming-payments)
-- [Handling Failed Payments](#handling-failed-payments)
+    - [Refunding Transactions](#refunding-transactions)
+    - [Crediting Transactions](#crediting-transactions)
+- [Transactions](#transactions)
+    - [Upcoming Payment Date](#upcoming-payment-date)
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -169,13 +173,7 @@ Paddle relies on its own JavaScript library to initiate the Paddle checkout widg
 <a name="currency-configuration"></a>
 ### Currency Configuration
 
-The default Cashier currency is United States Dollars (USD). You can change the default currency by defining a `CASHIER_CURRENCY` environment variable within your application's `.env` file:
-
-```ini
-CASHIER_CURRENCY=EUR
-```
-
-In addition to configuring Cashier's currency, you may also specify a locale to be used when formatting money values for display on invoices. Internally, Cashier utilizes [PHP's `NumberFormatter` class](https://www.php.net/manual/en/class.numberformatter.php) to set the currency locale:
+You can specify a locale to be used when formatting money values for display on invoices and from money formatting methods. Internally, Cashier utilizes [PHP's `NumberFormatter` class](https://www.php.net/manual/en/class.numberformatter.php) to set the currency locale:
 
 ```ini
 CASHIER_CURRENCY_LOCALE=nl_BE
@@ -337,10 +335,10 @@ If a user is already a customer and you would like to display the prices that ap
 
 Please note that the billable instance must already be a customer within Paddle. Internally, Cashier will use the user's customer ID to retrieve the prices in their currency. So, for example, a user living in the United States will see prices in USD while a user in Belgium will see prices in EUR. If no matching currency can be found the default currency of the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
 
-<a name="prices-coupons"></a>
-### Coupons
+<a name="price-discounts"></a>
+### Discounts
 
-You may also choose to display prices after a coupon reduction. When calling the `previewPrices` method, one coupon ID may be passed like this:
+You may also choose to display prices after a discount. When calling the `previewPrices` method, one discount ID may be passed like this:
 
     use Laravel\Paddle\Cashier;
 
@@ -1047,8 +1045,8 @@ The `checkout` method accepts an array as its second argument, allowing you to p
         'custom_option' => $value,
     ]);
 
-<a name="refunding-orders"></a>
-### Refunding Orders
+<a name="refunding-transactions"></a>
+### Refunding Transactions
 
 If you need to refund a Paddle purchase, you may use the `refund` method. This method accepts the Paddle transaction ID as its first argument, a reason as the second argument and a list of transaction items to refund as its third argument. You may retrieve the transactions for a given billable model using the `transactions` method:
 
@@ -1077,8 +1075,8 @@ For more info, [see Paddle's documentation on refunds](https://developer.paddle.
 > **Warning**
 > Refunds always need to be approved by Paddle first.
 
-<a name="crediting-orders"></a>
-### crediting Orders
+<a name="crediting-transactions"></a>
+### Crediting Transactions
 
 Just like refunding, you can also credit transactions:
 
