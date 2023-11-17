@@ -210,8 +210,8 @@ After defining your model, you may instruct Cashier to use your custom model via
         Cashier::useTransactionModel(Transaction::class);
     }
 
-<a name="core-concepts"></a>
-## Core Concepts
+<a name="checkout-sessions"></a>
+## Checkout Sessions
 
 Most operations to bill customers are performed through Checkouts. There's two ways to perform these: through a [checkout overlay widget](https://developer.paddle.com/build/checkout/build-overlay-checkout) or an [inline checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout).
 
@@ -268,9 +268,6 @@ To adjust the height of the inline checkout component, you may pass the `height`
 ```
 
 Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout) as well as their [checkout settings](https://developer.paddle.com/build/checkout/set-up-checkout-default-settings) for further details on the inline checkout's available options.
-
-> **Warning**  
-> If you would like to also use the `custom_data` option when specifying custom options, you should provide a key / value array as its value. In addition, the `subscription_type` custom data key is reserved for internal Cashier usage.
 
 <a name="guest-checkouts"></a>
 ### Guest Checkouts
@@ -367,7 +364,15 @@ Then, display the calculated prices:
 <a name="customer-defaults"></a>
 ### Customer Defaults
 
-Cashier allows you to define some useful defaults for your customers when creating pay links. Setting these defaults allow you to pre-fill a customer's email address, country, and postal code so that they can immediately move on to the payment portion of the checkout widget. You can set these defaults by overriding the following methods on your billable model:
+Cashier allows you to define some useful defaults for your customers when creating checkout sessions. Setting these defaults allow you to pre-fill a customer's email address and name so that they can immediately move on to the payment portion of the checkout widget. You can set these defaults by overriding the following methods on your billable model:
+
+    /**
+     * Get the customer's name to associate with Paddle.
+     */
+    public function paddleName(): string|null
+    {
+        return $this->name;
+    }
 
     /**
      * Get the customer's email address to associate with Paddle.
@@ -377,51 +382,27 @@ Cashier allows you to define some useful defaults for your customers when creati
         return $this->email;
     }
 
-    /**
-     * Get the customer's country to associate with Paddle.
-     *
-     * This needs to be a 2 letter code. See the link below for supported countries.
-     *
-     * @link https://developer.paddle.com/reference/platform-parameters/supported-countries
-     */
-    public function paddleCountry(): string|null
-    {
-        // ...
-    }
-
-    /**
-     * Get the customer's postal code to associate with Paddle.
-     *
-     * See the link below for countries which require this.
-     *
-     * @link https://developer.paddle.com/reference/platform-parameters/supported-countries#countries-requiring-postcode
-     */
-    public function paddlePostcode(): string|null
-    {
-        // ...
-    }
-
-These defaults will be used for every action in Cashier that generates a [pay link](#pay-links).
+These defaults will be used for every action in Cashier that generates a [checkout session](#checkout-sessions).
 
 <a name="retrieving-customers"></a>
 ### Retrieving Customers
 
-You can retrieve a customer by their Stripe ID using the `Cashier::findBillable` method. This method will return an instance of the billable model:
+You can retrieve a customer by their Paddle Customer ID using the `Cashier::findBillable` method. This method will return an instance of the billable model:
 
     use Laravel\Cashier\Cashier;
 
-    $user = Cashier::findBillable($stripeId);
+    $user = Cashier::findBillable($customerId);
 
 <a name="creating-customers"></a>
 ### Creating Customers
 
-Occasionally, you may wish to create a Stripe customer without beginning a subscription. You may accomplish this using the `createAsStripeCustomer` method:
+Occasionally, you may wish to create a Paddle customer without beginning a subscription. You may accomplish this using the `createAsCustomer` method:
 
-    $stripeCustomer = $user->createAsStripeCustomer();
+    $customer = $user->createAsCustomer();
 
-Once the customer has been created in Stripe, you may begin a subscription at a later date. You may provide an optional `$options` array to pass in any additional [customer creation parameters that are supported by the Stripe API](https://stripe.com/docs/api/customers/create):
+An instance of `Laravel\Paddle\Customer` is returned. Once the customer has been created in Paddle, you may begin a subscription at a later date. You may provide an optional `$options` array to pass in any additional [customer creation parameters that are supported by the Paddle API](https://developer.paddle.com/api-reference/customers/create-customer):
 
-    $stripeCustomer = $user->createAsStripeCustomer($options);
+    $customer = $user->createAsCustomer($options);
 
 <a name="subscriptions"></a>
 ## Subscriptions
@@ -429,68 +410,51 @@ Once the customer has been created in Stripe, you may begin a subscription at a 
 <a name="creating-subscriptions"></a>
 ### Creating Subscriptions
 
-To create a subscription, first retrieve an instance of your billable model from your database, which typically will be an instance of `App\Models\User`. Once you have retrieved the model instance, you may use the `newSubscription` method to create the model's subscription pay link:
+To create a subscription, first retrieve an instance of your billable model from your database, which typically will be an instance of `App\Models\User`. Once you have retrieved the model instance, you may use the `subscribe` method to create the model's checkout session:
 
     use Illuminate\Http\Request;
 
     Route::get('/user/subscribe', function (Request $request) {
-        $payLink = $request->user()->newSubscription('default', $premium = 12345)
-            ->returnTo(route('home'))
-            ->create();
+        $checkout = $request->user()->subscribe($premium = 12345, 'default')
+            ->returnTo(route('home'));
 
-        return view('billing', ['payLink' => $payLink]);
+        return view('billing', ['checkout' => $checkout]);
     });
 
-The first argument passed to the `newSubscription` method should be the internal name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. This subscription name is only for internal application usage and is not meant to be shown to users. In addition, it should not contain spaces and it should never be changed after creating the subscription. The second argument given to the `newSubscription` method is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Paddle. The `returnTo` method accepts a URL that your user will be redirected to after they successfully complete the checkout.
+The first argument given to the `subscribe` method is the specific price the user is subscribing to. This value should correspond to the price's identifier in Paddle. The `returnTo` method accepts a URL that your user will be redirected to after they successfully complete the checkout. The second argument passed to the `subscribe` method should be the internal type of the subscription. If your application only offers a single subscription, you might call this `default` or `primary` or leave it blank which will use `default`. This subscription type is only for internal application usage and is not meant to be shown to users. In addition, it should not contain spaces and it should never be changed after creating the subscription. 
 
-The `create` method will create a pay link which you can use to generate a payment button. The payment button can be generated using the `paddle-button` [Blade component](/docs/{{version}}/blade#components) that is included with Cashier Paddle:
+The payment button can be generated using the `paddle-button` [Blade component](/docs/{{version}}/blade#components) that is included with Cashier Paddle:
 
 ```blade
-<x-paddle-button :url="$payLink" class="px-8 py-4">
+<x-paddle-button :checkout="$checkout" class="px-8 py-4">
     Subscribe
 </x-paddle-button>
 ```
 
 After the user has finished their checkout, a `subscription_created` webhook will be dispatched from Paddle. Cashier will receive this webhook and setup the subscription for your customer. In order to make sure all webhooks are properly received and handled by your application, ensure you have properly [setup webhook handling](#handling-paddle-webhooks).
 
-<a name="additional-details"></a>
-#### Additional Details
+<a name="custom-data"></a>
+#### Custom Data
 
-If you would like to specify additional customer or subscription details, you may do so by passing them as an array of key / value pairs to the `create` method. To learn more about the additional fields supported by Paddle, check out Paddle's documentation on [generating pay links](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink):
+You can also pass an array of custom data using the third argument:
 
-    $payLink = $user->newSubscription('default', $monthly = 12345)
-        ->returnTo(route('home'))
-        ->create([
-            'vat_number' => $vatNumber,
-        ]);
-
-<a name="subscriptions-coupons"></a>
-#### Coupons
-
-If you would like to apply a coupon when creating the subscription, you may use the `withCoupon` method:
-
-    $payLink = $user->newSubscription('default', $monthly = 12345)
-        ->returnTo(route('home'))
-        ->withCoupon('code')
-        ->create();
-
-<a name="metadata"></a>
-#### Metadata
-
-You can also pass an array of metadata using the `withMetadata` method:
-
-    $payLink = $user->newSubscription('default', $monthly = 12345)
-        ->returnTo(route('home'))
-        ->withMetadata(['key' => 'value'])
-        ->create();
+    $checkout = $request->user()->subscribe($premium = 12345, 'default')
+        ->customData(['key' => 'value'])
+        ->returnTo(route('home'));
 
 > **Warning**  
-> When providing metadata, please avoid using `subscription_name` as a metadata key. This key is reserved for internal use by Cashier.
+> When providing custom data, please avoid using `subscription_type` as a key. This key is reserved for internal use by Cashier.
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
 
-Once a user is subscribed to your application, you may check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an active subscription, even if the subscription is currently within its trial period:
+Once a user is subscribed to your application, you may check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an valid subscription, even if the subscription is currently within its trial period:
+
+    if ($user->subscribed()) {
+        // ...
+    }
+
+Alternatively, if you're using a different subscription type, you may pass the type as an argument:
 
     if ($user->subscribed('default')) {
         // ...
@@ -515,7 +479,7 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
          */
         public function handle(Request $request, Closure $next): Response
         {
-            if ($request->user() && ! $request->user()->subscribed('default')) {
+            if ($request->user() && ! $request->user()->subscribed()) {
                 // This user is not a paying customer...
                 return redirect('billing');
             }
@@ -526,40 +490,34 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
 
 If you would like to determine if a user is still within their trial period, you may use the `onTrial` method. This method can be useful for determining if you should display a warning to the user that they are still on their trial period:
 
-    if ($user->subscription('default')->onTrial()) {
+    if ($user->subscription()->onTrial()) {
         // ...
     }
 
-The `subscribedToPlan` method may be used to determine if the user is subscribed to a given plan based on a given Paddle plan ID. In this example, we will determine if the user's `default` subscription is actively subscribed to the monthly plan:
+The `subscribedToPrice` method may be used to determine if the user is subscribed to a given plan based on a given Paddle price ID. In this example, we will determine if the user's `default` subscription is actively subscribed to the monthly price:
 
-    if ($user->subscribedToPlan($monthly = 12345, 'default')) {
+    if ($user->subscribedToPrice($monthly = 'pri_123', 'default')) {
         // ...
     }
 
-The `recurring` method may be used to determine if the user is currently subscribed and is no longer within their trial period:
+The `recurring` method may be used to determine if the user is currently on an active subscription and is no longer within their trial period or on a grace period:
 
-    if ($user->subscription('default')->recurring()) {
+    if ($user->subscription()->recurring()) {
         // ...
     }
 
-<a name="cancelled-subscription-status"></a>
-#### Cancelled Subscription Status
+<a name="canceled-subscription-status"></a>
+#### Canceled Subscription Status
 
-To determine if the user was once an active subscriber but has cancelled their subscription, you may use the `cancelled` method:
+To determine if the user was once an active subscriber but has canceled their subscription, you may use the `canceled` method:
 
-    if ($user->subscription('default')->cancelled()) {
+    if ($user->subscription()->canceled()) {
         // ...
     }
 
-You may also determine if a user has cancelled their subscription, but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time:
+You may also determine if a user has canceled their subscription, but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time:
 
-    if ($user->subscription('default')->onGracePeriod()) {
-        // ...
-    }
-
-To determine if the user has cancelled their subscription and is no longer within their "grace period", you may use the `ended` method:
-
-    if ($user->subscription('default')->ended()) {
+    if ($user->subscription()->onGracePeriod()) {
         // ...
     }
 
@@ -568,13 +526,13 @@ To determine if the user has cancelled their subscription and is no longer withi
 
 If a payment fails for a subscription, it will be marked as `past_due`. When your subscription is in this state it will not be active until the customer has updated their payment information. You may determine if a subscription is past due using the `pastDue` method on the subscription instance:
 
-    if ($user->subscription('default')->pastDue()) {
+    if ($user->subscription()->pastDue()) {
         // ...
     }
 
-When a subscription is past due, you should instruct the user to [update their payment information](#updating-payment-information). You may configure how past due subscriptions are handled in your [Paddle subscription settings](https://vendors.paddle.com/subscription-settings).
+When a subscription is past due, you should instruct the user to [update their payment information](#updating-payment-information).
 
-If you would like subscriptions to still be considered active when they are `past_due`, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
+If you would like subscriptions to still be considered valid when they are `past_due`, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
 
     use Laravel\Paddle\Cashier;
 
@@ -594,85 +552,96 @@ If you would like subscriptions to still be considered active when they are `pas
 
 Most subscription states are also available as query scopes so that you may easily query your database for subscriptions that are in a given state:
 
-    // Get all active subscriptions...
-    $subscriptions = Subscription::query()->active()->get();
+    // Get all valid subscriptions...
+    $subscriptions = Subscription::query()->valid()->get();
 
-    // Get all of the cancelled subscriptions for a user...
-    $subscriptions = $user->subscriptions()->cancelled()->get();
+    // Get all of the canceled subscriptions for a user...
+    $subscriptions = $user->subscriptions()->canceled()->get();
 
 A complete list of available scopes is available below:
 
-    Subscription::query()->active();
+    Subscription::query()->valid();
     Subscription::query()->onTrial();
+    Subscription::query()->expiredTrial();
     Subscription::query()->notOnTrial();
-    Subscription::query()->pastDue();
+    Subscription::query()->active();
     Subscription::query()->recurring();
-    Subscription::query()->ended();
+    Subscription::query()->pastDue();
     Subscription::query()->paused();
     Subscription::query()->notPaused();
     Subscription::query()->onPausedGracePeriod();
     Subscription::query()->notOnPausedGracePeriod();
-    Subscription::query()->cancelled();
-    Subscription::query()->notCancelled();
+    Subscription::query()->canceled();
+    Subscription::query()->notCanceled();
     Subscription::query()->onGracePeriod();
     Subscription::query()->notOnGracePeriod();
 
 <a name="subscription-single-charges"></a>
 ### Subscription Single Charges
 
-Subscription single charges allow you to charge subscribers with a one-time charge on top of their subscriptions:
+Subscription single charges allow you to charge subscribers with a one-time charge on top of their subscriptions. You must provide one or multiple price ID's for this:
 
-    $response = $user->subscription('default')->charge(12.99, 'Support Add-on');
+    // Charge a single price...
+    $response = $user->subscription()->charge('pri_123');
 
-In contrast to [single charges](#single-charges), this method will immediately charge the customer's stored payment method for the subscription. The charge amount should always be defined in the currency of the subscription.
+    // Charge multiple prices at once...
+    $response = $user->subscription()->charge(['pri_123', 'pri_456']);
+
+This method will delay charging the customer until the next billing interval of the subscription. If you would like to bill the customer immediately you may use the `chargeAndInvoice` method:
+
+    $response = $user->subscription()->chargeAndInvoice('pri_123');
 
 <a name="updating-payment-information"></a>
 ### Updating Payment Information
 
-Paddle always saves a payment method per subscription. If you want to update the default payment method for a subscription, you should first generate a subscription "update URL" using the `updateUrl` method on the subscription model:
+Paddle always saves a payment method per subscription. If you want to update the default payment method for a subscription, you should redirect your customer to the dedicated Paddle page using the `redirectToUpdatePaymentMethod` method on the subscription model:
 
-    use App\Models\User;
+    use Illuminate\Http\Request;
 
-    $user = User::find(1);
+    Route::get('/update-payment-method', function (Request $request) {
+        $user = $request->user();
 
-    $updateUrl = $user->subscription('default')->updateUrl();
-
-Then, you may use the generated URL in combination with Cashier's provided `paddle-button` Blade component to allow the user to initiate the Paddle widget and update their payment information:
-
-```html
-<x-paddle-button :url="$updateUrl" class="px-8 py-4">
-    Update Card
-</x-paddle-button>
-```
+        return $user->subscription()->redirectToUpdatePaymentMethod();
+    });
 
 When a user has finished updating their information, a `subscription_updated` webhook will be dispatched by Paddle and the subscription details will be updated in your application's database.
 
 <a name="changing-plans"></a>
 ### Changing Plans
 
-After a user has subscribed to your application, they may occasionally want to change to a new subscription plan. To update the subscription plan for a user, you should pass the Paddle plan's identifier to the subscription's `swap` method:
+After a user has subscribed to your application, they may occasionally want to change to a new subscription plan. To update the subscription plan for a user, you should pass the Paddle price's identifier to the subscription's `swap` method:
 
     use App\Models\User;
 
     $user = User::find(1);
 
-    $user->subscription('default')->swap($premium = 34567);
+    $user->subscription()->swap($premium = 'pri_456');
 
 If you would like to swap plans and immediately invoice the user instead of waiting for their next billing cycle, you may use the `swapAndInvoice` method:
 
     $user = User::find(1);
 
-    $user->subscription('default')->swapAndInvoice($premium = 34567);
+    $user->subscription()->swapAndInvoice($premium = 'pri_456');
 
 > **Warning**  
-> Plans may not be swapped when a trial is active. For additional information regarding this limitation, please see the [Paddle documentation](https://developer.paddle.com/api-reference/subscription-api/users/updateuser#usage-notes).
+> Plans may not be swapped when a trial is active. For additional information regarding this limitation, please see the [Paddle documentation](https://developer.paddle.com/api-reference/subscription-api/users/updateuser#usage-notes). // TODO: is this possible now in Paddle Billing?
 
 <a name="prorations"></a>
 #### Prorations
 
-By default, Paddle prorates charges when swapping between plans. The `noProrate` method may be used to update the subscriptions without prorating the charges:
+By default, Paddle prorates charges when swapping between plans on the subscription renewal date. The `noProrate` method may be used to update the subscriptions without prorating the charges:
 
-    $user->subscription('default')->noProrate()->swap($premium = 34567);
+    $user->subscription('default')->noProrate()->swap($premium = 'pri_456');
+
+If you would like to not prorate the charges and invoice immediately you may use the `swapAndInvoice` method in combination with `noProrate`:
+
+    $user->subscription('default')->noProrate()->swapAndInvoice($premium = 'pri_456');
+
+When there's a scenario that you do not wish to bill your customer for the changes made you can use the `doNotBill` method:
+
+    $user->subscription('default')->doNotBill()->swap($premium = 'pri_456');
+
+For more info on proration in Paddle, see [its dedicated guide](https://developer.paddle.com/concepts/subscriptions/proration).
 
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
@@ -681,87 +650,90 @@ Sometimes subscriptions are affected by "quantity". For example, a project manag
 
     $user = User::find(1);
 
-    $user->subscription('default')->incrementQuantity();
+    $user->subscription()->incrementQuantity();
 
     // Add five to the subscription's current quantity...
-    $user->subscription('default')->incrementQuantity(5);
+    $user->subscription()->incrementQuantity(5);
 
-    $user->subscription('default')->decrementQuantity();
+    $user->subscription()->decrementQuantity();
 
     // Subtract five from the subscription's current quantity...
-    $user->subscription('default')->decrementQuantity(5);
+    $user->subscription()->decrementQuantity(5);
 
 Alternatively, you may set a specific quantity using the `updateQuantity` method:
 
-    $user->subscription('default')->updateQuantity(10);
+    $user->subscription()->updateQuantity(10);
 
 The `noProrate` method may be used to update the subscription's quantity without prorating the charges:
 
-    $user->subscription('default')->noProrate()->updateQuantity(10);
+    $user->subscription()->noProrate()->updateQuantity(10);
 
-<a name="subscription-modifiers"></a>
-### Subscription Modifiers
+<a name="quantities-for-subscription-with-multiple-products"></a>
+#### Quantities For Subscriptions With Multiple Products
 
-Subscription modifiers allow you to implement [metered billing](https://developer.paddle.com/guides/how-tos/subscriptions/metered-billing#using-subscription-price-modifiers) or extend subscriptions with add-ons.
+If your subscription is a [subscription with multiple products](#subscriptions-with-multiple-products), you should pass the ID of the price whose quantity you wish to increment or decrement as the second argument to the increment / decrement methods:
 
-For example, you might want to offer a "Premium Support" add-on with your standard subscription. You can create this modifier like so:
+    $user->subscription()->incrementQuantity(1, 'price_chat');
 
-    $modifier = $user->subscription('default')->newModifier(12.99)->create();
+<a name="subscriptions-with-multiple-products"></a>
+### Subscriptions With Multiple Products
 
-The example above will add a $12.99 add-on to the subscription. By default, this charge will recur on every interval you have configured for the subscription. If you would like, you can add a readable description to the modifier using the modifier's `description` method:
+[Subscription with multiple products](https://developer.paddle.com/build/subscriptions/add-remove-products-prices-addons) allow you to assign multiple billing products to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription price of $10 per month but offers a live chat add-on product for an additional $15 per month. Information for subscriptions with multiple products is stored in Cashier's `subscription_items` database table.
 
-    $modifier = $user->subscription('default')->newModifier(12.99)
-        ->description('Premium Support')
-        ->create();
+You may specify multiple products for a given subscription by passing an array of prices as the first argument to the `subscribe` method:
 
-To illustrate how to implement metered billing using modifiers, imagine your application charges per SMS message sent by the user. First, you should create a $0 plan in your Paddle dashboard. Once the user has been subscribed to this plan, you can add modifiers representing each individual charge to the subscription:
+    use Illuminate\Http\Request;
 
-    $modifier = $user->subscription('default')->newModifier(0.99)
-        ->description('New text message')
-        ->oneTime()
-        ->create();
+    Route::post('/user/subscribe', function (Request $request) {
+        $checkout = $request->user()->subscribe([
+            'price_monthly',
+            'price_chat',
+        ]);
 
-As you can see, we invoked the `oneTime` method when creating this modifier. This method will ensure the modifier is only charged once and does not recur every billing interval.
+        return view('billing', ['checkout' => $checkout]);
+    });
 
-<a name="retrieving-modifiers"></a>
-#### Retrieving Modifiers
+In the example above, the customer will have two prices attached to their `default` subscription. Both prices will be charged on their respective billing intervals. If necessary, you use a key/value approach to indicate a specific quantity for each price. Simply define the price ID as the key and the quantity as the value:
 
-You may retrieve a list of all modifiers for a subscription via the `modifiers` method:
+    $user = User::find(1);
 
-    $modifiers = $user->subscription('default')->modifiers();
+    $checkout = $user->subscribe('default', ['price_monthly', ['price_chat' => 5]]);
 
-    foreach ($modifiers as $modifier) {
-        $modifier->amount(); // $0.99
-        $modifier->description; // New text message.
-    }
+If you would like to add another price to an existing subscription, you may must use the subscription's `swap` method and add the current used prices as well. Also don't forget to set the current quantities on original prices:
 
-<a name="deleting-modifiers"></a>
-#### Deleting Modifiers
+    $user = User::find(1);
 
-Modifiers may be deleted by invoking the `delete` method on a `Laravel\Paddle\Modifier` instance:
+    $user->subscription()->swap(['price_chat', ['price_original' => 2]]);
 
-    $modifier->delete();
+The example above will add the new price and the customer will be billed for it on their next billing cycle. If you would like to bill the customer immediately you may use the `swapAndInvoice` method:
+
+    $user->subscription()->swapAndInvoice(['price_chat', ['price_original' => 2]]);
+
+You may remove prices from subscriptions using the `swap` method and omitting the price you want to remove:
+
+    $user->subscription()->swap(['price_original' => 2]);
+
+> **Warning**  
+> You may not remove the last price on a subscription. Instead, you should simply cancel the subscription.
 
 <a name="multiple-subscriptions"></a>
 ### Multiple Subscriptions
 
 Paddle allows your customers to have multiple subscriptions simultaneously. For example, you may run a gym that offers a swimming subscription and a weight-lifting subscription, and each subscription may have different pricing. Of course, customers should be able to subscribe to either or both plans.
 
-When your application creates subscriptions, you may provide the name of the subscription to the `newSubscription` method. The name may be any string that represents the type of subscription the user is initiating:
+When your application creates subscriptions, you may provide the type of the subscription to the `subscribe` method as the second argument. The type may be any string that represents the type of subscription the user is initiating:
 
     use Illuminate\Http\Request;
 
     Route::post('/swimming/subscribe', function (Request $request) {
-        $request->user()
-            ->newSubscription('swimming', $swimmingMonthly = 12345)
-            ->create($request->paymentMethodId);
+        $checkout = $request->user()->subscribe($swimmingMonthly = 'pri_123', 'swimming');
 
-        // ...
+        return view('billing', ['checkout' => $checkout]);
     });
 
 In this example, we initiated a monthly swimming subscription for the customer. However, they may want to swap to a yearly subscription at a later time. When adjusting the customer's subscription, we can simply swap the price on the `swimming` subscription:
 
-    $user->subscription('swimming')->swap($swimmingYearly = 34567);
+    $user->subscription('swimming')->swap($swimmingYearly = 'pri_456');
 
 Of course, you may also cancel the subscription entirely:
 
@@ -772,41 +744,57 @@ Of course, you may also cancel the subscription entirely:
 
 To pause a subscription, call the `pause` method on the user's subscription:
 
-    $user->subscription('default')->pause();
+    $user->subscription()->pause();
 
-When a subscription is paused, Cashier will automatically set the `paused_from` column in your database. This column is used to know when the `paused` method should begin returning `true`. For example, if a customer pauses a subscription on March 1st, but the subscription was not scheduled to recur until March 5th, the `paused` method will continue to return `false` until March 5th. This is done because a user is typically allowed to continue using an application until the end of their billing cycle.
+When a subscription is paused, Cashier will automatically set the `paused_at` column in your database. This column is used to know when the `paused` method should begin returning `true`. For example, if a customer pauses a subscription on March 1st, but the subscription was not scheduled to recur until March 5th, the `paused` method will continue to return `false` until March 5th. This is done because a user is typically allowed to continue using an application until the end of their billing cycle.
+
+By default, pausing happens at the next billing interval so the customer can use the remainder of the period they paid for. If you want to pause immediately, you may use `pauseNow`:
+
+    $user->subscription()->pauseNow();
+
+You can also pause the subscription until a specific moment in time, let's say, for a month:
+
+    $user->subscription()->pauseUntil(now()->addMonth());
+
+Or if you would like to use a combination of the two above:
+
+    $user->subscription()->pauseNowUntil(now()->addMonth());
 
 You may determine if a user has paused their subscription but are still on their "grace period" using the `onPausedGracePeriod` method:
 
-    if ($user->subscription('default')->onPausedGracePeriod()) {
+    if ($user->subscription()->onPausedGracePeriod()) {
         // ...
     }
 
-To resume a paused a subscription, you may call the `unpause` method on the user's subscription:
+To resume a paused a subscription, you may call the `resume` method on the user's subscription:
 
-    $user->subscription('default')->unpause();
+    $user->subscription()->resume();
 
 > **Warning**  
-> A subscription cannot be modified while it is paused. If you want to swap to a different plan or update quantities you must resume the subscription first.
+> A subscription cannot be modified while it is paused. If you want to swap to a different plan or update quantities you must resume the subscription first. // TODO: still applicable?
 
-<a name="cancelling-subscriptions"></a>
-### Cancelling Subscriptions
+<a name="canceling-subscriptions"></a>
+### Canceling Subscriptions
 
 To cancel a subscription, call the `cancel` method on the user's subscription:
 
-    $user->subscription('default')->cancel();
+    $user->subscription()->cancel();
 
-When a subscription is cancelled, Cashier will automatically set the `ends_at` column in your database. This column is used to know when the `subscribed` method should begin returning `false`. For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th. This is done because a user is typically allowed to continue using an application until the end of their billing cycle.
+When a subscription is canceled, Cashier will automatically set the `ends_at` column in your database. This column is used to know when the `subscribed` method should begin returning `false`. For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th. This is done because a user is typically allowed to continue using an application until the end of their billing cycle.
 
-You may determine if a user has cancelled their subscription but are still on their "grace period" using the `onGracePeriod` method:
+You may determine if a user has canceled their subscription but are still on their "grace period" using the `onGracePeriod` method:
 
-    if ($user->subscription('default')->onGracePeriod()) {
+    if ($user->subscription()->onGracePeriod()) {
         // ...
     }
 
 If you wish to cancel a subscription immediately, you may call the `cancelNow` method on the user's subscription:
 
-    $user->subscription('default')->cancelNow();
+    $user->subscription()->cancelNow();
+
+To stop a cancelation from happening, call `stopCancel`:
+
+    $user->subscription()->stopCancel();
 
 > **Warning**  
 > Paddle's subscriptions cannot be resumed after cancellation. If your customer wishes to resume their subscription, they will have to subscribe to a new subscription.
@@ -818,7 +806,7 @@ If you wish to cancel a subscription immediately, you may call the `cancelNow` m
 ### With Payment Method Up Front
 
 > **Warning**  
-> While trialing and collecting payment method details up front, Paddle prevents any subscription changes such as swapping plans or updating quantities. If you want to allow a customer to swap plans during a trial the subscription must be cancelled and recreated.
+> While trialing and collecting payment method details up front, Paddle prevents any subscription changes such as swapping plans or updating quantities. If you want to allow a customer to swap plans during a trial the subscription must be canceled and recreated.
 
 If you would like to offer trial periods to your customers while still collecting payment method information up front, you should use the `trialDays` method when creating your subscription pay links:
 
@@ -836,7 +824,7 @@ If you would like to offer trial periods to your customers while still collectin
 This method will set the trial period ending date on the subscription record within your application's database, as well as instruct Paddle to not begin billing the customer until after this date.
 
 > **Warning**  
-> If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
+> If the customer's subscription is not canceled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
 
 You may determine if the user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
 
@@ -922,7 +910,7 @@ To ensure your application can handle Paddle webhooks, be sure to [configure the
 
 - Subscription Created
 - Subscription Updated
-- Subscription Cancelled
+- Subscription Canceled
 - Payment Succeeded
 - Subscription Payment Succeeded
 
@@ -1149,7 +1137,7 @@ You may use the `lastPayment` and `nextPayment` methods to retrieve and display 
     $lastPayment = $subscription->lastPayment();
     $nextPayment = $subscription->nextPayment();
 
-Both of these methods will return an instance of `Laravel\Paddle\Payment`; however, `nextPayment` will return `null` when the billing cycle has ended (such as when a subscription has been cancelled):
+Both of these methods will return an instance of `Laravel\Paddle\Payment`; however, `nextPayment` will return `null` when the billing cycle has ended (such as when a subscription has been canceled):
 
 ```blade
 Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
