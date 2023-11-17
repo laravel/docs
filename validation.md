@@ -2306,6 +2306,23 @@ If you only need the functionality of a custom rule once throughout your applica
         ],
     ]);
 
+In addition, the closure also receives the `$validator` instance, which provides access to the entire validation context. This enables sophisticated validation logic, including attribute comparisons and leveraging values from other attributes, to handle complex validation scenarios:
+
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Validator as ValidationValidator;
+    use Closure;
+
+    $validator = Validator::make($request->input('payment', []), [
+        'payment_method' => [
+            'required',
+            function (string $attribute, mixed $value, Closure $fail, ValidationValidator $validator) {
+                if (!valid_payment_method($value, $validator->getValue('country')) {
+                    $fail("The {$attribute} is invalid.");
+                }
+            },
+        ],
+    ]);
+
 <a name="implicit-rules"></a>
 ### Implicit Rules
 
