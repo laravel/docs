@@ -54,6 +54,20 @@ In this example, we'll define an accessor for the `first_name` attribute. The ac
 
 All accessor methods return an `Attribute` instance which defines how the attribute will be accessed and, optionally, mutated. In this example, we are only defining how the attribute will be accessed. To do so, we supply the `get` argument to the `Attribute` class constructor.
 
+Alternatively, you can define an accessor by creating a protected `getFooAttribute` method on your model where `Foo` is the camel cased name of the attribute column name.
+
+```php
+ /**
+ * Get the user's first name.
+ *
+ * @param string $value Original value.
+ * @return string       Returned value.
+ */
+protected function getFirstNameAttribute(string $value): string {
+    return ucfirst($value);
+}
+```
+
 As you can see, the original value of the column is passed to the accessor, allowing you to manipulate and return the value. To access the value of the accessor, you may simply access the `first_name` attribute on a model instance:
 
     use App\Models\User;
@@ -156,7 +170,23 @@ A mutator transforms an Eloquent attribute value when it is set. To define a mut
         }
     }
 
-The mutator closure will receive the value that is being set on the attribute, allowing you to manipulate the value and return the manipulated value. To use our mutator, we only need to set the `first_name` attribute on an Eloquent model:
+The mutator closure will receive the value that is being set on the attribute, allowing you to manipulate the value and return the manipulated value.
+
+You can also define a mutator by creating a protected `setFooAttribute` method on your model where `Foo` is the camel cased name of the attribute column name.
+
+```php
+ /**
+ * Set the user's first name.
+ *
+ * @param string $value Attribute value.
+ * @return void
+ */
+protected function setFirstNameAttribute(string $value): void {
+    $this->attributes['first_name'] = strtolower($value);
+}
+```
+
+To use our mutator, we only need to set the `first_name` attribute on an Eloquent model:
 
     use App\Models\User;
 
