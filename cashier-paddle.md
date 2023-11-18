@@ -621,9 +621,6 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription()->swapAndInvoice($premium = 'pri_456');
 
-> **Warning**  
-> Plans may not be swapped when a trial is active. For additional information regarding this limitation, please see the [Paddle documentation](https://developer.paddle.com/api-reference/subscription-api/users/updateuser#usage-notes). // TODO: is this possible now in Paddle Billing?
-
 <a name="prorations"></a>
 #### Prorations
 
@@ -769,7 +766,7 @@ To resume a paused a subscription, you may call the `resume` method on the user'
     $user->subscription()->resume();
 
 > **Warning**  
-> A subscription cannot be modified while it is paused. If you want to swap to a different plan or update quantities you must resume the subscription first. // TODO: still applicable?
+> A subscription cannot be modified while it is paused. If you want to swap to a different plan or update quantities you must resume the subscription first.
 
 <a name="canceling-subscriptions"></a>
 ### Canceling Subscriptions
@@ -802,9 +799,6 @@ To stop a subscription on its grace period from canceling, call `stopCancel`:
 
 <a name="with-payment-method-up-front"></a>
 ### With Payment Method Up Front
-
-> **Warning**  
-> While trialing and collecting payment method details up front, Paddle prevents any subscription changes such as swapping plans or updating quantities. If you want to allow a customer to swap plans during a trial the subscription must be canceled and recreated. // TODO: check if this is still the case
 
 If you would like to offer trial periods to your customers while still collecting payment method information up front, you should use set a trial time in the Paddle dashboard on the price your customer is subscribing to. Then, initiate the checkout session as normal:
 
@@ -911,7 +905,7 @@ Or you could immediately activate a subscription by ending its trial calling `ac
 
 Paddle can notify your application of a variety of events via webhooks. By default, a route that points to Cashier's webhook controller is registered by the Cashier service provider. This controller will handle all incoming webhook requests.
 
-By default, this controller will automatically handle canceling subscriptions that have too many failed charges ([as defined by your Paddle dunning settings](https://vendors.paddle.com/recover-settings#dunning-form-id)), subscription updates, and payment method changes; however, as we'll soon discover, you can extend this controller to handle any Paddle webhook event you like. // TODO: Paddle Billing doesn't seems to have this
+By default, this controller will automatically handle canceling subscriptions that have too many failed charges, subscription updates, and payment method changes; however, as we'll soon discover, you can extend this controller to handle any Paddle webhook event you like.
 
 To ensure your application can handle Paddle webhooks, be sure to [configure the webhook URL in the Paddle control panel](https://vendors.paddle.com/alerts-webhooks). By default, Cashier's webhook controller responds to the `/paddle/webhook` URL path. The full list of all webhooks you should enable in the Paddle control panel are:
 
@@ -1048,7 +1042,9 @@ The `checkout` method accepts an array as its second argument, allowing you to p
 <a name="refunding-transactions"></a>
 ### Refunding Transactions
 
-If you need to refund a Paddle purchase, you may use the `refund` method. This method accepts the Paddle transaction ID as its first argument, a reason as the second argument and a list of transaction items to refund as its third argument. You may retrieve the transactions for a given billable model using the `transactions` method:
+If you need to refund a Paddle purchase, you may use the `refund` method on a `Cashier\Paddle\Transaction` model. This method accepts a reason as the first argument, one or more price ID's as an array to refund with optional amounts paired as key/values. You may retrieve the transactions for a given billable model using the `transactions` method and then perform the refund.
+
+Let's say we want to refund a specific transaction for prices `pri_123` and `pri_456`. We want to fully refund `pri_123` but `pri_456` only for 2 dollar:
 
     use App\Models\User;
 
@@ -1056,19 +1052,14 @@ If you need to refund a Paddle purchase, you may use the `refund` method. This m
 
     $transaction = $user->transactions()->first();
 
-    $response = $user->refund($transaction->paddle_id, 'Accidental charge', [
-        [
-            'item_id' => 'txnitm_123', // TODO: explain how to retrieve these
-            'type' => 'partial',
-            'amount' => 100,
-        ],
-        [
-            'item_id' => 'txnitm_456',
-            'type' => 'full',
-        ],
+    $response = $transaction->refund('Accidental charge', [
+        'pri_123', // Fully refund this price...
+        ['pri_456' => 200], // Only partially refund this price...
     ]);
 
-The above will refund item `txitm_123` partially for 1 dollar (if the currency was in USD) and will refund item `txitm_456` fully. Both of these items need to belong to the given transaction.
+The above refunds specific line items in a transaction. If you want to refund the entire transaction fully, simply provide a reason:
+
+    $response = $transaction->refund('Accidental charge');
 
 For more info, [see Paddle's documentation on refunds](https://developer.paddle.com/build/transactions/create-transaction-adjustments).
 
@@ -1082,15 +1073,10 @@ Just like refunding, you can also credit transactions:
 
     $transaction = $user->transactions()->first();
 
-    $response = $user->credit($transaction->paddle_id, 'Compensation', [
-        [
-            'item_id' => 'txnitm_123',
-            'type' => 'partial',
-            'amount' => 100,
-        ]
-    ]);
+    // Credit a specific line item fully...
+    $response = $transaction->credit('Compensation', 'pri_123');
 
-For more info, [see Paddle's documentation on credits](https://developer.paddle.com/build/transactions/create-transaction-adjustments).
+For more info, [see Paddle's documentation on crediting](https://developer.paddle.com/build/transactions/create-transaction-adjustments).
 
 > **Warning**
 > Credits can only be applied for manually-collected transactions. Automatically-collected transactions are credited by Paddle themselves.
