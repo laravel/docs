@@ -1312,7 +1312,7 @@ You may also choose to cancel the subscription at a specific moment in time:
         now()->addDays(10)
     );
 
-Should the time come when you need to (soft) delete a user account, make sure you don't forget to cancel their subscription first:
+You should also always cancel user subscriptions before deleting the associated user model:
 
     $user->subscription('default')->cancelNow();
 
