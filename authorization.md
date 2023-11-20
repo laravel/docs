@@ -579,6 +579,7 @@ Like the `can` method, this method accepts the name of the action you wish to au
     use App\Models\Post;
     use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Gate;
 
     class PostController extends Controller
     {
@@ -589,7 +590,7 @@ Like the `can` method, this method accepts the name of the action you wish to au
          */
         public function update(Request $request, Post $post): RedirectResponse
         {
-            $this->authorize('update', $post);
+            Gate::authorize('update', $post);
 
             // The current user can update the blog post...
 
@@ -605,6 +606,7 @@ As previously discussed, some policy methods like `create` do not require a mode
     use App\Models\Post;
     use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Gate;
 
     /**
      * Create a new blog post.
@@ -613,7 +615,7 @@ As previously discussed, some policy methods like `create` do not require a mode
      */
     public function create(Request $request): RedirectResponse
     {
-        $this->authorize('create', Post::class);
+        Gate::authorize('create', Post::class);
 
         // The current user can create blog posts...
 
@@ -641,7 +643,7 @@ The `authorizeResource` method accepts the model's class name as its first argum
          */
         public function __construct()
         {
-            $this->authorizeResource(Post::class, 'post');
+            $this->authorizeResource(Post::class, 'post'); // TODO
         }
     }
 
@@ -783,7 +785,7 @@ When attempting to determine if the authenticated user can update a given post, 
      */
     public function update(Request $request, Post $post): RedirectResponse
     {
-        $this->authorize('update', [$post, $request->category]);
+        Gate::authorize('update', [$post, $request->category]);
 
         // The current user can update the blog post...
 
