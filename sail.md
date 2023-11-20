@@ -430,12 +430,14 @@ sail share
 
 When sharing your site via the `share` command, you should configure your application's trusted proxies within the `TrustProxies` middleware. Otherwise, URL generation helpers such as `url` and `route` will be unable to determine the correct HTTP host that should be used during URL generation:
 
-    /**
-     * The trusted proxies for this application.
-     *
-     * @var array|string|null
-     */
-    protected $proxies = '*';
+```php
+/**
+ * The trusted proxies for this application.
+ *
+ * @var array|string|null
+ */
+protected $proxies = '*';
+```
 
 If you would like to choose the subdomain for your shared site, you may provide the `subdomain` option when executing the `share` command:
 

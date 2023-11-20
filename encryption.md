@@ -22,39 +22,43 @@ Before using Laravel's encrypter, you must set the `key` configuration option in
 
 You may encrypt a value using the `encryptString` method provided by the `Crypt` facade. All encrypted values are encrypted using OpenSSL and the AES-256-CBC cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC). The integrated message authentication code will prevent the decryption of any values that have been tampered with by malicious users:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use Illuminate\Http\RedirectResponse;
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Crypt;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
-    class DigitalOceanTokenController extends Controller
+class DigitalOceanTokenController extends Controller
+{
+    /**
+     * Store a DigitalOcean API token for the user.
+     */
+    public function store(Request $request): RedirectResponse
     {
-        /**
-         * Store a DigitalOcean API token for the user.
-         */
-        public function store(Request $request): RedirectResponse
-        {
-            $request->user()->fill([
-                'token' => Crypt::encryptString($request->token),
-            ])->save();
+        $request->user()->fill([
+            'token' => Crypt::encryptString($request->token),
+        ])->save();
 
-            return redirect('/secrets');
-        }
+        return redirect('/secrets');
     }
+}
+```
 
 <a name="decrypting-a-value"></a>
 #### Decrypting A Value
 
 You may decrypt values using the `decryptString` method provided by the `Crypt` facade. If the value can not be properly decrypted, such as when the message authentication code is invalid, an `Illuminate\Contracts\Encryption\DecryptException` will be thrown:
 
-    use Illuminate\Contracts\Encryption\DecryptException;
-    use Illuminate\Support\Facades\Crypt;
+```php
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 
-    try {
-        $decrypted = Crypt::decryptString($encryptedValue);
-    } catch (DecryptException $e) {
-        // ...
-    }
+try {
+    $decrypted = Crypt::decryptString($encryptedValue);
+} catch (DecryptException $e) {
+    // ...
+}
+```

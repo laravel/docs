@@ -134,7 +134,9 @@ Redis [cache tag](/docs/{{version}}/cache#cache-tags) support has been rewritten
 
 However, to properly prune stale cache tag entries, Laravel's new `cache:prune-stale-tags` Artisan command should be [scheduled](/docs/{{version}}/scheduling) in your application's `App\Console\Kernel` class:
 
-    $schedule->command('cache:prune-stale-tags')->hourly();
+```php
+$schedule->command('cache:prune-stale-tags')->hourly();
+```
 
 ### Database
 
@@ -169,11 +171,15 @@ The `Illuminate\Database\QueryException` constructor now accepts a string connec
 
 When migrations invoke the `ulid` method without any arguments, the column will now be named `ulid`. In previous releases of Laravel, invoking this method without any arguments created a column erroneously named `uuid`:
 
-    $table->ulid();
+```php
+$table->ulid();
+```
 
 To explicitly specify a column name when invoking the `ulid` method, you may pass the column name to the method:
 
-    $table->ulid('ulid');
+```php
+$table->ulid('ulid');
+```
 
 ### Eloquent
 

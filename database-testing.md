@@ -16,27 +16,29 @@ Laravel provides a variety of helpful tools and assertions to make it easier to 
 
 Before proceeding much further, let's discuss how to reset your database after each of your tests so that data from a previous test does not interfere with subsequent tests. Laravel's included `Illuminate\Foundation\Testing\RefreshDatabase` trait will take care of this for you. Simply use the trait on your test class:
 
-    <?php
+```php
+<?php
 
-    namespace Tests\Feature;
+namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * A basic functional test example.
+     */
+    public function test_basic_example(): void
     {
-        use RefreshDatabase;
+        $response = $this->get('/');
 
-        /**
-         * A basic functional test example.
-         */
-        public function test_basic_example(): void
-        {
-            $response = $this->get('/');
-
-            // ...
-        }
+        // ...
     }
+}
+```
 
 The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database.
 
@@ -49,85 +51,93 @@ When testing, you may need to insert a few records into your database before exe
 
 To learn more about creating and utilizing model factories to create models, please consult the complete [model factory documentation](/docs/{{version}}/eloquent-factories). Once you have defined a model factory, you may utilize the factory within your test to create models:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    public function test_models_can_be_instantiated(): void
-    {
-        $user = User::factory()->create();
+public function test_models_can_be_instantiated(): void
+{
+    $user = User::factory()->create();
 
-        // ...
-    }
+    // ...
+}
+```
 
 <a name="running-seeders"></a>
 ## Running Seeders
 
 If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a feature test, you may invoke the `seed` method. By default, the `seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
 
-    <?php
+```php
+<?php
 
-    namespace Tests\Feature;
+namespace Tests\Feature;
 
-    use Database\Seeders\OrderStatusSeeder;
-    use Database\Seeders\TransactionStatusSeeder;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Tests\TestCase;
+use Database\Seeders\OrderStatusSeeder;
+use Database\Seeders\TransactionStatusSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * Test creating a new order.
+     */
+    public function test_orders_can_be_created(): void
     {
-        use RefreshDatabase;
+        // Run the DatabaseSeeder...
+        $this->seed();
 
-        /**
-         * Test creating a new order.
-         */
-        public function test_orders_can_be_created(): void
-        {
-            // Run the DatabaseSeeder...
-            $this->seed();
+        // Run a specific seeder...
+        $this->seed(OrderStatusSeeder::class);
 
-            // Run a specific seeder...
-            $this->seed(OrderStatusSeeder::class);
+        // ...
 
+        // Run an array of specific seeders...
+        $this->seed([
+            OrderStatusSeeder::class,
+            TransactionStatusSeeder::class,
             // ...
-
-            // Run an array of specific seeders...
-            $this->seed([
-                OrderStatusSeeder::class,
-                TransactionStatusSeeder::class,
-                // ...
-            ]);
-        }
+        ]);
     }
+}
+```
 
 Alternatively, you may instruct Laravel to automatically seed the database before each test that uses the `RefreshDatabase` trait. You may accomplish this by defining a `$seed` property on your base test class:
 
-    <?php
+```php
+<?php
 
-    namespace Tests;
+namespace Tests;
 
-    use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
-    abstract class TestCase extends BaseTestCase
-    {
-        use CreatesApplication;
+abstract class TestCase extends BaseTestCase
+{
+    use CreatesApplication;
 
-        /**
-         * Indicates whether the default seeder should run before each test.
-         *
-         * @var bool
-         */
-        protected $seed = true;
-    }
+    /**
+     * Indicates whether the default seeder should run before each test.
+     *
+     * @var bool
+     */
+    protected $seed = true;
+}
+```
 
 When the `$seed` property is `true`, the test will run the `Database\Seeders\DatabaseSeeder` class before each test that uses the `RefreshDatabase` trait. However, you may specify a specific seeder that should be executed by defining a `$seeder` property on your test class:
 
-    use Database\Seeders\OrderStatusSeeder;
+```php
+use Database\Seeders\OrderStatusSeeder;
 
-    /**
-     * Run a specific seeder before each test.
-     *
-     * @var string
-     */
-    protected $seeder = OrderStatusSeeder::class;
+/**
+ * Run a specific seeder before each test.
+ *
+ * @var string
+ */
+protected $seeder = OrderStatusSeeder::class;
+```
 
 <a name="available-assertions"></a>
 ## Available Assertions
@@ -139,69 +149,85 @@ Laravel provides several database assertions for your [PHPUnit](https://phpunit.
 
 Assert that a table in the database contains the given number of records:
 
-    $this->assertDatabaseCount('users', 5);
+```php
+$this->assertDatabaseCount('users', 5);
+```
 
 <a name="assert-database-has"></a>
 #### assertDatabaseHas
 
 Assert that a table in the database contains records matching the given key / value query constraints:
 
-    $this->assertDatabaseHas('users', [
-        'email' => 'sally@example.com',
-    ]);
+```php
+$this->assertDatabaseHas('users', [
+    'email' => 'sally@example.com',
+]);
+```
 
 <a name="assert-database-missing"></a>
 #### assertDatabaseMissing
 
 Assert that a table in the database does not contain records matching the given key / value query constraints:
 
-    $this->assertDatabaseMissing('users', [
-        'email' => 'sally@example.com',
-    ]);
+```php
+$this->assertDatabaseMissing('users', [
+    'email' => 'sally@example.com',
+]);
+```
 
 <a name="assert-deleted"></a>
 #### assertSoftDeleted
 
 The `assertSoftDeleted` method may be used to assert a given Eloquent model has been "soft deleted":
 
-    $this->assertSoftDeleted($user);
-    
+```php
+$this->assertSoftDeleted($user);
+```
+
 <a name="assert-not-deleted"></a>
 #### assertNotSoftDeleted
 
 The `assertNotSoftDeleted` method may be used to assert a given Eloquent model hasn't been "soft deleted":
 
-    $this->assertNotSoftDeleted($user);
+```php
+$this->assertNotSoftDeleted($user);
+```
 
 <a name="assert-model-exists"></a>
 #### assertModelExists
 
 Assert that a given model exists in the database:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    $user = User::factory()->create();
+$user = User::factory()->create();
 
-    $this->assertModelExists($user);
+$this->assertModelExists($user);
+```
 
 <a name="assert-model-missing"></a>
 #### assertModelMissing
 
 Assert that a given model does not exist in the database:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    $user = User::factory()->create();
+$user = User::factory()->create();
 
-    $user->delete();
+$user->delete();
 
-    $this->assertModelMissing($user);
+$this->assertModelMissing($user);
+```
 
 <a name="expects-database-query-count"></a>
 #### expectsDatabaseQueryCount
 
 The `expectsDatabaseQueryCount` method may be invoked at the beginning of your test to specify the total number of database queries that you expect to be run during the test. If the actual number of executed queries does not exactly match this expectation, the test will fail:
 
-    $this->expectsDatabaseQueryCount(5);
+```php
+$this->expectsDatabaseQueryCount(5);
 
-    // Test...
+// Test...
+```

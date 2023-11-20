@@ -92,7 +92,9 @@ APP_NAME="My Application"
 
 All of the variables listed in the `.env` file will be loaded into the `$_ENV` PHP super-global when your application receives a request. However, you may use the `env` function to retrieve values from these variables in your configuration files. In fact, if you review the Laravel configuration files, you will notice many of the options are already using this function:
 
-    'debug' => env('APP_DEBUG', false),
+```php
+'debug' => env('APP_DEBUG', false),
+```
 
 The second value passed to the `env` function is the "default value". This value will be returned if no environment variable exists for the given key.
 
@@ -101,19 +103,23 @@ The second value passed to the `env` function is the "default value". This value
 
 The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
 
-    use Illuminate\Support\Facades\App;
+```php
+use Illuminate\Support\Facades\App;
 
-    $environment = App::environment();
+$environment = App::environment();
+```
 
 You may also pass arguments to the `environment` method to determine if the environment matches a given value. The method will return `true` if the environment matches any of the given values:
 
-    if (App::environment('local')) {
-        // The environment is local
-    }
+```php
+if (App::environment('local')) {
+    // The environment is local
+}
 
-    if (App::environment(['local', 'staging'])) {
-        // The environment is either local OR staging...
-    }
+if (App::environment(['local', 'staging'])) {
+    // The environment is either local OR staging...
+}
+```
 
 > **Note**  
 > The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable.
@@ -187,14 +193,18 @@ php artisan env:decrypt --force
 
 You may easily access your configuration values using the global `config` function from anywhere in your application. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
 
-    $value = config('app.timezone');
+```php
+$value = config('app.timezone');
 
-    // Retrieve a default value if the configuration value does not exist...
-    $value = config('app.timezone', 'Asia/Seoul');
+// Retrieve a default value if the configuration value does not exist...
+$value = config('app.timezone', 'Asia/Seoul');
+```
 
 To set configuration values at runtime, pass an array to the `config` function:
 
-    config(['app.timezone' => 'America/Chicago']);
+```php
+config(['app.timezone' => 'America/Chicago']);
+```
 
 <a name="configuration-caching"></a>
 ## Configuration Caching

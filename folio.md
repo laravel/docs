@@ -22,7 +22,7 @@
 
 For example, to create a page that is accessible at the `/greeting` URL, just create a `greeting.blade.php` file in your application's `resources/views/pages` directory:
 
-```php
+```html
 <div>
     Hello World
 </div>

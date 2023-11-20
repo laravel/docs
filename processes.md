@@ -585,16 +585,18 @@ Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result
 
 If you would like to ensure that all invoked processes have been faked throughout your individual test or complete test suite, you can call the `preventStrayProcesses` method. After calling this method, any processes that do not have a corresponding fake result will throw an exception rather than starting an actual process:
 
-    use Illuminate\Support\Facades\Process;
+```php
+use Illuminate\Support\Facades\Process;
 
-    Process::preventStrayProcesses();
+Process::preventStrayProcesses();
 
-    Process::fake([
-        'ls *' => 'Test output...',
-    ]);
+Process::fake([
+    'ls *' => 'Test output...',
+]);
 
-    // Fake response is returned...
-    Process::run('ls -la');
+// Fake response is returned...
+Process::run('ls -la');
 
-    // An exception is thrown...
-    Process::run('bash import.sh');
+// An exception is thrown...
+Process::run('bash import.sh');
+```

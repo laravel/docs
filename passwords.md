@@ -56,9 +56,11 @@ To properly implement support for allowing users to reset their passwords, we wi
 
 First, we will define the routes that are needed to request password reset links. To get started, we will define a route that returns a view with the password reset link request form:
 
-    Route::get('/forgot-password', function () {
-        return view('auth.forgot-password');
-    })->middleware('guest')->name('password.request');
+```php
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->middleware('guest')->name('password.request');
+```
 
 The view that is returned by this route should have a form containing an `email` field, which will allow the user to request a password reset link for a given email address.
 
@@ -67,20 +69,22 @@ The view that is returned by this route should have a form containing an `email`
 
 Next, we will define a route that handles the form submission request from the "forgot password" view. This route will be responsible for validating the email address and sending the password reset request to the corresponding user:
 
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Password;
+```php
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 
-    Route::post('/forgot-password', function (Request $request) {
-        $request->validate(['email' => 'required|email']);
+Route::post('/forgot-password', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
 
-        return $status === Password::RESET_LINK_SENT
-                    ? back()->with(['status' => __($status)])
-                    : back()->withErrors(['email' => __($status)]);
-    })->middleware('guest')->name('password.email');
+    return $status === Password::RESET_LINK_SENT
+                ? back()->with(['status' => __($status)])
+                : back()->withErrors(['email' => __($status)]);
+})->middleware('guest')->name('password.email');
+```
 
 Before moving on, let's examine this route in more detail. First, the request's `email` attribute is validated. Next, we will use Laravel's built-in "password broker" (via the `Password` facade) to send a password reset link to the user. The password broker will take care of retrieving the user by the given field (in this case, the email address) and sending the user a password reset link via Laravel's built-in [notification system](/docs/{{version}}/notifications).
 
@@ -102,9 +106,11 @@ You may be wondering how Laravel knows how to retrieve the user record from your
 
 Next, we will define the routes necessary to actually reset the password once the user clicks on the password reset link that has been emailed to them and provides a new password. First, let's define the route that will display the reset password form that is displayed when the user clicks the reset password link. This route will receive a `token` parameter that we will use later to verify the password reset request:
 
-    Route::get('/reset-password/{token}', function (string $token) {
-        return view('auth.reset-password', ['token' => $token]);
-    })->middleware('guest')->name('password.reset');
+```php
+Route::get('/reset-password/{token}', function (string $token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
+```
 
 The view that is returned by this route should display a form containing an `email` field, a `password` field, a `password_confirmation` field, and a hidden `token` field, which should contain the value of the secret `$token` received by our route.
 
@@ -113,37 +119,39 @@ The view that is returned by this route should display a form containing an `ema
 
 Of course, we need to define a route to actually handle the password reset form submission. This route will be responsible for validating the incoming request and updating the user's password in the database:
 
-    use App\Models\User;
-    use Illuminate\Auth\Events\PasswordReset;
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Hash;
-    use Illuminate\Support\Facades\Password;
-    use Illuminate\Support\Str;
+```php
+use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
-    Route::post('/reset-password', function (Request $request) {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
-        ]);
+Route::post('/reset-password', function (Request $request) {
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
 
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user, string $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60));
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function (User $user, string $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
 
-                $user->save();
+            $user->save();
 
-                event(new PasswordReset($user));
-            }
-        );
+            event(new PasswordReset($user));
+        }
+    );
 
-        return $status === Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withErrors(['email' => [__($status)]]);
-    })->middleware('guest')->name('password.update');
+    return $status === Password::PASSWORD_RESET
+                ? redirect()->route('login')->with('status', __($status))
+                : back()->withErrors(['email' => [__($status)]]);
+})->middleware('guest')->name('password.update');
+```
 
 Before moving on, let's examine this route in more detail. First, the request's `token`, `email`, and `password` attributes are validated. Next, we will use Laravel's built-in "password broker" (via the `Password` facade) to validate the password reset request credentials.
 
@@ -164,7 +172,9 @@ php artisan auth:clear-resets
 
 If you would like to automate this process, consider adding the command to your application's [scheduler](/docs/{{version}}/scheduling):
 
-    $schedule->command('auth:clear-resets')->everyFifteenMinutes();
+```php
+$schedule->command('auth:clear-resets')->everyFifteenMinutes();
+```
 
 <a name="password-customization"></a>
 ## Customization
@@ -174,34 +184,38 @@ If you would like to automate this process, consider adding the command to your 
 
 You may customize the password reset link URL using the `createUrlUsing` method provided by the `ResetPassword` notification class. This method accepts a closure which receives the user instance that is receiving the notification as well as the password reset link token. Typically, you should call this method from your `App\Providers\AuthServiceProvider` service provider's `boot` method:
 
-    use App\Models\User;
-    use Illuminate\Auth\Notifications\ResetPassword;
+```php
+use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 
-    /**
-     * Register any authentication / authorization services.
-     */
-    public function boot(): void
-    {
-        ResetPassword::createUrlUsing(function (User $user, string $token) {
-            return 'https://example.com/reset-password?token='.$token;
-        });
-    }
+/**
+ * Register any authentication / authorization services.
+ */
+public function boot(): void
+{
+    ResetPassword::createUrlUsing(function (User $user, string $token) {
+        return 'https://example.com/reset-password?token='.$token;
+    });
+}
+```
 
 <a name="reset-email-customization"></a>
 #### Reset Email Customization
 
 You may easily modify the notification class used to send the password reset link to the user. To get started, override the `sendPasswordResetNotification` method on your `App\Models\User` model. Within this method, you may send the notification using any [notification class](/docs/{{version}}/notifications) of your own creation. The password reset `$token` is the first argument received by the method. You may use this `$token` to build the password reset URL of your choice and send your notification to the user:
 
-    use App\Notifications\ResetPasswordNotification;
+```php
+use App\Notifications\ResetPasswordNotification;
 
-    /**
-     * Send a password reset notification to the user.
-     *
-     * @param  string  $token
-     */
-    public function sendPasswordResetNotification($token): void
-    {
-        $url = 'https://example.com/reset-password?token='.$token;
+/**
+ * Send a password reset notification to the user.
+ *
+ * @param  string  $token
+ */
+public function sendPasswordResetNotification($token): void
+{
+    $url = 'https://example.com/reset-password?token='.$token;
 
-        $this->notify(new ResetPasswordNotification($url));
-    }
+    $this->notify(new ResetPasswordNotification($url));
+}
+```
