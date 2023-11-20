@@ -272,7 +272,7 @@ Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/
 <a name="guest-checkouts"></a>
 ### Guest Checkouts
 
-Sometimes, you may need to create a checkout session for users that do not have an account within your own application. To do so, you may use the `guest` method:
+Sometimes, you may need to create a checkout session for users that do not need an account with your application. To do so, you may use the `guest` method:
 
     use Illuminate\Http\Request;
     use Laravel\Paddle\Checkout;
