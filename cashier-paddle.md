@@ -255,7 +255,18 @@ The Paddle checkout widget is asynchronous. Once the user creates a subscription
 
 If you don't want to make use of Paddle's "overlay" style checkout widget, Paddle also provides the option to display the widget inline. While this approach does not allow you to adjust any of the checkout's HTML fields, it allows you to embed the widget within your application.
 
-To make it easy for you to get started with inline checkout, Cashier includes a `paddle-checkout` Blade component. To get started, you should [generate a checkout session](#overlay-checkout) and pass the checkout session to the component's `checkout` attribute:
+To make it easy for you to get started with inline checkout, Cashier includes a `paddle-checkout` Blade component. To get started, you should [generate a checkout session](#overlay-checkout):
+
+    use Illuminate\Http\Request;
+
+    Route::get('/buy', function (Request $request) {
+        $checkout = $user->checkout('pri_34567')
+            ->returnTo(route('dashboard'));
+
+        return view('billing', ['checkout' => $checkout]);
+    });
+
+Now you may pass the checkout session to the component's `checkout` attribute:
 
 ```blade
 <x-paddle-checkout :checkout="$checkout" class="w-full" />
@@ -268,6 +279,36 @@ To adjust the height of the inline checkout component, you may pass the `height`
 ```
 
 Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout) and [available checkout settings](https://developer.paddle.com/build/checkout/set-up-checkout-default-settings) for further details on the inline checkout's customization options.
+
+<a name="manually-rendering-an-inline-checkout"></a>
+#### Manually Rendering An Inline Checkout
+
+You may also manually render an inline checkout without using Laravel's built-in Blade components. To get started, generate the checkout session [as demonstrated in previous examples](#inline-checkout):
+
+    use Illuminate\Http\Request;
+
+    Route::get('/buy', function (Request $request) {
+        $checkout = $user->checkout('pri_34567')
+            ->returnTo(route('dashboard'));
+
+        return view('billing', ['checkout' => $checkout]);
+    });
+
+Next, you may use Paddle.js to initialize the checkout. To keep this example simple, we will demonstrate this using [Alpine.js](https://github.com/alpinejs/alpine); however, you are free to translate this example to your own frontend stack:
+
+```alpine
+<?php
+$options = $checkout->options();
+
+$options['settings']['frameTarget'] = 'paddle-checkout';
+$options['settings']['frameInitialHeight'] = 366;
+?>
+
+<div class="paddle-checkout" x-data="{}" x-init="
+    Paddle.Checkout.open(@json($options));
+">
+</div>
+```
 
 <a name="guest-checkouts"></a>
 ### Guest Checkouts
