@@ -243,6 +243,8 @@ By default, this will display the widget using Paddle's default styling. You can
 </x-paddle-button>
 ```
 
+For more attributes you can [consult the Paddle docs](https://developer.paddle.com/paddlejs/html-data-attributes).
+
 The Paddle checkout widget is asynchronous. Once the user creates a subscription within the widget, Paddle will send your application a webhook so that you may properly update the subscription state in your application's database. Therefore, it's important that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
 
 > **Warning**  
@@ -333,7 +335,7 @@ If a user is already a customer and you would like to display the prices that ap
 
     $prices = User::find(1)->previewPrices(['pri_123', 'pri_456']);
 
-Please note that the billable instance must already be a customer within Paddle. Internally, Cashier will use the user's customer ID to retrieve the prices in their currency. So, for example, a user living in the United States will see prices in US dollars while a user in Belgium will see prices in Euros. If no matching currency can be found, the default currency of the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
+Internally, Cashier will use the user's customer ID to retrieve the prices in their currency. So, for example, a user living in the United States will see prices in US dollars while a user in Belgium will see prices in Euros. If no matching currency can be found, the default currency of the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
 
 <a name="price-discounts"></a>
 ### Discounts
@@ -434,7 +436,7 @@ After the user has finished their checkout, a `subscription_created` webhook wil
 <a name="custom-data"></a>
 #### Custom Data
 
-You can also pass an array of custom data using the third argument:
+You can also pass an array of custom data using the `customData` method:
 
     $checkout = $request->user()->subscribe($premium = 12345, 'default')
         ->customData(['key' => 'value'])
@@ -692,17 +694,17 @@ In the example above, the customer will have two prices attached to their `defau
 
     $user = User::find(1);
 
-    $checkout = $user->subscribe('default', ['price_monthly', ['price_chat' => 5]]);
+    $checkout = $user->subscribe('default', ['price_monthly', 'price_chat' => 5]);
 
 If you would like to add another price to an existing subscription, you must use the subscription's `swap` method. When invoking the `swap` method, you should also include the subscription's current prices and quantities as well:
 
     $user = User::find(1);
 
-    $user->subscription()->swap(['price_chat', ['price_original' => 2]]);
+    $user->subscription()->swap(['price_chat', 'price_original' => 2]);
 
 The example above will add the new price, but the customer will not be billed for it until their next billing cycle. If you would like to bill the customer immediately you may use the `swapAndInvoice` method:
 
-    $user->subscription()->swapAndInvoice(['price_chat', ['price_original' => 2]]);
+    $user->subscription()->swapAndInvoice(['price_chat', 'price_original' => 2]);
 
 You may remove prices from subscriptions using the `swap` method and omitting the price you want to remove:
 
@@ -787,9 +789,9 @@ If you wish to cancel a subscription immediately, you may call the `cancelNow` m
 
     $user->subscription()->cancelNow();
 
-To stop a subscription on its grace period from canceling, you may invoke the `stopCancel` method:
+To stop a subscription on its grace period from canceling, you may invoke the `stopCancelation` method:
 
-    $user->subscription()->stopCancel();
+    $user->subscription()->stopCancelation();
 
 > **Warning**  
 > Paddle's subscriptions cannot be resumed after cancelation. If your customer wishes to resume their subscription, they will have to create a new subscription.
@@ -1020,7 +1022,7 @@ If you would like to initiate a product purchase for a customer, you may use the
     use Illuminate\Http\Request;
 
     Route::get('/buy', function (Request $request) {
-        $checkout = $request->user()->checkout(['pri_tshirt', ['pri_socks' => 5]]);
+        $checkout = $request->user()->checkout(['pri_tshirt', 'pri_socks' => 5]);
 
         return view('buy', ['checkout' => $checkout]);
     });
@@ -1033,11 +1035,12 @@ After generating the checkout session, you may use Cashier's provided `paddle-bu
 </x-paddle-button>
 ```
 
-The `checkout` method accepts an array as its second argument, allowing you to pass any custom data you wish to the underlying transaction creation. Please consult [the Paddle documentation](https://developer.paddle.com/build/transactions/custom-data) to learn more about the options available to you when passing custom data:
+A checkout session has a `customData` method, allowing you to pass any custom data you wish to the underlying transaction creation. Please consult [the Paddle documentation](https://developer.paddle.com/build/transactions/custom-data) to learn more about the options available to you when passing custom data:
 
-    $checkout = $user->checkout('pri_tshirt', [
-        'custom_option' => $value,
-    ]);
+    $checkout = $user->checkout('pri_tshirt')
+        ->customData([
+            'custom_option' => $value,
+        ]);
 
 <a name="refunding-transactions"></a>
 ### Refunding Transactions
@@ -1054,7 +1057,7 @@ For example, imagine we want to refund a specific transaction for prices `pri_12
 
     $response = $transaction->refund('Accidental charge', [
         'pri_123', // Fully refund this price...
-        ['pri_456' => 200], // Only partially refund this price...
+        'pri_456' => 200, // Only partially refund this price...
     ]);
 
 The example above refunds specific line items in a transaction. If you want to refund the entire transaction, simply provide a reason:
