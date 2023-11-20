@@ -1312,6 +1312,12 @@ You may also choose to cancel the subscription at a specific moment in time:
         now()->addDays(10)
     );
 
+Finally, you should always cancel user subscriptions before deleting the associated user model:
+
+    $user->subscription('default')->cancelNow();
+
+    $user->delete();
+
 <a name="resuming-subscriptions"></a>
 ### Resuming Subscriptions
 
