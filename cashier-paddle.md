@@ -1045,7 +1045,7 @@ A checkout session has a `customData` method, allowing you to pass any custom da
 <a name="refunding-transactions"></a>
 ### Refunding Transactions
 
-If you need to refund a Paddle purchase, you may use the `refund` method on a `Cashier\Paddle\Transaction` model. This method accepts a reason as the first argument, one or more price ID's to refund with optional amounts as an associative array. You may retrieve the transactions for a given billable model using the `transactions` method.
+Refunding transactions will return the refunded amount to your customer's payment method used at the time of purchase. If you need to refund a Paddle purchase, you may use the `refund` method on a `Cashier\Paddle\Transaction` model. This method accepts a reason as the first argument, one or more price ID's to refund with optional amounts as an associative array. You may retrieve the transactions for a given billable model using the `transactions` method.
 
 For example, imagine we want to refund a specific transaction for prices `pri_123` and `pri_456`. We want to fully refund `pri_123`, but only refund two dollars for `pri_456`:
 
@@ -1072,7 +1072,7 @@ For more information on refunds, please consult [Paddle's refund documentation](
 <a name="crediting-transactions"></a>
 ### Crediting Transactions
 
-Just like refunding, you can also credit transactions:
+Just like refunding, you can also credit transactions. Crediting transactions will add the funds to the customer's balance so it may be used for future purchases. Crediting transactions can only be done for manually-collected transactions and not for automatically-collected transactions (like subscriptions) since Paddle handles that for you.
 
     $transaction = $user->transactions()->first();
 
