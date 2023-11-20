@@ -1121,26 +1121,26 @@ Schema::table('users', function (Blueprint $table) {
 
 The following table contains all of the available column modifiers. This list does not include [index modifiers](#creating-indexes):
 
-Modifier  |  Description
---------  |  -----------
-`->after('column')`  |  Place the column "after" another column (MySQL).
-`->autoIncrement()`  |  Set INTEGER columns as auto-incrementing (primary key).
-`->charset('utf8mb4')`  |  Specify a character set for the column (MySQL).
-`->collation('utf8mb4_unicode_ci')`  |  Specify a collation for the column (MySQL/PostgreSQL/SQL Server).
-`->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL).
-`->default($value)`  |  Specify a "default" value for the column.
-`->first()`  |  Place the column "first" in the table (MySQL).
-`->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL).
-`->invisible()`  |  Make the column "invisible" to `SELECT *` queries (MySQL).
-`->nullable($value = true)`  |  Allow NULL values to be inserted into the column.
-`->storedAs($expression)`  |  Create a stored generated column (MySQL / PostgreSQL).
-`->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
-`->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.
-`->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated (MySQL).
-`->virtualAs($expression)`  |  Create a virtual generated column (MySQL / PostgreSQL / SQLite).
-`->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL).
-`->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL).
-`->isGeometry()`  |  Set spatial column type to `geometry` - the default type is `geography` (PostgreSQL).
+| Modifier                            | Description                                                                               |
+|-------------------------------------|-------------------------------------------------------------------------------------------|
+| `->after('column')`                 | Place the column "after" another column (MySQL).                                          |
+| `->autoIncrement()`                 | Set INTEGER columns as auto-incrementing (primary key).                                   |
+| `->charset('utf8mb4')`              | Specify a character set for the column (MySQL).                                           |
+| `->collation('utf8mb4_unicode_ci')` | Specify a collation for the column (MySQL/PostgreSQL/SQL Server).                         |
+| `->comment('my comment')`           | Add a comment to a column (MySQL/PostgreSQL).                                             |
+| `->default($value)`                 | Specify a "default" value for the column.                                                 |
+| `->first()`                         | Place the column "first" in the table (MySQL).                                            |
+| `->from($integer)`                  | Set the starting value of an auto-incrementing field (MySQL / PostgreSQL).                |
+| `->invisible()`                     | Make the column "invisible" to `SELECT *` queries (MySQL).                                |
+| `->nullable($value = true)`         | Allow NULL values to be inserted into the column.                                         |
+| `->storedAs($expression)`           | Create a stored generated column (MySQL / PostgreSQL).                                    |
+| `->unsigned()`                      | Set INTEGER columns as UNSIGNED (MySQL).                                                  |
+| `->useCurrent()`                    | Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.                          |
+| `->useCurrentOnUpdate()`            | Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated (MySQL).          |
+| `->virtualAs($expression)`          | Create a virtual generated column (MySQL / PostgreSQL / SQLite).                          |
+| `->generatedAs($expression)`        | Create an identity column with specified sequence options (PostgreSQL).                   |
+| `->always()`                        | Defines the precedence of sequence values over input for an identity column (PostgreSQL). |
+| `->isGeometry()`                    | Set spatial column type to `geometry` - the default type is `geography` (PostgreSQL).     |
 
 <a name="default-expressions"></a>
 #### Default Expressions
@@ -1283,14 +1283,14 @@ If you are running a version of SQLite prior to `3.35.0`, you must install the `
 
 Laravel provides several convenient methods related to dropping common types of columns. Each of these methods is described in the table below:
 
-Command  |  Description
--------  |  -----------
-`$table->dropMorphs('morphable');`  |  Drop the `morphable_id` and `morphable_type` columns.
-`$table->dropRememberToken();`  |  Drop the `remember_token` column.
-`$table->dropSoftDeletes();`  |  Drop the `deleted_at` column.
-`$table->dropSoftDeletesTz();`  |  Alias of `dropSoftDeletes()` method.
-`$table->dropTimestamps();`  |  Drop the `created_at` and `updated_at` columns.
-`$table->dropTimestampsTz();` |  Alias of `dropTimestamps()` method.
+| Command                            | Description                                           |
+|------------------------------------|-------------------------------------------------------|
+| `$table->dropMorphs('morphable');` | Drop the `morphable_id` and `morphable_type` columns. |
+| `$table->dropRememberToken();`     | Drop the `remember_token` column.                     |
+| `$table->dropSoftDeletes();`       | Drop the `deleted_at` column.                         |
+| `$table->dropSoftDeletesTz();`     | Alias of `dropSoftDeletes()` method.                  |
+| `$table->dropTimestamps();`        | Drop the `created_at` and `updated_at` columns.       |
+| `$table->dropTimestampsTz();`      | Alias of `dropTimestamps()` method.                   |
 
 <a name="indexes"></a>
 ## Indexes
@@ -1332,15 +1332,15 @@ $table->unique('email', 'unique_email');
 
 Laravel's schema builder blueprint class provides methods for creating each type of index supported by Laravel. Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s) used for the index, as well as the index type. Each of the available index methods is described in the table below:
 
-Command  |  Description
--------  |  -----------
-`$table->primary('id');`  |  Adds a primary key.
-`$table->primary(['id', 'parent_id']);`  |  Adds composite keys.
-`$table->unique('email');`  |  Adds a unique index.
-`$table->index('state');`  |  Adds an index.
-`$table->fullText('body');`  |  Adds a full text index (MySQL/PostgreSQL).
-`$table->fullText('body')->language('english');`  |  Adds a full text index of the specified language (PostgreSQL).
-`$table->spatialIndex('location');`  |  Adds a spatial index (except SQLite).
+| Command                                          | Description                                                    |
+|--------------------------------------------------|----------------------------------------------------------------|
+| `$table->primary('id');`                         | Adds a primary key.                                            |
+| `$table->primary(['id', 'parent_id']);`          | Adds composite keys.                                           |
+| `$table->unique('email');`                       | Adds a unique index.                                           |
+| `$table->index('state');`                        | Adds an index.                                                 |
+| `$table->fullText('body');`                      | Adds a full text index (MySQL/PostgreSQL).                     |
+| `$table->fullText('body')->language('english');` | Adds a full text index of the specified language (PostgreSQL). |
+| `$table->spatialIndex('location');`              | Adds a spatial index (except SQLite).                          |
 
 <a name="index-lengths-mysql-mariadb"></a>
 #### Index Lengths & MySQL / MariaDB
@@ -1378,13 +1378,13 @@ $table->renameIndex('from', 'to');
 
 To drop an index, you must specify the index's name. By default, Laravel automatically assigns an index name based on the table name, the name of the indexed column, and the index type. Here are some examples:
 
-Command  |  Description
--------  |  -----------
-`$table->dropPrimary('users_id_primary');`  |  Drop a primary key from the "users" table.
-`$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
-`$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
-`$table->dropFullText('posts_body_fulltext');`  |  Drop a full text index from the "posts" table.
-`$table->dropSpatialIndex('geo_location_spatialindex');`  |  Drop a spatial index from the "geo" table  (except SQLite).
+| Command                                                  | Description                                                 |
+|----------------------------------------------------------|-------------------------------------------------------------|
+| `$table->dropPrimary('users_id_primary');`               | Drop a primary key from the "users" table.                  |
+| `$table->dropUnique('users_email_unique');`              | Drop a unique index from the "users" table.                 |
+| `$table->dropIndex('geo_state_index');`                  | Drop a basic index from the "geo" table.                    |
+| `$table->dropFullText('posts_body_fulltext');`           | Drop a full text index from the "posts" table.              |
+| `$table->dropSpatialIndex('geo_location_spatialindex');` | Drop a spatial index from the "geo" table  (except SQLite). |
 
 If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns, and index type:
 
@@ -1439,13 +1439,13 @@ $table->foreignId('user_id')
 
 An alternative, expressive syntax is also provided for these actions:
 
-Method  |  Description
--------  |  -----------
-`$table->cascadeOnUpdate();` | Updates should cascade.
-`$table->restrictOnUpdate();`| Updates should be restricted.
-`$table->cascadeOnDelete();` | Deletes should cascade.
-`$table->restrictOnDelete();`| Deletes should be restricted.
-`$table->nullOnDelete();`    | Deletes should set the foreign key value to null.
+| Method                        | Description                                       |
+|-------------------------------|---------------------------------------------------|
+| `$table->cascadeOnUpdate();`  | Updates should cascade.                           |
+| `$table->restrictOnUpdate();` | Updates should be restricted.                     |
+| `$table->cascadeOnDelete();`  | Deletes should cascade.                           |
+| `$table->restrictOnDelete();` | Deletes should be restricted.                     |
+| `$table->nullOnDelete();`     | Deletes should set the foreign key value to null. |
 
 Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:
 
@@ -1495,11 +1495,11 @@ Schema::withoutForeignKeyConstraints(function () {
 
 For convenience, each migration operation will dispatch an [event](/docs/{{version}}/events). All of the following events extend the base `Illuminate\Database\Events\MigrationEvent` class:
 
- Class | Description
--------|-------
+| Class                                          | Description                                    |
+|------------------------------------------------|------------------------------------------------|
 | `Illuminate\Database\Events\MigrationsStarted` | A batch of migrations is about to be executed. |
-| `Illuminate\Database\Events\MigrationsEnded` | A batch of migrations has finished executing. |
-| `Illuminate\Database\Events\MigrationStarted` | A single migration is about to be executed. |
-| `Illuminate\Database\Events\MigrationEnded` | A single migration has finished executing. |
-| `Illuminate\Database\Events\SchemaDumped` | A database schema dump has completed. |
-| `Illuminate\Database\Events\SchemaLoaded` | An existing database schema dump has loaded. |
+| `Illuminate\Database\Events\MigrationsEnded`   | A batch of migrations has finished executing.  |
+| `Illuminate\Database\Events\MigrationStarted`  | A single migration is about to be executed.    |
+| `Illuminate\Database\Events\MigrationEnded`    | A single migration has finished executing.     |
+| `Illuminate\Database\Events\SchemaDumped`      | A database schema dump has completed.          |
+| `Illuminate\Database\Events\SchemaLoaded`      | An existing database schema dump has loaded.   |

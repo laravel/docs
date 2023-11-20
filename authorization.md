@@ -710,14 +710,14 @@ The following controller methods will be mapped to their corresponding policy me
 <div class="overflow-auto">
 
 | Controller Method | Policy Method |
-| --- | --- |
-| index | viewAny |
-| show | view |
-| create | create |
-| store | create |
-| edit | update |
-| update | update |
-| destroy | delete |
+|-------------------|---------------|
+| index             | viewAny       |
+| show              | view          |
+| create            | create        |
+| store             | create        |
+| edit              | update        |
+| update            | update        |
+| destroy           | delete        |
 
 </div>
 
