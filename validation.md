@@ -906,6 +906,7 @@ Below is a list of all available validation rules and their function:
 [Filled](#rule-filled)
 [Greater Than](#rule-gt)
 [Greater Than Or Equal](#rule-gte)
+[Hex Color](#rule-hex-color)
 [Image (File)](#rule-image)
 [In](#rule-in)
 [In Array](#rule-in-array)
@@ -1343,6 +1344,11 @@ The field under validation must be greater than the given _field_ or _value_. Th
 #### gte:_field_
 
 The field under validation must be greater than or equal to the given _field_ or _value_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+
+<a name="rule-hex-color"></a>
+#### hex_color
+
+The field under validation must contain a valid color value in [hexadecimal](https://developer.mozilla.org/en-US/docs/Web/CSS/hex-color) format.
 
 <a name="rule-image"></a>
 #### image
