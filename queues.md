@@ -2132,6 +2132,24 @@ You may use the `assertDispatchedWithoutChain` method to assert that a job was p
 
     Bus::assertDispatchedWithoutChain(ShipOrder::class);
 
+<a name="testing-chained-batches"></a>
+#### Testing Chained Batches
+
+If your job chain [contains a batch of jobs](#chains-and-batches), you may assert that the chained batch matches your expectations by inserting a `Bus::chainedBatch` definition within your chain assertion:
+
+    use App\Jobs\ShipOrder;
+    use App\Jobs\UpdateInventory;
+    use Illuminate\Bus\PendingBatch;
+    use Illuminate\Support\Facades\Bus;
+
+    Bus::assertChained([
+        new ShipOrder,
+        Bus::chainedBatch(function (PendingBatch $batch) {
+            return $batch->jobs->count() === 3;
+        }),
+        new UpdateInventory,
+    ]);
+
 <a name="testing-job-batches"></a>
 ### Testing Job Batches
 
