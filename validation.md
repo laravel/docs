@@ -1348,7 +1348,7 @@ The field under validation must be greater than or equal to the given _field_ or
 <a name="rule-hex"></a>
 #### hex
 
-The field under validation must be a valid [hexadecimal](https://developer.mozilla.org/en-US/docs/Web/CSS/hex-color) value.
+The field under validation contains a valid color value in [hexadecimal](https://developer.mozilla.org/en-US/docs/Web/CSS/hex-color) format.
 
 <a name="rule-image"></a>
 #### image
