@@ -10,6 +10,7 @@
 - [Retrieving Translation Strings](#retrieving-translation-strings)
     - [Replacing Parameters In Translation Strings](#replacing-parameters-in-translation-strings)
     - [Pluralization](#pluralization)
+    - [Handling Missing Translation Strings](#handling-missing-translation-strings)
 - [Overriding Package Language Files](#overriding-package-language-files)
 
 <a name="introduction"></a>
@@ -232,6 +233,27 @@ You may also define placeholder attributes in pluralization strings. These place
 If you would like to display the integer value that was passed to the `trans_choice` function, you may use the built-in `:count` placeholder:
 
     'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',
+
+<a name="handling-missing-translation-strings"></a>
+### Handling Missing Translation Strings
+
+Typically, when attempting to translate a string that does not have a corresponding key in your language files, Laravel will return the translation string key.
+
+You may customize or intercept this behavior using the `handleMissingKeysUsing` method. Typically, you should invoke this method in the `boot` method of your application's `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\Lang;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Lang::handleMissingKeysUsing(function (string $key, array $replacements, string $locale) {
+            info("Missing translation key [$key] detected.");
+
+            return $key;
+        });
+    }
 
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files
