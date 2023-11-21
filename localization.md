@@ -8,6 +8,7 @@
     - [Using Short Keys](#using-short-keys)
     - [Using Translation Strings As Keys](#using-translation-strings-as-keys)
 - [Retrieving Translation Strings](#retrieving-translation-strings)
+    - [Handling Missing Translation Strings](#handling-missing-translation-strings)
     - [Replacing Parameters In Translation Strings](#replacing-parameters-in-translation-strings)
     - [Pluralization](#pluralization)
 - [Overriding Package Language Files](#overriding-package-language-files)
@@ -163,6 +164,19 @@ Again, if the translation string does not exist, the `__` function will return t
 If you are using the [Blade templating engine](/docs/{{version}}/blade), you may use the `{{ }}` echo syntax to display the translation string:
 
     {{ __('messages.welcome') }}
+
+<a name="handling-missing-translation-strings">
+### Handling Missing Translation Strings
+
+The behavior when a translation string is missing can be customized using the `handleMissingTranslationKeyUsing` method in any service provider. You should pass a closure which can receive up to four parameters and returns the translation string to use.
+
+    use Illuminate\Translation\Translator;
+    use Log;
+
+    Translator::handleMissingTranslationKeyUsing(function ($key, $replace, $locale, $fallback) {
+        Log::error("Missing translation key [$key] detected.");
+        return $key;
+    });
 
 <a name="replacing-parameters-in-translation-strings"></a>
 ### Replacing Parameters In Translation Strings
