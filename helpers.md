@@ -89,9 +89,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 <div class="collection-method-list" markdown="1">
 
 [Number::format](#method-number-format)
-[Number::toPercentage](#method-number-to-percentage)
-[Number::toCurrency](#method-number-to-currency)
-[Number::toFileSize](#method-number-to-file-size)
+[Number::percentage](#method-number-percentage)
+[Number::currency](#method-number-currency)
+[Number::fileSize](#method-number-file-size)
 [Number::forHumans](#method-number-for-humans)
 
 </div>
@@ -1097,13 +1097,10 @@ The `last` function returns the last element in the given array:
 <a name="numbers"></a>
 ## Numbers
 
-> **Warning**
-> Several of the `Number` methods require the PHP `intl` extension.
-
 <a name="method-number-format"></a>
 #### `Number::format()` {.collection-method}
 
-The `Number::format` method determines the formatting of a value by grouped thousands:
+The `Number::format` method formats the given number into a locale specific string:
 
     use Illuminate\Support\Number;
 
@@ -1111,71 +1108,83 @@ The `Number::format` method determines the formatting of a value by grouped thou
 
     // 100,000
 
-    $number = Number::format(100000, 'de');
+    $number = Number::format(100000, precision: 2);
+
+    // 100,000.00
+
+    $number = Number::format(100000.123, maxPrecision: 2);
+
+    // 100,000.12
+
+    $number = Number::format(100000, locale: 'de');
 
     // 100.000
 
-<a name="method-number-to-percentage"></a>
-#### `Number::toPercentage()` {.collection-method}
+<a name="method-number-percentage"></a>
+#### `Number::percentage()` {.collection-method}
 
-The `Number::toPercentage` method returns the percentage representation of the given value:
+The `Number::percentage` method returns the percentage representation of the given value as a string:
 
     use Illuminate\Support\Number;
 
-    $percentage = Number::toPercentage(10);
+    $percentage = Number::percentage(10);
 
     // 10%
 
-    $percentage = Number::toPercentage(10, 2);
+    $percentage = Number::percentage(10, precision: 2);
 
     // 10.00%
 
-You may pass a third argument to the method to specify the percentage locale:
+    $percentage = Number::percentage(10.123, maxPrecision: 2);
 
-    $percentage = Number::toPercentage(10, 2, 'de');
+    // 10.12%
+
+    $percentage = Number::percentage(10, precision: 2, locale: 'de');
 
     // 10,00%
 
-<a name="method-number-to-currency"></a>
-#### `Number::toCurrency()` {.collection-method}
+<a name="method-number-currency"></a>
+#### `Number::currency()` {.collection-method}
 
-The `Number::toCurrency` method returns the currency representation of the provided numerical value:
+The `Number::currency` method returns the currency representation of the given value as a string:
 
     use Illuminate\Support\Number;
 
-    $currency = Number::toCurrency(1000);
+    $currency = Number::currency(1000);
 
     // $1,000
 
-    $currency = Number::toCurrency(1000, 'EUR');
+    $currency = Number::currency(1000, in: 'EUR');
 
     // €1,000
 
-You may pass a third argument to the method to specify the currency locale:
-
-    $currency = Number::toCurrency(1000, 'EUR', 'de');
+    $currency = Number::currency(1000, in: 'EUR', locale: 'de');
 
     // 1.000 €
 
-<a name="method-number-to-file-size"></a>
-#### `Number::toFileSize()` {.collection-method}
+<a name="method-number-file-size"></a>
+#### `Number::fileSize()` {.collection-method}
 
-The `Number::toFileSize` method returns the file size representation of the given numerical value in bytes:
+The `Number::fileSize` method returns the file size representation of the given byte value as a string:
 
     use Illuminate\Support\Number;
 
-    $size = Number::toFileSize(1024);
+    $size = Number::fileSize(1024);
 
     // 1 KB
 
-    $size = Number::toFileSize(1024, 2);
+    $size = Number::fileSize(1024 * 1024);
+
+    // 1 MB
+
+    $size = Number::fileSize(1024, precision: 2);
 
     // 1.00 KB
 
 <a name="method-number-for-humans"></a>
 #### `Number::forHumans()` {.collection-method}
 
-The `Number::forHumans()` method returns the human-readable format of a provided numberical value:
+The `Number::forHumans()` method returns the human-readable format of the provided numerical value:
 
     use Illuminate\Support\Number;
 
@@ -1187,11 +1196,9 @@ The `Number::forHumans()` method returns the human-readable format of a provided
 
     // 490 thousand
 
-You may pass a second argument to the method to specify the number of decimal places:
+    $number = Number::forHumans(1230000, precision: 2);
 
-    $number = Number::forHumans(1000, 2);
-
-    // 1.00 thousand
+    // 1.23 million
 
 <a name="paths"></a>
 ## Paths
