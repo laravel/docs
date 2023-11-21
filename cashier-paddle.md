@@ -235,15 +235,13 @@ Cashier includes a `paddle-button` [Blade component](/docs/{{version}}/blade#com
 </x-paddle-button>
 ```
 
-By default, this will display the widget using Paddle's default styling. You can customize the widget by adding attributes like the  `data-theme='light'` attribute to the component:
+By default, this will display the widget using Paddle's default styling. You can customize the widget by adding [Paddle supported attributes](https://developer.paddle.com/paddlejs/html-data-attributes) like the  `data-theme='light'` attribute to the component:
 
 ```html
 <x-paddle-button :url="$payLink" class="px-8 py-4" data-theme="light">
     Subscribe
 </x-paddle-button>
 ```
-
-For more attributes you can [consult the Paddle docs](https://developer.paddle.com/paddlejs/html-data-attributes).
 
 The Paddle checkout widget is asynchronous. Once the user creates a subscription within the widget, Paddle will send your application a webhook so that you may properly update the subscription state in your application's database. Therefore, it's important that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
 
@@ -266,7 +264,7 @@ To make it easy for you to get started with inline checkout, Cashier includes a 
         return view('billing', ['checkout' => $checkout]);
     });
 
-Now you may pass the checkout session to the component's `checkout` attribute:
+Then, you may pass the checkout session to the component's `checkout` attribute:
 
 ```blade
 <x-paddle-checkout :checkout="$checkout" class="w-full" />
@@ -294,9 +292,9 @@ You may also manually render an inline checkout without using Laravel's built-in
         return view('billing', ['checkout' => $checkout]);
     });
 
-Next, you may use Paddle.js to initialize the checkout. To keep this example simple, we will demonstrate this using [Alpine.js](https://github.com/alpinejs/alpine); however, you are free to translate this example to your own frontend stack:
+Next, you may use Paddle.js to initialize the checkout. In this example, we will demonstrate this using [Alpine.js](https://github.com/alpinejs/alpine); however, you are free to modify this example for your own frontend stack:
 
-```alpine
+```blade
 <?php
 $options = $checkout->options();
 
@@ -464,6 +462,12 @@ To create a subscription, first retrieve an instance of your billable model from
 
 The first argument given to the `subscribe` method is the specific price the user is subscribing to. This value should correspond to the price's identifier in Paddle. The `returnTo` method accepts a URL that your user will be redirected to after they successfully complete the checkout. The second argument passed to the `subscribe` method should be the internal "type" of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. This subscription type is only for internal application usage and is not meant to be displayed to users. In addition, it should not contain spaces and it should never be changed after creating the subscription.
 
+You may also provide an array of custom meta data regarding the subscription using the `customData` method:
+
+    $checkout = $request->user()->subscribe($premium = 12345, 'default')
+        ->customData(['key' => 'value'])
+        ->returnTo(route('home'));
+
 Once a subscription checkout session has been created, the checkout session may be provided to the `paddle-button` [Blade component](#overlay-checkout) that is included with Cashier Paddle:
 
 ```blade
@@ -473,18 +477,6 @@ Once a subscription checkout session has been created, the checkout session may 
 ```
 
 After the user has finished their checkout, a `subscription_created` webhook will be dispatched from Paddle. Cashier will receive this webhook and setup the subscription for your customer. In order to make sure all webhooks are properly received and handled by your application, ensure you have properly [setup webhook handling](#handling-paddle-webhooks).
-
-<a name="custom-data"></a>
-#### Custom Data
-
-You can also pass an array of custom data using the `customData` method:
-
-    $checkout = $request->user()->subscribe($premium = 12345, 'default')
-        ->customData(['key' => 'value'])
-        ->returnTo(route('home'));
-
-> **Warning**  
-> When providing custom data, please avoid using `subscription_type` as a key. This key is reserved for internal use by Cashier.
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
@@ -1086,7 +1078,7 @@ A checkout session has a `customData` method, allowing you to pass any custom da
 <a name="refunding-transactions"></a>
 ### Refunding Transactions
 
-Refunding transactions will return the refunded amount to your customer's payment method used at the time of purchase. If you need to refund a Paddle purchase, you may use the `refund` method on a `Cashier\Paddle\Transaction` model. This method accepts a reason as the first argument, one or more price ID's to refund with optional amounts as an associative array. You may retrieve the transactions for a given billable model using the `transactions` method.
+Refunding transactions will return the refunded amount to your customer's payment method that was used at the time of purchase. If you need to refund a Paddle purchase, you may use the `refund` method on a `Cashier\Paddle\Transaction` model. This method accepts a reason as the first argument, one or more price ID's to refund with optional amounts as an associative array. You may retrieve the transactions for a given billable model using the `transactions` method.
 
 For example, imagine we want to refund a specific transaction for prices `pri_123` and `pri_456`. We want to fully refund `pri_123`, but only refund two dollars for `pri_456`:
 
@@ -1113,7 +1105,7 @@ For more information on refunds, please consult [Paddle's refund documentation](
 <a name="crediting-transactions"></a>
 ### Crediting Transactions
 
-Just like refunding, you can also credit transactions. Crediting transactions will add the funds to the customer's balance so it may be used for future purchases. Crediting transactions can only be done for manually-collected transactions and not for automatically-collected transactions (like subscriptions) since Paddle handles that for you.
+Just like refunding, you can also credit transactions. Crediting transactions will add the funds to the customer's balance so it may be used for future purchases. Crediting transactions can only be done for manually-collected transactions and not for automatically-collected transactions (like subscriptions) since Paddle handles subscription credits automatically:
 
     $transaction = $user->transactions()->first();
 
