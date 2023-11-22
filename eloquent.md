@@ -1261,6 +1261,37 @@ Eloquent also allows you to define global scopes using closures, which is partic
         }
     }
 
+<a name="using-auth"></a>
+#### Using Auth in Global Scopes
+
+Trying to access the authenticated user in a global scope will fail if you use methods such as `Auth::check()` or `Auth::user()`. For example, the following code will not work:
+
+    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Support\Facades\Auth;
+    
+    class YearScope implements Scope
+    {
+        public function apply(Builder $builder, Model $model): void
+        {
+            $builder->where('year', Auth::user()->graduation_year);
+        }
+    }
+
+If you would like to access a property of the authenticated user, you first need to check for an authenticated user using `Auth::hasUser()`, `Auth::check()` or `Auth::user()`:
+
+    class YearScope implements Scope
+    {
+        public function apply(Builder $builder, Model $model): void
+        {
+            if (Auth::hasUser()) {
+                $builder->where('year', Auth::user()->graduation_year);
+            }
+        }
+    }
+
+You may also use [auth helpers](/docs/{{version}}/helpers#method-auth).
+
 <a name="removing-global-scopes"></a>
 #### Removing Global Scopes
 
