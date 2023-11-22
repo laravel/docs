@@ -1329,7 +1329,10 @@ You may explicitly specify the database column name that should be used by the `
 <a name="rule-extensions"></a>
 #### extensions:_foo_,_bar_,...
 
-The file under validation must have an extension corresponding to one of the listed extensions. This validation can be used in combination with [MIME Types](#rule-mimetypes) and [MIME Type By File Extension](#rule-mimes) validators.
+The file under validation must have an extension corresponding to one of the listed extensions.
+
+> **Warning**
+> For security reasons, you should never only validate a file type by its extension. Since `extensions` does not validate that the file type matches its extension, this rule should always be used in combination with the [MIME Types](#rule-mimetypes) or [MIME Type By File Extension](#rule-mimes) validations.
 
 <a name="rule-file"></a>
 #### file
