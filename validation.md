@@ -902,6 +902,7 @@ Below is a list of all available validation rules and their function:
 [Exclude With](#rule-exclude-with)
 [Exclude Without](#rule-exclude-without)
 [Exists (Database)](#rule-exists)
+[Extensions](#rule-extensions)
 [File](#rule-file)
 [Filled](#rule-filled)
 [Greater Than](#rule-gt)
@@ -1325,6 +1326,11 @@ You may explicitly specify the database column name that should be used by the `
 
     'state' => Rule::exists('states', 'abbreviation'),
 
+<a name="rule-extensions"></a>
+#### extensions:_foo_,_bar_,...
+
+The file under validation must have an extension corresponding to one of the listed extensions. This validation can be used in combination with [MIME Types](#rule-mimetypes) and [MIME Type By File Extension](#rule-mimes) validators.
+
 <a name="rule-file"></a>
 #### file
 
@@ -1463,6 +1469,9 @@ To determine the MIME type of the uploaded file, the file's contents will be rea
 #### mimes:_foo_,_bar_,...
 
 The file under validation must have a MIME type corresponding to one of the listed extensions.
+
+> **Note**  
+> This validation does not check the correspondence between the mimetype and the extension used for the file name. For example, the `mimes:png` validation would be valid for a PNG type file named `photo.txt`. If you want to validate the extension of the file name itself, you can use the [`extensions`](#rule-extensions) validator.
 
 <a name="basic-usage-of-mime-rule"></a>
 #### Basic Usage Of MIME Rule
