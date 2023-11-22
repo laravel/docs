@@ -283,15 +283,10 @@ If you are having trouble authenticating with your application from a SPA that e
 
 You should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. This may be accomplished by setting the `supports_credentials` option within your application's `config/cors.php` configuration file to `true`.
 
-In addition, you should enable the `withCredentials` option on your application's global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file. If you are not using Axios to make HTTP requests from your frontend, you should perform the equivalent configuration on your own HTTP client:
+In addition, you should enable the `withCredentials` and `withXSRFToken` options on your application's global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file. If you are not using Axios to make HTTP requests from your frontend, you should perform the equivalent configuration on your own HTTP client:
 
 ```js
 axios.defaults.withCredentials = true;
-```
-
-In later versions of Axios, you must also enable the `withXSRFToken` option for XSRF tokens to be sent to separate subdomains:
-
-```js
 axios.defaults.withXSRFToken = true;
 ```
 
