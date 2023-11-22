@@ -289,6 +289,12 @@ In addition, you should enable the `withCredentials` option on your application'
 axios.defaults.withCredentials = true;
 ```
 
+In later versions of Axios, you must also enable the `withXSRFToken` option for XSRF tokens to be sent to separate subdomains:
+
+```js
+axios.defaults.withXSRFToken = true;
+```
+
 Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may accomplish this by prefixing the domain with a leading `.` within your application's `config/session.php` configuration file:
 
     'domain' => '.domain.com',
