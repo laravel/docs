@@ -306,7 +306,7 @@ Sometimes you may wish to turn the string response of a given operation into a d
 <a name="file-responses"></a>
 ### File Responses
 
-The `file` method may be used to display a file, such as an image or PDF, directly in the user's browser instead of initiating a download. This method accepts the path to the file as its first argument and an array of headers as its second argument:
+The `file` method may be used to display a file, such as an image or PDF, directly in the user's browser instead of initiating a download. This method accepts the absolute path to the file as its first argument and an array of headers as its second argument:
 
     return response()->file($pathToFile);
 
