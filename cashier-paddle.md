@@ -248,6 +248,41 @@ The Paddle checkout widget is asynchronous. Once the user creates a subscription
 > **Warning**  
 > After a subscription state change, the delay for receiving the corresponding webhook is typically minimal but you should account for this in your application by considering that your user's subscription might not be immediately available after completing the checkout.
 
+<a name="manually-rendering-an-overlay-checkout"></a>
+#### Manually Rendering An Overlay Checkout
+
+You may also manually render an overlay checkout without using Laravel's built-in Blade components. To get started, generate the checkout session [as demonstrated in previous examples](#overlay-checkout):
+
+    use Illuminate\Http\Request;
+
+    Route::get('/buy', function (Request $request) {
+        $checkout = $user->checkout('pri_34567')
+            ->returnTo(route('dashboard'));
+
+        return view('billing', ['checkout' => $checkout]);
+    });
+
+Next, you may use Paddle.js to initialize the checkout. In this example, we will demonstrate this using a simple hyperlink which uses the `paddle_button` approach:
+
+```blade
+<?php
+$items = $checkout->getItems();
+$customer = $checkout->getCustomer();
+$custom = $checkout->getCustomData();
+?>
+
+<a
+    href='#!'
+    class='paddle_button'
+    data-items='{!! json_encode($items) !!}'
+    @if ($customer) data-customer-id='{{ $customer->paddle_id }}' @endif
+    @if ($custom) data-custom-data='{{ json_encode($custom) }}' @endif
+    @if ($returnUrl = $checkout->getReturnUrl()) data-success-url='{{ $returnUrl }}' @endif
+>
+    Buy Product
+</a>
+```
+
 <a name="inline-checkout"></a>
 ### Inline Checkout
 
