@@ -262,7 +262,7 @@ You may also manually render an overlay checkout without using Laravel's built-i
         return view('billing', ['checkout' => $checkout]);
     });
 
-Next, you may use Paddle.js to initialize the checkout. In this example, we will demonstrate this using a simple hyperlink which uses the `paddle_button` approach:
+Next, you may use Paddle.js to initialize the checkout. In this example, we will create a link that is assigned the `paddle_button` class. Paddle.js will detect this class and display the overlay checkout when the link is clicked:
 
 ```blade
 <?php
