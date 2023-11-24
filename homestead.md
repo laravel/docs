@@ -335,6 +335,7 @@ features:
     - chronograf: true
     - couchdb: true
     - crystal: true
+    - dragonflydb: true
     - elasticsearch:
         version: 7.9.0
     - eventstore: true
