@@ -108,7 +108,6 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Chronograf
 - CouchDB
 - Crystal & Lucky Framework
-- Dragonfly <small>(Replaces Redis)</small>
 - Elasticsearch
 - EventStoreDB
 - Flyway
