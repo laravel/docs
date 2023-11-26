@@ -182,7 +182,11 @@ window.Echo = new Echo({
 Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
 
 ```shell
+# run the Vite development server
 npm run dev
+
+# Build and bundle the assets
+npm run build
 ```
 
 > **Note**  
