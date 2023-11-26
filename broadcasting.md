@@ -182,7 +182,7 @@ window.Echo = new Echo({
 Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
 
 ```shell
-npm run dev
+npm run build
 ```
 
 > **Note**  
