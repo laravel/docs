@@ -902,6 +902,7 @@ Below is a list of all available validation rules and their function:
 [Exclude With](#rule-exclude-with)
 [Exclude Without](#rule-exclude-without)
 [Exists (Database)](#rule-exists)
+[Extensions](#rule-extensions)
 [File](#rule-file)
 [Filled](#rule-filled)
 [Greater Than](#rule-gt)
@@ -1325,6 +1326,16 @@ You may explicitly specify the database column name that should be used by the `
 
     'state' => Rule::exists('states', 'abbreviation'),
 
+<a name="rule-extensions"></a>
+#### extensions:_foo_,_bar_,...
+
+The file under validation must have a user-assigned extension corresponding to one of the listed extensions:
+
+    'photo' => ['required', 'extensions:jpg,png'],
+
+> **Warning**
+> You should never rely on validating a file by its user-assigned extension alone. This rule should typically always be used in combinatino with the [`mimes`](#rule-mimes) or [`mimetypes`](#rule-mimetypes) rules.
+
 <a name="rule-file"></a>
 #### file
 
@@ -1462,16 +1473,18 @@ To determine the MIME type of the uploaded file, the file's contents will be rea
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
 
-The file under validation must have a MIME type corresponding to one of the listed extensions.
-
-<a name="basic-usage-of-mime-rule"></a>
-#### Basic Usage Of MIME Rule
+The file under validation must have a MIME type corresponding to one of the listed extensions:
 
     'photo' => 'mimes:jpg,bmp,png'
 
 Even though you only need to specify the extensions, this rule actually validates the MIME type of the file by reading the file's contents and guessing its MIME type. A full listing of MIME types and their corresponding extensions may be found at the following location:
 
 [https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+
+<a name="mime-types-and-extensions"></a>
+#### MIME Types & Extensions
+
+This validation rule does not verify agreement between the MIME type and the extension the user assigned to the file. For example, the `mimes:png` validation rule would consider a file containing valid PNG content to be a valid PNG image, even if the file is named `photo.txt`. If you would like to validate the user-assigned extension of the file, you may use the [`extensions`](#rule-extensions) rule.
 
 <a name="rule-min"></a>
 #### min:_value_
