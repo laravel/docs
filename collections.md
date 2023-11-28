@@ -788,9 +788,11 @@ You may stop iterating through the items by returning `false` from the callback:
 <a name="method-ensure"></a>
 #### `ensure()` {.collection-method}
 
-The `ensure` method may be used to verify that all elements of a collection are of a given type. Otherwise, an `UnexpectedValueException` will be thrown:
+The `ensure` method may be used to verify that all elements of a collection are of a given type or list of types. Otherwise, an `UnexpectedValueException` will be thrown:
 
     return $collection->ensure(User::class);
+
+    return $collection->ensure([User::class, Customer::class]);
 
 Primitive types such as `string`, `int`, `float`, `bool`, and `array` may also be specified:
 
