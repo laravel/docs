@@ -1334,7 +1334,7 @@ The file under validation must have a user-assigned extension corresponding to o
     'photo' => ['required', 'extensions:jpg,png'],
 
 > **Warning**
-> You should never rely on validating a file by its user-assigned extension alone. This rule should typically always be used in combinatino with the [`mimes`](#rule-mimes) or [`mimetypes`](#rule-mimetypes) rules.
+> You should never rely on validating a file by its user-assigned extension alone. This rule should typically always be used in combination with the [`mimes`](#rule-mimes) or [`mimetypes`](#rule-mimetypes) rules.
 
 <a name="rule-file"></a>
 #### file
