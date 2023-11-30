@@ -145,7 +145,7 @@ By default, Pulse will resolve the `name` and `email` fields from the `User` mod
 The `users` method accepts a closure which will receive the user IDs to be displayed and should return an array or collection containing the `id`, `name`, `extra`, and `avatar` for each user ID:
 
 ```php
-use Laravel\Pulse\Pulse;
+use Laravel\Pulse\Facades\Pulse;
 
 Pulse::users(function ($ids) {
     return User::findMany($ids)->map(fn ($user) => [
