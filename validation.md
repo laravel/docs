@@ -379,8 +379,8 @@ The `after` method should return an array of callables or closures which will be
 As noted, the array returned by the `after` method may also contain invokable classes. The `__invoke` method of these classes will receive an `Illuminate\Validation\Validator` instance:
 
 ```php
-use App\Validation\ValidateShippingTime;
-use App\Validation\ValidateUserStatus;
+use App\Validations\ShippingTimeValidation;
+use App\Validations\UserStatusValidation;
 use Illuminate\Validation\Validator;
 
 /**
@@ -389,8 +389,8 @@ use Illuminate\Validation\Validator;
 public function after(): array
 {
     return [
-        new ValidateUserStatus,
-        new ValidateShippingTime,
+        new ShippingTimeValidation,
+        new UserStatusValidation,
         function (Validator $validator) {
             //
         }
