@@ -19,7 +19,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Pulse delivers at-a-glance insights into your application's performance and usage. Track down bottlenecks like slow jobs and endpoints, find your most active users, and more.
+Laravel Pulse delivers at-a-glance insights into your application's performance and usage. With Pulse, you can track down bottlenecks like slow jobs and endpoints, find your most active users, and more.
 
 For in-depth debugging of individual events, check out [Laravel Telescope](/docs/{{version}}/telescope).
 
@@ -41,7 +41,10 @@ After installing Pulse, you should run the `migrate` command in order to create 
 php artisan migrate
 ```
 
-It is also possible to [configure a dedicated database connection](#using-a-different-database) for Pulse's data.
+Once Pulse's database migrations have been run, you may access the Pulse dashboard via the `/pulse` route.
+
+> **Note**
+> If you do not want to store Pulse data in your application's primary database, you may [specify a dedicated database connection](#using-a-different-database).
 
 <a name="configuration"></a>
 ### Configuration
@@ -49,7 +52,7 @@ It is also possible to [configure a dedicated database connection](#using-a-diff
 Many of Pulse's configuration options can be controlled using environment variables. To see the available options, register new recorders, or configure advanced options, you may publish the `config/pulse.php` configuration file:
 
 ```sh
-php artisan vendor:publish --tag pulse-config
+php artisan vendor:publish --tag=pulse-config
 ```
 
 <a name="dashboard"></a>
@@ -58,14 +61,14 @@ php artisan vendor:publish --tag pulse-config
 <a name="dashboard-authorization"></a>
 ### Authorization
 
-The Pulse dashboard may be accessed at the `/pulse` route. By default, you will only be able to access this dashboard in the `local` environment, so you will need to configure authorization for your production environments by customising the `'viewPulse'` authorization gate. You can do this within your `app/Providers/AuthServiceProvider.php` file:
+The Pulse dashboard may be accessed via the `/pulse` route. By default, you will only be able to access this dashboard in the `local` environment, so you will need to configure authorization for your production environments by customizing the `'viewPulse'` authorization gate. You can accomplish this within your application's `app/Providers/AuthServiceProvider.php` file:
 
 ```php
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
 /**
- * Bootstrap any application services.
+ * Register any authentication / authorization services.
  */
 public function boot(): void
 {
@@ -80,17 +83,15 @@ public function boot(): void
 <a name="dashboard-customization"></a>
 ### Customization
 
-The Pulse dashboard cards and layout may be configured by publishing the dashboard view:
+The Pulse dashboard cards and layout may be configured by publishing the dashboard view. The dashboard view will be published to `resources/views/vendor/pulse/dashboard.blade.php`:
 
 ```sh
 php artisan vendor:publish --tag pulse-dashboard
 ```
 
-The dashboard view will be published to `resources/views/vendor/pulse/dashboard.blade.php`.
+The dashboard is powered by [Livewire](https://livewire.laravel.com/), and allows you to customize the cards and layout without needing to rebuild any JavaScript assets.
 
-The dashboard is powered by [Livewire](https://livewire.laravel.com/) and allows you to customize the cards and layout without needing to rebuild any JavaScript assets.
-
-Within this file, the `<x-pulse>` component is responsible for rendering the dashboard and provides a grid layout for the cards. If you would like the dashboard to span the full width of the screen, you may specify the `full-width` prop:
+Within this file, the `<x-pulse>` component is responsible for rendering the dashboard and provides a grid layout for the cards. If you would like the dashboard to span the full width of the screen, you may provide the `full-width` prop to the component:
 
 ```blade
 <x-pulse full-width>
@@ -98,7 +99,7 @@ Within this file, the `<x-pulse>` component is responsible for rendering the das
 </x-pulse>
 ```
 
-By default, the `<x-pulse>` component will create a 12 column grid, but you may customize this with the `cols` prop:
+By default, the `<x-pulse>` component will create a 12 column grid, but you may customize this using the `cols` prop:
 
 ```blade
 <x-pulse cols="16">
@@ -124,7 +125,7 @@ Most cards also accept an `expand` prop to show the full card instead of scrolli
 <a name="servers-card"></a>
 #### Servers
 
-The `<livewire:pulse.servers />` card displays system resource usage for all servers running the `pulse:check` command. See the [system stats recorder](#system-stats-recorder) for more information.
+The `<livewire:pulse.servers />` card displays system resource usage for all servers running the `pulse:check` command. Please refer to the documentation regarding the [system stats recorder](#system-stats-recorder) for more information on system resource reporting.
 
 <a name="application-usage-card"></a>
 #### Application Usage
@@ -139,9 +140,13 @@ If you wish to view all usage metrics on screen at the same time, you may includ
 <livewire:pulse.usage type="jobs" />
 ```
 
-By default, Pulse will resolve the `name` and `email` fields from the `User` model and display avatars using the Gravatar web service. However, you may customize the user resolution and display by registering a callback in your `App\Providers\AppServiceProvider` class. The callback will receive the user IDs to be displayed and should return an array or collection containing the `id`, `name`, `extra`, and `avatar` for each user ID:
+By default, Pulse will resolve the `name` and `email` fields from the `User` model and display avatars using the Gravatar web service. However, you may customize the user resolution and display by invoking the `Pulse::users` method within application's `App\Providers\AppServiceProvider` class.
+
+The `users` method accepts a closure which will receive the user IDs to be displayed and should return an array or collection containing the `id`, `name`, `extra`, and `avatar` for each user ID:
 
 ```php
+use Laravel\Pulse\Pulse;
+
 Pulse::users(function ($ids) {
     return User::findMany($ids)->map(fn ($user) => [
         'id' => $user->id,
@@ -152,55 +157,56 @@ Pulse::users(function ($ids) {
 });
 ```
 
-If your application receives a lot of requests or dispatches a lot of jobs, you may wish to enable [sampling](#sampling). See the [user requests recorder](#user-requests-recorder), [user jobs recorder](#user-jobs-recorder), and [slow jobs recorder](#slow-jobs-recorder) sections for more information.
+> **Note**
+> If your application receives a lot of requests or dispatches a lot of jobs, you may wish to enable [sampling](#sampling). See the [user requests recorder](#user-requests-recorder), [user jobs recorder](#user-jobs-recorder), and [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
 
 <a name="exceptions-card"></a>
 #### Exceptions
 
-The `<livewire:pulse.exceptions />` card shows the frequency and recency of exceptions occurring in your application. By default, exceptions are grouped based on the exception class and location where it occurred. See the [exceptions recorder](#exceptions-recorder) for more information.
+The `<livewire:pulse.exceptions />` card shows the frequency and recency of exceptions occurring in your application. By default, exceptions are grouped based on the exception class and location where it occurred. See the [exceptions recorder](#exceptions-recorder) documentation for more information.
 
 <a name="queues-card"></a>
 #### Queues
 
-The `<livewire:pulse.queues />` shows the throughput of the queues in your application, including the number of jobs queued, processing, processed, released, and failed. See the [queues recorder](#queues-recorder) for more information.
+The `<livewire:pulse.queues />` card shows the throughput of the queues in your application, including the number of jobs queued, processing, processed, released, and failed. See the [queues recorder](#queues-recorder) documentation for more information.
 
 <a name="slow-requests-card"></a>
 #### Slow Requests
 
-The `<livewire:pulse.slow-requests />` card shows incoming requests to your application that exceed the configured threshold, which is 1,000ms by default. See the [slow requests recorder](#slow-requests-recorder) for more information.
+The `<livewire:pulse.slow-requests />` card shows incoming requests to your application that exceed the configured threshold, which is 1,000ms by default. See the [slow requests recorder](#slow-requests-recorder) documentation for more information.
 
 <a name="slow-jobs-card"></a>
 #### Slow Jobs
 
-The `<livewire:pulse.slow-jobs />` card shows the queued jobs in your application that exceed the configured threshold, which is 1,000ms by default. See the [slow jobs recorder](#slow-jobs-recorder) for more information.
+The `<livewire:pulse.slow-jobs />` card shows the queued jobs in your application that exceed the configured threshold, which is 1,000ms by default. See the [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
 
 <a name="slow-queries-card"></a>
 #### Slow Queries
 
 The `<livewire:pulse.slow-queries />` card shows the database queries in your application that exceed the configured threshold, which is 1,000ms by default.
 
-By default, slow queries are grouped based on the SQL query without bindings and the location where it occurred, but you may opt to not capture the location if you wish to group solely on the SQL query.
+By default, slow queries are grouped based on the SQL query (without bindings) and the location where it occurred, but you may choose to not capture the location if you wish to group solely on the SQL query.
 
-See the [slow queries recorder](#slow-queries-recorder) for more information.
+See the [slow queries recorder](#slow-queries-recorder) documentation for more information.
 
 <a name="slow-outgoing-requests-card"></a>
 #### Slow Outgoing Requests
 
-The `<livewire:pulse.slow-outgoing-requests />` shows outgoing requests made using Laravel's [HTTP client](/docs/{{version}}/http-client) that exceed the configured threshold, which is 1,000ms by default.
+The `<livewire:pulse.slow-outgoing-requests />` card shows outgoing requests made using Laravel's [HTTP client](/docs/{{version}}/http-client) that exceed the configured threshold, which is 1,000ms by default.
 
-By default, entries will be grouped by the full URL. However you may wish to normalize or group similar outgoing requests using regular expressions. See the [slow outgoing requests recorder](#slow-outgoing-requests-recorder) for more information.
+By default, entries will be grouped by the full URL. However, you may wish to normalize or group similar outgoing requests using regular expressions. See the [slow outgoing requests recorder](#slow-outgoing-requests-recorder) documentation for more information.
 
 <a name="cache-card"></a>
 #### Cache
 
 The `<livewire:pulse.cache />` card shows the cache hit and miss statistics for your application, both globally and for individual keys.
 
-By default, entries will be grouped by the key. However you may wish to normalize or group similar keys using regular expressions. See the [cache interactions recorder](#cache-interactions-recorder) for more information.
+By default, entries will be grouped by key. However, you may wish to normalize or group similar keys using regular expressions. See the [cache interactions recorder](#cache-interactions-recorder) documentation for more information.
 
 <a name="capturing-entries"></a>
 ## Capturing Entries
 
-Most Pulse recorders will automatically capture entries based on events fired by Laravel. However, the [system stats recorder](#system-stats-recorder) and some third-party cards must poll for information regularly. To use these card, you must run the `pulse:check` daemon command on all your individual application servers:
+Most Pulse recorders will automatically capture entries based on framework events dispatched by Laravel. However, the [system stats recorder](#system-stats-recorder) and some third-party cards must poll for information regularly. To use these cards, you must run the `pulse:check` daemon on all of your individual application servers:
 
 ```php
 php artisan pulse:check
@@ -208,8 +214,6 @@ php artisan pulse:check
 
 > **Note**  
 > To keep the `pulse:check` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the command does not stop running.
-
-See [custom recorders](#custom-recorders) for more information on using the `pulse:check` command for your own cards.
 
 <a name="recorders"></a>
 ### Recorders
