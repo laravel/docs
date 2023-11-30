@@ -245,14 +245,14 @@ The first pattern that matches will be used. If no patterns match, then the key 
 
 The `Exceptions` recorder captures information about reportable exceptions occurring in your application for display on the [Exceptions](#exceptions-card) card.
 
-You may optionally adjust the [sample rate](#sampling), and ignored exceptions patterns. You may also configure whether to capture the location that the exception originated from. The captured location will be displayed on the Pulse dashboard which can help to track down the exception origin. However, if the same exception occurs in multiple locations then it will appear multiple times for each unique location.
+You may optionally adjust the [sample rate](#sampling) and ignored exceptions patterns. You may also configure whether to capture the location that the exception originated from. The captured location will be displayed on the Pulse dashboard which can help to track down the exception origin; however, if the same exception occurs in multiple locations then it will appear multiple times for each unique location.
 
 <a name="queues-recorder"></a>
 #### Queues
 
 The `Queues` recorder captures information about your applications queues for display on the [Queues](#queues-card).
 
-You may optionally adjust the [sample rate](#sampling), and ignored jobs patterns.
+You may optionally adjust the [sample rate](#sampling) and ignored jobs patterns.
 
 <a name="slow-jobs-recorder"></a>
 #### Slow Jobs
@@ -288,7 +288,7 @@ The first pattern that matches will be used. If no patterns match, then the URL 
 
 The `SlowQueries` recorder captures any database queries in your application that exceed the configured threshold for display on the [Slow Queries](#slow-queries-card) card.
 
-You may optionally adjust the slow query threshold, [sample rate](#sampling), and ignored query patterns. You may also configure whether to capture the query location. The captured location will be displayed on the Pulse dashboard which can help to track down the query origin. However, if the same query is made in multiple locations then it will appear multiple times for each unique location.
+You may optionally adjust the slow query threshold, [sample rate](#sampling), and ignored query patterns. You may also configure whether to capture the query location. The captured location will be displayed on the Pulse dashboard which can help to track down the query origin; however, if the same query is made in multiple locations then it will appear multiple times for each unique location.
 
 <a name="slow-requests-recorder"></a>
 #### Slow Requests
@@ -308,7 +308,7 @@ Each reporting server must have a unique name. By default, Pulse will use the va
 PULSE_SERVER_NAME=load-balancer
 ```
 
-The configuration also allows you to customize the directories that are monitored.
+The Pulse configuration file also allows you to customize the directories that are monitored.
 
 <a name="user-jobs-recorder"></a>
 #### User Jobs
@@ -328,7 +328,7 @@ You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
 <a name="performance"></a>
 ## Performance
 
-Pulse has been designed to drop-in to an existing application without requiring any additional infrastructure. However, for high-traffic applications, there are several ways of removing any impact Pulse may have on your application performance.
+Pulse has been designed to drop into an existing application without requiring any additional infrastructure. However, for high-traffic applications, there are several ways of removing any impact Pulse may have on your application's performance.
 
 <a name="using-a-different-database"></a>
 ### Using a Different Database
@@ -342,21 +342,21 @@ PULSE_DB_CONNECTION=pulse
 ```
 
 <a name="ingest"></a>
-## Redis Ingest
+### Redis Ingest
 
-By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the request has been returned or a job has been processed, however you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This may can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
+By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the HTTP response has been sent to the client or a job has been processed; however, you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
 
 ```
 PULSE_INGEST_DRIVER=redis
 ```
 
-Pulse will use your default [Redis connection](/docs/{{version}}/redis#configuration) by default, but you may customize this with the `PULSE_REDIS_CONNECTION` environment variable:
+Pulse will use your default [Redis connection](/docs/{{version}}/redis#configuration) by default, but you may customize this via the `PULSE_REDIS_CONNECTION` environment variable:
 
 ```
 PULSE_REDIS_CONNECTION=pulse
 ```
 
-When using the Redis ingest, you will need to run the `pulse:work` command to monitor the stream and store entries into Pulse's database tables.
+When using the Redis ingest, you will need to run the `pulse:work` command to monitor the stream and move entries from Redis into Pulse's database tables.
 
 ```php
 php artisan pulse:work
@@ -366,26 +366,25 @@ php artisan pulse:work
 > To keep the `pulse:work` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the Pulse worker does not stop running.
 
 <a name="sampling"></a>
-## Sampling
+### Sampling
 
-By default, Pulse will capture every relevant event that occurs in your application. For high-traffic applications, this can result in needing to aggregate millions of database rows in the dashboard, especially for the longer time periods.
+By default, Pulse will capture every relevant event that occurs in your application. For high-traffic applications, this can result in needing to aggregate millions of database rows in the dashboard, especially for longer time periods.
 
-You may instead opt to enabling sampling on the recorders of your choosing. For example, setting the sample rate to 0.1 on the [`User Requests`](#user-requests-recorder) recorder will mean that you only record approximately 10% of the requests to your application. In the dashboard, the values will be scaled up and prefixed with a `~` to indicate that they are an approximation.
+You may instead choose to enabling "sampling" on certain Pulse data recorders. For example, setting the sample rate to `0.1` on the [`User Requests`](#user-requests-recorder) recorder will mean that you only record approximately 10% of the requests to your application. In the dashboard, the values will be scaled up and prefixed with a `~` to indicate that they are an approximation.
 
-As a general rule, the more entries you have for a particular metric, the lower you can safely set the sample rate without sacrificing too much accuracy. Each recorder may be sampled independently based on your application needs.
+In general, the more entries you have for a particular metric, the lower you can safely set the sample rate without sacrificing too much accuracy.
 
 <a name="trimming"></a>
-## Trimming
+### Trimming
 
-Pulse will automatically trim the stored entries once they are outside of the dashboard window.
-Trimming occurs when ingesting data using a lottery system which may be customized in the [configuration](#configuration).
+Pulse will automatically trim its stored entries once they are outside of the dashboard window. Trimming occurs when ingesting data using a lottery system which may be customized in the Pulse [configuration file](#configuration).
 
 <a name="pulse-exceptions"></a>
-## Handling Pulse Exceptions
+### Handling Pulse Exceptions
 
-In the event that an exception occurs while capturing data, such as being unable to connect to the storage database, Pulse will silently fail to avoid impacting your application.
+If an exception occurs while capturing Pulse data, such as being unable to connect to the storage database, Pulse will silently fail to avoid impacting your application.
 
-If you wish to see these exceptions, you may use the `handleExceptionsUsing` method:
+If you wish to customize how these exceptions are handled, you may provide a closure to the `handleExceptionsUsing` method:
 
 ```php
 use \Laravel\Pulse\Facades\Pulse;
