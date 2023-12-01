@@ -149,7 +149,7 @@ If you wish to view all usage metrics on screen at the same time, you may includ
 
 By default, Pulse will resolve the `name` and `email` fields from the `User` model and display avatars using the Gravatar web service. However, you may customize the user resolution and display by invoking the `Pulse::users` method within application's `App\Providers\AppServiceProvider` class.
 
-The `users` method accepts a closure which will receive the user IDs to be displayed and should return an array or collection containing the `id`, `name`, `extra`, and `avatar` for each user ID:
+The `users` method accepts a closure which will receive the user IDs to be displayed and should return an array or collection containing the `id`, `name`, `email`, and `avatar` for each user ID:
 
 ```php
 use Laravel\Pulse\Facades\Pulse;
@@ -158,7 +158,7 @@ Pulse::users(function ($ids) {
     return User::findMany($ids)->map(fn ($user) => [
         'id' => $user->id,
         'name' => $user->name,
-        'extra' => $user->email,
+        'email' => $user->email,
         'avatar' => $user->avatar_url,
     ]);
 });
