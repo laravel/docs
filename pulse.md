@@ -29,7 +29,14 @@ For in-depth debugging of individual events, check out [Laravel Telescope](/docs
 > **Warning**  
 > Pulse's first-party storage implementation currently requires a MySQL database. If you are using a different database engine, such as PostgreSQL, you will need a separate MySQL database for your Pulse data.
 
-You may use the Composer package manager to install Pulse into your Laravel project:
+Since Pulse is currently in beta, you may need to adjust your application's `composer.json` file to allow beta package releases to be installed:
+
+```json
+"minimum-stability": "beta",
+"prefer-stable": true
+```
+
+Then, you may use the Composer package manager to install Pulse into your Laravel project:
 
 ```sh
 composer require laravel/pulse
