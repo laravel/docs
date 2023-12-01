@@ -125,7 +125,7 @@ Most cards also accept an `expand` prop to show the full card instead of scrolli
 <a name="servers-card"></a>
 #### Servers
 
-The `<livewire:pulse.servers />` card displays system resource usage for all servers running the `pulse:check` command. Please refer to the documentation regarding the [system stats recorder](#system-stats-recorder) for more information on system resource reporting.
+The `<livewire:pulse.servers />` card displays system resource usage for all servers running the `pulse:check` command. Please refer to the documentation regarding the [servers recorder](#servers-recorder) for more information on system resource reporting.
 
 <a name="application-usage-card"></a>
 #### Application Usage
@@ -206,7 +206,7 @@ By default, entries will be grouped by key. However, you may wish to normalize o
 <a name="capturing-entries"></a>
 ## Capturing Entries
 
-Most Pulse recorders will automatically capture entries based on framework events dispatched by Laravel. However, the [system stats recorder](#system-stats-recorder) and some third-party cards must poll for information regularly. To use these cards, you must run the `pulse:check` daemon on all of your individual application servers:
+Most Pulse recorders will automatically capture entries based on framework events dispatched by Laravel. However, the [servers recorder](#servers-recorder) and some third-party cards must poll for information regularly. To use these cards, you must run the `pulse:check` daemon on all of your individual application servers:
 
 ```php
 php artisan pulse:check
@@ -297,10 +297,10 @@ The `Requests` recorder captures information about requests made to your applica
 
 You may optionally adjust the slow route threshold, [sample rate](#sampling), and ignored paths.
 
-<a name="system-stats-recorder"></a>
-#### System Stats
+<a name="servers-recorder"></a>
+#### Servers
 
-The `SystemStats` recorder captures CPU, memory, and storage usage of the servers that power your application for display on the [Servers](#servers-card) card. This recorder requires the [`pulse:check` command](#capturing-entries) to be running on each of the servers you wish to monitor.
+The `Servers` recorder captures CPU, memory, and storage usage of the servers that power your application for display on the [Servers](#servers-card) card. This recorder requires the [`pulse:check` command](#capturing-entries) to be running on each of the servers you wish to monitor.
 
 Each reporting server must have a unique name. By default, Pulse will use the value returned by PHP's `gethostname` function. If you wish to customize this, you may set the `PULSE_SERVER_NAME` environment variable:
 
