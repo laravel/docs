@@ -93,7 +93,7 @@ public function boot(): void
 The Pulse dashboard cards and layout may be configured by publishing the dashboard view. The dashboard view will be published to `resources/views/vendor/pulse/dashboard.blade.php`:
 
 ```sh
-php artisan vendor:publish --tag pulse-dashboard
+php artisan vendor:publish --tag=pulse-dashboard
 ```
 
 The dashboard is powered by [Livewire](https://livewire.laravel.com/), and allows you to customize the cards and layout without needing to rebuild any JavaScript assets.
