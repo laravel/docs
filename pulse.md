@@ -19,7 +19,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Pulse delivers at-a-glance insights into your application's performance and usage. With Pulse, you can track down bottlenecks like slow jobs and endpoints, find your most active users, and more.
+[Laravel Pulse](https://github.com/laravel/pulse) delivers at-a-glance insights into your application's performance and usage. With Pulse, you can track down bottlenecks like slow jobs and endpoints, find your most active users, and more.
 
 For in-depth debugging of individual events, check out [Laravel Telescope](/docs/{{version}}/telescope).
 
