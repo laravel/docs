@@ -598,7 +598,7 @@ import.meta.env.VITE_SENTRY_DSN_PUBLIC
 
 Laravel's Vite integration will attempt to resolve your assets while running your tests, which requires you to either run the Vite development server or build your assets.
 
-If you would prefer to mock Vite during testing, you may call the `withoutVite` method, which is is available for any tests that extend Laravel's `TestCase` class:
+If you would prefer to mock Vite during testing, you may call the `withoutVite` method, which is available for any tests that extend Laravel's `TestCase` class:
 
 ```php
 use Tests\TestCase;
