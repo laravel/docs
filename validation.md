@@ -1242,6 +1242,9 @@ The `Enum` rule is a class based rule that validates whether the field under val
         'status' => [Rule::enum(ServerStatus::class)],
     ]);
 
+> **Warning**  
+> You must use a backed Enum if you are passing an `int` or `string` value.
+
 <a name="rule-exclude"></a>
 #### exclude
 
