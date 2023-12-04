@@ -351,6 +351,9 @@ PULSE_DB_CONNECTION=pulse
 <a name="ingest"></a>
 ### Redis Ingest
 
+> **Warning**  
+> The Redis Ingest requires Redis 6.2 or greater.
+
 By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the HTTP response has been sent to the client or a job has been processed; however, you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
 
 ```
