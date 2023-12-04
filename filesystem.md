@@ -193,6 +193,12 @@ Typically, after updating the disk's credentials to match the credentials of the
 
     'endpoint' => env('AWS_ENDPOINT', 'https://minio:9000'),
 
+<a name="streaming-reads"></a>
+#### Streaming Reads
+When reading files from a disk using the `s3` driver, a temporary local copy is created behind the scenes to allow file seeking. If you need to stream large files and don't require the ability to rewind the stream, you can enable truly streamed reads with the `stream_reads` configuration option:
+
+    'stream_reads' => true,
+
 <a name="minio"></a>
 #### MinIO
 
