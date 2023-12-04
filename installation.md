@@ -61,6 +61,9 @@ After you have installed PHP and Composer, you may create a new Laravel project 
 composer create-project laravel/laravel example-app
 ```
 
+> **Note**
+> To use composer's create-project with Laravel, the fileinfo extension must be enabled in PHP. If it is not, you may enable it by uncommenting `extension=fileinfo` in your php.ini file.
+
 Once the project has been created, start Laravel's local development server using Laravel Artisan's `serve` command:
 
 ```nothing
