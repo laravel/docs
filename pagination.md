@@ -126,7 +126,7 @@ You may create a cursor based paginator instance via the `cursorPaginate` method
 Once you have retrieved a cursor paginator instance, you may [display the pagination results](#displaying-pagination-results) as you typically would when using the `paginate` and `simplePaginate` methods. For more information on the instance methods offered by the cursor paginator, please consult the [cursor paginator instance method documentation](#cursor-paginator-instance-methods).
 
 > **Warning**  
-> Your query must contain an "order by" clause in order to take advantage of cursor pagination.
+> Your query must contain an "order by" clause in order to take advantage of cursor pagination. In addition, the columns that the query are ordered by must belong to the table you are paginating.
 
 <a name="cursor-vs-offset-pagination"></a>
 #### Cursor vs. Offset Pagination
