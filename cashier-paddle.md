@@ -45,7 +45,7 @@
     - [Refunding Transactions](#refunding-transactions)
     - [Crediting Transactions](#crediting-transactions)
 - [Transactions](#transactions)
-    - [Upcoming Payment Date](#upcoming-payment-date)
+    - [Past & Upcoming Payments](#past-and-upcoming-payments)
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -1189,10 +1189,10 @@ The `download-invoice` route may look like the following:
         return $transaction->redirectToInvoicePdf();
     })->name('download-invoice');
 
-<a name="upcoming-payment-date"></a>
-### Upcoming Payment Date
+<a name="past-and-upcoming-payments"></a>
+### Past & Upcoming Payments
 
-You may use the `nextBilledAt` method to retrieve and display a customer's upcoming payment date for recurring subscriptions:
+You may use the `lastPayment` and `nextPayment` methods to retrieve and display a customer's past or upcoming payments for recurring subscriptions:
 
     use App\Models\User;
 
@@ -1200,12 +1200,13 @@ You may use the `nextBilledAt` method to retrieve and display a customer's upcom
 
     $subscription = $user->subscription();
 
-    $nextBilledAt = $subscription->nextBilledAt();
+    $lastPayment = $subscription->lastPayment();
+    $nextPayment = $subscription->nextPayment();
 
-This methods will return an instance of `Carbon\Carbon`; however, `nextBilledAt` will return `null` when the billing cycle has ended, such as when a subscription has been canceled:
+Both of these methods will return an instance of `Laravel\Paddle\Payment`; however, `lastPayment` will return `null` when transactions have not been synced by webhooks yet, while `nextPayment` will return `null` when the billing cycle has ended (such as when a subscription has been canceled):
 
 ```blade
-Next payment on {{ $nextBilledAt->toFormattedDateString() }}
+Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
 ```
 
 <a name="testing"></a>
