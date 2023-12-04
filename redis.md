@@ -306,6 +306,9 @@ Sometimes you may need to execute dozens of Redis commands. Instead of making a 
 
 Laravel provides a convenient interface to the Redis `publish` and `subscribe` commands. These Redis commands allow you to listen for messages on a given "channel". You may publish messages to the channel from another application, or even using another programming language, allowing easy communication between applications and processes.
 
+> **Warning**  
+> Prefix specified in the connection will also be applied to the channel names.
+
 First, let's setup a channel listener using the `subscribe` method. We'll place this method call within an [Artisan command](/docs/{{version}}/artisan) since calling the `subscribe` method begins a long-running process:
 
     <?php
