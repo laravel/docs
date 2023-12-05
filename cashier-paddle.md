@@ -4,7 +4,6 @@
 - [Upgrading Cashier](#upgrading-cashier)
 - [Installation](#installation)
     - [Paddle Sandbox](#paddle-sandbox)
-    - [Database Migrations](#database-migrations)
 - [Configuration](#configuration)
     - [Billable Model](#billable-model)
     - [API Keys](#api-keys)
@@ -72,6 +71,18 @@ First, install the Cashier package for Paddle using the Composer package manager
 composer require laravel/cashier-paddle
 ```
 
+Next, you should publish the Cashier migration files using the `vendor:publish` Artisan command:
+
+```shell
+php artisan vendor:publish --tag="cashier-migrations"
+```
+
+Then, you should run your application's database migrations. The Cashier migrations will create a new `customers` table. In addition, new `subscriptions` and `subscription_items` tables will be created to store all of your customer's subscriptions. Lastly, a new `transactions` table will be created to store all of the Paddle transactions associated with your customers:
+
+```shell
+php artisan migrate
+```
+
 > **Warning**  
 > To ensure Cashier properly handles all Paddle events, remember to [set up Cashier's webhook handling](#handling-paddle-webhooks).
 
@@ -87,33 +98,6 @@ PADDLE_SANDBOX=true
 ```
 
 After you have finished developing your application you may [apply for a Paddle vendor account](https://paddle.com). Before your application is placed into production, Paddle will need to approve your application's domain.
-
-<a name="database-migrations"></a>
-### Database Migrations
-
-The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table. In addition, new `subscriptions` and `subscription_items` tables will be created to store all of your customer's subscriptions. Finally, a new `transactions` table will be created to store all of the Paddle transactions associated with your customers:
-
-```shell
-php artisan migrate
-```
-
-If you need to overwrite the migrations that are included with Cashier, you can publish them using the `vendor:publish` Artisan command:
-
-```shell
-php artisan vendor:publish --tag="cashier-migrations"
-```
-
-If you would like to prevent Cashier's migrations from running entirely, you may use the `ignoreMigrations` provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
-
-    use Laravel\Paddle\Cashier;
-
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        Cashier::ignoreMigrations();
-    }
 
 <a name="configuration"></a>
 ## Configuration
