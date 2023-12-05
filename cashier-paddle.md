@@ -77,7 +77,7 @@ Next, you should publish the Cashier migration files using the `vendor:publish` 
 php artisan vendor:publish --tag="cashier-migrations"
 ```
 
-Finally, you should run your application's database migrations. The Cashier migrations will create a new `customers` table. In addition, new `subscriptions` and `subscription_items` tables will be created to store all of your customer's subscriptions. Lastly, a new `transactions` table will be created to store all of the Paddle transactions associated with your customers:
+Then, you should run your application's database migrations. The Cashier migrations will create a new `customers` table. In addition, new `subscriptions` and `subscription_items` tables will be created to store all of your customer's subscriptions. Lastly, a new `transactions` table will be created to store all of the Paddle transactions associated with your customers:
 
 ```shell
 php artisan migrate
