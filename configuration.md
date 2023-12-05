@@ -262,6 +262,12 @@ After placing the application in maintenance mode, you may navigate to the appli
 https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
 ```
 
+If you would like Laravel to generate the secret token for you, you may use the `with-secret` option. The secret will be displayed to you once the application is in maintenance mode:
+
+```shell
+php artisan down --with-secret
+```
+
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
 
 > **Note**  
