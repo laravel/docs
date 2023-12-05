@@ -42,9 +42,15 @@ Then, you may use the Composer package manager to install Pulse into your Larave
 composer require laravel/pulse
 ```
 
-After installing Pulse, you should run the `migrate` command in order to create the tables needed to store Pulse's data:
+Next, you should publish the Pulse configuration and migration files using the `vendor:publish` Artisan command:
 
-```sh
+```shell
+php artisan vendor:publish --provider="Laravel\Pulse\PulseServiceProvider"
+```
+
+Finally, you should run the `migrate` command in order to create the tables needed to store Pulse's data:
+
+```shell
 php artisan migrate
 ```
 
