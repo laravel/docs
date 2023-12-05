@@ -610,6 +610,12 @@ In some situations, it's useful to embed PHP code into your views. You can use t
 @endphp
 ```
 
+Or, if you only need to use PHP to import a class, you may use the `@use` directive:
+
+```blade
+@use('App\Models\Flight')
+```
+
 <a name="comments"></a>
 ### Comments
 
