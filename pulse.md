@@ -9,6 +9,7 @@
     - [Cards](#dashboard-cards)
 - [Capturing Entries](#capturing-entries)
     - [Recorders](#recorders)
+    - [Filtering](#filtering)
 - [Performance](#performance)
     - [Using a Different Database](#using-a-different-database)
     - [Redis Ingest](#ingest)
@@ -337,6 +338,30 @@ The `UserRequests` recorder captures information about the users making requests
 
 You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
 
+<a name="filtering"></a>
+### Filtering
+
+As we have seen, many [recorders](#recorders) offer the ability to, via configuration, "ignore" incoming entries based on their value, such as a request's URL. But, sometimes it may be useful to filter out records based on other factors, such as the currently authenticated user. To filter out these records, you may pass a closure to Pulse's `filter` method. Typically, the `filter` method should be invoked within the `boot` method of your application's `AppServiceProvider`:
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Laravel\Pulse\Entry;
+use Laravel\Pulse\Facades\Pulse;
+use Laravel\Pulse\Value;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Pulse::filter(function (Entry|Value $entry) {
+        return Auth::user()->isNotAdmin();
+    });
+
+    // ...
+}
+```
+
 <a name="performance"></a>
 ## Performance
 
@@ -402,8 +427,8 @@ If an exception occurs while capturing Pulse data, such as being unable to conne
 If you wish to customize how these exceptions are handled, you may provide a closure to the `handleExceptionsUsing` method:
 
 ```php
-use \Laravel\Pulse\Facades\Pulse;
-use \Illuminate\Support\Facades\Log;
+use Laravel\Pulse\Facades\Pulse;
+use Illuminate\Support\Facades\Log;
 
 Pulse::handleExceptionsUsing(function ($e) {
     Log::debug('An exception happened in Pulse', [
