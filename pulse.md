@@ -341,9 +341,7 @@ You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
 <a name="filtering"></a>
 ### Filtering
 
-As we have seen, many [recorders](#recorders) offer the ability to, via configuration, "ignore" incoming entries based on their value, such as a request's URL. It may be useful to filter out records based on other factors, such as the currently authenticated user. To filter out records you may pass a closure to the `filter` method within the `app/Providers/AppServiceProvider.php` file.
-
-As an example, you might want to filter out records for "admin" users:
+As we have seen, many [recorders](#recorders) offer the ability to, via configuration, "ignore" incoming entries based on their value, such as a request's URL. But, sometimes it may be useful to filter out records based on other factors, such as the currently authenticated user. To filter out these records, you may pass a closure to Pulse's `filter` method. Typically, the `filter` method should be invoked within the `boot` method of your application's `AppServiceProvider`:
 
 ```php
 use Illuminate\Support\Facades\Auth;
