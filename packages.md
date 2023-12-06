@@ -155,14 +155,20 @@ If your package contains [database migrations](/docs/{{version}}/migrations), yo
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
+Once your package's migrations have been registered, they will automatically be run when the `php artisan migrate` command is executed. You do not need to export them to the application's `database/migrations` directory.
+
 <a name="publishing-migrations"></a>
 #### Publishing Migrations
 
 If you would like to make your views available, you may use the service provider's `publishesMigrations` method. The `publishesMigrations` method accepts an array of package migration paths and their desired publish locations:
 
+```php
+$this->publishesMigrations([
+    __DIR__.'/../database/migrations' => $this->app->databasePath('migrations'),
+], 'pennant-migrations');
+```
 
-
-Once your package's migrations have been registered, they will automatically be run when the `php artisan migrate` command is executed. You do not need to export them to the application's `database/migrations` directory.
+Now, when users of your package execute Laravel's vendor:publish Artisan command, your package's migrations will be copied to the specified publish location.
 
 <a name="language-files"></a>
 ### Language Files
