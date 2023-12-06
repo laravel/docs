@@ -9,6 +9,7 @@
     - [Cards](#dashboard-cards)
 - [Capturing Entries](#capturing-entries)
     - [Recorders](#recorders)
+    - [Filtering](#filtering)
 - [Performance](#performance)
     - [Using a Different Database](#using-a-different-database)
     - [Redis Ingest](#ingest)
@@ -336,6 +337,34 @@ You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
 The `UserRequests` recorder captures information about the users making requests to your application for display on the [Application Usage](#application-usage-card) card.
 
 You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
+
+<a name="filtering"></a>
+### Filtering
+
+As we have seen, many [recorders](#recorders) offer the ability to, via configuration, "ignore" incoming entries based on their value, such as a request's URL. It may be useful to filter out records based on other factors, such as the currently authenticated user. As an example, you might not want to record entries from "admin" users. 
+
+To filter out records you may pass a closure to the `filter` method within the `app/Providers/AppServiceProvider.php` file's `boot` method and return `true` for records you would like to capture:
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Laravel\Pulse\Entry;
+use Laravel\Pulse\Facades\Pulse;
+use Laravel\Pulse\Value;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Pulse::filter(function (Entry|Value $entry) {
+        // Ignore entries from admin users...
+
+        return ! Auth::user()->isAdmin();
+    });
+
+    // ...
+}
+```
 
 <a name="performance"></a>
 ## Performance
