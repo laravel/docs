@@ -431,8 +431,8 @@ If an exception occurs while capturing Pulse data, such as being unable to conne
 If you wish to customize how these exceptions are handled, you may provide a closure to the `handleExceptionsUsing` method:
 
 ```php
-use \Laravel\Pulse\Facades\Pulse;
-use \Illuminate\Support\Facades\Log;
+use Laravel\Pulse\Facades\Pulse;
+use Illuminate\Support\Facades\Log;
 
 Pulse::handleExceptionsUsing(function ($e) {
     Log::debug('An exception happened in Pulse', [
