@@ -325,14 +325,11 @@ Once the cast is defined, you may access the `options` attribute and it will aut
 
     $user->save();
 
-To update a single field of a JSON attribute with a more terse syntax, you may use the `->` operator when calling the `update` method:
+To update a single field of a JSON attribute with a more terse syntax, you may [make the attribute mass assignable](/docs/{{version}}/eloquent#mass-assignment-json-columns) and use the `->` operator when calling the `update` method:
 
     $user = User::find(1);
 
     $user->update(['options->key' => 'value']);
-
-> **Note**
-> In order for update to work, [you will need to add the attribute using the right arrow operator to your model's fillable array](/docs/{{version}}/eloquent#mass-assignment-json-columns).
 
 <a name="array-object-and-collection-casting"></a>
 #### Array Object & Collection Casting
