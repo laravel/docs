@@ -341,9 +341,9 @@ You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
 <a name="filtering"></a>
 ### Filtering
 
-As we have seen, many [recorders](#recorders) offer the ability to, via configuration, "ignore" incoming entries based on their value, such as a request's URL. It may be useful to filter out records based on other factors, such as the currently authenticated user. As an example, you might not want to record entries from "admin" users. 
+As we have seen, many [recorders](#recorders) offer the ability to, via configuration, "ignore" incoming entries based on their value, such as a request's URL. It may be useful to filter out records based on other factors, such as the currently authenticated user. To filter out records you may pass a closure to the `filter` method within the `app/Providers/AppServiceProvider.php` file.
 
-To filter out records you may pass a closure to the `filter` method within the `app/Providers/AppServiceProvider.php` file's `boot` method and return `true` for records you would like to capture:
+As an example, you might want to filter out records for "admin" users:
 
 ```php
 use Illuminate\Support\Facades\Auth;
@@ -357,9 +357,7 @@ use Laravel\Pulse\Value;
 public function boot(): void
 {
     Pulse::filter(function (Entry|Value $entry) {
-        // Ignore entries from admin users...
-
-        return ! Auth::user()->isAdmin();
+        return Auth::user()->isNotAdmin();
     });
 
     // ...
