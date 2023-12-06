@@ -155,6 +155,13 @@ If your package contains [database migrations](/docs/{{version}}/migrations), yo
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
+<a name="publishing-migrations"></a>
+#### Publishing Migrations
+
+If you would like to make your views available, you may use the service provider's `publishesMigrations` method. The `publishesMigrations` method accepts an array of package migration paths and their desired publish locations:
+
+
+
 Once your package's migrations have been registered, they will automatically be run when the `php artisan migrate` command is executed. You do not need to export them to the application's `database/migrations` directory.
 
 <a name="language-files"></a>
