@@ -62,7 +62,7 @@ As you can see, the original value of the column is passed to the accessor, allo
 
     $firstName = $user->first_name;
 
-> **Note**  
+> **Note**
 > If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](/docs/{{version}}/eloquent-serialization#appending-values-to-json).
 
 <a name="building-value-objects-from-multiple-attributes"></a>
@@ -261,7 +261,7 @@ If you need to add a new, temporary cast at runtime, you may use the `mergeCasts
         'options' => 'object',
     ]);
 
-> **Warning**  
+> **Warning**
 > Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship or assign a cast to the model's primary key.
 
 <a name="stringable-casting"></a>
@@ -330,6 +330,9 @@ To update a single field of a JSON attribute with a more terse syntax, you may u
     $user = User::find(1);
 
     $user->update(['options->key' => 'value']);
+
+> **Note**
+> In order for update to work, [you will need to add the attribute using the right arrow operator to your model's fillable array](/docs/{{version}}/eloquent#mass-assignment-json-columns).
 
 <a name="array-object-and-collection-casting"></a>
 #### Array Object & Collection Casting
@@ -624,7 +627,7 @@ When casting to value objects, any changes made to the value object will automat
 
     $user->save();
 
-> **Note**  
+> **Note**
 > If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces on the value object.
 
 <a name="value-object-caching"></a>
