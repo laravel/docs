@@ -246,6 +246,86 @@ After defining your model, you may instruct Cashier to use your custom model via
         Cashier::useSubscriptionItemModel(SubscriptionItem::class);
     }
 
+<a name="quickstart"></a>
+## Quickstart
+
+Our own recommended way for working with Cashier is to use Stripe Checkout which gives you the easiest way to build modern payment and billing integrations with Stripe. In this quickstart guide we'll show a few building blocks you can use for your own app.
+
+When working with Stripe Checkout, you should always try to create Products up front in your dashboard with pre-defined prices. This will give you the best way possibel to track financial data for your business.
+
+<a name="quickstart-purchasing-products"></a>
+### Purchasing Products
+
+To let people pay for single-charged products, we'll build a flow for directing the customer to Stripe Checkout where they can add their payment details and later on be redirected to a success page within your store:
+
+    use Illuminate\Http\Request;
+    use Stripe\Checkout\Session;
+    use Stripe\Customer;
+    
+    Route::get('/checkout', function (Request $request) {
+        $price = $request->price_id;
+        $quantity = $request->quantity;
+
+        return $request->user()->checkout([$price => $quantity], [
+            'success_url' => route('checkout-success')',
+            'cancel_url' => route('checkout-cancel'),
+        ]);
+    })->name('checkout');
+    
+    Route::view('checkout.success)->name('checkout-success');
+
+As you can see in the example above we provide a redirect to Stripe Checkout for a given Price identifier. In the previous request the customer selected a quantity which we pass along. The `checkout` method already takes care of creating a customer in Stripe and connecting it to your user. After finishing the checkout session, we either redirect them to a dedicated succes or cancelation page.
+
+<a name="quickstart-tracking-orders"></a>
+### Tracking Orders
+
+By default, Cashier doesn't offer a way to keep track of orders but you can build this yourself if you're in need of it. To do so, we'll need to listen to an incoming webhook and store the orders while also linking them to the customer in our database. 
+
+To actual store orders, we'll listen to the `checkout.session.complete` webhook. We'll create a listener called `App\Listeners\StoreOrder` and hook it up in our `AppServiceProvider`:
+
+    use App\Listeners\StoreOrder;
+    use Laravel\Cashier\Events\WebhookReceived;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        $this->app['events']->listen(WebhookReceived::class, StoreOrder::class);
+    }
+
+The listener itself looks like this:
+
+    namespace App\Listeners;
+
+    use Laravel\Cashier\Cashier;
+    use Laravel\Cashier\Events\WebhookReceived;
+
+    class StoreOrder
+    {
+        public function handle(WebhookReceived $event): void
+        {
+            if ($event->payload['type'] !== 'checkout.session.completed') {
+                return; // Only continue if we've received the correct event...
+            }
+
+            $checkoutSession = $payload['data']['object'];
+
+            if (! $billable = Cashier::findBillable($checkoutSession['customer'])) {
+                return; // Only continue if we've found the billable which is attached to the order...
+            }
+
+            // Store the order on the billable...
+        }
+    }
+
+We won't go into much detail on how to store the order as this is different for each shop but you can use the data on [the checkout session object](https://stripe.com/docs/api/checkout/sessions/object) which is sent along with the `checkout.session.completed` event.
+
+<a name="quickstart-starting-subscriptions"></a>
+### Starting Subscriptions
+
+...
+
 <a name="customers"></a>
 ## Customers
 
