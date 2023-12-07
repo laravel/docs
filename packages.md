@@ -160,7 +160,7 @@ Once your package's migrations have been registered, they will automatically be 
 <a name="publishing-migrations"></a>
 #### Publishing Migrations
 
-If you would like to make your views available, you may use the service provider's `publishesMigrations` method. The `publishesMigrations` method accepts an array of package migration paths and their desired publish locations:
+If you would like to make your migrations available, you may use the service provider's `publishesMigrations` method. The `publishesMigrations` method accepts an array of package migration paths and their desired publish locations:
 
 ```php
 $this->publishesMigrations([
