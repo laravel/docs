@@ -541,6 +541,10 @@ The `Broadcast::routes` method will automatically place its routes within the `w
 
     Broadcast::routes($attributes);
 
+For example, if you want to use `admin` guard, you need to add `auth:admin` middleware:
+
+    Broadcast::routes(['middleware' => ['web', 'auth:admin']]);
+
 <a name="customizing-the-authorization-endpoint"></a>
 #### Customizing The Authorization Endpoint
 
