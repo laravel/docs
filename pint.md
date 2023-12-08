@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
+    - [Global Installation](#global-installation)
 - [Running Pint](#running-pint)
 - [Configuring Pint](#configuring-pint)
     - [Presets](#presets)
@@ -22,6 +23,21 @@ Pint is included in recent releases of the Laravel framework, so installation is
 
 ```shell
 composer require laravel/pint --dev
+```
+
+<a name="global-installation"></a>
+### Global Installation
+
+You can also install Pint globally, using Composer:
+
+```shell
+composer global require laravel/pint
+```
+
+This will allow you to run the `pint` binary from anywhere:
+
+```shell
+pint --version
 ```
 
 <a name="running-pint"></a>
