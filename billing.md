@@ -274,7 +274,7 @@ To let people pay for single-charged products, we'll build a flow for directing 
     
     Route::view('checkout.success)->name('checkout-success');
 
-As you can see in the example above we provide a redirect to Stripe Checkout for a given Price identifier. In the previous request the customer selected a quantity which we pass along. The `checkout` method already takes care of creating a customer in Stripe and connecting it to your user. After finishing the checkout session, we either redirect them to a dedicated succes or cancelation page.
+As you can see in the example above we provide a redirect to Stripe Checkout for a given Price identifier. In the previous request the customer selected a quantity which we pass along. The `checkout` method already takes care of creating a customer in Stripe and connecting it to your user. After finishing the checkout session, we either redirect them to a dedicated success or cancellation page.
 
 <a name="quickstart-tracking-orders"></a>
 ### Tracking Orders
