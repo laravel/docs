@@ -11,6 +11,10 @@
     - [Tax Configuration](#tax-configuration)
     - [Logging](#logging)
     - [Using Custom Models](#using-custom-models)
+- [Quickstart](#quickstart)
+    - [Purchasing Products](#quickstart-purchasing-products)
+    - [Tracking Orders](#quickstart-tracking-orders)
+    - [Subscription Based Services](#quickstart-subscription-based-services)
 - [Customers](#customers)
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
@@ -321,10 +325,112 @@ The listener itself looks like this:
 
 We won't go into much detail on how to store the order as this is different for each shop but you can use the data on [the checkout session object](https://stripe.com/docs/api/checkout/sessions/object) which is sent along with the `checkout.session.completed` event.
 
-<a name="quickstart-starting-subscriptions"></a>
-### Starting Subscriptions
+<a name="quickstart-subscription-based-services"></a>
+### Subscription Based Services
 
-...
+Setting up a subscription based service can encompass quite a lot of technical setup. Luckily Cashier Stripe helps to make this a breeze. For this tutorial we'll take a simple scenario of a one-plan subscription service with a monthly (`price_basic_monthly`) and yearly (`price_basic_yearly`) plan. These two prices were grouped under a Basic product in Stripe (`pro_basic`). Alternatively, we have an Expert product as well (`pro_expert`).
+
+First, we'll need to get the customer to subscribe to our services. To do so, we'll initiate a Stripe Checkout session for them to fill out their payment details and start the subscription:
+
+    use Illuminate\Http\Request;
+    
+    Route::get('/subscription-checkout', function (Request $request) {
+        return $request->user()
+            ->newSubscription('default', 'price_monthly')
+            ->trialDays(5)
+            ->allowPromotionCodes()
+            ->checkout([
+                'success_url' => route('your-success-route'),
+                'cancel_url' => route('your-cancel-route'),
+            ]);
+    });
+
+As you can see in the code snippet, we start a subscription for the monthly plan, grant them 5 days to trial and enable promotion codes for them to redeem if they have one. After a successful checkout or cancelation, we'll redirect them back to the url we defined. Of course, to make sure that we know when their subscription has started, we'll need to [set up Cashier's webhook handling](#handling-stripe-webhooks).
+
+Now that we have the part ready for customers to start subscriptions, we'll need to protect areas of our app with some checks. For example, we could want to prevent some parts in our UI from being shown if we aren't subscribed:
+
+    @if (auth()->user()->subscribed())
+        <p>You have been subscribed to our services.</p>
+    @endif
+
+Alternatively, we can show a part only if you're subscribed to a specific product:
+
+    @if (auth()->user()->subscribedToProduct('pro_basic'))
+        <p>You have been subscribed to our Basic plan.</p>
+    @endif
+
+We could also wrap this up in a middleware which we can apply to our routes:
+
+    <?php
+
+    namespace App\Http\Middleware;
+
+    use Closure;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
+
+    class Subscribed
+    {
+        /**
+         * Handle an incoming request.
+         */
+        public function handle(Request $request, Closure $next): Response
+        {
+            $user = $request->user();
+
+            if (! $user || ! $user->subscribedToProduct('pro_basic')) {
+                abort(403);
+            }
+
+            return $next($request);
+        }
+    }
+
+Then register it in the kernel:
+
+    /**
+     * The application's route middleware.
+     *
+     * These middleware may be assigned to groups or used individually.
+     *
+     * @var array<string, class-string>
+     */
+    protected $routeMiddleware = [
+        ...
+        'subscribed' => \App\Http\Middleware::class,
+        ...
+    ];
+
+And finally enable it on some routes:
+
+    use App\Http\Controllers\ServiceController;
+    use Illuminate\Support\Facades\Route;
+
+    Route::group(['middleware' => 'subscribed'], function () {
+        Route::get('/my-service', ServiceController::class);
+    });
+
+When the time comes to switch to the yearly plan, the most easy way of letting your customer do this is by using the billing portal. Here they can change plans, cancel subscriptions, review their billing data and download their invoices.
+
+We'll need to redirect them with a redirect. Let's create a link to it in our app:
+
+    <a href="{{ route('billing') }}">
+        Billing
+    </a>
+
+Then let's add the route to redirect them with a redirect to our app's dashboard:
+
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Route;
+
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/billing', function (Request $request) {
+            return $request->user()
+                ->redirectToBillingPortal(route('dashboard'));
+        })->name('billing');
+    });
+
+And that's it! You now have a basic up and running subscription service.
 
 <a name="customers"></a>
 ## Customers
