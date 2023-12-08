@@ -251,7 +251,7 @@ After defining your model, you may instruct Cashier to use your custom model via
 
 Our own recommended way for working with Cashier is to use Stripe Checkout which gives you the easiest way to build modern payment and billing integrations with Stripe. In this quickstart guide we'll show a few building blocks you can use for your own app.
 
-When working with Stripe Checkout, you should always try to create Products up front in your dashboard with pre-defined prices. This will give you the best way possibel to track financial data for your business.
+When working with Stripe Checkout, you should always try to create Products up front in your dashboard with pre-defined prices. This will give you the best way possible to track financial data for your business.
 
 <a name="quickstart-purchasing-products"></a>
 ### Purchasing Products
