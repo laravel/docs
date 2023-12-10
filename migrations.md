@@ -1241,6 +1241,7 @@ Method  |  Description
 -------  |  -----------
 `$table->cascadeOnUpdate();` | Updates should cascade.
 `$table->restrictOnUpdate();`| Updates should be restricted.
+`$table->noActionOnUpdate();`| No action when updates.
 `$table->cascadeOnDelete();` | Deletes should cascade.
 `$table->restrictOnDelete();`| Deletes should be restricted.
 `$table->nullOnDelete();`    | Deletes should set the foreign key value to null.
