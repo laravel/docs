@@ -65,6 +65,9 @@ When upgrading to a new version of Cashier, it's important that you carefully re
 <a name="installation"></a>
 ## Installation
 
+> **Warning**
+> At the moment it is not possible to install Cashier Paddle for existing Paddle accounts which have existing customer records because there's no way from Paddle's side to retrieve existing customers by email address. Cashier Paddle can only be installed for new Paddle vendor accounts.
+
 First, install the Cashier package for Paddle using the Composer package manager:
 
 ```shell
