@@ -764,11 +764,10 @@ By combining "castables" with PHP's [anonymous classes](https://www.php.net/manu
 
     <?php
 
-    namespace App\Models;
+    namespace App\ValueObjects;
 
     use Illuminate\Contracts\Database\Eloquent\Castable;
     use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-    use Illuminate\Database\Eloquent\Model;
 
     class Address implements Castable
     {
