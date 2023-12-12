@@ -1165,6 +1165,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertValueIsNot](#assert-value-is-not)
 [assertAttribute](#assert-attribute)
 [assertAttributeContains](#assert-attribute-contains)
+[assertAttributeDoesntContain](#assert-attribute-doesnt-contain)
 [assertAriaAttribute](#assert-aria-attribute)
 [assertDataAttribute](#assert-data-attribute)
 [assertVisible](#assert-visible)
@@ -1186,7 +1187,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertVue](#assert-vue)
 [assertVueIsNot](#assert-vue-is-not)
 [assertVueContains](#assert-vue-contains)
-[assertVueDoesNotContain](#assert-vue-does-not-contain)
+[assertVueDoesntContain](#assert-vue-doesnt-contain)
 
 </div>
 
@@ -1559,6 +1560,13 @@ Assert that the element matching the given selector contains the given value in 
 
     $browser->assertAttributeContains($selector, $attribute, $value);
 
+<a name="assert-attribute-doesnt-contain"></a>
+#### assertAttributeDoesntContain
+
+Assert that the element matching the given selector does not contain the given value in the provided attribute:
+
+    $browser->assertAttributeDoesntContain($selector, $attribute, $value);
+
 <a name="assert-aria-attribute"></a>
 #### assertAriaAttribute
 
@@ -1743,12 +1751,12 @@ Assert that a given Vue component data property is an array and contains the giv
 
     $browser->assertVueContains($property, $value, $componentSelector = null);
 
-<a name="assert-vue-does-not-contain"></a>
-#### assertVueDoesNotContain
+<a name="assert-vue-doesnt-contain"></a>
+#### assertVueDoesntContain
 
 Assert that a given Vue component data property is an array and does not contain the given value:
 
-    $browser->assertVueDoesNotContain($property, $value, $componentSelector = null);
+    $browser->assertVueDoesntContain($property, $value, $componentSelector = null);
 
 <a name="pages"></a>
 ## Pages
