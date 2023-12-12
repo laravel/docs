@@ -1109,11 +1109,11 @@ The `Number::abbreviate` method returns the human-readable format of the provide
 
     // 1K
 
-    $number = Number::forHumans(489939);
+    $number = Number::abbreviate(489939);
 
     // 490K
 
-    $number = Number::forHumans(1230000, precision: 2);
+    $number = Number::abbreviate(1230000, precision: 2);
 
     // 1.23M
 
