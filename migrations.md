@@ -446,7 +446,6 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [tinyInteger](#column-method-tinyInteger)
 [tinyText](#column-method-tinyText)
 [unsignedBigInteger](#column-method-unsignedBigInteger)
-[unsignedDecimal](#column-method-unsignedDecimal)
 [unsignedInteger](#column-method-unsignedInteger)
 [unsignedMediumInteger](#column-method-unsignedMediumInteger)
 [unsignedSmallInteger](#column-method-unsignedSmallInteger)
@@ -525,9 +524,9 @@ The `decimal` method creates a `DECIMAL` equivalent column with the given precis
 <a name="column-method-double"></a>
 #### `double()` {.collection-method}
 
-The `double` method creates a `DOUBLE` equivalent column with the given precision (total digits) and scale (decimal digits):
+The `double` method creates a `DOUBLE` equivalent column:
 
-    $table->double('amount', 8, 2);
+    $table->double('amount');
 
 <a name="column-method-enum"></a>
 #### `enum()` {.collection-method}
@@ -539,9 +538,9 @@ The `enum` method creates a `ENUM` equivalent column with the given valid values
 <a name="column-method-float"></a>
 #### `float()` {.collection-method}
 
-The `float` method creates a `FLOAT` equivalent column with the given precision (total digits) and scale (decimal digits):
+The `float` method creates a `FLOAT` equivalent column with the given precision:
 
-    $table->float('amount', 8, 2);
+    $table->float('amount', 53);
 
 <a name="column-method-foreignId"></a>
 #### `foreignId()` {.collection-method}
@@ -868,13 +867,6 @@ The `tinyText` method creates a `TINYTEXT` equivalent column:
 The `unsignedBigInteger` method creates an `UNSIGNED BIGINT` equivalent column:
 
     $table->unsignedBigInteger('votes');
-
-<a name="column-method-unsignedDecimal"></a>
-#### `unsignedDecimal()` {.collection-method}
-
-The `unsignedDecimal` method creates an `UNSIGNED DECIMAL` equivalent column with an optional precision (total digits) and scale (decimal digits):
-
-    $table->unsignedDecimal('amount', $precision = 8, $scale = 2);
 
 <a name="column-method-unsignedInteger"></a>
 #### `unsignedInteger()` {.collection-method}
