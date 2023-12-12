@@ -1193,7 +1193,7 @@ If you would like to mark your job as failed because of an exception that you ha
 <a name="job-batching"></a>
 ## Job Batching
 
-Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing. Before getting started, you should create a database migration to build a table to contain meta information about your job batches, such as their completion percentage. This migration may be generated using the `queue:batches-table` Artisan command:
+Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing. Before getting started, you should create a database migration to build a table which will contain meta information about your job batches, such as their completion percentage. This migration may be generated using the `queue:batches-table` Artisan command:
 
 ```shell
 php artisan queue:batches-table
@@ -1474,7 +1474,7 @@ Likewise, your `jobs_batches` table may also accumulate batch records for cancel
 <a name="storing-batches-in-dynamodb"></a>
 ### Storing Batches In DynamoDB
 
-Laravel also provides support for storing batch metadata in [DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database. However, you will need to manually create a DynamoDB table to store all of the batch records.
+Laravel also provides support for storing batch meta information in [DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database. However, you will need to manually create a DynamoDB table to store all of the batch records.
 
 Typically, this table should be named `job_batches`, but you should name the table based on the value of the `queue.batching.table` configuration value within your application's `queue` configuration file.
 
