@@ -28,7 +28,7 @@
     - [Cancelling Batches](#cancelling-batches)
     - [Batch Failures](#batch-failures)
     - [Pruning Batches](#pruning-batches)
-    - [Using DynamoDB for Batches](#using-dynamodb-for-batches)
+    - [Storing Batches In DynamoDB](#storing-batches-in-dynamodb)
 - [Queueing Closures](#queueing-closures)
 - [Running The Queue Worker](#running-the-queue-worker)
     - [The `queue:work` Command](#the-queue-work-command)
@@ -1471,22 +1471,30 @@ Likewise, your `jobs_batches` table may also accumulate batch records for cancel
 
     $schedule->command('queue:prune-batches --hours=48 --cancelled=72')->daily();
 
-<a name="using-dynamodb-for-batches">
-### Using DynamoDB for Batches
+<a name="storing-batches-in-dynamodb"></a>
+### Storing Batches In DynamoDB
 
-Laravel also provides support for using [DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database to power job batching. However, you must create a DynamoDB table to store all of the job batches records. Typically, this table should be named `job_batches`, but you should name the table based on the value of the `queue.batching.table` configuration value within your application's `queue` configuration file.
+Laravel also provides support for storing batch metadata in [DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database. However, you will need to manually create a DynamoDB table to store all of the batch records.
+
+Typically, this table should be named `job_batches`, but you should name the table based on the value of the `queue.batching.table` configuration value within your application's `queue` configuration file.
+
+<a name="dynamodb-batch-table-configuration"></a>
+#### DynamoDB Batch Table Configuration
 
 The `job_batches` table should have a string primary partition key named `application` and a string primary sort key named `id`. The `application` portion of the key will contain your application's name as defined by the `name` configuration value within your application's `app` configuration file. Since the application name is part of the DynamoDB table's key, you can use the same table to store job batches for multiple Laravel applications.
 
-In addition you might set up a ttl attribute as well for your table. See the section on [pruning for DynamoDB](#pruning-batches-in-dynamodb)
+In addition, you may define `ttl` attribute for your table if you would like to take advantage of [automatic batch pruning](#pruning-batches-in-dynamodb).
 
-In addition, ensure that you install the AWS SDK so that your Laravel application can communicate with Amazon DynamoDB:
+<a name="dynamodb-configuration"></a>
+#### DynamoDB Configuration
+
+Next, install the AWS SDK so that your Laravel application can communicate with Amazon DynamoDB:
 
 ```shell
 composer require aws/aws-sdk-php
 ```
 
-Next, set the `queue.batching.driver` configuration option's value to `dynamodb`. In addition, you should define `key`, `secret`, and `region` configuration options within the failed job configuration array. These options will be used to authenticate with AWS. When using the `dynamodb` driver, the `queue.batching.database` configuration option is unnecessary:
+Then, set the `queue.batching.driver` configuration option's value to `dynamodb`. In addition, you should define `key`, `secret`, and `region` configuration options within the `batching` configuration array. These options will be used to authenticate with AWS. When using the `dynamodb` driver, the `queue.batching.database` configuration option is unnecessary:
 
 ```php
 'batching' => [
@@ -1498,16 +1506,12 @@ Next, set the `queue.batching.driver` configuration option's value to `dynamodb`
 ],
 ```
 
-<a name="pruning-batches-in-dynamodb">
-#### Pruning batches in DynamoDB
+<a name="pruning-batches-in-dynamodb"></a>
+#### Pruning Batches In DynamoDB
 
-If using [DynamoDB](https://aws.amazon.com/dynamodb) to store job batches, the pruning commands will not currently work. Instead, you can make use of [DynamoDB's native TTL functionality](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) to remove records for old batches.
+When utilizing [DynamoDB](https://aws.amazon.com/dynamodb) to store job batch information, the typical pruning commands used to prune batches stored in a relational database will not work. Instead, you may utilize [DynamoDB's native TTL functionality](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) to automatically remove records for old batches.
 
-If you setup your table with a ttl attribute, you can use additional config parameters:
-- `queue.batching.ttl_attribute` to specify the name of the attribute holding the TTL
-- `queue.batching.ttl` to specify the time (in seconds) after which a job can be removed from the table. Note that this is the time since the last update to this batch and not the time since the creation of the batch.
-
-Your configuration then becomes:
+If you defined your DynamoDB table with a `ttl` attribute, you may define configuration parameters to instruct Laravel how to prune batch records. The `queue.batching.ttl_attribute` configuration value defines the name of the attribute holding the TTL, while the `queue.batching.ttl` configuration value defines the number of seconds after which a batch record can be removed from the DynamoDB table, relative to the last time the record was updated:
 
 ```php
 'batching' => [
@@ -1517,7 +1521,7 @@ Your configuration then becomes:
     'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     'table' => 'job_batches',
     'ttl_attribute' => 'ttl',
-    'ttl' => 60*60*24*7, // 7 days
+    'ttl' => 60 * 60 * 24 * 7, // 7 days...
 ],
 ```
 
@@ -1934,7 +1938,7 @@ By default, all the failed job records that are more than 24 hours old will be p
 php artisan queue:prune-failed --hours=48
 ```
 
-<a name="storing-failed-jobs-in-dynamodb"></a>
+<a name="storing-failed-jobs-in-dynamo-db"></a>
 ### Storing Failed Jobs In DynamoDB
 
 Laravel also provides support for storing your failed job records in [DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database table. However, you must create a DynamoDB table to store all of the failed job records. Typically, this table should be named `failed_jobs`, but you should name the table based on the value of the `queue.failed.table` configuration value within your application's `queue` configuration file.
