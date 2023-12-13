@@ -12,9 +12,8 @@
     - [Logging](#logging)
     - [Using Custom Models](#using-custom-models)
 - [Quickstart](#quickstart)
-    - [Purchasing Products](#quickstart-purchasing-products)
-    - [Tracking Orders](#quickstart-tracking-orders)
-    - [Subscription Based Services](#quickstart-subscription-based-services)
+    - [Selling Products](#quickstart-selling-products)
+    - [Selling Subscriptions](#quickstart-selling-subscriptions)
 - [Customers](#customers)
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
@@ -253,14 +252,15 @@ After defining your model, you may instruct Cashier to use your custom model via
 <a name="quickstart"></a>
 ## Quickstart
 
-Our own recommended way for working with Cashier is to use Stripe Checkout which gives you the easiest way to build modern payment and billing integrations with Stripe. In this quickstart guide we'll show a few building blocks you can use for your own app.
+Offering product and subscription billing via your application can be intimidating. However, thanks to Cashier and Stripe Checkout, you can easily build modern payment integrations.
 
-When working with Stripe Checkout, you should always try to create Products up front in your dashboard with pre-defined prices. This will give you the best way possible to track financial data for your business.
+<a name="quickstart-selling-products"></a>
+### Selling Products
 
-<a name="quickstart-purchasing-products"></a>
-### Purchasing Products
+> **Note**
+> Before utilizing Stripe Checkout, you should define Products with fixed prices in your Stripe dashboard. In addition, you should [configure Cashier's webhook handling](#handling-stripe-webhooks).
 
-To let people pay for single-charged products, we'll build a flow for directing the customer to Stripe Checkout where they can add their payment details and later on be redirected to a success page within your store:
+To charge customers for products (not subscriptions), we'll utilize Cashier to direct customers to Stripe Checkout, where they will provide their payment details. Once the payment has been made via Checkout, the customer will be redirected to a success URL of your choosing within your application:
 
     use Illuminate\Http\Request;
     use Stripe\Checkout\Session;
@@ -268,26 +268,31 @@ To let people pay for single-charged products, we'll build a flow for directing 
     
     Route::get('/checkout', function (Request $request) {
         $price = $request->price_id;
+
         $quantity = $request->quantity;
 
         return $request->user()->checkout([$price => $quantity], [
-            'success_url' => route('checkout-success')',
+            'success_url' => route('checkout-success'),
             'cancel_url' => route('checkout-cancel'),
         ]);
     })->name('checkout');
-    
-    Route::view('checkout.success)->name('checkout-success');
 
-As you can see in the example above we provide a redirect to Stripe Checkout for a given Price identifier. In the previous request the customer selected a quantity which we pass along. The `checkout` method already takes care of creating a customer in Stripe and connecting it to your user. After finishing the checkout session, we either redirect them to a dedicated success or cancellation page.
+    Route::view('checkout.success')->name('checkout-success');
+    Route::view('checkout.cancel')->name('checkout-cancel');
+
+As you can see in the example above, we will utilize Cashier's provided `checkout` method to redirect the customer to Stripe Checkout for a given "price identifier". When using Stripe, "prices" usually refer to specific products or subscriptions.
+
+The `checkout` method will automatically create a customer in Stripe and connect it to the corresponding user in your application's database. After completing the checkout session, the customer will be redirected to a dedicated success or cancellation page where you can display an informational message to the customer.
 
 <a name="quickstart-tracking-orders"></a>
-### Tracking Orders
+#### Tracking Orders
 
-By default, Cashier doesn't offer a way to keep track of orders but you can build this yourself if you're in need of it. To do so, we'll need to listen to an incoming webhook and store the orders while also linking them to the customer in our database. 
+By default, Cashier doesn't store individual order information when selling products. However, you can easily listen to the webhooks dispatched by Stripe and raised via events by Cashier to store order information in your database.
 
-To actual store orders, we'll listen to the `checkout.session.complete` webhook. We'll create a listener called `App\Listeners\StoreOrder` and hook it up in our `AppServiceProvider`:
+To get started, listen for the `WebhookReceived` event dispatched by Cashier. In this case, we are particularly interested in the `checkout.session.complete` webhook. Typically, you should register the event listener in the `boot` method of one of your application's service providers:
 
     use App\Listeners\StoreOrder;
+    use Illuminate\Support\Facades\Event;
     use Laravel\Cashier\Events\WebhookReceived;
 
     /**
@@ -295,10 +300,10 @@ To actual store orders, we'll listen to the `checkout.session.complete` webhook.
      */
     public function boot(): void
     {
-        $this->app['events']->listen(WebhookReceived::class, StoreOrder::class);
+        Event::listen(WebhookReceived::class, StoreOrder::class);
     }
 
-The listener itself looks like this:
+In this example, the `StoreOrder` listener might look like the following:
 
     namespace App\Listeners;
 
@@ -307,36 +312,43 @@ The listener itself looks like this:
 
     class StoreOrder
     {
+        /**
+         * Handle the incoming Cashier webhook event.
+         */
         public function handle(WebhookReceived $event): void
         {
             if ($event->payload['type'] !== 'checkout.session.completed') {
-                return; // Only continue if we've received the correct event...
+                return;
             }
 
             $checkoutSession = $payload['data']['object'];
 
             if (! $billable = Cashier::findBillable($checkoutSession['customer'])) {
-                return; // Only continue if we've found the billable which is attached to the order...
+                return;
             }
 
-            // Store the order on the billable...
+            // Store the customer's order...
+            $billable->orders()->create(...);
         }
     }
 
-We won't go into much detail on how to store the order as this is different for each shop but you can use the data on [the checkout session object](https://stripe.com/docs/api/checkout/sessions/object) which is sent along with the `checkout.session.completed` event.
+Please refer to Stripe's documentation for more information on the [payload contained by the `checkout.session.completed` webhook](https://stripe.com/docs/api/checkout/sessions/object).
 
-<a name="quickstart-subscription-based-services"></a>
-### Subscription Based Services
+<a name="quickstart-selling-subscriptions"></a>
+### Selling Subscriptions
 
-Setting up a subscription based service can encompass quite a lot of technical setup. Luckily Cashier Stripe helps to make this a breeze. For this tutorial we'll take a simple scenario of a one-plan subscription service with a monthly (`price_basic_monthly`) and yearly (`price_basic_yearly`) plan. These two prices were grouped under a Basic product in Stripe (`pro_basic`). Alternatively, we have an Expert product as well (`pro_expert`).
+> **Note**
+> Before utilizing Stripe Checkout, you should define Products with fixed prices in your Stripe dashboard. In addition, you should [configure Cashier's webhook handling](#handling-stripe-webhooks).
 
-First, we'll need to get the customer to subscribe to our services. To do so, we'll initiate a Stripe Checkout session for them to fill out their payment details and start the subscription:
+To learn how to sell subscriptions using Cashier and Stripe Checkout, let's consider the simple scenario of a subscription service with a basic monthly (`price_basic_monthly`) and yearly (`price_basic_yearly`) plan. These two prices could be grouped under a "Basic" product (`pro_basic`) in our Stripe dashboard. In addition, our subscription service might offer an Expert plan as `pro_expert`.
+
+First, let's discover how a customer can subscribe to our services. Of course, you can imagine the customer might click a "subscribe" button for the Basic plan on our application's pricing page. This button or link should direct the user to a Laravel route which creates the Stripe Checkout session for their chosen plan:
 
     use Illuminate\Http\Request;
     
     Route::get('/subscription-checkout', function (Request $request) {
         return $request->user()
-            ->newSubscription('default', 'price_monthly')
+            ->newSubscription('default', 'price_basic_monthly')
             ->trialDays(5)
             ->allowPromotionCodes()
             ->checkout([
@@ -345,21 +357,32 @@ First, we'll need to get the customer to subscribe to our services. To do so, we
             ]);
     });
 
-As you can see in the code snippet, we start a subscription for the monthly plan, grant them 5 days to trial and enable promotion codes for them to redeem if they have one. After a successful checkout or cancelation, we'll redirect them back to the url we defined. Of course, to make sure that we know when their subscription has started, we'll need to [set up Cashier's webhook handling](#handling-stripe-webhooks).
+As you can see in the example above, we will redirect the customer to a Stripe Checkout session which will allow them to subscribe to our Basic plan. After a successful checkout or cancellation, the customer will be redirected back to the URL we provided to the `checkout` method. To know when their subscription has actually started (since some payment methods require a few seconds to process), we'll also need to [configure Cashier's webhook handling](#handling-stripe-webhooks).
 
-Now that we have the part ready for customers to start subscriptions, we'll need to protect areas of our app with some checks. For example, we could want to prevent some parts in our UI from being shown if we aren't subscribed:
+Now that customers can start subscriptions, we need to restrict certain portions of our application so that only subscribed users can access them. Of course, we can always determine a user's current subscription status via the `subscribed` method provided by Cashier's `Billable` trait:
 
-    @if (auth()->user()->subscribed())
-        <p>You have been subscribed to our services.</p>
-    @endif
+```blade
+@if ($user->subscribed())
+    <p>You are subscribed.</p>
+@endif
+```
 
-Alternatively, we can show a part only if you're subscribed to a specific product:
+We can even easily determine if a user is subscribed to specific product or price:
 
-    @if (auth()->user()->subscribedToProduct('pro_basic'))
-        <p>You have been subscribed to our Basic plan.</p>
-    @endif
+```blade
+@if ($user->subscribedToProduct('pro_basic'))
+    <p>You are subscribed to our Basic product.</p>
+@endif
 
-We could also wrap this up in a middleware which we can apply to our routes:
+@if ($user->subscribedToPrice('price_basic_monthly'))
+    <p>You are subscribed to our monthly Basic plan.</p>
+@endif
+```
+
+<a name="quickstart-building-a-subscribed-middleware"></a>
+#### Building A Subscribed Middleware
+
+For convenience, you may wish to build a [middleware](/docs/{{version}}/middleware) which determines if the incoming request is from a subscribed user. Once this middleware has been defined, you may easily assign it to a route to prevent users that are not subscribed from accessing the route:
 
     <?php
 
@@ -376,61 +399,43 @@ We could also wrap this up in a middleware which we can apply to our routes:
          */
         public function handle(Request $request, Closure $next): Response
         {
-            $user = $request->user();
-
-            if (! $user || ! $user->subscribedToProduct('pro_basic')) {
-                abort(403);
+            if (! $request->user()?->subscribed()) {
+                // Redirect user to billing page and ask them to subscribe...
+                return redirect('/billing');
             }
 
             return $next($request);
         }
     }
 
-Then register it in the kernel:
+Once the middleware has been defined, you may assign it to a route:
 
-    /**
-     * The application's route middleware.
-     *
-     * These middleware may be assigned to groups or used individually.
-     *
-     * @var array<string, class-string>
-     */
-    protected $routeMiddleware = [
-        ...
-        'subscribed' => \App\Http\Middleware::class,
-        ...
-    ];
+    use App\Http\Middleware\Subscribed;
 
-And finally enable it on some routes:
+    Route::get('/dashboard', function () {
+        // ...
+    })->middleware([Subscribed::class]);
 
-    use App\Http\Controllers\ServiceController;
-    use Illuminate\Support\Facades\Route;
+<a name="quickstart-allowing-customers-to-manage-their-billing-plan"></a>
+#### Allowing Customers To Manage Their Billing Plan
 
-    Route::group(['middleware' => 'subscribed'], function () {
-        Route::get('/my-service', ServiceController::class);
-    });
+Of course, customers may want to change their subscription plan to another product or "tier". The easiest way to allow this is by directing customer's to Stripe's Customer Billing Portal, which provides a hosted user interface that allows customers to download invoices, update their payment method, and change subscription plans.
 
-When the time comes to switch to the yearly plan, the most easy way of letting your customer do this is by using the billing portal. Here they can change plans, cancel subscriptions, review their billing data and download their invoices.
+First, define a link or button within your application that directs users to a Laravel route which we will utilize to initiate a Billing Portal session:
 
-We'll need to redirect them with a redirect. Let's create a link to it in our app:
+```blade
+<a href="{{ route('billing') }}">
+    Billing
+</a>
+```
 
-    <a href="{{ route('billing') }}">
-        Billing
-    </a>
-
-Then let's add the route to redirect them with a redirect to our app's dashboard:
+Next, let's define the route that initiates a Stripe Customer Billing Portal session and redirects the user to the Portal. The `redirectToBillingPortal` method accepts the URL that users should be returned to when exiting the Portal:
 
     use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Route;
 
-    Route::group(['middleware' => 'auth'], function () {
-        Route::get('/billing', function (Request $request) {
-            return $request->user()
-                ->redirectToBillingPortal(route('dashboard'));
-        })->name('billing');
-    });
-
-And that's it! You now have a basic up and running subscription service.
+    Route::get('/billing', function (Request $request) {
+        return $request->user()->redirectToBillingPortal(route('dashboard'));
+    })->middleware(['auth'])->name('billing');
 
 <a name="customers"></a>
 ## Customers
