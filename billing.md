@@ -252,15 +252,15 @@ After defining your model, you may instruct Cashier to use your custom model via
 <a name="quickstart"></a>
 ## Quickstart
 
-Offering product and subscription billing via your application can be intimidating. However, thanks to Cashier and Stripe Checkout, you can easily build modern payment integrations.
-
 <a name="quickstart-selling-products"></a>
 ### Selling Products
 
 > **Note**
 > Before utilizing Stripe Checkout, you should define Products with fixed prices in your Stripe dashboard. In addition, you should [configure Cashier's webhook handling](#handling-stripe-webhooks).
 
-To charge customers for products (not subscriptions), we'll utilize Cashier to direct customers to Stripe Checkout, where they will provide their payment details. Once the payment has been made via Checkout, the customer will be redirected to a success URL of your choosing within your application:
+Offering product and subscription billing via your application can be intimidating. However, thanks to Cashier and [Stripe Checkout](https://stripe.com/payments/checkout), you can easily build modern, robust payment integrations.
+
+To charge customers for non-recurring, single-charge products, we'll utilize Cashier to direct customers to Stripe Checkout, where they will provide their payment details and confirm their purchase. Once the payment has been made via Checkout, the customer will be redirected to a success URL of your choosing within your application:
 
     use Illuminate\Http\Request;
     use Stripe\Checkout\Session;
@@ -340,6 +340,8 @@ Please refer to Stripe's documentation for more information on the [payload cont
 > **Note**
 > Before utilizing Stripe Checkout, you should define Products with fixed prices in your Stripe dashboard. In addition, you should [configure Cashier's webhook handling](#handling-stripe-webhooks).
 
+Offering product and subscription billing via your application can be intimidating. However, thanks to Cashier and [Stripe Checkout](https://stripe.com/payments/checkout), you can easily build modern, robust payment integrations.
+
 To learn how to sell subscriptions using Cashier and Stripe Checkout, let's consider the simple scenario of a subscription service with a basic monthly (`price_basic_monthly`) and yearly (`price_basic_yearly`) plan. These two prices could be grouped under a "Basic" product (`pro_basic`) in our Stripe dashboard. In addition, our subscription service might offer an Expert plan as `pro_expert`.
 
 First, let's discover how a customer can subscribe to our services. Of course, you can imagine the customer might click a "subscribe" button for the Basic plan on our application's pricing page. This button or link should direct the user to a Laravel route which creates the Stripe Checkout session for their chosen plan:
@@ -382,7 +384,7 @@ We can even easily determine if a user is subscribed to specific product or pric
 <a name="quickstart-building-a-subscribed-middleware"></a>
 #### Building A Subscribed Middleware
 
-For convenience, you may wish to build a [middleware](/docs/{{version}}/middleware) which determines if the incoming request is from a subscribed user. Once this middleware has been defined, you may easily assign it to a route to prevent users that are not subscribed from accessing the route:
+For convenience, you may wish to create a [middleware](/docs/{{version}}/middleware) which determines if the incoming request is from a subscribed user. Once this middleware has been defined, you may easily assign it to a route to prevent users that are not subscribed from accessing the route:
 
     <?php
 
@@ -419,7 +421,7 @@ Once the middleware has been defined, you may assign it to a route:
 <a name="quickstart-allowing-customers-to-manage-their-billing-plan"></a>
 #### Allowing Customers To Manage Their Billing Plan
 
-Of course, customers may want to change their subscription plan to another product or "tier". The easiest way to allow this is by directing customer's to Stripe's Customer Billing Portal, which provides a hosted user interface that allows customers to download invoices, update their payment method, and change subscription plans.
+Of course, customers may want to change their subscription plan to another product or "tier". The easiest way to allow this is by directing customers to Stripe's [Customer Billing Portal](https://stripe.com/docs/no-code/customer-portal), which provides a hosted user interface that allows customers to download invoices, update their payment method, and change subscription plans.
 
 First, define a link or button within your application that directs users to a Laravel route which we will utilize to initiate a Billing Portal session:
 
@@ -436,6 +438,9 @@ Next, let's define the route that initiates a Stripe Customer Billing Portal ses
     Route::get('/billing', function (Request $request) {
         return $request->user()->redirectToBillingPortal(route('dashboard'));
     })->middleware(['auth'])->name('billing');
+
+> **Note**
+> As long as you have configured Cashier's webhook handling, Cashier will automatically keep your application's Cashier-related database tables in sync by inspecting the incoming webhooks from Stripe. So, for example, when a user cancels their subscription via Stripe's Customer Billing Portal, Cashier will receive the corresponding webhook and mark the subscription as "cancelled" in your application's database.
 
 <a name="customers"></a>
 ## Customers
