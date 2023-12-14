@@ -282,94 +282,52 @@ As you can see in the example above, we will utilize Cashier's provided `checkou
 
 The `checkout` method will automatically create a customer in Stripe and connect it to the corresponding user in your application's database. After completing the checkout session, the customer will be redirected to a dedicated success or cancellation page where you can display an informational message to the customer.
 
-<a name="quickstart-handling-carts"></a>
-#### Handling Carts
+<a name="providing-meta-data-to-stripe-checkout"></a>
+#### Providing Meta Data To Stripe Checkout
 
-Often, for an online shop, you'll have a sort of shopping cart with items. Let's see how we can successfully redirect the user to Stripe Checkout with the cart items. Imagine we've stored all items in a cart record in the database. We'll use the below route to checkout the cart:
+When selling products, it's common to keep track of completed orders and purchased products via `Cart` and `Order` models defined by your own application. When redirecting customers to Stripe Checkout to complete a purchase, you may need to provide an existing order identifier so that you can associate the completed purchase with the corresponding order when the customer is redirected back to your application.
+
+To accomplish this, you may provide an array of `metadata` to the `checkout` method. Let's imagine that a pending `Order` is created within our application when a user begins the checkout process. Remember, the `Cart` and `Order` models in this example are illustrative and not provided by Cashier. You are free to implement these concepts based on the needs of your own application:
     
+    use App\Models\Cart;
+    use App\Models\Order;
     use Illuminate\Http\Request;
     
-    Route::get('/cart/{id}/checkout', function (Request $request, $id) {
-        $items = DB::table('carts')->find($id)['items'] ?? [];
+    Route::get('/cart/{cart}/checkout', function (Request $request, Cart $cart) {
+        $order = Order::create([
+            'cart_id' => $cart->id,
+            'items' => $cart->items,
+            'status' => 'incomplete',
+        ]);
 
-        if (empty($items)) {
-            return redirect()->route('shop');
-        }
-    
-        return $request->user()->checkout($items, [
+        return $request->user()->checkout($order->items, [
             'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout-cancel'),
-            'metadata' => ['cart_id' => $id],
+            'metadata' => ['order_id' => $order->id],
         ]);
     })->name('checkout');
 
-As you can see we'll retrieve the items, add them to the checkout and redirect to it. We make sure to set the session ID upon successful return so we can clear the cart later on. We also add the `card_id` to the session metadata.
+As you can see in the example above, when a user begins the checkout process, we will provide all of the cart / order's associated Stripe price identifiers to the `checkout` method. Of course, your application is responsible for associating these items with the "shopping cart" or order as a customer adds them. We also provide the order's ID to the Stripe Checkout session via the `metadata` array. Finally, we have added the `CHECKOUT_SESSION_ID` template variable to the Checkout success route. When Stripe redirects customers back to your application, this template variable will automatically be populated with the Checkout session ID.
 
-Now when we have a successful checkout session, we can clear the cart:
+Next, let's build our Checkout "success" route. This is the route that users will be redirected to after their purchase has been completed via Stripe Checkout. Within this route, we can retrieve the Stripe Checkout session ID and the associated Stripe Checkout instance in order to access our provided meta data and update our customer's order accordingly:
 
+    use App\Models\Order;
     use Illuminate\Http\Request;
-    
+    use Laravel\Cashier\Cashier;
+
     Route::get('/checkout/success', function (Request $request) {
         $sessionId = $request->get('session_id');
 
-        $cartId = $sessionId ? (Cashier::stripe()->sessions->retrieve($sessionId)['metadata']['cart_id'] ?? null) : null;
+        $orderId = Cashier::stripe()->sessions->retrieve($sessionId)['metadata']['order_id'] ?? null;
 
-        if ($cartId) {
-            DB::table('carts')->delete($cartId);
-        }
+        $order = Order::findOrFail($orderId);
 
-        return view('checkout-success');
+        $order->update(['status' => 'completed']);
+
+        return view('checkout-success', ['order' => $order]);
     })->name('checkout-success');
 
-<a name="quickstart-tracking-orders"></a>
-#### Tracking Orders
-
-By default, Cashier doesn't store individual order information when selling products. However, you can easily listen to the webhooks dispatched by Stripe and raised via events by Cashier to store order information in your database.
-
-To get started, listen for the `WebhookReceived` event dispatched by Cashier. In this case, we are particularly interested in the `checkout.session.complete` webhook. Typically, you should register the event listener in the `boot` method of one of your application's service providers:
-
-    use App\Listeners\StoreOrder;
-    use Illuminate\Support\Facades\Event;
-    use Laravel\Cashier\Events\WebhookReceived;
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Event::listen(WebhookReceived::class, StoreOrder::class);
-    }
-
-In this example, the `StoreOrder` listener might look like the following:
-
-    namespace App\Listeners;
-
-    use Laravel\Cashier\Cashier;
-    use Laravel\Cashier\Events\WebhookReceived;
-
-    class StoreOrder
-    {
-        /**
-         * Handle the incoming Cashier webhook event.
-         */
-        public function handle(WebhookReceived $event): void
-        {
-            if ($event->payload['type'] !== 'checkout.session.completed') {
-                return;
-            }
-
-            $checkoutSession = $payload['data']['object'];
-
-            if (! $billable = Cashier::findBillable($checkoutSession['customer'])) {
-                return;
-            }
-
-            // Store the customer's order...
-            $billable->orders()->create(...);
-        }
-    }
-
-Please refer to Stripe's documentation for more information on the [payload contained by the `checkout.session.completed` webhook](https://stripe.com/docs/api/checkout/sessions/object).
+Please refer to Stripe's documentation for more information on the [data contained by the Checkout session object](https://stripe.com/docs/api/checkout/sessions/object).
 
 <a name="quickstart-selling-subscriptions"></a>
 ### Selling Subscriptions
