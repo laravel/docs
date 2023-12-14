@@ -78,7 +78,7 @@ Pulse is not meant to be run during testing and as such should be disabled. You 
 <env name="PULSE_ENABLED" value="false"/>
 ```
 
-Additionally, if you're using sqlite during testing, you should prevent the Pulse migrations from running by adding this check in the `up` method:
+Additionally, if you're using SQLite during testing, you should prevent the Pulse migrations from running by adding this check in the `up` method:
 
 ```php
 public function up(): void
