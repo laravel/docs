@@ -5,6 +5,7 @@
 - [Server Prerequisites](#server-prerequisites)
     - [RoadRunner](#roadrunner)
     - [Swoole](#swoole)
+    - [FrankenPHP](#frankenphp)
 - [Serving Your Application](#serving-your-application)
     - [Serving Your Application Via HTTPS](#serving-your-application-via-https)
     - [Serving Your Application Via Nginx](#serving-your-application-via-nginx)
@@ -26,7 +27,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [Open Swoole](https://openswoole.com/), [Swoole](https://github.com/swoole/swoole-src), and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
+[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [Open Swoole](https://openswoole.com/), [Swoole](https://github.com/swoole/swoole-src), [RoadRunner](https://roadrunner.dev), and  [FrankenPHP](https://frankenphp.dev/). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
 
 <a name="installation"></a>
 ## Installation
@@ -62,7 +63,7 @@ If you plan to develop your application using [Laravel Sail](/docs/{{version}}/s
 ```shell
 ./vendor/bin/sail up
 
-./vendor/bin/sail composer require laravel/octane spiral/roadrunner-cli spiral/roadrunner-http 
+./vendor/bin/sail composer require laravel/octane spiral/roadrunner-cli spiral/roadrunner-http
 ```
 
 Next, you should start a Sail shell and use the `rr` executable to retrieve the latest Linux based build of the RoadRunner binary:
@@ -151,6 +152,23 @@ Swoole supports a few additional configuration options that you may add to your 
     ],
 ],
 ```
+
+
+<a name="frankenphp"></a>
+### FrankenPHP
+
+If you plan to use the FrankenPHP application server to serve your Laravel Octane application, you must install the FrankenPHP binaries. This can be done via the `php artisan octane:install` command with the `server` option set with `frankenphp` value:
+
+```shell
+php artisan octane:install --server=frankenphp
+```
+
+The command above will download the FrankenPHP binary for your operating system, and it will add the `OCTANE_SERVER` parameter in the `.env` file:
+
+```
+OCTANE_SERVER=frankenphp
+```
+
 
 <a name="serving-your-application"></a>
 ## Serving Your Application
