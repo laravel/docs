@@ -187,6 +187,12 @@ The `ip` method may be used to retrieve the IP address of the client that made t
 
     $ipAddress = $request->ip();
 
+If you would like to retrieve an array of IP addresses, including all of the client IP addesses that were forwarded by proxies, you may use the `ips` method. The "original" client IP address will be at the end of the array:
+
+    $ipAddresses = $request->ips();
+
+In general, IP addresses should be considered untrusted, user-controlled input and be used for informational purposes only.
+
 <a name="content-negotiation"></a>
 ### Content Negotiation
 
