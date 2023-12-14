@@ -592,7 +592,7 @@ Custom cards may fetch and display data from anywhere, however you may wish to l
 <a name="custom-card-data-capture"></a>
 #### Capturing Entries
 
-Pulse allows you to record "entries" which are pre-aggregated into buckets for efficient retrieval later. When using the `Pulse::record` method, you must specify a name for the type of entry you are recording and a key that determines how the aggregated data should be grouped. For most aggregation methods, you will also need to specify the value related to the individual entry. You will then need to choose one or more aggregations to perform on the entry:
+Pulse allows you to record "entries" using the `Pulse::record` method:
 
 ```php
 use Laravel\Pulse\Facades\Pulse;
@@ -601,6 +601,8 @@ Pulse::record('user_sale', $user->id, $sale->amount)
     ->sum()
     ->count();
 ```
+
+You will need specify a `type` for the entry you are recording and a `key` that determines how the aggregated data should be grouped. For most aggregation methods you will also need to specify a `value`. You may then chain one or more aggregation methods so Pulse may capture pre-aggregated values into buckets for efficient retrieval later.
 
 The available aggregation methods are:
 
@@ -629,9 +631,7 @@ class TopSellers extends Card
 }
 ```
 
-Pulse will use the pre-aggregated buckets, combined with a live aggregation of the entries where the oldest bucket falls partially outside of the period.
-
-The specified aggregations must have been captured upfront when calling the `Pulse::record`.
+Pulse will primarily retrieve data from the pre-aggregated buckets, therefore the specified aggregates must have been captured up-front using the `Pulse::record` method. The oldest bucket will typically fall partially outside the period, so Pulse will aggregate the oldest entries to fill the gap and give an accurate value for the entire period, without needing to aggregate the entire period on each poll request.
 
 You may also retrieve a total value for a given type by using the `aggregateTotal` method:
 
@@ -642,7 +642,7 @@ $total = $this->aggregateTotal('user_sale', 'sum');
 <a name="custom-recorders"></a>
 #### Custom Recorders
 
-Package authors may wish to provider recorder classes to allow users to configure the capturing of data.
+Package authors may wish to provide recorder classes to allow users to configure the capturing of data.
 
 Recorders are registered in the `recorders` section of the users `config/pulse.php` configuration file:
 
