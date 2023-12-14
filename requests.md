@@ -187,6 +187,10 @@ The `ip` method may be used to retrieve the IP address of the client that made t
 
     $ipAddress = $request->ip();
 
+If you need to inspect all of the client IP addesses that were forwarded you may use the `ips` method:
+
+    $ipAddresses = $request->ips();
+
 <a name="content-negotiation"></a>
 ### Content Negotiation
 
