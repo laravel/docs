@@ -191,6 +191,9 @@ If you need to inspect all of the client IP addesses that were forwarded you may
 
     $ipAddresses = $request->ips();
 
+> **Warning:**
+> In the returned array of `ips` the most trusted IP address is first, and the least trusted one last. The "real" client IP address is the last one, but this is also the least trusted one. Trusted proxies are stripped. Use this method carefully; you should preferable use `ip` instead.
+
 <a name="content-negotiation"></a>
 ### Content Negotiation
 
