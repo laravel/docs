@@ -187,12 +187,11 @@ The `ip` method may be used to retrieve the IP address of the client that made t
 
     $ipAddress = $request->ip();
 
-If you need to inspect all of the client IP addesses that were forwarded you may use the `ips` method:
+If you would like to retrieve an array of IP addresses, including all of the client IP addesses that were forwarded by proxies, you may use the `ips` method:
 
     $ipAddresses = $request->ips();
 
-> **Warning:**
-> In the returned array of `ips` the most trusted IP address is first, and the least trusted one last. The "real" client IP address is the last one, but this is also the least trusted one. Trusted proxies are stripped. Use this method carefully; you should preferable use `ip` instead.
+In general, IP addresses should be considered untrusted, user-controlled input and be used for informational purposes only.
 
 <a name="content-negotiation"></a>
 ### Content Negotiation
