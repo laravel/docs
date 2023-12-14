@@ -265,11 +265,11 @@ To charge customers for non-recurring, single-charge products, we'll utilize Cas
     use Illuminate\Http\Request;
     
     Route::get('/checkout', function (Request $request) {
-        $price = $request->price_id;
+        $stripePriceId = 'price_deluxe_album';
 
-        $quantity = $request->quantity;
+        $quantity = 1;
 
-        return $request->user()->checkout([$price => $quantity], [
+        return $request->user()->checkout([$stripePriceId => $quantity], [
             'success_url' => route('checkout-success'),
             'cancel_url' => route('checkout-cancel'),
         ]);
@@ -278,9 +278,9 @@ To charge customers for non-recurring, single-charge products, we'll utilize Cas
     Route::view('checkout.success')->name('checkout-success');
     Route::view('checkout.cancel')->name('checkout-cancel');
 
-As you can see in the example above, we will utilize Cashier's provided `checkout` method to redirect the customer to Stripe Checkout for a given "price identifier". When using Stripe, "prices" usually refer to specific products or subscriptions.
+As you can see in the example above, we will utilize Cashier's provided `checkout` method to redirect the customer to Stripe Checkout for a given "price identifier". When using Stripe, "prices" refer to [defined prices for specific products](https://stripe.com/docs/products-prices/how-products-and-prices-work).
 
-The `checkout` method will automatically create a customer in Stripe and connect it to the corresponding user in your application's database. After completing the checkout session, the customer will be redirected to a dedicated success or cancellation page where you can display an informational message to the customer.
+If necessary, the `checkout` method will automatically create a customer in Stripe and connect that Stripe customer record to the corresponding user in your application's database. After completing the checkout session, the customer will be redirected to a dedicated success or cancellation page where you can display an informational message to the customer.
 
 <a name="providing-meta-data-to-stripe-checkout"></a>
 #### Providing Meta Data To Stripe Checkout
@@ -296,11 +296,11 @@ To accomplish this, you may provide an array of `metadata` to the `checkout` met
     Route::get('/cart/{cart}/checkout', function (Request $request, Cart $cart) {
         $order = Order::create([
             'cart_id' => $cart->id,
-            'items' => $cart->items,
+            'price_ids' => $cart->price_ids,
             'status' => 'incomplete',
         ]);
 
-        return $request->user()->checkout($order->items, [
+        return $request->user()->checkout($order->price_ids, [
             'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout-cancel'),
             'metadata' => ['order_id' => $order->id],
@@ -309,7 +309,7 @@ To accomplish this, you may provide an array of `metadata` to the `checkout` met
 
 As you can see in the example above, when a user begins the checkout process, we will provide all of the cart / order's associated Stripe price identifiers to the `checkout` method. Of course, your application is responsible for associating these items with the "shopping cart" or order as a customer adds them. We also provide the order's ID to the Stripe Checkout session via the `metadata` array. Finally, we have added the `CHECKOUT_SESSION_ID` template variable to the Checkout success route. When Stripe redirects customers back to your application, this template variable will automatically be populated with the Checkout session ID.
 
-Next, let's build our Checkout "success" route. This is the route that users will be redirected to after their purchase has been completed via Stripe Checkout. Within this route, we can retrieve the Stripe Checkout session ID and the associated Stripe Checkout instance in order to access our provided meta data and update our customer's order accordingly:
+Next, let's build the Checkout success route. This is the route that users will be redirected to after their purchase has been completed via Stripe Checkout. Within this route, we can retrieve the Stripe Checkout session ID and the associated Stripe Checkout instance in order to access our provided meta data and update our customer's order accordingly:
 
     use App\Models\Order;
     use Illuminate\Http\Request;
