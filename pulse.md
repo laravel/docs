@@ -72,7 +72,7 @@ php artisan vendor:publish --tag=pulse-config
 <a name="disabling-pulse-during-testing"></a>
 #### Disabling Pulse During Testing
 
-Pulse isn't meant to be run during testing and as such should be disabled. You can easily achieve this by setting the `PULSE_ENABLED` environment variable to `false` in your `phpunit.xml` file:
+Pulse is not meant to be run during testing and as such should be disabled. You can easily achieve this by setting the `PULSE_ENABLED` environment variable to `false` in your `phpunit.xml` file:
 
 ```xml
 <env name="PULSE_ENABLED" value="false"/>
