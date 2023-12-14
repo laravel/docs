@@ -263,8 +263,6 @@ Offering product and subscription billing via your application can be intimidati
 To charge customers for non-recurring, single-charge products, we'll utilize Cashier to direct customers to Stripe Checkout, where they will provide their payment details and confirm their purchase. Once the payment has been made via Checkout, the customer will be redirected to a success URL of your choosing within your application:
 
     use Illuminate\Http\Request;
-    use Stripe\Checkout\Session;
-    use Stripe\Customer;
     
     Route::get('/checkout', function (Request $request) {
         $price = $request->price_id;
@@ -283,6 +281,45 @@ To charge customers for non-recurring, single-charge products, we'll utilize Cas
 As you can see in the example above, we will utilize Cashier's provided `checkout` method to redirect the customer to Stripe Checkout for a given "price identifier". When using Stripe, "prices" usually refer to specific products or subscriptions.
 
 The `checkout` method will automatically create a customer in Stripe and connect it to the corresponding user in your application's database. After completing the checkout session, the customer will be redirected to a dedicated success or cancellation page where you can display an informational message to the customer.
+
+<a name="quickstart-handling-carts"></a>
+#### Handling Carts
+
+Often, for an online shop, you'll have a sort of shopping cart with items. Let's see how we can successfully redirect the user to Stripe Checkout with the cart items. Imagine we've stored all items in a cart record in the database. We'll use the below route to checkout the cart:
+    
+    use Illuminate\Http\Request;
+    
+    Route::get('/cart/{id}/checkout', function (Request $request, $id) {
+        $items = DB::table('carts')->find($id)['items'] ?? [];
+
+        if (empty($items)) {
+            return redirect()->route('shop');
+        }
+    
+        return $request->user()->checkout($items, [
+            'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout-cancel'),
+            'metadata' => ['cart_id' => $id],
+        ]);
+    })->name('checkout');
+
+As you can see we'll retrieve the items, add them to the checkout and redirect to it. We make sure to set the session ID upon successful return so we can clear the cart later on. We also add the `card_id` to the session metadata.
+
+Now when we have a successful checkout session, we can clear the cart:
+
+    use Illuminate\Http\Request;
+    
+    Route::get('/checkout/success', function (Request $request) {
+        $sessionId = $request->get('session_id');
+
+        $cartId = $sessionId ? (Cashier::stripe()->sessions->retrieve($sessionId)['metadata']['cart_id'] ?? null) : null;
+
+        if ($cartId) {
+            DB::table('carts')->delete($cartId);
+        }
+
+        return view('checkout-success');
+    })->name('checkout-success');
 
 <a name="quickstart-tracking-orders"></a>
 #### Tracking Orders
