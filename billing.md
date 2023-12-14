@@ -263,8 +263,6 @@ Offering product and subscription billing via your application can be intimidati
 To charge customers for non-recurring, single-charge products, we'll utilize Cashier to direct customers to Stripe Checkout, where they will provide their payment details and confirm their purchase. Once the payment has been made via Checkout, the customer will be redirected to a success URL of your choosing within your application:
 
     use Illuminate\Http\Request;
-    use Stripe\Checkout\Session;
-    use Stripe\Customer;
     
     Route::get('/checkout', function (Request $request) {
         $price = $request->price_id;
@@ -284,55 +282,52 @@ As you can see in the example above, we will utilize Cashier's provided `checkou
 
 The `checkout` method will automatically create a customer in Stripe and connect it to the corresponding user in your application's database. After completing the checkout session, the customer will be redirected to a dedicated success or cancellation page where you can display an informational message to the customer.
 
-<a name="quickstart-tracking-orders"></a>
-#### Tracking Orders
+<a name="providing-meta-data-to-stripe-checkout"></a>
+#### Providing Meta Data To Stripe Checkout
 
-By default, Cashier doesn't store individual order information when selling products. However, you can easily listen to the webhooks dispatched by Stripe and raised via events by Cashier to store order information in your database.
+When selling products, it's common to keep track of completed orders and purchased products via `Cart` and `Order` models defined by your own application. When redirecting customers to Stripe Checkout to complete a purchase, you may need to provide an existing order identifier so that you can associate the completed purchase with the corresponding order when the customer is redirected back to your application.
 
-To get started, listen for the `WebhookReceived` event dispatched by Cashier. In this case, we are particularly interested in the `checkout.session.complete` webhook. Typically, you should register the event listener in the `boot` method of one of your application's service providers:
+To accomplish this, you may provide an array of `metadata` to the `checkout` method. Let's imagine that a pending `Order` is created within our application when a user begins the checkout process. Remember, the `Cart` and `Order` models in this example are illustrative and not provided by Cashier. You are free to implement these concepts based on the needs of your own application:
+    
+    use App\Models\Cart;
+    use App\Models\Order;
+    use Illuminate\Http\Request;
+    
+    Route::get('/cart/{cart}/checkout', function (Request $request, Cart $cart) {
+        $order = Order::create([
+            'cart_id' => $cart->id,
+            'items' => $cart->items,
+            'status' => 'incomplete',
+        ]);
 
-    use App\Listeners\StoreOrder;
-    use Illuminate\Support\Facades\Event;
-    use Laravel\Cashier\Events\WebhookReceived;
+        return $request->user()->checkout($order->items, [
+            'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout-cancel'),
+            'metadata' => ['order_id' => $order->id],
+        ]);
+    })->name('checkout');
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Event::listen(WebhookReceived::class, StoreOrder::class);
-    }
+As you can see in the example above, when a user begins the checkout process, we will provide all of the cart / order's associated Stripe price identifiers to the `checkout` method. Of course, your application is responsible for associating these items with the "shopping cart" or order as a customer adds them. We also provide the order's ID to the Stripe Checkout session via the `metadata` array. Finally, we have added the `CHECKOUT_SESSION_ID` template variable to the Checkout success route. When Stripe redirects customers back to your application, this template variable will automatically be populated with the Checkout session ID.
 
-In this example, the `StoreOrder` listener might look like the following:
+Next, let's build our Checkout "success" route. This is the route that users will be redirected to after their purchase has been completed via Stripe Checkout. Within this route, we can retrieve the Stripe Checkout session ID and the associated Stripe Checkout instance in order to access our provided meta data and update our customer's order accordingly:
 
-    namespace App\Listeners;
-
+    use App\Models\Order;
+    use Illuminate\Http\Request;
     use Laravel\Cashier\Cashier;
-    use Laravel\Cashier\Events\WebhookReceived;
 
-    class StoreOrder
-    {
-        /**
-         * Handle the incoming Cashier webhook event.
-         */
-        public function handle(WebhookReceived $event): void
-        {
-            if ($event->payload['type'] !== 'checkout.session.completed') {
-                return;
-            }
+    Route::get('/checkout/success', function (Request $request) {
+        $sessionId = $request->get('session_id');
 
-            $checkoutSession = $payload['data']['object'];
+        $orderId = Cashier::stripe()->sessions->retrieve($sessionId)['metadata']['order_id'] ?? null;
 
-            if (! $billable = Cashier::findBillable($checkoutSession['customer'])) {
-                return;
-            }
+        $order = Order::findOrFail($orderId);
 
-            // Store the customer's order...
-            $billable->orders()->create(...);
-        }
-    }
+        $order->update(['status' => 'completed']);
 
-Please refer to Stripe's documentation for more information on the [payload contained by the `checkout.session.completed` webhook](https://stripe.com/docs/api/checkout/sessions/object).
+        return view('checkout-success', ['order' => $order]);
+    })->name('checkout-success');
+
+Please refer to Stripe's documentation for more information on the [data contained by the Checkout session object](https://stripe.com/docs/api/checkout/sessions/object).
 
 <a name="quickstart-selling-subscriptions"></a>
 ### Selling Subscriptions
