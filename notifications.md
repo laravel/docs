@@ -818,6 +818,18 @@ If a notification supports being stored in a database table, you should define a
         ];
     }
 
+By default, the notification when stored in the database will use the name of the class for it's `type`, e.g. `App\Notifications\InvoicePaid`. You can override this string by defining a `databaseType` method on the notification class:
+
+    /**
+     * Get the notification's database type.
+     *
+     * @return string
+     */
+    public function databaseType(): string
+    {
+        return 'invoice-paid';
+    }
+
 <a name="todatabase-vs-toarray"></a>
 #### `toDatabase` Vs. `toArray`
 
