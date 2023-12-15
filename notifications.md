@@ -825,7 +825,7 @@ By default, the notification when stored in the database will use the name of th
      *
      * @return string
      */
-    public function databaseType(): string
+    public function databaseType(object $notifiable): string
     {
         return 'invoice-paid';
     }
