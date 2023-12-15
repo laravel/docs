@@ -818,7 +818,7 @@ If a notification supports being stored in a database table, you should define a
         ];
     }
 
-By default, the notification when stored in the database will use the name of the class for it's `type`, e.g. `App\Notifications\InvoicePaid`. You can override this string by defining a `databaseType` method on the notification class:
+When the notification is stored in your application's database, the `type` column will be populated with the notification's class name. However, you may customize this behavior by defining a `databaseType` method on your notification class:
 
     /**
      * Get the notification's database type.
