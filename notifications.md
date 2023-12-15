@@ -818,6 +818,18 @@ If a notification supports being stored in a database table, you should define a
         ];
     }
 
+When the notification is stored in your application's database, the `type` column will be populated with the notification's class name. However, you may customize this behavior by defining a `databaseType` method on your notification class:
+
+    /**
+     * Get the notification's database type.
+     *
+     * @return string
+     */
+    public function databaseType(object $notifiable): string
+    {
+        return 'invoice-paid';
+    }
+
 <a name="todatabase-vs-toarray"></a>
 #### `toDatabase` Vs. `toArray`
 
