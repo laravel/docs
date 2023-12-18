@@ -6,6 +6,7 @@
 - [Dashboard](#dashboard)
     - [Authorization](#dashboard-authorization)
     - [Customization](#dashboard-customization)
+    - [Resolving Users](#dashboard-resolving-users)
     - [Cards](#dashboard-cards)
 - [Capturing Entries](#capturing-entries)
     - [Recorders](#recorders)
@@ -133,6 +134,37 @@ Most cards also accept an `expand` prop to show the full card instead of scrolli
 <livewire:pulse.slow-queries expand />
 ```
 
+<a name="dashboard-resolving-users"></a>
+### Resolving Users
+
+For cards that display information about your users, such as the Application Usage card, Pulse will only record the user's ID.
+
+When rendering the dashboard, Pulse will resolve the `name` and `email` fields from the `User` model and display avatars using the Gravatar web service. However, you may customize the user resolution and display by invoking the `Pulse::users` method within your application's `App\Providers\AppServiceProvider` class.
+
+The `users` method accepts a closure which will receive the user IDs to be displayed and should return an array or collection containing an `id`, `name`, `extra`, and `avatar` for each user ID:
+
+```php
+use App\Models\User;
+use Laravel\Pulse\Facades\Pulse;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Pulse::users(function ($ids) {
+        return User::findMany($ids)->map(fn ($user) => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'extra' => $user->email,
+            'avatar' => $user->avatar_url,
+        ]);
+    });
+
+    // ...
+}
+```
+
 <a name="dashboard-cards"></a>
 ### Cards
 
@@ -154,22 +186,7 @@ If you wish to view all usage metrics on screen at the same time, you may includ
 <livewire:pulse.usage type="jobs" />
 ```
 
-By default, Pulse will resolve the `name` and `email` fields from the `User` model and display avatars using the Gravatar web service. However, you may customize the user resolution and display by invoking the `Pulse::users` method within application's `App\Providers\AppServiceProvider` class.
-
-The `users` method accepts a closure which will receive the user IDs to be displayed and should return an array or collection containing the `id`, `name`, `extra`, and `avatar` for each user ID:
-
-```php
-use Laravel\Pulse\Facades\Pulse;
-
-Pulse::users(function ($ids) {
-    return User::findMany($ids)->map(fn ($user) => [
-        'id' => $user->id,
-        'name' => $user->name,
-        'extra' => $user->email,
-        'avatar' => $user->avatar_url,
-    ]);
-});
-```
+To learn how to customize how Pulse retrieves and displays user information, consult our documentation on [resolving users](#dashboard-resolving-users).
 
 > **Note**
 > If your application receives a lot of requests or dispatches a lot of jobs, you may wish to enable [sampling](#sampling). See the [user requests recorder](#user-requests-recorder), [user jobs recorder](#user-jobs-recorder), and [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
