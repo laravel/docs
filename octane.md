@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Server Prerequisites](#server-prerequisites)
+    - [FrankenPHP](#frankenphp)
     - [RoadRunner](#roadrunner)
     - [Swoole](#swoole)
 - [Serving Your Application](#serving-your-application)
@@ -26,7 +27,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [Open Swoole](https://openswoole.com/), [Swoole](https://github.com/swoole/swoole-src), and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
+[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [FrankenPHP](https://frankenphp.dev/), [Open Swoole](https://openswoole.com/), [Swoole](https://github.com/swoole/swoole-src), and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
 
 <a name="installation"></a>
 ## Installation
@@ -48,6 +49,14 @@ php artisan octane:install
 
 > **Warning**
 > Laravel Octane requires [PHP 8.1+](https://php.net/releases/).
+
+<a name="frankenphp"></a>
+### FrankenPHP
+
+> **Warning**
+> FrankenPHP's Octane integration is in beta and should be used with caution in production.
+
+[FrankenPHP](https://frankenphp.dev) is a PHP application server, written in Go, that supports modern web features like early hints and Zstandard compression. When you install Octane and choose FrankenPHP as your server, Octane will automatically download and install the FrankenPHP binary for you.
 
 <a name="roadrunner"></a>
 ### RoadRunner
