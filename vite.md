@@ -136,7 +136,7 @@ If your local development web server is serving your application via HTTPS, you 
 
 If you are using [Laravel Herd](https://herd.laravel.com) and have secured the site or you are using [Laravel Valet](/docs/{{version}}/valet) and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, the Laravel Vite plugin will automatically detect and use the generated TLS certificate for you.
 
-If you secured the site using a host that does not match the projects directory name, you may manually specify the host in your `vite.config.js`:
+If you secured the site using a host that does not match the application's directory name, you may manually specify the host in your application's `vite.config.js` file:
 
 ```js
 import { defineConfig } from 'vite';
