@@ -491,7 +491,7 @@ Laravel also supports querying JSON column types on databases that provide suppo
                     ->where('preferences->dining->meal', 'salad')
                     ->get();
 
-You may use `whereJsonContains` to query JSON arrays. This method is not supported by SQLite:
+You may use `whereJsonContains` to query JSON arrays:
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', 'en')
