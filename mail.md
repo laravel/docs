@@ -256,7 +256,7 @@ Within a mailable class's `content` method, you may define the `view`, or which 
     public function content(): Content
     {
         return new Content(
-            view: 'emails.orders.shipped',
+            view: 'mail.orders.shipped',
         );
     }
 
@@ -274,16 +274,16 @@ If you would like to define a plain-text version of your email, you may specify 
     public function content(): Content
     {
         return new Content(
-            view: 'emails.orders.shipped',
-            text: 'emails.orders.shipped-text'
+            view: 'mail.orders.shipped',
+            text: 'mail.orders.shipped-text'
         );
     }
 
 For clarity, the `html` parameter may be used as an alias of the `view` parameter:
 
     return new Content(
-        html: 'emails.orders.shipped',
-        text: 'emails.orders.shipped-text'
+        html: 'mail.orders.shipped',
+        text: 'mail.orders.shipped-text'
     );
 
 <a name="view-data"></a>
@@ -321,7 +321,7 @@ Typically, you will want to pass some data to your view that you can utilize whe
         public function content(): Content
         {
             return new Content(
-                view: 'emails.orders.shipped',
+                view: 'mail.orders.shipped',
             );
         }
     }
@@ -364,7 +364,7 @@ If you would like to customize the format of your email's data before it is sent
         public function content(): Content
         {
             return new Content(
-                view: 'emails.orders.shipped',
+                view: 'mail.orders.shipped',
                 with: [
                     'orderName' => $this->order->name,
                     'orderPrice' => $this->order->price,
@@ -650,7 +650,7 @@ Markdown mailable messages allow you to take advantage of the pre-built template
 To generate a mailable with a corresponding Markdown template, you may use the `--markdown` option of the `make:mail` Artisan command:
 
 ```shell
-php artisan make:mail OrderShipped --markdown=emails.orders.shipped
+php artisan make:mail OrderShipped --markdown=mail.orders.shipped
 ```
 
 Then, when configuring the mailable `Content` definition within its `content` method, use the `markdown` parameter instead of the `view` parameter:
@@ -663,7 +663,7 @@ Then, when configuring the mailable `Content` definition within its `content` me
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.orders.shipped',
+            markdown: 'mail.orders.shipped',
             with: [
                 'url' => $this->orderUrl,
             ],

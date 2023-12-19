@@ -96,7 +96,7 @@ If you need to determine if a view exists, you may use the `View` facade. The `e
 
     use Illuminate\Support\Facades\View;
 
-    if (View::exists('emails.customer')) {
+    if (View::exists('admin.profile')) {
         // ...
     }
 
