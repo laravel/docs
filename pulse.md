@@ -44,7 +44,7 @@ Then, you may use the Composer package manager to install Pulse into your Larave
 composer require laravel/pulse
 ```
 
-Next, you should publish the Pulse configuration and migration files using the `vendor:publish` Artisan command:
+Next, you should publish the Pulse configuration and dashboard file using the `vendor:publish` Artisan command:
 
 ```shell
 php artisan vendor:publish --provider="Laravel\Pulse\PulseServiceProvider"
