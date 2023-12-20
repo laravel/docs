@@ -35,6 +35,7 @@
 - [Model Broadcasting](#model-broadcasting)
     - [Model Broadcasting Conventions](#model-broadcasting-conventions)
     - [Listening For Model Broadcasts](#listening-for-model-broadcasts)
+    - [Manually Trigger Broadcast Event](#manually-trigger-broadcast-event)
 - [Client Events](#client-events)
 - [Notifications](#notifications)
 
@@ -1087,6 +1088,18 @@ Echo.private(`App.Models.User.${this.user.id}`)
         console.log(e.model);
     });
 ```
+
+<a name="manually-trigger-broadcast-event"></a>
+### Manually Trigger Broadcast Event
+In some scenario, you would want to manually trigger broadcast event since you didn't do any changes on the model. You may do so by using following methods:
+
+- `broadcastCreated` for `created` event
+- `broadcastTrashed` for `trashed` event
+- `broadcastUpdated` for `updated` event 
+- `broadcastRestored` for `restored` event 
+- `broadcastDeleted` for `deleted` event
+
+For example, you want to broadcast `updated` event for `User` model manually, then you can just use `$user->broadcastUpdated()`
 
 <a name="client-events"></a>
 ## Client Events
