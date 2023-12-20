@@ -1039,7 +1039,7 @@ When modifying a column, you must explicitly include all of the modifiers you wa
 
 If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package using the Composer package manager before modifying a column. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:
 
-    composer require doctrine/dbal
+    composer require doctrine/dbal:^3.0
 
 If you plan to modify columns created using the `timestamp` method, you must also add the following configuration to your application's `config/database.php` configuration file:
 
@@ -1068,7 +1068,7 @@ To rename a column, you may use the `renameColumn` method provided by the schema
 <a name="renaming-columns-on-legacy-databases"></a>
 #### Renaming Columns On Legacy Databases
 
-If you are running a database installation older than one of the following releases, you should ensure that you have installed the `doctrine/dbal` library via the Composer package manager before renaming a column:
+If you are running a database installation older than one of the following releases, you should ensure that you have installed the `doctrine/dbal:^3.0` library via the Composer package manager before renaming a column:
 
 <div class="content-list" markdown="1">
 
@@ -1096,7 +1096,7 @@ You may drop multiple columns from a table by passing an array of column names t
 <a name="dropping-columns-on-legacy-databases"></a>
 #### Dropping Columns On Legacy Databases
 
-If you are running a version of SQLite prior to `3.35.0`, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used. Dropping or modifying multiple columns within a single migration while using this package is not supported.
+If you are running a version of SQLite prior to `3.35.0`, you must install the `doctrine/dbal:^3.0` package via the Composer package manager before the `dropColumn` method may be used. Dropping or modifying multiple columns within a single migration while using this package is not supported.
 
 <a name="available-command-aliases"></a>
 #### Available Command Aliases
@@ -1179,7 +1179,7 @@ To rename an index, you may use the `renameIndex` method provided by the schema 
     $table->renameIndex('from', 'to')
 
 > **Warning**  
-> If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package via the Composer package manager before the `renameIndex` method may be used.
+> If your application is utilizing an SQLite database, you must install the `doctrine/dbal:^3.0` package via the Composer package manager before the `renameIndex` method may be used.
 
 <a name="dropping-indexes"></a>
 ### Dropping Indexes
