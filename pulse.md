@@ -509,7 +509,7 @@ If your card requires additional styling beyond the classes and components inclu
 <a name="custom-card-styling-vite"></a>
 #### Laravel Vite Integration
 
-If your custom card lives within your application code base and you are using Laravel's [Vite integration](https://laravel.com/docs/10.x/vite), you may update your `vite.config.js` file to include a dedicated CSS entrypoint for your card:
+If your custom card lives within your application code base and you are using Laravel's [Vite integration](/docs/{{version}}/vite), you may update your `vite.config.js` file to include a dedicated CSS entrypoint for your card:
 
 ```js
 laravel({
@@ -576,7 +576,7 @@ You may then specify the configuration file in your CSS entrypoint:
 @tailwind utilities;
 ```
 
-You should be sure to include an `id` or `class` attribute in your cards view that matches the selector passed to Tailwind's [`important` selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy):
+You will need to include an `id` or `class` attribute in your card's view that matches the selector passed to Tailwind's [`important` selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy):
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">
