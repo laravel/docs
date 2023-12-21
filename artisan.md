@@ -520,7 +520,7 @@ In addition to displaying output, you may also ask the user to provide input dur
         // ...
     }
 
-In addition, the `ask` method accepts an optional second argument which specifies a default value to be returned in case no user input is provided.
+The `ask` method also accepts an optional second argument which specifies the default value that should be returned if no user input is provided:
 
     $name = $this->ask('What is your name?', 'Taylor');
 
