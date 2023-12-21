@@ -929,6 +929,8 @@ Below is a list of all available validation rules and their function:
 [Missing Unless](#rule-missing-unless)
 [Missing With](#rule-missing-with)
 [Missing With All](#rule-missing-with-all)
+[Missing Without](#rule-missing-without)
+[Missing Without All](#rule-missing-without-all)
 [Multiple Of](#rule-multiple-of)
 [Not In](#rule-not-in)
 [Not Regex](#rule-not-regex)
@@ -1525,6 +1527,16 @@ The field under validation must not be present unless the _anotherfield_ field i
  #### missing_with_all:_foo_,_bar_,...
 
  The field under validation must not be present _only if_ all of the other specified fields are present.
+
+<a name="rule-missing-without"></a>
+#### missing_without:_foo_,_bar_,...
+
+The field under validation must not be present _only if_ any of the other specified fields are also not present.
+
+<a name="rule-missing-without-all"></a>
+#### missing_without_all:_foo_,_bar_,...
+
+The field under validation must not be present _only if_ all of the other specified fields are also not present.
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
