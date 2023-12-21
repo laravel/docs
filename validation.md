@@ -936,6 +936,10 @@ Below is a list of all available validation rules and their function:
 [Numeric](#rule-numeric)
 [Password](#rule-password)
 [Present](#rule-present)
+[Present If](#rule-present-if)
+[Present Unless](#rule-present-unless)
+[Present With](#rule-present-with)
+[Present With All](#rule-present-with-all)
 [Prohibited](#rule-prohibited)
 [Prohibited If](#rule-prohibited-if)
 [Prohibited Unless](#rule-prohibited-unless)
@@ -1572,6 +1576,26 @@ The field under validation must match the authenticated user's password.
 #### present
 
 The field under validation must exist in the input data.
+
+<a name="rule-present-if"></a>
+#### present_if:_anotherfield_,_value_,...
+
+The field under validation must be present if the _anotherfield_ field is equal to any _value_.
+
+<a name="rule-present-unless"></a>
+#### present_unless:_anotherfield_,_value_
+
+The field under validation must be present unless the _anotherfield_ field is equal to any _value_.
+
+<a name="rule-present-with"></a>
+#### present_with:_foo_,_bar_,...
+
+The field under validation must be present _only if_ any of the other specified fields are present.
+
+<a name="rule-present-with-all"></a>
+#### present_with_all:_foo_,_bar_,...
+
+The field under validation must be present _only if_ all of the other specified fields are present.
 
 <a name="rule-prohibited"></a>
 #### prohibited
