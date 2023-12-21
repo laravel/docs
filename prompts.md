@@ -360,7 +360,7 @@ $categories = multiselect(
 You may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
 
 ```
-$permissions = select(
+$permissions = multiselect(
     label: 'What permissions should the user have?',
     options: [
         'read' => 'Read',
