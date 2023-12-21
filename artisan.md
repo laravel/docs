@@ -520,6 +520,10 @@ In addition to displaying output, you may also ask the user to provide input dur
         // ...
     }
 
+The `ask` method also accepts an optional second argument which specifies the default value that should be returned if no user input is provided:
+
+    $name = $this->ask('What is your name?', 'Taylor');
+
 The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful when asking for sensitive information such as passwords:
 
     $password = $this->secret('What is the password?');
