@@ -93,21 +93,21 @@ First, install the Cashier package for Stripe using the Composer package manager
 composer require laravel/cashier
 ```
 
-After requiring the package, publish Cashier's migrations like so:
+After installing the package, publish Cashier's migrations using the `vendor:publish` Artisan command:
 
 ```shell
 php artisan vendor:publish --tag="cashier-migrations"
 ```
 
-And then migrate your database:
+Then, migrate your database:
 
 ```shell
 php artisan migrate
 ```
 
-The Cashier migrations will add several columns to your `users` table. It will also create a new `subscriptions` table to hold all of your customer's subscriptions and a `subscription_items` table for subscriptions with multiple prices.
+Cashier's migrations will add several columns to your `users` table. They will also create a new `subscriptions` table to hold all of your customer's subscriptions and a `subscription_items` table for subscriptions with multiple prices.
 
-Lastly, to ensure Cashier properly handles all Stripe events, remember to [set up Cashier's webhook handling](#handling-stripe-webhooks).
+Lastly, to ensure Cashier properly handles all Stripe events, remember to [configure Cashier's webhook handling](#handling-stripe-webhooks).
 
 > **Warning**  
 > Stripe recommends that any column used for storing Stripe identifiers should be case-sensitive. Therefore, you should ensure the column collation for the `stripe_id` column is set to `utf8_bin` when using MySQL. More information regarding this can be found in the [Stripe documentation](https://stripe.com/docs/upgrades#what-changes-does-stripe-consider-to-be-backwards-compatible).
