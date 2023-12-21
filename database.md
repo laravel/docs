@@ -381,6 +381,9 @@ If needed, you may specify a database connection name to connect to a database c
 php artisan db mysql
 ```
 
+> **Note**
+> The `db` Artisan command currently does not work on Windows.
+
 <a name="inspecting-your-databases"></a>
 ## Inspecting Your Databases
 
