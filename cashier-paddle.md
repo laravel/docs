@@ -197,6 +197,8 @@ After defining your model, you may instruct Cashier to use your custom model via
 
 Most operations to bill customers are performed using "checkouts" via Paddle's [checkout overlay widget](https://developer.paddle.com/build/checkout/build-overlay-checkout) or by utilizing [inline checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout).
 
+One important setting you should not forget is [the default payment link](https://developer.paddle.com/build/transactions/default-payment-link#set-default-link). This page will open a checkout overlay from a payment link provided buy paddle.
+
 <a name="overlay-checkout"></a>
 ### Overlay Checkout
 
