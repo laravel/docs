@@ -235,7 +235,11 @@ php artisan migrate:fresh
 php artisan migrate:fresh --seed
 ```
 
-You should note that `migrate:fresh` only drops tables from the default or provided database connection using the `--database` flag. During development it's best to use a single database connection so you can use `migrate:fresh` and you can then optionally use multiple connections in production where you don't need the command.
+By default, the `migrate:fresh` command only drops tables from the default database connection. However, you may use the `--database` flag to specify the database connection that should be migrated. The database connection name should correspond to a connection defined in your application's `database` [configuration file](/docs/{{version}}/configuration):
+
+```shell
+php artisan migrate:fresh --database=admin
+```
 
 > **Warning**  
 > The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications.
