@@ -445,12 +445,12 @@ Pulse::handleExceptionsUsing(function ($e) {
 <a name="custom-cards"></a>
 ## Custom Cards
 
-Pulse allows you to include custom cards to display data relevant to your application's specific needs. Pulse uses [Livewire](https://livewire.laravel.com), so you may want to [review its documentation](https://livewire.laravel.com/docs) first.
+Pulse allows you to build custom cards to display data relevant to your application's specific needs. Pulse uses [Livewire](https://livewire.laravel.com), so you may want to [review its documentation](https://livewire.laravel.com/docs) before building your first custom card.
 
 <a name="custom-card-components"></a>
 ### Card Components
 
-Creating a custom card in Laravel Pulse involves extending the base card component and setting up a corresponding view. Below is a minimal example to get you started:
+Creating a custom card in Laravel Pulse starts with extending the base `Card` Livewire component and defining a corresponding view:
 
 ```php
 namespace App\Livewire\Pulse;
@@ -470,7 +470,7 @@ class TopSellers extends Card
 
 When using Livewire's [lazy loading](https://livewire.laravel.com/docs/lazy) feature, The `Card` component will automatically provide a placeholder that respects the `cols` and `rows` attributes passed to your component.
 
-Your view may include Pulse's Blade components for a consistent look and feel:
+When writing your Pulse card's corresponding view, you may leverage Pulse's Blade components for a consistent look and feel:
 
 ```blade
 <x-pulse::card :cols="$cols" :rows="$rows" :class="$class" wire:poll.5s="">
@@ -488,7 +488,7 @@ Your view may include Pulse's Blade components for a consistent look and feel:
 
 The `$cols`, `$rows`, `$class`, and `$expand` variables should be passed to their respective Blade components so the card layout may be customized from the dashboard view. You may also wish to include the `wire:poll.5s=""` attribute in your view to have the card automatically update.
 
-The card may then be included in your [dashboard view](#dashboard-customization):
+Once you have defined your Livewire component and template, the card may be included in your [dashboard view](#dashboard-customization):
 
 ```blade
 <x-pulse>
@@ -509,7 +509,7 @@ If your card requires additional styling beyond the classes and components inclu
 <a name="custom-card-styling-vite"></a>
 #### Laravel Vite Integration
 
-If your custom card lives within your application code base and you are using Laravel's [Vite integration](/docs/{{version}}/vite), you may update your `vite.config.js` file to include a dedicated CSS entrypoint for your card:
+If your custom card lives within your application's code base and you are using Laravel's [Vite integration](/docs/{{version}}/vite), you may update your `vite.config.js` file to include a dedicated CSS entry point for your card:
 
 ```js
 laravel({
@@ -576,7 +576,7 @@ You may then specify the configuration file in your CSS entrypoint:
 @tailwind utilities;
 ```
 
-You will need to include an `id` or `class` attribute in your card's view that matches the selector passed to Tailwind's [`important` selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy):
+You will also need to include an `id` or `class` attribute in your card's view that matches the selector passed to Tailwind's [`important` selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy):
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">
@@ -587,7 +587,7 @@ You will need to include an `id` or `class` attribute in your card's view that m
 <a name="custom-card-data"></a>
 ### Data Capture & Aggregation
 
-Custom cards may fetch and display data from anywhere, however you may wish to leverage Pulse's powerful and efficient data recording and aggregation system.
+Custom cards may fetch and display data from anywhere; however. you may wish to leverage Pulse's powerful and efficient data recording and aggregation system.
 
 <a name="custom-card-data-capture"></a>
 #### Capturing Entries
@@ -602,7 +602,7 @@ Pulse::record('user_sale', $user->id, $sale->amount)
     ->count();
 ```
 
-You will need specify a `type` for the entry you are recording and a `key` that determines how the aggregated data should be grouped. For most aggregation methods you will also need to specify a `value`. You may then chain one or more aggregation methods so Pulse may capture pre-aggregated values into buckets for efficient retrieval later.
+The first argument provided to the `record` method is the `type` for the entry you are recording, while the second argument is the `key` that determines how the aggregated data should be grouped. For most aggregation methods you will also need to specify a `value` to be aggregated. In the example above, the value being aggregated is `$sale->amount`. You may then invoke one or more aggregation methods (such as `sum`) so that Pulse may capture pre-aggregated values into "buckets" for efficient retrieval later.
 
 The available aggregation methods are:
 
@@ -615,9 +615,7 @@ The available aggregation methods are:
 <a name="custom-card-data-retrieval"></a>
 #### Retrieving Aggregate Data
 
-When extending Pulse's `Card` component, you may use the `aggregate` method to retrieve aggregated data for the period being viewed in the dashboard:
-
-```php
+When extending Pulse's `Card` Livewire component, you may use the `aggregate` method to retrieve aggregated data for the period being viewed in the dashboard:
 
 ```php
 class TopSellers extends Card
@@ -631,9 +629,9 @@ class TopSellers extends Card
 }
 ```
 
-Pulse will primarily retrieve data from the pre-aggregated buckets, therefore the specified aggregates must have been captured up-front using the `Pulse::record` method. The oldest bucket will typically fall partially outside the period, so Pulse will aggregate the oldest entries to fill the gap and give an accurate value for the entire period, without needing to aggregate the entire period on each poll request.
+Pulse will primarily retrieve data from the pre-aggregated buckets; therefore, the specified aggregates must have been captured up-front using the `Pulse::record` method. The oldest bucket will typically fall partially outside the period, so Pulse will aggregate the oldest entries to fill the gap and give an accurate value for the entire period, without needing to aggregate the entire period on each poll request.
 
-You may also retrieve a total value for a given type by using the `aggregateTotal` method:
+You may also retrieve a total value for a given type by using the `aggregateTotal` method. For example, the following method would retrieve the total of all user sales instead of grouping them by user.
 
 ```php
 $total = $this->aggregateTotal('user_sale', 'sum');
@@ -644,7 +642,7 @@ $total = $this->aggregateTotal('user_sale', 'sum');
 
 Package authors may wish to provide recorder classes to allow users to configure the capturing of data.
 
-Recorders are registered in the `recorders` section of the users `config/pulse.php` configuration file:
+Recorders are registered in the `recorders` section of the application's `config/pulse.php` configuration file:
 
 ```php
 [
@@ -653,6 +651,7 @@ Recorders are registered in the `recorders` section of the users `config/pulse.p
         Acme\Recorders\Deployments::class => [
             // ...
         ],
+
         // ...
     ],
 ]
