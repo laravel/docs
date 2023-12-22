@@ -39,6 +39,7 @@ The Laravel framework has a few system requirements. You should ensure that your
 - Session PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
+- Intl PHP Extension
 
 </div>
 
