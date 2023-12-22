@@ -3,7 +3,6 @@
 - [Introduction](#introduction)
 - [Upgrading Cashier](#upgrading-cashier)
 - [Installation](#installation)
-    - [Database Migrations](#database-migrations)
 - [Configuration](#configuration)
     - [Billable Model](#billable-model)
     - [API Keys](#api-keys)
@@ -83,7 +82,7 @@
 When upgrading to a new version of Cashier, it's important that you carefully review [the upgrade guide](https://github.com/laravel/cashier-stripe/blob/master/UPGRADE.md).
 
 > **Warning**  
-> To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 14 utilizes Stripe API version `2022-11-15`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
+> To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 15 utilizes Stripe API version `2023-10-16`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
 
 <a name="installation"></a>
 ## Installation
@@ -94,35 +93,21 @@ First, install the Cashier package for Stripe using the Composer package manager
 composer require laravel/cashier
 ```
 
-> **Warning**  
-> To ensure Cashier properly handles all Stripe events, remember to [set up Cashier's webhook handling](#handling-stripe-webhooks).
-
-<a name="database-migrations"></a>
-### Database Migrations
-
-Cashier's service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will add several columns to your `users` table. It will also create a new `subscriptions` table to hold all of your customer's subscriptions and a `subscription_items` table for subscriptions with multiple prices:
-
-```shell
-php artisan migrate
-```
-
-If you need to overwrite the migrations that ship with Cashier, you can publish them using the `vendor:publish` Artisan command:
+After installing the package, publish Cashier's migrations using the `vendor:publish` Artisan command:
 
 ```shell
 php artisan vendor:publish --tag="cashier-migrations"
 ```
 
-If you would like to prevent Cashier's migrations from running entirely, you may use the `ignoreMigrations` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
+Then, migrate your database:
 
-    use Laravel\Cashier\Cashier;
+```shell
+php artisan migrate
+```
 
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        Cashier::ignoreMigrations();
-    }
+Cashier's migrations will add several columns to your `users` table. They will also create a new `subscriptions` table to hold all of your customer's subscriptions and a `subscription_items` table for subscriptions with multiple prices.
+
+Lastly, to ensure Cashier properly handles all Stripe events, remember to [configure Cashier's webhook handling](#handling-stripe-webhooks).
 
 > **Warning**  
 > Stripe recommends that any column used for storing Stripe identifiers should be case-sensitive. Therefore, you should ensure the column collation for the `stripe_id` column is set to `utf8_bin` when using MySQL. More information regarding this can be found in the [Stripe documentation](https://stripe.com/docs/upgrades#what-changes-does-stripe-consider-to-be-backwards-compatible).
@@ -719,7 +704,7 @@ The `paymentMethods` method on the billable model instance returns a collection 
 
     $paymentMethods = $user->paymentMethods();
 
-By default, this method will return payment methods of the `card` type. To retrieve payment methods of a different type, you may pass the `type` as an argument to the method:
+By default, this method will return payment methods of every type. To retrieve payment methods of a specific type, you may pass the `type` as an argument to the method:
 
     $paymentMethods = $user->paymentMethods('sepa_debit');
 
@@ -746,7 +731,7 @@ You may use the `hasPaymentMethod` method to determine if a billable model has a
         // ...
     }
 
-This method will determine if the billable model has payment methods of the `card` type. To determine if a payment method of another type exists for the model, you may pass the `type` as an argument to the method:
+This method will determine if the billable model has any payment method at all. To determine if a payment method of a specific type exists for the model, you may pass the `type` as an argument to the method:
 
     if ($user->hasPaymentMethod('sepa_debit')) {
         // ...
@@ -791,7 +776,7 @@ The `deletePaymentMethods` method will delete all of the payment method informat
 
     $user->deletePaymentMethods();
 
-By default, this method will delete payment methods of the `card` type. To delete payment methods of a different type you can pass the `type` as an argument to the method:
+By default, this method will delete payment methods of every type. To delete payment methods of a specific type you can pass the `type` as an argument to the method:
 
     $user->deletePaymentMethods('sepa_debit');
 
@@ -818,7 +803,7 @@ To create a subscription, first retrieve an instance of your billable model, whi
         // ...
     });
 
-The first argument passed to the `newSubscription` method should be the internal name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. This subscription name is only for internal application usage and is not meant to be shown to users. In addition, it should not contain spaces and it should never be changed after creating the subscription. The second argument is the specific price the user is subscribing to. This value should correspond to the price's identifier in Stripe.
+The first argument passed to the `newSubscription` method should be the internal type of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. This subscription type is only for internal application usage and is not meant to be shown to users. In addition, it should not contain spaces and it should never be changed after creating the subscription. The second argument is the specific price the user is subscribing to. This value should correspond to the price's identifier in Stripe.
 
 The `create` method, which accepts [a Stripe payment method identifier](#storing-payment-methods) or Stripe `PaymentMethod` object, will begin the subscription as well as update your database with the billable model's Stripe customer ID and other relevant billing information.
 
@@ -929,16 +914,16 @@ If you would like to add a subscription to a customer who already has a default 
 <a name="creating-subscriptions-from-the-stripe-dashboard"></a>
 #### Creating Subscriptions From The Stripe Dashboard
 
-You may also create subscriptions from the Stripe dashboard itself. When doing so, Cashier will sync newly added subscriptions and assign them a name of `default`. To customize the subscription name that is assigned to dashboard created subscriptions, [extend the `WebhookController`](#defining-webhook-event-handlers) and overwrite the `newSubscriptionName` method.
+You may also create subscriptions from the Stripe dashboard itself. When doing so, Cashier will sync newly added subscriptions and assign them a type of `default`. To customize the subscription type that is assigned to dashboard created subscriptions, [extend the `WebhookController`](#defining-webhook-event-handlers) and overwrite the `newSubscriptionType` method.
 
-In addition, you may only create one type of subscription via the Stripe dashboard. If your application offers multiple subscriptions that use different names, only one type of subscription may be added through the Stripe dashboard.
+In addition, you may only create one type of subscription via the Stripe dashboard. If your application offers multiple subscriptions that use different types, only one type of subscription may be added through the Stripe dashboard.
 
 Finally, you should always make sure to only add one active subscription per type of subscription offered by your application. If a customer has two `default` subscriptions, only the most recently added subscription will be used by Cashier even though both would be synced with your application's database.
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
 
-Once a customer is subscribed to your application, you may easily check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the customer has an active subscription, even if the subscription is currently within its trial period. The `subscribed` method accepts the name of the subscription as its first argument:
+Once a customer is subscribed to your application, you may easily check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the customer has an active subscription, even if the subscription is currently within its trial period. The `subscribed` method accepts the type of the subscription as its first argument:
 
     if ($user->subscribed('default')) {
         // ...
@@ -1003,7 +988,7 @@ The `recurring` method may be used to determine if the user is currently subscri
     }
 
 > **Warning**  
-> If a user has two subscriptions with the same name, the most recent subscription will always be returned by the `subscription` method. For example, a user might have two subscription records named `default`; however, one of the subscriptions may be an old, expired subscription, while the other is the current, active subscription. The most recent subscription will always be returned while older subscriptions are kept in the database for historical review.
+> If a user has two subscriptions with the same type, the most recent subscription will always be returned by the `subscription` method. For example, a user might have two subscription records with the type of `default`; however, one of the subscriptions may be an old, expired subscription, while the other is the current, active subscription. The most recent subscription will always be returned while older subscriptions are kept in the database for historical review.
 
 <a name="cancelled-subscription-status"></a>
 #### Canceled Subscription Status
@@ -1252,7 +1237,7 @@ By default, Stripe will prorate charges when adding or removing prices from a su
 <a name="swapping-quantities"></a>
 #### Quantities
 
-If you would like to update quantities on individual subscription prices, you may do so using the [existing quantity methods](#subscription-quantity) by passing the name of the price as an additional argument to the method:
+If you would like to update quantities on individual subscription prices, you may do so using the [existing quantity methods](#subscription-quantity) by passing the ID of the price as an additional argument to the method:
 
     $user = User::find(1);
 
@@ -1291,7 +1276,7 @@ You can also retrieve a specific price using the `findItemOrFail` method:
 
 Stripe allows your customers to have multiple subscriptions simultaneously. For example, you may run a gym that offers a swimming subscription and a weight-lifting subscription, and each subscription may have different pricing. Of course, customers should be able to subscribe to either or both plans.
 
-When your application creates subscriptions, you may provide the name of the subscription to the `newSubscription` method. The name may be any string that represents the type of subscription the user is initiating:
+When your application creates subscriptions, you may provide the type of the subscription to the `newSubscription` method. The type may be any string that represents the type of subscription the user is initiating:
 
     use Illuminate\Http\Request;
 
@@ -1605,7 +1590,7 @@ Once you are ready to create an actual subscription for the user, you may use th
 
     $user->newSubscription('default', 'price_monthly')->create($paymentMethod);
 
-To retrieve the user's trial ending date, you may use the `trialEndsAt` method. This method will return a Carbon date instance if a user is on a trial or `null` if they aren't. You may also pass an optional subscription name parameter if you would like to get the trial ending date for a specific subscription other than the default one:
+To retrieve the user's trial ending date, you may use the `trialEndsAt` method. This method will return a Carbon date instance if a user is on a trial or `null` if they aren't. You may also pass an optional subscription type parameter if you would like to get the trial ending date for a specific subscription other than the default one:
 
     if ($user->onTrial()) {
         $trialEndsAt = $user->trialEndsAt('main');
@@ -1792,7 +1777,7 @@ The `charge` method will throw an exception if the charge fails. If the charge i
 <a name="charge-with-invoice"></a>
 ### Charge With Invoice
 
-Sometimes you may need to make a one-time charge and offer a PDF receipt to your customer. The `invoicePrice` method lets you do just that. For example, let's invoice a customer for five new shirts:
+Sometimes you may need to make a one-time charge and offer a PDF invoice to your customer. The `invoicePrice` method lets you do just that. For example, let's invoice a customer for five new shirts:
 
     $user->invoicePrice('price_tshirt', 5);
 
