@@ -515,7 +515,7 @@ Once you have defined your Livewire component and template, the card may be incl
 </x-pulse>
 ```
 
-> *Note*  
+> **Note**  
 > If your card is included in a package, you will need to register the component with Livewire using the `Livewire::component` method.
 
 <a name="custom-card-styling"></a>
@@ -604,7 +604,7 @@ You will also need to include an `id` or `class` attribute in your card's view t
 <a name="custom-card-data"></a>
 ### Data Capture & Aggregation
 
-Custom cards may fetch and display data from anywhere; however. you may wish to leverage Pulse's powerful and efficient data recording and aggregation system.
+Custom cards may fetch and display data from anywhere; however, you may wish to leverage Pulse's powerful and efficient data recording and aggregation system.
 
 <a name="custom-card-data-capture"></a>
 #### Capturing Entries
@@ -644,6 +644,16 @@ class TopSellers extends Card
         ]);
     }
 }
+```
+
+The `aggregate` method returns return a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
+
+```
+@foreach ($topSellers as $seller)
+    {{ $seller->key }}
+    {{ $seller->sum }}
+    {{ $seller->count }}
+@endforeach
 ```
 
 Pulse will primarily retrieve data from the pre-aggregated buckets; therefore, the specified aggregates must have been captured up-front using the `Pulse::record` method. The oldest bucket will typically fall partially outside the period, so Pulse will aggregate the oldest entries to fill the gap and give an accurate value for the entire period, without needing to aggregate the entire period on each poll request.
