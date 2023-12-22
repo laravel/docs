@@ -794,7 +794,7 @@ The `softDeletes` method adds a nullable `deleted_at` `TIMESTAMP` equivalent col
 <a name="column-method-string"></a>
 #### `string()` {.collection-method}
 
-The `string` method creates a `VARCHAR` equivalent column of the given length:
+The `string` method creates a `VARCHAR` equivalent column with an optional length:
 
     $table->string('name', 100);
 
