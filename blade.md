@@ -276,18 +276,6 @@ Or, you may determine if the application is running in a specific environment us
 @endenv
 ```
 
-<a name="session-directives"></a>
-#### Session Directives
-
-The `@session` directive may be used to check if a [session](/docs/{{version}}/session) value exists for a given attribute. Within an `@session` directive, you may echo the `$value` variable to display the session value:
-
-```blade
-@session('status')
-    {{ $value }}
-@endsession
-```
-
-
 <a name="section-directives"></a>
 #### Section Directives
 
@@ -311,6 +299,19 @@ You may use the `sectionMissing` directive to determine if a section does not ha
         @include('default-navigation')
     </div>
 @endif
+```
+
+<a name="session-directives"></a>
+#### Session Directives
+
+The `@session` directive may be used to determine if a [session](/docs/{{version}}/session) value exists. If the session value exists, the template contents within the `@session` and `@endsession` directives will be evaluated. Within the `@session` directive's contents, you may echo the `$value` variable to display the session value:
+
+```blade
+@session('status')
+    <div class="p-4 bg-green-100">
+        {{ $value }}
+    </div>
+@endsession
 ```
 
 <a name="switch-statements"></a>
