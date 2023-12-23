@@ -4,6 +4,7 @@
     - [Configuration](#configuration)
     - [Driver Prerequisites](#driver-prerequisites)
     - [Failover Configuration](#failover-configuration)
+    - [RoundRobin Configuration](#roundrobin-configuration)
 - [Generating Mailables](#generating-mailables)
 - [Writing Mailables](#writing-mailables)
     - [Configuring The Sender](#configuring-the-sender)
@@ -182,6 +183,33 @@ To accomplish this, you should define a mailer within your application's `mail` 
 Once your failover mailer has been defined, you should set this mailer as the default mailer used by your application by specifying its name as the value of the `default` configuration key within your application's `mail` configuration file:
 
     'default' => env('MAIL_MAILER', 'failover'),
+
+<a name="roundrobin-configuration"></a>
+### RoundRobin Configuration
+
+Sometimes, we might want to distribute our mailing workload across multiple transports.
+
+To accomplish this, you should define a mailer within your application's `mail` configuration file that uses the `roundrobin` transport. The configuration array for your application's `roundrobin` mailer should contain an array of `mailers` that reference which mail drivers should be chosen for delivery:
+
+    'mailers' => [
+        'roundrobin' => [
+            'transport' => 'roundrobin',
+            'mailers' => [
+                'ses',
+                'postmark',
+            ],
+        ],
+
+        // ...
+    ],
+
+Once your roundrobin mailer has been defined, you should set this mailer as the default mailer used by your application by specifying its name as the value of the `default` configuration key within your application's `mail` configuration file:
+
+    'default' => env('MAIL_MAILER', 'roundrobin'),
+
+The roundrobin transport starts with a *randomly* selected transport from the list of available mailers and then switches to the next available transport for each subsequent email.
+
+In contrast to `failover` transport, which helps to achieve *[high availability](https://en.wikipedia.org/wiki/High_availability)*, the `roundrobin` transport helps to achieve *[load balancing](https://en.wikipedia.org/wiki/Load_balancing_(computing))*.
 
 <a name="generating-mailables"></a>
 ## Generating Mailables
