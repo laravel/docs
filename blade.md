@@ -276,6 +276,18 @@ Or, you may determine if the application is running in a specific environment us
 @endenv
 ```
 
+<a name="session-directives"></a>
+#### Session Directives
+
+The `@session` directive may be used to check if a [session](/docs/{{version}}/session) value exists for a given attribute. Within an `@session` directive, you may echo the `$value` variable to display the session value:
+
+```blade
+@session('status')
+    {{ $value }}
+@endsession
+```
+
+
 <a name="section-directives"></a>
 #### Section Directives
 
