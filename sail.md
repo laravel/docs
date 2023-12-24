@@ -15,6 +15,8 @@
     - [Redis](#redis)
     - [Meilisearch](#meilisearch)
 - [File Storage](#file-storage)
+    - [Amazon S3](#amazon-s3)
+    - [The Public Disk](#public-disk)
 - [Running Tests](#running-tests)
     - [Laravel Dusk](#laravel-dusk)
 - [Previewing Emails](#previewing-emails)
@@ -241,6 +243,9 @@ From your local machine, you may access Meilisearch's web based administration p
 <a name="file-storage"></a>
 ## File Storage
 
+<a name="amazon-s3"></a>
+### Amazon S3
+
 If you plan to use Amazon S3 to store files while running your application in its production environment, you may wish to install the [MinIO](https://min.io) service when installing Sail. MinIO provides an S3 compatible API that you may use to develop locally using Laravel's `s3` file storage driver without creating "test" storage buckets in your production S3 environment. If you choose to install MinIO while installing Sail, a MinIO configuration section will be added to your application's `docker-compose.yml` file.
 
 By default, your application's `filesystems` configuration file already contains a disk configuration for the `s3` disk. In addition to using this disk to interact with Amazon S3, you may use it to interact with any S3 compatible file storage service such as MinIO by simply modifying the associated environment variables that control its configuration. For example, when using MinIO, your filesystem environment variable configuration should be defined as follows:
@@ -265,6 +270,29 @@ You may create buckets via the MinIO console, which is available at `http://loca
 
 > **Warning**  
 > Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
+
+<a name="public-disk"></a>
+### The Public Disk
+
+If you are using the `public` disk to store files, you should create a symbolic link from `public/storage` to `storage/app/public`.
+
+The following command will allow you to interact with the Docker container. Once there, you can create the symbolic link with the `php artisan storage:link` command
+```shell
+docker exec -it 'container_id' bash
+```
+
+```shell
+root@34f664a1c69e:/var/www/html# php artisan storage:link
+```
+
+The `container_id` of the container can be viewed with the command:
+```shell
+docker ps
+```
+
+You will then be able to access your images via, an example in blade would look like this:
+
+    <img src="{{ asset('storage/file.jpg') }}">
 
 <a name="running-tests"></a>
 ## Running Tests
