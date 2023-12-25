@@ -274,25 +274,16 @@ You may create buckets via the MinIO console, which is available at `http://loca
 <a name="public-disk"></a>
 ### The Public Disk
 
-If you are using the `public` disk to store files, you should create a symbolic link from `public/storage` to `storage/app/public`.
+If you are working with [The Public Disk](/docs/{{version}}/filesystem#the-public-disk) the public disk, you can interact with the Docker container and create the symlink.
 
-The following command will allow you to interact with the Docker container. Once there, you can create the symbolic link with the `php artisan storage:link` command
 ```shell
 docker exec -it 'container_id' bash
-```
-
-```shell
-root@34f664a1c69e:/var/www/html# php artisan storage:link
 ```
 
 The `container_id` of the container can be viewed with the command:
 ```shell
 docker ps
 ```
-
-You will then be able to access your images via, an example in blade would look like this:
-
-    <img src="{{ asset('storage/file.jpg') }}">
 
 <a name="running-tests"></a>
 ## Running Tests
