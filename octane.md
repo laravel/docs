@@ -75,7 +75,7 @@ Next, you should use the `octane:install` Artisan command to install the Franken
 ./vendor/bin/sail artisan octane:install --server=frankenphp
 ```
 
-Next, you should adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
+Then, you should adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
 
 ```shell
 ./vendor/bin/sail artisan sail:publish
