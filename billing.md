@@ -107,7 +107,7 @@ php artisan migrate
 
 Cashier's migrations will add several columns to your `users` table. They will also create a new `subscriptions` table to hold all of your customer's subscriptions and a `subscription_items` table for subscriptions with multiple prices.
 
-You can also publish the configuration file using the `vendor:publish` Artisan command:
+If you wish, you can also publish Cashier's configuration file using the `vendor:publish` Artisan command:
 
 ```shell
 php artisan vendor:publish --tag="cashier-config"
