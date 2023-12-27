@@ -4,6 +4,7 @@
     - [Configuration](#configuration)
     - [Driver Prerequisites](#driver-prerequisites)
     - [Failover Configuration](#failover-configuration)
+    - [Round Robin Configuration](#round-robin-configuration)
 - [Generating Mailables](#generating-mailables)
 - [Writing Mailables](#writing-mailables)
     - [Configuring The Sender](#configuring-the-sender)
@@ -164,7 +165,7 @@ To learn more about MailerSend, including how to use hosted templates, consult t
 
 Sometimes, an external service you have configured to send your application's mail may be down. In these cases, it can be useful to define one or more backup mail delivery configurations that will be used in case your primary delivery driver is down.
 
-To accomplish this, you should define a mailer within your application's `mail` configuration file that uses the `failover` transport. The configuration array for your application's `failover` mailer should contain an array of `mailers` that reference the order in which mail drivers should be chosen for delivery:
+To accomplish this, you should define a mailer within your application's `mail` configuration file that uses the `failover` transport. The configuration array for your application's `failover` mailer should contain an array of `mailers` that reference the order in which configured mailers should be chosen for delivery:
 
     'mailers' => [
         'failover' => [
@@ -182,6 +183,29 @@ To accomplish this, you should define a mailer within your application's `mail` 
 Once your failover mailer has been defined, you should set this mailer as the default mailer used by your application by specifying its name as the value of the `default` configuration key within your application's `mail` configuration file:
 
     'default' => env('MAIL_MAILER', 'failover'),
+
+<a name="round-robin-configuration"></a>
+### Round Robin Configuration
+
+The `roundrobin` transport allows you to distribute your mailing workload across multiple mailers. To get started, define a mailer within your application's `mail` configuration file that uses the `roundrobin` transport. The configuration array for your application's `roundrobin` mailer should contain an array of `mailers` that reference which configured mailers should be used for delivery:
+
+    'mailers' => [
+        'roundrobin' => [
+            'transport' => 'roundrobin',
+            'mailers' => [
+                'ses',
+                'postmark',
+            ],
+        ],
+
+        // ...
+    ],
+
+Once your round robin mailer has been defined, you should set this mailer as the default mailer used by your application by specifying its name as the value of the `default` configuration key within your application's `mail` configuration file:
+
+    'default' => env('MAIL_MAILER', 'roundrobin'),
+
+The round robin transport selects a random mailer from the list of configured mailers and then switches to the next available mailer for each subsequent email. In contrast to `failover` transport, which helps to achieve *[high availability](https://en.wikipedia.org/wiki/High_availability)*, the `roundrobin` transport provides *[load balancing](https://en.wikipedia.org/wiki/Load_balancing_(computing))*.
 
 <a name="generating-mailables"></a>
 ## Generating Mailables
