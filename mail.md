@@ -205,9 +205,7 @@ Once your round robin mailer has been defined, you should set this mailer as the
 
     'default' => env('MAIL_MAILER', 'roundrobin'),
 
-The round robin transport selects a random mailer from the list of configured mailers and then switches to the next available mailer for each subsequent email.
-
-In contrast to `failover` transport, which helps to achieve *[high availability](https://en.wikipedia.org/wiki/High_availability)*, the `roundrobin` transport provides *[load balancing](https://en.wikipedia.org/wiki/Load_balancing_(computing))*.
+The round robin transport selects a random mailer from the list of configured mailers and then switches to the next available mailer for each subsequent email. In contrast to `failover` transport, which helps to achieve *[high availability](https://en.wikipedia.org/wiki/High_availability)*, the `roundrobin` transport provides *[load balancing](https://en.wikipedia.org/wiki/Load_balancing_(computing))*.
 
 <a name="generating-mailables"></a>
 ## Generating Mailables
