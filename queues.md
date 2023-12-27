@@ -1032,6 +1032,16 @@ You may take a more granular approach by defining the maximum number of times a 
         public $tries = 5;
     }
 
+If you need dynamic control over a particular job's maximum attempts, you may define a `tries` method on the job:
+
+    /**
+     * Determine number of times the job may be attempted.
+     */
+    public function tries(): int
+    {
+        return 5;
+    }
+
 <a name="time-based-attempts"></a>
 #### Time Based Attempts
 
