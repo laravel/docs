@@ -84,7 +84,7 @@ Then, you should adjust the `supervisor.conf` file used by Sail to keep your app
 Finally, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
 
 ```ini
-command=/usr/bin/php -d variablescommand=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80
+command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80
 ```
 
 <a name="roadrunner"></a>
