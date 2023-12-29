@@ -75,13 +75,13 @@ Next, you should use the `octane:install` Artisan command to install the Franken
 ./vendor/bin/sail artisan octane:install --server=frankenphp
 ```
 
-Then, you should adjust the `docker-compose.yml` file used by Sail. To get started, add the following key to the `laravel.test` service's environment variables:
+Finally, update the `environment` key of your application's `docker-compose.yml` file so that Sail serves your application using Octane instead of the PHP development server:
 
 ```yaml
 services:
-    laravel.test:
-        environment:
-            SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80"
+  laravel.test:
+    environment:
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80" # [tl! add]
 ```
 
 <a name="roadrunner"></a>
@@ -109,16 +109,13 @@ Next, you should start a Sail shell and use the `rr` executable to retrieve the 
 ./vendor/bin/rr get-binary
 ```
 
-After installing the RoadRunner binary, you may exit your Sail shell session. You will now need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
+Then, update the `environment` key of your application's `docker-compose.yml` file so that Sail serves your application using Octane instead of the PHP development server:
 
-```shell
-./vendor/bin/sail artisan sail:publish
-```
-
-Next, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
-
-```ini
-command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=80
+```yaml
+services:
+  laravel.test:
+    environment:
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=80" # [tl! add]
 ```
 
 Finally, ensure the `rr` binary is executable and build your Sail images:
@@ -157,14 +154,13 @@ Using Laravel Octane with Open Swoole grants the same functionality provided by 
 
 Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](/docs/{{version}}/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
 
-```shell
-./vendor/bin/sail artisan sail:publish
-```
+Update the `environment` key of your application's `docker-compose.yml` file so that Sail serves your application using Octane instead of the PHP development server:
 
-Next, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
-
-```ini
-command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port=80
+```yaml
+services:
+  laravel.test:
+    environment:
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port=80" # [tl! add]
 ```
 
 Finally, build your Sail images:
