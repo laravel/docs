@@ -75,16 +75,13 @@ Next, you should use the `octane:install` Artisan command to install the Franken
 ./vendor/bin/sail artisan octane:install --server=frankenphp
 ```
 
-Then, you should adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
+Then, you should adjust the `docker-compose.yml` file used by Sail. To get started, add the following key to the `laravel.test` service's environment variables:
 
-```shell
-./vendor/bin/sail artisan sail:publish
-```
-
-Finally, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
-
-```ini
-command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80
+```yaml
+services:
+    laravel.test:
+        environment:
+            SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80"
 ```
 
 <a name="roadrunner"></a>
