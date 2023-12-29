@@ -152,9 +152,9 @@ Using Laravel Octane with Open Swoole grants the same functionality provided by 
 > **Warning**
 > Before serving an Octane application via Sail, ensure you have the latest version of Laravel Sail and execute `./vendor/bin/sail build --no-cache` within your application's root directory.
 
-Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](/docs/{{version}}/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
+Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](/docs/{{version}}/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `docker-compose.yml` file used by Sail.
 
-Update the `environment` key of your application's `docker-compose.yml` file so that Sail serves your application using Octane instead of the PHP development server:
+To get started, update the `environment` key of your application's `docker-compose.yml` file so that Sail serves your application using Octane instead of the PHP development server:
 
 ```yaml
 services:
