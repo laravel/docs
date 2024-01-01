@@ -124,6 +124,20 @@ The `balanceMaxShift` and `balanceCooldown` configuration values determine how q
 
 When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration.
 
+<a name="maintenance-mode"></a>
+#### Maintenance Mode
+
+When Laravel is put into [maintainance mode](/docs/{{version}}/scheduling#maintenance-mode), queue processing is suspended unless you use the `force` option in your supervisor config:
+
+    'environments' => [
+        'production' => [
+            'supervisor-1' => [
+                ...
+                'force' => true,
+            ],
+        ],
+    ],
+
 <a name="dashboard-authorization"></a>
 ### Dashboard Authorization
 
