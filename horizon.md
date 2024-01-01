@@ -86,6 +86,20 @@ As you can see in Horizon's default configuration file, each environment can con
 
 You may add additional supervisors to a given environment if you would like to define a new group of worker processes that should run in that environment. You may choose to do this if you would like to define a different balancing strategy or worker process count for a given queue used by your application.
 
+<a name="maintenance-mode"></a>
+#### Maintenance Mode
+
+While your application is in [maintainance mode](/docs/{{version}}/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
+
+    'environments' => [
+        'production' => [
+            'supervisor-1' => [
+                // ...
+                'force' => true,
+            ],
+        ],
+    ],
+
 <a name="default-values"></a>
 #### Default Values
 
@@ -123,20 +137,6 @@ The `autoScalingStrategy` configuration value determines if Horizon will assign 
 The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
 
 When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration.
-
-<a name="maintenance-mode"></a>
-#### Maintenance Mode
-
-When Laravel is put into [maintainance mode](/docs/{{version}}/scheduling#maintenance-mode), queue processing is suspended unless you use the `force` option in your supervisor config:
-
-    'environments' => [
-        'production' => [
-            'supervisor-1' => [
-                ...
-                'force' => true,
-            ],
-        ],
-    ],
 
 <a name="dashboard-authorization"></a>
 ### Dashboard Authorization
