@@ -662,12 +662,14 @@ $total = $this->aggregateTotal('user_sale', 'sum');
 When working with aggregates that record a user ID as the key, you may resolve the keys to user records using the `Pulse::resolveUsers` method:
 
 ```php
-$users = Pulse::resolveUsers($topSellers->pluck('key'));
+$aggregates = $this->aggregate('user_sale', ['sum', 'count']);
+$users = Pulse::resolveUsers($aggregates->pluck('key'));
 
 return view('livewire.pulse.top-sellers', [
-    'topSellers' => $this->aggregate('user_sale', ['sum', 'count'])->map(fn ($seller) => (object) [
-        'user' => $users->find($seller->key),
-        // ...
+    'sellers' => $aggregates->map(fn ($aggregate) => (object) [
+        'user' => $users->find($aggregate->key),
+        'sum' => $aggregate->sum,
+        'count' => $aggregate->count,
     ])
 ]);
 ```
