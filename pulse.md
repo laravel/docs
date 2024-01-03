@@ -145,7 +145,7 @@ For cards that display information about your users, such as the Application Usa
 
 You may customize the fields and avatar by invoking the `Pulse::user` method within your application's `App\Providers\AppServiceProvider` class.
 
-The `user` method accepts a closure which will receive the `Authenticatable` model to be displayed and should return an array containing an `name`, `extra`, and `avatar` for the user:
+The `user` method accepts a closure which will receive the `Authenticatable` model to be displayed and should return an array containing `name`, `extra`, and `avatar` information for the user:
 
 ```php
 use Laravel\Pulse\Facades\Pulse;
