@@ -141,14 +141,13 @@ Most cards also accept an `expand` prop to show the full card instead of scrolli
 <a name="dashboard-resolving-users"></a>
 ### Resolving Users
 
-For cards that display information about your users, such as the Application Usage card, Pulse will only record the user's ID.
+For cards that display information about your users, such as the Application Usage card, Pulse will only record the user's ID. When rendering the dashboard, Pulse will resolve the `name` and `email` fields from your default `Authenticatable` model and display avatars using the Gravatar web service.
 
-When rendering the dashboard, Pulse will resolve the `name` and `email` fields from the `User` model and display avatars using the Gravatar web service. However, you may customize the user resolution and display by invoking the `Pulse::users` method within your application's `App\Providers\AppServiceProvider` class.
+You may customize the fields and avatar by invoking the `Pulse::user` method within your application's `App\Providers\AppServiceProvider` class.
 
-The `users` method accepts a closure which will receive the user IDs to be displayed and should return an array or collection containing an `id`, `name`, `extra`, and `avatar` for each user ID:
+The `user` method accepts a closure which will receive the `Authenticatable` model to be displayed and should return an array containing `name`, `extra`, and `avatar` information for the user:
 
 ```php
-use App\Models\User;
 use Laravel\Pulse\Facades\Pulse;
 
 /**
@@ -156,18 +155,18 @@ use Laravel\Pulse\Facades\Pulse;
  */
 public function boot(): void
 {
-    Pulse::users(function ($ids) {
-        return User::findMany($ids)->map(fn ($user) => [
-            'id' => $user->id,
-            'name' => $user->name,
-            'extra' => $user->email,
-            'avatar' => $user->avatar_url,
-        ]);
-    });
+    Pulse::user(fn ($user) => [
+        'name' => $user->name,
+        'extra' => $user->email,
+        'avatar' => $user->avatar_url,
+    ]);
 
     // ...
 }
 ```
+
+> **Note**  
+> You may completely customize how the authenticated user is captured and retrieved by implementing the `Laravel\Pulse\Contracts\ResolvesUsers` contract and binding it in Laravel's [service container](/docs/{{ version }}/container#binding-a-singleton).
 
 <a name="dashboard-cards"></a>
 ### Cards
@@ -629,6 +628,9 @@ The available aggregation methods are:
 * `min`
 * `sum`
 
+> **Note**  
+> When building a card package that captures the currently authenticated user ID, you should use the `Pulse::resolveAuthenticatedUserId()` method, which respects any [user resolver customizations](#dashboard-resolving-users) made to the application.
+
 <a name="custom-card-data-retrieval"></a>
 #### Retrieving Aggregate Data
 
@@ -662,6 +664,31 @@ You may also retrieve a total value for a given type by using the `aggregateTota
 
 ```php
 $total = $this->aggregateTotal('user_sale', 'sum');
+```
+
+<a name="custom-card-displaying-users"></a>
+#### Displaying Users
+
+When working with aggregates that record a user ID as the key, you may resolve the keys to user records using the `Pulse::resolveUsers` method:
+
+```php
+$aggregates = $this->aggregate('user_sale', ['sum', 'count']);
+
+$users = Pulse::resolveUsers($aggregates->pluck('key'));
+
+return view('livewire.pulse.top-sellers', [
+    'sellers' => $aggregates->map(fn ($aggregate) => (object) [
+        'user' => $users->find($aggregate->key),
+        'sum' => $aggregate->sum,
+        'count' => $aggregate->count,
+    ])
+]);
+```
+
+The `find` method returns an object containing `name`, `extra`, and `avatar` keys, which you may optionally pass directly to the `<x-pulse::user-card>` Blade component:
+
+```blade
+<x-pulse::user-card :user="{{ $seller->user }}" :stats="{{ $seller->sum }}" />
 ```
 
 <a name="custom-recorders"></a>
