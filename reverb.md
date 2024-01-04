@@ -105,7 +105,7 @@ PUSHER_SCHEME=http
 <a name="allowed-origins"></a>
 ### Allowed Origins
 
-You may also define the allowed origins from which client requests may originate by updating the value of `allowed_origins` in Reverb's app configuration. Any requests from an origin not listed will be rejected. Using the wildcard `*` allowa requests from any origin.
+You may also define the origins from which client requests may originate by updating the value of `allowed_origins` in Reverb's app configuration. Any requests from an origin not listed will be rejected. You may allow all origins with `*`.
 
 ```php
 'apps' => [
@@ -120,7 +120,7 @@ You may also define the allowed origins from which client requests may originate
 <a name="additional-applications"></a>
 ### Additional Applications
 
-Although typically Reverb will provide a WebSocket server for the application in which it is installed, it is possible for Reverb to serve more than one application at a time. For example, you may wish to maintain a single server which provides WebSockets for multiple applications. This can be achieved by defining multiple `apps` in the Reverb configuration file:
+Although typically Reverb will provide a WebSocket server for the application in which it is installed, it is possible to serve more than one application at a time. For example, you may wish to maintain a single server which provides WebSockets for multiple applications. This can be achieved by defining multiple `apps` in the Reverb configuration file:
 
 ```php
 'apps' => [
@@ -138,14 +138,22 @@ Although typically Reverb will provide a WebSocket server for the application in
 <a name="echo"></a>
 ## Laravel Echo
 
-Laravel Echo is a library which makes it incredibly simple to interact with Pusher channels from your front-end code and it can be paired with Reverb with some minor tweaks to your configuration. To begin, you should ensure you have followed [Echo's installation instructions for Pusher Channels](broadcasting#client-pusher-channels) before updating your `VITE_` prefixed Pusher environment variables:
+Laravel Echo is a library which makes it incredibly simple to interact with Pusher channels from your front-end code and it can be paired with Reverb with some minor tweaks to your configuration. To begin, you should ensure you have followed [Echo's installation instructions](broadcasting#client-pusher-channels) for Pusher Channels before updating your `VITE_` or `MIX_` prefixed Pusher environment variables:
 
 ```env
+# Using Vite
 VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
 VITE_PUSHER_HOST="${PUSHER_HOST}"
 VITE_PUSHER_PORT="${PUSHER_PORT}"
 VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
-VITE_PUSHER_APP_CLUSTER=
+VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+
+# Using Mix
+MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+MIX_PUSHER_HOST="${PUSHER_HOST}"
+MIX_PUSHER_PORT="${PUSHER_PORT}"
+MIX_PUSHER_SCHEME="${PUSHER_SCHEME}"
+MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 ```
 
 > **Note**  
@@ -173,11 +181,11 @@ After rebuilding your assets, your frontend should now be connected to your Reve
 
 Due to the lon-running nature of WebSockets, you may need to make some optimizations in your hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the available resources. If you are hosting your application on a server provisioned by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel of your site.
 
-<a name="open-files">
+<a name="open-files"></a>
 ### Open Files
 Each WebSocket connection is held in memory until either the client or server disconnects. In Unix and Unix-like environments, each connection is represented by a file. There are often limits on the number of allowed open files at both the operating system and application level which is typically 1,024 open files.
 
-<a name="operating-system">
+<a name="operating-system"></a>
 #### Operating System
 
 On a Unix based operating system, you make check the allowed number of open files using the `ulimit` command:
