@@ -28,9 +28,16 @@
 > **Warning**  
 > Laravel Reveb requires PHP 8.2+.
 
-Reverb may be installed via the Composer package manager:
+Since Reverb is currently in beta, you may need to adjust your application's composer.json file to allow beta package releases to be installed:
 
-```shell
+```json
+"minimum-stability": "beta",
+"prefer-stable": true
+```
+
+Then, you may use the Composer package manager to install Reverb into your Laravel project:
+
+```sh
 composer install laravel/reverb
 ```
 
@@ -39,7 +46,7 @@ composer install laravel/reverb
 
 Many of Reverbs's configuration options can be controlled using environment variables. To see the available options, or configure advanced options, you may publish the `config/reverb.php` configuration file:
 
-```shell
+```sh
 php artisan vendor:publish --tag=reverb-config
 ```
 
@@ -48,7 +55,7 @@ php artisan vendor:publish --tag=reverb-config
 
 The Reverb server can be started via the `reverb:start` Artisan command:
 
-```shell
+```sh
 php artisan reverb:start
 ```
 
@@ -56,7 +63,7 @@ By default, Reverb will start the server on localhost port 8080.
 
 Should you need to use a custom host or port, you may do so by utilizing the `host` and `port` options when running the command:
 
-```shell
+```sh
 php artisan reverb:start --host=127.0.0.1 --port=9000
 ```
 
@@ -67,7 +74,7 @@ Alternatively, you may set the `REVERB_HOST` and `REVERB_PORT` environment varia
 
 In order optimize for scale, Reverb will not write any debug information to the logs. If you wish to see the stream of data passing through your Reverb server, you may opt-in using the `--debug` option:
 
-```shell
+```sh
 php artisan reverb:start --debug
 ```
 
@@ -175,7 +182,7 @@ Each WebSocket connection is held in memory until either the client or server di
 
 On a Unix based operating system, you make check the allowed number of open files using the `ulimit` command:
 
-```shell
+```sh
 ulimit -n
 ```
 
@@ -194,7 +201,7 @@ Under the hood, Reverb uses a ReactPHP event loop to manage WebSocket connection
 
 Reverb will automatically switch to an `ext-event`, `ext-ev`, or `ext-uv` powered loop when available. All of the extensions are available for install via PECL:
 
-```shell
+```sh
 pecl install event
 # or
 pecl install ev
@@ -247,7 +254,7 @@ The above configuration will allow up to 10,000 Nginx workers to be spawned and 
 
 Unix-based operating systems typically limit the number of ports which can be opened on the server. You may see the current allowed range by running:
 
- ```shell
+ ```sh
  cat /proc/sys/net/ipv4/ip_local_port_range
 # 32768	60999
 ```
