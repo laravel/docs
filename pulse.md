@@ -663,6 +663,7 @@ When working with aggregates that record a user ID as the key, you may resolve t
 
 ```php
 $aggregates = $this->aggregate('user_sale', ['sum', 'count']);
+
 $users = Pulse::resolveUsers($aggregates->pluck('key'));
 
 return view('livewire.pulse.top-sellers', [
