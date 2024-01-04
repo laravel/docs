@@ -9,7 +9,7 @@
     - [Credentials](#credentials)
     - [Allowed Origins](#allowed-origins)
     - [Additional Applications](#additional-applications)
-- [Laravel Echo](#echo)
+    - [Laravel Echo](#echo)
 - [Running in Production](#production)
     - [Open Files](#open-files)
     - [Web Server](#web-server)
@@ -136,7 +136,7 @@ Although typically Reverb will provide a WebSocket server for the application in
 ```
 
 <a name="echo"></a>
-## Laravel Echo
+### Laravel Echo
 
 Laravel Echo is a library which makes it incredibly simple to interact with Pusher channels from your front-end code and it can be paired with Reverb with some minor tweaks to your configuration. To begin, you should ensure you have followed [Echo's installation instructions](broadcasting#client-pusher-channels) for Pusher Channels before updating your `VITE_` or `MIX_` prefixed Pusher environment variables:
 
@@ -146,14 +146,14 @@ VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
 VITE_PUSHER_HOST="${PUSHER_HOST}"
 VITE_PUSHER_PORT="${PUSHER_PORT}"
 VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
-VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+VITE_PUSHER_APP_CLUSTER=
 
 # Using Mix
 MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
 MIX_PUSHER_HOST="${PUSHER_HOST}"
 MIX_PUSHER_PORT="${PUSHER_PORT}"
 MIX_PUSHER_SCHEME="${PUSHER_SCHEME}"
-MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+MIX_PUSHER_APP_CLUSTER=
 ```
 
 > **Note**  
@@ -179,7 +179,7 @@ After rebuilding your assets, your frontend should now be connected to your Reve
 <a name="production"></a>
 ## Running in Production
 
-Due to the lon-running nature of WebSockets, you may need to make some optimizations in your hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the available resources. If you are hosting your application on a server provisioned by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel of your site.
+Due to the long-running nature of WebSockets, you may need to make some optimizations to your hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the available resources. If you are hosting your application on a server provisioned by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel of your site.
 
 <a name="open-files"></a>
 ### Open Files
@@ -220,7 +220,7 @@ pecl install uv
 <a name="web-server"></a>
 ### Web Server
 
-In most cases, Reverb runs on a non web-facing port on your server so in order to route traffic to it, you should configure a reverse proxy. Given Reverb running on host `127.0.0.1` port `8080` and using Nginx as your web server, this can be achieved by updating the config for the site:
+In most cases, Reverb runs on a non web-facing port on your server so in order to route traffic to it, you should configure a reverse proxy. Assuming Reverb is running on host `127.0.0.1` port `8080` and using an Nginx web server, this can be achieved by updating the config for the site:
 
 ```nginx
 server {
@@ -240,7 +240,7 @@ server {
     ...
 ```
 
-Typically, web servers are configured to limit the number of allowed connections in order to prevent overloading the server. To increase the number of allowed connections on an Nginx web server to 10,000, the `nginx.conf` file should be updated as follows:
+Typically, web servers are configured to limit the number of allowed connections in order to prevent overloading the server. To increase the number of allowed connections on an Nginx web server to 10,000, the `worker_rlimit_nofile` and `worker_connections` values of the `nginx.conf` file should be updated:
 
 ```nginx
 user forge;
@@ -269,10 +269,6 @@ Unix-based operating systems typically limit the number of ports which can be op
 
 The output above shows the server can handle a maximum of 28,231 (60,999 - 32,768) connections as each connection requires a free port. Although we would recommend [horizontal scaling](#scaling) to increase the number of allowed connections, should you wish to increase the number of open ports, you may do so by updating the allowed range in your server's `/etc/sysctl.conf` file.
 
-To update this temporarily, run `echo 15000 64000 > /proc/sys/net/ipv4/ip_local_port_range`. This will set the minimum and maximum ports allowed for networking connection on its local port.
-
-To make the change permanent, add the setting to `/etc/sysctl.conf`.
-
 <a name="process-management"></a>
 ### Process Management
 
@@ -287,7 +283,7 @@ minfds=10000
 <a name="scaling"></a>
 ### Scaling
 
-You may scale your Reverb server horizontally in the event you need to handle more connections than a single server will allow. Utilizing the publish / subscribe capabilities of Redis, Reverb is able to manage connections across multiple servers.
+You may scale your Reverb server horizontally should you need to handle more connections than a single server will allow. Utilizing the publish / subscribe capabilities of Redis, Reverb is able to manage connections across multiple servers.
 
 To enable horizontal scaling, you should set the `REVERB_SCALING_ENABLED` variable to true in your environment:
 
