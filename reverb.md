@@ -20,7 +20,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Reverb](https://github.com/laravel/reverb) brings super-fast and scalable real-time communication directly to your Laravel application. Reverb is a low-level WebSocket server built on top of ReactPHP and offers baked in support for the Pusher protocol providing seamless integration with Laravel’s existing suite of broadcasting tools.
+[Laravel Reverb](https://github.com/laravel/reverb) brings super-fast and scalable real-time communication directly to your Laravel application. Reverb is a low-level WebSocket server built on top of [ReactPHP](https://reactphp.org/) and offers baked in support for the Pusher protocol providing seamless integration with Laravel’s existing suite of broadcasting tools.
 
 <a name="installation"></a>
 ## Installation
