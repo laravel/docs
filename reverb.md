@@ -5,6 +5,7 @@
     - [Configuration](#configuration)
 - [Running the Server](#running-server)
     - [Debugging](#debugging)
+    - [Restarting](#restarting)
 - [Pusher Protocol](#pusher-protocol)
     - [Credentials](#credentials)
     - [Allowed Origins](#allowed-origins)
@@ -76,6 +77,15 @@ In order optimize for scale, Reverb will not write any debug information to the 
 
 ```sh
 php artisan reverb:start --debug
+```
+
+<a name="restarting"></a>
+### Restarting
+
+Due to the long-running nature of the Reverb, updated code will not be reflected without restarting the server. Active connections will be dropped when the server is restarted so you should only restart when necessary. You may gracefully restart the server using the `reverb:restart` Artisan command which will ensure all connections are gracefully terminated before stopping the server. If you are running Reverb with a process manager such as Supervisor, the server will automatically restart:
+
+```sh
+php artisan reverb:restart
 ```
 
 <a name="pusher-protocol"></a>
