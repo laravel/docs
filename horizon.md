@@ -366,7 +366,8 @@ If you would like to manually define the tags for one of your queueable objects,
 
 #### Manually Tagging Event Listeners
 
-In the case you're queueing an event listener, the event object will not be available on the class' constructor, but on the `handle` method. To circumnvent this, Horizon will automatically pass an instance of the event to the `tags` method:
+In the case you're queueing an event listener, the event object will not be available on the class' constructor, but on the `handle` method. Since the event is not stored on a property, the `tags` method will not have access to it.
+To circumnvent this, Horizon will automatically pass an instance of the event to the `tags` method:
 
     class VideoRendered implements ShouldQueue
     {
