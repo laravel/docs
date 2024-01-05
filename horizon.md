@@ -364,6 +364,30 @@ If you would like to manually define the tags for one of your queueable objects,
         }
     }
 
+#### Manually Tagging Event Listeners
+
+In the case you're queueing an event listener, the event object will not be available on the class' constructor, but on the `handle` method. To circumnvent this, Horizon will automatically pass an instance of the event to the `tags` method:
+
+    class VideoRendered implements ShouldQueue
+    {
+        public function handle(VideoRendered $event): void
+        {
+            //
+        }
+    
+        /**
+         * Get the tags that should be assigned to the job.
+         *
+         * @param  \App\Listeners\VideoRendered $event
+         * @return array<int, string>
+         */
+        public function tags(VideoRendered $event): array
+        {
+            return ['video_rendered', 'video:'.$event->video->id];
+        }
+    }
+
+
 <a name="notifications"></a>
 ## Notifications
 
