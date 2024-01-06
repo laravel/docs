@@ -46,7 +46,7 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
         {
             DB::table('users')->insert([
                 'name' => Str::random(10),
-                'email' => Str::random(10).'@gmail.com',
+                'email' => Str::random(10).'@example.com',
                 'password' => Hash::make('password'),
             ]);
         }
