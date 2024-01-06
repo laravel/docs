@@ -410,7 +410,7 @@ class ExampleTest extends TestCase
     {
         Process::fake();
 
-        $response = $this->get('/');
+        $response = $this->get('/import');
 
         // Simple process assertion...
         Process::assertRan('bash import.sh');
