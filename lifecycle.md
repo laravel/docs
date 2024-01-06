@@ -7,7 +7,7 @@
     - [Service Providers](#service-providers)
     - [Routing](#routing)
     - [Finishing Up](#finishing-up)
-- [Focus On Service Providers](#focus-on-service-providers)
+- [Focus on Service Providers](#focus-on-service-providers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -65,7 +65,7 @@ Once the route or controller method returns a response, the response will travel
 Finally, once the response travels back through the middleware, the HTTP kernel's `handle` method returns the response object and the `index.php` file calls the `send` method on the returned response. The `send` method sends the response content to the user's web browser. We've finished our journey through the entire Laravel request lifecycle!
 
 <a name="focus-on-service-providers"></a>
-## Focus On Service Providers
+## Focus on Service Providers
 
 Service providers are truly the key to bootstrapping a Laravel application. The application instance is created, the service providers are registered, and the request is handed to the bootstrapped application. It's really that simple!
 

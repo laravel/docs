@@ -3,16 +3,16 @@
 - [Introduction](#introduction)
     - [Configuration](#configuration)
     - [Driver Prerequisites](#driver-prerequisites)
-- [Interacting With The Session](#interacting-with-the-session)
+- [Interacting With the Session](#interacting-with-the-session)
     - [Retrieving Data](#retrieving-data)
     - [Storing Data](#storing-data)
     - [Flash Data](#flash-data)
     - [Deleting Data](#deleting-data)
-    - [Regenerating The Session ID](#regenerating-the-session-id)
+    - [Regenerating the Session ID](#regenerating-the-session-id)
 - [Session Blocking](#session-blocking)
 - [Adding Custom Session Drivers](#adding-custom-session-drivers)
-    - [Implementing The Driver](#implementing-the-driver)
-    - [Registering The Driver](#registering-the-driver)
+    - [Implementing the Driver](#implementing-the-driver)
+    - [Registering the Driver](#registering-the-driver)
 
 <a name="introduction"></a>
 ## Introduction
@@ -79,7 +79,7 @@ Before using Redis sessions with Laravel, you will need to either install the Ph
 > In the `session` configuration file, the `connection` option may be used to specify which Redis connection is used by the session.
 
 <a name="interacting-with-the-session"></a>
-## Interacting With The Session
+## Interacting With the Session
 
 <a name="retrieving-data"></a>
 ### Retrieving Data
@@ -145,7 +145,7 @@ If you would like to retrieve all the data in the session, you may use the `all`
     $data = $request->session()->all();
 
 <a name="determining-if-an-item-exists-in-the-session"></a>
-#### Determining If An Item Exists In The Session
+#### Determining if an Item Exists in the Session
 
 To determine if an item is present in the session, you may use the `has` method. The `has` method returns `true` if the item is present and is not `null`:
 
@@ -177,21 +177,21 @@ To store data in the session, you will typically use the request instance's `put
     session(['key' => 'value']);
 
 <a name="pushing-to-array-session-values"></a>
-#### Pushing To Array Session Values
+#### Pushing to Array Session Values
 
 The `push` method may be used to push a new value onto a session value that is an array. For example, if the `user.teams` key contains an array of team names, you may push a new value onto the array like so:
 
     $request->session()->push('user.teams', 'developers');
 
 <a name="retrieving-deleting-an-item"></a>
-#### Retrieving & Deleting An Item
+#### Retrieving and Deleting an Item
 
 The `pull` method will retrieve and delete an item from the session in a single statement:
 
     $value = $request->session()->pull('key', 'default');
 
 <a name="#incrementing-and-decrementing-session-values"></a>
-#### Incrementing & Decrementing Session Values
+#### Incrementing and Decrementing Session Values
 
 If your session data contains an integer you wish to increment or decrement, you may use the `increment` and `decrement` methods:
 
@@ -234,7 +234,7 @@ The `forget` method will remove a piece of data from the session. If you would l
     $request->session()->flush();
 
 <a name="regenerating-the-session-id"></a>
-### Regenerating The Session ID
+### Regenerating the Session ID
 
 Regenerating the session ID is often done in order to prevent malicious users from exploiting a [session fixation](https://owasp.org/www-community/attacks/Session_fixation) attack on your application.
 
@@ -278,7 +278,7 @@ If neither of these arguments is passed, the lock will be obtained for a maximum
 ## Adding Custom Session Drivers
 
 <a name="implementing-the-driver"></a>
-#### Implementing The Driver
+### Implementing the Driver
 
 If none of the existing session drivers fit your application's needs, Laravel makes it possible to write your own session handler. Your custom session driver should implement PHP's built-in `SessionHandlerInterface`. This interface contains just a few simple methods. A stubbed MongoDB implementation looks like the following:
 
@@ -313,7 +313,7 @@ Since the purpose of these methods is not readily understandable, let's quickly 
 </div>
 
 <a name="registering-the-driver"></a>
-#### Registering The Driver
+### Registering the Driver
 
 Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Laravel's session backend, you may use the `extend` method provided by the `Session` [facade](/docs/{{version}}/facades). You should call the `extend` method from the `boot` method of a [service provider](/docs/{{version}}/providers). You may do this from the existing `App\Providers\AppServiceProvider` or create an entirely new provider:
 

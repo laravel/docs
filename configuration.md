@@ -4,7 +4,7 @@
 - [Environment Configuration](#environment-configuration)
     - [Environment Variable Types](#environment-variable-types)
     - [Retrieving Environment Configuration](#retrieving-environment-configuration)
-    - [Determining The Current Environment](#determining-the-current-environment)
+    - [Determining the Current Environment](#determining-the-current-environment)
     - [Encrypting Environment Files](#encrypting-environment-files)
 - [Accessing Configuration Values](#accessing-configuration-values)
 - [Configuration Caching](#configuration-caching)
@@ -97,7 +97,7 @@ All of the variables listed in the `.env` file will be loaded into the `$_ENV` P
 The second value passed to the `env` function is the "default value". This value will be returned if no environment variable exists for the given key.
 
 <a name="determining-the-current-environment"></a>
-### Determining The Current Environment
+### Determining the Current Environment
 
 The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
 
@@ -274,7 +274,7 @@ When accessing this hidden route, you will then be redirected to the `/` route o
 > Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?` or `&`.
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
-#### Pre-Rendering The Maintenance Mode View
+#### Pre-Rendering the Maintenance Mode View
 
 If you utilize the `php artisan down` command during deployment, your users may still occasionally encounter errors if they access the application while your Composer dependencies or other infrastructure components are updating. This occurs because a significant part of the Laravel framework must boot in order to determine your application is in maintenance mode and render the maintenance mode view using the templating engine.
 
@@ -306,11 +306,11 @@ php artisan up
 > You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`.
 
 <a name="maintenance-mode-queues"></a>
-#### Maintenance Mode & Queues
+#### Maintenance Mode and Queues
 
 While your application is in maintenance mode, no [queued jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
 
 <a name="alternatives-to-maintenance-mode"></a>
-#### Alternatives To Maintenance Mode
+#### Alternatives to Maintenance Mode
 
 Since maintenance mode requires your application to have several seconds of downtime, consider alternatives like [Laravel Vapor](https://vapor.laravel.com) and [Envoyer](https://envoyer.io) to accomplish zero-downtime deployment with Laravel.

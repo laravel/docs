@@ -1,14 +1,14 @@
 # Localization
 
 - [Introduction](#introduction)
-    - [Publishing The Language Files](#publishing-the-language-files)
-    - [Configuring The Locale](#configuring-the-locale)
+    - [Publishing the Language Files](#publishing-the-language-files)
+    - [Configuring the Locale](#configuring-the-locale)
     - [Pluralization Language](#pluralization-language)
 - [Defining Translation Strings](#defining-translation-strings)
     - [Using Short Keys](#using-short-keys)
-    - [Using Translation Strings As Keys](#using-translation-strings-as-keys)
+    - [Using Translation Strings as Keys](#using-translation-strings-as-keys)
 - [Retrieving Translation Strings](#retrieving-translation-strings)
-    - [Replacing Parameters In Translation Strings](#replacing-parameters-in-translation-strings)
+    - [Replacing Parameters in Translation Strings](#replacing-parameters-in-translation-strings)
     - [Pluralization](#pluralization)
     - [Handling Missing Translation Strings](#handling-missing-translation-strings)
 - [Overriding Package Language Files](#overriding-package-language-files)
@@ -38,7 +38,7 @@ Or, translation strings may be defined within JSON files that are placed within 
 We'll discuss each approach to managing translation strings within this documentation.
 
 <a name="publishing-the-language-files"></a>
-### Publishing The Language Files
+### Publishing the Language Files
 
 By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files or create your own, you should scaffold the `lang` directory via the `lang:publish` Artisan command. The `lang:publish` command will create the `lang` directory in your application and publish the default set of language files used by Laravel:
 
@@ -47,7 +47,7 @@ php artisan lang:publish
 ```
 
 <a name="configuring-the-locale"></a>
-### Configuring The Locale
+### Configuring the Locale
 
 The default language for your application is stored in the `config/app.php` configuration file's `locale` configuration option. You are free to modify this value to suit the needs of your application.
 
@@ -70,7 +70,7 @@ You may configure a "fallback language", which will be used when the active lang
     'fallback_locale' => 'en',
 
 <a name="determining-the-current-locale"></a>
-#### Determining The Current Locale
+#### Determining the Current Locale
 
 You may use the `currentLocale` and `isLocale` methods on the `App` facade to determine the current locale or check if the locale is a given value:
 
@@ -130,7 +130,7 @@ All language files return an array of keyed strings. For example:
 > For languages that differ by territory, you should name the language directories according to the ISO 15897. For example, "en_GB" should be used for British English rather than "en-gb".
 
 <a name="using-translation-strings-as-keys"></a>
-### Using Translation Strings As Keys
+### Using Translation Strings as Keys
 
 For applications with a large number of translatable strings, defining every string with a "short key" can become confusing when referencing the keys in your views and it is cumbersome to continually invent keys for every translation string supported by your application.
 
@@ -166,7 +166,7 @@ If you are using the [Blade templating engine](/docs/{{version}}/blade), you may
     {{ __('messages.welcome') }}
 
 <a name="replacing-parameters-in-translation-strings"></a>
-### Replacing Parameters In Translation Strings
+### Replacing Parameters in Translation Strings
 
 If you wish, you may define placeholders in your translation strings. All placeholders are prefixed with a `:`. For example, you may define a welcome message with a placeholder name:
 

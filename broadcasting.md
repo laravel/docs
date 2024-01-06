@@ -10,31 +10,31 @@
     - [Pusher Channels](#client-pusher-channels)
     - [Ably](#client-ably)
 - [Concept Overview](#concept-overview)
-    - [Using An Example Application](#using-example-application)
+    - [Using an Example Application](#using-example-application)
 - [Defining Broadcast Events](#defining-broadcast-events)
     - [Broadcast Name](#broadcast-name)
     - [Broadcast Data](#broadcast-data)
     - [Broadcast Queue](#broadcast-queue)
     - [Broadcast Conditions](#broadcast-conditions)
-    - [Broadcasting & Database Transactions](#broadcasting-and-database-transactions)
+    - [Broadcasting and Database Transactions](#broadcasting-and-database-transactions)
 - [Authorizing Channels](#authorizing-channels)
     - [Defining Authorization Routes](#defining-authorization-routes)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
     - [Defining Channel Classes](#defining-channel-classes)
 - [Broadcasting Events](#broadcasting-events)
-    - [Only To Others](#only-to-others)
-    - [Customizing The Connection](#customizing-the-connection)
+    - [Only to Others](#only-to-others)
+    - [Customizing the Connection](#customizing-the-connection)
 - [Receiving Broadcasts](#receiving-broadcasts)
-    - [Listening For Events](#listening-for-events)
-    - [Leaving A Channel](#leaving-a-channel)
+    - [Listening for Events](#listening-for-events)
+    - [Leaving a Channel](#leaving-a-channel)
     - [Namespaces](#namespaces)
 - [Presence Channels](#presence-channels)
     - [Authorizing Presence Channels](#authorizing-presence-channels)
     - [Joining Presence Channels](#joining-presence-channels)
-    - [Broadcasting To Presence Channels](#broadcasting-to-presence-channels)
+    - [Broadcasting to Presence Channels](#broadcasting-to-presence-channels)
 - [Model Broadcasting](#model-broadcasting)
     - [Model Broadcasting Conventions](#model-broadcasting-conventions)
-    - [Listening For Model Broadcasts](#listening-for-model-broadcasts)
+    - [Listening for Model Broadcasts](#listening-for-model-broadcasts)
 - [Client Events](#client-events)
 - [Notifications](#notifications)
 
@@ -189,7 +189,7 @@ npm run build
 > To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
 
 <a name="using-an-existing-client-instance"></a>
-#### Using An Existing Client Instance
+#### Using an Existing Client Instance
 
 If you already have a pre-configured Pusher Channels client instance that you would like Echo to utilize, you may pass it to Echo via the `client` configuration option:
 
@@ -264,7 +264,7 @@ Events are broadcast over "channels", which may be specified as public or privat
 > If you would like to explore open source alternatives to Pusher, check out the [open source alternatives](#open-source-alternatives).
 
 <a name="using-example-application"></a>
-### Using An Example Application
+### Using an Example Application
 
 Before diving into each component of event broadcasting, let's take a high level overview using an e-commerce store as an example.
 
@@ -347,7 +347,7 @@ The `channel` method accepts two arguments: the name of the channel and a callba
 All authorization callbacks receive the currently authenticated user as their first argument and any additional wildcard parameters as their subsequent arguments. In this example, we are using the `{orderId}` placeholder to indicate that the "ID" portion of the channel name is a wildcard.
 
 <a name="listening-for-event-broadcasts"></a>
-#### Listening For Event Broadcasts
+#### Listening for Event Broadcasts
 
 Next, all that remains is to listen for the event in our JavaScript application. We can do this using [Laravel Echo](#client-side-installation). First, we'll use the `private` method to subscribe to the private channel. Then, we may use the `listen` method to listen for the `OrderShipmentStatusUpdated` event. By default, all of the event's public properties will be included on the broadcast event:
 
@@ -503,7 +503,7 @@ Sometimes you want to broadcast your event only if a given condition is true. Yo
     }
 
 <a name="broadcasting-and-database-transactions"></a>
-#### Broadcasting & Database Transactions
+#### Broadcasting and Database Transactions
 
 When broadcast events are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your event depends on these models, unexpected errors can occur when the job that broadcasts the event is processed.
 
@@ -542,7 +542,7 @@ The `Broadcast::routes` method will automatically place its routes within the `w
     Broadcast::routes($attributes);
 
 <a name="customizing-the-authorization-endpoint"></a>
-#### Customizing The Authorization Endpoint
+#### Customizing the Authorization Endpoint
 
 By default, Echo will use the `/broadcasting/auth` endpoint to authorize channel access. However, you may specify your own authorization endpoint by passing the `authEndpoint` configuration option to your Echo instance:
 
@@ -555,7 +555,7 @@ window.Echo = new Echo({
 ```
 
 <a name="customizing-the-authorization-request"></a>
-#### Customizing The Authorization Request
+#### Customizing the Authorization Request
 
 You can customize how Laravel Echo performs authorization requests by providing a custom authorizer when initializing Echo:
 
@@ -682,7 +682,7 @@ Once you have defined an event and marked it with the `ShouldBroadcast` interfac
     OrderShipmentStatusUpdated::dispatch($order);
 
 <a name="only-to-others"></a>
-### Only To Others
+### Only to Others
 
 When building an application that utilizes event broadcasting, you may occasionally need to broadcast an event to all subscribers to a given channel except for the current user. You may accomplish this using the `broadcast` helper and the `toOthers` method:
 
@@ -716,7 +716,7 @@ var socketId = Echo.socketId();
 ```
 
 <a name="customizing-the-connection"></a>
-### Customizing The Connection
+### Customizing the Connection
 
 If your application interacts with multiple broadcast connections and you want to broadcast an event using a broadcaster other than your default, you may specify which connection to push an event to using the `via` method:
 
@@ -755,7 +755,7 @@ Alternatively, you may specify the event's broadcast connection by calling the `
 ## Receiving Broadcasts
 
 <a name="listening-for-events"></a>
-### Listening For Events
+### Listening for Events
 
 Once you have [installed and instantiated Laravel Echo](#client-side-installation), you are ready to start listening for events that are broadcast from your Laravel application. First, use the `channel` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event:
 
@@ -776,7 +776,7 @@ Echo.private(`orders.${this.order.id}`)
 ```
 
 <a name="stop-listening-for-events"></a>
-#### Stop Listening For Events
+#### Stop Listening for Events
 
 If you would like to stop listening to a given event without [leaving the channel](#leaving-a-channel), you may use the `stopListening` method:
 
@@ -786,7 +786,7 @@ Echo.private(`orders.${this.order.id}`)
 ```
 
 <a name="leaving-a-channel"></a>
-### Leaving A Channel
+### Leaving a Channel
 
 To leave a channel, you may call the `leaveChannel` method on your Echo instance:
 
@@ -865,7 +865,7 @@ Echo.join(`chat.${roomId}`)
 The `here` callback will be executed immediately once the channel is joined successfully, and will receive an array containing the user information for all of the other users currently subscribed to the channel. The `joining` method will be executed when a new user joins a channel, while the `leaving` method will be executed when a user leaves the channel. The `error` method will be executed when the authentication endpoint returns a HTTP status code other than 200 or if there is a problem parsing the returned JSON.
 
 <a name="broadcasting-to-presence-channels"></a>
-### Broadcasting To Presence Channels
+### Broadcasting to Presence Channels
 
 Presence channels may receive events just like public or private channels. Using the example of a chatroom, we may want to broadcast `NewMessage` events to the room's presence channel. To do so, we'll return an instance of `PresenceChannel` from the event's `broadcastOn` method:
 
@@ -1073,7 +1073,7 @@ public function broadcastWith(string $event): array
 ```
 
 <a name="listening-for-model-broadcasts"></a>
-### Listening For Model Broadcasts
+### Listening for Model Broadcasts
 
 Once you have added the `BroadcastsEvents` trait to your model and defined your model's `broadcastOn` method, you are ready to start listening for broadcasted model events within your client-side application. Before getting started, you may wish to consult the complete documentation on [listening for events](#listening-for-events).
 
