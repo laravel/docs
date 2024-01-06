@@ -12,10 +12,10 @@
 - [Factory Relationships](#factory-relationships)
     - [Has Many Relationships](#has-many-relationships)
     - [Belongs To Relationships](#belongs-to-relationships)
-    - [Many To Many Relationships](#many-to-many-relationships)
+    - [Many to Many Relationships](#many-to-many-relationships)
     - [Polymorphic Relationships](#polymorphic-relationships)
     - [Defining Relationships Within Factories](#defining-relationships-within-factories)
-    - [Recycling An Existing Model For Relationships](#recycling-an-existing-model-for-relationships)
+    - [Recycling an Existing Model for Relationships](#recycling-an-existing-model-for-relationships)
 
 <a name="introduction"></a>
 ## Introduction
@@ -70,7 +70,7 @@ php artisan make:factory PostFactory
 The new factory class will be placed in your `database/factories` directory.
 
 <a name="factory-and-model-discovery-conventions"></a>
-#### Model & Factory Discovery Conventions
+#### Model and Factory Discovery Conventions
 
 Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\Database\Eloquent\Factories\HasFactory` trait in order to instantiate a factory instance for that model.
 
@@ -381,7 +381,7 @@ For convenience, you may use Laravel's magic factory relationship methods to def
                 ->create();
 
 <a name="many-to-many-relationships"></a>
-### Many To Many Relationships
+### Many to Many Relationships
 
 Like [has many relationships](#has-many-relationships), "many to many" relationships may be created using the `has` method:
 
@@ -459,7 +459,7 @@ Magic methods may not be used to create `morphTo` relationships. Instead, the `f
     )->create();
 
 <a name="polymorphic-many-to-many-relationships"></a>
-#### Polymorphic Many To Many Relationships
+#### Polymorphic Many to Many Relationships
 
 Polymorphic "many to many" (`morphToMany` / `morphedByMany`) relationships may be created just like non-polymorphic "many to many" relationships:
 
@@ -520,7 +520,7 @@ If the relationship's columns depend on the factory that defines it you may assi
     }
 
 <a name="recycling-an-existing-model-for-relationships"></a>
-### Recycling An Existing Model For Relationships
+### Recycling an Existing Model for Relationships
 
 If you have models that share a common relationship with another model, you may use the `recycle` method to ensure a single instance of the related model is recycled for all of the relationships created by the factory.
 

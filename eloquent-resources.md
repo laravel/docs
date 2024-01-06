@@ -171,7 +171,7 @@ When the `preserveKeys` property is set to `true`, collection keys will be prese
     });
 
 <a name="customizing-the-underlying-resource-class"></a>
-#### Customizing The Underlying Resource Class
+#### Customizing the Underlying Resource Class
 
 Typically, the `$this->collection` property of a resource collection is automatically populated with the result of mapping each item of the collection to its singular resource class. The singular resource class is assumed to be the collection's class name without the trailing `Collection` portion of the class name. In addition, depending on your personal preference, the singular resource class may or may not be suffixed with `Resource`.
 
@@ -410,7 +410,7 @@ You may be wondering if this will cause your outermost resource to be wrapped in
     }
 
 <a name="data-wrapping-and-pagination"></a>
-#### Data Wrapping And Pagination
+#### Data Wrapping and Pagination
 
 When returning paginated collections via a resource response, Laravel will wrap your resource data in a `data` key even if the `withoutWrapping` method has been called. This is because paginated responses always contain `meta` and `links` keys with information about the paginator's state:
 
@@ -493,7 +493,7 @@ Paginated responses always contain `meta` and `links` keys with information abou
 ```
 
 <a name="customizing-the-pagination-information"></a>
-#### Customizing The Pagination Information
+#### Customizing the Pagination Information
 
 If you would like to customize the information included in the `links` or `meta` keys of the pagination response, you may define a `paginationInformation` method on the resource. This method will receive the `$paginated` data and the array of `$default` information, which is an array containing the `links` and `meta` keys:
 
