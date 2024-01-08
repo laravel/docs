@@ -16,7 +16,7 @@
 - [Spin](#spin)
 - [Progress Bar](#progress)
 - [Terminal Considerations](#terminal-considerations)
-- [Unsupported Environments & Fallbacks](#fallbacks)
+- [Unsupported Environments and Fallbacks](#fallbacks)
 
 <a name="introduction"></a>
 ## Introduction
@@ -718,7 +718,7 @@ If the length of any label, option, or validation message exceeds the number of 
 For any prompts that accept the `scroll` argument, the configured value will automatically be reduced to fit the height of the user's terminal, including space for a validation message.
 
 <a name="fallbacks"></a>
-### Unsupported Environments & Fallbacks
+### Unsupported Environments and Fallbacks
 
 Laravel Prompts supports macOS, Linux, and Windows with WSL. Due to limitations in the Windows version of PHP, it is not currently possible to use Laravel Prompts on Windows outside of WSL.
 

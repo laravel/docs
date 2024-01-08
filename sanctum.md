@@ -1,7 +1,7 @@
 # Laravel Sanctum
 
 - [Introduction](#introduction)
-    - [How It Works](#how-it-works)
+    - [How it Works](#how-it-works)
 - [Installation](#installation)
 - [Configuration](#configuration)
     - [Overriding Default Models](#overriding-default-models)
@@ -28,7 +28,7 @@
 [Laravel Sanctum](https://github.com/laravel/sanctum) provides a featherweight authentication system for SPAs (single page applications), mobile applications, and simple, token based APIs. Sanctum allows each user of your application to generate multiple API tokens for their account. These tokens may be granted abilities / scopes which specify which actions the tokens are allowed to perform.
 
 <a name="how-it-works"></a>
-### How It Works
+### How it Works
 
 Laravel Sanctum exists to solve two separate problems. Let's discuss each before digging deeper into the library.
 
@@ -285,7 +285,7 @@ Next, you should add Sanctum's middleware to your `api` middleware group within 
     ],
 
 <a name="cors-and-cookies"></a>
-#### CORS & Cookies
+#### CORS and Cookies
 
 If you are having trouble authenticating with your application from a SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings.
 
