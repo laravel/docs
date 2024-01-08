@@ -24,8 +24,8 @@
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
     - [Retrieving Payment Methods](#retrieving-payment-methods)
-    - [Determining If A User Has A Payment Method](#check-for-a-payment-method)
-    - [Updating The Default Payment Method](#updating-the-default-payment-method)
+    - [Payment Method Presence](#payment-method-presence)
+    - [Updating the Default Payment Method](#updating-the-default-payment-method)
     - [Adding Payment Methods](#adding-payment-methods)
     - [Deleting Payment Methods](#deleting-payment-methods)
 - [Subscriptions](#subscriptions)
@@ -274,7 +274,7 @@ As you can see in the example above, we will utilize Cashier's provided `checkou
 If necessary, the `checkout` method will automatically create a customer in Stripe and connect that Stripe customer record to the corresponding user in your application's database. After completing the checkout session, the customer will be redirected to a dedicated success or cancellation page where you can display an informational message to the customer.
 
 <a name="providing-meta-data-to-stripe-checkout"></a>
-#### Providing Meta Data To Stripe Checkout
+#### Providing Meta Data to Stripe Checkout
 
 When selling products, it's common to keep track of completed orders and purchased products via `Cart` and `Order` models defined by your own application. When redirecting customers to Stripe Checkout to complete a purchase, you may need to provide an existing order identifier so that you can associate the completed purchase with the corresponding order when the customer is redirected back to your application.
 
@@ -368,7 +368,7 @@ We can even easily determine if a user is subscribed to specific product or pric
 ```
 
 <a name="quickstart-building-a-subscribed-middleware"></a>
-#### Building A Subscribed Middleware
+#### Building a Subscribed Middleware
 
 For convenience, you may wish to create a [middleware](/docs/{{version}}/middleware) which determines if the incoming request is from a subscribed user. Once this middleware has been defined, you may easily assign it to a route to prevent users that are not subscribed from accessing the route:
 
@@ -405,7 +405,7 @@ Once the middleware has been defined, you may assign it to a route:
     })->middleware([Subscribed::class]);
 
 <a name="quickstart-allowing-customers-to-manage-their-billing-plan"></a>
-#### Allowing Customers To Manage Their Billing Plan
+#### Allowing Customers to Manage Their Billing Plan
 
 Of course, customers may want to change their subscription plan to another product or "tier". The easiest way to allow this is by directing customers to Stripe's [Customer Billing Portal](https://stripe.com/docs/no-code/customer-portal), which provides a hosted user interface that allows customers to download invoices, update their payment method, and change subscription plans.
 
@@ -583,7 +583,7 @@ If you would like to generate the URL to the billing portal without generating a
 In order to create subscriptions or perform "one-off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish this differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
 
 <a name="payment-methods-for-subscriptions"></a>
-#### Payment Methods For Subscriptions
+#### Payment Methods for Subscriptions
 
 When storing a customer's credit card information for future use by a subscription, the Stripe "Setup Intents" API must be used to securely gather the customer's payment method details. A "Setup Intent" indicates to Stripe the intention to charge a customer's payment method. Cashier's `Billable` trait includes the `createSetupIntent` method to easily create a new Setup Intent. You should invoke this method from the route or controller that will render the form which gathers your customer's payment method details:
 
@@ -650,7 +650,7 @@ After the card has been verified by Stripe, you may pass the resulting `setupInt
 > If you would like more information about Setup Intents and gathering customer payment details please [review this overview provided by Stripe](https://stripe.com/docs/payments/save-and-reuse#php).
 
 <a name="payment-methods-for-single-charges"></a>
-#### Payment Methods For Single Charges
+#### Payment Methods for Single Charges
 
 Of course, when making a single charge against a customer's payment method, we will only need to use a payment method identifier once. Due to Stripe limitations, you may not use the stored default payment method of a customer for single charges. You must allow the customer to enter their payment method details using the Stripe.js library. For example, consider the following form:
 
@@ -722,8 +722,8 @@ You can retrieve a specific payment method that is attached to the billable mode
 
     $paymentMethod = $user->findPaymentMethod($paymentMethodId);
 
-<a name="check-for-a-payment-method"></a>
-### Determining If A User Has A Payment Method
+<a name="payment-method-presence"></a>
+### Payment Method Presence
 
 To determine if a billable model has a default payment method attached to their account, invoke the `hasDefaultPaymentMethod` method:
 
@@ -744,7 +744,7 @@ This method will determine if the billable model has any payment method at all. 
     }
 
 <a name="updating-the-default-payment-method"></a>
-### Updating The Default Payment Method
+### Updating the Default Payment Method
 
 The `updateDefaultPaymentMethod` method may be used to update a customer's default payment method information. This method accepts a Stripe payment method identifier and will assign the new payment method as the default billing payment method:
 
@@ -817,7 +817,7 @@ The `create` method, which accepts [a Stripe payment method identifier](#storing
 > Passing a payment method identifier directly to the `create` subscription method will also automatically add it to the user's stored payment methods.
 
 <a name="collecting-recurring-payments-via-invoice-emails"></a>
-#### Collecting Recurring Payments Via Invoice Emails
+#### Collecting Recurring Payments via Invoice Emails
 
 Instead of collecting a customer's recurring payments automatically, you may instruct Stripe to email an invoice to the customer each time their recurring payment is due. Then, the customer may manually pay the invoice once they receive it. The customer does not need to provide a payment method up front when collecting recurring payments via invoices:
 
@@ -918,7 +918,7 @@ If you would like to add a subscription to a customer who already has a default 
     $user->newSubscription('default', 'price_monthly')->add();
 
 <a name="creating-subscriptions-from-the-stripe-dashboard"></a>
-#### Creating Subscriptions From The Stripe Dashboard
+#### Creating Subscriptions From the Stripe Dashboard
 
 You may also create subscriptions from the Stripe dashboard itself. When doing so, Cashier will sync newly added subscriptions and assign them a type of `default`. To customize the subscription type that is assigned to dashboard created subscriptions, [extend the `WebhookController`](#defining-webhook-event-handlers) and overwrite the `newSubscriptionType` method.
 
@@ -1148,7 +1148,7 @@ The `noProrate` method may be used to update the subscription's quantity without
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
 
 <a name="quantities-for-subscription-with-multiple-products"></a>
-#### Quantities For Subscriptions With Multiple Products
+#### Quantities for Subscriptions With Multiple Products
 
 If your subscription is a [subscription with multiple products](#subscriptions-with-multiple-products), you should pass the ID of the price whose quantity you wish to increment or decrement as the second argument to the increment / decrement methods:
 
@@ -1565,7 +1565,7 @@ To determine if an existing trial has expired, you may use the `hasExpiredTrial`
     }
 
 <a name="defining-trial-days-in-stripe-cashier"></a>
-#### Defining Trial Days In Stripe / Cashier
+#### Defining Trial Days in Stripe / Cashier
 
 You may choose to define how many trial days your price's receive in the Stripe dashboard or always pass them explicitly using Cashier. If you choose to define your price's trial days in Stripe you should be aware that new subscriptions, including new subscriptions for a customer that had a subscription in the past, will always receive a trial period unless you explicitly call the `skipTrial()` method.
 
@@ -1676,7 +1676,7 @@ php artisan cashier:webhook --disabled
 > Make sure you protect incoming Stripe webhook requests with Cashier's included [webhook signature verification](#verifying-webhook-signatures) middleware.
 
 <a name="webhooks-csrf-protection"></a>
-#### Webhooks & CSRF Protection
+#### Webhooks and CSRF Protection
 
 Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your application's `App\Http\Middleware\VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
 
@@ -2093,7 +2093,7 @@ Of course, you can also enable promotion codes for subscription checkouts:
 > Unfortunately Stripe Checkout does not support all subscription billing options when starting subscriptions. Using the `anchorBillingCycleOn` method on the subscription builder, setting proration behavior, or setting payment behavior will not have any effect during Stripe Checkout sessions. Please consult [the Stripe Checkout Session API documentation](https://stripe.com/docs/api/checkout/sessions/create) to review which parameters are available.
 
 <a name="stripe-checkout-trial-periods"></a>
-#### Stripe Checkout & Trial Periods
+#### Stripe Checkout and Trial Periods
 
 Of course, you can define a trial period when building a subscription that will be completed using Stripe Checkout:
 
@@ -2104,7 +2104,7 @@ Of course, you can define a trial period when building a subscription that will 
 However, the trial period must be at least 48 hours, which is the minimum amount of trial time supported by Stripe Checkout.
 
 <a name="stripe-checkout-subscriptions-and-webhooks"></a>
-#### Subscriptions & Webhooks
+#### Subscriptions and Webhooks
 
 Remember, Stripe and Cashier update subscription statuses via webhooks, so there's a possibility a subscription might not yet be active when the customer returns to the application after entering their payment information. To handle this scenario, you may wish to display a message informing the user that their payment or subscription is pending.
 

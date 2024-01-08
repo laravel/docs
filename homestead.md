@@ -1,33 +1,33 @@
 # Laravel Homestead
 
 - [Introduction](#introduction)
-- [Installation & Setup](#installation-and-setup)
+- [Installation and Setup](#installation-and-setup)
     - [First Steps](#first-steps)
     - [Configuring Homestead](#configuring-homestead)
     - [Configuring Nginx Sites](#configuring-nginx-sites)
     - [Configuring Services](#configuring-services)
-    - [Launching The Vagrant Box](#launching-the-vagrant-box)
+    - [Launching the Vagrant Box](#launching-the-vagrant-box)
     - [Per Project Installation](#per-project-installation)
     - [Installing Optional Features](#installing-optional-features)
     - [Aliases](#aliases)
 - [Updating Homestead](#updating-homestead)
 - [Daily Usage](#daily-usage)
-    - [Connecting Via SSH](#connecting-via-ssh)
+    - [Connecting via SSH](#connecting-via-ssh)
     - [Adding Additional Sites](#adding-additional-sites)
     - [Environment Variables](#environment-variables)
     - [Ports](#ports)
     - [PHP Versions](#php-versions)
-    - [Connecting To Databases](#connecting-to-databases)
+    - [Connecting to Databases](#connecting-to-databases)
     - [Database Backups](#database-backups)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Configuring MailHog](#configuring-mailhog)
     - [Configuring Minio](#configuring-minio)
     - [Laravel Dusk](#laravel-dusk)
     - [Sharing Your Environment](#sharing-your-environment)
-- [Debugging & Profiling](#debugging-and-profiling)
+- [Debugging and Profiling](#debugging-and-profiling)
     - [Debugging Web Requests With Xdebug](#debugging-web-requests)
     - [Debugging CLI Applications](#debugging-cli-applications)
-    - [Profiling Applications with Blackfire](#profiling-applications-with-blackfire)
+    - [Profiling Applications With Blackfire](#profiling-applications-with-blackfire)
 - [Network Interfaces](#network-interfaces)
 - [Extending Homestead](#extending-homestead)
 - [Provider Specific Settings](#provider-specific-settings)
@@ -138,7 +138,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 </div>
 
 <a name="installation-and-setup"></a>
-## Installation & Setup
+## Installation and Setup
 
 <a name="first-steps"></a>
 ### First Steps
@@ -290,7 +290,7 @@ services:
 The specified services will be started or stopped based on their order in the `enabled` and `disabled` directives.
 
 <a name="launching-the-vagrant-box"></a>
-### Launching The Vagrant Box
+### Launching the Vagrant Box
 
 Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from your Homestead directory. Vagrant will boot the virtual machine and automatically configure your shared folders and Nginx sites.
 
@@ -453,7 +453,7 @@ vagrant up
 ## Daily Usage
 
 <a name="connecting-via-ssh"></a>
-### Connecting Via SSH
+### Connecting via SSH
 
 You can SSH into your virtual machine by executing the `vagrant ssh` terminal command from your Homestead directory.
 
@@ -604,7 +604,7 @@ php82
 ```
 
 <a name="connecting-to-databases"></a>
-### Connecting To Databases
+### Connecting to Databases
 
 A `homestead` database is configured for both MySQL and PostgreSQL out of the box. To connect to your MySQL or PostgreSQL database from your host machine's database client, you should connect to `127.0.0.1` on port `33060` (MySQL) or `54320` (PostgreSQL). The username and password for both databases is `homestead` / `secret`.
 
@@ -729,7 +729,7 @@ If you need to share content over HTTPS rather than HTTP, using the `sshare` com
 > Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the Internet when running the `share` command.
 
 <a name="debugging-and-profiling"></a>
-## Debugging & Profiling
+## Debugging and Profiling
 
 <a name="debugging-web-requests"></a>
 ### Debugging Web Requests With Xdebug
@@ -761,7 +761,7 @@ To debug a PHP CLI application, use the `xphp` shell alias inside your Homestead
     xphp /path/to/script
 
 <a name="profiling-applications-with-blackfire"></a>
-### Profiling Applications with Blackfire
+### Profiling Applications With Blackfire
 
 [Blackfire](https://blackfire.io/docs/introduction) is a service for profiling web requests and CLI applications. It offers an interactive user interface which displays profile data in call-graphs and timelines. It is built for use in development, staging, and production, with no overhead for end users. In addition, Blackfire provides performance, quality, and security checks on code and `php.ini` configuration settings.
 
