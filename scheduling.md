@@ -8,12 +8,12 @@
     - [Schedule Frequency Options](#schedule-frequency-options)
     - [Timezones](#timezones)
     - [Preventing Task Overlaps](#preventing-task-overlaps)
-    - [Running Tasks On One Server](#running-tasks-on-one-server)
+    - [Running Tasks on One Server](#running-tasks-on-one-server)
     - [Background Tasks](#background-tasks)
     - [Maintenance Mode](#maintenance-mode)
-- [Running The Scheduler](#running-the-scheduler)
+- [Running the Scheduler](#running-the-scheduler)
     - [Sub-Minute Scheduled Tasks](#sub-minute-scheduled-tasks)
-    - [Running The Scheduler Locally](#running-the-scheduler-locally)
+    - [Running the Scheduler Locally](#running-the-scheduler-locally)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
 - [Events](#events)
@@ -282,7 +282,7 @@ If needed, you may specify how many minutes must pass before the "without overla
 Behind the scenes, the `withoutOverlapping` method utilizes your application's [cache](/docs/{{version}}/cache) to obtain locks. If necessary, you can clear these cache locks using the `schedule:clear-cache` Artisan command. This is typically only necessary if a task becomes stuck due to an unexpected server problem.
 
 <a name="running-tasks-on-one-server"></a>
-### Running Tasks On One Server
+### Running Tasks on One Server
 
 > **Warning**  
 > To utilize this feature, your application must be using the `database`, `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
@@ -343,7 +343,7 @@ Your application's scheduled tasks will not run when the application is in [main
     $schedule->command('emails:send')->evenInMaintenanceMode();
 
 <a name="running-the-scheduler"></a>
-## Running The Scheduler
+## Running the Scheduler
 
 Now that we have learned how to define scheduled tasks, let's discuss how to actually run them on our server. The `schedule:run` Artisan command will evaluate all of your scheduled tasks and determine if they need to run based on the server's current time.
 
@@ -384,7 +384,7 @@ php artisan schedule:interrupt
 ```
 
 <a name="running-the-scheduler-locally"></a>
-### Running The Scheduler Locally
+### Running the Scheduler Locally
 
 Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command:
 

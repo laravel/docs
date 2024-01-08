@@ -6,7 +6,7 @@
 - [Configuration](#configuration)
 - [Authentication](#authentication)
     - [Routing](#routing)
-    - [Authentication & Storage](#authentication-and-storage)
+    - [Authentication and Storage](#authentication-and-storage)
     - [Access Scopes](#access-scopes)
     - [Slack Bot Scopes](#slack-bot-scopes)
     - [Optional Parameters](#optional-parameters)
@@ -73,7 +73,7 @@ To authenticate users using an OAuth provider, you will need two routes: one for
 The `redirect` method provided by the `Socialite` facade takes care of redirecting the user to the OAuth provider, while the `user` method will examine the incoming request and retrieve the user's information from the provider after they have approved the authentication request.
 
 <a name="authentication-and-storage"></a>
-### Authentication & Storage
+### Authentication and Storage
 
 Once the user has been retrieved from the OAuth provider, you may determine if the user exists in your application's database and [authenticate the user](/docs/{{version}}/authentication#authenticate-a-user-instance). If the user does not exist in your application's database, you will typically create a new record in your database to represent the user:
 
@@ -189,7 +189,7 @@ Differing properties and methods may be available on this object depending on wh
     });
 
 <a name="retrieving-user-details-from-a-token-oauth2"></a>
-#### Retrieving User Details From A Token (OAuth2)
+#### Retrieving User Details From a Token (OAuth2)
 
 If you already have a valid access token for a user, you can retrieve their user details using Socialite's `userFromToken` method:
 
@@ -198,7 +198,7 @@ If you already have a valid access token for a user, you can retrieve their user
     $user = Socialite::driver('github')->userFromToken($token);
 
 <a name="retrieving-user-details-from-a-token-and-secret-oauth1"></a>
-#### Retrieving User Details From A Token And Secret (OAuth1)
+#### Retrieving User Details From a Token and Secret (OAuth1)
 
 If you already have a valid token and secret for a user, you can retrieve their user details using Socialite's `userFromTokenAndSecret` method:
 

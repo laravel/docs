@@ -3,10 +3,10 @@
 - [Introduction](#introduction)
 - [Live Validation](#live-validation)
     - [Using Vue](#using-vue)
-    - [Using Vue & Inertia](#using-vue-and-inertia)
+    - [Using Vue and Inertia](#using-vue-and-inertia)
     - [Using React](#using-react)
-    - [Using React & Inertia](#using-react-and-inertia)
-    - [Using Alpine & Blade](#using-alpine)
+    - [Using React and Inertia](#using-react-and-inertia)
+    - [Using Alpine and Blade](#using-alpine)
     - [Configuring Axios](#configuring-axios)
 - [Customizing Validation Rules](#customizing-validation-rules)
 - [Handling File Uploads](#handling-file-uploads)
@@ -173,7 +173,7 @@ You may determine if a form submission request is in-flight by inspecting the fo
 ```
 
 <a name="using-vue-and-inertia"></a>
-### Using Vue & Inertia
+### Using Vue and Inertia
 
 > **Note**
 > If you would like a head start when developing your Laravel application with Vue and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
@@ -349,7 +349,7 @@ You may determine if a form submission request is in-flight by inspecting the fo
 ```
 
 <a name="using-react-and-inertia"></a>
-### Using React & Inertia
+### Using React and Inertia
 
 > **Note**
 > If you would like a head start when developing your Laravel application with React and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
@@ -383,7 +383,7 @@ const submit = (e) => {
 ```
 
 <a name="using-alpine"></a>
-### Using Alpine & Blade
+### Using Alpine and Blade
 
 Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend Alpine application. To illustrate how it works, let's build a form for creating new users within our application.
 

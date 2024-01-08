@@ -17,7 +17,7 @@
     - [Guest Users](#guest-users)
     - [Policy Filters](#policy-filters)
 - [Authorizing Actions Using Policies](#authorizing-actions-using-policies)
-    - [Via The User Model](#via-the-user-model)
+    - [Via the User Model](#via-the-user-model)
     - [Via Controller Helpers](#via-controller-helpers)
     - [Via Middleware](#via-middleware)
     - [Via Blade Templates](#via-blade-templates)
@@ -125,7 +125,7 @@ You may authorize multiple actions at a time using the `any` or `none` methods:
     }
 
 <a name="authorizing-or-throwing-exceptions"></a>
-#### Authorizing Or Throwing Exceptions
+#### Authorizing or Throwing Exceptions
 
 If you would like to attempt to authorize an action and automatically throw an `Illuminate\Auth\Access\AuthorizationException` if the user is not allowed to perform the given action, you may use the `Gate` facade's `authorize` method. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler:
 
@@ -403,7 +403,7 @@ When using the `Gate::authorize` method, which throws an `AuthorizationException
     // The action is authorized...
 
 <a name="customising-policy-response-status"></a>
-#### Customizing The HTTP Response Status
+#### Customizing the HTTP Response Status
 
 When an action is denied via a policy method, a `403` HTTP response is returned; however, it can sometimes be useful to return an alternative HTTP status code. You may customize the HTTP status code returned for a failed authorization check using the `denyWithStatus` static constructor on the `Illuminate\Auth\Access\Response` class:
 
@@ -501,7 +501,7 @@ If you would like to deny all authorization checks for a particular type of user
 ## Authorizing Actions Using Policies
 
 <a name="via-the-user-model"></a>
-### Via The User Model
+### Via the User Model
 
 The `App\Models\User` model that is included with your Laravel application includes two helpful methods for authorizing actions: `can` and `cannot`. The `can` and `cannot` methods receive the name of the action you wish to authorize and the relevant model. For example, let's determine if a user is authorized to update a given `App\Models\Post` model. Typically, this will be done within a controller method:
 

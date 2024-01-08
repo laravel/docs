@@ -1,10 +1,10 @@
 # Laravel Sail
 
 - [Introduction](#introduction)
-- [Installation & Setup](#installation)
+- [Installation and Setup](#installation)
     - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
     - [Configuring A Shell Alias](#configuring-a-shell-alias)
-- [Starting & Stopping Sail](#starting-and-stopping-sail)
+- [Starting and Stopping Sail](#starting-and-stopping-sail)
 - [Executing Commands](#executing-sail-commands)
     - [Executing PHP Commands](#executing-php-commands)
     - [Executing Composer Commands](#executing-composer-commands)
@@ -37,7 +37,7 @@ At its heart, Sail is the `docker-compose.yml` file and the `sail` script that i
 Laravel Sail is supported on macOS, Linux, and Windows (via [WSL2](https://docs.microsoft.com/en-us/windows/wsl/about)).
 
 <a name="installation"></a>
-## Installation & Setup
+## Installation and Setup
 
 Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately. To learn how to create a new Laravel application, please consult Laravel's [installation documentation](/docs/{{version}}/installation#docker-installation-using-sail) for your operating system. During installation, you will be asked to choose which Sail supported services your application will be interacting with.
 
@@ -107,7 +107,7 @@ sail up
 ```
 
 <a name="starting-and-stopping-sail"></a>
-## Starting & Stopping Sail
+## Starting and Stopping Sail
 
 Laravel Sail's `docker-compose.yml` file defines a variety of Docker containers that work together to help you build Laravel applications. Each of these containers is an entry within the `services` configuration of your `docker-compose.yml` file. The `laravel.test` container is the primary application container that will be serving your application.
 
@@ -167,7 +167,7 @@ sail composer require laravel/sanctum
 ```
 
 <a name="installing-composer-dependencies-for-existing-projects"></a>
-#### Installing Composer Dependencies For Existing Applications
+#### Installing Composer Dependencies for Existing Applications
 
 If you are developing an application with a team, you may not be the one that initially creates the Laravel application. Therefore, none of the application's Composer dependencies, including Sail, will be installed after you clone the application's repository to your local computer.
 
@@ -321,7 +321,7 @@ sail dusk
 ```
 
 <a name="selenium-on-apple-silicon"></a>
-#### Selenium On Apple Silicon
+#### Selenium on Apple Silicon
 
 If your local machine contains an Apple Silicon chip, your `selenium` service must use the `seleniarm/standalone-chromium` image:
 

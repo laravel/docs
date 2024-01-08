@@ -20,16 +20,16 @@
     - [Where Exists Clauses](#where-exists-clauses)
     - [Subquery Where Clauses](#subquery-where-clauses)
     - [Full Text Where Clauses](#full-text-where-clauses)
-- [Ordering, Grouping, Limit & Offset](#ordering-grouping-limit-and-offset)
+- [Ordering, Grouping, Limit and Offset](#ordering-grouping-limit-and-offset)
     - [Ordering](#ordering)
     - [Grouping](#grouping)
-    - [Limit & Offset](#limit-and-offset)
+    - [Limit and Offset](#limit-and-offset)
 - [Conditional Clauses](#conditional-clauses)
 - [Insert Statements](#insert-statements)
     - [Upserts](#upserts)
 - [Update Statements](#update-statements)
     - [Updating JSON Columns](#updating-json-columns)
-    - [Increment & Decrement](#increment-and-decrement)
+    - [Increment and Decrement](#increment-and-decrement)
 - [Delete Statements](#delete-statements)
 - [Pessimistic Locking](#pessimistic-locking)
 - [Debugging](#debugging)
@@ -48,7 +48,7 @@ The Laravel query builder uses PDO parameter binding to protect your application
 ## Running Database Queries
 
 <a name="retrieving-all-rows-from-a-table"></a>
-#### Retrieving All Rows From A Table
+#### Retrieving All Rows From a Table
 
 You may use the `table` method provided by the `DB` facade to begin a query. The `table` method returns a fluent query builder instance for the given table, allowing you to chain more constraints onto the query and then finally retrieve the results of the query using the `get` method:
 
@@ -87,7 +87,7 @@ The `get` method returns an `Illuminate\Support\Collection` instance containing 
 > Laravel collections provide a variety of extremely powerful methods for mapping and reducing data. For more information on Laravel collections, check out the [collection documentation](/docs/{{version}}/collections).
 
 <a name="retrieving-a-single-row-column-from-a-table"></a>
-#### Retrieving A Single Row / Column From A Table
+#### Retrieving a Single Row / Column From a Table
 
 If you just need to retrieve a single row from a database table, you may use the `DB` facade's `first` method. This method will return a single `stdClass` object:
 
@@ -104,7 +104,7 @@ To retrieve a single row by its `id` column value, use the `find` method:
     $user = DB::table('users')->find(3);
 
 <a name="retrieving-a-list-of-column-values"></a>
-#### Retrieving A List Of Column Values
+#### Retrieving a List of Column Values
 
 If you would like to retrieve an `Illuminate\Support\Collection` instance containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve a collection of user titles:
 
@@ -205,7 +205,7 @@ Of course, you may combine these methods with other clauses to fine-tune how you
                     ->avg('price');
 
 <a name="determining-if-records-exist"></a>
-#### Determining If Records Exist
+#### Determining if Records Exist
 
 Instead of using the `count` method to determine if any records exist that match your query's constraints, you may use the `exists` and `doesntExist` methods:
 
@@ -221,7 +221,7 @@ Instead of using the `count` method to determine if any records exist that match
 ## Select Statements
 
 <a name="specifying-a-select-clause"></a>
-#### Specifying A Select Clause
+#### Specifying a Select Clause
 
 You may not always want to select all columns from a database table. Using the `select` method, you can specify a custom "select" clause for the query:
 
@@ -746,7 +746,7 @@ The `whereFullText` and `orWhereFullText` methods may be used to add full text "
                ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
-## Ordering, Grouping, Limit & Offset
+## Ordering, Grouping, Limit and Offset
 
 <a name="ordering"></a>
 ### Ordering
@@ -768,7 +768,7 @@ To sort by multiple columns, you may simply invoke `orderBy` as many times as ne
                     ->get();
 
 <a name="latest-oldest"></a>
-#### The `latest` & `oldest` Methods
+#### The `latest` and `oldest` Methods
 
 The `latest` and `oldest` methods allow you to easily order results by date. By default, the result will be ordered by the table's `created_at` column. Or, you may pass the column name that you wish to sort by:
 
@@ -804,7 +804,7 @@ You may pass a column and direction when calling the `reorder` method in order t
 ### Grouping
 
 <a name="groupby-having"></a>
-#### The `groupBy` & `having` Methods
+#### The `groupBy` and `having` Methods
 
 As you might expect, the `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
 
@@ -831,10 +831,10 @@ You may pass multiple arguments to the `groupBy` method to group by multiple col
 To build more advanced `having` statements, see the [`havingRaw`](#raw-methods) method.
 
 <a name="limit-and-offset"></a>
-### Limit & Offset
+### Limit and Offset
 
 <a name="skip-take"></a>
-#### The `skip` & `take` Methods
+#### The `skip` and `take` Methods
 
 You may use the `skip` and `take` methods to limit the number of results returned from the query or to skip a given number of results in the query:
 
@@ -947,7 +947,7 @@ In addition to inserting records into the database, the query builder can also u
                   ->update(['votes' => 1]);
 
 <a name="update-or-insert"></a>
-#### Update Or Insert
+#### Update or Insert
 
 Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs indicating the columns to be updated.
 
@@ -969,7 +969,7 @@ When updating a JSON column, you should use `->` syntax to update the appropriat
                   ->update(['options->enabled' => true]);
 
 <a name="increment-and-decrement"></a>
-### Increment & Decrement
+### Increment and Decrement
 
 The query builder also provides convenient methods for incrementing or decrementing the value of a given column. Both of these methods accept at least one argument: the column to modify. A second argument may be provided to specify the amount by which the column should be incremented or decremented:
 
@@ -1006,7 +1006,7 @@ If you wish to truncate an entire table, which will remove all records from the 
     DB::table('users')->truncate();
 
 <a name="table-truncation-and-postgresql"></a>
-#### Table Truncation & PostgreSQL
+#### Table Truncation and PostgreSQL
 
 When truncating a PostgreSQL database, the `CASCADE` behavior will be applied. This means that all foreign key related records in other tables will be deleted as well.
 

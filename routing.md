@@ -22,9 +22,9 @@
 - [Fallback Routes](#fallback-routes)
 - [Rate Limiting](#rate-limiting)
     - [Defining Rate Limiters](#defining-rate-limiters)
-    - [Attaching Rate Limiters To Routes](#attaching-rate-limiters-to-routes)
+    - [Attaching Rate Limiters to Routes](#attaching-rate-limiters-to-routes)
 - [Form Method Spoofing](#form-method-spoofing)
-- [Accessing The Current Route](#accessing-the-current-route)
+- [Accessing the Current Route](#accessing-the-current-route)
 - [Cross-Origin Resource Sharing (CORS)](#cors)
 - [Route Caching](#route-caching)
 
@@ -185,7 +185,7 @@ You may define as many route parameters as required by your route:
 Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Underscores (`_`) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter.
 
 <a name="parameters-and-dependency-injection"></a>
-#### Parameters & Dependency Injection
+#### Parameters and Dependency Injection
 
 If your route has dependencies that you would like the Laravel service container to automatically inject into your route's callback, you should list your route parameters after your dependencies:
 
@@ -300,7 +300,7 @@ You may also specify route names for controller actions:
 > Route names should always be unique.
 
 <a name="generating-urls-to-named-routes"></a>
-#### Generating URLs To Named Routes
+#### Generating URLs to Named Routes
 
 Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via Laravel's `route` and `redirect` helper functions:
 
@@ -334,7 +334,7 @@ If you pass additional parameters in the array, those key / value pairs will aut
 > Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values).
 
 <a name="inspecting-the-current-route"></a>
-#### Inspecting The Current Route
+#### Inspecting the Current Route
 
 If you would like to determine if the current request was routed to a given named route, you may use the `named` method on a Route instance. For example, you may check the current route name from a route middleware:
 
@@ -471,7 +471,7 @@ Typically, implicit model binding will not retrieve models that have been [soft 
 
 <a name="customizing-the-key"></a>
 <a name="customizing-the-default-key-name"></a>
-#### Customizing The Key
+#### Customizing the Key
 
 Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
 
@@ -492,7 +492,7 @@ If you would like model binding to always use a database column other than `id` 
     }
 
 <a name="implicit-model-binding-scoping"></a>
-#### Custom Keys & Scoping
+#### Custom Keys and Scoping
 
 When implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the previous Eloquent model. For example, consider this route definition that retrieves a blog post by slug for a specific user:
 
@@ -602,7 +602,7 @@ Since we have bound all `{user}` parameters to the `App\Models\User` model, an i
 If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
 
 <a name="customizing-the-resolution-logic"></a>
-#### Customizing The Resolution Logic
+#### Customizing the Resolution Logic
 
 If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The closure you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `RouteServiceProvider`:
 
@@ -756,7 +756,7 @@ If needed, you may return an array of rate limits for a given rate limiter confi
     });
 
 <a name="attaching-rate-limiters-to-routes"></a>
-### Attaching Rate Limiters To Routes
+### Attaching Rate Limiters to Routes
 
 Rate limiters may be attached to routes or route groups using the `throttle` [middleware](/docs/{{version}}/middleware). The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
 
@@ -795,7 +795,7 @@ For convenience, you may use the `@method` [Blade directive](/docs/{{version}}/b
     </form>
 
 <a name="accessing-the-current-route"></a>
-## Accessing The Current Route
+## Accessing the Current Route
 
 You may use the `current`, `currentRouteName`, and `currentRouteAction` methods on the `Route` facade to access information about the route handling the incoming request:
 

@@ -4,7 +4,7 @@
 - [Environment](#environment)
 - [Creating Tests](#creating-tests)
 - [Running Tests](#running-tests)
-    - [Running Tests In Parallel](#running-tests-in-parallel)
+    - [Running Tests in Parallel](#running-tests-in-parallel)
     - [Reporting Test Coverage](#reporting-test-coverage)
     - [Profiling Tests](#profiling-tests)
 
@@ -105,7 +105,7 @@ php artisan test --testsuite=Feature --stop-on-failure
 ```
 
 <a name="running-tests-in-parallel"></a>
-### Running Tests In Parallel
+### Running Tests in Parallel
 
 By default, Laravel and PHPUnit execute your tests sequentially within a single process. However, you may greatly reduce the amount of time it takes to run your tests by running tests simultaneously across multiple processes. To get started, you should install the `brianium/paratest` Composer package as a "dev" dependency. Then, include the `--parallel` option when executing the `test` Artisan command:
 
@@ -125,7 +125,7 @@ php artisan test --parallel --processes=4
 > When running tests in parallel, some PHPUnit options (such as `--do-not-cache-result`) may not be available.
 
 <a name="parallel-testing-and-databases"></a>
-#### Parallel Testing & Databases
+#### Parallel Testing and Databases
 
 As long as you have configured a primary database connection, Laravel automatically handles creating and migrating a test database for each parallel process that is running your tests. The test databases will be suffixed with a process token which is unique per process. For example, if you have two parallel test processes, Laravel will create and use `your_db_test_1` and `your_db_test_2` test databases.
 
@@ -182,7 +182,7 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
     }
 
 <a name="accessing-the-parallel-testing-token"></a>
-#### Accessing The Parallel Testing Token
+#### Accessing the Parallel Testing Token
 
 If you would like to access the current parallel process "token" from any other location in your application's test code, you may use the `token` method. This token is a unique, string identifier for an individual test process and may be used to segment resources across parallel test processes. For example, Laravel automatically appends this token to the end of the test databases created by each parallel testing process:
 
@@ -201,7 +201,7 @@ php artisan test --coverage
 ```
 
 <a name="enforcing-a-minimum-coverage-threshold"></a>
-#### Enforcing A Minimum Coverage Threshold
+#### Enforcing a Minimum Coverage Threshold
 
 You may use the `--min` option to define a minimum test coverage threshold for your application. The test suite will fail if this threshold is not met:
 

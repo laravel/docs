@@ -1,6 +1,6 @@
 # Upgrade Guide
 
-- [Upgrading To 10.0 From 9.x](#upgrade-10.0)
+- [Upgrading to 10.0 from 9.x](#upgrade-10.0)
 
 <a name="high-impact-changes"></a>
 ## High Impact Changes
@@ -44,7 +44,7 @@
 </div>
 
 <a name="upgrade-10.0"></a>
-## Upgrading To 10.0 From 9.x
+## Upgrading to 10.0 from 9.x
 
 <a name="estimated-upgrade-time-??-minutes"></a>
 #### Estimated Upgrade Time: 10 Minutes

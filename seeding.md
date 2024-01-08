@@ -139,7 +139,7 @@ php artisan migrate:fresh --seed --seeder=UserSeeder
 ```
 
 <a name="forcing-seeding-production"></a>
-#### Forcing Seeders To Run In Production
+#### Forcing Seeders to Run in Production
 
 Some seeding operations may cause you to alter or lose data. In order to protect you from running seeding commands against your production database, you will be prompted for confirmation before the seeders are executed in the `production` environment. To force the seeders to run without a prompt, use the `--force` flag:
 

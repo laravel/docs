@@ -7,20 +7,20 @@
     - [RoadRunner](#roadrunner)
     - [Swoole](#swoole)
 - [Serving Your Application](#serving-your-application)
-    - [Serving Your Application Via HTTPS](#serving-your-application-via-https)
-    - [Serving Your Application Via Nginx](#serving-your-application-via-nginx)
-    - [Watching For File Changes](#watching-for-file-changes)
-    - [Specifying The Worker Count](#specifying-the-worker-count)
-    - [Specifying The Max Request Count](#specifying-the-max-request-count)
-    - [Reloading The Workers](#reloading-the-workers)
-    - [Stopping The Server](#stopping-the-server)
-- [Dependency Injection & Octane](#dependency-injection-and-octane)
+    - [Serving Your Application via HTTPS](#serving-your-application-via-https)
+    - [Serving Your Application via Nginx](#serving-your-application-via-nginx)
+    - [Watching for File Changes](#watching-for-file-changes)
+    - [Specifying the Worker Count](#specifying-the-worker-count)
+    - [Specifying the Max Request Count](#specifying-the-max-request-count)
+    - [Reloading the Workers](#reloading-the-workers)
+    - [Stopping the Server](#stopping-the-server)
+- [Dependency Injection and Octane](#dependency-injection-and-octane)
     - [Container Injection](#container-injection)
     - [Request Injection](#request-injection)
     - [Configuration Repository Injection](#configuration-repository-injection)
 - [Managing Memory Leaks](#managing-memory-leaks)
 - [Concurrent Tasks](#concurrent-tasks)
-- [Ticks & Intervals](#ticks-and-intervals)
+- [Ticks and Intervals](#ticks-and-intervals)
 - [The Octane Cache](#the-octane-cache)
 - [Tables](#tables)
 
@@ -59,7 +59,7 @@ php artisan octane:install
 [FrankenPHP](https://frankenphp.dev) is a PHP application server, written in Go, that supports modern web features like early hints and Zstandard compression. When you install Octane and choose FrankenPHP as your server, Octane will automatically download and install the FrankenPHP binary for you.
 
 <a name="frankenphp-via-laravel-sail"></a>
-#### FrankenPHP Via Laravel Sail
+#### FrankenPHP via Laravel Sail
 
 If you plan to develop your application using [Laravel Sail](/docs/{{version}}/sail), you should run the following commands to install Octane and FrankenPHP:
 
@@ -93,7 +93,7 @@ command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start
 [RoadRunner](https://roadrunner.dev) is powered by the RoadRunner binary, which is built using Go. The first time you start a RoadRunner based Octane server, Octane will offer to download and install the RoadRunner binary for you.
 
 <a name="roadrunner-via-laravel-sail"></a>
-#### RoadRunner Via Laravel Sail
+#### RoadRunner via Laravel Sail
 
 If you plan to develop your application using [Laravel Sail](/docs/{{version}}/sail), you should run the following commands to install Octane and RoadRunner:
 
@@ -153,7 +153,7 @@ pecl install openswoole
 Using Laravel Octane with Open Swoole grants the same functionality provided by Swoole, such as concurrent tasks, ticks, and intervals.
 
 <a name="swoole-via-laravel-sail"></a>
-#### Swoole Via Laravel Sail
+#### Swoole via Laravel Sail
 
 > **Warning**
 > Before serving an Octane application via Sail, ensure you have the latest version of Laravel Sail and execute `./vendor/bin/sail build --no-cache` within your application's root directory.
@@ -202,7 +202,7 @@ php artisan octane:start
 By default, Octane will start the server on port 8000, so you may access your application in a web browser via `http://localhost:8000`.
 
 <a name="serving-your-application-via-https"></a>
-### Serving Your Application Via HTTPS
+### Serving Your Application via HTTPS
 
 By default, applications running via Octane generate links prefixed with `http://`. The `OCTANE_HTTPS` environment variable, used within your application's `config/octane.php` configuration file, can be set to `true` when serving your application via HTTPS. When this configuration value is set to `true`, Octane will instruct Laravel to prefix all generated links with `https://`:
 
@@ -211,7 +211,7 @@ By default, applications running via Octane generate links prefixed with `http:/
 ```
 
 <a name="serving-your-application-via-nginx"></a>
-### Serving Your Application Via Nginx
+### Serving Your Application via Nginx
 
 > **Note**
 > If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel Octane application, check out [Laravel Forge](https://forge.laravel.com).
@@ -275,7 +275,7 @@ server {
 ```
 
 <a name="watching-for-file-changes"></a>
-### Watching For File Changes
+### Watching for File Changes
 
 Since your application is loaded in memory once when the Octane server starts, any changes to your application's files will not be reflected when you refresh your browser. For example, route definitions added to your `routes/web.php` file will not be reflected until the server is restarted. For convenience, you may use the `--watch` flag to instruct Octane to automatically restart the server on any file changes within your application:
 
@@ -292,7 +292,7 @@ npm install --save-dev chokidar
 You may configure the directories and files that should be watched using the `watch` configuration option within your application's `config/octane.php` configuration file.
 
 <a name="specifying-the-worker-count"></a>
-### Specifying The Worker Count
+### Specifying the Worker Count
 
 By default, Octane will start an application request worker for each CPU core provided by your machine. These workers will then be used to serve incoming HTTP requests as they enter your application. You may manually specify how many workers you would like to start using the `--workers` option when invoking the `octane:start` command:
 
@@ -307,7 +307,7 @@ php artisan octane:start --workers=4 --task-workers=6
 ```
 
 <a name="specifying-the-max-request-count"></a>
-### Specifying The Max Request Count
+### Specifying the Max Request Count
 
 To help prevent stray memory leaks, Octane gracefully restarts any worker once it has handled 500 requests. To adjust this number, you may use the `--max-requests` option:
 
@@ -316,7 +316,7 @@ php artisan octane:start --max-requests=250
 ```
 
 <a name="reloading-the-workers"></a>
-### Reloading The Workers
+### Reloading the Workers
 
 You may gracefully restart the Octane server's application workers using the `octane:reload` command. Typically, this should be done after deployment so that your newly deployed code is loaded into memory and is used to serve to subsequent requests:
 
@@ -325,7 +325,7 @@ php artisan octane:reload
 ```
 
 <a name="stopping-the-server"></a>
-### Stopping The Server
+### Stopping the Server
 
 You may stop the Octane server using the `octane:stop` Artisan command:
 
@@ -334,7 +334,7 @@ php artisan octane:stop
 ```
 
 <a name="checking-the-server-status"></a>
-#### Checking The Server Status
+#### Checking the Server Status
 
 You may check the current status of the Octane server using the `octane:status` Artisan command:
 
@@ -343,7 +343,7 @@ php artisan octane:status
 ```
 
 <a name="dependency-injection-and-octane"></a>
-## Dependency Injection & Octane
+## Dependency Injection and Octane
 
 Since Octane boots your application once and keeps it in memory while serving requests, there are a few caveats you should consider while building your application. For example, the `register` and `boot` methods of your application's service providers will only be executed once when the request worker initially boots. On subsequent requests, the same application instance will be reused.
 
@@ -530,7 +530,7 @@ php artisan octane:start --workers=4 --task-workers=6
 When invoking the `concurrently` method, you should not provide more than 1024 tasks due to limitations imposed by Swoole's task system.
 
 <a name="ticks-and-intervals"></a>
-## Ticks & Intervals
+## Ticks and Intervals
 
 > **Warning**
 > This feature requires [Swoole](#swoole).

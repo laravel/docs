@@ -12,10 +12,10 @@
     - [Options](#options)
     - [Input Arrays](#input-arrays)
     - [Input Descriptions](#input-descriptions)
-    - [Prompting For Missing Input](#prompting-for-missing-input)
+    - [Prompting for Missing Input](#prompting-for-missing-input)
 - [Command I/O](#command-io)
     - [Retrieving Input](#retrieving-input)
-    - [Prompting For Input](#prompting-for-input)
+    - [Prompting for Input](#prompting-for-input)
     - [Writing Output](#writing-output)
 - [Registering Commands](#registering-commands)
 - [Programmatically Executing Commands](#programmatically-executing-commands)
@@ -388,7 +388,7 @@ You may assign descriptions to input arguments and options by separating the arg
                             {--queue : Whether the job should be queued}';
 
 <a name="prompting-for-missing-input"></a>
-### Prompting For Missing Input
+### Prompting for Missing Input
 
 If your command contains required arguments, the user will receive an error message when they are not provided. Alternatively, you may configure your command to automatically prompt the user when required arguments are missing by implementing the `PromptsForMissingInput` interface:
 
@@ -503,7 +503,7 @@ Options may be retrieved just as easily as arguments using the `option` method. 
     $options = $this->options();
 
 <a name="prompting-for-input"></a>
-### Prompting For Input
+### Prompting for Input
 
 > **Note**  
 > [Laravel Prompts](/docs/{{version}}/prompts) is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
@@ -529,7 +529,7 @@ The `secret` method is similar to `ask`, but the user's input will not be visibl
     $password = $this->secret('What is the password?');
 
 <a name="asking-for-confirmation"></a>
-#### Asking For Confirmation
+#### Asking for Confirmation
 
 If you need to ask the user for a simple "yes or no" confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` or `yes` in response to the prompt, the method will return `true`.
 

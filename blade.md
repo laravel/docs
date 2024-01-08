@@ -4,7 +4,7 @@
     - [Supercharging Blade With Livewire](#supercharging-blade-with-livewire)
 - [Displaying Data](#displaying-data)
     - [HTML Entity Encoding](#html-entity-encoding)
-    - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
+    - [Blade and JavaScript Frameworks](#blade-and-javascript-frameworks)
 - [Blade Directives](#blade-directives)
     - [If Statements](#if-statements)
     - [Switch Statements](#switch-statements)
@@ -18,7 +18,7 @@
     - [Comments](#comments)
 - [Components](#components)
     - [Rendering Components](#rendering-components)
-    - [Passing Data To Components](#passing-data-to-components)
+    - [Passing Data to Components](#passing-data-to-components)
     - [Component Attributes](#component-attributes)
     - [Reserved Keywords](#reserved-keywords)
     - [Slots](#slots)
@@ -121,7 +121,7 @@ Hello, {!! $name !!}.
 > Be very careful when echoing content that is supplied by users of your application. You should typically use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
 
 <a name="blade-and-javascript-frameworks"></a>
-### Blade & JavaScript Frameworks
+### Blade and JavaScript Frameworks
 
 Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
 
@@ -568,7 +568,7 @@ To include the first view that exists from a given array of views, you may use t
 > You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
 <a name="rendering-views-for-collections"></a>
-#### Rendering Views For Collections
+#### Rendering Views for Collections
 
 You may combine loops and includes into one line with Blade's `@each` directive:
 
@@ -741,7 +741,7 @@ If you would like to conditionally render your component, you may define a `shou
     }
 
 <a name="passing-data-to-components"></a>
-### Passing Data To Components
+### Passing Data to Components
 
 You may pass data to Blade components using HTML attributes. Hard-coded, primitive values may be passed to the component using simple HTML attribute strings. PHP expressions and variables should be passed to the component via attributes that use the `:` character as a prefix:
 
@@ -857,7 +857,7 @@ You may execute this method from your component template by invoking the variabl
 ```
 
 <a name="using-attributes-slots-within-component-class"></a>
-#### Accessing Attributes & Slots Within Component Classes
+#### Accessing Attributes and Slots Within Component Classes
 
 Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method. The closure will receive a `$data` array as its only argument. This array will contain several elements that provide information about the component:
 
@@ -1030,7 +1030,7 @@ If you would like an attribute other than `class` to have its default value and 
 ```
 
 <a name="filtering-attributes"></a>
-#### Retrieving & Filtering Attributes
+#### Retrieving and Filtering Attributes
 
 You may filter attributes using the `filter` method. This method accepts a closure which should return `true` if you wish to retain the attribute in the attribute bag:
 
@@ -1436,7 +1436,7 @@ When a prefix is provided, components within that "namespace" may be rendered by
 Most web applications maintain the same general layout across various pages. It would be incredibly cumbersome and hard to maintain our application if we had to repeat the entire layout HTML in every view we create. Thankfully, it's convenient to define this layout as a single [Blade component](#components) and then use it throughout our application.
 
 <a name="defining-the-layout-component"></a>
-#### Defining The Layout Component
+#### Defining the Layout Component
 
 For example, imagine we are building a "todo" list application. We might define a `layout` component that looks like the following:
 
@@ -1456,7 +1456,7 @@ For example, imagine we are building a "todo" list application. We might define 
 ```
 
 <a name="applying-the-layout-component"></a>
-#### Applying The Layout Component
+#### Applying the Layout Component
 
 Once the `layout` component has been defined, we may create a Blade view that utilizes the component. In this example, we will define a simple view that displays our task list:
 
@@ -1498,7 +1498,7 @@ Now that we have defined our layout and task list views, we just need to return 
 ### Layouts Using Template Inheritance
 
 <a name="defining-a-layout"></a>
-#### Defining A Layout
+#### Defining a Layout
 
 Layouts may also be created via "template inheritance". This was the primary way of building applications prior to the introduction of [components](#components).
 
@@ -1528,7 +1528,7 @@ As you can see, this file contains typical HTML mark-up. However, take note of t
 Now that we have defined a layout for our application, let's define a child page that inherits the layout.
 
 <a name="extending-a-layout"></a>
-#### Extending A Layout
+#### Extending a Layout
 
 When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 

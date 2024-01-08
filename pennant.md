@@ -12,7 +12,7 @@
     - [Middleware](#middleware)
     - [In-Memory Cache](#in-memory-cache)
 - [Scope](#scope)
-    - [Specifying The Scope](#specifying-the-scope)
+    - [Specifying the Scope](#specifying-the-scope)
     - [Default Scope](#default-scope)
     - [Nullable Scope](#nullable-scope)
     - [Identifying Scope](#identifying-scope)
@@ -25,8 +25,8 @@
     - [Purging Features](#purging-features)
 - [Testing](#testing)
 - [Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)
-    - [Implementing The Driver](#implementing-the-driver)
-    - [Registering The Driver](#registering-the-driver)
+    - [Implementing the Driver](#implementing-the-driver)
+    - [Registering the Driver](#registering-the-driver)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -356,7 +356,7 @@ Route::get('/api/servers', function () {
 ```
 
 <a name="customizing-the-response"></a>
-#### Customizing The Response
+#### Customizing the Response
 
 If you would like to customize the response that is returned by the middleware when one of the listed features is inactive, you may use the `whenInactive` method provided by the `EnsureFeaturesAreActive` middleware. Typically, this method should be invoked within the `boot` method of one of your application's service providers:
 
@@ -393,7 +393,7 @@ If you need to manually flush the in-memory cache, you may use the `flushCache` 
 ## Scope
 
 <a name="specifying-the-scope"></a>
-### Specifying The Scope
+### Specifying the Scope
 
 As discussed, features are typically checked against the currently authenticated user. However, this may not always suit your needs. Therefore, it is possible to specify the scope you would like to check a given feature against via the `Feature` facade's `for` method:
 
@@ -847,7 +847,7 @@ You may configure the store that Pennant will use during testing by defining the
 ## Adding Custom Pennant Drivers
 
 <a name="implementing-the-driver"></a>
-#### Implementing The Driver
+#### Implementing the Driver
 
 If none of Pennant's existing storage drivers fit your application's needs, you may write your own storage driver. Your custom driver should implement the `Laravel\Pennant\Contracts\Driver` interface:
 
@@ -877,7 +877,7 @@ Now, we just need to implement each of these methods using a Redis connection. F
 > Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`.
 
 <a name="registering-the-driver"></a>
-#### Registering The Driver
+#### Registering the Driver
 
 Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Pennant, you may use the `extend` method provided by the `Feature` facade. You should call the `extend` method from the `boot` method of one of your application's [service provider](/docs/{{version}}/providers):
 

@@ -5,8 +5,8 @@
     - [Database Preparation](#database-preparation)
     - [Configuring Trusted Hosts](#configuring-trusted-hosts)
 - [Routing](#routing)
-    - [Requesting The Password Reset Link](#requesting-the-password-reset-link)
-    - [Resetting The Password](#resetting-the-password)
+    - [Requesting the Password Reset Link](#requesting-the-password-reset-link)
+    - [Resetting the Password](#resetting-the-password)
 - [Deleting Expired Tokens](#deleting-expired-tokens)
 - [Customization](#password-customization)
 
@@ -49,7 +49,7 @@ To learn more about this middleware, please consult the [`TrustHosts` middleware
 To properly implement support for allowing users to reset their passwords, we will need to define several routes. First, we will need a pair of routes to handle allowing the user to request a password reset link via their email address. Second, we will need a pair of routes to handle actually resetting the password once the user visits the password reset link that is emailed to them and completes the password reset form.
 
 <a name="requesting-the-password-reset-link"></a>
-### Requesting The Password Reset Link
+### Requesting the Password Reset Link
 
 <a name="the-password-reset-link-request-form"></a>
 #### The Password Reset Link Request Form
@@ -63,7 +63,7 @@ First, we will define the routes that are needed to request password reset links
 The view that is returned by this route should have a form containing an `email` field, which will allow the user to request a password reset link for a given email address.
 
 <a name="password-reset-link-handling-the-form-submission"></a>
-#### Handling The Form Submission
+#### Handling the Form Submission
 
 Next, we will define a route that handles the form submission request from the "forgot password" view. This route will be responsible for validating the email address and sending the password reset request to the corresponding user:
 
@@ -95,7 +95,7 @@ You may be wondering how Laravel knows how to retrieve the user record from your
 > When manually implementing password resets, you are required to define the contents of the views and routes yourself. If you would like scaffolding that includes all necessary authentication and verification logic, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits).
 
 <a name="resetting-the-password"></a>
-### Resetting The Password
+### Resetting the Password
 
 <a name="the-password-reset-form"></a>
 #### The Password Reset Form
@@ -109,7 +109,7 @@ Next, we will define the routes necessary to actually reset the password once th
 The view that is returned by this route should display a form containing an `email` field, a `password` field, a `password_confirmation` field, and a hidden `token` field, which should contain the value of the secret `$token` received by our route.
 
 <a name="password-reset-handling-the-form-submission"></a>
-#### Handling The Form Submission
+#### Handling the Form Submission
 
 Of course, we need to define a route to actually handle the password reset form submission. This route will be responsible for validating the incoming request and updating the user's password in the database:
 

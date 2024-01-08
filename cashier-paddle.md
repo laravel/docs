@@ -35,16 +35,16 @@
 - [Subscription Trials](#subscription-trials)
     - [With Payment Method Up Front](#with-payment-method-up-front)
     - [Without Payment Method Up Front](#without-payment-method-up-front)
-    - [Extend Or Activate A Trial](#extend-or-activate-a-trial)
+    - [Extend or Activate a Trial](#extend-or-activate-a-trial)
 - [Handling Paddle Webhooks](#handling-paddle-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Verifying Webhook Signatures](#verifying-webhook-signatures)
 - [Single Charges](#single-charges)
-    - [Charging For Products](#charging-for-products)
+    - [Charging for Products](#charging-for-products)
     - [Refunding Transactions](#refunding-transactions)
     - [Crediting Transactions](#crediting-transactions)
 - [Transactions](#transactions)
-    - [Past & Upcoming Payments](#past-and-upcoming-payments)
+    - [Past and Upcoming Payments](#past-and-upcoming-payments)
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -235,7 +235,7 @@ The Paddle checkout widget is asynchronous. Once the user creates a subscription
 > After a subscription state change, the delay for receiving the corresponding webhook is typically minimal but you should account for this in your application by considering that your user's subscription might not be immediately available after completing the checkout.
 
 <a name="manually-rendering-an-overlay-checkout"></a>
-#### Manually Rendering An Overlay Checkout
+#### Manually Rendering an Overlay Checkout
 
 You may also manually render an overlay checkout without using Laravel's built-in Blade components. To get started, generate the checkout session [as demonstrated in previous examples](#overlay-checkout):
 
@@ -300,7 +300,7 @@ To adjust the height of the inline checkout component, you may pass the `height`
 Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout) and [available checkout settings](https://developer.paddle.com/build/checkout/set-up-checkout-default-settings) for further details on the inline checkout's customization options.
 
 <a name="manually-rendering-an-inline-checkout"></a>
-#### Manually Rendering An Inline Checkout
+#### Manually Rendering an Inline Checkout
 
 You may also manually render an inline checkout without using Laravel's built-in Blade components. To get started, generate the checkout session [as demonstrated in previous examples](#inline-checkout):
 
@@ -720,7 +720,7 @@ The `noProrate` method may be used to update the subscription's quantity without
     $user->subscription()->noProrate()->updateQuantity(10);
 
 <a name="quantities-for-subscription-with-multiple-products"></a>
-#### Quantities For Subscriptions With Multiple Products
+#### Quantities for Subscriptions With Multiple Products
 
 If your subscription is a [subscription with multiple products](#subscriptions-with-multiple-products), you should pass the ID of the price whose quantity you wish to increment or decrement as the second argument to the increment / decrement methods:
 
@@ -946,7 +946,7 @@ You may use the `onGenericTrial` method if you wish to know specifically that th
     }
 
 <a name="extend-or-activate-a-trial"></a>
-### Extend Or Activate A Trial
+### Extend or Activate a Trial
 
 You can extend an existing trial period on a subscription by invoking the `extendTrial` method and specifying the moment in time that the trial should end:
 
@@ -977,7 +977,7 @@ To ensure your application can handle Paddle webhooks, be sure to [configure the
 > Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/cashier-paddle#verifying-webhook-signatures) middleware.
 
 <a name="webhooks-csrf-protection"></a>
-#### Webhooks & CSRF Protection
+#### Webhooks and CSRF Protection
 
 Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your `App\Http\Middleware\VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
 
@@ -986,7 +986,7 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
     ];
 
 <a name="webhooks-local-development"></a>
-#### Webhooks & Local Development
+#### Webhooks and Local Development
 
 For Paddle to be able to send your application webhooks during local development, you will need to expose your application via a site sharing service such as [Ngrok](https://ngrok.com/) or [Expose](https://expose.dev/docs/introduction). If you are developing your application locally using [Laravel Sail](/docs/{{version}}/sail), you may use Sail's [site sharing command](/docs/{{version}}/sail#sharing-your-site).
 
@@ -1069,7 +1069,7 @@ To enable webhook verification, ensure that the `PADDLE_WEBHOOK_SECRET` environm
 ## Single Charges
 
 <a name="charging-for-products"></a>
-### Charging For Products
+### Charging for Products
 
 If you would like to initiate a product purchase for a customer, you may use the `checkout` method on a billable model instance to generate a checkout session for the purchase. The `checkout` method accepts one or multiple price ID's. If necessary, an associative array may be used to provide the quantity of the product that is being purchased:
 
@@ -1176,7 +1176,7 @@ The `download-invoice` route may look like the following:
     })->name('download-invoice');
 
 <a name="past-and-upcoming-payments"></a>
-### Past & Upcoming Payments
+### Past and Upcoming Payments
 
 You may use the `lastPayment` and `nextPayment` methods to retrieve and display a customer's past or upcoming payments for recurring subscriptions:
 

@@ -20,7 +20,7 @@
 - [Custom Cards](#custom-cards)
     - [Card Components](#custom-card-components)
     - [Styling](#custom-card-styling)
-    - [Data Capture & Aggregation](#custom-card-data)
+    - [Data Capture and Aggregation](#custom-card-data)
 
 <a name="introduction"></a>
 ## Introduction
@@ -601,7 +601,7 @@ You will also need to include an `id` or `class` attribute in your card's view t
 ```
 
 <a name="custom-card-data"></a>
-### Data Capture & Aggregation
+### Data Capture and Aggregation
 
 Custom cards may fetch and display data from anywhere; however, you may wish to leverage Pulse's powerful and efficient data recording and aggregation system.
 

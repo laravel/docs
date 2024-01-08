@@ -11,7 +11,7 @@
     - [Fluent JSON Testing](#fluent-json-testing)
 - [Testing File Uploads](#testing-file-uploads)
 - [Testing Views](#testing-views)
-    - [Rendering Blade & Components](#rendering-blade-and-components)
+    - [Rendering Blade and Components](#rendering-blade-and-components)
 - [Available Assertions](#available-assertions)
     - [Response Assertions](#response-assertions)
     - [Authentication Assertions](#authentication-assertions)
@@ -307,7 +307,7 @@ As previously mentioned, the `assertJson` method may be used to assert that a fr
     }
 
 <a name="verifying-json-paths"></a>
-#### Asserting On JSON Paths
+#### Asserting on JSON Paths
 
 If you would like to verify that the JSON response contains the given data at a specified path, you should use the `assertJsonPath` method:
 
@@ -361,7 +361,7 @@ Laravel also offers a beautiful way to fluently test your application's JSON res
             );
     }
 
-#### Understanding The `etc` Method
+#### Understanding the `etc` Method
 
 In the example above, you may have noticed we invoked the `etc` method at the end of our assertion chain. This method informs Laravel that there may be other attributes present on the JSON object. If the `etc` method is not used, the test will fail if other attributes that you did not make assertions against exist on the JSON object.
 
@@ -572,7 +572,7 @@ Some views may depend on errors shared in the [global error bag provided by Lara
     $view->assertSee('Please provide a valid name.');
 
 <a name="rendering-blade-and-components"></a>
-### Rendering Blade & Components
+### Rendering Blade and Components
 
 If necessary, you may use the `blade` method to evaluate and render a raw [Blade](/docs/{{version}}/blade) string. Like the `view` method, the `blade` method returns an instance of `Illuminate\Testing\TestView`:
 

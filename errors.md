@@ -5,9 +5,9 @@
 - [The Exception Handler](#the-exception-handler)
     - [Reporting Exceptions](#reporting-exceptions)
     - [Exception Log Levels](#exception-log-levels)
-    - [Ignoring Exceptions By Type](#ignoring-exceptions-by-type)
+    - [Ignoring Exceptions by Type](#ignoring-exceptions-by-type)
     - [Rendering Exceptions](#rendering-exceptions)
-    - [Reportable & Renderable Exceptions](#renderable-exceptions)
+    - [Reportable and Renderable Exceptions](#renderable-exceptions)
 - [Throttling Reported Exceptions](#throttling-reported-exceptions)
 - [HTTP Exceptions](#http-exceptions)
     - [Custom HTTP Error Pages](#custom-http-error-pages)
@@ -182,7 +182,7 @@ To accomplish this, you may define a `$levels` property on your application's ex
     ];
 
 <a name="ignoring-exceptions-by-type"></a>
-### Ignoring Exceptions By Type
+### Ignoring Exceptions by Type
 
 When building your application, there will be some types of exceptions you never want to report. To ignore these exceptions, define a `$dontReport` property on your application's exception handler. Any classes that you add to this property will never be reported; however, they may still have custom rendering logic:
 
@@ -251,7 +251,7 @@ You may also use the `renderable` method to override the rendering behavior for 
     }
 
 <a name="renderable-exceptions"></a>
-### Reportable & Renderable Exceptions
+### Reportable and Renderable Exceptions
 
 Instead of defining custom reporting and rendering behavior in your exception handler's `register` method, you may define `report` and `render` methods directly on your application's exceptions. When these methods exist, they will automatically be called by the framework:
 

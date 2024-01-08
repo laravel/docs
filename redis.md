@@ -65,7 +65,7 @@ Each Redis server defined in your configuration file is required to have a name,
     ],
 
 <a name="configuring-the-connection-scheme"></a>
-#### Configuring The Connection Scheme
+#### Configuring the Connection Scheme
 
 By default, Redis clients will use the `tcp` scheme when connecting to your Redis servers; however, you may use TLS / SSL encryption by specifying a `scheme` configuration option in your Redis server's configuration array:
 
@@ -181,7 +181,7 @@ In addition to the default `scheme`, `host`, `port`, `database`, and `password` 
     ],
 
 <a name="phpredis-serialization"></a>
-#### PhpRedis Serialization & Compression
+#### PhpRedis Serialization and Compression
 
 The PhpRedis extension may also be configured to use a variety of serializers and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
 

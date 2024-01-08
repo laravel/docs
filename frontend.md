@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Using PHP](#using-php)
-    - [PHP & Blade](#php-and-blade)
+    - [PHP and Blade](#php-and-blade)
     - [Livewire](#livewire)
     - [Starter Kits](#php-starter-kits)
 - [Using Vue / React](#using-vue-react)
@@ -21,7 +21,7 @@ There are two primary ways to tackle frontend development when building an appli
 ## Using PHP
 
 <a name="php-and-blade"></a>
-### PHP & Blade
+### PHP and Blade
 
 In the past, most PHP applications rendered HTML to the browser using simple HTML templates interspersed with PHP `echo` statements which render data that was retrieved from a database during the request:
 

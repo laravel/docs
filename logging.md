@@ -8,11 +8,11 @@
 - [Building Log Stacks](#building-log-stacks)
 - [Writing Log Messages](#writing-log-messages)
     - [Contextual Information](#contextual-information)
-    - [Writing To Specific Channels](#writing-to-specific-channels)
+    - [Writing to Specific Channels](#writing-to-specific-channels)
 - [Monolog Channel Customization](#monolog-channel-customization)
-    - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
+    - [Customizing Monolog for Channels](#customizing-monolog-for-channels)
     - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
-    - [Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)
+    - [Creating Custom Channels via Factories](#creating-custom-channels-via-factories)
 - [Tailing Log Messages Using Pail](#tailing-log-messages-using-pail)
     - [Installation](#pail-installation)
     - [Usage](#pail-usage)
@@ -35,7 +35,7 @@ All of the configuration options for your application's logging behavior are hou
 By default, Laravel will use the `stack` channel when logging messages. The `stack` channel is used to aggregate multiple log channels into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
 
 <a name="configuring-the-channel-name"></a>
-#### Configuring The Channel Name
+#### Configuring the Channel Name
 
 By default, Monolog is instantiated with a "channel name" that matches the current environment, such as `production` or `local`. To change this value, add a `name` option to your channel's configuration:
 
@@ -73,7 +73,7 @@ Name | Description
 ### Channel Prerequisites
 
 <a name="configuring-the-single-and-daily-channels"></a>
-#### Configuring The Single and Daily Channels
+#### Configuring the Single and Daily Channels
 
 The `single` and `daily` channels have three optional configuration options: `bubble`, `permission`, and `locking`.
 
@@ -98,12 +98,12 @@ Name | Description                                                       | Defau
 </div>
 
 <a name="configuring-the-papertrail-channel"></a>
-#### Configuring The Papertrail Channel
+#### Configuring the Papertrail Channel
 
 The `papertrail` channel requires the `host` and `port` configuration options. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
 
 <a name="configuring-the-slack-channel"></a>
-#### Configuring The Slack Channel
+#### Configuring the Slack Channel
 
 The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
 
@@ -274,7 +274,7 @@ If you would like to share contextual information across _all_ logging channels,
     }
 
 <a name="writing-to-specific-channels"></a>
-### Writing To Specific Channels
+### Writing to Specific Channels
 
 Sometimes you may wish to log a message to a channel other than your application's default channel. You may use the `channel` method on the `Log` facade to retrieve and log to any channel defined in your configuration file:
 
@@ -313,7 +313,7 @@ You may also wish to include an on-demand channel in an on-demand logging stack.
 ## Monolog Channel Customization
 
 <a name="customizing-monolog-for-channels"></a>
-### Customizing Monolog For Channels
+### Customizing Monolog for Channels
 
 Sometimes you may need complete control over how Monolog is configured for an existing channel. For example, you may want to configure a custom Monolog `FormatterInterface` implementation for Laravel's built-in `single` channel.
 
@@ -419,7 +419,7 @@ If you are using a Monolog handler that is capable of providing its own formatte
 
 
 <a name="creating-custom-channels-via-factories"></a>
-### Creating Custom Channels Via Factories
+### Creating Custom Channels via Factories
 
 If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify a `custom` driver type in your `config/logging.php` configuration file. Your configuration should include a `via` option that contains the name of the factory class which will be invoked to create the Monolog instance:
 

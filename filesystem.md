@@ -5,7 +5,7 @@
     - [The Local Driver](#the-local-driver)
     - [The Public Disk](#the-public-disk)
     - [Driver Prerequisites](#driver-prerequisites)
-    - [Scoped & Read-Only Filesystems](#scoped-and-read-only-filesystems)
+    - [Scoped and Read-Only Filesystems](#scoped-and-read-only-filesystems)
     - [Amazon S3 Compatible Filesystems](#amazon-s3-compatible-filesystems)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
     - [On-Demand Disks](#on-demand-disks)
@@ -15,8 +15,8 @@
     - [Temporary URLs](#temporary-urls)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
-    - [Prepending & Appending To Files](#prepending-appending-to-files)
-    - [Copying & Moving Files](#copying-moving-files)
+    - [Prepending and Appending To Files](#prepending-appending-to-files)
+    - [Copying and Moving Files](#copying-moving-files)
     - [Automatic Streaming](#automatic-streaming)
     - [File Uploads](#file-uploads)
     - [File Visibility](#file-visibility)
@@ -150,7 +150,7 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
     ],
 
 <a name="scoped-and-read-only-filesystems"></a>
-### Scoped & Read-Only Filesystems
+### Scoped and Read-Only Filesystems
 
 Scoped disks allow you to define a filesystem where all paths are automatically prefixed with a given path prefix. Before creating a scoped filesystem disk, you will need to install an additional Flysystem package via the Composer package manager:
 
@@ -415,7 +415,7 @@ If you wish, you may define the `throw` option within your filesystem disk's con
     ],
 
 <a name="prepending-appending-to-files"></a>
-### Prepending & Appending To Files
+### Prepending and Appending To Files
 
 The `prepend` and `append` methods allow you to write to the beginning or end of a file:
 
@@ -424,7 +424,7 @@ The `prepend` and `append` methods allow you to write to the beginning or end of
     Storage::append('file.log', 'Appended Text');
 
 <a name="copying-moving-files"></a>
-### Copying & Moving Files
+### Copying and Moving Files
 
 The `copy` method may be used to copy an existing file to a new location on the disk, while the `move` method may be used to rename or move an existing file to a new location:
 
@@ -484,7 +484,7 @@ You may also call the `putFile` method on the `Storage` facade to perform the sa
     $path = Storage::putFile('avatars', $request->file('avatar'));
 
 <a name="specifying-a-file-name"></a>
-#### Specifying A File Name
+#### Specifying a File Name
 
 If you do not want a filename to be automatically assigned to your stored file, you may use the `storeAs` method, which receives the path, the filename, and the (optional) disk as its arguments:
 
@@ -502,7 +502,7 @@ You may also use the `putFileAs` method on the `Storage` facade, which will perf
 > Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\WhitespacePathNormalizer::normalizePath` method.
 
 <a name="specifying-a-disk"></a>
-#### Specifying A Disk
+#### Specifying a Disk
 
 By default, this uploaded file's `store` method will use your default disk. If you would like to specify another disk, pass the disk name as the second argument to the `store` method:
 
@@ -563,7 +563,7 @@ When interacting with uploaded files, you may use the `storePublicly` and `store
     );
 
 <a name="local-files-and-visibility"></a>
-#### Local Files & Visibility
+#### Local Files and Visibility
 
 When using the `local` driver, `public` [visibility](#file-visibility) translates to `0755` permissions for directories and `0644` permissions for files. You can modify the permissions mappings in your application's `filesystems` configuration file:
 
@@ -603,7 +603,7 @@ If necessary, you may specify the disk that the file should be deleted from:
 ## Directories
 
 <a name="get-all-files-within-a-directory"></a>
-#### Get All Files Within A Directory
+#### Get All Files Within a Directory
 
 The `files` method returns an array of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `allFiles` method:
 
@@ -614,7 +614,7 @@ The `files` method returns an array of all of the files in a given directory. If
     $files = Storage::allFiles($directory);
 
 <a name="get-all-directories-within-a-directory"></a>
-#### Get All Directories Within A Directory
+#### Get All Directories Within a Directory
 
 The `directories` method returns an array of all the directories within a given directory. Additionally, you may use the `allDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
 
@@ -623,14 +623,14 @@ The `directories` method returns an array of all the directories within a given 
     $directories = Storage::allDirectories($directory);
 
 <a name="create-a-directory"></a>
-#### Create A Directory
+#### Create a Directory
 
 The `makeDirectory` method will create the given directory, including any needed subdirectories:
 
     Storage::makeDirectory($directory);
 
 <a name="delete-a-directory"></a>
-#### Delete A Directory
+#### Delete a Directory
 
 Finally, the `deleteDirectory` method may be used to remove a directory and all of its files:
 

@@ -111,7 +111,7 @@ Within both of these methods, you may use the Laravel schema builder to expressi
     };
 
 <a name="setting-the-migration-connection"></a>
-#### Setting The Migration Connection
+#### Setting the Migration Connection
 
 If your migration will be interacting with a database connection other than your application's default database connection, you should set the `$connection` property of your migration:
 
@@ -165,7 +165,7 @@ php artisan migrate --isolated
 > To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 <a name="forcing-migrations-to-run-in-production"></a>
-#### Forcing Migrations To Run In Production
+#### Forcing Migrations to Run in Production
 
 Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag:
 
@@ -207,7 +207,7 @@ php artisan migrate:reset
 ```
 
 <a name="roll-back-migrate-using-a-single-command"></a>
-#### Roll Back & Migrate Using A Single Command
+#### Roll Back and Migrate Using a Single Command
 
 The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
 
@@ -225,7 +225,7 @@ php artisan migrate:refresh --step=5
 ```
 
 <a name="drop-all-tables-migrate"></a>
-#### Drop All Tables & Migrate
+#### Drop All Tables and Migrate
 
 The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:
 
@@ -264,10 +264,10 @@ To create a new database table, use the `create` method on the `Schema` facade. 
 
 When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
 
-<a name="checking-for-table-column-existence"></a>
-#### Checking For Table / Column Existence
+<a name="determining-table-column-existence"></a>
+#### Determining Table / Column Existence
 
-You may check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
+You may determine the existence of a table or column using the `hasTable` and `hasColumn` methods:
 
     if (Schema::hasTable('users')) {
         // The "users" table exists...
@@ -278,7 +278,7 @@ You may check for the existence of a table or column using the `hasTable` and `h
     }
 
 <a name="database-connection-table-options"></a>
-#### Database Connection & Table Options
+#### Database Connection and Table Options
 
 If you want to perform a schema operation on a database connection that is not your application's default connection, use the `connection` method:
 
@@ -1041,7 +1041,7 @@ When modifying a column, you must explicitly include all of the modifiers you wa
     });
 
 <a name="modifying-columns-on-sqlite"></a>
-#### Modifying Columns On SQLite
+#### Modifying Columns on SQLite
 
 If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package using the Composer package manager before modifying a column. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:
 
@@ -1072,7 +1072,7 @@ To rename a column, you may use the `renameColumn` method provided by the schema
     });
 
 <a name="renaming-columns-on-legacy-databases"></a>
-#### Renaming Columns On Legacy Databases
+#### Renaming Columns on Legacy Databases
 
 If you are running a database installation older than one of the following releases, you should ensure that you have installed the `doctrine/dbal` library via the Composer package manager before renaming a column:
 
@@ -1100,7 +1100,7 @@ You may drop multiple columns from a table by passing an array of column names t
     });
 
 <a name="dropping-columns-on-legacy-databases"></a>
-#### Dropping Columns On Legacy Databases
+#### Dropping Columns on Legacy Databases
 
 If you are running a version of SQLite prior to `3.35.0`, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used. Dropping or modifying multiple columns within a single migration while using this package is not supported.
 
@@ -1161,7 +1161,7 @@ Command  |  Description
 `$table->spatialIndex('location');`  |  Adds a spatial index (except SQLite).
 
 <a name="index-lengths-mysql-mariadb"></a>
-#### Index Lengths & MySQL / MariaDB
+#### Index Lengths and MySQL / MariaDB
 
 By default, Laravel uses the `utf8mb4` character set. If you are running a version of MySQL older than the 5.7.7 release or MariaDB older than the 10.2.2 release, you may need to manually configure the default string length generated by migrations in order for MySQL to create indexes for them. You may configure the default string length by calling the `Schema::defaultStringLength` method within the `boot` method of your `App\Providers\AppServiceProvider` class:
 

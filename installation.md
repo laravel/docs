@@ -2,20 +2,20 @@
 
 - [Meet Laravel](#meet-laravel)
     - [Why Laravel?](#why-laravel)
-- [Creating A Laravel Project](#creating-a-laravel-project)
+- [Creating a Laravel Project](#creating-a-laravel-project)
 - [Initial Configuration](#initial-configuration)
     - [Environment Based Configuration](#environment-based-configuration)
-    - [Databases & Migrations](#databases-and-migrations)
+    - [Databases and Migrations](#databases-and-migrations)
     - [Directory Configuration](#directory-configuration)
 - [Docker Installation Using Sail](#docker-installation-using-sail)
-    - [Sail On macOS](#sail-on-macos)
-    - [Sail On Windows](#sail-on-windows)
-    - [Sail On Linux](#sail-on-linux)
+    - [Sail on macOS](#sail-on-macos)
+    - [Sail on Windows](#sail-on-windows)
+    - [Sail on Linux](#sail-on-linux)
     - [Choosing Your Sail Services](#choosing-your-sail-services)
 - [IDE Support](#ide-support)
 - [Next Steps](#next-steps)
-    - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
-    - [Laravel The API Backend](#laravel-the-api-backend)
+    - [Laravel the Full Stack Framework](#laravel-the-fullstack-framework)
+    - [Laravel the API Backend](#laravel-the-api-backend)
 
 <a name="meet-laravel"></a>
 ## Meet Laravel
@@ -51,7 +51,7 @@ Need extreme scaling? Platforms like [Laravel Vapor](https://vapor.laravel.com) 
 Laravel combines the best packages in the PHP ecosystem to offer the most robust and developer friendly framework available. In addition, thousands of talented developers from around the world have [contributed to the framework](https://github.com/laravel/framework). Who knows, maybe you'll even become a Laravel contributor.
 
 <a name="creating-a-laravel-project"></a>
-## Creating A Laravel Project
+## Creating a Laravel Project
 
 Before creating your first Laravel project, make sure that your local machine has PHP and [Composer](https://getcomposer.org) installed. If you are developing on macOS, PHP and Composer can be installed in minutes via [Laravel Herd](https://herd.laravel.com). In addition, we recommend [installing Node and NPM](https://nodejs.org).
 
@@ -100,7 +100,7 @@ Your `.env` file should not be committed to your application's source control, s
 > For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="databases-and-migrations"></a>
-### Databases & Migrations
+### Databases and Migrations
 
 Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with a MySQL database and will access the database at `127.0.0.1`.
 
@@ -145,7 +145,7 @@ Laravel Sail is a light-weight command-line interface for interacting with Larav
 > Already a Docker expert? Don't worry! Everything about Sail can be customized using the `docker-compose.yml` file included with Laravel.
 
 <a name="sail-on-macos"></a>
-### Sail On macOS
+### Sail on macOS
 
 If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
@@ -171,7 +171,7 @@ Once the application's Docker containers have been started, you can access the a
 > To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
 
 <a name="sail-on-windows"></a>
-### Sail On Windows
+### Sail on Windows
 
 Before we create a new Laravel application on your Windows machine, make sure to install [Docker Desktop](https://www.docker.com/products/docker-desktop). Next, you should ensure that Windows Subsystem for Linux 2 (WSL2) is installed and enabled. WSL allows you to run Linux binary executables natively on Windows 10. Information on how to install and enable WSL2 can be found within Microsoft's [developer environment documentation](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
@@ -208,7 +208,7 @@ Of course, you will need to be able to modify the Laravel application files that
 Once these tools are installed, you may open any Laravel project by executing the `code .` command from your application's root directory using Windows Terminal.
 
 <a name="sail-on-linux"></a>
-### Sail On Linux
+### Sail on Linux
 
 If you're developing on Linux and [Docker Compose](https://docs.docker.com/compose/install/) is already installed, you can use a simple terminal command to create a new Laravel project.
 
@@ -287,7 +287,7 @@ How you want to use Laravel will also dictate the next steps on your journey. Th
 > New to Laravel? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com) for a hands-on tour of the framework while we walk you through building your first Laravel application.
 
 <a name="laravel-the-fullstack-framework"></a>
-### Laravel The Full Stack Framework
+### Laravel the Full Stack Framework
 
 Laravel may serve as a full stack framework. By "full stack" framework we mean that you are going to use Laravel to route requests to your application and render your frontend via [Blade templates](/docs/{{version}}/blade) or a single-page application hybrid technology like [Inertia](https://inertiajs.com). This is the most common way to use the Laravel framework, and, in our opinion, the most productive way to use Laravel.
 
@@ -299,7 +299,7 @@ If you are using Laravel as a full stack framework, we also strongly encourage y
 > If you want to get a head start building your application, check out one of our official [application starter kits](/docs/{{version}}/starter-kits).
 
 <a name="laravel-the-api-backend"></a>
-### Laravel The API Backend
+### Laravel the API Backend
 
 Laravel may also serve as an API backend to a JavaScript single-page application or mobile application. For example, you might use Laravel as an API backend for your [Next.js](https://nextjs.org) application. In this context, you may use Laravel to provide [authentication](/docs/{{version}}/sanctum) and data storage / retrieval for your application, while also taking advantage of Laravel's powerful services such as queues, emails, notifications, and more.
 

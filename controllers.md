@@ -14,7 +14,7 @@
     - [Localizing Resource URIs](#restful-localizing-resource-uris)
     - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
     - [Singleton Resource Controllers](#singleton-resource-controllers)
-- [Dependency Injection & Controllers](#dependency-injection-and-controllers)
+- [Dependency Injection and Controllers](#dependency-injection-and-controllers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -158,8 +158,8 @@ You may even register many resource controllers at once by passing an array to t
         'posts' => PostController::class,
     ]);
 
-<a name="actions-handled-by-resource-controller"></a>
-#### Actions Handled By Resource Controller
+<a name="actions-handled-by-resource-controllers"></a>
+#### Actions Handled by Resource Controllers
 
 Verb      | URI                    | Action       | Route Name
 ----------|------------------------|--------------|---------------------
@@ -199,7 +199,7 @@ Calling `withTrashed` with no arguments will allow soft deleted models for the `
     Route::resource('photos', PhotoController::class)->withTrashed(['show']);
 
 <a name="specifying-the-resource-model"></a>
-#### Specifying The Resource Model
+#### Specifying the Resource Model
 
 If you are using [route model binding](/docs/{{version}}/routing#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
 
@@ -451,7 +451,7 @@ Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
 ```
 
 <a name="dependency-injection-and-controllers"></a>
-## Dependency Injection & Controllers
+## Dependency Injection and Controllers
 
 <a name="constructor-injection"></a>
 #### Constructor Injection
