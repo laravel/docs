@@ -166,7 +166,7 @@ public function boot(): void
 ```
 
 > **Note**  
-> You may completely customize how the authenticated user is captured and retrieved by implementing the `Laravel\Pulse\Contracts\ResolvesUsers` contract and binding it in Laravel's [service container](/docs/{{ version }}/container#binding-a-singleton).
+> You may completely customize how the authenticated user is captured and retrieved by implementing the `Laravel\Pulse\Contracts\ResolvesUsers` contract and binding it in Laravel's [service container](/docs/{{version}}/container#binding-a-singleton).
 
 <a name="dashboard-cards"></a>
 ### Cards
