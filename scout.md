@@ -119,7 +119,7 @@ To specify the connection and queue that your Scout jobs utilize, you may define
         'queue' => 'scout'
     ],
 
-If you are using Scout with a queue, you need add the queue name `queue` to the worker, `php artisan queue:work` runs only the default queue if no name is specified:
+If you are using Scout with a queue, you need add the queue name `scout` to the worker, `php artisan queue:work` runs only the default queue if no name is specified:
 
     'php artisan queue:work --queue=default,scout'
 
