@@ -273,6 +273,8 @@ If you would like to share contextual information across _all_ logging channels,
         }
     }
 
+Please note that the shared log context is not available inside jobs handled by a daemon like `php artisan queue:work` or Laravel Horizon to prevent memory leaks.
+
 <a name="writing-to-specific-channels"></a>
 ### Writing to Specific Channels
 
