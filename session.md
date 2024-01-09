@@ -145,9 +145,9 @@ If you would like to retrieve all the data in the session, you may use the `all`
     $data = $request->session()->all();
 
 <a name="retrieving-a-portion-of-the-session-data"></a>
-#### Retrieving A Portion Of The Session Data
+#### Retrieving a Portion of the Session Data
 
-The `only` and `except` methods can be used to retrieve a subset of the session data.  Both of these methods accept a single array or a dynamic list of arguments:
+The `only` and `except` methods may be used to retrieve a subset of the session data:
 
     $data = $request->session()->only(['username', 'email']);
 
