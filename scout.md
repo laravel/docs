@@ -119,9 +119,9 @@ To specify the connection and queue that your Scout jobs utilize, you may define
         'queue' => 'scout'
     ],
 
-If you are using Scout with a queue, you need to add the queue name `scout` to the worker, `php artisan queue:work` runs only the default queue if no name is specified:
+Of course, if you customize the connection and queue that Scout jobs utilize, you should run a queue worker to process jobs on that connection and queue:
 
-    php artisan queue:work --queue=default,scout
+    php artisan queue:work redis --queue=scout
 
 <a name="configuration"></a>
 ## Configuration
