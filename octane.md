@@ -75,7 +75,7 @@ Next, you should use the `octane:install` Artisan command to install the Franken
 ./vendor/bin/sail artisan octane:install --server=frankenphp
 ```
 
-Finally, update the `environment` key of your application's `docker-compose.yml` file so that Sail serves your application using Octane instead of the PHP development server:
+Finally, add a `SUPERVISOR_PHP_COMMAND` environment variable to the `laravel.test` service definition in your application's `docker-compose.yml` file. This environment variable will contain the command that Sail will use to serve your application using Octane instead of the PHP development server:
 
 ```yaml
 services:
@@ -109,7 +109,7 @@ Next, you should start a Sail shell and use the `rr` executable to retrieve the 
 ./vendor/bin/rr get-binary
 ```
 
-Then, update the `environment` key of your application's `docker-compose.yml` file so that Sail serves your application using Octane instead of the PHP development server:
+Then, add a `SUPERVISOR_PHP_COMMAND` environment variable to the `laravel.test` service definition in your application's `docker-compose.yml` file. This environment variable will contain the command that Sail will use to serve your application using Octane instead of the PHP development server:
 
 ```yaml
 services:
@@ -154,7 +154,7 @@ Using Laravel Octane with Open Swoole grants the same functionality provided by 
 
 Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](/docs/{{version}}/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `docker-compose.yml` file used by Sail.
 
-To get started, update the `environment` key of your application's `docker-compose.yml` file so that Sail serves your application using Octane instead of the PHP development server:
+To get started, add a `SUPERVISOR_PHP_COMMAND` environment variable to the `laravel.test` service definition in your application's `docker-compose.yml` file. This environment variable will contain the command that Sail will use to serve your application using Octane instead of the PHP development server:
 
 ```yaml
 services:
