@@ -50,7 +50,7 @@ Laravel's default `.env` file contains some common configuration values that may
 
 If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting placeholder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
 
-> **Note**  
+> [!NOTE]  
 > Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
 
 <a name="environment-file-security"></a>
@@ -115,7 +115,7 @@ You may also pass arguments to the `environment` method to determine if the envi
         // The environment is either local OR staging...
     }
 
-> **Note**  
+> [!NOTE]  
 > The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable.
 
 <a name="encrypting-environment-files"></a>
@@ -138,7 +138,7 @@ Running the `env:encrypt` command will encrypt your `.env` file and place the en
 php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
-> **Note**  
+> [!NOTE]  
 > The length of the key provided should match the key length required by the encryption cipher being used. By default, Laravel will use the `AES-256-CBC` cipher which requires a 32 character key. You are free to use any cipher supported by Laravel's [encrypter](/docs/{{version}}/encryption) by passing the `--cipher` option when invoking the command.
 
 If your application has multiple environment files, such as `.env` and `.env.staging`, you may specify the environment file that should be encrypted by providing the environment name via the `--env` option:
@@ -213,7 +213,7 @@ The `config:clear` command may be used to purge the cached configuration:
 php artisan config:clear
 ```
 
-> **Warning**
+> [!WARNING]  
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables.
 
 <a name="debug-mode"></a>
@@ -221,7 +221,7 @@ php artisan config:clear
 
 The `debug` option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your `.env` file.
 
-> **Warning**
+> [!WARNING]  
 > For local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
 
 <a name="maintenance-mode"></a>
@@ -270,7 +270,7 @@ php artisan down --with-secret
 
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
 
-> **Note**  
+> [!NOTE]  
 > Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?` or `&`.
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
@@ -302,7 +302,7 @@ To disable maintenance mode, use the `up` command:
 php artisan up
 ```
 
-> **Note**  
+> [!NOTE]  
 > You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`.
 
 <a name="maintenance-mode-queues"></a>

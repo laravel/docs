@@ -99,7 +99,7 @@ When deploying to production, make sure that you are optimizing Composer's class
 composer install --optimize-autoloader --no-dev
 ```
 
-> **Note**  
+> [!NOTE]  
 > In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present.
 
 <a name="optimizing-configuration-loading"></a>
@@ -113,7 +113,7 @@ php artisan config:cache
 
 This command will combine all of Laravel's configuration files into a single, cached file, which greatly reduces the number of trips the framework must make to the filesystem when loading your configuration values.
 
-> **Warning**  
+> [!WARNING]  
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function for `.env` variables will return `null`.
 
 <a name="caching-events"></a>
@@ -152,7 +152,7 @@ This command precompiles all your Blade views so they are not compiled on demand
 
 The debug option in your config/app.php configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your application's `.env` file.
 
-> **Warning**
+> [!WARNING]  
 > **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
 
 <a name="deploying-with-forge-or-vapor"></a>
@@ -165,7 +165,7 @@ If you aren't quite ready to manage your own server configuration or aren't comf
 
 Laravel Forge can create servers on various infrastructure providers such as DigitalOcean, Linode, AWS, and more. In addition, Forge installs and manages all of the tools needed to build robust Laravel applications, such as Nginx, MySQL, Redis, Memcached, Beanstalk, and more.
 
-> **Note**
+> [!NOTE]  
 > Want a full guide to deploying with Laravel Forge? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com/deploying) and the Forge [video series available on Laracasts](https://laracasts.com/series/learn-laravel-forge-2022-edition).
 
 <a name="laravel-vapor"></a>

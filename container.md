@@ -134,7 +134,7 @@ $this->app->bindIf(Transistor::class, function (Application $app) {
 });
 ```
 
-> **Note**  
+> [!NOTE]  
 > There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.
 
 <a name="binding-a-singleton"></a>
