@@ -14,7 +14,7 @@
     - [Localizing Resource URIs](#restful-localizing-resource-uris)
     - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
     - [Singleton Resource Controllers](#singleton-resource-controllers)
-- [Dependency Injection & Controllers](#dependency-injection-and-controllers)
+- [Dependency Injection and Controllers](#dependency-injection-and-controllers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -63,7 +63,7 @@ Once you have written a controller class and method, you may define a route to t
 
 When an incoming request matches the specified route URI, the `show` method on the `App\Http\Controllers\UserController` class will be invoked and the route parameters will be passed to the method.
 
-> **Note**  
+> [!NOTE]  
 > Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods.
 
 <a name="single-action-controllers"></a>
@@ -98,7 +98,7 @@ You may generate an invokable controller by using the `--invokable` option of th
 php artisan make:controller ProvisionServer --invokable
 ```
 
-> **Note**  
+> [!NOTE]  
 > Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="controller-middleware"></a>
@@ -158,8 +158,8 @@ You may even register many resource controllers at once by passing an array to t
         'posts' => PostController::class,
     ]);
 
-<a name="actions-handled-by-resource-controller"></a>
-#### Actions Handled By Resource Controller
+<a name="actions-handled-by-resource-controllers"></a>
+#### Actions Handled by Resource Controllers
 
 Verb      | URI                    | Action       | Route Name
 ----------|------------------------|--------------|---------------------
@@ -199,7 +199,7 @@ Calling `withTrashed` with no arguments will allow soft deleted models for the `
     Route::resource('photos', PhotoController::class)->withTrashed(['show']);
 
 <a name="specifying-the-resource-model"></a>
-#### Specifying The Resource Model
+#### Specifying the Resource Model
 
 If you are using [route model binding](/docs/{{version}}/routing#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
 
@@ -372,7 +372,7 @@ If you need to add additional routes to a resource controller beyond the default
     Route::get('/photos/popular', [PhotoController::class, 'popular']);
     Route::resource('photos', PhotoController::class);
 
-> **Note**  
+> [!NOTE]  
 > Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
 
 <a name="singleton-resource-controllers"></a>
@@ -451,7 +451,7 @@ Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
 ```
 
 <a name="dependency-injection-and-controllers"></a>
-## Dependency Injection & Controllers
+## Dependency Injection and Controllers
 
 <a name="constructor-injection"></a>
 #### Constructor Injection

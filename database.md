@@ -2,13 +2,13 @@
 
 - [Introduction](#introduction)
     - [Configuration](#configuration)
-    - [Read & Write Connections](#read-and-write-connections)
+    - [Read and Write Connections](#read-and-write-connections)
 - [Running SQL Queries](#running-queries)
     - [Using Multiple Database Connections](#using-multiple-database-connections)
-    - [Listening For Query Events](#listening-for-query-events)
+    - [Listening for Query Events](#listening-for-query-events)
     - [Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)
 - [Database Transactions](#database-transactions)
-- [Connecting To The Database CLI](#connecting-to-the-database-cli)
+- [Connecting to the Database CLI](#connecting-to-the-database-cli)
 - [Inspecting Your Databases](#inspecting-your-databases)
 - [Monitoring Your Databases](#monitoring-your-databases)
 
@@ -75,7 +75,7 @@ driver://username:password@host:port/database?options
 For convenience, Laravel supports these URLs as an alternative to configuring your database with multiple configuration options. If the `url` (or corresponding `DATABASE_URL` environment variable) configuration option is present, it will be used to extract the database connection and credential information.
 
 <a name="read-and-write-connections"></a>
-### Read & Write Connections
+### Read and Write Connections
 
 Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
 
@@ -118,7 +118,7 @@ The `sticky` option is an *optional* value that can be used to allow the immedia
 Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, `delete`, and `statement`.
 
 <a name="running-a-select-query"></a>
-#### Running A Select Query
+#### Running a Select Query
 
 To run a basic SELECT query, you may use the `select` method on the `DB` facade:
 
@@ -181,7 +181,7 @@ Instead of using `?` to represent your parameter bindings, you may execute a que
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
 
 <a name="running-an-insert-statement"></a>
-#### Running An Insert Statement
+#### Running an Insert Statement
 
 To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method accepts the SQL query as its first argument and bindings as its second argument:
 
@@ -190,7 +190,7 @@ To execute an `insert` statement, you may use the `insert` method on the `DB` fa
     DB::insert('insert into users (id, name) values (?, ?)', [1, 'Marc']);
 
 <a name="running-an-update-statement"></a>
-#### Running An Update Statement
+#### Running an Update Statement
 
 The `update` method should be used to update existing records in the database. The number of rows affected by the statement is returned by the method:
 
@@ -202,7 +202,7 @@ The `update` method should be used to update existing records in the database. T
     );
 
 <a name="running-a-delete-statement"></a>
-#### Running A Delete Statement
+#### Running a Delete Statement
 
 The `delete` method should be used to delete records from the database. Like `update`, the number of rows affected will be returned by the method:
 
@@ -211,20 +211,20 @@ The `delete` method should be used to delete records from the database. Like `up
     $deleted = DB::delete('delete from users');
 
 <a name="running-a-general-statement"></a>
-#### Running A General Statement
+#### Running a General Statement
 
 Some database statements do not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
 
     DB::statement('drop table users');
 
 <a name="running-an-unprepared-statement"></a>
-#### Running An Unprepared Statement
+#### Running an Unprepared Statement
 
 Sometimes you may want to execute an SQL statement without binding any values. You may use the `DB` facade's `unprepared` method to accomplish this:
 
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 
-> **Warning**  
+> [!WARNING]  
 > Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
 
 <a name="implicit-commits-in-transactions"></a>
@@ -250,7 +250,7 @@ You may access the raw, underlying PDO instance of a connection using the `getPd
     $pdo = DB::connection()->getPdo();
 
 <a name="listening-for-query-events"></a>
-### Listening For Query Events
+### Listening for Query Events
 
 If you would like to specify a closure that is invoked for each SQL query executed by your application, you may use the `DB` facade's `listen` method. This method can be useful for logging queries or debugging. You may register your query listener closure in the `boot` method of a [service provider](/docs/{{version}}/providers):
 
@@ -363,11 +363,11 @@ Lastly, you can commit a transaction via the `commit` method:
 
     DB::commit();
 
-> **Note**  
+> [!NOTE]  
 > The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
 
 <a name="connecting-to-the-database-cli"></a>
-## Connecting To The Database CLI
+## Connecting to the Database CLI
 
 If you would like to connect to your database's CLI, you may use the `db` Artisan command:
 

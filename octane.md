@@ -3,30 +3,31 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Server Prerequisites](#server-prerequisites)
+    - [FrankenPHP](#frankenphp)
     - [RoadRunner](#roadrunner)
     - [Swoole](#swoole)
 - [Serving Your Application](#serving-your-application)
-    - [Serving Your Application Via HTTPS](#serving-your-application-via-https)
-    - [Serving Your Application Via Nginx](#serving-your-application-via-nginx)
-    - [Watching For File Changes](#watching-for-file-changes)
-    - [Specifying The Worker Count](#specifying-the-worker-count)
-    - [Specifying The Max Request Count](#specifying-the-max-request-count)
-    - [Reloading The Workers](#reloading-the-workers)
-    - [Stopping The Server](#stopping-the-server)
-- [Dependency Injection & Octane](#dependency-injection-and-octane)
+    - [Serving Your Application via HTTPS](#serving-your-application-via-https)
+    - [Serving Your Application via Nginx](#serving-your-application-via-nginx)
+    - [Watching for File Changes](#watching-for-file-changes)
+    - [Specifying the Worker Count](#specifying-the-worker-count)
+    - [Specifying the Max Request Count](#specifying-the-max-request-count)
+    - [Reloading the Workers](#reloading-the-workers)
+    - [Stopping the Server](#stopping-the-server)
+- [Dependency Injection and Octane](#dependency-injection-and-octane)
     - [Container Injection](#container-injection)
     - [Request Injection](#request-injection)
     - [Configuration Repository Injection](#configuration-repository-injection)
 - [Managing Memory Leaks](#managing-memory-leaks)
 - [Concurrent Tasks](#concurrent-tasks)
-- [Ticks & Intervals](#ticks-and-intervals)
+- [Ticks and Intervals](#ticks-and-intervals)
 - [The Octane Cache](#the-octane-cache)
 - [Tables](#tables)
 
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [Open Swoole](https://openswoole.com/), [Swoole](https://github.com/swoole/swoole-src), and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
+[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [FrankenPHP](https://frankenphp.dev/), [Open Swoole](https://openswoole.com/), [Swoole](https://github.com/swoole/swoole-src), and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
 
 <a name="installation"></a>
 ## Installation
@@ -46,8 +47,42 @@ php artisan octane:install
 <a name="server-prerequisites"></a>
 ## Server Prerequisites
 
-> **Warning**
+> [!WARNING]  
 > Laravel Octane requires [PHP 8.1+](https://php.net/releases/).
+
+<a name="frankenphp"></a>
+### FrankenPHP
+
+> [!WARNING]  
+> FrankenPHP's Octane integration is in beta and should be used with caution in production.
+
+[FrankenPHP](https://frankenphp.dev) is a PHP application server, written in Go, that supports modern web features like early hints and Zstandard compression. When you install Octane and choose FrankenPHP as your server, Octane will automatically download and install the FrankenPHP binary for you.
+
+<a name="frankenphp-via-laravel-sail"></a>
+#### FrankenPHP via Laravel Sail
+
+If you plan to develop your application using [Laravel Sail](/docs/{{version}}/sail), you should run the following commands to install Octane and FrankenPHP:
+
+```shell
+./vendor/bin/sail up
+
+./vendor/bin/sail composer require laravel/octane
+```
+
+Next, you should use the `octane:install` Artisan command to install the FrankenPHP binary:
+
+```shell
+./vendor/bin/sail artisan octane:install --server=frankenphp
+```
+
+Finally, add a `SUPERVISOR_PHP_COMMAND` environment variable to the `laravel.test` service definition in your application's `docker-compose.yml` file. This environment variable will contain the command that Sail will use to serve your application using Octane instead of the PHP development server:
+
+```yaml
+services:
+  laravel.test:
+    environment:
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80" # [tl! add]
+```
 
 <a name="roadrunner"></a>
 ### RoadRunner
@@ -55,7 +90,7 @@ php artisan octane:install
 [RoadRunner](https://roadrunner.dev) is powered by the RoadRunner binary, which is built using Go. The first time you start a RoadRunner based Octane server, Octane will offer to download and install the RoadRunner binary for you.
 
 <a name="roadrunner-via-laravel-sail"></a>
-#### RoadRunner Via Laravel Sail
+#### RoadRunner via Laravel Sail
 
 If you plan to develop your application using [Laravel Sail](/docs/{{version}}/sail), you should run the following commands to install Octane and RoadRunner:
 
@@ -74,16 +109,13 @@ Next, you should start a Sail shell and use the `rr` executable to retrieve the 
 ./vendor/bin/rr get-binary
 ```
 
-After installing the RoadRunner binary, you may exit your Sail shell session. You will now need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
+Then, add a `SUPERVISOR_PHP_COMMAND` environment variable to the `laravel.test` service definition in your application's `docker-compose.yml` file. This environment variable will contain the command that Sail will use to serve your application using Octane instead of the PHP development server:
 
-```shell
-./vendor/bin/sail artisan sail:publish
-```
-
-Next, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
-
-```ini
-command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=80
+```yaml
+services:
+  laravel.test:
+    environment:
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=80" # [tl! add]
 ```
 
 Finally, ensure the `rr` binary is executable and build your Sail images:
@@ -115,21 +147,20 @@ pecl install openswoole
 Using Laravel Octane with Open Swoole grants the same functionality provided by Swoole, such as concurrent tasks, ticks, and intervals.
 
 <a name="swoole-via-laravel-sail"></a>
-#### Swoole Via Laravel Sail
+#### Swoole via Laravel Sail
 
-> **Warning**
+> [!WARNING]  
 > Before serving an Octane application via Sail, ensure you have the latest version of Laravel Sail and execute `./vendor/bin/sail build --no-cache` within your application's root directory.
 
-Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](/docs/{{version}}/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
+Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](/docs/{{version}}/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `docker-compose.yml` file used by Sail.
 
-```shell
-./vendor/bin/sail artisan sail:publish
-```
+To get started, add a `SUPERVISOR_PHP_COMMAND` environment variable to the `laravel.test` service definition in your application's `docker-compose.yml` file. This environment variable will contain the command that Sail will use to serve your application using Octane instead of the PHP development server:
 
-Next, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
-
-```ini
-command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port=80
+```yaml
+services:
+  laravel.test:
+    environment:
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port=80" # [tl! add]
 ```
 
 Finally, build your Sail images:
@@ -164,7 +195,7 @@ php artisan octane:start
 By default, Octane will start the server on port 8000, so you may access your application in a web browser via `http://localhost:8000`.
 
 <a name="serving-your-application-via-https"></a>
-### Serving Your Application Via HTTPS
+### Serving Your Application via HTTPS
 
 By default, applications running via Octane generate links prefixed with `http://`. The `OCTANE_HTTPS` environment variable, used within your application's `config/octane.php` configuration file, can be set to `true` when serving your application via HTTPS. When this configuration value is set to `true`, Octane will instruct Laravel to prefix all generated links with `https://`:
 
@@ -173,9 +204,9 @@ By default, applications running via Octane generate links prefixed with `http:/
 ```
 
 <a name="serving-your-application-via-nginx"></a>
-### Serving Your Application Via Nginx
+### Serving Your Application via Nginx
 
-> **Note**
+> [!NOTE]  
 > If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel Octane application, check out [Laravel Forge](https://forge.laravel.com).
 
 In production environments, you should serve your Octane application behind a traditional web server such as Nginx or Apache. Doing so will allow the web server to serve your static assets such as images and stylesheets, as well as manage your SSL certificate termination.
@@ -237,7 +268,7 @@ server {
 ```
 
 <a name="watching-for-file-changes"></a>
-### Watching For File Changes
+### Watching for File Changes
 
 Since your application is loaded in memory once when the Octane server starts, any changes to your application's files will not be reflected when you refresh your browser. For example, route definitions added to your `routes/web.php` file will not be reflected until the server is restarted. For convenience, you may use the `--watch` flag to instruct Octane to automatically restart the server on any file changes within your application:
 
@@ -254,7 +285,7 @@ npm install --save-dev chokidar
 You may configure the directories and files that should be watched using the `watch` configuration option within your application's `config/octane.php` configuration file.
 
 <a name="specifying-the-worker-count"></a>
-### Specifying The Worker Count
+### Specifying the Worker Count
 
 By default, Octane will start an application request worker for each CPU core provided by your machine. These workers will then be used to serve incoming HTTP requests as they enter your application. You may manually specify how many workers you would like to start using the `--workers` option when invoking the `octane:start` command:
 
@@ -269,7 +300,7 @@ php artisan octane:start --workers=4 --task-workers=6
 ```
 
 <a name="specifying-the-max-request-count"></a>
-### Specifying The Max Request Count
+### Specifying the Max Request Count
 
 To help prevent stray memory leaks, Octane gracefully restarts any worker once it has handled 500 requests. To adjust this number, you may use the `--max-requests` option:
 
@@ -278,7 +309,7 @@ php artisan octane:start --max-requests=250
 ```
 
 <a name="reloading-the-workers"></a>
-### Reloading The Workers
+### Reloading the Workers
 
 You may gracefully restart the Octane server's application workers using the `octane:reload` command. Typically, this should be done after deployment so that your newly deployed code is loaded into memory and is used to serve to subsequent requests:
 
@@ -287,7 +318,7 @@ php artisan octane:reload
 ```
 
 <a name="stopping-the-server"></a>
-### Stopping The Server
+### Stopping the Server
 
 You may stop the Octane server using the `octane:stop` Artisan command:
 
@@ -296,7 +327,7 @@ php artisan octane:stop
 ```
 
 <a name="checking-the-server-status"></a>
-#### Checking The Server Status
+#### Checking the Server Status
 
 You may check the current status of the Octane server using the `octane:status` Artisan command:
 
@@ -305,7 +336,7 @@ php artisan octane:status
 ```
 
 <a name="dependency-injection-and-octane"></a>
-## Dependency Injection & Octane
+## Dependency Injection and Octane
 
 Since Octane boots your application once and keeps it in memory while serving requests, there are a few caveats you should consider while building your application. For example, the `register` and `boot` methods of your application's service providers will only be executed once when the request worker initially boots. On subsequent requests, the same application instance will be reused.
 
@@ -396,7 +427,7 @@ $service->method($request->input('name'));
 
 The global `request` helper will always return the request the application is currently handling and is therefore safe to use within your application.
 
-> **Warning**
+> [!WARNING]  
 > It is acceptable to type-hint the `Illuminate\Http\Request` instance on your controller methods and route closures.
 
 <a name="configuration-repository-injection"></a>
@@ -467,7 +498,7 @@ While building your application, you should take special care to avoid creating 
 <a name="concurrent-tasks"></a>
 ## Concurrent Tasks
 
-> **Warning**
+> [!WARNING]  
 > This feature requires [Swoole](#swoole).
 
 When using Swoole, you may execute operations concurrently via light-weight background tasks. You may accomplish this using Octane's `concurrently` method. You may combine this method with PHP array destructuring to retrieve the results of each operation:
@@ -492,9 +523,9 @@ php artisan octane:start --workers=4 --task-workers=6
 When invoking the `concurrently` method, you should not provide more than 1024 tasks due to limitations imposed by Swoole's task system.
 
 <a name="ticks-and-intervals"></a>
-## Ticks & Intervals
+## Ticks and Intervals
 
-> **Warning**
+> [!WARNING]  
 > This feature requires [Swoole](#swoole).
 
 When using Swoole, you may register "tick" operations that will be executed every specified number of seconds. You may register "tick" callbacks via the `tick` method. The first argument provided to the `tick` method should be a string that represents the name of the ticker. The second argument should be a callable that will be invoked at the specified interval.
@@ -517,7 +548,7 @@ Octane::tick('simple-ticker', fn () => ray('Ticking...'))
 <a name="the-octane-cache"></a>
 ## The Octane Cache
 
-> **Warning**
+> [!WARNING]  
 > This feature requires [Swoole](#swoole).
 
 When using Swoole, you may leverage the Octane cache driver, which provides read and write speeds of up to 2 million operations per second. Therefore, this cache driver is an excellent choice for applications that need extreme read / write speeds from their caching layer.
@@ -528,7 +559,7 @@ This cache driver is powered by [Swoole tables](https://www.swoole.co.uk/docs/mo
 Cache::store('octane')->put('framework', 'Laravel', 30);
 ```
 
-> **Note**
+> [!NOTE]  
 > The maximum number of entries allowed in the Octane cache may be defined in your application's `octane` configuration file.
 
 <a name="cache-intervals"></a>
@@ -547,7 +578,7 @@ Cache::store('octane')->interval('random', function () {
 <a name="tables"></a>
 ## Tables
 
-> **Warning**
+> [!WARNING]  
 > This feature requires [Swoole](#swoole).
 
 When using Swoole, you may define and interact with your own arbitrary [Swoole tables](https://www.swoole.co.uk/docs/modules/swoole-table). Swoole tables provide extreme performance throughput and the data in these tables can be accessed by all workers on the server. However, the data within them will be lost when the server is restarted.
@@ -576,5 +607,5 @@ Octane::table('example')->set('uuid', [
 return Octane::table('example')->get('uuid');
 ```
 
-> **Warning**
+> [!WARNING]  
 > The column types supported by Swoole tables are: `string`, `int`, and `float`.

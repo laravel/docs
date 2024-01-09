@@ -5,9 +5,9 @@
 - [The Exception Handler](#the-exception-handler)
     - [Reporting Exceptions](#reporting-exceptions)
     - [Exception Log Levels](#exception-log-levels)
-    - [Ignoring Exceptions By Type](#ignoring-exceptions-by-type)
+    - [Ignoring Exceptions by Type](#ignoring-exceptions-by-type)
     - [Rendering Exceptions](#rendering-exceptions)
-    - [Reportable & Renderable Exceptions](#renderable-exceptions)
+    - [Reportable and Renderable Exceptions](#renderable-exceptions)
 - [Throttling Reported Exceptions](#throttling-reported-exceptions)
 - [HTTP Exceptions](#http-exceptions)
     - [Custom HTTP Error Pages](#custom-http-error-pages)
@@ -56,7 +56,7 @@ When you register a custom exception reporting callback using the `reportable` m
         return false;
     });
 
-> **Note**  
+> [!NOTE]  
 > To customize the exception reporting for a given exception, you may also utilize [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions).
 
 <a name="global-log-context"></a>
@@ -182,7 +182,7 @@ To accomplish this, you may define a `$levels` property on your application's ex
     ];
 
 <a name="ignoring-exceptions-by-type"></a>
-### Ignoring Exceptions By Type
+### Ignoring Exceptions by Type
 
 When building your application, there will be some types of exceptions you never want to report. To ignore these exceptions, define a `$dontReport` property on your application's exception handler. Any classes that you add to this property will never be reported; however, they may still have custom rendering logic:
 
@@ -251,7 +251,7 @@ You may also use the `renderable` method to override the rendering behavior for 
     }
 
 <a name="renderable-exceptions"></a>
-### Reportable & Renderable Exceptions
+### Reportable and Renderable Exceptions
 
 Instead of defining custom reporting and rendering behavior in your exception handler's `register` method, you may define `report` and `render` methods directly on your application's exceptions. When these methods exist, they will automatically be called by the framework:
 
@@ -314,7 +314,7 @@ If your exception contains custom reporting logic that is only necessary when ce
         return false;
     }
 
-> **Note**  
+> [!NOTE]  
 > You may type-hint any required dependencies of the `report` method and they will automatically be injected into the method by Laravel's [service container](/docs/{{version}}/container).
 
 <a name="throttling-reported-exceptions"></a>

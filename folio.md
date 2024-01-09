@@ -183,7 +183,7 @@ Captured models can be accessed as variables within your Blade template. The mod
 </div>
 ```
 
-#### Customizing The Key
+#### Customizing the Key
 
 Sometimes you may wish to resolve bound Eloquent models using a column other than `id`. To do so, you may specify the column in the page's filename. For example, a page with the filename `[Post:slug].blade.php` will attempt to resolve the bound model via the `slug` column instead of the `id` column.
 

@@ -22,9 +22,9 @@
 - [Fallback Routes](#fallback-routes)
 - [Rate Limiting](#rate-limiting)
     - [Defining Rate Limiters](#defining-rate-limiters)
-    - [Attaching Rate Limiters To Routes](#attaching-rate-limiters-to-routes)
+    - [Attaching Rate Limiters to Routes](#attaching-rate-limiters-to-routes)
 - [Form Method Spoofing](#form-method-spoofing)
-- [Accessing The Current Route](#accessing-the-current-route)
+- [Accessing the Current Route](#accessing-the-current-route)
 - [Cross-Origin Resource Sharing (CORS)](#cors)
 - [Route Caching](#route-caching)
 
@@ -74,7 +74,7 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
         // ...
     });
 
-> **Note**  
+> [!NOTE]  
 > When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, and `options` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route.
 
 <a name="dependency-injection"></a>
@@ -113,7 +113,7 @@ Or, you may use the `Route::permanentRedirect` method to return a `301` status c
 
     Route::permanentRedirect('/here', '/there');
 
-> **Warning**  
+> [!WARNING]  
 > When using route parameters in redirect routes, the following parameters are reserved by Laravel and cannot be used: `destination` and `status`.
 
 <a name="view-routes"></a>
@@ -125,7 +125,7 @@ If your route only needs to return a [view](/docs/{{version}}/views), you may us
 
     Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 
-> **Warning**  
+> [!WARNING]  
 > When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
 
 <a name="the-route-list"></a>
@@ -185,7 +185,7 @@ You may define as many route parameters as required by your route:
 Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Underscores (`_`) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter.
 
 <a name="parameters-and-dependency-injection"></a>
-#### Parameters & Dependency Injection
+#### Parameters and Dependency Injection
 
 If your route has dependencies that you would like the Laravel service container to automatically inject into your route's callback, you should list your route parameters after your dependencies:
 
@@ -277,7 +277,7 @@ The Laravel routing component allows all characters except `/` to be present wit
         return $search;
     })->where('search', '.*');
 
-> **Warning**  
+> [!WARNING]  
 > Encoded forward slashes are only supported within the last route segment.
 
 <a name="named-routes"></a>
@@ -296,11 +296,11 @@ You may also specify route names for controller actions:
         [UserProfileController::class, 'show']
     )->name('profile');
 
-> **Warning**  
+> [!WARNING]  
 > Route names should always be unique.
 
 <a name="generating-urls-to-named-routes"></a>
-#### Generating URLs To Named Routes
+#### Generating URLs to Named Routes
 
 Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via Laravel's `route` and `redirect` helper functions:
 
@@ -330,11 +330,11 @@ If you pass additional parameters in the array, those key / value pairs will aut
 
     // /user/1/profile?photos=yes
 
-> **Note**  
+> [!NOTE]  
 > Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values).
 
 <a name="inspecting-the-current-route"></a>
-#### Inspecting The Current Route
+#### Inspecting the Current Route
 
 If you would like to determine if the current request was routed to a given named route, you may use the `named` method on a Route instance. For example, you may check the current route name from a route middleware:
 
@@ -401,7 +401,7 @@ Route groups may also be used to handle subdomain routing. Subdomains may be ass
         });
     });
 
-> **Warning**  
+> [!WARNING]  
 > In order to ensure your subdomain routes are reachable, you should register subdomain routes before registering root domain routes. This will prevent root domain routes from overwriting subdomain routes which have the same URI path.
 
 <a name="route-group-prefixes"></a>
@@ -471,7 +471,7 @@ Typically, implicit model binding will not retrieve models that have been [soft 
 
 <a name="customizing-the-key"></a>
 <a name="customizing-the-default-key-name"></a>
-#### Customizing The Key
+#### Customizing the Key
 
 Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
 
@@ -492,7 +492,7 @@ If you would like model binding to always use a database column other than `id` 
     }
 
 <a name="implicit-model-binding-scoping"></a>
-#### Custom Keys & Scoping
+#### Custom Keys and Scoping
 
 When implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the previous Eloquent model. For example, consider this route definition that retrieves a blog post by slug for a specific user:
 
@@ -546,7 +546,7 @@ Typically, a 404 HTTP response will be generated if an implicitly bound model is
 <a name="implicit-enum-binding"></a>
 ### Implicit Enum Binding
 
-PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint a [string-backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
+PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To complement this feature, Laravel allows you to type-hint a [string-backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
 
 ```php
 <?php
@@ -602,7 +602,7 @@ Since we have bound all `{user}` parameters to the `App\Models\User` model, an i
 If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
 
 <a name="customizing-the-resolution-logic"></a>
-#### Customizing The Resolution Logic
+#### Customizing the Resolution Logic
 
 If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The closure you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `RouteServiceProvider`:
 
@@ -659,7 +659,7 @@ Using the `Route::fallback` method, you may define a route that will be executed
         // ...
     });
 
-> **Warning**  
+> [!WARNING]  
 > The fallback route should always be the last route registered by your application.
 
 <a name="rate-limiting"></a>
@@ -756,7 +756,7 @@ If needed, you may return an array of rate limits for a given rate limiter confi
     });
 
 <a name="attaching-rate-limiters-to-routes"></a>
-### Attaching Rate Limiters To Routes
+### Attaching Rate Limiters to Routes
 
 Rate limiters may be attached to routes or route groups using the `throttle` [middleware](/docs/{{version}}/middleware). The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
 
@@ -795,7 +795,7 @@ For convenience, you may use the `@method` [Blade directive](/docs/{{version}}/b
     </form>
 
 <a name="accessing-the-current-route"></a>
-## Accessing The Current Route
+## Accessing the Current Route
 
 You may use the `current`, `currentRouteName`, and `currentRouteAction` methods on the `Route` facade to access information about the route handling the incoming request:
 
@@ -812,7 +812,7 @@ You may refer to the API documentation for both the [underlying class of the Rou
 
 Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. All CORS settings may be configured in your application's `config/cors.php` configuration file. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/{{version}}/middleware) that is included by default in your global middleware stack. Your global middleware stack is located in your application's HTTP kernel (`App\Http\Kernel`).
 
-> **Note**  
+> [!NOTE]  
 > For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
 
 <a name="route-caching"></a>

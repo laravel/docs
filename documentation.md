@@ -95,6 +95,7 @@
     - [Pint](/docs/{{version}}/pint)
     - [Precognition](/docs/{{version}}/precognition)
     - [Prompts](/docs/{{version}}/prompts)
+    - [Pulse](/docs/{{version}}/pulse)
     - [Sail](/docs/{{version}}/sail)
     - [Sanctum](/docs/{{version}}/sanctum)
     - [Scout](/docs/{{version}}/scout)

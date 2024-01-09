@@ -35,6 +35,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [preg_replace_array](#method-preg-replace-array)
 [Str::after](#method-str-after)
 [Str::afterLast](#method-str-after-last)
+[Str::apa](#method-str-apa)
 [Str::ascii](#method-str-ascii)
 [Str::before](#method-str-before)
 [Str::beforeLast](#method-str-before-last)
@@ -117,6 +118,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 
 [after](#method-fluent-str-after)
 [afterLast](#method-fluent-str-after-last)
+[apa](#method-fluent-str-apa)
 [append](#method-fluent-str-append)
 [ascii](#method-fluent-str-ascii)
 [basename](#method-fluent-str-basename)
@@ -277,6 +279,17 @@ The `Str::afterLast` method returns everything after the last occurrence of the 
     $slice = Str::afterLast('App\Http\Controllers\Controller', '\\');
 
     // 'Controller'
+
+<a name="method-str-apa"></a>
+#### `Str::apa()` {.collection-method}
+
+The `Str::apa` method converts the given string to title case following the [APA guidelines](https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case):
+
+    use Illuminate\Support\Str;
+
+    $title = Str::apa('Creating A Project');
+
+    // 'Creating a Project'
 
 <a name="method-str-ascii"></a>
 #### `Str::ascii()` {.collection-method}
@@ -1313,6 +1326,17 @@ The `afterLast` method returns everything after the last occurrence of the given
     $slice = Str::of('App\Http\Controllers\Controller')->afterLast('\\');
 
     // 'Controller'
+
+<a name="method-fluent-str-apa"></a>
+#### `apa` {.collection-method}
+
+The `apa` method converts the given string to title case following the [APA guidelines](https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case):
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::of('a nice title uses the correct case')->apa();
+
+    // A Nice Title Uses the Correct Case
 
 <a name="method-fluent-str-append"></a>
 #### `append` {.collection-method}

@@ -83,6 +83,21 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [last](#method-last)
 </div>
 
+<a name="numbers-method-list"></a>
+### Numbers
+
+<div class="collection-method-list" markdown="1">
+
+[Number::abbreviate](#method-number-abbreviate)
+[Number::format](#method-number-format)
+[Number::percentage](#method-number-percentage)
+[Number::currency](#method-number-currency)
+[Number::fileSize](#method-number-file-size)
+[Number::forHumans](#method-number-for-humans)
+
+</div>
+
+
 <a name="paths-method-list"></a>
 ### Paths
 
@@ -1080,6 +1095,131 @@ The `last` function returns the last element in the given array:
 
     // 300
 
+<a name="numbers"></a>
+## Numbers
+
+<a name="method-number-abbreviate"></a>
+#### `Number::abbreviate()` {.collection-method}
+
+The `Number::abbreviate` method returns the human-readable format of the provided numerical value, with an abbreviation for the units:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::abbreviate(1000);
+
+    // 1K
+
+    $number = Number::abbreviate(489939);
+
+    // 490K
+
+    $number = Number::abbreviate(1230000, precision: 2);
+
+    // 1.23M
+
+<a name="method-number-format"></a>
+#### `Number::format()` {.collection-method}
+
+The `Number::format` method formats the given number into a locale specific string:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::format(100000);
+
+    // 100,000
+
+    $number = Number::format(100000, precision: 2);
+
+    // 100,000.00
+
+    $number = Number::format(100000.123, maxPrecision: 2);
+
+    // 100,000.12
+
+    $number = Number::format(100000, locale: 'de');
+
+    // 100.000
+
+<a name="method-number-percentage"></a>
+#### `Number::percentage()` {.collection-method}
+
+The `Number::percentage` method returns the percentage representation of the given value as a string:
+
+    use Illuminate\Support\Number;
+
+    $percentage = Number::percentage(10);
+
+    // 10%
+
+    $percentage = Number::percentage(10, precision: 2);
+
+    // 10.00%
+
+    $percentage = Number::percentage(10.123, maxPrecision: 2);
+
+    // 10.12%
+
+    $percentage = Number::percentage(10, precision: 2, locale: 'de');
+
+    // 10,00%
+
+<a name="method-number-currency"></a>
+#### `Number::currency()` {.collection-method}
+
+The `Number::currency` method returns the currency representation of the given value as a string:
+
+    use Illuminate\Support\Number;
+
+    $currency = Number::currency(1000);
+
+    // $1,000
+
+    $currency = Number::currency(1000, in: 'EUR');
+
+    // €1,000
+
+    $currency = Number::currency(1000, in: 'EUR', locale: 'de');
+
+    // 1.000 €
+
+<a name="method-number-file-size"></a>
+#### `Number::fileSize()` {.collection-method}
+
+The `Number::fileSize` method returns the file size representation of the given byte value as a string:
+
+    use Illuminate\Support\Number;
+
+    $size = Number::fileSize(1024);
+
+    // 1 KB
+
+    $size = Number::fileSize(1024 * 1024);
+
+    // 1 MB
+
+    $size = Number::fileSize(1024, precision: 2);
+
+    // 1.00 KB
+
+<a name="method-number-for-humans"></a>
+#### `Number::forHumans()` {.collection-method}
+
+The `Number::forHumans` method returns the human-readable format of the provided numerical value:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::forHumans(1000);
+
+    // 1 thousand
+
+    $number = Number::forHumans(489939);
+
+    // 490 thousand
+
+    $number = Number::forHumans(1230000, precision: 2);
+
+    // 1.23 million
+
 <a name="paths"></a>
 ## Paths
 
@@ -1128,7 +1268,7 @@ The `lang_path` function returns the fully qualified path to your application's 
 
     $path = lang_path('en/messages.php');
 
-> **Note**
+> [!NOTE]  
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 <a name="method-mix"></a>
@@ -1474,7 +1614,7 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
 
     $env = env('APP_ENV', 'production');
 
-> **Warning**  
+> [!WARNING]  
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
 
 <a name="method-event"></a>

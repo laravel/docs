@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-- [Using The Encrypter](#using-the-encrypter)
+- [Using the Encrypter](#using-the-encrypter)
 
 <a name="introduction"></a>
 ## Introduction
@@ -15,10 +15,10 @@ Laravel's encryption services provide a simple, convenient interface for encrypt
 Before using Laravel's encrypter, you must set the `key` configuration option in your `config/app.php` configuration file. This configuration value is driven by the `APP_KEY` environment variable. You should use the `php artisan key:generate` command to generate this variable's value since the `key:generate` command will use PHP's secure random bytes generator to build a cryptographically secure key for your application. Typically, the value of the `APP_KEY` environment variable will be generated for you during [Laravel's installation](/docs/{{version}}/installation).
 
 <a name="using-the-encrypter"></a>
-## Using The Encrypter
+## Using the Encrypter
 
 <a name="encrypting-a-value"></a>
-#### Encrypting A Value
+#### Encrypting a Value
 
 You may encrypt a value using the `encryptString` method provided by the `Crypt` facade. All encrypted values are encrypted using OpenSSL and the AES-256-CBC cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC). The integrated message authentication code will prevent the decryption of any values that have been tampered with by malicious users:
 
@@ -46,7 +46,7 @@ You may encrypt a value using the `encryptString` method provided by the `Crypt`
     }
 
 <a name="decrypting-a-value"></a>
-#### Decrypting A Value
+#### Decrypting a Value
 
 You may decrypt values using the `decryptString` method provided by the `Crypt` facade. If the value can not be properly decrypted, such as when the message authentication code is invalid, an `Illuminate\Contracts\Encryption\DecryptException` will be thrown:
 
