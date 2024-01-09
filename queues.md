@@ -2135,6 +2135,9 @@ You may use the `Queue` facade's `fake` method to prevent queued jobs from actua
 
             // Assert that a Closure was pushed to the queue...
             Queue::assertClosurePushed();
+
+            // Assert the total number of jobs that were pushed...
+            Queue::assertCount(3);
         }
     }
 
