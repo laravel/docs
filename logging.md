@@ -66,7 +66,7 @@ Name | Description
 
 </div>
 
-> **Note**  
+> [!NOTE]  
 > Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
 <a name="channel-prerequisites"></a>
@@ -350,7 +350,7 @@ Once you have configured the `tap` option on your channel, you're ready to defin
         }
     }
 
-> **Note**  
+> [!NOTE]  
 > All of your "tap" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected.
 
 <a name="creating-monolog-handler-channels"></a>
@@ -461,7 +461,7 @@ Laravel Pail is a package that allows you to easily dive into your Laravel appli
 <a name="pail-installation"></a>
 ### Installation
 
-> **Warning**
+> [!WARNING]  
 > Laravel Pail requires [PHP 8.2+](https://php.net/releases/) and the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
 
 To get started, install Pail into your project using the Composer package manager:

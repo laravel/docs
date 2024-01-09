@@ -50,7 +50,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-> **Warning**
+> [!WARNING]  
 > This documentation is for Cashier Paddle 2.x's integration with Paddle Billing. If you're still using Paddle Classic, you should use [Cashier Paddle 1.x](https://github.com/laravel/cashier-paddle/tree/1.x).
 
 [Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle) provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: swapping subscriptions, subscription "quantities", subscription pausing, cancelation grace periods, and more.
@@ -83,7 +83,7 @@ Then, you should run your application's database migrations. The Cashier migrati
 php artisan migrate
 ```
 
-> **Warning**  
+> [!WARNING]  
 > To ensure Cashier properly handles all Paddle events, remember to [set up Cashier's webhook handling](#handling-paddle-webhooks).
 
 <a name="paddle-sandbox"></a>
@@ -163,7 +163,7 @@ You can specify a locale to be used when formatting money values for display on 
 CASHIER_CURRENCY_LOCALE=nl_BE
 ```
 
-> **Warning**  
+> [!WARNING]  
 > In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server.
 
 <a name="overriding-default-models"></a>
@@ -231,7 +231,7 @@ By default, this will display the widget using Paddle's default styling. You can
 
 The Paddle checkout widget is asynchronous. Once the user creates a subscription within the widget, Paddle will send your application a webhook so that you may properly update the subscription state in your application's database. Therefore, it's important that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
 
-> **Warning**  
+> [!WARNING]  
 > After a subscription state change, the delay for receiving the corresponding webhook is typically minimal but you should account for this in your application by considering that your user's subscription might not be immediately available after completing the checkout.
 
 <a name="manually-rendering-an-overlay-checkout"></a>
@@ -598,7 +598,7 @@ If you would like subscriptions to still be considered valid when they are `past
         Cashier::keepPastDueSubscriptionsActive();
     }
 
-> **Warning**  
+> [!WARNING]  
 > When a subscription is in a `past_due` state it cannot be changed until payment information has been updated. Therefore, the `swap` and `updateQuantity` methods will throw an exception when the subscription is in a `past_due` state.
 
 <a name="subscription-scopes"></a>
@@ -764,7 +764,7 @@ You may remove prices from subscriptions using the `swap` method and omitting th
 
     $user->subscription()->swap(['price_original' => 2]);
 
-> **Warning**  
+> [!WARNING]  
 > You may not remove the last price on a subscription. Instead, you should simply cancel the subscription.
 
 <a name="multiple-subscriptions"></a>
@@ -821,7 +821,7 @@ To resume a paused subscription, you may invoke the `resume` method on the subsc
 
     $user->subscription()->resume();
 
-> **Warning**  
+> [!WARNING]  
 > A subscription cannot be modified while it is paused. If you want to swap to a different plan or update quantities you must resume the subscription first.
 
 <a name="canceling-subscriptions"></a>
@@ -847,7 +847,7 @@ To stop a subscription on its grace period from canceling, you may invoke the `s
 
     $user->subscription()->stopCancelation();
 
-> **Warning**  
+> [!WARNING]  
 > Paddle's subscriptions cannot be resumed after cancelation. If your customer wishes to resume their subscription, they will have to create a new subscription.
 
 <a name="subscription-trials"></a>
@@ -869,7 +869,7 @@ If you would like to offer trial periods to your customers while still collectin
 
 When your application receives the `subscription_created` event, Cashier will set the trial period ending date on the subscription record within your application's database as well as instruct Paddle to not begin billing the customer until after this date.
 
-> **Warning**  
+> [!WARNING]  
 > If the customer's subscription is not canceled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
 
 You may determine if the user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
@@ -973,7 +973,7 @@ To ensure your application can handle Paddle webhooks, be sure to [configure the
 - Subscription Paused
 - Subscription Canceled
 
-> **Warning**  
+> [!WARNING]  
 > Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/cashier-paddle#verifying-webhook-signatures) middleware.
 
 <a name="webhooks-csrf-protection"></a>
@@ -1120,7 +1120,7 @@ The example above refunds specific line items in a transaction. If you want to r
 
 For more information on refunds, please consult [Paddle's refund documentation](https://developer.paddle.com/build/transactions/create-transaction-adjustments).
 
-> **Warning**
+> [!WARNING]  
 > Refunds must always be approved by Paddle before fully processing.
 
 <a name="crediting-transactions"></a>
@@ -1135,7 +1135,7 @@ Just like refunding, you can also credit transactions. Crediting transactions wi
 
 For more info, [see Paddle's documentation on crediting](https://developer.paddle.com/build/transactions/create-transaction-adjustments).
 
-> **Warning**
+> [!WARNING]  
 > Credits can only be applied for manually-collected transactions. Automatically-collected transactions are credited by Paddle themselves.
 
 <a name="transactions"></a>

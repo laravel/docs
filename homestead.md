@@ -42,7 +42,7 @@ Laravel strives to make the entire PHP development experience delightful, includ
 
 Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other software you need to develop amazing Laravel applications.
 
-> **Warning**  
+> [!WARNING]  
 > If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS. If you are using Hyper-V on a UEFI system you may additionally need to disable Hyper-V in order to access VT-x.
 
 <a name="included-software"></a>
@@ -189,7 +189,7 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 
     provider: virtualbox
 
-> **Warning**  
+> [!WARNING]  
 > If you are using Apple Silicon the Parallels provider is required.
 
 <a name="configuring-shared-folders"></a>
@@ -203,7 +203,7 @@ folders:
       to: /home/vagrant/project1
 ```
 
-> **Warning**  
+> [!WARNING]  
 > Windows users should not use the `~/` path syntax and instead should use the full path to their project, such as `C:\Users\user\Code\project1`.
 
 You should always map individual applications to their own folder mapping instead of mapping a single large directory that contains all of your applications. When you map a folder, the virtual machine must keep track of all disk IO for *every* file in the folder. You may experience reduced performance if you have a large number of files in a folder:
@@ -216,7 +216,7 @@ folders:
       to: /home/vagrant/project2
 ```
 
-> **Warning**  
+> [!WARNING]  
 > You should never mount `.` (the current directory) when using Homestead. This causes Vagrant to not map the current folder to `/vagrant` and will break optional features and cause unexpected results while provisioning.
 
 To enable [NFS](https://developer.hashicorp.com/vagrant/docs/synced-folders/nfs), you may add a `type` option to your folder mapping:
@@ -228,7 +228,7 @@ folders:
       type: "nfs"
 ```
 
-> **Warning**  
+> [!WARNING]  
 > When using NFS on Windows, you should consider installing the [vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) plug-in. This plug-in will maintain the correct user / group permissions for files and directories within the Homestead virtual machine.
 
 You may also pass any options supported by Vagrant's [Synced Folders](https://developer.hashicorp.com/vagrant/docs/synced-folders/basic_usage) by listing them under the `options` key:
@@ -256,7 +256,7 @@ sites:
 
 If you change the `sites` property after provisioning the Homestead virtual machine, you should execute the `vagrant reload --provision` command in your terminal to update the Nginx configuration on the virtual machine.
 
-> **Warning**  
+> [!WARNING]  
 > Homestead scripts are built to be as idempotent as possible. However, if you are experiencing issues while provisioning you should destroy and rebuild the machine by executing the `vagrant destroy && vagrant up` command.
 
 <a name="hostname-resolution"></a>
@@ -372,7 +372,7 @@ features:
 
 You may specify a supported version of Elasticsearch, which must be an exact version number (major.minor.patch). The default installation will create a cluster named 'homestead'. You should never give Elasticsearch more than half of the operating system's memory, so make sure your Homestead virtual machine has at least twice the Elasticsearch allocation.
 
-> **Note**  
+> [!NOTE]  
 > Check out the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current) to learn how to customize your configuration.
 
 <a name="mariadb"></a>
@@ -470,7 +470,7 @@ sites:
       to: /home/vagrant/project2/public
 ```
 
-> **Warning**  
+> [!WARNING]  
 > You should ensure that you have configured a [folder mapping](#configuring-shared-folders) for the project's directory before adding the site.
 
 If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well. On macOS and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`:
@@ -608,7 +608,7 @@ php82
 
 A `homestead` database is configured for both MySQL and PostgreSQL out of the box. To connect to your MySQL or PostgreSQL database from your host machine's database client, you should connect to `127.0.0.1` on port `33060` (MySQL) or `54320` (PostgreSQL). The username and password for both databases is `homestead` / `secret`.
 
-> **Warning**  
+> [!WARNING]  
 > You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel application's `database` configuration file since Laravel is running _within_ the virtual machine.
 
 <a name="database-backups"></a>
@@ -725,7 +725,7 @@ share homestead.test -region=eu -subdomain=laravel
 
 If you need to share content over HTTPS rather than HTTP, using the `sshare` command instead of `share` will enable you to do so.
 
-> **Warning**  
+> [!WARNING]  
 > Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the Internet when running the `share` command.
 
 <a name="debugging-and-profiling"></a>
@@ -738,7 +738,7 @@ Homestead includes support for step debugging using [Xdebug](https://xdebug.org)
 
 By default, Xdebug is already running and ready to accept connections. If you need to enable Xdebug on the CLI, execute the `sudo phpenmod xdebug` command within your Homestead virtual machine. Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
-> **Warning**  
+> [!WARNING]  
 > Xdebug causes PHP to run significantly slower. To disable Xdebug, run `sudo phpdismod xdebug` within your Homestead virtual machine and restart the FPM service.
 
 <a name="autostarting-xdebug"></a>

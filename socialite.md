@@ -17,7 +17,7 @@
 
 In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, Twitter, LinkedIn, Google, GitHub, GitLab, Bitbucket, and Slack.
 
-> **Note**  
+> [!NOTE]  
 > Adapters for other platforms are available via the community driven [Socialite Providers](https://socialiteproviders.com/) website.
 
 <a name="installation"></a>
@@ -47,7 +47,7 @@ These credentials should be placed in your application's `config/services.php` c
         'redirect' => 'http://example.com/callback-url',
     ],
 
-> **Note**  
+> [!NOTE]  
 > If the `redirect` option contains a relative path, it will automatically be resolved to a fully qualified URL.
 
 <a name="authentication"></a>
@@ -98,7 +98,7 @@ Once the user has been retrieved from the OAuth provider, you may determine if t
         return redirect('/dashboard');
     });
 
-> **Note**  
+> [!NOTE]  
 > For more information regarding what user information is available from specific OAuth providers, please consult the documentation on [retrieving user details](#retrieving-user-details).
 
 <a name="access-scopes"></a>
@@ -156,7 +156,7 @@ A number of OAuth providers support other optional parameters on the redirect re
         ->with(['hd' => 'example.com'])
         ->redirect();
 
-> **Warning**  
+> [!WARNING]  
 > When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`.
 
 <a name="retrieving-user-details"></a>
@@ -215,5 +215,5 @@ The `stateless` method may be used to disable session state verification. This i
 
     return Socialite::driver('google')->stateless()->user();
 
-> **Warning**  
+> [!WARNING]  
 > Stateless authentication is not available for the Twitter OAuth 1.0 driver.

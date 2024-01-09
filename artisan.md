@@ -62,7 +62,7 @@ All Laravel applications include Tinker by default. However, you may install Tin
 composer require laravel/tinker
 ```
 
-> **Note**  
+> [!NOTE]  
 > Looking for hot reloading, multiline code editing, and autocompletion when interacting with your Laravel application? Check out [Tinkerwell](https://tinkerwell.app)!
 
 <a name="usage"></a>
@@ -80,7 +80,7 @@ You can publish Tinker's configuration file using the `vendor:publish` command:
 php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 ```
 
-> **Warning**  
+> [!WARNING]  
 > The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depends on garbage collection to place the job on the queue. Therefore, when using tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs.
 
 <a name="command-allow-list"></a>
@@ -155,7 +155,7 @@ Let's take a look at an example command. Note that we are able to request any de
         }
     }
 
-> **Note**  
+> [!NOTE]  
 > For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
 
 <a name="closure-commands"></a>
@@ -203,7 +203,7 @@ When defining a closure based command, you may use the `purpose` method to add a
 <a name="isolatable-commands"></a>
 ### Isolatable Commands
 
-> **Warning**
+> [!WARNING]  
 > To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 Sometimes you may wish to ensure that only one instance of a command can run at a time. To accomplish this, you may implement the `Illuminate\Contracts\Console\Isolatable` interface on your command class:
@@ -448,7 +448,7 @@ If you would like complete control over the prompt, you may provide a closure th
         ),
     ];
 
-> **Note**  
+> [!NOTE]  
 The comprehensive [Laravel Prompts](/docs/{{version}}/prompts) documentation includes additional information on the available prompts and their usage.
 
 If you wish to prompt the user to select or enter [options](#options), you may include prompts in your command's `handle` method. However, if you only wish to prompt the user when they have also been automatically prompted for missing arguments, then you may implement the `afterPromptingForMissingArguments` method:
@@ -505,7 +505,7 @@ Options may be retrieved just as easily as arguments using the `option` method. 
 <a name="prompting-for-input"></a>
 ### Prompting for Input
 
-> **Note**  
+> [!NOTE]  
 > [Laravel Prompts](/docs/{{version}}/prompts) is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
 
 In addition to displaying output, you may also ask the user to provide input during the execution of your command. The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command:
@@ -648,7 +648,7 @@ Sometimes, you may need more manual control over how a progress bar is advanced.
 
     $bar->finish();
 
-> **Note**  
+> [!NOTE]  
 > For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/current/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>

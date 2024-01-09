@@ -46,7 +46,7 @@ The `App\Providers\EventServiceProvider` included with your Laravel application 
         ],
     ];
 
-> **Note**  
+> [!NOTE]  
 > The `event:list` command may be used to display a list of all events and listeners registered by your application.
 
 <a name="generating-events-and-listeners"></a>
@@ -244,7 +244,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
         }
     }
 
-> **Note**  
+> [!NOTE]  
 > Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
 
 <a name="stopping-the-propagation-of-an-event"></a>
@@ -414,7 +414,7 @@ If your queue connection's `after_commit` configuration option is set to `false`
         use InteractsWithQueue;
     }
 
-> **Note**  
+> [!NOTE]  
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="handling-failed-jobs"></a>
@@ -529,7 +529,7 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
 
     OrderShipped::dispatchUnless($condition, $order);
 
-> **Note**  
+> [!NOTE]  
 > When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
 
 <a name="dispatching-events-after-database-transactions"></a>
@@ -729,7 +729,7 @@ If you would simply like to assert that an event listener is listening to a give
         SendShipmentNotification::class
     );
 
-> **Warning**
+> [!WARNING]  
 > After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
 
 <a name="faking-a-subset-of-events"></a>

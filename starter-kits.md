@@ -65,7 +65,7 @@ npm run dev
 
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
 
-> **Note**
+> [!NOTE]  
 > To learn more about compiling your application's CSS and JavaScript, check out Laravel's [Vite documentation](/docs/{{version}}/vite#running-vite).
 
 <a name="breeze-and-livewire"></a>

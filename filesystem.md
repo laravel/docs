@@ -37,7 +37,7 @@ Laravel's filesystem configuration file is located at `config/filesystems.php`. 
 
 The `local` driver interacts with files stored locally on the server running the Laravel application while the `s3` driver is used to write to Amazon's S3 cloud storage service.
 
-> **Note**
+> [!NOTE]  
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
 
 <a name="the-local-driver"></a>
@@ -202,7 +202,7 @@ In order for Laravel's Flysystem integration to generate proper URLs when using 
 AWS_URL=http://localhost:9000/local
 ```
 
-> **Warning**  
+> [!WARNING]  
 > Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
 
 <a name="obtaining-disk-instances"></a>
@@ -277,7 +277,7 @@ You may use the `url` method to get the URL for a given file. If you are using t
 
 When using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) at `public/storage` which points to the `storage/app/public` directory.
 
-> **Warning**  
+> [!WARNING]  
 > When using the `local` driver, the return value of `url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
 
 <a name="url-host-customization"></a>
@@ -347,7 +347,7 @@ If you need to customize how temporary URLs are created for a specific storage d
 <a name="temporary-upload-urls"></a>
 #### Temporary Upload URLs
 
-> **Warning**
+> [!WARNING]  
 > The ability to generate temporary upload URLs is only supported by the `s3` driver.
 
 If you need to generate a temporary URL that can be used to upload a file directly from your client-side application, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire. The `temporaryUploadUrl` method returns an associative array which may be destructured into the upload URL and the headers that should be included with the upload request:
@@ -498,7 +498,7 @@ You may also use the `putFileAs` method on the `Storage` facade, which will perf
         'avatars', $request->file('avatar'), $request->user()->id
     );
 
-> **Warning**  
+> [!WARNING]  
 > Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\WhitespacePathNormalizer::normalizePath` method.
 
 <a name="specifying-a-disk"></a>
@@ -675,7 +675,7 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
 
 By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads).
 
-> **Warning**
+> [!WARNING]  
 > The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php).
 
 <a name="custom-filesystems"></a>
