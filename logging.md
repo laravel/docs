@@ -214,7 +214,9 @@ You may call any of these methods to log a message for the corresponding level. 
 <a name="contextual-information"></a>
 ### Contextual Information
 
-An array of contextual data may be passed to the log methods. This contextual data will be formatted and displayed with the log message:
+An array of contextual data may be passed to the log methods. This contextual data will be formatted and displayed with the log message.
+
+If you want Monolog to replace context placeholders in your message, as shown below, you can add `'replace_placeholders' => true` to the log channel configuration.  
 
     use Illuminate\Support\Facades\Log;
 
