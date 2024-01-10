@@ -1645,6 +1645,7 @@ To ensure your application can handle Stripe webhooks, be sure to configure the 
 - `customer.updated`
 - `customer.deleted`
 - `payment_method.automatically_updated`
+- `payment_method.card_automatically_updated`
 - `invoice.payment_action_required`
 - `invoice.payment_succeeded`
 
