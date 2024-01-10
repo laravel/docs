@@ -32,7 +32,7 @@
 
 [Laravel Scout](https://github.com/laravel/scout) provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
-Currently, Scout ships with [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
+Currently, Scout ships with [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), [Typesense](https://typesense.org), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
 <a name="installation"></a>
 ## Installation
@@ -101,6 +101,37 @@ In addition, you should ensure that you install a version of `meilisearch/meilis
 > [!WARNING]  
 > When upgrading Scout on an application that utilizes Meilisearch, you should always [review any additional breaking changes](https://github.com/meilisearch/Meilisearch/releases) to the Meilisearch service itself.
 
+<a name="typesense"></a>
+#### Typesense
+
+[Typesense](https://typesense.org) is a lightning-fast, open source alternative to Algolia and supports keyword search, semantic search, geo search and vector search.
+
+You can [self-host](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-self-hosting) Typesense or you can use their [hosted version](https://cloud.typesense.org). 
+
+When using the Typesense driver you will need to install the Typesense PHP SDK via the Composer package manager:
+
+```shell
+composer require typesense/typesense-php
+```
+
+Then, set the `SCOUT_DRIVER` environment variable as well as your Typesense host and API key credentials within your application's .env file:
+
+```env
+SCOUT_DRIVER=typesense
+TYPESENSE_API_KEY=xyz
+TYPESENSE_HOST=localhost
+```
+
+You can also modify `port`, `path` and `protocol` as needed:
+
+```env
+TYPESENSE_PORT=8108
+TYPESENSE_PATH=
+TYPESENSE_PROTOCOL=http
+```
+
+For more information regarding Typesense, please consult the [Typesense documentation](https://typesense.org/docs/guide/#quick-start).
+
 <a name="queueing"></a>
 ### Queueing
 
@@ -110,7 +141,9 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 
     'queue' => true,
 
-Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
+Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately. 
+
+Typesense, on the other hand, indexes records synchronously. So you want to set `'queue' => true` so that writes to Typesense are sent from a queue worker.
 
 To specify the connection and queue that your Scout jobs utilize, you may define the `queue` configuration option as an array:
 
@@ -235,6 +268,130 @@ After configuring your application's index settings, you must invoke the `scout:
 php artisan scout:sync-index-settings
 ```
 
+<a name="configuring-collection-and-search-parameters-for-typesense"></a>
+#### Configuring Collection & Search Parameters (Typesense)
+
+Cast your model `id` to string and `created_at` to `int32` timestamp by customizing `toSearchableArray()`:
+
+```php
+<?php
+
+    public function toSearchableArray()
+    {
+        return array_merge(
+            $this->toArray(), 
+            [
+                // Cast id to string and turn created_at into an int32 timestamp
+                // in order to maintain compatibility with the Typesense collection schema below
+                'id' => (string) $this->id,
+                'created_at' => $this->created_at->timestamp,
+            ]
+        );
+    }
+```
+
+To set up Typesense collection schemas, in `config/scout.php` find the `typesense` driver configs and modify `model-settings` array as shown in example below.
+
+To modify the model `query_by` attributes you have to set up `seach-parameters` in `model-settings`
+
+Note: `query_by` is a required parameter.
+
+```php
+use App\Models\User;
+
+ /*
+    |--------------------------------------------------------------------------
+    | Typesense Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure your Typesense settings. Typesense is an open
+    | source search engine with minimal configuration. Below, you can state
+    | the host and key information for your own Typesense installation.
+    |
+    | See: https://typesense.org/docs/latest/api/authentication.html
+    |
+    */
+
+    'typesense' => [
+        'client-settings' => [
+            'api_key' => env('TYPESENSE_API_KEY', 'xyz'),
+            'nodes' => [
+                [
+                    'host' => env('TYPESENSE_HOST', 'localhost'),
+                    'port' => env('TYPESENSE_PORT', '8108'),
+                    'path' => env('TYPESENSE_PATH', ''),
+                    'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
+                ],
+            ],
+            'nearest_node' => [
+                'host' => env('TYPESENSE_HOST', 'localhost'),
+                'port' => env('TYPESENSE_PORT', '8108'),
+                'path' => env('TYPESENSE_PATH', ''),
+                'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
+            ],
+            'connection_timeout_seconds' => env('TYPESENSE_CONNECTION_TIMEOUT_SECONDS', 2),
+            'healthcheck_interval_seconds' => env('TYPESENSE_HEALTHCHECK_INTERVAL_SECONDS', 30),
+            'num_retries' => env('TYPESENSE_NUM_RETRIES', 3),
+            'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
+        ],
+        'model-settings' => [
+            User::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                        ],
+                        [
+                            'name' => '__soft_deleted', // <==== When scout.soft_delete is set to true, this field is set to 1 if the record is deleted.
+                            'type' => 'int32',
+                            'optional' => true
+                        ],
+                    ],
+                    'default_sorting_field' => 'created_at',
+                ],
+                'search-parameters' => [ 
+                    'query_by' => 'name, title' // required
+                ],
+            ],
+        ],
+    ],
+```
+
+<a name="search-parameters-on-the-fly-for-typesense"></a>
+##### Search Parameters On The Fly (Typesense)
+
+Typesense supports the ability to set almost all search parameters on the fly, if needed.
+
+To modify search parameters on the fly you can use the `setSearchParameters` method of the Typesense Engine.
+
+```php
+use App\Models\Todo;
+
+Todo::search('Do grocceries')->setSearchParameters(['query_by' => 'title, description'])->get();
+```
+
+Here are some example search parameters:
+
+```php
+'highlight_start_tag' => '<mark>',
+'highlight_end_tag' => '</mark>',
+'snippet_threshold' => 30,
+'exhaustive_search' => false,
+'use_cache' => false,
+'cache_ttl' => 60,
+'prioritize_exact_match' => true,
+'enable_overrides' => true,
+'highlight_affix_num_tokens' => 4,
+```
+
+Full list of Typesense search parameters and descriptions can be found [here](https://typesense.org/docs/latest/api/search.html#search-parameters).
+
+
 <a name="configuring-the-model-id"></a>
 ### Configuring the Model ID
 
@@ -323,7 +480,7 @@ To use the database engine, you may simply set the value of the `SCOUT_DRIVER` e
 SCOUT_DRIVER=database
 ```
 
-Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or Meilisearch indexes, is unnecessary when using the database engine.
+Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia, Meilisearch or Typesense indexes, is unnecessary when using the database engine.
 
 #### Customizing Database Searching Strategies
 
@@ -359,7 +516,7 @@ public function toSearchableArray(): array
 <a name="collection-engine"></a>
 ### Collection Engine
 
-While you are free to use the Algolia or Meilisearch search engines during local development, you may find it more convenient to get started with the "collection" engine. The collection engine will use "where" clauses and collection filtering on results from your existing database to determine the applicable search results for your query. When using this engine, it is not necessary to "index" your searchable models, as they will simply be retrieved from your local database.
+While you are free to use the Algolia, Meilisearch or Typesense search engines during local development, you may find it more convenient to get started with the "collection" engine. The collection engine will use "where" clauses and collection filtering on results from your existing database to determine the applicable search results for your query. When using this engine, it is not necessary to "index" your searchable models, as they will simply be retrieved from your local database.
 
 To use the collection engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `collection`, or specify the `collection` driver directly in your application's `scout` configuration file:
 
@@ -367,7 +524,7 @@ To use the collection engine, you may simply set the value of the `SCOUT_DRIVER`
 SCOUT_DRIVER=collection
 ```
 
-Once you have specified the collection driver as your preferred driver, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or Meilisearch indexes, is unnecessary when using the collection engine.
+Once you have specified the collection driver as your preferred driver, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia, Meilisearch or Typesense indexes, is unnecessary when using the collection engine.
 
 #### Differences From Database Engine
 
