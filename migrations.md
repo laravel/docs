@@ -960,14 +960,14 @@ Modifier  |  Description
 `->after('column')`  |  Place the column "after" another column (MySQL).
 `->autoIncrement()`  |  Set INTEGER columns as auto-incrementing (primary key).
 `->charset('utf8mb4')`  |  Specify a character set for the column (MySQL).
-`->collation('utf8mb4_unicode_ci')`  |  Specify a collation for the column (MySQL/PostgreSQL/SQL Server).
+`->collation('utf8mb4_unicode_ci')`  |  Specify a collation for the column.
 `->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL).
 `->default($value)`  |  Specify a "default" value for the column.
 `->first()`  |  Place the column "first" in the table (MySQL).
 `->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL).
 `->invisible()`  |  Make the column "invisible" to `SELECT *` queries (MySQL).
 `->nullable($value = true)`  |  Allow NULL values to be inserted into the column.
-`->storedAs($expression)`  |  Create a stored generated column (MySQL / PostgreSQL).
+`->storedAs($expression)`  |  Create a stored generated column (MySQL / PostgreSQL / SQLite).
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.
 `->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated (MySQL).
@@ -1032,28 +1032,6 @@ When modifying a column, you must explicitly include all of the modifiers you wa
         $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();
     });
 
-<a name="modifying-columns-on-sqlite"></a>
-#### Modifying Columns on SQLite
-
-If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package using the Composer package manager before modifying a column. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:
-
-    composer require doctrine/dbal
-
-If you plan to modify columns created using the `timestamp` method, you must also add the following configuration to your application's `config/database.php` configuration file:
-
-```php
-use Illuminate\Database\DBAL\TimestampType;
-
-'dbal' => [
-    'types' => [
-        'timestamp' => TimestampType::class,
-    ],
-],
-```
-
-> [!WARNING]  
-> When using the `doctrine/dbal` package, the following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, `ulid`, and `uuid`.
-
 <a name="renaming-columns"></a>
 ### Renaming Columns
 
@@ -1062,19 +1040,6 @@ To rename a column, you may use the `renameColumn` method provided by the schema
     Schema::table('users', function (Blueprint $table) {
         $table->renameColumn('from', 'to');
     });
-
-<a name="renaming-columns-on-legacy-databases"></a>
-#### Renaming Columns on Legacy Databases
-
-If you are running a database installation older than one of the following releases, you should ensure that you have installed the `doctrine/dbal` library via the Composer package manager before renaming a column:
-
-<div class="content-list" markdown="1">
-
-- MySQL < `8.0.3`
-- MariaDB < `10.5.2`
-- SQLite < `3.25.0`
-
-</div>
 
 <a name="dropping-columns"></a>
 ### Dropping Columns
@@ -1090,11 +1055,6 @@ You may drop multiple columns from a table by passing an array of column names t
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
-
-<a name="dropping-columns-on-legacy-databases"></a>
-#### Dropping Columns on Legacy Databases
-
-If you are running a version of SQLite prior to `3.35.0`, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used. Dropping or modifying multiple columns within a single migration while using this package is not supported.
 
 <a name="available-command-aliases"></a>
 #### Available Command Aliases
@@ -1175,9 +1135,6 @@ Alternatively, you may enable the `innodb_large_prefix` option for your database
 To rename an index, you may use the `renameIndex` method provided by the schema builder blueprint. This method accepts the current index name as its first argument and the desired name as its second argument:
 
     $table->renameIndex('from', 'to')
-
-> [!WARNING]  
-> If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package via the Composer package manager before the `renameIndex` method may be used.
 
 <a name="dropping-indexes"></a>
 ### Dropping Indexes
