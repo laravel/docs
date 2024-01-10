@@ -173,12 +173,6 @@ The `DatabaseMigrations` trait will run your database migrations before each tes
 <a name="reset-truncation"></a>
 #### Using Database Truncation
 
-Before using the `DatabaseTruncation` trait, you must install the `doctrine/dbal` package using the Composer package manager:
-
-```shell
-composer require --dev doctrine/dbal
-```
-
 The `DatabaseTruncation` trait will migrate your database on the first test in order to ensure your database tables have been properly created. However, on subsequent tests, the database's tables will simply be truncated - providing a speed boost over re-running all of your database migrations:
 
     <?php
