@@ -130,7 +130,7 @@ Sanctum allows you to issue API tokens / personal access tokens that may be used
 To begin issuing tokens for users, your User model should use the `Laravel\Sanctum\HasApiTokens` trait:
 
     use Illuminate\Database\Eloquent\Model;
-    use Illuminate\Contracts\Auth\Authenticatable
+    use Illuminate\Contracts\Auth\Authenticatable;
     use Laravel\Sanctum\HasApiTokens;
 
     class User extends Model implements Authenticatable
