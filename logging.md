@@ -255,21 +255,34 @@ Occasionally, you may wish to specify some contextual information that should be
         }
     }
 
-If you would like to share contextual information across _all_ logging channels, you may call the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently. Typically, the `shareContext` method should be called from the `boot` method of an application service provider:
+If you would like to share contextual information across _all_ logging channels, you may call the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently:
 
+    <?php
+
+    namespace App\Http\Middleware;
+
+    use Closure;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Log;
     use Illuminate\Support\Str;
+    use Symfony\Component\HttpFoundation\Response;
 
-    class AppServiceProvider
+    class AssignRequestId
     {
         /**
-         * Bootstrap any application services.
+         * Handle an incoming request.
+         *
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function boot(): void
+        public function handle(Request $request, Closure $next): Response
         {
-            Log::shareContext([
-                'invocation-id' => (string) Str::uuid(),
+            $requestId = (string) Str::uuid();
+
+            Log::withContext([
+                'request-id' => $requestId
             ]);
+
+            // ...
         }
     }
 
