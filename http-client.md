@@ -150,7 +150,7 @@ You may use the `withBody` method if you would like to provide a raw request bod
 If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. If needed, you may provide a third argument which will be considered the file's filename:
 
     $response = Http::attach(
-        'attachment', file_get_contents('photo.jpg'), 'photo.jpg'
+        'attachment', file_get_contents('photo.jpg'), 'photo.jpg', ['Content-Type' => 'image/jpeg']
     )->post('http://example.com/attachments');
 
 Instead of passing the raw contents of a file, you may pass a stream resource:
