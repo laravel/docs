@@ -255,7 +255,7 @@ Occasionally, you may wish to specify some contextual information that should be
         }
     }
 
-If you would like to share contextual information across _all_ logging channels, you may call the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently:
+If you would like to share contextual information across _all_ logging channels, you may invoke the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently:
 
     <?php
 
@@ -285,6 +285,9 @@ If you would like to share contextual information across _all_ logging channels,
             // ...
         }
     }
+
+> [!NOTE]
+> If you need to share log context while processing queued jobs, you may utilize [job middleware](/docs/{{version}}/queues#job-middleware).
 
 <a name="writing-to-specific-channels"></a>
 ### Writing to Specific Channels
