@@ -2,8 +2,11 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-    - [Driver Prerequisites](#driver-prerequisites)
     - [Queueing](#queueing)
+- [Driver Prerequisites](#driver-prerequisites)
+    - [Algolia](#algolia)
+    - [Meilisearch](#meilisearch)
+    - [Typesense](#typesense)
 - [Configuration](#configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
@@ -63,11 +66,33 @@ Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to
         use Searchable;
     }
 
+<a name="queueing"></a>
+### Queueing
+
+While not strictly required to use Scout, you should strongly consider configuring a [queue driver](/docs/{{version}}/queues) before using the library. Running a queue worker will allow Scout to queue all operations that sync your model information to your search indexes, providing much better response times for your application's web interface.
+
+Once you have configured a queue driver, set the value of the `queue` option in your `config/scout.php` configuration file to `true`:
+
+    'queue' => true,
+
+Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
+
+To specify the connection and queue that your Scout jobs utilize, you may define the `queue` configuration option as an array:
+
+    'queue' => [
+        'connection' => 'redis',
+        'queue' => 'scout'
+    ],
+
+Of course, if you customize the connection and queue that Scout jobs utilize, you should run a queue worker to process jobs on that connection and queue:
+
+    php artisan queue:work redis --queue=scout
+
 <a name="driver-prerequisites"></a>
-### Driver Prerequisites
+## Driver Prerequisites
 
 <a name="algolia"></a>
-#### Algolia
+### Algolia
 
 When using the Algolia driver, you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file. Once your credentials have been configured, you will also need to install the Algolia PHP SDK via the Composer package manager:
 
@@ -76,7 +101,7 @@ composer require algolia/algoliasearch-client-php
 ```
 
 <a name="meilisearch"></a>
-#### Meilisearch
+### Meilisearch
 
 [Meilisearch](https://www.meilisearch.com) is a blazingly fast and open source search engine. If you aren't sure how to install Meilisearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
 
@@ -102,13 +127,13 @@ In addition, you should ensure that you install a version of `meilisearch/meilis
 > When upgrading Scout on an application that utilizes Meilisearch, you should always [review any additional breaking changes](https://github.com/meilisearch/Meilisearch/releases) to the Meilisearch service itself.
 
 <a name="typesense"></a>
-#### Typesense
+### Typesense
 
-[Typesense](https://typesense.org) is a lightning-fast, open source alternative to Algolia and supports keyword search, semantic search, geo search and vector search.
+[Typesense](https://typesense.org) is a lightning-fast, open source search engine and supports keyword search, semantic search, geo search, and vector search.
 
-You can [self-host](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-self-hosting) Typesense or you can use their [hosted version](https://cloud.typesense.org). 
+You can [self-host](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-self-hosting) Typesense or use [Typesense Cloud](https://cloud.typesense.org).
 
-When using the Typesense driver you will need to install the Typesense PHP SDK via the Composer package manager:
+To get started using Typesense with Scout, install the Typesense PHP SDK via the Composer package manager:
 
 ```shell
 composer require typesense/typesense-php
@@ -118,11 +143,11 @@ Then, set the `SCOUT_DRIVER` environment variable as well as your Typesense host
 
 ```env
 SCOUT_DRIVER=typesense
-TYPESENSE_API_KEY=xyz
+TYPESENSE_API_KEY=masterKey
 TYPESENSE_HOST=localhost
 ```
 
-You can also modify `port`, `path` and `protocol` as needed:
+If needed, you may also specify your installation's port, path, and protocol:
 
 ```env
 TYPESENSE_PORT=8108
@@ -130,31 +155,57 @@ TYPESENSE_PATH=
 TYPESENSE_PROTOCOL=http
 ```
 
-For more information regarding Typesense, please consult the [Typesense documentation](https://typesense.org/docs/guide/#quick-start).
+Additional settings and schema definitions for your Typesense collections can be found within your application's `config/scout.php` configuration file. For more information regarding Typesense, please consult the [Typesense documentation](https://typesense.org/docs/guide/#quick-start).
 
-<a name="queueing"></a>
-### Queueing
+<a name="preparing-data-for-storage-in-typesense"></a>
+#### Preparing Data for Storage in Typesense
 
-While not strictly required to use Scout, you should strongly consider configuring a [queue driver](/docs/{{version}}/queues) before using the library. Running a queue worker will allow Scout to queue all operations that sync your model information to your search indexes, providing much better response times for your application's web interface.
+When utilizing Typesense, your searchable model's must define a `toSearchableArray` method that casts your model's primary key to a string and creation date to a UNIX timestamp:
 
-Once you have configured a queue driver, set the value of the `queue` option in your `config/scout.php` configuration file to `true`:
+```php
+/**
+ * Get the indexable data array for the model.
+ *
+ * @return array<string, mixed>
+ */
+public function toSearchableArray()
+{
+    return array_merge($this->toArray(),[
+        'id' => (string) $this->id,
+        'created_at' => $this->created_at->timestamp,
+    ]);
+}
+```
 
-    'queue' => true,
+If your searchable model is soft deletable, you should define a `__soft_deleted` field in the model's corresponding Typesense schema within your application's `config/scout.php` configuration file:
 
-Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately. 
-
-Typesense, on the other hand, indexes records synchronously. So you want to set `'queue' => true` so that writes to Typesense are sent from a queue worker.
-
-To specify the connection and queue that your Scout jobs utilize, you may define the `queue` configuration option as an array:
-
-    'queue' => [
-        'connection' => 'redis',
-        'queue' => 'scout'
+```php
+User::class => [
+    'collection-schema' => [
+        'fields' => [
+            // ...
+            [
+                'name' => '__soft_deleted',
+                'type' => 'int32',
+                'optional' => true,
+            ],
+        ],
     ],
+],
+```
 
-Of course, if you customize the connection and queue that Scout jobs utilize, you should run a queue worker to process jobs on that connection and queue:
+<a name="typesense-dynamic-search-parameters"></a>
+#### Dynamic Search Parameters
 
-    php artisan queue:work redis --queue=scout
+Typesense allows you to modify your [search parameters](https://typesense.org/docs/latest/api/search.html#search-parameters) dynamically when performing a search operation via the `withSearchParameters` method:
+
+```php
+use App\Models\Todo;
+
+Todo::search('Groceries')->withSearchParameters([
+    'query_by' => 'title, description'
+])->get();
+```
 
 <a name="configuration"></a>
 ## Configuration
@@ -267,130 +318,6 @@ After configuring your application's index settings, you must invoke the `scout:
 ```shell
 php artisan scout:sync-index-settings
 ```
-
-<a name="configuring-collection-and-search-parameters-for-typesense"></a>
-#### Configuring Collection & Search Parameters (Typesense)
-
-Cast your model `id` to string and `created_at` to `int32` timestamp by customizing `toSearchableArray()`:
-
-```php
-<?php
-
-    public function toSearchableArray()
-    {
-        return array_merge(
-            $this->toArray(), 
-            [
-                // Cast id to string and turn created_at into an int32 timestamp
-                // in order to maintain compatibility with the Typesense collection schema below
-                'id' => (string) $this->id,
-                'created_at' => $this->created_at->timestamp,
-            ]
-        );
-    }
-```
-
-To set up Typesense collection schemas, in `config/scout.php` find the `typesense` driver configs and modify `model-settings` array as shown in example below.
-
-To modify the model `query_by` attributes you have to set up `seach-parameters` in `model-settings`
-
-Note: `query_by` is a required parameter.
-
-```php
-use App\Models\User;
-
- /*
-    |--------------------------------------------------------------------------
-    | Typesense Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure your Typesense settings. Typesense is an open
-    | source search engine with minimal configuration. Below, you can state
-    | the host and key information for your own Typesense installation.
-    |
-    | See: https://typesense.org/docs/latest/api/authentication.html
-    |
-    */
-
-    'typesense' => [
-        'client-settings' => [
-            'api_key' => env('TYPESENSE_API_KEY', 'xyz'),
-            'nodes' => [
-                [
-                    'host' => env('TYPESENSE_HOST', 'localhost'),
-                    'port' => env('TYPESENSE_PORT', '8108'),
-                    'path' => env('TYPESENSE_PATH', ''),
-                    'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
-                ],
-            ],
-            'nearest_node' => [
-                'host' => env('TYPESENSE_HOST', 'localhost'),
-                'port' => env('TYPESENSE_PORT', '8108'),
-                'path' => env('TYPESENSE_PATH', ''),
-                'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
-            ],
-            'connection_timeout_seconds' => env('TYPESENSE_CONNECTION_TIMEOUT_SECONDS', 2),
-            'healthcheck_interval_seconds' => env('TYPESENSE_HEALTHCHECK_INTERVAL_SECONDS', 30),
-            'num_retries' => env('TYPESENSE_NUM_RETRIES', 3),
-            'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
-        ],
-        'model-settings' => [
-            User::class => [
-                'collection-schema' => [
-                    'fields' => [
-                        [
-                            'name' => 'name',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'created_at',
-                            'type' => 'int64',
-                        ],
-                        [
-                            'name' => '__soft_deleted', // <==== When scout.soft_delete is set to true, this field is set to 1 if the record is deleted.
-                            'type' => 'int32',
-                            'optional' => true
-                        ],
-                    ],
-                    'default_sorting_field' => 'created_at',
-                ],
-                'search-parameters' => [ 
-                    'query_by' => 'name, title' // required
-                ],
-            ],
-        ],
-    ],
-```
-
-<a name="search-parameters-on-the-fly-for-typesense"></a>
-##### Search Parameters On The Fly (Typesense)
-
-Typesense supports the ability to set almost all search parameters on the fly, if needed.
-
-To modify search parameters on the fly you can use the `setSearchParameters` method of the Typesense Engine.
-
-```php
-use App\Models\Todo;
-
-Todo::search('Do grocceries')->setSearchParameters(['query_by' => 'title, description'])->get();
-```
-
-Here are some example search parameters:
-
-```php
-'highlight_start_tag' => '<mark>',
-'highlight_end_tag' => '</mark>',
-'snippet_threshold' => 30,
-'exhaustive_search' => false,
-'use_cache' => false,
-'cache_ttl' => 60,
-'prioritize_exact_match' => true,
-'enable_overrides' => true,
-'highlight_affix_num_tokens' => 4,
-```
-
-Full list of Typesense search parameters and descriptions can be found [here](https://typesense.org/docs/latest/api/search.html#search-parameters).
-
 
 <a name="configuring-the-model-id"></a>
 ### Configuring the Model ID
