@@ -278,7 +278,7 @@ If you would like to share contextual information across _all_ logging channels,
         {
             $requestId = (string) Str::uuid();
 
-            Log::withContext([
+            Log::shareContext([
                 'request-id' => $requestId
             ]);
 
