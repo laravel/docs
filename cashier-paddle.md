@@ -131,7 +131,7 @@ Next, you should configure your Paddle keys in your application's `.env` file. Y
 
 ```ini
 PADDLE_SELLER_ID=your-paddle-seller-id
-PADDLE_AUTH_CODE=your-paddle-auth-code
+PADDLE_API_KEY=your-paddle-api-key
 PADDLE_RETAIN_KEY=your-paddle-retain-key
 PADDLE_WEBHOOK_SECRET="your-paddle-webhook-secret"
 PADDLE_SANDBOX=true
