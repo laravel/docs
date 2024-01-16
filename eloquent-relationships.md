@@ -1739,9 +1739,6 @@ In this example, Eloquent will only eager load posts where the post's `title` co
         $query->orderBy('created_at', 'desc');
     }])->get();
 
-> [!WARNING]  
-> The `limit` and `take` query builder methods may not be used when constraining eager loads.
-
 <a name="constraining-eager-loading-of-morph-to-relationships"></a>
 #### Constraining Eager Loading of `morphTo` Relationships
 
