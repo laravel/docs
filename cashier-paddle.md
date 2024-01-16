@@ -10,6 +10,9 @@
     - [Paddle JS](#paddle-js)
     - [Currency Configuration](#currency-configuration)
     - [Overriding Default Models](#overriding-default-models)
+- [Quickstart](#quickstart)
+    - [Selling Products](#quickstart-selling-products)
+    - [Selling Subscriptions](#quickstart-selling-subscriptions)
 - [Checkout Sessions](#checkout-sessions)
     - [Overlay Checkout](#overlay-checkout)
     - [Inline Checkout](#inline-checkout)
@@ -208,7 +211,7 @@ To charge customers for non-recurring, single-charge products, we'll utilize Cas
     use Illuminate\Http\Request;
 
     Route::get('/buy', function (Request $request) {
-        $checkout = $user->checkout('pri_deluxe_album')
+        $checkout = $request->user()->checkout('pri_deluxe_album')
             ->returnTo(route('dashboard'));
 
         return view('buy', ['checkout' => $checkout]);
@@ -307,7 +310,7 @@ First, let's discover how a customer can subscribe to our services. Of course, y
     use Illuminate\Http\Request;
 
     Route::get('/subscribe', function (Request $request) {
-        $checkout = $user->checkout('price_basic_monthly')
+        $checkout = $request->user()->checkout('price_basic_monthly')
             ->returnTo(route('dashboard'));
 
         return view('subscribe', ['checkout' => $checkout]);
@@ -383,9 +386,27 @@ Once the middleware has been defined, you may assign it to a route:
 <a name="quickstart-allowing-customers-to-manage-their-billing-plan"></a>
 #### Allowing Customers to Manage Their Billing Plan
 
-Of course, customers may want to change their subscription plan to another product or "tier". 
+Of course, customers may want to change their subscription plan to another product or "tier". In our example from above, we'd want to allow the customer to change their plan from a monthly subscription to a yearly subscription. For this you'll need to implement something like a button that leads to the below route:
 
-WIP...
+    use Illuminate\Http\Request;
+
+    Route::put('/subscription/{price}/swap', function (Request $request, $price) {
+        $user->subscription()->swap($price); // With "$price" being "price_basic_yearly" for this example.
+
+        return redirect()->route('dashboard');
+    })->name('subscription.swap');
+
+Besides swapping plans you'll also need to allow your customers to cancel their subscription. Like swapping plans, provide a button that leads to the following route:
+
+    use Illuminate\Http\Request;
+
+    Route::put('/subscription/cancel', function (Request $request, $price) {
+        $user->subscription()->cancel();
+
+        return redirect()->route('dashboard');
+    })->name('subscription.cancel');
+
+And now your subscription will get cancelled at the end of its billing period.
 
 > [!NOTE]  
 > As long as you have configured Cashier's webhook handling, Cashier will automatically keep your application's Cashier-related database tables in sync by inspecting the incoming webhooks from Paddle. So, for example, when you cancel a customer's subscription via Paddle's dashboard, Cashier will receive the corresponding webhook and mark the subscription as "cancelled" in your application's database.
