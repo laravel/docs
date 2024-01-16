@@ -201,12 +201,12 @@ After defining your model, you may instruct Cashier to use your custom model via
 <a name="quickstart-selling-products"></a>
 ### Selling Products
 
-> [!NOTE]  
+> [!NOTE]
 > Before utilizing Paddle Checkout, you should define Products with fixed prices in your Paddle dashboard. In addition, you should [configure Paddle's webhook handling](#handling-paddle-webhooks).
 
 Offering product and subscription billing via your application can be intimidating. However, thanks to Cashier and [Paddle's Checkout Overlay](https://www.paddle.com/billing/checkout), you can easily build modern, robust payment integrations.
 
-To charge customers for non-recurring, single-charge products, we'll utilize Cashier to charge customers with Paddle's Checkout Overlay, where they will provide their payment details and confirm their purchase. Once the payment has been made via the checkout overlay, the customer will be redirected to a success URL of your choosing within your application:
+To charge customers for non-recurring, single-charge products, we'll utilize Cashier to charge customers with Paddle's Checkout Overlay, where they will provide their payment details and confirm their purchase. Once the payment has been made via the Checkout Overlay, the customer will be redirected to a success URL of your choosing within your application:
 
     use Illuminate\Http\Request;
 
@@ -217,17 +217,17 @@ To charge customers for non-recurring, single-charge products, we'll utilize Cas
         return view('buy', ['checkout' => $checkout]);
     })->name('checkout');
 
-Then place a clickable button in the `buy` view to invoke the Checkout Overlay:
+As you can see in the example above, we will utilize Cashier's provided `checkout` method to create a checkout object to present the customer the Paddle Checkout Overlay for a given "price identifier". When using Paddle, "prices" refer to [defined prices for specific products](https://developer.paddle.com/build/products/create-products-prices).
+
+If necessary, the `checkout` method will automatically create a customer in Paddle and connect that Paddle customer record to the corresponding user in your application's database. After completing the checkout session, the customer will be redirected to a dedicated success page where you can display an informational message to the customer.
+
+In the `buy` view, we will include a button to display the Checkout Overlay. The `paddle-button` Blade component is included with Cashier Paddle; however, you may also [manually render an overlay checkout](#manually-rendering-an-overlay-checkout):
 
 ```html
 <x-paddle-button :checkout="$checkout" class="px-8 py-4">
     Buy Product
 </x-paddle-button>
 ```
-
-As you can see in the example above, we will utilize Cashier's provided `checkout` method to create a checkout object to present the customer the Paddle Checkout Overlay for a given "price identifier". When using Paddle, "prices" refer to [defined prices for specific products](https://developer.paddle.com/build/products/create-products-prices).
-
-If necessary, the `checkout` method will automatically create a customer in Paddle and connect that Paddle customer record to the corresponding user in your application's database. After completing the checkout session, the customer will be redirected to a dedicated success page where you can display an informational message to the customer.
 
 <a name="providing-meta-data-to-paddle-checkout"></a>
 #### Providing Meta Data to Paddle Checkout
@@ -255,11 +255,11 @@ To accomplish this, you may provide an array of custom data to the `checkout` me
 
 As you can see in the example above, when a user begins the checkout process, we will provide all of the cart / order's associated Paddle price identifiers to the `checkout` method. Of course, your application is responsible for associating these items with the "shopping cart" or order as a customer adds them. We also provide the order's ID to the Paddle Checkout Overlay via the `customData` method.
 
-By default, Cashier doesn't store individual order information when selling products. However, you can easily listen to the webhooks dispatched by Paddle and raised via events by Cashier to store order information in your database.
+Of course, you will likely want to mark the order as "complete" once the customer has finished the checkout process. To accomplish this, you may listen to the webhooks dispatched by Paddle and raised via events by Cashier to store order information in your database.
 
 To get started, listen for the `TransactionCompleted` event dispatched by Cashier. Typically, you should register the event listener in the `boot` method of one of your application's service providers:
 
-    use App\Listeners\StoreOrder;
+    use App\Listeners\CompleteOrder;
     use Illuminate\Support\Facades\Event;
     use Laravel\Paddle\Events\TransactionCompleted;
 
@@ -268,28 +268,29 @@ To get started, listen for the `TransactionCompleted` event dispatched by Cashie
      */
     public function boot(): void
     {
-        Event::listen(TransactionCompleted::class, StoreOrder::class);
+        Event::listen(TransactionCompleted::class, CompleteOrder::class);
     }
 
-In this example, the `StoreOrder` listener might look like the following:
+In this example, the `CompleteOrder` listener might look like the following:
 
     namespace App\Listeners;
 
+    use App\Models\Order;
     use Laravel\Cashier\Cashier;
     use Laravel\Cashier\Events\TransactionCompleted;
 
-    class StoreOrder
+    class CompleteOrder
     {
         /**
          * Handle the incoming Cashier webhook event.
          */
         public function handle(TransactionCompleted $event): void
         {
-            // The custom data at the time of the purchase...
-            $data = $payload['data']['custom_data'];
+            $orderId = $event->payload['data']['custom_data']['order_id'] ?? null;
 
-            // Store the customer's order...
-            $event->billable->orders()->create(...);
+            $order = Order::findOrFail($orderId);
+
+            $order->update(['status' => 'completed']);
         }
     }
 
@@ -305,7 +306,7 @@ Offering product and subscription billing via your application can be intimidati
 
 To learn how to sell subscriptions using Cashier and Paddle's Checkout Overlay, let's consider the simple scenario of a subscription service with a basic monthly (`price_basic_monthly`) and yearly (`price_basic_yearly`) plan. These two prices could be grouped under a "Basic" product (`pro_basic`) in our Paddle dashboard. In addition, our subscription service might offer an Expert plan as `pro_expert`.
 
-First, let's discover how a customer can subscribe to our services. Of course, you can imagine the customer might click a "subscribe" button for the Basic plan on our application's pricing page. This button will invoke a Paddle Checkout Overlay for their chosen plan:
+First, let's discover how a customer can subscribe to our services. Of course, you can imagine the customer might click a "subscribe" button for the Basic plan on our application's pricing page. This button will invoke a Paddle Checkout Overlay for their chosen plan. To get started, let's initiate a checkout session via the `checkout` method:
 
     use Illuminate\Http\Request;
 
@@ -316,7 +317,7 @@ First, let's discover how a customer can subscribe to our services. Of course, y
         return view('subscribe', ['checkout' => $checkout]);
     })->name('subscribe');
 
-Then place a clickable button in the `subscribe` view to invoke the Checkout Overlay:
+In the `subscribe` view, we will include a button to display the Checkout Overlay. The `paddle-button` Blade component is included with Cashier Paddle; however, you may also [manually render an overlay checkout](#manually-rendering-an-overlay-checkout):
 
 ```html
 <x-paddle-button :checkout="$checkout" class="px-8 py-4">
@@ -324,7 +325,7 @@ Then place a clickable button in the `subscribe` view to invoke the Checkout Ove
 </x-paddle-button>
 ```
 
-As you can see in the example above, we will invoke the Paddle Checkout Overlay which will allow them to subscribe to our Basic plan. After a successful checkout, the customer will be redirected back to the URL we provided to the `subscribe` method. To know when their subscription has actually started (since some payment methods require a few seconds to process), we'll also need to [configure Cashier's webhook handling](#handling-paddle-webhooks).
+Now, when the Subscribe button is clicked, the customer will be able to enter their payment details and initiate their subscription. To know when their subscription has actually started (since some payment methods require a few seconds to process), you should also [configure Cashier's webhook handling](#handling-paddle-webhooks).
 
 Now that customers can start subscriptions, we need to restrict certain portions of our application so that only subscribed users can access them. Of course, we can always determine a user's current subscription status via the `subscribed` method provided by Cashier's `Billable` trait:
 
@@ -368,7 +369,7 @@ For convenience, you may wish to create a [middleware](/docs/{{version}}/middlew
         {
             if (! $request->user()?->subscribed()) {
                 // Redirect user to billing page and ask them to subscribe...
-                return redirect('/billing');
+                return redirect('/subscribe');
             }
 
             return $next($request);
@@ -414,14 +415,14 @@ And now your subscription will get cancelled at the end of its billing period.
 <a name="checkout-sessions"></a>
 ## Checkout Sessions
 
-Most operations to bill customers are performed using "checkouts" via Paddle's [checkout overlay widget](https://developer.paddle.com/build/checkout/build-overlay-checkout) or by utilizing [inline checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout).
+Most operations to bill customers are performed using "checkouts" via Paddle's [Checkout Overlay widget](https://developer.paddle.com/build/checkout/build-overlay-checkout) or by utilizing [inline checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout).
 
 Before processing checkout payments using Paddle, you should define your application's [default payment link](https://developer.paddle.com/build/transactions/default-payment-link#set-default-link) in your Paddle checkout settings dashboard.
 
 <a name="overlay-checkout"></a>
 ### Overlay Checkout
 
-Before displaying the checkout overlay widget, you must generate a checkout session using Cashier. A checkout session will inform the checkout widget of the billing operation that should be performed:
+Before displaying the Checkout Overlay widget, you must generate a checkout session using Cashier. A checkout session will inform the checkout widget of the billing operation that should be performed:
 
     use Illuminate\Http\Request;
 
