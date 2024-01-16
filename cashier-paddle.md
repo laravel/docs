@@ -247,7 +247,7 @@ To accomplish this, you may provide an array of custom data to the `checkout` me
             'status' => 'incomplete',
         ]);
 
-        $checkout $request->user()->checkout($order->price_ids)
+        $checkout = $request->user()->checkout($order->price_ids)
             ->customData(['order_id' => $order->id]);
 
         return view('billing', ['checkout' => $checkout]);
