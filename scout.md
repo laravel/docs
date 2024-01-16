@@ -2,8 +2,11 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-    - [Driver Prerequisites](#driver-prerequisites)
     - [Queueing](#queueing)
+- [Driver Prerequisites](#driver-prerequisites)
+    - [Algolia](#algolia)
+    - [Meilisearch](#meilisearch)
+    - [Typesense](#typesense)
 - [Configuration](#configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
@@ -32,7 +35,7 @@
 
 [Laravel Scout](https://github.com/laravel/scout) provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
-Currently, Scout ships with [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
+Currently, Scout ships with [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), [Typesense](https://typesense.org), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
 <a name="installation"></a>
 ## Installation
@@ -63,11 +66,33 @@ Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to
         use Searchable;
     }
 
+<a name="queueing"></a>
+### Queueing
+
+While not strictly required to use Scout, you should strongly consider configuring a [queue driver](/docs/{{version}}/queues) before using the library. Running a queue worker will allow Scout to queue all operations that sync your model information to your search indexes, providing much better response times for your application's web interface.
+
+Once you have configured a queue driver, set the value of the `queue` option in your `config/scout.php` configuration file to `true`:
+
+    'queue' => true,
+
+Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
+
+To specify the connection and queue that your Scout jobs utilize, you may define the `queue` configuration option as an array:
+
+    'queue' => [
+        'connection' => 'redis',
+        'queue' => 'scout'
+    ],
+
+Of course, if you customize the connection and queue that Scout jobs utilize, you should run a queue worker to process jobs on that connection and queue:
+
+    php artisan queue:work redis --queue=scout
+
 <a name="driver-prerequisites"></a>
-### Driver Prerequisites
+## Driver Prerequisites
 
 <a name="algolia"></a>
-#### Algolia
+### Algolia
 
 When using the Algolia driver, you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file. Once your credentials have been configured, you will also need to install the Algolia PHP SDK via the Composer package manager:
 
@@ -76,7 +101,7 @@ composer require algolia/algoliasearch-client-php
 ```
 
 <a name="meilisearch"></a>
-#### Meilisearch
+### Meilisearch
 
 [Meilisearch](https://www.meilisearch.com) is a blazingly fast and open source search engine. If you aren't sure how to install Meilisearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
 
@@ -101,27 +126,86 @@ In addition, you should ensure that you install a version of `meilisearch/meilis
 > [!WARNING]  
 > When upgrading Scout on an application that utilizes Meilisearch, you should always [review any additional breaking changes](https://github.com/meilisearch/Meilisearch/releases) to the Meilisearch service itself.
 
-<a name="queueing"></a>
-### Queueing
+<a name="typesense"></a>
+### Typesense
 
-While not strictly required to use Scout, you should strongly consider configuring a [queue driver](/docs/{{version}}/queues) before using the library. Running a queue worker will allow Scout to queue all operations that sync your model information to your search indexes, providing much better response times for your application's web interface.
+[Typesense](https://typesense.org) is a lightning-fast, open source search engine and supports keyword search, semantic search, geo search, and vector search.
 
-Once you have configured a queue driver, set the value of the `queue` option in your `config/scout.php` configuration file to `true`:
+You can [self-host](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-self-hosting) Typesense or use [Typesense Cloud](https://cloud.typesense.org).
 
-    'queue' => true,
+To get started using Typesense with Scout, install the Typesense PHP SDK via the Composer package manager:
 
-Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
+```shell
+composer require typesense/typesense-php
+```
 
-To specify the connection and queue that your Scout jobs utilize, you may define the `queue` configuration option as an array:
+Then, set the `SCOUT_DRIVER` environment variable as well as your Typesense host and API key credentials within your application's .env file:
 
-    'queue' => [
-        'connection' => 'redis',
-        'queue' => 'scout'
+```env
+SCOUT_DRIVER=typesense
+TYPESENSE_API_KEY=masterKey
+TYPESENSE_HOST=localhost
+```
+
+If needed, you may also specify your installation's port, path, and protocol:
+
+```env
+TYPESENSE_PORT=8108
+TYPESENSE_PATH=
+TYPESENSE_PROTOCOL=http
+```
+
+Additional settings and schema definitions for your Typesense collections can be found within your application's `config/scout.php` configuration file. For more information regarding Typesense, please consult the [Typesense documentation](https://typesense.org/docs/guide/#quick-start).
+
+<a name="preparing-data-for-storage-in-typesense"></a>
+#### Preparing Data for Storage in Typesense
+
+When utilizing Typesense, your searchable model's must define a `toSearchableArray` method that casts your model's primary key to a string and creation date to a UNIX timestamp:
+
+```php
+/**
+ * Get the indexable data array for the model.
+ *
+ * @return array<string, mixed>
+ */
+public function toSearchableArray()
+{
+    return array_merge($this->toArray(),[
+        'id' => (string) $this->id,
+        'created_at' => $this->created_at->timestamp,
+    ]);
+}
+```
+
+If your searchable model is soft deletable, you should define a `__soft_deleted` field in the model's corresponding Typesense schema within your application's `config/scout.php` configuration file:
+
+```php
+User::class => [
+    'collection-schema' => [
+        'fields' => [
+            // ...
+            [
+                'name' => '__soft_deleted',
+                'type' => 'int32',
+                'optional' => true,
+            ],
+        ],
     ],
+],
+```
 
-Of course, if you customize the connection and queue that Scout jobs utilize, you should run a queue worker to process jobs on that connection and queue:
+<a name="typesense-dynamic-search-parameters"></a>
+#### Dynamic Search Parameters
 
-    php artisan queue:work redis --queue=scout
+Typesense allows you to modify your [search parameters](https://typesense.org/docs/latest/api/search.html#search-parameters) dynamically when performing a search operation via the `withSearchParameters` method:
+
+```php
+use App\Models\Todo;
+
+Todo::search('Groceries')->withSearchParameters([
+    'query_by' => 'title, description'
+])->get();
+```
 
 <a name="configuration"></a>
 ## Configuration
@@ -323,7 +407,7 @@ To use the database engine, you may simply set the value of the `SCOUT_DRIVER` e
 SCOUT_DRIVER=database
 ```
 
-Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or Meilisearch indexes, is unnecessary when using the database engine.
+Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia, Meilisearch or Typesense indexes, is unnecessary when using the database engine.
 
 #### Customizing Database Searching Strategies
 
@@ -359,7 +443,7 @@ public function toSearchableArray(): array
 <a name="collection-engine"></a>
 ### Collection Engine
 
-While you are free to use the Algolia or Meilisearch search engines during local development, you may find it more convenient to get started with the "collection" engine. The collection engine will use "where" clauses and collection filtering on results from your existing database to determine the applicable search results for your query. When using this engine, it is not necessary to "index" your searchable models, as they will simply be retrieved from your local database.
+While you are free to use the Algolia, Meilisearch, or Typesense search engines during local development, you may find it more convenient to get started with the "collection" engine. The collection engine will use "where" clauses and collection filtering on results from your existing database to determine the applicable search results for your query. When using this engine, it is not necessary to "index" your searchable models, as they will simply be retrieved from your local database.
 
 To use the collection engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `collection`, or specify the `collection` driver directly in your application's `scout` configuration file:
 
@@ -367,7 +451,7 @@ To use the collection engine, you may simply set the value of the `SCOUT_DRIVER`
 SCOUT_DRIVER=collection
 ```
 
-Once you have specified the collection driver as your preferred driver, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or Meilisearch indexes, is unnecessary when using the collection engine.
+Once you have specified the collection driver as your preferred driver, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia, Meilisearch, or Typesense indexes, is unnecessary when using the collection engine.
 
 #### Differences From Database Engine
 
