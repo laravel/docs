@@ -56,6 +56,7 @@
     - [Product Checkouts](#product-checkouts)
     - [Single Charge Checkouts](#single-charge-checkouts)
     - [Subscription Checkouts](#subscription-checkouts)
+    - [Subscription Checkouts, modify billing cycle](stripe-checkout-billing-cycle)
     - [Collecting Tax IDs](#collecting-tax-ids)
     - [Guest Checkouts](#guest-checkouts)
 - [Invoices](#invoices)
@@ -2091,6 +2092,20 @@ Of course, you can also enable promotion codes for subscription checkouts:
 
 > [!WARNING]  
 > Unfortunately Stripe Checkout does not support all subscription billing options when starting subscriptions. Using the `anchorBillingCycleOn` method on the subscription builder, setting proration behavior, or setting payment behavior will not have any effect during Stripe Checkout sessions. Please consult [the Stripe Checkout Session API documentation](https://stripe.com/docs/api/checkout/sessions/create) to review which parameters are available.
+
+<a name="stripe-checkout-billing-cycle></a>
+#### Stripe Subscription Checkout and Billing Cycle Anchor
+It is possible to set the billing anchor for a subscription checkout.
+
+You need to use the subscription-data element in the checkout method:
+    $anchorDate = Carbon::parse('first day of next month');
+    $checkout = Auth::user()->newSubscription('default', 'price_monthly')
+        ->checkout(
+        ['billing_cycle_anchor' => $anchorDate ],
+        );
+
+This will anchor the billing date to the start of the month.
+Please consult [the Set the billing cycle date in Checkout API documentation](https://stripe.com/docs/payments/checkout/billing-cycle) to review which parameters are available.
 
 <a name="stripe-checkout-trial-periods"></a>
 #### Stripe Checkout and Trial Periods
