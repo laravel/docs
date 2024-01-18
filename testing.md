@@ -81,7 +81,7 @@ Once the test has been generated, you may define test methods as you normally wo
     }
 
 > [!WARNING]  
-> If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class.
+> If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class. Call `parent::setUp()` at the start of your `setUp` method, and `parent::tearDown()` at the _end_ of your `tearDown` method.
 
 <a name="running-tests"></a>
 ## Running Tests
