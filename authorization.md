@@ -258,6 +258,9 @@ Gate::denyIf(fn (User $user) => $user->banned());
 
 If the action is not authorized or if no user is currently authenticated, Laravel will automatically throw an `Illuminate\Auth\Access\AuthorizationException` exception. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler.
 
+> [!WARNING]  
+> Inline authorization **does not** execute your "before" and "after" checks.
+
 <a name="creating-policies"></a>
 ## Creating Policies
 
