@@ -74,7 +74,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - MySQL 8.0
 - lmm
 - Sqlite3
-- PostgreSQL 16
+- PostgreSQL 15
 - Composer
 - Docker
 - Node (With Yarn, Bower, Grunt, and Gulp)
