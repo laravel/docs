@@ -934,7 +934,6 @@ Below is a list of all available validation rules and their function:
 [Not Regex](#rule-not-regex)
 [Nullable](#rule-nullable)
 [Numeric](#rule-numeric)
-[Password](#rule-password)
 [Present](#rule-present)
 [Present If](#rule-present-if)
 [Present Unless](#rule-present-unless)
@@ -1563,14 +1562,6 @@ The field under validation may be `null`.
 #### numeric
 
 The field under validation must be [numeric](https://www.php.net/manual/en/function.is-numeric.php).
-
-<a name="rule-password"></a>
-#### password
-
-The field under validation must match the authenticated user's password.
-
-> [!WARNING]  
-> This rule was renamed to `current_password` with the intention of removing it in Laravel 9. Please use the [Current Password](#rule-current-password) rule instead.
 
 <a name="rule-present"></a>
 #### present
