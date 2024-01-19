@@ -66,7 +66,7 @@ public function dump(...$args);
 <a name="database"></a>
 ### Database
 
-<a name="the-enumerable-contract"></a>
+<a name="spatial-types"></a>
 #### Spatial Types
 
 **Likelihood Of Impact: Low**
