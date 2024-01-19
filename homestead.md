@@ -20,7 +20,7 @@
     - [Connecting to Databases](#connecting-to-databases)
     - [Database Backups](#database-backups)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
-    - [Configuring MailHog](#configuring-mailhog)
+    - [Configuring Mailpit](#configuring-mailpit)
     - [Configuring Minio](#configuring-minio)
     - [Laravel Dusk](#laravel-dusk)
     - [Sharing Your Environment](#sharing-your-environment)
@@ -36,7 +36,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel strives to make the entire PHP development experience delightful, including your local development environment. [Laravel Homestead](https://github.com/laravel/homestead) is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, and any other server software on your local machine.
+Laravel strives to make the entire PHP development experience delightful, including your local development environment. [Laravel Homestead](https://github.com/laravel/homestead) is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, or any other server software on your local machine.
 
 [Vagrant](https://www.vagrantup.com) provides a simple, elegant way to manage and provision Virtual Machines. Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
@@ -58,8 +58,9 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 
 <div id="software-list" markdown="1">
 
-- Ubuntu 20.04
+- Ubuntu 22.04
 - Git
+- PHP 8.3
 - PHP 8.2
 - PHP 8.1
 - PHP 8.0
@@ -80,7 +81,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Redis
 - Memcached
 - Beanstalkd
-- Mailhog
+- Mailpit
 - avahi
 - ngrok
 - Xdebug
@@ -116,7 +117,6 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Grafana
 - InfluxDB
 - Logstash
-- Mailpit <small>(Replaces Mailhog)</small>
 - MariaDB
 - Meilisearch
 - MinIO
@@ -346,12 +346,10 @@ features:
     - grafana: true
     - influxdb: true
     - logstash: true
-    - mailpit: true
     - mariadb: true
     - meilisearch: true
     - minio: true
     - mongodb: true
-    - mysql: true
     - neo4j: true
     - ohmyzsh: true
     - openresty: true
@@ -558,7 +556,7 @@ Below is a list of additional Homestead service ports that you may wish to map f
 - **MySQL:** 33060 &rarr; To 3306
 - **PostgreSQL:** 54320 &rarr; To 5432
 - **MongoDB:** 27017 &rarr; To 27017
-- **Mailhog:** 8025 &rarr; To 8025
+- **Mailpit:** 8025 &rarr; To 8025
 - **Minio:** 9600 &rarr; To 9600
 
 </div>
@@ -566,7 +564,7 @@ Below is a list of additional Homestead service ports that you may wish to map f
 <a name="php-versions"></a>
 ### PHP Versions
 
-Homestead supports running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", and "8.2" (the default):
+Homestead supports running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2", and "8.3", (the default):
 
 ```yaml
 sites:
@@ -587,6 +585,7 @@ php7.4 artisan list
 php8.0 artisan list
 php8.1 artisan list
 php8.2 artisan list
+php8.3 artisan list
 ```
 
 You may change the default version of PHP used by the CLI by issuing the following commands from within your Homestead virtual machine:
@@ -601,6 +600,7 @@ php74
 php80
 php81
 php82
+php83
 ```
 
 <a name="connecting-to-databases"></a>
@@ -636,10 +636,10 @@ sites:
 
 The cron job for the site will be defined in the `/etc/cron.d` directory of the Homestead virtual machine.
 
-<a name="configuring-mailhog"></a>
-### Configuring MailHog
+<a name="configuring-mailpit"></a>
+### Configuring Mailpit
 
-[MailHog](https://github.com/mailhog/MailHog) allows you to intercept your outgoing email and examine it without actually sending the mail to its recipients. To get started, update your application's `.env` file to use the following mail settings:
+[Mailpit](https://github.com/axllent/mailpit) allows you to intercept your outgoing email and examine it without actually sending the mail to its recipients. To get started, update your application's `.env` file to use the following mail settings:
 
 ```ini
 MAIL_MAILER=smtp
@@ -650,7 +650,7 @@ MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
 ```
 
-Once MailHog has been configured, you may access the MailHog dashboard at `http://localhost:8025`.
+Once Mailpit has been configured, you may access the Mailpit dashboard at `http://localhost:8025`.
 
 <a name="configuring-minio"></a>
 ### Configuring Minio
