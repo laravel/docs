@@ -410,7 +410,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [foreignIdFor](#column-method-foreignIdFor)
 [foreignUlid](#column-method-foreignUlid)
 [foreignUuid](#column-method-foreignUuid)
-[geometryCollection](#column-method-geometryCollection)
+[geography](#column-method-geography)
 [geometry](#column-method-geometry)
 [id](#column-method-id)
 [increments](#column-method-increments)
@@ -418,22 +418,16 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [ipAddress](#column-method-ipAddress)
 [json](#column-method-json)
 [jsonb](#column-method-jsonb)
-[lineString](#column-method-lineString)
 [longText](#column-method-longText)
 [macAddress](#column-method-macAddress)
 [mediumIncrements](#column-method-mediumIncrements)
 [mediumInteger](#column-method-mediumInteger)
 [mediumText](#column-method-mediumText)
 [morphs](#column-method-morphs)
-[multiLineString](#column-method-multiLineString)
-[multiPoint](#column-method-multiPoint)
-[multiPolygon](#column-method-multiPolygon)
 [nullableMorphs](#column-method-nullableMorphs)
 [nullableTimestamps](#column-method-nullableTimestamps)
 [nullableUlidMorphs](#column-method-nullableUlidMorphs)
 [nullableUuidMorphs](#column-method-nullableUuidMorphs)
-[point](#column-method-point)
-[polygon](#column-method-polygon)
 [rememberToken](#column-method-rememberToken)
 [set](#column-method-set)
 [smallIncrements](#column-method-smallIncrements)
@@ -546,7 +540,7 @@ The `enum` method creates a `ENUM` equivalent column with the given valid values
 
 The `float` method creates a `FLOAT` equivalent column with the given precision:
 
-    $table->float('amount', 53);
+    $table->float('amount', $precision = 53);
 
 <a name="column-method-foreignId"></a>
 #### `foreignId()` {.collection-method}
@@ -576,19 +570,25 @@ The `foreignUuid` method creates a `UUID` equivalent column:
 
     $table->foreignUuid('user_id');
 
-<a name="column-method-geometryCollection"></a>
-#### `geometryCollection()` {.collection-method}
+<a name="column-method-geography"></a>
+#### `geography()` {.collection-method}
 
-The `geometryCollection` method creates a `GEOMETRYCOLLECTION` equivalent column:
+The `geography` method creates a `GEOGRAPHY` equivalent column with the given spatial type and SRID (Spatial Reference System Identifier):
 
-    $table->geometryCollection('positions');
+    $table->geography('coordinates', subtype: 'point', srid: 4326);
+
+> [!NOTE]  
+> Support for spatial types depends on your database driver. Please refer to your database's documentation. If your application is utilizing a PostgreSQL database, you must install the [PostGIS](https://postgis.net) extension before the `geography` method may be used.
 
 <a name="column-method-geometry"></a>
 #### `geometry()` {.collection-method}
 
-The `geometry` method creates a `GEOMETRY` equivalent column:
+The `geometry` method creates a `GEOMETRY` equivalent column with the given spatial type and SRID (Spatial Reference System Identifier):
 
-    $table->geometry('positions');
+    $table->geometry('positions', subtype: 'point', srid: 0);
+
+> [!NOTE]  
+> Support for spatial types depends on your database driver. Please refer to your database's documentation. If your application is utilizing a PostgreSQL database, you must install the [PostGIS](https://postgis.net) extension before the `geometry` method may be used.
 
 <a name="column-method-id"></a>
 #### `id()` {.collection-method}
@@ -634,13 +634,6 @@ The `jsonb` method creates a `JSONB` equivalent column:
 
     $table->jsonb('options');
 
-<a name="column-method-lineString"></a>
-#### `lineString()` {.collection-method}
-
-The `lineString` method creates a `LINESTRING` equivalent column:
-
-    $table->lineString('positions');
-
 <a name="column-method-longText"></a>
 #### `longText()` {.collection-method}
 
@@ -685,27 +678,6 @@ This method is intended to be used when defining the columns necessary for a pol
 
     $table->morphs('taggable');
 
-<a name="column-method-multiLineString"></a>
-#### `multiLineString()` {.collection-method}
-
-The `multiLineString` method creates a `MULTILINESTRING` equivalent column:
-
-    $table->multiLineString('positions');
-
-<a name="column-method-multiPoint"></a>
-#### `multiPoint()` {.collection-method}
-
-The `multiPoint` method creates a `MULTIPOINT` equivalent column:
-
-    $table->multiPoint('positions');
-
-<a name="column-method-multiPolygon"></a>
-#### `multiPolygon()` {.collection-method}
-
-The `multiPolygon` method creates a `MULTIPOLYGON` equivalent column:
-
-    $table->multiPolygon('positions');
-
 <a name="column-method-nullableTimestamps"></a>
 #### `nullableTimestamps()` {.collection-method}
 
@@ -733,20 +705,6 @@ The method is similar to the [ulidMorphs](#column-method-ulidMorphs) method; how
 The method is similar to the [uuidMorphs](#column-method-uuidMorphs) method; however, the columns that are created will be "nullable":
 
     $table->nullableUuidMorphs('taggable');
-
-<a name="column-method-point"></a>
-#### `point()` {.collection-method}
-
-The `point` method creates a `POINT` equivalent column:
-
-    $table->point('position');
-
-<a name="column-method-polygon"></a>
-#### `polygon()` {.collection-method}
-
-The `polygon` method creates a `POLYGON` equivalent column:
-
-    $table->polygon('position');
 
 <a name="column-method-rememberToken"></a>
 #### `rememberToken()` {.collection-method}
@@ -974,7 +932,6 @@ Modifier  |  Description
 `->virtualAs($expression)`  |  Create a virtual generated column (MySQL / PostgreSQL / SQLite).
 `->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL).
 `->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL).
-`->isGeometry()`  |  Set spatial column type to `geometry` - the default type is `geography` (PostgreSQL).
 
 <a name="default-expressions"></a>
 #### Default Expressions
