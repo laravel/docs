@@ -575,7 +575,7 @@ The `foreignUuid` method creates a `UUID` equivalent column:
 
 The `geography` method creates a `GEOGRAPHY` equivalent column with the given spatial type and SRID (Spatial Reference System Identifier):
 
-    $table->geography('coordinates', $subtype = 'point', $srid = 4326);
+    $table->geography('coordinates', subtype: 'point', srid: 4326);
 
 > [!NOTE]  
 > Support for spatial types depends on your database driver. Please refer to your database's documentation. If your application is utilizing a PostgreSQL database, you must install the [PostGIS](https://postgis.net) extension before the `geography` method may be used.
@@ -585,7 +585,7 @@ The `geography` method creates a `GEOGRAPHY` equivalent column with the given sp
 
 The `geometry` method creates a `GEOMETRY` equivalent column with the given spatial type and SRID (Spatial Reference System Identifier):
 
-    $table->geometry('positions', $subtype = 'point', $srid = 0);
+    $table->geometry('positions', subtype: 'point', srid: 0);
 
 > [!NOTE]  
 > Support for spatial types depends on your database driver. Please refer to your database's documentation. If your application is utilizing a PostgreSQL database, you must install the [PostGIS](https://postgis.net) extension before the `geometry` method may be used.

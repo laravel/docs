@@ -18,6 +18,7 @@
 <div class="content-list" markdown="1">
 
 - [The `Enumerable` Contract](#the-enumerable-contract)
+- [Spatial Types](#spatial-types)
 
 </div>
 
@@ -71,14 +72,12 @@ public function dump(...$args);
 
 **Likelihood Of Impact: Low**
 
-The spatial column types of database migrations have been rewritten to make these types consistent across all databases, Therefore, you may remove `point`, `lineString`, `polygon`, `geometryCollection`, `multiPoint`, `multiLineString`, `multiPolygon`, and `multiPolygonZ` methods from your migrations and use `geometry` or `geography` methods instead:
+The spatial column types of database migrations have been rewritten to be consistent across all databases. Therefore, you may remove `point`, `lineString`, `polygon`, `geometryCollection`, `multiPoint`, `multiLineString`, `multiPolygon`, and `multiPolygonZ` methods from your migrations and use `geometry` or `geography` methods instead:
 
 ```php
 $table->geometry('shapes');
 $table->geography('coordinates');
 ```
-
-The `->isGeometry()` and `->projection()` column modifiers of the PostgreSQL grammar have been removed accordingly.
 
 To explicitly restrict the type or the spatial reference system identifier for values stored in the column on MySQL and PostgreSQL, you may pass the `subtype` and `srid` to the method:
 
@@ -86,3 +85,5 @@ To explicitly restrict the type or the spatial reference system identifier for v
 $table->geometry('dimension', subtype: 'polygon', srid: 0);
 $table->geography('latitude', subtype: 'point', srid: 4326);
 ```
+
+The `isGeometry` and `projection` column modifiers of the PostgreSQL grammar have been removed accordingly.
