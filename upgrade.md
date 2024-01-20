@@ -117,15 +117,15 @@ $table->double('amount');
 The `float` column type now creates a `FLOAT` equivalent column without total digits and places (digits after decimal point), but with an optional `$precision` specification to determine storage size as a 4-byte single-precision column or an 8-byte double-precision column. Therefore, you may remove the arguments for `$total` and `$places` and specify the optional `$precision` to your desired value and according to your database's documentation:
 
 ```php
-$table->float('amount', $precision = 53);
+$table->float('amount', precision: 53);
 ```
 
 The `unsignedDecimal`, `unsignedDouble`, and `unsignedFloat` methods have been removed, as the unsigned modifier for these column types has been deprecated by MySQL, and was never standardized on other database systems. However, if you wish to continue using the deprecated unsigned attribute for these column types, you may chain the `unsigned` method onto the column's definition:
 
 ```php
-$table->decimal('amount', $total = 8, $places = 2)->unsigned();
+$table->decimal('amount', total: 8, places: 2)->unsigned();
 $table->double('amount')->unsigned();
-$table->float('amount', $precision = 53)->unsigned();
+$table->float('amount', precision: 53)->unsigned();
 ```
 
 <a name="spatial-types"></a>
