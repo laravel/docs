@@ -9,6 +9,17 @@
 
 - [Updating Dependencies](#updating-dependencies)
 - [Updating Minimum Stability](#updating-minimum-stability)
+- [SQLite Minimum Version](#sqlite-minimum-version)
+
+</div>
+
+<a name="medium-impact-changes"></a>
+## Medium Impact Changes
+
+<div class="content-list" markdown="1">
+
+- [Modifying Columns](#modifying-columns)
+- [Floating-Point Types](#floating-point-types)
 
 </div>
 
@@ -19,6 +30,7 @@
 
 - [The `Enumerable` Contract](#the-enumerable-contract)
 - [Spatial Types](#spatial-types)
+- [Doctrine DBAL Removal](#doctrine-dbal-removal)
 
 </div>
 
@@ -50,7 +62,7 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
-In addition, you may remove `doctrine/dbal` composer dependency, as Laravel is not dependent to this package anymore.
+In addition, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
 
 <a name="collections"></a>
 ### Collections
@@ -81,7 +93,7 @@ If your application is utilizing an SQLite database, SQLite 3.35.0 or greater is
 
 **Likelihood Of Impact: Medium**
 
-When modifying a column, you must explicitly include all the modifiers you want to keep on the column definition - any missing attribute will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column:
+When modifying a column, you must now explicitly include all the modifiers you want to keep on the column definition after it is changed. Any missing attributes will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column, even if those attributes have been assigned to the column by a previous migration:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
@@ -94,9 +106,9 @@ Schema::table('users', function (Blueprint $table) {
 
 **Likelihood Of Impact: Medium**
 
-The `double` and `float` column types of database migrations have been rewritten to be consistent across all databases.
+The `double` and `float` migration column types have been rewritten to be consistent across all databases.
 
-The `double` column type now creates a `DOUBLE` equivalent column without total digits and places (digits after decimal point), which is the standard syntax in SQL. Therefore, you may remove the arguments for `$total` and `$places`:
+The `double` column type now creates a `DOUBLE` equivalent column without total digits and places (digits after decimal point), which is the standard SQL syntax. Therefore, you may remove the arguments for `$total` and `$places`:
 
 ```php
 $table->double('amount');
@@ -108,7 +120,7 @@ The `float` column type now creates a `FLOAT` equivalent column without total di
 $table->float('amount', $precision = 53);
 ```
 
-The `unsignedDecimal`, `unsignedDouble`, and `unsignedFloat` methods have been removed. Therefore, you may use equivalent column types and forcing deprecated `UNSIGNED` attribute using `->unsigned()` modifier on MySQL:
+The `unsignedDecimal`, `unsignedDouble`, and `unsignedFloat` methods have been removed, as the unsigned modifier for these column types has been deprecated by MySQL, and was never standardized on other database systems. However, if you wish to continue using the deprecated unsigned attribute for these column types, you may chain the `unsigned` method onto the column's definition:
 
 ```php
 $table->decimal('amount', $total = 8, $places = 2)->unsigned();
@@ -137,12 +149,12 @@ $table->geography('latitude', subtype: 'point', srid: 4326);
 
 The `isGeometry` and `projection` column modifiers of the PostgreSQL grammar have been removed accordingly.
 
-<a name="schema-and-connection"></a>
-#### Schema and Connection
+<a name="doctrine-dbal-removal"></a>
+#### Doctrine DBAL Removal
 
 **Likelihood Of Impact: Low**
 
-Following list of related Doctrine DBAL classes and methods have been removed:
+The following list of Doctrine DBAL related classes and methods have been removed. Laravel is no longer dependent on this package and registering custom Doctrines types is no longer necessary for the proper creation and alteration of various column types that previously required custom types:
 
 <div class="content-list" markdown="1">
 
@@ -163,17 +175,12 @@ Following list of related Doctrine DBAL classes and methods have been removed:
 
 </div>
 
+In addition, registering custom Doctrine types via `dbal.types` in your application's `database` configuration file is no longer required.
+
 <a name="get-column-types"></a>
-#### Schema builder `getColumnType()` method
+#### Schema Builder `getColumnType()` Method
 
 **Likelihood Of Impact: Very Low**
 
 The `Schema::getColumnType()` method now always returns actual type of the given column, not the Doctrine DBAL equivalent type.
-
-<a name="registering-doctrine-types"></a>
-#### Registering Custom Doctrine Types
-
-**Likelihood Of Impact: Low**
-
-Registering custom Doctrine types via `dbal.types` in the `database` configuration file is no longer required.
 
