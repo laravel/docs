@@ -94,7 +94,7 @@ Schema::table('users', function (Blueprint $table) {
 
 **Likelihood Of Impact: Medium**
 
-The `double` and `float` column types of database migrations have been rewritten to make these types consistent across all databases.
+The `double` and `float` column types of database migrations have been rewritten to be consistent across all databases.
 
 The `double` column type now creates a `DOUBLE` equivalent column without total digits and places (digits after decimal point), which is the standard syntax in SQL. Therefore, you may remove the arguments for `$total` and `$places`:
 
