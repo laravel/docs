@@ -385,11 +385,30 @@ Http::globalResponseMiddleware(fn ($response) => $response->withHeader(
 <a name="guzzle-options"></a>
 ### Guzzle Options
 
-You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en/stable/request-options.html) using the `withOptions` method. The `withOptions` method accepts an array of key / value pairs:
+You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en/stable/request-options.html) for an outgoing request using the `withOptions` method. The `withOptions` method accepts an array of key / value pairs:
 
     $response = Http::withOptions([
         'debug' => true,
     ])->get('http://example.com/users');
+
+<a name="global-options"></a>
+#### Global Options
+
+To configure default options for every outgoing request you may call the `globalOptions` method in your application's `App\Providers\AppServiceProvider`:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Http::globalOptions([
+        'allow_redirects' => false,
+    ]);
+}
+```
 
 <a name="concurrent-requests"></a>
 ## Concurrent Requests
