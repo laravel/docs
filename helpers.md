@@ -187,6 +187,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [validator](#method-validator)
 [value](#method-value)
 [view](#method-view)
+[windows_os](#method-windows-os)
 [with](#method-with)
 
 </div>
@@ -2011,6 +2012,17 @@ Additional arguments may be passed to the `value` function. If the first argumen
 The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 
     return view('auth.login');
+
+<a name="method-windows-os"></a>
+#### `windows_os()` {.collection-method}
+
+The `windows_os` function returns a boolean value if the user os is Windows:
+
+```php
+$isWindows = windows_os();
+
+// true
+```
 
 <a name="method-with"></a>
 #### `with()` {.collection-method}
