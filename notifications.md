@@ -325,6 +325,13 @@ If you would like to provide the recipient's name when sending an on-demand noti
         'barrett@example.com' => 'Barrett Blair',
     ])->notify(new InvoicePaid($invoice));
 
+Using the `routes` method, you may provide ad-hoc routing information for multiple notification channels at once:
+
+    Notification::routes([
+        'mail' => ['barrett@example.com' => 'Barrett Blair'],
+        'vonage' => '5555555555',
+    ])->notify(new InvoicePaid($invoice));
+
 <a name="mail-notifications"></a>
 ## Mail Notifications
 
