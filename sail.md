@@ -251,7 +251,7 @@ TYPESENSE_PROTOCOL=http
 TYPESENSE_API_KEY=xyz
 ```
 
-From your local machine, you may access Typesense's API by sending requests to `http://localhost:8108` as the base URL.
+From your local machine, you may access Typesense's API via `http://localhost:8108`.
 
 <a name="file-storage"></a>
 ## File Storage
