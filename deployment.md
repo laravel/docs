@@ -25,7 +25,7 @@ The Laravel framework has a few system requirements. You should ensure that your
 
 <div class="content-list" markdown="1">
 
-- PHP >= 8.1
+- PHP >= 8.2
 - Ctype PHP Extension
 - cURL PHP Extension
 - DOM PHP Extension
