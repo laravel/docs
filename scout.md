@@ -194,19 +194,6 @@ User::class => [
 ],
 ```
 
-<a name="typesense-dynamic-search-parameters"></a>
-#### Dynamic Search Parameters
-
-Typesense allows you to modify your [search parameters](https://typesense.org/docs/latest/api/search.html#search-parameters) dynamically when performing a search operation via the `withSearchParameters` method:
-
-```php
-use App\Models\Todo;
-
-Todo::search('Groceries')->withSearchParameters([
-    'query_by' => 'title, description'
-])->get();
-```
-
 <a name="configuration"></a>
 ## Configuration
 
