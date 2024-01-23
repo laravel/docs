@@ -14,6 +14,7 @@
     - [MySQL](#mysql)
     - [Redis](#redis)
     - [Meilisearch](#meilisearch)
+    - [Typesense](#typesense)
 - [File Storage](#file-storage)
 - [Running Tests](#running-tests)
     - [Laravel Dusk](#laravel-dusk)
@@ -237,6 +238,20 @@ To connect to your application's Redis database from your local machine, you may
 If you chose to install the [Meilisearch](https://www.meilisearch.com) service when installing Sail, your application's `docker-compose.yml` file will contain an entry for this powerful search-engine that is [compatible](https://github.com/meilisearch/meilisearch-laravel-scout) with [Laravel Scout](/docs/{{version}}/scout). Once you have started your containers, you may connect to the Meilisearch instance within your application by setting your `MEILISEARCH_HOST` environment variable to `http://meilisearch:7700`.
 
 From your local machine, you may access Meilisearch's web based administration panel by navigating to `http://localhost:7700` in your web browser.
+
+<a name="typesense"></a>
+### Typesense
+
+If you chose to install the [Typesense](https://typesense.org) service when installing Sail, your application's `docker-compose.yml` file will contain an entry for this lightning fast, open-source search-engine that is natively integrated with [Laravel Scout](/docs/{{version}}/scout#typesense). Once you have started your containers, you may connect to the Typesense instance within your application by setting the following environment variables:
+
+```ini
+TYPESENSE_HOST=typesense
+TYPESENSE_PORT=8108
+TYPESENSE_PROTOCOL=http
+TYPESENSE_API_KEY=xyz
+```
+
+From your local machine, you may access Typesense's API via `http://localhost:8108`.
 
 <a name="file-storage"></a>
 ## File Storage
