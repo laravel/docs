@@ -177,51 +177,7 @@ public function toSearchableArray()
 }
 ```
 
-You should also define the Typesense collection schema in your application's `config/scout.php`, which describes the data types of each field that Typesense will use to validate incoming data:
-
-```php
-// In config/scout.php
-[
-    'typesense' => [
-        'model-settings' => [
-            User::class => [
-                'collection-schema' => [
-                    'fields' => [
-                        // Only include fields you'll be searching, filtering, faceting, sorting or grouping on below.
-                        // 
-                        // You can still send additional fields (eg: display fields) in the records you import into Typesense. 
-                        // These fields not mentioned in the schema but present in documents, will just be stored on disk and 
-                        // returned when the document is a hit.
-                        [
-                            'name' => 'first_name',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'last_name',
-                            'type' => 'string',
-                            'optional' => true
-                        ],
-                        [
-                            'name' => 'created_at',
-                            'type' => 'int64',
-                        ],
-                    ],
-                    'default_sorting_field' => 'created_at',
-                ],
-                // These can be overridden dynamically as well. See the "Dynamic Search Parameters" section below.
-                'search-parameters' => [ 
-                    'query_by' => 'name'
-                ],
-            ],
-        ],
-    ],
-]
-
-```
-
-For more information on all available schema options, please consult the [Typesense documentation](https://typesense.org/docs/latest/api/collections.html#schema-parameters).
-
-Note: If you need to change your Typesense collection's schema later on, you would have to do it directly using Typesense's API. This driver will only use the schema specified in `config/scout.php` when the collection is created the first time.
+You should also define your Typesense collection schemas in your application's `config/scout.php` file. A collection schema describes the data types of each field that is searchable via Typesense. For more information on all available schema options, please consult the [Typesense documentation](https://typesense.org/docs/latest/api/collections.html#schema-parameters). If you need to change your Typesense collection's schema after it has been defined, you must do so via Typesense's API.
 
 If your searchable model is soft deletable, you should define a `__soft_deleted` field in the model's corresponding Typesense schema within your application's `config/scout.php` configuration file:
 
