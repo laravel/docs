@@ -4,8 +4,8 @@
 - [Configuration](#configuration)
 - [Basic Usage](#basic-usage)
     - [Hashing Passwords](#hashing-passwords)
-    - [Verifying That A Password Matches A Hash](#verifying-that-a-password-matches-a-hash)
-    - [Determining If A Password Needs To Be Rehashed](#determining-if-a-password-needs-to-be-rehashed)
+    - [Verifying That a Password Matches a Hash](#verifying-that-a-password-matches-a-hash)
+    - [Determining if a Password Needs to be Rehashed](#determining-if-a-password-needs-to-be-rehashed)
 
 <a name="introduction"></a>
 ## Introduction
@@ -72,11 +72,11 @@ If you are using the Argon2 algorithm, the `make` method allows you to manage th
         'threads' => 2,
     ]);
 
-> **Note**  
+> [!NOTE]  
 > For more information on these options, please refer to the [official PHP documentation regarding Argon hashing](https://secure.php.net/manual/en/function.password-hash.php).
 
 <a name="verifying-that-a-password-matches-a-hash"></a>
-### Verifying That A Password Matches A Hash
+### Verifying That a Password Matches a Hash
 
 The `check` method provided by the `Hash` facade allows you to verify that a given plain-text string corresponds to a given hash:
 
@@ -85,7 +85,7 @@ The `check` method provided by the `Hash` facade allows you to verify that a giv
     }
 
 <a name="determining-if-a-password-needs-to-be-rehashed"></a>
-### Determining If A Password Needs To Be Rehashed
+### Determining if a Password Needs to be Rehashed
 
 The `needsRehash` method provided by the `Hash` facade allows you to determine if the work factor used by the hasher has changed since the password was hashed. Some applications choose to perform this check during the application's authentication process:
 

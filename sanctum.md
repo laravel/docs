@@ -1,7 +1,7 @@
 # Laravel Sanctum
 
 - [Introduction](#introduction)
-    - [How It Works](#how-it-works)
+    - [How it Works](#how-it-works)
 - [Installation](#installation)
 - [Configuration](#configuration)
     - [Overriding Default Models](#overriding-default-models)
@@ -28,7 +28,7 @@
 [Laravel Sanctum](https://github.com/laravel/sanctum) provides a featherweight authentication system for SPAs (single page applications), mobile applications, and simple, token based APIs. Sanctum allows each user of your application to generate multiple API tokens for their account. These tokens may be granted abilities / scopes which specify which actions the tokens are allowed to perform.
 
 <a name="how-it-works"></a>
-### How It Works
+### How it Works
 
 Laravel Sanctum exists to solve two separate problems. Let's discuss each before digging deeper into the library.
 
@@ -48,13 +48,13 @@ For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses
 
 Sanctum will only attempt to authenticate using cookies when the incoming request originates from your own SPA frontend. When Sanctum examines an incoming HTTP request, it will first check for an authentication cookie and, if none is present, Sanctum will then examine the `Authorization` header for a valid API token.
 
-> **Note**  
+> [!NOTE]  
 > It is perfectly fine to use Sanctum only for API token authentication or only for SPA authentication. Just because you use Sanctum does not mean you are required to use both features it offers.
 
 <a name="installation"></a>
 ## Installation
 
-> **Note**  
+> [!NOTE]  
 > The most recent versions of Laravel already include Laravel Sanctum. However, if your application's `composer.json` file does not include `laravel/sanctum`, you may follow the installation instructions below.
 
 You may install Laravel Sanctum via the Composer package manager:
@@ -119,7 +119,7 @@ Then, you may instruct Sanctum to use your custom model via the `usePersonalAcce
 <a name="api-token-authentication"></a>
 ## API Token Authentication
 
-> **Note**  
+> [!NOTE]  
 > You should not use API tokens to authenticate your own first-party SPA. Instead, use Sanctum's built-in [SPA authentication features](#spa-authentication).
 
 <a name="issuing-api-tokens"></a>
@@ -237,6 +237,14 @@ By default, Sanctum tokens never expire and may only be invalidated by [revoking
 'expiration' => 525600,
 ```
 
+If you would like to specify the expiration time of each token independently, you may do so by providing the expiration time as the third argument to the `createToken` method:
+
+```php
+return $user->createToken(
+    'token-name', ['*'], now()->addWeek()
+)->plainTextToken;
+```
+
 If you have configured a token expiration time for your application, you may also wish to [schedule a task](/docs/{{version}}/scheduling) to prune your application's expired tokens. Thankfully, Sanctum includes a `sanctum:prune-expired` Artisan command that you may use to accomplish this. For example, you may configure a scheduled tasks to delete all expired token database records that have been expired for at least 24 hours:
 
 ```php
@@ -250,7 +258,7 @@ Sanctum also exists to provide a simple method of authenticating single page app
 
 For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses Laravel's built-in cookie based session authentication services. This approach to authentication provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS.
 
-> **Warning**  
+> [!WARNING]  
 > In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains. Additionally, you should ensure that you send the `Accept: application/json` header and either the `Referer` or `Origin` header with your request.
 
 
@@ -262,7 +270,7 @@ For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses
 
 First, you should configure which domains your SPA will be making requests from. You may configure these domains using the `stateful` configuration option in your `sanctum` configuration file. This configuration setting determines which domains will maintain "stateful" authentication using Laravel session cookies when making requests to your API.
 
-> **Warning**  
+> [!WARNING]  
 > If you are accessing your application via a URL that includes a port (`127.0.0.1:8000`), you should ensure that you include the port number with the domain.
 
 <a name="sanctum-middleware"></a>
@@ -277,7 +285,7 @@ Next, you should add Sanctum's middleware to your `api` middleware group within 
     ],
 
 <a name="cors-and-cookies"></a>
-#### CORS & Cookies
+#### CORS and Cookies
 
 If you are having trouble authenticating with your application from a SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings.
 
@@ -319,7 +327,7 @@ If the login request is successful, you will be authenticated and subsequent req
 
 Of course, if your user's session expires due to lack of activity, subsequent requests to the Laravel application may receive 401 or 419 HTTP error response. In this case, you should redirect the user to your SPA's login page.
 
-> **Warning**  
+> [!WARNING]  
 > You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard.
 
 <a name="protecting-spa-routes"></a>
@@ -404,7 +412,7 @@ Typically, you will make a request to the token endpoint from your mobile applic
 
 When the mobile application uses the token to make an API request to your application, it should pass the token in the `Authorization` header as a `Bearer` token.
 
-> **Note**  
+> [!NOTE]  
 > When issuing tokens for a mobile application, you are also free to specify [token abilities](#token-abilities).
 
 <a name="protecting-mobile-api-routes"></a>

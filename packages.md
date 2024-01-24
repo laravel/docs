@@ -1,7 +1,7 @@
 # Package Development
 
 - [Introduction](#introduction)
-    - [A Note On Facades](#a-note-on-facades)
+    - [A Note on Facades](#a-note-on-facades)
 - [Package Discovery](#package-discovery)
 - [Service Providers](#service-providers)
 - [Resources](#resources)
@@ -26,7 +26,7 @@ There are different types of packages. Some packages are stand-alone, meaning th
 On the other hand, other packages are specifically intended for use with Laravel. These packages may have routes, controllers, views, and configuration specifically intended to enhance a Laravel application. This guide primarily covers the development of those packages that are Laravel specific.
 
 <a name="a-note-on-facades"></a>
-### A Note On Facades
+### A Note on Facades
 
 When writing a Laravel application, it generally does not matter if you use contracts or facades since both provide essentially equal levels of testability. However, when writing packages, your package will not typically have access to all of Laravel's testing helpers. If you would like to be able to write your package tests as if the package were installed inside a typical Laravel application, you may use the [Orchestral Testbench](https://github.com/orchestral/testbench) package.
 
@@ -51,7 +51,7 @@ In a Laravel application's `config/app.php` configuration file, the `providers` 
 Once your package has been configured for discovery, Laravel will automatically register its service providers and facades when it is installed, creating a convenient installation experience for your package's users.
 
 <a name="opting-out-of-package-discovery"></a>
-### Opting Out Of Package Discovery
+#### Opting Out of Package Discovery
 
 If you are the consumer of a package and would like to disable package discovery for a package, you may list the package name in the `extra` section of your application's `composer.json` file:
 
@@ -106,7 +106,7 @@ Now, when users of your package execute Laravel's `vendor:publish` command, your
 
     $value = config('courier.option');
 
-> **Warning**  
+> [!WARNING]  
 > You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
 
 <a name="default-package-configuration"></a>
@@ -126,7 +126,7 @@ The `mergeConfigFrom` method accepts the path to your package's configuration fi
         );
     }
 
-> **Warning**  
+> [!WARNING]  
 > This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
 
 <a name="routes"></a>

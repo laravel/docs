@@ -10,19 +10,19 @@
     - [Serving a Default Site](#serving-a-default-site)
     - [Per-Site PHP Versions](#per-site-php-versions)
 - [Sharing Sites](#sharing-sites)
-    - [Sharing Sites On Your Local Network](#sharing-sites-on-your-local-network)
+    - [Sharing Sites on Your Local Network](#sharing-sites-on-your-local-network)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Proxying Services](#proxying-services)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
-- [Valet Directories & Files](#valet-directories-and-files)
+- [Valet Directories and Files](#valet-directories-and-files)
     - [Disk Access](#disk-access)
 
 <a name="introduction"></a>
 ## Introduction
 
-> **Note**
+> [!NOTE]  
 > Looking for an even easier way to develop Laravel applications on macOS? Check out [Laravel Herd](https://herd.laravel.com). Herd includes everything you need to get started with Laravel development, including Valet, PHP, and Composer.
 
 [Laravel Valet](https://github.com/laravel/valet) is a development environment for macOS minimalists. Laravel Valet configures your Mac to always run [Nginx](https://www.nginx.com/) in the background when your machine starts. Then, using [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq), Valet proxies all requests on the `*.test` domain to point to sites installed on your local machine.
@@ -69,7 +69,7 @@ However, you may extend Valet with your own [custom drivers](#custom-valet-drive
 <a name="installation"></a>
 ## Installation
 
-> **Warning**  
+> [!WARNING]  
 > Valet requires macOS and [Homebrew](https://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.
 
 To get started, you first need to ensure that Homebrew is up to date using the `update` command:
@@ -103,7 +103,7 @@ Valet will automatically start its required services each time your machine boot
 <a name="php-versions"></a>
 #### PHP Versions
 
-> **Note**  
+> [!NOTE]  
 > Instead of modifying your global PHP version, you can instruct Valet to use per-site PHP versions via the `isolate` [command](#per-site-php-versions).
 
 Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Homebrew if it is not already installed:
@@ -122,7 +122,7 @@ php=php@8.1
 
 Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
 
-> **Warning**  
+> [!WARNING]  
 > Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
 
 <a name="database"></a>
@@ -141,7 +141,7 @@ If you are having trouble getting your Valet installation to run properly, execu
 You may update your Valet installation by executing the `composer global require laravel/valet` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
 
 <a name="upgrading-to-valet-4"></a>
-#### Upgrading To Valet 4
+#### Upgrading to Valet 4
 
 If you're upgrading from Valet 3 to Valet 4, take the following steps to properly upgrade your Valet installation:
 
@@ -228,7 +228,7 @@ valet unsecure laravel
 ```
 
 <a name="serving-a-default-site"></a>
-### Serving A Default Site
+### Serving a Default Site
 
 Sometimes, you may wish to configure Valet to serve a "default" site instead of a `404` when visiting an unknown `test` domain. To accomplish this, you may add a `default` option to your `~/.config/valet/config.json` configuration file containing the path to the site that should serve as your default site:
 
@@ -294,11 +294,11 @@ valet share
 
 To stop sharing your site, you may press `Control + C`.
 
-> **Warning**
+> [!WARNING]  
 > If you're using a custom DNS server (like `1.1.1.1`), ngrok sharing may not work correctly. If this is the case on your machine, open your Mac's system settings, go to the Network settings, open the Advanced settings, then go the DNS tab and add `127.0.0.1` as your first DNS server.
 
 <a name="sharing-sites-via-ngrok"></a>
-#### Sharing Sites Via Ngrok
+#### Sharing Sites via Ngrok
 
 Sharing your site using ngrok requires you to [create an ngrok account](https://dashboard.ngrok.com/signup) and [set up an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken). Once you have an authentication token, you can update your Valet configuration with that token:
 
@@ -306,18 +306,18 @@ Sharing your site using ngrok requires you to [create an ngrok account](https://
 valet set-ngrok-token YOUR_TOKEN_HERE
 ```
 
-> **Note**  
+> [!NOTE]  
 > You may pass additional ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
 
 <a name="sharing-sites-via-expose"></a>
-#### Sharing Sites Via Expose
+#### Sharing Sites via Expose
 
 Sharing your site using Expose requires you to [create an Expose account](https://expose.dev/register) and [authenticate with Expose via your authentication token](https://expose.dev/docs/getting-started/getting-your-token).
 
 You may consult the [Expose documentation](https://expose.dev/docs) for information regarding the additional command-line parameters it supports.
 
 <a name="sharing-sites-on-your-local-network"></a>
-### Sharing Sites On Your Local Network
+### Sharing Sites on Your Local Network
 
 Valet restricts incoming traffic to the internal `127.0.0.1` interface by default so that your development machine isn't exposed to security risks from the Internet.
 
@@ -418,7 +418,7 @@ The `isStaticFile` should determine if the incoming request is for a file that i
         return false;
     }
 
-> **Warning**  
+> [!WARNING]  
 > The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
 
 <a name="the-frontcontrollerpath-method"></a>
@@ -482,7 +482,7 @@ Command  | Description
 </div>
 
 <a name="valet-directories-and-files"></a>
-## Valet Directories & Files
+## Valet Directories and Files
 
 You may find the following directory and file information helpful while troubleshooting issues with your Valet environment:
 

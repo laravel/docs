@@ -3,10 +3,10 @@
 - [Introduction](#introduction)
 - [Laravel Breeze](#laravel-breeze)
     - [Installation](#laravel-breeze-installation)
-    - [Breeze & Blade](#breeze-and-blade)
-    - [Breeze & Livewire](#breeze-and-livewire)
-    - [Breeze & React / Vue](#breeze-and-inertia)
-    - [Breeze & Next.js / API](#breeze-and-next)
+    - [Breeze and Blade](#breeze-and-blade)
+    - [Breeze and Livewire](#breeze-and-livewire)
+    - [Breeze and React / Vue](#breeze-and-inertia)
+    - [Breeze and Next.js / API](#breeze-and-next)
 - [Laravel Jetstream](#laravel-jetstream)
 
 <a name="introduction"></a>
@@ -51,7 +51,7 @@ npm run dev
 ```
 
 <a name="breeze-and-blade"></a>
-### Breeze & Blade
+### Breeze and Blade
 
 The default Breeze "stack" is the Blade stack, which utilizes simple [Blade templates](/docs/{{version}}/blade) to render your application's frontend. The Blade stack may be installed by invoking the `breeze:install` command with no other additional arguments and selecting the Blade frontend stack. After Breeze's scaffolding is installed, you should also compile your application's frontend assets:
 
@@ -65,11 +65,11 @@ npm run dev
 
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
 
-> **Note**
+> [!NOTE]  
 > To learn more about compiling your application's CSS and JavaScript, check out Laravel's [Vite documentation](/docs/{{version}}/vite#running-vite).
 
 <a name="breeze-and-livewire"></a>
-### Breeze & Livewire
+### Breeze and Livewire
 
 Laravel Breeze also offers [Livewire](https://livewire.laravel.com) scaffolding. Livewire is a powerful way of building dynamic, reactive, front-end UIs using just PHP.
 
@@ -84,7 +84,7 @@ php artisan migrate
 ```
 
 <a name="breeze-and-inertia"></a>
-### Breeze & React / Vue
+### Breeze and React / Vue
 
 Laravel Breeze also offers React and Vue scaffolding via an [Inertia](https://inertiajs.com) frontend implementation. Inertia allows you to build modern, single-page React and Vue applications using classic server-side routing and controllers.
 
@@ -103,7 +103,7 @@ npm run dev
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
 
 <a name="breeze-and-next"></a>
-### Breeze & Next.js / API
+### Breeze and Next.js / API
 
 Laravel Breeze can also scaffold an authentication API that is ready to authenticate modern JavaScript applications such as those powered by [Next](https://nextjs.org), [Nuxt](https://nuxt.com), and others. To get started, select the API stack as your desired stack when executing the `breeze:install` Artisan command:
 

@@ -1,9 +1,9 @@
 # Contracts
 
 - [Introduction](#introduction)
-    - [Contracts Vs. Facades](#contracts-vs-facades)
-- [When To Use Contracts](#when-to-use-contracts)
-- [How To Use Contracts](#how-to-use-contracts)
+    - [Contracts vs. Facades](#contracts-vs-facades)
+- [When to Use Contracts](#when-to-use-contracts)
+- [How to Use Contracts](#how-to-use-contracts)
 - [Contract Reference](#contract-reference)
 
 <a name="introduction"></a>
@@ -16,21 +16,21 @@ Each contract has a corresponding implementation provided by the framework. For 
 All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized when building packages that interact with Laravel services.
 
 <a name="contracts-vs-facades"></a>
-### Contracts Vs. Facades
+### Contracts vs. Facades
 
 Laravel's [facades](/docs/{{version}}/facades) and helper functions provide a simple way of utilizing Laravel's services without needing to type-hint and resolve contracts out of the service container. In most cases, each facade has an equivalent contract.
 
 Unlike facades, which do not require you to require them in your class' constructor, contracts allow you to define explicit dependencies for your classes. Some developers prefer to explicitly define their dependencies in this way and therefore prefer to use contracts, while other developers enjoy the convenience of facades. **In general, most applications can use facades without issue during development.**
 
 <a name="when-to-use-contracts"></a>
-## When To Use Contracts
+## When to Use Contracts
 
 The decision to use contracts or facades will come down to personal taste and the tastes of your development team. Both contracts and facades can be used to create robust, well-tested Laravel applications. Contracts and facades are not mutually exclusive. Some parts of your applications may use facades while others depend on contracts. As long as you are keeping your class' responsibilities focused, you will notice very few practical differences between using contracts and facades.
 
 In general, most applications can use facades without issue during development. If you are building a package that integrates with multiple PHP frameworks you may wish to use the `illuminate/contracts` package to define your integration with Laravel's services without the need to require Laravel's concrete implementations in your package's `composer.json` file.
 
 <a name="how-to-use-contracts"></a>
-## How To Use Contracts
+## How to Use Contracts
 
 So, how do you get an implementation of a contract? It's actually quite simple.
 

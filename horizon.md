@@ -18,7 +18,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-> **Note**  
+> [!NOTE]  
 > Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/{{version}}/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel.
 
 [Laravel Horizon](https://github.com/laravel/horizon) provides a beautiful dashboard and code-driven configuration for your Laravel powered [Redis queues](/docs/{{version}}/queues). Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
@@ -30,7 +30,7 @@ When using Horizon, all of your queue worker configuration is stored in a single
 <a name="installation"></a>
 ## Installation
 
-> **Warning**  
+> [!WARNING]  
 > Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file.
 
 You may install Horizon into your project using the Composer package manager:
@@ -50,7 +50,7 @@ php artisan horizon:install
 
 After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure the queue worker options for your application. Each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
 
-> **Warning**  
+> [!WARNING]  
 > Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file.
 
 <a name="environments"></a>
@@ -76,7 +76,7 @@ After installation, the primary Horizon configuration option that you should fam
 
 When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/docs/{{version}}/configuration#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
 
-> **Warning**  
+> [!WARNING]  
 > You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon.
 
 <a name="supervisors"></a>
@@ -85,6 +85,20 @@ When you start Horizon, it will use the worker process configuration options for
 As you can see in Horizon's default configuration file, each environment can contain one or more "supervisors". By default, the configuration file defines this supervisor as `supervisor-1`; however, you are free to name your supervisors whatever you want. Each supervisor is essentially responsible for "supervising" a group of worker processes and takes care of balancing worker processes across queues.
 
 You may add additional supervisors to a given environment if you would like to define a new group of worker processes that should run in that environment. You may choose to do this if you would like to define a different balancing strategy or worker process count for a given queue used by your application.
+
+<a name="maintenance-mode"></a>
+#### Maintenance Mode
+
+While your application is in [maintainance mode](/docs/{{version}}/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
+
+    'environments' => [
+        'production' => [
+            'supervisor-1' => [
+                // ...
+                'force' => true,
+            ],
+        ],
+    ],
 
 <a name="default-values"></a>
 #### Default Values
@@ -246,7 +260,7 @@ Supervisor is a process monitor for the Linux operating system and will automati
 sudo apt-get install supervisor
 ```
 
-> **Note**  
+> [!NOTE]  
 > If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
 
 <a name="supervisor-configuration"></a>
@@ -268,7 +282,7 @@ stopwaitsecs=3600
 
 When defining your Supervisor configuration, you should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
 
-> **Warning**  
+> [!WARNING]  
 > While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information.
 
 <a name="starting-supervisor"></a>
@@ -284,7 +298,7 @@ sudo supervisorctl update
 sudo supervisorctl start horizon
 ```
 
-> **Note**  
+> [!NOTE]  
 > For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
 
 <a name="tags"></a>
@@ -350,10 +364,29 @@ If you would like to manually define the tags for one of your queueable objects,
         }
     }
 
+<a name="manually-tagging-event-listeners"></a>
+#### Manually Tagging Event Listeners
+
+When retrieving the tags for a queued event listener, Horizon will automatically pass the event instance to the `tags` method, allowing you to add event data to the tags:
+
+    class SendRenderNotifications implements ShouldQueue
+    {
+        /**
+         * Get the tags that should be assigned to the listener.
+         *
+         * @return array<int, string>
+         */
+        public function tags(VideoRendered $event): array
+        {
+            return ['video:'.$event->video->id];
+        }
+    }
+
+
 <a name="notifications"></a>
 ## Notifications
 
-> **Warning**  
+> [!WARNING]  
 > When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications).
 
 If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from the `boot` method of your application's `App\Providers\HorizonServiceProvider`:

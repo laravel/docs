@@ -5,7 +5,7 @@
     - [The Local Driver](#the-local-driver)
     - [The Public Disk](#the-public-disk)
     - [Driver Prerequisites](#driver-prerequisites)
-    - [Scoped & Read-Only Filesystems](#scoped-and-read-only-filesystems)
+    - [Scoped and Read-Only Filesystems](#scoped-and-read-only-filesystems)
     - [Amazon S3 Compatible Filesystems](#amazon-s3-compatible-filesystems)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
     - [On-Demand Disks](#on-demand-disks)
@@ -15,8 +15,8 @@
     - [Temporary URLs](#temporary-urls)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
-    - [Prepending & Appending To Files](#prepending-appending-to-files)
-    - [Copying & Moving Files](#copying-moving-files)
+    - [Prepending and Appending To Files](#prepending-appending-to-files)
+    - [Copying and Moving Files](#copying-moving-files)
     - [Automatic Streaming](#automatic-streaming)
     - [File Uploads](#file-uploads)
     - [File Visibility](#file-visibility)
@@ -37,7 +37,7 @@ Laravel's filesystem configuration file is located at `config/filesystems.php`. 
 
 The `local` driver interacts with files stored locally on the server running the Laravel application while the `s3` driver is used to write to Amazon's S3 cloud storage service.
 
-> **Note**
+> [!NOTE]  
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
 
 <a name="the-local-driver"></a>
@@ -150,7 +150,7 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
     ],
 
 <a name="scoped-and-read-only-filesystems"></a>
-### Scoped & Read-Only Filesystems
+### Scoped and Read-Only Filesystems
 
 Scoped disks allow you to define a filesystem where all paths are automatically prefixed with a given path prefix. Before creating a scoped filesystem disk, you will need to install an additional Flysystem package via the Composer package manager:
 
@@ -202,7 +202,7 @@ In order for Laravel's Flysystem integration to generate proper URLs when using 
 AWS_URL=http://localhost:9000/local
 ```
 
-> **Warning**  
+> [!WARNING]  
 > Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
 
 <a name="obtaining-disk-instances"></a>
@@ -277,7 +277,7 @@ You may use the `url` method to get the URL for a given file. If you are using t
 
 When using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) at `public/storage` which points to the `storage/app/public` directory.
 
-> **Warning**  
+> [!WARNING]  
 > When using the `local` driver, the return value of `url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
 
 <a name="url-host-customization"></a>
@@ -347,7 +347,7 @@ If you need to customize how temporary URLs are created for a specific storage d
 <a name="temporary-upload-urls"></a>
 #### Temporary Upload URLs
 
-> **Warning**
+> [!WARNING]  
 > The ability to generate temporary upload URLs is only supported by the `s3` driver.
 
 If you need to generate a temporary URL that can be used to upload a file directly from your client-side application, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire. The `temporaryUploadUrl` method returns an associative array which may be destructured into the upload URL and the headers that should be included with the upload request:
@@ -415,7 +415,7 @@ If you wish, you may define the `throw` option within your filesystem disk's con
     ],
 
 <a name="prepending-appending-to-files"></a>
-### Prepending & Appending To Files
+### Prepending and Appending To Files
 
 The `prepend` and `append` methods allow you to write to the beginning or end of a file:
 
@@ -424,7 +424,7 @@ The `prepend` and `append` methods allow you to write to the beginning or end of
     Storage::append('file.log', 'Appended Text');
 
 <a name="copying-moving-files"></a>
-### Copying & Moving Files
+### Copying and Moving Files
 
 The `copy` method may be used to copy an existing file to a new location on the disk, while the `move` method may be used to rename or move an existing file to a new location:
 
@@ -484,7 +484,7 @@ You may also call the `putFile` method on the `Storage` facade to perform the sa
     $path = Storage::putFile('avatars', $request->file('avatar'));
 
 <a name="specifying-a-file-name"></a>
-#### Specifying A File Name
+#### Specifying a File Name
 
 If you do not want a filename to be automatically assigned to your stored file, you may use the `storeAs` method, which receives the path, the filename, and the (optional) disk as its arguments:
 
@@ -498,11 +498,11 @@ You may also use the `putFileAs` method on the `Storage` facade, which will perf
         'avatars', $request->file('avatar'), $request->user()->id
     );
 
-> **Warning**  
+> [!WARNING]  
 > Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\WhitespacePathNormalizer::normalizePath` method.
 
 <a name="specifying-a-disk"></a>
-#### Specifying A Disk
+#### Specifying a Disk
 
 By default, this uploaded file's `store` method will use your default disk. If you would like to specify another disk, pass the disk name as the second argument to the `store` method:
 
@@ -563,7 +563,7 @@ When interacting with uploaded files, you may use the `storePublicly` and `store
     );
 
 <a name="local-files-and-visibility"></a>
-#### Local Files & Visibility
+#### Local Files and Visibility
 
 When using the `local` driver, `public` [visibility](#file-visibility) translates to `0755` permissions for directories and `0644` permissions for files. You can modify the permissions mappings in your application's `filesystems` configuration file:
 
@@ -603,7 +603,7 @@ If necessary, you may specify the disk that the file should be deleted from:
 ## Directories
 
 <a name="get-all-files-within-a-directory"></a>
-#### Get All Files Within A Directory
+#### Get All Files Within a Directory
 
 The `files` method returns an array of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `allFiles` method:
 
@@ -614,7 +614,7 @@ The `files` method returns an array of all of the files in a given directory. If
     $files = Storage::allFiles($directory);
 
 <a name="get-all-directories-within-a-directory"></a>
-#### Get All Directories Within A Directory
+#### Get All Directories Within a Directory
 
 The `directories` method returns an array of all the directories within a given directory. Additionally, you may use the `allDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
 
@@ -623,14 +623,14 @@ The `directories` method returns an array of all the directories within a given 
     $directories = Storage::allDirectories($directory);
 
 <a name="create-a-directory"></a>
-#### Create A Directory
+#### Create a Directory
 
 The `makeDirectory` method will create the given directory, including any needed subdirectories:
 
     Storage::makeDirectory($directory);
 
 <a name="delete-a-directory"></a>
-#### Delete A Directory
+#### Delete a Directory
 
 Finally, the `deleteDirectory` method may be used to remove a directory and all of its files:
 
@@ -675,7 +675,7 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
 
 By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads).
 
-> **Warning**
+> [!WARNING]  
 > The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php).
 
 <a name="custom-filesystems"></a>

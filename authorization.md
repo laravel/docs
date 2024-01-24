@@ -17,7 +17,7 @@
     - [Guest Users](#guest-users)
     - [Policy Filters](#policy-filters)
 - [Authorizing Actions Using Policies](#authorizing-actions-using-policies)
-    - [Via The User Model](#via-the-user-model)
+    - [Via the User Model](#via-the-user-model)
     - [Via Controller Helpers](#via-controller-helpers)
     - [Via Middleware](#via-middleware)
     - [Via Blade Templates](#via-blade-templates)
@@ -38,7 +38,7 @@ You do not need to choose between exclusively using gates or exclusively using p
 <a name="writing-gates"></a>
 ### Writing Gates
 
-> **Warning**  
+> [!WARNING]  
 > Gates are a great way to learn the basics of Laravel's authorization features; however, when building robust Laravel applications you should consider using [policies](#creating-policies) to organize your authorization rules.
 
 Gates are simply closures that determine if a user is authorized to perform a given action. Typically, gates are defined within the `boot` method of the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument and may optionally receive additional arguments such as a relevant Eloquent model.
@@ -125,7 +125,7 @@ You may authorize multiple actions at a time using the `any` or `none` methods:
     }
 
 <a name="authorizing-or-throwing-exceptions"></a>
-#### Authorizing Or Throwing Exceptions
+#### Authorizing or Throwing Exceptions
 
 If you would like to attempt to authorize an action and automatically throw an `Illuminate\Auth\Access\AuthorizationException` if the user is not allowed to perform the given action, you may use the `Gate` facade's `authorize` method. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler:
 
@@ -245,7 +245,7 @@ Similar to the `before` method, if the `after` closure returns a non-null result
 <a name="inline-authorization"></a>
 ### Inline Authorization
 
-Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicated gate that corresponds to the action. Laravel allows you to perform these types of "inline" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:
+Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicated gate that corresponds to the action. Laravel allows you to perform these types of "inline" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods. Inline authorization does not execute any defined ["before" or "after" authorization hooks](#intercepting-gate-checks):
 
 ```php
 use App\Models\User;
@@ -327,7 +327,7 @@ If you would like to define your own policy discovery logic, you may register a 
         // Return the name of the policy class for the given model...
     });
 
-> **Warning**  
+> [!WARNING]  
 > Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potentially auto-discovered policies.
 
 <a name="writing-policies"></a>
@@ -362,7 +362,7 @@ You may continue to define additional methods on the policy as needed for the va
 
 If you used the `--model` option when generating your policy via the Artisan console, it will already contain methods for the `viewAny`, `view`, `create`, `update`, `delete`, `restore`, and `forceDelete` actions.
 
-> **Note**  
+> [!NOTE]  
 > All policies are resolved via the Laravel [service container](/docs/{{version}}/container), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected.
 
 <a name="policy-responses"></a>
@@ -403,7 +403,7 @@ When using the `Gate::authorize` method, which throws an `AuthorizationException
     // The action is authorized...
 
 <a name="customising-policy-response-status"></a>
-#### Customizing The HTTP Response Status
+#### Customizing the HTTP Response Status
 
 When an action is denied via a policy method, a `403` HTTP response is returned; however, it can sometimes be useful to return an alternative HTTP status code. You may customize the HTTP status code returned for a failed authorization check using the `denyWithStatus` static constructor on the `Illuminate\Auth\Access\Response` class:
 
@@ -494,14 +494,14 @@ For certain users, you may wish to authorize all actions within a given policy. 
 
 If you would like to deny all authorization checks for a particular type of user then you may return `false` from the `before` method. If `null` is returned, the authorization check will fall through to the policy method.
 
-> **Warning**  
+> [!WARNING]  
 > The `before` method of a policy class will not be called if the class doesn't contain a method with a name matching the name of the ability being checked.
 
 <a name="authorizing-actions-using-policies"></a>
 ## Authorizing Actions Using Policies
 
 <a name="via-the-user-model"></a>
-### Via The User Model
+### Via the User Model
 
 The `App\Models\User` model that is included with your Laravel application includes two helpful methods for authorizing actions: `can` and `cannot`. The `can` and `cannot` methods receive the name of the action you wish to authorize and the relevant model. For example, let's determine if a user is authorized to update a given `App\Models\Post` model. Typically, this will be done within a controller method:
 
@@ -661,7 +661,7 @@ The following controller methods will be mapped to their corresponding policy me
 
 </div>
 
-> **Note**  
+> [!NOTE]  
 > You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`.
 
 <a name="via-middleware"></a>

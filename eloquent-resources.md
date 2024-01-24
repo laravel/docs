@@ -44,7 +44,7 @@ php artisan make:resource UserCollection
 <a name="concept-overview"></a>
 ## Concept Overview
 
-> **Note**  
+> [!NOTE]  
 > This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources.
 
 Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` resource class:
@@ -171,7 +171,7 @@ When the `preserveKeys` property is set to `true`, collection keys will be prese
     });
 
 <a name="customizing-the-underlying-resource-class"></a>
-#### Customizing The Underlying Resource Class
+#### Customizing the Underlying Resource Class
 
 Typically, the `$this->collection` property of a resource collection is automatically populated with the result of mapping each item of the collection to its singular resource class. The singular resource class is assumed to be the collection's class name without the trailing `Collection` portion of the class name. In addition, depending on your personal preference, the singular resource class may or may not be suffixed with `Resource`.
 
@@ -196,7 +196,7 @@ For example, `UserCollection` will attempt to map the given user instances into 
 <a name="writing-resources"></a>
 ## Writing Resources
 
-> **Note**  
+> [!NOTE]  
 > If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation.
 
 Resources only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:
@@ -261,7 +261,7 @@ If you would like to include related resources in your response, you may add the
         ];
     }
 
-> **Note**  
+> [!NOTE]  
 > If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships).
 
 <a name="writing-resource-collections"></a>
@@ -380,7 +380,7 @@ If you would like to disable the wrapping of the outermost resource, you should 
         }
     }
 
-> **Warning**  
+> [!WARNING]  
 > The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections.
 
 <a name="wrapping-nested-resources"></a>
@@ -410,7 +410,7 @@ You may be wondering if this will cause your outermost resource to be wrapped in
     }
 
 <a name="data-wrapping-and-pagination"></a>
-#### Data Wrapping And Pagination
+#### Data Wrapping and Pagination
 
 When returning paginated collections via a resource response, Laravel will wrap your resource data in a `data` key even if the `withoutWrapping` method has been called. This is because paginated responses always contain `meta` and `links` keys with information about the paginator's state:
 
@@ -493,7 +493,7 @@ Paginated responses always contain `meta` and `links` keys with information abou
 ```
 
 <a name="customizing-the-pagination-information"></a>
-#### Customizing The Pagination Information
+#### Customizing the Pagination Information
 
 If you would like to customize the information included in the `links` or `meta` keys of the pagination response, you may define a `paginationInformation` method on the resource. This method will receive the `$paginated` data and the array of `$default` information, which is an array containing the `links` and `meta` keys:
 
@@ -577,7 +577,7 @@ Sometimes you may have several attributes that should only be included in the re
 
 Again, if the given condition is `false`, these attributes will be removed from the resource response before it is sent to the client.
 
-> **Warning**  
+> [!WARNING]  
 > The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially.
 
 <a name="conditional-relationships"></a>

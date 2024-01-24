@@ -136,7 +136,7 @@ If you would like to send data using the `application/x-www-form-urlencoded` con
     ]);
 
 <a name="sending-a-raw-request-body"></a>
-#### Sending A Raw Request Body
+#### Sending a Raw Request Body
 
 You may use the `withBody` method if you would like to provide a raw request body when making a request. The content type may be provided via the method's second argument:
 
@@ -147,10 +147,10 @@ You may use the `withBody` method if you would like to provide a raw request bod
 <a name="multi-part-requests"></a>
 #### Multi-Part Requests
 
-If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. If needed, you may provide a third argument which will be considered the file's filename:
+If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. If needed, you may provide a third argument which will be considered the file's filename, while a fourth argument may be used to provide headers associated with the file:
 
     $response = Http::attach(
-        'attachment', file_get_contents('photo.jpg'), 'photo.jpg'
+        'attachment', file_get_contents('photo.jpg'), 'photo.jpg', ['Content-Type' => 'image/jpeg']
     )->post('http://example.com/attachments');
 
 Instead of passing the raw contents of a file, you may pass a stream resource:
@@ -260,7 +260,7 @@ If all of the requests fail, an instance of `Illuminate\Http\Client\RequestExcep
 
     $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 
-> **Warning**  
+> [!WARNING]  
 > If all of the requests fail because of a connection issue, a `Illuminate\Http\Client\ConnectionException` will still be thrown even when the `throw` argument is set to `false`.
 
 <a name="error-handling"></a>

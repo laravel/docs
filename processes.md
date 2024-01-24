@@ -6,11 +6,11 @@
     - [Process Output](#process-output)
     - [Pipelines](#process-pipelines)
 - [Asynchronous Processes](#asynchronous-processes)
-    - [Process IDs & Signals](#process-ids-and-signals)
+    - [Process IDs and Signals](#process-ids-and-signals)
     - [Asynchronous Process Output](#asynchronous-process-output)
 - [Concurrent Processes](#concurrent-processes)
     - [Naming Pool Processes](#naming-pool-processes)
-    - [Pool Process IDs & Signals](#pool-process-ids-and-signals)
+    - [Pool Process IDs and Signals](#pool-process-ids-and-signals)
 - [Testing](#testing)
     - [Faking Processes](#faking-processes)
     - [Faking Specific Processes](#faking-specific-processes)
@@ -249,7 +249,7 @@ $result = $process->wait();
 ```
 
 <a name="process-ids-and-signals"></a>
-### Process IDs & Signals
+### Process IDs and Signals
 
 The `id` method may be used to retrieve the operating system assigned process ID of the running process:
 
@@ -357,7 +357,7 @@ return $results['first']->output();
 ```
 
 <a name="pool-process-ids-and-signals"></a>
-### Pool Process IDs & Signals
+### Pool Process IDs and Signals
 
 Since the process pool's `running` method provides a collection of all invoked processes within the pool, you may easily access the underlying pool process IDs:
 
@@ -410,7 +410,7 @@ class ExampleTest extends TestCase
     {
         Process::fake();
 
-        $response = $this->get('/');
+        $response = $this->get('/import');
 
         // Simple process assertion...
         Process::assertRan('bash import.sh');

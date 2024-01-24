@@ -8,11 +8,11 @@
 - [Building Log Stacks](#building-log-stacks)
 - [Writing Log Messages](#writing-log-messages)
     - [Contextual Information](#contextual-information)
-    - [Writing To Specific Channels](#writing-to-specific-channels)
+    - [Writing to Specific Channels](#writing-to-specific-channels)
 - [Monolog Channel Customization](#monolog-channel-customization)
-    - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
+    - [Customizing Monolog for Channels](#customizing-monolog-for-channels)
     - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
-    - [Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)
+    - [Creating Custom Channels via Factories](#creating-custom-channels-via-factories)
 - [Tailing Log Messages Using Pail](#tailing-log-messages-using-pail)
     - [Installation](#pail-installation)
     - [Usage](#pail-usage)
@@ -35,7 +35,7 @@ All of the configuration options for your application's logging behavior are hou
 By default, Laravel will use the `stack` channel when logging messages. The `stack` channel is used to aggregate multiple log channels into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
 
 <a name="configuring-the-channel-name"></a>
-#### Configuring The Channel Name
+#### Configuring the Channel Name
 
 By default, Monolog is instantiated with a "channel name" that matches the current environment, such as `production` or `local`. To change this value, add a `name` option to your channel's configuration:
 
@@ -66,14 +66,14 @@ Name | Description
 
 </div>
 
-> **Note**  
+> [!NOTE]  
 > Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
 <a name="channel-prerequisites"></a>
 ### Channel Prerequisites
 
 <a name="configuring-the-single-and-daily-channels"></a>
-#### Configuring The Single and Daily Channels
+#### Configuring the Single and Daily Channels
 
 The `single` and `daily` channels have three optional configuration options: `bubble`, `permission`, and `locking`.
 
@@ -98,12 +98,12 @@ Name | Description                                                       | Defau
 </div>
 
 <a name="configuring-the-papertrail-channel"></a>
-#### Configuring The Papertrail Channel
+#### Configuring the Papertrail Channel
 
 The `papertrail` channel requires the `host` and `port` configuration options. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
 
 <a name="configuring-the-slack-channel"></a>
-#### Configuring The Slack Channel
+#### Configuring the Slack Channel
 
 The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
 
@@ -255,26 +255,42 @@ Occasionally, you may wish to specify some contextual information that should be
         }
     }
 
-If you would like to share contextual information across _all_ logging channels, you may call the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently. Typically, the `shareContext` method should be called from the `boot` method of an application service provider:
+If you would like to share contextual information across _all_ logging channels, you may invoke the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently:
 
+    <?php
+
+    namespace App\Http\Middleware;
+
+    use Closure;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Log;
     use Illuminate\Support\Str;
+    use Symfony\Component\HttpFoundation\Response;
 
-    class AppServiceProvider
+    class AssignRequestId
     {
         /**
-         * Bootstrap any application services.
+         * Handle an incoming request.
+         *
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function boot(): void
+        public function handle(Request $request, Closure $next): Response
         {
+            $requestId = (string) Str::uuid();
+
             Log::shareContext([
-                'invocation-id' => (string) Str::uuid(),
+                'request-id' => $requestId
             ]);
+
+            // ...
         }
     }
 
+> [!NOTE]
+> If you need to share log context while processing queued jobs, you may utilize [job middleware](/docs/{{version}}/queues#job-middleware).
+
 <a name="writing-to-specific-channels"></a>
-### Writing To Specific Channels
+### Writing to Specific Channels
 
 Sometimes you may wish to log a message to a channel other than your application's default channel. You may use the `channel` method on the `Log` facade to retrieve and log to any channel defined in your configuration file:
 
@@ -313,7 +329,7 @@ You may also wish to include an on-demand channel in an on-demand logging stack.
 ## Monolog Channel Customization
 
 <a name="customizing-monolog-for-channels"></a>
-### Customizing Monolog For Channels
+### Customizing Monolog for Channels
 
 Sometimes you may need complete control over how Monolog is configured for an existing channel. For example, you may want to configure a custom Monolog `FormatterInterface` implementation for Laravel's built-in `single` channel.
 
@@ -350,7 +366,7 @@ Once you have configured the `tap` option on your channel, you're ready to defin
         }
     }
 
-> **Note**  
+> [!NOTE]  
 > All of your "tap" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected.
 
 <a name="creating-monolog-handler-channels"></a>
@@ -419,7 +435,7 @@ If you are using a Monolog handler that is capable of providing its own formatte
 
 
 <a name="creating-custom-channels-via-factories"></a>
-### Creating Custom Channels Via Factories
+### Creating Custom Channels via Factories
 
 If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify a `custom` driver type in your `config/logging.php` configuration file. Your configuration should include a `via` option that contains the name of the factory class which will be invoked to create the Monolog instance:
 
@@ -461,7 +477,7 @@ Laravel Pail is a package that allows you to easily dive into your Laravel appli
 <a name="pail-installation"></a>
 ### Installation
 
-> **Warning**
+> [!WARNING]  
 > Laravel Pail requires [PHP 8.2+](https://php.net/releases/) and the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
 
 To get started, install Pail into your project using the Composer package manager:

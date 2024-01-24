@@ -88,6 +88,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 <div class="collection-method-list" markdown="1">
 
+[Number::abbreviate](#method-number-abbreviate)
 [Number::format](#method-number-format)
 [Number::percentage](#method-number-percentage)
 [Number::currency](#method-number-currency)
@@ -1097,6 +1098,25 @@ The `last` function returns the last element in the given array:
 <a name="numbers"></a>
 ## Numbers
 
+<a name="method-number-abbreviate"></a>
+#### `Number::abbreviate()` {.collection-method}
+
+The `Number::abbreviate` method returns the human-readable format of the provided numerical value, with an abbreviation for the units:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::abbreviate(1000);
+
+    // 1K
+
+    $number = Number::abbreviate(489939);
+
+    // 490K
+
+    $number = Number::abbreviate(1230000, precision: 2);
+
+    // 1.23M
+
 <a name="method-number-format"></a>
 #### `Number::format()` {.collection-method}
 
@@ -1184,7 +1204,7 @@ The `Number::fileSize` method returns the file size representation of the given 
 <a name="method-number-for-humans"></a>
 #### `Number::forHumans()` {.collection-method}
 
-The `Number::forHumans()` method returns the human-readable format of the provided numerical value:
+The `Number::forHumans` method returns the human-readable format of the provided numerical value:
 
     use Illuminate\Support\Number;
 
@@ -1248,7 +1268,7 @@ The `lang_path` function returns the fully qualified path to your application's 
 
     $path = lang_path('en/messages.php');
 
-> **Note**
+> [!NOTE]  
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 <a name="method-mix"></a>
@@ -1594,7 +1614,7 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
 
     $env = env('APP_ENV', 'production');
 
-> **Warning**  
+> [!WARNING]  
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
 
 <a name="method-event"></a>

@@ -1,15 +1,15 @@
 # Events
 
 - [Introduction](#introduction)
-- [Registering Events & Listeners](#registering-events-and-listeners)
-    - [Generating Events & Listeners](#generating-events-and-listeners)
+- [Registering Events and Listeners](#registering-events-and-listeners)
+    - [Generating Events and Listeners](#generating-events-and-listeners)
     - [Manually Registering Events](#manually-registering-events)
     - [Event Discovery](#event-discovery)
 - [Defining Events](#defining-events)
 - [Defining Listeners](#defining-listeners)
 - [Queued Event Listeners](#queued-event-listeners)
-    - [Manually Interacting With The Queue](#manually-interacting-with-the-queue)
-    - [Queued Event Listeners & Database Transactions](#queued-event-listeners-and-database-transactions)
+    - [Manually Interacting With the Queue](#manually-interacting-with-the-queue)
+    - [Queued Event Listeners and Database Transactions](#queued-event-listeners-and-database-transactions)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
     - [Dispatching Events After Database Transactions](#dispatching-events-after-database-transactions)
@@ -17,7 +17,7 @@
     - [Writing Event Subscribers](#writing-event-subscribers)
     - [Registering Event Subscribers](#registering-event-subscribers)
 - [Testing](#testing)
-    - [Faking A Subset Of Events](#faking-a-subset-of-events)
+    - [Faking a Subset of Events](#faking-a-subset-of-events)
     - [Scoped Events Fakes](#scoped-event-fakes)
 
 <a name="introduction"></a>
@@ -28,7 +28,7 @@ Laravel's events provide a simple observer pattern implementation, allowing you 
 Events serve as a great way to decouple various aspects of your application, since a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order has shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `App\Events\OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
 
 <a name="registering-events-and-listeners"></a>
-## Registering Events & Listeners
+## Registering Events and Listeners
 
 The `App\Providers\EventServiceProvider` included with your Laravel application provides a convenient place to register all of your application's event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add an `OrderShipped` event:
 
@@ -46,11 +46,11 @@ The `App\Providers\EventServiceProvider` included with your Laravel application 
         ],
     ];
 
-> **Note**  
+> [!NOTE]  
 > The `event:list` command may be used to display a list of all events and listeners registered by your application.
 
 <a name="generating-events-and-listeners"></a>
-### Generating Events & Listeners
+### Generating Events and Listeners
 
 Of course, manually creating the files for each event and listener is cumbersome. Instead, add listeners and events to your `EventServiceProvider` and use the `event:generate` Artisan command. This command will generate any events or listeners that are listed in your `EventServiceProvider` that do not already exist:
 
@@ -244,7 +244,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
         }
     }
 
-> **Note**  
+> [!NOTE]  
 > Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
 
 <a name="stopping-the-propagation-of-an-event"></a>
@@ -367,7 +367,7 @@ Sometimes, you may need to determine whether a listener should be queued based o
     }
 
 <a name="manually-interacting-with-the-queue"></a>
-### Manually Interacting With The Queue
+### Manually Interacting With the Queue
 
 If you need to manually access the listener's underlying queue job's `delete` and `release` methods, you may do so using the `Illuminate\Queue\InteractsWithQueue` trait. This trait is imported by default on generated listeners and provides access to these methods:
 
@@ -395,7 +395,7 @@ If you need to manually access the listener's underlying queue job's `delete` an
     }
 
 <a name="queued-event-listeners-and-database-transactions"></a>
-### Queued Event Listeners & Database Transactions
+### Queued Event Listeners and Database Transactions
 
 When queued listeners are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can occur when the job that dispatches the queued listener is processed.
 
@@ -414,7 +414,7 @@ If your queue connection's `after_commit` configuration option is set to `false`
         use InteractsWithQueue;
     }
 
-> **Note**  
+> [!NOTE]  
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="handling-failed-jobs"></a>
@@ -529,7 +529,7 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
 
     OrderShipped::dispatchUnless($condition, $order);
 
-> **Note**  
+> [!NOTE]  
 > When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
 
 <a name="dispatching-events-after-database-transactions"></a>
@@ -729,11 +729,11 @@ If you would simply like to assert that an event listener is listening to a give
         SendShipmentNotification::class
     );
 
-> **Warning**
+> [!WARNING]  
 > After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
 
 <a name="faking-a-subset-of-events"></a>
-### Faking A Subset Of Events
+### Faking a Subset of Events
 
 If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:
 

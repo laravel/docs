@@ -3,42 +3,42 @@
 - [Introduction](#introduction)
 - [Generating Notifications](#generating-notifications)
 - [Sending Notifications](#sending-notifications)
-    - [Using The Notifiable Trait](#using-the-notifiable-trait)
-    - [Using The Notification Facade](#using-the-notification-facade)
+    - [Using the Notifiable Trait](#using-the-notifiable-trait)
+    - [Using the Notification Facade](#using-the-notification-facade)
     - [Specifying Delivery Channels](#specifying-delivery-channels)
     - [Queueing Notifications](#queueing-notifications)
     - [On-Demand Notifications](#on-demand-notifications)
 - [Mail Notifications](#mail-notifications)
     - [Formatting Mail Messages](#formatting-mail-messages)
-    - [Customizing The Sender](#customizing-the-sender)
-    - [Customizing The Recipient](#customizing-the-recipient)
-    - [Customizing The Subject](#customizing-the-subject)
-    - [Customizing The Mailer](#customizing-the-mailer)
-    - [Customizing The Templates](#customizing-the-templates)
+    - [Customizing the Sender](#customizing-the-sender)
+    - [Customizing the Recipient](#customizing-the-recipient)
+    - [Customizing the Subject](#customizing-the-subject)
+    - [Customizing the Mailer](#customizing-the-mailer)
+    - [Customizing the Templates](#customizing-the-templates)
     - [Attachments](#mail-attachments)
-    - [Adding Tags & Metadata](#adding-tags-metadata)
-    - [Customizing The Symfony Message](#customizing-the-symfony-message)
+    - [Adding Tags and Metadata](#adding-tags-metadata)
+    - [Customizing the Symfony Message](#customizing-the-symfony-message)
     - [Using Mailables](#using-mailables)
     - [Previewing Mail Notifications](#previewing-mail-notifications)
 - [Markdown Mail Notifications](#markdown-mail-notifications)
-    - [Generating The Message](#generating-the-message)
-    - [Writing The Message](#writing-the-message)
-    - [Customizing The Components](#customizing-the-components)
+    - [Generating the Message](#generating-the-message)
+    - [Writing the Message](#writing-the-message)
+    - [Customizing the Components](#customizing-the-components)
 - [Database Notifications](#database-notifications)
     - [Prerequisites](#database-prerequisites)
     - [Formatting Database Notifications](#formatting-database-notifications)
-    - [Accessing The Notifications](#accessing-the-notifications)
-    - [Marking Notifications As Read](#marking-notifications-as-read)
+    - [Accessing the Notifications](#accessing-the-notifications)
+    - [Marking Notifications as Read](#marking-notifications-as-read)
 - [Broadcast Notifications](#broadcast-notifications)
     - [Prerequisites](#broadcast-prerequisites)
     - [Formatting Broadcast Notifications](#formatting-broadcast-notifications)
-    - [Listening For Notifications](#listening-for-notifications)
+    - [Listening for Notifications](#listening-for-notifications)
 - [SMS Notifications](#sms-notifications)
     - [Prerequisites](#sms-prerequisites)
     - [Formatting SMS Notifications](#formatting-sms-notifications)
     - [Unicode Content](#unicode-content)
-    - [Customizing The "From" Number](#customizing-the-from-number)
-    - [Adding A Client Reference](#adding-a-client-reference)
+    - [Customizing the "From" Number](#customizing-the-from-number)
+    - [Adding a Client Reference](#adding-a-client-reference)
     - [Routing SMS Notifications](#routing-sms-notifications)
 - [Slack Notifications](#slack-notifications)
     - [Prerequisites](#slack-prerequisites)
@@ -73,7 +73,7 @@ This command will place a fresh notification class in your `app/Notifications` d
 ## Sending Notifications
 
 <a name="using-the-notifiable-trait"></a>
-### Using The Notifiable Trait
+### Using the Notifiable Trait
 
 Notifications may be sent in two ways: using the `notify` method of the `Notifiable` trait or using the `Notification` [facade](/docs/{{version}}/facades). The `Notifiable` trait is included on your application's `App\Models\User` model by default:
 
@@ -95,11 +95,11 @@ The `notify` method that is provided by this trait expects to receive a notifica
 
     $user->notify(new InvoicePaid($invoice));
 
-> **Note**  
+> [!NOTE]  
 > Remember, you may use the `Notifiable` trait on any of your models. You are not limited to only including it on your `User` model.
 
 <a name="using-the-notification-facade"></a>
-### Using The Notification Facade
+### Using the Notification Facade
 
 Alternatively, you may send notifications via the `Notification` [facade](/docs/{{version}}/facades). This approach is useful when you need to send a notification to multiple notifiable entities such as a collection of users. To send notifications using the facade, pass all of the notifiable entities and the notification instance to the `send` method:
 
@@ -116,7 +116,7 @@ You can also send notifications immediately using the `sendNow` method. This met
 
 Every notification class has a `via` method that determines on which channels the notification will be delivered. Notifications may be sent on the `mail`, `database`, `broadcast`, `vonage`, and `slack` channels.
 
-> **Note**  
+> [!NOTE]  
 > If you would like to use other delivery channels such as Telegram or Pusher, check out the community driven [Laravel Notification Channels website](http://laravel-notification-channels.com).
 
 The `via` method receives a `$notifiable` instance, which will be an instance of the class to which the notification is being sent. You may use `$notifiable` to determine which channels the notification should be delivered on:
@@ -134,7 +134,7 @@ The `via` method receives a `$notifiable` instance, which will be an instance of
 <a name="queueing-notifications"></a>
 ### Queueing Notifications
 
-> **Warning**  
+> [!WARNING]  
 > Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues#running-the-queue-worker).
 
 Sending notifications can take time, especially if the channel needs to make an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using the `make:notification` command, so you may immediately add them to your notification class:
@@ -170,7 +170,7 @@ If you would like to delay the delivery of the notification, you may chain the `
     $user->notify((new InvoicePaid($invoice))->delay($delay));
 
 <a name="delaying-notifications-per-channel"></a>
-#### Delaying Notifications Per Channel
+#### Delaying Notifications per Channel
 
 You may pass an array to the `delay` method to specify the delay amount for specific channels:
 
@@ -195,7 +195,7 @@ Alternatively, you may define a `withDelay` method on the notification class its
     }
 
 <a name="customizing-the-notification-queue-connection"></a>
-#### Customizing The Notification Queue Connection
+#### Customizing the Notification Queue Connection
 
 By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may call the `onConnection` method from your notification's constructor:
 
@@ -254,7 +254,7 @@ If you would like to specify a specific queue that should be used for each notif
     }
 
 <a name="queued-notifications-and-database-transactions"></a>
-#### Queued Notifications & Database Transactions
+#### Queued Notifications and Database Transactions
 
 When queued notifications are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your notification depends on these models, unexpected errors can occur when the job that sends the queued notification is processed.
 
@@ -287,11 +287,11 @@ Alternatively, you may call the `afterCommit` method from your notification's co
         }
     }
 
-> **Note**  
+> [!NOTE]  
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="determining-if-the-queued-notification-should-be-sent"></a>
-#### Determining If A Queued Notification Should Be Sent
+#### Determining if a Queued Notification Should Be Sent
 
 After a queued notification has been dispatched for the queue for background processing, it will typically be accepted by a queue worker and sent to its intended recipient.
 
@@ -325,6 +325,13 @@ If you would like to provide the recipient's name when sending an on-demand noti
         'barrett@example.com' => 'Barrett Blair',
     ])->notify(new InvoicePaid($invoice));
 
+Using the `routes` method, you may provide ad-hoc routing information for multiple notification channels at once:
+
+    Notification::routes([
+        'mail' => ['barrett@example.com' => 'Barrett Blair'],
+        'vonage' => '5555555555',
+    ])->notify(new InvoicePaid($invoice));
+
 <a name="mail-notifications"></a>
 ## Mail Notifications
 
@@ -350,14 +357,14 @@ The `MailMessage` class contains a few simple methods to help you build transact
                     ->line('Thank you for using our application!');
     }
 
-> **Note**  
+> [!NOTE]  
 > Note we are using `$this->invoice->id` in our `toMail` method. You may pass any data your notification needs to generate its message into the notification's constructor.
 
 In this example, we register a greeting, a line of text, a call to action, and then another line of text. These methods provided by the `MailMessage` object make it simple and fast to format small transactional emails. The mail channel will then translate the message components into a beautiful, responsive HTML email template with a plain-text counterpart. Here is an example of an email generated by the `mail` channel:
 
 <img src="https://laravel.com/img/docs/notification-example-2.png">
 
-> **Note**  
+> [!NOTE]  
 > When sending mail notifications, be sure to set the `name` configuration option in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.
 
 <a name="error-messages"></a>
@@ -387,7 +394,7 @@ Instead of defining the "lines" of text in the notification class, you may use t
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)->view(
-            'emails.name', ['invoice' => $this->invoice]
+            'mail.invoice.paid', ['invoice' => $this->invoice]
         );
     }
 
@@ -399,13 +406,25 @@ You may specify a plain-text view for the mail message by passing the view name 
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)->view(
-            ['emails.name.html', 'emails.name.plain'],
+            ['mail.invoice.paid', 'mail.invoice.paid-text'],
             ['invoice' => $this->invoice]
         );
     }
 
+Or, if your message only has a plain-text view, you may utilize the `text` method:
+
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): MailMessage
+    {
+        return (new MailMessage)->text(
+            'mail.invoice.paid-text', ['invoice' => $this->invoice]
+        );
+    }
+
 <a name="customizing-the-sender"></a>
-### Customizing The Sender
+### Customizing the Sender
 
 By default, the email's sender / from address is defined in the `config/mail.php` configuration file. However, you may specify the from address for a specific notification using the `from` method:
 
@@ -420,7 +439,7 @@ By default, the email's sender / from address is defined in the `config/mail.php
     }
 
 <a name="customizing-the-recipient"></a>
-### Customizing The Recipient
+### Customizing the Recipient
 
 When sending notifications via the `mail` channel, the notification system will automatically look for an `email` property on your notifiable entity. You may customize which email address is used to deliver the notification by defining a `routeNotificationForMail` method on the notifiable entity:
 
@@ -452,7 +471,7 @@ When sending notifications via the `mail` channel, the notification system will 
     }
 
 <a name="customizing-the-subject"></a>
-### Customizing The Subject
+### Customizing the Subject
 
 By default, the email's subject is the class name of the notification formatted to "Title Case". So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If you would like to specify a different subject for the message, you may call the `subject` method when building your message:
 
@@ -467,7 +486,7 @@ By default, the email's subject is the class name of the notification formatted 
     }
 
 <a name="customizing-the-mailer"></a>
-### Customizing The Mailer
+### Customizing the Mailer
 
 By default, the email notification will be sent using the default mailer defined in the `config/mail.php` configuration file. However, you may specify a different mailer at runtime by calling the `mailer` method when building your message:
 
@@ -482,7 +501,7 @@ By default, the email notification will be sent using the default mailer defined
     }
 
 <a name="customizing-the-templates"></a>
-### Customizing The Templates
+### Customizing the Templates
 
 You can modify the HTML and plain-text template used by mail notifications by publishing the notification package's resources. After running this command, the mail notification templates will be located in the `resources/views/vendor/notifications` directory:
 
@@ -505,7 +524,7 @@ To add attachments to an email notification, use the `attach` method while build
                     ->attach('/path/to/file');
     }
 
-> **Note**  
+> [!NOTE]  
 > The `attach` method offered by notification mail messages also accepts [attachable objects](/docs/{{version}}/mail#attachable-objects). Please consult the comprehensive [attachable object documentation](/docs/{{version}}/mail#attachable-objects) to learn more.
 
 When attaching files to a message, you may also specify the display name and / or MIME type by passing an `array` as the second argument to the `attach` method:
@@ -573,7 +592,7 @@ The `attachData` method may be used to attach a raw string of bytes as an attach
     }
 
 <a name="adding-tags-metadata"></a>
-### Adding Tags & Metadata
+### Adding Tags and Metadata
 
 Some third-party email providers such as Mailgun and Postmark support message "tags" and "metadata", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via the `tag` and `metadata` methods:
 
@@ -593,7 +612,7 @@ If your application is using the Mailgun driver, you may consult Mailgun's docum
 If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message.
 
 <a name="customizing-the-symfony-message"></a>
-### Customizing The Symfony Message
+### Customizing the Symfony Message
 
 The `withSymfonyMessage` method of the `MailMessage` class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
 
@@ -630,7 +649,7 @@ If needed, you may return a full [mailable object](/docs/{{version}}/mail) from 
     }
 
 <a name="mailables-and-on-demand-notifications"></a>
-#### Mailables & On-Demand Notifications
+#### Mailables and On-Demand Notifications
 
 If you are sending an [on-demand notification](#on-demand-notifications), the `$notifiable` instance given to the `toMail` method will be an instance of `Illuminate\Notifications\AnonymousNotifiable`, which offers a `routeNotificationFor` method that may be used to retrieve the email address the on-demand notification should be sent to:
 
@@ -672,7 +691,7 @@ When designing a mail notification template, it is convenient to quickly preview
 Markdown mail notifications allow you to take advantage of the pre-built templates of mail notifications, while giving you more freedom to write longer, customized messages. Since the messages are written in Markdown, Laravel is able to render beautiful, responsive HTML templates for the messages while also automatically generating a plain-text counterpart.
 
 <a name="generating-the-message"></a>
-### Generating The Message
+### Generating the Message
 
 To generate a notification with a corresponding Markdown template, you may use the `--markdown` option of the `make:notification` Artisan command:
 
@@ -695,7 +714,7 @@ Like all other mail notifications, notifications that use Markdown templates sho
     }
 
 <a name="writing-the-message"></a>
-### Writing The Message
+### Writing the Message
 
 Markdown mail notifications use a combination of Blade components and Markdown syntax which allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
 
@@ -751,7 +770,7 @@ The table component allows you to transform a Markdown table into an HTML table.
 ```
 
 <a name="customizing-the-components"></a>
-### Customizing The Components
+### Customizing the Components
 
 You may export all of the Markdown notification components to your own application for customization. To export the components, use the `vendor:publish` Artisan command to publish the `laravel-mail` asset tag:
 
@@ -762,7 +781,7 @@ php artisan vendor:publish --tag=laravel-mail
 This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain an `html` and a `text` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
 
 <a name="customizing-the-css"></a>
-#### Customizing The CSS
+#### Customizing the CSS
 
 After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be in-lined within the HTML representations of your Markdown notifications.
 
@@ -797,8 +816,8 @@ php artisan notifications:table
 php artisan migrate
 ```
 
-> **Note**  
-> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration.
+> [!NOTE]  
+> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [`uuidMorphs`](/docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration.
 
 <a name="formatting-database-notifications"></a>
 ### Formatting Database Notifications
@@ -818,13 +837,25 @@ If a notification supports being stored in a database table, you should define a
         ];
     }
 
+When the notification is stored in your application's database, the `type` column will be populated with the notification's class name. However, you may customize this behavior by defining a `databaseType` method on your notification class:
+
+    /**
+     * Get the notification's database type.
+     *
+     * @return string
+     */
+    public function databaseType(object $notifiable): string
+    {
+        return 'invoice-paid';
+    }
+
 <a name="todatabase-vs-toarray"></a>
-#### `toDatabase` Vs. `toArray`
+#### `toDatabase` vs. `toArray`
 
 The `toArray` method is also used by the `broadcast` channel to determine which data to broadcast to your JavaScript powered frontend. If you would like to have two different array representations for the `database` and `broadcast` channels, you should define a `toDatabase` method instead of a `toArray` method.
 
 <a name="accessing-the-notifications"></a>
-### Accessing The Notifications
+### Accessing the Notifications
 
 Once notifications are stored in the database, you need a convenient way to access them from your notifiable entities. The `Illuminate\Notifications\Notifiable` trait, which is included on Laravel's default `App\Models\User` model, includes a `notifications` [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that returns the notifications for the entity. To fetch notifications, you may access this method like any other Eloquent relationship. By default, notifications will be sorted by the `created_at` timestamp with the most recent notifications at the beginning of the collection:
 
@@ -842,11 +873,11 @@ If you want to retrieve only the "unread" notifications, you may use the `unread
         echo $notification->type;
     }
 
-> **Note**  
+> [!NOTE]  
 > To access your notifications from your JavaScript client, you should define a notification controller for your application which returns the notifications for a notifiable entity, such as the current user. You may then make an HTTP request to that controller's URL from your JavaScript client.
 
 <a name="marking-notifications-as-read"></a>
-### Marking Notifications As Read
+### Marking Notifications as Read
 
 Typically, you will want to mark a notification as "read" when a user views it. The `Illuminate\Notifications\Notifiable` trait provides a `markAsRead` method, which updates the `read_at` column on the notification's database record:
 
@@ -906,7 +937,7 @@ All broadcast notifications are queued for broadcasting. If you would like to co
                     ->onQueue('broadcasts');
 
 <a name="customizing-the-notification-type"></a>
-#### Customizing The Notification Type
+#### Customizing the Notification Type
 
 In addition to the data you specify, all broadcast notifications also have a `type` field containing the full class name of the notification. If you would like to customize the notification `type`, you may define a `broadcastType` method on the notification class:
 
@@ -919,7 +950,7 @@ In addition to the data you specify, all broadcast notifications also have a `ty
     }
 
 <a name="listening-for-notifications"></a>
-### Listening For Notifications
+### Listening for Notifications
 
 Notifications will broadcast on a private channel formatted using a `{notifiable}.{id}` convention. So, if you are sending a notification to an `App\Models\User` instance with an ID of `1`, the notification will be broadcast on the `App.Models.User.1` private channel. When using [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation), you may easily listen for notifications on a channel using the `notification` method:
 
@@ -929,7 +960,7 @@ Notifications will broadcast on a private channel formatted using a `{notifiable
         });
 
 <a name="customizing-the-notification-channel"></a>
-#### Customizing The Notification Channel
+#### Customizing the Notification Channel
 
 If you would like to customize which channel that an entity's broadcast notifications are broadcast on, you may define a `receivesBroadcastNotificationsOn` method on the notifiable entity:
 
@@ -1004,7 +1035,7 @@ If your SMS message will contain unicode characters, you should call the `unicod
     }
 
 <a name="customizing-the-from-number"></a>
-### Customizing The "From" Number
+### Customizing the "From" Number
 
 If you would like to send some notifications from a phone number that is different from the phone number specified by your `VONAGE_SMS_FROM` environment variable, you may call the `from` method on a `VonageMessage` instance:
 
@@ -1243,7 +1274,7 @@ For instance, returning `#support-channel` from the `routeNotificationForSlack` 
 <a name="notifying-external-slack-workspaces"></a>
 ### Notifying External Slack Workspaces
 
-> **Note**
+> [!NOTE]  
 > Before sending notifications to external Slack workspaces, your Slack App must be [distributed](#slack-app-distribution).
 
 Of course, you will often want to send notifications to the Slack workspaces owned by your application's users. To do so, you will first need to obtain a Slack OAuth token for the user. Thankfully, [Laravel Socialite](/docs/{{version}}/socialite) includes a Slack driver that will allow you to easily authenticate your application's users with Slack and [obtain a bot token](/docs/{{version}}/socialite#slack-bot-scopes).
@@ -1440,7 +1471,7 @@ When a notification is sent, the `Illuminate\Notifications\Events\NotificationSe
         ],
     ];
 
-> **Note**  
+> [!NOTE]  
 > After registering listeners in your `EventServiceProvider`, use the `event:generate` Artisan command to quickly generate listener classes.
 
 Within an event listener, you may access the `notifiable`, `notification`, `channel`, and `response` properties on the event to learn more about the notification recipient or the notification itself:

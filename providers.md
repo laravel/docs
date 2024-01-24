@@ -18,7 +18,7 @@ If you open the `config/app.php` file included with Laravel, you will see a `pro
 
 In this overview, you will learn how to write your own service providers and register them with your Laravel application.
 
-> **Note**  
+> [!NOTE]  
 > If you would like to learn more about how Laravel handles requests and works internally, check out our documentation on the Laravel [request lifecycle](/docs/{{version}}/lifecycle).
 
 <a name="writing-service-providers"></a>
@@ -63,7 +63,7 @@ Let's take a look at a basic service provider. Within any of your service provid
 This service provider only defines a `register` method, and uses that method to define an implementation of `App\Services\Riak\Connection` in the service container. If you're not yet familiar with Laravel's service container, check out [its documentation](/docs/{{version}}/container).
 
 <a name="the-bindings-and-singletons-properties"></a>
-#### The `bindings` And `singletons` Properties
+#### The `bindings` and `singletons` Properties
 
 If your service provider registers many simple bindings, you may wish to use the `bindings` and `singletons` properties instead of manually registering each container binding. When the service provider is loaded by the framework, it will automatically check for these properties and register their bindings:
 

@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Using PHP](#using-php)
-    - [PHP & Blade](#php-and-blade)
+    - [PHP and Blade](#php-and-blade)
     - [Livewire](#livewire)
     - [Starter Kits](#php-starter-kits)
 - [Using Vue / React](#using-vue-react)
@@ -21,7 +21,7 @@ There are two primary ways to tackle frontend development when building an appli
 ## Using PHP
 
 <a name="php-and-blade"></a>
-### PHP & Blade
+### PHP and Blade
 
 In the past, most PHP applications rendered HTML to the browser using simple HTML templates interspersed with PHP `echo` statements which render data that was retrieved from a database during the request:
 
@@ -191,5 +191,5 @@ By default, Laravel utilizes [Vite](https://vitejs.dev) to bundle your assets. V
 
 The fastest way to get started with Laravel and Vite is by beginning your application's development using [Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze), our simplest starter kit that jump-starts your application by providing frontend and backend authentication scaffolding.
 
-> **Note**  
+> [!NOTE]  
 > For more detailed documentation on utilizing Vite with Laravel, please see our [dedicated documentation on bundling and compiling your assets](/docs/{{version}}/vite).

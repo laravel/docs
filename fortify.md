@@ -1,7 +1,7 @@
 # Laravel Fortify
 
 - [Introduction](#introduction)
-    - [What Is Fortify?](#what-is-fortify)
+    - [What is Fortify?](#what-is-fortify)
     - [When Should I Use Fortify?](#when-should-i-use-fortify)
 - [Installation](#installation)
     - [The Fortify Service Provider](#the-fortify-service-provider)
@@ -9,7 +9,7 @@
     - [Disabling Views](#disabling-views)
 - [Authentication](#authentication)
     - [Customizing User Authentication](#customizing-user-authentication)
-    - [Customizing The Authentication Pipeline](#customizing-the-authentication-pipeline)
+    - [Customizing the Authentication Pipeline](#customizing-the-authentication-pipeline)
     - [Customizing Redirects](#customizing-authentication-redirects)
 - [Two Factor Authentication](#two-factor-authentication)
     - [Enabling Two Factor Authentication](#enabling-two-factor-authentication)
@@ -18,8 +18,8 @@
 - [Registration](#registration)
     - [Customizing Registration](#customizing-registration)
 - [Password Reset](#password-reset)
-    - [Requesting A Password Reset Link](#requesting-a-password-reset-link)
-    - [Resetting The Password](#resetting-the-password)
+    - [Requesting a Password Reset Link](#requesting-a-password-reset-link)
+    - [Resetting the Password](#resetting-the-password)
     - [Customizing Password Resets](#customizing-password-resets)
 - [Email Verification](#email-verification)
     - [Protecting Routes](#protecting-routes)
@@ -32,11 +32,11 @@
 
 Since Fortify does not provide its own user interface, it is meant to be paired with your own user interface which makes requests to the routes it registers. We will discuss exactly how to make requests to these routes in the remainder of this documentation.
 
-> **Note**  
+> [!NOTE]  
 > Remember, Fortify is a package that is meant to give you a head start implementing Laravel's authentication features. **You are not required to use it.** You are always free to manually interact with Laravel's authentication services by following the documentation available in the [authentication](/docs/{{version}}/authentication), [password reset](/docs/{{version}}/passwords), and [email verification](/docs/{{version}}/verification) documentation.
 
 <a name="what-is-fortify"></a>
-### What Is Fortify?
+### What is Fortify?
 
 As mentioned previously, Laravel Fortify is a frontend agnostic authentication backend implementation for Laravel. Fortify registers the routes and controllers needed to implement all of Laravel's authentication features, including login, registration, password reset, email verification, and more.
 
@@ -58,7 +58,7 @@ If you choose to install Fortify, your user interface will make requests to Fort
 If you choose to manually interact with Laravel's authentication services instead of using Fortify, you may do so by following the documentation available in the [authentication](/docs/{{version}}/authentication), [password reset](/docs/{{version}}/passwords), and [email verification](/docs/{{version}}/verification) documentation.
 
 <a name="laravel-fortify-and-laravel-sanctum"></a>
-#### Laravel Fortify & Laravel Sanctum
+#### Laravel Fortify and Laravel Sanctum
 
 Some developers become confused regarding the difference between [Laravel Sanctum](/docs/{{version}}/sanctum) and Laravel Fortify. Because the two packages solve two different but related problems, Laravel Fortify and Laravel Sanctum are not mutually exclusive or competing packages.
 
@@ -119,7 +119,7 @@ By default, Fortify defines routes that are intended to return views, such as a 
 ```
 
 <a name="disabling-views-and-password-reset"></a>
-#### Disabling Views & Password Reset
+#### Disabling Views and Password Reset
 
 If you choose to disable Fortify's views and you will be implementing password reset features for your application, you should still define a route named `password.reset` that is responsible for displaying your application's "reset password" view. This is necessary because Laravel's `Illuminate\Auth\Notifications\ResetPassword` notification will generate the password reset URL via the `password.reset` named route.
 
@@ -187,7 +187,7 @@ public function boot(): void
 You may customize the authentication guard used by Fortify within your application's `fortify` configuration file. However, you should ensure that the configured guard is an implementation of `Illuminate\Contracts\Auth\StatefulGuard`. If you are attempting to use Laravel Fortify to authenticate an SPA, you should use Laravel's default `web` guard in combination with [Laravel Sanctum](https://laravel.com/docs/sanctum).
 
 <a name="customizing-the-authentication-pipeline"></a>
-### Customizing The Authentication Pipeline
+### Customizing the Authentication Pipeline
 
 Laravel Fortify authenticates login requests through a pipeline of invokable classes. If you would like, you may define a custom pipeline of classes that login requests should be piped through. Each class should have an `__invoke` method which receives the incoming `Illuminate\Http\Request` instance and, like [middleware](/docs/{{version}}/middleware), a `$next` variable that is invoked in order to pass the request to the next class in the pipeline.
 
@@ -304,7 +304,7 @@ If the request is successful, the user will be redirected back to the previous U
 If the request to the two factor authentication confirmation endpoint was made via an XHR request, a `200` HTTP response will be returned.
 
 <a name="displaying-the-recovery-codes"></a>
-#### Displaying The Recovery Codes
+#### Displaying the Recovery Codes
 
 You should also display the user's two factor recovery codes. These recovery codes allow the user to authenticate if they lose access to their mobile device. If you are using Blade to render your application's frontend, you may access the recovery codes via the authenticated user instance:
 
@@ -390,7 +390,7 @@ The user validation and creation process may be customized by modifying the `App
 ## Password Reset
 
 <a name="requesting-a-password-reset-link"></a>
-### Requesting A Password Reset Link
+### Requesting a Password Reset Link
 
 To begin implementing our application's password reset functionality, we need to instruct Fortify how to return our "forgot password" view. Remember, Fortify is a headless authentication library. If you would like a frontend implementation of Laravel's authentication features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits).
 
@@ -417,7 +417,7 @@ Fortify will take care of defining the `/forgot-password` endpoint that returns 
 The `/forgot-password` endpoint expects a string `email` field. The name of this field / database column should match the `email` configuration value within your application's `fortify` configuration file.
 
 <a name="handling-the-password-reset-link-request-response"></a>
-#### Handling The Password Reset Link Request Response
+#### Handling the Password Reset Link Request Response
 
 If the password reset link request was successful, Fortify will redirect the user back to the `/forgot-password` endpoint and send an email to the user with a secure link they can use to reset their password. If the request was an XHR request, a 200 HTTP response will be returned.
 
@@ -436,7 +436,7 @@ The value of the `$status` session variable will match one of the translation st
 If the request was not successful, the user will be redirected back to the request password reset link screen and the validation errors will be available to you via the shared `$errors` [Blade template variable](/docs/{{version}}/validation#quick-displaying-the-validation-errors). Or, in the case of an XHR request, the validation errors will be returned with a 422 HTTP response.
 
 <a name="resetting-the-password"></a>
-### Resetting The Password
+### Resetting the Password
 
 To finish implementing our application's password reset functionality, we need to instruct Fortify how to return our "reset password" view.
 
@@ -464,7 +464,7 @@ Fortify will take care of defining the route to display this view. Your `reset-p
 The `/reset-password` endpoint expects a string `email` field, a `password` field, a `password_confirmation` field, and a hidden field named `token` that contains the value of `request()->route('token')`. The name of the "email" field / database column should match the `email` configuration value defined within your application's `fortify` configuration file.
 
 <a name="handling-the-password-reset-response"></a>
-#### Handling The Password Reset Response
+#### Handling the Password Reset Response
 
 If the password reset request was successful, Fortify will redirect back to the `/login` route so that the user can log in with their new password. In addition, a `status` session variable will be set so that you may display the successful status of the reset on your login screen:
 

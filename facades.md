@@ -1,9 +1,9 @@
 # Facades
 
 - [Introduction](#introduction)
-- [When To Use Facades](#when-to-use-facades)
-    - [Facades Vs. Dependency Injection](#facades-vs-dependency-injection)
-    - [Facades Vs. Helper Functions](#facades-vs-helper-functions)
+- [When to Utilize Facades](#when-to-use-facades)
+    - [Facades vs. Dependency Injection](#facades-vs-dependency-injection)
+    - [Facades vs. Helper Functions](#facades-vs-helper-functions)
 - [How Facades Work](#how-facades-work)
 - [Real-Time Facades](#real-time-facades)
 - [Facade Class Reference](#facade-class-reference)
@@ -48,14 +48,14 @@ For example, instead of using the `Illuminate\Support\Facades\Response` facade t
     });
 
 <a name="when-to-use-facades"></a>
-## When To Use Facades
+## When to Utilize Facades
 
 Facades have many benefits. They provide a terse, memorable syntax that allows you to use Laravel's features without remembering long class names that must be injected or configured manually. Furthermore, because of their unique usage of PHP's dynamic methods, they are easy to test.
 
 However, some care must be taken when using facades. The primary danger of facades is class "scope creep". Since facades are so easy to use and do not require injection, it can be easy to let your classes continue to grow and use many facades in a single class. Using dependency injection, this potential is mitigated by the visual feedback a large constructor gives you that your class is growing too large. So, when using facades, pay special attention to the size of your class so that its scope of responsibility stays narrow. If your class is getting too large, consider splitting it into multiple smaller classes.
 
 <a name="facades-vs-dependency-injection"></a>
-### Facades Vs. Dependency Injection
+### Facades vs. Dependency Injection
 
 One of the primary benefits of dependency injection is the ability to swap implementations of the injected class. This is useful during testing since you can inject a mock or stub and assert that various methods were called on the stub.
 
@@ -86,7 +86,7 @@ Using Laravel's facade testing methods, we can write the following test to verif
     }
 
 <a name="facades-vs-helper-functions"></a>
-### Facades Vs. Helper Functions
+### Facades vs. Helper Functions
 
 In addition to facades, Laravel includes a variety of "helper" functions which can perform common tasks like generating views, firing events, dispatching jobs, or sending HTTP responses. Many of these helper functions perform the same function as a corresponding facade. For example, this facade call and helper call are equivalent:
 
@@ -282,6 +282,7 @@ Process  |  [Illuminate\Process\Factory](https://laravel.com/api/{{version}}/Ill
 Queue  |  [Illuminate\Queue\QueueManager](https://laravel.com/api/{{version}}/Illuminate/Queue/QueueManager.html)  |  `queue`
 Queue (Instance)  |  [Illuminate\Contracts\Queue\Queue](https://laravel.com/api/{{version}}/Illuminate/Contracts/Queue/Queue.html)  |  `queue.connection`
 Queue (Base Class)  |  [Illuminate\Queue\Queue](https://laravel.com/api/{{version}}/Illuminate/Queue/Queue.html)  |  &nbsp;
+RateLimiter  |  [Illuminate\Cache\RateLimiter](https://laravel.com/api/{{version}}/Illuminate/Cache/RateLimiter.html)  |  &nbsp;
 Redirect  |  [Illuminate\Routing\Redirector](https://laravel.com/api/{{version}}/Illuminate/Routing/Redirector.html)  |  `redirect`
 Redis  |  [Illuminate\Redis\RedisManager](https://laravel.com/api/{{version}}/Illuminate/Redis/RedisManager.html)  |  `redis`
 Redis (Instance)  |  [Illuminate\Redis\Connections\Connection](https://laravel.com/api/{{version}}/Illuminate/Redis/Connections/Connection.html)  |  `redis.connection`

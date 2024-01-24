@@ -4,7 +4,7 @@
 - [Defining Middleware](#defining-middleware)
 - [Registering Middleware](#registering-middleware)
     - [Global Middleware](#global-middleware)
-    - [Assigning Middleware To Routes](#assigning-middleware-to-routes)
+    - [Assigning Middleware to Routes](#assigning-middleware-to-routes)
     - [Middleware Groups](#middleware-groups)
     - [Sorting Middleware](#sorting-middleware)
 - [Middleware Parameters](#middleware-parameters)
@@ -57,12 +57,12 @@ As you can see, if the given `token` does not match our secret token, the middle
 
 It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
 
-> **Note**  
+> [!NOTE]  
 > All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor.
 
 <a name="before-after-middleware"></a>
 <a name="middleware-and-responses"></a>
-#### Middleware & Responses
+#### Middleware and Responses
 
 Of course, a middleware can perform tasks before or after passing the request deeper into the application. For example, the following middleware would perform some task **before** the request is handled by the application:
 
@@ -115,7 +115,7 @@ However, this middleware would perform its task **after** the request is handled
 If you want a middleware to run during every HTTP request to your application, list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
 
 <a name="assigning-middleware-to-routes"></a>
-### Assigning Middleware To Routes
+### Assigning Middleware to Routes
 
 If you would like to assign middleware to specific routes, you may invoke the `middleware` method when defining the route:
 
@@ -220,7 +220,7 @@ Middleware groups may be assigned to routes and controller actions using the sam
         // ...
     });
 
-> **Note**  
+> [!NOTE]  
 > Out of the box, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `App\Providers\RouteServiceProvider`.
 
 <a name="sorting-middleware"></a>

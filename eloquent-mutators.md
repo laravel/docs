@@ -1,11 +1,11 @@
 # Eloquent: Mutators & Casting
 
 - [Introduction](#introduction)
-- [Accessors & Mutators](#accessors-and-mutators)
-    - [Defining An Accessor](#defining-an-accessor)
-    - [Defining A Mutator](#defining-a-mutator)
+- [Accessors and Mutators](#accessors-and-mutators)
+    - [Defining an Accessor](#defining-an-accessor)
+    - [Defining a Mutator](#defining-a-mutator)
 - [Attribute Casting](#attribute-casting)
-    - [Array & JSON Casting](#array-and-json-casting)
+    - [Array and JSON Casting](#array-and-json-casting)
     - [Date Casting](#date-casting)
     - [Enum Casting](#enum-casting)
     - [Encrypted Casting](#encrypted-casting)
@@ -23,10 +23,10 @@
 Accessors, mutators, and attribute casting allow you to transform Eloquent attribute values when you retrieve or set them on model instances. For example, you may want to use the [Laravel encrypter](/docs/{{version}}/encryption) to encrypt a value while it is stored in the database, and then automatically decrypt the attribute when you access it on an Eloquent model. Or, you may want to convert a JSON string that is stored in your database to an array when it is accessed via your Eloquent model.
 
 <a name="accessors-and-mutators"></a>
-## Accessors & Mutators
+## Accessors and Mutators
 
 <a name="defining-an-accessor"></a>
-### Defining An Accessor
+### Defining an Accessor
 
 An accessor transforms an Eloquent attribute value when it is accessed. To define an accessor, create a protected method on your model to represent the accessible attribute. This method name should correspond to the "camel case" representation of the true underlying model attribute / database column when applicable.
 
@@ -62,7 +62,7 @@ As you can see, the original value of the column is passed to the accessor, allo
 
     $firstName = $user->first_name;
 
-> **Note**  
+> [!NOTE]  
 > If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](/docs/{{version}}/eloquent-serialization#appending-values-to-json).
 
 <a name="building-value-objects-from-multiple-attributes"></a>
@@ -131,7 +131,7 @@ protected function address(): Attribute
 ```
 
 <a name="defining-a-mutator"></a>
-### Defining A Mutator
+### Defining a Mutator
 
 A mutator transforms an Eloquent attribute value when it is set. To define a mutator, you may provide the `set` argument when defining your attribute. Let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:
 
@@ -261,7 +261,7 @@ If you need to add a new, temporary cast at runtime, you may use the `mergeCasts
         'options' => 'object',
     ]);
 
-> **Warning**  
+> [!WARNING]  
 > Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship or assign a cast to the model's primary key.
 
 <a name="stringable-casting"></a>
@@ -289,7 +289,7 @@ You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to 
     }
 
 <a name="array-and-json-casting"></a>
-### Array & JSON Casting
+### Array and JSON Casting
 
 The `array` cast is particularly useful when working with columns that are stored as serialized JSON. For example, if your database has a `JSON` or `TEXT` field type that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
 
@@ -325,14 +325,14 @@ Once the cast is defined, you may access the `options` attribute and it will aut
 
     $user->save();
 
-To update a single field of a JSON attribute with a more terse syntax, you may use the `->` operator when calling the `update` method:
+To update a single field of a JSON attribute with a more terse syntax, you may [make the attribute mass assignable](/docs/{{version}}/eloquent#mass-assignment-json-columns) and use the `->` operator when calling the `update` method:
 
     $user = User::find(1);
 
     $user->update(['options->key' => 'value']);
 
 <a name="array-object-and-collection-casting"></a>
-#### Array Object & Collection Casting
+#### Array Object and Collection Casting
 
 Although the standard `array` cast is sufficient for many applications, it does have some disadvantages. Since the `array` cast returns a primitive type, it is not possible to mutate an offset of the array directly. For example, the following code will trigger a PHP error:
 
@@ -418,7 +418,7 @@ To specify the format that should be used when actually storing a model's dates 
     protected $dateFormat = 'U';
 
 <a name="date-casting-and-timezones"></a>
-#### Date Casting, Serialization, & Timezones
+#### Date Casting, Serialization, and Timezones
 
 By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`YYYY-MM-DDTHH:MM:SS.uuuuuuZ`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript.
 
@@ -449,7 +449,7 @@ Once you have defined the cast on your model, the specified attribute will be au
     }
 
 <a name="casting-arrays-of-enums"></a>
-#### Casting Arrays Of Enums
+#### Casting Arrays of Enums
 
 Sometimes you may need your model to store an array of enum values within a single column. To accomplish this, you may utilize the `AsEnumArrayObject` or `AsEnumCollection` casts provided by Laravel:
 
@@ -624,7 +624,7 @@ When casting to value objects, any changes made to the value object will automat
 
     $user->save();
 
-> **Note**  
+> [!NOTE]  
 > If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces on the value object.
 
 <a name="value-object-caching"></a>
@@ -764,11 +764,10 @@ By combining "castables" with PHP's [anonymous classes](https://www.php.net/manu
 
     <?php
 
-    namespace App\Models;
+    namespace App\ValueObjects;
 
     use Illuminate\Contracts\Database\Eloquent\Castable;
     use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-    use Illuminate\Database\Eloquent\Model;
 
     class Address implements Castable
     {
