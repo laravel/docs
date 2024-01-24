@@ -64,7 +64,7 @@ composer create-project laravel/laravel example-app
 Or, you may create new Laravel projects by globally installing [the Laravel installer](https://github.com/laravel/installer) via Composer:
 
 ```nothing
-composer global require laravel/installer:^5.4
+composer global require laravel/installer
 
 laravel new example-app
 ```
