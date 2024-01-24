@@ -88,6 +88,9 @@ Next, if you plan to utilize Sanctum to authenticate a SPA, you should add Sanct
 
 If you are not going to use Sanctum's default migrations, you should call the `Sanctum::ignoreMigrations` method in the `register` method of your `App\Providers\AppServiceProvider` class. You may export the default migrations by executing the following command: `php artisan vendor:publish --tag=sanctum-migrations`
 
+> [!NOTE]  
+> If Sanctum's default migrations exist in your `database/migrations` folder, then `Sanctum::ignoreMigrations` method will not ignore them.
+
 <a name="configuration"></a>
 ## Configuration
 
