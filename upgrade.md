@@ -177,14 +177,14 @@ The following list of Doctrine DBAL related classes and methods have been remove
 
 In addition, registering custom Doctrine types via `dbal.types` in your application's `database` configuration file is no longer required.
 
-<a name="deprecated-schema-methods-removal"></a>
-#### Deprecated Schema Methods Removal
+<a name="deprecated-schema-methods"></a>
+#### Deprecated Schema Methods
 
 **Likelihood Of Impact: Very Low**
 
 The deprecated `Schema::getAllTables()`, `Schema::getAllViews()`, and `Schema::getAllTypes()` methods have been removed in favor of new `Schema::getTables()`, `Schema::getViews()`, and `Schema::getTypes()` methods.
 
-None of the Schema methods on PostgreSQL will accept a 3-parts reference (e.g. `database.schema.table`) anymore and will throw an exception. Therefore, you may use `connection()` to declare the database instead:
+When using PostgreSQL, none of the new schema methods will accept a three-part reference (e.g. `database.schema.table`). Therefore, you should use `connection()` to declare the database instead:
 
 ```php
 Schema::connection('database')->hasTable('schema.table');
