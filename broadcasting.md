@@ -141,11 +141,6 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 <a name="open-source-alternatives"></a>
 ### Open Source Alternatives
 
-<a name="open-source-alternatives-php"></a>
-#### PHP
-
-The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible WebSocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
-
 <a name="open-source-alternatives-node"></a>
 #### Node
 
