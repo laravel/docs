@@ -1258,6 +1258,15 @@ Any additional [column modifiers](#column-modifiers) must be called before the `
           ->nullable()
           ->constrained();
 
+Sometimes you need to specify the foreign key type, so can use `type` method:
+
+```php
+$table->foreignId('user_id')
+    ->type('tinyInteger')
+    ->constrained('users')
+    ->cascadeOnDelete();
+```
+
 <a name="dropping-foreign-keys"></a>
 #### Dropping Foreign Keys
 
