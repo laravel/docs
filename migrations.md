@@ -1258,7 +1258,7 @@ Any additional [column modifiers](#column-modifiers) must be called before the `
           ->nullable()
           ->constrained();
 
-Sometimes you need to specify the foreign key type, so can use `type` method:
+Sometimes you need to specify the foreign key type, so you can use the `type` method:
 
 ```php
 $table->foreignId('user_id')
