@@ -165,6 +165,8 @@ If you are using the [Blade templating engine](/docs/{{version}}/blade), you may
 
     {{ __('messages.welcome') }}
 
+Note: The dot notation does not work when using nested keys within json files (en.json).
+
 <a name="replacing-parameters-in-translation-strings"></a>
 ### Replacing Parameters in Translation Strings
 
