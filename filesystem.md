@@ -73,6 +73,12 @@ You may configure additional symbolic links in your `filesystems` configuration 
         public_path('images') => storage_path('app/images'),
     ],
 
+The `storage:unlink` command may be used to destroy your configured symbolic links:
+
+```shell
+php artisan storage:unlink
+```
+
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
