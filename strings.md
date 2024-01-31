@@ -134,8 +134,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [containsAll](#method-fluent-str-contains-all)
 [dirname](#method-fluent-str-dirname)
 [endsWith](#method-fluent-str-ends-with)
-[excerpt](#method-fluent-str-excerpt)
 [exactly](#method-fluent-str-exactly)
+[excerpt](#method-fluent-str-excerpt)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
 [headline](#method-fluent-str-headline)
@@ -143,8 +143,9 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
-[isNotEmpty](#method-fluent-str-is-not-empty)
 [isJson](#method-fluent-str-is-json)
+[isMatch](#method-fluent-str-is-match)
+[isNotEmpty](#method-fluent-str-is-not-empty)
 [isUlid](#method-fluent-str-is-ulid)
 [isUrl](#method-fluent-str-is-url)
 [isUuid](#method-fluent-str-is-uuid)
@@ -158,7 +159,6 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
-[isMatch](#method-fluent-str-is-match)
 [newLine](#method-fluent-str-new-line)
 [padBoth](#method-fluent-str-padboth)
 [padLeft](#method-fluent-str-padleft)
@@ -1175,17 +1175,6 @@ The `Str::ucsplit` method splits the given string into an array by uppercase cha
 
     // [0 => 'Foo', 1 => 'Bar']
 
-<a name="method-str-upper"></a>
-#### `Str::upper()` {.collection-method}
-
-The `Str::upper` method converts the given string to uppercase:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::upper('laravel');
-
-    // LARAVEL
-
 <a name="method-str-ulid"></a>
 #### `Str::ulid()` {.collection-method}
 
@@ -1220,6 +1209,17 @@ The `Str::unwrap` method removes the specified strings from the beginning and en
     Str::unwrap('{framework: "Laravel"}', '{', '}');
 
     // framework: "Laravel"
+
+<a name="method-str-upper"></a>
+#### `Str::upper()` {.collection-method}
+
+The `Str::upper` method converts the given string to uppercase:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::upper('laravel');
+
+    // LARAVEL
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
@@ -1522,32 +1522,6 @@ If necessary, you may specify how many directory levels you wish to trim from th
 
     // '/foo'
 
-<a name="method-fluent-str-excerpt"></a>
-#### `excerpt` {.collection-method}
-
-The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::of('This is my name')->excerpt('my', [
-        'radius' => 3
-    ]);
-
-    // '...is my na...'
-
-The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
-
-In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::of('This is my name')->excerpt('name', [
-        'radius' => 3,
-        'omission' => '(...) '
-    ]);
-
-    // '(...) my name'
-
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}
 
@@ -1581,6 +1555,32 @@ The `exactly` method determines if the given string is an exact match with anoth
     $result = Str::of('Laravel')->exactly('Laravel');
 
     // true
+
+<a name="method-fluent-str-excerpt"></a>
+#### `excerpt` {.collection-method}
+
+The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('my', [
+        'radius' => 3
+    ]);
+
+    // '...is my na...'
+
+The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
+
+In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('name', [
+        'radius' => 3,
+        'omission' => '(...) '
+    ]);
+
+    // '(...) my name'
 
 <a name="method-fluent-str-explode"></a>
 #### `explode` {.collection-method}
