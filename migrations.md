@@ -983,11 +983,21 @@ The `change` method allows you to modify the type and attributes of existing col
         $table->string('name', 50)->change();
     });
 
-When modifying a column, you must explicitly include all of the modifiers you want to keep on the column definition - any missing attribute will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column:
+When modifying a column, you must explicitly include all the modifiers you want to keep on the column definition - any missing attribute will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column:
 
     Schema::table('users', function (Blueprint $table) {
         $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();
     });
+
+The `change` method does not change the indexes of the column. Therefore, you may use index modifiers to explicitly add or drop an index when modifying the column:
+
+```php
+// Add an index...
+$table->bigIncrements('id')->primary()->change();
+
+// Drop an index...
+$table->char('postal_code', 10)->unique(false)->change();
+```
 
 <a name="renaming-columns"></a>
 ### Renaming Columns
