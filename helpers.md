@@ -3,11 +3,11 @@
 - [Introduction](#introduction)
 - [Available Methods](#available-methods)
 - [Other Utilities](#other-utilities)
-    - [Benchmarking](#benchmarking)
-    - [Dates](#dates)
-    - [Lottery](#lottery)
-    - [Pipeline](#pipeline)
-    - [Sleep](#sleep)
+  - [Benchmarking](#benchmarking)
+  - [Dates](#dates)
+  - [Lottery](#lottery)
+  - [Pipeline](#pipeline)
+  - [Sleep](#sleep)
 
 <a name="introduction"></a>
 ## Introduction
@@ -88,12 +88,16 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 <div class="collection-method-list" markdown="1">
 
+[Number::useLocale](#method-number-use-locale)
+[Number::withLocale](#method-number-with-locale)
 [Number::abbreviate](#method-number-abbreviate)
 [Number::format](#method-number-format)
 [Number::percentage](#method-number-percentage)
 [Number::currency](#method-number-currency)
 [Number::fileSize](#method-number-file-size)
 [Number::forHumans](#method-number-for-humans)
+[Number::ordinal](#method-number-ordinal)
+[Number::spell](#method-number-spell)
 
 </div>
 
@@ -1098,6 +1102,32 @@ The `last` function returns the last element in the given array:
 <a name="numbers"></a>
 ## Numbers
 
+<a name="method-number-use-locale"></a>
+#### `Number::useLocale()` {.collection-method}
+
+You can set the default locale globally. This may be accomplished by invoking the `useLocale` method within the `boot` method of one of your application's service providers :
+
+    use Illuminate\Support\Number;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot()
+    {
+        Number::useLocale('de');
+    }
+
+<a name="method-number-with-locale"></a>
+#### `Number::useLocale()` {.collection-method}
+
+You can use the withLocale method which executes the given callback using the specified locale and then restores the original locale:
+
+    use Illuminate\Support\Number;
+
+    Number::withLocale('sv', function () {
+        return Number::format(1500);
+    });
+
 <a name="method-number-abbreviate"></a>
 #### `Number::abbreviate()` {.collection-method}
 
@@ -1219,6 +1249,52 @@ The `Number::forHumans` method returns the human-readable format of the provided
     $number = Number::forHumans(1230000, precision: 2);
 
     // 1.23 million
+
+<a name="method-number-ordinal"></a>
+#### `Number::ordinal()` {.collection-method}
+
+The `Number::ordinal` method helps express numbers in their ordinal form:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::ordinal(1);
+
+    // 1st
+
+    $number = Number::ordinal(2);
+
+    // 2nd
+
+    $number = Number::ordinal(21);
+
+    // 21st
+
+<a name="method-number-spell"></a>
+#### `Number::spell()` {.collection-method}
+
+The `Number::spell` method helps transforms numbers into words:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::spell(102);
+
+    // one hundred and two
+
+    $number = Number::spell(102, locale: 'fr');
+
+    // quatre-vingt-huit
+
+You can also pass a threshold to limit how high the numbers are spelled out:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::spell(10, threshold: 10);
+
+    // ten
+
+    $number = Number::spell(11, threshold: 10);
+
+    // 11
 
 <a name="paths"></a>
 ## Paths
@@ -1996,7 +2072,7 @@ The `value` function returns the value it is given. However, if you pass a closu
     });
 
     // false
-    
+
 Additional arguments may be passed to the `value` function. If the first argument is a closure then the additional parameters will be passed to the closure as arguments, otherwise they will be ignored:
 
     $result = value(function (string $name) {
