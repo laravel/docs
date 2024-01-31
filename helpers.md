@@ -1124,7 +1124,7 @@ You can use the withLocale method which executes the given callback using the sp
 
     use Illuminate\Support\Number;
 
-    Number::withLocale('sv', function () {
+    $number = Number::withLocale('sv', function () {
         return Number::format(1500);
     });
 
