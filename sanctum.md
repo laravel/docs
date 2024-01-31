@@ -440,20 +440,38 @@ To allow users to revoke API tokens issued to mobile devices, you may list them 
 
 While testing, the `Sanctum::actingAs` method may be used to authenticate a user and specify which abilities should be granted to their token:
 
-    use App\Models\User;
-    use Laravel\Sanctum\Sanctum;
+```php tab=Pest
+use App\Models\User;
+use Laravel\Sanctum\Sanctum;
 
-    public function test_task_list_can_be_retrieved(): void
-    {
-        Sanctum::actingAs(
-            User::factory()->create(),
-            ['view-tasks']
-        );
+test('task list can be retrieved', function () {
+    Sanctum::actingAs(
+        User::factory()->create(),
+        ['view-tasks']
+    );
 
-        $response = $this->get('/api/task');
+    $response = $this->get('/api/task');
 
-        $response->assertOk();
-    }
+    $response->assertOk();
+});
+```
+
+```php tab=PHPUnit
+use App\Models\User;
+use Laravel\Sanctum\Sanctum;
+
+public function test_task_list_can_be_retrieved(): void
+{
+    Sanctum::actingAs(
+        User::factory()->create(),
+        ['view-tasks']
+    );
+
+    $response = $this->get('/api/task');
+
+    $response->assertOk();
+}
+```
 
 If you would like to grant all abilities to the token, you should include `*` in the ability list provided to the `actingAs` method:
 

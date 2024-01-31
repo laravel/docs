@@ -800,7 +800,17 @@ Feature::define('purchase-button', fn () => Arr::random([
 
 To modify the feature's returned value in your tests, you may re-define the feature at the beginning of the test. The following test will always pass, even though the `Arr::random()` implementation is still present in the service provider:
 
-```php
+```php tab=Pest
+use Laravel\Pennant\Feature;
+
+test('it can control feature values', function () {
+    Feature::define('purchase-button', 'seafoam-green');
+
+    $this->assertSame('seafoam-green', Feature::value('purchase-button'));
+});
+```
+
+```php tab=PHPUnit
 use Laravel\Pennant\Feature;
 
 public function test_it_can_control_feature_values()

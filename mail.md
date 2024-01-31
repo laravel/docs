@@ -986,37 +986,72 @@ Laravel provides a variety of methods for inspecting your mailable's structure. 
 
 As you might expect, the "HTML" assertions assert that the HTML version of your mailable contains a given string, while the "text" assertions assert that the plain-text version of your mailable contains a given string:
 
-    use App\Mail\InvoicePaid;
-    use App\Models\User;
+```php tab=Pest
+use App\Mail\InvoicePaid;
+use App\Models\User;
 
-    public function test_mailable_content(): void
-    {
-        $user = User::factory()->create();
+test('mailable content', function () {
+    $user = User::factory()->create();
 
-        $mailable = new InvoicePaid($user);
+    $mailable = new InvoicePaid($user);
 
-        $mailable->assertFrom('jeffrey@example.com');
-        $mailable->assertTo('taylor@example.com');
-        $mailable->assertHasCc('abigail@example.com');
-        $mailable->assertHasBcc('victoria@example.com');
-        $mailable->assertHasReplyTo('tyler@example.com');
-        $mailable->assertHasSubject('Invoice Paid');
-        $mailable->assertHasTag('example-tag');
-        $mailable->assertHasMetadata('key', 'value');
+    $mailable->assertFrom('jeffrey@example.com');
+    $mailable->assertTo('taylor@example.com');
+    $mailable->assertHasCc('abigail@example.com');
+    $mailable->assertHasBcc('victoria@example.com');
+    $mailable->assertHasReplyTo('tyler@example.com');
+    $mailable->assertHasSubject('Invoice Paid');
+    $mailable->assertHasTag('example-tag');
+    $mailable->assertHasMetadata('key', 'value');
 
-        $mailable->assertSeeInHtml($user->email);
-        $mailable->assertSeeInHtml('Invoice Paid');
-        $mailable->assertSeeInOrderInHtml(['Invoice Paid', 'Thanks']);
+    $mailable->assertSeeInHtml($user->email);
+    $mailable->assertSeeInHtml('Invoice Paid');
+    $mailable->assertSeeInOrderInHtml(['Invoice Paid', 'Thanks']);
 
-        $mailable->assertSeeInText($user->email);
-        $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);
+    $mailable->assertSeeInText($user->email);
+    $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);
 
-        $mailable->assertHasAttachment('/path/to/file');
-        $mailable->assertHasAttachment(Attachment::fromPath('/path/to/file'));
-        $mailable->assertHasAttachedData($pdfData, 'name.pdf', ['mime' => 'application/pdf']);
-        $mailable->assertHasAttachmentFromStorage('/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
-        $mailable->assertHasAttachmentFromStorageDisk('s3', '/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
-    }
+    $mailable->assertHasAttachment('/path/to/file');
+    $mailable->assertHasAttachment(Attachment::fromPath('/path/to/file'));
+    $mailable->assertHasAttachedData($pdfData, 'name.pdf', ['mime' => 'application/pdf']);
+    $mailable->assertHasAttachmentFromStorage('/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
+    $mailable->assertHasAttachmentFromStorageDisk('s3', '/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
+});
+```
+
+```php tab=PHPUnit
+use App\Mail\InvoicePaid;
+use App\Models\User;
+
+public function test_mailable_content(): void
+{
+    $user = User::factory()->create();
+
+    $mailable = new InvoicePaid($user);
+
+    $mailable->assertFrom('jeffrey@example.com');
+    $mailable->assertTo('taylor@example.com');
+    $mailable->assertHasCc('abigail@example.com');
+    $mailable->assertHasBcc('victoria@example.com');
+    $mailable->assertHasReplyTo('tyler@example.com');
+    $mailable->assertHasSubject('Invoice Paid');
+    $mailable->assertHasTag('example-tag');
+    $mailable->assertHasMetadata('key', 'value');
+
+    $mailable->assertSeeInHtml($user->email);
+    $mailable->assertSeeInHtml('Invoice Paid');
+    $mailable->assertSeeInOrderInHtml(['Invoice Paid', 'Thanks']);
+
+    $mailable->assertSeeInText($user->email);
+    $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);
+
+    $mailable->assertHasAttachment('/path/to/file');
+    $mailable->assertHasAttachment(Attachment::fromPath('/path/to/file'));
+    $mailable->assertHasAttachedData($pdfData, 'name.pdf', ['mime' => 'application/pdf']);
+    $mailable->assertHasAttachmentFromStorage('/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
+    $mailable->assertHasAttachmentFromStorageDisk('s3', '/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
+}
+```
 
 <a name="testing-mailable-sending"></a>
 ### Testing Mailable Sending
@@ -1025,38 +1060,68 @@ We suggest testing the content of your mailables separately from your tests that
 
 You may use the `Mail` facade's `fake` method to prevent mail from being sent. After calling the `Mail` facade's `fake` method, you may then assert that mailables were instructed to be sent to users and even inspect the data the mailables received:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use App\Mail\OrderShipped;
+use Illuminate\Support\Facades\Mail;
 
-    use App\Mail\OrderShipped;
-    use Illuminate\Support\Facades\Mail;
-    use Tests\TestCase;
+test('orders can be shipped', function () {
+    Mail::fake();
 
-    class ExampleTest extends TestCase
+    // Perform order shipping...
+
+    // Assert that no mailables were sent...
+    Mail::assertNothingSent();
+
+    // Assert that a mailable was sent...
+    Mail::assertSent(OrderShipped::class);
+
+    // Assert a mailable was sent twice...
+    Mail::assertSent(OrderShipped::class, 2);
+
+    // Assert a mailable was not sent...
+    Mail::assertNotSent(AnotherMailable::class);
+
+    // Assert 3 total mailables were sent...
+    Mail::assertSentCount(3);
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Mail\OrderShipped;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_orders_can_be_shipped(): void
     {
-        public function test_orders_can_be_shipped(): void
-        {
-            Mail::fake();
+        Mail::fake();
 
-            // Perform order shipping...
+        // Perform order shipping...
 
-            // Assert that no mailables were sent...
-            Mail::assertNothingSent();
+        // Assert that no mailables were sent...
+        Mail::assertNothingSent();
 
-            // Assert that a mailable was sent...
-            Mail::assertSent(OrderShipped::class);
+        // Assert that a mailable was sent...
+        Mail::assertSent(OrderShipped::class);
 
-            // Assert a mailable was sent twice...
-            Mail::assertSent(OrderShipped::class, 2);
+        // Assert a mailable was sent twice...
+        Mail::assertSent(OrderShipped::class, 2);
 
-            // Assert a mailable was not sent...
-            Mail::assertNotSent(AnotherMailable::class);
+        // Assert a mailable was not sent...
+        Mail::assertNotSent(AnotherMailable::class);
 
-            // Assert 3 total mailables were sent...
-            Mail::assertSentCount(3);
-        }
+        // Assert 3 total mailables were sent...
+        Mail::assertSentCount(3);
     }
+}
+```
 
 If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:
 

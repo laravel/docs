@@ -682,39 +682,67 @@ When testing code that dispatches events, you may wish to instruct Laravel to no
 
 Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched`, `assertNotDispatched`, and `assertNothingDispatched` methods:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use App\Events\OrderFailedToShip;
+use App\Events\OrderShipped;
+use Illuminate\Support\Facades\Event;
 
-    use App\Events\OrderFailedToShip;
-    use App\Events\OrderShipped;
-    use Illuminate\Support\Facades\Event;
-    use Tests\TestCase;
+test('orders can be shipped', function () {
+    Event::fake();
 
-    class ExampleTest extends TestCase
+    // Perform order shipping...
+
+    // Assert that an event was dispatched...
+    Event::assertDispatched(OrderShipped::class);
+
+    // Assert an event was dispatched twice...
+    Event::assertDispatched(OrderShipped::class, 2);
+
+    // Assert an event was not dispatched...
+    Event::assertNotDispatched(OrderFailedToShip::class);
+
+    // Assert that no events were dispatched...
+    Event::assertNothingDispatched();
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Events\OrderFailedToShip;
+use App\Events\OrderShipped;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * Test order shipping.
+     */
+    public function test_orders_can_be_shipped(): void
     {
-        /**
-         * Test order shipping.
-         */
-        public function test_orders_can_be_shipped(): void
-        {
-            Event::fake();
+        Event::fake();
 
-            // Perform order shipping...
+        // Perform order shipping...
 
-            // Assert that an event was dispatched...
-            Event::assertDispatched(OrderShipped::class);
+        // Assert that an event was dispatched...
+        Event::assertDispatched(OrderShipped::class);
 
-            // Assert an event was dispatched twice...
-            Event::assertDispatched(OrderShipped::class, 2);
+        // Assert an event was dispatched twice...
+        Event::assertDispatched(OrderShipped::class, 2);
 
-            // Assert an event was not dispatched...
-            Event::assertNotDispatched(OrderFailedToShip::class);
+        // Assert an event was not dispatched...
+        Event::assertNotDispatched(OrderFailedToShip::class);
 
-            // Assert that no events were dispatched...
-            Event::assertNothingDispatched();
-        }
+        // Assert that no events were dispatched...
+        Event::assertNothingDispatched();
     }
+}
+```
 
 You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that an event was dispatched that passes a given "truth test". If at least one event was dispatched that passes the given truth test then the assertion will be successful:
 
@@ -737,22 +765,39 @@ If you would simply like to assert that an event listener is listening to a give
 
 If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:
 
-    /**
-     * Test order process.
-     */
-    public function test_orders_can_be_processed(): void
-    {
-        Event::fake([
-            OrderCreated::class,
-        ]);
+```php tab=Pest
+test('orders can be processed', function () {
+    Event::fake([
+        OrderCreated::class,
+    ]);
 
-        $order = Order::factory()->create();
+    $order = Order::factory()->create();
 
-        Event::assertDispatched(OrderCreated::class);
+    Event::assertDispatched(OrderCreated::class);
 
-        // Other events are dispatched as normal...
-        $order->update([...]);
-    }
+    // Other events are dispatched as normal...
+    $order->update([...]);
+});
+```
+
+```php tab=PHPUnit
+/**
+ * Test order process.
+ */
+public function test_orders_can_be_processed(): void
+{
+    Event::fake([
+        OrderCreated::class,
+    ]);
+
+    $order = Order::factory()->create();
+
+    Event::assertDispatched(OrderCreated::class);
+
+    // Other events are dispatched as normal...
+    $order->update([...]);
+}
+```
 
 You may fake all events except for a set of specified events using the `except` method:
 
@@ -765,31 +810,54 @@ You may fake all events except for a set of specified events using the `except` 
 
 If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use App\Events\OrderCreated;
+use App\Models\Order;
+use Illuminate\Support\Facades\Event;
 
-    use App\Events\OrderCreated;
-    use App\Models\Order;
-    use Illuminate\Support\Facades\Event;
-    use Tests\TestCase;
+test('orders can be processed', function () {
+    $order = Event::fakeFor(function () {
+        $order = Order::factory()->create();
 
-    class ExampleTest extends TestCase
+        Event::assertDispatched(OrderCreated::class);
+
+        return $order;
+    });
+
+    // Events are dispatched as normal and observers will run ...
+    $order->update([...]);
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Events\OrderCreated;
+use App\Models\Order;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * Test order process.
+     */
+    public function test_orders_can_be_processed(): void
     {
-        /**
-         * Test order process.
-         */
-        public function test_orders_can_be_processed(): void
-        {
-            $order = Event::fakeFor(function () {
-                $order = Order::factory()->create();
+        $order = Event::fakeFor(function () {
+            $order = Order::factory()->create();
 
-                Event::assertDispatched(OrderCreated::class);
+            Event::assertDispatched(OrderCreated::class);
 
-                return $order;
-            });
+            return $order;
+        });
 
-            // Events are dispatched as normal and observers will run ...
-            $order->update([...]);
-        }
+        // Events are dispatched as normal and observers will run ...
+        $order->update([...]);
     }
+}
+```

@@ -22,7 +22,17 @@
 
 Laravel provides a very fluent API for making HTTP requests to your application and examining the responses. For example, take a look at the feature test defined below:
 
-```php
+```php tab=Pest
+<?php
+
+test('the application returns a successful response', function () {
+    $response = $this->get('/');
+
+    $response->assertStatus(200);
+});
+```
+
+```php tab=PHPUnit
 <?php
 
 namespace Tests\Feature;
@@ -52,28 +62,40 @@ To make a request to your application, you may invoke the `get`, `post`, `put`, 
 
 Instead of returning an `Illuminate\Http\Response` instance, test request methods return an instance of `Illuminate\Testing\TestResponse`, which provides a [variety of helpful assertions](#available-assertions) that allow you to inspect your application's responses:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+test('basic request', function () {
+    $response = $this->get('/');
 
-    use Tests\TestCase;
+    $response->assertStatus(200);
+});
+```
 
-    class ExampleTest extends TestCase
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     */
+    public function test_a_basic_request(): void
     {
-        /**
-         * A basic test example.
-         */
-        public function test_a_basic_request(): void
-        {
-            $response = $this->get('/');
+        $response = $this->get('/');
 
-            $response->assertStatus(200);
-        }
+        $response->assertStatus(200);
     }
+}
+```
 
 In general, each of your tests should only make one request to your application. Unexpected behavior may occur if multiple requests are executed within a single test method.
 
-> [!NOTE]  
+> [!NOTE]
 > For convenience, the CSRF middleware is automatically disabled when running tests.
 
 <a name="customizing-request-headers"></a>
@@ -81,90 +103,157 @@ In general, each of your tests should only make one request to your application.
 
 You may use the `withHeaders` method to customize the request's headers before it is sent to the application. This method allows you to add any custom headers you would like to the request:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+tesst('interacting with headers', function () {
+    $response = $this->withHeaders([
+        'X-Header' => 'Value',
+    ])->post('/user', ['name' => 'Sally']);
 
-    use Tests\TestCase;
+    $response->assertStatus(201);
+});
+```
 
-    class ExampleTest extends TestCase
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic functional test example.
+     */
+    public function test_interacting_with_headers(): void
     {
-        /**
-         * A basic functional test example.
-         */
-        public function test_interacting_with_headers(): void
-        {
-            $response = $this->withHeaders([
-                'X-Header' => 'Value',
-            ])->post('/user', ['name' => 'Sally']);
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post('/user', ['name' => 'Sally']);
 
-            $response->assertStatus(201);
-        }
+        $response->assertStatus(201);
     }
+}
+```
 
 <a name="cookies"></a>
 ### Cookies
 
 You may use the `withCookie` or `withCookies` methods to set cookie values before making a request. The `withCookie` method accepts a cookie name and value as its two arguments, while the `withCookies` method accepts an array of name / value pairs:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+test('interacting with cookies', function () {
+    $response = $this->withCookie('color', 'blue')->get('/');
 
-    use Tests\TestCase;
+    $response = $this->withCookies([
+        'color' => 'blue',
+        'name' => 'Taylor',
+    ])->get('/');
 
-    class ExampleTest extends TestCase
+    //
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_interacting_with_cookies(): void
     {
-        public function test_interacting_with_cookies(): void
-        {
-            $response = $this->withCookie('color', 'blue')->get('/');
+        $response = $this->withCookie('color', 'blue')->get('/');
 
-            $response = $this->withCookies([
-                'color' => 'blue',
-                'name' => 'Taylor',
-            ])->get('/');
-        }
+        $response = $this->withCookies([
+            'color' => 'blue',
+            'name' => 'Taylor',
+        ])->get('/');
+
+        //
     }
+}
+```
 
 <a name="session-and-authentication"></a>
 ### Session / Authentication
 
 Laravel provides several helpers for interacting with the session during HTTP testing. First, you may set the session data to a given array using the `withSession` method. This is useful for loading the session with data before issuing a request to your application:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+test('interacting with the session', function () {
+    $response = $this->withSession(['banned' => false])->get('/');
 
-    use Tests\TestCase;
+    //
+});
+```
 
-    class ExampleTest extends TestCase
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_interacting_with_the_session(): void
     {
-        public function test_interacting_with_the_session(): void
-        {
-            $response = $this->withSession(['banned' => false])->get('/');
-        }
+        $response = $this->withSession(['banned' => false])->get('/');
+
+        //
     }
+}
+```
 
 Laravel's session is typically used to maintain state for the currently authenticated user. Therefore, the `actingAs` helper method provides a simple way to authenticate a given user as the current user. For example, we may use a [model factory](/docs/{{version}}/eloquent-factories) to generate and authenticate a user:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use App\Models\User;
 
-    use App\Models\User;
-    use Tests\TestCase;
+test('an action that requires authentication', function () {
+    $user = User::factory()->create();
 
-    class ExampleTest extends TestCase
+    $response = $this->actingAs($user)
+                     ->withSession(['banned' => false])
+                     ->get('/');
+
+    //
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\User;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_an_action_that_requires_authentication(): void
     {
-        public function test_an_action_that_requires_authentication(): void
-        {
-            $user = User::factory()->create();
+        $user = User::factory()->create();
 
-            $response = $this->actingAs($user)
-                             ->withSession(['banned' => false])
-                             ->get('/');
-        }
+        $response = $this->actingAs($user)
+                         ->withSession(['banned' => false])
+                         ->get('/');
+
+        //
     }
+}
+```
 
 You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method. The guard that is provided to the `actingAs` method will also become the default guard for the duration of the test:
 
@@ -175,53 +264,85 @@ You may also specify which guard should be used to authenticate the given user b
 
 After making a test request to your application, the `dump`, `dumpHeaders`, and `dumpSession` methods may be used to examine and debug the response contents:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+test('basic test', function () {
+    $response = $this->get('/');
 
-    use Tests\TestCase;
+    $response->dumpHeaders();
 
-    class ExampleTest extends TestCase
+    $response->dumpSession();
+
+    $response->dump();
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     */
+    public function test_basic_test(): void
     {
-        /**
-         * A basic test example.
-         */
-        public function test_basic_test(): void
-        {
-            $response = $this->get('/');
+        $response = $this->get('/');
 
-            $response->dumpHeaders();
+        $response->dumpHeaders();
 
-            $response->dumpSession();
+        $response->dumpSession();
 
-            $response->dump();
-        }
+        $response->dump();
     }
+}
+```
 
 Alternatively, you may use the `dd`, `ddHeaders`, and `ddSession` methods to dump information about the response and then stop execution:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+test('basic test', function () {
+    $response = $this->get('/');
 
-    use Tests\TestCase;
+    $response->ddHeaders();
 
-    class ExampleTest extends TestCase
+    $response->ddSession();
+
+    $response->dd();
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     */
+    public function test_basic_test(): void
     {
-        /**
-         * A basic test example.
-         */
-        public function test_basic_test(): void
-        {
-            $response = $this->get('/');
+        $response = $this->get('/');
 
-            $response->ddHeaders();
+        $response->ddHeaders();
 
-            $response->ddSession();
+        $response->ddSession();
 
-            $response->dd();
-        }
+        $response->dd();
     }
+}
+```
 
 <a name="exception-handling"></a>
 ### Exception Handling
@@ -248,34 +369,56 @@ $this->assertThrows(
 
 Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `getJson`, `postJson`, `putJson`, `patchJson`, `deleteJson`, and `optionsJson` methods may be used to issue JSON requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/api/user` and assert that the expected JSON data was returned:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+test('making an api request', function () {
+    $response = $this->postJson('/api/user', ['name' => 'Sally']);
 
-    use Tests\TestCase;
+    $response
+        ->assertStatus(201)
+        ->assertJson([
+            'created' => true,
+         ]);
+});
+```
 
-    class ExampleTest extends TestCase
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic functional test example.
+     */
+    public function test_making_an_api_request(): void
     {
-        /**
-         * A basic functional test example.
-         */
-        public function test_making_an_api_request(): void
-        {
-            $response = $this->postJson('/api/user', ['name' => 'Sally']);
+        $response = $this->postJson('/api/user', ['name' => 'Sally']);
 
-            $response
-                ->assertStatus(201)
-                ->assertJson([
-                    'created' => true,
-                ]);
-        }
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'created' => true,
+            ]);
     }
+}
+```
 
 In addition, JSON response data may be accessed as array variables on the response, making it convenient for you to inspect the individual values returned within a JSON response:
 
-    $this->assertTrue($response['created']);
+```php tab=Pest
+expect($response['created'])->toBeTrue();
+```
 
-> [!NOTE]  
+```php tab=PHPUnit
+$this->assertTrue($response['created']);
+```
+
+> [!NOTE]
 > The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
 <a name="verifying-exact-match"></a>
@@ -283,54 +426,85 @@ In addition, JSON response data may be accessed as array variables on the respon
 
 As previously mentioned, the `assertJson` method may be used to assert that a fragment of JSON exists within the JSON response. If you would like to verify that a given array **exactly matches** the JSON returned by your application, you should use the `assertExactJson` method:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+test('asserting an exact json match', function () {
+    $response = $this->postJson('/user', ['name' => 'Sally']);
 
-    use Tests\TestCase;
+    $response
+        ->assertStatus(201)
+        ->assertExactJson([
+            'created' => true,
+        ]);
+});
 
-    class ExampleTest extends TestCase
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic functional test example.
+     */
+    public function test_asserting_an_exact_json_match(): void
     {
-        /**
-         * A basic functional test example.
-         */
-        public function test_asserting_an_exact_json_match(): void
-        {
-            $response = $this->postJson('/user', ['name' => 'Sally']);
+        $response = $this->postJson('/user', ['name' => 'Sally']);
 
-            $response
-                ->assertStatus(201)
-                ->assertExactJson([
-                    'created' => true,
-                ]);
-        }
+        $response
+            ->assertStatus(201)
+            ->assertExactJson([
+                'created' => true,
+            ]);
     }
+}
+```
 
 <a name="verifying-json-paths"></a>
 #### Asserting on JSON Paths
 
 If you would like to verify that the JSON response contains the given data at a specified path, you should use the `assertJsonPath` method:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+test('asserting a json path value', function () {
+    $response = $this->postJson('/user', ['name' => 'Sally']);
 
-    use Tests\TestCase;
+    $response
+        ->assertStatus(201)
+        ->assertJsonPath('team.owner.name', 'Darian');
+});
+```
 
-    class ExampleTest extends TestCase
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic functional test example.
+     */
+    public function test_asserting_a_json_paths_value(): void
     {
-        /**
-         * A basic functional test example.
-         */
-        public function test_asserting_a_json_paths_value(): void
-        {
-            $response = $this->postJson('/user', ['name' => 'Sally']);
+        $response = $this->postJson('/user', ['name' => 'Sally']);
 
-            $response
-                ->assertStatus(201)
-                ->assertJsonPath('team.owner.name', 'Darian');
-        }
+        $response
+            ->assertStatus(201)
+            ->assertJsonPath('team.owner.name', 'Darian');
     }
+}
+```
 
 The `assertJsonPath` method also accepts a closure, which may be used to dynamically determine if the assertion should pass:
 
@@ -341,25 +515,45 @@ The `assertJsonPath` method also accepts a closure, which may be used to dynamic
 
 Laravel also offers a beautiful way to fluently test your application's JSON responses. To get started, pass a closure to the `assertJson` method. This closure will be invoked with an instance of `Illuminate\Testing\Fluent\AssertableJson` which can be used to make assertions against the JSON that was returned by your application. The `where` method may be used to make assertions against a particular attribute of the JSON, while the `missing` method may be used to assert that a particular attribute is missing from the JSON:
 
-    use Illuminate\Testing\Fluent\AssertableJson;
+```php tab=Pest
+use Illuminate\Testing\Fluent\AssertableJson;
 
-    /**
-     * A basic functional test example.
-     */
-    public function test_fluent_json(): void
-    {
-        $response = $this->getJson('/users/1');
+test('fluent json', function () {
+    $response = $this->getJson('/users/1');
 
-        $response
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->where('id', 1)
-                     ->where('name', 'Victoria Faith')
-                     ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
-                     ->whereNot('status', 'pending')
-                     ->missing('password')
-                     ->etc()
-            );
-    }
+    $response
+        ->assertJson(fn (AssertableJson $json) =>
+            $json->where('id', 1)
+                 ->where('name', 'Victoria Faith')
+                 ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
+                 ->whereNot('status', 'pending')
+                 ->missing('password')
+                 ->etc()
+        );
+});
+```
+
+```php tab=PHPUnit
+use Illuminate\Testing\Fluent\AssertableJson;
+
+/**
+ * A basic functional test example.
+ */
+public function test_fluent_json(): void
+{
+    $response = $this->getJson('/users/1');
+
+    $response
+        ->assertJson(fn (AssertableJson $json) =>
+            $json->where('id', 1)
+                 ->where('name', 'Victoria Faith')
+                 ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
+                 ->whereNot('status', 'pending')
+                 ->missing('password')
+                 ->etc()
+        );
+}
+```
 
 #### Understanding the `etc` Method
 
@@ -484,29 +678,50 @@ The `whereType` and `whereAllType` methods recognize the following types: `strin
 
 The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be used to generate dummy files or images for testing. This, combined with the `Storage` facade's `fake` method, greatly simplifies the testing of file uploads. For example, you may combine these two features to easily test an avatar upload form:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
-    use Illuminate\Http\UploadedFile;
-    use Illuminate\Support\Facades\Storage;
-    use Tests\TestCase;
+test('avatars can be uploaded', function () {
+    Storage::fake('avatars');
 
-    class ExampleTest extends TestCase
+    $file = UploadedFile::fake()->image('avatar.jpg');
+
+    $response = $this->post('/avatar', [
+        'avatar' => $file,
+    ]);
+
+    Storage::disk('avatars')->assertExists($file->hashName());
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_avatars_can_be_uploaded(): void
     {
-        public function test_avatars_can_be_uploaded(): void
-        {
-            Storage::fake('avatars');
+        Storage::fake('avatars');
 
-            $file = UploadedFile::fake()->image('avatar.jpg');
+        $file = UploadedFile::fake()->image('avatar.jpg');
 
-            $response = $this->post('/avatar', [
-                'avatar' => $file,
-            ]);
+        $response = $this->post('/avatar', [
+            'avatar' => $file,
+        ]);
 
-            Storage::disk('avatars')->assertExists($file->hashName());
-        }
+        Storage::disk('avatars')->assertExists($file->hashName());
     }
+}
+```
 
 If you would like to assert that a given file does not exist, you may use the `assertMissing` method provided by the `Storage` facade:
 
@@ -538,21 +753,33 @@ If needed, you may pass a `$mimeType` argument to the method to explicitly defin
 
 Laravel also allows you to render a view without making a simulated HTTP request to the application. To accomplish this, you may call the `view` method within your test. The `view` method accepts the view name and an optional array of data. The method returns an instance of `Illuminate\Testing\TestView`, which offers several methods to conveniently make assertions about the view's contents:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+test('a welcome view can be rendered', function () {
+    $view = $this->view('welcome', ['name' => 'Taylor']);
 
-    use Tests\TestCase;
+    $view->assertSee('Taylor');
+});
+```
 
-    class ExampleTest extends TestCase
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_a_welcome_view_can_be_rendered(): void
     {
-        public function test_a_welcome_view_can_be_rendered(): void
-        {
-            $view = $this->view('welcome', ['name' => 'Taylor']);
+        $view = $this->view('welcome', ['name' => 'Taylor']);
 
-            $view->assertSee('Taylor');
-        }
+        $view->assertSee('Taylor');
     }
+}
+```
 
 The `TestView` class provides the following assertion methods: `assertSee`, `assertSeeInOrder`, `assertSeeText`, `assertSeeTextInOrder`, `assertDontSee`, and `assertDontSeeText`.
 
@@ -1327,7 +1554,13 @@ Passing a closure as the second argument to the `assertViewHas` method will allo
 
 In addition, view data may be accessed as array variables on the response, allowing you to conveniently inspect it:
 
-    $this->assertEquals('Taylor', $response['name']);
+```php tab=Pest
+expect($response['name'])->toBe('Taylor');
+```
+
+```php tab=PHPUnit
+$this->assertEquals('Taylor', $response['name']);
+```
 
 <a name="assert-view-has-all"></a>
 #### assertViewHasAll

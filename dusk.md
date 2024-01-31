@@ -153,19 +153,33 @@ Most of the tests you write will interact with pages that retrieve data from you
 
 The `DatabaseMigrations` trait will run your database migrations before each test. However, dropping and re-creating your database tables for each test is typically slower than truncating the tables:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Browser;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
 
-    use App\Models\User;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Laravel\Dusk\Chrome;
-    use Tests\DuskTestCase;
+uses(DatabaseMigrations::class);
 
-    class ExampleTest extends DuskTestCase
-    {
-        use DatabaseMigrations;
-    }
+//
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Browser;
+
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
+
+class ExampleTest extends DuskTestCase
+{
+    use DatabaseMigrations;
+
+    //
+}
+```
 
 > [!WARNING]  
 > SQLite in-memory databases may not be used when executing Dusk tests. Since the browser executes within its own process, it will not be able to access the in-memory databases of other processes.
@@ -175,21 +189,39 @@ The `DatabaseMigrations` trait will run your database migrations before each tes
 
 The `DatabaseTruncation` trait will migrate your database on the first test in order to ensure your database tables have been properly created. However, on subsequent tests, the database's tables will simply be truncated - providing a speed boost over re-running all of your database migrations:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Browser;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Laravel\Dusk\Browser;
 
-    use App\Models\User;
-    use Illuminate\Foundation\Testing\DatabaseTruncation;
-    use Laravel\Dusk\Chrome;
-    use Tests\DuskTestCase;
+uses(DatabaseTruncation::class);
 
-    class ExampleTest extends DuskTestCase
-    {
-        use DatabaseTruncation;
-    }
+//
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Browser;
+
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
+
+class ExampleTest extends DuskTestCase
+{
+    use DatabaseTruncation;
+
+    //
+}
+```
 
 By default, this trait will truncate all tables except the `migrations` table. If you would like to customize the tables that should be truncated, you may define a `$tablesToTruncate` property on your test class:
+
+> [!NOTE]
+> If you are using Pest, you should define properties or methods on the base `DuskTestCase` class or on any class your test file extends.
 
     /**
      * Indicates which tables should be truncated.
@@ -249,7 +281,7 @@ If you had test failures the last time you ran the `dusk` command, you may save 
 php artisan dusk:fails
 ```
 
-The `dusk` command accepts any argument that is normally accepted by the PHPUnit test runner, such as allowing you to only run the tests for a given [group](https://phpunit.readthedocs.io/en/10.1/annotations.html#group):
+The `dusk` command accepts any argument that is normally accepted by the Pest / PHPUnit test runner, such as allowing you to only run the tests for a given [group](https://phpunit.readthedocs.io/en/10.1/annotations.html#group):
 
 ```shell
 php artisan dusk --group=foo
@@ -302,38 +334,63 @@ When running tests, Dusk will back-up your `.env` file and rename your Dusk envi
 
 To get started, let's write a test that verifies we can log into our application. After generating a test, we can modify it to navigate to the login page, enter some credentials, and click the "Login" button. To create a browser instance, you may call the `browse` method from within your Dusk test:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Browser;
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
 
-    use App\Models\User;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Laravel\Dusk\Browser;
-    use Laravel\Dusk\Chrome;
-    use Tests\DuskTestCase;
+uses(DatabaseMigrations::class);
 
-    class ExampleTest extends DuskTestCase
+test('basic example', function () {
+    $user = User::factory()->create([
+        'email' => 'taylor@laravel.com',
+    ]);
+
+    $this->browse(function (Browser $browser) use ($user) {
+        $browser->visit('/login')
+                ->type('email', $user->email)
+                ->type('password', 'password')
+                ->press('Login')
+                ->assertPathIs('/home');
+    });
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Browser;
+
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
+
+class ExampleTest extends DuskTestCase
+{
+    use DatabaseMigrations;
+
+    /**
+     * A basic browser test example.
+     */
+    public function test_basic_example(): void
     {
-        use DatabaseMigrations;
+        $user = User::factory()->create([
+            'email' => 'taylor@laravel.com',
+        ]);
 
-        /**
-         * A basic browser test example.
-         */
-        public function test_basic_example(): void
-        {
-            $user = User::factory()->create([
-                'email' => 'taylor@laravel.com',
-            ]);
-
-            $this->browse(function (Browser $browser) use ($user) {
-                $browser->visit('/login')
-                        ->type('email', $user->email)
-                        ->type('password', 'password')
-                        ->press('Login')
-                        ->assertPathIs('/home');
-            });
-        }
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->visit('/login')
+                    ->type('email', $user->email)
+                    ->type('password', 'password')
+                    ->press('Login')
+                    ->assertPathIs('/home');
+        });
     }
+}
+```
 
 As you can see in the example above, the `browse` method accepts a closure. A browser instance will automatically be passed to this closure by Dusk and is the main object used to interact with and make assertions against your application.
 
@@ -1720,16 +1777,27 @@ Dusk even allows you to make assertions on the state of [Vue component](https://
 
 You may assert on the state of the Vue component like so:
 
-    /**
-     * A basic Vue test example.
-     */
-    public function test_vue(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertVue('user.name', 'Taylor', '@profile-component');
-        });
-    }
+```php tab=Pest
+test('vue', function () {
+    $this->browse(function (Browser $browser) {
+        $browser->visit('/')
+                ->assertVue('user.name', 'Taylor', '@profile-component');
+    });
+});
+```
+
+```php tab=PHPUnit
+/**
+ * A basic Vue test example.
+ */
+public function test_vue(): void
+{
+    $this->browse(function (Browser $browser) {
+        $browser->visit('/')
+                ->assertVue('user.name', 'Taylor', '@profile-component');
+    });
+}
+```
 
 <a name="assert-vue-is-not"></a>
 #### assertVueIsNot
@@ -1962,31 +2030,53 @@ As shown above, a "date picker" is an example of a component that might exist th
 
 Once the component has been defined, we can easily select a date within the date picker from any test. And, if the logic necessary to select a date changes, we only need to update the component:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Browser;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\Browser\Components\DatePicker;
 
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Laravel\Dusk\Browser;
-    use Tests\Browser\Components\DatePicker;
-    use Tests\DuskTestCase;
+uses(DatabaseMigrations::class);
 
-    class ExampleTest extends DuskTestCase
+test('basic example', function () {
+    $this->browse(function (Browser $browser) {
+        $browser->visit('/')
+                ->within(new DatePicker, function (Browser $browser) {
+                    $browser->selectDate(2019, 1, 30);
+                })
+                ->assertSee('January');
+    });
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Browser;
+
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\Browser\Components\DatePicker;
+use Tests\DuskTestCase;
+
+class ExampleTest extends DuskTestCase
+{
+    /**
+     * A basic component test example.
+     */
+    public function test_basic_example(): void
     {
-        /**
-         * A basic component test example.
-         */
-        public function test_basic_example(): void
-        {
-            $this->browse(function (Browser $browser) {
-                $browser->visit('/')
-                        ->within(new DatePicker, function (Browser $browser) {
-                            $browser->selectDate(2019, 1, 30);
-                        })
-                        ->assertSee('January');
-            });
-        }
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/')
+                    ->within(new DatePicker, function (Browser $browser) {
+                        $browser->selectDate(2019, 1, 30);
+                    })
+                    ->assertSee('January');
+        });
     }
+}
+```
 
 <a name="continuous-integration"></a>
 ## Continuous Integration

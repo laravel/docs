@@ -1194,34 +1194,70 @@ Passport raises events when issuing access tokens and refresh tokens. You may us
 
 Passport's `actingAs` method may be used to specify the currently authenticated user as well as its scopes. The first argument given to the `actingAs` method is the user instance and the second is an array of scopes that should be granted to the user's token:
 
-    use App\Models\User;
-    use Laravel\Passport\Passport;
+```php tab=Pest
+use App\Models\User;
+use Laravel\Passport\Passport;
 
-    public function test_servers_can_be_created(): void
-    {
-        Passport::actingAs(
-            User::factory()->create(),
-            ['create-servers']
-        );
+test('servers can be created', function () {
+    Passport::actingAs(
+        User::factory()->create(),
+        ['create-servers']
+    );
 
-        $response = $this->post('/api/create-server');
+    $response = $this->post('/api/create-server');
 
-        $response->assertStatus(201);
-    }
+    $response->assertStatus(201);
+});
+```
+
+```php tab=PHPUnit
+use App\Models\User;
+use Laravel\Passport\Passport;
+
+public function test_servers_can_be_created(): void
+{
+    Passport::actingAs(
+        User::factory()->create(),
+        ['create-servers']
+    );
+
+    $response = $this->post('/api/create-server');
+
+    $response->assertStatus(201);
+}
+```
 
 Passport's `actingAsClient` method may be used to specify the currently authenticated client as well as its scopes. The first argument given to the `actingAsClient` method is the client instance and the second is an array of scopes that should be granted to the client's token:
 
-    use Laravel\Passport\Client;
-    use Laravel\Passport\Passport;
+```php tab=Pest
+use Laravel\Passport\Client;
+use Laravel\Passport\Passport;
 
-    public function test_orders_can_be_retrieved(): void
-    {
-        Passport::actingAsClient(
-            Client::factory()->create(),
-            ['check-status']
-        );
+test('orders can be retrieved', function () {
+    Passport::actingAsClient(
+        Client::factory()->create(),
+        ['check-status']
+    );
 
-        $response = $this->get('/api/orders');
+    $response = $this->get('/api/orders');
 
-        $response->assertStatus(200);
-    }
+    $response->assertStatus(200);
+});
+```
+
+```php tab=PHPUnit
+use Laravel\Passport\Client;
+use Laravel\Passport\Passport;
+
+public function test_orders_can_be_retrieved(): void
+{
+    Passport::actingAsClient(
+        Client::factory()->create(),
+        ['check-status']
+    );
+
+    $response = $this->get('/api/orders');
+
+    $response->assertStatus(200);
+}
+```
