@@ -101,6 +101,13 @@ Schema::table('users', function (Blueprint $table) {
 });
 ```
 
+The `change` method does not change indexes of the column. Therefore, you may use index modifiers explicitly to add/drop an index when modifying the column:
+
+```php
+$table->bigIncrements('id')->primary()->change();
+$table->char('postal_code', 10)->unique(false)->change();
+```
+
 <a name="floating-point-types"></a>
 #### Floating-Point Types
 
@@ -140,7 +147,7 @@ $table->geometry('shapes');
 $table->geography('coordinates');
 ```
 
-To explicitly restrict the type or the spatial reference system identifier for values stored in the column on MySQL and PostgreSQL, you may pass the `subtype` and `srid` to the method:
+To explicitly restrict the type or the spatial reference system identifier for values stored in the column on MySQL, MariaDB, and PostgreSQL, you may pass the `subtype` and `srid` to the method:
 
 ```php
 $table->geometry('dimension', subtype: 'polygon', srid: 0);
