@@ -1347,39 +1347,70 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
 
 After calling the `Notification` facade's `fake` method, you may then assert that notifications were instructed to be sent to users and even inspect the data the notifications received:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use App\Notifications\OrderShipped;
+use Illuminate\Support\Facades\Notification;
 
-    use App\Notifications\OrderShipped;
-    use Illuminate\Support\Facades\Notification;
-    use Tests\TestCase;
+test('orders can be shipped', function () {
+    Notification::fake();
 
-    class ExampleTest extends TestCase
+    // Perform order shipping...
+
+    // Assert that no notifications were sent...
+    Notification::assertNothingSent();
+
+    // Assert a notification was sent to the given users...
+    Notification::assertSentTo(
+        [$user], OrderShipped::class
+    );
+
+    // Assert a notification was not sent...
+    Notification::assertNotSentTo(
+        [$user], AnotherNotification::class
+    );
+
+    // Assert that a given number of notifications were sent...
+    Notification::assertCount(3);
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Notifications\OrderShipped;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_orders_can_be_shipped(): void
     {
-        public function test_orders_can_be_shipped(): void
-        {
-            Notification::fake();
+        Notification::fake();
 
-            // Perform order shipping...
+        // Perform order shipping...
 
-            // Assert that no notifications were sent...
-            Notification::assertNothingSent();
+        // Assert that no notifications were sent...
+        Notification::assertNothingSent();
 
-            // Assert a notification was sent to the given users...
-            Notification::assertSentTo(
-                [$user], OrderShipped::class
-            );
+        // Assert a notification was sent to the given users...
+        Notification::assertSentTo(
+            [$user], OrderShipped::class
+        );
 
-            // Assert a notification was not sent...
-            Notification::assertNotSentTo(
-                [$user], AnotherNotification::class
-            );
+        // Assert a notification was not sent...
+        Notification::assertNotSentTo(
+            [$user], AnotherNotification::class
+        );
 
-            // Assert that a given number of notifications were sent...
-            Notification::assertCount(3);
-        }
+        // Assert that a given number of notifications were sent...
+        Notification::assertCount(3);
     }
+}
+```
 
 You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in order to assert that a notification was sent that passes a given "truth test". If at least one notification was sent that passes the given truth test then the assertion will be successful:
 

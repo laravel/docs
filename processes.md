@@ -394,7 +394,30 @@ Route::get('/import', function () {
 
 When testing this route, we can instruct Laravel to return a fake, successful process result for every invoked process by calling the `fake` method on the `Process` facade with no arguments. In addition, we can even [assert](#available-assertions) that a given process was "run":
 
-```php
+```php tab=Pest
+<?php
+
+use Illuminate\Process\PendingProcess;
+use Illuminate\Contracts\Process\ProcessResult;
+use Illuminate\Support\Facades\Process;
+
+test('process is invoked', function () {
+    Process::fake();
+
+    $response = $this->get('/import');
+
+    // Simple process assertion...
+    Process::assertRan('bash import.sh');
+
+    // Or, inspecting the process configuration...
+    Process::assertRan(function (PendingProcess $process, ProcessResult $result) {
+        return $process->command === 'bash import.sh' &&
+               $process->timeout === 60;
+    });
+});
+```
+
+```php tab=PHPUnit
 <?php
 
 namespace Tests\Feature;

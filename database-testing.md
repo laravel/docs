@@ -16,27 +16,43 @@ Laravel provides a variety of helpful tools and assertions to make it easier to 
 
 Before proceeding much further, let's discuss how to reset your database after each of your tests so that data from a previous test does not interfere with subsequent tests. Laravel's included `Illuminate\Foundation\Testing\RefreshDatabase` trait will take care of this for you. Simply use the trait on your test class:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Tests\TestCase;
+uses(RefreshDatabase::class); // or in the "Pest.php" file...
 
-    class ExampleTest extends TestCase
+test('basic example', function () {
+    $response = $this->get('/');
+
+    // ...
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * A basic functional test example.
+     */
+    public function test_basic_example(): void
     {
-        use RefreshDatabase;
+        $response = $this->get('/');
 
-        /**
-         * A basic functional test example.
-         */
-        public function test_basic_example(): void
-        {
-            $response = $this->get('/');
-
-            // ...
-        }
+        // ...
     }
+}
+```
 
 The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database.
 
@@ -49,54 +65,95 @@ When testing, you may need to insert a few records into your database before exe
 
 To learn more about creating and utilizing model factories to create models, please consult the complete [model factory documentation](/docs/{{version}}/eloquent-factories). Once you have defined a model factory, you may utilize the factory within your test to create models:
 
-    use App\Models\User;
+```php tab=Pest
+use App\Models\User;
 
-    public function test_models_can_be_instantiated(): void
-    {
-        $user = User::factory()->create();
+test('models can be instantiated', function () {
+    $user = User::factory()->create();
 
-        // ...
-    }
+    // ...
+});
+```
+
+```php tab=PHPUnit
+use App\Models\User;
+
+public function test_models_can_be_instantiated(): void
+{
+    $user = User::factory()->create();
+
+    // ...
+}
+```
 
 <a name="running-seeders"></a>
 ## Running Seeders
 
 If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a feature test, you may invoke the `seed` method. By default, the `seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use Database\Seeders\OrderStatusSeeder;
+use Database\Seeders\TransactionStatusSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-    use Database\Seeders\OrderStatusSeeder;
-    use Database\Seeders\TransactionStatusSeeder;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Tests\TestCase;
+uses(RefreshDatabase::class); // or in the "Pest.php" file...
 
-    class ExampleTest extends TestCase
+test('orders can be created', function () {
+    // Run the DatabaseSeeder...
+    $this->seed();
+
+    // Run a specific seeder...
+    $this->seed(OrderStatusSeeder::class);
+
+    // ...
+
+    // Run an array of specific seeders...
+    $this->seed([
+        OrderStatusSeeder::class,
+        TransactionStatusSeeder::class,
+        // ...
+    ]);
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Database\Seeders\OrderStatusSeeder;
+use Database\Seeders\TransactionStatusSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * Test creating a new order.
+     */
+    public function test_orders_can_be_created(): void
     {
-        use RefreshDatabase;
+        // Run the DatabaseSeeder...
+        $this->seed();
 
-        /**
-         * Test creating a new order.
-         */
-        public function test_orders_can_be_created(): void
-        {
-            // Run the DatabaseSeeder...
-            $this->seed();
+        // Run a specific seeder...
+        $this->seed(OrderStatusSeeder::class);
 
-            // Run a specific seeder...
-            $this->seed(OrderStatusSeeder::class);
+        // ...
 
+        // Run an array of specific seeders...
+        $this->seed([
+            OrderStatusSeeder::class,
+            TransactionStatusSeeder::class,
             // ...
-
-            // Run an array of specific seeders...
-            $this->seed([
-                OrderStatusSeeder::class,
-                TransactionStatusSeeder::class,
-                // ...
-            ]);
-        }
+        ]);
     }
+}
+```
 
 Alternatively, you may instruct Laravel to automatically seed the database before each test that uses the `RefreshDatabase` trait. You may accomplish this by defining a `$seed` property on your base test class:
 
@@ -132,7 +189,7 @@ When the `$seed` property is `true`, the test will run the `Database\Seeders\Dat
 <a name="available-assertions"></a>
 ## Available Assertions
 
-Laravel provides several database assertions for your [PHPUnit](https://phpunit.de/) feature tests. We'll discuss each of these assertions below.
+Laravel provides several database assertions for your [Pest](https://pestphp.com) or [PHPUnit](https://phpunit.de) feature tests. We'll discuss each of these assertions below.
 
 <a name="assert-database-count"></a>
 #### assertDatabaseCount

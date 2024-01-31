@@ -18,19 +18,36 @@ Laravel provides helpful methods for mocking events, jobs, and other facades out
 
 When mocking an object that is going to be injected into your application via Laravel's [service container](/docs/{{version}}/container), you will need to bind your mocked instance into the container as an `instance` binding. This will instruct the container to use your mocked instance of the object instead of constructing the object itself:
 
-    use App\Service;
-    use Mockery;
-    use Mockery\MockInterface;
+```php tab=Pest
+use App\Service;
+use Mockery;
+use Mockery\MockInterface;
 
-    public function test_something_can_be_mocked(): void
-    {
-        $this->instance(
-            Service::class,
-            Mockery::mock(Service::class, function (MockInterface $mock) {
-                $mock->shouldReceive('process')->once();
-            })
-        );
-    }
+test('something can be mocked', function () {
+    $this->instance(
+        Service::class,
+        Mockery::mock(Service::class, function (MockInterface $mock) {
+            $mock->shouldReceive('process')->once();
+        })
+    );
+});
+```
+
+```php tab=PHPUnit
+use App\Service;
+use Mockery;
+use Mockery\MockInterface;
+
+public function test_something_can_be_mocked(): void
+{
+    $this->instance(
+        Service::class,
+        Mockery::mock(Service::class, function (MockInterface $mock) {
+            $mock->shouldReceive('process')->once();
+        })
+    );
+}
+```
 
 In order to make this more convenient, you may use the `mock` method that is provided by Laravel's base test case class. For example, the following example is equivalent to the example above:
 
@@ -88,27 +105,46 @@ Unlike traditional static method calls, [facades](/docs/{{version}}/facades) (in
 
 We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use Illuminate\Support\Facades\Cache;
 
-    use Illuminate\Support\Facades\Cache;
-    use Tests\TestCase;
+test('get index', function () {
+    Cache::shouldReceive('get')
+                ->once()
+                ->with('key')
+                ->andReturn('value');
 
-    class UserControllerTest extends TestCase
+    $response = $this->get('/users');
+
+    // ...
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Support\Facades\Cache;
+use Tests\TestCase;
+
+class UserControllerTest extends TestCase
+{
+    public function test_get_index(): void
     {
-        public function test_get_index(): void
-        {
-            Cache::shouldReceive('get')
-                        ->once()
-                        ->with('key')
-                        ->andReturn('value');
+        Cache::shouldReceive('get')
+                    ->once()
+                    ->with('key')
+                    ->andReturn('value');
 
-            $response = $this->get('/users');
+        $response = $this->get('/users');
 
-            // ...
-        }
+        // ...
     }
+}
+```
 
 > [!WARNING]  
 > You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
@@ -118,46 +154,86 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
 
 If you would like to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on a facade, you may call the `spy` method on the corresponding facade. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:
 
-    use Illuminate\Support\Facades\Cache;
+```php tab=Pest
+<?php
 
-    public function test_values_are_be_stored_in_cache(): void
-    {
-        Cache::spy();
+use Illuminate\Support\Facades\Cache;
 
-        $response = $this->get('/');
+test('values are be stored in cache', function () {
+    Cache::spy();
 
-        $response->assertStatus(200);
+    $response = $this->get('/');
 
-        Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);
-    }
+    $response->assertStatus(200);
+
+    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);
+});
+```
+
+```php tab=PHPUnit
+use Illuminate\Support\Facades\Cache;
+
+public function test_values_are_be_stored_in_cache(): void
+{
+    Cache::spy();
+
+    $response = $this->get('/');
+
+    $response->assertStatus(200);
+
+    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);
+}
+```
 
 <a name="interacting-with-time"></a>
 ## Interacting With Time
 
 When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\Support\Carbon::now()`. Thankfully, Laravel's base feature test class includes helpers that allow you to manipulate the current time:
 
-    use Illuminate\Support\Carbon;
+```php tab=Pest
+test('time can be manipulated', function () {
+    // Travel into the future...
+    $this->travel(5)->milliseconds();
+    $this->travel(5)->seconds();
+    $this->travel(5)->minutes();
+    $this->travel(5)->hours();
+    $this->travel(5)->days();
+    $this->travel(5)->weeks();
+    $this->travel(5)->years();
 
-    public function test_time_can_be_manipulated(): void
-    {
-        // Travel into the future...
-        $this->travel(5)->milliseconds();
-        $this->travel(5)->seconds();
-        $this->travel(5)->minutes();
-        $this->travel(5)->hours();
-        $this->travel(5)->days();
-        $this->travel(5)->weeks();
-        $this->travel(5)->years();
+    // Travel into the past...
+    $this->travel(-5)->hours();
 
-        // Travel into the past...
-        $this->travel(-5)->hours();
+    // Travel to an explicit time...
+    $this->travelTo(now()->subHours(6));
 
-        // Travel to an explicit time...
-        $this->travelTo(now()->subHours(6));
+    // Return back to the present time...
+    $this->travelBack();
+});
+```
 
-        // Return back to the present time...
-        $this->travelBack();
-    }
+```php tab=PHPUnit
+public function test_time_can_be_manipulated(): void
+{
+    // Travel into the future...
+    $this->travel(5)->milliseconds();
+    $this->travel(5)->seconds();
+    $this->travel(5)->minutes();
+    $this->travel(5)->hours();
+    $this->travel(5)->days();
+    $this->travel(5)->weeks();
+    $this->travel(5)->years();
+
+    // Travel into the past...
+    $this->travel(-5)->hours();
+
+    // Travel to an explicit time...
+    $this->travelTo(now()->subHours(6));
+
+    // Return back to the present time...
+    $this->travelBack();
+}
+```
 
 You may also provide a closure to the various time travel methods. The closure will be invoked with time frozen at the specified time. Once the closure has executed, time will resume as normal:
 
@@ -185,13 +261,27 @@ The `freezeTime` method may be used to freeze the current time. Similarly, the `
 
 As you would expect, all of the methods discussed above are primarily useful for testing time sensitive application behavior, such as locking inactive posts on a discussion forum:
 
-    use App\Models\Thread;
-    
-    public function test_forum_threads_lock_after_one_week_of_inactivity()
-    {
-        $thread = Thread::factory()->create();
-        
-        $this->travel(1)->week();
-        
-        $this->assertTrue($thread->isLockedByInactivity());
-    }
+```php tab=Pest
+use App\Models\Thread;
+
+test('forum threads lock after one week of inactivity', function () {
+    $thread = Thread::factory()->create();
+
+    $this->travel(1)->week();
+
+    expect($thread->isLockedByInactivity())->toBeTrue();
+});
+```
+
+```php tab=PHPUnit
+use App\Models\Thread;
+
+public function test_forum_threads_lock_after_one_week_of_inactivity()
+{
+    $thread = Thread::factory()->create();
+
+    $this->travel(1)->week();
+
+    $this->assertTrue($thread->isLockedByInactivity());
+}
+```

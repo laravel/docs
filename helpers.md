@@ -2223,29 +2223,55 @@ When testing code that utilizes the `Sleep` class or PHP's native sleep function
 
 Typically, testing this code would take _at least_ one second. Luckily, the `Sleep` class allows us to "fake" sleeping so that our test suite stays fast:
 
-    public function test_it_waits_until_ready()
-    {
-        Sleep::fake();
+```php tab=Pest
+it('waits until ready', function () {
+    Sleep::fake();
 
-        // ...
-    }
+    // ...
+});
+```
+
+```php tab=PHPUnit
+public function test_it_waits_until_ready()
+{
+    Sleep::fake();
+
+    // ...
+}
+```
 
 When faking the `Sleep` class, the actual execution pause is by-passed, leading to a substantially faster test.
 
 Once the `Sleep` class has been faked, it is possible to make assertions against the expected "sleeps" that should have occurred. To illustrate this, let's imagine we are testing code that pauses execution three times, with each pause increasing by a single second. Using the `assertSequence` method, we can assert that our code "slept" for the proper amount of time while keeping our test fast:
 
-    public function test_it_checks_if_ready_four_times()
-    {
-        Sleep::fake();
+```php tab=Pest
+it('checks if ready three times', function () {
+    Sleep::fake();
 
-        // ...
+    // ...
 
-        Sleep::assertSequence([
-            Sleep::for(1)->second(),
-            Sleep::for(2)->seconds(),
-            Sleep::for(3)->seconds(),
-        ]);
-    }
+    Sleep::assertSequence([
+        Sleep::for(1)->second(),
+        Sleep::for(2)->seconds(),
+        Sleep::for(3)->seconds(),
+    ]);
+}
+```
+
+```php tab=PHPUnit
+public function test_it_checks_if_ready_four_times()
+{
+    Sleep::fake();
+
+    // ...
+
+    Sleep::assertSequence([
+        Sleep::for(1)->second(),
+        Sleep::for(2)->seconds(),
+        Sleep::for(3)->seconds(),
+    ]);
+}
+```
 
 Of course, the `Sleep` class offers a variety of other assertions you may use when testing:
 

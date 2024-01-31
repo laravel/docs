@@ -11,13 +11,13 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel is built with testing in mind. In fact, support for testing with PHPUnit is included out of the box and a `phpunit.xml` file is already set up for your application. The framework also ships with convenient helper methods that allow you to expressively test your applications.
+Laravel is built with testing in mind. In fact, support for testing with [Pest](https://pestphp.com) and [PHPUnit](https://phpunit.de) is included out of the box and a `phpunit.xml` file is already set up for your application. The framework also ships with convenient helper methods that allow you to expressively test your applications.
 
 By default, your application's `tests` directory contains two directories: `Feature` and `Unit`. Unit tests are tests that focus on a very small, isolated portion of your code. In fact, most unit tests probably focus on a single method. Tests within your "Unit" test directory do not boot your Laravel application and therefore are unable to access your application's database or other framework services.
 
 Feature tests may test a larger portion of your code, including how several objects interact with each other or even a full HTTP request to a JSON endpoint. **Generally, most of your tests should be feature tests. These types of tests provide the most confidence that your system as a whole is functioning as intended.**
 
-An `ExampleTest.php` file is provided in both the `Feature` and `Unit` test directories. After installing a new Laravel application, execute the `vendor/bin/phpunit` or `php artisan test` commands to run your tests.
+An `ExampleTest.php` file is provided in both the `Feature` and `Unit` test directories. After installing a new Laravel application, execute the `vendor/bin/pest`, `vendor/bin/phpunit`, or `php artisan test` commands to run your tests.
 
 <a name="environment"></a>
 ## Environment
@@ -29,7 +29,7 @@ You are free to define other testing environment configuration values as necessa
 <a name="the-env-testing-environment-file"></a>
 #### The `.env.testing` Environment File
 
-In addition, you may create a `.env.testing` file in the root of your project. This file will be used instead of the `.env` file when running PHPUnit tests or executing Artisan commands with the `--env=testing` option.
+In addition, you may create a `.env.testing` file in the root of your project. This file will be used instead of the `.env` file when running Pest and PHPUnit tests or executing Artisan commands with the `--env=testing` option.
 
 <a name="the-creates-application-trait"></a>
 #### The `CreatesApplication` Trait
@@ -58,37 +58,51 @@ php artisan make:test UserTest --pest
 php artisan make:test UserTest --unit --pest
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
-Once the test has been generated, you may define test methods as you normally would using [PHPUnit](https://phpunit.de). To run your tests, execute the `vendor/bin/phpunit` or `php artisan test` command from your terminal:
+Once the test has been generated, you may define test as you normally would using Pest or PHPUnit. To run your tests, execute the `vendor/bin/pest`, `vendor/bin/phpunit`, or `php artisan test` command from your terminal:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Unit;
+test('basic', function () {
+    expect(true)->toBeTrue();
+});
+```
 
-    use PHPUnit\Framework\TestCase;
+```php tab=PHPUnit
+<?php
 
-    class ExampleTest extends TestCase
+namespace Tests\Unit;
+
+use PHPUnit\Framework\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     */
+    public function test_basic_test(): void
     {
-        /**
-         * A basic test example.
-         */
-        public function test_basic_test(): void
-        {
-            $this->assertTrue(true);
-        }
+        $this->assertTrue(true);
     }
+}
+```
 
-> [!WARNING]  
+> [!WARNING]
 > If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class. Typically, you should invoke `parent::setUp()` at the start of your own `setUp` method, and `parent::tearDown()` at the end of your `tearDown` method.
 
 <a name="running-tests"></a>
 ## Running Tests
 
-As mentioned previously, once you've written tests, you may run them using `phpunit`:
+As mentioned previously, once you've written tests, you may run them using `pest` or `phpunit`:
 
-```shell
+```shell tab=Pest
+./vendor/bin/pest
+```
+
+```shell tab=PHPUnit
 ./vendor/bin/phpunit
 ```
 
@@ -107,7 +121,7 @@ php artisan test --testsuite=Feature --stop-on-failure
 <a name="running-tests-in-parallel"></a>
 ### Running Tests in Parallel
 
-By default, Laravel and PHPUnit execute your tests sequentially within a single process. However, you may greatly reduce the amount of time it takes to run your tests by running tests simultaneously across multiple processes. To get started, you should install the `brianium/paratest` Composer package as a "dev" dependency. Then, include the `--parallel` option when executing the `test` Artisan command:
+By default, Laravel and Pest / PHPUnit execute your tests sequentially within a single process. However, you may greatly reduce the amount of time it takes to run your tests by running tests simultaneously across multiple processes. To get started, you should install the `brianium/paratest` Composer package as a "dev" dependency. Then, include the `--parallel` option when executing the `test` Artisan command:
 
 ```shell
 composer require brianium/paratest --dev
@@ -122,7 +136,7 @@ php artisan test --parallel --processes=4
 ```
 
 > [!WARNING]  
-> When running tests in parallel, some PHPUnit options (such as `--do-not-cache-result`) may not be available.
+> When running tests in parallel, some Pest / PHPUnit options (such as `--do-not-cache-result`) may not be available.
 
 <a name="parallel-testing-and-databases"></a>
 #### Parallel Testing and Databases

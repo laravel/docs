@@ -2103,43 +2103,78 @@ When testing code that dispatches jobs, you may wish to instruct Laravel to not 
 
 You may use the `Queue` facade's `fake` method to prevent queued jobs from actually being pushed to the queue. After calling the `Queue` facade's `fake` method, you may then assert that the application attempted to push jobs to the queue:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use App\Jobs\AnotherJob;
+use App\Jobs\FinalJob;
+use App\Jobs\ShipOrder;
+use Illuminate\Support\Facades\Queue;
 
-    use App\Jobs\AnotherJob;
-    use App\Jobs\FinalJob;
-    use App\Jobs\ShipOrder;
-    use Illuminate\Support\Facades\Queue;
-    use Tests\TestCase;
+test('orders can be shipped', function () {
+    Queue::fake();
 
-    class ExampleTest extends TestCase
+    // Perform order shipping...
+
+    // Assert that no jobs were pushed...
+    Queue::assertNothingPushed();
+
+    // Assert a job was pushed to a given queue...
+    Queue::assertPushedOn('queue-name', ShipOrder::class);
+
+    // Assert a job was pushed twice...
+    Queue::assertPushed(ShipOrder::class, 2);
+
+    // Assert a job was not pushed...
+    Queue::assertNotPushed(AnotherJob::class);
+
+    // Assert that a Closure was pushed to the queue...
+    Queue::assertClosurePushed();
+
+    // Assert the total number of jobs that were pushed...
+    Queue::assertCount(3);
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Jobs\AnotherJob;
+use App\Jobs\FinalJob;
+use App\Jobs\ShipOrder;
+use Illuminate\Support\Facades\Queue;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_orders_can_be_shipped(): void
     {
-        public function test_orders_can_be_shipped(): void
-        {
-            Queue::fake();
+        Queue::fake();
 
-            // Perform order shipping...
+        // Perform order shipping...
 
-            // Assert that no jobs were pushed...
-            Queue::assertNothingPushed();
+        // Assert that no jobs were pushed...
+        Queue::assertNothingPushed();
 
-            // Assert a job was pushed to a given queue...
-            Queue::assertPushedOn('queue-name', ShipOrder::class);
+        // Assert a job was pushed to a given queue...
+        Queue::assertPushedOn('queue-name', ShipOrder::class);
 
-            // Assert a job was pushed twice...
-            Queue::assertPushed(ShipOrder::class, 2);
+        // Assert a job was pushed twice...
+        Queue::assertPushed(ShipOrder::class, 2);
 
-            // Assert a job was not pushed...
-            Queue::assertNotPushed(AnotherJob::class);
+        // Assert a job was not pushed...
+        Queue::assertNotPushed(AnotherJob::class);
 
-            // Assert that a Closure was pushed to the queue...
-            Queue::assertClosurePushed();
+        // Assert that a Closure was pushed to the queue...
+        Queue::assertClosurePushed();
 
-            // Assert the total number of jobs that were pushed...
-            Queue::assertCount(3);
-        }
+        // Assert the total number of jobs that were pushed...
+        Queue::assertCount(3);
     }
+}
+```
 
 You may pass a closure to the `assertPushed` or `assertNotPushed` methods in order to assert that a job was pushed that passes a given "truth test". If at least one job was pushed that passes the given truth test then the assertion will be successful:
 
@@ -2152,17 +2187,32 @@ You may pass a closure to the `assertPushed` or `assertNotPushed` methods in ord
 
 If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:
 
-    public function test_orders_can_be_shipped(): void
-    {
-        Queue::fake([
-            ShipOrder::class,
-        ]);
+```php tab=Pest
+test('orders can be shipped', function () {
+    Queue::fake([
+        ShipOrder::class,
+    ]);
 
-        // Perform order shipping...
+    // Perform order shipping...
 
-        // Assert a job was pushed twice...
-        Queue::assertPushed(ShipOrder::class, 2);
-    }
+    // Assert a job was pushed twice...
+    Queue::assertPushed(ShipOrder::class, 2);
+});
+```
+
+```php tab=PHPUnit
+public function test_orders_can_be_shipped(): void
+{
+    Queue::fake([
+        ShipOrder::class,
+    ]);
+
+    // Perform order shipping...
+
+    // Assert a job was pushed twice...
+    Queue::assertPushed(ShipOrder::class, 2);
+}
+```
 
 You may fake all jobs except for a set of specified jobs using the `except` method:
 
