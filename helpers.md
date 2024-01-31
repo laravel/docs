@@ -1118,7 +1118,7 @@ You can set the default locale globally. This may be accomplished by invoking th
     }
 
 <a name="method-number-with-locale"></a>
-#### `Number::useLocale()` {.collection-method}
+#### `Number::withLocale()` {.collection-method}
 
 You can use the withLocale method which executes the given callback using the specified locale and then restores the original locale:
 
