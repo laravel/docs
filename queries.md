@@ -56,7 +56,6 @@ You may use the `table` method provided by the `DB` facade to begin a query. The
 
     namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\DB;
     use Illuminate\View\View;
 
