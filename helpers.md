@@ -1280,7 +1280,7 @@ The `Number::spell` method helps transforms numbers into words:
 
     // one hundred and two
 
-    $number = Number::spell(102, locale: 'fr');
+    $number = Number::spell(88, locale: 'fr');
 
     // quatre-vingt-huit
 
