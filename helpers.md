@@ -3,11 +3,11 @@
 - [Introduction](#introduction)
 - [Available Methods](#available-methods)
 - [Other Utilities](#other-utilities)
-  - [Benchmarking](#benchmarking)
-  - [Dates](#dates)
-  - [Lottery](#lottery)
-  - [Pipeline](#pipeline)
-  - [Sleep](#sleep)
+    - [Benchmarking](#benchmarking)
+    - [Dates](#dates)
+    - [Lottery](#lottery)
+    - [Pipeline](#pipeline)
+    - [Sleep](#sleep)
 
 <a name="introduction"></a>
 ## Introduction
@@ -88,8 +88,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 <div class="collection-method-list" markdown="1">
 
-[Number::useLocale](#method-number-use-locale)
-[Number::withLocale](#method-number-with-locale)
 [Number::abbreviate](#method-number-abbreviate)
 [Number::format](#method-number-format)
 [Number::percentage](#method-number-percentage)
@@ -98,6 +96,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::forHumans](#method-number-for-humans)
 [Number::ordinal](#method-number-ordinal)
 [Number::spell](#method-number-spell)
+[Number::useLocale](#method-number-use-locale)
+[Number::withLocale](#method-number-with-locale)
 
 </div>
 
@@ -1102,32 +1102,6 @@ The `last` function returns the last element in the given array:
 <a name="numbers"></a>
 ## Numbers
 
-<a name="method-number-use-locale"></a>
-#### `Number::useLocale()` {.collection-method}
-
-You can set the default locale globally. This may be accomplished by invoking the `useLocale` method within the `boot` method of one of your application's service providers :
-
-    use Illuminate\Support\Number;
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot()
-    {
-        Number::useLocale('de');
-    }
-
-<a name="method-number-with-locale"></a>
-#### `Number::withLocale()` {.collection-method}
-
-You can use the withLocale method which executes the given callback using the specified locale and then restores the original locale:
-
-    use Illuminate\Support\Number;
-
-    $number = Number::withLocale('sv', function () {
-        return Number::format(1500);
-    });
-
 <a name="method-number-abbreviate"></a>
 #### `Number::abbreviate()` {.collection-method}
 
@@ -1253,7 +1227,7 @@ The `Number::forHumans` method returns the human-readable format of the provided
 <a name="method-number-ordinal"></a>
 #### `Number::ordinal()` {.collection-method}
 
-The `Number::ordinal` method helps express numbers in their ordinal form:
+The `Number::ordinal` method returns a number's ordinal representation:
 
     use Illuminate\Support\Number;
 
@@ -1272,7 +1246,7 @@ The `Number::ordinal` method helps express numbers in their ordinal form:
 <a name="method-number-spell"></a>
 #### `Number::spell()` {.collection-method}
 
-The `Number::spell` method helps transforms numbers into words:
+The `Number::spell` method transforms the given number into a string of words:
 
     use Illuminate\Support\Number;
 
@@ -1284,17 +1258,52 @@ The `Number::spell` method helps transforms numbers into words:
 
     // quatre-vingt-huit
 
-You can also pass a threshold to limit how high the numbers are spelled out:
+
+The `after` argument allows you to specify a value after which all numbers should be spelled out:
+
+    $number = Number::spell(10, after: 10);
+
+    // 10
+
+    $number = Number::spell(11, after: 10);
+
+    // eleven
+
+The `until` argument allows you to specify a value before which all numbers should be spelled out:
+
+    $number = Number::spell(5, until: 10);
+
+    // five
+
+    $number = Number::spell(10, until: 10);
+
+    // 10
+
+<a name="method-number-use-locale"></a>
+#### `Number::useLocale()` {.collection-method}
+
+The `Number::useLocale` method sets the default number locale globally, which affects how numbers and currency are formatted by subsequent invocations to the `Number` class' methods:
 
     use Illuminate\Support\Number;
 
-    $number = Number::spell(10, threshold: 10);
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Number::useLocale('de');
+    }
 
-    // ten
+<a name="method-number-with-locale"></a>
+#### `Number::withLocale()` {.collection-method}
 
-    $number = Number::spell(11, threshold: 10);
+The `Number::withLocale` method executes the given closure using the specified locale and then restores the original locale after the callback has executed:
 
-    // 11
+    use Illuminate\Support\Number;
+
+    $number = Number::withLocale('de', function () {
+        return Number::format(1500);
+    });
 
 <a name="paths"></a>
 ## Paths
