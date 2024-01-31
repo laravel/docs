@@ -123,7 +123,7 @@ By default, the `Illuminate\Console\Events\CommandStarting` and `Illuminate\Cons
 
 use Illuminate\Foundation\Testing\WithConsoleEvents;
 
-uses(WithConsoleEvents::class); // or in the "Pest.php" file...
+uses(WithConsoleEvents::class);
 
 // ...
 ```
