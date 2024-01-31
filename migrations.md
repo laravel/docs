@@ -989,10 +989,13 @@ When modifying a column, you must explicitly include all the modifiers you want 
         $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();
     });
 
-The `change` method does not change indexes of the column. Therefore, you may use index modifiers explicitly to add/drop an index when modifying the column:
+The `change` method does not change the indexes of the column. Therefore, you may use index modifiers to explicitly add or drop an index when modifying the column:
 
 ```php
+// Add an index...
 $table->bigIncrements('id')->primary()->change();
+
+// Drop an index...
 $table->char('postal_code', 10)->unique(false)->change();
 ```
 
