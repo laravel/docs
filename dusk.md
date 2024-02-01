@@ -61,7 +61,7 @@
 To get started, you should install [Google Chrome](https://www.google.com/chrome) and add the `laravel/dusk` Composer dependency to your project:
 
 ```shell
-composer require --dev laravel/dusk
+composer require laravel/dusk --dev
 ```
 
 > [!WARNING]  
