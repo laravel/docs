@@ -165,8 +165,6 @@ Alternatively, you may instruct Laravel to automatically seed the database befor
 
     abstract class TestCase extends BaseTestCase
     {
-        use CreatesApplication;
-
         /**
          * Indicates whether the default seeder should run before each test.
          *
