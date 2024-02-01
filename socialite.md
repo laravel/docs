@@ -29,6 +29,12 @@ To get started with Socialite, use the Composer package manager to add the packa
 composer require laravel/socialite
 ```
 
+Next, you should publish the `config/services.php` configuration file using the `config:publish` Artisan command:
+
+```shell
+php artisan config:publish services
+```
+
 <a name="upgrading-socialite"></a>
 ## Upgrading Socialite
 
