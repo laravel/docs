@@ -130,7 +130,7 @@ The `registerPolicies` method of the `AuthServiceProvider` is now invoked automa
 
 **Likelihood Of Impact: Medium**
 
-Usage of `Cache::tags()` is only recommended for Memcached. If you are using Redis as your application's cache driver, you should consider moving to Memcached or using an alternative solution.
+Usage of `Cache::tags()` is only recommended for applications using Memcached. If you are using Redis as your application's cache driver, you should consider moving to Memcached or using an alternative solution.
 
 ### Database
 
