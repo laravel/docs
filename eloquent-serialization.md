@@ -204,7 +204,10 @@ You may customize the default serialization format by overriding the `serializeD
 
 You may customize the serialization format of individual Eloquent date attributes by specifying the date format in the model's [cast declarations](/docs/{{version}}/eloquent-mutators#attribute-casting):
 
-    protected $casts = [
-        'birthday' => 'date:Y-m-d',
-        'joined_at' => 'datetime:Y-m-d H:00',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'birthday' => 'date:Y-m-d',
+            'joined_at' => 'datetime:Y-m-d H:00',
+        ];
+    }

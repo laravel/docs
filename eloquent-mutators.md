@@ -196,9 +196,9 @@ protected function address(): Attribute
 <a name="attribute-casting"></a>
 ## Attribute Casting
 
-Attribute casting provides functionality similar to accessors and mutators without requiring you to define any additional methods on your model. Instead, your model's `$casts` property provides a convenient method of converting attributes to common data types.
+Attribute casting provides functionality similar to accessors and mutators without requiring you to define any additional methods on your model. Instead, your model's `casts` method provides a convenient way of converting attributes to common data types.
 
-The `$casts` property should be an array where the key is the name of the attribute being cast and the value is the type you wish to cast the column to. The supported cast types are:
+The `casts` method should return an array where the key is the name of the attribute being cast and the value is the type you wish to cast the column to. The supported cast types are:
 
 <div class="content-list" markdown="1">
 
@@ -237,13 +237,16 @@ To demonstrate attribute casting, let's cast the `is_admin` attribute, which is 
     class User extends Model
     {
         /**
-         * The attributes that should be cast.
+         * Get the attributes that should be cast.
          *
-         * @var array
+         * @return array<string, string>
          */
-        protected $casts = [
-            'is_admin' => 'boolean',
-        ];
+        protected function casts(): array
+        {
+            return [
+                'is_admin' => 'boolean',
+            ];
+        }
     }
 
 After defining the cast, the `is_admin` attribute will always be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer:
@@ -279,13 +282,16 @@ You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to 
     class User extends Model
     {
         /**
-         * The attributes that should be cast.
+         * Get the attributes that should be cast.
          *
-         * @var array
+         * @return array<string, string>
          */
-        protected $casts = [
-            'directory' => AsStringable::class,
-        ];
+        protected function casts(): array
+        {
+            return [
+                'directory' => AsStringable::class,
+            ];
+        }
     }
 
 <a name="array-and-json-casting"></a>
@@ -302,13 +308,16 @@ The `array` cast is particularly useful when working with columns that are store
     class User extends Model
     {
         /**
-         * The attributes that should be cast.
+         * Get the attributes that should be cast.
          *
-         * @var array
+         * @return array<string, string>
          */
-        protected $casts = [
-            'options' => 'array',
-        ];
+        protected function casts(): array
+        {
+            return [
+                'options' => 'array',
+            ];
+        }
     }
 
 Once the cast is defined, you may access the `options` attribute and it will automatically be deserialized from JSON into a PHP array. When you set the value of the `options` attribute, the given array will automatically be serialized back into JSON for storage:
@@ -345,26 +354,32 @@ To solve this, Laravel offers an `AsArrayObject` cast that casts your JSON attri
     use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'options' => AsArrayObject::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'options' => AsArrayObject::class,
+        ];
+    }
 
 Similarly, Laravel offers an `AsCollection` cast that casts your JSON attribute to a Laravel [Collection](/docs/{{version}}/collections) instance:
 
     use Illuminate\Database\Eloquent\Casts\AsCollection;
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'options' => AsCollection::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'options' => AsCollection::class,
+        ];
+    }
 
 If you would like the `AsCollection` cast to instantiate a custom collection class instead of Laravel's base collection class, you may provide the collection class name as a cast argument:
 
@@ -372,29 +387,35 @@ If you would like the `AsCollection` cast to instantiate a custom collection cla
     use Illuminate\Database\Eloquent\Casts\AsCollection;
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'options' => AsCollection::class.':'.OptionCollection::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'options' => AsCollection::using(OptionCollection::class),
+        ];
+    }
 
 <a name="date-casting"></a>
 ### Date Casting
 
-By default, Eloquent will cast the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which extends the PHP `DateTime` class and provides an assortment of helpful methods. You may cast additional date attributes by defining additional date casts within your model's `$casts` property array. Typically, dates should be cast using the `datetime` or `immutable_datetime` cast types.
+By default, Eloquent will cast the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which extends the PHP `DateTime` class and provides an assortment of helpful methods. You may cast additional date attributes by defining additional date casts within your model's `casts` method. Typically, dates should be cast using the `datetime` or `immutable_datetime` cast types.
 
 When defining a `date` or `datetime` cast, you may also specify the date's format. This format will be used when the [model is serialized to an array or JSON](/docs/{{version}}/eloquent-serialization):
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime:Y-m-d',
+        ];
+    }
 
 When a column is cast as a date, you may set the corresponding model attribute value to a UNIX timestamp, date string (`Y-m-d`), date-time string, or a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database.
 
@@ -427,18 +448,21 @@ If a custom format is applied to the `date` or `datetime` cast, such as `datetim
 <a name="enum-casting"></a>
 ### Enum Casting
 
-Eloquent also allows you to cast your attribute values to PHP [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
+Eloquent also allows you to cast your attribute values to PHP [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `casts` method:
 
     use App\Enums\ServerStatus;
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'status' => ServerStatus::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'status' => ServerStatus::class,
+        ];
+    }
 
 Once you have defined the cast on your model, the specified attribute will be automatically cast to and from an enum when you interact with the attribute:
 
@@ -457,13 +481,16 @@ Sometimes you may need your model to store an array of enum values within a sing
     use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'statuses' => AsEnumCollection::class.':'.ServerStatus::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'statuses' => AsEnumCollection::of(ServerStatus::class),
+        ];
+    }
 
 <a name="encrypted-casting"></a>
 ### Encrypted Casting
@@ -555,13 +582,16 @@ Once you have defined a custom cast type, you may attach it to a model attribute
     class User extends Model
     {
         /**
-         * The attributes that should be cast.
+         * Get the attributes that should be cast.
          *
-         * @var array
+         * @return array<string, string>
          */
-        protected $casts = [
-            'options' => Json::class,
-        ];
+        protected function casts(): array
+        {
+            return [
+                'options' => Json::class,
+            ];
+        }
     }
 
 <a name="value-object-casting"></a>
@@ -708,13 +738,16 @@ A classic example of an inbound only cast is a "hashing" cast. For example, we m
 When attaching a custom cast to a model, cast parameters may be specified by separating them from the class name using a `:` character and comma-delimiting multiple parameters. The parameters will be passed to the constructor of the cast class:
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'secret' => Hash::class.':sha256',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'secret' => Hash::class.':sha256',
+        ];
+    }
 
 <a name="castables"></a>
 ### Castables
@@ -723,9 +756,12 @@ You may want to allow your application's value objects to define their own custo
 
     use App\ValueObjects\Address;
 
-    protected $casts = [
-        'address' => Address::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'address' => Address::class,
+        ];
+    }
 
 Objects that implement the `Castable` interface must define a `castUsing` method that returns the class name of the custom caster class that is responsible for casting to and from the `Castable` class:
 
@@ -749,13 +785,16 @@ Objects that implement the `Castable` interface must define a `castUsing` method
         }
     }
 
-When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed to the `castUsing` method:
+When using `Castable` classes, you may still provide arguments in the `casts` method definition. The arguments will be passed to the `castUsing` method:
 
     use App\ValueObjects\Address;
 
-    protected $casts = [
-        'address' => Address::class.':argument',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'address' => Address::class.':argument',
+        ];
+    }
 
 <a name="anonymous-cast-classes"></a>
 #### Castables & Anonymous Cast Classes
