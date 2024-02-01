@@ -637,6 +637,8 @@ In this example, the `:attribute` placeholder will be replaced by the actual nam
         'in' => 'The :attribute must be one of the following types: :values',
     ];
 
+If you want the placeholder to be in uppercase or with the first character capitalized, `:ATTRIBUTE` and `:Attribute` are also recognized.
+
 <a name="specifying-a-custom-message-for-a-given-attribute"></a>
 #### Specifying a Custom Message for a Given Attribute
 
