@@ -31,11 +31,6 @@ You are free to define other testing environment configuration values as necessa
 
 In addition, you may create a `.env.testing` file in the root of your project. This file will be used instead of the `.env` file when running Pest and PHPUnit tests or executing Artisan commands with the `--env=testing` option.
 
-<a name="the-creates-application-trait"></a>
-#### The `CreatesApplication` Trait
-
-Laravel includes a `CreatesApplication` trait that is applied to your application's base `TestCase` class. This trait contains a `createApplication` method that bootstraps the Laravel application before running your tests. It's important that you leave this trait at its original location as some features, such as Laravel's parallel testing feature, depend on it.
-
 <a name="creating-tests"></a>
 ## Creating Tests
 
