@@ -64,7 +64,7 @@ composer create-project laravel/laravel example-app
 Or, you may create new Laravel projects by globally installing [the Laravel installer](https://github.com/laravel/installer) via Composer:
 
 ```nothing
-composer global require laravel/installer:^5.4
+composer global require laravel/installer:^5.5
 
 laravel new example-app
 ```
@@ -79,7 +79,7 @@ php artisan serve
 
 Once you have started the Artisan development server, your application will be accessible in your web browser at [http://localhost:8000](http://localhost:8000). Next, you're ready to [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also want to [configure a database](#databases-and-migrations).
 
-> [!NOTE]  
+> [!NOTE]
 > If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
 <a name="initial-configuration"></a>
@@ -96,36 +96,35 @@ Since many of Laravel's configuration option values may vary depending on whethe
 
 Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
 
-> [!NOTE]  
+> [!NOTE]
 > For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="databases-and-migrations"></a>
 ### Databases and Migrations
 
-Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with a MySQL database and will access the database at `127.0.0.1`.
+Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with a SQLite database.
 
-> [!NOTE]  
-> If you are developing on macOS and need to install MySQL, Postgres, or Redis locally, consider using [DBngin](https://dbngin.com/).
+During the creation of the project, Laravel created a `database/database.sqlite` file for you, and ran the necessary migrations to create the application's database tables.
 
-If you do not want to install MySQL or Postgres on your local machine, you can always use a [SQLite](https://www.sqlite.org/index.html) database. SQLite is a small, fast, self-contained database engine. To get started, update your `.env` configuration file to use Laravel's `sqlite` database driver. You may remove the other database configuration options:
+If you prefer to use another database driver such as MySQL or Postgres, you can update your `.env` configuration file to use the appropriate database. For example, if you wish to use MySQL, update your `.env` configuration file's `DB_*` section like so:
 
 ```ini
-DB_CONNECTION=sqlite # [tl! add]
-DB_CONNECTION=mysql # [tl! remove]
-DB_HOST=127.0.0.1 # [tl! remove]
-DB_PORT=3306 # [tl! remove]
-DB_DATABASE=laravel # [tl! remove]
-DB_USERNAME=root # [tl! remove]
-DB_PASSWORD= # [tl! remove]
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
-Once you have configured your SQLite database, you may run your application's [database migrations](/docs/{{version}}/migrations), which will create your application's database tables:
+> [!NOTE]
+> If you are developing on macOS and need to install MySQL, Postgres, or Redis locally, consider using [DBngin](https://dbngin.com/).
+
+If you opted for using the SQLite database that was created for you, you don't need any extra steps. However, if you are using another database, you will need to create it and run your application's [database migrations](/docs/{{version}}/migrations), which will create your application's database tables:
 
 ```shell
 php artisan migrate
 ```
-
-If an SQLite database does not exist for your application, Laravel will ask you if you would like the database to be created. Typically, the SQLite database file will be created at `database/database.sqlite`.
 
 <a name="directory-configuration"></a>
 ### Directory Configuration
