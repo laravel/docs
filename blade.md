@@ -1203,6 +1203,26 @@ To interact with slot attributes, you may access the `attributes` property of th
 </div>
 ```
 
+<a name="default-slot-content"></a>
+#### Default Slot Content
+
+You may use `$slot->isEmpty()` to check that content for the slot exists, and if not, provide default content.
+
+```blade
+<!-- /resources/views/components/alert.blade.php -->
+ 
+<span class="alert-title">{{ $title }}</span>
+ 
+<div class="alert alert-danger">
+    @if($slot->isEmpty())
+        This is default content if $slot is empty.
+    @else
+        {{ $slot }}
+    @endif
+</div>
+
+```
+
 <a name="inline-component-views"></a>
 ### Inline Component Views
 
