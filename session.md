@@ -28,6 +28,17 @@ Your application's session configuration file is stored at `config/session.php`.
 
 The session `driver` configuration option defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:
 
+
+For `$request->session()` to work you will need to these in `app/Htt/Kernel.php` inside `protected $middleware` array
+
+```shell
+\Illuminate\Session\Middleware\StartSession::class,
+\Illuminate\View\Middleware\ShareErrorsFromSession::class,
+
+```
+
+otherwise you will get 'Session store not set on request' error.
+
 <div class="content-list" markdown="1">
 
 - `file` - sessions are stored in `storage/framework/sessions`.
