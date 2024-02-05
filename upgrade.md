@@ -30,7 +30,7 @@
 ## Low Impact Changes
 
 <div class="content-list" markdown="1">
-    
+
 - [Closure Validation Rule Messages](#closure-validation-rule-messages)
 - [Form Request `after` Method](#form-request-after-method)
 - [Public Path Binding](#public-path-binding)
