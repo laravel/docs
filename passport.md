@@ -243,7 +243,9 @@ After defining your model, you may instruct Passport to use your custom model vi
 <a name="overriding-routes"></a>
 ### Overriding Routes
 
-Sometimes you may wish to customize the routes defined by Passport. To achieve this, you first need to ignore the routes registered by Passport by adding `Passport::ignoreRoutes` to the `register` method of your application's `AppServiceProvider`:
+By default, Passport uses the route prefix of `oauth` for all its routes. If you'd like to change this, you need to update the `path` value in `config/passport.php`.
+
+However, sometimes you may wish to customize the actual routes defined by Passport. To achieve this, you first need to ignore the routes registered by Passport by adding `Passport::ignoreRoutes` to the `register` method of your application's `AppServiceProvider`:
 
     use Laravel\Passport\Passport;
 
