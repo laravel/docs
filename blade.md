@@ -246,10 +246,14 @@ If needed, you may specify the authentication guard that should be checked when 
 ```blade
 @auth('admin')
     // The user is authenticated...
+@elseauth('seller')
+    // The user is authenticated with 'seller' guard...
 @endauth
 
 @guest('admin')
     // The user is not authenticated...
+@elseguest('seller')
+    // The user is not authenticated with 'seller' guard...
 @endguest
 ```
 
