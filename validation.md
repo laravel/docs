@@ -970,12 +970,12 @@ Below is a list of all available validation rules and their function:
 <a name="rule-accepted"></a>
 #### accepted
 
-The field under validation must be `"yes"`, `"on"`, `1`, or `true`. This is useful for validating "Terms of Service" acceptance or similar fields.
+The field under validation must be `"yes"`, `"on"`, `1`, `"1"`, `true`, or `"true"`. This is useful for validating "Terms of Service" acceptance or similar fields.
 
 <a name="rule-accepted-if"></a>
 #### accepted_if:anotherfield,value,...
 
-The field under validation must be `"yes"`, `"on"`, `1`, or `true` if another field under validation is equal to a specified value. This is useful for validating "Terms of Service" acceptance or similar fields.
+The field under validation must be `"yes"`, `"on"`, `1`, `"1"`, `true`, or `"true"` if another field under validation is equal to a specified value. This is useful for validating "Terms of Service" acceptance or similar fields.
 
 <a name="rule-active-url"></a>
 #### active_url
@@ -1131,12 +1131,12 @@ The field under validation must be numeric and must contain the specified number
 <a name="rule-declined"></a>
 #### declined
 
-The field under validation must be `"no"`, `"off"`, `0`, or `false`.
+The field under validation must be `"no"`, `"off"`, `0`, `"0"`, `false`, or `"false"`.
 
 <a name="rule-declined-if"></a>
 #### declined_if:anotherfield,value,...
 
-The field under validation must be `"no"`, `"off"`, `0`, or `false` if another field under validation is equal to a specified value.
+The field under validation must be `"no"`, `"off"`, `0`, `"0"`, `false`, or `"false"` if another field under validation is equal to a specified value.
 
 <a name="rule-different"></a>
 #### different:_field_
@@ -1702,7 +1702,7 @@ If you would like to construct a more complex condition for the `required_if` ru
 <a name="rule-required-if-accepted"></a>
 #### required_if_accepted:_anotherfield_,...
 
-The field under validation must be present and not empty if the _anotherfield_ field is equal to `yes`, `on`, `1`, `"1"`, `true`, or `"true"`.
+The field under validation must be present and not empty if the _anotherfield_ field is equal to `"yes"`, `"on"`, `1`, `"1"`, `true`, or `"true"`.
 
 <a name="rule-required-unless"></a>
 #### required_unless:_anotherfield_,_value_,...
