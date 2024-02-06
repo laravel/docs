@@ -629,6 +629,12 @@ Or, if you only need to use PHP to import a class, you may use the `@use` direct
 @use('App\Models\Flight')
 ```
 
+Also, you can create an alias from your import class:
+
+```php
+@use('App\Models\Flight', 'FlightModel')
+```
+
 <a name="comments"></a>
 ### Comments
 
