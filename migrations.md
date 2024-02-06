@@ -401,6 +401,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [char](#column-method-char)
 [dateTimeTz](#column-method-dateTimeTz)
 [dateTime](#column-method-dateTime)
+[datetimes](#column-method-datetimes)
 [date](#column-method-date)
 [decimal](#column-method-decimal)
 [double](#column-method-double)
@@ -513,6 +514,13 @@ The `dateTimeTz` method creates a `DATETIME` (with timezone) equivalent column w
 The `dateTime` method creates a `DATETIME` equivalent column with an optional precision (total digits):
 
     $table->dateTime('created_at', $precision = 0);
+
+<a name="column-method-datetimes"></a>
+#### `datetimes()` {.collection-method}
+
+The `datetimes` method creates `created_at` and `updated_at` `DATETIME` equivalent column with an optional precision (total digits):
+
+    $table->datetimes($precision = 0);
 
 <a name="column-method-date"></a>
 #### `date()` {.collection-method}
