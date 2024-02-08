@@ -219,6 +219,13 @@ If you are using third-party logging services such as BugSnag or Rollbar, you ma
 
 The deprecated `Bus::dispatchNow` and `dispatch_now` methods have been removed. Instead, your application should use the `Bus::dispatchSync` and `dispatch_sync` methods, respectively.
 
+<a name="dispatch-return"></a>
+#### The `dispatch()` Helper Return Value
+
+**Likelihood Of Impact: Low**
+
+Invoking `dispatch` with a class that does not implement `Illuminate\Contracts\Queue` would previously return the result of the class's `handle` method. However, this will now return an `Illuminate\Foundation\Bus\PendingBatch` instance. You may use `dispatch_sync()` to replicate the previous behavior.
+
 ### Routing
 
 <a name="middleware-aliases"></a>
