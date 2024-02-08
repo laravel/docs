@@ -188,7 +188,7 @@ If your model's primary key is not an integer, you should define a protected `$k
     class Flight extends Model
     {
         /**
-         * The data type of the auto-incrementing ID.
+         * The data type of the primary key ID.
          *
          * @var string
          */
