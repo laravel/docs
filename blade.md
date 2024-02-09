@@ -1148,6 +1148,20 @@ You may define the content of the named slot using the `x-slot` tag. Any content
 </x-alert>
 ```
 
+You may invoke a slot's `isEmpty` method to determine if the slot contains content:
+
+```blade
+<span class="alert-title">{{ $title }}</span>
+
+<div class="alert alert-danger">
+    @if ($slot->isEmpty())
+        This is default content if the slot is empty.
+    @else
+        {{ $slot }}
+    @endif
+</div>
+```
+
 <a name="scoped-slots"></a>
 #### Scoped Slots
 
@@ -1201,26 +1215,6 @@ To interact with slot attributes, you may access the `attributes` property of th
         {{ $footer }}
     </footer>
 </div>
-```
-
-<a name="default-slot-content"></a>
-#### Default Slot Content
-
-You may use `$slot->isEmpty()` to check that content for the slot exists, and if not, provide default content.
-
-```blade
-<!-- /resources/views/components/alert.blade.php -->
- 
-<span class="alert-title">{{ $title }}</span>
- 
-<div class="alert alert-danger">
-    @if($slot->isEmpty())
-        This is default content if $slot is empty.
-    @else
-        {{ $slot }}
-    @endif
-</div>
-
 ```
 
 <a name="inline-component-views"></a>
