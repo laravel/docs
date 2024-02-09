@@ -117,14 +117,14 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-> [!NOTE]
-> If you are developing on macOS and need to install MySQL, Postgres, or Redis locally, consider using [DBngin](https://dbngin.com/).
-
 If you choose to use a database other than SQLite, you will need to create the database and run your application's [database migrations](/docs/{{version}}/migrations), which will create your application's database tables:
 
 ```shell
 php artisan migrate
 ```
+
+> [!NOTE]
+> If you are developing on macOS and need to install MySQL, Postgres, or Redis locally, consider using [DBngin](https://dbngin.com/).
 
 <a name="directory-configuration"></a>
 ### Directory Configuration
