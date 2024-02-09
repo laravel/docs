@@ -1148,6 +1148,20 @@ You may define the content of the named slot using the `x-slot` tag. Any content
 </x-alert>
 ```
 
+You may invoke a slot's `isEmpty` method to determine if the slot contains content:
+
+```blade
+<span class="alert-title">{{ $title }}</span>
+
+<div class="alert alert-danger">
+    @if ($slot->isEmpty())
+        This is default content if the slot is empty.
+    @else
+        {{ $slot }}
+    @endif
+</div>
+```
+
 <a name="scoped-slots"></a>
 #### Scoped Slots
 
