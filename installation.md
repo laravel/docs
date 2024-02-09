@@ -64,7 +64,7 @@ composer create-project laravel/laravel example-app
 Or, you may create new Laravel projects by globally installing [the Laravel installer](https://github.com/laravel/installer) via Composer:
 
 ```nothing
-composer global require laravel/installer:^5.5
+composer global require laravel/installer
 
 laravel new example-app
 ```
@@ -106,7 +106,7 @@ Now that you have created your Laravel application, you probably want to store s
 
 During the creation of the project, Laravel created a `database/database.sqlite` file for you, and ran the necessary migrations to create the application's database tables.
 
-If you prefer to use another database driver such as MySQL or Postgres, you can update your `.env` configuration file to use the appropriate database. For example, if you wish to use MySQL, update your `.env` configuration file's `DB_*` section like so:
+If you prefer to use another database driver such as MySQL or Postgres, you can update your `.env` configuration file to use the appropriate database. For example, if you wish to use MySQL, update your `.env` configuration file's `DB_*` variables like so:
 
 ```ini
 DB_CONNECTION=mysql
@@ -120,7 +120,7 @@ DB_PASSWORD=
 > [!NOTE]
 > If you are developing on macOS and need to install MySQL, Postgres, or Redis locally, consider using [DBngin](https://dbngin.com/).
 
-If you opted for using the SQLite database that was created for you, you don't need any extra steps. However, if you are using another database, you will need to create it and run your application's [database migrations](/docs/{{version}}/migrations), which will create your application's database tables:
+If you choose to use a database other than SQLite, you will need to create the database and run your application's [database migrations](/docs/{{version}}/migrations), which will create your application's database tables:
 
 ```shell
 php artisan migrate
