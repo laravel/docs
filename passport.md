@@ -658,10 +658,10 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
 
 The OAuth2 password grant allows your other first-party clients, such as a mobile application, to obtain an access token using an email address / username and password. This allows you to issue access tokens securely to your first-party clients without requiring your users to go through the entire OAuth2 authorization code redirect flow.
 
-To enable the grant, call the `enablePasswordGrant` method in the `boot` method of your application's `App\Providers\AuthServiceProvider` class:
+To enable the password grant, call the `enablePasswordGrant` method in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
     /**
-     * Register any authentication / authorization services.
+     * Bootstrap any application services.
      */
     public function boot(): void
     {
