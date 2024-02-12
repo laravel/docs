@@ -629,6 +629,12 @@ Or, if you only need to use PHP to import a class, you may use the `@use` direct
 @use('App\Models\Flight')
 ```
 
+A second argument may be provided to the `@use` directive to alias the imported class:
+
+```php
+@use('App\Models\Flight', 'FlightModel')
+```
+
 <a name="comments"></a>
 ### Comments
 
@@ -1146,6 +1152,20 @@ You may define the content of the named slot using the `x-slot` tag. Any content
 
     <strong>Whoops!</strong> Something went wrong!
 </x-alert>
+```
+
+You may invoke a slot's `isEmpty` method to determine if the slot contains content:
+
+```blade
+<span class="alert-title">{{ $title }}</span>
+
+<div class="alert alert-danger">
+    @if ($slot->isEmpty())
+        This is default content if the slot is empty.
+    @else
+        {{ $slot }}
+    @endif
+</div>
 ```
 
 <a name="scoped-slots"></a>

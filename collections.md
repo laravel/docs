@@ -16,7 +16,7 @@
 
 The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper for working with arrays of data. For example, check out the following code. We'll use the `collect` helper to create a new collection instance from the array, run the `strtoupper` function on each element, and then remove all empty elements:
 
-    $collection = collect(['taylor', 'abigail', null])->map(function (string $name) {
+    $collection = collect(['taylor', 'abigail', null])->map(function (?string $name) {
         return strtoupper($name);
     })->reject(function (string $name) {
         return empty($name);
