@@ -145,7 +145,7 @@ class NewApi
 
 #### Customizing the Stored Feature Name
 
-By default, Pennant will store the feature class's fully qualified class name. If you would like to decouple the stored feature name from the application's internal structure you may specify a `$name` property on the feature class. The value of this property will be used in storage in place of the class name.
+By default, Pennant will store the feature class's fully qualified class name. If you would like to decouple the stored feature name from the application's internal structure, you may specify a `$name` property on the feature class. The value of this property will be stored in place of the class name:
 
 ```php
 <?php
