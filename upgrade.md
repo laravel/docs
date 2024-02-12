@@ -292,6 +292,22 @@ public function rules()
 }
 ```
 
+<a name="validation-messages-and-closure-rules"></a>
+#### Validation Messages and Closure Rules
+
+**Likelihood Of Impact: Very Low**
+
+Previously, you could assign a failure message to a different key by providing an array to the `$fail` callback injected into Closure based validation rules. However, you should now provide the key as the first argument and the failure message as the second argument:
+
+```php
+Validator::make([
+    'foo' => 'string',
+    'bar' => [function ($attribute, $value, $fail) {
+        $fail('foo', 'Something went wrong!');
+    }],
+]);
+```
+
 <a name="form-request-after-method"></a>
 #### Form Request After Method
 
