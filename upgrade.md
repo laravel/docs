@@ -292,7 +292,7 @@ public function rules()
 }
 ```
 
-<a name="validation-closure-fail-to-different-field-arg"></a>
+<a name="validation-messages-and-closure-rules"></a>
 #### Validation Messages and Closure Rules
 
 **Likelihood Of Impact: Very Low**
