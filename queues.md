@@ -86,6 +86,9 @@ Some applications may not need to ever push jobs onto multiple queues, instead p
 php artisan queue:work --queue=high,default
 ```
 
+> [!WARNING]
+> You cannot run the queues when you are on maintenance mode.
+
 <a name="driver-prerequisites"></a>
 ### Driver Notes and Prerequisites
 
