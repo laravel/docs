@@ -293,30 +293,17 @@ public function rules()
 ```
 
 <a name="validation-closure-fail-to-different-field-arg"></a>
-#### Assigning a validation message to a different key via a closure
+#### Validation Messages and Closure Rules
 
 **Likelihood Of Impact: Very Low**
 
-Previously you could assign a failure message to a different key using an array. Now you can provide the key as the first argument and the failure message as the second argument.
-
-For example:
+Previously, you could assign a failure message to a different key by providing an array to the `$fail` callback injected into Closure based validation rules. However, you should now provide the key as the first argument and the failure message as the second argument:
 
 ```php
 Validator::make([
     'foo' => 'string',
     'bar' => [function ($attribute, $value, $fail) {
-        $fail(['foo' => 'something has gone wrong']);
-    }],
-]);
-```
-
-should now be:
-
-```php
-Validator::make([
-    'foo' => 'string',
-    'bar' => [function ($attribute, $value, $fail) {
-        $fail('foo', 'something has gone wrong');
+        $fail('foo', 'Something went wrong!');
     }],
 ]);
 ```
