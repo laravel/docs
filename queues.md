@@ -86,15 +86,6 @@ Some applications may not need to ever push jobs onto multiple queues, instead p
 php artisan queue:work --queue=high,default
 ```
 
-> [!WARNING]
-> Your queues won't be executed when you are on maintenance mode.
-
-To run your queues when you are in maintenance mode, you may use `--force` to force the queue execution:
-
-```shell
-php artisan queue:work --force
-```
-
 <a name="driver-prerequisites"></a>
 ### Driver Notes and Prerequisites
 
@@ -1680,6 +1671,17 @@ When jobs are available on the queue, the worker will keep processing jobs with 
 
 ```shell
 php artisan queue:work --sleep=3
+```
+
+<a name="maintenance-mode-queues"></a>
+#### Maintenance Mode and Queues
+
+While your application is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), no queued jobs will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+
+To force your queue workers to process jobs even if maintenance mode is enabled, you may use `--force` option:
+
+```shell
+php artisan queue:work --force
 ```
 
 <a name="resource-considerations"></a>
