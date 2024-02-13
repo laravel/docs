@@ -208,4 +208,3 @@ Schema::connection('database')->hasTable('schema.table');
 **Likelihood Of Impact: Very Low**
 
 The `Schema::getColumnType()` method now always returns actual type of the given column, not the Doctrine DBAL equivalent type.
-
