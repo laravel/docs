@@ -86,7 +86,7 @@ Once you have started the Artisan development server, your application will be a
 
 Laravel needs no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `.env` file that exists at the root of your application to see some of the configuration options available to you.
 
-The `.env` file is where you may configure your application's settings, such as your application's name or database connection. For example, to set your application's name and timezone, you should modify the `APP_NAME` and add an `APP_TIMEZONE` variables in your `.env` file:
+The `.env` file is where you may configure some of your application's settings, such as your application's name or database connection. For example, to set your application's name and timezone, you should modify the `APP_NAME` and add an `APP_TIMEZONE` variables in your `.env` file:
 
 ```ini
 APP_NAME="My Application"
@@ -95,10 +95,8 @@ APP_TIMEZONE=America/New_York
 
 Many of Laravel's configuration options may vary depending on whether your application is running on your local machine or on a production web server, so your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would be exposed.
 
-You may also review the files within the `vendor/laravel/framework/config` directory to see the options and environment variables available to you. Each file is documented, so feel free to look through the files and get familiar with the available options that can be configured using environment variables.
-
 > [!NOTE]
-> For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
+> For more information about the `.env` file and the options that can be configured using environment variables, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="databases-and-migrations"></a>
 ### Databases and Migrations
