@@ -231,6 +231,18 @@ If you would like the HTTP client to automatically retry the request if a client
 
     $response = Http::retry(3, 100)->post(/* ... */);
 
+If you would like to manually calculate the number of milliseconds to sleep between attempts, you may pass a closure as the second argument to the `retry` method:
+
+    use Exception;
+
+    $response = Http::retry(3, function (int $attempt, Exception $exception) {
+        return $attempt * 100;
+    })->post(/* ... */);
+
+For convenience, you may also provide an array as the first argument to the `retry` method. This array will be used to determine how many milliseconds to sleep between subsequent attempts:
+
+    $response = Http::retry([100, 200])->post(/* ... */);
+
 If needed, you may pass a third argument to the `retry` method. The third argument should be a callable that determines if the retries should actually be attempted. For example, you may wish to only retry the request if the initial request encounters an `ConnectionException`:
 
     use Exception;
