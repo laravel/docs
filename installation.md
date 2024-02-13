@@ -84,16 +84,11 @@ Once you have started the Artisan development server, your application will be a
 <a name="initial-configuration"></a>
 ## Initial Configuration
 
-Laravel needs no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `.env` file that exists at the root of your application to see some of the configuration options available to you.
+Laravel requires no additional configuration out of the box. However, you may wish to review the `.env` file that exists at the root of your application to explore some of the configuration options available to you.
 
-The `.env` file is where you may configure some of your application's settings, such as your application's name or database connection. For example, to set your application's name and timezone, you should modify the `APP_NAME` and add an `APP_TIMEZONE` variables in your `.env` file:
+The `.env` file is where you may configure most of your application's settings, including your application's name and database connection information.
 
-```ini
-APP_NAME="My Application"
-APP_TIMEZONE=America/New_York
-```
-
-Many of Laravel's configuration options may vary depending on whether your application is running on your local machine or on a production web server, so your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would be exposed.
+Many of Laravel's configuration options may vary depending on whether your application is running on your local machine or on a production web server, so your `.env` file should not be committed to your application's source control since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would be exposed.
 
 > [!NOTE]
 > For more information about the `.env` file and the options that can be configured using environment variables, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
