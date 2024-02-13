@@ -16,6 +16,9 @@
 
 While Laravel requires no additional configuration out of the box, over time you may need to configure various aspects of the framework, such as using a different database connection.
 
+<a name="publishing-the-configuration-files"></a>
+#### Publishing the Configuration Files
+
 Most aspects of the framework's behavior can be configured via your application's [environment file](#environment-configuration); however, some applications, such as those utilizing multiple database connections, may need to publish Laravel's full configuration files.
 
 Laravel's configuration files are not published by default. To publish the configuration files to your application's `config` directory, you may use the `config:publish` Artisan command:
@@ -27,6 +30,9 @@ php artisan config:publish --all
 ```
 
 Each configuration file is thoroughly documented, so feel free to review all published configuration files in order to get familiar with the options available to your application.
+
+<a name="the-about-command"></a>
+#### The `about` Command
 
 Laravel can display an overview of your application's configuration, drivers, and environment via the `about` Artisan command.
 
