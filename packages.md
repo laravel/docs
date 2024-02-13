@@ -174,7 +174,7 @@ Package translation lines are referenced using the `package::file.line` syntax c
 
     echo trans('courier::messages.welcome');
 
-Also, you can register JSON translation file for your package:
+You can register JSON translation files for your package using the `loadJsonTranslationsFrom` method. This method accepts the path to the directory that contains your package's JSON translation files:
 
 ```php
 /**
@@ -185,8 +185,6 @@ public function boot(): void
     $this->loadJsonTranslationsFrom(__DIR__.'/../lang');
 }
 ```
-
-The `loadJsonTranslationsFrom` automatically finds the JSON files and loads the keys and values.
 
 <a name="publishing-language-files"></a>
 #### Publishing Language Files
