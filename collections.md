@@ -184,6 +184,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [replaceRecursive](#method-replacerecursive)
 [reverse](#method-reverse)
 [search](#method-search)
+[select](#method-select)
 [shift](#method-shift)
 [shuffle](#method-shuffle)
 [skip](#method-skip)
@@ -2141,6 +2142,27 @@ Alternatively, you may provide your own closure to search for the first item tha
     });
 
     // 2
+
+<a name="method-select"></a>
+#### `select()` {.collection-method}
+
+The `select` method selects the given keys from the collection, similar to an SQL `SELECT` statement:
+
+```php
+$users = collect([
+    ['name' => 'Taylor Otwell', 'role' => 'Developer', 'status' => 'active'],
+    ['name' => 'Victoria Faith', 'role' => 'Researcher', 'status' => 'active'],
+]);
+
+$users->select(['name', 'role']);
+
+/*
+    [
+        ['name' => 'Taylor Otwell', 'role' => 'Developer'],
+        ['name' => 'Victoria Faith', 'role' => 'Researcher'],
+    ],
+*/
+```
 
 <a name="method-shift"></a>
 #### `shift()` {.collection-method}
