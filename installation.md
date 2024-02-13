@@ -4,7 +4,6 @@
     - [Why Laravel?](#why-laravel)
 - [Creating a Laravel Project](#creating-a-laravel-project)
 - [Initial Configuration](#initial-configuration)
-    - [Environment Based Configuration](#environment-based-configuration)
     - [Databases and Migrations](#databases-and-migrations)
     - [Directory Configuration](#directory-configuration)
 - [Docker Installation Using Sail](#docker-installation-using-sail)
@@ -85,19 +84,14 @@ Once you have started the Artisan development server, your application will be a
 <a name="initial-configuration"></a>
 ## Initial Configuration
 
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+Laravel requires no additional configuration out of the box. However, you may wish to review the `.env` file that exists at the root of your application to explore some of the configuration options available to you.
 
-Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+The `.env` file is where you may configure most of your application's settings, including your application's name and database connection information.
 
-<a name="environment-based-configuration"></a>
-### Environment Based Configuration
-
-Since many of Laravel's configuration option values may vary depending on whether your application is running on your local machine or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
-
-Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
+Many of Laravel's configuration options may vary depending on whether your application is running on your local machine or on a production web server, so your `.env` file should not be committed to your application's source control since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would be exposed.
 
 > [!NOTE]
-> For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
+> For more information about the `.env` file and the options that can be configured using environment variables, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="databases-and-migrations"></a>
 ### Databases and Migrations
