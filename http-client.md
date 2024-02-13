@@ -239,7 +239,7 @@ If you would like to manually calculate the number of milliseconds to sleep betw
         return $attempt * 100;
     })->post(/* ... */);
 
-For convenience, you may provide an array as the first argument to the `retry` method. This array will be used to determine how many milliseconds to sleep between subsequent attempts:
+For convenience, you may also provide an array as the first argument to the `retry` method. This array will be used to determine how many milliseconds to sleep between subsequent attempts:
 
     $response = Http::retry([100, 200])->post(/* ... */);
 
