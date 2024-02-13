@@ -14,14 +14,27 @@
 <a name="introduction"></a>
 ## Introduction
 
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+While Laravel requires no additional configuration out of the box, over time you may need to configure various aspects of the framework, such as using a different database connection.
 
-These configuration files allow you to configure things like your database connection information, your mail server information, as well as various other core configuration values such as your application timezone and encryption key.
+<a name="publishing-the-configuration-files"></a>
+#### Publishing the Configuration Files
 
-<a name="application-overview"></a>
-#### Application Overview
+Most aspects of the framework's behavior can be configured via your application's [environment file](#environment-configuration); however, some applications, such as those utilizing multiple database connections, may need to publish Laravel's full configuration files.
 
-In a hurry? You can get a quick overview of your application's configuration, drivers, and environment via the `about` Artisan command:
+Laravel's configuration files are not published by default. To publish the configuration files to your application's `config` directory, you may use the `config:publish` Artisan command:
+
+```shell
+php artisan config:publish
+
+php artisan config:publish --all
+```
+
+Each configuration file is thoroughly documented, so feel free to review all published configuration files in order to get familiar with the options available to your application.
+
+<a name="the-about-command"></a>
+#### The `about` Command
+
+Laravel can display an overview of your application's configuration, drivers, and environment via the `about` Artisan command.
 
 ```shell
 php artisan about
@@ -46,11 +59,11 @@ It is often helpful to have different configuration values based on the environm
 
 To make this a cinch, Laravel utilizes the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library. In a fresh Laravel installation, the root directory of your application will contain a `.env.example` file that defines many common environment variables. During the Laravel installation process, this file will automatically be copied to `.env`.
 
-Laravel's default `.env` file contains some common configuration values that may differ based on whether your application is running locally or on a production web server. These values are then retrieved from various Laravel configuration files within the `config` directory using Laravel's `env` function.
+Laravel's default `.env` file contains some common configuration values that may differ based on whether your application is running locally or on a production web server. These values are then read by Laravel's various configuration files within the `vendor/laravel/framework/config` and `config` directories using Laravel's `env` function.
 
-If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting placeholder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
+If you are developing with a team, you may wish to continue including and updating the `.env.example` file with your application. By putting placeholder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
 
-> [!NOTE]  
+> [!NOTE]
 > Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
 
 <a name="environment-file-security"></a>
