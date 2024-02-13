@@ -25,7 +25,7 @@ The Laravel framework has a few system requirements. You should ensure that your
 
 <div class="content-list" markdown="1">
 
-- PHP >= 8.1
+- PHP >= 8.2
 - Ctype PHP Extension
 - cURL PHP Extension
 - DOM PHP Extension
@@ -96,7 +96,7 @@ server {
 When deploying to production, make sure that you are optimizing Composer's class autoloader map so Composer can quickly find the proper file to load for a given class:
 
 ```shell
-composer install --optimize-autoloader --no-dev
+composer install --no-dev
 ```
 
 > [!NOTE]  
