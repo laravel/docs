@@ -15,7 +15,7 @@
 
 Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to your application's login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application.
 
-Additional middleware can be written to perform a variety of tasks besides authentication. For example, a logging middleware might log all incoming requests to your application. There are several middleware included in Laravel, including middleware for authentication and CSRF protection. All of these middleware are located in the `app/Http/Middleware` directory.
+Additional middleware can be written to perform a variety of tasks besides authentication. For example, a logging middleware might log all incoming requests to your application. A variety of middleware are included in Laravel, including middleware for authentication and CSRF protection; however, all user-defined middleware are typically located in your application's `app/Http/Middleware` directory.
 
 <a name="defining-middleware"></a>
 ## Defining Middleware
@@ -112,7 +112,15 @@ However, this middleware would perform its task **after** the request is handled
 <a name="global-middleware"></a>
 ### Global Middleware
 
-If you want a middleware to run during every HTTP request to your application, list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
+If you want a middleware to run during every HTTP request to your application, you may append it to the global middleware stack in your application's `bootstrap/app.php` file:
+
+    use App\Http\Middleware\EnsureTokenIsValid;
+
+    ->withMiddleware(function (Middleware $middleware) {
+         $middleware->append(EnsureTokenIsValid::class);
+    })
+
+The `$middleware` object provided to the `withMiddleware` closure is an instance of `Illuminate\Foundation\Configuration\Middleware` and is responsible for managing the middleware assigned to your application's routes. The `append` method adds the middleware to the end of the list of global middleware. If you would like to add a middleware to the beginning of the list, you should use the `prepend` method.
 
 <a name="assigning-middleware-to-routes"></a>
 ### Assigning Middleware to Routes
@@ -131,27 +139,21 @@ You may assign multiple middleware to the route by passing an array of middlewar
         // ...
     })->middleware([First::class, Second::class]);
 
-For convenience, you may assign aliases to middleware in your application's `app/Http/Kernel.php` file. By default, the `$middlewareAliases` property of this class contains entries for the middleware included with Laravel. You may add your own middleware to this list and assign it an alias of your choosing:
+For convenience, you may assign aliases to middleware in your application's `bootstrap/app.php` file. This allows you to define a short alias for the middleware, which can be especially useful for middleware with long class names:
 
-    // Within App\Http\Kernel class...
+    use App\Http\Middleware\EnsureUserIsSubscribed;
 
-    protected $middlewareAliases = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
-        'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-    ];
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'subscribed' => EnsureUserIsSubscribed::class
+        ]);
+    })
 
-Once the middleware alias has been defined in the HTTP kernel, you may use the alias when assigning middleware to routes:
+Once the middleware alias has been defined in your application's `bootstrap/app.php` file, you may use the alias when assigning middleware to routes:
 
     Route::get('/profile', function () {
         // ...
-    })->middleware('auth');
+    })->middleware('subscribed');
 
 <a name="excluding-middleware"></a>
 #### Excluding Middleware
@@ -185,68 +187,84 @@ The `withoutMiddleware` method can only remove route middleware and does not app
 <a name="middleware-groups"></a>
 ### Middleware Groups
 
-Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may accomplish this using the `$middlewareGroups` property of your HTTP kernel.
+Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may accomplish this using the `appendToGroup` method within your application's `bootstrap/app.php` file:
 
-Laravel includes predefined `web` and `api` middleware groups that contain common middleware you may want to apply to your web and API routes. Remember, these middleware groups are automatically applied by your application's `App\Providers\RouteServiceProvider` service provider to routes within your corresponding `web` and `api` route files:
+    use App\Http\Middleware\First;
+    use App\Http\Middleware\Second;
 
-    /**
-     * The application's route middleware groups.
-     *
-     * @var array
-     */
-    protected $middlewareGroups = [
-        'web' => [
-            \App\Http\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ],
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->appendToGroup('group-name', [
+            First::class,
+            Second::class,
+        ]);
+    })
 
-        'api' => [
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ],
-    ];
+You may prepend middleware to a group using the `prependToGroup` method.
 
-Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware. Again, middleware groups make it more convenient to assign many middleware to a route at once:
+Laravel includes predefined `web` and `api` middleware groups that contain common middleware you may want to apply to your web and API routes. Remember, Laravel automatically applies these middleware groups to the corresponding `routes/web.php` and `routes/api.php` files:
+
+| The `web` Middleware Group
+|--------------
+| `Illuminate\Cookie\Middleware\EncryptCookies`
+| `Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse`
+| `Illuminate\Session\Middleware\StartSession`
+| `Illuminate\View\Middleware\ShareErrorsFromSession`
+| `Illuminate\Foundation\Http\Middleware\ValidateCsrfToken`
+| `Illuminate\Routing\Middleware\SubstituteBindings`
+| `Illuminate\Session\Middleware\AuthenticateSession`
+
+| The `api` Middleware Group
+|--------------
+| `Illuminate\Routing\Middleware\ThrottleRequests:api`
+| `Illuminate\Routing\Middleware\SubstituteBindings`
+
+If you would like to append or prepend middleware to these groups, you may use the `web` and `api` methods within your application's `bootstrap/app.php` file. The `web` and `api` methods are convenient alternatives to the `appendToGroup` method:
+
+    use App\Http\Middleware\EnsureTokenIsValid;
+    use App\Http\Middleware\EnsureUserIsSubscribed;
+
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->web(append: [
+            EnsureUserIsSubscribed::class,
+        ]);
+
+        $middleware->api(append: [
+            EnsureTokenIsValid::class,
+        ]);
+    })
+
+Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware:
 
     Route::get('/', function () {
         // ...
-    })->middleware('web');
+    })->middleware('group-name');
 
-    Route::middleware(['web'])->group(function () {
+    Route::middleware(['group-name'])->group(function () {
         // ...
     });
 
 > [!NOTE]  
-> Out of the box, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `App\Providers\RouteServiceProvider`.
+> By default, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `bootstrap/app.php` file.
 
 <a name="sorting-middleware"></a>
 ### Sorting Middleware
 
-Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In this case, you may specify your middleware priority using the `$middlewarePriority` property of your `app/Http/Kernel.php` file. This property may not exist in your HTTP kernel by default. If it does not exist, you may copy its default definition below:
+Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In these situations, you may specify your middleware priority using the `priority` method in your application's `bootstrap/app.php` file:
 
-    /**
-     * The priority-sorted list of middleware.
-     *
-     * This forces non-global middleware to always be in the given order.
-     *
-     * @var string[]
-     */
-    protected $middlewarePriority = [
-        \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
-        \Illuminate\Cookie\Middleware\EncryptCookies::class,
-        \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
-        \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
-        \Illuminate\Contracts\Session\Middleware\AuthenticatesSessions::class,
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        \Illuminate\Auth\Middleware\Authorize::class,
-    ];
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->priority([
+            \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+            \Illuminate\Routing\Middleware\ThrottleRequests::class,
+            \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
+            \Illuminate\Contracts\Session\Middleware\AuthenticatesSessions::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\Auth\Middleware\Authorize::class,
+        ]);
+    })
 
 <a name="middleware-parameters"></a>
 ## Middleware Parameters
@@ -327,7 +345,7 @@ Sometimes a middleware may need to do some work after the HTTP response has been
         }
     }
 
-The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of routes or global middleware in the `app/Http/Kernel.php` file.
+The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of routes or global middleware in your application's `bootstrap/app.php` file.
 
 When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method. Typically this should be done in the `register` method of your `AppServiceProvider`:
 
