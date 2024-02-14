@@ -792,7 +792,6 @@ By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middl
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->throttleWithRedis();
-
         // ...
     })
 
