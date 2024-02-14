@@ -42,7 +42,7 @@ The most basic Laravel routes accept a URI and a closure, providing a very simpl
 <a name="the-default-route-files"></a>
 #### The Default Route Files
 
-All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by Laravel depending on how you configure routing on the `bootstrap/app.php` file. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection.
+All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by Laravel using the configuration specified in your application's `bootstrap/app.php` file. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection.
 
 For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://example.com/user` in your browser:
 
@@ -51,21 +51,21 @@ For most applications, you will begin by defining routes in your `routes/web.php
     Route::get('/user', [UserController::class, 'index']);
 
 <a name="api-routes"></a>
-#### API routes
+#### API Routes
 
-By default, API routing is disabled in a new Laravel application. To install API routing in your application, you may use the `install:api` Artisan command:
+If your application will also offer a stateless API, you may enable API routing using the `install:api` Artisan command:
 
 ```shell
 php artisan install:api
 ```
 
-This command installs the Laravel [Sanctum](/docs/{{version}}/sanctum) package, which provides a simple way to authenticate SPAs (single-page applications), and publishes the `routes/api.php` file:
+The `install:api` command installs [Laravel Sanctum](/docs/{{version}}/sanctum), which provides a robust, yet simple API token authentication guard which can be used to authenticate third-party API consumers, SPAs, or mobile applications. In addition, the `install:api` command creates the `routes/api.php` file:
 
     Route::get('/user', function (Request $request) {
         return $request->user();
     })->middleware(Authenticate::using('sanctum'));
 
-The routes in `routes/api.php` are stateless and are assigned to the `api` middleware group. Additionally, the `/api` URI prefix is automatically applied, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your `bootstrap/app.php` file:
+The routes in `routes/api.php` are stateless and are assigned to the `api` middleware group. Additionally, the `/api` URI prefix is automatically applied to these routes, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your application's `bootstrap/app.php` file:
 
     ->withRouting(
         api: __DIR__.'/../routes/api.php',
@@ -274,7 +274,7 @@ If the incoming request does not match the route pattern constraints, a 404 HTTP
 <a name="parameters-global-constraints"></a>
 #### Global Constraints
 
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `App\Providers\AppServiceProvider` class:
+If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
     use Illuminate\Support\Facades\Route;
 
@@ -789,7 +789,7 @@ Rate limiters may be attached to routes or route groups using the `throttle` [mi
 <a name="throttling-with-redis"></a>
 #### Throttling With Redis
 
-By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. However, if you are using Redis as your application's cache driver, you may wish to instruct Laravel to use Redis to manage rate limiting. To do so, you should use the `throttleWithRedis` method in your `bootstrap/app.php` file. This effectively maps the `throttle` middleware to the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` middleware class:
+By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. However, if you are using Redis as your application's cache driver, you may wish to instruct Laravel to use Redis to manage rate limiting. To do so, you should use the `throttleWithRedis` method in your application's `bootstrap/app.php` file. This method maps the `throttle` middleware to the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` middleware class:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->throttleWithRedis();
@@ -830,15 +830,15 @@ You may refer to the API documentation for both the [underlying class of the Rou
 <a name="cors"></a>
 ## Cross-Origin Resource Sharing (CORS)
 
-Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/{{version}}/middleware) that is included by default in your global middleware stack.
+Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/{{version}}/middleware) that is automatically included in your application's global middleware stack.
 
-Sometimes, you may need to customize the CORS settings for your application. To configure CORS, you should first publish the CORS configuration file using the `config:publish` Artisan command:
+Sometimes, you may need to customize the CORS configuration values for your application. You may do so by first publishing the CORS configuration file using the `config:publish` Artisan command:
 
 ```shell
 php artisan config:publish cors
 ```
 
-This command will place a `cors.php` file within your `config` directory that you may use to configure all CORS settings.
+This command will place a `cors.php` configuration file within your application's `config` directory.
 
 > [!NOTE]  
 > For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
