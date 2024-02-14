@@ -72,27 +72,15 @@ If you are building a SPA that is utilizing Laravel as an API backend, you shoul
 
 Sometimes you may wish to exclude a set of URIs from CSRF protection. For example, if you are using [Stripe](https://stripe.com) to process payments and are utilizing their webhook system, you will need to exclude your Stripe webhook handler route from CSRF protection since Stripe will not know what CSRF token to send to your routes.
 
-Typically, you should place these kinds of routes outside of the `web` middleware group that the `App\Providers\RouteServiceProvider` applies to all routes in the `routes/web.php` file. However, you may also exclude the routes by adding their URIs to the `$except` property of the `VerifyCsrfToken` middleware:
+Typically, you should place these kinds of routes outside of the `web` middleware group that Laravel applies to all routes in the `routes/web.php` file. However, you may also exclude specific routes by providing their URIs to the `validateCsrfTokens` method in your application's `bootstrap/app.php` file:
 
-    <?php
-
-    namespace App\Http\Middleware;
-
-    use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
-
-    class VerifyCsrfToken extends Middleware
-    {
-        /**
-         * The URIs that should be excluded from CSRF verification.
-         *
-         * @var array
-         */
-        protected $except = [
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->validateCsrfTokens(except: [
             'stripe/*',
             'http://example.com/foo/bar',
             'http://example.com/foo/*',
-        ];
-    }
+        ]);
+    })
 
 > [!NOTE]  
 > For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing).
