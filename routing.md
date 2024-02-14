@@ -65,7 +65,14 @@ This command installs the Laravel [Sanctum](/docs/{{version}}/sanctum) package, 
         return $request->user();
     })->middleware(Authenticate::using('sanctum'));
 
-The routes in `routes/api.php` are stateless and are assigned to the `api` middleware group. Within this group, the `/api` URI prefix is automatically applied, so you do not need to manually apply it to every route in the file. You may modify the prefix and other route group options by modifying your `routes/api.php` file.
+The routes in `routes/api.php` are stateless and are assigned to the `api` middleware group. Additionally, the `/api` URI prefix is automatically applied, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your `bootstrap/app.php` file:
+
+    ->withRouting(
+        api: __DIR__.'/../routes/api.php',
+        apiPrefix: 'api/admin',
+
+        // ...
+    )
 
 <a name="available-router-methods"></a>
 #### Available Router Methods
