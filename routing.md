@@ -797,11 +797,13 @@ Rate limiters may be attached to routes or route groups using the `throttle` [mi
 <a name="throttling-with-redis"></a>
 #### Throttling With Redis
 
-By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. However, if you are using Redis as your application's cache driver, you may wish to replace this mapping in the `bootstrap/api.php` file to use the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` class. This class is more efficient at managing rate limiting using Redis:
+By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. However, if you are using Redis as your application's cache driver, you may wish to instruct Laravel to use Redis to manage rate limiting. To do so, you should use the `throttleWithRedis` method in your `bootstrap/app.php` file. This effectively maps the `throttle` middleware to the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` middleware class:
 
-    $middleware->api(
-        replace: ['throttle' => \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class],
-    );
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->throttleWithRedis();
+
+        // ...
+    })
 
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
