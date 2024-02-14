@@ -279,7 +279,7 @@ If you would like a route parameter to always be constrained by a given regular 
     use Illuminate\Support\Facades\Route;
 
     /**
-     * Define your route model bindings, pattern filters, etc.
+     * Bootstrap any application services.
      */
     public function boot(): void
     {
@@ -604,13 +604,11 @@ You are not required to use Laravel's implicit, convention based model resolutio
     use Illuminate\Support\Facades\Route;
 
     /**
-     * Define your route model bindings, pattern filters, etc.
+     * Bootstrap any application services.
      */
     public function boot(): void
     {
         Route::model('user', User::class);
-
-        // ...
     }
 
 Next, define a route that contains a `{user}` parameter:
@@ -634,15 +632,13 @@ If you wish to define your own model binding resolution logic, you may use the `
     use Illuminate\Support\Facades\Route;
 
     /**
-     * Define your route model bindings, pattern filters, etc.
+     * Bootstrap any application services.
      */
     public function boot(): void
     {
         Route::bind('user', function (string $value) {
             return User::where('name', $value)->firstOrFail();
         });
-
-        // ...
     }
 
 Alternatively, you may override the `resolveRouteBinding` method on your Eloquent model. This method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
@@ -702,15 +698,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 
 /**
- * Define your route model bindings, pattern filters, and other route configuration.
+ * Bootstrap any application services.
  */
 protected function boot(): void
 {
     RateLimiter::for('api', function (Request $request) {
         return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
     });
-
-    // ...
 }
 ```
 
@@ -721,15 +715,13 @@ Rate limiters are defined using the `RateLimiter` facade's `for` method. The `fo
     use Illuminate\Support\Facades\RateLimiter;
 
     /**
-     * Define your route model bindings, pattern filters, and other route configuration.
+     * Bootstrap any application services.
      */
     protected function boot(): void
     {
         RateLimiter::for('global', function (Request $request) {
             return Limit::perMinute(1000);
         });
-
-        // ...
     }
 
 If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Laravel. If you would like to define your own response that should be returned by a rate limit, you may use the `response` method:
