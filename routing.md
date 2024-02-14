@@ -70,7 +70,6 @@ The routes in `routes/api.php` are stateless and are assigned to the `api` middl
     ->withRouting(
         api: __DIR__.'/../routes/api.php',
         apiPrefix: 'api/admin',
-
         // ...
     )
 
