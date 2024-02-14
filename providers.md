@@ -14,9 +14,9 @@ Service providers are the central place of all Laravel application bootstrapping
 
 But, what do we mean by "bootstrapped"? In general, we mean **registering** things, including registering service container bindings, event listeners, middleware, and even routes. Service providers are the central place to configure your application.
 
-Laravel internally uses dozens of service providers to bootstrap its core services, such as the mailer, queue, cache, and others. Many of these providers are "deferred" providers, meaning they will not be loaded on every request, but only when the services they provide are actually needed.
+Laravel uses dozens of service providers internally to bootstrap its core services, such as the mailer, queue, cache, and others. Many of these providers are "deferred" providers, meaning they will not be loaded on every request, but only when the services they provide are actually needed.
 
-All user-defined service providers are registered in the `bootstrap/providers.php` file. In this overview, you will learn how to write your own service providers and register them with your Laravel application.
+All user-defined service providers are registered in the `bootstrap/providers.php` file. In the following documentation, you will learn how to write your own service providers and register them with your Laravel application.
 
 > [!NOTE]  
 > If you would like to learn more about how Laravel handles requests and works internally, check out our documentation on the Laravel [request lifecycle](/docs/{{version}}/lifecycle).
@@ -145,7 +145,7 @@ You may type-hint dependencies for your service provider's `boot` method. The [s
 <a name="registering-providers"></a>
 ## Registering Providers
 
-All service providers are registered in the `bootstrap/providers.php` configuration file. This file returns an array that contains the class names of your service providers. As example, by default, the `AppServiceProvider` is listed in this array:
+All service providers are registered in the `bootstrap/providers.php` configuration file. This file returns an array that contains the class names of your application's service providers:
 
     <?php
 
@@ -155,7 +155,7 @@ All service providers are registered in the `bootstrap/providers.php` configurat
         App\Providers\AppServiceProvider::class,
     ];
 
-When you use the `make:provider` Artisan command, the generated provider will automatically be added to the `bootstrap/providers.php` file. However, if you have manually created the provider class, you should add it to the array:
+When you invoke the `make:provider` Artisan command, Laravel will automatically add the generated provider to the `bootstrap/providers.php` file. However, if you have manually created the provider class, you should manually add the provider class to the array:
 
     <?php
 
