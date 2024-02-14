@@ -141,6 +141,8 @@ You may assign multiple middleware to the route by passing an array of middlewar
 
 For convenience, you may assign aliases to middleware in your application's `bootstrap/app.php` file. This allows you to define a short alias for the middleware, which can be especially useful for middleware with long class names:
 
+    use App\Http\Middleware\EnsureUserIsSubscribed;
+
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'subscribed' => EnsureUserIsSubscribed::class
@@ -187,6 +189,9 @@ The `withoutMiddleware` method can only remove route middleware and does not app
 
 Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may accomplish this using the `appendToGroup` method within your application's `bootstrap/app.php` file:
 
+    use App\Http\Middleware\First;
+    use App\Http\Middleware\Second;
+
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->appendToGroup('group-name', [
             First::class,
@@ -214,6 +219,9 @@ Laravel includes predefined `web` and `api` middleware groups that contain commo
 | `Illuminate\Routing\Middleware\SubstituteBindings`
 
 If you would like to append or prepend middleware to these groups, you may use the `web` and `api` methods within your application's `bootstrap/app.php` file. The `web` and `api` methods are convenient alternatives to the `appendToGroup` method:
+
+    use App\Http\Middleware\EnsureTokenIsValid;
+    use App\Http\Middleware\EnsureUserIsSubscribed;
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
