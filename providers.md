@@ -163,7 +163,7 @@ When you use the `make:provider` Artisan command, the generated provider will au
 
     return [
         App\Providers\AppServiceProvider::class,
-        App\Providers\ComposerServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class, // [tl! add]
     ];
 
 <a name="deferred-providers"></a>
