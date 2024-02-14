@@ -830,7 +830,7 @@ You may refer to the API documentation for both the [underlying class of the Rou
 
 Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/{{version}}/middleware) that is automatically included in your application's global middleware stack.
 
-Sometimes, you may need to customize the CORS configuration values for your application. You may do so by first publishing the CORS configuration file using the `config:publish` Artisan command:
+Sometimes, you may need to customize the CORS configuration values for your application. You may do so by publishing the CORS configuration file using the `config:publish` Artisan command:
 
 ```shell
 php artisan config:publish cors
