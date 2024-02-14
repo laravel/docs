@@ -42,7 +42,7 @@ The most basic Laravel routes accept a URI and a closure, providing a very simpl
 <a name="the-default-route-files"></a>
 #### The Default Route Files
 
-All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by your application's `App\Providers\RouteServiceProvider`. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection. The routes in `routes/api.php` are stateless and are assigned the `api` middleware group.
+All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by Laravel depending on how you configure routing on the `bootstrap/app.php` file. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection.
 
 For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://example.com/user` in your browser:
 
@@ -50,7 +50,22 @@ For most applications, you will begin by defining routes in your `routes/web.php
 
     Route::get('/user', [UserController::class, 'index']);
 
-Routes defined in the `routes/api.php` file are nested within a route group by the `RouteServiceProvider`. Within this group, the `/api` URI prefix is automatically applied so you do not need to manually apply it to every route in the file. You may modify the prefix and other route group options by modifying your `RouteServiceProvider` class.
+<a name="api-routes"></a>
+#### API routes
+
+By default, API routing is disabled in a new Laravel application. To install API routing in your application, you may use the `install:api` Artisan command:
+
+```shell
+php artisan install:api
+```
+
+This command installs the Laravel [Sanctum](/docs/{{version}}/sanctum) package, which provides a simple way to authenticate SPAs (single-page applications), and publishes the `routes/api.php` file:
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    })->middleware(Authenticate::using('sanctum'));
+
+The routes in `routes/api.php` are stateless and are assigned to the `api` middleware group. Within this group, the `/api` URI prefix is automatically applied, so you do not need to manually apply it to every route in the file. You may modify the prefix and other route group options by modifying your `routes/api.php` file.
 
 <a name="available-router-methods"></a>
 #### Available Router Methods
@@ -252,7 +267,9 @@ If the incoming request does not match the route pattern constraints, a 404 HTTP
 <a name="parameters-global-constraints"></a>
 #### Global Constraints
 
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `App\Providers\RouteServiceProvider` class:
+If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `App\Providers\AppServiceProvider` class:
+
+    use Illuminate\Support\Facades\Route;
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -574,7 +591,7 @@ Route::get('/categories/{category}', function (Category $category) {
 <a name="explicit-binding"></a>
 ### Explicit Binding
 
-You are not required to use Laravel's implicit, convention based model resolution in order to use model binding. You can also explicitly define how route parameters correspond to models. To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings at the beginning of the `boot` method of your `RouteServiceProvider` class:
+You are not required to use Laravel's implicit, convention based model resolution in order to use model binding. You can also explicitly define how route parameters correspond to models. To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings at the beginning of the `boot` method of your `AppServiceProvider` class:
 
     use App\Models\User;
     use Illuminate\Support\Facades\Route;
@@ -604,7 +621,7 @@ If a matching model instance is not found in the database, a 404 HTTP response w
 <a name="customizing-the-resolution-logic"></a>
 #### Customizing the Resolution Logic
 
-If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The closure you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `RouteServiceProvider`:
+If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The closure you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `AppServiceProvider`:
 
     use App\Models\User;
     use Illuminate\Support\Facades\Route;
@@ -670,7 +687,7 @@ Using the `Route::fallback` method, you may define a route that will be executed
 
 Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs.
 
-Typically, rate limiters are defined within the `boot` method of your application's `App\Providers\RouteServiceProvider` class. In fact, this class already includes a rate limiter definition that is applied to the routes in your application's `routes/api.php` file:
+Rate limiters may be defined within the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
 ```php
 use Illuminate\Cache\RateLimiting\Limit;
@@ -773,9 +790,11 @@ Rate limiters may be attached to routes or route groups using the `throttle` [mi
 <a name="throttling-with-redis"></a>
 #### Throttling With Redis
 
-Typically, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. This mapping is defined in your application's HTTP kernel (`App\Http\Kernel`). However, if you are using Redis as your application's cache driver, you may wish to change this mapping to use the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` class. This class is more efficient at managing rate limiting using Redis:
+By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. However, if you are using Redis as your application's cache driver, you may wish to replace this mapping in the `bootstrap/api.php` file to use the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` class. This class is more efficient at managing rate limiting using Redis:
 
-    'throttle' => \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
+    $middleware->api(
+        replace: ['throttle' => \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class],
+    );
 
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
@@ -810,7 +829,7 @@ You may refer to the API documentation for both the [underlying class of the Rou
 <a name="cors"></a>
 ## Cross-Origin Resource Sharing (CORS)
 
-Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. All CORS settings may be configured in your application's `config/cors.php` configuration file. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/{{version}}/middleware) that is included by default in your global middleware stack. Your global middleware stack is located in your application's HTTP kernel (`App\Http\Kernel`).
+Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/{{version}}/middleware) that is included by default in your global middleware stack.
 
 > [!NOTE]  
 > For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
