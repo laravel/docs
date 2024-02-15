@@ -145,14 +145,14 @@ In most cases, secure WebSocket connections are likely to be handled by the web 
 <a name="echo"></a>
 ### Laravel Echo
 
-Laravel Echo is a library which makes it incredibly simple to interact with Pusher channels from your front-end code and it can be paired with Reverb with some minor tweaks to your configuration. To begin, you should ensure you have followed [Echo's installation instructions](broadcasting#client-pusher-channels) before setting the `VITE_REVERB_` prefixed environment variables:
+Laravel Echo is a library which makes it incredibly simple to interact with Laravel's event broadcasting functionality from your front-end code. It also integrates seamlessly with Reverb. To begin, you should ensure you have followed [Echo's installation instructions](broadcasting#client-pusher-channels) before setting the `VITE_REVERB_` prefixed environment variables:
 
 ```env
 # Using Vite
-VITE_REVERB_APP_KEY="${PUSHER_APP_KEY}"
-VITE_REVERB_HOST="${PUSHER_HOST}"
-VITE_REVERB_PORT="${PUSHER_PORT}"
-VITE_REVERB_SCHEME="${PUSHER_SCHEME}"
+VITE_REVERB_APP_KEY="${REVERB_APP_KEY}"
+VITE_REVERB_HOST="${REVERB_HOST}"
+VITE_REVERB_PORT="${REVERB_PORT}"
+VITE_REVERB_SCHEME="${REVERB_SCHEME}"
 ```
 
 You may now instantiate Echo with using the `reverb` broadcaster:
@@ -160,11 +160,11 @@ You may now instantiate Echo with using the `reverb` broadcaster:
 ```javascript
 window.Echo = new Echo({
     broadcaster: 'reverb',
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    wsHost: import.meta.env.VITE_PUSHER_HOST,
-    wsPort: import.meta.env.VITE_PUSHER_PORT,
-    wssPort: import.meta.env.VITE_PUSHER_PORT,
-    forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsPort: import.meta.env.VITE_REVERB_PORT,
+    wssPort: import.meta.env.VITE_REVERB_PORT,
+    forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
     enabledTransports: ['ws', 'wss'],
 })
 ```
@@ -176,7 +176,8 @@ After rebuilding your assets, your application's frontend should now be connecte
 
 Due to the long-running nature of WebSockets, you may need to make some optimizations to your hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the resources available.
 
-If you are hosting your application on a server provisioned by [Laravel Forge](https://forge.laravel.com), you may automatically configure your server for Reverb directly from the "Application" panel of your site.
+> [!NOTE]  
+> If you site is managed by [Laravel Forge](https://forge.laravel.com), you may automatically configure your server for Reverb directly from the "Application" panel.
 
 <a name="open-files"></a>
 ### Open Files
