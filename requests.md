@@ -522,11 +522,11 @@ If you would like to disable this behavior for all requests, you may remove the 
 If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `trimStrings` and `convertEmptyStringsToNull` methods offered in the `bootstrap/app.php` file. Both methods accept an array of closures, which should return `true` or `false` to indicate whether input normalization should be skipped:
 
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->convertEmptyStringsToNull([
+        $middleware->convertEmptyStringsToNull(except: [
             fn (Request $request) => $request->is('admin/*'),
         ]);
 
-        $middleware->trimStrings([
+        $middleware->trimStrings(except: [
             fn (Request $request) => $request->is('admin/*'),
         ]);
     })
