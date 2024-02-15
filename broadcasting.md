@@ -96,7 +96,7 @@ Once the package is installed, you may run Reverb's installation command to publ
 php artisan reverb:install
 ```
 
-You may see more detailed documentation in the [Reverb section](/docs/{{version}}/reverb).
+You may see more detailed instructions in the [Reverb section](/docs/{{version}}/reverb) of the documentation.
 
 <a name="pusher-channels"></a>
 ### Pusher Channels
