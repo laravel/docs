@@ -147,7 +147,7 @@ In most cases, secure WebSocket connections are likely to be handled by the web 
 Due to the long-running nature of WebSockets, you may need to make some optimizations to your hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the resources available.
 
 > **Note** 
-> If you site is managed by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel.
+> If your site is managed by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel.
 
 <a name="open-files"></a>
 ### Open Files
