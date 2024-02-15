@@ -96,16 +96,21 @@ By default, Sail commands are invoked using the `vendor/bin/sail` script that is
 However, instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a shell alias that allows you to execute Sail's commands more easily:
 
 ```shell
-alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 ```
 
 To make sure this is always available, you may add this to your shell configuration file in your home directory, such as `~/.zshrc` or `~/.bashrc`, and then restart your shell.
 
-Once the shell alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:
+Once the shell alias has been configured, you may execute Sail commands by simply typing `sail`:
 
 ```shell
 sail up
 ```
+
+**The remainder of this documentation's examples will assume that you have configured this alias.**
+
+> [!INFO]  
+> In case you are using the shell alias, you can extend the functionality of the Laravel Sail script. To do so, simply create a `sail` script with your customizations at the root of your project and call `"vendor/bin/sail" "$@"` at the end of it.
 
 <a name="starting-and-stopping-sail"></a>
 ## Starting and Stopping Sail
