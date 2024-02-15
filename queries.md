@@ -974,22 +974,27 @@ The query builder also provides convenient methods for incrementing or decrement
 
     DB::table('users')->increment('votes');
 
+    DB::table('users')->find(3)->increment('votes');
+
     DB::table('users')->increment('votes', 5);
 
     DB::table('users')->decrement('votes');
 
     DB::table('users')->decrement('votes', 5);
 
+    DB::table('users')->find(3)->decrement('votes');
+
 If needed, you may also specify additional columns to update during the increment or decrement operation:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
-In addition, you may increment or decrement multiple columns at once using the `incrementEach` and `decrementEach` methods:
+In addition, you may increment or decrement all rows and target multiple columns at once using the `incrementEach` and `decrementEach` methods. This will update all rows in the selected table even if you only have one row selected:
 
     DB::table('users')->incrementEach([
         'votes' => 5,
         'balance' => 100,
     ]);
+
 
 <a name="delete-statements"></a>
 ## Delete Statements
