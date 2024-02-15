@@ -35,7 +35,7 @@ You may use the Composer package manager to install Reverb into your Laravel pro
 composer require laravel/reverb:@beta
 ```
 
-You may then run Reverb's installation command to publish the configuration, add the required environment variables and enable broadcasting in your application:
+Once the package is installed, you may run Reverb's installation command to publish the configuration, add the required environment variables and enable broadcasting in your application:
 
 ```sh
 php artisan reverb:install
