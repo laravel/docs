@@ -50,9 +50,9 @@ The Reverb server can be started using the `reverb:start` Artisan command:
 php artisan reverb:start
 ```
 
-By default, the Reverb server will be started on port 8080 of host 0.0.0.0. This makes it accessible from all network interfaces.
+By default, the Reverb server will be started on port 8080 of host 0.0.0.0, making it accessible from all network interfaces.
 
-Should you need to use a custom host or port, you may do so by utilizing the `host` and `port` options when starting the server:
+Should you need to use a custom host or port, you may do so by utilizing the `--host` and `--port` options when starting the server:
 
 ```sh
 php artisan reverb:start --host=127.0.0.1 --port=9000
@@ -81,12 +81,12 @@ php artisan reverb:restart
 <a name="configuration"></a>
 ## Configuration
 
-The `reverb:install` command will automatically set up Reverb with a sensible set of default configuration options. Should you wish to make any advanced configuration changes, you may do so by updating Reverb's environment variables or `config/reverb.php` configuration file.
+The `reverb:install` command will automatically set up Reverb with a sensible set of default configuration options. Should you wish to make any advanced configuration changes, you may do so by updating Reverb's environment variables or the `config/reverb.php` configuration file.
 
 <a name="credentials"></a>
 ### Credentials
 
-In order for a client to connect to a Reverb WebSocket server, a set of credentials must be exchanged. These credentials are configured on the server and are used to verify the request from the client. You may define these credentials with the following enviroment variables:
+In order establish a connection to Reverb, a set of credentials must be exchanged between client and server. These credentials are configured on the server and are used to verify the request from the client. You may define these credentials with the following enviroment variables:
 
 ```
 REVERB_APP_ID=my-app-id
@@ -112,7 +112,7 @@ You may also define the origins from which client requests may originate by upda
 <a name="additional-applications"></a>
 ### Additional Applications
 
-Although typically Reverb will provide a WebSocket server for the application in which it is installed, it is possible to serve more than one application at a time. For example, you may wish to maintain a single server which provides WebSocket connectivity for multiple applications. This can be achieved by defining multiple `apps` in the `config/reverb.php` configuration file:
+Although typically Reverb will provide a WebSocket server for the application in which it is installed, it is possible to serve more than one application at a time. For example, you may wish to maintain a single Laravel application which provides WebSocket connectivity for multiple applications. This can be achieved by defining multiple `apps` in the `config/reverb.php` configuration file:
 
 ```php
 'apps' => [
@@ -127,7 +127,7 @@ Although typically Reverb will provide a WebSocket server for the application in
 ],
 ```
 
-<a name="ssl"><a>
+<a name="ssl"></a>
 ### SSL
 
 In most cases, secure WebSocket connections are likely to be handled by the web server before the request is proxied your Reverb server. However, it can be useful, such as in local development, for the Reverb server to handle secure connections directly. You may achieve this by setting the `tls` options in the `config/reverb.php` configuration file. Here you may use any of the options available in the [PHP SSL context options](https://www.php.net/manual/en/context.ssl.php):
