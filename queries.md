@@ -995,7 +995,6 @@ In addition, you may increment or decrement all rows and target multiple columns
         'balance' => 100,
     ]);
 
-
 <a name="delete-statements"></a>
 ## Delete Statements
 
