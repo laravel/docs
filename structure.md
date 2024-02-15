@@ -120,7 +120,7 @@ The `Broadcasting` directory contains all of the broadcast channel classes for y
 <a name="the-console-directory"></a>
 #### The Console Directory
 
-The `Console` directory contains all of the custom Artisan commands for your application. These commands may be generated using the `make:command` command. This directory also houses your console kernel, which is where your custom Artisan commands are registered and your [scheduled tasks](/docs/{{version}}/scheduling) are defined.
+The `Console` directory contains all of the custom Artisan commands for your application. These commands may be generated using the `make:command` command.
 
 <a name="the-events-directory"></a>
 #### The Events Directory
