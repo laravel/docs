@@ -101,16 +101,11 @@ alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 
 To make sure this is always available, you may add this to your shell configuration file in your home directory, such as `~/.zshrc` or `~/.bashrc`, and then restart your shell.
 
-Once the shell alias has been configured, you may execute Sail commands by simply typing `sail`:
+Once the shell alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:
 
 ```shell
 sail up
 ```
-
-**The remainder of this documentation's examples will assume that you have configured this alias.**
-
-> [!INFO]  
-> In case you are using the shell alias, you can extend the functionality of the Laravel Sail script. To do so, simply create a `sail` script with your customizations at the root of your project and call `"vendor/bin/sail" "$@"` at the end of it.
 
 <a name="starting-and-stopping-sail"></a>
 ## Starting and Stopping Sail
