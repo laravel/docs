@@ -84,19 +84,19 @@ You will also need to configure and run a [queue worker](/docs/{{version}}/queue
 <a name="reverb"></a>
 ### Reverb
 
-You may use the Composer package manager to install Reverb into your Laravel project. Since Reverb is currently in beta, you will need to explicitly install the beta version:
+You may use the Composer package manager to install Laravel Reverb into your Laravel project. Since Reverb is currently in beta, you will need to explicitly install the beta release:
 
 ```sh
 composer require laravel/reverb:@beta
 ```
 
-Once the package is installed, you may run Reverb's installation command to publish the configuration, add the required environment variables and enable broadcasting in your application:
+Once the package is installed, you may run Reverb's installation command to publish the configuration, add Reverb's required environment variables, and enable event broadcasting in your application:
 
 ```sh
 php artisan reverb:install
 ```
 
-You may see more detailed instructions in the [Reverb section](/docs/{{version}}/reverb) of the documentation.
+You can find detailed Reverb installation and usage instructions in the [Reverb documentation](/docs/{{version}}/reverb).
 
 <a name="pusher-channels"></a>
 ### Pusher Channels
