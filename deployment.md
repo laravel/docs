@@ -1,17 +1,21 @@
 # Deployment
 
-- [Introduction](#introduction)
-- [Server Requirements](#server-requirements)
-- [Server Configuration](#server-configuration)
+- [Deployment](#deployment)
+  - [Introduction](#introduction)
+  - [Server Requirements](#server-requirements)
+  - [Server Configuration](#server-configuration)
     - [Nginx](#nginx)
-- [Optimization](#optimization)
+    - [Apache](#apache)
+  - [Optimization](#optimization)
     - [Autoloader Optimization](#autoloader-optimization)
-    - [Caching Configuration](#optimizing-configuration-loading)
+    - [Caching Configuration](#caching-configuration)
     - [Caching Events](#caching-events)
-    - [Caching Routes](#optimizing-route-loading)
-    - [Caching Views](#optimizing-view-loading)
-- [Debug Mode](#debug-mode)
-- [Easy Deployment With Forge / Vapor](#deploying-with-forge-or-vapor)
+    - [Caching Routes](#caching-routes)
+    - [Caching Views](#caching-views)
+  - [Debug Mode](#debug-mode)
+  - [Easy Deployment With Forge / Vapor](#easy-deployment-with-forge--vapor)
+      - [Laravel Forge](#laravel-forge)
+      - [Laravel Vapor](#laravel-vapor)
 
 <a name="introduction"></a>
 ## Introduction
@@ -85,6 +89,46 @@ server {
         deny all;
     }
 }
+```
+
+<a name="apache"></a>
+### Apache
+If you're deploying your application on a server running Apache, you can use the following configuration file as a starting point for setting up your web server.
+
+```apache
+/etc/apache2/sites-available/name_website.conf
+
+<VirtualHost *:80>
+    ServerAdmin admin@example.com
+    ServerAlias name_of_your_project.com
+    ServerName www.name_of_your_project.com
+    DocumentRoot /var/www/name_of_your_project/public
+
+    Redirect permanent / https://name_of_your_project.com/
+
+    ErrorLog ${APACHE_LOG_DIR}/name_project-error.log
+    CustomLog ${APACHE_LOG_DIR}/name_project-access.log combined
+
+    <Directory /var/www/name_of_your_project/public>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order Allow,Deny
+        Allow from All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+We can now save and close the file and then enable the Apache rewrite module, and activate the Laravel virtual host with the following command:
+```
+a2enmod rewrite
+a2ensite name_of_your_project.conf
+```
+Now verify the Apache2 configuration and make sure there is no error.
+```
+apachectl configtest
+// if or not error, Now restart the Apache2 service
+systemctl restart apache2
 ```
 
 <a name="optimization"></a>
