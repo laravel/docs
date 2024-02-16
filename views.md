@@ -193,7 +193,7 @@ We'll use the `View` facade's `composer` method to register the view composer. L
     }
 
 > [!WARNING]  
-> Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
+> Remember, if you manually create a service provider to contain your view composer registrations, without the help of the `make:provider` Artisan command, you will need to add the service provider to the `bootstrap/providers.php` file.
 
 Now that we have registered the composer, the `compose` method of the `App\View\Composers\ProfileComposer` class will be executed each time the `profile` view is being rendered. Let's take a look at an example of the composer class:
 
