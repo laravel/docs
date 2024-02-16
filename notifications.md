@@ -1132,7 +1132,7 @@ If a notification supports being sent as a Slack message, you should define a `t
     use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
     use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
     use Illuminate\Notifications\Slack\BlockKit\Composites\ConfirmObject;
-    use Illuminate\Notifications\Slack\SlackMessage;
+    use Illuminate\Notifications\Messages\SlackMessage;
 
     /**
      * Get the Slack representation of the notification.
