@@ -24,15 +24,15 @@ Laravel ships with a variety of session backends that are accessed through an ex
 <a name="configuration"></a>
 ### Configuration
 
-The session `driver` configuration option defines where session data will be stored for each request. By default, Laravel is configured to use the `database` session driver, which will work well for many applications.
+By default, Laravel is configured to use the `database` session driver, which stores user session information in your application's database and will work well for many production applications.
 
-Laravel's `session.php` configuration file is not published by default, as you can specify the session driver using the `SESSION_DRIVER` environment variable. However, if necessary, you may publish the configuration file using the `config:publish` Artisan command:
+Laravel's complete `session.php` configuration file is not published by default, as you can specify your application's session driver using the `SESSION_DRIVER` environment variable. However, if necessary, you may publish the configuration file using the `config:publish` Artisan command:
 
 ```shell
 php artisan config:publish session
 ```
 
-Laravel ships with several great drivers out of the box:
+Laravel includes a variety of great session drivers:
 
 <div class="content-list" markdown="1">
 
@@ -54,7 +54,7 @@ Laravel ships with several great drivers out of the box:
 <a name="database"></a>
 #### Database
 
-When using the `database` session driver, you will need to ensure that you have a database table to contain the session data. Typically, this is included in the `0001_01_01_000000_create_users_table.php` migration file; however, if for any reason you do not have a `sessions` table, you may use the `session:table` Artisan command to generate this migration:
+When using the `database` session driver, you will need to ensure that you have a database table to contain the session data. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` [database migration](/docs/{{version}}/migrations); however, if for any reason you do not have a `sessions` table, you may use the `session:table` Artisan command to generate this migration:
 
 ```shell
 php artisan session:table
@@ -62,15 +62,13 @@ php artisan session:table
 php artisan migrate
 ```
 
-To learn more about database migrations, you may consult the complete [migration documentation](/docs/{{version}}/migrations).
-
 <a name="redis"></a>
 #### Redis
 
 Before using Redis sessions with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer. For more information on configuring Redis, consult Laravel's [Redis documentation](/docs/{{version}}/redis#configuration).
 
 > [!NOTE]  
-> The `SESSION_CONNECTION` environment variable, or the `connection` option in the `session.php` configuration file, may be used to specify which Redis connection is used by the session.
+> The `SESSION_CONNECTION` environment variable, or the `connection` option in the `session.php` configuration file, may be used to specify which Redis connection is used for session storage.
 
 <a name="interacting-with-the-session"></a>
 ## Interacting With the Session
@@ -351,4 +349,4 @@ Once your driver has been implemented, you are ready to register it with Laravel
         }
     }
 
-Once the session driver has been registered, you may use the `mongo` driver in your `SESSION_DRIVER` environment variable or directly within your `config/session.php` configuration file.
+Once the session driver has been registered, you may specify the `mongo` driver as your application's session driver using the `SESSION_DRIVER` environment variable or within the application's `config/session.php` configuration file.
