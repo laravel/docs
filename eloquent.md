@@ -1210,22 +1210,7 @@ Writing a global scope is simple. First, use the `make:scope` command to generat
 <a name="applying-global-scopes"></a>
 #### Applying Global Scopes
 
-To assign a global scope to a model, you may simply place the `ScopedBy` attribute on the model:
-
-    <?php
-
-    namespace App\Models;
-
-    use App\Models\Scopes\AncientScope;
-    use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-
-    #[ScopedBy([AncientScope::class])]
-    class User extends Model
-    {
-        //
-    }
-
-Or, you may manually register the global scope by overriding the model's `booted` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:
+To assign a global scope to a model, you should override the model's `booted` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:
 
     <?php
 
