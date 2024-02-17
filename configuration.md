@@ -192,6 +192,10 @@ You may easily access your configuration values using the global `config` functi
     // Retrieve a default value if the configuration value does not exist...
     $value = config('app.timezone', 'Asia/Seoul');
 
+If your configuration values are stored in nested files, such as config/mail/smtp.php, you can still access them using the same "dot" syntax. For example:
+
+    $value = config('mail.smtp.host');
+
 To set configuration values at runtime, pass an array to the `config` function:
 
     config(['app.timezone' => 'America/Chicago']);
