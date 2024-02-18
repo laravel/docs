@@ -852,7 +852,7 @@ The `Arr::take` method returns a new array with the specified number of items:
 
     $array = [0, 1, 2, 3, 4, 5];
 
-    $chunk = Arr::take(3);
+    $chunk = Arr::take($array, 3);
 
     // [0, 1, 2]
 
@@ -860,7 +860,7 @@ You may also pass a negative integer to take the specified number of items from 
 
     $array = [0, 1, 2, 3, 4, 5];
 
-    $chunk = Arr::take(-2);
+    $chunk = Arr::take($array, -2);
 
     // [4, 5]
 
