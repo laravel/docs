@@ -2433,7 +2433,7 @@ The `title` method converts the given string to `Title Case`:
 <a name="method-fluent-str-to-base64"></a>
 #### `toBase64()` {.collection-method}
 
-The `toBase64()` method converts the given string to a base64:
+The `toBase64` method converts the given string to Base64:
 
     use Illuminate\Support\Str;
 
