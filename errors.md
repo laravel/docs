@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-- [Exceptions](#exceptions)
+- [Handling Exceptions](#exceptions)
     - [Reporting Exceptions](#reporting-exceptions)
     - [Exception Log Levels](#exception-log-levels)
     - [Ignoring Exceptions by Type](#ignoring-exceptions-by-type)
@@ -17,7 +17,7 @@
 
 When you start a new Laravel project, error and exception handling is already configured for you; however, at any point, you may use the `withExceptions` method in your application's `bootstrap/app.php` to manage how exceptions are reported and rendered by your application.
 
-The `$exceptions` object provided to the `withMiddleware` closure is an instance of `Illuminate\Foundation\Configuration\Exceptions` and is responsible for managing exception handling in your application. We'll dive deeper into this object throughout this documentation.
+The `$exceptions` object provided to the `withExceptions` closure is an instance of `Illuminate\Foundation\Configuration\Exceptions` and is responsible for managing exception handling in your application. We'll dive deeper into this object throughout this documentation.
 
 <a name="configuration"></a>
 ## Configuration
@@ -26,15 +26,15 @@ The `debug` option in your `config/app.php` configuration file, which you may op
 
 During local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the value is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
 
-<a name="exceptions"></a>
-## Exceptions
+<a name="handling-exceptions"></a>
+## Handling Exceptions
 
 <a name="reporting-exceptions"></a>
 ### Reporting Exceptions
 
-In Laravel, exception reporting is used to log exceptions or send them to an external service like [Flare](https://flareapp.io), [Bugsnag](https://bugsnag.com), or [Sentry](https://github.com/getsentry/sentry-laravel). By default, exceptions will be logged based on your [logging](/docs/{{version}}/logging) configuration. However, you are free to log exceptions however you wish.
+In Laravel, exception reporting is used to log exceptions or send them to an external service [Sentry](https://github.com/getsentry/sentry-laravel) or [Flare](https://flareapp.io). By default, exceptions will be logged based on your [logging](/docs/{{version}}/logging) configuration. However, you are free to log exceptions however you wish.
 
-If you need to report different types of exceptions in different ways, you may use the `reportable` method in your application's `bootstrap/app.php` to register a closure that should be executed when an exception of a given type needs to be reported. Laravel will determine what type of exception the closure reports by examining the type-hint of the closure:
+If you need to report different types of exceptions in different ways, you may use the `reportable` exception method in your application's `bootstrap/app.php` to register a closure that should be executed when an exception of a given type needs to be reported. Laravel will determine what type of exception the closure reports by examining the type-hint of the closure:
 
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->reportable(function (InvalidOrderException $e) {
@@ -47,7 +47,7 @@ When you register a custom exception reporting callback using the `reportable` m
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->reportable(function (InvalidOrderException $e) {
             // ...
-        });
+        })->stop();
 
         $exceptions->reportable(function (InvalidOrderException $e) {
             return false;
@@ -60,15 +60,12 @@ When you register a custom exception reporting callback using the `reportable` m
 <a name="global-log-context"></a>
 #### Global Log Context
 
-If available, Laravel automatically adds the current user's ID to every exception's log message as contextual data. You may define your own global contextual data using the `context` method in your application's `bootstrap/app.php` file. This information will be included in every exception's log message written by your application:
-
+If available, Laravel automatically adds the current user's ID to every exception's log message as contextual data. You may define your own global contextual data using the `context` exception method in your application's `bootstrap/app.php` file. This information will be included in every exception's log message written by your application:
 
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->context(function () {
-            return [
-                'foo' => 'bar',
-            ];
-        });
+        $exceptions->context(fn () => [
+            'foo' => 'bar',
+        ]);
     })
 
 <a name="exception-log-context"></a>
@@ -118,7 +115,7 @@ Sometimes you may need to report an exception but continue handling the current 
 
 If you are using the `report` function throughout your application, you may occasionally report the same exception multiple times, creating duplicate entries in your logs.
 
-If you would like to ensure that a single instance of an exception is only ever reported once, you may use the `dontReportDuplicates` method in your application's `bootstrap/app.php` file:
+If you would like to ensure that a single instance of an exception is only ever reported once, you may invoke the `dontReportDuplicates` exception method in your application's `bootstrap/app.php` file:
 
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->dontReportDuplicates();
@@ -148,7 +145,7 @@ When messages are written to your application's [logs](/docs/{{version}}/logging
 
 As noted above, even when you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at.
 
-To accomplish this, you may use the `level` method in your application's `bootstrap/app.php` file. This method receives the exception type as its first argument and the log level as its second argument:
+To accomplish this, you may use the `level` exception method in your application's `bootstrap/app.php` file. This method receives the exception type as its first argument and the log level as its second argument:
 
     use PDOException;
     use Psr\Log\LogLevel;
@@ -160,7 +157,7 @@ To accomplish this, you may use the `level` method in your application's `bootst
 <a name="ignoring-exceptions-by-type"></a>
 ### Ignoring Exceptions by Type
 
-When building your application, there will be some types of exceptions you never want to report. To ignore these exceptions, you may use the `dontReport` method in your application's `boostrap/app.php` file. Any class provided to this method will never be reported; however, they may still have custom rendering logic:
+When building your application, there will be some types of exceptions you never want to report. To ignore these exceptions, you may use the `dontReport` exception method in your application's `boostrap/app.php` file. Any class provided to this method will never be reported; however, they may still have custom rendering logic:
 
     use App\Exceptions\InvalidOrderException;
 
@@ -170,7 +167,7 @@ When building your application, there will be some types of exceptions you never
         ]);
     })
 
-Internally, Laravel already ignores some types of errors for you, such as exceptions resulting from 404 HTTP errors or 419 HTTP responses generated by invalid CSRF tokens. If you would like to instruct Laravel to stop ignoring a given type of exception, you may use the `stopIgnoring` method in your application's `boostrap/app.php` file:
+Internally, Laravel already ignores some types of errors for you, such as exceptions resulting from 404 HTTP errors or 419 HTTP responses generated by invalid CSRF tokens. If you would like to instruct Laravel to stop ignoring a given type of exception, you may use the `stopIgnoring` exception method in your application's `boostrap/app.php` file:
 
     use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -181,7 +178,7 @@ Internally, Laravel already ignores some types of errors for you, such as except
 <a name="rendering-exceptions"></a>
 ### Rendering Exceptions
 
-By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering closure for exceptions of a given type. You may accomplish this by using the `renderable` method in your application's `boostrap/app.php` file.
+By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering closure for exceptions of a given type. You may accomplish this by using the `renderable` exception method in your application's `boostrap/app.php` file.
 
 The closure passed to the `renderable` method should return an instance of `Illuminate\Http\Response`, which may be generated via the `response` helper. Laravel will determine what type of exception the closure renders by examining the type-hint of the closure:
 
@@ -212,7 +209,7 @@ You may also use the `renderable` method to override the rendering behavior for 
 <a name="renderable-exceptions"></a>
 ### Reportable and Renderable Exceptions
 
-Instead of defining custom reporting and rendering behavior in your application's `boostrap/app.php`, you may define `report` and `render` methods directly on your application's exceptions. When these methods exist, they will automatically be called by the framework:
+Instead of defining custom reporting and rendering behavior in your application's `boostrap/app.php` file, you may define `report` and `render` methods directly on your application's exceptions. When these methods exist, they will automatically be called by the framework:
 
     <?php
 
@@ -281,7 +278,7 @@ If your exception contains custom reporting logic that is only necessary when ce
 
 If your application reports a very large number of exceptions, you may want to throttle how many exceptions are actually logged or sent to your application's external error tracking service.
 
-To take a random sample rate of exceptions, you may use the `throttle` method in your application's `bootstrap/app.php` file. The `throttle` method receives a closure that should return a `Lottery` instance:
+To take a random sample rate of exceptions, you may use the `throttle` exception method in your application's `bootstrap/app.php` file. The `throttle` method receives a closure that should return a `Lottery` instance:
 
     use Illuminate\Support\Lottery;
     use Throwable;
