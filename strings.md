@@ -1150,11 +1150,13 @@ The `Str::title` method converts the given string to `Title Case`:
 <a name="method-str-to-base64"></a>
 #### `Str::toBase64()` {.collection-method}
 
-The `Str::toBase64()` method converts the given string to a base64:
+The `Str::toBase64` method converts the given string to Base64:
 
     use Illuminate\Support\Str;
 
     $base64 = Str::toBase64('Laravel');
+
+    // TGFyYXZlbA==
 
 <a name="method-str-to-html-string"></a>
 #### `Str::toHtmlString()` {.collection-method}
