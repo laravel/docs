@@ -254,7 +254,7 @@ Laravel also provides a global `old` helper. If you are displaying old input wit
 <a name="a-note-on-optional-fields"></a>
 ### A Note on Optional Fields
 
-By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the stack by the `App\Http\Kernel` class. Because of this, you will often need to mark your "optional" request fields as `nullable` if you do not want the validator to consider `null` values as invalid. For example:
+By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. Because of this, you will often need to mark your "optional" request fields as `nullable` if you do not want the validator to consider `null` values as invalid. For example:
 
     $request->validate([
         'title' => 'required|unique:posts|max:255',
