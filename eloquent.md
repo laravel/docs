@@ -1460,6 +1460,9 @@ Instead of using custom event classes, you may register closures that execute wh
         }
     }
 
+> [!WARNING]  
+> When you want to use the `trashed` event in your model, you must use `softDeleted` event.
+
 If needed, you may utilize [queueable anonymous event listeners](/docs/{{version}}/events#queuable-anonymous-event-listeners) when registering model events. This will instruct Laravel to execute the model event listener in the background using your application's [queue](/docs/{{version}}/queues):
 
     use function Illuminate\Events\queueable;
