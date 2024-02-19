@@ -1542,7 +1542,7 @@ To register an observer, you may place the `ObservedBy` attribute on the corresp
         //
     }
 
-Or, you may manually register an observing by calling the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\Providers\EventServiceProvider` service provider:
+Or, you may manually register an observer by calling the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\Providers\EventServiceProvider` service provider:
 
     use App\Models\User;
     use App\Observers\UserObserver;
