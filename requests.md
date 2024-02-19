@@ -507,7 +507,7 @@ By default, Laravel includes the `Illuminate\Foundation\Http\Middleware\TrimStri
 
 #### Disabling Input Normalization
 
-If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack in your `bootstrap/app.php` file:
+If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by invoking the `$middleware->remove` method in your application's `bootstrap/app.php` file:
 
     use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
     use Illuminate\Foundation\Http\Middleware\TrimStrings;
@@ -519,7 +519,7 @@ If you would like to disable this behavior for all requests, you may remove the 
         ]);
     })
 
-If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `trimStrings` and `convertEmptyStringsToNull` methods offered in the `bootstrap/app.php` file. Both methods accept an array of closures, which should return `true` or `false` to indicate whether input normalization should be skipped:
+If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `trimStrings` and `convertEmptyStringsToNull` middleware methods within your application's `bootstrap/app.php` file. Both methods accept an array of closures, which should return `true` or `false` to indicate whether input normalization should be skipped:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->convertEmptyStringsToNull(except: [
@@ -599,7 +599,7 @@ If you do not want a filename to be automatically generated, you may use the `st
 
 When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links when using the `url` helper. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links.
 
-To solve this, you may use the `Illuminate\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be specified on the method `trustProxies` in the `bootstrap/app.php` file:
+To solve this, you may enable the `Illuminate\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be specified using the `trustProxies` middleware method in your application's `bootstrap/app.php` file:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies(at: [
@@ -608,10 +608,10 @@ To solve this, you may use the `Illuminate\Http\Middleware\TrustProxies` middlew
         ]);
     })
 
-In addition to configuring the trusted proxies, you may configure the proxy headers that should be trusted:
+In addition to configuring the trusted proxies, you may also configure the proxy headers that should be trusted:
 
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->trustProxies(withHeaders: Request::HEADER_X_FORWARDED_FOR |
+        $middleware->trustProxies(headers: Request::HEADER_X_FORWARDED_FOR |
             Request::HEADER_X_FORWARDED_HOST |
             Request::HEADER_X_FORWARDED_PORT |
             Request::HEADER_X_FORWARDED_PROTO |
@@ -620,7 +620,7 @@ In addition to configuring the trusted proxies, you may configure the proxy head
     })
 
 > [!NOTE]  
-> If you are using AWS Elastic Load Balancing, your `withHeaders` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `withHeaders` value, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).
+> If you are using AWS Elastic Load Balancing, your `headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `headers` value, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).
 
 <a name="trusting-all-proxies"></a>
 #### Trusting All Proxies
@@ -638,13 +638,13 @@ By default, Laravel will respond to all requests it receives regardless of the c
 
 Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `Illuminate\Http\Middleware\TrustHosts` middleware for your application.
 
-To enable the `TrustHosts` middleware, you should use the `trustHosts` method in your `bootstrap/app.php` file. In the `at` argument of this method, you may specify the host names that your application should respond to. Incoming requests with other `Host` value headers will be rejected:
+To enable the `TrustHosts` middleware, you should use the `trustHosts` middleware method in your application's `bootstrap/app.php` file. Using the `at` argument of this method, you may specify the host names that your application should respond to. Incoming requests with other `Host` value headers will be rejected:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustHosts(at: ['laravel.test']);
     })
 
-By default, requests coming from subdomains of the application's URL are also trusted. If you would like to disable this behavior, you may use the `subdomains` argument:
+By default, requests coming from subdomains of the application's URL are also automatically trusted. If you would like to disable this behavior, you may use the `subdomains` argument:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustHosts(at: ['laravel.test'], subdomains: false);
