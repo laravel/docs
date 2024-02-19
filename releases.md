@@ -49,9 +49,103 @@ For all Laravel releases, bug fixes are provided for 18 months and security fixe
 <a name="laravel-11"></a>
 ## Laravel 11
 
-To be determined...
+Laravel 11 continues the improvements made in Laravel 10.x by introducing a streamlined application structure, per-second rate limiting, health routing, graceful encryption key rotation, queue testing improvements, [Resend](https://resend.com) mail transport, Prompt validator integration, new Artisan commands, and more. In addition, Laravel Reverb, a first-party, scalable WebSocket server has been introduced to provide robust real-time capabilities to your applications.
 
 <a name="php-8"></a>
 ### PHP 8.2
 
 Laravel 11.x requires a minimum PHP version of 8.2.
+
+<a name="structure"></a>
+### Streamlined Application Structure
+
+Laravel 11 introduces a streamlined application structure for **new** Laravel applications, without requiring any changes to existing applications. The new application structure is intended to provide a leaner, more modern experience, while retaining many of the concepts that Laravel developers are already familiar with. Below we will discuss the highlights of Laravel's new application structure.
+
+#### The Application Bootstrap File
+
+The `bootstrap/app.php` file has been revitalized as a code-first application configuration file. From this file, you may now customize your application's routing, middleware, service providers, exception handling, and more. This file unifies a variety of high-level application behavior settings that were previously scattered throughout your application's file structure.
+
+```php
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )
+    ->withMiddleware(function (Middleware $middleware) {
+        //
+    })
+    ->withExceptions(function (Exceptions $exceptions) {
+        //
+    })->create();
+```
+
+#### Service Providers
+
+Instead of the default Laravel application structure containing five service providers, Laravel 11 only includes a single `AppServiceProvider`. The functionality of the previous service providers has been incorporated into the `bootstrap/app.php`, is handled automatically by the framework, or may be placed in your application's `AppServiceProvider`.
+
+For example, event discovery is now enabled by default, largely eliminating the need for manual registration of events and their listeners. However, if you do need to manually register events, you may simply do so in the `AppServiceProvider`. Similarly, route model bindings or authorization gates you may have previously registered in the `AuthServiceProvider` may also be registered in the `AppServiceProvider`.
+
+#### Configuration Files
+
+The use of environment variables has been expanded, with additional place-holders being added to the `.env.example` file included with new Laravel applications. Because of this, almost all core framework functionality can be configured via your application's `.env` file instead of individual configuration files. Therefore, the `config` directory no longer contains any configuration files by default.
+
+Instead, configuration files can be published using the new `config:publish` Artisan command, which allows you to publish only the configuration files you would like to customize:
+
+```shell
+php artisan config:publish
+```
+
+Of course, you may easily publish all of the framework's configuration files:
+
+```shell
+php artisan config:publish --all
+```
+
+#### Opt-in API and Broadcast Routing
+
+The `api.php` and `channels.php` route files are no longer present by default, as many applications do not require these files. Instead, they may be created using simple Artisan commands:
+
+```shell
+php artisan install:api
+
+php artisan install:broadcasting
+```
+
+#### Middleware
+
+Previously, new Laravel applications included nine middleware. These middleware performed a variety of tasks such as authenticating requests, trimming input strings, and validating CSRF tokens.
+
+In Laravel 11, these middleware have been moved into the framework itself, so that they do not add bulk to your application's structure. New methods of customizing the behavior of these middleware have been added to the framework and may be invoked from your application's `bootstrap/app.php` file:
+
+```php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->validateCsrfTokens(
+        except: ['stripe/*']
+    );
+
+    $middleware->web(append: [
+        EnsureUserIsSubscribed::class,
+    ])
+})
+```
+
+Since all middleware can be easily customized via your application's `bootstrap/app.php`, the need for a separate HTTP "kernel" class has been eliminated.
+
+#### Scheduling
+
+Using a new `Schedule` facade, scheduled tasks may now be defined directly in your application's `routes/console.php` file, eliminating the need for a separate console "kernel" class:
+
+```php
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::command('emails:send')->daily();
+```
+
+#### Exception Handling
+
+Like routing and middleware, exception handling can now be customized from your application's `bootstrap/app.php` file instead of a separate exception handler class, reducing the overall number of files included in a new Laravel application:
+
+
+
+#### Application Defaults
