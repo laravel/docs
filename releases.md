@@ -224,6 +224,8 @@ When encrypting values, Laravel will always use the "current" encryption key, wh
 
 This approach to graceful decryption allows users to keep using your application uninterrupted even if your encryption key rotated.
 
+For more information on encryption in Laravel, check out the [encryption documentation](/docs/{{version}}/encryption).
+
 <a name="prompt-validation"></a>
 ### Prompt Validation
 
@@ -251,3 +253,22 @@ $name = text('What is your name?', validate: [
     'name' => 'required|min:3|max:255',
 ]);
 ```
+
+<a name="queue-interaction-testing"></a>
+### Queue Interaction Testing
+
+_Queue interaction testing was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+Previously, attempting to test that a queued job was released, deleted, or manually failed was cumbersome and required the definition of custom queue fakes and stubs. However, in Laravel 11, you may easily test for these queue interactions using the `withFakeQueueInteractions` method:
+
+```php
+use App\Jobs\ProcessPodcast;
+
+$job = (new ProcessPodcast)->withFakeQueueInteractions();
+
+$job->handle();
+
+$job->assertReleased(delay: 30);
+```
+
+For more information on testing queued jobs, check out the [queue documentation](/docs/{{version}}/queues#testing).
