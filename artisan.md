@@ -161,17 +161,9 @@ Let's take a look at an example command. Note that we are able to request any de
 <a name="closure-commands"></a>
 ### Closure Commands
 
-Closure based commands provide an alternative to defining console commands as classes. In the same way that route closures are an alternative to controllers, think of command closures as an alternative to command classes. Within the `commands` method of your `app/Console/Kernel.php` file, Laravel loads the `routes/console.php` file:
+Closure based commands provide an alternative to defining console commands as classes. In the same way that route closures are an alternative to controllers, think of command closures as an alternative to command classes.
 
-    /**
-     * Register the closure based commands for the application.
-     */
-    protected function commands(): void
-    {
-        require base_path('routes/console.php');
-    }
-
-Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your closure based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:
+Even though the `routes/console.php` file file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your closure based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:
 
     Artisan::command('mail:send {user}', function (string $user) {
         $this->info("Sending email to: {$user}!");
@@ -416,9 +408,9 @@ If Laravel needs to gather a required argument from the user, it will automatica
     /**
      * Prompt for missing input arguments using the returned questions.
      *
-     * @return array
+     * @return array<string, string>
      */
-    protected function promptForMissingArgumentsUsing()
+    protected function promptForMissingArgumentsUsing(): array
     {
         return [
             'user' => 'Which user ID should receive the mail?',
@@ -461,12 +453,8 @@ If you wish to prompt the user to select or enter [options](#options), you may i
 
     /**
      * Perform actions after the user was prompted for missing arguments.
-     *
-     * @param  \Symfony\Component\Console\Input\InputInterface  $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
-     * @return void
      */
-    protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)
+    protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output): void
     {
         $input->setOption('queue', confirm(
             label: 'Would you like to queue the mail?',
@@ -654,24 +642,19 @@ Sometimes, you may need more manual control over how a progress bar is advanced.
 <a name="registering-commands"></a>
 ## Registering Commands
 
-All of your console commands are registered within your application's `App\Console\Kernel` class, which is your application's "console kernel". Within the `commands` method of this class, you will see a call to the kernel's `load` method. The `load` method will scan the `app/Console/Commands` directory and automatically register each command it contains with Artisan. You are even free to make additional calls to the `load` method to scan other directories for Artisan commands:
+By default, Laravel automatically registers all commands within the `app/Console/Commands` directory. However, you can instruct Laravel to scan other directories for Artisan commands using the `withCommands` method in your application's `bootstrap/app.php` file:
 
-    /**
-     * Register the commands for the application.
-     */
-    protected function commands(): void
-    {
-        $this->load(__DIR__.'/Commands');
-        $this->load(__DIR__.'/../Domain/Orders/Commands');
+    ->withCommands([
+        __DIR__.'/../Domain/Orders/Commands',
+    ])
 
-        // ...
-    }
+If necessary, you may also manually register commands by providing the command's class name to the the `withCommands` method:
 
-If necessary, you may manually register commands by adding the command's class name to a `$commands` property within your `App\Console\Kernel` class. If this property is not already defined on your kernel, you should define it manually. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:
-
-    protected $commands = [
+    ->withCommands([
         Commands\SendEmails::class
-    ];
+    ])
+
+ When Artisan boots, all the commands in your application will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan.
 
 <a name="programmatically-executing-commands"></a>
 ## Programmatically Executing Commands
