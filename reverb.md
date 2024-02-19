@@ -151,7 +151,7 @@ php artisan reverb:restart
 Due to the long-running nature of WebSocket servers, you may need to make some optimizations to your server / hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the resources available on your server.
 
 > **Note** 
-> If your site is managed by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel.
+> If your site is managed by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel. By enabling the Reverb integration, Forge will ensure your server is production-ready, including installing any required extensions and increasing the allowed number of connections.
 
 <a name="open-files"></a>
 ### Open Files
