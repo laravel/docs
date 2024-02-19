@@ -223,3 +223,31 @@ Laravel 11 allows you to define your application's previous encryption keys as a
 When encrypting values, Laravel will always use the "current" encryption key, which is within the `APP_KEY` environment variable. When decrypting values, Laravel will first try the current key. If decryption fails using the current key, Laravel will try all previous keys until one of the keys is able to decrypt the value.
 
 This approach to graceful decryption allows users to keep using your application uninterrupted even if your encryption key rotated.
+
+<a name="prompt-validation"></a>
+### Prompt Validation
+
+_Prompt validator integration was contributed by [Andrea Marco Sartori](https://github.com/cerbero90)_.
+
+[Laravel Prompts](/docs/{{version}}/prompts) is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
+
+Laravel Prompts supports input validation via closures:
+
+```php
+$name = text(
+    label: 'What is your name?',
+    validate: fn (string $value) => match (true) {
+        strlen($value) < 3 => 'The name must be at least 3 characters.',
+        strlen($value) > 255 => 'The name must not exceed 255 characters.',
+        default => null
+    }
+);
+```
+
+However, this can become cumbersome when dealing with many inputs or complicated validation scenarios. Therefore, in Laravel 11, you may utilize the full power of Laravel's [validator](/docs/{{version}}/validation) when validating prompt inputs:
+
+```php
+$name = text('What is your name?', validate: [
+    'name' => 'required|min:3|max:255',
+]);
+```
