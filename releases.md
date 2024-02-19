@@ -59,6 +59,8 @@ Laravel 11.x requires a minimum PHP version of 8.2.
 <a name="structure"></a>
 ### Streamlined Application Structure
 
+_Laravel's streamlined application structure was developed by [Taylor Otwell](https://github.com/taylorotwell) and [Nuno Maduro](https://github.com/nunomaduro)_.
+
 Laravel 11 introduces a streamlined application structure for **new** Laravel applications, without requiring any changes to existing applications. The new application structure is intended to provide a leaner, more modern experience, while retaining many of the concepts that Laravel developers are already familiar with. Below we will discuss the highlights of Laravel's new application structure.
 
 #### The Application Bootstrap File
@@ -165,6 +167,8 @@ In addition, over time, the `database` drivers for these Laravel services have b
 <a name="reverb"></a>
 ### Laravel Reverb
 
+_Laravel Reverb was developed by [Joe Dixon](https://github.com/joedixon)_.
+
 [Laravel Reverb](https://reverb.laravel.com) brings blazing-fast and scalable real-time WebSocket communication directly to your Laravel application, and provides seamless integration with Laravel’s existing suite of event broadcasting tools, such as Laravel Echo.
 
 ```shell
@@ -174,3 +178,40 @@ php artisan reverb:start
 In addition, Reverb supports horizontal scaling via Redis's publish / subscribe capabilities, allowing you to distribute your WebSocket traffic across multiple backend Reverb servers all supporting a single, high-demand application.
 
 For more information on Laravel Reverb, please consult the complete [Reverb documentation](/docs/{{version}}/reverb).
+
+<a name="rate-limiting"></a>
+### Per-Second Rate Limiting
+
+_Per-second rate limiting was contributed by [Tim MacDonald](https://github.com/timacdonald)_.
+
+Laravel now supports "per-second" rate limiting for all rate limiters, including those for HTTP requests and queued jobs. Previously, Laravel's rate limiters were limited to "per-minute" granularity:
+
+```php
+RateLimiter::for('invoices', function (Request $request) {
+    return Limit::perSecond(1);
+});
+```
+
+For more information on rate limiting in Laravel, check out the [rate limiting documentation](/docs/{{version}}/routing#rate-limiting).
+
+<a name="health"></a>
+### Health Routing
+
+_Health routing was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+New Laravel 11 applications include a `health` routing directive, which instructs Laravel to define a simple health-check endpoint that may be invoked by third-party application health monitoring services or orchestration systems like Kubernetes. By default, this route is served at `/up`:
+
+```php
+->withRouting(
+    web: __DIR__.'/../routes/web.php',
+    commands: __DIR__.'/../routes/console.php',
+    health: '/up',
+)
+```
+
+When HTTP requests are made to this route, Laravel will also dispatch a `DiagnosingHealth` event, allowing you to perform additional health checks that are relevant to your application.
+
+<a name="encryption"></a>
+### Graceful Encryption Key Rotation
+
+...
