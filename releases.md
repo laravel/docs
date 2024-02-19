@@ -146,6 +146,31 @@ Schedule::command('emails:send')->daily();
 
 Like routing and middleware, exception handling can now be customized from your application's `bootstrap/app.php` file instead of a separate exception handler class, reducing the overall number of files included in a new Laravel application:
 
+```php
+->withExceptions(function (Exceptions $exceptions) {
+    $exceptions->dontReport(MissedFlightException::class);
 
+    $exceptions->reportable(function (InvalidOrderException $e) {
+        // ...
+    });
+})
+```
 
 #### Application Defaults
+
+By default, new Laravel applications use SQLite for database storage, as well as the `database` driver for Laravel's session, cache, and queue. This allows you to begin building your application immediately after creating a new Laravel application, without being required to install additional software or create additional database migrations.
+
+In addition, over time, the `database` drivers for these Laravel services have become robust enough for production usage in many application contexts; therefore, they provide a sensible, unified choice for both local and production applications.
+
+<a name="reverb"></a>
+### Laravel Reverb
+
+[Laravel Reverb](https://reverb.laravel.com) brings blazing-fast and scalable real-time WebSocket communication directly to your Laravel application, and provides seamless integration with Laravel’s existing suite of event broadcasting tools, such as Laravel Echo.
+
+```shell
+php artisan reverb:start
+```
+
+In addition, Reverb supports horizontal scaling via Redis's publish / subscribe capabilities, allowing you to distribute your WebSocket traffic across multiple backend Reverb servers all supporting a single, high-demand application.
+
+For more information on Laravel Reverb, please consult the complete [Reverb documentation](/docs/{{version}}/reverb).
