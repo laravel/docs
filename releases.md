@@ -272,3 +272,15 @@ $job->assertReleased(delay: 30);
 ```
 
 For more information on testing queued jobs, check out the [queue documentation](/docs/{{version}}/queues#testing).
+
+### New Artisan Commands
+
+_Class creation Artisan commands were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+New Artisan commands have been added to allow the quick creation of classes, interfaces, and traits:
+
+```shell
+php artisan make:class
+php artisan make:interface
+php artisan make:trait
+```
