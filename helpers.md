@@ -97,6 +97,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::forHumans](#method-number-for-humans)
 [Number::ordinal](#method-number-ordinal)
 [Number::spell](#method-number-spell)
+[Number::clamp](#method-number-clamp)
 [Number::useLocale](#method-number-use-locale)
 [Number::withLocale](#method-number-with-locale)
 
@@ -1302,6 +1303,29 @@ The `until` argument allows you to specify a value before which all numbers shou
     $number = Number::spell(10, until: 10);
 
     // 10
+
+<a name="method-number-clamp"></a>
+#### `Number::clamp()` {.collection-method}
+
+The `Number::clamp` method ensures a given number stays within a specified range. If the number is lower than the minimum, it's set to the minimum; if higher than the maximum, it's set to the maximum. The method returns the clamped number:
+
+    use Illuminate\Support\Number;
+ 
+    $number = Number::clamp(105, min: 10, max: 100);
+ 
+    // 100
+ 
+    $number = Number::clamp(5, min: 10, max: 100);
+ 
+    // 10
+ 
+    $number = Number::clamp(10, min: 10, max: 100);
+ 
+    // 10
+
+    $number = Number::clamp(20, min: 10, max: 100);
+ 
+    // 20
 
 <a name="method-number-use-locale"></a>
 #### `Number::useLocale()` {.collection-method}
