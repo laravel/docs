@@ -1739,6 +1739,17 @@ In this example, Eloquent will only eager load posts where the post's `title` co
         $query->orderBy('created_at', 'desc');
     }])->get();
 
+<a name="eager-load-limit"></a>
+#### Eager Load Limit
+
+If you want to limit the query for fetching the relations, you can use `limit` method in arrow function. 
+
+```php
+$users = User::with([
+    'posts' => fn ($query) => $query->limit(5)
+])->get();
+```
+
 <a name="constraining-eager-loading-of-morph-to-relationships"></a>
 #### Constraining Eager Loading of `morphTo` Relationships
 
