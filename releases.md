@@ -49,7 +49,7 @@ For all Laravel releases, bug fixes are provided for 18 months and security fixe
 <a name="laravel-11"></a>
 ## Laravel 11
 
-Laravel 11 continues the improvements made in Laravel 10.x by introducing a streamlined application structure, per-second rate limiting, health routing, graceful encryption key rotation, queue testing improvements, [Resend](https://resend.com) mail transport, Prompt validator integration, new Artisan commands, and more. In addition, Laravel Reverb, a first-party, scalable WebSocket server has been introduced to provide robust real-time capabilities to your applications.
+Laravel 11 continues the improvements made in Laravel 10.x by introducing a streamlined application structure, per-second rate limiting, health routing, graceful encryption key rotation, queue testing improvements, [Resend](https://resend.com) mail driver, Prompt validator integration, new Artisan commands, and more. In addition, Laravel Reverb, a first-party, scalable WebSocket server has been introduced to provide robust real-time capabilities to your applications.
 
 <a name="php-8"></a>
 ### PHP 8.2
@@ -65,7 +65,7 @@ Laravel 11 introduces a streamlined application structure for **new** Laravel ap
 
 #### The Application Bootstrap File
 
-The `bootstrap/app.php` file has been revitalized as a code-first application configuration file. From this file, you may now customize your application's routing, middleware, service providers, exception handling, and more. This file unifies a variety of high-level application behavior settings that were previously scattered throughout your application's file structure.
+The `bootstrap/app.php` file has been revitalized as a code-first application configuration file. From this file, you may now customize your application's routing, middleware, service providers, exception handling, and more. This file unifies a variety of high-level application behavior settings that were previously scattered throughout your application's file structure:
 
 ```php
 return Application::configure(basePath: dirname(__DIR__))
@@ -157,6 +157,23 @@ Like routing and middleware, exception handling can now be customized from your 
     });
 })
 ```
+
+#### Base `Controller` Class
+
+The base controller previously included in new Laravel applications has been simplified. It no longer extends Laravel's `Controller` class, and the traits `AuthorizesRequests` and `ValidatesRequests` have been removed, as they are not commonly used in application controllers:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    abstract class Controller
+    {
+        //
+    }
+
+#### `CreatesApplication` Trait
+
+The `CreatesApplication` trait has been removed from new Laravel applications, as it is no longer necessary. Instead, Laravel automatically finds and creates a new application instance for each one of your tests.
 
 #### Application Defaults
 
@@ -277,10 +294,94 @@ For more information on testing queued jobs, check out the [queue documentation]
 
 _Class creation Artisan commands were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-New Artisan commands have been added to allow the quick creation of classes, interfaces, and traits:
+New Artisan commands have been added to allow the quick creation of classes, enums, interfaces, and traits:
 
 ```shell
 php artisan make:class
+php artisan make:enum
 php artisan make:interface
 php artisan make:trait
 ```
+
+### Up-To-Date Migration Dates
+
+_Up-to-date migrations dates was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
+
+When publishing a migration, the migration's date will now be set to the current date and time, ensuring that your migrations always have up-to-date timestamps.
+
+Here is an example where running the `vendor:publish` Artisan command on a package such as `Telescope` will result in migrations with the current date and time:
+
+```
+2018_08_08_100000_create_telescope_entries_table.php // [tl! remove]
+2024_03_01_123456_create_telescope_entries_table.php // [tl! add]
+```
+
+For more information on migrations, check out the [migrations documentation](/docs/{{version}}/migrations).
+
+### Resend Mail Driver
+
+_Resend mail driver was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+Laravel 11 includes a new `resend` mail driver that allows you to use the [Resend](https://resend.com) mail service to send your application's emails.
+
+For more information on sending mails in Laravel, check out the [mail documentation](/docs/{{version}}/mail).
+
+### Model Casts Improvements
+
+_Model casts improvements were contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
+
+Laravel 11 supports defining your model's casts using a method instead of a property. This allows for a much cleaner way to define casts for your models, especially when using casts with arguments:
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'options' => AsCollection::using(OptionCollection::class),
+                      // AsEncryptedCollection::using(OptionCollection::class),
+                      // AsEnumArrayObject::using(OptionEnum::class),
+                      // AsEnumCollection::using(OptionEnum::class),
+        ];
+    }
+
+For more information on attribute casting, check out the [eloquent mutators documentation](/docs/{{version}}/eloquent-mutators#attribute-casting).
+
+### `once` helper
+
+_The `once` helper was contributed by [Taylor Otwell](https://github.com/taylorotwell)_ and _[Nuno Maduro](https://github.com/nunomaduro)_.
+
+Laravel 11 includes a new `once` helper that is extremely useful for caching a costly computation without the need to create a temporary like a nullable property on the class itself. Here is a practical example:
+
+```php
+class User extends Model
+{
+    public function stats(): array
+    {
+        return once(function () {
+            // Any kind of expensive computation that should be cached during the request...
+
+            return $stats;
+        });
+    }
+}
+```
+
+For more information on the `once` helper, check out the [helpers documentation](/docs/{{version}}/helpers#method-once).
+
+### Improved Performance When Testing With In-Memory Databases
+
+_Improved performance when testing with in-memory databases was contributed by [Anders Jenbo](https://github.com/AJenbo)_
+
+When using the `:memory:` SQLite database for testing, Laravel 11 tests will experience improved speed. This is due to the fact that Laravel now maintains a reference to PHP's PDO object and reuses it across connections. This results in a significant performance boost, with test suites that used to take minutes to run now being completed in just seconds.
+
+### Improved Support For MariaDB
+
+_Improved support for MariaDB was contributed by [Julius Kiekbusch](https://github.com/Jubeki)_
+
+Laravel 11 includes improved support for MariaDB. While in previous versions, you could already use MariaDB with Laravel through the MySQL driver, Laravel 11 now includes a MariaDB specific driver and better defaults for this type of database.
+
+For more information on Laravel's database drivers, check out the [database documentation](/docs/{{version}}/database).
+
