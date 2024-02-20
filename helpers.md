@@ -170,6 +170,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [method_field](#method-method-field)
 [now](#method-now)
 [old](#method-old)
+[once](#method-once)
 [optional](#method-optional)
 [policy](#method-policy)
 [redirect](#method-redirect)
@@ -1808,6 +1809,33 @@ Since the "default value" provided as the second argument to the `old` function 
     // Is equivalent to...
 
     {{ old('name', $user) }}
+
+<a name="method-once"></a>
+#### `once()` {.collection-method}
+
+The `once` function accept a callable and ensures a callable is only called once, and returns the result on subsequent calls.
+
+```php
+<?php
+ 
+namespace App;
+ 
+class Number
+{
+    public function random(): int
+    {
+        return once(function () {
+            return random_int(1, 100);
+        });
+    }
+}
+
+$number = new App\Number;
+
+$number->random(); // 30
+$number->random(); // 30
+$number->random(); // 30
+```
 
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}
