@@ -1813,7 +1813,7 @@ Since the "default value" provided as the second argument to the `old` function 
 <a name="method-once"></a>
 #### `once()` {.collection-method}
 
-The `once` function executes the given callback and caches the result in memory for the duration of the request. Any subsequent calls to the `once` function with the same callback will return the cached result:
+The `once` function executes the given callback and caches the result in memory for the duration of the request. Any subsequent calls to the `once` function with the same callback will return the previously cached result:
 
     function random(): int
     {
@@ -1826,6 +1826,31 @@ The `once` function executes the given callback and caches the result in memory 
     random(); // 123 (cached result)
     random(); // 123 (cached result)
 
+When the `once` function is executed from within an object instance, the cached result will be unique to that object instance:
+
+```php
+<?php
+
+use App;
+
+class NumberService
+{
+    public function all(): array
+    {
+        return once(fn () => [1, 2, 3]);
+    }
+}
+
+$service = new NumberService;
+
+$service->all();
+$service->all(); (cached result)
+
+$secondService = new NumberService;
+
+$secondService->all();
+$secondService->all(); (cached result)
+```
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}
 
