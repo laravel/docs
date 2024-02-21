@@ -1831,8 +1831,6 @@ When the `once` function is executed from within an object instance, the cached 
 ```php
 <?php
 
-use App;
-
 class NumberService
 {
     public function all(): array
@@ -1844,12 +1842,12 @@ class NumberService
 $service = new NumberService;
 
 $service->all();
-$service->all(); (cached result)
+$service->all(); // (cached result)
 
 $secondService = new NumberService;
 
 $secondService->all();
-$secondService->all(); (cached result)
+$secondService->all(); // (cached result)
 ```
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}
