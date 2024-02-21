@@ -26,7 +26,7 @@
 ## Installation
 
 > **Warning**  
-> Laravel Reveb requires PHP 8.2+.
+> Laravel Reverb requires PHP 8.2+.
 
 You may use the Composer package manager to install Reverb into your Laravel project. Since Reverb is currently in beta, you will need to explicitly install the beta release:
 
