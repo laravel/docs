@@ -1210,7 +1210,22 @@ Writing a global scope is simple. First, use the `make:scope` command to generat
 <a name="applying-global-scopes"></a>
 #### Applying Global Scopes
 
-To assign a global scope to a model, you should override the model's `booted` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:
+To assign a global scope to a model, you may simply place the `ScopedBy` attribute on the model:
+
+    <?php
+
+    namespace App\Models;
+
+    use App\Models\Scopes\AncientScope;
+    use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+
+    #[ScopedBy([AncientScope::class])]
+    class User extends Model
+    {
+        //
+    }
+
+Or, you may manually register the global scope by overriding the model's `booted` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:
 
     <?php
 
@@ -1516,7 +1531,18 @@ This command will place the new observer in your `app/Observers` directory. If t
         }
     }
 
-To register an observer, you need to call the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\Providers\EventServiceProvider` service provider:
+To register an observer, you may place the `ObservedBy` attribute on the corresponding model:
+
+    use App\Observers\UserObserver;
+    use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+
+    #[ObservedBy([UserObserver::class])]
+    class User extends Authenticatable
+    {
+        //
+    }
+
+Or, you may manually register an observer by calling the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\Providers\EventServiceProvider` service provider:
 
     use App\Models\User;
     use App\Observers\UserObserver;
@@ -1528,20 +1554,6 @@ To register an observer, you need to call the `observe` method on the model you 
     {
         User::observe(UserObserver::class);
     }
-
-Alternatively, you may list your observers within an `$observers` property of your applications' `App\Providers\EventServiceProvider` class:
-
-    use App\Models\User;
-    use App\Observers\UserObserver;
-
-    /**
-     * The model observers for your application.
-     *
-     * @var array
-     */
-    protected $observers = [
-        User::class => [UserObserver::class],
-    ];
 
 > [!NOTE]  
 > There are additional events an observer can listen to, such as `saving` and `retrieved`. These events are described within the [events](#events) documentation.

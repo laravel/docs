@@ -133,7 +133,7 @@ If you have billable entities that are not users, you may also add the trait to 
 Next, you should configure your Paddle keys in your application's `.env` file. You can retrieve your Paddle API keys from the Paddle control panel:
 
 ```ini
-PADDLE_SELLER_ID=your-paddle-seller-id
+PADDLE_CLIENT_SIDE_TOKEN=your-paddle-client-side-token
 PADDLE_API_KEY=your-paddle-api-key
 PADDLE_RETAIN_KEY=your-paddle-retain-key
 PADDLE_WEBHOOK_SECRET="your-paddle-webhook-secret"

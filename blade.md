@@ -1168,6 +1168,14 @@ You may invoke a slot's `isEmpty` method to determine if the slot contains conte
 </div>
 ```
 
+Additionally, the `hasActualContent` method may be used to determine if the slot contains any "actual" content that is not an HTML comment:
+
+```blade
+@if ($slot->hasActualContent())
+    The scope has non-comment content.
+@endif
+```
+
 <a name="scoped-slots"></a>
 #### Scoped Slots
 

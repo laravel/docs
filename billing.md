@@ -309,7 +309,17 @@ Next, let's build the Checkout success route. This is the route that users will 
     Route::get('/checkout/success', function (Request $request) {
         $sessionId = $request->get('session_id');
 
-        $orderId = Cashier::stripe()->checkout->sessions->retrieve($sessionId)['metadata']['order_id'] ?? null;
+        if ($sessionId === null) {
+            return;
+        }
+
+        $session = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
+
+        if ($session->payment_status !== 'paid') {
+            return;
+        }
+
+        $orderId = $session['metadata']['order_id'] ?? null;
 
         $order = Order::findOrFail($orderId);
 

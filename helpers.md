@@ -69,6 +69,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
 [Arr::sortRecursiveDesc](#method-array-sort-recursive-desc)
+[Arr::take](#method-array-take)
 [Arr::toCssClasses](#method-array-to-css-classes)
 [Arr::toCssStyles](#method-array-to-css-styles)
 [Arr::undot](#method-array-undot)
@@ -842,10 +843,31 @@ If you would like the results sorted in descending order, you may use the `Arr::
 
     $sorted = Arr::sortRecursiveDesc($array);
 
+<a name="method-array-take"></a>
+#### `Arr::take()` {.collection-method}
+
+The `Arr::take` method returns a new array with the specified number of items:
+
+    use Illuminate\Support\Arr;
+
+    $array = [0, 1, 2, 3, 4, 5];
+
+    $chunk = Arr::take($array, 3);
+
+    // [0, 1, 2]
+
+You may also pass a negative integer to take the specified number of items from the end of the array:
+
+    $array = [0, 1, 2, 3, 4, 5];
+
+    $chunk = Arr::take($array, -2);
+
+    // [4, 5]
+
 <a name="method-array-to-css-classes"></a>
 #### `Arr::toCssClasses()` {.collection-method}
 
-The `Arr::toCssClasses` conditionally compiles a CSS class string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
+The `Arr::toCssClasses` method conditionally compiles a CSS class string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
     use Illuminate\Support\Arr;
 
@@ -866,6 +888,8 @@ The `Arr::toCssClasses` conditionally compiles a CSS class string. The method ac
 The `Arr::toCssStyles` conditionally compiles a CSS style string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
 ```php
+use Illuminate\Support\Arr;
+
 $hasColor = true;
 
 $array = ['background-color: blue', 'color: blue' => $hasColor];
