@@ -379,7 +379,7 @@ When using the `:memory:` SQLite database for testing, Laravel 11 tests will exp
 
 ### Improved Support For MariaDB
 
-_Improved support for MariaDB was contributed by [Julius Kiekbusch](https://github.com/Jubeki)_
+_Improved support for MariaDB was contributed by [Jonas Staudenmeir](https://github.com/staudenmeir) and [Julius Kiekbusch](https://github.com/Jubeki)_
 
 Laravel 11 includes improved support for MariaDB. While in previous versions, you could already use MariaDB with Laravel through the MySQL driver, Laravel 11 now includes a MariaDB specific driver and better defaults for this type of database.
 
