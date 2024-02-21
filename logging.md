@@ -30,15 +30,15 @@ Under the hood, Laravel utilizes the [Monolog](https://github.com/Seldaek/monolo
 <a name="configuration"></a>
 ## Configuration
 
-By default, Laravel uses the `stack` channel when logging messages. The `stack` channel is used to aggregate multiple log channels into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
+By default, Laravel uses the `stack` channel when logging messages. The `stack` channel is used to [aggregate multiple log channels](#building-log-stacks) into a single channel.
 
-Laravel's complete `logging.php` configuration file is not published by default, as you can specify your application's log driver using the `LOG_DRIVER` environment variable. However, to customize some of the configuration options documented below that are not available via environment variables, you may have to publish the configuration file using the `config:publish` Artisan command:
+You can specify your application's log driver using the `LOG_DRIVER` environment variable. However, to customize some of the configuration options documented below that are not available via environment variables, you should publish Laravel's complete `logging` configuration file using the `config:publish` Artisan command:
 
 ```
 php artisan config:publish logging
 ```
 
-If you choose not to publish the configuration file, it is still advisable to review the `vendor/laravel/framework/config/logging.php` file to understand all the available channels and their options. Below, we'll review a few common options.
+If you choose to not publish the configuration file, you may wish to review the `vendor/laravel/framework/config/logging.php` file to understand all of the available logging channels and their options.
 
 <a name="available-channel-drivers"></a>
 ### Available Channel Drivers
@@ -67,7 +67,7 @@ Name | Description
 <a name="configuring-the-channel-name"></a>
 #### Configuring the Channel Name
 
-By default, Monolog is instantiated with a "channel name" that matches the current environment, such as `production` or `local`. To change this value, add a `name` option to your channel's configuration:
+By default, Monolog is instantiated with a "channel name" that matches the current environment, such as `production` or `local`. To change this value, you may add a `name` option to your channel's configuration:
 
     'stack' => [
         'driver' => 'stack',
@@ -106,14 +106,14 @@ Name | Description                                                       | Defau
 <a name="configuring-the-papertrail-channel"></a>
 #### Configuring the Papertrail Channel
 
-The `papertrail` channel requires the `host` and `port` configuration options, that may be set using the `LOG_PAPERTRAIL_URL` and `LOG_PAPERTRAIL_PORT` environment variables. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
+The `papertrail` channel requires `host` and `port` configuration options. These may be defined via the `LOG_PAPERTRAIL_URL` and `LOG_PAPERTRAIL_PORT` environment variables. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
 
 <a name="configuring-the-slack-channel"></a>
 #### Configuring the Slack Channel
 
-The `slack` channel requires a `url` configuration option, that may be set using the `LOG_SLACK_WEBHOOK_URL` environment variable. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
+The `slack` channel requires a `url` configuration option. This value may be defined via the `LOG_SLACK_WEBHOOK_URL` environment variable. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
 
-By default, Slack will only receive logs at the `critical` level and above; however, you can adjust this using the `LOG_LEVEL` environment variable or modifying the `level` configuration option within your Slack log channel's configuration array.
+By default, Slack will only receive logs at the `critical` level and above; however, you can adjust this using the `LOG_LEVEL` environment variable or by modifying the `level` configuration option within your Slack log channel's configuration array.
 
 <a name="logging-deprecation-warnings"></a>
 ### Logging Deprecation Warnings
