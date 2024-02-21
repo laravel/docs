@@ -11,6 +11,7 @@
     - [Caching Routes](#optimizing-route-loading)
     - [Caching Views](#optimizing-view-loading)
 - [Debug Mode](#debug-mode)
+- [Health Check Endpoint](#health-check-endpoint)
 - [Easy Deployment With Forge / Vapor](#deploying-with-forge-or-vapor)
 
 <a name="introduction"></a>
@@ -150,10 +151,26 @@ This command precompiles all your Blade views so they are not compiled on demand
 <a name="debug-mode"></a>
 ## Debug Mode
 
-The debug option in your config/app.php configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your application's `.env` file.
+The debug option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your application's `.env` file.
 
 > [!WARNING]  
 > **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
+
+<a name="health-check-endpoint"></a>
+## Health Check Endpoint
+
+Laravel includes a built-in health check endpoint that can be used to monitor the status of your application. Typically, in production, you may also use this endpoint to report the status of your application to an uptime monitor, load balancer, or orchestration system such as Kubernetes.
+
+By default, this health check endpoint is served at `/up`, and it will return a 200 status code if the application has booted without exceptions and a 500 status code otherwise. You may configure the path of this endpoint in your application's `bootstrap/app` file:
+
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up', // [tl! remove]
+        health: '/status', // [tl! add]
+    )
+
+When HTTP requests are made to this route, Laravel will also dispatch a `DiagnosingHealth` event, allowing you to perform additional health checks relevant to your application.
 
 <a name="deploying-with-forge-or-vapor"></a>
 ## Easy Deployment With Forge / Vapor
