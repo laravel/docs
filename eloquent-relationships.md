@@ -1264,7 +1264,7 @@ where user_id = ? and active = 1 or votes >= 100
 
 In most situations, you should use [logical groups](/docs/{{version}}/queries#logical-grouping) to group the conditional checks between parentheses:
 
-    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     $user->posts()
             ->where(function (Builder $query) {
@@ -1318,7 +1318,7 @@ Nested `has` statements may be constructed using "dot" notation. For example, yo
 
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to define additional query constraints on your `has` queries, such as inspecting the content of a comment:
 
-    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     // Retrieve posts with at least one comment containing words like code%...
     $posts = Post::whereHas('comments', function (Builder $query) {
@@ -1359,7 +1359,7 @@ When retrieving model records, you may wish to limit your results based on the a
 
 If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to add additional query constraints to your `doesntHave` queries, such as inspecting the content of a comment:
 
-    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     $posts = Post::whereDoesntHave('comments', function (Builder $query) {
         $query->where('content', 'like', 'code%');
@@ -1367,7 +1367,7 @@ If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesn
 
 You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments; however, posts that have comments from authors that are not banned will be included in the results:
 
-    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     $posts = Post::whereDoesntHave('comments.author', function (Builder $query) {
         $query->where('banned', 0);
@@ -1381,7 +1381,7 @@ To query the existence of "morph to" relationships, you may use the `whereHasMor
     use App\Models\Comment;
     use App\Models\Post;
     use App\Models\Video;
-    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     // Retrieve comments associated to posts or videos with a title like code%...
     $comments = Comment::whereHasMorph(
@@ -1403,7 +1403,7 @@ To query the existence of "morph to" relationships, you may use the `whereHasMor
 
 You may occasionally need to add query constraints based on the "type" of the related polymorphic model. The closure passed to the `whereHasMorph` method may receive a `$type` value as its second argument. This argument allows you to inspect the "type" of the query that is being built:
 
-    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     $comments = Comment::whereHasMorph(
         'commentable',
@@ -1420,7 +1420,7 @@ You may occasionally need to add query constraints based on the "type" of the re
 
 Instead of passing an array of possible polymorphic models, you may provide `*` as a wildcard value. This will instruct Laravel to retrieve all of the possible polymorphic types from the database. Laravel will execute an additional query in order to perform this operation:
 
-    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     $comments = Comment::whereHasMorph('commentable', '*', function (Builder $query) {
         $query->where('title', 'like', 'foo%');
@@ -1444,7 +1444,7 @@ Sometimes you may want to count the number of related models for a given relatio
 
 By passing an array to the `withCount` method, you may add the "counts" for multiple relations as well as add additional constraints to the queries:
 
-    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     $posts = Post::withCount(['votes', 'comments' => function (Builder $query) {
         $query->where('content', 'like', 'code%');
@@ -1455,7 +1455,7 @@ By passing an array to the `withCount` method, you may add the "counts" for mult
 
 You may also alias the relationship count result, allowing multiple counts on the same relationship:
 
-    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     $posts = Post::withCount([
         'comments',
