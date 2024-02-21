@@ -2398,13 +2398,13 @@ Laravel uses the `Sleep` class internally whenever it is pausing execution. For 
 <a name="php-enum"></a>
 ### PHP Enum
 
-You can create enum class with `make:enum` command:
+You can generate an enum class with the `make:enum` command:
 
 ```bash
 php artisan make:enum StatusEnum
 ```
 
-The enum class available on `App\StatusEnum.php`.
+The new enum class will be placed in your `App` directory.
 
 For convenience, you can create enum class with specify type such as `string` and `int`:
 
@@ -2412,7 +2412,7 @@ For convenience, you can create enum class with specify type such as `string` an
 php artisan make:enum StatusEnum --string
 ```
 
-The enum class be like this:
+After, the enum class is generated with string type:
 
 ```php
 <?php
