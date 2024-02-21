@@ -11,7 +11,7 @@
     - [Caching Routes](#optimizing-route-loading)
     - [Caching Views](#optimizing-view-loading)
 - [Debug Mode](#debug-mode)
-- [Health Check Endpoint](#health-check-endpoint)
+- [The Health Route](#the-health-route)
 - [Easy Deployment With Forge / Vapor](#deploying-with-forge-or-vapor)
 
 <a name="introduction"></a>
@@ -156,8 +156,8 @@ The debug option in your `config/app.php` configuration file determines how much
 > [!WARNING]  
 > **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
 
-<a name="health-check-endpoint"></a>
-## Health Route
+<a name="the-health-route"></a>
+## The Health Route
 
 Laravel includes a built-in health check route that can be used to monitor the status of your application. In production, this route may be used to report the status of your application to an uptime monitor, load balancer, or orchestration system such as Kubernetes.
 
