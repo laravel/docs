@@ -9,6 +9,8 @@
 
 - [Updating Dependencies](#updating-dependencies)
 - [Updating Minimum Stability](#updating-minimum-stability)
+- [Modifying Columns](#modifying-columns)
+- [Floating-Point Types](#floating-point-types)
 - [SQLite Minimum Version](#sqlite-minimum-version)
 
 </div>
@@ -18,8 +20,7 @@
 
 <div class="content-list" markdown="1">
 
-- [Modifying Columns](#modifying-columns)
-- [Floating-Point Types](#floating-point-types)
+- [Per-Second Rate Limiting](#per-second-rate-limiting)
 
 </div>
 
@@ -29,6 +30,7 @@
 <div class="content-list" markdown="1">
 
 - [The `Enumerable` Contract](#the-enumerable-contract)
+- [Eloquent Model `casts` Method](#eloquent-model-casts-method)
 - [Spatial Types](#spatial-types)
 - [Doctrine DBAL Removal](#doctrine-dbal-removal)
 
@@ -38,7 +40,7 @@
 ## Upgrading To 11.0 From 10.x
 
 <a name="estimated-upgrade-time-??-minutes"></a>
-#### Estimated Upgrade Time: ?? Minutes
+#### Estimated Upgrade Time: 15 Minutes
 
 > [!NOTE]
 > We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
@@ -64,6 +66,29 @@ You should update the following dependencies in your application's `composer.jso
 
 In addition, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
 
+<a name="authentication"></a>
+### Authentication
+
+#### The `UserProvider` Contract
+
+The `Illuminate\Contracts\Auth\UserProvider` contract has received a new `rehashPasswordIfRequired` method. This method is responsible for re-hashing and storing the user's password in storage when the application's hashing algorithm work factor has changed.
+
+If your application or package defines a class that implements this interface, you should add the new `rehashPasswordIfRequired` method to your implementation. A reference implementation can be found within the `Illuminate\Auth\EloquentUserProvider` class:
+
+```php
+public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false);
+```
+
+<a name="cache"></a>
+### Cache
+
+<a name="cache-key-prefixes"></a>
+#### Cache Key Prefixes
+
+**Likelihood Of Impact: Very Low**
+
+Previously, if a cache key prefix was defined for the DynamoDB, Memcached, or Redis cache stores, Laravel would append a `:` to the prefix. In Laravel 11, the cache key prefix does not receive the `:` suffix. If you would like to maintain the previous prefixing behavior, you can manually add the `:` suffix to your cache key prefix.
+
 <a name="collections"></a>
 ### Collections
 
@@ -88,10 +113,17 @@ public function dump(...$args);
 
 If your application is utilizing an SQLite database, SQLite 3.35.0 or greater is required.
 
+<a name="eloquent-model-casts-method"></a>
+#### Eloquent Model `casts` Method
+
+**Likelihood Of Impact: Low**
+
+The base Eloquent model class now defines a `casts` method in order to support the definition of attribute casts. If one of your application's models is defining a `casts` relationship, it may conflict with the `casts` method now present on the base Eloquent model class.
+
 <a name="modifying-columns"></a>
 #### Modifying Columns
 
-**Likelihood Of Impact: Medium**
+**Likelihood Of Impact: High**
 
 When modifying a column, you must now explicitly include all the modifiers you want to keep on the column definition after it is changed. Any missing attributes will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column, even if those attributes have been assigned to the column by a previous migration:
 
@@ -114,7 +146,7 @@ $table->char('postal_code', 10)->unique(false)->change();
 <a name="floating-point-types"></a>
 #### Floating-Point Types
 
-**Likelihood Of Impact: Medium**
+**Likelihood Of Impact: High**
 
 The `double` and `float` migration column types have been rewritten to be consistent across all databases.
 
@@ -208,3 +240,73 @@ Schema::connection('database')->hasTable('schema.table');
 **Likelihood Of Impact: Very Low**
 
 The `Schema::getColumnType()` method now always returns actual type of the given column, not the Doctrine DBAL equivalent type.
+
+<a name="database-connection-interface"></a>
+#### Database Connection Interface
+
+**Likelihood Of Impact: Very Low**
+
+The `Illuminate\Database\ConnectionInterface` interface has received a new `scalar` method. If you are defining your own implementation of this interface, you should add the `scalar` method to your implementation:
+
+```php
+public function scalar($query, $bindings = [], $useReadPdo = true);
+```
+
+<a name="mail"></a>
+### Mail
+
+<a name="the-mailer-contract"></a>
+#### The `Mailer` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `Illuminate\Contracts\Mail\Mailer` contract has received a new `sendNow` method. If your application or package is manually implementing this contract, you should add the new `sendNow` method to your implementation:
+
+```php
+public function sendNow($mailable, array $data = [], $callback = null);
+```
+
+<a name="queues"></a>
+### Queues
+
+<a name="the-batch-repository-interface"></a>
+#### The `BatchRepository` Interface
+
+**Likelihood Of Impact: Very Low**
+
+The `Illuminate\Bus\BatchRepository` interface has received a new `rollBack` method. If you are implementing this interface within your own package or application, you should add this method to your implementation:
+
+```php
+public function rollBack();
+```
+
+<a name="rate-limiting"></a>
+### Rate Limiting
+
+<a name="per-second-rate-limiting"></a>
+#### Per-Second Rate Limiting
+
+**Likelihood Of Impact: Medium**
+
+Laravel 11 supports per-second rate limiting instead of being limited to per-minute granularity. There are a variety of potential breaking changes you should be aware of related to this change.
+
+The `GlobalLimit` class constructor now accepts seconds instead of minutes. This class is not documented and would not typically be used by your application:
+
+```php
+new GlobalLimit($attempts, 2 * 60);
+```
+
+The `Limit` class constructor now accepts seconds instead of minutes. All documented usages of this class are limited to static constructors such as `Limit::perMinute` and `Limit::perSecond`. However, if you are instantiating this class manually, you should update your application to provide seconds to the class's constructor:
+
+```php
+new Limit($key, $attempts, 2 * 60);
+```
+
+The `Limit` class's `decayMinutes` property has been renamed to `decaySeconds` and now contains seconds instead of minutes.
+
+The `Illuminate\Queue\Middleware\ThrottlesExceptions` and `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` class constructors now accept seconds instead of minutes:
+
+```php
+new ThrottlesExceptions($attempts, 2 * 60);
+new ThrottlesExceptionsWithRedis($attempts, 2 * 60);
+```
