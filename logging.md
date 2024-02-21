@@ -30,25 +30,20 @@ Under the hood, Laravel utilizes the [Monolog](https://github.com/Seldaek/monolo
 <a name="configuration"></a>
 ## Configuration
 
-All of the configuration options for your application's logging behavior are housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below.
+By default, Laravel uses the `stack` channel when logging messages. The `stack` channel is used to [aggregate multiple log channels](#building-log-stacks) into a single channel.
 
-By default, Laravel will use the `stack` channel when logging messages. The `stack` channel is used to aggregate multiple log channels into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
+You can specify your application's log driver using the `LOG_DRIVER` environment variable. However, to customize some of the configuration options documented below that are not available via environment variables, you should publish Laravel's complete `logging` configuration file using the `config:publish` Artisan command:
 
-<a name="configuring-the-channel-name"></a>
-#### Configuring the Channel Name
+```
+php artisan config:publish logging
+```
 
-By default, Monolog is instantiated with a "channel name" that matches the current environment, such as `production` or `local`. To change this value, add a `name` option to your channel's configuration:
-
-    'stack' => [
-        'driver' => 'stack',
-        'name' => 'channel-name',
-        'channels' => ['single', 'slack'],
-    ],
+If you choose to not publish the configuration file, you may wish to review the `vendor/laravel/framework/config/logging.php` file to understand all of the available logging channels and their options.
 
 <a name="available-channel-drivers"></a>
 ### Available Channel Drivers
 
-Each log channel is powered by a "driver". The driver determines how and where the log message is actually recorded. The following log channel drivers are available in every Laravel application. An entry for most of these drivers is already present in your application's `config/logging.php` configuration file, so be sure to review this file to become familiar with its contents:
+Each log channel is powered by a "driver". The driver determines how and where the log message is actually recorded. The following log channel drivers are available in every Laravel application:
 
 <div class="overflow-auto">
 
@@ -69,6 +64,17 @@ Name | Description
 > [!NOTE]  
 > Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
+<a name="configuring-the-channel-name"></a>
+#### Configuring the Channel Name
+
+By default, Monolog is instantiated with a "channel name" that matches the current environment, such as `production` or `local`. To change this value, you may add a `name` option to your channel's configuration:
+
+    'stack' => [
+        'driver' => 'stack',
+        'name' => 'channel-name',
+        'channels' => ['single', 'slack'],
+    ],
+
 <a name="channel-prerequisites"></a>
 ### Channel Prerequisites
 
@@ -87,7 +93,7 @@ Name | Description | Default
 
 </div>
 
-Additionally, the retention policy for the `daily` channel can be configured via the `days` option:
+Additionally, the retention policy for the `daily` channel can be configured via the `LOG_DAILY_DAYS` environment variable or by setting the `days` configuration option.
 
 <div class="overflow-auto">
 
@@ -100,19 +106,19 @@ Name | Description                                                       | Defau
 <a name="configuring-the-papertrail-channel"></a>
 #### Configuring the Papertrail Channel
 
-The `papertrail` channel requires the `host` and `port` configuration options. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
+The `papertrail` channel requires `host` and `port` configuration options. These may be defined via the `LOG_PAPERTRAIL_URL` and `LOG_PAPERTRAIL_PORT` environment variables. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
 
 <a name="configuring-the-slack-channel"></a>
 #### Configuring the Slack Channel
 
-The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
+The `slack` channel requires a `url` configuration option. This value may be defined via the `LOG_SLACK_WEBHOOK_URL` environment variable. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
 
-By default, Slack will only receive logs at the `critical` level and above; however, you can adjust this in your `config/logging.php` configuration file by modifying the `level` configuration option within your Slack log channel's configuration array.
+By default, Slack will only receive logs at the `critical` level and above; however, you can adjust this using the `LOG_LEVEL` environment variable or by modifying the `level` configuration option within your Slack log channel's configuration array.
 
 <a name="logging-deprecation-warnings"></a>
 ### Logging Deprecation Warnings
 
-PHP, Laravel, and other libraries often notify their users that some of their features have been deprecated and will be removed in a future version. If you would like to log these deprecation warnings, you may specify your preferred `deprecations` log channel in your application's `config/logging.php` configuration file:
+PHP, Laravel, and other libraries often notify their users that some of their features have been deprecated and will be removed in a future version. If you would like to log these deprecation warnings, you may specify your preferred `deprecations` log channel using the `LOG_DEPRECATIONS_CHANNEL` environment variable, or within your application's `config/logging.php` configuration file:
 
     'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
 
@@ -134,25 +140,31 @@ Or, you may define a log channel named `deprecations`. If a log channel with thi
 
 As mentioned previously, the `stack` driver allows you to combine multiple channels into a single log channel for convenience. To illustrate how to use log stacks, let's take a look at an example configuration that you might see in a production application:
 
-    'channels' => [
-        'stack' => [
-            'driver' => 'stack',
-            'channels' => ['syslog', 'slack'],
-        ],
-
-        'syslog' => [
-            'driver' => 'syslog',
-            'level' => 'debug',
-        ],
-
-        'slack' => [
-            'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'Laravel Log',
-            'emoji' => ':boom:',
-            'level' => 'critical',
-        ],
+```php
+'channels' => [
+    'stack' => [
+        'driver' => 'stack',
+        'channels' => ['syslog', 'slack'], // [tl! add]
+        'ignore_exceptions' => false,
     ],
+
+    'syslog' => [
+        'driver' => 'syslog',
+        'level' => env('LOG_LEVEL', 'debug'),
+        'facility' => env('LOG_SYSLOG_FACILITY', LOG_USER),
+        'replace_placeholders' => true,
+    ],
+
+    'slack' => [
+        'driver' => 'slack',
+        'url' => env('LOG_SLACK_WEBHOOK_URL'),
+        'username' => env('LOG_SLACK_USERNAME', 'Laravel Log'),
+        'emoji' => env('LOG_SLACK_EMOJI', ':boom:'),
+        'level' => env('LOG_LEVEL', 'critical'),
+        'replace_placeholders' => true,
+    ],
+],
+```
 
 Let's dissect this configuration. First, notice our `stack` channel aggregates two other channels via its `channels` option: `syslog` and `slack`. So, when logging messages, both of these channels will have the opportunity to log the message. However, as we will see below, whether these channels actually log the message may be determined by the message's severity / "level".
 
@@ -339,7 +351,8 @@ To get started, define a `tap` array on the channel's configuration. The `tap` a
         'driver' => 'single',
         'tap' => [App\Logging\CustomizeFormatter::class],
         'path' => storage_path('logs/laravel.log'),
-        'level' => 'debug',
+        'level' => env('LOG_LEVEL', 'debug'),
+        'replace_placeholders' => true,
     ],
 
 Once you have configured the `tap` option on your channel, you're ready to define the class that will customize your Monolog instance. This class only needs a single method: `__invoke`, which receives an `Illuminate\Log\Logger` instance. The `Illuminate\Log\Logger` instance proxies all method calls to the underlying Monolog instance:
