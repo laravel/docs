@@ -2411,3 +2411,16 @@ For convenience, you can create enum class with specify type such as `string` an
 ```bash
 php artisan make:enum StatusEnum --string
 ```
+
+The enum class be like this:
+
+```php
+<?php
+
+namespace App;
+
+enum StatusEnum: string
+{
+    //
+}
+```
