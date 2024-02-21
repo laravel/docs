@@ -170,7 +170,7 @@ By default, the health check route is served at `/up` and will return a 200 HTTP
         health: '/status', // [tl! add]
     )
 
-When HTTP requests are made to this route, Laravel will also dispatch a `DiagnosingHealth` event, allowing you to perform additional health checks relevant to your application.
+When HTTP requests are made to this route, Laravel will also dispatch a `Illuminate\Foundation\Events\DiagnosingHealth` event, allowing you to perform additional health checks relevant to your application. Within a [listener](/docs/{{version}}/events) for this event, you may check your application's database or cache status. If you detect a problem with your application, you may simply throw an exception from the listener.
 
 <a name="deploying-with-forge-or-vapor"></a>
 ## Easy Deployment With Forge / Vapor
