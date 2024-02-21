@@ -166,6 +166,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [fake](#method-fake)
 [filled](#method-filled)
 [info](#method-info)
+[literal](#method-literal)
 [logger](#method-logger)
 [method_field](#method-method-field)
 [now](#method-now)
@@ -1760,6 +1761,19 @@ The `info` function will write information to your application's [log](/docs/{{v
 An array of contextual data may also be passed to the function:
 
     info('User login attempt failed.', ['id' => $user->id]);
+
+<a name="method-literal"></a>
+#### `literal()` {.collection-method}
+
+"The `literal` function creates a new [stdClass](https://www.php.net/manual/en/class.stdclass.php) instance with the given named arguments as properties:
+
+    $obj = literal(
+        name: 'Joe',
+        languages: ['PHP', 'Ruby'],
+    );
+
+    $obj->name; // 'Joe'
+    $obj->languages; // ['PHP', 'Ruby']
 
 <a name="method-logger"></a>
 #### `logger()` {.collection-method}
