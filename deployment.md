@@ -157,11 +157,11 @@ The debug option in your `config/app.php` configuration file determines how much
 > **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
 
 <a name="health-check-endpoint"></a>
-## Health Check Endpoint
+## Health Route
 
-Laravel includes a built-in health check endpoint that can be used to monitor the status of your application. Typically, in production, you may also use this endpoint to report the status of your application to an uptime monitor, load balancer, or orchestration system such as Kubernetes.
+Laravel includes a built-in health check route that can be used to monitor the status of your application. In production, this route may be used to report the status of your application to an uptime monitor, load balancer, or orchestration system such as Kubernetes.
 
-By default, this health check endpoint is served at `/up`, and it will return a 200 status code if the application has booted without exceptions and a 500 status code otherwise. You may configure the path of this endpoint in your application's `bootstrap/app` file:
+By default, the health check route is served at `/up` and will return a 200 HTTP response if the application has booted without exceptions. Otherwise, a 500 HTTP response will be returned. You may configure the URI for this route in your application's `bootstrap/app` file:
 
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
