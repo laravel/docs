@@ -455,8 +455,28 @@ Often, you will be testing pages that require authentication. You can use Dusk's
               ->visit('/home');
     });
 
+#### Default user
+
+To avoid passing the same parameter from every test, the `login` method will automatically use a default:
+
+    use Laravel\Dusk\Browser;
+
+    $this->browse(function (Browser $browser) {
+        $browser->login()
+              ->visit('/home');
+    });
+
+This relies on you adding the following lines to your `tests/DuskTestCase.php` file:
+
+    use App\Models\User;
+
+    public static function user(): void
+    {
+        return User::find(1);
+    }
+
 > [!WARNING]  
-> After using the `loginAs` method, the user session will be maintained for all tests within the file.
+> After using the `loginAs` or `login` methods, the user session will be maintained for all tests within the file.
 
 <a name="cookies"></a>
 ### Cookies
