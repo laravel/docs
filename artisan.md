@@ -21,6 +21,7 @@
 - [Programmatically Executing Commands](#programmatically-executing-commands)
     - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
 - [Signal Handling](#signal-handling)
+- [Make PHP Files](#make-php-files)
 - [Stub Customization](#stub-customization)
 - [Events](#events)
 
@@ -782,6 +783,38 @@ To listen for multiple signals at once, you may provide an array of signals to t
 
         dump($signal); // SIGTERM / SIGQUIT
     });
+
+<a name="make-php-files"></a>
+## Make PHP Files
+
+Artisan provides a variety of helpful commands for generating classes and other PHP files.
+
+For creating classes, you may use the `make:class` Artisan command:
+
+```shell
+php artisan make:class
+php artisan make:class --invokable
+```
+
+If you wish to create an enum, you may use the `make:enum` Artisan command:
+
+```shell
+php artisan make:enum
+php artisan make:enum --int
+php artisan make:enum --string
+```
+
+To create an interface, you may use the `make:interface` Artisan command:
+
+```shell
+php artisan make:interface
+```
+
+If you need to create a trait, you may use the `make:trait` Artisan command:
+
+```shell
+php artisan make:trait
+```
 
 <a name="stub-customization"></a>
 ## Stub Customization
