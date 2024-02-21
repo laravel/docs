@@ -9,6 +9,7 @@
 
 - [Updating Dependencies](#updating-dependencies)
 - [Updating Minimum Stability](#updating-minimum-stability)
+- [Application Structure](#application-structure)
 - [Modifying Columns](#modifying-columns)
 - [Floating-Point Types](#floating-point-types)
 - [SQLite Minimum Version](#sqlite-minimum-version)
@@ -65,6 +66,13 @@ You should update the following dependencies in your application's `composer.jso
 </div>
 
 In addition, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
+
+<a name="application-structure"></a>
+### Application Structure
+
+Laravel 11 introduces a new default application structure with fewer default files. Namely, new Laravel applications contain fewer service providers, middleware, and configuration files.
+
+However, we do **not recommend** that Laravel 10 applications upgrading to Laravel 11 attempt to migrate their application structure, as Laravel 11 has been carefully tuned to also support the Laravel 10 application structure.
 
 <a name="authentication"></a>
 ### Authentication
