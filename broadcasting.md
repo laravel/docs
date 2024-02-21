@@ -6,7 +6,7 @@
     - [Reverb](#reverb)
     - [Pusher Channels](#pusher-channels)
     - [Ably](#ably)
-    - [Open Source Alternatives](#open-source-alternatives)
+    - [Community Alternatives](#community-alternatives)
 - [Client Side Installation](#client-side-installation)
     - [Reverb](#client-reverb)
     - [Pusher Channels](#client-pusher-channels)
@@ -69,22 +69,36 @@ Event broadcasting is accomplished by a server-side broadcasting driver that bro
 <a name="configuration"></a>
 ### Configuration
 
-All of your application's event broadcasting configuration is stored in the `config/broadcasting.php` configuration file. Laravel supports several broadcast drivers out of the box: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), [Redis](/docs/{{version}}/redis), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to totally disable broadcasting during testing. A configuration example is included for each of these drivers in the `config/broadcasting.php` configuration file.
+Laravel's complete `broadcasting.php` configuration file is not published by default, as you can specify your application's broadcast driver using the `BROADCAST_CONNECTION` environment variable. However, to customize some of the configuration options documented below that are not available via environment variables, you may have to publish the configuration file using the `config:publish` Artisan command:
 
-<a name="broadcast-service-provider"></a>
-#### Broadcast Service Provider
+```shell
+php artisan config:publish broadcasting
+```
 
-Before broadcasting any events, you will first need to register the `App\Providers\BroadcastServiceProvider`. In new Laravel applications, you only need to uncomment this provider in the `providers` array of your `config/app.php` configuration file. This `BroadcastServiceProvider` contains the code necessary to register the broadcast authorization routes and callbacks.
+If you choose not to publish the configuration file, it is still advisable to review the `vendor/laravel/framework/config/broadcasting.php` file to understand all the available drivers and their options.
+
+Laravel supports several broadcast drivers out of the box: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), [Redis](/docs/{{version}}/redis), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to totally disable broadcasting during testing.
+
+<a name="installation"></a>
+#### Installation
+
+Broadcasting is not enabled by default in a new Laravel application. You may enable broadcasting using the `install:broadcasting` Artisan command:
+
+```shell
+php artisan install:broadcasting
+```
+
+The `install:broadcasting` command will create an `routes/channels.php` file where you may register the broadcast authorization routes and callbacks.
 
 <a name="queue-configuration"></a>
 #### Queue Configuration
 
-You will also need to configure and run a [queue worker](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected by events being broadcast.
+Before broadcasting any events, first you will also need to configure and run a [queue worker](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected by events being broadcast.
 
 <a name="reverb"></a>
 ### Reverb
 
-You may use the Composer package manager to install Laravel Reverb into your Laravel project. Since Reverb is currently in beta, you will need to explicitly install the beta release:
+When running the `install:broadcasting` command, you will be prompted to install Reverb. If you respond negatively to the prompt, you may install Reverb manually using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
 
 ```sh
 composer require laravel/reverb:@beta
@@ -107,29 +121,32 @@ If you plan to broadcast your events using [Pusher Channels](https://pusher.com/
 composer require pusher/pusher-php-server
 ```
 
-Next, you should configure your Pusher Channels credentials in the `config/broadcasting.php` configuration file. An example Pusher Channels configuration is already included in this file, allowing you to quickly specify your key, secret, and application ID. Typically, these values should be set via the `PUSHER_APP_KEY`, `PUSHER_APP_SECRET`, and `PUSHER_APP_ID` [environment variables](/docs/{{version}}/configuration#environment-configuration):
+Next, you should configure your Pusher Channels credentials in your `.env` file:
 
 ```ini
 PUSHER_APP_ID=your-pusher-app-id
 PUSHER_APP_KEY=your-pusher-key
 PUSHER_APP_SECRET=your-pusher-secret
+PUSHER_HOST=
+PUSHER_PORT=443
+PUSHER_SCHEME=https
 PUSHER_APP_CLUSTER=mt1
 ```
 
-The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster.
+If you publish the `config/broadcasting.php` file, you may specify additional `options` that are supported by Channels, such as the cluster.
 
-Next, you will need to change your broadcast driver to `pusher` in your `.env` file:
+Next, you will need to change your broadcast connection to `pusher` in your `.env` file:
 
 ```ini
-BROADCAST_DRIVER=pusher
+BROADCAST_CONNECTION=pusher
 ```
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
 
-<a name="pusher-compatible-open-source-alternatives"></a>
-#### Open Source Pusher Alternatives
+<a name="pusher-compatible-community-alternatives"></a>
+#### Community Pusher Alternatives
 
-[soketi](https://docs.soketi.app/) provides a Pusher compatible WebSocket server for Laravel, allowing you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using open source packages for broadcasting, please consult our documentation on [open source alternatives](#open-source-alternatives).
+[soketi](https://docs.soketi.app/) provides a Pusher compatible WebSocket server for Laravel, allowing you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using open source packages for broadcasting, please consult our documentation on [open source alternatives](#community-alternatives).
 
 <a name="ably"></a>
 ### Ably
@@ -143,24 +160,24 @@ If you plan to broadcast your events using [Ably](https://ably.com), you should 
 composer require ably/ably-php
 ```
 
-Next, you should configure your Ably credentials in the `config/broadcasting.php` configuration file. An example Ably configuration is already included in this file, allowing you to quickly specify your key. Typically, this value should be set via the `ABLY_KEY` [environment variable](/docs/{{version}}/configuration#environment-configuration):
+Next, you should configure your Ably credentials via the `ABLY_KEY` environment variable in your `.env` file:
 
 ```ini
 ABLY_KEY=your-ably-key
 ```
 
-Next, you will need to change your broadcast driver to `ably` in your `.env` file:
+Next, you will need to change your broadcast connection to `ably` in your `.env` file:
 
 ```ini
-BROADCAST_DRIVER=ably
+BROADCAST_CONNECTION=ably
 ```
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
 
-<a name="open-source-alternatives"></a>
-### Open Source Alternatives
+<a name="community-alternatives"></a>
+### Community Alternatives
 
-<a name="open-source-alternatives-node"></a>
+<a name="community-alternatives-node"></a>
 #### Node
 
 [Soketi](https://github.com/soketi/soketi) is a Node based, Pusher compatible WebSocket server for Laravel. Under the hood, Soketi utilizes µWebSockets.js for extreme scalability and speed. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://docs.soketi.app/).
@@ -177,12 +194,12 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file - you simply need to uncomment it:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that was created by the `install:broadcasting` Artisan command. By default, an example Echo configuration is already included in this file:
 
 ```js
 import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
 
+import Pusher from 'pusher-js';
 window.Pusher = Pusher;
 
 window.Echo = new Echo({
@@ -205,12 +222,12 @@ window.Echo = new Echo({
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file - you simply need to uncomment it:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that was created by the `install:broadcasting` Artisan command. By default, an example Echo configuration is already included in this file; however, the default configuration in the `bootstrap.js` file is intended for Reverb. You may copy the configuration below to transition your configuration to Pusher:
 
 ```js
 import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
 
+import Pusher from 'pusher-js';
 window.Pusher = Pusher;
 
 window.Echo = new Echo({
@@ -266,12 +283,12 @@ npm install --save-dev laravel-echo pusher-js
 
 **Before continuing, you should enable Pusher protocol support in your Ably application settings. You may enable this feature within the "Protocol Adapter Settings" portion of your Ably application's settings dashboard.**
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file; however, the default configuration in the `bootstrap.js` file is intended for Pusher. You may copy the configuration below to transition your configuration to Ably:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that was created by the `install:broadcasting` Artisan command. By default, an example Echo configuration is already included in this file; however, the default configuration in the `bootstrap.js` file is intended for Reverb. You may copy the configuration below to transition your configuration to Ably:
 
 ```js
 import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
 
+import Pusher from 'pusher-js';
 window.Pusher = Pusher;
 
 window.Echo = new Echo({
@@ -303,7 +320,7 @@ Laravel's event broadcasting allows you to broadcast your server-side Laravel ev
 Events are broadcast over "channels", which may be specified as public or private. Any visitor to your application may subscribe to a public channel without any authentication or authorization; however, in order to subscribe to a private channel, a user must be authenticated and authorized to listen on that channel.
 
 > [!NOTE]  
-> If you would like to explore open source alternatives to Pusher, check out the [open source alternatives](#open-source-alternatives).
+> If you would like to explore open source alternatives to Pusher, check out the [open source alternatives](#community-alternatives).
 
 <a name="using-example-application"></a>
 ### Using an Example Application
@@ -570,63 +587,14 @@ If your queue connection's `after_commit` configuration option is set to `false`
 <a name="authorizing-channels"></a>
 ## Authorizing Channels
 
-Private channels require you to authorize that the currently authenticated user can actually listen on the channel. This is accomplished by making an HTTP request to your Laravel application with the channel name and allowing your application to determine if the user can listen on that channel. When using [Laravel Echo](#client-side-installation), the HTTP request to authorize subscriptions to private channels will be made automatically; however, you do need to define the proper routes to respond to these requests.
+Private channels require you to authorize that the currently authenticated user can actually listen on the channel. This is accomplished by making an HTTP request to your Laravel application with the channel name and allowing your application to determine if the user can listen on that channel. When using [Laravel Echo](#client-side-installation), the HTTP request to authorize subscriptions to private channels will be made automatically.
 
-<a name="defining-authorization-routes"></a>
-### Defining Authorization Routes
-
-Thankfully, Laravel makes it easy to define the routes to respond to channel authorization requests. In the `App\Providers\BroadcastServiceProvider` included with your Laravel application, you will see a call to the `Broadcast::routes` method. This method will register the `/broadcasting/auth` route to handle authorization requests:
-
-    Broadcast::routes();
-
-The `Broadcast::routes` method will automatically place its routes within the `web` middleware group; however, you may pass an array of route attributes to the method if you would like to customize the assigned attributes:
-
-    Broadcast::routes($attributes);
-
-<a name="customizing-the-authorization-endpoint"></a>
-#### Customizing the Authorization Endpoint
-
-By default, Echo will use the `/broadcasting/auth` endpoint to authorize channel access. However, you may specify your own authorization endpoint by passing the `authEndpoint` configuration option to your Echo instance:
-
-```js
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    // ...
-    authEndpoint: '/custom/endpoint/auth'
-});
-```
-
-<a name="customizing-the-authorization-request"></a>
-#### Customizing the Authorization Request
-
-You can customize how Laravel Echo performs authorization requests by providing a custom authorizer when initializing Echo:
-
-```js
-window.Echo = new Echo({
-    // ...
-    authorizer: (channel, options) => {
-        return {
-            authorize: (socketId, callback) => {
-                axios.post('/api/broadcasting/auth', {
-                    socket_id: socketId,
-                    channel_name: channel.name
-                })
-                .then(response => {
-                    callback(null, response.data);
-                })
-                .catch(error => {
-                    callback(error);
-                });
-            }
-        };
-    },
-})
-```
+Laravel automatically registers the `/broadcasting/auth` route to handle authorization requests, making it really easy to get started. The `/broadcasting/auth` route is automatically placed within the `web` middleware group.
 
 <a name="defining-authorization-callbacks"></a>
 ### Defining Authorization Callbacks
 
-Next, we need to define the logic that will actually determine if the currently authenticated user can listen to a given channel. This is done in the `routes/channels.php` file that is included with your application. In this file, you may use the `Broadcast::channel` method to register channel authorization callbacks:
+Next, we need to define the logic that will actually determine if the currently authenticated user can listen to a given channel. This is done in the `routes/channels.php` file that was created by the `install:broadcasting` Artisan command. In this file, you may use the `Broadcast::channel` method to register channel authorization callbacks:
 
     use App\Models\User;
 
@@ -1170,4 +1138,4 @@ Echo.private(`App.Models.User.${userId}`)
     });
 ```
 
-In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework.
+In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in your application `routes/channels.php` file.
