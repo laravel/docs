@@ -1149,7 +1149,7 @@ The `Number::abbreviate` method returns the human-readable format of the provide
 <a name="method-number-clamp"></a>
 #### `Number::clamp()` {.collection-method}
 
-The `Number::clamp` method ensures a given number stays within a specified range. If the number is lower than the minimum, it's set to the minimum; if higher than the maximum, it's set to the maximum. The method returns the clamped number:
+The `Number::clamp` method ensures a given number stays within a specified range. If the number is lower than the minimum, the minimum value is returned. If the number is higher than the maximum, the maximum value is returned:
 
     use Illuminate\Support\Number;
 
