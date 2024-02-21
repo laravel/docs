@@ -8,6 +8,7 @@
     - [Lottery](#lottery)
     - [Pipeline](#pipeline)
     - [Sleep](#sleep)
+    - [PHP Enum](#php-enum)
 
 <a name="introduction"></a>
 ## Introduction
@@ -2393,3 +2394,12 @@ Sleep::whenFakingSleep(function (Duration $duration) {
 ```
 
 Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [`retry`](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.
+
+<a name="php-enum"></a>
+### PHP Enum
+
+You can create enum class with `make:enum` command:
+
+```bash
+php artisan make:enum StatusEnum
+```
