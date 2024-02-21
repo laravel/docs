@@ -2403,3 +2403,11 @@ You can create enum class with `make:enum` command:
 ```bash
 php artisan make:enum StatusEnum
 ```
+
+The enum class available on `App\StatusEnum.php`.
+
+For convenience, you can create enum class with specify type such as `string` and `int`:
+
+```bash
+php artisan make:enum StatusEnum --string
+```
