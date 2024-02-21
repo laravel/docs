@@ -22,7 +22,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides an expressive, minimal API around the [Symfony Process component](https://symfony.com/doc/current/components/process.html), allowing you to conveniently invoke external processes from your Laravel application. Laravel's process features are focused on the most common use cases and a wonderful developer experience.
+Laravel provides an expressive, minimal API around the [Symfony Process component](https://symfony.com/doc/7.0/components/process.html), allowing you to conveniently invoke external processes from your Laravel application. Laravel's process features are focused on the most common use cases and a wonderful developer experience.
 
 <a name="invoking-processes"></a>
 ## Invoking Processes

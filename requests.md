@@ -620,7 +620,7 @@ In addition to configuring the trusted proxies, you may also configure the proxy
     })
 
 > [!NOTE]  
-> If you are using AWS Elastic Load Balancing, your `headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `headers` value, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).
+> If you are using AWS Elastic Load Balancing, your `headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `headers` value, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/7.0/deployment/proxies.html).
 
 <a name="trusting-all-proxies"></a>
 #### Trusting All Proxies
