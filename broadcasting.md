@@ -68,7 +68,7 @@ Event broadcasting is accomplished by a server-side broadcasting driver that bro
 <a name="configuration"></a>
 ### Configuration
 
-Laravel's complete `broadcasting.php` configuration file is not published by default, as you can specify your application's broadcast driver using the `BROADCAST_CONNECTION` [environment variable](/docs/{{version}}/configuration#environment-configuration). However, to customize some of the configuration options documented below that are not available via environment variables, you may need to publish the `broadcasting.php` configuration file using the `config:publish` Artisan command:
+Laravel's complete `broadcasting.php` configuration file is not published by default, as you can specify your application's broadcast driver using the `BROADCAST_CONNECTION` [environment variable](/docs/{{version}}/configuration#environment-configuration). However, to customize some of the configuration options documented below that are not available via environment variables, you may publish the `broadcasting.php` configuration file using the `config:publish` Artisan command:
 
 ```shell
 php artisan config:publish broadcasting
@@ -130,7 +130,7 @@ PUSHER_SCHEME=https
 PUSHER_APP_CLUSTER=mt1
 ```
 
-Next, you should set the `BROADCAST_CONNECTION` environment variable's value to `pusher` in your application's `.env` file:
+Then, set the `BROADCAST_CONNECTION` environment variable to `pusher` in your application's `.env` file:
 
 ```ini
 BROADCAST_CONNECTION=pusher
@@ -156,7 +156,7 @@ Next, you should configure your Ably credentials via the `ABLY_KEY` environment 
 ABLY_KEY=your-ably-key
 ```
 
-Next, you should set the `BROADCAST_CONNECTION` environment variable's value to `ably` in your application's `.env` file:
+Then, set the `BROADCAST_CONNECTION` environment variable to `ably` in your application's `.env` file:
 
 ```ini
 BROADCAST_CONNECTION=ably
@@ -213,7 +213,7 @@ npm run build
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is within the `resources/js/echo.js` file that was created by the `install:broadcasting` Artisan command. By default, an example Echo configuration is already included in this file; however, the default configuration in the `echo.js` file is intended for Laravel Reverb. You may copy the configuration below to transition your configuration to Pusher:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. The `install:broadcasting` command creates an Echo configuration file at `resources/js/echo.js`; however, the default configuration in this file is intended for Laravel Reverb. You may copy the configuration below to transition your configuration to Pusher:
 
 ```js
 import Echo from 'laravel-echo';
@@ -274,7 +274,7 @@ npm install --save-dev laravel-echo pusher-js
 
 **Before continuing, you should enable Pusher protocol support in your Ably application settings. You may enable this feature within the "Protocol Adapter Settings" portion of your Ably application's settings dashboard.**
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is within the `resources/js/echo.js` file that was created by the `install:broadcasting` Artisan command. By default, an example Echo configuration is already included in this file; however, the default configuration in the `echo.js` file is intended for Laravel Reverb. You may copy the configuration below to transition your configuration to Ably:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. The `install:broadcasting` command creates an Echo configuration file at `resources/js/echo.js`; however, the default configuration in this file is intended for Laravel Reverb. You may copy the configuration below to transition your configuration to Ably:
 
 ```js
 import Echo from 'laravel-echo';
