@@ -139,11 +139,31 @@ The base Eloquent model class now defines a `casts` method in order to support t
 
 **Likelihood Of Impact: High**
 
-When modifying a column, you must now explicitly include all the modifiers you want to keep on the column definition after it is changed. Any missing attributes will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column, even if those attributes have been assigned to the column by a previous migration:
+When modifying a column, you must now explicitly include all the modifiers you want to keep on the column definition after it is changed. Any missing attributes will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column, even if those attributes have been assigned to the column by a previous migration.
+
+Let's look at a concrete example. Previously you would maybe have a migration that created a `votes` column with `unsigned`, `default`, and `comment` attributes:
+
+
+```php
+Schema::create('users', function (Blueprint $table) {
+    $table->integer('votes')->unsigned()->default(1)->comment('my comment');
+});
+```
+
+Later on you might "change" that column to be `nullable` as well:
+
 
 ```php
 Schema::table('users', function (Blueprint $table) {
-    $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();
+    $table->integer('votes')->nullable()->change();
+});
+```
+
+This would retain the `unsigned`, `default`, and `comment` attributes. However, in Laravel v11 that second "change" migration needs to have all of the previous attributes as well:
+
+```php
+Schema::table('users', function (Blueprint $table) {
+    $table->integer('votes')->unsigned()->default(1)->comment('my comment')->nullable()->change();
 });
 ```
 
@@ -155,6 +175,12 @@ $table->bigIncrements('id')->primary()->change();
 
 // Drop an index...
 $table->char('postal_code', 10)->unique(false)->change();
+```
+
+The most easy way to deal with this change is to take a dump of your database scheme and delete old migrations before migrating to Laravel v11:
+
+```bash
+php artisan schema:dump --prune
 ```
 
 <a name="floating-point-types"></a>
