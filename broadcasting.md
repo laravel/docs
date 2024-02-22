@@ -294,7 +294,7 @@ window.Echo = new Echo({
 
 You may have noticed our Ably Echo configuration references a `VITE_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
 
-Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
+Once you have adjusted the Echo configuration according to your needs, you may compile your application's assets:
 
 ```shell
 npm run dev
