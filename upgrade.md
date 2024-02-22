@@ -177,11 +177,13 @@ $table->bigIncrements('id')->primary()->change();
 $table->char('postal_code', 10)->unique(false)->change();
 ```
 
-The most easy way to deal with this change is to [squash and prune migrations](/docs/{{version}}/migrations#squashing-migrations):
+The most easy way to deal with this change is to [squash migrations](/docs/{{version}}/migrations#squashing-migrations):
 
 ```bash
-php artisan schema:dump --prune
+php artisan schema:dump
 ```
+
+This way, you can rely on raw SQL statements to restore the database which don't need to run the old migrations any longer.
 
 <a name="floating-point-types"></a>
 #### Floating-Point Types
