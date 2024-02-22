@@ -53,6 +53,21 @@ Laravel will automatically find and register your listeners by scanning your app
         }
     }
 
+If you plan to register addicional listeners, but you don't want to put them in the `Listeners` directory, you may manually register your listeners in your `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\Event;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Event::listen(
+            \App\Domain\Orders\Events\PodcastProcessed::class,
+            \App\Domain\Orders\Listeners\SendPodcastNotification::class,
+        );
+    }
+
 The `event:list` command may be used to display a list of all listeners registered in your application:
 
 ```shell
