@@ -69,7 +69,7 @@ Event broadcasting is accomplished by a server-side broadcasting driver that bro
 <a name="configuration"></a>
 ### Configuration
 
-Laravel's complete `broadcasting.php` configuration file is not published by default, as you can specify your application's broadcast driver using the `BROADCAST_CONNECTION` environment variable. However, to customize some of the configuration options documented below that are not available via environment variables, you may have to publish the configuration file using the `config:publish` Artisan command:
+Laravel's complete `broadcasting.php` configuration file is not published by default, as you can specify your application's broadcast driver using the `BROADCAST_CONNECTION` [environment variable](/docs/{{version}}/configuration#environment-configuration). However, to customize some of the configuration options documented below that are not available via environment variables, you may have to publish the configuration file using the `config:publish` Artisan command:
 
 ```shell
 php artisan config:publish broadcasting
