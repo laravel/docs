@@ -195,6 +195,15 @@ window.Echo = new Echo({
 });
 ```
 
+Next, you only need to compile your application's assets:
+
+```shell
+npm run build
+```
+
+> [!NOTE]
+> To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
+
 <a name="client-pusher-channels"></a>
 ### Pusher Channels
 
@@ -220,7 +229,7 @@ window.Echo = new Echo({
 });
 ```
 
-Once you have uncommented and adjusted the Echo configuration according to your application's needs, you may compile your application's assets:
+Once you have adjusted the Echo configuration according to your application's needs, you may compile your application's assets:
 
 ```shell
 npm run build
