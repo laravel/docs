@@ -26,7 +26,7 @@ Laravel ships with a variety of session backends that are accessed through an ex
 
 By default, Laravel is configured to use the `database` session driver, which stores user session information in your application's database and will work well for many production applications.
 
-Laravel's complete `session.php` configuration file is not published by default, as you can specify your application's session driver using the `SESSION_DRIVER` environment variable. However, if necessary, you may publish the configuration file using the `config:publish` Artisan command:
+Laravel's complete `session.php` configuration file is not published by default, as you can specify your application's session driver using the `SESSION_DRIVER` [environment variable](/docs/{{version}}/configuration#environment-configuration). However, if necessary, you may publish the configuration file using the `config:publish` Artisan command:
 
 ```shell
 php artisan config:publish session
@@ -54,10 +54,10 @@ Laravel includes a variety of great session drivers:
 <a name="database"></a>
 #### Database
 
-When using the `database` session driver, you will need to ensure that you have a database table to contain the session data. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` [database migration](/docs/{{version}}/migrations); however, if for any reason you do not have a `sessions` table, you may use the `session:table` Artisan command to generate this migration:
+When using the `database` session driver, you will need to ensure that you have a database table to contain the session data. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` [database migration](/docs/{{version}}/migrations); however, if for any reason you do not have a `sessions` table, you may use the `make:session-table` Artisan command to generate this migration:
 
 ```shell
-php artisan session:table
+php artisan make:session-table
 
 php artisan migrate
 ```
