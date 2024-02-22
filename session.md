@@ -57,7 +57,7 @@ Laravel includes a variety of great session drivers:
 When using the `database` session driver, you will need to ensure that you have a database table to contain the session data. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` [database migration](/docs/{{version}}/migrations); however, if for any reason you do not have a `sessions` table, you may use the `make:session-table` Artisan command to generate this migration:
 
 ```shell
-php artisan session:table
+php artisan make:session-table
 
 php artisan migrate
 ```
