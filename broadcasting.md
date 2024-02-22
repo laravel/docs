@@ -301,9 +301,6 @@ Laravel's event broadcasting allows you to broadcast your server-side Laravel ev
 
 Events are broadcast over "channels", which may be specified as public or private. Any visitor to your application may subscribe to a public channel without any authentication or authorization; however, in order to subscribe to a private channel, a user must be authenticated and authorized to listen on that channel.
 
-> [!NOTE]  
-> If you would like to explore open source alternatives to Pusher, check out the [open source alternatives](#community-alternatives).
-
 <a name="using-example-application"></a>
 ### Using an Example Application
 
@@ -571,7 +568,7 @@ If your queue connection's `after_commit` configuration option is set to `false`
 
 Private channels require you to authorize that the currently authenticated user can actually listen on the channel. This is accomplished by making an HTTP request to your Laravel application with the channel name and allowing your application to determine if the user can listen on that channel. When using [Laravel Echo](#client-side-installation), the HTTP request to authorize subscriptions to private channels will be made automatically.
 
-Laravel automatically registers the `/broadcasting/auth` route to handle authorization requests, making it really easy to get started. The `/broadcasting/auth` route is automatically placed within the `web` middleware group.
+When broadcasting is enabled, Laravel automatically registers the `/broadcasting/auth` route to handle authorization requests. The `/broadcasting/auth` route is automatically placed within the `web` middleware group.
 
 <a name="defining-authorization-callbacks"></a>
 ### Defining Authorization Callbacks
@@ -1120,4 +1117,4 @@ Echo.private(`App.Models.User.${userId}`)
     });
 ```
 
-In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in your application `routes/channels.php` file.
+In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in your application's `routes/channels.php` file.
