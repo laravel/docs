@@ -94,7 +94,7 @@ server {
 <a name="autoloader-optimization"></a>
 ### Autoloader Optimization
 
-When deploying to production, make sure that you are optimizing Composer's class autoloader map so Composer can quickly find the proper file to load for a given class:
+When deploying to production, make sure that you are optimizing Composer's class autoloader map so Composer can quickly find the proper file to load for a given class. Luckily, we set `"optimize-autoloader": true,` in our composer json, so you don't need to add the `--optimize-autoloader` flag.
 
 ```shell
 composer install --no-dev
