@@ -177,7 +177,7 @@ $table->bigIncrements('id')->primary()->change();
 $table->char('postal_code', 10)->unique(false)->change();
 ```
 
-The most easy way to deal with this change is to take a dump of your database scheme and delete old migrations before migrating to Laravel v11:
+The most easy way to deal with this change is to [squash and prune migrations](/docs/{{version}}/migrations#squashing-migrations) before migrating to Laravel v11:
 
 ```bash
 php artisan schema:dump --prune
