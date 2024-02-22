@@ -5,7 +5,6 @@
 - [Server Configuration](#server-configuration)
     - [Nginx](#nginx)
 - [Optimization](#optimization)
-    - [Autoloader Optimization](#autoloader-optimization)
     - [Caching Configuration](#optimizing-configuration-loading)
     - [Caching Events](#caching-events)
     - [Caching Routes](#optimizing-route-loading)
@@ -90,18 +89,6 @@ server {
 
 <a name="optimization"></a>
 ## Optimization
-
-<a name="autoloader-optimization"></a>
-### Autoloader Optimization
-
-When deploying to production, make sure that you are optimizing Composer's class autoloader map so Composer can quickly find the proper file to load for a given class:
-
-```shell
-composer install --no-dev
-```
-
-> [!NOTE]  
-> In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present.
 
 <a name="optimizing-configuration-loading"></a>
 ### Caching Configuration
