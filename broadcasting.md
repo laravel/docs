@@ -176,7 +176,7 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the `resources/js/echo.js` file that was created by the `install:broadcasting` Artisan command. By default, an example Echo configuration is already included in this file:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. The `install:broadcasting` Artisan command creates a `resources/js/echo.js` file that handles this for you:
 
 ```js
 import Echo from 'laravel-echo';
@@ -204,7 +204,7 @@ window.Echo = new Echo({
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the `resources/js/echo.js` file that was created by the `install:broadcasting` Artisan command. By default, an example Echo configuration is already included in this file; however, the default configuration in the `echo.js` file is intended for Reverb. You may copy the configuration below to transition your configuration to Pusher:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is within the `resources/js/echo.js` file that was created by the `install:broadcasting` Artisan command. By default, an example Echo configuration is already included in this file; however, the default configuration in the `echo.js` file is intended for Laravel Reverb. You may copy the configuration below to transition your configuration to Pusher:
 
 ```js
 import Echo from 'laravel-echo';
@@ -220,7 +220,7 @@ window.Echo = new Echo({
 });
 ```
 
-Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
+Once you have uncommented and adjusted the Echo configuration according to your application's needs, you may compile your application's assets:
 
 ```shell
 npm run build
@@ -265,7 +265,7 @@ npm install --save-dev laravel-echo pusher-js
 
 **Before continuing, you should enable Pusher protocol support in your Ably application settings. You may enable this feature within the "Protocol Adapter Settings" portion of your Ably application's settings dashboard.**
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the `resources/js/echo.js` file that was created by the `install:broadcasting` Artisan command. By default, an example Echo configuration is already included in this file; however, the default configuration in the `echo.js` file is intended for Reverb. You may copy the configuration below to transition your configuration to Ably:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is within the `resources/js/echo.js` file that was created by the `install:broadcasting` Artisan command. By default, an example Echo configuration is already included in this file; however, the default configuration in the `echo.js` file is intended for Laravel Reverb. You may copy the configuration below to transition your configuration to Ably:
 
 ```js
 import Echo from 'laravel-echo';
@@ -283,7 +283,7 @@ window.Echo = new Echo({
 });
 ```
 
-Note that our Ably Echo configuration references a `VITE_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
+You may have noticed our Ably Echo configuration references a `VITE_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
 
 Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
 
