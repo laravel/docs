@@ -27,7 +27,9 @@ Thankfully, Laravel provides an expressive, unified API for various cache backen
 <a name="configuration"></a>
 ## Configuration
 
-Laravel's complete `cache.php` configuration file is not published by default, as you can specify your application's cache driver using the `CACHE_DRIVER` [environment variable](/docs/{{version}}/configuration#environment-configuration). However, to customize some of the configuration options documented below that are not available via environment variables, you may have to publish the configuration file using the `config:publish` Artisan command:
+Laravel's complete `cache.php` configuration file is not published by default, as you can specify your application's cache driver using the `CACHE_DRIVER` [environment variable](/docs/{{version}}/configuration#environment-configuration).
+
+However, to customize some of the configuration options documented below that are not available via environment variables, you may need to publish the configuration file using the `config:publish` Artisan command:
 
 ```shell
 php artisan config:publish cache
@@ -35,7 +37,7 @@ php artisan config:publish cache
 
 Laravel supports popular caching backends like [Memcached](https://memcached.org), [Redis](https://redis.io), [DynamoDB](https://aws.amazon.com/dynamodb), and relational databases out of the box. In addition, a file based cache driver is available, while `array` and "null" cache drivers provide convenient cache backends for your automated tests.
 
-By default, Laravel is configured to use the `database` cache driver, which stores the serialized, cached objects in your application's database. For larger applications, it is recommended that you use a more robust driver such as Memcached or Redis. You may even configure multiple cache configurations for the same driver.
+By default, Laravel is configured to use the `database` cache driver, which stores the serialized, cached objects in your application's database.
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
@@ -43,7 +45,7 @@ By default, Laravel is configured to use the `database` cache driver, which stor
 <a name="prerequisites-database"></a>
 #### Database
 
-When using the `database` session driver, you will need to ensure that you have a database table to contain the cache data. Typically, this is included in Laravel's default `0001_01_01_000001_create_cache_table.php` [database migration](/docs/{{version}}/migrations); however, if for any reason you do not have a `cache` table, you may use the `make:cache-table` Artisan command to generate this migration:
+When using the `database` session driver, you will need a database table to contain the cache data. Typically, this is included in Laravel's default `0001_01_01_000001_create_cache_table.php` [database migration](/docs/{{version}}/migrations); however, if your application does not contain this migration, you may use the `make:cache-table` Artisan command to create it:
 
 ```shell
 php artisan make:cache-table
@@ -57,15 +59,15 @@ php artisan migrate
 Using the Memcached driver requires the [Memcached PECL package](https://pecl.php.net/package/memcached) to be installed. You may list all of your Memcached servers in the `config/cache.php` configuration file. This file already contains a `memcached.servers` entry to get you started:
 
     'memcached' => [
-            // ...
+        // ...
 
-            'servers' => [
-                [
-                    'host' => env('MEMCACHED_HOST', '127.0.0.1'),
-                    'port' => env('MEMCACHED_PORT', 11211),
-                    'weight' => 100,
-                ],
+        'servers' => [
+            [
+                'host' => env('MEMCACHED_HOST', '127.0.0.1'),
+                'port' => env('MEMCACHED_PORT', 11211),
+                'weight' => 100,
             ],
+        ],
     ],
 
 If needed, you may set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
@@ -92,7 +94,7 @@ For more information on configuring Redis, consult its [Laravel documentation pa
 <a name="dynamodb"></a>
 #### DynamoDB
 
-Before using the [DynamoDB](https://aws.amazon.com/dynamodb) cache driver, you must create a DynamoDB table to store all of the cached data. Typically, this table should be named `cache`. However, you should name the table based on the value of the `stores.dynamodb.table` configuration value within the `cache` configuration file. If you wish to set a different table name, typically, this should be done via the `DYNAMODB_CACHE_TABLE` environment variable.
+Before using the [DynamoDB](https://aws.amazon.com/dynamodb) cache driver, you must create a DynamoDB table to store all of the cached data. Typically, this table should be named `cache`. However, you should name the table based on the value of the `stores.dynamodb.table` configuration value within the `cache` configuration file. The table name may also be set via the `DYNAMODB_CACHE_TABLE` environment variable.
 
 This table should also have a string partition key with a name that corresponds to the value of the `stores.dynamodb.attributes.key` configuration item within your application's `cache` configuration file. By default, the partition key should be named `key`.
 
@@ -418,12 +420,12 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
 
 The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a closure that should return an `Illuminate\Cache\Repository` instance. The closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
 
-Once your extension is registered, update your `CACHE_DRIVER` environment variable to the name of your custom driver or update your application's `config/cache.php` configuration file's `driver` option to the name of your extension.
+Once your extension is registered, update the `CACHE_DRIVER` environment variable or `driver` option within your application's `config/cache.php` configuration file to the name of your extension.
 
 <a name="events"></a>
 ## Events
 
-To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache:
+To execute code on every cache operation, you may listen for various [events](/docs/{{version}}/events) dispatched by the cache:
 
 Event Name |
 ------------- |
@@ -431,22 +433,3 @@ Event Name |
 `Illuminate\Cache\Events\CacheMissed` |
 `Illuminate\Cache\Events\KeyForgotten` |
 `Illuminate\Cache\Events\KeyWritten` |
-
-Listening for these events can be done in your `AppServiceProvider` class, or you may create a dedicated event listeners:
-
-    <?php
-
-    namespace App\Listeners;
-
-    use Illuminate\Cache\Events\CacheHit;
-
-    class LogCacheHit
-    {
-        /**
-         * Handle the event.
-         */
-        public function handle(CacheHit $event): void
-        {
-            // Log the cache hit...
-        }
-    }
