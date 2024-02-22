@@ -47,7 +47,7 @@ When using the `database` cache driver, you will need to set up a table to conta
     });
 
 > [!NOTE]  
-> You may also use the `php artisan cache:table` Artisan command to generate a migration with the proper schema.
+> You may also use the `php artisan make:cache-table` Artisan command to generate a migration with the proper schema.
 
 <a name="memcached"></a>
 #### Memcached
@@ -283,7 +283,7 @@ When using the `database` cache driver, you will need to setup a table to contai
     });
 
 > [!NOTE]  
-> If you used the `cache:table` Artisan command to create the database driver's cache table, the migration created by that command already includes a definition for the `cache_locks` table.
+> If you used the `make:cache-table` Artisan command to create the database driver's cache table, the migration created by that command already includes a definition for the `cache_locks` table.
 
 <a name="managing-locks"></a>
 ### Managing Locks
