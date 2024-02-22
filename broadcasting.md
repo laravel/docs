@@ -6,7 +6,6 @@
     - [Reverb](#reverb)
     - [Pusher Channels](#pusher-channels)
     - [Ably](#ably)
-    - [Community Alternatives](#community-alternatives)
 - [Client Side Installation](#client-side-installation)
     - [Reverb](#client-reverb)
     - [Pusher Channels](#client-pusher-channels)
@@ -69,36 +68,34 @@ Event broadcasting is accomplished by a server-side broadcasting driver that bro
 <a name="configuration"></a>
 ### Configuration
 
-Laravel's complete `broadcasting.php` configuration file is not published by default, as you can specify your application's broadcast driver using the `BROADCAST_CONNECTION` [environment variable](/docs/{{version}}/configuration#environment-configuration). However, to customize some of the configuration options documented below that are not available via environment variables, you may have to publish the configuration file using the `config:publish` Artisan command:
+Laravel's complete `broadcasting.php` configuration file is not published by default, as you can specify your application's broadcast driver using the `BROADCAST_CONNECTION` [environment variable](/docs/{{version}}/configuration#environment-configuration). However, to customize some of the configuration options documented below that are not available via environment variables, you may need to publish the `broadcasting.php` configuration file using the `config:publish` Artisan command:
 
 ```shell
 php artisan config:publish broadcasting
 ```
 
-If you choose not to publish the configuration file, it is still advisable to review the `vendor/laravel/framework/config/broadcasting.php` file to understand all the available drivers and their options.
-
-Laravel supports several broadcast drivers out of the box: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), [Redis](/docs/{{version}}/redis), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to totally disable broadcasting during testing.
+Laravel supports several broadcast drivers: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to totally disable broadcasting during testing.
 
 <a name="installation"></a>
 #### Installation
 
-Broadcasting is not enabled by default in a new Laravel application. You may enable broadcasting using the `install:broadcasting` Artisan command:
+by default, broadcasting is not enabled in new Laravel applications. You may enable broadcasting using the `install:broadcasting` Artisan command:
 
 ```shell
 php artisan install:broadcasting
 ```
 
-The `install:broadcasting` command will create an `routes/channels.php` file where you may register the broadcast authorization routes and callbacks.
+The `install:broadcasting` command will create a `routes/channels.php` file where you may register your application's broadcast authorization routes and callbacks.
 
 <a name="queue-configuration"></a>
 #### Queue Configuration
 
-Before broadcasting any events, first you will also need to configure and run a [queue worker](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected by events being broadcast.
+Before broadcasting any events, you should first configure and run a [queue worker](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected by events being broadcast.
 
 <a name="reverb"></a>
 ### Reverb
 
-When running the `install:broadcasting` command, you will be prompted to install Reverb. If you respond negatively to the prompt, you may install Reverb manually using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
+When running the `install:broadcasting` command, you will be prompted to install [Laravel Reverb](/docs/{{version}}/reverb). Of course, you may also install Reverb manually using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
 
 ```sh
 composer require laravel/reverb:@beta
@@ -121,7 +118,7 @@ If you plan to broadcast your events using [Pusher Channels](https://pusher.com/
 composer require pusher/pusher-php-server
 ```
 
-Next, you should configure your Pusher Channels credentials in your `.env` file:
+Next, you should configure your Pusher Channels credentials in your application's `.env` file:
 
 ```ini
 PUSHER_APP_ID=your-pusher-app-id
@@ -133,20 +130,13 @@ PUSHER_SCHEME=https
 PUSHER_APP_CLUSTER=mt1
 ```
 
-If you publish the `config/broadcasting.php` file, you may specify additional `options` that are supported by Channels, such as the cluster.
-
-Next, you will need to change your broadcast connection to `pusher` in your `.env` file:
+Next, you should set the `BROADCAST_CONNECTION` environment variable's value to `pusher` in your application's `.env` file:
 
 ```ini
 BROADCAST_CONNECTION=pusher
 ```
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
-
-<a name="pusher-compatible-community-alternatives"></a>
-#### Community Pusher Alternatives
-
-[soketi](https://docs.soketi.app/) provides a Pusher compatible WebSocket server for Laravel, allowing you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using open source packages for broadcasting, please consult our documentation on [open source alternatives](#community-alternatives).
 
 <a name="ably"></a>
 ### Ably
@@ -160,27 +150,19 @@ If you plan to broadcast your events using [Ably](https://ably.com), you should 
 composer require ably/ably-php
 ```
 
-Next, you should configure your Ably credentials via the `ABLY_KEY` environment variable in your `.env` file:
+Next, you should configure your Ably credentials via the `ABLY_KEY` environment variable in your application's `.env` file:
 
 ```ini
 ABLY_KEY=your-ably-key
 ```
 
-Next, you will need to change your broadcast connection to `ably` in your `.env` file:
+Next, you should set the `BROADCAST_CONNECTION` environment variable's value to `ably` in your application's `.env` file:
 
 ```ini
 BROADCAST_CONNECTION=ably
 ```
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
-
-<a name="community-alternatives"></a>
-### Community Alternatives
-
-<a name="community-alternatives-node"></a>
-#### Node
-
-[Soketi](https://github.com/soketi/soketi) is a Node based, Pusher compatible WebSocket server for Laravel. Under the hood, Soketi utilizes µWebSockets.js for extreme scalability and speed. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://docs.soketi.app/).
 
 <a name="client-side-installation"></a>
 ## Client Side Installation
