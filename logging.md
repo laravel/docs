@@ -38,8 +38,6 @@ You can specify your application's log driver using the `LOG_DRIVER` environment
 php artisan config:publish logging
 ```
 
-If you choose to not publish the configuration file, you may wish to review the `vendor/laravel/framework/config/logging.php` file to understand all of the available logging channels and their options.
-
 <a name="available-channel-drivers"></a>
 ### Available Channel Drivers
 

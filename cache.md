@@ -29,7 +29,7 @@ Thankfully, Laravel provides an expressive, unified API for various cache backen
 
 Laravel's complete `cache.php` configuration file is not published by default, as you can specify your application's cache driver using the `CACHE_DRIVER` [environment variable](/docs/{{version}}/configuration#environment-configuration).
 
-However, to customize some of the configuration options documented below that are not available via environment variables, you may need to publish the configuration file using the `config:publish` Artisan command:
+However, to customize some of the configuration options documented below that are not available via environment variables, you may publish the configuration file using the `config:publish` Artisan command:
 
 ```shell
 php artisan config:publish cache
