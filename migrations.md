@@ -311,7 +311,7 @@ The `temporary` method may be used to indicate that the table should be "tempora
         // ...
     });
 
-If you would like to add a "comment" to a database table, you may invoke the `comment` method on the table instance. Table comments are currently only supported by MySQL and Postgres:
+If you would like to add a "comment" to a database table, you may invoke the `comment` method on the table instance. Table comments are currently only supported by MySQL and PostgreSQL:
 
     Schema::create('calculations', function (Blueprint $table) {
         $table->comment('Business calculations');
@@ -618,7 +618,7 @@ The `ipAddress` method creates a `VARCHAR` equivalent column:
 
     $table->ipAddress('visitor');
     
-When using Postgres, an `INET` column will be created.
+When using PostgreSQL, an `INET` column will be created.
 
 <a name="column-method-json"></a>
 #### `json()` {.collection-method}

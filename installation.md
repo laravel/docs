@@ -100,7 +100,7 @@ Now that you have created your Laravel application, you probably want to store s
 
 During the creation of the project, Laravel created a `database/database.sqlite` file for you, and ran the necessary migrations to create the application's database tables.
 
-If you prefer to use another database driver such as MySQL or Postgres, you can update your `.env` configuration file to use the appropriate database. For example, if you wish to use MySQL, update your `.env` configuration file's `DB_*` variables like so:
+If you prefer to use another database driver such as MySQL or PostgreSQL, you can update your `.env` configuration file to use the appropriate database. For example, if you wish to use MySQL, update your `.env` configuration file's `DB_*` variables like so:
 
 ```ini
 DB_CONNECTION=mysql
@@ -118,7 +118,7 @@ php artisan migrate
 ```
 
 > [!NOTE]
-> If you are developing on macOS and need to install MySQL, Postgres, or Redis locally, consider using [DBngin](https://dbngin.com/).
+> If you are developing on macOS and need to install MySQL, PostgreSQL, or Redis locally, consider using [DBngin](https://dbngin.com/).
 
 <a name="directory-configuration"></a>
 ### Directory Configuration
