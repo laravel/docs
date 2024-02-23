@@ -33,7 +33,7 @@ When writing a Laravel application, it generally does not matter if you use cont
 <a name="package-discovery"></a>
 ## Package Discovery
 
-In a Laravel application's `config/app.php` configuration file, the `providers` option defines a list of service providers that should be loaded by Laravel. When someone installs your package, you will typically want your service provider to be included in this list. Instead of requiring users to manually add your service provider to the list, you may define the provider in the `extra` section of your package's `composer.json` file. In addition to service providers, you may also list any [facades](/docs/{{version}}/facades) you would like to be registered:
+The `bootstrap/providers.php` file in Laravel applications defines the list of service providers that should be loaded by Laravel. When someone installs your package, you will typically want your service provider to be included in this list. Instead of requiring users to manually add your service provider to the list, you may define the provider in the `extra` section of your package's `composer.json` file. In addition to service providers, you may also list any [facades](/docs/{{version}}/facades) you would like to be registered:
 
 ```json
 "extra": {
@@ -145,17 +145,17 @@ If your package contains routes, you may load them using the `loadRoutesFrom` me
 <a name="migrations"></a>
 ### Migrations
 
-If your package contains [database migrations](/docs/{{version}}/migrations), you may use the `loadMigrationsFrom` method to inform Laravel how to load them. The `loadMigrationsFrom` method accepts the path to your package's migrations as its only argument:
+If your package contains [database migrations](/docs/{{version}}/migrations), you may use the `publishesMigrations` method to inform Laravel that the given directory or file contains migrations, and that those migrations should be published with updated timestamps:
 
     /**
      * Bootstrap any package services.
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->publishesMigrations([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ]);
     }
-
-Once your package's migrations have been registered, they will automatically be run when the `php artisan migrate` command is executed. You do not need to export them to the application's `database/migrations` directory.
 
 <a name="language-files"></a>
 ### Language Files
@@ -374,7 +374,7 @@ You may want to publish groups of package assets and resources separately. For i
             __DIR__.'/../config/package.php' => config_path('package.php')
         ], 'courier-config');
 
-        $this->publishes([
+        $this->publishesMigrations([
             __DIR__.'/../database/migrations/' => database_path('migrations')
         ], 'courier-migrations');
     }
