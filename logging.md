@@ -118,10 +118,13 @@ By default, Slack will only receive logs at the `critical` level and above; howe
 
 PHP, Laravel, and other libraries often notify their users that some of their features have been deprecated and will be removed in a future version. If you would like to log these deprecation warnings, you may specify your preferred `deprecations` log channel using the `LOG_DEPRECATIONS_CHANNEL` environment variable, or within your application's `config/logging.php` configuration file:
 
-    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
+    'deprecations' => [
+        'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
+        'trace' => env('LOG_DEPRECATIONS_TRACE', false),
+    ],
 
     'channels' => [
-        ...
+        // ...
     ]
 
 Or, you may define a log channel named `deprecations`. If a log channel with this name exists, it will always be used to log deprecations:
