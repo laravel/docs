@@ -202,7 +202,7 @@ Next, you only need to compile your application's assets:
 npm run build
 ```
 
-> [!WARNING]  
+> [!WARNING]    
 > To use the `reverb` broadcaster with Laravel Echo, you must install `laravel-echo` >= `v1.16.0`.
 
 <a name="client-pusher-channels"></a>
