@@ -25,7 +25,7 @@
 <a name="installation"></a>
 ## Installation
 
-> **Warning**  
+> [!WARNING]  
 > Laravel Reverb requires PHP 8.2+.
 
 You may use the Composer package manager to install Reverb into your Laravel project. Since Reverb is currently in beta, you will need to explicitly install the beta release:
@@ -150,7 +150,7 @@ php artisan reverb:restart
 
 Due to the long-running nature of WebSocket servers, you may need to make some optimizations to your server / hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the resources available on your server.
 
-> **Note** 
+> [!NOTE]  
 > If your site is managed by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel. By enabling the Reverb integration, Forge will ensure your server is production-ready, including installing any required extensions and increasing the allowed number of connections.
 
 <a name="open-files"></a>
