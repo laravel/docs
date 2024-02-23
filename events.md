@@ -53,7 +53,13 @@ Laravel will automatically find and register your listeners by scanning your app
         }
     }
 
-If you plan to register addicional listeners, but you don't want to put them in the `Listeners` directory, you may manually register your listeners in your `AppServiceProvider`:
+If you plan to store your listeners in a different directory, you may instruct Laravel to scan that directory using the `withEvents` method in your application's `bootstrap/app.php` file:
+
+    ->withEvents(discover: [
+        __DIR__.'/../app/Domain/Listeners',
+    ])
+
+Optionally, you may also manually register your listeners in your application's `AppServiceProvider.php` file:
 
     use Illuminate\Support\Facades\Event;
 
