@@ -33,9 +33,15 @@ Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flys
 <a name="configuration"></a>
 ## Configuration
 
-Laravel's filesystem configuration file is located at `config/filesystems.php`. Within this file, you may configure all of your filesystem "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file so you can modify the configuration to reflect your storage preferences and credentials.
+By default, Laravel uses the `local` disk when storing files. This disk uses the local filesystem and is a great starting point for development. In production, you may find it helpful to use a cloud-based storage solution such as the `s3` disk.
 
-The `local` driver interacts with files stored locally on the server running the Laravel application while the `s3` driver is used to write to Amazon's S3 cloud storage service.
+You can specify your application's "default" filesystem disk using the `FILESYSTEM_DISK` environment variable. However, to customize some of the configuration options documented below that are not available via environment variables, you should publish Laravel's complete `filesystem` configuration file using the `config:publish` Artisan command:
+
+```shell
+php artisan config:publish filesystem
+```
+
+Within this file, you may configure all of your filesystem "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file so you can modify the configuration to reflect your storage preferences and credentials.
 
 > [!NOTE]  
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
@@ -91,7 +97,17 @@ Before using the S3 driver, you will need to install the Flysystem S3 package vi
 composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
 ```
 
-The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI.
+The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. By default, you may configure the S3 configuration and credentials using the following environment variables:
+
+```
+AWS_ACCESS_KEY_ID=<your-key-id>
+AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=<your-bucket-name>
+AWS_USE_PATH_STYLE_ENDPOINT=false
+```
+
+For convenience, these environment variables match the naming convention used by the AWS CLI.
 
 <a name="ftp-driver-configuration"></a>
 #### FTP Driver Configuration
@@ -289,13 +305,14 @@ When using the `local` driver, all files that should be publicly accessible shou
 <a name="url-host-customization"></a>
 #### URL Host Customization
 
-If you would like to pre-define the host for URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:
+If you would like to modify the host for URLs generated using the `Storage` facade, you may change a `url` option to the disk's configuration array:
 
     'public' => [
         'driver' => 'local',
         'root' => storage_path('app/public'),
         'url' => env('APP_URL').'/storage',
         'visibility' => 'public',
+        'throw' => false,
     ],
 
 <a name="temporary-urls"></a>
@@ -586,6 +603,7 @@ When using the `local` driver, `public` [visibility](#file-visibility) translate
                 'private' => 0700,
             ],
         ],
+        'throw' => false,
     ],
 
 <a name="deleting-files"></a>
