@@ -90,7 +90,7 @@ You may also install Reverb using the Composer package manager. Since Reverb is 
 composer require laravel/reverb:@beta
 ```
 
-Once the package is installed, you may run Reverb's installation command to publish the configuration, update your broadcasting configuration and add Reverb's required environment variables to your application:
+Once the package is installed, you may run Reverb's installation command to publish the configuration, update your applications's broadcasting configuration and add Reverb's required environment variables:
 
 ```sh
 php artisan reverb:install
