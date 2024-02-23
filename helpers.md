@@ -1752,7 +1752,7 @@ The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) single
 @endfor
 ```
 
-By default, the `fake` function will utilize the `app.faker_locale` configuration option in your `config/app.php` configuration. By default, this configuration option can also be set via the `APP_FALLBACK_LOCALE` environment variable. You may also specify the locale by passing it to the `fake` function. Each locale will resolve an individual singleton:
+By default, the `fake` function will utilize the `app.faker_locale` configuration option in your `config/app.php` configuration. Typically, this configuration option can also be set via the `APP_FALLBACK_LOCALE` environment variable. You may also specify the locale by passing it to the `fake` function. Each locale will resolve an individual singleton:
 
     fake('nl_NL')->name()
 
