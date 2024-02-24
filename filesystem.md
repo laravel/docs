@@ -33,15 +33,9 @@ Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flys
 <a name="configuration"></a>
 ## Configuration
 
-By default, Laravel uses the `local` disk when storing files. This disk uses the local filesystem and is a great starting point for development. In production, you may find it helpful to use a cloud-based storage solution such as the `s3` disk.
+Laravel's filesystem configuration file is located at `config/filesystems.php`. Within this file, you may configure all of your filesystem "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file so you can modify the configuration to reflect your storage preferences and credentials.
 
-You can specify your application's "default" filesystem disk using the `FILESYSTEM_DISK` environment variable. However, to customize some of the configuration options documented below that are not available via environment variables, you should publish Laravel's complete `filesystem` configuration file using the `config:publish` Artisan command:
-
-```shell
-php artisan config:publish filesystem
-```
-
-Within this file, you may configure all of your filesystem "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file so you can modify the configuration to reflect your storage preferences and credentials.
+The `local` driver interacts with files stored locally on the server running the Laravel application while the `s3` driver is used to write to Amazon's S3 cloud storage service.
 
 > [!NOTE]  
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
