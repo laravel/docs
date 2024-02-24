@@ -1443,28 +1443,25 @@ By passing a closure as the second argument to the `assertSentOnDemand` method, 
 <a name="notification-sending-event"></a>
 #### Notification Sending Event
 
-When a notification is sending, the `Illuminate\Notifications\Events\NotificationSending` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register listeners for this event in your application's `EventServiceProvider`:
+When a notification is sending, the `Illuminate\Notifications\Events\NotificationSending` event is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register [event listeners](/docs/{{version}}/events) for this event within your application:
 
-    use App\Listeners\CheckNotificationStatus;
     use Illuminate\Notifications\Events\NotificationSending;
-    
-    /**
-     * The event listener mappings for the application.
-     *
-     * @var array
-     */
-    protected $listen = [
-        NotificationSending::class => [
-            CheckNotificationStatus::class,
-        ],
-    ];
+
+    class CheckNotificationStatus
+    {
+        /**
+         * Handle the given event.
+         */
+        public function handle(NotificationSending $event): void
+        {
+            // Check notification status...
+        }
+    }
 
 The notification will not be sent if an event listener for the `NotificationSending` event returns `false` from its `handle` method:
 
-    use Illuminate\Notifications\Events\NotificationSending;
-
     /**
-     * Handle the event.
+     * Handle the given event.
      */
     public function handle(NotificationSending $event): bool
     {
@@ -1474,7 +1471,7 @@ The notification will not be sent if an event listener for the `NotificationSend
 Within an event listener, you may access the `notifiable`, `notification`, and `channel` properties on the event to learn more about the notification recipient or the notification itself:
 
     /**
-     * Handle the event.
+     * Handle the given event.
      */
     public function handle(NotificationSending $event): void
     {
@@ -1486,29 +1483,25 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
 <a name="notification-sent-event"></a>
 #### Notification Sent Event
 
-When a notification is sent, the `Illuminate\Notifications\Events\NotificationSent` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register listeners for this event in your `EventServiceProvider`:
+When a notification is sent, the `Illuminate\Notifications\Events\NotificationSent` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register [event listeners](/docs/{{version}}/events) for this event within your application:
 
-    use App\Listeners\LogNotification;
     use Illuminate\Notifications\Events\NotificationSent;
-    
-    /**
-     * The event listener mappings for the application.
-     *
-     * @var array
-     */
-    protected $listen = [
-        NotificationSent::class => [
-            LogNotification::class,
-        ],
-    ];
 
-> [!NOTE]  
-> After registering listeners in your `EventServiceProvider`, use the `event:generate` Artisan command to quickly generate listener classes.
+    class LogNotification
+    {
+        /**
+         * Handle the given event.
+         */
+        public function handle(NotificationSending $event): void
+        {
+            // Log the notification...
+        }
+    }
 
 Within an event listener, you may access the `notifiable`, `notification`, `channel`, and `response` properties on the event to learn more about the notification recipient or the notification itself:
 
     /**
-     * Handle the event.
+     * Handle the given event.
      */
     public function handle(NotificationSent $event): void
     {
