@@ -8,6 +8,7 @@
     - [Encrypting Environment Files](#encrypting-environment-files)
 - [Accessing Configuration Values](#accessing-configuration-values)
 - [Configuration Caching](#configuration-caching)
+- [Configuration Publishing](#configuration-publishing)
 - [Debug Mode](#debug-mode)
 - [Maintenance Mode](#maintenance-mode)
 
@@ -215,6 +216,19 @@ php artisan config:clear
 
 > [!WARNING]  
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables.
+
+<a name="configuration-publishing"></a>
+## Configuration Publishing
+
+Most of Laravel's core configuration files are published by default in your application's `config` directory; however, certain configuration files like `cors.php` or `view.php` are not published by default as the likelihood of their needing to be modified is very low.
+
+You may use the `config:publish` Artisan command to publish any configuration files that are not published by default:
+
+```shell
+php artisan config:publish
+
+php artisan config:publish --all
+```
 
 <a name="debug-mode"></a>
 ## Debug Mode

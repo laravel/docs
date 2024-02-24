@@ -30,18 +30,14 @@ Under the hood, Laravel utilizes the [Monolog](https://github.com/Seldaek/monolo
 <a name="configuration"></a>
 ## Configuration
 
-By default, Laravel uses the `stack` channel when logging messages. The `stack` channel is used to [aggregate multiple log channels](#building-log-stacks) into a single channel.
+All of the configuration options for your application's logging behavior are housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below.
 
-You can specify your application's log channel using the `LOG_CHANNEL` environment variable. However, to customize some of the configuration options documented below that are not available via environment variables, you should publish Laravel's complete `logging` configuration file using the `config:publish` Artisan command:
-
-```
-php artisan config:publish logging
-```
+By default, Laravel will use the `stack` channel when logging messages. The `stack` channel is used to aggregate multiple log channels into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
 
 <a name="available-channel-drivers"></a>
 ### Available Channel Drivers
 
-Each log channel is powered by a "driver". The driver determines how and where the log message is actually recorded. The following log channel drivers are available in every Laravel application:
+Each log channel is powered by a "driver". The driver determines how and where the log message is actually recorded. The following log channel drivers are available in every Laravel application. An entry for most of these drivers is already present in your application's `config/logging.php` configuration file, so be sure to review this file to become familiar with its contents:
 
 <div class="overflow-auto">
 

@@ -22,7 +22,7 @@ The `$exceptions` object provided to the `withExceptions` closure is an instance
 <a name="configuration"></a>
 ## Configuration
 
-The `APP_DEBUG` environment variable determines how much information about an error is actually displayed to the user.
+The `debug` option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your `.env` file.
 
 During local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the value is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
 

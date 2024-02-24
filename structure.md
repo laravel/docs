@@ -51,7 +51,7 @@ The `bootstrap` directory contains the `app.php` file which bootstraps the frame
 <a name="the-config-directory"></a>
 #### The Config Directory
 
-The `config` directory, as the name implies, contains all of your application's configuration files. By default, the directory is empty; however, packages may place their configuration files in this directory. You may also create your own configuration files in this directory.
+The `config` directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
 
 <a name="the-database-directory"></a>
 #### The Database Directory
