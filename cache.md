@@ -27,17 +27,9 @@ Thankfully, Laravel provides an expressive, unified API for various cache backen
 <a name="configuration"></a>
 ## Configuration
 
-Laravel's complete `cache.php` configuration file is not published by default, as you can specify your application's cache driver using the `CACHE_DRIVER` [environment variable](/docs/{{version}}/configuration#environment-configuration).
+Your application's cache configuration file is located at `config/cache.php`. In this file, you may specify which cache driver you would like to be used by default throughout your application. Laravel supports popular caching backends like [Memcached](https://memcached.org), [Redis](https://redis.io), [DynamoDB](https://aws.amazon.com/dynamodb), and relational databases out of the box. In addition, a file based cache driver is available, while `array` and "null" cache drivers provide convenient cache backends for your automated tests.
 
-However, to customize some of the configuration options documented below that are not available via environment variables, you may publish the configuration file using the `config:publish` Artisan command:
-
-```shell
-php artisan config:publish cache
-```
-
-Laravel supports popular caching backends like [Memcached](https://memcached.org), [Redis](https://redis.io), [DynamoDB](https://aws.amazon.com/dynamodb), and relational databases out of the box. In addition, a file based cache driver is available, while `array` and "null" cache drivers provide convenient cache backends for your automated tests.
-
-By default, Laravel is configured to use the `database` cache driver, which stores the serialized, cached objects in your application's database.
+The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `database` cache driver, which stores the serialized, cached objects in your application's database. For larger applications, it is recommended that you use a more robust driver such as Memcached or Redis. You may even configure multiple cache configurations for the same driver.
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
@@ -45,7 +37,7 @@ By default, Laravel is configured to use the `database` cache driver, which stor
 <a name="prerequisites-database"></a>
 #### Database
 
-When using the `database` session driver, you will need a database table to contain the cache data. Typically, this is included in Laravel's default `0001_01_01_000001_create_cache_table.php` [database migration](/docs/{{version}}/migrations); however, if your application does not contain this migration, you may use the `make:cache-table` Artisan command to create it:
+When using the `database` cache driver, you will need a database table to contain the cache data. Typically, this is included in Laravel's default `0001_01_01_000001_create_cache_table.php` [database migration](/docs/{{version}}/migrations); however, if your application does not contain this migration, you may use the `make:cache-table` Artisan command to create it:
 
 ```shell
 php artisan make:cache-table
