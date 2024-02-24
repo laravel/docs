@@ -59,12 +59,13 @@ To use the Mailgun driver, install Symfony's Mailgun Mailer transport via Compos
 composer require symfony/mailgun-mailer symfony/http-client
 ```
 
-Next, set the `default` option in your application's `config/mail.php` configuration file to `mailgun`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:
+Next, set the `default` option in your application's `config/mail.php` configuration file to `mailgun`. After configuring your application's default mailer, add the following options to your `config/services.php` configuration file:
 
     'mailgun' => [
-        'transport' => 'mailgun',
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'scheme' => 'https',
     ],
 
 If you are not using the United States [Mailgun region](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions), you may define your region's endpoint in the `services` configuration file:
@@ -73,6 +74,7 @@ If you are not using the United States [Mailgun region](https://documentation.ma
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.eu.mailgun.net'),
+        'scheme' => 'https',
     ],
 
 <a name="postmark-driver"></a>
@@ -84,7 +86,7 @@ To use the Postmark driver, install Symfony's Postmark Mailer transport via Comp
 composer require symfony/postmark-mailer symfony/http-client
 ```
 
-Next, set the `default` option in your application's `config/mail.php` configuration file to `postmark`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:
+Next, set the `default` option in your application's `config/mail.php` configuration file to `postmark`. After configuring your application's default mailer, ensure that your `config/services.php` configuration file contains the following options:
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
@@ -95,6 +97,9 @@ If you would like to specify the Postmark message stream that should be used by 
     'postmark' => [
         'transport' => 'postmark',
         'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
+        // 'client' => [
+        //     'timeout' => 5,
+        // ],
     ],
 
 This way you are also able to set up multiple Postmark mailers with different message streams.
@@ -1216,27 +1221,21 @@ Finally, you may specify a global "to" address by invoking the `alwaysTo` method
 <a name="events"></a>
 ## Events
 
-Laravel fires two events during the process of sending mail messages. The `MessageSending` event is fired prior to a message being sent, while the `MessageSent` event is fired after a message has been sent. Remember, these events are fired when the mail is being *sent*, not when it is queued. You may register event listeners for this event in your `App\Providers\EventServiceProvider` service provider:
+Laravel fires two events during the process of sending mail messages. The `MessageSending` event is fired prior to a message being sent, while the `MessageSent` event is fired after a message has been sent. Remember, these events are fired when the mail is being *sent*, not when it is queued. You may register [event listeners](/docs/{{version}}/events) for these events within your application:
 
-    use App\Listeners\LogSendingMessage;
-    use App\Listeners\LogSentMessage;
     use Illuminate\Mail\Events\MessageSending;
-    use Illuminate\Mail\Events\MessageSent;
+    // use Illuminate\Mail\Events\MessageSent;
 
-    /**
-     * The event listener mappings for the application.
-     *
-     * @var array
-     */
-    protected $listen = [
-        MessageSending::class => [
-            LogSendingMessage::class,
-        ],
-
-        MessageSent::class => [
-            LogSentMessage::class,
-        ],
-    ];
+    class LogSendingMessage
+    {
+        /**
+         * Handle the given event.
+         */
+        public function handle(MessageSending $event): void
+        {
+            // Log the message data...
+        }
+    }
 
 <a name="custom-transports"></a>
 ## Custom Transports
