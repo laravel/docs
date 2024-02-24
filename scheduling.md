@@ -28,7 +28,13 @@ Laravel's command scheduler offers a fresh approach to managing scheduled tasks 
 <a name="defining-schedules"></a>
 ## Defining Schedules
 
+If you want to define a schedule, you can use the `Schedule` facade in the `routes/console.php` file:
 
+```php
+use Illuminate\Support\Facades\Schedule;
+ 
+Schedule::command('emails:send')->daily();
+```
 
 In addition to scheduling using closures, you may also schedule [invokable objects](https://secure.php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
 
