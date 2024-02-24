@@ -92,17 +92,13 @@ php artisan queue:work --queue=high,default
 <a name="database"></a>
 #### Database
 
-In order to use the `database` queue driver, you will need a database table to hold the jobs. To generate a migration that creates this table, run the `make:queue-table` Artisan command. Once the migration has been created, you may migrate your database using the `migrate` command:
+In order to use the `database` queue driver, you will need a database table to hold the jobs. Typically, this is included in Laravel's default `0001_01_01_000002_create_jobs_table.php` [database migration](/docs/{{version}}/migrations); however, if your application does not contain this migration, you may use the `make:queue-table` Artisan command to create it:
 
 ```shell
 php artisan make:queue-table
 
 php artisan migrate
 ```
-
-Finally, don't forget to instruct your application to use the `database` driver by updating the `QUEUE_CONNECTION` variable in your application's `.env` file:
-
-    QUEUE_CONNECTION=database
 
 <a name="redis"></a>
 #### Redis
@@ -118,9 +114,11 @@ If your Redis queue connection uses a Redis Cluster, your queue names must conta
 
     'redis' => [
         'driver' => 'redis',
-        'connection' => 'default',
-        'queue' => '{default}',
-        'retry_after' => 90,
+        'connection' => env('REDIS_QUEUE_CONNECTION', 'default'),
+        'queue' => env('REDIS_QUEUE', '{default}'),
+        'retry_after' => env('REDIS_QUEUE_RETRY_AFTER', 90),
+        'block_for' => null,
+        'after_commit' => false,
     ],
 
 **Blocking**
@@ -131,10 +129,11 @@ Adjusting this value based on your queue load can be more efficient than continu
 
     'redis' => [
         'driver' => 'redis',
-        'connection' => 'default',
-        'queue' => 'default',
-        'retry_after' => 90,
+        'connection' => env('REDIS_QUEUE_CONNECTION', 'default'),
+        'queue' => env('REDIS_QUEUE', 'default'),
+        'retry_after' => env('REDIS_QUEUE_RETRY_AFTER', 90),
         'block_for' => 5,
+        'after_commit' => false,
     ],
 
 > [!WARNING]  
@@ -149,7 +148,7 @@ The following dependencies are needed for the listed queue drivers. These depend
 
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~4.0`
-- Redis: `predis/predis ~1.0` or phpredis PHP extension
+- Redis: `predis/predis ~2.0` or phpredis PHP extension
 
 </div>
 
