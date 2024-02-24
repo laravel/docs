@@ -739,6 +739,17 @@ Since rate limiter callbacks receive the incoming HTTP request instance, you may
                     : Limit::perMinute(100);
     });
 
+<a name="per-second-rate-limiting"></a>
+#### Per-Second Rate Limiting
+
+You can use the `perSecond` method for per-second rate liming  for all rate limiters, including those for HTTP requests and queued jobs:
+
+```php
+RateLimiter::for('invoices', function (Request $request) {
+    return Limit::perSecond(1);
+});
+```
+
 <a name="segmenting-rate-limits"></a>
 #### Segmenting Rate Limits
 
