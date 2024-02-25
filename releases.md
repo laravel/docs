@@ -339,11 +339,3 @@ Laravel 11 includes improved support for MariaDB. In previous Laravel releases, 
 
 For more information on Laravel's database drivers, check out the [database documentation](/docs/{{version}}/database).
 
-### Resend Mail Transport
-
-_The Resend mail transport was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
-
-Laravel 11 includes a new `resend` mail transport that allows you to use the [Resend](https://resend.com) mail service to send your application's emails.
-
-For more information on sending emails in Laravel, check out the [mail documentation](/docs/{{version}}/mail).
-
