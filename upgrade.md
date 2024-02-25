@@ -21,6 +21,7 @@
 
 <div class="content-list" markdown="1">
 
+- [Carbon 3](#carbon-3)
 - [Per-Second Rate Limiting](#per-second-rate-limiting)
 
 </div>
@@ -290,6 +291,16 @@ The `Illuminate\Database\ConnectionInterface` interface has received a new `scal
 ```php
 public function scalar($query, $bindings = [], $useReadPdo = true);
 ```
+
+<a name="dates"></a>
+### Dates
+
+<a name="carbon-3"></a>
+#### Carbon 3
+
+**Likelihood Of Impact: Medium**
+
+Laravel 11 supports both Carbon 2 and Carbon 3. Carbon is a date manipulation library utilized extensively by Laravel and packages throughout the ecosystem. If you install Carbon 3, you should review Carbon's [change log](https://github.com/briannesbitt/Carbon/releases/tag/3.0.0).
 
 <a name="mail"></a>
 ### Mail
