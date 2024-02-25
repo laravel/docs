@@ -1,10 +1,11 @@
 # Events
 
 - [Introduction](#introduction)
+- [Generating Events and Listeners](#generating-events-and-listeners)
 - [Registering Events and Listeners](#registering-events-and-listeners)
-    - [Generating Events and Listeners](#generating-events-and-listeners)
-    - [Manually Registering Events](#manually-registering-events)
     - [Event Discovery](#event-discovery)
+    - [Manually Registering Events](#manually-registering-events)
+    - [Closure Listeners](#closure-listeners)
 - [Defining Events](#defining-events)
 - [Defining Listeners](#defining-listeners)
 - [Queued Event Listeners](#queued-event-listeners)
@@ -27,38 +28,10 @@ Laravel's events provide a simple observer pattern implementation, allowing you 
 
 Events serve as a great way to decouple various aspects of your application, since a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order has shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `App\Events\OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
 
-<a name="registering-events-and-listeners"></a>
-## Registering Events and Listeners
-
-The `App\Providers\EventServiceProvider` included with your Laravel application provides a convenient place to register all of your application's event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add an `OrderShipped` event:
-
-    use App\Events\OrderShipped;
-    use App\Listeners\SendShipmentNotification;
-
-    /**
-     * The event listener mappings for the application.
-     *
-     * @var array<class-string, array<int, class-string>>
-     */
-    protected $listen = [
-        OrderShipped::class => [
-            SendShipmentNotification::class,
-        ],
-    ];
-
-> [!NOTE]  
-> The `event:list` command may be used to display a list of all events and listeners registered by your application.
-
 <a name="generating-events-and-listeners"></a>
-### Generating Events and Listeners
+## Generating Events and Listeners
 
-Of course, manually creating the files for each event and listener is cumbersome. Instead, add listeners and events to your `EventServiceProvider` and use the `event:generate` Artisan command. This command will generate any events or listeners that are listed in your `EventServiceProvider` that do not already exist:
-
-```shell
-php artisan event:generate
-```
-
-Alternatively, you may use the `make:event` and `make:listener` Artisan commands to generate individual events and listeners:
+To quickly generate events and listeners, you may use the `make:event` and `make:listener` Artisan commands:
 
 ```shell
 php artisan make:event PodcastProcessed
@@ -66,17 +39,63 @@ php artisan make:event PodcastProcessed
 php artisan make:listener SendPodcastNotification --event=PodcastProcessed
 ```
 
+For convenience, you may also invoke the `make:event` and `make:listener` Artisan commands without additional arguments. When you do so, Laravel will automatically prompt you for the class name and, when creating a listener, the event it should listen to:
+
+```shell
+php artisan make:event
+
+php artisan make:listener
+```
+
+<a name="registering-events-and-listeners"></a>
+## Registering Events and Listeners
+
+<a name="event-discovery"></a>
+### Event Discovery
+
+By default, Laravel will automatically find and register your event listeners by scanning your application's `Listeners` directory. When Laravel finds any listener class method that begins with `handle` or `__invoke`, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature:
+
+    use App\Events\PodcastProcessed;
+
+    class SendPodcastNotification
+    {
+        /**
+         * Handle the given event.
+         */
+        public function handle(PodcastProcessed $event): void
+        {
+            // ...
+        }
+    }
+
+If you plan to store your listeners in a different directory or within multiple directories, you may instruct Laravel to scan those directories using the `withEvents` method in your application's `bootstrap/app.php` file:
+
+    ->withEvents(discover: [
+        __DIR__.'/../app/Domain/Listeners',
+    ])
+
+The `event:list` command may be used to list all of the listeners registered within your application:
+
+```shell
+php artisan event:list
+```
+
+<a name="event-discovery-in-production"></a>
+#### Event Discovery in Production
+
+To give your application a speed boost, you should cache a manifest of all of your application's listeners using the `event:cache` Artisan command. Typically, this command should be run as part of your application's [deployment process](/docs/{{version}}/deployment#caching-events). This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the cache.
+
 <a name="manually-registering-events"></a>
 ### Manually Registering Events
 
-Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register class or closure based event listeners manually in the `boot` method of your `EventServiceProvider`:
+Using the `Event` facade, you may manually register events and their corresponding listeners within the `boot` method of your application's `AppServiceProvider`:
 
-    use App\Events\PodcastProcessed;
-    use App\Listeners\SendPodcastNotification;
+    use App\Domain\Orders\Events\PodcastProcessed;
+    use App\Domain\Orders\Listeners\SendPodcastNotification;
     use Illuminate\Support\Facades\Event;
 
     /**
-     * Register any other events for your application.
+     * Bootstrap any application services.
      */
     public function boot(): void
     {
@@ -84,7 +103,27 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
             PodcastProcessed::class,
             SendPodcastNotification::class,
         );
+    }
 
+The `event:list` command may be used to list all of the listeners registered within your application:
+
+```shell
+php artisan event:list
+```
+
+<a name="closure-listeners"></a>
+### Closure Listeners
+
+Typically, listeners are defined as classes; however, you may also manually register closure-based event listeners in the `boot` method of your application's `AppServiceProvider`:
+
+    use App\Events\PodcastProcessed;
+    use Illuminate\Support\Facades\Event;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
         Event::listen(function (PodcastProcessed $event) {
             // ...
         });
@@ -93,14 +132,14 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
 <a name="queuable-anonymous-event-listeners"></a>
 #### Queueable Anonymous Event Listeners
 
-When registering closure based event listeners manually, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
+When registering closure based event listeners, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
 
     use App\Events\PodcastProcessed;
     use function Illuminate\Events\queueable;
     use Illuminate\Support\Facades\Event;
 
     /**
-     * Register any other events for your application.
+     * Bootstrap any application services.
      */
     public function boot(): void
     {
@@ -131,60 +170,11 @@ If you would like to handle anonymous queued listener failures, you may provide 
 <a name="wildcard-event-listeners"></a>
 #### Wildcard Event Listeners
 
-You may even register listeners using the `*` as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the event name as their first argument and the entire event data array as their second argument:
+You may also register listeners using the `*` character as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the event name as their first argument and the entire event data array as their second argument:
 
     Event::listen('event.*', function (string $eventName, array $data) {
         // ...
     });
-
-<a name="event-discovery"></a>
-### Event Discovery
-
-Instead of registering events and listeners manually in the `$listen` array of the `EventServiceProvider`, you can enable automatic event discovery. When event discovery is enabled, Laravel will automatically find and register your events and listeners by scanning your application's `Listeners` directory. In addition, any explicitly defined events listed in the `EventServiceProvider` will still be registered.
-
-Laravel finds event listeners by scanning the listener classes using PHP's reflection services. When Laravel finds any listener class method that begins with `handle` or `__invoke`, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature:
-
-    use App\Events\PodcastProcessed;
-
-    class SendPodcastNotification
-    {
-        /**
-         * Handle the given event.
-         */
-        public function handle(PodcastProcessed $event): void
-        {
-            // ...
-        }
-    }
-
-Event discovery is disabled by default, but you can enable it by overriding the `shouldDiscoverEvents` method of your application's `EventServiceProvider`:
-
-    /**
-     * Determine if events and listeners should be automatically discovered.
-     */
-    public function shouldDiscoverEvents(): bool
-    {
-        return true;
-    }
-
-By default, all listeners within your application's `app/Listeners` directory will be scanned. If you would like to define additional directories to scan, you may override the `discoverEventsWithin` method in your `EventServiceProvider`:
-
-    /**
-     * Get the listener directories that should be used to discover events.
-     *
-     * @return array<int, string>
-     */
-    protected function discoverEventsWithin(): array
-    {
-        return [
-            $this->app->path('Listeners'),
-        ];
-    }
-
-<a name="event-discovery-in-production"></a>
-#### Event Discovery In Production
-
-In production, it is not efficient for the framework to scan all of your listeners on every request. Therefore, during your deployment process, you should run the `event:cache` Artisan command to cache a manifest of all of your application's events and listeners. This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the cache.
 
 <a name="defining-events"></a>
 ## Defining Events
@@ -217,7 +207,7 @@ As you can see, this event class contains no logic. It is a container for the `A
 <a name="defining-listeners"></a>
 ## Defining Listeners
 
-Next, let's take a look at the listener for our example event. Event listeners receive event instances in their `handle` method. The `event:generate` and `make:listener` Artisan commands will automatically import the proper event class and type-hint the event on the `handle` method. Within the `handle` method, you may perform any actions necessary to respond to the event:
+Next, let's take a look at the listener for our example event. Event listeners receive event instances in their `handle` method. The `make:listener` Artisan command, when invoked with the `--event` option, will automatically import the proper event class and type-hint the event in the `handle` method. Within the `handle` method, you may perform any actions necessary to respond to the event:
 
     <?php
 
@@ -244,7 +234,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
         }
     }
 
-> [!NOTE]  
+> [!NOTE]
 > Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
 
 <a name="stopping-the-propagation-of-an-event"></a>
@@ -257,7 +247,7 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 
 Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making an HTTP request. Before using queued listeners, make sure to [configure your queue](/docs/{{version}}/queues) and start a queue worker on your server or local development environment.
 
-To specify that a listener should be queued, add the `ShouldQueue` interface to the listener class. Listeners generated by the `event:generate` and `make:listener` Artisan commands already have this interface imported into the current namespace so you can use it immediately:
+To specify that a listener should be queued, add the `ShouldQueue` interface to the listener class. Listeners generated by the `make:listener` Artisan commands already have this interface imported into the current namespace so you can use it immediately:
 
     <?php
 
@@ -414,7 +404,7 @@ If your queue connection's `after_commit` configuration option is set to `false`
         use InteractsWithQueue;
     }
 
-> [!NOTE]  
+> [!NOTE]
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="handling-failed-jobs"></a>
@@ -522,14 +512,14 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
             return redirect('/orders');
         }
     }
-    
+
  If you would like to conditionally dispatch an event, you may use the `dispatchIf` and `dispatchUnless` methods:
 
     OrderShipped::dispatchIf($condition, $order);
 
     OrderShipped::dispatchUnless($condition, $order);
 
-> [!NOTE]  
+> [!NOTE]
 > When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
 
 <a name="dispatching-events-after-database-transactions"></a>
@@ -645,34 +635,25 @@ If your event listener methods are defined within the subscriber itself, you may
 <a name="registering-event-subscribers"></a>
 ### Registering Event Subscribers
 
-After writing the subscriber, you are ready to register it with the event dispatcher. You may register subscribers using the `$subscribe` property on the `EventServiceProvider`. For example, let's add the `UserEventSubscriber` to the list:
+After writing the subscriber, you are ready to register it with the event dispatcher. You may register subscribers using the `subscribe` method of the `Event` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider`:
 
     <?php
 
     namespace App\Providers;
 
     use App\Listeners\UserEventSubscriber;
-    use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+    use Illuminate\Support\Facades\Event;
+    use Illuminate\Support\ServiceProvider;
 
-    class EventServiceProvider extends ServiceProvider
+    class AppServiceProvider extends ServiceProvider
     {
         /**
-         * The event listener mappings for the application.
-         *
-         * @var array
+         * Bootstrap any application services.
          */
-        protected $listen = [
-            // ...
-        ];
-
-        /**
-         * The subscriber classes to register.
-         *
-         * @var array
-         */
-        protected $subscribe = [
-            UserEventSubscriber::class,
-        ];
+        public function boot(): void
+        {
+            Event::subscribe(UserEventSubscriber::class);
+        }
     }
 
 <a name="testing"></a>
