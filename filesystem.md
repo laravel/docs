@@ -91,7 +91,7 @@ Before using the S3 driver, you will need to install the Flysystem S3 package vi
 composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
 ```
 
-The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. By default, you may configure the S3 configuration and credentials using the following environment variables:
+An S3 disk configuration array is located in your `config/filesystems.php` configuration file. Typically, you should configure your S3 configuration and credentials using the following environment variables which are referenced by the `config/filesystems.php` configuration file:
 
 ```
 AWS_ACCESS_KEY_ID=<your-key-id>
@@ -112,7 +112,7 @@ Before using the FTP driver, you will need to install the Flysystem FTP package 
 composer require league/flysystem-ftp "^3.0"
 ```
 
-Laravel's Flysystem integrations work great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure an FTP filesystem, you may use the configuration example below:
+Laravel's Flysystem integrations work great with FTP; however, a sample configuration is not included with the framework's default `config/filesystems.php` configuration file. If you need to configure an FTP filesystem, you may use the configuration example below:
 
     'ftp' => [
         'driver' => 'ftp',
@@ -137,7 +137,7 @@ Before using the SFTP driver, you will need to install the Flysystem SFTP packag
 composer require league/flysystem-sftp-v3 "^3.0"
 ```
 
-Laravel's Flysystem integrations work great with SFTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure an SFTP filesystem, you may use the configuration example below:
+Laravel's Flysystem integrations work great with SFTP; however, a sample configuration is not included with the framework's default `config/filesystems.php` configuration file. If you need to configure an SFTP filesystem, you may use the configuration example below:
 
     'sftp' => [
         'driver' => 'sftp',
@@ -299,7 +299,7 @@ When using the `local` driver, all files that should be publicly accessible shou
 <a name="url-host-customization"></a>
 #### URL Host Customization
 
-If you would like to modify the host for URLs generated using the `Storage` facade, you may change a `url` option to the disk's configuration array:
+If you would like to modify the host for URLs generated using the `Storage` facade, you may add or change the `url` option in the disk's configuration array:
 
     'public' => [
         'driver' => 'local',
