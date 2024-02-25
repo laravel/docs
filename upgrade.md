@@ -133,11 +133,34 @@ The base Eloquent model class now defines a `casts` method in order to support t
 
 **Likelihood Of Impact: High**
 
-When modifying a column, you must now explicitly include all the modifiers you want to keep on the column definition after it is changed. Any missing attributes will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column, even if those attributes have been assigned to the column by a previous migration:
+When modifying a column, you must now explicitly include all the modifiers you want to keep on the column definition after it is changed. Any missing attributes will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column, even if those attributes have been assigned to the column by a previous migration.
+
+For example, imagine you have a migration that creates a `votes` column with the `unsigned`, `default`, and `comment` attributes:
+
+```php
+Schema::create('users', function (Blueprint $table) {
+    $table->integer('votes')->unsigned()->default(1)->comment('The vote count');
+});
+```
+
+Later, you write a migration that changes the column to be `nullable` as well:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
-    $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();
+    $table->integer('votes')->nullable()->change();
+});
+```
+
+In Laravel 10, this migration would retain the `unsigned`, `default`, and `comment` attributes on the column. However, in Laravel 11, the migration must now also include all of the attributes that were previously defined on the column. Otherwise, they will be dropped:
+
+```php
+Schema::table('users', function (Blueprint $table) {
+    $table->integer('votes')
+        ->unsigned()
+        ->default(1)
+        ->comment('The vote count')
+        ->nullable()
+        ->change();
 });
 ```
 
@@ -150,6 +173,14 @@ $table->bigIncrements('id')->primary()->change();
 // Drop an index...
 $table->char('postal_code', 10)->unique(false)->change();
 ```
+
+If you do not want to update all of the existing "change" migrations in your application to retain the column's existing attributes, you may simply [squash your migrations](/docs/{{version}}/migrations#squashing-migrations):
+
+```bash
+php artisan schema:dump
+```
+
+Once your migrations have been squashed, Laravel will "migrate" the database using your application's schema file before running any pending migrations.
 
 <a name="floating-point-types"></a>
 #### Floating-Point Types
