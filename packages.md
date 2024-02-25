@@ -33,7 +33,7 @@ When writing a Laravel application, it generally does not matter if you use cont
 <a name="package-discovery"></a>
 ## Package Discovery
 
-The `bootstrap/providers.php` file in Laravel applications defines the list of service providers that should be loaded by Laravel. When someone installs your package, you will typically want your service provider to be included in this list. Instead of requiring users to manually add your service provider to the list, you may define the provider in the `extra` section of your package's `composer.json` file. In addition to service providers, you may also list any [facades](/docs/{{version}}/facades) you would like to be registered:
+The application's `bootstrap/providers.php` file contains the list of service providers that should be loaded by Laravel. However, instead of requiring users to manually add your service provider to the list, you may define the provider in the `extra` section of your package's `composer.json` file so that it is automatically loaded by Laravel. In addition to service providers, you may also list any [facades](/docs/{{version}}/facades) you would like to be registered:
 
 ```json
 "extra": {
@@ -145,7 +145,7 @@ If your package contains routes, you may load them using the `loadRoutesFrom` me
 <a name="migrations"></a>
 ### Migrations
 
-If your package contains [database migrations](/docs/{{version}}/migrations), you may use the `publishesMigrations` method to inform Laravel that the given directory or file contains migrations, and that those migrations should be published with updated timestamps:
+If your package contains [database migrations](/docs/{{version}}/migrations), you may use the `publishesMigrations` method to inform Laravel that the given directory or file contains migrations. When Laravel publishes the migrations, it will automatically update the timestamp within their filename to reflect the current date and time:
 
     /**
      * Bootstrap any package services.
