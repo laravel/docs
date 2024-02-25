@@ -301,7 +301,7 @@ php artisan make:trait
 
 ### Resend Mail Transport
 
-_Resend mail transport was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+_The Resend mail transport was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
 Laravel 11 includes a new `resend` mail transport that allows you to use the [Resend](https://resend.com) mail service to send your application's emails.
 
