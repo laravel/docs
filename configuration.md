@@ -220,9 +220,9 @@ php artisan config:clear
 <a name="configuration-publishing"></a>
 ## Configuration Publishing
 
-Most of Laravel's core configuration files are published by default in your application's `config` directory; however, certain configuration files like `cors.php` or `view.php` are not published by default as the likelihood of their needing to be modified is very low.
+Most of Laravel's configuration files are already published in your application's `config` directory; however, certain configuration files like `cors.php` and `view.php` are not published by default, as most applications will never need to modify them.
 
-You may use the `config:publish` Artisan command to publish any configuration files that are not published by default:
+However, you may use the `config:publish` Artisan command to publish any configuration files that are not published by default:
 
 ```shell
 php artisan config:publish
