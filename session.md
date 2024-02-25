@@ -24,7 +24,7 @@ Laravel ships with a variety of session backends that are accessed through an ex
 <a name="configuration"></a>
 ### Configuration
 
-Your application's session configuration file is stored at `config/session.php`. Be sure to review the options available to you in this file. By default, Laravel is configured to use the `database` session driver, which will work well for many applications.
+Your application's session configuration file is stored at `config/session.php`. Be sure to review the options available to you in this file. By default, Laravel is configured to use the `database` session driver.
 
 The session `driver` configuration option defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:
 
