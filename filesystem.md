@@ -91,7 +91,7 @@ Before using the S3 driver, you will need to install the Flysystem S3 package vi
 composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
 ```
 
-An S3 disk configuration array is located in your `config/filesystems.php` configuration file. Typically, you should configure your S3 configuration and credentials using the following environment variables which are referenced by the `config/filesystems.php` configuration file:
+An S3 disk configuration array is located in your `config/filesystems.php` configuration file. Typically, you should configure your S3 information and credentials using the following environment variables which are referenced by the `config/filesystems.php` configuration file:
 
 ```
 AWS_ACCESS_KEY_ID=<your-key-id>
