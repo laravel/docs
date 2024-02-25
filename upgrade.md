@@ -186,7 +186,7 @@ If you do not want to update all of the existing "change" migrations in your app
 php artisan schema:dump
 ```
 
-Of course, once your migrations have been squashed, Laravel will "migrate" the database using your application's schema file before running any pending migrations.
+Once your migrations have been squashed, Laravel will "migrate" the database using your application's schema file before running any pending migrations.
 
 <a name="floating-point-types"></a>
 #### Floating-Point Types
