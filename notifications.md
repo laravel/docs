@@ -1443,7 +1443,7 @@ By passing a closure as the second argument to the `assertSentOnDemand` method, 
 <a name="notification-sending-event"></a>
 #### Notification Sending Event
 
-When a notification is sending, the `Illuminate\Notifications\Events\NotificationSending` event is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register [event listeners](/docs/{{version}}/events) for this event within your application:
+When a notification is sending, the `Illuminate\Notifications\Events\NotificationSending` event is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may create [event listeners](/docs/{{version}}/events) for this event within your application:
 
     use Illuminate\Notifications\Events\NotificationSending;
 
@@ -1454,7 +1454,7 @@ When a notification is sending, the `Illuminate\Notifications\Events\Notificatio
          */
         public function handle(NotificationSending $event): void
         {
-            // Check notification status...
+            // ...
         }
     }
 
@@ -1483,7 +1483,7 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
 <a name="notification-sent-event"></a>
 #### Notification Sent Event
 
-When a notification is sent, the `Illuminate\Notifications\Events\NotificationSent` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register [event listeners](/docs/{{version}}/events) for this event within your application:
+When a notification is sent, the `Illuminate\Notifications\Events\NotificationSent` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may create [event listeners](/docs/{{version}}/events) for this event within your application:
 
     use Illuminate\Notifications\Events\NotificationSent;
 
@@ -1494,7 +1494,7 @@ When a notification is sent, the `Illuminate\Notifications\Events\NotificationSe
          */
         public function handle(NotificationSending $event): void
         {
-            // Log the notification...
+            // ...
         }
     }
 
