@@ -83,7 +83,7 @@ php artisan event:list
 <a name="event-discovery-in-production"></a>
 #### Event Discovery in Production
 
-To give your application a speed boost, you should cache a manifest of all of your application's listeners using the `event:cache` Artisan command. Typically, this command should be run as part of your application's [deployment process](/docs/{{version}}/deployment#caching-events). This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the cache.
+To give your application a speed boost, you should cache a manifest of all of your application's listeners using the `optimize` or `event:cache` Artisan commands. Typically, this command should be run as part of your application's [deployment process](/docs/{{version}}/deployment#optimization). This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the event cache.
 
 <a name="manually-registering-events"></a>
 ### Manually Registering Events
