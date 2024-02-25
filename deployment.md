@@ -107,7 +107,7 @@ This command will combine all of Laravel's configuration files into a single, ca
 <a name="caching-events"></a>
 ### Caching Events
 
-If your application is utilizing [event discovery](/docs/{{version}}/events#event-discovery), you should cache your application's event to listener mappings during your deployment process. This can be accomplished by invoking the `event:cache` Artisan command during deployment:
+You should cache your application's auto-discovered event to listener mappings during your deployment process. This can be accomplished by invoking the `event:cache` Artisan command during deployment:
 
 ```shell
 php artisan event:cache
