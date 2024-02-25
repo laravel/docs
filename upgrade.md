@@ -157,7 +157,7 @@ Schema::table('users', function (Blueprint $table) {
 });
 ```
 
-In Laravel 10, this migration would retain the `unsigned`, `default`, and `comment` attributes on the column. However, in Laravel 11, the migration must also include all of the attributes that were previously defined on the column:
+In Laravel 10, this migration would retain the `unsigned`, `default`, and `comment` attributes on the column. However, in Laravel 11, the migration must now also include all of the attributes that were previously defined on the column. Otherwise, they will be dropped:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
