@@ -74,12 +74,6 @@ Laravel 11 introduces a new default application structure with fewer default fil
 
 However, we do **not recommend** that Laravel 10 applications upgrading to Laravel 11 attempt to migrate their application structure, as Laravel 11 has been carefully tuned to also support the Laravel 10 application structure.
 
-Nevertheless, if you choose to attempt to migrate your application's structure and also choose to remove your application's configuration files, you should install the following compatibility package via Composer to ensure that Laravel continues to function correctly:
-
-```shell
-composer require laravel/previously-on-laravel-10
-```
-
 <a name="authentication"></a>
 ### Authentication
 

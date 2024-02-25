@@ -88,22 +88,6 @@ Instead of the default Laravel application structure containing five service pro
 
 For example, event discovery is now enabled by default, largely eliminating the need for manual registration of events and their listeners. However, if you do need to manually register events, you may simply do so in the `AppServiceProvider`. Similarly, route model bindings or authorization gates you may have previously registered in the `AuthServiceProvider` may also be registered in the `AppServiceProvider`.
 
-#### Configuration Files
-
-The use of environment variables has been expanded, with additional place-holders being added to the `.env.example` file included with new Laravel applications. Because of this, almost all core framework functionality can be configured via your application's `.env` file instead of individual configuration files. Therefore, the `config` directory no longer contains any configuration files by default.
-
-Instead, configuration files can be published using the new `config:publish` Artisan command, which allows you to publish only the configuration files you would like to customize:
-
-```shell
-php artisan config:publish
-```
-
-Of course, you may easily publish all of the framework's configuration files:
-
-```shell
-php artisan config:publish --all
-```
-
 #### Opt-in API and Broadcast Routing
 
 The `api.php` and `channels.php` route files are no longer present by default, as many applications do not require these files. Instead, they may be created using simple Artisan commands:

@@ -50,12 +50,7 @@ To assist you in building these types of features, Laravel makes it easy to "bro
 
 The core concepts behind broadcasting are simple: clients connect to named channels on the frontend, while your Laravel application broadcasts events to these channels on the backend. These events can contain any additional data you wish to make available to the frontend.
 
-<a name="supported-drivers"></a>
-#### Supported Drivers
-
-By default, Laravel includes three server-side broadcasting drivers for you to choose from: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.com). You may also be interested in community driven packages such as [soketi](https://docs.soketi.app/).
-
-> [!NOTE]  
+> [!NOTE]
 > Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
 
 <a name="server-side-installation"></a>
@@ -68,13 +63,7 @@ Event broadcasting is accomplished by a server-side broadcasting driver that bro
 <a name="configuration"></a>
 ### Configuration
 
-Laravel's complete `broadcasting.php` configuration file is not published by default, as you can specify your application's broadcast driver using the `BROADCAST_CONNECTION` [environment variable](/docs/{{version}}/configuration#environment-configuration). However, to customize some of the configuration options documented below that are not available via environment variables, you may publish the `broadcasting.php` configuration file using the `config:publish` Artisan command:
-
-```shell
-php artisan config:publish broadcasting
-```
-
-Laravel supports several broadcast drivers: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to totally disable broadcasting during testing.
+All of your application's event broadcasting configuration is stored in the `config/broadcasting.php` configuration file. Laravel supports several broadcast drivers out of the box: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to totally disable broadcasting during testing. A configuration example is included for each of these drivers in the `config/broadcasting.php` configuration file.
 
 <a name="installation"></a>
 #### Installation
@@ -118,7 +107,7 @@ If you plan to broadcast your events using [Pusher Channels](https://pusher.com/
 composer require pusher/pusher-php-server
 ```
 
-Next, you should configure your Pusher Channels credentials in your application's `.env` file:
+Next, you should configure your Pusher Channels credentials in the `config/broadcasting.php` configuration file. An example Pusher Channels configuration is already included in this file, allowing you to quickly specify your key, secret, and application ID. Typically, you should configure your Pusher Channels credentials in your application's `.env` file:
 
 ```ini
 PUSHER_APP_ID=your-pusher-app-id
@@ -129,6 +118,8 @@ PUSHER_PORT=443
 PUSHER_SCHEME=https
 PUSHER_APP_CLUSTER=mt1
 ```
+
+The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster.
 
 Then, set the `BROADCAST_CONNECTION` environment variable to `pusher` in your application's `.env` file:
 
@@ -150,7 +141,7 @@ If you plan to broadcast your events using [Ably](https://ably.com), you should 
 composer require ably/ably-php
 ```
 
-Next, you should configure your Ably credentials via the `ABLY_KEY` environment variable in your application's `.env` file:
+Next, you should configure your Ably credentials in the `config/broadcasting.php` configuration file. An example Ably configuration is already included in this file, allowing you to quickly specify your key. Typically, this value should be set via the `ABLY_KEY` [environment variable](/docs/{{version}}/configuration#environment-configuration):
 
 ```ini
 ABLY_KEY=your-ably-key
