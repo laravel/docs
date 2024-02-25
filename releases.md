@@ -49,7 +49,7 @@ For all Laravel releases, bug fixes are provided for 18 months and security fixe
 <a name="laravel-11"></a>
 ## Laravel 11
 
-Laravel 11 continues the improvements made in Laravel 10.x by introducing a streamlined application structure, per-second rate limiting, health routing, graceful encryption key rotation, queue testing improvements, [Resend](https://resend.com) mail driver, Prompt validator integration, new Artisan commands, and more. In addition, Laravel Reverb, a first-party, scalable WebSocket server has been introduced to provide robust real-time capabilities to your applications.
+Laravel 11 continues the improvements made in Laravel 10.x by introducing a streamlined application structure, per-second rate limiting, health routing, graceful encryption key rotation, queue testing improvements, [Resend](https://resend.com) mail transport, Prompt validator integration, new Artisan commands, and more. In addition, Laravel Reverb, a first-party, scalable WebSocket server has been introduced to provide robust real-time capabilities to your applications.
 
 <a name="php-8"></a>
 ### PHP 8.2
@@ -160,7 +160,7 @@ Like routing and middleware, exception handling can now be customized from your 
 
 #### Base `Controller` Class
 
-The base controller previously included in new Laravel applications has been simplified. It no longer extends Laravel's `Controller` class, and the traits `AuthorizesRequests` and `ValidatesRequests` have been removed, as they are not commonly used in application controllers:
+The base controller included in new Laravel applications has been simplified. It no longer extends Laravel's internal `Controller` class, and the `AuthorizesRequests` and `ValidatesRequests` traits have been removed, as they may included on your application's individual controllers if desired:
 
     <?php
 
@@ -170,10 +170,6 @@ The base controller previously included in new Laravel applications has been sim
     {
         //
     }
-
-#### `CreatesApplication` Trait
-
-The `CreatesApplication` trait has been removed from new Laravel applications, as it is no longer necessary. Instead, Laravel automatically finds and creates a new application instance for each one of your tests.
 
 #### Application Defaults
 
@@ -303,26 +299,11 @@ php artisan make:interface
 php artisan make:trait
 ```
 
-### Up-To-Date Migration Dates
+### Resend Mail Transport
 
-_Up-to-date migrations dates was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
+_Resend mail transport was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-When publishing a migration, the migration's date will now be set to the current date and time, ensuring that your migrations always have up-to-date timestamps.
-
-Here is an example where running the `vendor:publish` Artisan command on a package such as `Telescope` will result in migrations with the current date and time:
-
-```
-2018_08_08_100000_create_telescope_entries_table.php // [tl! remove]
-2024_03_01_123456_create_telescope_entries_table.php // [tl! add]
-```
-
-For more information on migrations, check out the [migrations documentation](/docs/{{version}}/migrations).
-
-### Resend Mail Driver
-
-_Resend mail driver was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
-
-Laravel 11 includes a new `resend` mail driver that allows you to use the [Resend](https://resend.com) mail service to send your application's emails.
+Laravel 11 includes a new `resend` mail transport that allows you to use the [Resend](https://resend.com) mail service to send your application's emails.
 
 For more information on sending mails in Laravel, check out the [mail documentation](/docs/{{version}}/mail).
 
@@ -330,7 +311,7 @@ For more information on sending mails in Laravel, check out the [mail documentat
 
 _Model casts improvements were contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
 
-Laravel 11 supports defining your model's casts using a method instead of a property. This allows for a much cleaner way to define casts for your models, especially when using casts with arguments:
+Laravel 11 supports defining your model's casts using a method instead of a property. This allows for streamlined, fluent cast definitions, especially when using casts with arguments:
 
     /**
      * Get the attributes that should be cast.
@@ -347,13 +328,13 @@ Laravel 11 supports defining your model's casts using a method instead of a prop
         ];
     }
 
-For more information on attribute casting, check out the [eloquent mutators documentation](/docs/{{version}}/eloquent-mutators#attribute-casting).
+For more information on attribute casting, review the [Eloquent documentation](/docs/{{version}}/eloquent-mutators#attribute-casting).
 
-### `once` helper
+### The `once` Helper
 
 _The `once` helper was contributed by [Taylor Otwell](https://github.com/taylorotwell)_ and _[Nuno Maduro](https://github.com/nunomaduro)_.
 
-Laravel 11 includes a new `once` helper that is extremely useful for caching a costly computation without the need to create a temporary like a nullable property on the class itself. Here is a practical example:
+Laravel 11 includes a new `once` helper function that is extremely useful for caching a costly computation without the need to create a temporary like a nullable property on the class itself. Here is a practical example:
 
 ```php
 class User extends Model
