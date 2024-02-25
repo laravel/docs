@@ -82,12 +82,14 @@ return Application::configure(basePath: dirname(__DIR__))
     })->create();
 ```
 
+<a name="service-providers"></a>
 #### Service Providers
 
 Instead of the default Laravel application structure containing five service providers, Laravel 11 only includes a single `AppServiceProvider`. The functionality of the previous service providers has been incorporated into the `bootstrap/app.php`, is handled automatically by the framework, or may be placed in your application's `AppServiceProvider`.
 
 For example, event discovery is now enabled by default, largely eliminating the need for manual registration of events and their listeners. However, if you do need to manually register events, you may simply do so in the `AppServiceProvider`. Similarly, route model bindings or authorization gates you may have previously registered in the `AuthServiceProvider` may also be registered in the `AppServiceProvider`.
 
+<a name="opt-in-routing"></a>
 #### Opt-in API and Broadcast Routing
 
 The `api.php` and `channels.php` route files are no longer present by default, as many applications do not require these files. Instead, they may be created using simple Artisan commands:
@@ -98,6 +100,7 @@ php artisan install:api
 php artisan install:broadcasting
 ```
 
+<a name="middleware"></a>
 #### Middleware
 
 Previously, new Laravel applications included nine middleware. These middleware performed a variety of tasks such as authenticating requests, trimming input strings, and validating CSRF tokens.
@@ -118,6 +121,7 @@ In Laravel 11, these middleware have been moved into the framework itself, so th
 
 Since all middleware can be easily customized via your application's `bootstrap/app.php`, the need for a separate HTTP "kernel" class has been eliminated.
 
+<a name="scheduling"></a>
 #### Scheduling
 
 Using a new `Schedule` facade, scheduled tasks may now be defined directly in your application's `routes/console.php` file, eliminating the need for a separate console "kernel" class:
@@ -128,6 +132,7 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::command('emails:send')->daily();
 ```
 
+<a name="exception-handling"></a>
 #### Exception Handling
 
 Like routing and middleware, exception handling can now be customized from your application's `bootstrap/app.php` file instead of a separate exception handler class, reducing the overall number of files included in a new Laravel application:
@@ -142,6 +147,7 @@ Like routing and middleware, exception handling can now be customized from your 
 })
 ```
 
+<a name="base-controller-class"></a>
 #### Base `Controller` Class
 
 The base controller included in new Laravel applications has been simplified. It no longer extends Laravel's internal `Controller` class, and the `AuthorizesRequests` and `ValidatesRequests` traits have been removed, as they may included on your application's individual controllers if desired:
@@ -155,6 +161,7 @@ The base controller included in new Laravel applications has been simplified. It
         //
     }
 
+<a name="application-defaults"></a>
 #### Application Defaults
 
 By default, new Laravel applications use SQLite for database storage, as well as the `database` driver for Laravel's session, cache, and queue. This allows you to begin building your application immediately after creating a new Laravel application, without being required to install additional software or create additional database migrations.
@@ -270,6 +277,7 @@ $job->assertReleased(delay: 30);
 
 For more information on testing queued jobs, check out the [queue documentation](/docs/{{version}}/queues#testing).
 
+<a name="new-artisan-commands"></a>
 ### New Artisan Commands
 
 _Class creation Artisan commands were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
@@ -283,6 +291,7 @@ php artisan make:interface
 php artisan make:trait
 ```
 
+<a name="model-cast-improvements"></a>
 ### Model Casts Improvements
 
 _Model casts improvements were contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
@@ -306,6 +315,7 @@ Laravel 11 supports defining your model's casts using a method instead of a prop
 
 For more information on attribute casting, review the [Eloquent documentation](/docs/{{version}}/eloquent-mutators#attribute-casting).
 
+<a name="the-once-function"></a>
 ### The `once` Function
 
 _The `once` helper was contributed by [Taylor Otwell](https://github.com/taylorotwell)_ and _[Nuno Maduro](https://github.com/nunomaduro)_.
@@ -325,12 +335,14 @@ The `once` helper function executes the given callback and caches the result in 
 
 For more information on the `once` helper, check out the [helpers documentation](/docs/{{version}}/helpers#method-once).
 
+<a name="database-performance"></a>
 ### Improved Performance When Testing With In-Memory Databases
 
 _Improved in-memory database testing performance was contributed by [Anders Jenbo](https://github.com/AJenbo)_
 
 Laravel 11 offers a significant speed boost when using the `:memory:` SQLite database during testing. To accomplish this, Laravel now maintains a reference to PHP's PDO object and reuses it across connections, often cutting total test run time in half.
 
+<a name="mariadb"></a>
 ### Improved Support for MariaDB
 
 _Improved support for MariaDB was contributed by [Jonas Staudenmeir](https://github.com/staudenmeir) and [Julius Kiekbusch](https://github.com/Jubeki)_
