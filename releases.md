@@ -330,39 +330,36 @@ Laravel 11 supports defining your model's casts using a method instead of a prop
 
 For more information on attribute casting, review the [Eloquent documentation](/docs/{{version}}/eloquent-mutators#attribute-casting).
 
-### The `once` Helper
+### The `once` Function
 
 _The `once` helper was contributed by [Taylor Otwell](https://github.com/taylorotwell)_ and _[Nuno Maduro](https://github.com/nunomaduro)_.
 
-Laravel 11 includes a new `once` helper function that is extremely useful for caching a costly computation without the need to create a temporary like a nullable property on the class itself. Here is a practical example:
+The `once` helper function executes the given callback and caches the result in memory for the duration of the request. Any subsequent calls to the `once` function with the same callback will return the previously cached result:
 
-```php
-class User extends Model
-{
-    public function stats(): array
+    function random(): int
     {
         return once(function () {
-            // Any kind of expensive computation that should be cached during the request...
-
-            return $stats;
+            return random_int(1, 1000);
         });
     }
-}
-```
+
+    random(); // 123
+    random(); // 123 (cached result)
+    random(); // 123 (cached result)
 
 For more information on the `once` helper, check out the [helpers documentation](/docs/{{version}}/helpers#method-once).
 
 ### Improved Performance When Testing With In-Memory Databases
 
-_Improved performance when testing with in-memory databases was contributed by [Anders Jenbo](https://github.com/AJenbo)_
+_Improved in-memory database testing performance was contributed by [Anders Jenbo](https://github.com/AJenbo)_
 
-When using the `:memory:` SQLite database for testing, Laravel 11 tests will experience improved speed. This is due to the fact that Laravel now maintains a reference to PHP's PDO object and reuses it across connections. This results in a significant performance boost, with test suites that used to take minutes to run now being completed in just seconds.
+Laravel 11 offers a significant speed boost when using the `:memory:` SQLite database during testing. To accomplish this, Laravel now maintains a reference to PHP's PDO object and reuses it across connections, often cutting total test run time in half.
 
-### Improved Support For MariaDB
+### Improved Support for MariaDB
 
 _Improved support for MariaDB was contributed by [Jonas Staudenmeir](https://github.com/staudenmeir) and [Julius Kiekbusch](https://github.com/Jubeki)_
 
-Laravel 11 includes improved support for MariaDB. While in previous versions, you could already use MariaDB with Laravel through the MySQL driver, Laravel 11 now includes a MariaDB specific driver and better defaults for this type of database.
+Laravel 11 includes improved support for MariaDB. In previous Laravel releases, you could use MariaDB via Laravel's MySQL driver. However, Laravel 11 now includes a dedicated MariaDB driver which provides better defaults for this database system.
 
 For more information on Laravel's database drivers, check out the [database documentation](/docs/{{version}}/database).
 
