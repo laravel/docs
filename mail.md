@@ -1221,19 +1221,19 @@ Finally, you may specify a global "to" address by invoking the `alwaysTo` method
 <a name="events"></a>
 ## Events
 
-Laravel fires two events during the process of sending mail messages. The `MessageSending` event is fired prior to a message being sent, while the `MessageSent` event is fired after a message has been sent. Remember, these events are fired when the mail is being *sent*, not when it is queued. You may register [event listeners](/docs/{{version}}/events) for these events within your application:
+Laravel dispatches two events while sending mail messages. The `MessageSending` event is dispatched prior to a message being sent, while the `MessageSent` event is dispatched after a message has been sent. Remember, these events are dispatched when the mail is being *sent*, not when it is queued. You may create [event listeners](/docs/{{version}}/events) for these events within your application:
 
     use Illuminate\Mail\Events\MessageSending;
     // use Illuminate\Mail\Events\MessageSent;
 
-    class LogSendingMessage
+    class LogMessage
     {
         /**
          * Handle the given event.
          */
         public function handle(MessageSending $event): void
         {
-            // Log the message data...
+            // ...
         }
     }
 
