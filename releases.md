@@ -361,5 +361,5 @@ _The Resend mail transport was contributed by [Taylor Otwell](https://github.com
 
 Laravel 11 includes a new `resend` mail transport that allows you to use the [Resend](https://resend.com) mail service to send your application's emails.
 
-For more information on sending mails in Laravel, check out the [mail documentation](/docs/{{version}}/mail).
+For more information on sending emails in Laravel, check out the [mail documentation](/docs/{{version}}/mail).
 
