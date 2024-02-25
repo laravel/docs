@@ -91,7 +91,17 @@ Before using the S3 driver, you will need to install the Flysystem S3 package vi
 composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
 ```
 
-The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI.
+An S3 disk configuration array is located in your `config/filesystems.php` configuration file. Typically, you should configure your S3 information and credentials using the following environment variables which are referenced by the `config/filesystems.php` configuration file:
+
+```
+AWS_ACCESS_KEY_ID=<your-key-id>
+AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=<your-bucket-name>
+AWS_USE_PATH_STYLE_ENDPOINT=false
+```
+
+For convenience, these environment variables match the naming convention used by the AWS CLI.
 
 <a name="ftp-driver-configuration"></a>
 #### FTP Driver Configuration
@@ -102,7 +112,7 @@ Before using the FTP driver, you will need to install the Flysystem FTP package 
 composer require league/flysystem-ftp "^3.0"
 ```
 
-Laravel's Flysystem integrations work great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure an FTP filesystem, you may use the configuration example below:
+Laravel's Flysystem integrations work great with FTP; however, a sample configuration is not included with the framework's default `config/filesystems.php` configuration file. If you need to configure an FTP filesystem, you may use the configuration example below:
 
     'ftp' => [
         'driver' => 'ftp',
@@ -127,7 +137,7 @@ Before using the SFTP driver, you will need to install the Flysystem SFTP packag
 composer require league/flysystem-sftp-v3 "^3.0"
 ```
 
-Laravel's Flysystem integrations work great with SFTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure an SFTP filesystem, you may use the configuration example below:
+Laravel's Flysystem integrations work great with SFTP; however, a sample configuration is not included with the framework's default `config/filesystems.php` configuration file. If you need to configure an SFTP filesystem, you may use the configuration example below:
 
     'sftp' => [
         'driver' => 'sftp',
@@ -289,13 +299,14 @@ When using the `local` driver, all files that should be publicly accessible shou
 <a name="url-host-customization"></a>
 #### URL Host Customization
 
-If you would like to pre-define the host for URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:
+If you would like to modify the host for URLs generated using the `Storage` facade, you may add or change the `url` option in the disk's configuration array:
 
     'public' => [
         'driver' => 'local',
         'root' => storage_path('app/public'),
         'url' => env('APP_URL').'/storage',
         'visibility' => 'public',
+        'throw' => false,
     ],
 
 <a name="temporary-urls"></a>
@@ -586,6 +597,7 @@ When using the `local` driver, `public` [visibility](#file-visibility) translate
                 'private' => 0700,
             ],
         ],
+        'throw' => false,
     ],
 
 <a name="deleting-files"></a>
