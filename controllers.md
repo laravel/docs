@@ -108,29 +108,49 @@ php artisan make:controller ProvisionServer --invokable
 
     Route::get('profile', [UserController::class, 'show'])->middleware('auth');
 
-Or, you may find it convenient to specify middleware within your controller's constructor. Using the `middleware` method within your controller's constructor, you can assign middleware to the controller's actions:
+Or, you may find it convenient to specify middleware within your controller class. To do so, your controller should implement the `HasMiddleware` interface, which dictates that the controller should have a static `middleware` method. From this method, you may return an array of middleware that should be applied to the controller's actions:
 
-    class UserController extends Controller
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Http\Controllers\Controller;
+    use Illuminate\Routing\Controllers\HasMiddleware;
+    use Illuminate\Routing\Controllers\Middleware;
+
+    class UserController extends Controller implements HasMiddleware
     {
         /**
-         * Instantiate a new controller instance.
+         * Get the middleware that should be assigned to the controller.
          */
-        public function __construct()
+        public static function middleware(): array
         {
-            $this->middleware('auth');
-            $this->middleware('log')->only('index');
-            $this->middleware('subscribed')->except('store');
+            return [
+                'auth',
+                new Middleware('log', only: ['index']),
+                new Middleware('subscribed', except: ['store']),
+            ];
         }
+
+        // ...
     }
 
-Controllers also allow you to register middleware using a closure. This provides a convenient way to define an inline middleware for a single controller without defining an entire middleware class:
+You may also define controller middleware as closures, which provides a convenient way to define an inline middleware without writing an entire middleware class:
 
     use Closure;
     use Illuminate\Http\Request;
 
-    $this->middleware(function (Request $request, Closure $next) {
-        return $next($request);
-    });
+    /**
+     * Get the middleware that should be assigned to the controller.
+     */
+    public static function middleware(): array
+    {
+        return [
+            function (Request $request, Closure $next) {
+                return $next($request);
+            },
+        ];
+    }
 
 <a name="resource-controllers"></a>
 ## Resource Controllers
