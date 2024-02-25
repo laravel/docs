@@ -65,7 +65,7 @@ Laravel 11 introduces a streamlined application structure for **new** Laravel ap
 
 #### The Application Bootstrap File
 
-The `bootstrap/app.php` file has been revitalized as a code-first application configuration file. From this file, you may now customize your application's routing, middleware, service providers, exception handling, and more. This file unifies a variety of high-level application behavior settings that were previously scattered throughout your application's file structure.
+The `bootstrap/app.php` file has been revitalized as a code-first application configuration file. From this file, you may now customize your application's routing, middleware, service providers, exception handling, and more. This file unifies a variety of high-level application behavior settings that were previously scattered throughout your application's file structure:
 
 ```php
 return Application::configure(basePath: dirname(__DIR__))
@@ -141,6 +141,19 @@ Like routing and middleware, exception handling can now be customized from your 
     });
 })
 ```
+
+#### Base `Controller` Class
+
+The base controller included in new Laravel applications has been simplified. It no longer extends Laravel's internal `Controller` class, and the `AuthorizesRequests` and `ValidatesRequests` traits have been removed, as they may included on your application's individual controllers if desired:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    abstract class Controller
+    {
+        //
+    }
 
 #### Application Defaults
 
@@ -261,10 +274,76 @@ For more information on testing queued jobs, check out the [queue documentation]
 
 _Class creation Artisan commands were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-New Artisan commands have been added to allow the quick creation of classes, interfaces, and traits:
+New Artisan commands have been added to allow the quick creation of classes, enums, interfaces, and traits:
 
 ```shell
 php artisan make:class
+php artisan make:enum
 php artisan make:interface
 php artisan make:trait
 ```
+
+### Model Casts Improvements
+
+_Model casts improvements were contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
+
+Laravel 11 supports defining your model's casts using a method instead of a property. This allows for streamlined, fluent cast definitions, especially when using casts with arguments:
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'options' => AsCollection::using(OptionCollection::class),
+                      // AsEncryptedCollection::using(OptionCollection::class),
+                      // AsEnumArrayObject::using(OptionEnum::class),
+                      // AsEnumCollection::using(OptionEnum::class),
+        ];
+    }
+
+For more information on attribute casting, review the [Eloquent documentation](/docs/{{version}}/eloquent-mutators#attribute-casting).
+
+### The `once` Function
+
+_The `once` helper was contributed by [Taylor Otwell](https://github.com/taylorotwell)_ and _[Nuno Maduro](https://github.com/nunomaduro)_.
+
+The `once` helper function executes the given callback and caches the result in memory for the duration of the request. Any subsequent calls to the `once` function with the same callback will return the previously cached result:
+
+    function random(): int
+    {
+        return once(function () {
+            return random_int(1, 1000);
+        });
+    }
+
+    random(); // 123
+    random(); // 123 (cached result)
+    random(); // 123 (cached result)
+
+For more information on the `once` helper, check out the [helpers documentation](/docs/{{version}}/helpers#method-once).
+
+### Improved Performance When Testing With In-Memory Databases
+
+_Improved in-memory database testing performance was contributed by [Anders Jenbo](https://github.com/AJenbo)_
+
+Laravel 11 offers a significant speed boost when using the `:memory:` SQLite database during testing. To accomplish this, Laravel now maintains a reference to PHP's PDO object and reuses it across connections, often cutting total test run time in half.
+
+### Improved Support for MariaDB
+
+_Improved support for MariaDB was contributed by [Jonas Staudenmeir](https://github.com/staudenmeir) and [Julius Kiekbusch](https://github.com/Jubeki)_
+
+Laravel 11 includes improved support for MariaDB. In previous Laravel releases, you could use MariaDB via Laravel's MySQL driver. However, Laravel 11 now includes a dedicated MariaDB driver which provides better defaults for this database system.
+
+For more information on Laravel's database drivers, check out the [database documentation](/docs/{{version}}/database).
+
+### Resend Mail Transport
+
+_The Resend mail transport was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+Laravel 11 includes a new `resend` mail transport that allows you to use the [Resend](https://resend.com) mail service to send your application's emails.
+
+For more information on sending emails in Laravel, check out the [mail documentation](/docs/{{version}}/mail).
+
