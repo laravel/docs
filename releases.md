@@ -299,14 +299,6 @@ php artisan make:interface
 php artisan make:trait
 ```
 
-### Resend Mail Transport
-
-_The Resend mail transport was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
-
-Laravel 11 includes a new `resend` mail transport that allows you to use the [Resend](https://resend.com) mail service to send your application's emails.
-
-For more information on sending mails in Laravel, check out the [mail documentation](/docs/{{version}}/mail).
-
 ### Model Casts Improvements
 
 _Model casts improvements were contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
@@ -362,4 +354,12 @@ _Improved support for MariaDB was contributed by [Jonas Staudenmeir](https://git
 Laravel 11 includes improved support for MariaDB. In previous Laravel releases, you could use MariaDB via Laravel's MySQL driver. However, Laravel 11 now includes a dedicated MariaDB driver which provides better defaults for this database system.
 
 For more information on Laravel's database drivers, check out the [database documentation](/docs/{{version}}/database).
+
+### Resend Mail Transport
+
+_The Resend mail transport was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+Laravel 11 includes a new `resend` mail transport that allows you to use the [Resend](https://resend.com) mail service to send your application's emails.
+
+For more information on sending mails in Laravel, check out the [mail documentation](/docs/{{version}}/mail).
 
