@@ -74,9 +74,9 @@ If you want to schedule an Artisan command defined by a closure, you may chain t
 
 If you need to pass arguments to the closure command, you may provide them to the `schedule` method:
 
-    Artisan::command('emails:send {user}', function ($user) {
+    Artisan::command('emails:send {user} {--force}', function ($user) {
         // ...
-    })->purpose('Send emails to the specified user')->schedule(['Taylor'])->daily();
+    })->purpose('Send emails to the specified user')->schedule(['Taylor', '--force'])->daily();
 
 <a name="scheduling-queued-jobs"></a>
 ### Scheduling Queued Jobs
