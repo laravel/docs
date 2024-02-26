@@ -181,7 +181,7 @@ To determine if the user making the incoming HTTP request is authenticated, you 
 <a name="protecting-routes"></a>
 ### Protecting Routes
 
-[Route middleware](/docs/{{version}}/middleware) can be used to only allow authenticated users to access a given route. Laravel ships with an `auth` middleware, which references the `Illuminate\Auth\Middleware\Authenticate` class. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition:
+[Route middleware](/docs/{{version}}/middleware) can be used to only allow authenticated users to access a given route. Laravel ships with an `auth` middleware, which is an alias for the `Illuminate\Auth\Middleware\Authenticate` middleware class. Since this middleware is already aliased internally by Laravel, all you need to do is attach the middleware to a route definition:
 
     Route::get('/flights', function () {
         // Only authenticated users may access this route...
@@ -190,17 +190,16 @@ To determine if the user making the incoming HTTP request is authenticated, you 
 <a name="redirecting-unauthenticated-users"></a>
 #### Redirecting Unauthenticated Users
 
-When the `auth` middleware detects an unauthenticated user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes). You may modify this behavior by updating the `redirectTo` function in your application's `app/Http/Middleware/Authenticate.php` file:
+When the `auth` middleware detects an unauthenticated user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes). You may modify this behavior using the method `redirectGuestsTo` of your application's `bootstrap/app.php` file:
 
     use Illuminate\Http\Request;
 
-    /**
-     * Get the path the user should be redirected to.
-     */
-    protected function redirectTo(Request $request): string
-    {
-        return route('login');
-    }
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->redirectGuestsTo('/login');
+
+        // Using a closure...
+        $middleware->redirectGuestsTo(fn (Request $request) => route('login'));
+    })
 
 <a name="specifying-a-guard"></a>
 #### Specifying a Guard
@@ -458,7 +457,7 @@ In addition to calling the `logout` method, it is recommended that you invalidat
 
 Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device. This feature is typically utilized when a user is changing or updating their password and you would like to invalidate sessions on other devices while keeping the current device authenticated.
 
-Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is included on the routes that should receive session authentication. Typically, you should place this middleware on a route group definition so that it can be applied to the majority of your application's routes. By default, the `AuthenticateSession` middleware may be attached to a route using the `auth.session` route middleware alias as defined in your application's HTTP kernel:
+Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is included on the routes that should receive session authentication. Typically, you should place this middleware on a route group definition so that it can be applied to the majority of your application's routes. By default, the `AuthenticateSession` middleware may be attached to a route using the `auth.session` route middleware alias:
 
     Route::middleware(['auth', 'auth.session'])->group(function () {
         Route::get('/', function () {
@@ -540,7 +539,7 @@ You should ensure that any route that performs an action which requires recent p
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards
 
-You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place your call to the `extend` method within a [service provider](/docs/{{version}}/providers). Since Laravel already ships with an `AuthServiceProvider`, we can place the code in that provider:
+You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place your call to the `extend` method within a [service provider](/docs/{{version}}/providers). Since Laravel already ships with an `AppServiceProvider`, we can place the code in that provider:
 
     <?php
 
@@ -548,13 +547,15 @@ You may define your own authentication guards using the `extend` method on the `
 
     use App\Services\Auth\JwtGuard;
     use Illuminate\Contracts\Foundation\Application;
-    use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
     use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\ServiceProvider;
 
-    class AuthServiceProvider extends ServiceProvider
+    class AppServiceProvider extends ServiceProvider
     {
+        // ...
+
         /**
-         * Register any application authentication / authorization services.
+         * Bootstrap any application services.
          */
         public function boot(): void
         {
@@ -580,14 +581,14 @@ As you can see in the example above, the callback passed to the `extend` method 
 
 The simplest way to implement a custom, HTTP request based authentication system is by using the `Auth::viaRequest` method. This method allows you to quickly define your authentication process using a single closure.
 
-To get started, call the `Auth::viaRequest` method within the `boot` method of your `AuthServiceProvider`. The `viaRequest` method accepts an authentication driver name as its first argument. This name can be any string that describes your custom guard. The second argument passed to the method should be a closure that receives the incoming HTTP request and returns a user instance or, if authentication fails, `null`:
+To get started, call the `Auth::viaRequest` method within the `boot` method of your application's `AppServiceProvider`. The `viaRequest` method accepts an authentication driver name as its first argument. This name can be any string that describes your custom guard. The second argument passed to the method should be a closure that receives the incoming HTTP request and returns a user instance or, if authentication fails, `null`:
 
     use App\Models\User;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
 
     /**
-     * Register any application authentication / authorization services.
+     * Bootstrap any application services.
      */
     public function boot(): void
     {
@@ -621,13 +622,15 @@ If you are not using a traditional relational database to store your users, you 
 
     use App\Extensions\MongoUserProvider;
     use Illuminate\Contracts\Foundation\Application;
-    use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
     use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\ServiceProvider;
 
-    class AuthServiceProvider extends ServiceProvider
+    class AppServiceProvider extends ServiceProvider
     {
+        // ...
+
         /**
-         * Register any application authentication / authorization services.
+         * Bootstrap any application services.
          */
         public function boot(): void
         {
@@ -674,6 +677,7 @@ Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
         public function updateRememberToken(Authenticatable $user, $token);
         public function retrieveByCredentials(array $credentials);
         public function validateCredentials(Authenticatable $user, array $credentials);
+        public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false);
     }
 
 The `retrieveById` function typically receives a key representing the user, such as an auto-incrementing ID from a MySQL database. The `Authenticatable` implementation matching the ID should be retrieved and returned by the method.
@@ -685,6 +689,8 @@ The `updateRememberToken` method updates the `$user` instance's `remember_token`
 The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to authenticate with an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition that searches for a user record with a "username" matching the value of `$credentials['username']`. The method should return an implementation of `Authenticatable`. **This method should not attempt to do any password validation or authentication.**
 
 The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method will typically use the `Hash::check` method to compare the value of `$user->getAuthPassword()` to the value of `$credentials['password']`. This method should return `true` or `false` indicating whether the password is valid.
+
+The `rehashPasswordIfRequired` method should rehash the given `$user`'s password if required and supported. For example, this method will typically use the `Hash::needsRehash` method to determine if the `$credentials['password']` value needs to be rehashed. If the password needs to be rehashed, the method should use the `Hash::make` method to rehash the password and update the user's record in the underlying persistent storage.
 
 <a name="the-authenticatable-contract"></a>
 ### The Authenticatable Contract
@@ -699,72 +705,33 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
     {
         public function getAuthIdentifierName();
         public function getAuthIdentifier();
+        public function getAuthPasswordName();
         public function getAuthPassword();
         public function getRememberToken();
         public function setRememberToken($value);
         public function getRememberTokenName();
     }
 
-This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" field of the user and the `getAuthIdentifier` method should return the "primary key" of the user. When using a MySQL back-end, this would likely be the auto-incrementing primary key assigned to the user record. The `getAuthPassword` method should return the user's hashed password.
+This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" column for the user and the `getAuthIdentifier` method should return the "primary key" of the user. When using a MySQL back-end, this would likely be the auto-incrementing primary key assigned to the user record. The `getAuthPasswordName` method should return the name of the user's password column. The `getAuthPassword` method should return the user's hashed password.
 
 This interface allows the authentication system to work with any "user" class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes an `App\Models\User` class in the `app/Models` directory which implements this interface.
 
 <a name="events"></a>
 ## Events
 
-Laravel dispatches a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
+Laravel dispatches a variety of [events](/docs/{{version}}/events) during the authentication process. You may [define listeners](/docs/{{version}}/events) for any of the following events:
 
-    /**
-     * The event listener mappings for the application.
-     *
-     * @var array
-     */
-    protected $listen = [
-        'Illuminate\Auth\Events\Registered' => [
-            'App\Listeners\LogRegisteredUser',
-        ],
-
-        'Illuminate\Auth\Events\Attempting' => [
-            'App\Listeners\LogAuthenticationAttempt',
-        ],
-
-        'Illuminate\Auth\Events\Authenticated' => [
-            'App\Listeners\LogAuthenticated',
-        ],
-
-        'Illuminate\Auth\Events\Login' => [
-            'App\Listeners\LogSuccessfulLogin',
-        ],
-
-        'Illuminate\Auth\Events\Failed' => [
-            'App\Listeners\LogFailedLogin',
-        ],
-
-        'Illuminate\Auth\Events\Validated' => [
-            'App\Listeners\LogValidated',
-        ],
-
-        'Illuminate\Auth\Events\Verified' => [
-            'App\Listeners\LogVerified',
-        ],
-
-        'Illuminate\Auth\Events\Logout' => [
-            'App\Listeners\LogSuccessfulLogout',
-        ],
-
-        'Illuminate\Auth\Events\CurrentDeviceLogout' => [
-            'App\Listeners\LogCurrentDeviceLogout',
-        ],
-
-        'Illuminate\Auth\Events\OtherDeviceLogout' => [
-            'App\Listeners\LogOtherDeviceLogout',
-        ],
-
-        'Illuminate\Auth\Events\Lockout' => [
-            'App\Listeners\LogLockout',
-        ],
-
-        'Illuminate\Auth\Events\PasswordReset' => [
-            'App\Listeners\LogPasswordReset',
-        ],
-    ];
+Event Name |
+------------- |
+`Illuminate\Auth\Events\Registered` |
+`Illuminate\Auth\Events\Attempting` |
+`Illuminate\Auth\Events\Authenticated` |
+`Illuminate\Auth\Events\Login` |
+`Illuminate\Auth\Events\Failed` |
+`Illuminate\Auth\Events\Validated` |
+`Illuminate\Auth\Events\Verified` |
+`Illuminate\Auth\Events\Logout` |
+`Illuminate\Auth\Events\CurrentDeviceLogout` |
+`Illuminate\Auth\Events\OtherDeviceLogout` |
+`Illuminate\Auth\Events\Lockout` |
+`Illuminate\Auth\Events\PasswordRese` |
