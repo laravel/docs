@@ -19,7 +19,7 @@ Laravel includes a simple to use rate limiting abstraction which, in conjunction
 
 Typically, the rate limiter utilizes your default application cache as defined by the `default` key within your application's `cache` configuration file. However, you may specify which cache driver the rate limiter should use by defining a `limiter` key within your application's `cache` configuration file:
 
-    'default' => 'memcached',
+    'default' => env('CACHE_STORE', 'database'),
 
     'limiter' => 'redis',
 
