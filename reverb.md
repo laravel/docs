@@ -117,7 +117,7 @@ php artisan reverb:start
 
 By default, the Reverb server will be started at `0.0.0.0:8080`, making it accessible from all network interfaces.
 
-Ify you need to specify a custom host or port, you may do so via the `--host` and `--port` options when starting the server:
+If you need to specify a custom host or port, you may do so via the `--host` and `--port` options when starting the server:
 
 ```sh
 php artisan reverb:start --host=127.0.0.1 --port=9000
@@ -161,7 +161,7 @@ Each WebSocket connection is held in memory until either the client or server di
 <a name="operating-system"></a>
 #### Operating System
 
-On a Unix based operating system, you make determine the allowed number of open files using the `ulimit` command:
+On a Unix based operating system, you may determine the allowed number of open files using the `ulimit` command:
 
 ```sh
 ulimit -n
