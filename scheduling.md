@@ -66,13 +66,13 @@ When scheduling Artisan commands using the command's class name, you may pass an
 <a name="scheduling-artisan-closure-commands"></a>
 #### Scheduling Artisan Closure Commands
 
-If you want to schedule an Artisan command defined by a closure, you can chain the scheduling-related methods after the command's definition:
+If you want to schedule an Artisan command defined by a closure, you may chain the scheduling related methods after the command's definition:
 
     Artisan::command('delete:recent-users', function () {
         DB::table('recent_users')->delete();
     })->purpose('Delete recent users')->daily();
 
-If you need to pass arguments to the closure command, you can use the `schedule` method:
+If you need to pass arguments to the closure command, you may provide them to the `schedule` method:
 
     Artisan::command('emails:send {user}', function ($user) {
         // ...
@@ -157,6 +157,8 @@ Method  | Description
 
 These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, you may schedule a command to run weekly on Monday:
 
+    use Illuminate\Support\Facades\Schedule;
+
     // Run once per week on Monday at 1 PM...
     Schedule::call(function () {
         // ...
@@ -196,6 +198,8 @@ Method  | Description
 #### Day Constraints
 
 The `days` method may be used to limit the execution of a task to specific days of the week. For example, you may schedule a command to run hourly on Sundays and Wednesdays:
+
+    use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('emails:send')
                     ->hourly()
@@ -256,11 +260,13 @@ The `environments` method may be used to execute tasks only on the given environ
 
 Using the `timezone` method, you may specify that a scheduled task's time should be interpreted within a given timezone:
 
+    use Illuminate\Support\Facades\Schedule;
+
     Schedule::command('report:generate')
              ->timezone('America/New_York')
              ->at('2:00')
 
-If you are repeatedly assigning the same timezone to all of your scheduled tasks, you can specify which timezone should be assigned to all schedules by defining a `schedule_timezone` key within your application's `app` configuration file:
+If you are repeatedly assigning the same timezone to all of your scheduled tasks, you can specify which timezone should be assigned to all schedules by defining a `schedule_timezone` option within your application's `app` configuration file:
 
     'timezone' => env('APP_TIMEZONE', 'UTC'),
 
@@ -273,6 +279,8 @@ If you are repeatedly assigning the same timezone to all of your scheduled tasks
 ### Preventing Task Overlaps
 
 By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use the `withoutOverlapping` method:
+
+    use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('emails:send')->withoutOverlapping();
 
@@ -293,6 +301,8 @@ Behind the scenes, the `withoutOverlapping` method utilizes your application's [
 If your application's scheduler is running on multiple servers, you may limit a scheduled job to only execute on a single server. For instance, assume you have a scheduled task that generates a new report every Friday night. If the task scheduler is running on three worker servers, the scheduled task will run on all three servers and generate the report three times. Not good!
 
 To indicate that the task should run on only one server, use the `onOneServer` method when defining the scheduled task. The first server to obtain the task will secure an atomic lock on the job to prevent other servers from running the same task at the same time:
+
+    use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('report:generate')
                     ->fridays()
@@ -331,6 +341,8 @@ Schedule::call(fn () => User::resetApiRequestCount())
 
 By default, multiple tasks scheduled at the same time will execute sequentially based on the order they are defined in your `schedule` method. If you have long-running tasks, this may cause subsequent tasks to start much later than anticipated. If you would like to run tasks in the background so that they may all run simultaneously, you may use the `runInBackground` method:
 
+    use Illuminate\Support\Facades\Schedule;
+
     Schedule::command('analytics:report')
              ->daily()
              ->runInBackground();
@@ -360,6 +372,8 @@ So, when using Laravel's scheduler, we only need to add a single cron configurat
 ### Sub-Minute Scheduled Tasks
 
 On most operating systems, cron jobs are limited to running a maximum of once per minute. However, Laravel's scheduler allows you to schedule tasks to run at more frequent intervals, even as often as once per second:
+
+    use Illuminate\Support\Facades\Schedule;
 
     Schedule::call(function () {
         DB::table('recent_users')->delete();
@@ -400,6 +414,8 @@ php artisan schedule:work
 
 The Laravel scheduler provides several convenient methods for working with the output generated by scheduled tasks. First, using the `sendOutputTo` method, you may send the output to a file for later inspection:
 
+    use Illuminate\Support\Facades\Schedule;
+
     Schedule::command('emails:send')
              ->daily()
              ->sendOutputTo($filePath);
@@ -430,6 +446,8 @@ If you only want to email the output if the scheduled Artisan or system command 
 ## Task Hooks
 
 Using the `before` and `after` methods, you may specify code to be executed before and after the scheduled task is executed:
+
+    use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('emails:send')
              ->daily()
@@ -491,7 +509,7 @@ The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL 
 <a name="events"></a>
 ## Events
 
-To execute code on every scheduling operation, you may listen for various [events](/docs/{{version}}/events) dispatched by the scheduler:
+Laravel dispatches a variety of [events](/docs/{{version}}/events) during the scheduling process. You may [define listeners](/docs/{{version}}/events) for any of the following events:
 
 Event Name |
 ------------- |
