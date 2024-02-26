@@ -17,7 +17,13 @@ Bcrypt is a great choice for hashing passwords because its "work factor" is adju
 <a name="configuration"></a>
 ## Configuration
 
-The default hashing driver for your application is configured in your application's `config/hashing.php` configuration file. There are currently several supported drivers: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) and [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i and Argon2id variants).
+By default, Laravel uses the `bcrypt` hashing driver when hashing data. However, several other hashing drivers are supported, including [`argon`](https://en.wikipedia.org/wiki/Argon2) and [`argon2id`](https://en.wikipedia.org/wiki/Argon2).
+
+You may specify your application's hashing driver using the `HASH_DRIVER` environment variable. But, if you want to customize all of Laravel's hashing driver options, you should publish the complete `hashing` configuration file using the `config:publish` Artisan command:
+
+```bash
+php artisan config:publish hashing
+```
 
 <a name="basic-usage"></a>
 ## Basic Usage
