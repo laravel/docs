@@ -10,8 +10,8 @@
 - [Updating Dependencies](#updating-dependencies)
 - [Updating Minimum Stability](#updating-minimum-stability)
 - [Application Structure](#application-structure)
-- [Modifying Columns](#modifying-columns)
 - [Floating-Point Types](#floating-point-types)
+- [Modifying Columns](#modifying-columns)
 - [SQLite Minimum Version](#sqlite-minimum-version)
 
 </div>
@@ -31,10 +31,12 @@
 
 <div class="content-list" markdown="1">
 
-- [The `Enumerable` Contract](#the-enumerable-contract)
+- [Doctrine DBAL Removal](#doctrine-dbal-removal)
 - [Eloquent Model `casts` Method](#eloquent-model-casts-method)
 - [Spatial Types](#spatial-types)
-- [Doctrine DBAL Removal](#doctrine-dbal-removal)
+- [The `Enumerable` Contract](#the-enumerable-contract)
+- [The `UserProvider` Contract](#the-user-provider-contract)
+- [The `Authenticatable` Contract](#the-authenticatable-contract)
 
 </div>
 
@@ -78,7 +80,10 @@ However, we do **not recommend** that Laravel 10 applications upgrading to Larav
 <a name="authentication"></a>
 ### Authentication
 
+<a name="the-user-provider-contract"></a>
 #### The `UserProvider` Contract
+
+**Likelihood Of Impact: Low**
 
 The `Illuminate\Contracts\Auth\UserProvider` contract has received a new `rehashPasswordIfRequired` method. This method is responsible for re-hashing and storing the user's password in storage when the application's hashing algorithm work factor has changed.
 
@@ -87,6 +92,24 @@ If your application or package defines a class that implements this interface, y
 ```php
 public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false);
 ```
+
+<a name="the-authenticatable-contract"></a>
+#### The `Authenticatable` Contract
+
+**Likelihood Of Impact: Low**
+
+The `Illuminate\Contracts\Auth\Authenticatable` contract has received a new `getAuthPasswordName` method. This method is responsible for returning the name of your authenticatable entity's password column.
+
+If your application or package defines a class that implements this interface, you should add the new `getAuthPasswordName` method to your implementation:
+
+```php
+public function getAuthPasswordName()
+{
+    return 'password';
+}
+```
+
+The default `User` model included with Laravel receives this method automatically since the method is included within the `Illuminate\Auth\Authenticatable` trait.
 
 <a name="cache"></a>
 ### Cache
