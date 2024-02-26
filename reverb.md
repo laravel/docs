@@ -96,7 +96,15 @@ For example, you may wish to maintain a single Laravel application which, via Re
 
 In most cases, secure WebSocket connections are likely to be handled by the upstream web server (Nginx, etc.) before the request is proxied to your Reverb server.
 
-However, it can sometimes be useful, such as in local development, for the Reverb server to handle secure connections directly. You may achieve this by defining `tls` options in your application's `config/reverb.php` configuration file. Within the array of `tls` options, you may provide any of the options supported by [PHP's SSL context options](https://www.php.net/manual/en/context.ssl.php):
+However, it can sometimes be useful, such as during local development, for the Reverb server to handle secure connections directly. If you are using [Laravel Herd](https://herd.laravel.com) and have secured the site or you are using [Laravel Valet](/docs/{{version}}/valet) and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may use the Herd / Valet certificate generated for your site to secure your Reverb connections. To do so, set the `REVERB_HOST` environment variable to your site's hostname or explicitly pass the hostname option when starting the Reverb server:
+
+```sh
+php artisan reverb:start --host="0.0.0.0" --port=8080 --hostname="laravel.test"
+```
+
+Since Herd and Valet domains resolve to localhost, running the commmand above will result in your Reverb server being accessible via the secure WebSocket protocol (wss) at `wss://laravel.test:8080`.
+
+You may also manually choose a certificate by defining `tls` options in your application's `config/reverb.php` configuration file. Within the array of `tls` options, you may provide any of the options supported by [PHP's SSL context options](https://www.php.net/manual/en/context.ssl.php):
 
 ```php
 'options' => [
@@ -117,7 +125,7 @@ php artisan reverb:start
 
 By default, the Reverb server will be started at `0.0.0.0:8080`, making it accessible from all network interfaces.
 
-Ify you need to specify a custom host or port, you may do so via the `--host` and `--port` options when starting the server:
+If you need to specify a custom host or port, you may do so via the `--host` and `--port` options when starting the server:
 
 ```sh
 php artisan reverb:start --host=127.0.0.1 --port=9000
@@ -161,7 +169,7 @@ Each WebSocket connection is held in memory until either the client or server di
 <a name="operating-system"></a>
 #### Operating System
 
-On a Unix based operating system, you make determine the allowed number of open files using the `ulimit` command:
+On a Unix based operating system, you may determine the allowed number of open files using the `ulimit` command:
 
 ```sh
 ulimit -n
