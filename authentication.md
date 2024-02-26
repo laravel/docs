@@ -181,7 +181,7 @@ To determine if the user making the incoming HTTP request is authenticated, you 
 <a name="protecting-routes"></a>
 ### Protecting Routes
 
-[Route middleware](/docs/{{version}}/middleware) can be used to only allow authenticated users to access a given route. Laravel ships with an `auth` middleware, which references the `Illuminate\Auth\Middleware\Authenticate` class. Since this middleware is already registered internally by Laravel, all you need to do is attach the middleware to a route definition:
+[Route middleware](/docs/{{version}}/middleware) can be used to only allow authenticated users to access a given route. Laravel ships with an `auth` middleware, which is an alias for the `Illuminate\Auth\Middleware\Authenticate` middleware class. Since this middleware is already aliased internally by Laravel, all you need to do is attach the middleware to a route definition:
 
     Route::get('/flights', function () {
         // Only authenticated users may access this route...
@@ -192,11 +192,13 @@ To determine if the user making the incoming HTTP request is authenticated, you 
 
 When the `auth` middleware detects an unauthenticated user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes). You may modify this behavior using the method `redirectGuestsTo` of your application's `bootstrap/app.php` file:
 
+    use Illuminate\Http\Request;
+
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->redirectGuestsTo('/login');
 
-        // or...
-        $middleware->redirectGuestsTo(fn () => route('login'));
+        // Using a closure...
+        $middleware->redirectGuestsTo(fn (Request $request) => route('login'));
     })
 
 <a name="specifying-a-guard"></a>
@@ -579,7 +581,7 @@ As you can see in the example above, the callback passed to the `extend` method 
 
 The simplest way to implement a custom, HTTP request based authentication system is by using the `Auth::viaRequest` method. This method allows you to quickly define your authentication process using a single closure.
 
-To get started, call the `Auth::viaRequest` method within the `boot` method of your `AppServiceProvider`. The `viaRequest` method accepts an authentication driver name as its first argument. This name can be any string that describes your custom guard. The second argument passed to the method should be a closure that receives the incoming HTTP request and returns a user instance or, if authentication fails, `null`:
+To get started, call the `Auth::viaRequest` method within the `boot` method of your application's `AppServiceProvider`. The `viaRequest` method accepts an authentication driver name as its first argument. This name can be any string that describes your custom guard. The second argument passed to the method should be a closure that receives the incoming HTTP request and returns a user instance or, if authentication fails, `null`:
 
     use App\Models\User;
     use Illuminate\Http\Request;
@@ -710,14 +712,14 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
         public function getRememberTokenName();
     }
 
-This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" field of the user and the `getAuthIdentifier` method should return the "primary key" of the user. When using a MySQL back-end, this would likely be the auto-incrementing primary key assigned to the user record. The `getAuthPasswordName` method should return the user's password attribute name. The `getAuthPassword` method should return the user's hashed password.
+This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" column for the user and the `getAuthIdentifier` method should return the "primary key" of the user. When using a MySQL back-end, this would likely be the auto-incrementing primary key assigned to the user record. The `getAuthPasswordName` method should return the name of the user's password column. The `getAuthPassword` method should return the user's hashed password.
 
 This interface allows the authentication system to work with any "user" class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes an `App\Models\User` class in the `app/Models` directory which implements this interface.
 
 <a name="events"></a>
 ## Events
 
-To execute code on every authentication operation, you may listen for various [events](/docs/{{version}}/events) dispatched by Laravel:
+Laravel dispatches a variety of [events](/docs/{{version}}/events) during the authentication process. You may [define listeners](/docs/{{version}}/events) for any of the following events:
 
 Event Name |
 ------------- |
