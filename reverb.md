@@ -96,7 +96,15 @@ For example, you may wish to maintain a single Laravel application which, via Re
 
 In most cases, secure WebSocket connections are likely to be handled by the upstream web server (Nginx, etc.) before the request is proxied to your Reverb server.
 
-However, it can sometimes be useful, such as in local development, for the Reverb server to handle secure connections directly. You may achieve this by defining `tls` options in your application's `config/reverb.php` configuration file. Within the array of `tls` options, you may provide any of the options supported by [PHP's SSL context options](https://www.php.net/manual/en/context.ssl.php):
+However, it can sometimes be useful, such as in local development, for the Reverb server to handle secure connections directly. If you are using [Laravel Herd](https://herd.laravel.com) and have secured the site or you are using [Laravel Valet](/docs/{{version}}/valet) and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may use the certificate generated for your site. To do so, either set the `REVERB_HOST` environment variable equal to your site's hostname or pass it explicitly when using the `--hostname` option when starting the server.
+
+```sh
+php artisan reverb:start --host 0.0.0.0 --port 8080 --hostname laravel.test
+```
+
+Since Herd and Valet domains resolve to localhost, running the above commmand will result in your Reverb server being accessible via the secure WebSocket protocol (wss) at `wss://laravel.test:8080`.
+
+You may also manually choose a certificate by defining `tls` options in your application's `config/reverb.php` configuration file. Within the array of `tls` options, you may provide any of the options supported by [PHP's SSL context options](https://www.php.net/manual/en/context.ssl.php):
 
 ```php
 'options' => [
