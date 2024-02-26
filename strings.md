@@ -559,7 +559,7 @@ The `Str::isUrl` method determines if the given string is a valid URL:
 
     // false
 
-The `isUrl` method considers a wide range of protocols as valid. However, you may specify the only protocols that should be considered valid by providing them to the `isUrl` method:
+The `isUrl` method considers a wide range of protocols as valid. However, you may specify the protocols that should be considered valid by providing them to the `isUrl` method:
 
     $isUrl = Str::isUrl('http://example.com', ['http', 'https']);
 
@@ -1762,7 +1762,7 @@ The `isUrl` method determines if a given string is a URL:
 
     // false
 
-The `isUrl` method considers a wide range of protocols as valid. However, you may specify the only protocols that should be considered valid by providing them to the `isUrl` method:
+The `isUrl` method considers a wide range of protocols as valid. However, you may specify the protocols that should be considered valid by providing them to the `isUrl` method:
 
     $result = Str::of('http://example.com')->isUrl(['http', 'https']);
 
