@@ -1245,6 +1245,14 @@ The `Enum` rule is a class based rule that validates whether the field under val
         'status' => [Rule::enum(ServerStatus::class)],
     ]);
 
+The `Enum` rule's `only` and `except` methods may be used to limit which enum cases should be considered valid:
+
+    Rule::enum(ServerStatus::class)
+        ->only([ServerStatus::Pending, ServerStatus::Active]);
+
+    Rule::enum(ServerStatus::class)
+        ->except([ServerStatus::Pending, ServerStatus::Active]);
+
 <a name="rule-exclude"></a>
 #### exclude
 
