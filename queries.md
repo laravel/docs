@@ -484,7 +484,7 @@ The `whereNot` and `orWhereNot` methods may be used to negate a given group of q
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7+, PostgreSQL, SQL Server 2016, and SQLite 3.39.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
+Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+, and SQLite 3.39.0+ (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
 
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
