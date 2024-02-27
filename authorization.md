@@ -297,10 +297,10 @@ If you would like to define your own policy discovery logic, you may register a 
 <a name="manually-registering-policies"></a>
 #### Manually Registering Policies
 
-Using the `Gate` facade, you may manually register policies and their corresponding model within the `boot` method of your application's `AppServiceProvider`:
+Using the `Gate` facade, you may manually register policies and their corresponding models within the `boot` method of your application's `AppServiceProvider`:
 
-    use App\Domain\Orders\Models\Order;
-    use App\Domain\Orders\Policies\OrderPolicy;
+    use App\Models\Order;
+    use App\Policies\OrderPolicy;
     use Illuminate\Support\Facades\Gate;
 
     /**
@@ -308,10 +308,7 @@ Using the `Gate` facade, you may manually register policies and their correspond
      */
     public function boot(): void
     {
-        Gate::policy(
-            Order::class,
-            OrderPolicy::class,
-        );
+        Gate::policy(Order::class, OrderPolicy::class);
     }
 
 <a name="writing-policies"></a>
@@ -609,7 +606,7 @@ As previously discussed, some policy methods like `create` do not require a mode
 <a name="via-middleware"></a>
 ### Via Middleware
 
-Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware may be attached to a route using the `can` route middleware alias. Let's explore an example of using the `can` middleware to authorize that a user can update a post:
+Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware may be attached to a route using the `can` route middleware alias, which is automatically registered by Laravel. Let's explore an example of using the `can` middleware to authorize that a user can update a post:
 
     use App\Models\Post;
 
