@@ -185,14 +185,20 @@ php artisan env:decrypt --force
 <a name="accessing-configuration-values"></a>
 ## Accessing Configuration Values
 
-You may easily access your configuration values using the global `config` function from anywhere in your application. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
+You may easily access your configuration values using the `Config` facade or global `config` function from anywhere in your application. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
+
+    use Illuminate\Support\Facades\Config;
+
+    $value = Config::get('app.timezone');
 
     $value = config('app.timezone');
 
     // Retrieve a default value if the configuration value does not exist...
     $value = config('app.timezone', 'Asia/Seoul');
 
-To set configuration values at runtime, pass an array to the `config` function:
+To set configuration values at runtime, you may invoke the `Config` facade's `set` method or pass an array to the `config` function:
+
+    Config::set('app.timezone', 'America/Chicago');
 
     config(['app.timezone' => 'America/Chicago']);
 
