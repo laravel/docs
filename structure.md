@@ -26,6 +26,8 @@
     - [The `Policies` Directory](#the-policies-directory)
     - [The `Providers` Directory](#the-providers-directory)
     - [The `Rules` Directory](#the-rules-directory)
+- [Customizing Framework Directories](#customizing-framework-directories)
+    - [Custom `vendor` and `bootstrap` paths](#custom-vendor-bootstrap-paths)
 
 <a name="introduction"></a>
 ## Introduction
@@ -176,3 +178,59 @@ In a fresh Laravel application, this directory will already contain several prov
 #### The Rules Directory
 
 This directory does not exist by default, but will be created for you if you execute the `make:rule` Artisan command. The `Rules` directory contains the custom validation rule objects for your application. Rules are used to encapsulate complicated validation logic in a simple object. For more information, check out the [validation documentation](/docs/{{version}}/validation).
+
+<a name="customizing-framework-directories"></a>
+## Customizing framework directories
+
+Sometimes you may need to *move the default laravel storage or public directories* to another path, this may be convenient when working with docker volumes or when deploying laravel to a shared hosting. In order to customize the default directory structure, we may bind the new paths directly on the `$app` instance in the `bootstrap/app.php` file, leveraging its own boot methods.
+
+> [!NOTE]
+> Ensure to [set the necessary permissions](https://laravel.com/docs/10.x/filesystem#local-files-and-visibility) beforehand.
+
+``` php
+// bootstrap/app.php
+
+// right after the app is instantiated
+$app = new Illuminate\Foundation\Application(
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
+);
+
+// customizing framework paths
+$app
+    // the 'app' directory
+    ->useAppPath('/path/to/app')
+    // the 'bootstrap' directory
+    // if you change this directory you should also update public/index.php
+    ->useBootstrapPath('/path/to/boot')
+    // the 'config' directory
+    ->useConfigPath('/path/to/conf')
+    // the 'database' directory
+    ->useDatabasePath('/path/to/db')
+    // the 'root' directory
+    ->useEnvironmentPath('/path/to/env')
+    // the 'lang' directory
+    ->useLangPath('/path/to/lang')
+    // the 'public' directory
+    ->usePublicPath('/path/to/public')
+    // the 'resources' directory
+    ->useResourcePath('/path/to/resources')
+    // the 'storage' directory
+    ->useStoragePath('/path/to/storage');
+```
+
+<a name="custom-vendor-bootstrap-paths">
+### Custom vendor and bootstrap paths
+
+You may even *change the default vendor and bootstrap paths* by updating the following require statements in `public/index.php`.
+
+``` php
+// public/index.php
+
+// update to the new vendor path
+// require __DIR__.'/../vendor/autoload.php';
+require '/path/to/vendor/autoload.php';
+
+// if you changed bootstrap path you should update the following
+// $app = require_once __DIR__.'/../bootstrap/app.php';
+$app = require_once '/path/to/bootstrap/app.php';
+```
