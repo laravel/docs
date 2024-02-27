@@ -1245,6 +1245,17 @@ The `Enum` rule is a class based rule that validates whether the field under val
         'status' => [Rule::enum(ServerStatus::class)],
     ]);
 
+Also, you can use `Enum` rule with condition:
+
+```php
+Rule::enum(ServerStatus::class)
+    ->when(
+        auth()->user()->is_admin,
+        fn ($rule) => $rule->only([ServerStatus::APPROVED]),
+        fn ($rule) => $rule->only([ServerStatus::PADDING]),
+    );
+```
+
 <a name="rule-exclude"></a>
 #### exclude
 
