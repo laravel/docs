@@ -66,19 +66,23 @@ If you would like to manually interact with the rate limiter, a variety of other
         return 'Too many attempts!';
     }
 
-    RateLimiter::hit('send-message:'.$user->id);
+    RateLimiter::increment('send-message:'.$user->id);
 
     // Send message...
 
-Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `hit` method to increment the number of total attempts:
+Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `increment` method to increment the number of total attempts:
 
     use Illuminate\Support\Facades\RateLimiter;
 
     if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {
-        RateLimiter::hit('send-message:'.$user->id);
+        RateLimiter::increment('send-message:'.$user->id);
 
         // Send message...
     }
+
+If you would like to increment the value for a given rate limiter key by more than one, you may provide the desired amount to the `increment` method:
+
+    RateLimiter::increment('send-message:'.$user->id, amount: 5);
 
 <a name="determining-limiter-availability"></a>
 #### Determining Limiter Availability
@@ -93,7 +97,7 @@ When a key has no more attempts left, the `availableIn` method returns the numbe
         return 'You may try again in '.$seconds.' seconds.';
     }
 
-    RateLimiter::hit('send-message:'.$user->id);
+    RateLimiter::increment('send-message:'.$user->id);
 
     // Send message...
 
