@@ -152,7 +152,7 @@ If you would like your application to interact with Redis via the Predis package
         // ...
     ],
 
-In addition to the default `host`, `port`, `database`, and `password` server configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in your application's `config/database.php` configuration file:
+In addition to the default configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in your application's `config/database.php` configuration file:
 
     'default' => [
         'url' => env('REDIS_URL'),
@@ -176,7 +176,7 @@ By default, Laravel will use the PhpRedis extension to communicate with Redis. T
         // ...
     ],
 
-In addition to the default `scheme`, `host`, `port`, `database`, and `password` server configuration options, PhpRedis supports the following additional connection parameters: `name`, `persistent`, `persistent_id`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
+In addition to the default configuration options, PhpRedis supports the following additional connection parameters: `name`, `persistent`, `persistent_id`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
 
     'default' => [
         'url' => env('REDIS_URL'),
