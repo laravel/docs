@@ -94,13 +94,13 @@ As mentioned previously, once you've written tests, you may run them using `pest
 ./vendor/bin/phpunit
 ```
 
-In addition to the `phpunit` command, you may use the `test` Artisan command to run your tests. The Artisan test runner provides verbose test reports in order to ease development and debugging:
+In addition to the `pest` or `phpunit` commands, you may use the `test` Artisan command to run your tests. The Artisan test runner provides verbose test reports in order to ease development and debugging:
 
 ```shell
 php artisan test
 ```
 
-Any arguments that can be passed to the `phpunit` command may also be passed to the Artisan `test` command:
+Any arguments that can be passed to the `pest` or `phpunit` commands may also be passed to the Artisan `test` command:
 
 ```shell
 php artisan test --testsuite=Feature --stop-on-failure
