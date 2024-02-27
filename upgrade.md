@@ -12,6 +12,7 @@
 - [Application Structure](#application-structure)
 - [Floating-Point Types](#floating-point-types)
 - [Modifying Columns](#modifying-columns)
+- [Sanctum Middleware Configuration](#sanctum-middleware-configuration)
 - [SQLite Minimum Version](#sqlite-minimum-version)
 
 </div>
@@ -65,6 +66,7 @@ You should update the following dependencies in your application's `composer.jso
 <div class="content-list" markdown="1">
 
 - `laravel/framework` to `^11.0`
+- `laravel/sanctum` to `^4.0`
 
 </div>
 
@@ -383,3 +385,20 @@ The `Illuminate\Queue\Middleware\ThrottlesExceptions` and `Illuminate\Queue\Midd
 new ThrottlesExceptions($attempts, 2 * 60);
 new ThrottlesExceptionsWithRedis($attempts, 2 * 60);
 ```
+
+<a name="sanctum"></a>
+### Sanctum
+
+<a name="sanctum-middleware-configuration"></a>
+#### Sanctum Middleware Configuration
+
+**Likelihood Of Impact: High**
+
+In your application's `config/sanctum.php` configuration file, you should update the references to the `authenticate_session`, `encrypt_cookies`, and `validate_csrf_token` middleware to the following:
+
+    'middleware' => [
+        'authenticate_session' => Laravel\Sanctum\Http\Middleware\AuthenticateSession::class,
+        'encrypt_cookies' => Illuminate\Cookie\Middleware\EncryptCookies::class,
+        'validate_csrf_token' => Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+    ],
+
