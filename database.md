@@ -44,14 +44,14 @@ DB_CONNECTION=sqlite
 DB_DATABASE=/absolute/path/to/database.sqlite
 ```
 
-By default, foreign key constraints for SQLite connections are enabled. If you wish to disable them, you can set the `DB_FOREIGN_KEYS` environment variable to `false`:
+By default, foreign key constraints are enabled for SQLite connections. If you would like to disable them, you should set the `DB_FOREIGN_KEYS` environment variable to `false`:
 
 ```ini
 DB_FOREIGN_KEYS=false
 ```
 
 > [!NOTE]
-> If you use the [Laravel Installer](/docs/{{version}}/installation#creating-a-laravel-project) to create your Laravel application and select SQLite as your database, Laravel will automatically create a `database/database.sqlite` file and run the [database migrations](/docs/{{version}}/migrations) for you.
+> If you use the [Laravel installer](/docs/{{version}}/installation#creating-a-laravel-project) to create your Laravel application and select SQLite as your database, Laravel will automatically create a `database/database.sqlite` file and run the default [database migrations](/docs/{{version}}/migrations) for you.
 
 <a name="mssql-configuration"></a>
 #### Microsoft SQL Server Configuration
