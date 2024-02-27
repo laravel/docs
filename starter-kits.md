@@ -32,7 +32,9 @@ If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://
 <a name="laravel-breeze-installation"></a>
 ### Installation
 
-First, you should [create a new Laravel application](/docs/{{version}}/installation), configure your database, and run your [database migrations](/docs/{{version}}/migrations). Once you have created a new Laravel application, you may install Laravel Breeze using Composer:
+First, you should [create a new Laravel application](/docs/{{version}}/installation). If you plan to use the [Laravel installer](/docs/{{version}}/installation#creating-a-laravel-project), you will be prompted to install Laravel Breeze during the installation process. If you choose to install Breeze, you may ignore the following installation instructions.
+
+If you have created a new Laravel application without any starter kit yet, you may install Laravel Breeze using Composer:
 
 ```shell
 composer require laravel/breeze --dev
