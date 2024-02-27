@@ -341,6 +341,24 @@ The `Illuminate\Contracts\Mail\Mailer` contract has received a new `sendNow` met
 public function sendNow($mailable, array $data = [], $callback = null);
 ```
 
+<a name="packages"></a>
+### Packages
+
+<a name="publishing-service-providers"></a>
+#### Publishing Service Providers to the Application
+
+**Likelihood Of Impact: Very Low**
+
+If you have written a Laravel package that manually publishes a service provider to the application's `app/Providers` directory and manually modifies the application's `config/app.php` configuration file to register the service provider, you should update your package to utilize the new `ServiceProvider::addProviderToBootstrapFile` method.
+
+The `addProviderToBootstrapFile` method will automatically add the service provider you have published to the application's `bootstrap/providers.php` file, since the `providers` array does not exist within the `config/app.php` configuration file in new Laravel 11 applications.
+
+```php
+use Illuminate\Support\ServiceProvider;
+
+ServiceProvider::addProviderToBootstrapFile(Provider::class);
+```
+
 <a name="queues"></a>
 ### Queues
 
