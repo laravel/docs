@@ -734,4 +734,4 @@ Event Name |
 `Illuminate\Auth\Events\CurrentDeviceLogout` |
 `Illuminate\Auth\Events\OtherDeviceLogout` |
 `Illuminate\Auth\Events\Lockout` |
-`Illuminate\Auth\Events\PasswordRese` |
+`Illuminate\Auth\Events\PasswordReset` |
