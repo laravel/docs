@@ -44,11 +44,14 @@ DB_CONNECTION=sqlite
 DB_DATABASE=/absolute/path/to/database.sqlite
 ```
 
-To enable foreign key constraints for SQLite connections, you should set the `DB_FOREIGN_KEYS` environment variable to `true`:
+By default, foreign key constraints are enabled for SQLite connections. If you would like to disable them, you should set the `DB_FOREIGN_KEYS` environment variable to `false`:
 
 ```ini
-DB_FOREIGN_KEYS=true
+DB_FOREIGN_KEYS=false
 ```
+
+> [!NOTE]
+> If you use the [Laravel installer](/docs/{{version}}/installation#creating-a-laravel-project) to create your Laravel application and select SQLite as your database, Laravel will automatically create a `database/database.sqlite` file and run the default [database migrations](/docs/{{version}}/migrations) for you.
 
 <a name="mssql-configuration"></a>
 #### Microsoft SQL Server Configuration
@@ -94,13 +97,20 @@ To see how read / write connections should be configured, let's look at this exa
             ],
         ],
         'sticky' => true,
-        'driver' => 'mysql',
-        'database' => 'database',
-        'username' => 'root',
-        'password' => '',
+
+        'database' => env('DB_DATABASE', 'laravel'),
+        'username' => env('DB_USERNAME', 'root'),
+        'password' => env('DB_PASSWORD', ''),
+        'unix_socket' => env('DB_SOCKET', ''),
         'charset' => 'utf8mb4',
-        'collation' => 'utf8mb4_unicode_ci',
+        'collation' => 'utf8mb4_0900_ai_ci',
         'prefix' => '',
+        'prefix_indexes' => true,
+        'strict' => true,
+        'engine' => null,
+        'options' => extension_loaded('pdo_mysql') ? array_filter([
+            PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+        ]) : [],
     ],
 
 Note that three keys have been added to the configuration array: `read`, `write` and `sticky`. The `read` and `write` keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` configuration array.
