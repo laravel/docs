@@ -636,9 +636,9 @@ If you are using Amazon AWS or another "cloud" load balancer provider, you may n
 
 By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request.
 
-Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `Illuminate\Http\Middleware\TrustHosts` middleware for your application.
+Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given hostname. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain hostnames, you may do so by enabling the `Illuminate\Http\Middleware\TrustHosts` middleware for your application.
 
-To enable the `TrustHosts` middleware, you should use the `trustHosts` middleware method in your application's `bootstrap/app.php` file. Using the `at` argument of this method, you may specify the host names that your application should respond to. Incoming requests with other `Host` value headers will be rejected:
+To enable the `TrustHosts` middleware, you should invoke the `trustHosts` middleware method in your application's `bootstrap/app.php` file. Using the `at` argument of this method, you may specify the hostnames that your application should respond to. Incoming requests with other `Host` headers will be rejected:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustHosts(at: ['laravel.test']);
