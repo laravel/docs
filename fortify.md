@@ -92,7 +92,7 @@ php artisan migrate
 <a name="the-fortify-service-provider"></a>
 ### The Fortify Service Provider
 
-The `vendor:publish` command discussed above will also publish the `App\Providers\FortifyServiceProvider` class. You should ensure this class is registered within the `providers` array of your application's `config/app.php` configuration file.
+The `vendor:publish` command discussed above will also publish the `App\Providers\FortifyServiceProvider` class. You should ensure this class is registered within the array of service providers in your application's `bootstrap/providers.php` file.
 
 The Fortify service provider registers the actions that Fortify published and instructs Fortify to use them when their respective tasks are executed by Fortify.
 
