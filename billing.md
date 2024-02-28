@@ -1688,7 +1688,7 @@ php artisan cashier:webhook --disabled
 <a name="webhooks-csrf-protection"></a>
 #### Webhooks and CSRF Protection
 
-Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), you should ensure that Laravel does not attempt to verify the CSRF token for incoming Stripe webhooks. To accomplish this, you should list `stripe/*` in the `validateCsrfTokens` middleware method in your application's `bootstrap/app.php` file:
+Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), you should ensure that Laravel does not attempt to validate the CSRF token for incoming Stripe webhooks. To accomplish this, you should exclude `stripe/*` from CSRF protection in your application's `bootstrap/app.php` file:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(except: [
