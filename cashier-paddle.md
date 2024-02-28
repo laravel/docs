@@ -257,7 +257,7 @@ As you can see in the example above, when a user begins the checkout process, we
 
 Of course, you will likely want to mark the order as "complete" once the customer has finished the checkout process. To accomplish this, you may listen to the webhooks dispatched by Paddle and raised via events by Cashier to store order information in your database.
 
-To get started, listen for the `TransactionCompleted` event dispatched by Cashier. Typically, you should register the event listener in the `boot` method of one of your application's service providers:
+To get started, listen for the `TransactionCompleted` event dispatched by Cashier. Typically, you should register the event listener in the `boot` method of your application's `AppServiceProvider`:
 
     use App\Listeners\CompleteOrder;
     use Illuminate\Support\Facades\Event;
@@ -1199,11 +1199,13 @@ To ensure your application can handle Paddle webhooks, be sure to [configure the
 <a name="webhooks-csrf-protection"></a>
 #### Webhooks and CSRF Protection
 
-Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your `App\Http\Middleware\VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
+Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), you should ensure that Laravel does not attempt to verify the CSRF token for incoming Paddle webhooks. To accomplish this, you should exclude `paddle/*` from CSRF protection in your application's `bootstrap/app.php` file:
 
-    protected $except = [
-        'paddle/*',
-    ];
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->validateCsrfTokens(except: [
+            'paddle/*',
+        ]);
+    })
 
 <a name="webhooks-local-development"></a>
 #### Webhooks and Local Development
@@ -1237,25 +1239,6 @@ Both events contain the full payload of the Paddle webhook. For example, if you 
                 // Handle the incoming event...
             }
         }
-    }
-
-Once your listener has been defined, you may register it within your application's `EventServiceProvider`:
-
-    <?php
-
-    namespace App\Providers;
-
-    use App\Listeners\PaddleEventListener;
-    use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-    use Laravel\Paddle\Events\WebhookReceived;
-
-    class EventServiceProvider extends ServiceProvider
-    {
-        protected $listen = [
-            WebhookReceived::class => [
-                PaddleEventListener::class,
-            ],
-        ];
     }
 
 Cashier also emit events dedicated to the type of the received webhook. In addition to the full payload from Paddle, they also contain the relevant models that were used to process the webhook such as the billable model, the subscription, or the receipt:
