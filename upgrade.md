@@ -454,4 +454,3 @@ Then, in your application's `config/sanctum.php` configuration file, you should 
         'encrypt_cookies' => Illuminate\Cookie\Middleware\EncryptCookies::class,
         'validate_csrf_token' => Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
     ],
-
