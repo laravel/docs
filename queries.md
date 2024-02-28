@@ -380,6 +380,26 @@ You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a q
                 $join->on('users.id', '=', 'latest_posts.user_id');
             })->get();
 
+<a name="lateral-joins"></a>
+#### Lateral Joins
+
+> [!WARNING]  
+> Lateral joins are currently supported by PostgreSQL, MySQL >= 8.0.14, and SQL Server.
+
+You may use the `joinLateral` and `leftJoinLateral` methods to perform a "lateral join" with a subquery. Each of these methods receives two arguments: the subquery and its table alias. The join condition(s) should be specified within the `where` clause of the given subquery. Lateral joins are evaluated for each row and can reference columns outside the subquery.
+
+In this example, we will retrieve a collection of users as well as the user's three most recent blog posts. Each user can produce up to three rows in the result set: one for each of their most recent blog posts. The join condition is specified with a `whereColumn` clause within the subquery, referencing the current user row:
+
+    $latestPosts = DB::table('posts')
+                       ->select('id as post_id', 'title as post_title', 'created_at as post_created_at')
+                       ->whereColumn('user_id', 'users.id')
+                       ->orderBy('created_at', 'desc')
+                       ->limit(3);
+
+    $users = DB::table('users')
+                ->joinLateral($latestPosts, 'latest_posts')
+                ->get();
+
 <a name="unions"></a>
 ## Unions
 
