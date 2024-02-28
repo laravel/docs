@@ -23,6 +23,7 @@
 <div class="content-list" markdown="1">
 
 - [Carbon 3](#carbon-3)
+- [Password Rehashing](#password-rehashing)
 - [Per-Second Rate Limiting](#per-second-rate-limiting)
 
 </div>
@@ -81,6 +82,15 @@ However, we do **not recommend** that Laravel 10 applications upgrading to Larav
 
 <a name="authentication"></a>
 ### Authentication
+
+<a name="password-rehashing"></a>
+#### Password Rehashing
+
+Laravel 11 will automatically rehash your user's passwords during authentication if your hashing algorithm's "work factor" has been updated since the password was last hashed.
+
+Typically, this should not disrupt your application; however, you may disable this behavior by adding the `rehash_on_login` option to your application's `config/hashing.php` configuration file:
+
+    'rehash_on_login' => false,
 
 <a name="the-user-provider-contract"></a>
 #### The `UserProvider` Contract
