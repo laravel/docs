@@ -12,8 +12,8 @@
 - [Application Structure](#application-structure)
 - [Floating-Point Types](#floating-point-types)
 - [Modifying Columns](#modifying-columns)
-- [Sanctum Middleware Configuration](#sanctum-middleware-configuration)
 - [SQLite Minimum Version](#sqlite-minimum-version)
+- [Updating Sanctum](#updating-sanctum)
 
 </div>
 
@@ -434,12 +434,20 @@ new ThrottlesExceptionsWithRedis($attempts, 2 * 60);
 <a name="sanctum"></a>
 ### Sanctum
 
-<a name="sanctum-middleware-configuration"></a>
-#### Sanctum Middleware Configuration
+<a name="updating-sanctum"></a>
+#### Updating Sanctum
 
 **Likelihood Of Impact: High**
 
-In your application's `config/sanctum.php` configuration file, you should update the references to the `authenticate_session`, `encrypt_cookies`, and `validate_csrf_token` middleware to the following:
+Laravel 11 no longer supports Laravel Sanctum 3.x. Therefore, you should update your application's Laravel Sanctum dependency to `^4.0` in your `composer.json` file.
+
+Sanctum 4.0 no longer automatically loads migrations from its own migrations directory. Instead, you should run the following command to publish Sanctum's migrations to your application:
+
+```shell
+php artisan vendor:publish --tag=sanctum-migrations
+```
+
+Then, in your application's `config/sanctum.php` configuration file, you should update the references to the `authenticate_session`, `encrypt_cookies`, and `validate_csrf_token` middleware to the following:
 
     'middleware' => [
         'authenticate_session' => Laravel\Sanctum\Http\Middleware\AuthenticateSession::class,
