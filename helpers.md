@@ -1034,6 +1034,19 @@ The function also accepts wildcards using asterisks, which may target any key of
 
     // ['Desk 1', 'Desk 2'];
 
+The `{first}` and `{last}` placeholders may be used to retrieve the first or last items in an array:
+
+    $flight = [
+        'segments' => [
+            ['from' => 'LHR', 'departure' => '9:00', 'to' => 'IST', 'arrival' => '15:00'],
+            ['from' => 'IST', 'departure' => '16:00', 'to' => 'PKX', 'arrival' => '20:00'],
+        ],
+    ];
+
+    data_get($flight, 'segments.{first}.arrival');
+
+    // 15:00
+
 <a name="method-data-set"></a>
 #### `data_set()` {.collection-method}
 
