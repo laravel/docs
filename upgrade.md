@@ -238,7 +238,7 @@ $table->float('amount', precision: 53)->unsigned();
 <a name="dedicated-mariadb-driver"></a>
 #### Dedicated MariaDB Driver
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Very Low**
 
 Instead of always utilizing the MySQL driver when connecting to MariaDB databases, Laravel 11 adds a dedicated database driver for MariaDB.
 
