@@ -24,7 +24,6 @@
 
 - [Carbon 3](#carbon-3)
 - [Per-Second Rate Limiting](#per-second-rate-limiting)
-- [Dedicated MariaDB Driver](#dedicated-mariadb-driver)
 
 </div>
 
@@ -239,18 +238,27 @@ $table->float('amount', precision: 53)->unsigned();
 <a name="dedicated-mariadb-driver"></a>
 #### Dedicated MariaDB Driver
 
-**Likelihood Of Impact: Medium**
+**Likelihood Of Impact: Low**
 
-Laravel 11 adds a dedicated driver for MariaDB. If your application is utilizing a MariaDB database, we recommend switching to the new driver (`mariadb`) to benefit from MariaDB-specific features.
-The MySQL driver still supports MariaDB, but this support will be dropped in future versions of Laravel.
+Instead of always utilizing the MySQL driver when connecting to MariaDB databases, Laravel 11 adds a dedicated database driver for MariaDB.
 
-The new MariaDB driver behaves like the current MySQL driver with one exception: It uses MariaDB's native `uuid` type instead of `char(36)` for UUID columns.
+If your application connects to a MariaDB database, you may update the connection configuration to the new `mariadb` driver to benefit from MariaDB specific features in the future:
 
-If your database schema contains UUID columns, you need to add a migration that converts all existing UUID columns to the new type:
+    'driver' => 'mariadb',
+    'url' => env('DB_URL'),
+    'host' => env('DB_HOST', '127.0.0.1'),
+    'port' => env('DB_PORT', '3306'),
+    // ...
+
+Currently, the new MariaDB driver behaves like the current MySQL driver with one exception: the `uuid` schema builder method creates native UUID columns instead of `char(36)` columns.
+
+If your existing migrations utilize the `uuid` schema builder method and you choose to use the new `mariadb` database driver, you should update your migration's invocations of the `uuid` method to `char` to avoid breaking changes or unexpected behavior:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
-    $table->uuid('uuid')->change();
+    $table->char('uuid', 36);
+
+    // ...
 });
 ```
 
