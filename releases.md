@@ -226,7 +226,7 @@ Laravel 11 allows you to define your application's previous encryption keys as a
 
 When encrypting values, Laravel will always use the "current" encryption key, which is within the `APP_KEY` environment variable. When decrypting values, Laravel will first try the current key. If decryption fails using the current key, Laravel will try all previous keys until one of the keys is able to decrypt the value.
 
-This approach to graceful decryption allows users to keep using your application uninterrupted even if your encryption key rotated.
+This approach to graceful decryption allows users to keep using your application uninterrupted even if your encryption key is rotated.
 
 For more information on encryption in Laravel, check out the [encryption documentation](/docs/{{version}}/encryption).
 
