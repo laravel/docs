@@ -68,8 +68,15 @@ You should update the following dependencies in your application's `composer.jso
 
 - `laravel/framework` to `^11.0`
 - `laravel/sanctum` to `^4.0`
+- `laravel/telescope` to `^5.0` (If installed)
 
 </div>
+
+If your application is using Laravel Telescope, you should run the following command to publish Telescope's migrations to your application. Telescope no longer automatically loads migrations from its own migrations directory:
+
+```bash
+php artisan vendor:publish --tag=telescope-migrations
+```
 
 In addition, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
 
