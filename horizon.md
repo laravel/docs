@@ -417,15 +417,11 @@ You may configure how many seconds are considered a "long wait" within your appl
 <a name="metrics"></a>
 ## Metrics
 
-Horizon includes a metrics dashboard which provides information regarding your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes via your application's [scheduler](/docs/{{version}}/scheduling):
+Horizon includes a metrics dashboard which provides information regarding your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes in your application's `routes/console.php` file:
 
-    /**
-     * Define the application's command schedule.
-     */
-    protected function schedule(Schedule $schedule): void
-    {
-        $schedule->command('horizon:snapshot')->everyFiveMinutes();
-    }
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('horizon:snapshot')->everyFiveMinutes();
 
 <a name="deleting-failed-jobs"></a>
 ## Deleting Failed Jobs
