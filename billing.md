@@ -1688,11 +1688,13 @@ php artisan cashier:webhook --disabled
 <a name="webhooks-csrf-protection"></a>
 #### Webhooks and CSRF Protection
 
-Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your application's `App\Http\Middleware\VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
+Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), you should ensure that Laravel does not attempt to validate the CSRF token for incoming Stripe webhooks. To accomplish this, you should exclude `stripe/*` from CSRF protection in your application's `bootstrap/app.php` file:
 
-    protected $except = [
-        'stripe/*',
-    ];
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->validateCsrfTokens(except: [
+            'stripe/*',
+        ]);
+    })
 
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
@@ -1721,25 +1723,6 @@ Both events contain the full payload of the Stripe webhook. For example, if you 
                 // Handle the incoming event...
             }
         }
-    }
-
-Once your listener has been defined, you may register it within your application's `EventServiceProvider`:
-
-    <?php
-
-    namespace App\Providers;
-
-    use App\Listeners\StripeEventListener;
-    use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-    use Laravel\Cashier\Events\WebhookReceived;
-
-    class EventServiceProvider extends ServiceProvider
-    {
-        protected $listen = [
-            WebhookReceived::class => [
-                StripeEventListener::class,
-            ],
-        ];
     }
 
 <a name="verifying-webhook-signatures"></a>
