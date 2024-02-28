@@ -661,25 +661,14 @@ Once Mailpit has been configured, you may access the Mailpit dashboard at `http:
 
 By default, Minio is available on port 9600. You may access the Minio control panel by visiting `http://localhost:9600`. The default access key is `homestead`, while the default secret key is `secretkey`. When accessing Minio, you should always use region `us-east-1`.
 
-In order to use Minio, you will need to adjust the S3 disk configuration in your application's `config/filesystems.php` configuration file. You will need to add the `use_path_style_endpoint` option to the disk configuration as well as change the `url` key to `endpoint`:
-
-    's3' => [
-        'driver' => 's3',
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_DEFAULT_REGION'),
-        'bucket' => env('AWS_BUCKET'),
-        'endpoint' => env('AWS_URL'),
-        'use_path_style_endpoint' => true,
-    ]
-
-Finally, ensure your `.env` file has the following options:
+In order to use Minio, ensure your `.env` file has the following options:
 
 ```ini
+AWS_USE_PATH_STYLE_ENDPOINT=true
+AWS_ENDPOINT=http://localhost:9600
 AWS_ACCESS_KEY_ID=homestead
 AWS_SECRET_ACCESS_KEY=secretkey
 AWS_DEFAULT_REGION=us-east-1
-AWS_URL=http://localhost:9600
 ```
 
 To provision Minio powered "S3" buckets, add a `buckets` directive to your `Homestead.yaml` file. After defining your buckets, you should execute the `vagrant reload --provision` command in your terminal:
