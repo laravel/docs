@@ -51,6 +51,7 @@
     - [Faking a Subset of Jobs](#faking-a-subset-of-jobs)
     - [Testing Job Chains](#testing-job-chains)
     - [Testing Job Batches](#testing-job-batches)
+    - [Testing Job / Queue Interactions](#testing-job-queue-interactions)
 - [Job Events](#job-events)
 
 <a name="introduction"></a>
@@ -2318,6 +2319,25 @@ In addition, you may occasionally need to test an individual job's interaction w
 
     $this->assertTrue($batch->cancelled());
     $this->assertEmpty($batch->added);
+
+<a name="testing-job-queue-interactions"></a>
+### Testing Job / Queue Interactions
+
+Sometimes, you may need to test that a queued job [releases itself back onto the queue](#manually-releasing-a-job). Or, you may need to test that the job deleted itself. You may test these queue interactions by instantiating the job and invoking the `withFakeQueueInteractions` method.
+
+Once the job's queue interactions have been faked, you may invoke the `handle` method on the job. After invoking the job, the `assetReleased`, `assertDeleted`, and `assertFailed` methods may be used to make assertions against the job's queue interactions:
+
+```php
+use App\Jobs\ProcessPodcast;
+
+$job = (new ProcessPodcast)->withFakeQueueInteractions();
+
+$job->handle();
+
+$job->assertReleased(delay: 30);
+$job->assertDeleted();
+$job->assertFailed();
+```
 
 <a name="job-events"></a>
 ## Job Events
