@@ -873,7 +873,7 @@ If you would like to make all of your attributes mass assignable, you may define
 
 By default, attributes that are not included in the `$fillable` array are silently discarded when performing mass-assignment operations. In production, this is expected behavior; however, during local development it can lead to confusion as to why model changes are not taking effect.
 
-If you wish, you may instruct Laravel to throw an exception when attempting to fill an unfillable attribute by invoking the `preventSilentlyDiscardingAttributes` method. Typically, this method should be invoked in the `boot` method of your application's `App\Providers\AppServiceProvider` service provider:
+If you wish, you may instruct Laravel to throw an exception when attempting to fill an unfillable attribute by invoking the `preventSilentlyDiscardingAttributes` method. Typically, this method should be invoked in the `boot` method of your application's `AppServiceProvider` class:
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -1538,7 +1538,7 @@ To register an observer, you may place the `ObservedBy` attribute on the corresp
         //
     }
 
-Or, you may manually register an observer by calling the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\Providers\AppServiceProvider` service provider:
+Or, you may manually register an observer by invoking the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `AppServiceProvider` class:
 
     use App\Models\User;
     use App\Observers\UserObserver;
