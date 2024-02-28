@@ -394,7 +394,7 @@ You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en
 <a name="global-options"></a>
 #### Global Options
 
-To configure default options for every outgoing request you may call the `globalOptions` method in your application's `App\Providers\AppServiceProvider`:
+To configure default options for every outgoing request, you may utilize the `globalOptions` method. Typically, this method should be invoked from the `boot` method of your application's `AppServiceProvider`:
 
 ```php
 use Illuminate\Support\Facades\Http;
