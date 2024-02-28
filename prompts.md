@@ -105,6 +105,15 @@ $name = text(
 
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
+Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+
+```php
+$name = text(
+    label: 'What is your name?',
+    validate: ['name' => 'required|max:255|unique:users,name']
+);
+```
+
 <a name="password"></a>
 ### Password
 
@@ -163,6 +172,15 @@ $password = password(
 ```
 
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+
+Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+
+```php
+$password = password(
+    label: 'What is your password?',
+    validate: ['password' => 'min:8']
+);
+```
 
 <a name="confirm"></a>
 ### Confirm
@@ -450,6 +468,16 @@ $name = suggest(
 ```
 
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+
+Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+
+```php
+$name = suggest(
+    label: 'What is your name?',
+    options: ['Taylor', 'Dayle'],
+    validate: ['name' => 'required|min:3|max:255']
+);
+```
 
 <a name="search"></a>
 ### Search
