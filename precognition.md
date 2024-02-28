@@ -691,6 +691,7 @@ it('validates registration form with precognition', function () {
         ]);
 
     $response->assertSuccessfulPrecognition();
+
     expect(User::count())->toBe(0);
 });
 ```
