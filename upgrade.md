@@ -235,6 +235,33 @@ $table->double('amount')->unsigned();
 $table->float('amount', precision: 53)->unsigned();
 ```
 
+<a name="dedicated-mariadb-driver"></a>
+#### Dedicated MariaDB Driver
+
+**Likelihood Of Impact: Very Low**
+
+Instead of always utilizing the MySQL driver when connecting to MariaDB databases, Laravel 11 adds a dedicated database driver for MariaDB.
+
+If your application connects to a MariaDB database, you may update the connection configuration to the new `mariadb` driver to benefit from MariaDB specific features in the future:
+
+    'driver' => 'mariadb',
+    'url' => env('DB_URL'),
+    'host' => env('DB_HOST', '127.0.0.1'),
+    'port' => env('DB_PORT', '3306'),
+    // ...
+
+Currently, the new MariaDB driver behaves like the current MySQL driver with one exception: the `uuid` schema builder method creates native UUID columns instead of `char(36)` columns.
+
+If your existing migrations utilize the `uuid` schema builder method and you choose to use the new `mariadb` database driver, you should update your migration's invocations of the `uuid` method to `char` to avoid breaking changes or unexpected behavior:
+
+```php
+Schema::table('users', function (Blueprint $table) {
+    $table->char('uuid', 36);
+
+    // ...
+});
+```
+
 <a name="spatial-types"></a>
 #### Spatial Types
 
