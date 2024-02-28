@@ -417,7 +417,7 @@ You may configure how many seconds are considered a "long wait" within your appl
 <a name="metrics"></a>
 ## Metrics
 
-Horizon includes a metrics dashboard which provides information regarding your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes in your `routes/console.php` file:
+Horizon includes a metrics dashboard which provides information regarding your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes in your application's `routes/console.php` file:
 
     use Illuminate\Support\Facades\Schedule;
 
