@@ -56,6 +56,8 @@ php artisan telescope:install
 php artisan migrate
 ```
 
+Finally, you may access the Telescope dashboard via the `/telescope` route.
+
 <a name="migration-customization"></a>
 #### Migration Customization
 

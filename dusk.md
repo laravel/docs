@@ -782,6 +782,8 @@ The `doubleClick` method may be used to simulate the double click of a mouse:
 
     $browser->doubleClick();
 
+    $browser->doubleClick('.selector');
+
 The `rightClick` method may be used to simulate the right click of a mouse:
 
     $browser->rightClick();
@@ -790,6 +792,8 @@ The `rightClick` method may be used to simulate the right click of a mouse:
 
 The `clickAndHold` method may be used to simulate a mouse button being clicked and held down. A subsequent call to the `releaseMouse` method will undo this behavior and release the mouse button:
 
+    $browser->clickAndHold('.selector');
+
     $browser->clickAndHold()
             ->pause(1000)
             ->releaseMouse();
@@ -797,6 +801,8 @@ The `clickAndHold` method may be used to simulate a mouse button being clicked a
 The `controlClick` method may be used to simulate the `ctrl+click` event within the browser:
 
     $browser->controlClick();
+
+    $browser->controlClick('.selector');
 
 <a name="mouseover"></a>
 #### Mouseover

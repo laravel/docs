@@ -1245,7 +1245,7 @@ The `Enum` rule is a class based rule that validates whether the field under val
         'status' => [Rule::enum(ServerStatus::class)],
     ]);
 
-Also, you can use `Enum` rule with condition:
+The `Enum` rule's `when` method may be used for add condition:
 
 ```php
 Rule::enum(ServerStatus::class)
@@ -1255,6 +1255,14 @@ Rule::enum(ServerStatus::class)
         fn ($rule) => $rule->only([ServerStatus::PADDING]),
     );
 ```
+
+The `Enum` rule's `only` and `except` methods may be used to limit which enum cases should be considered valid:
+
+    Rule::enum(ServerStatus::class)
+        ->only([ServerStatus::Pending, ServerStatus::Active]);
+
+    Rule::enum(ServerStatus::class)
+        ->except([ServerStatus::Pending, ServerStatus::Active]);
 
 <a name="rule-exclude"></a>
 #### exclude
