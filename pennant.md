@@ -828,7 +828,7 @@ use Laravel\Pennant\Feature;
 test('it can control feature values', function () {
     Feature::define('purchase-button', 'seafoam-green');
 
-    $this->assertSame('seafoam-green', Feature::value('purchase-button'));
+    expect(Feature::value('purchase-button'))->toBe('seafoam-green');
 });
 ```
 
@@ -845,7 +845,17 @@ public function test_it_can_control_feature_values()
 
 The same approach may be used for class based features:
 
-```php
+```php tab=Pest
+use Laravel\Pennant\Feature;
+
+test('it can control feature values', function () {
+    Feature::define(NewApi::class, true);
+
+    expect(Feature::value(NewApi::class))->toBeTrue();
+});
+```
+
+```php tab=PHPUnit
 use App\Features\NewApi;
 use Laravel\Pennant\Feature;
 
