@@ -26,11 +26,20 @@ To see an example of how to write a factory, take a look at the `database/factor
 
     namespace Database\Factories;
 
-    use Illuminate\Support\Str;
     use Illuminate\Database\Eloquent\Factories\Factory;
+    use Illuminate\Support\Facades\Hash;
+    use Illuminate\Support\Str;
 
+    /**
+     * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+     */
     class UserFactory extends Factory
     {
+        /**
+         * The current password being used by the factory.
+         */
+        protected static ?string $password;
+
         /**
          * Define the model's default state.
          *
@@ -42,9 +51,19 @@ To see an example of how to write a factory, take a look at the `database/factor
                 'name' => fake()->name(),
                 'email' => fake()->unique()->safeEmail(),
                 'email_verified_at' => now(),
-                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'password' => static::$password ??= Hash::make('password'),
                 'remember_token' => Str::random(10),
             ];
+        }
+
+        /**
+         * Indicate that the model's email address should be unverified.
+         */
+        public function unverified(): static
+        {
+            return $this->state(fn (array $attributes) => [
+                'email_verified_at' => null,
+            ]);
         }
     }
 
@@ -53,7 +72,7 @@ As you can see, in their most basic form, factories are classes that extend Lara
 Via the `fake` helper, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing and seeding.
 
 > [!NOTE]  
-> You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
+> You can change your application's Faker locale by updating the `faker_locale` option in your `config/app.php` configuration file.
 
 <a name="defining-model-factories"></a>
 ## Defining Model Factories
