@@ -1199,7 +1199,7 @@ To ensure your application can handle Paddle webhooks, be sure to [configure the
 <a name="webhooks-csrf-protection"></a>
 #### Webhooks and CSRF Protection
 
-Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), you should ensure that Laravel does not attempt to verify the CSRF token for incoming Paddle webhooks. To accomplish this, you should list `paddle/*` in the `validateCsrfTokens` middleware method in your application's `bootstrap/app.php` file:
+Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), you should ensure that Laravel does not attempt to verify the CSRF token for incoming Paddle webhooks. To accomplish this, you should exclude `paddle/*` from CSRF protection in your application's `bootstrap/app.php` file:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(except: [
