@@ -24,6 +24,7 @@
 
 - [Carbon 3](#carbon-3)
 - [Per-Second Rate Limiting](#per-second-rate-limiting)
+- [Dedicated MariaDB Driver](#dedicated-mariadb-driver)
 
 </div>
 
@@ -233,6 +234,24 @@ The `unsignedDecimal`, `unsignedDouble`, and `unsignedFloat` methods have been r
 $table->decimal('amount', total: 8, places: 2)->unsigned();
 $table->double('amount')->unsigned();
 $table->float('amount', precision: 53)->unsigned();
+```
+
+<a name="dedicated-mariadb-driver"></a>
+#### Dedicated MariaDB Driver
+
+**Likelihood Of Impact: Medium**
+
+Laravel 11 adds a dedicated driver for MariaDB. If your application is utilizing a MariaDB database, we recommend switching to the new driver (`mariadb`) to benefit from MariaDB-specific features.
+The MySQL driver still supports MariaDB, but this support will be dropped in future versions of Laravel.
+
+The new MariaDB driver behaves like the current MySQL driver with one exception: It uses MariaDB's native `uuid` type instead of `char(36)` for UUID columns.
+
+If your database schema contains UUID columns, you need to add a migration that converts all existing UUID columns to the new type:
+
+```php
+Schema::table('users', function (Blueprint $table) {
+    $table->uuid('uuid')->change();
+});
 ```
 
 <a name="spatial-types"></a>
