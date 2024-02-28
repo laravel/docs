@@ -683,7 +683,20 @@ If you would like to make precognitive requests in your tests, Laravel's `TestCa
 
 Additionally, if you would like to assert that a precognitive request was successful, e.g., did not return any validation errors, you may use the `assertSuccessfulPrecognition` method on the response:
 
-```php
+```php tab=Pest
+it('validates registration form with precognition', function () {
+    $response = $this->withPrecognition()
+        ->post('/register', [
+            'name' => 'Taylor Otwell',
+        ]);
+
+    $response->assertSuccessfulPrecognition();
+
+    expect(User::count())->toBe(0);
+});
+```
+
+```php tab=PHPUnit
 public function test_it_validates_registration_form_with_precognition()
 {
     $response = $this->withPrecognition()
