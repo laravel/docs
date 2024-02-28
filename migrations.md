@@ -1079,23 +1079,6 @@ Command  |  Description
 `$table->fullText('body')->language('english');`  |  Adds a full text index of the specified language (PostgreSQL).
 `$table->spatialIndex('location');`  |  Adds a spatial index (except SQLite).
 
-<a name="index-lengths-mysql-mariadb"></a>
-#### Index Lengths and MySQL / MariaDB
-
-By default, Laravel uses the `utf8mb4` character set. You may configure the default string length by calling the `Schema::defaultStringLength` method within the `boot` method of your `App\Providers\AppServiceProvider` class:
-
-    use Illuminate\Support\Facades\Schema;
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Schema::defaultStringLength(191);
-    }
-
-Alternatively, you may enable the `innodb_large_prefix` option for your database. Refer to your database's documentation for instructions on how to properly enable this option.
-
 <a name="renaming-indexes"></a>
 ### Renaming Indexes
 
