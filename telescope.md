@@ -48,18 +48,13 @@ You may use the Composer package manager to install Telescope into your Laravel 
 composer require laravel/telescope
 ```
 
-After installing Telescope, publish its assets using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command in order to create the tables needed to store Telescope's data:
+After installing Telescope, publish its assets and migrations using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command in order to create the tables needed to store Telescope's data:
 
 ```shell
 php artisan telescope:install
 
 php artisan migrate
 ```
-
-<a name="migration-customization"></a>
-#### Migration Customization
-
-If you are not going to use Telescope's default migrations, you should call the `Telescope::ignoreMigrations` method in the `register` method of your application's `App\Providers\AppServiceProvider` class. You may export the default migrations using the following command: `php artisan vendor:publish --tag=telescope-migrations`
 
 <a name="local-only-installation"></a>
 ### Local Only Installation
@@ -74,7 +69,7 @@ php artisan telescope:install
 php artisan migrate
 ```
 
-After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your application's `config/app.php` configuration file. Instead, manually register Telescope's service providers in the `register` method of your `App\Providers\AppServiceProvider` class. We will ensure the current environment is `local` before registering the providers:
+After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your application's `bootstrap/providers.php` configuration file. Instead, manually register Telescope's service providers in the `register` method of your `App\Providers\AppServiceProvider` class. We will ensure the current environment is `local` before registering the providers:
 
     /**
      * Register any application services.
@@ -113,11 +108,15 @@ If desired, you may disable Telescope's data collection entirely using the `enab
 
 Without pruning, the `telescope_entries` table can accumulate records very quickly. To mitigate this, you should [schedule](/docs/{{version}}/scheduling) the `telescope:prune` Artisan command to run daily:
 
-    $schedule->command('telescope:prune')->daily();
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('telescope:prune')->daily();
 
 By default, all entries older than 24 hours will be pruned. You may use the `hours` option when calling the command to determine how long to retain Telescope data. For example, the following command will delete all records created over 48 hours ago:
 
-    $schedule->command('telescope:prune --hours=48')->daily();
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('telescope:prune --hours=48')->daily();
 
 <a name="dashboard-authorization"></a>
 ### Dashboard Authorization
