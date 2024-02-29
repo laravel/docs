@@ -161,7 +161,7 @@ sail php script.php
 <a name="executing-composer-commands"></a>
 ### Executing Composer Commands
 
-Composer commands may be executed using the `composer` command. Laravel Sail's application container includes a Composer 2.x installation:
+Composer commands may be executed using the `composer` command. Laravel Sail's application container includes a Composer installation:
 
 ```nothing
 sail composer require laravel/sanctum
@@ -403,7 +403,7 @@ context: ./vendor/laravel/sail/runtimes/8.0
 In addition, you may wish to update your `image` name to reflect the version of PHP being used by your application. This option is also defined in your application's `docker-compose.yml` file:
 
 ```yaml
-image: sail-8.1/app
+image: sail-8.2/app
 ```
 
 After updating your application's `docker-compose.yml` file, you should rebuild your container images:
@@ -443,14 +443,13 @@ Sometimes you may need to share your site publicly in order to preview your site
 sail share
 ```
 
-When sharing your site via the `share` command, you should configure your application's trusted proxies within the `TrustProxies` middleware. Otherwise, URL generation helpers such as `url` and `route` will be unable to determine the correct HTTP host that should be used during URL generation:
+When sharing your site via the `share` command, you should configure your application's trusted proxies using `trustProxies` middleware method in your `bootstrap/app.php` file. Otherwise, URL generation helpers such as `url` and `route` will be unable to determine the correct HTTP host that should be used during URL generation:
 
-    /**
-     * The trusted proxies for this application.
-     *
-     * @var array|string|null
-     */
-    protected $proxies = '*';
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: [
+            '*',
+        ]);
+    })
 
 If you would like to choose the subdomain for your shared site, you may provide the `subdomain` option when executing the `share` command:
 
