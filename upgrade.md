@@ -67,18 +67,27 @@ You should update the following dependencies in your application's `composer.jso
 <div class="content-list" markdown="1">
 
 - `laravel/framework` to `^11.0`
-- `laravel/sanctum` to `^4.0`
+- `laravel/sanctum` to `^4.0` (If installed)
 - `laravel/telescope` to `^5.0` (If installed)
+- `laravel/passport` to `^12.0` (If installed)
 
 </div>
 
-If your application is using Laravel Telescope, you should run the following command to publish Telescope's migrations to your application. Telescope no longer automatically loads migrations from its own migrations directory:
+If your application is using Laravel Sanctum, Telescope, or Passport, you should publish those packages's migrations to your application. Sanctum, Telescope, and Passport, **no longer automatically load migrations from their own migrations** directory, therefore you should run the following command to publish their migrations to your application:
 
 ```bash
+php artisan vendor:publish --tag=sanctum-migrations
 php artisan vendor:publish --tag=telescope-migrations
+php artisan vendor:publish --tag=passport-migrations
 ```
 
-In addition, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
+In addition, you should review the upgrade guides for each of these packages to ensure you are aware of any additional breaking changes:
+
+- [Laravel Sanctum](#sanctum)
+- [Laravel Telescope](#telescope)
+- [Laravel Passport](#passport)
+
+Finally, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
 
 <a name="application-structure"></a>
 ### Application Structure
@@ -471,3 +480,42 @@ Then, in your application's `config/sanctum.php` configuration file, you should 
         'encrypt_cookies' => Illuminate\Cookie\Middleware\EncryptCookies::class,
         'validate_csrf_token' => Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
     ],
+
+<a name="telescope"></a>
+### Telescope
+
+<a name="updating-telescope"></a>
+#### Updating Telescope
+
+**Likelihood Of Impact: High**
+
+Laravel 11 no longer supports Laravel Telescope 4.x. Therefore, you should update your application's Laravel Telescope dependency to `^5.0` in your `composer.json` file.
+
+Telescope 5.0 no longer automatically loads migrations from its own migrations directory. Instead, you should run the following command to publish Telescope's migrations to your application:
+
+```shell
+php artisan vendor:publish --tag=telescope-migrations
+```
+
+<a name="passport"></a>
+### Passport
+
+<a name="updating-telescope"></a>
+#### Updating Passport
+
+**Likelihood Of Impact: High**
+
+Laravel 11 no longer supports Laravel Passport 11.x. Therefore, you should update your application's Laravel Passport dependency to `^12.0` in your `composer.json` file.
+
+Passport 12.0 no longer automatically loads migrations from its own migrations directory. Instead, you should run the following command to publish Passport's migrations to your application:
+
+```shell
+php artisan vendor:publish --tag=passport-migrations
+```
+
+In addition, the password grant type is disabled by default. You may enable it by calling the `enablePasswordGrant` method in the `boot` method of your application's `AppServiceProvider`:
+
+    public function boot(): void
+    {
+        Passport::enablePasswordGrant();
+    }
