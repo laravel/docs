@@ -664,6 +664,15 @@ The following controller methods will be mapped to their corresponding policy me
 > [!NOTE]  
 > You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`.
 
+<a name="excluding-resource-controller-methods"></a>
+#### Excluding Resource Controller Methods
+
+If you would like to exclude one or more of the resource controller's methods from being authorized by the policy, you can pass an array of method names as the third argument to the `authorizeResource` method:
+
+    $this->authorizeResource(Post::class, 'post', [
+        'except' => ['index', 'store']
+    ]);
+
 <a name="via-middleware"></a>
 ### Via Middleware
 
