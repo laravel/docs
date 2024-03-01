@@ -532,7 +532,7 @@ If the request to resend the verification link email was successful, Fortify wil
 <a name="protecting-routes"></a>
 ### Protecting Routes
 
-To specify that a route or group of routes requires that the user has verified their email address, you should attach Laravel's built-in `verified` middleware to the route. This middleware is registered within your application's `App\Http\Kernel` class:
+To specify that a route or group of routes requires that the user has verified their email address, you should attach Laravel's built-in `verified` middleware to the route. This middleware is registered automatically by Laravel:
 
 ```php
 Route::get('/dashboard', function () {
