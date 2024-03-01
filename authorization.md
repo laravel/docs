@@ -606,7 +606,7 @@ As previously discussed, some policy methods like `create` do not require a mode
 <a name="via-middleware"></a>
 ### Via Middleware
 
-Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware may be attached to a route using the `can` route middleware alias, which is automatically registered by Laravel. Let's explore an example of using the `can` middleware to authorize that a user can update a post:
+Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware may be attached to a route using the `can` route [middleware alias](/docs/{{version}}/middleware#middleware-alias), which is automatically registered by Laravel. Let's explore an example of using the `can` middleware to authorize that a user can update a post:
 
     use App\Models\Post;
 
