@@ -122,6 +122,21 @@ If you want a middleware to run during every HTTP request to your application, y
 
 The `$middleware` object provided to the `withMiddleware` closure is an instance of `Illuminate\Foundation\Configuration\Middleware` and is responsible for managing the middleware assigned to your application's routes. The `append` method adds the middleware to the end of the list of global middleware. If you would like to add a middleware to the beginning of the list, you should use the `prepend` method.
 
+If you would like to manage global middleware manually, you can fully rewrite predefined ones with `use` method. The code snippet below contain all predefined middleware, so you can change them, as you would like to:
+
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->use([
+            // \Illuminate\Http\Middleware\TrustHosts::class,
+            \Illuminate\Http\Middleware\TrustProxies::class,
+            \Illuminate\Http\Middleware\HandleCors::class,
+            \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
+            \Illuminate\Http\Middleware\ValidatePostSize::class,
+            \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
+            \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        ]);
+    })
+
+
 <a name="assigning-middleware-to-routes"></a>
 ### Assigning Middleware to Routes
 
@@ -230,6 +245,25 @@ If you would like to append or prepend middleware to these groups, you may use t
 
         $middleware->api(append: [
             EnsureTokenIsValid::class,
+        ]);
+    })
+
+If you would like to manage middleware on `web` and `api` groups manually, you can fully rewrite predefined ones. The code snippet below contain all predefined middleware, so you can change them, as you would like to:
+
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->group('web', [
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // \Illuminate\Session\Middleware\AuthenticateSession::class,
+        ]);
+        $middleware->group('api', [
+            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            // 'throttle:api',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
     })
 
