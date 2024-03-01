@@ -67,15 +67,18 @@ You should update the following dependencies in your application's `composer.jso
 <div class="content-list" markdown="1">
 
 - `laravel/framework` to `^11.0`
-- `laravel/sanctum` to `^4.0` (If installed)
-- `laravel/telescope` to `^5.0` (If installed)
+- `laravel/cashier-stripe` to `^15.0` (If installed)
 - `laravel/passport` to `^12.0` (If installed)
+- `laravel/sanctum` to `^4.0` (If installed)
+- `laravel/spark-stripe` to `^5.0` (If installed)
+- `laravel/telescope` to `^5.0` (If installed)
 
 </div>
 
 If your application is using Laravel Sanctum, Telescope, or Passport, you should publish those packages's migrations to your application. Sanctum, Telescope, and Passport, **no longer automatically load migrations from their own migrations** directory, therefore you should run the following command to publish their migrations to your application:
 
 ```bash
+php artisan vendor:publish --tag=cashier-migrations
 php artisan vendor:publish --tag=sanctum-migrations
 php artisan vendor:publish --tag=telescope-migrations
 php artisan vendor:publish --tag=passport-migrations
@@ -83,9 +86,11 @@ php artisan vendor:publish --tag=passport-migrations
 
 In addition, you should review the upgrade guides for each of these packages to ensure you are aware of any additional breaking changes:
 
-- [Laravel Sanctum](#sanctum)
-- [Laravel Telescope](#telescope)
+- [Laravel Cashier Stripe](#cashier-stripe)
 - [Laravel Passport](#passport)
+- [Laravel Sanctum](#sanctum)
+- [Laravel Spark Stripe](#spark-stripe)
+- [Laravel Telescope](#telescope)
 
 Finally, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
 
@@ -455,6 +460,38 @@ The `Illuminate\Queue\Middleware\ThrottlesExceptions` and `Illuminate\Queue\Midd
 ```php
 new ThrottlesExceptions($attempts, 2 * 60);
 new ThrottlesExceptionsWithRedis($attempts, 2 * 60);
+```
+
+<a name="cashier-stripe"></a>
+### Cashier Stripe
+
+<a name="updating-cashier-stripe"></a>
+#### Updating Cashier Stripe
+
+**Likelihood Of Impact: High**
+
+Laravel 11 no longer supports Laravel Stripe 14.x. Therefore, you should update your application's Laravel Cashier Stripe dependency to `^15.0` in your `composer.json` file.
+
+Cashier Stripe 15.0 no longer automatically loads migrations from its own migrations directory. Instead, you should run the following command to publish Cashier Stripe's migrations to your application:
+
+```shell
+php artisan vendor:publish --tag=cashier-migrations
+```
+
+<a name="spark-stripe"></a>
+### Spark Stripe
+
+<a name="updating-spark-stripe"></a>
+#### Updating Spark Stripe
+
+**Likelihood Of Impact: High**
+
+Laravel 11 no longer supports Laravel Spark 4.x. Therefore, you should update your application's Laravel Spark Spark dependency to `^5.0` in your `composer.json` file.
+
+Spark Stripe 5.0 no longer automatically loads migrations from its own migrations directory. Instead, you should run the following command to publish Spark Stripe's migrations to your application:
+
+```shell
+php artisan vendor:publish --tag=spark-migrations
 ```
 
 <a name="sanctum"></a>
