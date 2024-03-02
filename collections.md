@@ -2920,7 +2920,7 @@ This method has the same signature as the [`unique`](#method-unique) method; how
 <a name="method-unless"></a>
 #### `unless()` {.collection-method}
 
-The `unless` method will execute the given callback unless the first argument given to the method evaluates to `true`:
+The `unless` method will execute the given callback unless the first argument given to the method evaluates to `false`:
 
     $collection = collect([1, 2, 3]);
 
