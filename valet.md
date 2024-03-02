@@ -109,7 +109,7 @@ Valet will automatically start its required services each time your machine boot
 Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Homebrew if it is not already installed:
 
 ```shell
-valet use php@8.1
+valet use php@8.2
 
 valet use php
 ```
@@ -117,7 +117,7 @@ valet use php
 You may also create a `.valetrc` file in the root of your project. The `.valetrc` file should contain the PHP version the site should use:
 
 ```shell
-php=php@8.1
+php=php@8.2
 ```
 
 Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
