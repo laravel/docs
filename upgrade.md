@@ -417,6 +417,15 @@ The `Illuminate\Bus\BatchRepository` interface has received a new `rollBack` met
 public function rollBack();
 ```
 
+<a name="synchronous-jobs-in-database-transactions"></a>
+#### Synchronous Jobs in Database Transactions
+
+**Likelihood Of Impact: Very Low**
+
+Previously, synchronous jobs (jobs using the `sync` queue driver) would execute immediately, regardless of whether the `after_commit` configuration option of the queue connection was set to `true` or the `afterCommit` method was invoked on the job.
+
+In Laravel 11, synchronous queue jobs will now respect the "after commit" configuration of the queue connection or job.
+
 <a name="rate-limiting"></a>
 ### Rate Limiting
 
