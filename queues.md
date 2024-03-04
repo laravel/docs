@@ -1897,7 +1897,7 @@ When a particular job fails, you may want to send an alert to your users or reve
         /**
          * Handle a job failure.
          */
-        public function failed(Throwable $exception): void
+        public function failed(?Throwable $exception): void
         {
             // Send user notification of failure, etc...
         }
