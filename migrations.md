@@ -479,6 +479,12 @@ The `binary` method creates a `BLOB` equivalent column:
 
     $table->binary('photo');
 
+When utilizing MySQL, MariaDB, or SQL Server, you may pass `length` and `fixed` arguments to create `VARBINARY` or `BINARY` equivalent column:
+
+    $table->binary('data', length: 16); // VARBINARY(16)
+
+    $table->binary('data', length: 16, fixed: true); // BINARY(16)
+
 <a name="column-method-boolean"></a>
 #### `boolean()` {.collection-method}
 
@@ -491,21 +497,21 @@ The `boolean` method creates a `BOOLEAN` equivalent column:
 
 The `char` method creates a `CHAR` equivalent column with of a given length:
 
-    $table->char('name', 100);
+    $table->char('name', length: 100);
 
 <a name="column-method-dateTimeTz"></a>
 #### `dateTimeTz()` {.collection-method}
 
-The `dateTimeTz` method creates a `DATETIME` (with timezone) equivalent column with an optional precision (total digits):
+The `dateTimeTz` method creates a `DATETIME` (with timezone) equivalent column with an optional fractional seconds precision:
 
-    $table->dateTimeTz('created_at', $precision = 0);
+    $table->dateTimeTz('created_at', precision: 0);
 
 <a name="column-method-dateTime"></a>
 #### `dateTime()` {.collection-method}
 
-The `dateTime` method creates a `DATETIME` equivalent column with an optional precision (total digits):
+The `dateTime` method creates a `DATETIME` equivalent column with an optional fractional seconds precision:
 
-    $table->dateTime('created_at', $precision = 0);
+    $table->dateTime('created_at', precision: 0);
 
 <a name="column-method-date"></a>
 #### `date()` {.collection-method}
@@ -519,7 +525,7 @@ The `date` method creates a `DATE` equivalent column:
 
 The `decimal` method creates a `DECIMAL` equivalent column with the given precision (total digits) and scale (decimal digits):
 
-    $table->decimal('amount', $precision = 8, $scale = 2);
+    $table->decimal('amount', total: 8, places: 2);
 
 <a name="column-method-double"></a>
 #### `double()` {.collection-method}
@@ -540,7 +546,7 @@ The `enum` method creates a `ENUM` equivalent column with the given valid values
 
 The `float` method creates a `FLOAT` equivalent column with the given precision:
 
-    $table->float('amount', $precision = 53);
+    $table->float('amount', precision: 53);
 
 <a name="column-method-foreignId"></a>
 #### `foreignId()` {.collection-method}
@@ -641,6 +647,10 @@ The `longText` method creates a `LONGTEXT` equivalent column:
 
     $table->longText('description');
 
+When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `LONGBLOB` equivalent column:
+
+    $table->longText('data')->charset('binary'); // LONGBLOB
+
 <a name="column-method-macAddress"></a>
 #### `macAddress()` {.collection-method}
 
@@ -669,6 +679,10 @@ The `mediumText` method creates a `MEDIUMTEXT` equivalent column:
 
     $table->mediumText('description');
 
+When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `MEDIUMBLOB` equivalent column:
+
+    $table->mediumText('data')->charset('binary'); // MEDIUMBLOB
+
 <a name="column-method-morphs"></a>
 #### `morphs()` {.collection-method}
 
@@ -683,7 +697,7 @@ This method is intended to be used when defining the columns necessary for a pol
 
 The `nullableTimestamps` method is an alias of the [timestamps](#column-method-timestamps) method:
 
-    $table->nullableTimestamps(0);
+    $table->nullableTimestamps(precision: 0);
 
 <a name="column-method-nullableMorphs"></a>
 #### `nullableMorphs()` {.collection-method}
@@ -737,23 +751,23 @@ The `smallInteger` method creates a `SMALLINT` equivalent column:
 <a name="column-method-softDeletesTz"></a>
 #### `softDeletesTz()` {.collection-method}
 
-The `softDeletesTz` method adds a nullable `deleted_at` `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits). This column is intended to store the `deleted_at` timestamp needed for Eloquent's "soft delete" functionality:
+The `softDeletesTz` method adds a nullable `deleted_at` `TIMESTAMP` (with timezone) equivalent column with an optional fractional seconds precision. This column is intended to store the `deleted_at` timestamp needed for Eloquent's "soft delete" functionality:
 
-    $table->softDeletesTz($column = 'deleted_at', $precision = 0);
+    $table->softDeletesTz('deleted_at', precision: 0);
 
 <a name="column-method-softDeletes"></a>
 #### `softDeletes()` {.collection-method}
 
-The `softDeletes` method adds a nullable `deleted_at` `TIMESTAMP` equivalent column with an optional precision (total digits). This column is intended to store the `deleted_at` timestamp needed for Eloquent's "soft delete" functionality:
+The `softDeletes` method adds a nullable `deleted_at` `TIMESTAMP` equivalent column with an optional fractional seconds precision. This column is intended to store the `deleted_at` timestamp needed for Eloquent's "soft delete" functionality:
 
-    $table->softDeletes($column = 'deleted_at', $precision = 0);
+    $table->softDeletes('deleted_at', precision: 0);
 
 <a name="column-method-string"></a>
 #### `string()` {.collection-method}
 
 The `string` method creates a `VARCHAR` equivalent column of the given length:
 
-    $table->string('name', 100);
+    $table->string('name', length: 100);
 
 <a name="column-method-text"></a>
 #### `text()` {.collection-method}
@@ -762,47 +776,51 @@ The `text` method creates a `TEXT` equivalent column:
 
     $table->text('description');
 
+When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `BLOB` equivalent column:
+
+    $table->text('data')->charset('binary'); // BLOB
+
 <a name="column-method-timeTz"></a>
 #### `timeTz()` {.collection-method}
 
-The `timeTz` method creates a `TIME` (with timezone) equivalent column with an optional precision (total digits):
+The `timeTz` method creates a `TIME` (with timezone) equivalent column with an optional fractional seconds precision:
 
-    $table->timeTz('sunrise', $precision = 0);
+    $table->timeTz('sunrise', precision: 0);
 
 <a name="column-method-time"></a>
 #### `time()` {.collection-method}
 
-The `time` method creates a `TIME` equivalent column with an optional precision (total digits):
+The `time` method creates a `TIME` equivalent column with an optional fractional seconds precision:
 
-    $table->time('sunrise', $precision = 0);
+    $table->time('sunrise', precision: 0);
 
 <a name="column-method-timestampTz"></a>
 #### `timestampTz()` {.collection-method}
 
-The `timestampTz` method creates a `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits):
+The `timestampTz` method creates a `TIMESTAMP` (with timezone) equivalent column with an optional fractional seconds precision:
 
-    $table->timestampTz('added_at', $precision = 0);
+    $table->timestampTz('added_at', precision: 0);
 
 <a name="column-method-timestamp"></a>
 #### `timestamp()` {.collection-method}
 
-The `timestamp` method creates a `TIMESTAMP` equivalent column with an optional precision (total digits):
+The `timestamp` method creates a `TIMESTAMP` equivalent column with an optional fractional seconds precision:
 
-    $table->timestamp('added_at', $precision = 0);
+    $table->timestamp('added_at', precision: 0);
 
 <a name="column-method-timestampsTz"></a>
 #### `timestampsTz()` {.collection-method}
 
-The `timestampsTz` method creates `created_at` and `updated_at` `TIMESTAMP` (with timezone) equivalent columns with an optional precision (total digits):
+The `timestampsTz` method creates `created_at` and `updated_at` `TIMESTAMP` (with timezone) equivalent columns with an optional fractional seconds precision:
 
-    $table->timestampsTz($precision = 0);
+    $table->timestampsTz(precision: 0);
 
 <a name="column-method-timestamps"></a>
 #### `timestamps()` {.collection-method}
 
-The `timestamps` method creates `created_at` and `updated_at` `TIMESTAMP` equivalent columns with an optional precision (total digits):
+The `timestamps` method creates `created_at` and `updated_at` `TIMESTAMP` equivalent columns with an optional fractional seconds precision:
 
-    $table->timestamps($precision = 0);
+    $table->timestamps(precision: 0);
 
 <a name="column-method-tinyIncrements"></a>
 #### `tinyIncrements()` {.collection-method}
@@ -824,6 +842,10 @@ The `tinyInteger` method creates a `TINYINT` equivalent column:
 The `tinyText` method creates a `TINYTEXT` equivalent column:
 
     $table->tinyText('notes');
+
+When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `TINYBLOB` equivalent column:
+
+    $table->tinyText('data')->charset('binary'); // TINYBLOB
 
 <a name="column-method-unsignedBigInteger"></a>
 #### `unsignedBigInteger()` {.collection-method}
