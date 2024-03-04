@@ -248,6 +248,9 @@ $process = Process::timeout(120)->start('bash import.sh');
 $result = $process->wait();
 ```
 
+> [!WARNING]  
+> Even though an asynchronous process can run in parallel with the rest of your PHP script, it will be killed off when your script gets to the end. Process::start() does not make it possible to finish and close an HTTP page request and leave a script running on your system. A queue worker is the solution for those types of asynchronous needs.
+
 <a name="process-ids-and-signals"></a>
 ### Process IDs and Signals
 
