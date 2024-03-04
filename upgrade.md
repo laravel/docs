@@ -75,12 +75,13 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
-If your application is using Laravel Cashier Stripe, Passport, Sanctum, Spark Stripe, or Telescope, you should publish those packages's migrations to your application. Cashier, Sanctum, Telescope, and Passport, **no longer automatically load migrations from their own migrations** directory, therefore you should run the following command to publish their migrations to your application:
+If your application is using Laravel Cashier Stripe, Passport, Sanctum, Spark Stripe, or Telescope, you should publish those packages's migrations to your application. Cashier Stripe, Passport, Sanctum, Spark Stripe, and Telescope, **no longer automatically load migrations from their own migrations** directory, therefore you should run the following command to publish their migrations to your application:
 
 ```bash
 php artisan vendor:publish --tag=cashier-migrations
 php artisan vendor:publish --tag=passport-migrations
 php artisan vendor:publish --tag=sanctum-migrations
+php artisan vendor:publish --tag=spark-migrations
 php artisan vendor:publish --tag=telescope-migrations
 ```
 
@@ -494,6 +495,29 @@ Spark Stripe 5.0 no longer automatically loads migrations from its own migration
 php artisan vendor:publish --tag=spark-migrations
 ```
 
+<a name="passport"></a>
+### Passport
+
+<a name="updating-telescope"></a>
+#### Updating Passport
+
+**Likelihood Of Impact: High**
+
+Laravel 11 no longer supports Laravel Passport 11.x. Therefore, you should update your application's Laravel Passport dependency to `^12.0` in your `composer.json` file.
+
+Passport 12.0 no longer automatically loads migrations from its own migrations directory. Instead, you should run the following command to publish Passport's migrations to your application:
+
+```shell
+php artisan vendor:publish --tag=passport-migrations
+```
+
+In addition, the password grant type is disabled by default. You may enable it by calling the `enablePasswordGrant` method in the `boot` method of your application's `AppServiceProvider`:
+
+    public function boot(): void
+    {
+        Passport::enablePasswordGrant();
+    }
+
 <a name="sanctum"></a>
 ### Sanctum
 
@@ -533,26 +557,3 @@ Telescope 5.0 no longer automatically loads migrations from its own migrations d
 ```shell
 php artisan vendor:publish --tag=telescope-migrations
 ```
-
-<a name="passport"></a>
-### Passport
-
-<a name="updating-telescope"></a>
-#### Updating Passport
-
-**Likelihood Of Impact: High**
-
-Laravel 11 no longer supports Laravel Passport 11.x. Therefore, you should update your application's Laravel Passport dependency to `^12.0` in your `composer.json` file.
-
-Passport 12.0 no longer automatically loads migrations from its own migrations directory. Instead, you should run the following command to publish Passport's migrations to your application:
-
-```shell
-php artisan vendor:publish --tag=passport-migrations
-```
-
-In addition, the password grant type is disabled by default. You may enable it by calling the `enablePasswordGrant` method in the `boot` method of your application's `AppServiceProvider`:
-
-    public function boot(): void
-    {
-        Passport::enablePasswordGrant();
-    }
