@@ -479,10 +479,11 @@ The `binary` method creates a `BLOB` equivalent column:
 
     $table->binary('photo');
 
-When utilizing MySQL, MariaDB, or SQL Server you may pass `length` and `fixed` to create `VARBINARY` or `BINARY` equivalent column:
+When utilizing MySQL, MariaDB, or SQL Server, you may pass `length` and `fixed` arguments to create `VARBINARY` or `BINARY` equivalent column:
 
-    $table->binary('data', length: 16);             // VARBINARY(16)
-    $table->binary('data', length: 16, fixed: true) // BINARY(16)
+    $table->binary('data', length: 16); // VARBINARY(16)
+
+    $table->binary('data', length: 16, fixed: true); // BINARY(16)
 
 <a name="column-method-boolean"></a>
 #### `boolean()` {.collection-method}
@@ -646,7 +647,7 @@ The `longText` method creates a `LONGTEXT` equivalent column:
 
     $table->longText('description');
 
-When utilizing MySQL or MariaDB, you may append `charset('binary')` modifier to get `LONGBLOB` equivalent column:
+When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `LONGBLOB` equivalent column:
 
     $table->longText('data')->charset('binary'); // LONGBLOB
 
@@ -678,7 +679,7 @@ The `mediumText` method creates a `MEDIUMTEXT` equivalent column:
 
     $table->mediumText('description');
 
-When utilizing MySQL or MariaDB, you may append `charset('binary')` modifier to get `MEDIUMBLOB` equivalent column:
+When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `MEDIUMBLOB` equivalent column:
 
     $table->mediumText('data')->charset('binary'); // MEDIUMBLOB
 
@@ -775,7 +776,7 @@ The `text` method creates a `TEXT` equivalent column:
 
     $table->text('description');
 
-When utilizing MySQL or MariaDB, you may append `charset('binary')` modifier to get `BLOB` equivalent column:
+When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `BLOB` equivalent column:
 
     $table->text('data')->charset('binary'); // BLOB
 
@@ -842,7 +843,7 @@ The `tinyText` method creates a `TINYTEXT` equivalent column:
 
     $table->tinyText('notes');
 
-When utilizing MySQL or MariaDB, you may append `charset('binary')` modifier to get `TINYBLOB` equivalent column:
+When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `TINYBLOB` equivalent column:
 
     $table->tinyText('data')->charset('binary'); // TINYBLOB
 
