@@ -11,6 +11,7 @@
     - [Suggest](#suggest)
     - [Search](#search)
     - [Multi-search](#multisearch)
+    - [Pause](#pause)
 - [Informational Messages](#informational-messages)
 - [Tables](#tables)
 - [Spin](#spin)
@@ -610,8 +611,19 @@ $ids = multisearch(
 
 If the `options` closure returns an associative array, then the closure will receive the selected keys; otherwise, it will receive the selected values. The closure may return an error message, or `null` if the validation passes.
 
+<a name="pause"></a>
+### Pause
+
+The `pause` function may be used to display informational text to the user and wait for them to confirm their desire to proceed by pressing the Enter / Return key:
+
+```php
+use function Laravel\Prompts\pause;
+
+pause('Press ENTER to continue.');
+```
+
 <a name="informational-messages"></a>
-### Informational Messages
+## Informational Messages
 
 The `note`, `info`, `warning`, `error`, and `alert` functions may be used to display informational messages:
 
@@ -622,7 +634,7 @@ info('Package installed successfully.');
 ```
 
 <a name="tables"></a>
-### Tables
+## Tables
 
 The `table` function makes it easy to display multiple rows and columns of data. All you need to do is provide the column names and the data for the table:
 
@@ -636,7 +648,7 @@ table(
 ```
 
 <a name="spin"></a>
-### Spin
+## Spin
 
 The `spin` function displays a spinner along with an optional message while executing a specified callback. It serves to indicate ongoing processes and returns the callback's results upon completion:
 
@@ -705,7 +717,7 @@ $progress->finish();
 ```
 
 <a name="terminal-considerations"></a>
-### Terminal Considerations
+## Terminal Considerations
 
 <a name="terminal-width"></a>
 #### Terminal Width
@@ -718,7 +730,7 @@ If the length of any label, option, or validation message exceeds the number of 
 For any prompts that accept the `scroll` argument, the configured value will automatically be reduced to fit the height of the user's terminal, including space for a validation message.
 
 <a name="fallbacks"></a>
-### Unsupported Environments and Fallbacks
+## Unsupported Environments and Fallbacks
 
 Laravel Prompts supports macOS, Linux, and Windows with WSL. Due to limitations in the Windows version of PHP, it is not currently possible to use Laravel Prompts on Windows outside of WSL.
 
