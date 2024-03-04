@@ -75,7 +75,7 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
-If your application is using Laravel Sanctum, Telescope, or Passport, you should publish those packages's migrations to your application. Sanctum, Telescope, and Passport, **no longer automatically load migrations from their own migrations** directory, therefore you should run the following command to publish their migrations to your application:
+If your application is using Laravel Cashier Stripe, Spark Stripe, Sanctum, Telescope, or Passport, you should publish those packages's migrations to your application. Cashier, Sanctum, Telescope, and Passport, **no longer automatically load migrations from their own migrations** directory, therefore you should run the following command to publish their migrations to your application:
 
 ```bash
 php artisan vendor:publish --tag=cashier-migrations
