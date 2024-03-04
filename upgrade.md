@@ -422,7 +422,7 @@ public function rollBack();
 
 **Likelihood Of Impact: Very Low**
 
-Previously, synchronous jobs (`sync` queue driver) would execute immediately, regardless of whether the `after_commit` configuration option of the queue connection was set to `true` or the `afterCommit` method was called in the job class.
+Previously, synchronous jobs (jobs using the `sync` queue driver) would execute immediately, regardless of whether the `after_commit` configuration option of the queue connection was set to `true` or the `afterCommit` method was called in the job class.
 
 In Laravel 11, synchronous queue jobs will now respect the "after commit" configuration of the queue connection or job.
 
