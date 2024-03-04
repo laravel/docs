@@ -479,6 +479,8 @@ Cashier Stripe 15.0 no longer automatically loads migrations from its own migrat
 php artisan vendor:publish --tag=cashier-migrations
 ```
 
+Please review the complete [Cashier Stripe upgrade guide](https://github.com/laravel/cashier-stripe/blob/15.x/UPGRADE.md) for additional breaking changes.
+
 <a name="spark-stripe"></a>
 ### Spark Stripe
 
@@ -487,13 +489,15 @@ php artisan vendor:publish --tag=cashier-migrations
 
 **Likelihood Of Impact: High**
 
-Laravel 11 no longer supports Laravel Spark 4.x. Therefore, you should update your application's Laravel Spark Spark dependency to `^5.0` in your `composer.json` file.
+Laravel 11 no longer supports Laravel Spark Stripe 4.x. Therefore, you should update your application's Laravel Spark Stripe dependency to `^5.0` in your `composer.json` file.
 
 Spark Stripe 5.0 no longer automatically loads migrations from its own migrations directory. Instead, you should run the following command to publish Spark Stripe's migrations to your application:
 
 ```shell
 php artisan vendor:publish --tag=spark-migrations
 ```
+
+Please review the complete [Spark Stripe upgrade guide](https://spark.laravel.com/docs/spark-stripe/upgrade.html) for additional breaking changes.
 
 <a name="passport"></a>
 ### Passport
