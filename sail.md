@@ -443,7 +443,7 @@ Sometimes you may need to share your site publicly in order to preview your site
 sail share
 ```
 
-When sharing your site via the `share` command, you should configure your application's trusted proxies using `trustProxies` middleware method in your `bootstrap/app.php` file. Otherwise, URL generation helpers such as `url` and `route` will be unable to determine the correct HTTP host that should be used during URL generation:
+When sharing your site via the `share` command, you should configure your application's trusted proxies using the `trustProxies` middleware method in your application's `bootstrap/app.php` file. Otherwise, URL generation helpers such as `url` and `route` will be unable to determine the correct HTTP host that should be used during URL generation:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies(at: [
