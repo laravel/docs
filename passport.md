@@ -67,11 +67,13 @@ To get started, install Passport via the Composer package manager:
 composer require laravel/passport
 ```
 
-Next, you should execute the `passport:install` Artisan command. This command will publish and migrate the database migrations necessary for creating the tables your application needs to store OAuth2 clients and access tokens. Additionally, it will create the encryption keys required to generate secure access tokens and create the "personal access" and "password grant" clients, which will be used to generate access tokens:
+Next, you should execute the `passport:install` Artisan command. This command will publish and run the database migrations necessary for creating the tables your application needs to store OAuth2 clients and access tokens:
 
 ```shell
 php artisan passport:install
 ```
+
+Additionally, the `passport:install` command will create the encryption keys required to generate secure access tokens, as well as the "personal access" and "password grant" clients, which will be used to generate access tokens.
 
 > [!NOTE]  
 > If you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers, please install Passport using [the `uuids` option](#client-uuids).
@@ -801,7 +803,7 @@ Before your application can issue tokens via the client credentials grant, you w
 php artisan passport:client --client
 ```
 
-Next, to use this grant type, you may set `client` as an alias for the `CheckClientCredentials` middleware by using the `alias` middleware method in your application's `bootstrap/app.php` file:
+Next, to use this grant type, register a middleware alias for the `CheckClientCredentials` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
 
     use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
@@ -1061,7 +1063,7 @@ If you are issuing personal access tokens using the `App\Models\User` model's `c
 <a name="checking-scopes"></a>
 ### Checking Scopes
 
-Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope. To get started, add the following middleware aliases in your application's `bootstrap/app.php` file:
+Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope. To get started, define the following middleware aliases in your application's `bootstrap/app.php` file:
 
     use Laravel\Passport\Http\Middleware\CheckForAnyScope;
     use Laravel\Passport\Http\Middleware\CheckScopes;
@@ -1130,7 +1132,7 @@ You may determine if a given scope has been defined using the `hasScope` method:
 
 When building an API, it can be extremely useful to be able to consume your own API from your JavaScript application. This approach to API development allows your own application to consume the same API that you are sharing with the world. The same API may be consumed by your web application, mobile applications, third-party applications, and any SDKs that you may publish on various package managers.
 
-Typically, if you want to consume your API from your JavaScript application, you would need to manually send an access token to the application and pass it with each request to your application. However, Passport includes a middleware that can handle this for you. All you need to do is append the `CreateFreshApiToken` middleware to your `web` middleware group in your `bootstrap/app.php` file:
+Typically, if you want to consume your API from your JavaScript application, you would need to manually send an access token to the application and pass it with each request to your application. However, Passport includes a middleware that can handle this for you. All you need to do is append the `CreateFreshApiToken` middleware to the `web` middleware group in your application's `bootstrap/app.php` file:
 
     use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
 
@@ -1174,7 +1176,7 @@ When using this method of authentication, you will need to ensure a valid CSRF t
 <a name="events"></a>
 ## Events
 
-Passport raises events when issuing access tokens and refresh tokens. You may use these events to prune or revoke other access tokens in your database. If you would like, you may attach listeners to these events:
+Passport raises events when issuing access tokens and refresh tokens. You may [listen for these events](/docs/{{version}}/events) to prune or revoke other access tokens in your database:
 
 Event Name |
 ------------- |
