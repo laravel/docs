@@ -75,7 +75,7 @@ You should update the following dependencies in your application's `composer.jso
 
 </div>
 
-If your application is using Laravel Cashier Stripe, Passport, Sanctum, Spark Stripe, or Telescope, you should publish those packages's migrations to your application. Cashier Stripe, Passport, Sanctum, Spark Stripe, and Telescope, **no longer automatically load migrations from their own migrations** directory, therefore you should run the following command to publish their migrations to your application:
+If your application is using Laravel Cashier Stripe, Passport, Sanctum, Spark Stripe, or Telescope, you will need to publish their migrations to your application. Cashier Stripe, Passport, Sanctum, Spark Stripe, and Telescope **no longer automatically load migrations from their own migrations** directory. Therefore, you should run the following command to publish their migrations to your application:
 
 ```bash
 php artisan vendor:publish --tag=cashier-migrations
@@ -471,7 +471,7 @@ new ThrottlesExceptionsWithRedis($attempts, 2 * 60);
 
 **Likelihood Of Impact: High**
 
-Laravel 11 no longer supports Laravel Stripe 14.x. Therefore, you should update your application's Laravel Cashier Stripe dependency to `^15.0` in your `composer.json` file.
+Laravel 11 no longer supports Cashier Stripe 14.x. Therefore, you should update your application's Laravel Cashier Stripe dependency to `^15.0` in your `composer.json` file.
 
 Cashier Stripe 15.0 no longer automatically loads migrations from its own migrations directory. Instead, you should run the following command to publish Cashier Stripe's migrations to your application:
 
@@ -482,7 +482,7 @@ php artisan vendor:publish --tag=cashier-migrations
 Please review the complete [Cashier Stripe upgrade guide](https://github.com/laravel/cashier-stripe/blob/15.x/UPGRADE.md) for additional breaking changes.
 
 <a name="spark-stripe"></a>
-### Spark Stripe
+### Spark (Stripe)
 
 <a name="updating-spark-stripe"></a>
 #### Updating Spark Stripe
@@ -515,7 +515,7 @@ Passport 12.0 no longer automatically loads migrations from its own migrations d
 php artisan vendor:publish --tag=passport-migrations
 ```
 
-In addition, the password grant type is disabled by default. You may enable it by calling the `enablePasswordGrant` method in the `boot` method of your application's `AppServiceProvider`:
+In addition, the password grant type is disabled by default. You may enable it by invoking the `enablePasswordGrant` method in the `boot` method of your application's `AppServiceProvider`:
 
     public function boot(): void
     {
