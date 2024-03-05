@@ -142,7 +142,7 @@ When handling an incoming request authenticated by Sanctum, you may determine if
 <a name="token-ability-middleware"></a>
 #### Token Ability Middleware
 
-Sanctum also includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given ability. To get started, add the following middleware aliases to your application using the `alias` middleware method in your `bootstrap/app.php` file:
+Sanctum also includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given ability. To get started, define the following middleware aliases in your application's `bootstrap/app.php` file:
 
     use Laravel\Sanctum\Http\Middleware\CheckAbilities;
     use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
@@ -244,7 +244,6 @@ For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses
 > [!WARNING]  
 > In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains. Additionally, you should ensure that you send the `Accept: application/json` header and either the `Referer` or `Origin` header with your request.
 
-
 <a name="spa-configuration"></a>
 ### Configuration
 
@@ -259,29 +258,24 @@ First, you should configure which domains your SPA will be making requests from.
 <a name="sanctum-middleware"></a>
 #### Sanctum Middleware
 
-Next, you should instruct Laravel that incoming requests from your SPA can authenticate using Laravel's session cookies, while still allowing requests from third parties or mobile applications to authenticate using API tokens. This can be easily accomplished by using the `statefulApi` and `throttleApi` middleware methods in your application's `bootstrap/app.php` file:
+Next, you should instruct Laravel that incoming requests from your SPA can authenticate using Laravel's session cookies, while still allowing requests from third parties or mobile applications to authenticate using API tokens. This can be easily accomplished by invoking the `statefulApi` middleware method in your application's `bootstrap/app.php` file:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
-        $middleware->throttleApi();
     })
-
-By default, the `throttleApi` middleware method instructs Laravel to throttle incoming requests using the default cache store for managing rate limiting. At scale, you may require a faster rate-limiting solution, for which you can use Redis. If you wish to use Redis to throttle incoming requests, you should call the `throttleApi` middleware method with the `redis` option set to `true`:
-
-    $middleware->throttleApi(redis: true);
 
 <a name="cors-and-cookies"></a>
 #### CORS and Cookies
 
 If you are having trouble authenticating with your application from a SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings.
 
-Remember, your application's `config/cors.php` file is not published by default. So if you need to customize all of Laravel's cors options, you should publish the complete `cors` configuration file using the `config:publish` Artisan command:
+The `config/cors.php` configuration file is not published by default. If you need to customize Laravel's CORS options, you should publish the complete `cors` configuration file using the `config:publish` Artisan command:
 
 ```bash
 php artisan config:publish cors
 ```
 
-Next, you should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. This may be accomplished by setting the `supports_credentials` option within your application's `config/cors.php` configuration file to `true`:
+Next, you should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. This may be accomplished by setting the `supports_credentials` option within your application's `config/cors.php` configuration file to `true`.
 
 In addition, you should enable the `withCredentials` and `withXSRFToken` options on your application's global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file. If you are not using Axios to make HTTP requests from your frontend, you should perform the equivalent configuration on your own HTTP client:
 
