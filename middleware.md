@@ -6,6 +6,7 @@
     - [Global Middleware](#global-middleware)
     - [Assigning Middleware to Routes](#assigning-middleware-to-routes)
     - [Middleware Groups](#middleware-groups)
+    - [Middleware Aliases](#middleware-aliases)
     - [Sorting Middleware](#sorting-middleware)
 - [Middleware Parameters](#middleware-parameters)
 - [Terminable Middleware](#terminable-middleware)
@@ -145,33 +146,17 @@ If you would like to manage Laravel's global middleware stack manually, you may 
 
 If you would like to assign middleware to specific routes, you may invoke the `middleware` method when defining the route:
 
-    use App\Http\Middleware\Authenticate;
+    use App\Http\Middleware\EnsureTokenIsValid;
 
     Route::get('/profile', function () {
         // ...
-    })->middleware(Authenticate::class);
+    })->middleware(EnsureTokenIsValid::class);
 
 You may assign multiple middleware to the route by passing an array of middleware names to the `middleware` method:
 
     Route::get('/', function () {
         // ...
     })->middleware([First::class, Second::class]);
-
-For convenience, you may assign aliases to middleware in your application's `bootstrap/app.php` file. This allows you to define a short alias for the middleware, which can be especially useful for middleware with long class names:
-
-    use App\Http\Middleware\EnsureUserIsSubscribed;
-
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'subscribed' => EnsureUserIsSubscribed::class
-        ]);
-    })
-
-Once the middleware alias has been defined in your application's `bootstrap/app.php` file, you may use the alias when assigning middleware to routes:
-
-    Route::get('/profile', function () {
-        // ...
-    })->middleware('subscribed');
 
 <a name="excluding-middleware"></a>
 #### Excluding Middleware
@@ -245,11 +230,9 @@ Laravel includes predefined `web` and `api` middleware groups that contain commo
 | `Illuminate\View\Middleware\ShareErrorsFromSession`
 | `Illuminate\Foundation\Http\Middleware\ValidateCsrfToken`
 | `Illuminate\Routing\Middleware\SubstituteBindings`
-| `Illuminate\Session\Middleware\AuthenticateSession`
 
 | The `api` Middleware Group
 |--------------
-| `Illuminate\Routing\Middleware\ThrottleRequests:api`
 | `Illuminate\Routing\Middleware\SubstituteBindings`
 
 If you would like to append or prepend middleware to these groups, you may use the `web` and `api` methods within your application's `bootstrap/app.php` file. The `web` and `api` methods are convenient alternatives to the `appendToGroup` method:
@@ -262,10 +245,25 @@ If you would like to append or prepend middleware to these groups, you may use t
             EnsureUserIsSubscribed::class,
         ]);
 
-        $middleware->api(append: [
+        $middleware->api(prepend: [
             EnsureTokenIsValid::class,
         ]);
     })
+
+You may even replace one of Laravel's default middleware group entries with a custom middleware of your own:
+
+    use App\Http\Middleware\StartCustomSession;
+    use Illuminate\Session\Middleware\StartSession;
+
+    $middleware->web(replace: [
+        StartSession::class => StartCustomSession::class,
+    ]);
+
+Or, you may remove a middleware entirely:
+
+    $middleware->web(remove: [
+        StartSession::class,
+    ]);
 
 <a name="manually-managing-laravels-default-middleware-groups"></a>
 #### Manually Managing Laravel's Default Middleware Groups
@@ -293,6 +291,42 @@ If you would like to manually manage all of the middleware within Laravel's defa
 > [!NOTE]  
 > By default, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `bootstrap/app.php` file.
 
+<a name="middleware-aliases"></a>
+### Middleware Aliases
+
+You may assign aliases to middleware in your application's `bootstrap/app.php` file. Middleware aliases allows you to define a short alias for a given middleware class, which can be especially useful for middleware with long class names:
+
+    use App\Http\Middleware\EnsureUserIsSubscribed;
+
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'subscribed' => EnsureUserIsSubscribed::class
+        ]);
+    })
+
+Once the middleware alias has been defined in your application's `bootstrap/app.php` file, you may use the alias when assigning the middleware to routes:
+
+    Route::get('/profile', function () {
+        // ...
+    })->middleware('subscribed');
+
+For convenience, some of Laravel's built-in middleware are aliased by default. For example, the `auth` middleware is an alias for the `Illuminate\Auth\Middleware\Authenticate` middleware. Below is a list of the default middleware aliases:
+
+| Alias | Middleware
+|-------|------------
+`auth` | `Illuminate\Auth\Middleware\Authenticate`
+`auth.basic` | `Illuminate\Auth\Middleware\AuthenticateWithBasicAuth`
+`auth.session` | `Illuminate\Session\Middleware\AuthenticateSession`
+`cache.headers` | `Illuminate\Http\Middleware\SetCacheHeaders`
+`can` | `Illuminate\Auth\Middleware\Authorize`
+`guest` | `Illuminate\Auth\Middleware\RedirectIfAuthenticated`
+`password.confirm` | `Illuminate\Auth\Middleware\RequirePassword`
+`precognitive` | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests`
+`signed` | `Illuminate\Routing\Middleware\ValidateSignature`
+`subscribed` | `\Spark\Http\Middleware\VerifyBillableIsSubscribed`
+`throttle` | `Illuminate\Routing\Middleware\ThrottleRequests` or `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis`
+`verified` | `Illuminate\Auth\Middleware\EnsureEmailIsVerified`
+
 <a name="sorting-middleware"></a>
 ### Sorting Middleware
 
@@ -306,11 +340,11 @@ Rarely, you may need your middleware to execute in a specific order but not have
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
-            \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class,
             \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
-            \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
             \Illuminate\Auth\Middleware\Authorize::class,
         ]);
     })
