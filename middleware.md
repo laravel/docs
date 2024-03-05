@@ -245,10 +245,25 @@ If you would like to append or prepend middleware to these groups, you may use t
             EnsureUserIsSubscribed::class,
         ]);
 
-        $middleware->api(append: [
+        $middleware->api(prepend: [
             EnsureTokenIsValid::class,
         ]);
     })
+
+You may even replace one of Laravel's default middleware group entries with a custom middleware of your own:
+
+    use App\Http\Middleware\StartCustomSession;
+    use Illuminate\Session\Middleware\StartSession;
+
+    $middleware->web(replace: [
+        StartSession::class => StartCustomSession::class,
+    ]);
+
+Or, you may remove a middleware entirely:
+
+    $middleware->web(remove: [
+        StartSession::class,
+    ]);
 
 <a name="manually-managing-laravels-default-middleware-groups"></a>
 #### Manually Managing Laravel's Default Middleware Groups
