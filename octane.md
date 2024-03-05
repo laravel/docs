@@ -82,7 +82,28 @@ services:
   laravel.test:
     environment:
       SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80" # [tl! add]
+      XDG_CONFIG_HOME:  /var/www/html/config # [tl! add]
+      XDG_DATA_HOME:  /var/www/html/data # [tl! add]
 ```
+
+To enable HTTPS, HTTP/2 and HTTP/3, apply these modifications instead:
+
+```yaml
+services:
+  laravel.test:
+    ports:
+        - '${APP_PORT:-80}:80'
+        - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        - '443:443' # [tl! add]
+        - '443:443/udp' # [tl! add]
+    environment:
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --host=localhost --port=443 --admin-port=2019 --https" # [tl! add]
+      XDG_CONFIG_HOME:  /var/www/html/config # [tl! add]
+      XDG_DATA_HOME:  /var/www/html/data # [tl! add]
+```
+
+Be careful to use `https://localhost` to access your app.
+[Using `https://127.0.0.1` requires additional configuration and is discouraged.](https://frankenphp.dev/docs/known-issues/#using-https127001-with-docker)
 
 <a name="frankenphp-via-docker"></a>
 #### FrankenPHP via Docker
