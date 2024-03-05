@@ -48,7 +48,7 @@ The `reverb:install` command will automatically start Reverb using a sensible se
 <a name="application-credentials"></a>
 ### Application Credentials
 
-In order establish a connection to Reverb, a set of Reverb "application" credentials must be exchanged between the client and server. These credentials are configured on the server and are used to verify the request from the client. You may define these credentials using the following environment variables:
+In order to establish a connection to Reverb, a set of Reverb "application" credentials must be exchanged between the client and server. These credentials are configured on the server and are used to verify the request from the client. You may define these credentials using the following environment variables:
 
 ```ini
 REVERB_APP_ID=my-app-id
