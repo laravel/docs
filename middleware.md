@@ -122,7 +122,10 @@ If you want a middleware to run during every HTTP request to your application, y
 
 The `$middleware` object provided to the `withMiddleware` closure is an instance of `Illuminate\Foundation\Configuration\Middleware` and is responsible for managing the middleware assigned to your application's routes. The `append` method adds the middleware to the end of the list of global middleware. If you would like to add a middleware to the beginning of the list, you should use the `prepend` method.
 
-If you would like to manage global middleware manually, you can fully rewrite predefined ones with `use` method. The code snippet below contain all predefined middleware, so you can change them, as you would like to:
+<a name="manually-managing-laravels-default-global-middleware"></a>
+#### Manually Managing Laravel's Default Global Middleware
+
+If you would like to manage Laravel's global middleware stack manually, you may provide Laravel's default stack of global middleware to the `use` method. Then, you may adjust the default middleware stack as necessary:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->use([
@@ -212,9 +215,25 @@ Sometimes you may want to group several middleware under a single key to make th
             First::class,
             Second::class,
         ]);
+
+        $middleware->prependToGroup('group-name', [
+            First::class,
+            Second::class,
+        ]);
     })
 
-You may prepend middleware to a group using the `prependToGroup` method.
+Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware:
+
+    Route::get('/', function () {
+        // ...
+    })->middleware('group-name');
+
+    Route::middleware(['group-name'])->group(function () {
+        // ...
+    });
+
+<a name="laravels-default-middleware-groups"></a>
+#### Laravel's Default Middleware Groups
 
 Laravel includes predefined `web` and `api` middleware groups that contain common middleware you may want to apply to your web and API routes. Remember, Laravel automatically applies these middleware groups to the corresponding `routes/web.php` and `routes/api.php` files:
 
@@ -248,7 +267,10 @@ If you would like to append or prepend middleware to these groups, you may use t
         ]);
     })
 
-If you would like to manage middleware on `web` and `api` groups manually, you can fully rewrite predefined ones. The code snippet below contain all predefined middleware, so you can change them, as you would like to:
+<a name="manually-managing-laravels-default-middleware-groups"></a>
+#### Manually Managing Laravel's Default Middleware Groups
+
+If you would like to manually manage all of the middleware within Laravel's default `web` and `api` middleware groups, you may redefine the groups entirely. The example below will define the `web` and `api` middleware groups with their default middleware, allowing you to customize them as necessary:
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->group('web', [
@@ -260,22 +282,13 @@ If you would like to manage middleware on `web` and `api` groups manually, you c
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
         ]);
+
         $middleware->group('api', [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             // 'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
     })
-
-Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware:
-
-    Route::get('/', function () {
-        // ...
-    })->middleware('group-name');
-
-    Route::middleware(['group-name'])->group(function () {
-        // ...
-    });
 
 > [!NOTE]  
 > By default, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `bootstrap/app.php` file.
