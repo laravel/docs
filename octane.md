@@ -58,6 +58,40 @@ php artisan octane:install
 
 [FrankenPHP](https://frankenphp.dev) is a PHP application server, written in Go, that supports modern web features like early hints and Zstandard compression. When you install Octane and choose FrankenPHP as your server, Octane will automatically download and install the FrankenPHP binary for you.
 
+<a name="frankenphp-via-docker"></a>
+#### FrankenPHP via Docker
+
+Using FrankenPHP's Docker images means better performance (JIT is supported, among other things), the use of additional extensions not included or functional with the static version (such as XDebug) and the ability to run FrankenPHP on platforms it doesn't natively support (such as Windows).
+
+```dockerfile
+FROM dunglas/frankenphp
+
+RUN install-php-extensions \
+    pcntl
+    # add other extensions here
+
+COPY . /app
+
+ENTRYPOINT ["php", "artisan", "octane:frankenphp"]
+```
+
+In development, can use this Compose file to run your app:
+
+```yaml
+# compose.yaml
+services:
+  frankenphp:
+    build:
+      context: .
+    entrypoint: php artisan octane:frankenphp --max-requests=1
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+```
+
+See [the official documentation](https://frankenphp.dev/docs/docker/) for more information on running FrankenPHP with Docker.
+
 <a name="frankenphp-via-laravel-sail"></a>
 #### FrankenPHP via Laravel Sail
 
