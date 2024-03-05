@@ -84,6 +84,42 @@ services:
       SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80" # [tl! add]
 ```
 
+<a name="frankenphp-via-docker"></a>
+#### FrankenPHP via Docker
+
+Using FrankenPHP's official Docker images can offer improved performance and the use additional extensions not included with static installations of FrankenPHP. In addition, the official Docker images provide support for running FrankenPHP on platforms it doesn't natively support, such as Windows. FrankenPHP's official Docker images are suitable for both local development and production usage.
+
+You may use the following Dockerfile as a starting point for containerizing your FrankenPHP powered Laravel application:
+
+```dockerfile
+FROM dunglas/frankenphp
+
+RUN install-php-extensions \
+    pcntl
+    # Add other PHP extensions here...
+
+COPY . /app
+
+ENTRYPOINT ["php", "artisan", "octane:frankenphp"]
+```
+
+Then, during development, you may utilize the following Docker Compose file to run your application:
+
+```yaml
+# compose.yaml
+services:
+  frankenphp:
+    build:
+      context: .
+    entrypoint: php artisan octane:frankenphp --max-requests=1
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+```
+
+You may consult [the official FrankenPHP documentation](https://frankenphp.dev/docs/docker/) for more information on running FrankenPHP with Docker.
+
 <a name="roadrunner"></a>
 ### RoadRunner
 
