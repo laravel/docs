@@ -80,14 +80,14 @@ php artisan vendor:publish --tag=pulse-config
 <a name="dashboard-authorization"></a>
 ### Authorization
 
-The Pulse dashboard may be accessed via the `/pulse` route. By default, you will only be able to access this dashboard in the `local` environment, so you will need to configure authorization for your production environments by customizing the `'viewPulse'` authorization gate. You can accomplish this within your application's `app/Providers/AuthServiceProvider.php` file:
+The Pulse dashboard may be accessed via the `/pulse` route. By default, you will only be able to access this dashboard in the `local` environment, so you will need to configure authorization for your production environments by customizing the `'viewPulse'` authorization gate. You can accomplish this within your application's `app/Providers/AppServiceProvider.php` file:
 
 ```php
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
 /**
- * Register any authentication / authorization services.
+ * Bootstrap any application services.
  */
 public function boot(): void
 {
@@ -165,7 +165,7 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You may completely customize how the authenticated user is captured and retrieved by implementing the `Laravel\Pulse\Contracts\ResolvesUsers` contract and binding it in Laravel's [service container](/docs/{{version}}/container#binding-a-singleton).
 
 <a name="dashboard-cards"></a>
@@ -191,7 +191,7 @@ If you wish to view all usage metrics on screen at the same time, you may includ
 
 To learn how to customize how Pulse retrieves and displays user information, consult our documentation on [resolving users](#dashboard-resolving-users).
 
-> [!NOTE]  
+> [!NOTE]
 > If your application receives a lot of requests or dispatches a lot of jobs, you may wish to enable [sampling](#sampling). See the [user requests recorder](#user-requests-recorder), [user jobs recorder](#user-jobs-recorder), and [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
 
 <a name="exceptions-card"></a>
@@ -246,7 +246,7 @@ Most Pulse recorders will automatically capture entries based on framework event
 php artisan pulse:check
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To keep the `pulse:check` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the command does not stop running.
 
 <a name="recorders"></a>
@@ -401,7 +401,7 @@ PULSE_DB_CONNECTION=pulse
 <a name="ingest"></a>
 ### Redis Ingest
 
-> [!WARNING]  
+> [!WARNING]
 > The Redis Ingest requires Redis 6.2 or greater and `phpredis` or `predis` as the application's configured Redis client driver.
 
 By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the HTTP response has been sent to the client or a job has been processed; however, you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
@@ -422,7 +422,7 @@ When using the Redis ingest, you will need to run the `pulse:work` command to mo
 php artisan pulse:work
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To keep the `pulse:work` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the Pulse worker does not stop running.
 
 <a name="sampling"></a>
@@ -514,7 +514,7 @@ Once you have defined your Livewire component and template, the card may be incl
 </x-pulse>
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If your card is included in a package, you will need to register the component with Livewire using the `Livewire::component` method.
 
 <a name="custom-card-styling"></a>
@@ -628,7 +628,7 @@ The available aggregation methods are:
 * `min`
 * `sum`
 
-> [!NOTE]  
+> [!NOTE]
 > When building a card package that captures the currently authenticated user ID, you should use the `Pulse::resolveAuthenticatedUserId()` method, which respects any [user resolver customizations](#dashboard-resolving-users) made to the application.
 
 <a name="custom-card-data-retrieval"></a>
@@ -727,7 +727,7 @@ class Deployments
     /**
      * The events to listen for.
      *
-     * @var list<class-string>
+     * @var array<int, class-string>
      */
     public array $listen = [
         Deployment::class,
