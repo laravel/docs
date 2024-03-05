@@ -432,7 +432,7 @@ To get started, you should schedule the `db:monitor` command to [run every minut
 php artisan db:monitor --databases=mysql,pgsql --max=100
 ```
 
-Scheduling this command alone is not enough to trigger a notification alerting you of the number of open connections. When the command encounters a database that has an open connection count that exceeds your threshold, a `DatabaseBusy` event will be dispatched. You should listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
+Scheduling this command alone is not enough to trigger a notification alerting you of the number of open connections. When the command encounters a database that has an open connection count that exceeds your threshold, a `DatabaseBusy` event will be dispatched. You should listen for this event within your application's `AppServiceProvider` in order to send a notification to you or your development team:
 
 ```php
 use App\Notifications\DatabaseApproachingMaxConnections;
@@ -441,7 +441,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 
 /**
- * Register any other events for your application.
+ * Bootstrap any application services.
  */
 public function boot(): void
 {

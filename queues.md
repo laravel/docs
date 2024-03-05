@@ -1491,19 +1491,27 @@ php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 
 Without pruning, the `job_batches` table can accumulate records very quickly. To mitigate this, you should [schedule](/docs/{{version}}/scheduling) the `queue:prune-batches` Artisan command to run daily:
 
-    $schedule->command('queue:prune-batches')->daily();
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('queue:prune-batches')->daily();
 
 By default, all finished batches that are more than 24 hours old will be pruned. You may use the `hours` option when calling the command to determine how long to retain batch data. For example, the following command will delete all batches that finished over 48 hours ago:
 
-    $schedule->command('queue:prune-batches --hours=48')->daily();
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('queue:prune-batches --hours=48')->daily();
 
 Sometimes, your `jobs_batches` table may accumulate batch records for batches that never completed successfully, such as batches where a job failed and that job was never retried successfully. You may instruct the `queue:prune-batches` command to prune these unfinished batch records using the `unfinished` option:
 
-    $schedule->command('queue:prune-batches --hours=48 --unfinished=72')->daily();
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('queue:prune-batches --hours=48 --unfinished=72')->daily();
 
 Likewise, your `jobs_batches` table may also accumulate batch records for cancelled batches. You may instruct the `queue:prune-batches` command to prune these cancelled batch records using the `cancelled` option:
 
-    $schedule->command('queue:prune-batches --hours=48 --cancelled=72')->daily();
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('queue:prune-batches --hours=48 --cancelled=72')->daily();
 
 <a name="storing-batches-in-dynamodb"></a>
 ### Storing Batches in DynamoDB
@@ -2085,7 +2093,7 @@ To get started, you should schedule the `queue:monitor` command to [run every mi
 php artisan queue:monitor redis:default,redis:deployments --max=100
 ```
 
-Scheduling this command alone is not enough to trigger a notification alerting you of the queue's overwhelmed status. When the command encounters a queue that has a job count exceeding your threshold, an `Illuminate\Queue\Events\QueueBusy` event will be dispatched. You may listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
+Scheduling this command alone is not enough to trigger a notification alerting you of the queue's overwhelmed status. When the command encounters a queue that has a job count exceeding your threshold, an `Illuminate\Queue\Events\QueueBusy` event will be dispatched. You may listen for this event within your application's `AppServiceProvider` in order to send a notification to you or your development team:
 
 ```php
 use App\Notifications\QueueHasLongWaitTime;
@@ -2094,7 +2102,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 
 /**
- * Register any other events for your application.
+ * Bootstrap any application services.
  */
 public function boot(): void
 {

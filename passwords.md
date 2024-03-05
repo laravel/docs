@@ -160,7 +160,9 @@ php artisan auth:clear-resets
 
 If you would like to automate this process, consider adding the command to your application's [scheduler](/docs/{{version}}/scheduling):
 
-    $schedule->command('auth:clear-resets')->everyFifteenMinutes();
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 
 <a name="password-customization"></a>
 ## Customization

@@ -64,7 +64,7 @@ Once you have written a controller class and method, you may define a route to t
 When an incoming request matches the specified route URI, the `show` method on the `App\Http\Controllers\UserController` class will be invoked and the route parameters will be passed to the method.
 
 > [!NOTE]  
-> Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods.
+> Controllers are not **required** to extend a base class. However, it is sometimes convenient to extend a base controller class that contains methods that should be shared across all of your controllers.
 
 <a name="single-action-controllers"></a>
 ### Single Action Controllers
