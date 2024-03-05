@@ -6,7 +6,7 @@
     - [Global Middleware](#global-middleware)
     - [Assigning Middleware to Routes](#assigning-middleware-to-routes)
     - [Middleware Groups](#middleware-groups)
-    - [Middleware Alias](#middleware-alias)
+    - [Middleware Aliases](#middleware-aliases)
     - [Sorting Middleware](#sorting-middleware)
 - [Middleware Parameters](#middleware-parameters)
 - [Terminable Middleware](#terminable-middleware)
@@ -250,19 +250,6 @@ If you would like to append or prepend middleware to these groups, you may use t
         ]);
     })
 
-Sometimes, Laravel may also append middleware to the `web` and `api` middleware groups depending on the methods called within the `withMiddleware` closure. For example, the following code will append the `EnsureFrontendRequestsAreStateful` and `ThrottleRequests` middleware to the `api` middleware group:
-
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->statefulApi();
-        $middleware->throttleApi();
-    })
-
-| The `api` Middleware Group
-|--------------
-| `Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful`
-| `Illuminate\Routing\Middleware\ThrottleRequests`
-| `Illuminate\Routing\Middleware\SubstituteBindings`
-
 <a name="manually-managing-laravels-default-middleware-groups"></a>
 #### Manually Managing Laravel's Default Middleware Groups
 
@@ -289,10 +276,10 @@ If you would like to manually manage all of the middleware within Laravel's defa
 > [!NOTE]  
 > By default, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `bootstrap/app.php` file.
 
-<a name="middleware-alias"></a>
-### Middleware Alias
+<a name="middleware-aliases"></a>
+### Middleware Aliases
 
-You may assign aliases to middleware in your application's `bootstrap/app.php` file. This allows you to define a short alias for the middleware, which can be especially useful for middleware with long class names:
+You may assign aliases to middleware in your application's `bootstrap/app.php` file. Middleware aliases allows you to define a short alias for a given middleware class, which can be especially useful for middleware with long class names:
 
     use App\Http\Middleware\EnsureUserIsSubscribed;
 
@@ -302,13 +289,13 @@ You may assign aliases to middleware in your application's `bootstrap/app.php` f
         ]);
     })
 
-Once the middleware alias has been defined in your application's `bootstrap/app.php` file, you may use the alias when assigning middleware to routes:
+Once the middleware alias has been defined in your application's `bootstrap/app.php` file, you may use the alias when assigning the middleware to routes:
 
     Route::get('/profile', function () {
         // ...
     })->middleware('subscribed');
 
-For convenience, some of Laravel's built-in middleware are aliased by default. For example, the `auth` middleware is aliased as `Illuminate\Auth\Middleware\Authenticate`. Here is a list of the default middleware aliases:
+For convenience, some of Laravel's built-in middleware are aliased by default. For example, the `auth` middleware is an alias for the `Illuminate\Auth\Middleware\Authenticate` middleware. Below is a list of the default middleware aliases:
 
 | Alias | Middleware
 |-------|------------
