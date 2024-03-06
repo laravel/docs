@@ -804,13 +804,13 @@ php artisan pennant:purge new-api
 php artisan pennant:purge new-api purchase-button
 ```
 
-It is also possible to purge all features _except_ a given feature list. For example, imagine you wanted to purge all features but keep the values for the "new-api" and "purchase-button" features in storage. You can pass these feature names to the `--except` option:
+It is also possible to purge all features _except_ those in a given feature list. For example, imagine you wanted to purge all features but keep the values for the "new-api" and "purchase-button" features in storage. To accomplish this, you can pass those feature names to the `--except` option:
 
 ```sh
 php artisan pennant:purge --except=new-api --except=purchase-button
 ```
 
-For convenience, the purge command also supports an `--except-registered` flag. This flag indicates that all features except those explicitly registered in a service provider should be purged.
+For convenience, the `pennant:purge` command also supports an `--except-registered` flag. This flag indicates that all features except those explicitly registered in a service provider should be purged:
 
 ```sh
 php artisan pennant:purge --except-registered
