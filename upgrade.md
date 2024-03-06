@@ -13,7 +13,11 @@
 - [Floating-Point Types](#floating-point-types)
 - [Modifying Columns](#modifying-columns)
 - [SQLite Minimum Version](#sqlite-minimum-version)
+- [Updating Cashier Stripe](#updating-cashier-stripe)
+- [Updating Spark Stripe](#updating-spark-stripe)
+- [Updating Passport](#updating-passport)
 - [Updating Sanctum](#updating-sanctum)
+- [Updating Telescope](#updating-telescope)
 
 </div>
 
