@@ -61,24 +61,17 @@ However, if you are attempting to authenticate a single-page application, mobile
 <a name="installation"></a>
 ## Installation
 
-To get started, install Passport via the Composer package manager:
+You may install Laravel Passport via the `install:api` Artisan command:
 
 ```shell
-composer require laravel/passport
+php artisan install:api --passport
 ```
 
-Next, you should execute the `passport:install` Artisan command. This command will publish and run the database migrations necessary for creating the tables your application needs to store OAuth2 clients and access tokens:
+This command will publish and run the database migrations necessary for creating the tables your application needs to store OAuth2 clients and access tokens and will create the encryption keys required to generate secure access tokens.
 
-```shell
-php artisan passport:install
-```
+Additionally, this command will ask if you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers.
 
-Additionally, the `passport:install` command will create the encryption keys required to generate secure access tokens, as well as the "personal access" and "password grant" clients, which will be used to generate access tokens.
-
-> [!NOTE]  
-> If you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers, please install Passport using [the `uuids` option](#client-uuids).
-
-After running the `passport:install` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes. If your model is already using the `Laravel\Sanctum\HasApiTokens` trait, you may remove that trait:
+After running the `install:api` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
 
     <?php
 
@@ -107,15 +100,6 @@ Finally, in your application's `config/auth.php` configuration file, you should 
             'provider' => 'users',
         ],
     ],
-
-<a name="client-uuids"></a>
-#### Client UUIDs
-
-You may also run the `passport:install` command with the `--uuids` option present. This option will instruct Passport that you would like to use UUIDs instead of auto-incrementing integers as the Passport `Client` model's primary key values. After running the `passport:install` command with the `--uuids` option, you will be given additional instructions regarding disabling Passport's default migrations:
-
-```shell
-php artisan passport:install --uuids
-```
 
 <a name="deploying-passport"></a>
 ### Deploying Passport
