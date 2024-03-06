@@ -13,6 +13,7 @@
 - [Floating-Point Types](#floating-point-types)
 - [Modifying Columns](#modifying-columns)
 - [SQLite Minimum Version](#sqlite-minimum-version)
+- [Updating Sanctum](#updating-sanctum)
 
 </div>
 
@@ -24,7 +25,6 @@
 - [Carbon 3](#carbon-3)
 - [Password Rehashing](#password-rehashing)
 - [Per-Second Rate Limiting](#per-second-rate-limiting)
-- [Updating Sanctum](#updating-sanctum)
 
 </div>
 
