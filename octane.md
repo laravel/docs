@@ -86,7 +86,7 @@ services:
       XDG_DATA_HOME:  /var/www/html/data # [tl! add]
 ```
 
-To enable HTTPS, HTTP/2 and HTTP/3, apply these modifications instead:
+To enable HTTPS, HTTP/2, and HTTP/3, apply these modifications instead:
 
 ```yaml
 services:
@@ -102,7 +102,7 @@ services:
       XDG_DATA_HOME:  /var/www/html/data # [tl! add]
 ```
 
-Typically you should access your application via `https://localhost`, as using `https://127.0.0.1` requires additional configuration and is [discouraged](https://frankenphp.dev/docs/known-issues/#using-https127001-with-docker).
+Typically, you should access your FrankenPHP Sail application via `https://localhost`, as using `https://127.0.0.1` requires additional configuration and is [discouraged](https://frankenphp.dev/docs/known-issues/#using-https127001-with-docker).
 
 <a name="frankenphp-via-docker"></a>
 #### FrankenPHP via Docker
