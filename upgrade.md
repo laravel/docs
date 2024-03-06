@@ -36,6 +36,7 @@
 - [Doctrine DBAL Removal](#doctrine-dbal-removal)
 - [Eloquent Model `casts` Method](#eloquent-model-casts-method)
 - [Spatial Types](#spatial-types)
+- [Spatie Once Package](#spatie-once-package)
 - [The `Enumerable` Contract](#the-enumerable-contract)
 - [The `UserProvider` Contract](#the-user-provider-contract)
 - [The `Authenticatable` Contract](#the-authenticatable-contract)
@@ -571,3 +572,10 @@ Telescope 5.0 no longer automatically loads migrations from its own migrations d
 ```shell
 php artisan vendor:publish --tag=telescope-migrations
 ```
+
+<a name="spatie-once-package"></a>
+### Spatie Once Package
+
+**Likelihood Of Impact: Medium**
+
+Laravel 11 now provides its own [`once` function](/docs/{{version}}/helpers#method-once) to ensure that a given closure is only executed once. Therefore, if your application has a dependency on the `spatie/once` package, you should remove it from your application's `composer.json` file to avoid conflicts.
