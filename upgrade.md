@@ -574,3 +574,10 @@ Telescope 5.0 no longer automatically loads migrations from its own migrations d
 ```shell
 php artisan vendor:publish --tag=telescope-migrations
 ```
+
+<a name="saptie-once-package"></a>
+### Spatie Once Package
+
+**Likelihood Of Impact: Very Low**
+
+Laravel 11 now provides its own [`once` function](/docs/{{version}}/helpers#method-once) to ensure that a given closure is only executed once. Therefore, if your application has a dependency on the `spatie/once` package, you should remove it from your application's `composer.json` file to avoid conflicts.
