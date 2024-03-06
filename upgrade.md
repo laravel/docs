@@ -67,6 +67,7 @@ You should update the following dependencies in your application's `composer.jso
 <div class="content-list" markdown="1">
 
 - `laravel/framework` to `^11.0`
+- `nunomaduro/collision` to `^8.1`
 - `laravel/cashier-stripe` to `^15.0` (If installed)
 - `laravel/passport` to `^12.0` (If installed)
 - `laravel/sanctum` to `^4.0` (If installed)
