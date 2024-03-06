@@ -102,8 +102,7 @@ services:
       XDG_DATA_HOME:  /var/www/html/data # [tl! add]
 ```
 
-Be careful to use `https://localhost` to access your app.
-[Using `https://127.0.0.1` requires additional configuration and is discouraged.](https://frankenphp.dev/docs/known-issues/#using-https127001-with-docker)
+Typically you should access your application via `https://localhost`, as using `https://127.0.0.1` requires additional configuration and is [discouraged](https://frankenphp.dev/docs/known-issues/#using-https127001-with-docker).
 
 <a name="frankenphp-via-docker"></a>
 #### FrankenPHP via Docker
