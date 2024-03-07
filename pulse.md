@@ -249,6 +249,15 @@ php artisan pulse:check
 > [!NOTE]  
 > To keep the `pulse:check` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the command does not stop running.
 
+As the `pulse:check` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
+
+```sh
+php artisan pulse:restart
+```
+
+> [!NOTE]  
+> Pulse uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
+
 <a name="recorders"></a>
 ### Recorders
 
@@ -424,6 +433,15 @@ php artisan pulse:work
 
 > [!NOTE]  
 > To keep the `pulse:work` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the Pulse worker does not stop running.
+
+As the `pulse:work` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
+
+```sh
+php artisan pulse:restart
+```
+
+> [!NOTE]  
+> Pulse uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a name="sampling"></a>
 ### Sampling
