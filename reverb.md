@@ -131,7 +131,7 @@ If you need to specify a custom host or port, you may do so via the `--host` and
 php artisan reverb:start --host=127.0.0.1 --port=9000
 ```
 
-Alternatively, you may define `REVERB_HOST` and `REVERB_PORT` environment variables in your application's `.env` configuration file.
+Alternatively, you may define `REVERB_SERVER_HOST` and `REVERB_SERVER_PORT` environment variables in your application's `.env` configuration file.
 
 <a name="debugging"></a>
 ### Debugging
