@@ -68,7 +68,7 @@ All of your application's event broadcasting configuration is stored in the `con
 <a name="installation"></a>
 #### Installation
 
-by default, broadcasting is not enabled in new Laravel applications. You may enable broadcasting using the `install:broadcasting` Artisan command:
+By default, broadcasting is not enabled in new Laravel applications. You may enable broadcasting using the `install:broadcasting` Artisan command:
 
 ```shell
 php artisan install:broadcasting
