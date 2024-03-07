@@ -67,7 +67,7 @@ You may install Laravel Passport via the `install:api` Artisan command:
 php artisan install:api --passport
 ```
 
-This command will publish and run the database migrations necessary for creating the tables your application needs to store OAuth2 clients and access tokens and will create the encryption keys required to generate secure access tokens.
+This command will publish and run the database migrations necessary for creating the tables your application needs to store OAuth2 clients and access tokens. The command will also create the encryption keys required to generate secure access tokens.
 
 Additionally, this command will ask if you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers.
 
