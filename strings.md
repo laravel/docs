@@ -837,6 +837,16 @@ The `Str::random` method generates a random string of the specified length. This
 
     $random = Str::random(40);
 
+During testing, it may be useful to "fake" the value that is returned by the `Str::random` method. To accomplish this, you may use the `createRandomStringsUsing` method:
+
+    Str::createRandomStringsUsing(function () {
+        return 'fake-random-string';
+    });
+
+To instruct the `random` method to return to generating random strings normally, you may invoke the `createRandomStringsNormally` method:
+
+    Str::createRandomStringsNormally();
+
 <a name="method-str-remove"></a>
 #### `Str::remove()` {.collection-method}
 
@@ -1224,6 +1234,18 @@ use Illuminate\Support\Str;
 $date = Carbon::createFromId((string) Str::ulid());
 ```
 
+During testing, it may be useful to "fake" the value that is returned by the `Str::ulid` method. To accomplish this, you may use the `createUlidsUsing` method:
+
+    use Symfony\Component\Uid\Ulid;
+
+    Str::createUlidsUsing(function () {
+        return new Ulid('01HRDBNHHCKNW2AK4Z29SN82T9');
+    });
+
+To instruct the `ulid` method to return to generating ULIDs normally, you may invoke the `createUlidsNormally` method:
+
+    Str::createUlidsNormally();
+
 <a name="method-str-unwrap"></a>
 #### `Str::unwrap()` {.collection-method}
 
@@ -1247,6 +1269,18 @@ The `Str::uuid` method generates a UUID (version 4):
     use Illuminate\Support\Str;
 
     return (string) Str::uuid();
+
+During testing, it may be useful to "fake" the value that is returned by the `Str::uuid` method. To accomplish this, you may use the `createUuidsUsing` method:
+
+    use Ramsey\Uuid\Uuid;
+
+    Str::createUuidsUsing(function () {
+        return Uuid::fromString('eadbfeac-5258-45c2-bab7-ccb9b5ef74f9');
+    });
+
+To instruct the `uuid` method to return to generating UUIDs normally, you may invoke the `createUuidsNormally` method:
+
+    Str::createUuidsNormally();
 
 <a name="method-str-word-count"></a>
 #### `Str::wordCount()` {.collection-method}
