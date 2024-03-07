@@ -2414,4 +2414,17 @@ Sleep::whenFakingSleep(function (Duration $duration) {
 });
 ```
 
+As progressing time is a common requirement, the Sleep helper provides a dedicated `syncWithCarbon` method to keep Carbon in sync when sleeping within a test.
+
+```php
+Sleep::fake();
+Sleep::syncWithCarbon();
+
+$start = now();
+
+Sleep::for(1)->second();
+
+$start->diffForHumans(); // 1 second ago
+```
+
 Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [`retry`](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.
