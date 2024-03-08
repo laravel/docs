@@ -110,13 +110,13 @@ composer require pusher/pusher-php-server
 Next, you should configure your Pusher Channels credentials in the `config/broadcasting.php` configuration file. An example Pusher Channels configuration is already included in this file, allowing you to quickly specify your key, secret, and application ID. Typically, you should configure your Pusher Channels credentials in your application's `.env` file:
 
 ```ini
-PUSHER_APP_ID=your-pusher-app-id
-PUSHER_APP_KEY=your-pusher-key
-PUSHER_APP_SECRET=your-pusher-secret
+PUSHER_APP_ID="your-pusher-app-id"
+PUSHER_APP_KEY="your-pusher-key"
+PUSHER_APP_SECRET="your-pusher-secret"
 PUSHER_HOST=
 PUSHER_PORT=443
-PUSHER_SCHEME=https
-PUSHER_APP_CLUSTER=mt1
+PUSHER_SCHEME="https"
+PUSHER_APP_CLUSTER="mt1"
 ```
 
 The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster.
@@ -223,9 +223,9 @@ window.Echo = new Echo({
 Next, you should define the appropriate values for the Pusher environment variables in your application's `.env` file. If these variables do not already exist in your `.env` file, you should add them:
 
 ```ini
-PUSHER_APP_ID="your-app-id"
-PUSHER_APP_KEY="your-app-key"
-PUSHER_APP_SECRET="your-app-secret"
+PUSHER_APP_ID="your-pusher-app-id"
+PUSHER_APP_KEY="your-pusher-key"
+PUSHER_APP_SECRET="your-pusher-secret"
 PUSHER_HOST=
 PUSHER_PORT=443
 PUSHER_SCHEME="https"
