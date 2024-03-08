@@ -1,9 +1,11 @@
 # Routing
 
 - [Basic Routing](#basic-routing)
+    - [The Default Route Files](#the-default-route-files)
     - [Redirect Routes](#redirect-routes)
     - [View Routes](#view-routes)
-    - [The Route List](#the-route-list)
+    - [Listing Your Routes](#listing-your-routes)
+    - [Routing Customization](#routing-customization)
 - [Route Parameters](#route-parameters)
     - [Required Parameters](#required-parameters)
     - [Optional Parameters](#parameters-optional-parameters)
@@ -40,9 +42,9 @@ The most basic Laravel routes accept a URI and a closure, providing a very simpl
     });
 
 <a name="the-default-route-files"></a>
-#### The Default Route Files
+### The Default Route Files
 
-All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by Laravel using the configuration specified in your application's `bootstrap/app.php` file. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection.
+All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by Laravel using the configuration specified in your application's `bootstrap/app.php` file. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` [middleware group](/docs/{{version}}/middleware#laravels-default-middleware-groups), which provides features like session state and CSRF protection.
 
 For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://example.com/user` in your browser:
 
@@ -65,7 +67,7 @@ The `install:api` command installs [Laravel Sanctum](/docs/{{version}}/sanctum),
         return $request->user();
     })->middleware(Authenticate::using('sanctum'));
 
-The routes in `routes/api.php` are stateless and are assigned to the `api` middleware group. Additionally, the `/api` URI prefix is automatically applied to these routes, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your application's `bootstrap/app.php` file:
+The routes in `routes/api.php` are stateless and are assigned to the `api` [middleware group](/docs/{{version}}/middleware#laravels-default-middleware-groups). Additionally, the `/api` URI prefix is automatically applied to these routes, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your application's `bootstrap/app.php` file:
 
     ->withRouting(
         api: __DIR__.'/../routes/api.php',
@@ -149,8 +151,8 @@ If your route only needs to return a [view](/docs/{{version}}/views), you may us
 > [!WARNING]  
 > When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
 
-<a name="the-route-list"></a>
-### The Route List
+<a name="listing-your-routes"></a>
+### Listing Your Routes
 
 The `route:list` Artisan command can easily provide an overview of all of the routes that are defined by your application:
 
@@ -183,6 +185,60 @@ Likewise, you may also instruct Laravel to only show routes that are defined by 
 
 ```shell
 php artisan route:list --only-vendor
+```
+
+<a name="routing-customization"></a>
+### Routing Customization
+
+By default, your application's routes are configured and loaded by the `bootstrap/app.php` file:
+
+```php
+<?php
+
+use Illuminate\Foundation\Application;
+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )->create();
+```
+
+However, sometimes you may want to define an entirely new file to contain a subset of your application's routes. To accomplish this, you may provide a `then` closure to the `withRouting` method. Within this closure, you may register any additional routes that are necessary for your application:
+
+```php
+use Illuminate\Support\Facades\Route;
+
+->withRouting(
+    web: __DIR__.'/../routes/web.php',
+    commands: __DIR__.'/../routes/console.php',
+    health: '/up',
+    then: function () {
+        Route::middleware('api')
+            ->prefix('webhooks')
+            ->name('webhooks.')
+            ->group(base_path('routes/webhooks.php'));
+    },
+)
+```
+
+Or, you may even take complete control over route registration by providing a `using` closure to the `withRouting` method. When this argument is passed, no HTTP routes will be registered by the framework and you are responsible for manually registering all routes:
+
+```php
+use Illuminate\Support\Facades\Route;
+
+->withRouting(
+    commands: __DIR__.'/../routes/console.php',
+    using: function () {
+        Route::middleware('api')
+            ->prefix('api')
+            ->group(base_path('routes/api.php'));
+
+        Route::middleware('web')
+            ->group(base_path('routes/web.php'));
+    },
+)
 ```
 
 <a name="route-parameters"></a>
