@@ -220,6 +220,25 @@ window.Echo = new Echo({
 });
 ```
 
+Next, you should define the appropriate values for the Pusher environment variables in your application's `.env` file. If these variables do not already exist in your `.env` file, you should add them:
+
+```ini
+PUSHER_APP_ID="your-app-id"
+PUSHER_APP_KEY="your-app-key"
+PUSHER_APP_SECRET="your-app-secret"
+PUSHER_HOST=
+PUSHER_PORT=443
+PUSHER_SCHEME="https"
+PUSHER_APP_CLUSTER="mt1"
+
+VITE_APP_NAME="${APP_NAME}"
+VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+VITE_PUSHER_HOST="${PUSHER_HOST}"
+VITE_PUSHER_PORT="${PUSHER_PORT}"
+VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
+VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+```
+
 Once you have adjusted the Echo configuration according to your application's needs, you may compile your application's assets:
 
 ```shell
