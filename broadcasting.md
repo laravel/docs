@@ -171,7 +171,7 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 <a name="client-reverb"></a>
 ### Reverb
 
-[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since the Reverb broadcaster will leverage the Pusher SDK:
+[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since Reverb utilizes the Pusher protocol for WebSocket subscriptions, channels, and messages:
 
 ```shell
 npm install --save-dev laravel-echo pusher-js
