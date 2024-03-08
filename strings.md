@@ -495,12 +495,13 @@ The `Str::inlineMarkdown` method converts GitHub flavored Markdown into inline H
 
     // <strong>Laravel</strong>
 
-> [!WARNING]
-> It is important to note that by default Markdown supports raw HTML, which will expose Cross-Site Scripting (XSS) vulnerabilities when used with raw user input. As per the [CommonMark Security documentation](https://commonmark.thephpleague.com/security/), you can use the `html_input` option to either escape or strip raw HTML, and the `allow_unsafe_links` option to specify whether to allow unsafe links. If you need to allow some raw HTML, you should pass your compiled Markdown through an HTML Purifier.
+#### Markdown Security
+
+By default, Markdown supports raw HTML, which will expose Cross-Site Scripting (XSS) vulnerabilities when used with raw user input. As per the [CommonMark Security documentation](https://commonmark.thephpleague.com/security/), you may use the `html_input` option to either escape or strip raw HTML, and the `allow_unsafe_links` option to specify whether to allow unsafe links. If you need to allow some raw HTML, you should pass your compiled Markdown through an HTML Purifier:
 
     use Illuminate\Support\Str;
     
-    >>> Str::inlineMarkdown('Inject: <script>alert("Hello XSS!");</script>', [
+    Str::inlineMarkdown('Inject: <script>alert("Hello XSS!");</script>', [
         'html_input' => 'strip',
         'allow_unsafe_links' => false,
     ]);
@@ -685,16 +686,17 @@ The `Str::markdown` method converts GitHub flavored Markdown into HTML using [Co
 
     // <h1>Taylor Otwell</h1>
 
-> [!WARNING]
-> It is important to note that by default Markdown supports raw HTML, which will expose Cross-Site Scripting (XSS) vulnerabilities when used with raw user input. As per the [CommonMark Security documentation](https://commonmark.thephpleague.com/security/), you can use the `html_input` option to either escape or strip raw HTML, and the `allow_unsafe_links` option to specify whether to allow unsafe links. If you need to allow some raw HTML, you should pass your compiled Markdown through an HTML Purifier.
+#### Markdown Security
+
+By default, Markdown supports raw HTML, which will expose Cross-Site Scripting (XSS) vulnerabilities when used with raw user input. As per the [CommonMark Security documentation](https://commonmark.thephpleague.com/security/), you may use the `html_input` option to either escape or strip raw HTML, and the `allow_unsafe_links` option to specify whether to allow unsafe links. If you need to allow some raw HTML, you should pass your compiled Markdown through an HTML Purifier:
 
     use Illuminate\Support\Str;
-    
-    >>> Str::markdown('Inject: <script>alert("Hello XSS!");</script>', [
+
+    Str::markdown('Inject: <script>alert("Hello XSS!");</script>', [
         'html_input' => 'strip',
         'allow_unsafe_links' => false,
     ]);
-    
+
     // <p>Inject: alert(&quot;Hello XSS!&quot;);</p>
 
 <a name="method-str-mask"></a>
@@ -1710,16 +1712,17 @@ The `inlineMarkdown` method converts GitHub flavored Markdown into inline HTML u
 
     // <strong>Laravel</strong>
 
-> [!WARNING]
-> It is important to note that by default Markdown supports raw HTML, which will expose Cross-Site Scripting (XSS) vulnerabilities when used with raw user input. As per the [CommonMark Security documentation](https://commonmark.thephpleague.com/security/), you can use the `html_input` option to either escape or strip raw HTML, and the `allow_unsafe_links` option to specify whether to allow unsafe links. If you need to allow some raw HTML, you should pass your compiled Markdown through an HTML Purifier.
+#### Markdown Security
+
+By default, Markdown supports raw HTML, which will expose Cross-Site Scripting (XSS) vulnerabilities when used with raw user input. As per the [CommonMark Security documentation](https://commonmark.thephpleague.com/security/), you may use the `html_input` option to either escape or strip raw HTML, and the `allow_unsafe_links` option to specify whether to allow unsafe links. If you need to allow some raw HTML, you should pass your compiled Markdown through an HTML Purifier:
 
     use Illuminate\Support\Str;
-    
-    >>> Str::of('Inject: <script>alert("Hello XSS!");</script>')->inlineMarkdown([
+
+    Str::of('Inject: <script>alert("Hello XSS!");</script>')->inlineMarkdown([
         'html_input' => 'strip',
         'allow_unsafe_links' => false,
     ]);
-    
+
     // Inject: alert(&quot;Hello XSS!&quot;);
 
 <a name="method-fluent-str-is"></a>
@@ -1947,16 +1950,17 @@ The `markdown` method converts GitHub flavored Markdown into HTML:
 
     // <h1>Taylor Otwell</h1>
 
-> [!WARNING]
-> It is important to note that by default Markdown supports raw HTML, which will expose Cross-Site Scripting (XSS) vulnerabilities when used with raw user input. As per the [CommonMark Security documentation](https://commonmark.thephpleague.com/security/), you can use the `html_input` option to either escape or strip raw HTML, and the `allow_unsafe_links` option to specify whether to allow unsafe links. If you need to allow some raw HTML, you should pass your compiled Markdown through an HTML Purifier.
+#### Markdown Security
+
+By default, Markdown supports raw HTML, which will expose Cross-Site Scripting (XSS) vulnerabilities when used with raw user input. As per the [CommonMark Security documentation](https://commonmark.thephpleague.com/security/), you may use the `html_input` option to either escape or strip raw HTML, and the `allow_unsafe_links` option to specify whether to allow unsafe links. If you need to allow some raw HTML, you should pass your compiled Markdown through an HTML Purifier:
 
     use Illuminate\Support\Str;
-    
-    >>> Str::of('Inject: <script>alert("Hello XSS!");</script>')->markdown([
+
+    Str::of('Inject: <script>alert("Hello XSS!");</script>')->markdown([
         'html_input' => 'strip',
         'allow_unsafe_links' => false,
     ]);
-    
+
     // <p>Inject: alert(&quot;Hello XSS!&quot;);</p>
 
 <a name="method-fluent-str-mask"></a>
