@@ -53,58 +53,17 @@ DB_FOREIGN_KEYS=true
 <a name="mssql-configuration"></a>
 #### Microsoft SQL Server Configuration
 
-To use a Microsoft SQL Server database, you should ensure that you have the [`sqlsrv` and `pdo_sqlsrv` PHP extensions installed](https://learn.microsoft.com/en-us/sql/connect/php/installation-tutorial-linux-mac) as well as any dependencies they may require such as the Microsoft SQL ODBC driver.
+Ensure you have the [`sqlsrv` and `pdo_sqlsrv` PHP extensions installed](https://learn.microsoft.com/en-us/sql/connect/php/installation-tutorial-linux-mac), along with the necessary Microsoft SQL ODBC driver. Use the `DATABASE_URL` in the `.env` file for easy configuration of your Microsoft SQL Server database connection in a Laravel environment.
 
-For further configuration options such as `MultiSubnetFailover` look into `\Illuminate\Database\Connectors\SqlServerConnector->getSqlSrvDsn()`.
-
-Which can be configured in `config/database.php`:
-
-```php
-        'sqlsrv' => [
-            'driver' => 'sqlsrv',
-            // ..
-
-            // General connection options documentation:
-            // https://learn.microsoft.com/en-us/sql/connect/php/connection-options?view=sql-server-ver16#table-of-connection-options
-            // 'appname' => 'Your application name', // APP 
-            // 'transaction_isolation' => true, // TransactionIsolation
-            // 'login_timeout' => '', // LoginTimeout
-
-            // https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/odbc-driver-on-linux-support-for-high-availability-disaster-recovery?view=sql-server-ver16#targets-of-readonly
-            // 'readonly' => true, // ApplicationIntent=ReadOnly
-
-            // https://learn.microsoft.com/en-us/sql/connect/php/connection-pooling-microsoft-drivers-for-php-for-sql-server?view=sql-server-ver16
-            // 'pooling' => false, // ConnectionPooling=0
-
-            // https://learn.microsoft.com/en-us/sql/connect/php/how-to-connect-using-sql-server-authentication?view=sql-server-ver16
-            // 'encrypt' => true, // Encrypt
-            // 'trust_server_certificate' => true, // TrustServerCertificate
-
-            // https://learn.microsoft.com/en-us/sql/connect/php/how-to-disable-multiple-active-resultsets-mars?view=sql-server-ver16
-            // 'multiple_active_result_sets' => false, // MultipleActiveResultSets
-
-            // https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/odbc-driver-on-linux-support-for-high-availability-disaster-recovery?view=sql-server-ver16#connect-with-multisubnetfailover
-            // MultiSubnetFailover
-            // 'multi_subnet_failover' => true,
-
-            // https://learn.microsoft.com/en-us/sql/connect/php/using-always-encrypted-php-drivers?view=sql-server-ver16#enabling-always-encrypted-in-a-php-application
-            // 'column_encryption' => true, // ColumnEncryption
-
-            // https://learn.microsoft.com/en-us/sql/connect/odbc/using-always-encrypted-with-the-odbc-driver?view=sql-server-ver16
-            // 'key_store_authentication' => '', // KeyStoreAuthentication: 'KeyVaultClientSecret', 'KeyVaultPassword' / 'KeyVaultManagedIdentity'
-            // 'key_store_principal_id' => '', // KeyStorePrincipalId: <clientId> / <username> / <objectID>
-            // 'key_store_secret' => '', // KeyStoreSecret: <password> / <secret>
-
-            // https://learn.microsoft.com/en-us/sql/connect/php/azure-active-directory?view=sql-server-ver16
-            // 'authentication' => '', // Authentication: SqlPassword, ActiveDirectoryPassword, ActiveDirectoryMsi, ActiveDirectoryServicePrincipal
-        ],
-```
-
-Unsupported configuration options such as `TransparentNetworkIPResolution` can be set using a complete server string with all your options:
+Example `DATABASE_URL`:
 
 ```
-DATABASE_URL=sqlsrv:Server=sqlsrv.example.com;Database=laravel;MultiSubnetFailover=True;TransparentNetworkIPResolution=True
+DATABASE_URL="sqlsrv:Server=your_server_address;Database=your_database_name;Encrypt=true;TrustServerCertificate=false;LoginTimeout=30;App=your_app_name;MultipleActiveResultSets=false;MultiSubnetFailover=True"
 ```
+
+This connection string format allows inclusion of various Microsoft SQL Server options such as encryption, trust server certificate, login timeout, application name, Multiple Active Result Sets (MARS), and MultiSubnetFailovere.
+
+For a detailed list of available connection string options, refer to the [Microsoft SQL Server documentation on connection strings](https://learn.microsoft.com/en-us/sql/connect/php/connection-options?view=sql-server-ver16#table-of-connection-options).
 
 <a name="configuration-using-urls"></a>
 #### Configuration Using URLs
