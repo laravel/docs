@@ -8,7 +8,6 @@
 <div class="content-list" markdown="1">
 
 - [Updating Dependencies](#updating-dependencies)
-- [Updating Minimum Stability](#updating-minimum-stability)
 - [Application Structure](#application-structure)
 - [Floating-Point Types](#floating-point-types)
 - [Modifying Columns](#modifying-columns)
