@@ -32,15 +32,15 @@ If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://
 <a name="laravel-breeze-installation"></a>
 ### Installation
 
-First, you should [create a new Laravel application](/docs/{{version}}/installation). If you plan to use the [Laravel installer](/docs/{{version}}/installation#creating-a-laravel-project), you will be prompted to install Laravel Breeze during the installation process. If you choose to install Breeze, you may ignore the following installation instructions.
+First, you should [create a new Laravel application](/docs/{{version}}/installation). If you create your application using the [Laravel installer](/docs/{{version}}/installation#creating-a-laravel-project), you will be prompted to install Laravel Breeze during the installation process. Otherwise, you will need to follow the manual installation instructions below.
 
-If you have created a new Laravel application without any starter kit yet, you may install Laravel Breeze using Composer:
+If you have already created a new Laravel application without a starter kit, you may manually install Laravel Breeze using Composer:
 
 ```shell
 composer require laravel/breeze --dev
 ```
 
-After Composer has installed the Laravel Breeze package, you may run the `breeze:install` Artisan command. This command publishes the authentication views, routes, controllers, and other resources to your application. Laravel Breeze publishes all of its code to your application so that you have full control and visibility over its features and implementation.
+After Composer has installed the Laravel Breeze package, you should run the `breeze:install` Artisan command. This command publishes the authentication views, routes, controllers, and other resources to your application. Laravel Breeze publishes all of its code to your application so that you have full control and visibility over its features and implementation.
 
 The `breeze:install` command will prompt you for your preferred frontend stack and testing framework:
 
