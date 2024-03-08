@@ -54,7 +54,7 @@ The core concepts behind broadcasting are simple: clients connect to named chann
 <a name="supported-drivers"></a>
 #### Supported Drivers
 
-By default, Laravel includes three server-side broadcasting drivers for you to choose from: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.com). You may also be interested in community driven packages such as [soketi](https://docs.soketi.app/).
+By default, Laravel includes three server-side broadcasting drivers for you to choose from: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels), and [Ably](https://ably.com).
 
 > [!NOTE]  
 > Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
@@ -84,13 +84,13 @@ You will also need to configure and run a [queue worker](/docs/{{version}}/queue
 <a name="pusher-channels"></a>
 ### Reverb
 
-You may also install Reverb using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
+You may install Reverb using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
 
 ```sh
 composer require laravel/reverb:@beta
 ```
 
-Once the package is installed, you may run Reverb's installation command to publish the configuration, update your applications's broadcasting configuration and add Reverb's required environment variables:
+Once the package is installed, you may run Reverb's installation command to publish the configuration, update your applications's broadcasting configuration, and add Reverb's required environment variables:
 
 ```sh
 php artisan reverb:install
@@ -196,7 +196,7 @@ window.Echo = new Echo({
 });
 ```
 
-Next, you only need to compile your application's assets:
+Next, you should compile your application's assets:
 
 ```shell
 npm run build

@@ -12,6 +12,7 @@
     - [Restarting](#restarting)
 - [Running Reverb in Production](#production)
     - [Open Files](#open-files)
+    - [Event Loop](#event-loop)
     - [Web Server](#web-server)
     - [Ports](#ports)
     - [Process Management](#process-management)
@@ -94,15 +95,15 @@ For example, you may wish to maintain a single Laravel application which, via Re
 <a name="ssl"></a>
 ### SSL
 
-In most cases, secure WebSocket connections are likely to be handled by the upstream web server (Nginx, etc.) before the request is proxied to your Reverb server.
+In most cases, secure WebSocket connections are likely handled by an upstream web server (Nginx, etc.) before the request is proxied to your Reverb server.
 
-However, it can sometimes be useful, such as during local development, for the Reverb server to handle secure connections directly. If you are using [Laravel Herd](https://herd.laravel.com) and have secured the site or you are using [Laravel Valet](/docs/{{version}}/valet) and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may use the Herd / Valet certificate generated for your site to secure your Reverb connections. To do so, set the `REVERB_HOST` environment variable to your site's hostname or explicitly pass the hostname option when starting the Reverb server:
+However, it can sometimes be useful, such as during local development, for the Reverb server to handle secure connections directly. If you are using [Laravel Herd's](https://herd.laravel.com) secure site functionality, or you are using [Laravel Valet](/docs/{{version}}/valet) and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may use the Herd / Valet certificate generated for your site to secure your Reverb connections. To do so, set the `REVERB_HOST` environment variable to your site's hostname or explicitly pass the hostname option when starting the Reverb server:
 
 ```sh
 php artisan reverb:start --host="0.0.0.0" --port=8080 --hostname="laravel.test"
 ```
 
-Since Herd and Valet domains resolve to localhost, running the commmand above will result in your Reverb server being accessible via the secure WebSocket protocol (wss) at `wss://laravel.test:8080`.
+Since Herd and Valet domains resolve to `localhost`, running the commmand above will result in your Reverb server being accessible via the secure WebSocket protocol (wss) at `wss://laravel.test:8080`.
 
 You may also manually choose a certificate by defining `tls` options in your application's `config/reverb.php` configuration file. Within the array of `tls` options, you may provide any of the options supported by [PHP's SSL context options](https://www.php.net/manual/en/context.ssl.php):
 
@@ -156,7 +157,7 @@ php artisan reverb:restart
 <a name="production"></a>
 ## Running Reverb in Production
 
-Due to the long-running nature of WebSocket servers, you may need to make some optimizations to your server / hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the resources available on your server.
+Due to the long-running nature of WebSocket servers, you may need to make some optimizations to your server and hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the resources available on your server.
 
 > [!NOTE]  
 > If your site is managed by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel. By enabling the Reverb integration, Forge will ensure your server is production-ready, including installing any required extensions and increasing the allowed number of connections.
@@ -184,9 +185,9 @@ forge        hard  nofile  10000
 ```
 
 <a name="event-loop"></a>
-#### Event Loop
+### Event Loop
 
-Under the hood, Reverb uses a ReactPHP event loop to manage WebSocket connections on the server. By default, this event loop is powered by `stream_select`, which doesn't require any additional extensions. However, `stream_select` is typically limited to 1,024 open files. As such, if you plan to handle more than 1,000 concurrent connections, you will need to use an alternative event loop not bound to the same restrictions.
+Under the hood, Reverb uses a ReactPHP event loop to manage WebSocket connections on the server. By default, this event loop is powered by `stream_select`, which doesn't require any additional extensions. However, `stream_select` is typically limited to 1,024 open files. As such, if you plan to handle more than 1,000 concurrent connections, you will need to use an alternative event loop not bound by the same restrictions.
 
 Reverb will automatically switch to an `ext-event`, `ext-ev`, or `ext-uv` powered loop when available. All of these PHP extensions are available for install via PECL:
 
