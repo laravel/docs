@@ -61,6 +61,8 @@ Example `DATABASE_URL`:
 DATABASE_URL="sqlsrv:Server=your_server_address;Database=your_database_name;Encrypt=true;TrustServerCertificate=false;LoginTimeout=30;App=your_app_name;MultipleActiveResultSets=false;MultiSubnetFailover=True"
 ```
 
+(Due to a bug do not put Database= as your first item of the connection string.)
+
 This connection string format allows inclusion of various Microsoft SQL Server options such as encryption, trust server certificate, login timeout, application name, Multiple Active Result Sets (MARS), and MultiSubnetFailovere.
 
 For a detailed list of available connection string options, refer to the [Microsoft SQL Server documentation on connection strings](https://learn.microsoft.com/en-us/sql/connect/php/connection-options?view=sql-server-ver16#table-of-connection-options).
