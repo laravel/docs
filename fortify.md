@@ -4,7 +4,6 @@
     - [What is Fortify?](#what-is-fortify)
     - [When Should I Use Fortify?](#when-should-i-use-fortify)
 - [Installation](#installation)
-    - [The Fortify Service Provider](#the-fortify-service-provider)
     - [Fortify Features](#fortify-features)
     - [Disabling Views](#disabling-views)
 - [Authentication](#authentication)
@@ -75,10 +74,10 @@ To get started, install Fortify using the Composer package manager:
 composer require laravel/fortify
 ```
 
-Next, publish Fortify's resources using the `vendor:publish` command:
+Next, publish Fortify's resources using the `fortify:install` Artisan command:
 
 ```shell
-php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
+php artisan fortify:install
 ```
 
 This command will publish Fortify's actions to your `app/Actions` directory, which will be created if it does not exist. In addition, the `FortifyServiceProvider`, configuration file, and all necessary database migrations will be published.
@@ -88,13 +87,6 @@ Next, you should migrate your database:
 ```shell
 php artisan migrate
 ```
-
-<a name="the-fortify-service-provider"></a>
-### The Fortify Service Provider
-
-The `vendor:publish` command discussed above will also publish the `App\Providers\FortifyServiceProvider` class. You should ensure this class is registered within the array of service providers in your application's `bootstrap/providers.php` file.
-
-The Fortify service provider registers the actions that Fortify published and instructs Fortify to use them when their respective tasks are executed by Fortify.
 
 <a name="fortify-features"></a>
 ### Fortify Features
