@@ -105,7 +105,7 @@ php artisan install:broadcasting
 
 Previously, new Laravel applications included nine middleware. These middleware performed a variety of tasks such as authenticating requests, trimming input strings, and validating CSRF tokens.
 
-In Laravel 11, these middleware have been moved into the framework itself, so that they do not add bulk to your application's structure. New methods of customizing the behavior of these middleware have been added to the framework and may be invoked from your application's `bootstrap/app.php` file:
+In Laravel 11, these middleware have been moved into the framework itself, so that they do not add bulk to your application's structure. New methods for customizing the behavior of these middleware have been added to the framework and may be invoked from your application's `bootstrap/app.php` file:
 
 ```php
 ->withMiddleware(function (Middleware $middleware) {
