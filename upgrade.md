@@ -94,6 +94,12 @@ In addition, you should review the upgrade guides for each of these packages to 
 - [Laravel Spark Stripe](#spark-stripe)
 - [Laravel Telescope](#telescope)
 
+If you have manually installed the Laravel installer, you should update the installer via Composer:
+
+```bash
+composer global require laravel/installer:^5.6
+```
+
 Finally, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
 
 <a name="application-structure"></a>
