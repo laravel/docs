@@ -96,6 +96,16 @@ In addition, you should review the upgrade guides for each of these packages to 
 
 Finally, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
 
+#### Laravel Installer
+
+You should update the Laravel Installer to the latest version, to make sure you have all necessary installation options for the new Laravel 11 Application Structure.
+
+If you have the Laravel Installer globally installed via Composer you can simply run:
+
+```bash
+composer require laravel/installer:^5.6
+```
+
 <a name="application-structure"></a>
 ### Application Structure
 
