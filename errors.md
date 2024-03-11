@@ -178,7 +178,20 @@ Internally, Laravel already ignores some types of errors for you, such as except
 <a name="rendering-exceptions"></a>
 ### Rendering Exceptions
 
-By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering closure for exceptions of a given type. You may accomplish this by using the `renderable` exception method in your application's `boostrap/app.php` file.
+By default, the Laravel exception handler converts exceptions into an HTTP response for you. By default, Laravel tries to determine the best content type for the response based on the content types the client accepts. If the client accepts JSON, the exception is rendered as JSON; otherwise, the exception is rendered as HTML.
+
+However, you may use the `shouldReturnJson` exception method in your application's `bootstrap/app.php` file to instruct Laravel to render exceptions as JSON when certain conditions are met. If the closure returns `true`, the exception will be rendered as JSON:
+
+    use Illuminate\Http\Request;
+    use Throwable;
+
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->shouldReturnJsonWhen(function (Request $request, Throwable $exception) {
+            return true;
+        });
+    })
+
+You are also free to register a custom rendering closure for exceptions of a given type. You may accomplish this by using the `renderable` exception method in your application's `boostrap/app.php` file.
 
 The closure passed to the `renderable` method should return an instance of `Illuminate\Http\Response`, which may be generated via the `response` helper. Laravel will determine what type of exception the closure renders by examining the type-hint of the closure:
 
