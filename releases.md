@@ -351,3 +351,22 @@ Laravel 11 includes improved support for MariaDB. In previous Laravel releases, 
 
 For more information on Laravel's database drivers, check out the [database documentation](/docs/{{version}}/database).
 
+<a name="inspecting-database"></a>
+### Inspecting Database and Improved Schema Operations
+
+_Inspecting Database and Improved Schema Operations was contributed by [Hafez Divandari](https://github.com/hafezdivandari)_
+
+Laravel 11 enhances schema operations including native modifying, renaming and dropping columns, advanced spatial types, non-default schema names and new native schema methods to inspect database and its associated tables, views, columns, indexes and foreign keys: 
+
+    use Illuminate\Support\Facades\Schema;
+
+    $tables = Schema::getTables();
+
+    $views = Schema::getViews();
+
+    $columns = Schema::getColumns('users');
+
+    $indexes = Schema::getIndexes('users');
+
+    $foreignKeys = Schema::getForeignKeys('users');
+

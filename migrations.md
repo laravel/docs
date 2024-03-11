@@ -267,7 +267,7 @@ When creating the table, you may use any of the schema builder's [column methods
 <a name="determining-table-column-existence"></a>
 #### Determining Table / Column Existence
 
-You may determine the existence of a table or column using the `hasTable` and `hasColumn` methods:
+You may determine the existence of a table, column, or index using the `hasTable`, `hasColumn`, and `hasIndex` methods:
 
     if (Schema::hasTable('users')) {
         // The "users" table exists...
@@ -275,6 +275,10 @@ You may determine the existence of a table or column using the `hasTable` and `h
 
     if (Schema::hasColumn('users', 'email')) {
         // The "users" table exists and has an "email" column...
+    }
+
+    if (Schema::hasIndex('users', ['email'], 'unique')) {
+        // The "users" table exists and has a unique index on "email" column...
     }
 
 <a name="database-connection-table-options"></a>
@@ -289,7 +293,7 @@ If you want to perform a schema operation on a database connection that is not y
 In addition, a few other properties and methods may be used to define other aspects of the table's creation. The `engine` property may be used to specify the table's storage engine when using MySQL:
 
     Schema::create('users', function (Blueprint $table) {
-        $table->engine = 'InnoDB';
+        $table->engine('InnoDB');
 
         // ...
     });
@@ -297,8 +301,8 @@ In addition, a few other properties and methods may be used to define other aspe
 The `charset` and `collation` properties may be used to specify the character set and collation for the created table when using MySQL:
 
     Schema::create('users', function (Blueprint $table) {
-        $table->charset = 'utf8mb4';
-        $table->collation = 'utf8mb4_unicode_ci';
+        $table->charset('utf8mb4');
+        $table->collation('utf8mb4_unicode_ci');
 
         // ...
     });
@@ -941,7 +945,7 @@ Modifier  |  Description
 `->autoIncrement()`  |  Set INTEGER columns as auto-incrementing (primary key).
 `->charset('utf8mb4')`  |  Specify a character set for the column (MySQL).
 `->collation('utf8mb4_unicode_ci')`  |  Specify a collation for the column.
-`->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL).
+`->comment('my comment')`  |  Add a comment to a column (MySQL / PostgreSQL).
 `->default($value)`  |  Specify a "default" value for the column.
 `->first()`  |  Place the column "first" in the table (MySQL).
 `->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL).
@@ -951,7 +955,7 @@ Modifier  |  Description
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.
 `->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated (MySQL).
-`->virtualAs($expression)`  |  Create a virtual generated column (MySQL / PostgreSQL / SQLite).
+`->virtualAs($expression)`  |  Create a virtual generated column (MySQL / SQLite).
 `->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL).
 `->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL).
 
@@ -1097,7 +1101,7 @@ Command  |  Description
 `$table->primary(['id', 'parent_id']);`  |  Adds composite keys.
 `$table->unique('email');`  |  Adds a unique index.
 `$table->index('state');`  |  Adds an index.
-`$table->fullText('body');`  |  Adds a full text index (MySQL/PostgreSQL).
+`$table->fullText('body');`  |  Adds a full text index (MySQL / PostgreSQL).
 `$table->fullText('body')->language('english');`  |  Adds a full text index of the specified language (PostgreSQL).
 `$table->spatialIndex('location');`  |  Adds a spatial index (except SQLite).
 
