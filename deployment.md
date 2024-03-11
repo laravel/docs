@@ -36,6 +36,7 @@ The Laravel framework has a few system requirements. You should ensure that your
 - OpenSSL PHP Extension
 - PCRE PHP Extension
 - PDO PHP Extension
+- SQLite3 PHP Extension
 - Session PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
