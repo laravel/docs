@@ -94,17 +94,13 @@ In addition, you should review the upgrade guides for each of these packages to 
 - [Laravel Spark Stripe](#spark-stripe)
 - [Laravel Telescope](#telescope)
 
-Finally, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
-
-#### Laravel Installer
-
-You should update the Laravel Installer to the latest version, to make sure you have all necessary installation options for the new Laravel 11 Application Structure.
-
-If you have the Laravel Installer globally installed via Composer you can simply run:
+If you have manually installed the Laravel installer, you should update the installer via Composer:
 
 ```bash
-composer require laravel/installer:^5.6
+composer global require laravel/installer:^5.6
 ```
+
+Finally, you may remove the `doctrine/dbal` Composer dependency if you have previously added it to your application, as Laravel is no longer dependent on this package.
 
 <a name="application-structure"></a>
 ### Application Structure
