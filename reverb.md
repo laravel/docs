@@ -29,22 +29,16 @@
 > **Warning**  
 > Laravel Reverb requires PHP 8.2+.
 
-You may use the Composer package manager to install Reverb into your Laravel project. Since Reverb is currently in beta, you will need to explicitly install the beta release:
+You may install Reverb in your Laravel application using the `install:broadcasting` Artisan command:
 
-```sh
-composer require laravel/reverb:@beta
 ```
-
-Once the package is installed, you may run Reverb's installation command to publish the configuration, add Reverb's required environment variables, and enable event broadcasting in your application:
-
-```sh
-php artisan reverb:install
+php artisan install:broadcasting
 ```
 
 <a name="configuration"></a>
 ## Configuration
 
-The `reverb:install` command will automatically start Reverb using a sensible set of default configuration options. If you would like to make any configuration changes, you may do so by updating Reverb's environment variables or by updating the `config/reverb.php` configuration file.
+Behind the scenes, the `install:broadcasting` Artisan command will run the `reverb:install` command, which will automatically start Reverb using a sensible set of default configuration options. If you would like to make any configuration changes, you may do so by updating Reverb's environment variables or by updating the `config/reverb.php` configuration file.
 
 <a name="application-credentials"></a>
 ### Application Credentials
