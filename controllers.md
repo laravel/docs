@@ -13,7 +13,8 @@
     - [Scoping Resource Routes](#restful-scoping-resource-routes)
     - [Localizing Resource URIs](#restful-localizing-resource-uris)
     - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
-- [Dependency Injection & Controllers](#dependency-injection-and-controllers)
+    - [Singleton Resource Controllers](#singleton-resource-controllers)
+- [Dependency Injection and Controllers](#dependency-injection-and-controllers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -26,23 +27,27 @@ Instead of defining all of your request handling logic as closures in your route
 <a name="basic-controllers"></a>
 ### Basic Controllers
 
-Let's take a look at an example of a basic controller. Note that the controller extends the base controller class included with Laravel: `App\Http\Controllers\Controller`:
+To quickly generate a new controller, you may run the `make:controller` Artisan command. By default, all of the controllers for your application are stored in the `app/Http/Controllers` directory:
+
+```shell
+php artisan make:controller UserController
+```
+
+Let's take a look at an example of a basic controller. A controller may have any number of public methods which will respond to incoming HTTP requests:
 
     <?php
 
     namespace App\Http\Controllers;
     
     use App\Models\User;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show the profile for a given user.
-         *
-         * @param  int  $id
-         * @return \Illuminate\View\View
          */
-        public function show($id)
+        public function show(string $id): View
         {
             return view('user.profile', [
                 'user' => User::findOrFail($id)
@@ -50,7 +55,7 @@ Let's take a look at an example of a basic controller. Note that the controller 
         }
     }
 
-You can define a route to this controller method like so:
+Once you have written a controller class and method, you may define a route to the controller method like so:
 
     use App\Http\Controllers\UserController;
 
@@ -58,8 +63,8 @@ You can define a route to this controller method like so:
 
 When an incoming request matches the specified route URI, the `show` method on the `App\Http\Controllers\UserController` class will be invoked and the route parameters will be passed to the method.
 
-> **Note**  
-> Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods.
+> [!NOTE]  
+> Controllers are not **required** to extend a base class. However, it is sometimes convenient to extend a base controller class that contains methods that should be shared across all of your controllers.
 
 <a name="single-action-controllers"></a>
 ### Single Action Controllers
@@ -69,15 +74,11 @@ If a controller action is particularly complex, you might find it convenient to 
     <?php
 
     namespace App\Http\Controllers;
-    
-    use App\Models\User;
 
     class ProvisionServer extends Controller
     {
         /**
          * Provision a new web server.
-         *
-         * @return \Illuminate\Http\Response
          */
         public function __invoke()
         {
@@ -97,7 +98,7 @@ You may generate an invokable controller by using the `--invokable` option of th
 php artisan make:controller ProvisionServer --invokable
 ```
 
-> **Note**  
+> [!NOTE]  
 > Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="controller-middleware"></a>
@@ -107,28 +108,49 @@ php artisan make:controller ProvisionServer --invokable
 
     Route::get('profile', [UserController::class, 'show'])->middleware('auth');
 
-Or, you may find it convenient to specify middleware within your controller's constructor. Using the `middleware` method within your controller's constructor, you can assign middleware to the controller's actions:
+Or, you may find it convenient to specify middleware within your controller class. To do so, your controller should implement the `HasMiddleware` interface, which dictates that the controller should have a static `middleware` method. From this method, you may return an array of middleware that should be applied to the controller's actions:
 
-    class UserController extends Controller
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Http\Controllers\Controller;
+    use Illuminate\Routing\Controllers\HasMiddleware;
+    use Illuminate\Routing\Controllers\Middleware;
+
+    class UserController extends Controller implements HasMiddleware
     {
         /**
-         * Instantiate a new controller instance.
-         *
-         * @return void
+         * Get the middleware that should be assigned to the controller.
          */
-        public function __construct()
+        public static function middleware(): array
         {
-            $this->middleware('auth');
-            $this->middleware('log')->only('index');
-            $this->middleware('subscribed')->except('store');
+            return [
+                'auth',
+                new Middleware('log', only: ['index']),
+                new Middleware('subscribed', except: ['store']),
+            ];
         }
+
+        // ...
     }
 
-Controllers also allow you to register middleware using a closure. This provides a convenient way to define an inline middleware for a single controller without defining an entire middleware class:
+You may also define controller middleware as closures, which provides a convenient way to define an inline middleware without writing an entire middleware class:
 
-    $this->middleware(function ($request, $next) {
-        return $next($request);
-    });
+    use Closure;
+    use Illuminate\Http\Request;
+
+    /**
+     * Get the middleware that should be assigned to the controller.
+     */
+    public static function middleware(): array
+    {
+        return [
+            function (Request $request, Closure $next) {
+                return $next($request);
+            },
+        ];
+    }
 
 <a name="resource-controllers"></a>
 ## Resource Controllers
@@ -156,8 +178,8 @@ You may even register many resource controllers at once by passing an array to t
         'posts' => PostController::class,
     ]);
 
-<a name="actions-handled-by-resource-controller"></a>
-#### Actions Handled By Resource Controller
+<a name="actions-handled-by-resource-controllers"></a>
+#### Actions Handled by Resource Controllers
 
 Verb      | URI                    | Action       | Route Name
 ----------|------------------------|--------------|---------------------
@@ -183,8 +205,21 @@ Typically, a 404 HTTP response will be generated if an implicitly bound resource
                 return Redirect::route('photos.index');
             });
 
+<a name="soft-deleted-models"></a>
+#### Soft Deleted Models
+
+Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/{{version}}/eloquent#soft-deleting), and will instead return a 404 HTTP response. However, you can instruct the framework to allow soft deleted models by invoking the `withTrashed` method when defining your resource route:
+
+    use App\Http\Controllers\PhotoController;
+
+    Route::resource('photos', PhotoController::class)->withTrashed();
+
+Calling `withTrashed` with no arguments will allow soft deleted models for the `show`, `edit`, and `update` resource routes. You may specify a subset of these routes by passing an array to the `withTrashed` method:
+
+    Route::resource('photos', PhotoController::class)->withTrashed(['show']);
+
 <a name="specifying-the-resource-model"></a>
-#### Specifying The Resource Model
+#### Specifying the Resource Model
 
 If you are using [route model binding](/docs/{{version}}/routing#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
 
@@ -326,21 +361,17 @@ When using a custom keyed implicit binding as a nested route parameter, Laravel 
 <a name="restful-localizing-resource-uris"></a>
 ### Localizing Resource URIs
 
-By default, `Route::resource` will create resource URIs using English verbs and plural rules. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\Providers\RouteServiceProvider`:
+By default, `Route::resource` will create resource URIs using English verbs and plural rules. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\Providers\AppServiceProvider`:
 
     /**
-     * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
+     * Bootstrap any application services.
      */
-    public function boot()
+    public function boot(): void
     {
         Route::resourceVerbs([
             'create' => 'crear',
             'edit' => 'editar',
         ]);
-
-        // ...
     }
 
 Laravel's pluralizer supports [several different languages which you may configure based on your needs](/docs/{{version}}/localization#pluralization-language). Once the verbs and pluralization language have been customized, a resource route registration such as `Route::resource('publicacion', PublicacionController::class)` will produce the following URIs:
@@ -359,11 +390,86 @@ If you need to add additional routes to a resource controller beyond the default
     Route::get('/photos/popular', [PhotoController::class, 'popular']);
     Route::resource('photos', PhotoController::class);
 
-> **Note**  
+> [!NOTE]  
 > Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
 
+<a name="singleton-resource-controllers"></a>
+### Singleton Resource Controllers
+
+Sometimes, your application will have resources that may only have a single instance. For example, a user's "profile" can be edited or updated, but a user may not have more than one "profile". Likewise, an image may have a single "thumbnail". These resources are called "singleton resources", meaning one and only one instance of the resource may exist. In these scenarios, you may register a "singleton" resource controller:
+
+```php
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+
+Route::singleton('profile', ProfileController::class);
+```
+
+The singleton resource definition above will register the following routes. As you can see, "creation" routes are not registered for singleton resources, and the registered routes do not accept an identifier since only one instance of the resource may exist:
+
+Verb      | URI                               | Action       | Route Name
+----------|-----------------------------------|--------------|---------------------
+GET       | `/profile`                        | show         | profile.show
+GET       | `/profile/edit`                   | edit         | profile.edit
+PUT/PATCH | `/profile`                        | update       | profile.update
+
+Singleton resources may also be nested within a standard resource:
+
+```php
+Route::singleton('photos.thumbnail', ThumbnailController::class);
+```
+
+In this example, the `photos` resource would receive all of the [standard resource routes](#actions-handled-by-resource-controller); however, the `thumbnail` resource would be a singleton resource with the following routes:
+
+| Verb      | URI                              | Action  | Route Name               |
+|-----------|----------------------------------|---------|--------------------------|
+| GET       | `/photos/{photo}/thumbnail`      | show    | photos.thumbnail.show    |
+| GET       | `/photos/{photo}/thumbnail/edit` | edit    | photos.thumbnail.edit    |
+| PUT/PATCH | `/photos/{photo}/thumbnail`      | update  | photos.thumbnail.update  |
+
+<a name="creatable-singleton-resources"></a>
+#### Creatable Singleton Resources
+
+Occasionally, you may want to define creation and storage routes for a singleton resource. To accomplish this, you may invoke the `creatable` method when registering the singleton resource route:
+
+```php
+Route::singleton('photos.thumbnail', ThumbnailController::class)->creatable();
+```
+
+In this example, the following routes will be registered. As you can see, a `DELETE` route will also be registered for creatable singleton resources:
+
+| Verb      | URI                                | Action  | Route Name               |
+|-----------|------------------------------------|---------|--------------------------|
+| GET       | `/photos/{photo}/thumbnail/create` | create  | photos.thumbnail.create  |
+| POST      | `/photos/{photo}/thumbnail`        | store   | photos.thumbnail.store   |
+| GET       | `/photos/{photo}/thumbnail`        | show    | photos.thumbnail.show    |
+| GET       | `/photos/{photo}/thumbnail/edit`   | edit    | photos.thumbnail.edit    |
+| PUT/PATCH | `/photos/{photo}/thumbnail`        | update  | photos.thumbnail.update  |
+| DELETE    | `/photos/{photo}/thumbnail`        | destroy | photos.thumbnail.destroy |
+
+If you would like Laravel to register the `DELETE` route for a singleton resource but not register the creation or storage routes, you may utilize the `destroyable` method:
+
+```php
+Route::singleton(...)->destroyable();
+```
+
+<a name="api-singleton-resources"></a>
+#### API Singleton Resources
+
+The `apiSingleton` method may be used to register a singleton resource that will be manipulated via an API, thus rendering the `create` and `edit` routes unnecessary:
+
+```php
+Route::apiSingleton('profile', ProfileController::class);
+```
+
+Of course, API singleton resources may also be `creatable`, which will register `store` and `destroy` routes for the resource:
+
+```php
+Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
+```
+
 <a name="dependency-injection-and-controllers"></a>
-## Dependency Injection & Controllers
+## Dependency Injection and Controllers
 
 <a name="constructor-injection"></a>
 #### Constructor Injection
@@ -379,20 +485,11 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
     class UserController extends Controller
     {
         /**
-         * The user repository instance.
-         */
-        protected $users;
-
-        /**
          * Create a new controller instance.
-         *
-         * @param  \App\Repositories\UserRepository  $users
-         * @return void
          */
-        public function __construct(UserRepository $users)
-        {
-            $this->users = $users;
-        }
+        public function __construct(
+            protected UserRepository $users,
+        ) {}
     }
 
 <a name="method-injection"></a>
@@ -404,21 +501,21 @@ In addition to constructor injection, you may also type-hint dependencies on you
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
 
     class UserController extends Controller
     {
         /**
          * Store a new user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): RedirectResponse
         {
             $name = $request->name;
 
-            //
+            // Store the user...
+
+            return redirect('/users');
         }
     }
 
@@ -434,19 +531,18 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
 
     class UserController extends Controller
     {
         /**
          * Update the given user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  string  $id
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, $id)
+        public function update(Request $request, string $id): RedirectResponse
         {
-            //
+            // Update the user...
+
+            return redirect('/users');
         }
     }

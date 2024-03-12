@@ -6,17 +6,18 @@
 - [Configuration](#configuration)
 - [Authentication](#authentication)
     - [Routing](#routing)
-    - [Authentication & Storage](#authentication-and-storage)
+    - [Authentication and Storage](#authentication-and-storage)
     - [Access Scopes](#access-scopes)
+    - [Slack Bot Scopes](#slack-bot-scopes)
     - [Optional Parameters](#optional-parameters)
 - [Retrieving User Details](#retrieving-user-details)
 
 <a name="introduction"></a>
 ## Introduction
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, Twitter, LinkedIn, Google, GitHub, GitLab, and Bitbucket.
+In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, Twitter, LinkedIn, Google, GitHub, GitLab, Bitbucket, and Slack.
 
-> **Note**  
+> [!NOTE]  
 > Adapters for other platforms are available via the community driven [Socialite Providers](https://socialiteproviders.com/) website.
 
 <a name="installation"></a>
@@ -38,7 +39,7 @@ When upgrading to a new major version of Socialite, it's important that you care
 
 Before using Socialite, you will need to add credentials for the OAuth providers your application utilizes. Typically, these credentials may be retrieved by creating a "developer application" within the dashboard of the service you will be authenticating with.
 
-These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `twitter` (OAuth 1.0), `twitter-oauth-2` (OAuth 2.0), `linkedin`, `google`, `github`, `gitlab`, or `bitbucket`, depending on the providers your application requires:
+These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `twitter` (OAuth 1.0), `twitter-oauth-2` (OAuth 2.0), `linkedin-openid`, `google`, `github`, `gitlab`, `bitbucket`, or `slack`, depending on the providers your application requires:
 
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),
@@ -46,7 +47,7 @@ These credentials should be placed in your application's `config/services.php` c
         'redirect' => 'http://example.com/callback-url',
     ],
 
-> **Note**  
+> [!NOTE]  
 > If the `redirect` option contains a relative path, it will automatically be resolved to a fully qualified URL.
 
 <a name="authentication"></a>
@@ -72,7 +73,7 @@ To authenticate users using an OAuth provider, you will need two routes: one for
 The `redirect` method provided by the `Socialite` facade takes care of redirecting the user to the OAuth provider, while the `user` method will examine the incoming request and retrieve the user's information from the provider after they have approved the authentication request.
 
 <a name="authentication-and-storage"></a>
-### Authentication & Storage
+### Authentication and Storage
 
 Once the user has been retrieved from the OAuth provider, you may determine if the user exists in your application's database and [authenticate the user](/docs/{{version}}/authentication#authenticate-a-user-instance). If the user does not exist in your application's database, you will typically create a new record in your database to represent the user:
 
@@ -97,7 +98,7 @@ Once the user has been retrieved from the OAuth provider, you may determine if t
         return redirect('/dashboard');
     });
 
-> **Note**  
+> [!NOTE]  
 > For more information regarding what user information is available from specific OAuth providers, please consult the documentation on [retrieving user details](#retrieving-user-details).
 
 <a name="access-scopes"></a>
@@ -117,6 +118,33 @@ You can overwrite all existing scopes on the authentication request using the `s
         ->setScopes(['read:user', 'public_repo'])
         ->redirect();
 
+<a name="slack-bot-scopes"></a>
+### Slack Bot Scopes
+
+Slack's API provides [different types of access tokens](https://api.slack.com/authentication/token-types), each with their own set of [permission scopes](https://api.slack.com/scopes). Socialite is compatible with both of the following Slack access tokens types:
+
+<div class="content-list" markdown="1">
+
+- Bot (prefixed with `xoxb-`)
+- User (prefixed with `xoxp-`)
+
+</div>
+
+By default, the `slack` driver will generate a `user` token and invoking the driver's `user` method will return the user's details.
+
+Bot tokens are primarily useful if your application will be sending notifications to external Slack workspaces that are owned by your application's users. To generate a bot token, invoke the `asBotUser` method before redirecting the user to Slack for authentication:
+
+    return Socialite::driver('slack')
+        ->asBotUser()
+        ->setScopes(['chat:write', 'chat:write.public', 'chat:write.customize'])
+        ->redirect();
+
+In addition, you must invoke the `asBotUser` method before invoking the `user` method after Slack redirects the user back to your application after authentication:
+
+    $user = Socialite::driver('slack')->asBotUser()->user();
+
+When generating a bot token, the `user` method will still return a `Laravel\Socialite\Two\User` instance; however, only the `token` property will be hydrated. This token may be stored in order to [send notifications to the authenticated user's Slack workspaces](/docs/{{version}}/notifications#notifying-external-slack-workspaces).
+
 <a name="optional-parameters"></a>
 ### Optional Parameters
 
@@ -128,7 +156,7 @@ A number of OAuth providers support other optional parameters on the redirect re
         ->with(['hd' => 'example.com'])
         ->redirect();
 
-> **Warning**  
+> [!WARNING]  
 > When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`.
 
 <a name="retrieving-user-details"></a>
@@ -161,7 +189,7 @@ Differing properties and methods may be available on this object depending on wh
     });
 
 <a name="retrieving-user-details-from-a-token-oauth2"></a>
-#### Retrieving User Details From A Token (OAuth2)
+#### Retrieving User Details From a Token (OAuth2)
 
 If you already have a valid access token for a user, you can retrieve their user details using Socialite's `userFromToken` method:
 
@@ -170,7 +198,7 @@ If you already have a valid access token for a user, you can retrieve their user
     $user = Socialite::driver('github')->userFromToken($token);
 
 <a name="retrieving-user-details-from-a-token-and-secret-oauth1"></a>
-#### Retrieving User Details From A Token And Secret (OAuth1)
+#### Retrieving User Details From a Token and Secret (OAuth1)
 
 If you already have a valid token and secret for a user, you can retrieve their user details using Socialite's `userFromTokenAndSecret` method:
 
@@ -187,5 +215,5 @@ The `stateless` method may be used to disable session state verification. This i
 
     return Socialite::driver('google')->stateless()->user();
 
-> **Warning**  
+> [!WARNING]  
 > Stateless authentication is not available for the Twitter OAuth 1.0 driver.

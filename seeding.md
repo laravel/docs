@@ -12,7 +12,7 @@
 
 Laravel includes the ability to seed your database with data using seed classes. All seed classes are stored in the `database/seeders` directory. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
 
-> **Note**  
+> [!NOTE]  
 > [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled during database seeding.
 
 <a name="writing-seeders"></a>
@@ -41,20 +41,18 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
     {
         /**
          * Run the database seeders.
-         *
-         * @return void
          */
-        public function run()
+        public function run(): void
         {
             DB::table('users')->insert([
                 'name' => Str::random(10),
-                'email' => Str::random(10).'@gmail.com',
+                'email' => Str::random(10).'@example.com',
                 'password' => Hash::make('password'),
             ]);
         }
     }
 
-> **Note**  
+> [!NOTE]  
 > You may type-hint any dependencies you need within the `run` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
 <a name="using-model-factories"></a>
@@ -68,10 +66,8 @@ For example, let's create 50 users that each has one related post:
 
     /**
      * Run the database seeders.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         User::factory()
                 ->count(50)
@@ -86,10 +82,8 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
 
     /**
      * Run the database seeders.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call([
             UserSeeder::class,
@@ -116,10 +110,8 @@ While running seeds, you may want to prevent models from dispatching events. You
 
         /**
          * Run the database seeders.
-         *
-         * @return void
          */
-        public function run()
+        public function run(): void
         {
             $this->call([
                 UserSeeder::class,
@@ -138,14 +130,16 @@ php artisan db:seed
 php artisan db:seed --class=UserSeeder
 ```
 
-You may also seed your database using the `migrate:fresh` command in combination with the `--seed` option, which will drop all tables and re-run all of your migrations. This command is useful for completely re-building your database:
+You may also seed your database using the `migrate:fresh` command in combination with the `--seed` option, which will drop all tables and re-run all of your migrations. This command is useful for completely re-building your database. The `--seeder` option may be used to specify a specific seeder to run:
 
 ```shell
 php artisan migrate:fresh --seed
+
+php artisan migrate:fresh --seed --seeder=UserSeeder 
 ```
 
 <a name="forcing-seeding-production"></a>
-#### Forcing Seeders To Run In Production
+#### Forcing Seeders to Run in Production
 
 Some seeding operations may cause you to alter or lose data. In order to protect you from running seeding commands against your production database, you will be prompted for confirmation before the seeders are executed in the `production` environment. To force the seeders to run without a prompt, use the `--force` flag:
 

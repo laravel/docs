@@ -48,7 +48,7 @@ You may use the Composer package manager to install Telescope into your Laravel 
 composer require laravel/telescope
 ```
 
-After installing Telescope, publish its assets using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command in order to create the tables needed to store Telescope's data:
+After installing Telescope, publish its assets and migrations using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command in order to create the tables needed to store Telescope's data:
 
 ```shell
 php artisan telescope:install
@@ -56,10 +56,7 @@ php artisan telescope:install
 php artisan migrate
 ```
 
-<a name="migration-customization"></a>
-#### Migration Customization
-
-If you are not going to use Telescope's default migrations, you should call the `Telescope::ignoreMigrations` method in the `register` method of your application's `App\Providers\AppServiceProvider` class. You may export the default migrations using the following command: `php artisan vendor:publish --tag=telescope-migrations`
+Finally, you may access the Telescope dashboard via the `/telescope` route.
 
 <a name="local-only-installation"></a>
 ### Local Only Installation
@@ -74,14 +71,12 @@ php artisan telescope:install
 php artisan migrate
 ```
 
-After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your application's `config/app.php` configuration file. Instead, manually register Telescope's service providers in the `register` method of your `App\Providers\AppServiceProvider` class. We will ensure the current environment is `local` before registering the providers:
+After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your application's `bootstrap/providers.php` configuration file. Instead, manually register Telescope's service providers in the `register` method of your `App\Providers\AppServiceProvider` class. We will ensure the current environment is `local` before registering the providers:
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         if ($this->app->environment('local')) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
@@ -115,34 +110,38 @@ If desired, you may disable Telescope's data collection entirely using the `enab
 
 Without pruning, the `telescope_entries` table can accumulate records very quickly. To mitigate this, you should [schedule](/docs/{{version}}/scheduling) the `telescope:prune` Artisan command to run daily:
 
-    $schedule->command('telescope:prune')->daily();
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('telescope:prune')->daily();
 
 By default, all entries older than 24 hours will be pruned. You may use the `hours` option when calling the command to determine how long to retain Telescope data. For example, the following command will delete all records created over 48 hours ago:
 
-    $schedule->command('telescope:prune --hours=48')->daily();
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('telescope:prune --hours=48')->daily();
 
 <a name="dashboard-authorization"></a>
 ### Dashboard Authorization
 
-The Telescope dashboard may be accessed at the `/telescope` route. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
+The Telescope dashboard may be accessed via the `/telescope` route. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
+
+    use App\Models\User;
 
     /**
      * Register the Telescope gate.
      *
      * This gate determines who can access Telescope in non-local environments.
-     *
-     * @return void
      */
-    protected function gate()
+    protected function gate(): void
     {
-        Gate::define('viewTelescope', function ($user) {
+        Gate::define('viewTelescope', function (User $user) {
             return in_array($user->email, [
                 'taylor@laravel.com',
             ]);
         });
     }
 
-> **Warning**  
+> [!WARNING]  
 > You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
 
 <a name="upgrading-telescope"></a>
@@ -156,13 +155,13 @@ In addition, when upgrading to any new Telescope version, you should re-publish 
 php artisan telescope:publish
 ```
 
-To keep the assets up-to-date and avoid issues in future updates, you may add the `telescope:publish` command to the `post-update-cmd` scripts in your application's `composer.json` file:
+To keep the assets up-to-date and avoid issues in future updates, you may add the `vendor:publish --tag=laravel-assets` command to the `post-update-cmd` scripts in your application's `composer.json` file:
 
 ```json
 {
     "scripts": {
         "post-update-cmd": [
-            "@php artisan telescope:publish --ansi"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ]
     }
 }
@@ -181,10 +180,8 @@ You may filter the data that is recorded by Telescope via the `filter` closure t
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->hideSensitiveRequestDetails();
 
@@ -207,14 +204,13 @@ You may filter the data that is recorded by Telescope via the `filter` closure t
 While the `filter` closure filters data for individual entries, you may use the `filterBatch` method to register a closure that filters all data for a given request or console command. If the closure returns `true`, all of the entries are recorded by Telescope:
 
     use Illuminate\Support\Collection;
+    use Laravel\Telescope\IncomingEntry;
     use Laravel\Telescope\Telescope;
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->hideSensitiveRequestDetails();
 
@@ -223,7 +219,7 @@ While the `filter` closure filters data for individual entries, you may use the 
                 return true;
             }
 
-            return $entries->contains(function ($entry) {
+            return $entries->contains(function (IncomingEntry $entry) {
                 return $entry->isReportableException() ||
                     $entry->isFailedJob() ||
                     $entry->isScheduledTask() ||
@@ -243,10 +239,8 @@ Telescope allows you to search entries by "tag". Often, tags are Eloquent model 
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->hideSensitiveRequestDetails();
 
@@ -344,6 +338,17 @@ The job watcher records the data and status of any [jobs](/docs/{{version}}/queu
 
 The log watcher records the [log data](/docs/{{version}}/logging) for any logs written by your application.
 
+By default, Telescope will only record logs at the `error` level and above. However, you can modify the `level` option in your application's `config/telescope.php` configuration file to modify this behavior:
+
+    'watchers' => [
+        Watchers\LogWatcher::class => [
+            'enabled' => env('TELESCOPE_LOG_WATCHER', true),
+            'level' => 'debug',
+        ],
+
+        // ...
+    ],
+
 <a name="mail-watcher"></a>
 ### Mail Watcher
 
@@ -429,14 +434,12 @@ The Telescope dashboard displays the user avatar for the user that was authentic
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         // ...
 
-        Telescope::avatar(function ($id, $email) {
+        Telescope::avatar(function (string $id, string $email) {
             return '/avatars/'.User::find($id)->avatar_path;
         });
     }

@@ -3,10 +3,10 @@
 - [Introduction](#introduction)
 - [The Basics](#the-basics)
     - [Generating URLs](#generating-urls)
-    - [Accessing The Current URL](#accessing-the-current-url)
-- [URLs For Named Routes](#urls-for-named-routes)
+    - [Accessing the Current URL](#accessing-the-current-url)
+- [URLs for Named Routes](#urls-for-named-routes)
     - [Signed URLs](#signed-urls)
-- [URLs For Controller Actions](#urls-for-controller-actions)
+- [URLs for Controller Actions](#urls-for-controller-actions)
 - [Default Values](#default-values)
 
 <a name="introduction"></a>
@@ -29,7 +29,7 @@ The `url` helper may be used to generate arbitrary URLs for your application. Th
     // http://example.com/posts/1
 
 <a name="accessing-the-current-url"></a>
-### Accessing The Current URL
+### Accessing the Current URL
 
 If no path is provided to the `url` helper, an `Illuminate\Routing\UrlGenerator` instance is returned, allowing you to access information about the current URL:
 
@@ -49,12 +49,12 @@ Each of these methods may also be accessed via the `URL` [facade](/docs/{{versio
     echo URL::current();
 
 <a name="urls-for-named-routes"></a>
-## URLs For Named Routes
+## URLs for Named Routes
 
 The `route` helper may be used to generate URLs to [named routes](/docs/{{version}}/routing#named-routes). Named routes allow you to generate URLs without being coupled to the actual URL defined on the route. Therefore, if the route's URL changes, no changes need to be made to your calls to the `route` function. For example, imagine your application contains a route defined like the following:
 
     Route::get('/post/{post}', function (Post $post) {
-        //
+        // ...
     })->name('post.show');
 
 To generate a URL to this route, you may use the `route` helper like so:
@@ -66,7 +66,7 @@ To generate a URL to this route, you may use the `route` helper like so:
 Of course, the `route` helper may also be used to generate URLs for routes with multiple parameters:
 
     Route::get('/post/{post}/comment/{comment}', function (Post $post, Comment $comment) {
-        //
+        // ...
     })->name('comment.show');
 
     echo route('comment.show', ['post' => 1, 'comment' => 3]);
@@ -97,6 +97,10 @@ For example, you might use signed URLs to implement a public "unsubscribe" link 
 
     return URL::signedRoute('unsubscribe', ['user' => 1]);
 
+You may exclude the domain from the signed URL hash by providing the `absolute` argument to the `signedRoute` method:
+
+    return URL::signedRoute('unsubscribe', ['user' => 1], absolute: false);
+
 If you would like to generate a temporary signed route URL that expires after a specified amount of time, you may use the `temporarySignedRoute` method. When Laravel validates a temporary signed route URL, it will ensure that the expiration timestamp that is encoded into the signed URL has not elapsed:
 
     use Illuminate\Support\Facades\URL;
@@ -126,46 +130,33 @@ Sometimes, you may need to allow your application's frontend to append data to a
         abort(401);
     }
 
-Instead of validating signed URLs using the incoming request instance, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
-
-    /**
-     * The application's route middleware.
-     *
-     * These middleware may be assigned to groups or used individually.
-     *
-     * @var array
-     */
-    protected $routeMiddleware = [
-        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
-    ];
-
-Once you have registered the middleware in your kernel, you may attach it to a route. If the incoming request does not have a valid signature, the middleware will automatically return a `403` HTTP response:
+Instead of validating signed URLs using the incoming request instance, you may assign the `signed` (`Illuminate\Routing\Middleware\ValidateSignature`) [middleware](/docs/{{version}}/middleware) to the route. If the incoming request does not have a valid signature, the middleware will automatically return a `403` HTTP response:
 
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
     })->name('unsubscribe')->middleware('signed');
 
-<a name="responding-to-invalid-signed-routes"></a>
-#### Responding To Invalid Signed Routes
+If your signed URLs do not include the domain in the URL hash, you should provide the `relative` argument to the middleware:
 
-When someone visits a signed URL that has expired, they will receive a generic error page for the `403` HTTP status code. However, you can customize this behavior by defining a custom "renderable" closure for the `InvalidSignatureException` exception in your exception handler. This closure should return an HTTP response:
+    Route::post('/unsubscribe/{user}', function (Request $request) {
+        // ...
+    })->name('unsubscribe')->middleware('signed:relative');
+
+<a name="responding-to-invalid-signed-routes"></a>
+#### Responding to Invalid Signed Routes
+
+When someone visits a signed URL that has expired, they will receive a generic error page for the `403` HTTP status code. However, you can customize this behavior by defining a custom "render" closure for the `InvalidSignatureException` exception in your application's `bootstrap/app.php` file:
 
     use Illuminate\Routing\Exceptions\InvalidSignatureException;
 
-    /**
-     * Register the exception handling callbacks for the application.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->renderable(function (InvalidSignatureException $e) {
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function (InvalidSignatureException $e) {
             return response()->view('error.link-expired', [], 403);
         });
-    }
+    })
 
 <a name="urls-for-controller-actions"></a>
-## URLs For Controller Actions
+## URLs for Controller Actions
 
 The `action` function generates a URL for the given controller action:
 
@@ -183,7 +174,7 @@ If the controller method accepts route parameters, you may pass an associative a
 For some applications, you may wish to specify request-wide default values for certain URL parameters. For example, imagine many of your routes define a `{locale}` parameter:
 
     Route::get('/{locale}/posts', function () {
-        //
+        // ...
     })->name('post.index');
 
 It is cumbersome to always pass the `locale` every time you call the `route` helper. So, you may use the `URL::defaults` method to define a default value for this parameter that will always be applied during the current request. You may wish to call this method from a [route middleware](/docs/{{version}}/middleware#assigning-middleware-to-routes) so that you have access to the current request:
@@ -193,18 +184,18 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
     namespace App\Http\Middleware;
 
     use Closure;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\URL;
+    use Symfony\Component\HttpFoundation\Response;
 
     class SetDefaultLocaleForUrls
     {
         /**
-         * Handle the incoming request.
+         * Handle an incoming request.
          *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  \Closure  $next
-         * @return \Illuminate\Http\Response
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function handle($request, Closure $next)
+        public function handle(Request $request, Closure $next): Response
         {
             URL::defaults(['locale' => $request->user()->locale]);
 
@@ -215,22 +206,26 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
 Once the default value for the `locale` parameter has been set, you are no longer required to pass its value when generating URLs via the `route` helper.
 
 <a name="url-defaults-middleware-priority"></a>
-#### URL Defaults & Middleware Priority
+#### URL Defaults and Middleware Priority
 
-Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](/docs/{{version}}/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this by making sure your middleware occurs before the `SubstituteBindings` middleware within the `$middlewarePriority` property of your application's HTTP kernel.
+Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](/docs/{{version}}/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this using the `priority` middleware method in your application's `bootstrap/app.php` file:
 
-The `$middlewarePriority` property is defined in the base `Illuminate\Foundation\Http\Kernel` class. You may copy its definition from that class and overwrite it in your application's HTTP kernel in order to modify it:
-
-    /**
-     * The priority-sorted list of middleware.
-     *
-     * This forces non-global middleware to always be in the given order.
-     *
-     * @var array
-     */
-    protected $middlewarePriority = [
-        // ...
-         \App\Http\Middleware\SetDefaultLocaleForUrls::class,
-         \Illuminate\Routing\Middleware\SubstituteBindings::class,
-         // ...
-    ];
+```php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->priority([
+        \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
+        \Illuminate\Cookie\Middleware\EncryptCookies::class,
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+        \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
+        \Illuminate\Session\Middleware\AuthenticateSession::class,
+        \App\Http\Middleware\SetDefaultLocaleForUrls::class, // [tl! add]
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        \Illuminate\Auth\Middleware\Authorize::class,
+    ]);
+})
+```

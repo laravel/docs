@@ -2,13 +2,13 @@
 
 - [Introduction](#introduction)
     - [Configuration](#configuration)
-    - [Read & Write Connections](#read-and-write-connections)
+    - [Read and Write Connections](#read-and-write-connections)
 - [Running SQL Queries](#running-queries)
     - [Using Multiple Database Connections](#using-multiple-database-connections)
-    - [Listening For Query Events](#listening-for-query-events)
+    - [Listening for Query Events](#listening-for-query-events)
     - [Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)
 - [Database Transactions](#database-transactions)
-- [Connecting To The Database CLI](#connecting-to-the-database-cli)
+- [Connecting to the Database CLI](#connecting-to-the-database-cli)
 - [Inspecting Your Databases](#inspecting-your-databases)
 - [Monitoring Your Databases](#monitoring-your-databases)
 
@@ -22,7 +22,7 @@ Almost every modern web application interacts with a database. Laravel makes int
 - MariaDB 10.3+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))
 - MySQL 5.7+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
 - PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))
-- SQLite 3.8.8+
+- SQLite 3.35.0+
 - SQL Server 2017+ ([Version Policy](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
 </div>
@@ -44,11 +44,14 @@ DB_CONNECTION=sqlite
 DB_DATABASE=/absolute/path/to/database.sqlite
 ```
 
-To enable foreign key constraints for SQLite connections, you should set the `DB_FOREIGN_KEYS` environment variable to `true`:
+By default, foreign key constraints are enabled for SQLite connections. If you would like to disable them, you should set the `DB_FOREIGN_KEYS` environment variable to `false`:
 
 ```ini
-DB_FOREIGN_KEYS=true
+DB_FOREIGN_KEYS=false
 ```
+
+> [!NOTE]
+> If you use the [Laravel installer](/docs/{{version}}/installation#creating-a-laravel-project) to create your Laravel application and select SQLite as your database, Laravel will automatically create a `database/database.sqlite` file and run the default [database migrations](/docs/{{version}}/migrations) for you.
 
 <a name="mssql-configuration"></a>
 #### Microsoft SQL Server Configuration
@@ -75,7 +78,7 @@ driver://username:password@host:port/database?options
 For convenience, Laravel supports these URLs as an alternative to configuring your database with multiple configuration options. If the `url` (or corresponding `DATABASE_URL` environment variable) configuration option is present, it will be used to extract the database connection and credential information.
 
 <a name="read-and-write-connections"></a>
-### Read & Write Connections
+### Read and Write Connections
 
 Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
 
@@ -94,13 +97,20 @@ To see how read / write connections should be configured, let's look at this exa
             ],
         ],
         'sticky' => true,
-        'driver' => 'mysql',
-        'database' => 'database',
-        'username' => 'root',
-        'password' => '',
-        'charset' => 'utf8mb4',
-        'collation' => 'utf8mb4_unicode_ci',
+
+        'database' => env('DB_DATABASE', 'laravel'),
+        'username' => env('DB_USERNAME', 'root'),
+        'password' => env('DB_PASSWORD', ''),
+        'unix_socket' => env('DB_SOCKET', ''),
+        'charset' => env('DB_CHARSET', 'utf8mb4'),
+        'collation' => env('DB_COLLATION', 'utf8mb4_0900_ai_ci'),
         'prefix' => '',
+        'prefix_indexes' => true,
+        'strict' => true,
+        'engine' => null,
+        'options' => extension_loaded('pdo_mysql') ? array_filter([
+            PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+        ]) : [],
     ],
 
 Note that three keys have been added to the configuration array: `read`, `write` and `sticky`. The `read` and `write` keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` configuration array.
@@ -118,7 +128,7 @@ The `sticky` option is an *optional* value that can be used to allow the immedia
 Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, `delete`, and `statement`.
 
 <a name="running-a-select-query"></a>
-#### Running A Select Query
+#### Running a Select Query
 
 To run a basic SELECT query, you may use the `select` method on the `DB` facade:
 
@@ -128,15 +138,14 @@ To run a basic SELECT query, you may use the `select` method on the `DB` facade:
 
     use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\DB;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show a list of all of the application's users.
-         *
-         * @return \Illuminate\Http\Response
          */
-        public function index()
+        public function index(): View
         {
             $users = DB::select('select * from users where active = ?', [1]);
 
@@ -165,6 +174,15 @@ Sometimes your database query may result in a single, scalar value. Instead of b
         "select count(case when food = 'burger' then 1 end) as burgers from menu"
     );
 
+<a name="selecting-multiple-result-sets"></a>
+#### Selecting Multiple Result Sets
+
+If your application calls stored procedures that return multiple result sets, you may use the `selectResultSets` method to retrieve all of the result sets returned by the stored procedure:
+
+    [$options, $notifications] = DB::selectResultSets(
+        "CALL get_user_options_and_notifications(?)", $request->user()->id
+    );
+
 <a name="using-named-bindings"></a>
 #### Using Named Bindings
 
@@ -173,7 +191,7 @@ Instead of using `?` to represent your parameter bindings, you may execute a que
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
 
 <a name="running-an-insert-statement"></a>
-#### Running An Insert Statement
+#### Running an Insert Statement
 
 To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method accepts the SQL query as its first argument and bindings as its second argument:
 
@@ -182,7 +200,7 @@ To execute an `insert` statement, you may use the `insert` method on the `DB` fa
     DB::insert('insert into users (id, name) values (?, ?)', [1, 'Marc']);
 
 <a name="running-an-update-statement"></a>
-#### Running An Update Statement
+#### Running an Update Statement
 
 The `update` method should be used to update existing records in the database. The number of rows affected by the statement is returned by the method:
 
@@ -194,7 +212,7 @@ The `update` method should be used to update existing records in the database. T
     );
 
 <a name="running-a-delete-statement"></a>
-#### Running A Delete Statement
+#### Running a Delete Statement
 
 The `delete` method should be used to delete records from the database. Like `update`, the number of rows affected will be returned by the method:
 
@@ -203,20 +221,20 @@ The `delete` method should be used to delete records from the database. Like `up
     $deleted = DB::delete('delete from users');
 
 <a name="running-a-general-statement"></a>
-#### Running A General Statement
+#### Running a General Statement
 
 Some database statements do not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
 
     DB::statement('drop table users');
 
 <a name="running-an-unprepared-statement"></a>
-#### Running An Unprepared Statement
+#### Running an Unprepared Statement
 
 Sometimes you may want to execute an SQL statement without binding any values. You may use the `DB` facade's `unprepared` method to accomplish this:
 
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 
-> **Warning**  
+> [!WARNING]  
 > Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
 
 <a name="implicit-commits-in-transactions"></a>
@@ -242,7 +260,7 @@ You may access the raw, underlying PDO instance of a connection using the `getPd
     $pdo = DB::connection()->getPdo();
 
 <a name="listening-for-query-events"></a>
-### Listening For Query Events
+### Listening for Query Events
 
 If you would like to specify a closure that is invoked for each SQL query executed by your application, you may use the `DB` facade's `listen` method. This method can be useful for logging queries or debugging. You may register your query listener closure in the `boot` method of a [service provider](/docs/{{version}}/providers):
 
@@ -250,6 +268,7 @@ If you would like to specify a closure that is invoked for each SQL query execut
 
     namespace App\Providers;
 
+    use Illuminate\Database\Events\QueryExecuted;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\ServiceProvider;
 
@@ -257,22 +276,18 @@ If you would like to specify a closure that is invoked for each SQL query execut
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            //
+            // ...
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            DB::listen(function ($query) {
+            DB::listen(function (QueryExecuted $query) {
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
@@ -292,27 +307,24 @@ A common performance bottleneck of modern web applications is the amount of time
     use Illuminate\Database\Connection;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\ServiceProvider;
+    use Illuminate\Database\Events\QueryExecuted;
 
     class AppServiceProvider extends ServiceProvider
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            //
+            // ...
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            DB::whenQueryingForLongerThan(500, function (Connection $connection) {
+            DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
                 // Notify development team...
             });
         }
@@ -361,11 +373,11 @@ Lastly, you can commit a transaction via the `commit` method:
 
     DB::commit();
 
-> **Note**  
+> [!NOTE]  
 > The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
 
 <a name="connecting-to-the-database-cli"></a>
-## Connecting To The Database CLI
+## Connecting to the Database CLI
 
 If you would like to connect to your database's CLI, you may use the `db` Artisan command:
 
@@ -400,6 +412,20 @@ If you would like to include table row counts and database view details within t
 php artisan db:show --counts --views
 ```
 
+In addition, you may use the following `Schema` methods to inspect your database:
+
+    use Illuminate\Support\Facades\Schema;
+
+    $tables = Schema::getTables();
+    $views = Schema::getViews();
+    $columns = Schema::getColumns('users');
+    $indexes = Schema::getIndexes('users');
+    $foreignKeys = Schema::getForeignKeys('users');
+
+If you would like to inspect a database connection that is not your application's default connection, you may use the `connection` method:
+
+    $columns = Schema::connection('sqlite')->getColumns('users');
+
 <a name="table-overview"></a>
 #### Table Overview
 
@@ -420,7 +446,7 @@ To get started, you should schedule the `db:monitor` command to [run every minut
 php artisan db:monitor --databases=mysql,pgsql --max=100
 ```
 
-Scheduling this command alone is not enough to trigger a notification alerting you of the number of open connections. When the command encounters a database that has an open connection count that exceeds your threshold, a `DatabaseBusy` event will be dispatched. You should listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
+Scheduling this command alone is not enough to trigger a notification alerting you of the number of open connections. When the command encounters a database that has an open connection count that exceeds your threshold, a `DatabaseBusy` event will be dispatched. You should listen for this event within your application's `AppServiceProvider` in order to send a notification to you or your development team:
 
 ```php
 use App\Notifications\DatabaseApproachingMaxConnections;
@@ -429,11 +455,9 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 
 /**
- * Register any other events for your application.
- *
- * @return void
+ * Bootstrap any application services.
  */
-public function boot()
+public function boot(): void
 {
     Event::listen(function (DatabaseBusy $event) {
         Notification::route('mail', 'dev@example.com')

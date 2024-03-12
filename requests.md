@@ -2,19 +2,19 @@
 
 - [Introduction](#introduction)
 - [Interacting With The Request](#interacting-with-the-request)
-    - [Accessing The Request](#accessing-the-request)
-    - [Request Path, Host, & Method](#request-path-and-method)
+    - [Accessing the Request](#accessing-the-request)
+    - [Request Path, Host, and Method](#request-path-and-method)
     - [Request Headers](#request-headers)
     - [Request IP Address](#request-ip-address)
     - [Content Negotiation](#content-negotiation)
     - [PSR-7 Requests](#psr7-requests)
 - [Input](#input)
     - [Retrieving Input](#retrieving-input)
-    - [Determining If Input Is Present](#determining-if-input-is-present)
+    - [Input Presence](#input-presence)
     - [Merging Additional Input](#merging-additional-input)
     - [Old Input](#old-input)
     - [Cookies](#cookies)
-    - [Input Trimming & Normalization](#input-trimming-and-normalization)
+    - [Input Trimming and Normalization](#input-trimming-and-normalization)
 - [Files](#files)
     - [Retrieving Uploaded Files](#retrieving-uploaded-files)
     - [Storing Uploaded Files](#storing-uploaded-files)
@@ -30,7 +30,7 @@ Laravel's `Illuminate\Http\Request` class provides an object-oriented way to int
 ## Interacting With The Request
 
 <a name="accessing-the-request"></a>
-### Accessing The Request
+### Accessing the Request
 
 To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your route closure or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):
 
@@ -38,21 +38,21 @@ To obtain an instance of the current HTTP request via dependency injection, you 
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
 
     class UserController extends Controller
     {
         /**
          * Store a new user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): RedirectResponse
         {
             $name = $request->input('name');
 
-            //
+            // Store the user...
+
+            return redirect('/users');
         }
     }
 
@@ -61,11 +61,11 @@ As mentioned, you may also type-hint the `Illuminate\Http\Request` class on a ro
     use Illuminate\Http\Request;
 
     Route::get('/', function (Request $request) {
-        //
+        // ...
     });
 
 <a name="dependency-injection-route-parameters"></a>
-#### Dependency Injection & Route Parameters
+#### Dependency Injection and Route Parameters
 
 If your controller method is also expecting input from a route parameter you should list your route parameters after your other dependencies. For example, if your route is defined like so:
 
@@ -79,52 +79,51 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` route
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
 
     class UserController extends Controller
     {
         /**
          * Update the specified user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  string  $id
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, $id)
+        public function update(Request $request, string $id): RedirectResponse
         {
-            //
+            // Update the user...
+
+            return redirect('/users');
         }
     }
 
 <a name="request-path-and-method"></a>
-### Request Path, Host, & Method
+### Request Path, Host, and Method
 
 The `Illuminate\Http\Request` instance provides a variety of methods for examining the incoming HTTP request and extends the `Symfony\Component\HttpFoundation\Request` class. We will discuss a few of the most important methods below.
 
 <a name="retrieving-the-request-path"></a>
-#### Retrieving The Request Path
+#### Retrieving the Request Path
 
 The `path` method returns the request's path information. So, if the incoming request is targeted at `http://example.com/foo/bar`, the `path` method will return `foo/bar`:
 
     $uri = $request->path();
 
 <a name="inspecting-the-request-path"></a>
-#### Inspecting The Request Path / Route
+#### Inspecting the Request Path / Route
 
 The `is` method allows you to verify that the incoming request path matches a given pattern. You may use the `*` character as a wildcard when utilizing this method:
 
     if ($request->is('admin/*')) {
-        //
+        // ...
     }
 
 Using the `routeIs` method, you may determine if the incoming request has matched a [named route](/docs/{{version}}/routing#named-routes):
 
     if ($request->routeIs('admin.*')) {
-        //
+        // ...
     }
 
 <a name="retrieving-the-request-url"></a>
-#### Retrieving The Request URL
+#### Retrieving the Request URL
 
 To retrieve the full URL for the incoming request you may use the `url` or `fullUrl` methods. The `url` method will return the URL without the query string, while the `fullUrl` method includes the query string:
 
@@ -136,8 +135,14 @@ If you would like to append query string data to the current URL, you may call t
 
     $request->fullUrlWithQuery(['type' => 'phone']);
 
+If you would like to get the current URL without a given query string parameter, you may utilize the `fullUrlWithoutQuery` method:
+
+```php
+$request->fullUrlWithoutQuery(['type']);
+```
+
 <a name="retrieving-the-request-host"></a>
-#### Retrieving The Request Host
+#### Retrieving the Request Host
 
 You may retrieve the "host" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:
 
@@ -146,14 +151,14 @@ You may retrieve the "host" of the incoming request via the `host`, `httpHost`, 
     $request->schemeAndHttpHost();
 
 <a name="retrieving-the-request-method"></a>
-#### Retrieving The Request Method
+#### Retrieving the Request Method
 
 The `method` method will return the HTTP verb for the request. You may use the `isMethod` method to verify that the HTTP verb matches a given string:
 
     $method = $request->method();
 
     if ($request->isMethod('post')) {
-        //
+        // ...
     }
 
 <a name="request-headers"></a>
@@ -168,7 +173,7 @@ You may retrieve a request header from the `Illuminate\Http\Request` instance us
 The `hasHeader` method may be used to determine if the request contains a given header:
 
     if ($request->hasHeader('X-Header-Name')) {
-        //
+        // ...
     }
 
 For convenience, the `bearerToken` method may be used to retrieve a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:
@@ -181,6 +186,12 @@ For convenience, the `bearerToken` method may be used to retrieve a bearer token
 The `ip` method may be used to retrieve the IP address of the client that made the request to your application:
 
     $ipAddress = $request->ip();
+
+If you would like to retrieve an array of IP addresses, including all of the client IP addresses that were forwarded by proxies, you may use the `ips` method. The "original" client IP address will be at the end of the array:
+
+    $ipAddresses = $request->ips();
+
+In general, IP addresses should be considered untrusted, user-controlled input and be used for informational purposes only.
 
 <a name="content-negotiation"></a>
 ### Content Negotiation
@@ -220,10 +231,10 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
     use Psr\Http\Message\ServerRequestInterface;
 
     Route::get('/', function (ServerRequestInterface $request) {
-        //
+        // ...
     });
 
-> **Note**  
+> [!NOTE]  
 > If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
 
 <a name="input"></a>
@@ -243,14 +254,14 @@ Using the `collect` method, you may retrieve all of the incoming request's input
 
     $input = $request->collect();
 
-The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:
+The `collect` method also allows you to retrieve a subset of the incoming request's input as a collection:
 
-    $request->collect('users')->each(function ($user) {
+    $request->collect('users')->each(function (string $user) {
         // ...
     });
 
 <a name="retrieving-an-input-value"></a>
-#### Retrieving An Input Value
+#### Retrieving an Input Value
 
 Using a few simple methods, you may access all of the user input from your `Illuminate\Http\Request` instance without worrying about which HTTP verb was used for the request. Regardless of the HTTP verb, the `input` method may be used to retrieve user input:
 
@@ -271,7 +282,7 @@ You may call the `input` method without any arguments in order to retrieve all o
     $input = $request->input();
 
 <a name="retrieving-input-from-the-query-string"></a>
-#### Retrieving Input From The Query String
+#### Retrieving Input From the Query String
 
 While the `input` method retrieves values from the entire request payload (including the query string), the `query` method will only retrieve values from the query string:
 
@@ -329,7 +340,7 @@ Input values that correspond to [PHP enums](https://www.php.net/manual/en/langua
     $status = $request->enum('status', Status::class);
 
 <a name="retrieving-input-via-dynamic-properties"></a>
-#### Retrieving Input Via Dynamic Properties
+#### Retrieving Input via Dynamic Properties
 
 You may also access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:
 
@@ -338,7 +349,7 @@ You may also access user input using dynamic properties on the `Illuminate\Http\
 When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the matched route's parameters.
 
 <a name="retrieving-a-portion-of-the-input-data"></a>
-#### Retrieving A Portion Of The Input Data
+#### Retrieving a Portion of the Input Data
 
 If you need to retrieve a subset of the input data, you may use the `only` and `except` methods. Both of these methods accept a single `array` or a dynamic list of arguments:
 
@@ -350,74 +361,86 @@ If you need to retrieve a subset of the input data, you may use the `only` and `
 
     $input = $request->except('credit_card');
 
-> **Warning**  
+> [!WARNING]  
 > The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request.
 
-<a name="determining-if-input-is-present"></a>
-### Determining If Input Is Present
+<a name="input-presence"></a>
+### Input Presence
 
 You may use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present on the request:
 
     if ($request->has('name')) {
-        //
+        // ...
     }
 
 When given an array, the `has` method will determine if all of the specified values are present:
 
     if ($request->has(['name', 'email'])) {
-        //
+        // ...
+    }
+
+The `hasAny` method returns `true` if any of the specified values are present:
+
+    if ($request->hasAny(['name', 'email'])) {
+        // ...
     }
 
 The `whenHas` method will execute the given closure if a value is present on the request:
 
-    $request->whenHas('name', function ($input) {
-        //
+    $request->whenHas('name', function (string $input) {
+        // ...
     });
 
 A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:
 
-    $request->whenHas('name', function ($input) {
+    $request->whenHas('name', function (string $input) {
         // The "name" value is present...
     }, function () {
         // The "name" value is not present...
     });
 
-The `hasAny` method returns `true` if any of the specified values are present:
-
-    if ($request->hasAny(['name', 'email'])) {
-        //
-    }
-
 If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:
 
     if ($request->filled('name')) {
-        //
+        // ...
+    }
+
+The `anyFilled` method returns `true` if any of the specified values is not an empty string:
+
+    if ($request->anyFilled(['name', 'email'])) {
+        // ...
     }
 
 The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:
 
-    $request->whenFilled('name', function ($input) {
-        //
+    $request->whenFilled('name', function (string $input) {
+        // ...
     });
 
 A second closure may be passed to the `whenFilled` method that will be executed if the specified value is not "filled":
 
-    $request->whenFilled('name', function ($input) {
+    $request->whenFilled('name', function (string $input) {
         // The "name" value is filled...
     }, function () {
         // The "name" value is not filled...
     });
 
-To determine if a given key is absent from the request, you may use the `missing` method:
+To determine if a given key is absent from the request, you may use the `missing` and `whenMissing` methods:
 
     if ($request->missing('name')) {
-        //
+        // ...
     }
+
+    $request->whenMissing('name', function (array $input) {
+        // The "name" value is missing...
+    }, function () {
+        // The "name" value is present...
+    });
 
 <a name="merging-additional-input"></a>
 ### Merging Additional Input
 
-Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method:
+Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method. If a given input key already exists on the request, it will be overwritten by the data provided to the `merge` method:
 
     $request->merge(['votes' => 0]);
 
@@ -431,7 +454,7 @@ The `mergeIfMissing` method may be used to merge input into the request if the c
 Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included [validation features](/docs/{{version}}/validation), it is possible that you will not need to manually use these session input flashing methods directly, as some of Laravel's built-in validation facilities will call them automatically.
 
 <a name="flashing-input-to-the-session"></a>
-#### Flashing Input To The Session
+#### Flashing Input to the Session
 
 The `flash` method on the `Illuminate\Http\Request` class will flash the current input to the [session](/docs/{{version}}/session) so that it is available during the user's next request to the application:
 
@@ -478,36 +501,35 @@ All cookies created by the Laravel framework are encrypted and signed with an au
     $value = $request->cookie('name');
 
 <a name="input-trimming-and-normalization"></a>
-## Input Trimming & Normalization
+## Input Trimming and Normalization
 
-By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
+By default, Laravel includes the `Illuminate\Foundation\Http\Middleware\TrimStrings` and `Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
 
 #### Disabling Input Normalization
 
-If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
+If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by invoking the `$middleware->remove` method in your application's `bootstrap/app.php` file:
 
-If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`.
+    use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+    use Illuminate\Foundation\Http\Middleware\TrimStrings;
 
-```php
-use App\Http\Middleware\TrimStrings;
-use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->remove([
+            ConvertEmptyStringsToNull::class,
+            TrimStrings::class,
+        ]);
+    })
 
-/**
- * Bootstrap any application services.
- *
- * @return void
- */
-public function boot()
-{
-    TrimStrings::skipWhen(function ($request) {
-        return $request->is('admin/*');
-    });
+If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `trimStrings` and `convertEmptyStringsToNull` middleware methods within your application's `bootstrap/app.php` file. Both methods accept an array of closures, which should return `true` or `false` to indicate whether input normalization should be skipped:
 
-    ConvertEmptyStringsToNull::skipWhen(function ($request) {
-        // ...
-    });
-}
-```
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->convertEmptyStringsToNull(except: [
+            fn (Request $request) => $request->is('admin/*'),
+        ]);
+
+        $middleware->trimStrings(except: [
+            fn (Request $request) => $request->is('admin/*'),
+        ]);
+    })
 
 <a name="files"></a>
 ## Files
@@ -524,7 +546,7 @@ You may retrieve uploaded files from an `Illuminate\Http\Request` instance using
 You may determine if a file is present on the request using the `hasFile` method:
 
     if ($request->hasFile('photo')) {
-        //
+        // ...
     }
 
 <a name="validating-successful-uploads"></a>
@@ -533,11 +555,11 @@ You may determine if a file is present on the request using the `hasFile` method
 In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:
 
     if ($request->file('photo')->isValid()) {
-        //
+        // ...
     }
 
 <a name="file-paths-extensions"></a>
-#### File Paths & Extensions
+#### File Paths and Extensions
 
 The `UploadedFile` class also contains methods for accessing the file's fully-qualified path and its extension. The `extension` method will attempt to guess the file's extension based on its contents. This extension may be different from the extension that was supplied by the client:
 
@@ -569,7 +591,7 @@ If you do not want a filename to be automatically generated, you may use the `st
 
     $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
 
-> **Note**  
+> [!NOTE]  
 > For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem).
 
 <a name="configuring-trusted-proxies"></a>
@@ -577,70 +599,54 @@ If you do not want a filename to be automatically generated, you may use the `st
 
 When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links when using the `url` helper. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links.
 
-To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the proxy `$headers` that should be trusted:
+To solve this, you may enable the `Illuminate\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be specified using the `trustProxies` middleware method in your application's `bootstrap/app.php` file:
 
-    <?php
-
-    namespace App\Http\Middleware;
-
-    use Illuminate\Http\Middleware\TrustProxies as Middleware;
-    use Illuminate\Http\Request;
-
-    class TrustProxies extends Middleware
-    {
-        /**
-         * The trusted proxies for this application.
-         *
-         * @var string|array
-         */
-        protected $proxies = [
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: [
             '192.168.1.1',
             '192.168.1.2',
-        ];
+        ]);
+    })
 
-        /**
-         * The headers that should be used to detect proxies.
-         *
-         * @var int
-         */
-        protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
-    }
+In addition to configuring the trusted proxies, you may also configure the proxy headers that should be trusted:
 
-> **Note**  
-> If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(headers: Request::HEADER_X_FORWARDED_FOR |
+            Request::HEADER_X_FORWARDED_HOST |
+            Request::HEADER_X_FORWARDED_PORT |
+            Request::HEADER_X_FORWARDED_PROTO |
+            Request::HEADER_X_FORWARDED_AWS_ELB
+        );
+    })
+
+> [!NOTE]  
+> If you are using AWS Elastic Load Balancing, your `headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `headers` value, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/7.0/deployment/proxies.html).
 
 <a name="trusting-all-proxies"></a>
 #### Trusting All Proxies
 
 If you are using Amazon AWS or another "cloud" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies:
 
-    /**
-     * The trusted proxies for this application.
-     *
-     * @var string|array
-     */
-    protected $proxies = '*';
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: '*');
+    })
 
 <a name="configuring-trusted-hosts"></a>
 ## Configuring Trusted Hosts
 
 By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request.
 
-Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `App\Http\Middleware\TrustHosts` middleware for your application.
+Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given hostname. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain hostnames, you may do so by enabling the `Illuminate\Http\Middleware\TrustHosts` middleware for your application.
 
-The `TrustHosts` middleware is already included in the `$middleware` stack of your application; however, you should uncomment it so that it becomes active. Within this middleware's `hosts` method, you may specify the host names that your application should respond to. Incoming requests with other `Host` value headers will be rejected:
+To enable the `TrustHosts` middleware, you should invoke the `trustHosts` middleware method in your application's `bootstrap/app.php` file. Using the `at` argument of this method, you may specify the hostnames that your application should respond to. Incoming requests with other `Host` headers will be rejected:
 
-    /**
-     * Get the host patterns that should be trusted.
-     *
-     * @return array
-     */
-    public function hosts()
-    {
-        return [
-            'laravel.test',
-            $this->allSubdomainsOfApplicationUrl(),
-        ];
-    }
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustHosts(at: ['laravel.test']);
+    })
 
-The `allSubdomainsOfApplicationUrl` helper method will return a regular expression matching all subdomains of your application's `app.url` configuration value. This helper method provides a convenient way to allow all of your application's subdomains when building an application that utilizes wildcard subdomains.
+By default, requests coming from subdomains of the application's URL are also automatically trusted. If you would like to disable this behavior, you may use the `subdomains` argument:
+
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustHosts(at: ['laravel.test'], subdomains: false);
+    })
+

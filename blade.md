@@ -1,9 +1,10 @@
 # Blade Templates
 
 - [Introduction](#introduction)
+    - [Supercharging Blade With Livewire](#supercharging-blade-with-livewire)
 - [Displaying Data](#displaying-data)
     - [HTML Entity Encoding](#html-entity-encoding)
-    - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
+    - [Blade and JavaScript Frameworks](#blade-and-javascript-frameworks)
 - [Blade Directives](#blade-directives)
     - [If Statements](#if-statements)
     - [Switch Statements](#switch-statements)
@@ -17,7 +18,7 @@
     - [Comments](#comments)
 - [Components](#components)
     - [Rendering Components](#rendering-components)
-    - [Passing Data To Components](#passing-data-to-components)
+    - [Passing Data to Components](#passing-data-to-components)
     - [Component Attributes](#component-attributes)
     - [Reserved Keywords](#reserved-keywords)
     - [Slots](#slots)
@@ -28,7 +29,7 @@
     - [Anonymous Index Components](#anonymous-index-components)
     - [Data Properties / Attributes](#data-properties-attributes)
     - [Accessing Parent Data](#accessing-parent-data)
-    - [Anonymous Components Namespaces](#anonymous-component-namespaces)
+    - [Anonymous Components Paths](#anonymous-component-paths)
 - [Building Layouts](#building-layouts)
     - [Layouts Using Components](#layouts-using-components)
     - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
@@ -39,6 +40,7 @@
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
 - [Rendering Inline Blade Templates](#rendering-inline-blade-templates)
+- [Rendering Blade Fragments](#rendering-blade-fragments)
 - [Extending Blade](#extending-blade)
     - [Custom Echo Handlers](#custom-echo-handlers)
     - [Custom If Statements](#custom-if-statements)
@@ -54,8 +56,10 @@ Blade views may be returned from routes or controllers using the global `view` h
         return view('greeting', ['name' => 'Finn']);
     });
 
-> **Note**  
-> Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
+<a name="supercharging-blade-with-livewire"></a>
+### Supercharging Blade With Livewire
+
+Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://livewire.laravel.com). Livewire allows you to write Blade components that are augmented with dynamic functionality that would typically only be possible via frontend frameworks like React or Vue, providing a great approach to building modern, reactive frontends without the complexities, client-side rendering, or build steps of many JavaScript frameworks.
 
 <a name="displaying-data"></a>
 ## Displaying Data
@@ -72,7 +76,7 @@ You may display the contents of the `name` variable like so:
 Hello, {{ $name }}.
 ```
 
-> **Note**  
+> [!NOTE]  
 > Blade's `{{ }}` echo statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
 You are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
@@ -84,7 +88,7 @@ The current UNIX timestamp is {{ time() }}.
 <a name="html-entity-encoding"></a>
 ### HTML Entity Encoding
 
-By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
+By default, Blade (and the Laravel `e` function) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
 
     <?php
 
@@ -97,10 +101,8 @@ By default, Blade (and the Laravel `e` helper) will double encode HTML entities.
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             Blade::withoutDoubleEncoding();
         }
@@ -115,11 +117,11 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmls
 Hello, {!! $name !!}.
 ```
 
-> **Warning**  
+> [!WARNING]  
 > Be very careful when echoing content that is supplied by users of your application. You should typically use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
 
 <a name="blade-and-javascript-frameworks"></a>
-### Blade & JavaScript Frameworks
+### Blade and JavaScript Frameworks
 
 Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
 
@@ -168,7 +170,7 @@ The latest versions of the Laravel application skeleton include a `Js` facade, w
 </script>
 ```
 
-> **Warning**  
+> [!WARNING]  
 > You should only use the `Js::from` method to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 <a name="the-at-verbatim-directive"></a>
@@ -299,6 +301,19 @@ You may use the `sectionMissing` directive to determine if a section does not ha
 @endif
 ```
 
+<a name="session-directives"></a>
+#### Session Directives
+
+The `@session` directive may be used to determine if a [session](/docs/{{version}}/session) value exists. If the session value exists, the template contents within the `@session` and `@endsession` directives will be evaluated. Within the `@session` directive's contents, you may echo the `$value` variable to display the session value:
+
+```blade
+@session('status')
+    <div class="p-4 bg-green-100">
+        {{ $value }}
+    </div>
+@endsession
+```
+
 <a name="switch-statements"></a>
 ### Switch Statements
 
@@ -344,7 +359,7 @@ In addition to conditional statements, Blade provides simple directives for work
 @endwhile
 ```
 
-> **Note**  
+> [!NOTE]  
 > While iterating through a `foreach` loop, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
 
 When using loops you may also skip the current iteration or end the loop using the `@continue` and `@break` directives:
@@ -422,7 +437,7 @@ The `$loop` variable also contains a variety of other useful properties:
 | `$loop->parent`    | When in a nested loop, the parent's loop variable.     |
 
 <a name="conditional-classes"></a>
-### Conditional Classes
+### Conditional Classes & Styles
 
 The `@class` directive conditionally compiles a CSS class string. The directive accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
@@ -440,6 +455,21 @@ The `@class` directive conditionally compiles a CSS class string. The directive 
 ])></span>
 
 <span class="p-4 text-gray-500 bg-red"></span>
+```
+
+Likewise, the `@style` directive may be used to conditionally add inline CSS styles to an HTML element:
+
+```blade
+@php
+    $isActive = true;
+@endphp
+
+<span @style([
+    'background-color: red',
+    'font-weight: bold' => $isActive,
+])></span>
+
+<span style="background-color: red; font-weight: bold;"></span>
 ```
 
 <a name="additional-attributes"></a>
@@ -493,7 +523,7 @@ In addition, the `@required` directive may be used to indicate if a given elemen
 <a name="including-subviews"></a>
 ### Including Subviews
 
-> **Note**  
+> [!NOTE]  
 > While you're free to use the `@include` directive, Blade [components](#components) provide similar functionality and offer several benefits over the `@include` directive such as data and attribute binding.
 
 Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
@@ -534,11 +564,11 @@ To include the first view that exists from a given array of views, you may use t
 @includeFirst(['custom.admin', 'admin'], ['status' => 'complete'])
 ```
 
-> **Warning**  
+> [!WARNING]  
 > You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
 <a name="rendering-views-for-collections"></a>
-#### Rendering Views For Collections
+#### Rendering Views for Collections
 
 You may combine loops and includes into one line with Blade's `@each` directive:
 
@@ -554,7 +584,7 @@ You may also pass a fourth argument to the `@each` directive. This argument dete
 @each('view.name', $jobs, 'job', 'view.empty')
 ```
 
-> **Warning**  
+> [!WARNING]  
 > Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use the `@foreach` and `@include` directives instead.
 
 <a name="the-once-directive"></a>
@@ -591,6 +621,18 @@ In some situations, it's useful to embed PHP code into your views. You can use t
 @php
     $counter = 1;
 @endphp
+```
+
+Or, if you only need to use PHP to import a class, you may use the `@use` directive:
+
+```blade
+@use('App\Models\Flight')
+```
+
+A second argument may be provided to the `@use` directive to alias the imported class:
+
+```php
+@use('App\Models\Flight', 'FlightModel')
 ```
 
 <a name="comments"></a>
@@ -643,7 +685,7 @@ However, if you are building a package that utilizes Blade components, you will 
     /**
      * Bootstrap your package's services.
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::component('package-alert', Alert::class);
     }
@@ -660,10 +702,8 @@ Alternatively, you may use the `componentNamespace` method to autoload component
 
     /**
      * Bootstrap your package's services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
     }
@@ -694,8 +734,20 @@ If the component class is nested deeper within the `app/View/Components` directo
 <x-inputs.button/>
 ```
 
+If you would like to conditionally render your component, you may define a `shouldRender` method on your component class. If the `shouldRender` method returns `false` the component will not be rendered:
+
+    use Illuminate\Support\Str;
+
+    /**
+     * Whether the component should be rendered
+     */
+    public function shouldRender(): bool
+    {
+        return Str::length($this->message) > 0;
+    }
+
 <a name="passing-data-to-components"></a>
-### Passing Data To Components
+### Passing Data to Components
 
 You may pass data to Blade components using HTML attributes. Hard-coded, primitive values may be passed to the component using simple HTML attribute strings. PHP expressions and variables should be passed to the component via attributes that use the `:` character as a prefix:
 
@@ -710,42 +762,22 @@ You should define all of the component's data attributes in its class constructo
     namespace App\View\Components;
 
     use Illuminate\View\Component;
+    use Illuminate\View\View;
 
     class Alert extends Component
     {
         /**
-         * The alert type.
-         *
-         * @var string
-         */
-        public $type;
-
-        /**
-         * The alert message.
-         *
-         * @var string
-         */
-        public $message;
-
-        /**
          * Create the component instance.
-         *
-         * @param  string  $type
-         * @param  string  $message
-         * @return void
          */
-        public function __construct($type, $message)
-        {
-            $this->type = $type;
-            $this->message = $message;
-        }
+        public function __construct(
+            public string $type,
+            public string $message,
+        ) {}
 
         /**
          * Get the view / contents that represent the component.
-         *
-         * @return \Illuminate\View\View|\Closure|string
          */
-        public function render()
+        public function render(): View
         {
             return view('components.alert');
         }
@@ -766,19 +798,28 @@ Component constructor arguments should be specified using `camelCase`, while `ke
 
     /**
      * Create the component instance.
-     *
-     * @param  string  $alertType
-     * @return void
      */
-    public function __construct($alertType)
-    {
-        $this->alertType = $alertType;
-    }
+    public function __construct(
+        public string $alertType,
+    ) {}
 
 The `$alertType` argument may be provided to the component like so:
 
 ```blade
 <x-alert alert-type="danger" />
+```
+
+<a name="short-attribute-syntax"></a>
+#### Short Attribute Syntax
+
+When passing attributes to components, you may also use a "short attribute" syntax. This is often convenient since attribute names frequently match the variable names they correspond to:
+
+```blade
+{{-- Short attribute syntax... --}}
+<x-profile :$userId :$name />
+
+{{-- Is equivalent to... --}}
+<x-profile :user-id="$userId" :name="$name" />
 ```
 
 <a name="escaping-attribute-rendering"></a>
@@ -807,11 +848,8 @@ In addition to public variables being available to your component template, any 
 
     /**
      * Determine if the given option is the currently selected option.
-     *
-     * @param  string  $option
-     * @return bool
      */
-    public function isSelected($option)
+    public function isSelected(string $option): bool
     {
         return $option === $this->selected;
     }
@@ -825,16 +863,16 @@ You may execute this method from your component template by invoking the variabl
 ```
 
 <a name="using-attributes-slots-within-component-class"></a>
-#### Accessing Attributes & Slots Within Component Classes
+#### Accessing Attributes and Slots Within Component Classes
 
 Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method. The closure will receive a `$data` array as its only argument. This array will contain several elements that provide information about the component:
 
+    use Closure;
+
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\View\View|\Closure|string
      */
-    public function render()
+    public function render(): Closure
     {
         return function (array $data) {
             // $data['componentName'];
@@ -859,18 +897,12 @@ use App\Services\AlertCreator;
 
 /**
  * Create the component instance.
- *
- * @param  \App\Services\AlertCreator  $creator
- * @param  string  $type
- * @param  string  $message
- * @return void
  */
-public function __construct(AlertCreator $creator, $type, $message)
-{
-    $this->creator = $creator;
-    $this->type = $type;
-    $this->message = $message;
-}
+public function __construct(
+    public AlertCreator $creator,
+    public string $type,
+    public string $message,
+) {}
 ```
 
 <a name="hiding-attributes-and-methods"></a>
@@ -887,18 +919,18 @@ If you would like to prevent some public methods or properties from being expose
     class Alert extends Component
     {
         /**
-         * The alert type.
-         *
-         * @var string
-         */
-        public $type;
-
-        /**
          * The properties / methods that should not be exposed to the component template.
          *
          * @var array
          */
         protected $except = ['type'];
+
+        /**
+         * Create the component instance.
+         */
+        public function __construct(
+            public string $type,
+        ) {}
     }
 
 <a name="component-attributes"></a>
@@ -918,7 +950,7 @@ All of the attributes that are not part of the component's constructor will auto
 </div>
 ```
 
-> **Warning**  
+> [!WARNING]  
 > Using directives such as `@env` within component tags is not supported at this time. For example, `<x-alert :live="@env('production')"/>` will not be compiled.
 
 <a name="default-merged-attributes"></a>
@@ -965,7 +997,7 @@ If you need to merge other attributes onto your component, you can chain the `me
 </button>
 ```
 
-> **Note**  
+> [!NOTE]  
 > If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [`@class` directive](#conditional-classes).
 
 <a name="non-class-attribute-merging"></a>
@@ -1004,12 +1036,12 @@ If you would like an attribute other than `class` to have its default value and 
 ```
 
 <a name="filtering-attributes"></a>
-#### Retrieving & Filtering Attributes
+#### Retrieving and Filtering Attributes
 
 You may filter attributes using the `filter` method. This method accepts a closure which should return `true` if you wish to retain the attribute in the attribute bag:
 
 ```blade
-{{ $attributes->filter(fn ($value, $key) => $key == 'foo') }}
+{{ $attributes->filter(fn (string $value, string $key) => $key == 'foo') }}
 ```
 
 For convenience, you may use the `whereStartsWith` method to retrieve all attributes whose keys begin with a given string:
@@ -1035,6 +1067,22 @@ If you would like to check if an attribute is present on the component, you may 
 ```blade
 @if ($attributes->has('class'))
     <div>Class attribute is present</div>
+@endif
+```
+
+If an array is passed to the `has` method, the method will determine if all of the given attributes are present on the component:
+
+```blade
+@if ($attributes->has(['name', 'class']))
+    <div>All of the attributes are present</div>
+@endif
+```
+
+The `hasAny` method may be used to determine if any of the given attributes are present on the component:
+
+```blade
+@if ($attributes->hasAny(['href', ':href', 'v-bind:href']))
+    <div>One of the attributes is present</div>
 @endif
 ```
 
@@ -1106,6 +1154,28 @@ You may define the content of the named slot using the `x-slot` tag. Any content
 </x-alert>
 ```
 
+You may invoke a slot's `isEmpty` method to determine if the slot contains content:
+
+```blade
+<span class="alert-title">{{ $title }}</span>
+
+<div class="alert alert-danger">
+    @if ($slot->isEmpty())
+        This is default content if the slot is empty.
+    @else
+        {{ $slot }}
+    @endif
+</div>
+```
+
+Additionally, the `hasActualContent` method may be used to determine if the slot contains any "actual" content that is not an HTML comment:
+
+```blade
+@if ($slot->hasActualContent())
+    The scope has non-comment content.
+@endif
+```
+
 <a name="scoped-slots"></a>
 #### Scoped Slots
 
@@ -1168,10 +1238,8 @@ For very small components, it may feel cumbersome to manage both the component c
 
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\View\View|\Closure|string
      */
-    public function render()
+    public function render(): string
     {
         return <<<'blade'
             <div class="alert alert-danger">
@@ -1195,13 +1263,15 @@ php artisan make:component Alert --inline
 Sometimes you may need to render a component but not know which component should be rendered until runtime. In this situation, you may use Laravel's built-in `dynamic-component` component to render the component based on a runtime value or variable:
 
 ```blade
+// $componentName = "secondary-button";
+
 <x-dynamic-component :component="$componentName" class="mt-4" />
 ```
 
 <a name="manually-registering-components"></a>
 ### Manually Registering Components
 
-> **Warning**  
+> [!WARNING]  
 > The following documentation on manually registering components is primarily applicable to those who are writing Laravel packages that include view components. If you are not writing a package, this portion of the component documentation may not be relevant to you.
 
 When writing components for your own application, components are automatically discovered within the `app/View/Components` directory and `resources/views/components` directory.
@@ -1213,10 +1283,8 @@ However, if you are building a package that utilizes Blade components or placing
 
     /**
      * Bootstrap your package's services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::component('package-alert', AlertComponent::class);
     }
@@ -1235,10 +1303,8 @@ Alternatively, you may use the `componentNamespace` method to autoload component
 
     /**
      * Bootstrap your package's services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
     }
@@ -1355,32 +1421,38 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 </li>
 ```
 
-> **Warning**  
+> [!WARNING]  
 > The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
 
-<a name="anonymous-component-namespaces"></a>
-### Anonymous Component Namespaces
+<a name="anonymous-component-paths"></a>
+### Anonymous Component Paths
 
 As previously discussed, anonymous components are typically defined by placing a Blade template within your `resources/views/components` directory. However, you may occasionally want to register other anonymous component paths with Laravel in addition to the default path.
 
-For example, when building a vacation booking application, you may wish to place flight booking related anonymous components within a `resources/views/flights/bookings/components` directory. To inform Laravel of this anonymous component location, you may use the `anonymousComponentNamespace` method provided by the `Blade` facade.
-
-The `anonymousComponentNamespace` method accepts the "path" to the anonymous component location as its first argument and the "namespace" that components should be placed under as its second argument. As you will see in the example below, the "namespace" will be prefixed to the component's name when the component is rendered. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
+The `anonymousComponentPath` method accepts the "path" to the anonymous component location as its first argument and an optional "namespace" that components should be placed under as its second argument. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        Blade::anonymousComponentNamespace('flights.bookings.components', 'flights');
+        Blade::anonymousComponentPath(__DIR__.'/../components');
     }
 
-Given the example above, you may render a `panel` component that exists within the newly registered component directory like so:
+When component paths are registered without a specified prefix as in the example above, they may be rendered in your Blade components without a corresponding prefix as well. For example, if a `panel.blade.php` component exists in the path registered above, it may be rendered like so:
 
 ```blade
-<x-flights::panel :flight="$flight" />
+<x-panel />
+```
+
+Prefix "namespaces" may be provided as the second argument to the `anonymousComponentPath` method:
+
+    Blade::anonymousComponentPath(__DIR__.'/../components', 'dashboard');
+
+When a prefix is provided, components within that "namespace" may be rendered by prefixing to the component's namespace to the component name when the component is rendered:
+
+```blade
+<x-dashboard::panel />
 ```
 
 <a name="building-layouts"></a>
@@ -1392,7 +1464,7 @@ Given the example above, you may render a `panel` component that exists within t
 Most web applications maintain the same general layout across various pages. It would be incredibly cumbersome and hard to maintain our application if we had to repeat the entire layout HTML in every view we create. Thankfully, it's convenient to define this layout as a single [Blade component](#components) and then use it throughout our application.
 
 <a name="defining-the-layout-component"></a>
-#### Defining The Layout Component
+#### Defining the Layout Component
 
 For example, imagine we are building a "todo" list application. We might define a `layout` component that looks like the following:
 
@@ -1412,7 +1484,7 @@ For example, imagine we are building a "todo" list application. We might define 
 ```
 
 <a name="applying-the-layout-component"></a>
-#### Applying The Layout Component
+#### Applying the Layout Component
 
 Once the `layout` component has been defined, we may create a Blade view that utilizes the component. In this example, we will define a simple view that displays our task list:
 
@@ -1454,7 +1526,7 @@ Now that we have defined our layout and task list views, we just need to return 
 ### Layouts Using Template Inheritance
 
 <a name="defining-a-layout"></a>
-#### Defining A Layout
+#### Defining a Layout
 
 Layouts may also be created via "template inheritance". This was the primary way of building applications prior to the introduction of [components](#components).
 
@@ -1484,7 +1556,7 @@ As you can see, this file contains typical HTML mark-up. However, take note of t
 Now that we have defined a layout for our application, let's define a child page that inherits the layout.
 
 <a name="extending-a-layout"></a>
-#### Extending A Layout
+#### Extending a Layout
 
 When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
@@ -1508,7 +1580,7 @@ When defining a child view, use the `@extends` Blade directive to specify which 
 
 In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
-> **Note**  
+> [!NOTE]  
 > Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
 
 The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
@@ -1670,6 +1742,47 @@ return Blade::render(
 );
 ```
 
+<a name="rendering-blade-fragments"></a>
+## Rendering Blade Fragments
+
+When using frontend frameworks such as [Turbo](https://turbo.hotwired.dev/) and [htmx](https://htmx.org/), you may occasionally need to only return a portion of a Blade template within your HTTP response. Blade "fragments" allow you to do just that. To get started, place a portion of your Blade template within `@fragment` and `@endfragment` directives:
+
+```blade
+@fragment('user-list')
+    <ul>
+        @foreach ($users as $user)
+            <li>{{ $user->name }}</li>
+        @endforeach
+    </ul>
+@endfragment
+```
+
+Then, when rendering the view that utilizes this template, you may invoke the `fragment` method to specify that only the specified fragment should be included in the outgoing HTTP response:
+
+```php
+return view('dashboard', ['users' => $users])->fragment('user-list');
+```
+
+The `fragmentIf` method allows you to conditionally return a fragment of a view based on a given condition. Otherwise, the entire view will be returned:
+
+```php
+return view('dashboard', ['users' => $users])
+    ->fragmentIf($request->hasHeader('HX-Request'), 'user-list');
+```
+
+The `fragments` and `fragmentsIf` methods allow you to return multiple view fragments in the response. The fragments will be concatenated together:
+
+```php
+view('dashboard', ['users' => $users])
+    ->fragments(['user-list', 'comment-list']);
+
+view('dashboard', ['users' => $users])
+    ->fragmentsIf(
+        $request->hasHeader('HX-Request'),
+        ['user-list', 'comment-list']
+    );
+```
+
 <a name="extending-blade"></a>
 ## Extending Blade
 
@@ -1688,22 +1801,18 @@ The following example creates a `@datetime($var)` directive which formats a give
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            //
+            // ...
         }
 
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            Blade::directive('datetime', function ($expression) {
+            Blade::directive('datetime', function (string $expression) {
                 return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
             });
         }
@@ -1713,7 +1822,7 @@ As you can see, we will chain the `format` method onto whatever expression is pa
 
     <?php echo ($var)->format('m/d/Y H:i'); ?>
 
-> **Warning**  
+> [!WARNING]  
 > After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
 
 <a name="custom-echo-handlers"></a>
@@ -1728,10 +1837,8 @@ In these cases, Blade allows you to register a custom echo handler for that part
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Blade::stringable(function (Money $money) {
             return $money->formatTo('en_GB');
@@ -1753,12 +1860,10 @@ Programming a custom directive is sometimes more complex than necessary when def
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        Blade::if('disk', function ($value) {
+        Blade::if('disk', function (string $value) {
             return config('filesystems.default') === $value;
         });
     }

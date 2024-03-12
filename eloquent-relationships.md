@@ -2,41 +2,42 @@
 
 - [Introduction](#introduction)
 - [Defining Relationships](#defining-relationships)
-    - [One To One](#one-to-one)
-    - [One To Many](#one-to-many)
-    - [One To Many (Inverse) / Belongs To](#one-to-many-inverse)
-    - [Has One Of Many](#has-one-of-many)
+    - [One to One](#one-to-one)
+    - [One to Many](#one-to-many)
+    - [One to Many (Inverse) / Belongs To](#one-to-many-inverse)
+    - [Has One of Many](#has-one-of-many)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
-- [Many To Many Relationships](#many-to-many)
+- [Many to Many Relationships](#many-to-many)
     - [Retrieving Intermediate Table Columns](#retrieving-intermediate-table-columns)
-    - [Filtering Queries Via Intermediate Table Columns](#filtering-queries-via-intermediate-table-columns)
+    - [Filtering Queries via Intermediate Table Columns](#filtering-queries-via-intermediate-table-columns)
+    - [Ordering Queries via Intermediate Table Columns](#ordering-queries-via-intermediate-table-columns)
     - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
 - [Polymorphic Relationships](#polymorphic-relationships)
-    - [One To One](#one-to-one-polymorphic-relations)
-    - [One To Many](#one-to-many-polymorphic-relations)
-    - [One Of Many](#one-of-many-polymorphic-relations)
-    - [Many To Many](#many-to-many-polymorphic-relations)
+    - [One to One](#one-to-one-polymorphic-relations)
+    - [One to Many](#one-to-many-polymorphic-relations)
+    - [One of Many](#one-of-many-polymorphic-relations)
+    - [Many to Many](#many-to-many-polymorphic-relations)
     - [Custom Polymorphic Types](#custom-polymorphic-types)
 - [Dynamic Relationships](#dynamic-relationships)
 - [Querying Relations](#querying-relations)
-    - [Relationship Methods Vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
+    - [Relationship Methods vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
     - [Querying Relationship Existence](#querying-relationship-existence)
     - [Querying Relationship Absence](#querying-relationship-absence)
     - [Querying Morph To Relationships](#querying-morph-to-relationships)
 - [Aggregating Related Models](#aggregating-related-models)
     - [Counting Related Models](#counting-related-models)
     - [Other Aggregate Functions](#other-aggregate-functions)
-    - [Counting Related Models On Morph To Relationships](#counting-related-models-on-morph-to-relationships)
+    - [Counting Related Models on Morph To Relationships](#counting-related-models-on-morph-to-relationships)
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
     - [Lazy Eager Loading](#lazy-eager-loading)
     - [Preventing Lazy Loading](#preventing-lazy-loading)
-- [Inserting & Updating Related Models](#inserting-and-updating-related-models)
+- [Inserting and Updating Related Models](#inserting-and-updating-related-models)
     - [The `save` Method](#the-save-method)
     - [The `create` Method](#the-create-method)
     - [Belongs To Relationships](#updating-belongs-to-relationships)
-    - [Many To Many Relationships](#updating-many-to-many-relationships)
+    - [Many to Many Relationships](#updating-many-to-many-relationships)
 - [Touching Parent Timestamps](#touching-parent-timestamps)
 
 <a name="introduction"></a>
@@ -67,7 +68,7 @@ Eloquent relationships are defined as methods on your Eloquent model classes. Si
 But, before diving too deep into using relationships, let's learn how to define each type of relationship supported by Eloquent.
 
 <a name="one-to-one"></a>
-### One To One
+### One to One
 
 A one-to-one relationship is a very basic type of database relationship. For example, a `User` model might be associated with one `Phone` model. To define this relationship, we will place a `phone` method on the `User` model. The `phone` method should call the `hasOne` method and return its result. The `hasOne` method is available to your model via the model's `Illuminate\Database\Eloquent\Model` base class:
 
@@ -76,13 +77,14 @@ A one-to-one relationship is a very basic type of database relationship. For exa
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasOne;
 
     class User extends Model
     {
         /**
          * Get the phone associated with the user.
          */
-        public function phone()
+        public function phone(): HasOne
         {
             return $this->hasOne(Phone::class);
         }
@@ -101,7 +103,7 @@ Additionally, Eloquent assumes that the foreign key should have a value matching
     return $this->hasOne(Phone::class, 'foreign_key', 'local_key');
 
 <a name="one-to-one-defining-the-inverse-of-the-relationship"></a>
-#### Defining The Inverse Of The Relationship
+#### Defining the Inverse of the Relationship
 
 So, we can access the `Phone` model from our `User` model. Next, let's define a relationship on the `Phone` model that will let us access the user that owns the phone. We can define the inverse of a `hasOne` relationship using the `belongsTo` method:
 
@@ -110,13 +112,14 @@ So, we can access the `Phone` model from our `User` model. Next, let's define a 
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
     class Phone extends Model
     {
         /**
          * Get the user that owns the phone.
          */
-        public function user()
+        public function user(): BelongsTo
         {
             return $this->belongsTo(User::class);
         }
@@ -129,7 +132,7 @@ Eloquent determines the foreign key name by examining the name of the relationsh
     /**
      * Get the user that owns the phone.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'foreign_key');
     }
@@ -139,13 +142,13 @@ If the parent model does not use `id` as its primary key, or you wish to find th
     /**
      * Get the user that owns the phone.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'foreign_key', 'owner_key');
     }
 
 <a name="one-to-many"></a>
-### One To Many
+### One to Many
 
 A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a blog post may have an infinite number of comments. Like all other Eloquent relationships, one-to-many relationships are defined by defining a method on your Eloquent model:
 
@@ -154,13 +157,14 @@ A one-to-many relationship is used to define relationships where a single model 
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
 
     class Post extends Model
     {
         /**
          * Get the comments for the blog post.
          */
-        public function comments()
+        public function comments(): HasMany
         {
             return $this->hasMany(Comment::class);
         }
@@ -175,7 +179,7 @@ Once the relationship method has been defined, we can access the [collection](/d
     $comments = Post::find(1)->comments;
 
     foreach ($comments as $comment) {
-        //
+        // ...
     }
 
 Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `comments` method and continuing to chain conditions onto the query:
@@ -191,7 +195,7 @@ Like the `hasOne` method, you may also override the foreign and local keys by pa
     return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
 
 <a name="one-to-many-inverse"></a>
-### One To Many (Inverse) / Belongs To
+### One to Many (Inverse) / Belongs To
 
 Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `hasMany` relationship, define a relationship method on the child model which calls the `belongsTo` method:
 
@@ -200,13 +204,14 @@ Now that we can access all of a post's comments, let's define a relationship to 
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
     class Comment extends Model
     {
         /**
          * Get the post that owns the comment.
          */
-        public function post()
+        public function post(): BelongsTo
         {
             return $this->belongsTo(Post::class);
         }
@@ -229,7 +234,7 @@ However, if the foreign key for your relationship does not follow these conventi
     /**
      * Get the post that owns the comment.
      */
-    public function post()
+    public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class, 'foreign_key');
     }
@@ -239,7 +244,7 @@ If your parent model does not use `id` as its primary key, or you wish to find t
     /**
      * Get the post that owns the comment.
      */
-    public function post()
+    public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
     }
@@ -252,7 +257,7 @@ The `belongsTo`, `hasOne`, `hasOneThrough`, and `morphOne` relationships allow y
     /**
      * Get the author of the post.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class)->withDefault();
     }
@@ -262,7 +267,7 @@ To populate the default model with attributes, you may pass an array or closure 
     /**
      * Get the author of the post.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class)->withDefault([
             'name' => 'Guest Author',
@@ -272,9 +277,9 @@ To populate the default model with attributes, you may pass an array or closure 
     /**
      * Get the author of the post.
      */
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withDefault(function ($user, $post) {
+        return $this->belongsTo(User::class)->withDefault(function (User $user, Post $post) {
             $user->name = 'Guest Author';
         });
     }
@@ -303,7 +308,7 @@ By default, Laravel will determine the relationship associated with the given mo
     $posts = Post::whereBelongsTo($user, 'author')->get();
 
 <a name="has-one-of-many"></a>
-### Has One Of Many
+### Has One of Many
 
 Sometimes a model may have many related models, yet you want to easily retrieve the "latest" or "oldest" related model of the relationship. For example, a `User` model may be related to many `Order` models, but you want to define a convenient way to interact with the most recent order the user has placed. You may accomplish this using the `hasOne` relationship type combined with the `ofMany` methods:
 
@@ -311,7 +316,7 @@ Sometimes a model may have many related models, yet you want to easily retrieve 
 /**
  * Get the user's most recent order.
  */
-public function latestOrder()
+public function latestOrder(): HasOne
 {
     return $this->hasOne(Order::class)->latestOfMany();
 }
@@ -323,7 +328,7 @@ Likewise, you may define a method to retrieve the "oldest", or first, related mo
 /**
  * Get the user's oldest order.
  */
-public function oldestOrder()
+public function oldestOrder(): HasOne
 {
     return $this->hasOne(Order::class)->oldestOfMany();
 }
@@ -337,17 +342,40 @@ For example, using the `ofMany` method, you may retrieve the user's most expensi
 /**
  * Get the user's largest order.
  */
-public function largestOrder()
+public function largestOrder(): HasOne
 {
     return $this->hasOne(Order::class)->ofMany('price', 'max');
 }
 ```
 
-> **Warning**  
+> [!WARNING]  
 > Because PostgreSQL does not support executing the `MAX` function against UUID columns, it is not currently possible to use one-of-many relationships in combination with PostgreSQL UUID columns.
 
+<a name="converting-many-relationships-to-has-one-relationships"></a>
+#### Converting "Many" Relationships to Has One Relationships
+
+Often, when retrieving a single model using the `latestOfMany`, `oldestOfMany`, or `ofMany` methods, you already have a "has many" relationship defined for the same model. For convenience, Laravel allows you to easily convert this relationship into a "has one" relationship by invoking the `one` method on the relationship:
+
+```php
+/**
+ * Get the user's orders.
+ */
+public function orders(): HasMany
+{
+    return $this->hasMany(Order::class);
+}
+
+/**
+ * Get the user's largest order.
+ */
+public function largestOrder(): HasOne
+{
+    return $this->orders()->one()->ofMany('price', 'max');
+}
+```
+
 <a name="advanced-has-one-of-many-relationships"></a>
-#### Advanced Has One Of Many Relationships
+#### Advanced Has One of Many Relationships
 
 It is possible to construct more advanced "has one of many" relationships. For example, a `Product` model may have many associated `Price` models that are retained in the system even after new pricing is published. In addition, new pricing data for the product may be able to be published in advance to take effect at a future date via a `published_at` column.
 
@@ -357,12 +385,12 @@ So, in summary, we need to retrieve the latest published pricing where the publi
 /**
  * Get the current pricing for the product.
  */
-public function currentPricing()
+public function currentPricing(): HasOne
 {
     return $this->hasOne(Price::class)->ofMany([
         'published_at' => 'max',
         'id' => 'max',
-    ], function ($query) {
+    ], function (Builder $query) {
         $query->where('published_at', '<', now());
     });
 }
@@ -396,19 +424,30 @@ Now that we have examined the table structure for the relationship, let's define
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
     class Mechanic extends Model
     {
         /**
          * Get the car's owner.
          */
-        public function carOwner()
+        public function carOwner(): HasOneThrough
         {
             return $this->hasOneThrough(Owner::class, Car::class);
         }
     }
 
 The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
+
+Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-one-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Mechanic` model has a `cars` relationship and the `Car` model has an `owner` relationship, you may define a "has-one-through" relationship connecting the mechanic and the owner like so:
+
+```php
+// String based syntax...
+return $this->through('cars')->has('owner');
+
+// Dynamic syntax...
+return $this->throughCars()->hasOwner();
+```
 
 <a name="has-one-through-key-conventions"></a>
 #### Key Conventions
@@ -420,7 +459,7 @@ Typical Eloquent foreign key conventions will be used when performing the relati
         /**
          * Get the car's owner.
          */
-        public function carOwner()
+        public function carOwner(): HasOneThrough
         {
             return $this->hasOneThrough(
                 Owner::class,
@@ -432,6 +471,16 @@ Typical Eloquent foreign key conventions will be used when performing the relati
             );
         }
     }
+
+Or, as discussed earlier, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-one-through" relationship by invoking the `through` method and supplying the names of those relationships. This approach offers the advantage of reusing the key conventions already defined on the existing relationships:
+
+```php
+// String based syntax...
+return $this->through('cars')->has('owner');
+
+// Dynamic syntax...
+return $this->throughCars()->hasOwner();
+```
 
 <a name="has-many-through"></a>
 ### Has Many Through
@@ -459,19 +508,30 @@ Now that we have examined the table structure for the relationship, let's define
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
     class Project extends Model
     {
         /**
          * Get all of the deployments for the project.
          */
-        public function deployments()
+        public function deployments(): HasManyThrough
         {
             return $this->hasManyThrough(Deployment::class, Environment::class);
         }
     }
 
 The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
+
+Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-many-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Project` model has a `environments` relationship and the `Environment` model has a `deployments` relationship, you may define a "has-many-through" relationship connecting the project and the deployments like so:
+
+```php
+// String based syntax...
+return $this->through('environments')->has('deployments');
+
+// Dynamic syntax...
+return $this->throughEnvironments()->hasDeployments();
+```
 
 Though the `Deployment` model's table does not contain a `project_id` column, the `hasManyThrough` relation provides access to a project's deployments via `$project->deployments`. To retrieve these models, Eloquent inspects the `project_id` column on the intermediate `Environment` model's table. After finding the relevant environment IDs, they are used to query the `Deployment` model's table.
 
@@ -482,7 +542,7 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 
     class Project extends Model
     {
-        public function deployments()
+        public function deployments(): HasManyThrough
         {
             return $this->hasManyThrough(
                 Deployment::class,
@@ -495,8 +555,18 @@ Typical Eloquent foreign key conventions will be used when performing the relati
         }
     }
 
+Or, as discussed earlier, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-many-through" relationship by invoking the `through` method and supplying the names of those relationships. This approach offers the advantage of reusing the key conventions already defined on the existing relationships:
+
+```php
+// String based syntax...
+return $this->through('environments')->has('deployments');
+
+// Dynamic syntax...
+return $this->throughEnvironments()->hasDeployments();
+```
+
 <a name="many-to-many"></a>
-## Many To Many Relationships
+## Many to Many Relationships
 
 Many-to-many relations are slightly more complicated than `hasOne` and `hasMany` relationships. An example of a many-to-many relationship is a user that has many roles and those roles are also shared by other users in the application. For example, a user may be assigned the role of "Author" and "Editor"; however, those roles may also be assigned to other users as well. So, a user has many roles and a role has many users.
 
@@ -529,13 +599,14 @@ Many-to-many relationships are defined by writing a method that returns the resu
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
     class User extends Model
     {
         /**
          * The roles that belong to the user.
          */
-        public function roles()
+        public function roles(): BelongsToMany
         {
             return $this->belongsToMany(Role::class);
         }
@@ -548,7 +619,7 @@ Once the relationship is defined, you may access the user's roles using the `rol
     $user = User::find(1);
 
     foreach ($user->roles as $role) {
-        //
+        // ...
     }
 
 Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `roles` method and continuing to chain conditions onto the query:
@@ -564,7 +635,7 @@ In addition to customizing the name of the intermediate table, you may also cust
     return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
 
 <a name="many-to-many-defining-the-inverse-of-the-relationship"></a>
-#### Defining The Inverse Of The Relationship
+#### Defining the Inverse of the Relationship
 
 To define the "inverse" of a many-to-many relationship, you should define a method on the related model which also returns the result of the `belongsToMany` method. To complete our user / role example, let's define the `users` method on the `Role` model:
 
@@ -573,13 +644,14 @@ To define the "inverse" of a many-to-many relationship, you should define a meth
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
     class Role extends Model
     {
         /**
          * The users that belong to the role.
          */
-        public function users()
+        public function users(): BelongsToMany
         {
             return $this->belongsToMany(User::class);
         }
@@ -610,11 +682,11 @@ If you would like your intermediate table to have `created_at` and `updated_at` 
 
     return $this->belongsToMany(Role::class)->withTimestamps();
 
-> **Warning**  
+> [!WARNING]  
 > Intermediate tables that utilize Eloquent's automatically maintained timestamps are required to have both `created_at` and `updated_at` timestamp columns.
 
 <a name="customizing-the-pivot-attribute-name"></a>
-#### Customizing The `pivot` Attribute Name
+#### Customizing the `pivot` Attribute Name
 
 As noted previously, attributes from the intermediate table may be accessed on models via the `pivot` attribute. However, you are free to customize the name of this attribute to better reflect its purpose within your application.
 
@@ -633,7 +705,7 @@ Once the custom intermediate table attribute has been specified, you may access 
     }
 
 <a name="filtering-queries-via-intermediate-table-columns"></a>
-### Filtering Queries Via Intermediate Table Columns
+### Filtering Queries via Intermediate Table Columns
 
 You can also filter the results returned by `belongsToMany` relationship queries using the `wherePivot`, `wherePivotIn`, `wherePivotNotIn`, `wherePivotBetween`, `wherePivotNotBetween`, `wherePivotNull`, and `wherePivotNotNull` methods when defining the relationship:
 
@@ -662,6 +734,15 @@ You can also filter the results returned by `belongsToMany` relationship queries
                     ->as('subscriptions')
                     ->wherePivotNotNull('expired_at');
 
+<a name="ordering-queries-via-intermediate-table-columns"></a>
+### Ordering Queries via Intermediate Table Columns
+
+You can order the results returned by `belongsToMany` relationship queries using the `orderByPivot` method. In the following example, we will retrieve all of the latest badges for the user:
+
+    return $this->belongsToMany(Badge::class)
+                    ->where('rank', 'gold')
+                    ->orderByPivot('created_at', 'desc');
+
 <a name="defining-custom-intermediate-table-models"></a>
 ### Defining Custom Intermediate Table Models
 
@@ -674,13 +755,14 @@ Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
     class Role extends Model
     {
         /**
          * The users that belong to the role.
          */
-        public function users()
+        public function users(): BelongsToMany
         {
             return $this->belongsToMany(User::class)->using(RoleUser::class);
         }
@@ -696,14 +778,14 @@ When defining the `RoleUser` model, you should extend the `Illuminate\Database\E
 
     class RoleUser extends Pivot
     {
-        //
+        // ...
     }
 
-> **Warning**  
+> [!WARNING]  
 > Pivot models may not use the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model.
 
 <a name="custom-pivot-models-and-incrementing-ids"></a>
-#### Custom Pivot Models And Incrementing IDs
+#### Custom Pivot Models and Incrementing IDs
 
 If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class defines an `incrementing` property that is set to `true`.
 
@@ -720,7 +802,7 @@ If you have defined a many-to-many relationship that uses a custom pivot model, 
 A polymorphic relationship allows the child model to belong to more than one type of model using a single association. For example, imagine you are building an application that allows users to share blog posts and videos. In such an application, a `Comment` model might belong to both the `Post` and `Video` models.
 
 <a name="one-to-one-polymorphic-relations"></a>
-### One To One (Polymorphic)
+### One to One (Polymorphic)
 
 <a name="one-to-one-polymorphic-table-structure"></a>
 #### Table Structure
@@ -753,42 +835,49 @@ Next, let's examine the model definitions needed to build this relationship:
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
 
     class Image extends Model
     {
         /**
          * Get the parent imageable model (user or post).
          */
-        public function imageable()
+        public function imageable(): MorphTo
         {
             return $this->morphTo();
         }
     }
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphOne;
 
     class Post extends Model
     {
         /**
          * Get the post's image.
          */
-        public function image()
+        public function image(): MorphOne
         {
             return $this->morphOne(Image::class, 'imageable');
         }
     }
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphOne;
 
     class User extends Model
     {
         /**
          * Get the user's image.
          */
-        public function image()
+        public function image(): MorphOne
         {
             return $this->morphOne(Image::class, 'imageable');
         }
     }
 
 <a name="one-to-one-polymorphic-retrieving-the-relationship"></a>
-#### Retrieving The Relationship
+#### Retrieving the Relationship
 
 Once your database table and models are defined, you may access the relationships via your models. For example, to retrieve the image for a post, we can access the `image` dynamic relationship property:
 
@@ -816,13 +905,13 @@ If necessary, you may specify the name of the "id" and "type" columns utilized b
     /**
      * Get the model that the image belongs to.
      */
-    public function imageable()
+    public function imageable(): MorphTo
     {
         return $this->morphTo(__FUNCTION__, 'imageable_type', 'imageable_id');
     }
 
 <a name="one-to-many-polymorphic-relations"></a>
-### One To Many (Polymorphic)
+### One to Many (Polymorphic)
 
 <a name="one-to-many-polymorphic-table-structure"></a>
 #### Table Structure
@@ -855,42 +944,49 @@ Next, let's examine the model definitions needed to build this relationship:
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
 
     class Comment extends Model
     {
         /**
          * Get the parent commentable model (post or video).
          */
-        public function commentable()
+        public function commentable(): MorphTo
         {
             return $this->morphTo();
         }
     }
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphMany;
 
     class Post extends Model
     {
         /**
          * Get all of the post's comments.
          */
-        public function comments()
+        public function comments(): MorphMany
         {
             return $this->morphMany(Comment::class, 'commentable');
         }
     }
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphMany;
 
     class Video extends Model
     {
         /**
          * Get all of the video's comments.
          */
-        public function comments()
+        public function comments(): MorphMany
         {
             return $this->morphMany(Comment::class, 'commentable');
         }
     }
 
 <a name="one-to-many-polymorphic-retrieving-the-relationship"></a>
-#### Retrieving The Relationship
+#### Retrieving the Relationship
 
 Once your database table and models are defined, you may access the relationships via your model's dynamic relationship properties. For example, to access all of the comments for a post, we can use the `comments` dynamic property:
 
@@ -899,7 +995,7 @@ Once your database table and models are defined, you may access the relationship
     $post = Post::find(1);
 
     foreach ($post->comments as $comment) {
-        //
+        // ...
     }
 
 You may also retrieve the parent of a polymorphic child model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `commentable` method on the `Comment` model. So, we will access that method as a dynamic relationship property in order to access the comment's parent model:
@@ -913,7 +1009,7 @@ You may also retrieve the parent of a polymorphic child model by accessing the n
 The `commentable` relation on the `Comment` model will return either a `Post` or `Video` instance, depending on which type of model is the comment's parent.
 
 <a name="one-of-many-polymorphic-relations"></a>
-### One Of Many (Polymorphic)
+### One of Many (Polymorphic)
 
 Sometimes a model may have many related models, yet you want to easily retrieve the "latest" or "oldest" related model of the relationship. For example, a `User` model may be related to many `Image` models, but you want to define a convenient way to interact with the most recent image the user has uploaded. You may accomplish this using the `morphOne` relationship type combined with the `ofMany` methods:
 
@@ -921,7 +1017,7 @@ Sometimes a model may have many related models, yet you want to easily retrieve 
 /**
  * Get the user's most recent image.
  */
-public function latestImage()
+public function latestImage(): MorphOne
 {
     return $this->morphOne(Image::class, 'imageable')->latestOfMany();
 }
@@ -933,7 +1029,7 @@ Likewise, you may define a method to retrieve the "oldest", or first, related mo
 /**
  * Get the user's oldest image.
  */
-public function oldestImage()
+public function oldestImage(): MorphOne
 {
     return $this->morphOne(Image::class, 'imageable')->oldestOfMany();
 }
@@ -947,17 +1043,17 @@ For example, using the `ofMany` method, you may retrieve the user's most "liked"
 /**
  * Get the user's most popular image.
  */
-public function bestImage()
+public function bestImage(): MorphOne
 {
     return $this->morphOne(Image::class, 'imageable')->ofMany('likes', 'max');
 }
 ```
 
-> **Note**  
+> [!NOTE]  
 > It is possible to construct more advanced "one of many" relationships. For more information, please consult the [has one of many documentation](#advanced-has-one-of-many-relationships).
 
 <a name="many-to-many-polymorphic-relations"></a>
-### Many To Many (Polymorphic)
+### Many to Many (Polymorphic)
 
 <a name="many-to-many-polymorphic-table-structure"></a>
 #### Table Structure
@@ -981,7 +1077,7 @@ Many-to-many polymorphic relations are slightly more complicated than "morph one
         taggable_id - integer
         taggable_type - string
 
-> **Note**  
+> [!NOTE]  
 > Before diving into polymorphic many-to-many relationships, you may benefit from reading the documentation on typical [many-to-many relationships](#many-to-many).
 
 <a name="many-to-many-polymorphic-model-structure"></a>
@@ -996,20 +1092,21 @@ The `morphToMany` method accepts the name of the related model as well as the "r
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
     class Post extends Model
     {
         /**
          * Get all of the tags for the post.
          */
-        public function tags()
+        public function tags(): MorphToMany
         {
             return $this->morphToMany(Tag::class, 'taggable');
         }
     }
 
 <a name="many-to-many-polymorphic-defining-the-inverse-of-the-relationship"></a>
-#### Defining The Inverse Of The Relationship
+#### Defining the Inverse of the Relationship
 
 Next, on the `Tag` model, you should define a method for each of its possible parent models. So, in this example, we will define a `posts` method and a `videos` method. Both of these methods should return the result of the `morphedByMany` method.
 
@@ -1020,13 +1117,14 @@ The `morphedByMany` method accepts the name of the related model as well as the 
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
     class Tag extends Model
     {
         /**
          * Get all of the posts that are assigned this tag.
          */
-        public function posts()
+        public function posts(): MorphToMany
         {
             return $this->morphedByMany(Post::class, 'taggable');
         }
@@ -1034,14 +1132,14 @@ The `morphedByMany` method accepts the name of the related model as well as the 
         /**
          * Get all of the videos that are assigned this tag.
          */
-        public function videos()
+        public function videos(): MorphToMany
         {
             return $this->morphedByMany(Video::class, 'taggable');
         }
     }
 
 <a name="many-to-many-polymorphic-retrieving-the-relationship"></a>
-#### Retrieving The Relationship
+#### Retrieving the Relationship
 
 Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you may use the `tags` dynamic relationship property:
 
@@ -1050,7 +1148,7 @@ Once your database table and models are defined, you may access the relationship
     $post = Post::find(1);
 
     foreach ($post->tags as $tag) {
-        //
+        // ...
     }
 
 You may retrieve the parent of a polymorphic relation from the polymorphic child model by accessing the name of the method that performs the call to `morphedByMany`. In this case, that is the `posts` or `videos` methods on the `Tag` model:
@@ -1060,11 +1158,11 @@ You may retrieve the parent of a polymorphic relation from the polymorphic child
     $tag = Tag::find(1);
 
     foreach ($tag->posts as $post) {
-        //
+        // ...
     }
 
     foreach ($tag->videos as $video) {
-        //
+        // ...
     }
 
 <a name="custom-polymorphic-types"></a>
@@ -1091,7 +1189,7 @@ You may determine the morph alias of a given model at runtime using the model's 
 
     $class = Relation::getMorphedModel($alias);
 
-> **Warning**  
+> [!WARNING]  
 > When adding a "morph map" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its "map" name.
 
 <a name="dynamic-relationships"></a>
@@ -1104,11 +1202,11 @@ The `resolveRelationUsing` method accepts the desired relationship name as its f
     use App\Models\Order;
     use App\Models\Customer;
 
-    Order::resolveRelationUsing('customer', function ($orderModel) {
+    Order::resolveRelationUsing('customer', function (Order $orderModel) {
         return $orderModel->belongsTo(Customer::class, 'customer_id');
     });
 
-> **Warning**  
+> [!WARNING]  
 > When defining dynamic relationships, always provide explicit key name arguments to the Eloquent relationship methods.
 
 <a name="querying-relations"></a>
@@ -1123,13 +1221,14 @@ For example, imagine a blog application in which a `User` model has many associa
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
 
     class User extends Model
     {
         /**
          * Get all of the posts for the user.
          */
-        public function posts()
+        public function posts(): HasMany
         {
             return $this->hasMany(Post::class);
         }
@@ -1155,7 +1254,7 @@ As demonstrated in the example above, you are free to add additional constraints
             ->orWhere('votes', '>=', 100)
             ->get();
 
-The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return _any_ user with greater than 100 votes. The query is no longer constrained to a specific user:
+The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return _any_ post with greater than 100 votes. The query is no longer constrained to a specific user:
 
 ```sql
 select *
@@ -1183,7 +1282,7 @@ where user_id = ? and (active = 1 or votes >= 100)
 ```
 
 <a name="relationship-methods-vs-dynamic-properties"></a>
-### Relationship Methods Vs. Dynamic Properties
+### Relationship Methods vs. Dynamic Properties
 
 If you do not need to add additional constraints to an Eloquent relationship query, you may access the relationship as if it were a property. For example, continuing to use our `User` and `Post` example models, we may access all of a user's posts like so:
 
@@ -1192,7 +1291,7 @@ If you do not need to add additional constraints to an Eloquent relationship que
     $user = User::find(1);
 
     foreach ($user->posts as $post) {
-        //
+        // ...
     }
 
 Dynamic relationship properties perform "lazy loading", meaning they will only load their relationship data when you actually access them. Because of this, developers often use [eager loading](#eager-loading) to pre-load relationships they know will be accessed after loading the model. Eager loading provides a significant reduction in SQL queries that must be executed to load a model's relations.
@@ -1231,7 +1330,7 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
         $query->where('content', 'like', 'code%');
     }, '>=', 10)->get();
 
-> **Warning**  
+> [!WARNING]  
 > Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database.
 
 <a name="inline-relationship-existence-queries"></a>
@@ -1309,7 +1408,7 @@ You may occasionally need to add query constraints based on the "type" of the re
     $comments = Comment::whereHasMorph(
         'commentable',
         [Post::class, Video::class],
-        function (Builder $query, $type) {
+        function (Builder $query, string $type) {
             $column = $type === Post::class ? 'content' : 'title';
 
             $query->where($column, 'like', 'code%');
@@ -1379,12 +1478,12 @@ Using the `loadCount` method, you may load a relationship count after the parent
 
 If you need to set additional query constraints on the count query, you may pass an array keyed by the relationships you wish to count. The array values should be closures which receive the query builder instance:
 
-    $book->loadCount(['reviews' => function ($query) {
+    $book->loadCount(['reviews' => function (Builder $query) {
         $query->where('rating', 5);
     }])
 
 <a name="relationship-counting-and-custom-select-statements"></a>
-#### Relationship Counting & Custom Select Statements
+#### Relationship Counting and Custom Select Statements
 
 If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
 
@@ -1426,7 +1525,7 @@ If you're combining these aggregate methods with a `select` statement, ensure th
                     ->get();
 
 <a name="counting-related-models-on-morph-to-relationships"></a>
-### Counting Related Models On Morph To Relationships
+### Counting Related Models on Morph To Relationships
 
 If you would like to eager load a "morph to" relationship, as well as related model counts for the various entities that may be returned by that relationship, you may utilize the `with` method in combination with the `morphTo` relationship's `morphWithCount` method.
 
@@ -1466,13 +1565,14 @@ When accessing Eloquent relationships as properties, the related models are "laz
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
     class Book extends Model
     {
         /**
          * Get the author that wrote the book.
          */
-        public function author()
+        public function author(): BelongsTo
         {
             return $this->belongsTo(Author::class);
         }
@@ -1537,13 +1637,14 @@ If you would like to eager load a `morphTo` relationship, as well as nested rela
     <?php
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
 
     class ActivityFeed extends Model
     {
         /**
          * Get the parent of the activity feed record.
          */
-        public function parentable()
+        public function parentable(): MorphTo
         {
             return $this->morphTo();
         }
@@ -1571,11 +1672,11 @@ You may not always need every column from the relationships you are retrieving. 
 
     $books = Book::with('author:id,name,book_id')->get();
 
-> **Warning**  
+> [!WARNING]  
 > When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
 
 <a name="eager-loading-by-default"></a>
-#### Eager Loading By Default
+#### Eager Loading by Default
 
 Sometimes you might want to always load some relationships when retrieving a model. To accomplish this, you may define a `$with` property on the model:
 
@@ -1584,6 +1685,7 @@ Sometimes you might want to always load some relationships when retrieving a mod
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
     class Book extends Model
     {
@@ -1597,7 +1699,7 @@ Sometimes you might want to always load some relationships when retrieving a mod
         /**
          * Get the author that wrote the book.
          */
-        public function author()
+        public function author(): BelongsTo
         {
             return $this->belongsTo(Author::class);
         }
@@ -1605,7 +1707,7 @@ Sometimes you might want to always load some relationships when retrieving a mod
         /**
          * Get the genre of the book.
          */
-        public function genre()
+        public function genre(): BelongsTo
         {
             return $this->belongsTo(Genre::class);
         }
@@ -1625,34 +1727,31 @@ If you would like to override all items within the `$with` property for a single
 Sometimes you may wish to eager load a relationship but also specify additional query conditions for the eager loading query. You can accomplish this by passing an array of relationships to the `with` method where the array key is a relationship name and the array value is a closure that adds additional constraints to the eager loading query:
 
     use App\Models\User;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
-    $users = User::with(['posts' => function ($query) {
+    $users = User::with(['posts' => function (Builder $query) {
         $query->where('title', 'like', '%code%');
     }])->get();
 
 In this example, Eloquent will only eager load posts where the post's `title` column contains the word `code`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
 
-    $users = User::with(['posts' => function ($query) {
+    $users = User::with(['posts' => function (Builder $query) {
         $query->orderBy('created_at', 'desc');
     }])->get();
 
-> **Warning**  
-> The `limit` and `take` query builder methods may not be used when constraining eager loads.
-
 <a name="constraining-eager-loading-of-morph-to-relationships"></a>
-#### Constraining Eager Loading Of `morphTo` Relationships
+#### Constraining Eager Loading of `morphTo` Relationships
 
 If you are eager loading a `morphTo` relationship, Eloquent will run multiple queries to fetch each type of related model. You may add additional constraints to each of these queries using the `MorphTo` relation's `constrain` method:
 
-    use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Relations\MorphTo;
 
     $comments = Comment::with(['commentable' => function (MorphTo $morphTo) {
         $morphTo->constrain([
-            Post::class => function (Builder $query) {
+            Post::class => function ($query) {
                 $query->whereNull('hidden_at');
             },
-            Video::class => function (Builder $query) {
+            Video::class => function ($query) {
                 $query->where('type', 'educational');
             },
         ]);
@@ -1666,7 +1765,7 @@ In this example, Eloquent will only eager load posts that have not been hidden a
 You may sometimes find yourself needing to check for the existence of a relationship while simultaneously loading the relationship based on the same conditions. For example, you may wish to only retrieve `User` models that have child `Post` models matching a given query condition while also eager loading the matching posts. You may accomplish this using the `withWhereHas` method:
 
     use App\Models\User;
-  
+
     $users = User::withWhereHas('posts', function ($query) {
         $query->where('featured', true);
     })->get();
@@ -1686,7 +1785,7 @@ Sometimes you may need to eager load a relationship after the parent model has a
 
 If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be closure instances which receive the query instance:
 
-    $author->load(['books' => function ($query) {
+    $author->load(['books' => function (Builder $query) {
         $query->orderBy('published_date', 'asc');
     }]);
 
@@ -1695,7 +1794,7 @@ To load a relationship only when it has not already been loaded, use the `loadMi
     $book->loadMissing('author');
 
 <a name="nested-lazy-eager-loading-morphto"></a>
-#### Nested Lazy Eager Loading & `morphTo`
+#### Nested Lazy Eager Loading and `morphTo`
 
 If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `loadMorph` method.
 
@@ -1704,13 +1803,14 @@ This method accepts the name of the `morphTo` relationship as its first argument
     <?php
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
 
     class ActivityFeed extends Model
     {
         /**
          * Get the parent of the activity feed record.
          */
-        public function parentable()
+        public function parentable(): MorphTo
         {
             return $this->morphTo();
         }
@@ -1740,10 +1840,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Model::preventLazyLoading(! $this->app->isProduction());
 }
@@ -1754,15 +1852,15 @@ After preventing lazy loading, Eloquent will throw a `Illuminate\Database\LazyLo
 You may customize the behavior of lazy loading violations using the `handleLazyLoadingViolationsUsing` method. For example, using this method, you may instruct lazy loading violations to only be logged instead of interrupting the application's execution with exceptions:
 
 ```php
-Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
-    $class = get_class($model);
+Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {
+    $class = $model::class;
 
     info("Attempted to lazy load [{$relation}] on model [{$class}].");
 });
 ```
 
 <a name="inserting-and-updating-related-models"></a>
-## Inserting & Updating Related Models
+## Inserting and Updating Related Models
 
 <a name="the-save-method"></a>
 ### The `save` Method
@@ -1799,7 +1897,7 @@ The `save` and `saveMany` methods will persist the given model instances, but wi
     $post->comments;
 
 <a name="the-push-method"></a>
-#### Recursively Saving Models & Relationships
+#### Recursively Saving Models and Relationships
 
 If you would like to `save` your model and all of its associated relationships, you may use the `push` method. In this example, the `Post` model will be saved as well as its comments and the comment's authors:
 
@@ -1809,6 +1907,10 @@ If you would like to `save` your model and all of its associated relationships, 
     $post->comments[0]->author->name = 'Author Name';
 
     $post->push();
+
+The `pushQuietly` method may be used to save a model and its associated relationships without raising any events:
+
+    $post->pushQuietly();
 
 <a name="the-create-method"></a>
 ### The `create` Method
@@ -1832,9 +1934,22 @@ You may use the `createMany` method to create multiple related models:
         ['message' => 'Another new comment.'],
     ]);
 
+The `createQuietly` and `createManyQuietly` methods may be used to create a model(s) without dispatching any events:
+
+    $user = User::find(1);
+
+    $user->posts()->createQuietly([
+        'title' => 'Post title.',
+    ]);
+    
+    $user->posts()->createManyQuietly([
+        ['title' => 'First post.'],
+        ['title' => 'Second post.'],
+    ]);
+
 You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](/docs/{{version}}/eloquent#upserts).
 
-> **Note**  
+> [!NOTE]  
 > Before using the `create` method, be sure to review the [mass assignment](/docs/{{version}}/eloquent#mass-assignment) documentation.
 
 <a name="updating-belongs-to-relationships"></a>
@@ -1857,7 +1972,7 @@ To remove a parent model from a child model, you may use the `dissociate` method
     $user->save();
 
 <a name="updating-many-to-many-relationships"></a>
-### Many To Many Relationships
+### Many to Many Relationships
 
 <a name="attaching-detaching"></a>
 #### Attaching / Detaching
@@ -1919,8 +2034,15 @@ The many-to-many relationship also provides a `toggle` method which "toggles" th
 
     $user->roles()->toggle([1, 2, 3]);
 
+You may also pass additional intermediate table values with the IDs:
+
+    $user->roles()->toggle([
+        1 => ['expires' => true],
+        2 => ['expires' => true],
+    ]);
+
 <a name="updating-a-record-on-the-intermediate-table"></a>
-#### Updating A Record On The Intermediate Table
+#### Updating a Record on the Intermediate Table
 
 If you need to update an existing row in your relationship's intermediate table, you may use the `updateExistingPivot` method. This method accepts the intermediate record foreign key and an array of attributes to update:
 
@@ -1942,6 +2064,7 @@ For example, when a `Comment` model is updated, you may want to automatically "t
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
     class Comment extends Model
     {
@@ -1955,11 +2078,11 @@ For example, when a `Comment` model is updated, you may want to automatically "t
         /**
          * Get the post that the comment belongs to.
          */
-        public function post()
+        public function post(): BelongsTo
         {
             return $this->belongsTo(Post::class);
         }
     }
 
-> **Warning**  
+> [!WARNING]  
 > Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method.

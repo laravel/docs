@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Success / Failure Expectations](#success-failure-expectations)
 - [Input / Output Expectations](#input-output-expectations)
+- [Console Events](#console-events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -14,15 +15,21 @@ In addition to simplifying HTTP testing, Laravel provides a simple API for testi
 
 To get started, let's explore how to make assertions regarding an Artisan command's exit code. To accomplish this, we will use the `artisan` method to invoke an Artisan command from our test. Then, we will use the `assertExitCode` method to assert that the command completed with a given exit code:
 
-    /**
-     * Test a console command.
-     *
-     * @return void
-     */
-    public function test_console_command()
-    {
-        $this->artisan('inspire')->assertExitCode(0);
-    }
+```php tab=Pest
+test('console command', function () {
+    $this->artisan('inspire')->assertExitCode(0);
+});
+```
+
+```php tab=PHPUnit
+/**
+ * Test a console command.
+ */
+public function test_console_command(): void
+{
+    $this->artisan('inspire')->assertExitCode(0);
+}
+```
 
 You may use the `assertNotExitCode` method to assert that the command did not exit with a given exit code:
 
@@ -51,22 +58,37 @@ Laravel allows you to easily "mock" user input for your console commands using t
         $this->line('Your name is '.$name.' and you prefer '.$language.'.');
     });
 
-You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, `doesntExpectOutput`, and `assertExitCode` methods:
+You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, `doesntExpectOutput`, `expectsOutputToContain`, `doesntExpectOutputToContain`, and `assertExitCode` methods:
 
-    /**
-     * Test a console command.
-     *
-     * @return void
-     */
-    public function test_console_command()
-    {
-        $this->artisan('question')
-             ->expectsQuestion('What is your name?', 'Taylor Otwell')
-             ->expectsQuestion('Which language do you prefer?', 'PHP')
-             ->expectsOutput('Your name is Taylor Otwell and you prefer PHP.')
-             ->doesntExpectOutput('Your name is Taylor Otwell and you prefer Ruby.')
-             ->assertExitCode(0);
-    }
+```php tab=Pest
+test('console command', function () {
+    $this->artisan('question')
+         ->expectsQuestion('What is your name?', 'Taylor Otwell')
+         ->expectsQuestion('Which language do you prefer?', 'PHP')
+         ->expectsOutput('Your name is Taylor Otwell and you prefer PHP.')
+         ->doesntExpectOutput('Your name is Taylor Otwell and you prefer Ruby.')
+         ->expectsOutputToContain('Taylor Otwell')
+         ->doesntExpectOutputToContain('you prefer Ruby')
+         ->assertExitCode(0);
+});
+```
+
+```php tab=PHPUnit
+/**
+ * Test a console command.
+ */
+public function test_console_command(): void
+{
+    $this->artisan('question')
+         ->expectsQuestion('What is your name?', 'Taylor Otwell')
+         ->expectsQuestion('Which language do you prefer?', 'PHP')
+         ->expectsOutput('Your name is Taylor Otwell and you prefer PHP.')
+         ->doesntExpectOutput('Your name is Taylor Otwell and you prefer Ruby.')
+         ->expectsOutputToContain('Taylor Otwell')
+         ->doesntExpectOutputToContain('you prefer Ruby')
+         ->assertExitCode(0);
+}
+```
 
 <a name="confirmation-expectations"></a>
 #### Confirmation Expectations
@@ -90,3 +112,34 @@ If your command displays a table of information using Artisan's `table` method, 
             [1, 'taylor@example.com'],
             [2, 'abigail@example.com'],
         ]);
+
+<a name="console-events"></a>
+## Console Events
+
+By default, the `Illuminate\Console\Events\CommandStarting` and `Illuminate\Console\Events\CommandFinished` events are not dispatched while running your application's tests. However, you can enable these events for a given test class by adding the `Illuminate\Foundation\Testing\WithConsoleEvents` trait to the class:
+
+```php tab=Pest
+<?php
+
+use Illuminate\Foundation\Testing\WithConsoleEvents;
+
+uses(WithConsoleEvents::class);
+
+// ...
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\WithConsoleEvents;
+use Tests\TestCase;
+
+class ConsoleEventTest extends TestCase
+{
+    use WithConsoleEvents;
+
+    // ...
+}
+```

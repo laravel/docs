@@ -10,19 +10,20 @@
     - [Serving a Default Site](#serving-a-default-site)
     - [Per-Site PHP Versions](#per-site-php-versions)
 - [Sharing Sites](#sharing-sites)
-    - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
-    - [Sharing Sites Via Expose](#sharing-sites-via-expose)
-    - [Sharing Sites On Your Local Network](#sharing-sites-on-your-local-network)
+    - [Sharing Sites on Your Local Network](#sharing-sites-on-your-local-network)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Proxying Services](#proxying-services)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
-- [Valet Directories & Files](#valet-directories-and-files)
+- [Valet Directories and Files](#valet-directories-and-files)
     - [Disk Access](#disk-access)
 
 <a name="introduction"></a>
 ## Introduction
+
+> [!NOTE]  
+> Looking for an even easier way to develop Laravel applications on macOS? Check out [Laravel Herd](https://herd.laravel.com). Herd includes everything you need to get started with Laravel development, including Valet, PHP, and Composer.
 
 [Laravel Valet](https://github.com/laravel/valet) is a development environment for macOS minimalists. Laravel Valet configures your Mac to always run [Nginx](https://www.nginx.com/) in the background when your machine starts. Then, using [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq), Valet proxies all requests on the `*.test` domain to point to sites installed on your local machine.
 
@@ -42,7 +43,7 @@ Out of the box, Valet support includes, but is not limited to:
 - [Laravel](https://laravel.com)
 - [Bedrock](https://roots.io/bedrock/)
 - [CakePHP 3](https://cakephp.org)
-- [Concrete5](https://www.concrete5.org/)
+- [ConcreteCMS](https://www.concretecms.com/)
 - [Contao](https://contao.org/en/)
 - [Craft](https://craftcms.com)
 - [Drupal](https://www.drupal.org/)
@@ -68,7 +69,7 @@ However, you may extend Valet with your own [custom drivers](#custom-valet-drive
 <a name="installation"></a>
 ## Installation
 
-> **Warning**  
+> [!WARNING]  
 > Valet requires macOS and [Homebrew](https://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.
 
 To get started, you first need to ensure that Homebrew is up to date using the `update` command:
@@ -83,7 +84,7 @@ Next, you should use Homebrew to install PHP:
 brew install php
 ```
 
-After installing PHP, you are ready to install the [Composer package manager](https://getcomposer.org). In addition, you should make sure the `~/.composer/vendor/bin` directory is in your system's "PATH". After Composer has been installed, you may install Laravel Valet as a global Composer package:
+After installing PHP, you are ready to install the [Composer package manager](https://getcomposer.org). In addition, you should make sure the `$HOME/.composer/vendor/bin` directory is in your system's "PATH". After Composer has been installed, you may install Laravel Valet as a global Composer package:
 
 ```shell
 composer global require laravel/valet
@@ -102,39 +103,55 @@ Valet will automatically start its required services each time your machine boot
 <a name="php-versions"></a>
 #### PHP Versions
 
+> [!NOTE]  
+> Instead of modifying your global PHP version, you can instruct Valet to use per-site PHP versions via the `isolate` [command](#per-site-php-versions).
+
 Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Homebrew if it is not already installed:
 
 ```shell
-valet use php@7.2
+valet use php@8.2
 
 valet use php
 ```
 
-You may also create a `.valetphprc` file in the root of your project. The `.valetphprc` file should contain the PHP version the site should use:
+You may also create a `.valetrc` file in the root of your project. The `.valetrc` file should contain the PHP version the site should use:
 
 ```shell
-php@7.2
+php=php@8.2
 ```
 
 Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
 
-> **Warning**  
+> [!WARNING]  
 > Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
 
 <a name="database"></a>
 #### Database
 
-If your application needs a database, check out [DBngin](https://dbngin.com). DBngin provides a free, all-in-one database management tool that includes MySQL, PostgreSQL, and Redis. After DBngin has been installed, you can connect to your database at `127.0.0.1` using the `root` username and an empty string for the password.
+If your application needs a database, check out [DBngin](https://dbngin.com), which provides a free, all-in-one database management tool that includes MySQL, PostgreSQL, and Redis. After DBngin has been installed, you can connect to your database at `127.0.0.1` using the `root` username and an empty string for the password.
 
 <a name="resetting-your-installation"></a>
 #### Resetting Your Installation
 
-If you are having trouble getting your Valet installation to run properly, executing the `composer global update` command followed by `valet install` will reset your installation and can solve a variety of problems. In rare cases, it may be necessary to "hard reset" Valet by executing `valet uninstall --force` followed by `valet install`.
+If you are having trouble getting your Valet installation to run properly, executing the `composer global require laravel/valet` command followed by `valet install` will reset your installation and can solve a variety of problems. In rare cases, it may be necessary to "hard reset" Valet by executing `valet uninstall --force` followed by `valet install`.
 
 <a name="upgrading-valet"></a>
 ### Upgrading Valet
 
-You may update your Valet installation by executing the `composer global update` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
+You may update your Valet installation by executing the `composer global require laravel/valet` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
+
+<a name="upgrading-to-valet-4"></a>
+#### Upgrading to Valet 4
+
+If you're upgrading from Valet 3 to Valet 4, take the following steps to properly upgrade your Valet installation:
+
+<div class="content-list" markdown="1">
+
+- If you've added `.valetphprc` files to customize your site's PHP version, rename each `.valetphprc` file to `.valetrc`. Then, prepend `php=` to the existing content of the `.valetrc` file.
+- Update any custom drivers to match the namespace, extension, type-hints, and return type-hints of the new driver system. You may consult Valet's [SampleValetDriver](https://github.com/laravel/valet/blob/d7787c025e60abc24a5195dc7d4c5c6f2d984339/cli/stubs/SampleValetDriver.php) as an example.
+- If you use PHP 7.1 - 7.4 to serve your sites, make sure you still use Homebrew to install a version of PHP that's 8.0 or higher, as Valet will use this version, even if it's not your primary linked version, to run some of its scripts.
+
+</div>
 
 <a name="serving-sites"></a>
 ## Serving Sites
@@ -211,7 +228,7 @@ valet unsecure laravel
 ```
 
 <a name="serving-a-default-site"></a>
-### Serving A Default Site
+### Serving a Default Site
 
 Sometimes, you may wish to configure Valet to serve a "default" site instead of a `404` when visiting an unknown `test` domain. To accomplish this, you may add a `default` option to your `~/.config/valet/config.json` configuration file containing the path to the site that should serve as your default site:
 
@@ -257,12 +274,17 @@ valet unisolate
 <a name="sharing-sites"></a>
 ## Sharing Sites
 
-Valet even includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
+Valet includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
 
-<a name="sharing-sites-via-ngrok"></a>
-### Sharing Sites Via Ngrok
+Out of the box, Valet supports sharing your sites via ngrok or Expose. Before sharing a site, you should update your Valet configuration using the `share-tool` command, specifying either `ngrok` or `expose`:
 
-To share a site, navigate to the site's directory in your terminal and run Valet's `share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser or share with your team:
+```shell
+valet share-tool ngrok
+```
+
+If you choose a tool and don't have it installed via Homebrew (for ngrok) or Composer (for Expose), Valet will automatically prompt you to install it. Of course, both tools require you to authenticate your ngrok or Expose account before you can start sharing sites.
+
+To share a site, navigate to the site's directory in your terminal and run Valet's `share` command. A publicly accessible URL will be placed into your clipboard and is ready to paste directly into your browser or to be shared with your team:
 
 ```shell
 cd ~/Sites/laravel
@@ -270,26 +292,32 @@ cd ~/Sites/laravel
 valet share
 ```
 
-To stop sharing your site, you may press `Control + C`. Sharing your site using Ngrok requires you to [create an Ngrok account](https://dashboard.ngrok.com/signup) and [setup an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken).
-
-> **Note**  
-> You may pass additional Ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
-
-<a name="sharing-sites-via-expose"></a>
-### Sharing Sites Via Expose
-
-If you have [Expose](https://expose.dev) installed, you can share your site by navigating to the site's directory in your terminal and running the `expose` command. Consult the [Expose documentation](https://expose.dev/docs) for information regarding the additional command-line parameters it supports. After sharing the site, Expose will display the sharable URL that you may use on your other devices or amongst team members:
-
-```shell
-cd ~/Sites/laravel
-
-expose
-```
-
 To stop sharing your site, you may press `Control + C`.
 
+> [!WARNING]  
+> If you're using a custom DNS server (like `1.1.1.1`), ngrok sharing may not work correctly. If this is the case on your machine, open your Mac's system settings, go to the Network settings, open the Advanced settings, then go the DNS tab and add `127.0.0.1` as your first DNS server.
+
+<a name="sharing-sites-via-ngrok"></a>
+#### Sharing Sites via Ngrok
+
+Sharing your site using ngrok requires you to [create an ngrok account](https://dashboard.ngrok.com/signup) and [set up an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken). Once you have an authentication token, you can update your Valet configuration with that token:
+
+```shell
+valet set-ngrok-token YOUR_TOKEN_HERE
+```
+
+> [!NOTE]  
+> You may pass additional ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
+
+<a name="sharing-sites-via-expose"></a>
+#### Sharing Sites via Expose
+
+Sharing your site using Expose requires you to [create an Expose account](https://expose.dev/register) and [authenticate with Expose via your authentication token](https://expose.dev/docs/getting-started/getting-your-token).
+
+You may consult the [Expose documentation](https://expose.dev/docs) for information regarding the additional command-line parameters it supports.
+
 <a name="sharing-sites-on-your-local-network"></a>
-### Sharing Sites On Your Local Network
+### Sharing Sites on Your Local Network
 
 Valet restricts incoming traffic to the internal `127.0.0.1` interface by default so that your development machine isn't exposed to security risks from the Internet.
 
@@ -365,13 +393,8 @@ For example, let's imagine we are writing a `WordPressValetDriver`. Our `serves`
 
     /**
      * Determine if the driver serves the request.
-     *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
-     * @return bool
      */
-    public function serves($sitePath, $siteName, $uri)
+    public function serves(string $sitePath, string $siteName, string $uri): bool
     {
         return is_dir($sitePath.'/wp-admin');
     }
@@ -384,12 +407,9 @@ The `isStaticFile` should determine if the incoming request is for a file that i
     /**
      * Determine if the incoming request is for a static file.
      *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
      * @return string|false
      */
-    public function isStaticFile($sitePath, $siteName, $uri)
+    public function isStaticFile(string $sitePath, string $siteName, string $uri)
     {
         if (file_exists($staticFilePath = $sitePath.'/public/'.$uri)) {
             return $staticFilePath;
@@ -398,7 +418,7 @@ The `isStaticFile` should determine if the incoming request is for a file that i
         return false;
     }
 
-> **Warning**  
+> [!WARNING]  
 > The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
 
 <a name="the-frontcontrollerpath-method"></a>
@@ -408,13 +428,8 @@ The `frontControllerPath` method should return the fully qualified path to your 
 
     /**
      * Get the fully resolved path to the application's front controller.
-     *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
-     * @return string
      */
-    public function frontControllerPath($sitePath, $siteName, $uri)
+    public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
     {
         return $sitePath.'/public/index.php';
     }
@@ -424,30 +439,22 @@ The `frontControllerPath` method should return the fully qualified path to your 
 
 If you would like to define a custom Valet driver for a single application, create a `LocalValetDriver.php` file in the application's root directory. Your custom driver may extend the base `ValetDriver` class or extend an existing application specific driver such as the `LaravelValetDriver`:
 
+    use Valet\Drivers\LaravelValetDriver;
+
     class LocalValetDriver extends LaravelValetDriver
     {
         /**
          * Determine if the driver serves the request.
-         *
-         * @param  string  $sitePath
-         * @param  string  $siteName
-         * @param  string  $uri
-         * @return bool
          */
-        public function serves($sitePath, $siteName, $uri)
+        public function serves(string $sitePath, string $siteName, string $uri): bool
         {
             return true;
         }
 
         /**
          * Get the fully resolved path to the application's front controller.
-         *
-         * @param  string  $sitePath
-         * @param  string  $siteName
-         * @param  string  $uri
-         * @return string
          */
-        public function frontControllerPath($sitePath, $siteName, $uri)
+        public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
         {
             return $sitePath.'/public_html/index.php';
         }
@@ -456,8 +463,13 @@ If you would like to define a custom Valet driver for a single application, crea
 <a name="other-valet-commands"></a>
 ## Other Valet Commands
 
+<div class="overflow-auto">
+
 Command  | Description
 ------------- | -------------
+`valet list` | Display a list of all Valet commands.
+`valet diagnose` | Output diagnostics to aid in debugging Valet.
+`valet directory-listing` | Determine directory-listing behavior. Default is "off", which renders a 404 page for directories.
 `valet forget` | Run this command from a "parked" directory to remove it from the parked directory list.
 `valet log` | View a list of logs which are written by Valet's services.
 `valet paths` | View all of your "parked" paths.
@@ -467,8 +479,10 @@ Command  | Description
 `valet trust` | Add sudoers files for Brew and Valet to allow Valet commands to be run without prompting for your password.
 `valet uninstall` | Uninstall Valet: shows instructions for manual uninstall. Pass the `--force` option to aggressively delete all of Valet's resources.
 
+</div>
+
 <a name="valet-directories-and-files"></a>
-## Valet Directories & Files
+## Valet Directories and Files
 
 You may find the following directory and file information helpful while troubleshooting issues with your Valet environment:
 
@@ -483,10 +497,6 @@ This directory contains DNSMasq's configuration.
 #### `~/.config/valet/Drivers/`
 
 This directory contains Valet's drivers. Drivers determine how a particular framework / CMS is served.
-
-#### `~/.config/valet/Extensions/`
-
-This directory contains custom Valet extensions / commands.
 
 #### `~/.config/valet/Nginx/`
 

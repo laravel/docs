@@ -23,12 +23,6 @@
 
 Laravel provides an expressive, minimal API around the [Guzzle HTTP client](http://docs.guzzlephp.org/en/stable/), allowing you to quickly make outgoing HTTP requests to communicate with other web applications. Laravel's wrapper around Guzzle is focused on its most common use cases and a wonderful developer experience.
 
-Before getting started, you should ensure that you have installed the Guzzle package as a dependency of your application. By default, Laravel automatically includes this dependency. However, if you have previously removed the package, you may install it again via Composer:
-
-```shell
-composer require guzzlehttp/guzzle
-```
-
 <a name="making-requests"></a>
 ## Making Requests
 
@@ -41,15 +35,13 @@ To make requests, you may use the `head`, `get`, `post`, `put`, `patch`, and `de
 The `get` method returns an instance of `Illuminate\Http\Client\Response`, which provides a variety of methods that may be used to inspect the response:
 
     $response->body() : string;
-    $response->json($key = null) : array|mixed;
+    $response->json($key = null, $default = null) : array|mixed;
     $response->object() : object;
     $response->collect($key = null) : Illuminate\Support\Collection;
     $response->status() : int;
-    $response->ok() : bool;
     $response->successful() : bool;
     $response->redirect(): bool;
     $response->failed() : bool;
-    $response->serverError() : bool;
     $response->clientError() : bool;
     $response->header($header) : string;
     $response->headers() : array;
@@ -57,6 +49,39 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
 The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
 
     return Http::get('http://example.com/users/1')['name'];
+
+In addition to the response methods listed above, the following methods may be used to determine if the response has a given status code:
+
+    $response->ok() : bool;                  // 200 OK
+    $response->created() : bool;             // 201 Created
+    $response->accepted() : bool;            // 202 Accepted
+    $response->noContent() : bool;           // 204 No Content
+    $response->movedPermanently() : bool;    // 301 Moved Permanently
+    $response->found() : bool;               // 302 Found
+    $response->badRequest() : bool;          // 400 Bad Request
+    $response->unauthorized() : bool;        // 401 Unauthorized
+    $response->paymentRequired() : bool;     // 402 Payment Required
+    $response->forbidden() : bool;           // 403 Forbidden
+    $response->notFound() : bool;            // 404 Not Found
+    $response->requestTimeout() : bool;      // 408 Request Timeout
+    $response->conflict() : bool;            // 409 Conflict
+    $response->unprocessableEntity() : bool; // 422 Unprocessable Entity
+    $response->tooManyRequests() : bool;     // 429 Too Many Requests
+    $response->serverError() : bool;         // 500 Internal Server Error
+
+<a name="uri-templates"></a>
+#### URI Templates
+
+The HTTP client also allows you to construct request URLs using the [URI template specification](https://www.rfc-editor.org/rfc/rfc6570). To define the URL parameters that can be expanded by your URI template, you may use the `withUrlParameters` method:
+
+```php
+Http::withUrlParameters([
+    'endpoint' => 'https://laravel.com',
+    'page' => 'docs',
+    'version' => '11.x',
+    'topic' => 'validation',
+])->get('{+endpoint}/{page}/{version}/{topic}');
+```
 
 <a name="dumping-requests"></a>
 #### Dumping Requests
@@ -87,6 +112,13 @@ When making `GET` requests, you may either append a query string to the URL dire
         'page' => 1,
     ]);
 
+Alternatively, the `withQueryParameters` method may be used:
+
+    Http::retry(3, 100)->withQueryParameters([
+        'name' => 'Taylor',
+        'page' => 1,
+    ])->get('http://example.com/users')
+
 <a name="sending-form-url-encoded-requests"></a>
 #### Sending Form URL Encoded Requests
 
@@ -98,7 +130,7 @@ If you would like to send data using the `application/x-www-form-urlencoded` con
     ]);
 
 <a name="sending-a-raw-request-body"></a>
-#### Sending A Raw Request Body
+#### Sending a Raw Request Body
 
 You may use the `withBody` method if you would like to provide a raw request body when making a request. The content type may be provided via the method's second argument:
 
@@ -109,10 +141,10 @@ You may use the `withBody` method if you would like to provide a raw request bod
 <a name="multi-part-requests"></a>
 #### Multi-Part Requests
 
-If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. If needed, you may provide a third argument which will be considered the file's filename:
+If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. If needed, you may provide a third argument which will be considered the file's filename, while a fourth argument may be used to provide headers associated with the file:
 
     $response = Http::attach(
-        'attachment', file_get_contents('photo.jpg'), 'photo.jpg'
+        'attachment', file_get_contents('photo.jpg'), 'photo.jpg', ['Content-Type' => 'image/jpeg']
     )->post('http://example.com/attachments');
 
 Instead of passing the raw contents of a file, you may pass a stream resource:
@@ -143,6 +175,18 @@ For convenience, you may use the `acceptJson` method to quickly specify that you
 
     $response = Http::acceptJson()->get('http://example.com/users');
 
+The `withHeaders` method merges new headers into the request's existing headers. If needed, you may replace all of the headers entirely using the `replaceHeaders` method:
+
+```php
+$response = Http::withHeaders([
+    'X-Original' => 'foo',
+])->replaceHeaders([
+    'X-Replacement' => 'bar',
+])->post('http://example.com/users', [
+    'name' => 'Taylor',
+]);
+```
+
 <a name="authentication"></a>
 ### Authentication
 
@@ -164,7 +208,7 @@ If you would like to quickly add a bearer token to the request's `Authorization`
 <a name="timeout"></a>
 ### Timeout
 
-The `timeout` method may be used to specify the maximum number of seconds to wait for a response:
+The `timeout` method may be used to specify the maximum number of seconds to wait for a response. By default, the HTTP client will timeout after 30 seconds:
 
     $response = Http::timeout(3)->get(/* ... */);
 
@@ -181,15 +225,34 @@ If you would like the HTTP client to automatically retry the request if a client
 
     $response = Http::retry(3, 100)->post(/* ... */);
 
+If you would like to manually calculate the number of milliseconds to sleep between attempts, you may pass a closure as the second argument to the `retry` method:
+
+    use Exception;
+
+    $response = Http::retry(3, function (int $attempt, Exception $exception) {
+        return $attempt * 100;
+    })->post(/* ... */);
+
+For convenience, you may also provide an array as the first argument to the `retry` method. This array will be used to determine how many milliseconds to sleep between subsequent attempts:
+
+    $response = Http::retry([100, 200])->post(/* ... */);
+
 If needed, you may pass a third argument to the `retry` method. The third argument should be a callable that determines if the retries should actually be attempted. For example, you may wish to only retry the request if the initial request encounters an `ConnectionException`:
 
-    $response = Http::retry(3, 100, function ($exception, $request) {
+    use Exception;
+    use Illuminate\Http\Client\PendingRequest;
+
+    $response = Http::retry(3, 100, function (Exception $exception, PendingRequest $request) {
         return $exception instanceof ConnectionException;
     })->post(/* ... */);
 
 If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying the request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:
 
-    $response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {
+    use Exception;
+    use Illuminate\Http\Client\PendingRequest;
+    use Illuminate\Http\Client\RequestException;
+
+    $response = Http::withToken($this->getToken())->retry(2, 0, function (Exception $exception, PendingRequest $request) {
         if (! $exception instanceof RequestException || $exception->response->status() !== 401) {
             return false;
         }
@@ -203,7 +266,7 @@ If all of the requests fail, an instance of `Illuminate\Http\Client\RequestExcep
 
     $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 
-> **Warning**  
+> [!WARNING]  
 > If all of the requests fail because of a connection issue, a `Illuminate\Http\Client\ConnectionException` will still be thrown even when the `throw` argument is set to `false`.
 
 <a name="error-handling"></a>
@@ -231,6 +294,8 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 
 If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error, you may use the `throw` or `throwIf` methods:
 
+    use Illuminate\Http\Client\Response;
+
     $response = Http::post(/* ... */);
 
     // Throw an exception if a client or server error occurred...
@@ -238,9 +303,21 @@ If you have a response instance and would like to throw an instance of `Illumina
 
     // Throw an exception if an error occurred and the given condition is true...
     $response->throwIf($condition);
-    
+
+    // Throw an exception if an error occurred and the given closure resolves to true...
+    $response->throwIf(fn (Response $response) => true);
+
     // Throw an exception if an error occurred and the given condition is false...
     $response->throwUnless($condition);
+
+    // Throw an exception if an error occurred and the given closure resolves to false...
+    $response->throwUnless(fn (Response $response) => false);
+
+    // Throw an exception if the response has a specific status code...
+    $response->throwIfStatus(403);
+
+    // Throw an exception unless the response has a specific status code...
+    $response->throwUnlessStatus(200);
 
     return $response['user']['id'];
 
@@ -252,51 +329,86 @@ The `throw` method returns the response instance if no error occurred, allowing 
 
 If you would like to perform some additional logic before the exception is thrown, you may pass a closure to the `throw` method. The exception will be thrown automatically after the closure is invoked, so you do not need to re-throw the exception from within the closure:
 
-    return Http::post(/* ... */)->throw(function ($response, $e) {
-        //
+    use Illuminate\Http\Client\Response;
+    use Illuminate\Http\Client\RequestException;
+
+    return Http::post(/* ... */)->throw(function (Response $response, RequestException $e) {
+        // ...
     })->json();
 
 <a name="guzzle-middleware"></a>
 ### Guzzle Middleware
 
-Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withMiddleware` method in combination with Guzzle's `mapRequest` middleware factory:
+Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withRequestMiddleware` method:
 
-    use GuzzleHttp\Middleware;
     use Illuminate\Support\Facades\Http;
     use Psr\Http\Message\RequestInterface;
 
-    $response = Http::withMiddleware(
-        Middleware::mapRequest(function (RequestInterface $request) {
-            $request->withHeader('X-Example', 'Value');
-            
-            return $request;
-        })
-    ->get('http://example.com');
+    $response = Http::withRequestMiddleware(
+        function (RequestInterface $request) {
+            return $request->withHeader('X-Example', 'Value');
+        }
+    )->get('http://example.com');
 
-Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withMiddleware` method in combination with Guzzle's `mapResponse` middleware factory:
+Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withResponseMiddleware` method:
 
-    use GuzzleHttp\Middleware;
     use Illuminate\Support\Facades\Http;
     use Psr\Http\Message\ResponseInterface;
 
-    $response = Http::withMiddleware(
-        Middleware::mapResponse(function (ResponseInterface $response) {
+    $response = Http::withResponseMiddleware(
+        function (ResponseInterface $response) {
             $header = $response->getHeader('X-Example');
 
             // ...
-            
+
             return $response;
-        })
+        }
     )->get('http://example.com');
+
+<a name="global-middleware"></a>
+#### Global Middleware
+
+Sometimes, you may want to register a middleware that applies to every outgoing request and incoming response. To accomplish this, you may use the `globalRequestMiddleware` and `globalResponseMiddleware` methods. Typically, these methods should be invoked in the `boot` method of your application's `AppServiceProvider`:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+Http::globalRequestMiddleware(fn ($request) => $request->withHeader(
+    'User-Agent', 'Example Application/1.0'
+));
+
+Http::globalResponseMiddleware(fn ($response) => $response->withHeader(
+    'X-Finished-At', now()->toDateTimeString()
+));
+```
 
 <a name="guzzle-options"></a>
 ### Guzzle Options
 
-You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en/stable/request-options.html) using the `withOptions` method. The `withOptions` method accepts an array of key / value pairs:
+You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en/stable/request-options.html) for an outgoing request using the `withOptions` method. The `withOptions` method accepts an array of key / value pairs:
 
     $response = Http::withOptions([
         'debug' => true,
     ])->get('http://example.com/users');
+
+<a name="global-options"></a>
+#### Global Options
+
+To configure default options for every outgoing request, you may utilize the `globalOptions` method. Typically, this method should be invoked from the `boot` method of your application's `AppServiceProvider`:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Http::globalOptions([
+        'allow_redirects' => false,
+    ]);
+}
+```
 
 <a name="concurrent-requests"></a>
 ## Concurrent Requests
@@ -331,6 +443,26 @@ As you can see, each response instance can be accessed based on the order it was
 
     return $responses['first']->ok();
 
+<a name="customizing-concurrent-requests"></a>
+#### Customizing Concurrent Requests
+
+The `pool` method cannot be chained with other HTTP client methods such as the `withHeaders` or `middleware` methods. If you want to apply custom headers or middleware to pooled requests, you should configure those options on each request in the pool:
+
+```php
+use Illuminate\Http\Client\Pool;
+use Illuminate\Support\Facades\Http;
+
+$headers = [
+    'X-Example' => 'example',
+];
+
+$responses = Http::pool(fn (Pool $pool) => [
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+]);
+```
+
 <a name="macros"></a>
 ## Macros
 
@@ -341,10 +473,8 @@ use Illuminate\Support\Facades\Http;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Http::macro('github', function () {
         return Http::withHeaders([
@@ -556,21 +686,17 @@ $recorded = Http::recorded(function (Request $request, Response $response) {
 
 Laravel fires three events during the process of sending HTTP requests. The `RequestSending` event is fired prior to a request being sent, while the `ResponseReceived` event is fired after a response is received for a given request. The `ConnectionFailed` event is fired if no response is received for a given request.
 
-The `RequestSending` and `ConnectionFailed` events both contain a public `$request` property that you may use to inspect the `Illuminate\Http\Client\Request` instance. Likewise, the `ResponseReceived` event contains a `$request` property as well as a `$response` property which may be used to inspect the `Illuminate\Http\Client\Response` instance. You may register event listeners for this event in your `App\Providers\EventServiceProvider` service provider:
+The `RequestSending` and `ConnectionFailed` events both contain a public `$request` property that you may use to inspect the `Illuminate\Http\Client\Request` instance. Likewise, the `ResponseReceived` event contains a `$request` property as well as a `$response` property which may be used to inspect the `Illuminate\Http\Client\Response` instance. You may create [event listeners](/docs/{{version}}/events) for these events within your application:
 
-    /**
-     * The event listener mappings for the application.
-     *
-     * @var array
-     */
-    protected $listen = [
-        'Illuminate\Http\Client\Events\RequestSending' => [
-            'App\Listeners\LogRequestSending',
-        ],
-        'Illuminate\Http\Client\Events\ResponseReceived' => [
-            'App\Listeners\LogResponseReceived',
-        ],
-        'Illuminate\Http\Client\Events\ConnectionFailed' => [
-            'App\Listeners\LogConnectionFailed',
-        ],
-    ];
+    use Illuminate\Http\Client\Events\RequestSending;
+
+    class LogRequest
+    {
+        /**
+         * Handle the given event.
+         */
+        public function handle(RequestSending $event): void
+        {
+            // $event->request ...
+        }
+    }

@@ -4,8 +4,8 @@
 - [Configuration](#configuration)
 - [Basic Usage](#basic-usage)
     - [Hashing Passwords](#hashing-passwords)
-    - [Verifying That A Password Matches A Hash](#verifying-that-a-password-matches-a-hash)
-    - [Determining If A Password Needs To Be Rehashed](#determining-if-a-password-needs-to-be-rehashed)
+    - [Verifying That a Password Matches a Hash](#verifying-that-a-password-matches-a-hash)
+    - [Determining if a Password Needs to be Rehashed](#determining-if-a-password-needs-to-be-rehashed)
 
 <a name="introduction"></a>
 ## Introduction
@@ -17,7 +17,13 @@ Bcrypt is a great choice for hashing passwords because its "work factor" is adju
 <a name="configuration"></a>
 ## Configuration
 
-The default hashing driver for your application is configured in your application's `config/hashing.php` configuration file. There are currently several supported drivers: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) and [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i and Argon2id variants).
+By default, Laravel uses the `bcrypt` hashing driver when hashing data. However, several other hashing drivers are supported, including [`argon`](https://en.wikipedia.org/wiki/Argon2) and [`argon2id`](https://en.wikipedia.org/wiki/Argon2).
+
+You may specify your application's hashing driver using the `HASH_DRIVER` environment variable. But, if you want to customize all of Laravel's hashing driver options, you should publish the complete `hashing` configuration file using the `config:publish` Artisan command:
+
+```bash
+php artisan config:publish hashing
+```
 
 <a name="basic-usage"></a>
 ## Basic Usage
@@ -31,7 +37,7 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 
     namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Hash;
 
@@ -39,17 +45,16 @@ You may hash a password by calling the `make` method on the `Hash` facade:
     {
         /**
          * Update the password for the user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request)
+        public function update(Request $request): RedirectResponse
         {
             // Validate the new password length...
 
             $request->user()->fill([
                 'password' => Hash::make($request->newPassword)
             ])->save();
+
+            return redirect('/profile');
         }
     }
 
@@ -73,11 +78,11 @@ If you are using the Argon2 algorithm, the `make` method allows you to manage th
         'threads' => 2,
     ]);
 
-> **Note**  
+> [!NOTE]  
 > For more information on these options, please refer to the [official PHP documentation regarding Argon hashing](https://secure.php.net/manual/en/function.password-hash.php).
 
 <a name="verifying-that-a-password-matches-a-hash"></a>
-### Verifying That A Password Matches A Hash
+### Verifying That a Password Matches a Hash
 
 The `check` method provided by the `Hash` facade allows you to verify that a given plain-text string corresponds to a given hash:
 
@@ -86,7 +91,7 @@ The `check` method provided by the `Hash` facade allows you to verify that a giv
     }
 
 <a name="determining-if-a-password-needs-to-be-rehashed"></a>
-### Determining If A Password Needs To Be Rehashed
+### Determining if a Password Needs to be Rehashed
 
 The `needsRehash` method provided by the `Hash` facade allows you to determine if the work factor used by the hasher has changed since the password was hashed. Some applications choose to perform this check during the application's authentication process:
 

@@ -2,6 +2,12 @@
 
 - [Introduction](#introduction)
 - [Available Methods](#available-methods)
+- [Other Utilities](#other-utilities)
+    - [Benchmarking](#benchmarking)
+    - [Dates](#dates)
+    - [Lottery](#lottery)
+    - [Pipeline](#pipeline)
+    - [Sleep](#sleep)
 
 <a name="introduction"></a>
 ## Introduction
@@ -49,6 +55,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
 [Arr::map](#method-array-map)
+[Arr::mapWithKeys](#method-array-map-with-keys)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
@@ -59,8 +66,12 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
+[Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::sortRecursiveDesc](#method-array-sort-recursive-desc)
+[Arr::take](#method-array-take)
 [Arr::toCssClasses](#method-array-to-css-classes)
+[Arr::toCssStyles](#method-array-to-css-styles)
 [Arr::undot](#method-array-undot)
 [Arr::where](#method-array-where)
 [Arr::whereNotNull](#method-array-where-not-null)
@@ -68,9 +79,30 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [data_fill](#method-data-fill)
 [data_get](#method-data-get)
 [data_set](#method-data-set)
+[data_forget](#method-data-forget)
 [head](#method-head)
 [last](#method-last)
 </div>
+
+<a name="numbers-method-list"></a>
+### Numbers
+
+<div class="collection-method-list" markdown="1">
+
+[Number::abbreviate](#method-number-abbreviate)
+[Number::clamp](#method-number-clamp)
+[Number::currency](#method-number-currency)
+[Number::fileSize](#method-number-file-size)
+[Number::forHumans](#method-number-for-humans)
+[Number::format](#method-number-format)
+[Number::ordinal](#method-number-ordinal)
+[Number::percentage](#method-number-percentage)
+[Number::spell](#method-number-spell)
+[Number::useLocale](#method-number-use-locale)
+[Number::withLocale](#method-number-with-locale)
+
+</div>
+
 
 <a name="paths-method-list"></a>
 ### Paths
@@ -86,171 +118,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [public_path](#method-public-path)
 [resource_path](#method-resource-path)
 [storage_path](#method-storage-path)
-
-</div>
-
-<a name="strings-method-list"></a>
-### Strings
-
-<div class="collection-method-list" markdown="1">
-
-[\__](#method-__)
-[class_basename](#method-class-basename)
-[e](#method-e)
-[preg_replace_array](#method-preg-replace-array)
-[Str::after](#method-str-after)
-[Str::afterLast](#method-str-after-last)
-[Str::ascii](#method-str-ascii)
-[Str::before](#method-str-before)
-[Str::beforeLast](#method-str-before-last)
-[Str::between](#method-str-between)
-[Str::betweenFirst](#method-str-between-first)
-[Str::camel](#method-camel-case)
-[Str::contains](#method-str-contains)
-[Str::containsAll](#method-str-contains-all)
-[Str::endsWith](#method-ends-with)
-[Str::excerpt](#method-excerpt)
-[Str::finish](#method-str-finish)
-[Str::headline](#method-str-headline)
-[Str::inlineMarkdown](#method-str-inline-markdown)
-[Str::is](#method-str-is)
-[Str::isAscii](#method-str-is-ascii)
-[Str::isJson](#method-str-is-json)
-[Str::isUuid](#method-str-is-uuid)
-[Str::kebab](#method-kebab-case)
-[Str::lcfirst](#method-str-lcfirst)
-[Str::length](#method-str-length)
-[Str::limit](#method-str-limit)
-[Str::lower](#method-str-lower)
-[Str::markdown](#method-str-markdown)
-[Str::mask](#method-str-mask)
-[Str::orderedUuid](#method-str-ordered-uuid)
-[Str::padBoth](#method-str-padboth)
-[Str::padLeft](#method-str-padleft)
-[Str::padRight](#method-str-padright)
-[Str::plural](#method-str-plural)
-[Str::pluralStudly](#method-str-plural-studly)
-[Str::random](#method-str-random)
-[Str::remove](#method-str-remove)
-[Str::replace](#method-str-replace)
-[Str::replaceArray](#method-str-replace-array)
-[Str::replaceFirst](#method-str-replace-first)
-[Str::replaceLast](#method-str-replace-last)
-[Str::reverse](#method-str-reverse)
-[Str::singular](#method-str-singular)
-[Str::slug](#method-str-slug)
-[Str::snake](#method-snake-case)
-[Str::squish](#method-str-squish)
-[Str::start](#method-str-start)
-[Str::startsWith](#method-starts-with)
-[Str::studly](#method-studly-case)
-[Str::substr](#method-str-substr)
-[Str::substrCount](#method-str-substrcount)
-[Str::substrReplace](#method-str-substrreplace)
-[Str::swap](#method-str-swap)
-[Str::title](#method-title-case)
-[Str::toHtmlString](#method-str-to-html-string)
-[Str::ucfirst](#method-str-ucfirst)
-[Str::ucsplit](#method-str-ucsplit)
-[Str::upper](#method-str-upper)
-[Str::uuid](#method-str-uuid)
-[Str::wordCount](#method-str-word-count)
-[Str::words](#method-str-words)
-[str](#method-str)
-[trans](#method-trans)
-[trans_choice](#method-trans-choice)
-
-</div>
-
-<a name="fluent-strings-method-list"></a>
-### Fluent Strings
-
-<div class="collection-method-list" markdown="1">
-
-[after](#method-fluent-str-after)
-[afterLast](#method-fluent-str-after-last)
-[append](#method-fluent-str-append)
-[ascii](#method-fluent-str-ascii)
-[basename](#method-fluent-str-basename)
-[before](#method-fluent-str-before)
-[beforeLast](#method-fluent-str-before-last)
-[between](#method-fluent-str-between)
-[betweenFirst](#method-fluent-str-between-first)
-[camel](#method-fluent-str-camel)
-[classBasename](#method-fluent-str-class-basename)
-[contains](#method-fluent-str-contains)
-[containsAll](#method-fluent-str-contains-all)
-[dirname](#method-fluent-str-dirname)
-[endsWith](#method-fluent-str-ends-with)
-[excerpt](#method-fluent-str-excerpt)
-[exactly](#method-fluent-str-exactly)
-[explode](#method-fluent-str-explode)
-[finish](#method-fluent-str-finish)
-[inlineMarkdown](#method-fluent-str-inline-markdown)
-[is](#method-fluent-str-is)
-[isAscii](#method-fluent-str-is-ascii)
-[isEmpty](#method-fluent-str-is-empty)
-[isNotEmpty](#method-fluent-str-is-not-empty)
-[isJson](#method-fluent-str-is-json)
-[isUuid](#method-fluent-str-is-uuid)
-[kebab](#method-fluent-str-kebab)
-[lcfirst](#method-fluent-str-lcfirst)
-[length](#method-fluent-str-length)
-[limit](#method-fluent-str-limit)
-[lower](#method-fluent-str-lower)
-[ltrim](#method-fluent-str-ltrim)
-[markdown](#method-fluent-str-markdown)
-[mask](#method-fluent-str-mask)
-[match](#method-fluent-str-match)
-[matchAll](#method-fluent-str-match-all)
-[newLine](#method-fluent-str-new-line)
-[padBoth](#method-fluent-str-padboth)
-[padLeft](#method-fluent-str-padleft)
-[padRight](#method-fluent-str-padright)
-[pipe](#method-fluent-str-pipe)
-[plural](#method-fluent-str-plural)
-[prepend](#method-fluent-str-prepend)
-[remove](#method-fluent-str-remove)
-[replace](#method-fluent-str-replace)
-[replaceArray](#method-fluent-str-replace-array)
-[replaceFirst](#method-fluent-str-replace-first)
-[replaceLast](#method-fluent-str-replace-last)
-[replaceMatches](#method-fluent-str-replace-matches)
-[rtrim](#method-fluent-str-rtrim)
-[scan](#method-fluent-str-scan)
-[singular](#method-fluent-str-singular)
-[slug](#method-fluent-str-slug)
-[snake](#method-fluent-str-snake)
-[split](#method-fluent-str-split)
-[squish](#method-fluent-str-squish)
-[start](#method-fluent-str-start)
-[startsWith](#method-fluent-str-starts-with)
-[studly](#method-fluent-str-studly)
-[substr](#method-fluent-str-substr)
-[substrReplace](#method-fluent-str-substrreplace)
-[swap](#method-fluent-str-swap)
-[tap](#method-fluent-str-tap)
-[test](#method-fluent-str-test)
-[title](#method-fluent-str-title)
-[trim](#method-fluent-str-trim)
-[ucfirst](#method-fluent-str-ucfirst)
-[ucsplit](#method-fluent-str-ucsplit)
-[upper](#method-fluent-str-upper)
-[when](#method-fluent-str-when)
-[whenContains](#method-fluent-str-when-contains)
-[whenContainsAll](#method-fluent-str-when-contains-all)
-[whenEmpty](#method-fluent-str-when-empty)
-[whenNotEmpty](#method-fluent-str-when-not-empty)
-[whenStartsWith](#method-fluent-str-when-starts-with)
-[whenEndsWith](#method-fluent-str-when-ends-with)
-[whenExactly](#method-fluent-str-when-exactly)
-[whenNotExactly](#method-fluent-str-when-not-exactly)
-[whenIs](#method-fluent-str-when-is)
-[whenIsAscii](#method-fluent-str-when-is-ascii)
-[whenIsUuid](#method-fluent-str-when-is-uuid)
-[whenTest](#method-fluent-str-when-test)
-[wordCount](#method-fluent-str-word-count)
-[words](#method-fluent-str-words)
 
 </div>
 
@@ -293,6 +160,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [decrypt](#method-decrypt)
 [dd](#method-dd)
 [dispatch](#method-dispatch)
+[dispatch_sync](#method-dispatch-sync)
 [dump](#method-dump)
 [encrypt](#method-encrypt)
 [env](#method-env)
@@ -300,14 +168,18 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [fake](#method-fake)
 [filled](#method-filled)
 [info](#method-info)
+[literal](#method-literal)
 [logger](#method-logger)
 [method_field](#method-method-field)
 [now](#method-now)
 [old](#method-old)
+[once](#method-once)
 [optional](#method-optional)
 [policy](#method-policy)
 [redirect](#method-redirect)
 [report](#method-report)
+[report_if](#method-report-if)
+[report_unless](#method-report-unless)
 [request](#method-request)
 [rescue](#method-rescue)
 [resolve](#method-resolve)
@@ -326,19 +198,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [with](#method-with)
 
 </div>
-
-<a name="method-listing"></a>
-## Method Listing
-
-<style>
-    .collection-method code {
-        font-size: 14px;
-    }
-
-    .collection-method:not(.first-collection-method) {
-        margin-top: 50px;
-    }
-</style>
 
 <a name="arrays"></a>
 ## Arrays & Objects
@@ -492,7 +351,7 @@ The `Arr::first` method returns the first element of an array passing a given tr
 
     $array = [100, 200, 300];
 
-    $first = Arr::first($array, function ($value, $key) {
+    $first = Arr::first($array, function (int $value, int $key) {
         return $value >= 150;
     });
 
@@ -666,7 +525,7 @@ The `Arr::last` method returns the last element of an array passing a given trut
 
     $array = [100, 200, 300, 110];
 
-    $last = Arr::last($array, function ($value, $key) {
+    $last = Arr::last($array, function (int $value, int $key) {
         return $value >= 150;
     });
 
@@ -687,11 +546,42 @@ The `Arr::map` method iterates through the array and passes each value and key t
 
     $array = ['first' => 'james', 'last' => 'kirk'];
 
-    $mapped = Arr::map($array, function ($value, $key) {
+    $mapped = Arr::map($array, function (string $value, string $key) {
         return ucfirst($value);
     });
 
     // ['first' => 'James', 'last' => 'Kirk']
+
+<a name="method-array-map-with-keys"></a>
+#### `Arr::mapWithKeys()` {.collection-method}
+
+The `Arr::mapWithKeys` method iterates through the array and passes each value to the given callback. The callback should return an associative array containing a single key / value pair:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        [
+            'name' => 'John',
+            'department' => 'Sales',
+            'email' => 'john@example.com',
+        ],
+        [
+            'name' => 'Jane',
+            'department' => 'Marketing',
+            'email' => 'jane@example.com',
+        ]
+    ];
+
+    $mapped = Arr::mapWithKeys($array, function (array $item, int $key) {
+        return [$item['email'] => $item['name']];
+    });
+
+    /*
+        [
+            'john@example.com' => 'John',
+            'jane@example.com' => 'Jane',
+        ]
+    */
 
 <a name="method-array-only"></a>
 #### `Arr::only()` {.collection-method}
@@ -882,7 +772,7 @@ You may also sort the array by the results of a given closure:
         ['name' => 'Chair'],
     ];
 
-    $sorted = array_values(Arr::sort($array, function ($value) {
+    $sorted = array_values(Arr::sort($array, function (array $value) {
         return $value['name'];
     }));
 
@@ -891,6 +781,41 @@ You may also sort the array by the results of a given closure:
             ['name' => 'Chair'],
             ['name' => 'Desk'],
             ['name' => 'Table'],
+        ]
+    */
+
+<a name="method-array-sort-desc"></a>
+#### `Arr::sortDesc()` {.collection-method}
+
+The `Arr::sortDesc` method sorts an array in descending order by its values:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['Desk', 'Table', 'Chair'];
+
+    $sorted = Arr::sortDesc($array);
+
+    // ['Table', 'Desk', 'Chair']
+
+You may also sort the array by the results of a given closure:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        ['name' => 'Desk'],
+        ['name' => 'Table'],
+        ['name' => 'Chair'],
+    ];
+
+    $sorted = array_values(Arr::sortDesc($array, function (array $value) {
+        return $value['name'];
+    }));
+
+    /*
+        [
+            ['name' => 'Table'],
+            ['name' => 'Desk'],
+            ['name' => 'Chair'],
         ]
     */
 
@@ -917,10 +842,35 @@ The `Arr::sortRecursive` method recursively sorts an array using the `sort` func
         ]
     */
 
+If you would like the results sorted in descending order, you may use the `Arr::sortRecursiveDesc` method.
+
+    $sorted = Arr::sortRecursiveDesc($array);
+
+<a name="method-array-take"></a>
+#### `Arr::take()` {.collection-method}
+
+The `Arr::take` method returns a new array with the specified number of items:
+
+    use Illuminate\Support\Arr;
+
+    $array = [0, 1, 2, 3, 4, 5];
+
+    $chunk = Arr::take($array, 3);
+
+    // [0, 1, 2]
+
+You may also pass a negative integer to take the specified number of items from the end of the array:
+
+    $array = [0, 1, 2, 3, 4, 5];
+
+    $chunk = Arr::take($array, -2);
+
+    // [4, 5]
+
 <a name="method-array-to-css-classes"></a>
 #### `Arr::toCssClasses()` {.collection-method}
 
-The `Arr::toCssClasses` conditionally compiles a CSS class string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
+The `Arr::toCssClasses` method conditionally compiles a CSS class string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
     use Illuminate\Support\Arr;
 
@@ -934,6 +884,25 @@ The `Arr::toCssClasses` conditionally compiles a CSS class string. The method ac
     /*
         'p-4 bg-red'
     */
+
+<a name="method-array-to-css-styles"></a>
+#### `Arr::toCssStyles()` {.collection-method}
+
+The `Arr::toCssStyles` conditionally compiles a CSS style string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
+
+```php
+use Illuminate\Support\Arr;
+
+$hasColor = true;
+
+$array = ['background-color: blue', 'color: blue' => $hasColor];
+
+$classes = Arr::toCssStyles($array);
+
+/*
+    'background-color: blue; color: blue;'
+*/
+```
 
 This method powers Laravel's functionality allowing [merging classes with a Blade component's attribute bag](/docs/{{version}}/blade#conditionally-merge-classes) as well as the `@class` [Blade directive](/docs/{{version}}/blade#conditional-classes).
 
@@ -962,7 +931,7 @@ The `Arr::where` method filters an array using the given closure:
 
     $array = [100, '200', 300, '400', 500];
 
-    $filtered = Arr::where($array, function ($value, $key) {
+    $filtered = Arr::where($array, function (string|int $value, int $key) {
         return is_string($value);
     });
 
@@ -1065,6 +1034,19 @@ The function also accepts wildcards using asterisks, which may target any key of
 
     // ['Desk 1', 'Desk 2'];
 
+The `{first}` and `{last}` placeholders may be used to retrieve the first or last items in an array:
+
+    $flight = [
+        'segments' => [
+            ['from' => 'LHR', 'departure' => '9:00', 'to' => 'IST', 'arrival' => '15:00'],
+            ['from' => 'IST', 'departure' => '16:00', 'to' => 'PKX', 'arrival' => '20:00'],
+        ],
+    ];
+
+    data_get($flight, 'segments.{first}.arrival');
+
+    // 15:00
+
 <a name="method-data-set"></a>
 #### `data_set()` {.collection-method}
 
@@ -1100,9 +1082,40 @@ By default, any existing values are overwritten. If you wish to only set a value
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
-    data_set($data, 'products.desk.price', 200, $overwrite = false);
+    data_set($data, 'products.desk.price', 200, overwrite: false);
 
     // ['products' => ['desk' => ['price' => 100]]]
+
+<a name="method-data-forget"></a>
+#### `data_forget()` {.collection-method}
+
+The `data_forget` function removes a value within a nested array or object using "dot" notation:
+
+    $data = ['products' => ['desk' => ['price' => 100]]];
+
+    data_forget($data, 'products.desk.price');
+
+    // ['products' => ['desk' => []]]
+
+This function also accepts wildcards using asterisks and will remove values on the target accordingly:
+
+    $data = [
+        'products' => [
+            ['name' => 'Desk 1', 'price' => 100],
+            ['name' => 'Desk 2', 'price' => 150],
+        ],
+    ];
+
+    data_forget($data, 'products.*.price');
+
+    /*
+        [
+            'products' => [
+                ['name' => 'Desk 1'],
+                ['name' => 'Desk 2'],
+            ],
+        ]
+    */
 
 <a name="method-head"></a>
 #### `head()` {.collection-method}
@@ -1125,6 +1138,235 @@ The `last` function returns the last element in the given array:
     $last = last($array);
 
     // 300
+
+<a name="numbers"></a>
+## Numbers
+
+<a name="method-number-abbreviate"></a>
+#### `Number::abbreviate()` {.collection-method}
+
+The `Number::abbreviate` method returns the human-readable format of the provided numerical value, with an abbreviation for the units:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::abbreviate(1000);
+
+    // 1K
+
+    $number = Number::abbreviate(489939);
+
+    // 490K
+
+    $number = Number::abbreviate(1230000, precision: 2);
+
+    // 1.23M
+
+<a name="method-number-clamp"></a>
+#### `Number::clamp()` {.collection-method}
+
+The `Number::clamp` method ensures a given number stays within a specified range. If the number is lower than the minimum, the minimum value is returned. If the number is higher than the maximum, the maximum value is returned:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::clamp(105, min: 10, max: 100);
+
+    // 100
+
+    $number = Number::clamp(5, min: 10, max: 100);
+
+    // 10
+
+    $number = Number::clamp(10, min: 10, max: 100);
+
+    // 10
+
+    $number = Number::clamp(20, min: 10, max: 100);
+
+    // 20
+
+<a name="method-number-currency"></a>
+#### `Number::currency()` {.collection-method}
+
+The `Number::currency` method returns the currency representation of the given value as a string:
+
+    use Illuminate\Support\Number;
+
+    $currency = Number::currency(1000);
+
+    // $1,000
+
+    $currency = Number::currency(1000, in: 'EUR');
+
+    // €1,000
+
+    $currency = Number::currency(1000, in: 'EUR', locale: 'de');
+
+    // 1.000 €
+
+<a name="method-number-file-size"></a>
+#### `Number::fileSize()` {.collection-method}
+
+The `Number::fileSize` method returns the file size representation of the given byte value as a string:
+
+    use Illuminate\Support\Number;
+
+    $size = Number::fileSize(1024);
+
+    // 1 KB
+
+    $size = Number::fileSize(1024 * 1024);
+
+    // 1 MB
+
+    $size = Number::fileSize(1024, precision: 2);
+
+    // 1.00 KB
+
+<a name="method-number-for-humans"></a>
+#### `Number::forHumans()` {.collection-method}
+
+The `Number::forHumans` method returns the human-readable format of the provided numerical value:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::forHumans(1000);
+
+    // 1 thousand
+
+    $number = Number::forHumans(489939);
+
+    // 490 thousand
+
+    $number = Number::forHumans(1230000, precision: 2);
+
+    // 1.23 million
+
+<a name="method-number-format"></a>
+#### `Number::format()` {.collection-method}
+
+The `Number::format` method formats the given number into a locale specific string:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::format(100000);
+
+    // 100,000
+
+    $number = Number::format(100000, precision: 2);
+
+    // 100,000.00
+
+    $number = Number::format(100000.123, maxPrecision: 2);
+
+    // 100,000.12
+
+    $number = Number::format(100000, locale: 'de');
+
+    // 100.000
+
+<a name="method-number-ordinal"></a>
+#### `Number::ordinal()` {.collection-method}
+
+The `Number::ordinal` method returns a number's ordinal representation:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::ordinal(1);
+
+    // 1st
+
+    $number = Number::ordinal(2);
+
+    // 2nd
+
+    $number = Number::ordinal(21);
+
+    // 21st
+
+<a name="method-number-percentage"></a>
+#### `Number::percentage()` {.collection-method}
+
+The `Number::percentage` method returns the percentage representation of the given value as a string:
+
+    use Illuminate\Support\Number;
+
+    $percentage = Number::percentage(10);
+
+    // 10%
+
+    $percentage = Number::percentage(10, precision: 2);
+
+    // 10.00%
+
+    $percentage = Number::percentage(10.123, maxPrecision: 2);
+
+    // 10.12%
+
+    $percentage = Number::percentage(10, precision: 2, locale: 'de');
+
+    // 10,00%
+
+<a name="method-number-spell"></a>
+#### `Number::spell()` {.collection-method}
+
+The `Number::spell` method transforms the given number into a string of words:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::spell(102);
+
+    // one hundred and two
+
+    $number = Number::spell(88, locale: 'fr');
+
+    // quatre-vingt-huit
+
+
+The `after` argument allows you to specify a value after which all numbers should be spelled out:
+
+    $number = Number::spell(10, after: 10);
+
+    // 10
+
+    $number = Number::spell(11, after: 10);
+
+    // eleven
+
+The `until` argument allows you to specify a value before which all numbers should be spelled out:
+
+    $number = Number::spell(5, until: 10);
+
+    // five
+
+    $number = Number::spell(10, until: 10);
+
+    // 10
+
+<a name="method-number-use-locale"></a>
+#### `Number::useLocale()` {.collection-method}
+
+The `Number::useLocale` method sets the default number locale globally, which affects how numbers and currency are formatted by subsequent invocations to the `Number` class's methods:
+
+    use Illuminate\Support\Number;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Number::useLocale('de');
+    }
+
+<a name="method-number-with-locale"></a>
+#### `Number::withLocale()` {.collection-method}
+
+The `Number::withLocale` method executes the given closure using the specified locale and then restores the original locale after the callback has executed:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::withLocale('de', function () {
+        return Number::format(1500);
+    });
 
 <a name="paths"></a>
 ## Paths
@@ -1174,6 +1416,9 @@ The `lang_path` function returns the fully qualified path to your application's 
 
     $path = lang_path('en/messages.php');
 
+> [!NOTE]  
+> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
+
 <a name="method-mix"></a>
 #### `mix()` {.collection-method}
 
@@ -1207,2052 +1452,6 @@ The `storage_path` function returns the fully qualified path to your application
     $path = storage_path();
 
     $path = storage_path('app/file.txt');
-
-<a name="strings"></a>
-## Strings
-
-<a name="method-__"></a>
-#### `__()` {.collection-method}
-
-The `__` function translates the given translation string or translation key using your [localization files](/docs/{{version}}/localization):
-
-    echo __('Welcome to our application');
-
-    echo __('messages.welcome');
-
-If the specified translation string or key does not exist, the `__` function will return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
-
-<a name="method-class-basename"></a>
-#### `class_basename()` {.collection-method}
-
-The `class_basename` function returns the class name of the given class with the class's namespace removed:
-
-    $class = class_basename('Foo\Bar\Baz');
-
-    // Baz
-
-<a name="method-e"></a>
-#### `e()` {.collection-method}
-
-The `e` function runs PHP's `htmlspecialchars` function with the `double_encode` option set to `true` by default:
-
-    echo e('<html>foo</html>');
-
-    // &lt;html&gt;foo&lt;/html&gt;
-
-<a name="method-preg-replace-array"></a>
-#### `preg_replace_array()` {.collection-method}
-
-The `preg_replace_array` function replaces a given pattern in the string sequentially using an array:
-
-    $string = 'The event will take place between :start and :end';
-
-    $replaced = preg_replace_array('/:[a-z_]+/', ['8:30', '9:00'], $string);
-
-    // The event will take place between 8:30 and 9:00
-
-<a name="method-str-after"></a>
-#### `Str::after()` {.collection-method}
-
-The `Str::after` method returns everything after the given value in a string. The entire string will be returned if the value does not exist within the string:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::after('This is my name', 'This is');
-
-    // ' my name'
-
-<a name="method-str-after-last"></a>
-#### `Str::afterLast()` {.collection-method}
-
-The `Str::afterLast` method returns everything after the last occurrence of the given value in a string. The entire string will be returned if the value does not exist within the string:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::afterLast('App\Http\Controllers\Controller', '\\');
-
-    // 'Controller'
-
-<a name="method-str-ascii"></a>
-#### `Str::ascii()` {.collection-method}
-
-The `Str::ascii` method will attempt to transliterate the string into an ASCII value:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::ascii('û');
-
-    // 'u'
-
-<a name="method-str-before"></a>
-#### `Str::before()` {.collection-method}
-
-The `Str::before` method returns everything before the given value in a string:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::before('This is my name', 'my name');
-
-    // 'This is '
-
-<a name="method-str-before-last"></a>
-#### `Str::beforeLast()` {.collection-method}
-
-The `Str::beforeLast` method returns everything before the last occurrence of the given value in a string:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::beforeLast('This is my name', 'is');
-
-    // 'This '
-
-<a name="method-str-between"></a>
-#### `Str::between()` {.collection-method}
-
-The `Str::between` method returns the portion of a string between two values:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::between('This is my name', 'This', 'name');
-
-    // ' is my '
-
-<a name="method-str-between-first"></a>
-#### `Str::betweenFirst()` {.collection-method}
-
-The `Str::betweenFirst` method returns the smallest possible portion of a string between two values:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::betweenFirst('[a] bc [d]', '[', ']');
-
-    // 'a'
-
-<a name="method-camel-case"></a>
-#### `Str::camel()` {.collection-method}
-
-The `Str::camel` method converts the given string to `camelCase`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::camel('foo_bar');
-
-    // fooBar
-
-<a name="method-str-contains"></a>
-#### `Str::contains()` {.collection-method}
-
-The `Str::contains` method determines if the given string contains the given value. This method is case sensitive:
-
-    use Illuminate\Support\Str;
-
-    $contains = Str::contains('This is my name', 'my');
-
-    // true
-
-You may also pass an array of values to determine if the given string contains any of the values in the array:
-
-    use Illuminate\Support\Str;
-
-    $contains = Str::contains('This is my name', ['my', 'foo']);
-
-    // true
-
-<a name="method-str-contains-all"></a>
-#### `Str::containsAll()` {.collection-method}
-
-The `Str::containsAll` method determines if the given string contains all of the values in a given array:
-
-    use Illuminate\Support\Str;
-
-    $containsAll = Str::containsAll('This is my name', ['my', 'name']);
-
-    // true
-
-<a name="method-ends-with"></a>
-#### `Str::endsWith()` {.collection-method}
-
-The `Str::endsWith` method determines if the given string ends with the given value:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::endsWith('This is my name', 'name');
-
-    // true
-
-
-You may also pass an array of values to determine if the given string ends with any of the values in the array:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::endsWith('This is my name', ['name', 'foo']);
-
-    // true
-
-    $result = Str::endsWith('This is my name', ['this', 'foo']);
-
-    // false
-
-<a name="method-excerpt"></a>
-#### `Str::excerpt()` {.collection-method}
-
-The `Str::excerpt` method extracts an excerpt from a given string that matches the first instance of a phrase within that string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::excerpt('This is my name', 'my', [
-        'radius' => 3
-    ]);
-
-    // '...is my na...'
-
-The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
-
-In addition, you may use the `omission` option to define the string that will be prepended and appended to the truncated string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::excerpt('This is my name', 'name', [
-        'radius' => 3,
-        'omission' => '(...) '
-    ]);
-
-    // '(...) my name'
-
-<a name="method-str-finish"></a>
-#### `Str::finish()` {.collection-method}
-
-The `Str::finish` method adds a single instance of the given value to a string if it does not already end with that value:
-
-    use Illuminate\Support\Str;
-
-    $adjusted = Str::finish('this/string', '/');
-
-    // this/string/
-
-    $adjusted = Str::finish('this/string/', '/');
-
-    // this/string/
-
-<a name="method-str-headline"></a>
-#### `Str::headline()` {.collection-method}
-
-The `Str::headline` method will convert strings delimited by casing, hyphens, or underscores into a space delimited string with each word's first letter capitalized:
-
-    use Illuminate\Support\Str;
-
-    $headline = Str::headline('steve_jobs');
-
-    // Steve Jobs
-
-    $headline = Str::headline('EmailNotificationSent');
-
-    // Email Notification Sent
-
-<a name="method-str-inline-markdown"></a>
-#### `Str::inlineMarkdown()` {.collection-method}
-
-The `Str::inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/). However, unlike the `markdown` method, it does not wrap all generated HTML in a block-level element:
-
-    use Illuminate\Support\Str;
-
-    $html = Str::inlineMarkdown('**Laravel**');
-
-    // <strong>Laravel</strong>
-
-<a name="method-str-is"></a>
-#### `Str::is()` {.collection-method}
-
-The `Str::is` method determines if a given string matches a given pattern. Asterisks may be used as wildcard values:
-
-    use Illuminate\Support\Str;
-
-    $matches = Str::is('foo*', 'foobar');
-
-    // true
-
-    $matches = Str::is('baz*', 'foobar');
-
-    // false
-
-<a name="method-str-is-ascii"></a>
-#### `Str::isAscii()` {.collection-method}
-
-The `Str::isAscii` method determines if a given string is 7 bit ASCII:
-
-    use Illuminate\Support\Str;
-
-    $isAscii = Str::isAscii('Taylor');
-
-    // true
-
-    $isAscii = Str::isAscii('ü');
-
-    // false
-
-<a name="method-str-is-json"></a>
-#### `Str::isJson()` {.collection-method}
-
-The `Str::isJson` method determines if the given string is valid JSON:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::isJson('[1,2,3]');
-
-    // true
-
-    $result = Str::isJson('{"first": "John", "last": "Doe"}');
-
-    // true
-
-    $result = Str::isJson('{first: "John", last: "Doe"}');
-
-    // false
-
-<a name="method-str-is-uuid"></a>
-#### `Str::isUuid()` {.collection-method}
-
-The `Str::isUuid` method determines if the given string is a valid UUID:
-
-    use Illuminate\Support\Str;
-
-    $isUuid = Str::isUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de');
-
-    // true
-
-    $isUuid = Str::isUuid('laravel');
-
-    // false
-
-<a name="method-kebab-case"></a>
-#### `Str::kebab()` {.collection-method}
-
-The `Str::kebab` method converts the given string to `kebab-case`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::kebab('fooBar');
-
-    // foo-bar
-
-<a name="method-str-lcfirst"></a>
-#### `Str::lcfirst()` {.collection-method}
-
-The `Str::lcfirst` method returns the given string with the first character lowercased:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::lcfirst('Foo Bar');
-
-    // foo Bar
-
-<a name="method-str-length"></a>
-#### `Str::length()` {.collection-method}
-
-The `Str::length` method returns the length of the given string:
-
-    use Illuminate\Support\Str;
-
-    $length = Str::length('Laravel');
-
-    // 7
-
-<a name="method-str-limit"></a>
-#### `Str::limit()` {.collection-method}
-
-The `Str::limit` method truncates the given string to the specified length:
-
-    use Illuminate\Support\Str;
-
-    $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20);
-
-    // The quick brown fox...
-
-You may pass a third argument to the method to change the string that will be appended to the end of the truncated string:
-
-    use Illuminate\Support\Str;
-
-    $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
-
-    // The quick brown fox (...)
-
-<a name="method-str-lower"></a>
-#### `Str::lower()` {.collection-method}
-
-The `Str::lower` method converts the given string to lowercase:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::lower('LARAVEL');
-
-    // laravel
-
-<a name="method-str-markdown"></a>
-#### `Str::markdown()` {.collection-method}
-
-The `Str::markdown` method converts GitHub flavored Markdown into HTML using [CommonMark](https://commonmark.thephpleague.com/):
-
-    use Illuminate\Support\Str;
-
-    $html = Str::markdown('# Laravel');
-
-    // <h1>Laravel</h1>
-
-    $html = Str::markdown('# Taylor <b>Otwell</b>', [
-        'html_input' => 'strip',
-    ]);
-
-    // <h1>Taylor Otwell</h1>
-
-<a name="method-str-mask"></a>
-#### `Str::mask()` {.collection-method}
-
-The `Str::mask` method masks a portion of a string with a repeated character, and may be used to obfuscate segments of strings such as email addresses and phone numbers:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::mask('taylor@example.com', '*', 3);
-
-    // tay***************
-
-If needed, you provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
-
-    $string = Str::mask('taylor@example.com', '*', -15, 3);
-
-    // tay***@example.com
-
-<a name="method-str-ordered-uuid"></a>
-#### `Str::orderedUuid()` {.collection-method}
-
-The `Str::orderedUuid` method generates a "timestamp first" UUID that may be efficiently stored in an indexed database column. Each UUID that is generated using this method will be sorted after UUIDs previously generated using the method:
-
-    use Illuminate\Support\Str;
-
-    return (string) Str::orderedUuid();
-
-<a name="method-str-padboth"></a>
-#### `Str::padBoth()` {.collection-method}
-
-The `Str::padBoth` method wraps PHP's `str_pad` function, padding both sides of a string with another string until the final string reaches a desired length:
-
-    use Illuminate\Support\Str;
-
-    $padded = Str::padBoth('James', 10, '_');
-
-    // '__James___'
-
-    $padded = Str::padBoth('James', 10);
-
-    // '  James   '
-
-<a name="method-str-padleft"></a>
-#### `Str::padLeft()` {.collection-method}
-
-The `Str::padLeft` method wraps PHP's `str_pad` function, padding the left side of a string with another string until the final string reaches a desired length:
-
-    use Illuminate\Support\Str;
-
-    $padded = Str::padLeft('James', 10, '-=');
-
-    // '-=-=-James'
-
-    $padded = Str::padLeft('James', 10);
-
-    // '     James'
-
-<a name="method-str-padright"></a>
-#### `Str::padRight()` {.collection-method}
-
-The `Str::padRight` method wraps PHP's `str_pad` function, padding the right side of a string with another string until the final string reaches a desired length:
-
-    use Illuminate\Support\Str;
-
-    $padded = Str::padRight('James', 10, '-');
-
-    // 'James-----'
-
-    $padded = Str::padRight('James', 10);
-
-    // 'James     '
-
-<a name="method-str-plural"></a>
-#### `Str::plural()` {.collection-method}
-
-The `Str::plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
-
-    use Illuminate\Support\Str;
-
-    $plural = Str::plural('car');
-
-    // cars
-
-    $plural = Str::plural('child');
-
-    // children
-
-You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
-
-    use Illuminate\Support\Str;
-
-    $plural = Str::plural('child', 2);
-
-    // children
-
-    $singular = Str::plural('child', 1);
-
-    // child
-
-<a name="method-str-plural-studly"></a>
-#### `Str::pluralStudly()` {.collection-method}
-
-The `Str::pluralStudly` method converts a singular word string formatted in studly caps case to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
-
-    use Illuminate\Support\Str;
-
-    $plural = Str::pluralStudly('VerifiedHuman');
-
-    // VerifiedHumans
-
-    $plural = Str::pluralStudly('UserFeedback');
-
-    // UserFeedback
-
-You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
-
-    use Illuminate\Support\Str;
-
-    $plural = Str::pluralStudly('VerifiedHuman', 2);
-
-    // VerifiedHumans
-
-    $singular = Str::pluralStudly('VerifiedHuman', 1);
-
-    // VerifiedHuman
-
-<a name="method-str-random"></a>
-#### `Str::random()` {.collection-method}
-
-The `Str::random` method generates a random string of the specified length. This function uses PHP's `random_bytes` function:
-
-    use Illuminate\Support\Str;
-
-    $random = Str::random(40);
-
-<a name="method-str-remove"></a>
-#### `Str::remove()` {.collection-method}
-
-The `Str::remove` method removes the given value or array of values from the string:
-
-    use Illuminate\Support\Str;
-
-    $string = 'Peter Piper picked a peck of pickled peppers.';
-
-    $removed = Str::remove('e', $string);
-
-    // Ptr Pipr pickd a pck of pickld ppprs.
-
-You may also pass `false` as a third argument to the `remove` method to ignore case when removing strings.
-
-<a name="method-str-replace"></a>
-#### `Str::replace()` {.collection-method}
-
-The `Str::replace` method replaces a given string within the string:
-
-    use Illuminate\Support\Str;
-
-    $string = 'Laravel 8.x';
-
-    $replaced = Str::replace('8.x', '9.x', $string);
-
-    // Laravel 9.x
-
-<a name="method-str-replace-array"></a>
-#### `Str::replaceArray()` {.collection-method}
-
-The `Str::replaceArray` method replaces a given value in the string sequentially using an array:
-
-    use Illuminate\Support\Str;
-
-    $string = 'The event will take place between ? and ?';
-
-    $replaced = Str::replaceArray('?', ['8:30', '9:00'], $string);
-
-    // The event will take place between 8:30 and 9:00
-
-<a name="method-str-replace-first"></a>
-#### `Str::replaceFirst()` {.collection-method}
-
-The `Str::replaceFirst` method replaces the first occurrence of a given value in a string:
-
-    use Illuminate\Support\Str;
-
-    $replaced = Str::replaceFirst('the', 'a', 'the quick brown fox jumps over the lazy dog');
-
-    // a quick brown fox jumps over the lazy dog
-
-<a name="method-str-replace-last"></a>
-#### `Str::replaceLast()` {.collection-method}
-
-The `Str::replaceLast` method replaces the last occurrence of a given value in a string:
-
-    use Illuminate\Support\Str;
-
-    $replaced = Str::replaceLast('the', 'a', 'the quick brown fox jumps over the lazy dog');
-
-    // the quick brown fox jumps over a lazy dog
-
-
-<a name="method-str-reverse"></a>
-#### `Str::reverse()` {.collection-method}
-
-The `Str::reverse` method reverses the given string:
-
-    use Illuminate\Support\Str;
-
-    $reversed = Str::reverse('Hello World');
-
-    // dlroW olleH
-
-<a name="method-str-singular"></a>
-#### `Str::singular()` {.collection-method}
-
-The `Str::singular` method converts a string to its singular form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
-
-    use Illuminate\Support\Str;
-
-    $singular = Str::singular('cars');
-
-    // car
-
-    $singular = Str::singular('children');
-
-    // child
-
-<a name="method-str-slug"></a>
-#### `Str::slug()` {.collection-method}
-
-The `Str::slug` method generates a URL friendly "slug" from the given string:
-
-    use Illuminate\Support\Str;
-
-    $slug = Str::slug('Laravel 5 Framework', '-');
-
-    // laravel-5-framework
-
-<a name="method-snake-case"></a>
-#### `Str::snake()` {.collection-method}
-
-The `Str::snake` method converts the given string to `snake_case`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::snake('fooBar');
-
-    // foo_bar
-
-    $converted = Str::snake('fooBar', '-');
-
-    // foo-bar
-
-<a name="method-str-squish"></a>
-#### `Str::squish()` {.collection-method}
-
-The `Str::squish` method removes all extraneous white space from a string, including extraneous white space between words:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::squish('    laravel    framework    ');
-
-    // laravel framework
-
-<a name="method-str-start"></a>
-#### `Str::start()` {.collection-method}
-
-The `Str::start` method adds a single instance of the given value to a string if it does not already start with that value:
-
-    use Illuminate\Support\Str;
-
-    $adjusted = Str::start('this/string', '/');
-
-    // /this/string
-
-    $adjusted = Str::start('/this/string', '/');
-
-    // /this/string
-
-<a name="method-starts-with"></a>
-#### `Str::startsWith()` {.collection-method}
-
-The `Str::startsWith` method determines if the given string begins with the given value:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::startsWith('This is my name', 'This');
-
-    // true
-
-If an array of possible values is passed, the `startsWith` method will return `true` if the string begins with any of the given values:
-
-    $result = Str::startsWith('This is my name', ['This', 'That', 'There']);
-
-    // true
-
-<a name="method-studly-case"></a>
-#### `Str::studly()` {.collection-method}
-
-The `Str::studly` method converts the given string to `StudlyCase`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::studly('foo_bar');
-
-    // FooBar
-
-<a name="method-str-substr"></a>
-#### `Str::substr()` {.collection-method}
-
-The `Str::substr` method returns the portion of string specified by the start and length parameters:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::substr('The Laravel Framework', 4, 7);
-
-    // Laravel
-
-<a name="method-str-substrcount"></a>
-#### `Str::substrCount()` {.collection-method}
-
-The `Str::substrCount` method returns the number of occurrences of a given value in the given string:
-
-    use Illuminate\Support\Str;
-
-    $count = Str::substrCount('If you like ice cream, you will like snow cones.', 'like');
-
-    // 2
-
-<a name="method-str-substrreplace"></a>
-#### `Str::substrReplace()` {.collection-method}
-
-The `Str::substrReplace` method replaces text within a portion of a string, starting at the position specified by the third argument and replacing the number of characters specified by the fourth argument. Passing `0` to the method's fourth argument will insert the string at the specified position without replacing any of the existing characters in the string:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::substrReplace('1300', ':', 2);
-    // 13:
-
-    $result = Str::substrReplace('1300', ':', 2, 0);
-    // 13:00
-
-<a name="method-str-swap"></a>
-#### `Str::swap()` {.collection-method}
-
-The `Str::swap` method replaces multiple values in the given string using PHP's `strtr` function:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::swap([
-        'Tacos' => 'Burritos',
-        'great' => 'fantastic',
-    ], 'Tacos are great!');
-
-    // Burritos are fantastic!
-
-<a name="method-title-case"></a>
-#### `Str::title()` {.collection-method}
-
-The `Str::title` method converts the given string to `Title Case`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::title('a nice title uses the correct case');
-
-    // A Nice Title Uses The Correct Case
-
-<a name="method-str-to-html-string"></a>
-#### `Str::toHtmlString()` {.collection-method}
-
-The `Str::toHtmlString` method converts the string instance to an instance of `Illuminate\Support\HtmlString`, which may be displayed in Blade templates:
-
-    use Illuminate\Support\Str;
-
-    $htmlString = Str::of('Nuno Maduro')->toHtmlString();
-
-<a name="method-str-ucfirst"></a>
-#### `Str::ucfirst()` {.collection-method}
-
-The `Str::ucfirst` method returns the given string with the first character capitalized:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::ucfirst('foo bar');
-
-    // Foo bar
-
-<a name="method-str-ucsplit"></a>
-#### `Str::ucsplit()` {.collection-method}
-
-The `Str::ucsplit` method splits the given string into an array by uppercase characters:
-
-    use Illuminate\Support\Str;
-
-    $segments = Str::ucsplit('FooBar');
-
-    // [0 => 'Foo', 1 => 'Bar']
-
-<a name="method-str-upper"></a>
-#### `Str::upper()` {.collection-method}
-
-The `Str::upper` method converts the given string to uppercase:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::upper('laravel');
-
-    // LARAVEL
-
-<a name="method-str-uuid"></a>
-#### `Str::uuid()` {.collection-method}
-
-The `Str::uuid` method generates a UUID (version 4):
-
-    use Illuminate\Support\Str;
-
-    return (string) Str::uuid();
-
-<a name="method-str-word-count"></a>
-#### `Str::wordCount()` {.collection-method}
-
-The `Str::wordCount` method returns the number of words that a string contains:
-
-```php
-use Illuminate\Support\Str;
-
-Str::wordCount('Hello, world!'); // 2
-```
-
-<a name="method-str-words"></a>
-#### `Str::words()` {.collection-method}
-
-The `Str::words` method limits the number of words in a string. An additional string may be passed to this method via its third argument to specify which string should be appended to the end of the truncated string:
-
-    use Illuminate\Support\Str;
-
-    return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
-
-    // Perfectly balanced, as >>>
-
-<a name="method-str"></a>
-#### `str()` {.collection-method}
-
-The `str` function returns a new `Illuminate\Support\Stringable` instance of the given string. This function is equivalent to the `Str::of` method:
-
-    $string = str('Taylor')->append(' Otwell');
-
-    // 'Taylor Otwell'
-
-If no argument is provided to the `str` function, the function returns an instance of `Illuminate\Support\Str`:
-
-    $snake = str()->snake('FooBar');
-
-    // 'foo_bar'
-
-<a name="method-trans"></a>
-#### `trans()` {.collection-method}
-
-The `trans` function translates the given translation key using your [localization files](/docs/{{version}}/localization):
-
-    echo trans('messages.welcome');
-
-If the specified translation key does not exist, the `trans` function will return the given key. So, using the example above, the `trans` function would return `messages.welcome` if the translation key does not exist.
-
-<a name="method-trans-choice"></a>
-#### `trans_choice()` {.collection-method}
-
-The `trans_choice` function translates the given translation key with inflection:
-
-    echo trans_choice('messages.notifications', $unreadCount);
-
-If the specified translation key does not exist, the `trans_choice` function will return the given key. So, using the example above, the `trans_choice` function would return `messages.notifications` if the translation key does not exist.
-
-<a name="fluent-strings"></a>
-## Fluent Strings
-
-Fluent strings provide a more fluent, object-oriented interface for working with string values, allowing you to chain multiple string operations together using a more readable syntax compared to traditional string operations.
-
-<a name="method-fluent-str-after"></a>
-#### `after` {.collection-method}
-
-The `after` method returns everything after the given value in a string. The entire string will be returned if the value does not exist within the string:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::of('This is my name')->after('This is');
-
-    // ' my name'
-
-<a name="method-fluent-str-after-last"></a>
-#### `afterLast` {.collection-method}
-
-The `afterLast` method returns everything after the last occurrence of the given value in a string. The entire string will be returned if the value does not exist within the string:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::of('App\Http\Controllers\Controller')->afterLast('\\');
-
-    // 'Controller'
-
-<a name="method-fluent-str-append"></a>
-#### `append` {.collection-method}
-
-The `append` method appends the given values to the string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Taylor')->append(' Otwell');
-
-    // 'Taylor Otwell'
-
-<a name="method-fluent-str-ascii"></a>
-#### `ascii` {.collection-method}
-
-The `ascii` method will attempt to transliterate the string into an ASCII value:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('ü')->ascii();
-
-    // 'u'
-
-<a name="method-fluent-str-basename"></a>
-#### `basename` {.collection-method}
-
-The `basename` method will return the trailing name component of the given string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('/foo/bar/baz')->basename();
-
-    // 'baz'
-
-If needed, you may provide an "extension" that will be removed from the trailing component:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('/foo/bar/baz.jpg')->basename('.jpg');
-
-    // 'baz'
-
-<a name="method-fluent-str-before"></a>
-#### `before` {.collection-method}
-
-The `before` method returns everything before the given value in a string:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::of('This is my name')->before('my name');
-
-    // 'This is '
-
-<a name="method-fluent-str-before-last"></a>
-#### `beforeLast` {.collection-method}
-
-The `beforeLast` method returns everything before the last occurrence of the given value in a string:
-
-    use Illuminate\Support\Str;
-
-    $slice = Str::of('This is my name')->beforeLast('is');
-
-    // 'This '
-
-<a name="method-fluent-str-between"></a>
-#### `between` {.collection-method}
-
-The `between` method returns the portion of a string between two values:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::of('This is my name')->between('This', 'name');
-
-    // ' is my '
-
-<a name="method-fluent-str-between-first"></a>
-#### `betweenFirst` {.collection-method}
-
-The `betweenFirst` method returns the smallest possible portion of a string between two values:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::of('[a] bc [d]')->betweenFirst('[', ']');
-
-    // 'a'
-
-<a name="method-fluent-str-camel"></a>
-#### `camel` {.collection-method}
-
-The `camel` method converts the given string to `camelCase`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::of('foo_bar')->camel();
-
-    // fooBar
-
-<a name="method-fluent-str-class-basename"></a>
-#### `classBasename` {.collection-method}
-
-The `classBasename` method returns the class name of the given class with the class's namespace removed:
-
-    use Illuminate\Support\Str;
-
-    $class = Str::of('Foo\Bar\Baz')->classBasename();
-
-    // Baz
-
-<a name="method-fluent-str-contains"></a>
-#### `contains` {.collection-method}
-
-The `contains` method determines if the given string contains the given value. This method is case sensitive:
-
-    use Illuminate\Support\Str;
-
-    $contains = Str::of('This is my name')->contains('my');
-
-    // true
-
-You may also pass an array of values to determine if the given string contains any of the values in the array:
-
-    use Illuminate\Support\Str;
-
-    $contains = Str::of('This is my name')->contains(['my', 'foo']);
-
-    // true
-
-<a name="method-fluent-str-contains-all"></a>
-#### `containsAll` {.collection-method}
-
-The `containsAll` method determines if the given string contains all of the values in the given array:
-
-    use Illuminate\Support\Str;
-
-    $containsAll = Str::of('This is my name')->containsAll(['my', 'name']);
-
-    // true
-
-<a name="method-fluent-str-dirname"></a>
-#### `dirname` {.collection-method}
-
-The `dirname` method returns the parent directory portion of the given string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('/foo/bar/baz')->dirname();
-
-    // '/foo/bar'
-
-If necessary, you may specify how many directory levels you wish to trim from the string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('/foo/bar/baz')->dirname(2);
-
-    // '/foo'
-
-<a name="method-fluent-str-excerpt"></a>
-#### `excerpt` {.collection-method}
-
-The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::of('This is my name')->excerpt('my', [
-        'radius' => 3
-    ]);
-
-    // '...is my na...'
-
-The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
-
-In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::of('This is my name')->excerpt('name', [
-        'radius' => 3,
-        'omission' => '(...) '
-    ]);
-
-    // '(...) my name'
-
-<a name="method-fluent-str-ends-with"></a>
-#### `endsWith` {.collection-method}
-
-The `endsWith` method determines if the given string ends with the given value:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('This is my name')->endsWith('name');
-
-    // true
-
-You may also pass an array of values to determine if the given string ends with any of the values in the array:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('This is my name')->endsWith(['name', 'foo']);
-
-    // true
-
-    $result = Str::of('This is my name')->endsWith(['this', 'foo']);
-
-    // false
-
-<a name="method-fluent-str-exactly"></a>
-#### `exactly` {.collection-method}
-
-The `exactly` method determines if the given string is an exact match with another string:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('Laravel')->exactly('Laravel');
-
-    // true
-
-<a name="method-fluent-str-explode"></a>
-#### `explode` {.collection-method}
-
-The `explode` method splits the string by the given delimiter and returns a collection containing each section of the split string:
-
-    use Illuminate\Support\Str;
-
-    $collection = Str::of('foo bar baz')->explode(' ');
-
-    // collect(['foo', 'bar', 'baz'])
-
-<a name="method-fluent-str-finish"></a>
-#### `finish` {.collection-method}
-
-The `finish` method adds a single instance of the given value to a string if it does not already end with that value:
-
-    use Illuminate\Support\Str;
-
-    $adjusted = Str::of('this/string')->finish('/');
-
-    // this/string/
-
-    $adjusted = Str::of('this/string/')->finish('/');
-
-    // this/string/
-
-<a name="method-fluent-str-inline-markdown"></a>
-#### `inlineMarkdown` {.collection-method}
-
-The `inlineMarkdown` method converts GitHub flavored Markdown into inline HTML using [CommonMark](https://commonmark.thephpleague.com/). However, unlike the `markdown` method, it does not wrap all generated HTML in a block-level element:
-
-    use Illuminate\Support\Str;
-
-    $html = Str::of('**Laravel**')->inlineMarkdown();
-
-    // <strong>Laravel</strong>
-
-<a name="method-fluent-str-is"></a>
-#### `is` {.collection-method}
-
-The `is` method determines if a given string matches a given pattern. Asterisks may be used as wildcard values
-
-    use Illuminate\Support\Str;
-
-    $matches = Str::of('foobar')->is('foo*');
-
-    // true
-
-    $matches = Str::of('foobar')->is('baz*');
-
-    // false
-
-<a name="method-fluent-str-is-ascii"></a>
-#### `isAscii` {.collection-method}
-
-The `isAscii` method determines if a given string is an ASCII string:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('Taylor')->isAscii();
-
-    // true
-
-    $result = Str::of('ü')->isAscii();
-
-    // false
-
-<a name="method-fluent-str-is-empty"></a>
-#### `isEmpty` {.collection-method}
-
-The `isEmpty` method determines if the given string is empty:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('  ')->trim()->isEmpty();
-
-    // true
-
-    $result = Str::of('Laravel')->trim()->isEmpty();
-
-    // false
-
-<a name="method-fluent-str-is-not-empty"></a>
-#### `isNotEmpty` {.collection-method}
-
-The `isNotEmpty` method determines if the given string is not empty:
-
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('  ')->trim()->isNotEmpty();
-
-    // false
-
-    $result = Str::of('Laravel')->trim()->isNotEmpty();
-
-    // true
-
-<a name="method-fluent-str-is-json"></a>
-#### `isJson` {.collection-method}
-
-The `isJson` method determines if a given string is valid JSON:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('[1,2,3]')->isJson();
-
-    // true
-
-    $result = Str::of('{"first": "John", "last": "Doe"}')->isJson();
-
-    // true
-
-    $result = Str::of('{first: "John", last: "Doe"}')->isJson();
-
-    // false
-
-<a name="method-fluent-str-is-uuid"></a>
-#### `isUuid` {.collection-method}
-
-The `isUuid` method determines if a given string is a UUID:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('5ace9ab9-e9cf-4ec6-a19d-5881212a452c')->isUuid();
-
-    // true
-
-    $result = Str::of('Taylor')->isUuid();
-
-    // false
-
-<a name="method-fluent-str-kebab"></a>
-#### `kebab` {.collection-method}
-
-The `kebab` method converts the given string to `kebab-case`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::of('fooBar')->kebab();
-
-    // foo-bar
-
-<a name="method-fluent-str-lcfirst"></a>
-#### `lcfirst` {.collection-method}
-
-The `lcfirst` method returns the given string with the first character lowercased:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Foo Bar')->lcfirst();
-
-    // foo Bar
-
-
-<a name="method-fluent-str-length"></a>
-#### `length` {.collection-method}
-
-The `length` method returns the length of the given string:
-
-    use Illuminate\Support\Str;
-
-    $length = Str::of('Laravel')->length();
-
-    // 7
-
-<a name="method-fluent-str-limit"></a>
-#### `limit` {.collection-method}
-
-The `limit` method truncates the given string to the specified length:
-
-    use Illuminate\Support\Str;
-
-    $truncated = Str::of('The quick brown fox jumps over the lazy dog')->limit(20);
-
-    // The quick brown fox...
-
-You may also pass a second argument to change the string that will be appended to the end of the truncated string:
-
-    use Illuminate\Support\Str;
-
-    $truncated = Str::of('The quick brown fox jumps over the lazy dog')->limit(20, ' (...)');
-
-    // The quick brown fox (...)
-
-<a name="method-fluent-str-lower"></a>
-#### `lower` {.collection-method}
-
-The `lower` method converts the given string to lowercase:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('LARAVEL')->lower();
-
-    // 'laravel'
-
-<a name="method-fluent-str-ltrim"></a>
-#### `ltrim` {.collection-method}
-
-The `ltrim` method trims the left side of the string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('  Laravel  ')->ltrim();
-
-    // 'Laravel  '
-
-    $string = Str::of('/Laravel/')->ltrim('/');
-
-    // 'Laravel/'
-
-<a name="method-fluent-str-markdown"></a>
-#### `markdown` {.collection-method}
-
-The `markdown` method converts GitHub flavored Markdown into HTML:
-
-    use Illuminate\Support\Str;
-
-    $html = Str::of('# Laravel')->markdown();
-
-    // <h1>Laravel</h1>
-
-    $html = Str::of('# Taylor <b>Otwell</b>')->markdown([
-        'html_input' => 'strip',
-    ]);
-
-    // <h1>Taylor Otwell</h1>
-
-<a name="method-fluent-str-mask"></a>
-#### `mask` {.collection-method}
-
-The `mask` method masks a portion of a string with a repeated character, and may be used to obfuscate segments of strings such as email addresses and phone numbers:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('taylor@example.com')->mask('*', 3);
-
-    // tay***************
-
-If needed, you provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
-
-    $string = Str::of('taylor@example.com')->mask('*', -15, 3);
-
-    // tay***@example.com
-
-<a name="method-fluent-str-match"></a>
-#### `match` {.collection-method}
-
-The `match` method will return the portion of a string that matches a given regular expression pattern:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('foo bar')->match('/bar/');
-
-    // 'bar'
-
-    $result = Str::of('foo bar')->match('/foo (.*)/');
-
-    // 'bar'
-
-<a name="method-fluent-str-match-all"></a>
-#### `matchAll` {.collection-method}
-
-The `matchAll` method will return a collection containing the portions of a string that match a given regular expression pattern:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('bar foo bar')->matchAll('/bar/');
-
-    // collect(['bar', 'bar'])
-
-If you specify a matching group within the expression, Laravel will return a collection of that group's matches:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('bar fun bar fly')->matchAll('/f(\w*)/');
-
-    // collect(['un', 'ly']);
-
-If no matches are found, an empty collection will be returned.
-
-<a name="method-fluent-str-new-line"></a>
-#### `newLine` {.collection-method}
-
-The `newLine` method appends an "end of line" character to a string:
-
-    use Illuminate\Support\Str;
-
-    $padded = Str::of('Laravel')->newLine()->append('Framework');
-
-    // 'Laravel
-    //  Framework'
-
-<a name="method-fluent-str-padboth"></a>
-#### `padBoth` {.collection-method}
-
-The `padBoth` method wraps PHP's `str_pad` function, padding both sides of a string with another string until the final string reaches the desired length:
-
-    use Illuminate\Support\Str;
-
-    $padded = Str::of('James')->padBoth(10, '_');
-
-    // '__James___'
-
-    $padded = Str::of('James')->padBoth(10);
-
-    // '  James   '
-
-<a name="method-fluent-str-padleft"></a>
-#### `padLeft` {.collection-method}
-
-The `padLeft` method wraps PHP's `str_pad` function, padding the left side of a string with another string until the final string reaches the desired length:
-
-    use Illuminate\Support\Str;
-
-    $padded = Str::of('James')->padLeft(10, '-=');
-
-    // '-=-=-James'
-
-    $padded = Str::of('James')->padLeft(10);
-
-    // '     James'
-
-<a name="method-fluent-str-padright"></a>
-#### `padRight` {.collection-method}
-
-The `padRight` method wraps PHP's `str_pad` function, padding the right side of a string with another string until the final string reaches the desired length:
-
-    use Illuminate\Support\Str;
-
-    $padded = Str::of('James')->padRight(10, '-');
-
-    // 'James-----'
-
-    $padded = Str::of('James')->padRight(10);
-
-    // 'James     '
-
-<a name="method-fluent-str-pipe"></a>
-#### `pipe` {.collection-method}
-
-The `pipe` method allows you to transform the string by passing its current value to the given callable:
-
-    use Illuminate\Support\Str;
-
-    $hash = Str::of('Laravel')->pipe('md5')->prepend('Checksum: ');
-
-    // 'Checksum: a5c95b86291ea299fcbe64458ed12702'
-
-    $closure = Str::of('foo')->pipe(function ($str) {
-        return 'bar';
-    });
-
-    // 'bar'
-
-<a name="method-fluent-str-plural"></a>
-#### `plural` {.collection-method}
-
-The `plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
-
-    use Illuminate\Support\Str;
-
-    $plural = Str::of('car')->plural();
-
-    // cars
-
-    $plural = Str::of('child')->plural();
-
-    // children
-
-You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
-
-    use Illuminate\Support\Str;
-
-    $plural = Str::of('child')->plural(2);
-
-    // children
-
-    $plural = Str::of('child')->plural(1);
-
-    // child
-
-<a name="method-fluent-str-prepend"></a>
-#### `prepend` {.collection-method}
-
-The `prepend` method prepends the given values onto the string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Framework')->prepend('Laravel ');
-
-    // Laravel Framework
-
-<a name="method-fluent-str-remove"></a>
-#### `remove` {.collection-method}
-
-The `remove` method removes the given value or array of values from the string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Arkansas is quite beautiful!')->remove('quite');
-
-    // Arkansas is beautiful!
-
-You may also pass `false` as a second parameter to ignore case when removing strings.
-
-<a name="method-fluent-str-replace"></a>
-#### `replace` {.collection-method}
-
-The `replace` method replaces a given string within the string:
-
-    use Illuminate\Support\Str;
-
-    $replaced = Str::of('Laravel 6.x')->replace('6.x', '7.x');
-
-    // Laravel 7.x
-
-<a name="method-fluent-str-replace-array"></a>
-#### `replaceArray` {.collection-method}
-
-The `replaceArray` method replaces a given value in the string sequentially using an array:
-
-    use Illuminate\Support\Str;
-
-    $string = 'The event will take place between ? and ?';
-
-    $replaced = Str::of($string)->replaceArray('?', ['8:30', '9:00']);
-
-    // The event will take place between 8:30 and 9:00
-
-<a name="method-fluent-str-replace-first"></a>
-#### `replaceFirst` {.collection-method}
-
-The `replaceFirst` method replaces the first occurrence of a given value in a string:
-
-    use Illuminate\Support\Str;
-
-    $replaced = Str::of('the quick brown fox jumps over the lazy dog')->replaceFirst('the', 'a');
-
-    // a quick brown fox jumps over the lazy dog
-
-<a name="method-fluent-str-replace-last"></a>
-#### `replaceLast` {.collection-method}
-
-The `replaceLast` method replaces the last occurrence of a given value in a string:
-
-    use Illuminate\Support\Str;
-
-    $replaced = Str::of('the quick brown fox jumps over the lazy dog')->replaceLast('the', 'a');
-
-    // the quick brown fox jumps over a lazy dog
-
-<a name="method-fluent-str-replace-matches"></a>
-#### `replaceMatches` {.collection-method}
-
-The `replaceMatches` method replaces all portions of a string matching a pattern with the given replacement string:
-
-    use Illuminate\Support\Str;
-
-    $replaced = Str::of('(+1) 501-555-1000')->replaceMatches('/[^A-Za-z0-9]++/', '')
-
-    // '15015551000'
-
-The `replaceMatches` method also accepts a closure that will be invoked with each portion of the string matching the given pattern, allowing you to perform the replacement logic within the closure and return the replaced value:
-
-    use Illuminate\Support\Str;
-
-    $replaced = Str::of('123')->replaceMatches('/\d/', function ($match) {
-        return '['.$match[0].']';
-    });
-
-    // '[1][2][3]'
-
-<a name="method-fluent-str-rtrim"></a>
-#### `rtrim` {.collection-method}
-
-The `rtrim` method trims the right side of the given string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('  Laravel  ')->rtrim();
-
-    // '  Laravel'
-
-    $string = Str::of('/Laravel/')->rtrim('/');
-
-    // '/Laravel'
-
-<a name="method-fluent-str-scan"></a>
-#### `scan` {.collection-method}
-
-The `scan` method parses input from a string into a collection according to a format supported by the [`sscanf` PHP function](https://www.php.net/manual/en/function.sscanf.php):
-
-    use Illuminate\Support\Str;
-
-    $collection = Str::of('filename.jpg')->scan('%[^.].%s');
-
-    // collect(['filename', 'jpg'])
-
-<a name="method-fluent-str-singular"></a>
-#### `singular` {.collection-method}
-
-The `singular` method converts a string to its singular form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
-
-    use Illuminate\Support\Str;
-
-    $singular = Str::of('cars')->singular();
-
-    // car
-
-    $singular = Str::of('children')->singular();
-
-    // child
-
-<a name="method-fluent-str-slug"></a>
-#### `slug` {.collection-method}
-
-The `slug` method generates a URL friendly "slug" from the given string:
-
-    use Illuminate\Support\Str;
-
-    $slug = Str::of('Laravel Framework')->slug('-');
-
-    // laravel-framework
-
-<a name="method-fluent-str-snake"></a>
-#### `snake` {.collection-method}
-
-The `snake` method converts the given string to `snake_case`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::of('fooBar')->snake();
-
-    // foo_bar
-
-<a name="method-fluent-str-split"></a>
-#### `split` {.collection-method}
-
-The `split` method splits a string into a collection using a regular expression:
-
-    use Illuminate\Support\Str;
-
-    $segments = Str::of('one, two, three')->split('/[\s,]+/');
-
-    // collect(["one", "two", "three"])
-
-<a name="method-fluent-str-squish"></a>
-#### `squish` {.collection-method}
-
-The `squish` method removes all extraneous white space from a string, including extraneous white space between words:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('    laravel    framework    ')->squish();
-
-    // laravel framework
-
-<a name="method-fluent-str-start"></a>
-#### `start` {.collection-method}
-
-The `start` method adds a single instance of the given value to a string if it does not already start with that value:
-
-    use Illuminate\Support\Str;
-
-    $adjusted = Str::of('this/string')->start('/');
-
-    // /this/string
-
-    $adjusted = Str::of('/this/string')->start('/');
-
-    // /this/string
-
-<a name="method-fluent-str-starts-with"></a>
-#### `startsWith` {.collection-method}
-
-The `startsWith` method determines if the given string begins with the given value:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('This is my name')->startsWith('This');
-
-    // true
-
-<a name="method-fluent-str-studly"></a>
-#### `studly` {.collection-method}
-
-The `studly` method converts the given string to `StudlyCase`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::of('foo_bar')->studly();
-
-    // FooBar
-
-<a name="method-fluent-str-substr"></a>
-#### `substr` {.collection-method}
-
-The `substr` method returns the portion of the string specified by the given start and length parameters:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Laravel Framework')->substr(8);
-
-    // Framework
-
-    $string = Str::of('Laravel Framework')->substr(8, 5);
-
-    // Frame
-
-<a name="method-fluent-str-substrreplace"></a>
-#### `substrReplace` {.collection-method}
-
-The `substrReplace` method replaces text within a portion of a string, starting at the position specified by the second argument and replacing the number of characters specified by the third argument. Passing `0` to the method's third argument will insert the string at the specified position without replacing any of the existing characters in the string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('1300')->substrReplace(':', 2);
-
-    // 13:
-
-    $string = Str::of('The Framework')->substrReplace(' Laravel', 3, 0);
-
-    // The Laravel Framework
-
-<a name="method-fluent-str-swap"></a>
-#### `swap` {.collection-method}
-
-The `swap` method replaces multiple values in the string using PHP's `strtr` function:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Tacos are great!')
-        ->swap([
-            'Tacos' => 'Burritos',
-            'great' => 'fantastic',
-        ]);
-
-    // Burritos are fantastic!
-
-<a name="method-fluent-str-tap"></a>
-#### `tap` {.collection-method}
-
-The `tap` method passes the string to the given closure, allowing you to examine and interact with the string while not affecting the string itself. The original string is returned by the `tap` method regardless of what is returned by the closure:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Laravel')
-        ->append(' Framework')
-        ->tap(function ($string) {
-            dump('String after append: '.$string);
-        })
-        ->upper();
-
-    // LARAVEL FRAMEWORK
-
-<a name="method-fluent-str-test"></a>
-#### `test` {.collection-method}
-
-The `test` method determines if a string matches the given regular expression pattern:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::of('Laravel Framework')->test('/Laravel/');
-
-    // true
-
-<a name="method-fluent-str-title"></a>
-#### `title` {.collection-method}
-
-The `title` method converts the given string to `Title Case`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::of('a nice title uses the correct case')->title();
-
-    // A Nice Title Uses The Correct Case
-
-<a name="method-fluent-str-trim"></a>
-#### `trim` {.collection-method}
-
-The `trim` method trims the given string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('  Laravel  ')->trim();
-
-    // 'Laravel'
-
-    $string = Str::of('/Laravel/')->trim('/');
-
-    // 'Laravel'
-
-<a name="method-fluent-str-ucfirst"></a>
-#### `ucfirst` {.collection-method}
-
-The `ucfirst` method returns the given string with the first character capitalized:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('foo bar')->ucfirst();
-
-    // Foo bar
-
-<a name="method-fluent-str-ucsplit"></a>
-#### `ucsplit` {.collection-method}
-
-The `ucsplit` method splits the given string into a collection by uppercase characters:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Foo Bar')->ucsplit();
-
-    // collect(['Foo', 'Bar'])
-
-<a name="method-fluent-str-upper"></a>
-#### `upper` {.collection-method}
-
-The `upper` method converts the given string to uppercase:
-
-    use Illuminate\Support\Str;
-
-    $adjusted = Str::of('laravel')->upper();
-
-    // LARAVEL
-
-<a name="method-fluent-str-when"></a>
-#### `when` {.collection-method}
-
-The `when` method invokes the given closure if a given condition is `true`. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Taylor')
-                    ->when(true, function ($string) {
-                        return $string->append(' Otwell');
-                    });
-
-    // 'Taylor Otwell'
-
-If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
-
-<a name="method-fluent-str-when-contains"></a>
-#### `whenContains` {.collection-method}
-
-The `whenContains` method invokes the given closure if the string contains the given value. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('tony stark')
-                ->whenContains('tony', function ($string) {
-                    return $string->title();
-                });
-
-    // 'Tony Stark'
-
-If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the string does not contain the given value.
-
-You may also pass an array of values to determine if the given string contains any of the values in the array:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('tony stark')
-                ->whenContains(['tony', 'hulk'], function ($string) {
-                    return $string->title();
-                });
-
-    // Tony Stark
-
-<a name="method-fluent-str-when-contains-all"></a>
-#### `whenContainsAll` {.collection-method}
-
-The `whenContainsAll` method invokes the given closure if the string contains all of the given sub-strings. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('tony stark')
-                    ->whenContainsAll(['tony', 'stark'], function ($string) {
-                        return $string->title();
-                    });
-
-    // 'Tony Stark'
-
-If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
-
-<a name="method-fluent-str-when-empty"></a>
-#### `whenEmpty` {.collection-method}
-
-The `whenEmpty` method invokes the given closure if the string is empty. If the closure returns a value, that value will also be returned by the `whenEmpty` method. If the closure does not return a value, the fluent string instance will be returned:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('  ')->whenEmpty(function ($string) {
-        return $string->trim()->prepend('Laravel');
-    });
-
-    // 'Laravel'
-
-<a name="method-fluent-str-when-not-empty"></a>
-#### `whenNotEmpty` {.collection-method}
-
-The `whenNotEmpty` method invokes the given closure if the string is not empty. If the closure returns a value, that value will also be returned by the `whenNotEmpty` method. If the closure does not return a value, the fluent string instance will be returned:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Framework')->whenNotEmpty(function ($string) {
-        return $string->prepend('Laravel ');
-    });
-
-    // 'Laravel Framework'
-
-<a name="method-fluent-str-when-starts-with"></a>
-#### `whenStartsWith` {.collection-method}
-
-The `whenStartsWith` method invokes the given closure if the string starts with the given sub-string. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('disney world')->whenStartsWith('disney', function ($string) {
-        return $string->title();
-    });
-
-    // 'Disney World'
-
-<a name="method-fluent-str-when-ends-with"></a>
-#### `whenEndsWith` {.collection-method}
-
-The `whenEndsWith` method invokes the given closure if the string ends with the given sub-string. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('disney world')->whenEndsWith('world', function ($string) {
-        return $string->title();
-    });
-
-    // 'Disney World'
-
-<a name="method-fluent-str-when-exactly"></a>
-#### `whenExactly` {.collection-method}
-
-The `whenExactly` method invokes the given closure if the string exactly matches the given string. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('laravel')->whenExactly('laravel', function ($string) {
-        return $string->title();
-    });
-
-    // 'Laravel'
-
-<a name="method-fluent-str-when-not-exactly"></a>
-#### `whenNotExactly` {.collection-method}
-
-The `whenNotExactly` method invokes the given closure if the string does not exactly match the given string. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('framework')->whenNotExactly('laravel', function ($string) {
-        return $string->title();
-    });
-
-    // 'Framework'
-
-<a name="method-fluent-str-when-is"></a>
-#### `whenIs` {.collection-method}
-
-The `whenIs` method invokes the given closure if the string matches a given pattern. Asterisks may be used as wildcard values. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('foo/bar')->whenIs('foo/*', function ($string) {
-        return $string->append('/baz');
-    });
-
-    // 'foo/bar/baz'
-
-<a name="method-fluent-str-when-is-ascii"></a>
-#### `whenIsAscii` {.collection-method}
-
-The `whenIsAscii` method invokes the given closure if the string is 7 bit ASCII. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('foo/bar')->whenIsAscii('laravel', function ($string) {
-        return $string->title();
-    });
-
-    // 'Laravel'
-
-<a name="method-fluent-str-when-is-uuid"></a>
-#### `whenIsUuid` {.collection-method}
-
-The `whenIsUuid` method invokes the given closure if the string is a valid UUID. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('foo/bar')->whenIsUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de', function ($string) {
-        return $string->substr(0, 8);
-    });
-
-    // 'a0a2a2d2'
-
-<a name="method-fluent-str-when-test"></a>
-#### `whenTest` {.collection-method}
-
-The `whenTest` method invokes the given closure if the string matches the given regular expression. The closure will receive the fluent string instance:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('laravel framework')->whenTest('/laravel/', function ($string) {
-        return $string->title();
-    });
-
-    // 'Laravel Framework'
-
-<a name="method-fluent-str-word-count"></a>
-#### `wordCount` {.collection-method}
-
-The `wordCount` method returns the number of words that a string contains:
-
-```php
-use Illuminate\Support\Str;
-
-Str::of('Hello, world!')->wordCount(); // 2
-```
-
-<a name="method-fluent-str-words"></a>
-#### `words` {.collection-method}
-
-The `words` method limits the number of words in a string. If necessary, you may specify an additional string that will be appended to the truncated string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('Perfectly balanced, as all things should be.')->words(3, ' >>>');
-
-    // Perfectly balanced, as >>>
 
 <a name="urls"></a>
 ## URLs
@@ -3514,7 +1713,7 @@ The `decrypt` function [decrypts](/docs/{{version}}/encryption) the given value.
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
 
-The `dd` function dumps the given variables and ends execution of the script:
+The `dd` function dumps the given variables and ends the execution of the script:
 
     dd($value);
 
@@ -3528,6 +1727,13 @@ If you do not want to halt the execution of your script, use the [`dump`](#metho
 The `dispatch` function pushes the given [job](/docs/{{version}}/queues#creating-jobs) onto the Laravel [job queue](/docs/{{version}}/queues):
 
     dispatch(new App\Jobs\SendEmails);
+
+<a name="method-dispatch-sync"></a>
+#### `dispatch_sync()` {.collection-method}
+
+The `dispatch_sync` function pushes the given job to the [sync](/docs/{{version}}/queues#synchronous-dispatching) queue so that it is processed immediately:
+
+    dispatch_sync(new App\Jobs\SendEmails);
 
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}
@@ -3556,7 +1762,7 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
 
     $env = env('APP_ENV', 'production');
 
-> **Warning**  
+> [!WARNING]  
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
 
 <a name="method-event"></a>
@@ -3583,7 +1789,7 @@ The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) single
 @endfor
 ```
 
-By default, the `fake` function will utilize the `app.faker_locale` configuration option in your `config/app.php` configuration file; however, you may also specify the locale by passing it to the `fake` function. Each locale will resolve an individual singleton:
+By default, the `fake` function will utilize the `app.faker_locale` configuration option in your `config/app.php` configuration. Typically, this configuration option is set via the `APP_FAKER_LOCALE` environment variable. You may also specify the locale by passing it to the `fake` function. Each locale will resolve an individual singleton:
 
     fake('nl_NL')->name()
 
@@ -3617,6 +1823,19 @@ The `info` function will write information to your application's [log](/docs/{{v
 An array of contextual data may also be passed to the function:
 
     info('User login attempt failed.', ['id' => $user->id]);
+
+<a name="method-literal"></a>
+#### `literal()` {.collection-method}
+
+"The `literal` function creates a new [stdClass](https://www.php.net/manual/en/class.stdclass.php) instance with the given named arguments as properties:
+
+    $obj = literal(
+        name: 'Joe',
+        languages: ['PHP', 'Ruby'],
+    );
+
+    $obj->name; // 'Joe'
+    $obj->languages; // ['PHP', 'Ruby']
 
 <a name="method-logger"></a>
 #### `logger()` {.collection-method}
@@ -3666,6 +1885,45 @@ Since the "default value" provided as the second argument to the `old` function 
 
     {{ old('name', $user) }}
 
+<a name="method-once"></a>
+#### `once()` {.collection-method}
+
+The `once` function executes the given callback and caches the result in memory for the duration of the request. Any subsequent calls to the `once` function with the same callback will return the previously cached result:
+
+    function random(): int
+    {
+        return once(function () {
+            return random_int(1, 1000);
+        });
+    }
+
+    random(); // 123
+    random(); // 123 (cached result)
+    random(); // 123 (cached result)
+
+When the `once` function is executed from within an object instance, the cached result will be unique to that object instance:
+
+```php
+<?php
+
+class NumberService
+{
+    public function all(): array
+    {
+        return once(fn () => [1, 2, 3]);
+    }
+}
+
+$service = new NumberService;
+
+$service->all();
+$service->all(); // (cached result)
+
+$secondService = new NumberService;
+
+$secondService->all();
+$secondService->all(); // (cached result)
+```
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}
 
@@ -3677,7 +1935,7 @@ The `optional` function accepts any argument and allows you to access properties
 
 The `optional` function also accepts a closure as its second argument. The closure will be invoked if the value provided as the first argument is not null:
 
-    return optional(User::find($id), function ($user) {
+    return optional(User::find($id), function (User $user) {
         return $user->name;
     });
 
@@ -3710,6 +1968,24 @@ The `report` function also accepts a string as an argument. When a string is giv
 
     report('Something went wrong.');
 
+<a name="method-report-if"></a>
+#### `report_if()` {.collection-method}
+
+The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler) if the given condition is `true`:
+
+    report_if($shouldReport, $e);
+
+    report_if($shouldReport, 'Something went wrong.');
+
+<a name="method-report-unless"></a>
+#### `report_unless()` {.collection-method}
+
+The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler) if the given condition is `false`:
+
+    report_unless($reportingDisabled, $e);
+
+    report_unless($reportingDisabled, 'Something went wrong.');
+
 <a name="method-request"></a>
 #### `request()` {.collection-method}
 
@@ -3740,6 +2016,14 @@ You may also pass a second argument to the `rescue` function. This argument will
         return $this->failure();
     });
 
+A `report` argument may be provided to the `rescue` function to determine if the exception should be reported via the `report` function:
+
+    return rescue(function () {
+        return $this->method();
+    }, report: function (Throwable $throwable) {
+        return $throwable instanceof InvalidArgumentException;
+    });
+
 <a name="method-resolve"></a>
 #### `resolve()` {.collection-method}
 
@@ -3767,9 +2051,11 @@ The `retry` function attempts to execute the given callback until the given maxi
 
 If you would like to manually calculate the number of milliseconds to sleep between attempts, you may pass a closure as the third argument to the `retry` function:
 
+    use Exception;
+
     return retry(5, function () {
         // ...
-    }, function ($attempt, $exception) {
+    }, function (int $attempt, Exception $exception) {
         return $attempt * 100;
     });
 
@@ -3781,9 +2067,11 @@ For convenience, you may provide an array as the first argument to the `retry` f
 
 To only retry under specific conditions, you may pass a closure as the fourth argument to the `retry` function:
 
+    use Exception;
+
     return retry(5, function () {
         // ...
-    }, 100, function ($exception) {
+    }, 100, function (Exception $exception) {
         return $exception instanceof RetryException;
     });
 
@@ -3809,7 +2097,7 @@ The session store will be returned if no value is passed to the function:
 
 The `tap` function accepts two arguments: an arbitrary `$value` and a closure. The `$value` will be passed to the closure and then be returned by the `tap` function. The return value of the closure is irrelevant:
 
-    $user = tap(User::first(), function ($user) {
+    $user = tap(User::first(), function (User $user) {
         $user->name = 'taylor';
 
         $user->save();
@@ -3824,8 +2112,8 @@ If no closure is passed to the `tap` function, you may call any method on the gi
 
 To add a `tap` method to a class, you may add the `Illuminate\Support\Traits\Tappable` trait to the class. The `tap` method of this trait accepts a Closure as its only argument. The object instance itself will be passed to the Closure and then be returned by the `tap` method:
 
-    return $user->tap(function ($user) {
-        //
+    return $user->tap(function (User $user) {
+        // ...
     });
 
 <a name="method-throw-if"></a>
@@ -3873,7 +2161,7 @@ The `trait_uses_recursive` function returns all traits used by a trait:
 
 The `transform` function executes a closure on a given value if the value is not [blank](#method-blank) and then returns the return value of the closure:
 
-    $callback = function ($value) {
+    $callback = function (int $value) {
         return $value * 2;
     };
 
@@ -3909,6 +2197,14 @@ The `value` function returns the value it is given. However, if you pass a closu
 
     // false
 
+Additional arguments may be passed to the `value` function. If the first argument is a closure then the additional parameters will be passed to the closure as arguments, otherwise they will be ignored:
+
+    $result = value(function (string $name) {
+        return $name;
+    }, 'Taylor');
+    
+    // 'Taylor'
+
 <a name="method-view"></a>
 #### `view()` {.collection-method}
 
@@ -3921,7 +2217,7 @@ The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 
 The `with` function returns the value it is given. If a closure is passed as the second argument to the function, the closure will be executed and its returned value will be returned:
 
-    $callback = function ($value) {
+    $callback = function (mixed $value) {
         return is_numeric($value) ? $value * 2 : 0;
     };
 
@@ -3936,3 +2232,279 @@ The `with` function returns the value it is given. If a closure is passed as the
     $result = with(5, null);
 
     // 5
+
+<a name="other-utilities"></a>
+## Other Utilities
+
+<a name="benchmarking"></a>
+### Benchmarking
+
+Sometimes you may wish to quickly test the performance of certain parts of your application. On those occasions, you may utilize the `Benchmark` support class to measure the number of milliseconds it takes for the given callbacks to complete:
+
+    <?php
+
+    use App\Models\User;
+    use Illuminate\Support\Benchmark;
+
+    Benchmark::dd(fn () => User::find(1)); // 0.1 ms
+
+    Benchmark::dd([
+        'Scenario 1' => fn () => User::count(), // 0.5 ms
+        'Scenario 2' => fn () => User::all()->count(), // 20.0 ms
+    ]);
+
+By default, the given callbacks will be executed once (one iteration), and their duration will be displayed in the browser / console.
+
+To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
+
+    Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
+
+Sometimes, you may want to benchmark the execution of a callback while still obtaining the value returned by the callback. The `value` method will return a tuple containing the value returned by the callback and the amount of milliseconds it took to execute the callback:
+
+    [$count, $duration] = Benchmark::value(fn () => User::count());
+
+<a name="dates"></a>
+### Dates
+
+Laravel includes [Carbon](https://carbon.nesbot.com/docs/), a powerful date and time manipulation library. To create a new `Carbon` instance, you may invoke the `now` function. This function is globally available within your Laravel application:
+
+```php
+$now = now();
+```
+
+Or, you may create a new `Carbon` instance using the `Illuminate\Support\Carbon` class:
+
+```php
+use Illuminate\Support\Carbon;
+
+$now = Carbon::now();
+```
+
+For a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/docs/).
+
+<a name="lottery"></a>
+### Lottery
+
+Laravel's lottery class may be used to execute callbacks based on a set of given odds. This can be particularly useful when you only want to execute code for a percentage of your incoming requests:
+
+    use Illuminate\Support\Lottery;
+
+    Lottery::odds(1, 20)
+        ->winner(fn () => $user->won())
+        ->loser(fn () => $user->lost())
+        ->choose();
+
+You may combine Laravel's lottery class with other Laravel features. For example, you may wish to only report a small percentage of slow queries to your exception handler. And, since the lottery class is callable, we may pass an instance of the class into any method that accepts callables:
+
+    use Carbon\CarbonInterval;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Lottery;
+
+    DB::whenQueryingForLongerThan(
+        CarbonInterval::seconds(2),
+        Lottery::odds(1, 100)->winner(fn () => report('Querying > 2 seconds.')),
+    );
+
+<a name="testing-lotteries"></a>
+#### Testing Lotteries
+
+Laravel provides some simple methods to allow you to easily test your application's lottery invocations:
+
+    // Lottery will always win...
+    Lottery::alwaysWin();
+
+    // Lottery will always lose...
+    Lottery::alwaysLose();
+
+    // Lottery will win then lose, and finally return to normal behavior...
+    Lottery::fix([true, false]);
+
+    // Lottery will return to normal behavior...
+    Lottery::determineResultsNormally();
+
+<a name="pipeline"></a>
+### Pipeline
+
+Laravel's `Pipeline` facade provides a convenient way to "pipe" a given input through a series of invokable classes, closures, or callables, giving each class the opportunity to inspect or modify the input and invoke the next callable in the pipeline:
+
+```php
+use Closure;
+use App\Models\User;
+use Illuminate\Support\Facades\Pipeline;
+
+$user = Pipeline::send($user)
+            ->through([
+                function (User $user, Closure $next) {
+                    // ...
+
+                    return $next($user);
+                },
+                function (User $user, Closure $next) {
+                    // ...
+
+                    return $next($user);
+                },
+            ])
+            ->then(fn (User $user) => $user);
+```
+
+As you can see, each invokable class or closure in the pipeline is provided the input and a `$next` closure. Invoking the `$next` closure will invoke the next callable in the pipeline. As you may have noticed, this is very similar to [middleware](/docs/{{version}}/middleware).
+
+When the last callable in the pipeline invokes the `$next` closure, the callable provided to the `then` method will be invoked. Typically, this callable will simply return the given input.
+
+Of course, as discussed previously, you are not limited to providing closures to your pipeline. You may also provide invokable classes. If a class name is provided, the class will be instantiated via Laravel's [service container](/docs/{{version}}/container), allowing dependencies to be injected into the invokable class:
+
+```php
+$user = Pipeline::send($user)
+            ->through([
+                GenerateProfilePhoto::class,
+                ActivateSubscription::class,
+                SendWelcomeEmail::class,
+            ])
+            ->then(fn (User $user) => $user);
+```
+
+<a name="sleep"></a>
+### Sleep
+
+Laravel's `Sleep` class is a light-weight wrapper around PHP's native `sleep` and `usleep` functions, offering greater testability while also exposing a developer friendly API for working with time:
+
+    use Illuminate\Support\Sleep;
+
+    $waiting = true;
+
+    while ($waiting) {
+        Sleep::for(1)->second();
+
+        $waiting = /* ... */;
+    }
+
+The `Sleep` class offers a variety of methods that allow you to work with different units of time:
+
+    // Pause execution for 90 seconds...
+    Sleep::for(1.5)->minutes();
+
+    // Pause execution for 2 seconds...
+    Sleep::for(2)->seconds();
+
+    // Pause execution for 500 milliseconds...
+    Sleep::for(500)->milliseconds();
+
+    // Pause execution for 5,000 microseconds...
+    Sleep::for(5000)->microseconds();
+
+    // Pause execution until a given time...
+    Sleep::until(now()->addMinute());
+
+    // Alias of PHP's native "sleep" function...
+    Sleep::sleep(2);
+
+    // Alias of PHP's native "usleep" function...
+    Sleep::usleep(5000);
+
+To easily combine units of time, you may use the `and` method:
+
+    Sleep::for(1)->second()->and(10)->milliseconds();
+
+<a name="testing-sleep"></a>
+#### Testing Sleep
+
+When testing code that utilizes the `Sleep` class or PHP's native sleep functions, your test will pause execution. As you might expect, this makes your test suite significantly slower. For example, imagine you are testing the following code:
+
+    $waiting = /* ... */;
+
+    $seconds = 1;
+
+    while ($waiting) {
+        Sleep::for($seconds++)->seconds();
+
+        $waiting = /* ... */;
+    }
+
+Typically, testing this code would take _at least_ one second. Luckily, the `Sleep` class allows us to "fake" sleeping so that our test suite stays fast:
+
+```php tab=Pest
+it('waits until ready', function () {
+    Sleep::fake();
+
+    // ...
+});
+```
+
+```php tab=PHPUnit
+public function test_it_waits_until_ready()
+{
+    Sleep::fake();
+
+    // ...
+}
+```
+
+When faking the `Sleep` class, the actual execution pause is by-passed, leading to a substantially faster test.
+
+Once the `Sleep` class has been faked, it is possible to make assertions against the expected "sleeps" that should have occurred. To illustrate this, let's imagine we are testing code that pauses execution three times, with each pause increasing by a single second. Using the `assertSequence` method, we can assert that our code "slept" for the proper amount of time while keeping our test fast:
+
+```php tab=Pest
+it('checks if ready three times', function () {
+    Sleep::fake();
+
+    // ...
+
+    Sleep::assertSequence([
+        Sleep::for(1)->second(),
+        Sleep::for(2)->seconds(),
+        Sleep::for(3)->seconds(),
+    ]);
+}
+```
+
+```php tab=PHPUnit
+public function test_it_checks_if_ready_four_times()
+{
+    Sleep::fake();
+
+    // ...
+
+    Sleep::assertSequence([
+        Sleep::for(1)->second(),
+        Sleep::for(2)->seconds(),
+        Sleep::for(3)->seconds(),
+    ]);
+}
+```
+
+Of course, the `Sleep` class offers a variety of other assertions you may use when testing:
+
+    use Carbon\CarbonInterval as Duration;
+    use Illuminate\Support\Sleep;
+
+    // Assert that sleep was called 3 times...
+    Sleep::assertSleptTimes(3);
+
+    // Assert against the duration of sleep...
+    Sleep::assertSlept(function (Duration $duration): bool {
+        return /* ... */;
+    }, times: 1);
+
+    // Assert that the Sleep class was never invoked...
+    Sleep::assertNeverSlept();
+
+    // Assert that, even if Sleep was called, no execution paused occurred...
+    Sleep::assertInsomniac();
+
+Sometimes it may be useful to perform an action whenever a fake sleep occurs in your application code. To achieve this, you may provide a callback to the `whenFakingSleep` method. In the following example, we use Laravel's [time manipulation helpers](/docs/{{version}}/mocking#interacting-with-time) to instantly progress time by the duration of each sleep:
+
+```php
+use Carbon\CarbonInterval as Duration;
+
+$this->freezeTime();
+
+Sleep::fake();
+
+Sleep::whenFakingSleep(function (Duration $duration) {
+    // Progress time when faking sleep...
+    $this->travel($duration->totalMilliseconds)->milliseconds();
+});
+```
+
+Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [`retry`](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.

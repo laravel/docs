@@ -5,8 +5,8 @@
     - [Database Preparation](#database-preparation)
     - [Configuring Trusted Hosts](#configuring-trusted-hosts)
 - [Routing](#routing)
-    - [Requesting The Password Reset Link](#requesting-the-password-reset-link)
-    - [Resetting The Password](#resetting-the-password)
+    - [Requesting the Password Reset Link](#requesting-the-password-reset-link)
+    - [Resetting the Password](#resetting-the-password)
 - [Deleting Expired Tokens](#deleting-expired-tokens)
 - [Customization](#password-customization)
 
@@ -15,7 +15,7 @@
 
 Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this by hand for every application you create, Laravel provides convenient services for sending password reset links and secure resetting passwords.
 
-> **Note**  
+> [!NOTE]  
 > Want to get started fast? Install a Laravel [application starter kit](/docs/{{version}}/starter-kits) in a fresh Laravel application. Laravel's starter kits will take care of scaffolding your entire authentication system, including resetting forgotten passwords.
 
 <a name="model-preparation"></a>
@@ -28,20 +28,16 @@ Next, verify that your `App\Models\User` model implements the `Illuminate\Contra
 <a name="database-preparation"></a>
 ### Database Preparation
 
-A table must be created to store your application's password reset tokens. The migration for this table is included in the default Laravel application, so you only need to migrate your database to create this table:
-
-```shell
-php artisan migrate
-```
+A table must be created to store your application's password reset tokens. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` database migration.
 
 <a name="configuring-trusted-hosts"></a>
 ### Configuring Trusted Hosts
 
 By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request.
 
-Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `App\Http\Middleware\TrustHosts` middleware for your application. This is particularly important when your application offers password reset functionality.
+Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given hostname. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain hostnames, you may do so by using the `trustHosts` middleware method in your application's `bootstrap/app.php` file. This is particularly important when your application offers password reset functionality.
 
-To learn more about this middleware, please consult the [`TrustHosts` middleware documentation](/docs/{{version}}/requests#configuring-trusted-hosts).
+To learn more about this middleware method, please consult the [`TrustHosts` middleware documentation](/docs/{{version}}/requests#configuring-trusted-hosts).
 
 <a name="routing"></a>
 ## Routing
@@ -49,7 +45,7 @@ To learn more about this middleware, please consult the [`TrustHosts` middleware
 To properly implement support for allowing users to reset their passwords, we will need to define several routes. First, we will need a pair of routes to handle allowing the user to request a password reset link via their email address. Second, we will need a pair of routes to handle actually resetting the password once the user visits the password reset link that is emailed to them and completes the password reset form.
 
 <a name="requesting-the-password-reset-link"></a>
-### Requesting The Password Reset Link
+### Requesting the Password Reset Link
 
 <a name="the-password-reset-link-request-form"></a>
 #### The Password Reset Link Request Form
@@ -63,7 +59,7 @@ First, we will define the routes that are needed to request password reset links
 The view that is returned by this route should have a form containing an `email` field, which will allow the user to request a password reset link for a given email address.
 
 <a name="password-reset-link-handling-the-form-submission"></a>
-#### Handling The Form Submission
+#### Handling the Form Submission
 
 Next, we will define a route that handles the form submission request from the "forgot password" view. This route will be responsible for validating the email address and sending the password reset request to the corresponding user:
 
@@ -86,30 +82,34 @@ Before moving on, let's examine this route in more detail. First, the request's 
 
 The `sendResetLink` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
 
+> [!NOTE]  
+> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
+
 You may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `sendResetLink` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers).
 
-> **Note**  
+> [!NOTE]  
 > When manually implementing password resets, you are required to define the contents of the views and routes yourself. If you would like scaffolding that includes all necessary authentication and verification logic, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits).
 
 <a name="resetting-the-password"></a>
-### Resetting The Password
+### Resetting the Password
 
 <a name="the-password-reset-form"></a>
 #### The Password Reset Form
 
 Next, we will define the routes necessary to actually reset the password once the user clicks on the password reset link that has been emailed to them and provides a new password. First, let's define the route that will display the reset password form that is displayed when the user clicks the reset password link. This route will receive a `token` parameter that we will use later to verify the password reset request:
 
-    Route::get('/reset-password/{token}', function ($token) {
+    Route::get('/reset-password/{token}', function (string $token) {
         return view('auth.reset-password', ['token' => $token]);
     })->middleware('guest')->name('password.reset');
 
 The view that is returned by this route should display a form containing an `email` field, a `password` field, a `password_confirmation` field, and a hidden `token` field, which should contain the value of the secret `$token` received by our route.
 
 <a name="password-reset-handling-the-form-submission"></a>
-#### Handling The Form Submission
+#### Handling the Form Submission
 
 Of course, we need to define a route to actually handle the password reset form submission. This route will be responsible for validating the incoming request and updating the user's password in the database:
 
+    use App\Models\User;
     use Illuminate\Auth\Events\PasswordReset;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Hash;
@@ -125,7 +125,7 @@ Of course, we need to define a route to actually handle the password reset form 
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
+            function (User $user, string $password) {
                 $user->forceFill([
                     'password' => Hash::make($password)
                 ])->setRememberToken(Str::random(60));
@@ -145,7 +145,7 @@ Before moving on, let's examine this route in more detail. First, the request's 
 
 If the token, email address, and password given to the password broker are valid, the closure passed to the `reset` method will be invoked. Within this closure, which receives the user instance and the plain-text password provided to the password reset form, we may update the user's password in the database.
 
-The `reset` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
+The `reset` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file. If your application does not contain a `lang` directory, you may create it using the `lang:publish` Artisan command.
 
 Before moving on, you may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `reset` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers).
 
@@ -160,7 +160,9 @@ php artisan auth:clear-resets
 
 If you would like to automate this process, consider adding the command to your application's [scheduler](/docs/{{version}}/scheduling):
 
-    $schedule->command('auth:clear-resets')->everyFifteenMinutes();
+    use Illuminate\Support\Facades\Schedule;
+
+    Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 
 <a name="password-customization"></a>
 ## Customization
@@ -168,20 +170,17 @@ If you would like to automate this process, consider adding the command to your 
 <a name="reset-link-customization"></a>
 #### Reset Link Customization
 
-You may customize the password reset link URL using the `createUrlUsing` method provided by the `ResetPassword` notification class. This method accepts a closure which receives the user instance that is receiving the notification as well as the password reset link token. Typically, you should call this method from your `App\Providers\AuthServiceProvider` service provider's `boot` method:
+You may customize the password reset link URL using the `createUrlUsing` method provided by the `ResetPassword` notification class. This method accepts a closure which receives the user instance that is receiving the notification as well as the password reset link token. Typically, you should call this method from your `App\Providers\AppServiceProvider` service provider's `boot` method:
 
+    use App\Models\User;
     use Illuminate\Auth\Notifications\ResetPassword;
 
     /**
-     * Register any authentication / authorization services.
-     *
-     * @return void
+     * Bootstrap any application services.
      */
-    public function boot()
+    public function boot(): void
     {
-        $this->registerPolicies();
-
-        ResetPassword::createUrlUsing(function ($user, string $token) {
+        ResetPassword::createUrlUsing(function (User $user, string $token) {
             return 'https://example.com/reset-password?token='.$token;
         });
     }
@@ -197,9 +196,8 @@ You may easily modify the notification class used to send the password reset lin
      * Send a password reset notification to the user.
      *
      * @param  string  $token
-     * @return void
      */
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token): void
     {
         $url = 'https://example.com/reset-password?token='.$token;
 

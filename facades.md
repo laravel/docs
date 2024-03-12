@@ -1,9 +1,9 @@
 # Facades
 
 - [Introduction](#introduction)
-- [When To Use Facades](#when-to-use-facades)
-    - [Facades Vs. Dependency Injection](#facades-vs-dependency-injection)
-    - [Facades Vs. Helper Functions](#facades-vs-helper-functions)
+- [When to Utilize Facades](#when-to-use-facades)
+    - [Facades vs. Dependency Injection](#facades-vs-dependency-injection)
+    - [Facades vs. Helper Functions](#facades-vs-helper-functions)
 - [How Facades Work](#how-facades-work)
 - [Real-Time Facades](#real-time-facades)
 - [Facade Class Reference](#facade-class-reference)
@@ -13,7 +13,7 @@
 
 Throughout the Laravel documentation, you will see examples of code that interacts with Laravel's features via "facades". Facades provide a "static" interface to classes that are available in the application's [service container](/docs/{{version}}/container). Laravel ships with many facades which provide access to almost all of Laravel's features.
 
-Laravel facades serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods. It's perfectly fine if you don't totally understand how facades work under the hood - just go with the flow and continue learning about Laravel.
+Laravel facades serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods. It's perfectly fine if you don't totally understand how facades work - just go with the flow and continue learning about Laravel.
 
 All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespace. So, we can easily access a facade like so:
 
@@ -48,14 +48,14 @@ For example, instead of using the `Illuminate\Support\Facades\Response` facade t
     });
 
 <a name="when-to-use-facades"></a>
-## When To Use Facades
+## When to Utilize Facades
 
 Facades have many benefits. They provide a terse, memorable syntax that allows you to use Laravel's features without remembering long class names that must be injected or configured manually. Furthermore, because of their unique usage of PHP's dynamic methods, they are easy to test.
 
 However, some care must be taken when using facades. The primary danger of facades is class "scope creep". Since facades are so easy to use and do not require injection, it can be easy to let your classes continue to grow and use many facades in a single class. Using dependency injection, this potential is mitigated by the visual feedback a large constructor gives you that your class is growing too large. So, when using facades, pay special attention to the size of your class so that its scope of responsibility stays narrow. If your class is getting too large, consider splitting it into multiple smaller classes.
 
 <a name="facades-vs-dependency-injection"></a>
-### Facades Vs. Dependency Injection
+### Facades vs. Dependency Injection
 
 One of the primary benefits of dependency injection is the ability to swap implementations of the injected class. This is useful during testing since you can inject a mock or stub and assert that various methods were called on the stub.
 
@@ -69,26 +69,40 @@ Typically, it would not be possible to mock or stub a truly static class method.
 
 Using Laravel's facade testing methods, we can write the following test to verify that the `Cache::get` method was called with the argument we expected:
 
-    use Illuminate\Support\Facades\Cache;
+```php tab=Pest
+use Illuminate\Support\Facades\Cache;
 
-    /**
-     * A basic functional test example.
-     *
-     * @return void
-     */
-    public function testBasicExample()
-    {
-        Cache::shouldReceive('get')
-             ->with('key')
-             ->andReturn('value');
+test('basic example', function () {
+    Cache::shouldReceive('get')
+         ->with('key')
+         ->andReturn('value');
 
-        $response = $this->get('/cache');
+    $response = $this->get('/cache');
 
-        $response->assertSee('value');
-    }
+    $response->assertSee('value');
+});
+```
+
+```php tab=PHPUnit
+use Illuminate\Support\Facades\Cache;
+
+/**
+ * A basic functional test example.
+ */
+public function test_basic_example(): void
+{
+    Cache::shouldReceive('get')
+         ->with('key')
+         ->andReturn('value');
+
+    $response = $this->get('/cache');
+
+    $response->assertSee('value');
+}
+```
 
 <a name="facades-vs-helper-functions"></a>
-### Facades Vs. Helper Functions
+### Facades vs. Helper Functions
 
 In addition to facades, Laravel includes a variety of "helper" functions which can perform common tasks like generating views, firing events, dispatching jobs, or sending HTTP responses. Many of these helper functions perform the same function as a corresponding facade. For example, this facade call and helper call are equivalent:
 
@@ -102,16 +116,14 @@ There is absolutely no practical difference between facades and helper functions
         return cache('key');
     });
 
-Under the hood, the `cache` helper is going to call the `get` method on the class underlying the `Cache` facade. So, even though we are using the helper function, we can write the following test to verify that the method was called with the argument we expected:
+The `cache` helper is going to call the `get` method on the class underlying the `Cache` facade. So, even though we are using the helper function, we can write the following test to verify that the method was called with the argument we expected:
 
     use Illuminate\Support\Facades\Cache;
 
     /**
      * A basic functional test example.
-     *
-     * @return void
      */
-    public function testBasicExample()
+    public function test_basic_example(): void
     {
         Cache::shouldReceive('get')
              ->with('key')
@@ -135,16 +147,14 @@ The `Facade` base class makes use of the `__callStatic()` magic-method to defer 
 
     use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\Cache;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
          * Show the profile for the given user.
-         *
-         * @param  int  $id
-         * @return Response
          */
-        public function showProfile($id)
+        public function showProfile(string $id): View
         {
             $user = Cache::get('user:'.$id);
 
@@ -160,10 +170,11 @@ If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that the
     {
         /**
          * Get the registered name of the component.
-         *
-         * @return string
          */
-        protected static function getFacadeAccessor() { return 'cache'; }
+        protected static function getFacadeAccessor(): string
+        {
+            return 'cache';
+        }
     }
 
 Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. This method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
@@ -184,11 +195,8 @@ Using real-time facades, you may treat any class in your application as if it wa
     {
         /**
          * Publish the podcast.
-         *
-         * @param  Publisher  $publisher
-         * @return void
          */
-        public function publish(Publisher $publisher)
+        public function publish(Publisher $publisher): void
         {
             $this->update(['publishing' => now()]);
 
@@ -202,58 +210,79 @@ Injecting a publisher implementation into the method allows us to easily test th
 
     namespace App\Models;
 
-    use Facades\App\Contracts\Publisher;
+    use App\Contracts\Publisher; // [tl! remove]
+    use Facades\App\Contracts\Publisher; // [tl! add]
     use Illuminate\Database\Eloquent\Model;
 
     class Podcast extends Model
     {
         /**
          * Publish the podcast.
-         *
-         * @return void
          */
-        public function publish()
+        public function publish(Publisher $publisher): void // [tl! remove]
+        public function publish(): void // [tl! add]
         {
             $this->update(['publishing' => now()]);
 
-            Publisher::publish($this);
+            $publisher->publish($this); // [tl! remove]
+            Publisher::publish($this); // [tl! add]
         }
     }
 
 When the real-time facade is used, the publisher implementation will be resolved out of the service container using the portion of the interface or class name that appears after the `Facades` prefix. When testing, we can use Laravel's built-in facade testing helpers to mock this method call:
 
-    <?php
+```php tab=Pest
+<?php
 
-    namespace Tests\Feature;
+use App\Models\Podcast;
+use Facades\App\Contracts\Publisher;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-    use App\Models\Podcast;
-    use Facades\App\Contracts\Publisher;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Tests\TestCase;
+uses(RefreshDatabase::class);
 
-    class PodcastTest extends TestCase
+test('podcast can be published', function () {
+    $podcast = Podcast::factory()->create();
+
+    Publisher::shouldReceive('publish')->once()->with($podcast);
+
+    $podcast->publish();
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Podcast;
+use Facades\App\Contracts\Publisher;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class PodcastTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * A test example.
+     */
+    public function test_podcast_can_be_published(): void
     {
-        use RefreshDatabase;
+        $podcast = Podcast::factory()->create();
 
-        /**
-         * A test example.
-         *
-         * @return void
-         */
-        public function test_podcast_can_be_published()
-        {
-            $podcast = Podcast::factory()->create();
+        Publisher::shouldReceive('publish')->once()->with($podcast);
 
-            Publisher::shouldReceive('publish')->once()->with($podcast);
-
-            $podcast->publish();
-        }
+        $podcast->publish();
     }
+}
+```
 
 <a name="facade-class-reference"></a>
 ## Facade Class Reference
 
 Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [service container binding](/docs/{{version}}/container) key is also included where applicable.
+
+<div class="overflow-auto">
 
 Facade  |  Class  |  Service Container Binding
 ------------- | ------------- | -------------
@@ -284,9 +313,12 @@ Mail  |  [Illuminate\Mail\Mailer](https://laravel.com/api/{{version}}/Illuminate
 Notification  |  [Illuminate\Notifications\ChannelManager](https://laravel.com/api/{{version}}/Illuminate/Notifications/ChannelManager.html)  |  &nbsp;
 Password  |  [Illuminate\Auth\Passwords\PasswordBrokerManager](https://laravel.com/api/{{version}}/Illuminate/Auth/Passwords/PasswordBrokerManager.html)  |  `auth.password`
 Password (Instance)  |  [Illuminate\Auth\Passwords\PasswordBroker](https://laravel.com/api/{{version}}/Illuminate/Auth/Passwords/PasswordBroker.html)  |  `auth.password.broker`
+Pipeline (Instance)  |  [Illuminate\Pipeline\Pipeline](https://laravel.com/api/{{version}}/Illuminate/Pipeline/Pipeline.html)  |  &nbsp;
+Process  |  [Illuminate\Process\Factory](https://laravel.com/api/{{version}}/Illuminate/Process/Factory.html)  |  &nbsp;
 Queue  |  [Illuminate\Queue\QueueManager](https://laravel.com/api/{{version}}/Illuminate/Queue/QueueManager.html)  |  `queue`
 Queue (Instance)  |  [Illuminate\Contracts\Queue\Queue](https://laravel.com/api/{{version}}/Illuminate/Contracts/Queue/Queue.html)  |  `queue.connection`
 Queue (Base Class)  |  [Illuminate\Queue\Queue](https://laravel.com/api/{{version}}/Illuminate/Queue/Queue.html)  |  &nbsp;
+RateLimiter  |  [Illuminate\Cache\RateLimiter](https://laravel.com/api/{{version}}/Illuminate/Cache/RateLimiter.html)  |  &nbsp;
 Redirect  |  [Illuminate\Routing\Redirector](https://laravel.com/api/{{version}}/Illuminate/Routing/Redirector.html)  |  `redirect`
 Redis  |  [Illuminate\Redis\RedisManager](https://laravel.com/api/{{version}}/Illuminate/Redis/RedisManager.html)  |  `redis`
 Redis (Instance)  |  [Illuminate\Redis\Connections\Connection](https://laravel.com/api/{{version}}/Illuminate/Redis/Connections/Connection.html)  |  `redis.connection`
@@ -305,3 +337,5 @@ Validator (Instance)  |  [Illuminate\Validation\Validator](https://laravel.com/a
 View  |  [Illuminate\View\Factory](https://laravel.com/api/{{version}}/Illuminate/View/Factory.html)  |  `view`
 View (Instance)  |  [Illuminate\View\View](https://laravel.com/api/{{version}}/Illuminate/View/View.html)  |  &nbsp;
 Vite  |  [Illuminate\Foundation\Vite](https://laravel.com/api/{{version}}/Illuminate/Foundation/Vite.html)  |  &nbsp;
+
+</div>

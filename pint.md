@@ -33,6 +33,14 @@ You can instruct Pint to fix code style issues by invoking the `pint` binary tha
 ./vendor/bin/pint
 ```
 
+You may also run Pint on specific files or directories:
+
+```shell
+./vendor/bin/pint app/Models
+
+./vendor/bin/pint app/Models/User.php
+```
+
 Pint will display a thorough list of all of the files that it updates. You can view even more detail about Pint's changes by providing the `-v` option when invoking Pint:
 
 ```shell
@@ -43,6 +51,12 @@ If you would like Pint to simply inspect your code for style errors without actu
 
 ```shell
 ./vendor/bin/pint --test
+```
+
+If you would like Pint to only modify the files that have uncommitted changes according to Git, you may use the `--dirty` option:
+
+```shell
+./vendor/bin/pint --dirty
 ```
 
 <a name="configuring-pint"></a>
@@ -79,7 +93,7 @@ If you wish, you may also set the preset in your project's `pint.json` file:
 }
 ```
 
-Pint's currently supported presets are: `laravel`, `psr12`, and `symfony`.
+Pint's currently supported presets are: `laravel`, `per`, `psr12`, and `symfony`.
 
 <a name="rules"></a>
 ### Rules

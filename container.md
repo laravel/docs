@@ -2,10 +2,10 @@
 
 - [Introduction](#introduction)
     - [Zero Configuration Resolution](#zero-configuration-resolution)
-    - [When To Use The Container](#when-to-use-the-container)
+    - [When to Utilize the Container](#when-to-use-the-container)
 - [Binding](#binding)
     - [Binding Basics](#binding-basics)
-    - [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)
+    - [Binding Interfaces to Implementations](#binding-interfaces-to-implementations)
     - [Contextual Binding](#contextual-binding)
     - [Binding Primitives](#binding-primitives)
     - [Binding Typed Variadics](#binding-typed-variadics)
@@ -14,7 +14,7 @@
 - [Resolving](#resolving)
     - [The Make Method](#the-make-method)
     - [Automatic Injection](#automatic-injection)
-- [Method Invocation & Injection](#method-invocation-and-injection)
+- [Method Invocation and Injection](#method-invocation-and-injection)
 - [Container Events](#container-events)
 - [PSR-11](#psr-11)
 
@@ -32,34 +32,21 @@ Let's look at a simple example:
     use App\Http\Controllers\Controller;
     use App\Repositories\UserRepository;
     use App\Models\User;
+    use Illuminate\View\View;
 
     class UserController extends Controller
     {
         /**
-         * The user repository implementation.
-         *
-         * @var UserRepository
-         */
-        protected $users;
-
-        /**
          * Create a new controller instance.
-         *
-         * @param  UserRepository  $users
-         * @return void
          */
-        public function __construct(UserRepository $users)
-        {
-            $this->users = $users;
-        }
+        public function __construct(
+            protected UserRepository $users,
+        ) {}
 
         /**
          * Show the profile for the given user.
-         *
-         * @param  int  $id
-         * @return Response
          */
-        public function show($id)
+        public function show(string $id): View
         {
             $user = $this->users->find($id);
 
@@ -80,11 +67,11 @@ If a class has no dependencies or only depends on other concrete classes (not in
 
     class Service
     {
-        //
+        // ...
     }
 
     Route::get('/', function (Service $service) {
-        die(get_class($service));
+        die($service::class);
     });
 
 In this example, hitting your application's `/` route will automatically resolve the `Service` class and inject it into your route's handler. This is game changing. It means you can develop your application and take advantage of dependency injection without worrying about bloated configuration files.
@@ -92,7 +79,7 @@ In this example, hitting your application's `/` route will automatically resolve
 Thankfully, many of the classes you will be writing when building a Laravel application automatically receive their dependencies via the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). Once you taste the power of automatic and zero configuration dependency injection it feels impossible to develop without it.
 
 <a name="when-to-use-the-container"></a>
-### When To Use The Container
+### When to Utilize the Container
 
 Thanks to zero configuration resolution, you will often type-hint dependencies on routes, controllers, event listeners, and elsewhere without ever manually interacting with the container. For example, you might type-hint the `Illuminate\Http\Request` object on your route definition so that you can easily access the current request. Even though we never have to interact with the container to write this code, it is managing the injection of these dependencies behind the scenes:
 
@@ -121,8 +108,9 @@ Within a service provider, you always have access to the container via the `$thi
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
+    use Illuminate\Contracts\Foundation\Application;
 
-    $this->app->bind(Transistor::class, function ($app) {
+    $this->app->bind(Transistor::class, function (Application $app) {
         return new Transistor($app->make(PodcastParser::class));
     });
 
@@ -131,13 +119,22 @@ Note that we receive the container itself as an argument to the resolver. We can
 As mentioned, you will typically be interacting with the container within service providers; however, if you would like to interact with the container outside of a service provider, you may do so via the `App` [facade](/docs/{{version}}/facades):
 
     use App\Services\Transistor;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Support\Facades\App;
 
-    App::bind(Transistor::class, function ($app) {
+    App::bind(Transistor::class, function (Application $app) {
         // ...
     });
 
-> **Note**  
+You may use the `bindIf` method to register a container binding only if a binding has not already been registered for the given type:
+
+```php
+$this->app->bindIf(Transistor::class, function (Application $app) {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
+
+> [!NOTE]  
 > There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.
 
 <a name="binding-a-singleton"></a>
@@ -147,10 +144,19 @@ The `singleton` method binds a class or interface into the container that should
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
+    use Illuminate\Contracts\Foundation\Application;
 
-    $this->app->singleton(Transistor::class, function ($app) {
+    $this->app->singleton(Transistor::class, function (Application $app) {
         return new Transistor($app->make(PodcastParser::class));
     });
+
+You may use the `singletonIf` method to register a singleton container binding only if a binding has not already been registered for the given type:
+
+```php
+$this->app->singletonIf(Transistor::class, function (Application $app) {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
 
 <a name="binding-scoped"></a>
 #### Binding Scoped Singletons
@@ -159,8 +165,9 @@ The `scoped` method binds a class or interface into the container that should on
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
+    use Illuminate\Contracts\Foundation\Application;
 
-    $this->app->scoped(Transistor::class, function ($app) {
+    $this->app->scoped(Transistor::class, function (Application $app) {
         return new Transistor($app->make(PodcastParser::class));
     });
 
@@ -177,7 +184,7 @@ You may also bind an existing object instance into the container using the `inst
     $this->app->instance(Transistor::class, $service);
 
 <a name="binding-interfaces-to-implementations"></a>
-### Binding Interfaces To Implementations
+### Binding Interfaces to Implementations
 
 A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, let's assume we have an `EventPusher` interface and a `RedisEventPusher` implementation. Once we have coded our `RedisEventPusher` implementation of this interface, we can register it with the service container like so:
 
@@ -192,14 +199,10 @@ This statement tells the container that it should inject the `RedisEventPusher` 
 
     /**
      * Create a new class instance.
-     *
-     * @param  \App\Contracts\EventPusher  $pusher
-     * @return void
      */
-    public function __construct(EventPusher $pusher)
-    {
-        $this->pusher = $pusher;
-    }
+    public function __construct(
+        protected EventPusher $pusher
+    ) {}
 
 <a name="contextual-binding"></a>
 ### Contextual Binding
@@ -260,13 +263,6 @@ Occasionally, you may have a class that receives an array of typed objects using
     class Firewall
     {
         /**
-         * The logger instance.
-         *
-         * @var \App\Services\Logger
-         */
-        protected $logger;
-
-        /**
          * The filter instances.
          *
          * @var array
@@ -275,14 +271,11 @@ Occasionally, you may have a class that receives an array of typed objects using
 
         /**
          * Create a new class instance.
-         *
-         * @param  \App\Services\Logger  $logger
-         * @param  array  $filters
-         * @return void
          */
-        public function __construct(Logger $logger, Filter ...$filters)
-        {
-            $this->logger = $logger;
+        public function __construct(
+            protected Logger $logger,
+            Filter ...$filters,
+        ) {
             $this->filters = $filters;
         }
     }
@@ -291,7 +284,7 @@ Using contextual binding, you may resolve this dependency by providing the `give
 
     $this->app->when(Firewall::class)
               ->needs(Filter::class)
-              ->give(function ($app) {
+              ->give(function (Application $app) {
                     return [
                         $app->make(NullFilter::class),
                         $app->make(ProfanityFilter::class),
@@ -324,18 +317,18 @@ Sometimes a class may have a variadic dependency that is type-hinted as a given 
 Occasionally, you may need to resolve all of a certain "category" of binding. For example, perhaps you are building a report analyzer that receives an array of many different `Report` interface implementations. After registering the `Report` implementations, you can assign them a tag using the `tag` method:
 
     $this->app->bind(CpuReport::class, function () {
-        //
+        // ...
     });
 
     $this->app->bind(MemoryReport::class, function () {
-        //
+        // ...
     });
 
     $this->app->tag([CpuReport::class, MemoryReport::class], 'reports');
 
 Once the services have been tagged, you may easily resolve them all via the container's `tagged` method:
 
-    $this->app->bind(ReportAnalyzer::class, function ($app) {
+    $this->app->bind(ReportAnalyzer::class, function (Application $app) {
         return new ReportAnalyzer($app->tagged('reports'));
     });
 
@@ -344,7 +337,7 @@ Once the services have been tagged, you may easily resolve them all via the cont
 
 The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts two arguments, the service class you're extending and a closure that should return the modified service. The closure receives the service being resolved and the container instance:
 
-    $this->app->extend(Service::class, function ($service, $app) {
+    $this->app->extend(Service::class, function (Service $service, Application $app) {
         return new DecoratedService($service);
     });
 
@@ -360,33 +353,37 @@ You may use the `make` method to resolve a class instance from the container. Th
 
     $transistor = $this->app->make(Transistor::class);
 
-If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:
+If some of your class's dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:
 
     use App\Services\Transistor;
 
     $transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);
 
-If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) to resolve a class instance from the container:
+The `bound` method may be used to determine if a class or interface has been explicitly bound in the container:
+
+    if ($this->app->bound(Transistor::class)) {
+        // ...
+    }
+
+If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) or the `app` [helper](/docs/{{version}}/helpers#method-app) to resolve a class instance from the container:
 
     use App\Services\Transistor;
     use Illuminate\Support\Facades\App;
 
     $transistor = App::make(Transistor::class);
 
-If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\Container\Container` class on your class' constructor:
+    $transistor = app(Transistor::class);
+
+If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\Container\Container` class on your class's constructor:
 
     use Illuminate\Container\Container;
 
     /**
      * Create a new class instance.
-     *
-     * @param  \Illuminate\Container\Container  $container
-     * @return void
      */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
+    public function __construct(
+        protected Container $container
+    ) {}
 
 <a name="automatic-injection"></a>
 ### Automatic Injection
@@ -400,41 +397,30 @@ For example, you may type-hint a repository defined by your application in a con
     namespace App\Http\Controllers;
 
     use App\Repositories\UserRepository;
+    use App\Models\User;
 
     class UserController extends Controller
     {
         /**
-         * The user repository instance.
-         *
-         * @var \App\Repositories\UserRepository
-         */
-        protected $users;
-
-        /**
          * Create a new controller instance.
-         *
-         * @param  \App\Repositories\UserRepository  $users
-         * @return void
          */
-        public function __construct(UserRepository $users)
-        {
-            $this->users = $users;
-        }
+        public function __construct(
+            protected UserRepository $users,
+        ) {}
 
         /**
          * Show the user with the given ID.
-         *
-         * @param  int  $id
-         * @return \Illuminate\Http\Response
          */
-        public function show($id)
+        public function show(string $id): User
         {
-            //
+            $user = $this->users->findOrFail($id);
+
+            return $user;
         }
     }
 
 <a name="method-invocation-and-injection"></a>
-## Method Invocation & Injection
+## Method Invocation and Injection
 
 Sometimes you may wish to invoke a method on an object instance while allowing the container to automatically inject that method's dependencies. For example, given the following class:
 
@@ -448,13 +434,12 @@ Sometimes you may wish to invoke a method on an object instance while allowing t
     {
         /**
          * Generate a new user report.
-         *
-         * @param  \App\Repositories\UserRepository  $repository
-         * @return array
          */
-        public function generate(UserRepository $repository)
+        public function generate(UserRepository $repository): array
         {
-            // ...
+            return [
+                // ...
+            ];
         }
     }
 
@@ -480,12 +465,13 @@ The `call` method accepts any PHP callable. The container's `call` method may ev
 The service container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
 
     use App\Services\Transistor;
+    use Illuminate\Contracts\Foundation\Application;
 
-    $this->app->resolving(Transistor::class, function ($transistor, $app) {
+    $this->app->resolving(Transistor::class, function (Transistor $transistor, Application $app) {
         // Called when container resolves objects of type "Transistor"...
     });
 
-    $this->app->resolving(function ($object, $app) {
+    $this->app->resolving(function (mixed $object, Application $app) {
         // Called when container resolves object of any type...
     });
 
@@ -502,7 +488,7 @@ Laravel's service container implements the [PSR-11](https://github.com/php-fig/f
     Route::get('/', function (ContainerInterface $container) {
         $service = $container->get(Transistor::class);
 
-        //
+        // ...
     });
 
 An exception is thrown if the given identifier can't be resolved. The exception will be an instance of `Psr\Container\NotFoundExceptionInterface` if the identifier was never bound. If the identifier was bound but was unable to be resolved, an instance of `Psr\Container\ContainerExceptionInterface` will be thrown.
