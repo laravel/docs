@@ -26,9 +26,6 @@
 <a name="installation"></a>
 ## Installation
 
-> **Warning**  
-> Laravel Reverb requires PHP 8.2+.
-
 You may install Reverb using the `install:broadcasting` Artisan command:
 
 ```
