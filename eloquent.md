@@ -92,6 +92,7 @@ php artisan make:model Flight -mfsc
 
 # Shortcut to generate a model, migration, factory, seeder, policy, controller, and form requests...
 php artisan make:model Flight --all
+php artisan make:model Flight -a
 
 # Generate a pivot model...
 php artisan make:model Member --pivot
