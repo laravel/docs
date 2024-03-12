@@ -97,7 +97,7 @@ However, it can sometimes be useful, such as during local development, for the R
 php artisan reverb:start --host="0.0.0.0" --port=8080 --hostname="laravel.test"
 ```
 
-Since Herd and Valet domains resolve to `localhost`, running the commmand above will result in your Reverb server being accessible via the secure WebSocket protocol (`wss`) at `wss://laravel.test:8080`.
+Since Herd and Valet domains resolve to `localhost`, running the command above will result in your Reverb server being accessible via the secure WebSocket protocol (`wss`) at `wss://laravel.test:8080`.
 
 You may also manually choose a certificate by defining `tls` options in your application's `config/reverb.php` configuration file. Within the array of `tls` options, you may provide any of the options supported by [PHP's SSL context options](https://www.php.net/manual/en/context.ssl.php):
 
