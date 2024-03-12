@@ -29,7 +29,7 @@
 > **Warning**  
 > Laravel Reverb requires PHP 8.2+.
 
-You may install Reverb in your Laravel application using the `install:broadcasting` Artisan command:
+You may install Reverb using the `install:broadcasting` Artisan command:
 
 ```
 php artisan install:broadcasting
@@ -38,7 +38,7 @@ php artisan install:broadcasting
 <a name="configuration"></a>
 ## Configuration
 
-Behind the scenes, the `install:broadcasting` Artisan command will run the `reverb:install` command, which will automatically start Reverb using a sensible set of default configuration options. If you would like to make any configuration changes, you may do so by updating Reverb's environment variables or by updating the `config/reverb.php` configuration file.
+Behind the scenes, the `install:broadcasting` Artisan command will run the `reverb:install` command, which will install Reverb with a sensible set of default configuration options. If you would like to make any configuration changes, you may do so by updating Reverb's environment variables or by updating the `config/reverb.php` configuration file.
 
 <a name="application-credentials"></a>
 ### Application Credentials

@@ -161,15 +161,15 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 <a name="client-reverb"></a>
 ### Reverb
 
-On the client-side, Reverb suggests using the `laravel-echo` and `pusher-js` NPM packages. [Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. The `pusher-js` package allows the usage of the Pusher protocol in Reverb for WebSocket subscriptions, channels, and messages.
+[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. Echo also leverages the `pusher-js` NPM package to implement the Pusher protocol for WebSocket subscriptions, channels, and messages.
 
-The `install:broadcasting` Artisan command already installs `laravel-echo` and `pusher-js` for you; however, if for any reason you need to install these packages manually, you may do so using the NPM package manager:
+The `install:broadcasting` Artisan command automatically installs the `laravel-echo` and `pusher-js` packages for you; however, you may also install these packages manually via NPM:
 
 ```shell
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Once `laravel-echo` and  `pusher-js` are installed, you are ready to create a fresh Echo instance in your application's JavaScript. The `install:broadcasting` Artisan command creates a `resources/js/echo.js` file that handles this for you:
+Once `laravel-echo` and `pusher-js` are installed, you are ready to create a fresh Echo instance in your application's JavaScript. The `install:broadcasting` Artisan command creates a `resources/js/echo.js` file that handles this for you:
 
 ```js
 import Echo from 'laravel-echo';
@@ -200,9 +200,9 @@ npm run build
 <a name="client-pusher-channels"></a>
 ### Pusher Channels
 
-On the client-side, Pusher suggests using the `laravel-echo` and `pusher-js` NPM packages. [Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. Of course, the `pusher-js` package allows the usage of the Pusher protocol.
+[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. Echo also leverages the `pusher-js` NPM package to implement the Pusher protocol for WebSocket subscriptions, channels, and messages.
 
-The `install:broadcasting` Artisan command already installs `laravel-echo` and `pusher-js` for you; however, if for any reason you need to install these packages manually, you may do so using the NPM package manager:
+The `install:broadcasting` Artisan command automatically installs the `laravel-echo` and `pusher-js` packages for you; however, you may also install these packages manually via NPM:
 
 ```shell
 npm install --save-dev laravel-echo pusher-js
@@ -278,9 +278,9 @@ window.Echo = new Echo({
 > [!NOTE]  
 > The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team recommends and maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
 
-On the client-side, Ably suggests using the `laravel-echo` and `pusher-js` NPM packages. [Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. And because Ably includes Pusher compatibility, the `pusher-js` package allows the usage of the Pusher protocol when listening for events in our client-side application.
+[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. Echo also leverages the `pusher-js` NPM package to implement the Pusher protocol for WebSocket subscriptions, channels, and messages.
 
-The `install:broadcasting` Artisan command already installs `laravel-echo` and `pusher-js` for you; however, if for any reason you need to install these packages manually, you may do so using the NPM package manager:
+The `install:broadcasting` Artisan command automatically installs the `laravel-echo` and `pusher-js` packages for you; however, you may also install these packages manually via NPM:
 
 ```shell
 npm install --save-dev laravel-echo pusher-js
