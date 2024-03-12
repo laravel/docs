@@ -1221,23 +1221,7 @@ To dispatch a batch of jobs, you should use the `batch` method of the `Bus` faca
 The batch's ID, which may be accessed via the `$batch->id` property, may be used to [query the Laravel command bus](#inspecting-batches) for information about the batch after it has been dispatched.
 
 > **Warning**  
-> Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks.
-
-<a name="implicit-commits-within-batches"></a>
-#### Implicit Commits Within Batches
-
-When working with database statements within batches, it's important to know that batches are wrapped in transactions. As such, any [implicit commits](/docs/{{version}}/database#implicit-commits-in-transactions) will indirectly cause the entire transaction to be committed and thus should be avoided. Take the example below:
-
-    Bus::batch([function () {
-        DB::statement('CREATE TEMPORARY TABLE IF NOT EXISTS temporary_table (
-            `id` int(11),
-            `ColumnToDrop` varchar(200)
-        ) ENGINE=INNODB');
-
-        DB::statement("ALTER TABLE temporary_table DROP `ColumnToDrop`");
-    }])->dispatch();
-    
-In this example we create a temporary table and alter it later on within the same batch. This will cause the database transaction which this batch uses to automatically be committed. Any such statements should be avoided when working with batches.
+> Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks. In addition, since batched jobs are wrapped within database transactions, database statements that trigger implicit commits should not be executed within the jobs.
 
 <a name="naming-batches"></a>
 #### Naming Batches
