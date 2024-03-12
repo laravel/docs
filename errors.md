@@ -206,6 +206,24 @@ You may also use the `renderable` method to override the rendering behavior for 
         });
     })
 
+<a name="rendering-exceptions-as-json"></a>
+#### Rendering Exceptions as JSON
+
+When rendering an exception, Laravel will automatically determine if the exception should be rendered as an HTML or JSON response based on the `Content-Type` header of the request. If you would like to customize how Laravel determines whether to render HTML or JSON exception responses, you may utilize the `shouldRenderJsonWhen` method:
+
+    use Illuminate\Http\Request;
+    use Throwable;
+
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $e) {
+            if ($request->is('admin/*')) {
+                return true;
+            }
+
+            return $request->expectsJson();
+        });
+    })
+
 <a name="renderable-exceptions"></a>
 ### Reportable and Renderable Exceptions
 
