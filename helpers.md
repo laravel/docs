@@ -56,6 +56,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::last](#method-array-last)
 [Arr::map](#method-array-map)
 [Arr::mapWithKeys](#method-array-map-with-keys)
+[Arr::mapSpread](#method-array-map-spread)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
@@ -581,6 +582,29 @@ The `Arr::mapWithKeys` method iterates through the array and passes each value t
             'john@example.com' => 'John',
             'jane@example.com' => 'Jane',
         ]
+    */
+
+<a name="method-array-map-spread"></a>
+#### `Arr::mapSpread()` {.collection-method}
+
+The `Arr::mapSpread` method iterates over the array, passing each nested item value into the given closure. The closure is free to modify the item and return it, thus forming a new array of modified items:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        [0, 1],
+        [2, 3],
+        [4, 5],
+        [6, 7],
+        [8, 9],
+    ];
+
+    $mapped = Arr::mapSpread($array, function (int $even, int $odd) {
+        return $even + $odd;
+    });
+
+    /*
+        [1, 5, 9, 13, 17]
     */
 
 <a name="method-array-only"></a>
