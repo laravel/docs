@@ -81,7 +81,7 @@ Before broadcasting any events, you will first need to register the `App\Provide
 
 You will also need to configure and run a [queue worker](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected by events being broadcast.
 
-<a name="pusher-channels"></a>
+<a name="reverb"></a>
 ### Reverb
 
 You may install Reverb using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
