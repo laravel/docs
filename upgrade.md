@@ -70,6 +70,7 @@ You should update the following dependencies in your application's `composer.jso
 - `nunomaduro/collision` to `^8.1`
 - `laravel/breeze` to `^2.0` (If installed)
 - `laravel/cashier` to `^15.0` (If installed)
+- `laravel/dusk` to `^8.0` (If installed)
 - `laravel/jetstream` to `^5.0` (If installed)
 - `laravel/passport` to `^12.0` (If installed)
 - `laravel/sanctum` to `^4.0` (If installed)
