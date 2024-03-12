@@ -34,22 +34,22 @@ During local development, you should set the `APP_DEBUG` environment variable to
 
 In Laravel, exception reporting is used to log exceptions or send them to an external service [Sentry](https://github.com/getsentry/sentry-laravel) or [Flare](https://flareapp.io). By default, exceptions will be logged based on your [logging](/docs/{{version}}/logging) configuration. However, you are free to log exceptions however you wish.
 
-If you need to report different types of exceptions in different ways, you may use the `reportable` exception method in your application's `bootstrap/app.php` to register a closure that should be executed when an exception of a given type needs to be reported. Laravel will determine what type of exception the closure reports by examining the type-hint of the closure:
+If you need to report different types of exceptions in different ways, you may use the `report` exception method in your application's `bootstrap/app.php` to register a closure that should be executed when an exception of a given type needs to be reported. Laravel will determine what type of exception the closure reports by examining the type-hint of the closure:
 
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->reportable(function (InvalidOrderException $e) {
+        $exceptions->report(function (InvalidOrderException $e) {
             // ...
         });
     })
 
-When you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback or return `false` from the callback:
+When you register a custom exception reporting callback using the `report` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback or return `false` from the callback:
 
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->reportable(function (InvalidOrderException $e) {
+        $exceptions->report(function (InvalidOrderException $e) {
             // ...
         })->stop();
 
-        $exceptions->reportable(function (InvalidOrderException $e) {
+        $exceptions->report(function (InvalidOrderException $e) {
             return false;
         });
     })
@@ -143,7 +143,7 @@ report($caught); // ignored
 
 When messages are written to your application's [logs](/docs/{{version}}/logging), the messages are written at a specified [log level](/docs/{{version}}/logging#log-levels), which indicates the severity or importance of the message being logged.
 
-As noted above, even when you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at.
+As noted above, even when you register a custom exception reporting callback using the `report` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at.
 
 To accomplish this, you may use the `level` exception method in your application's `bootstrap/app.php` file. This method receives the exception type as its first argument and the log level as its second argument:
 
@@ -178,26 +178,26 @@ Internally, Laravel already ignores some types of errors for you, such as except
 <a name="rendering-exceptions"></a>
 ### Rendering Exceptions
 
-By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering closure for exceptions of a given type. You may accomplish this by using the `renderable` exception method in your application's `boostrap/app.php` file.
+By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering closure for exceptions of a given type. You may accomplish this by using the `render` exception method in your application's `boostrap/app.php` file.
 
-The closure passed to the `renderable` method should return an instance of `Illuminate\Http\Response`, which may be generated via the `response` helper. Laravel will determine what type of exception the closure renders by examining the type-hint of the closure:
+The closure passed to the `render` method should return an instance of `Illuminate\Http\Response`, which may be generated via the `response` helper. Laravel will determine what type of exception the closure renders by examining the type-hint of the closure:
 
     use App\Exceptions\InvalidOrderException;
     use Illuminate\Http\Request;
 
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->renderable(function (InvalidOrderException $e, Request $request) {
+        $exceptions->render(function (InvalidOrderException $e, Request $request) {
             return response()->view('errors.invalid-order', [], 500);
         });
     })
 
-You may also use the `renderable` method to override the rendering behavior for built-in Laravel or Symfony exceptions such as `NotFoundHttpException`. If the closure given to the `renderable` method does not return a value, Laravel's default exception rendering will be utilized:
+You may also use the `render` method to override the rendering behavior for built-in Laravel or Symfony exceptions such as `NotFoundHttpException`. If the closure given to the `render` method does not return a value, Laravel's default exception rendering will be utilized:
 
     use Illuminate\Http\Request;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
                     'message' => 'Record not found.'
@@ -221,6 +221,25 @@ When rendering an exception, Laravel will automatically determine if the excepti
             }
 
             return $request->expectsJson();
+        });
+    })
+
+<a name="customizing-the-exception-response"></a>
+#### Customizing the Exception Response
+
+Rarely, you may need to customize the entire HTTP response rendered by Laravel's exception handler. To accomplish this, you may register a response customization closure using the `respond` method:
+
+    use Symfony\Component\HttpFoundation\Response;
+
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->respond(function (Response $response) {
+            if ($response->getStatusCode() === 419) {
+                return back()->with([
+                    'message' => 'The page expired, please try again.',
+                ]);
+            }
+
+            return $response;
         });
     })
 

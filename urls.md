@@ -145,19 +145,15 @@ If your signed URLs do not include the domain in the URL hash, you should provid
 <a name="responding-to-invalid-signed-routes"></a>
 #### Responding to Invalid Signed Routes
 
-When someone visits a signed URL that has expired, they will receive a generic error page for the `403` HTTP status code. However, you can customize this behavior by defining a custom "renderable" closure for the `InvalidSignatureException` exception in your exception handler. This closure should return an HTTP response:
+When someone visits a signed URL that has expired, they will receive a generic error page for the `403` HTTP status code. However, you can customize this behavior by defining a custom "render" closure for the `InvalidSignatureException` exception in your application's `bootstrap/app.php` file:
 
     use Illuminate\Routing\Exceptions\InvalidSignatureException;
 
-    /**
-     * Register the exception handling callbacks for the application.
-     */
-    public function register(): void
-    {
-        $this->renderable(function (InvalidSignatureException $e) {
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function (InvalidSignatureException $e) {
             return response()->view('error.link-expired', [], 403);
         });
-    }
+    })
 
 <a name="urls-for-controller-actions"></a>
 ## URLs for Controller Actions

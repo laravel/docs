@@ -141,7 +141,7 @@ Like routing and middleware, exception handling can now be customized from your 
 ->withExceptions(function (Exceptions $exceptions) {
     $exceptions->dontReport(MissedFlightException::class);
 
-    $exceptions->reportable(function (InvalidOrderException $e) {
+    $exceptions->report(function (InvalidOrderException $e) {
         // ...
     });
 })
