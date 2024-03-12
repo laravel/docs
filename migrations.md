@@ -278,7 +278,7 @@ You may determine the existence of a table, column, or index using the `hasTable
     }
 
     if (Schema::hasIndex('users', ['email'], 'unique')) {
-        // The "users" table exists and has a unique index on "email" column...
+        // The "users" table exists and has a unique index on the "email" column...
     }
 
 <a name="database-connection-table-options"></a>

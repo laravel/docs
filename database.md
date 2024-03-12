@@ -394,24 +394,6 @@ php artisan db mysql
 <a name="inspecting-your-databases"></a>
 ## Inspecting Your Databases
 
-You may use following schema methods to inspect your database and its associated tables and views:
-
-    use Illuminate\Support\Facades\Schema;
-
-    $tables = Schema::getTables();
-
-    $views = Schema::getViews();
-
-    $columns = Schema::getColumns('users');
-
-    $indexes = Schema::getIndexes('users');
-
-    $foreignKeys = Schema::getForeignKeys('users');
-
-If you want to inspect a database connection that is not your application's default connection, use the `connection` method:
-
-    $columns = Schema::connection('sqlite')->getColumns('users');
-
 Using the `db:show` and `db:table` Artisan commands, you can get valuable insight into your database and its associated tables. To see an overview of your database, including its size, type, number of open connections, and a summary of its tables, you may use the `db:show` command:
 
 ```shell
@@ -429,6 +411,20 @@ If you would like to include table row counts and database view details within t
 ```shell
 php artisan db:show --counts --views
 ```
+
+In addition, you may use the following `Schema` methods to inspect your database:
+
+    use Illuminate\Support\Facades\Schema;
+
+    $tables = Schema::getTables();
+    $views = Schema::getViews();
+    $columns = Schema::getColumns('users');
+    $indexes = Schema::getIndexes('users');
+    $foreignKeys = Schema::getForeignKeys('users');
+
+If you would like to inspect a database connection that is not your application's default connection, you may use the `connection` method:
+
+    $columns = Schema::connection('sqlite')->getColumns('users');
 
 <a name="table-overview"></a>
 #### Table Overview
