@@ -10,6 +10,7 @@
 - [Running the Server](#running-server)
     - [Debugging](#debugging)
     - [Restarting](#restarting)
+- [Monitoring](#monitoring)
 - [Running Reverb in Production](#production)
     - [Open Files](#open-files)
     - [Event Loop](#event-loop)
@@ -143,6 +144,41 @@ The `reverb:restart` command ensures all connections are gracefully terminated b
 
 ```sh
 php artisan reverb:restart
+```
+
+<a name="monitoring"></a>
+## Monitoring
+
+Reverb provides monitoring via an integration with [Laravel Pulse](/docs/{{version}}/pulse). By enabling the integration, you may track the amount of connections being handled and the number of messages being sent and received by your server.
+
+To enable the integration, you should first ensure you have [installed Pulse](/docs/{{version}}/pulse#installation). You may then add any of Reverb's recorders to your `pulse.php` configuration file:
+
+```php
+'recorders' => [
+    ReverbConnections::class => [
+        'sample_rate' => 1,
+    ],
+
+    ReverbMessages::class => [
+        'sample_rate' => 1,
+    ],
+
+    ...
+],
+```
+
+If you wish to sample Reverb's data collection, you may set the `sample_rate` of each recorder according to your requirements.
+
+Reverb provides an accompanying Pulse card for each recorder which you may add to your dashboard:
+
+```html
+<x-pulse>
+    <livewire:reverb.connections cols="full" />
+
+    <livewire:reverb.messages cols="full" />
+
+    ...
+</x-pulse>
 ```
 
 <a name="production"></a>
