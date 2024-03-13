@@ -2157,7 +2157,7 @@ First, you could redirect your customer to the dedicated payment confirmation pa
         $subscription = $user->newSubscription('default', 'price_monthly')
                                 ->create($paymentMethod);
     } catch (IncompletePayment $exception) {
-        return redirect()->route(
+        return to_route(
             'cashier.payment',
             [$exception->payment->id, 'redirect' => route('home')]
         );

@@ -473,7 +473,7 @@ Since you often will want to flash input to the session and then redirect to the
 
     return redirect('form')->withInput();
 
-    return redirect()->route('user.create')->withInput();
+    return to_route('user.create')->withInput();
 
     return redirect('form')->withInput(
         $request->except('password')

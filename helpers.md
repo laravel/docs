@@ -1957,6 +1957,9 @@ The `redirect` function returns a [redirect HTTP response](/docs/{{version}}/res
 
     return redirect()->route('route.name');
 
+    //Shortend for above
+    return to_route('route.name');
+
 <a name="method-report"></a>
 #### `report()` {.collection-method}
 

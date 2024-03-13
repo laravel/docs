@@ -3,6 +3,7 @@
 - [Creating Redirects](#creating-redirects)
 - [Redirecting To Named Routes](#redirecting-named-routes)
 - [Redirecting To Controller Actions](#redirecting-controller-actions)
+- [Redirecting to External Domains](#redirecting-external-domains)
 - [Redirecting With Flashed Session Data](#redirecting-with-flashed-session-data)
 
 <a name="creating-redirects"></a>
@@ -46,7 +47,7 @@ If you are redirecting to a route with an "ID" parameter that is being populated
 
     // For a route with the following URI: profile/{id}
 
-    return redirect()->route('profile', [$user]);
+    return to_route('profile', [$user]);
 
 If you would like to customize the value that is placed in the route parameter, you should override the `getRouteKey` method on your Eloquent model:
 
@@ -72,6 +73,13 @@ If your controller route requires parameters, you may pass them as the second ar
     return redirect()->action(
         [UserController::class, 'profile'], ['id' => 1]
     );
+
+<a name="redirecting-external-domains"></a>
+### Redirecting to External Domains
+
+Sometimes you may need to redirect to a domain outside of your application. You may do so by calling the `away` method, which creates a `RedirectResponse` without any additional URL encoding, validation, or verification:
+
+    return redirect()->away('https://www.google.com');
 
 <a name="redirecting-with-flashed-session-data"></a>
 ## Redirecting With Flashed Session Data

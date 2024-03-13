@@ -394,7 +394,7 @@ Of course, customers may want to change their subscription plan to another produ
     Route::put('/subscription/{price}/swap', function (Request $request, $price) {
         $user->subscription()->swap($price); // With "$price" being "price_basic_yearly" for this example.
 
-        return redirect()->route('dashboard');
+        return to_route('dashboard');
     })->name('subscription.swap');
 
 Besides swapping plans you'll also need to allow your customers to cancel their subscription. Like swapping plans, provide a button that leads to the following route:
@@ -404,7 +404,7 @@ Besides swapping plans you'll also need to allow your customers to cancel their 
     Route::put('/subscription/cancel', function (Request $request, $price) {
         $user->subscription()->cancel();
 
-        return redirect()->route('dashboard');
+        return to_route('dashboard');
     })->name('subscription.cancel');
 
 And now your subscription will get cancelled at the end of its billing period.
