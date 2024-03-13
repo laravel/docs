@@ -164,7 +164,13 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+Once the application's Docker containers have been started, you should run your application's [database migrations](/docs/{{version}}/migrations) in a separate terminal:
+
+```shell
+./vendor/bin/sail artisan migrate
+```
+
+Finally, you can access the application in your web browser at: http://localhost.
 
 > [!NOTE]  
 > To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
@@ -195,7 +201,13 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+Once the application's Docker containers have been started, you should run your application's [database migrations](/docs/{{version}}/migrations) in a separate terminal:
+
+```shell
+./vendor/bin/sail artisan migrate
+```
+
+Finally, you can access the application in your web browser at: http://localhost.
 
 > [!NOTE]  
 > To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
@@ -235,7 +247,13 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+Once the application's Docker containers have been started, you should run your application's [database migrations](/docs/{{version}}/migrations) in a separate terminal:
+
+```shell
+./vendor/bin/sail artisan migrate
+```
+
+Finally, you can access the application in your web browser at: http://localhost.
 
 > [!NOTE]  
 > To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
