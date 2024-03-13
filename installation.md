@@ -164,7 +164,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-Once the application's Docker containers have been started, you should run your application's [database migrations](/docs/{{version}}/migrations) in a separate terminal:
+Once the application's Docker containers have started, you should run your application's [database migrations](/docs/{{version}}/migrations):
 
 ```shell
 ./vendor/bin/sail artisan migrate
@@ -201,7 +201,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-Once the application's Docker containers have been started, you should run your application's [database migrations](/docs/{{version}}/migrations) in a separate terminal:
+Once the application's Docker containers have started, you should run your application's [database migrations](/docs/{{version}}/migrations):
 
 ```shell
 ./vendor/bin/sail artisan migrate
@@ -247,7 +247,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-Once the application's Docker containers have been started, you should run your application's [database migrations](/docs/{{version}}/migrations) in a separate terminal:
+Once the application's Docker containers have started, you should run your application's [database migrations](/docs/{{version}}/migrations):
 
 ```shell
 ./vendor/bin/sail artisan migrate
