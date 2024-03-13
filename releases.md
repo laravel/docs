@@ -365,4 +365,3 @@ Laravel 11 provides additional database schema operation and inspection methods,
     $columns = Schema::getColumns('users');
     $indexes = Schema::getIndexes('users');
     $foreignKeys = Schema::getForeignKeys('users');
-

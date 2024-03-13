@@ -13,6 +13,7 @@
     - [Where Clauses](#where-clauses)
     - [Or Where Clauses](#or-where-clauses)
     - [Where Not Clauses](#where-not-clauses)
+    - [Where Any / All Clauses](#where-any-all-clauses)
     - [JSON Where Clauses](#json-where-clauses)
     - [Additional Where Clauses](#additional-where-clauses)
     - [Logical Grouping](#logical-grouping)
@@ -500,6 +501,53 @@ The `whereNot` and `orWhereNot` methods may be used to negate a given group of q
                               ->orWhere('price', '<', 10);
                     })
                     ->get();
+
+<a name="where-any-all-clauses"></a>
+### Where Any / All Clauses
+
+Sometimes you may need to apply the same query constraints to multiple columns. For example, you may want to retrieve all records where any columns in a given list are `LIKE` a given value. You may accomplish this using the `whereAny` method:
+
+    $users = DB::table('users')
+                ->where('active', true)
+                ->whereAny([
+                    'name',
+                    'email',
+                    'phone',
+                ], 'LIKE', 'Example%')
+                ->get();
+
+The query above will result in the following SQL:
+
+```sql
+SELECT *
+FROM users
+WHERE active = true AND (
+    name LIKE 'Example%' OR
+    email LIKE 'Example%' OR
+    phone LIKE 'Example%'
+)
+```
+
+Similarly, the `whereAll` method may be used to retrieve records where all of the given columns match a given constraint:
+
+    $posts = DB::table('posts')
+                ->where('published', true)
+                ->whereAll([
+                    'title',
+                    'content',
+                ], 'LIKE', '%Laravel%')
+                ->get();
+
+The query above will result in the following SQL:
+
+```sql
+SELECT *
+FROM posts
+WHERE published = true AND (
+    title LIKE '%Laravel%' AND
+    content LIKE '%Laravel%'
+)
+```
 
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses

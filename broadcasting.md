@@ -50,7 +50,12 @@ To assist you in building these types of features, Laravel makes it easy to "bro
 
 The core concepts behind broadcasting are simple: clients connect to named channels on the frontend, while your Laravel application broadcasts events to these channels on the backend. These events can contain any additional data you wish to make available to the frontend.
 
-> [!NOTE]
+<a name="supported-drivers"></a>
+#### Supported Drivers
+
+By default, Laravel includes three server-side broadcasting drivers for you to choose from: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels), and [Ably](https://ably.com).
+
+> [!NOTE]  
 > Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
 
 <a name="server-side-installation"></a>
@@ -91,6 +96,23 @@ composer require laravel/reverb:@beta
 ```
 
 Once the package is installed, you may run Reverb's installation command to publish the configuration, add Reverb's required environment variables, and enable event broadcasting in your application:
+
+```sh
+php artisan reverb:install
+```
+
+You can find detailed Reverb installation and usage instructions in the [Reverb documentation](/docs/{{version}}/reverb).
+
+<a name="reverb"></a>
+### Reverb
+
+You may install Reverb using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
+
+```sh
+composer require laravel/reverb:@beta
+```
+
+Once the package is installed, you may run Reverb's installation command to publish the configuration, update your applications's broadcasting configuration, and add Reverb's required environment variables:
 
 ```sh
 php artisan reverb:install
@@ -160,6 +182,43 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 
 <a name="client-reverb"></a>
 ### Reverb
+
+[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since Reverb utilizes the Pusher protocol for WebSocket subscriptions, channels, and messages:
+
+```shell
+npm install --save-dev laravel-echo pusher-js
+```
+
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file - you simply need to uncomment it and update the `broadcaster` configuration option to `reverb`:
+
+```js
+import Echo from 'laravel-echo';
+
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'reverb',
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsPort: import.meta.env.VITE_REVERB_PORT,
+    wssPort: import.meta.env.VITE_REVERB_PORT,
+    forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+    enabledTransports: ['ws', 'wss'],
+});
+```
+
+Next, you should compile your application's assets:
+
+```shell
+npm run build
+```
+
+> [!WARNING]  
+> The Laravel Echo `reverb` broadcaster requires laravel-echo v1.16.0+.
+
+<a name="client-pusher-channels"></a>
+### Pusher Channels
 
 [Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. Echo also leverages the `pusher-js` NPM package to implement the Pusher protocol for WebSocket subscriptions, channels, and messages.
 
