@@ -103,23 +103,6 @@ php artisan reverb:install
 
 You can find detailed Reverb installation and usage instructions in the [Reverb documentation](/docs/{{version}}/reverb).
 
-<a name="reverb"></a>
-### Reverb
-
-You may install Reverb using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
-
-```sh
-composer require laravel/reverb:@beta
-```
-
-Once the package is installed, you may run Reverb's installation command to publish the configuration, update your applications's broadcasting configuration, and add Reverb's required environment variables:
-
-```sh
-php artisan reverb:install
-```
-
-You can find detailed Reverb installation and usage instructions in the [Reverb documentation](/docs/{{version}}/reverb).
-
 <a name="pusher-channels"></a>
 ### Pusher Channels
 
