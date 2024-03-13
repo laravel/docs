@@ -203,6 +203,14 @@ To set configuration values at runtime, you may invoke the `Config` facade's `se
 
     config(['app.timezone' => 'America/Chicago']);
 
+To assist with static analysis, the `Config` facade also provides typed configuration retrieval methods. If the retrieved configuration value does not match the expected type, an exception will be thrown:
+
+    Config::string('config-key');
+    Config::integer('config-key');
+    Config::float('config-key');
+    Config::boolean('config-key');
+    Config::array('config-key');
+
 <a name="configuration-caching"></a>
 ## Configuration Caching
 
