@@ -2414,11 +2414,10 @@ Sleep::whenFakingSleep(function (Duration $duration) {
 });
 ```
 
-As progressing time is a common requirement, the Sleep class provides a dedicated `syncWithCarbon` method to keep Carbon in sync when sleeping within a test:
+As progressing time is a common requirement, the `fake` method accepts a `syncWithCarbon` argument to keep Carbon in sync when sleeping within a test:
 
 ```php
-Sleep::fake();
-Sleep::syncWithCarbon();
+Sleep::fake(syncWithCarbon: true);
 
 $start = now();
 
