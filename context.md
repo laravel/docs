@@ -5,7 +5,9 @@
 - [Capturing Context](#capturing-context)
     - [Stacks](#stacks)
 - [Retrieving Context](#retrieving-context)
+- [Removing Context](#removing-context)
 - [Hidden Context](#hidden-context)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -150,8 +152,10 @@ Context::get('key');
 // ]
 ```
 
-Stacks are useful when listening to events within your application. You could, for example, set up an event listener to push to a stack everytime a query is executed in your application:
+Stacks are useful when listening to events within your application. You could, for example, set up an event listener to push to a stack everytime a query is executed in your application capturing the query duration and query SQL as a tuple:
 
 ```php
-DB::listen(fn ($event) => Context::push('queries', $event->sql));
+DB::listen(function ($event) {
+    Context::push('queries', [$event->time, $event->sql]);
+});
 ```
