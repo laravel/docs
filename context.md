@@ -71,7 +71,7 @@ Context::add('trace_id', Str::uuid()->toString());
 ProcessPodcast::dispatch($podcast);
 ```
 
-When the job is dispatched, any information currently Context is captured and shared with the job, which is then hydrated into Context when the job is executing. If our job's handle method was to write a log entry:
+When the job is dispatched, any information currently Context is captured and shared with the job. The captured information is then hydrated into Context while the job is executing. If our job's handle method was to write a log entry:
 
 ```php
 class ProcessPodcast implements ShouldQueue
@@ -100,7 +100,7 @@ The log entry would contain the information added to Context during the request:
 Processing podcast. {"podcast_id":95} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
-Although we have focused on the built-in logging related features of Context, the following documentation will illustrate that Context allows you to share information across the HTTP request / queued job boundary and even add information that is not shared with log entries by default.
+Although we have focused on the built-in logging related features of Context, the following documentation will illustrate that Context allows you to share information across the HTTP request / queued job boundary and even add [hidden](#hidden-context) information that is not shared with log entries by default.
 
 <a name="capturing-context"></a>
 ## Capturing Context
@@ -128,15 +128,10 @@ Context::add('key', 'first');
 Context::get('key');
 // "first"
 
-Context::add('key', 'second');
+Context::addIf('key', 'second');
 
 Context::get('key');
-// "second"
-
-Context::addIf('key', 'third');
-
-Context::get('key');
-// "second"
+// "first"
 ```
 
 The `addIf` method will not override the value even when the existing value is `null`:
@@ -169,7 +164,7 @@ Context::get('breadcrumbs');
 // ]
 ```
 
-Stacks can be useful to capture historical information about a request, such as events that are happening throughout your system. You could, for example, set up an event listener to push to a stack every time a query is executed in your application capturing the query duration and query SQL as a tuple:
+Stacks can be useful to capture historical information about a request, such as events that are happening throughout your system. You could, for example, set up an event listener to push to a stack every time a query is executed in your application, capturing the query duration and query SQL as a tuple:
 
 ```php
 DB::listen(function ($event) {
@@ -180,7 +175,7 @@ DB::listen(function ($event) {
 <a name="retrieving-context"></a>
 ## Retrieving Context
 
-You may retrieve information for Context by using the `Context` facade's `get` method:
+You may retrieve information from Context by using the `Context` facade's `get` method:
 
 ```php
 $value = Context::get('key');
@@ -209,7 +204,7 @@ if (Context::has('key')) {
 }
 ```
 
-This will return `true` regardless of the value stored, i.e., a key with a `null` value will return `true`:
+The `has` method will return `true` regardless of the value stored, e.g., a key with a `null` value set will return `true`:
 
 ```php
 Context::add('key', null);
@@ -224,13 +219,13 @@ Context::has('key');
 The `forget` method removes a key and its value from Context:
 
 ```php
-Context::add(['first_key' => 'first_value', 'second_key' => 'second_value']);
+Context::add(['first_key' => 1, 'second_key' => 2]);
 
 Context::forget('first_key');
 
 Context::all();
 
-// ['second_key' => 'second_value']
+// ['second_key' => 2]
 ```
 
 You may forget several keys by passing an array:
@@ -272,7 +267,7 @@ Context::forgetHidden(/* ... */);
 
 Context offers two events that allow you to hook into the dehydrating and hydrating process of Context.
 
-To illustrate how these events may be used, imagine in a middleware of your application you set the `app.locale` configuration value based on the incoming HTTP request's `Accept-Language` header. Context's events allow you to capture the value during the request and restore it on the queue. This will ensure that any notifications sent on the queue also have the correct `app.locale` value. We will use Context's events and [hidden](#hidden-context) information to achieve this.
+To illustrate how these events may be used, imagine in a middleware of your application you set the `app.locale` configuration value based on the incoming HTTP request's `Accept-Language` header. Context's events allow you to capture the value during the request and restore it on the queue ensuring notifications sent on the queue have the correct `app.locale` value. We will use Context's events and [hidden](#hidden-context) information to achieve this.
 
 <a name="dehydrating"></a>
 ### Dehydrating
@@ -318,7 +313,7 @@ use Illuminate\Support\Facades\Context;
  */
 public function boot(): void
 {
-    Context::dehydrating(function (Repository $context) {
+    Context::hydrating(function (Repository $context) {
         if ($context->hasHidden('locale')) {
             Config::set('app.locale', $context->getHidden('locale'));
         }
@@ -327,4 +322,4 @@ public function boot(): void
 ```
 
 > [!NOTE]
-> You should not use the `Context` facade within the callback, as that will change the Context of the current process. Ensure you only make changes to the repository passed to the callback.
+> You should not use the `Context` facade within the callback and instead ensure you only make changes to the repository passed to the callback.
