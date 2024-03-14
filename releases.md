@@ -230,6 +230,15 @@ This approach to graceful decryption allows users to keep using your application
 
 For more information on encryption in Laravel, check out the [encryption documentation](/docs/{{version}}/encryption).
 
+<a name="automatic-password-rehashing"></a>
+### Automatic Password Rehashing
+
+_Automatic password rehashing was contributed by [Stephen Rees-Carter](https://github.com/valorin)_.
+
+Laravel's default password hashing algorithm is bcrypt. The "work factor" for bcrypt hashes can be adjusted via the `config/hashing.php` configuration file or the `BCRYPT_ROUNDS` environment variable.
+
+Typically, the bcrypt work factor should be increased over time as CPU / GPU processing power increases. If you increase the bcrypt work factor for your application, Laravel will now gracefully and automatically rehash user passwords as users authenticate with your application.
+
 <a name="prompt-validation"></a>
 ### Prompt Validation
 
