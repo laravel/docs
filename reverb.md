@@ -149,11 +149,14 @@ php artisan reverb:restart
 <a name="monitoring"></a>
 ## Monitoring
 
-Reverb provides monitoring via an integration with [Laravel Pulse](/docs/{{version}}/pulse). By enabling the integration, you may track the amount of connections being handled and the number of messages being sent and received by your server.
+Reverb may be monitored via an integration with [Laravel Pulse](/docs/{{version}}/pulse). By enabling Reverb's Pulse integration, you may track the number of connections and messages being handled by your server.
 
-To enable the integration, you should first ensure you have [installed Pulse](/docs/{{version}}/pulse#installation). You may then add any of Reverb's recorders to your `pulse.php` configuration file:
+To enable the integration, you should first ensure you have [installed Pulse](/docs/{{version}}/pulse#installation). Then, add any of Reverb's recorders to your application's `config/pulse.php` configuration file:
 
 ```php
+use Laravel\Reverb\Pulse\Recorders\ReverbConnections;
+use Laravel\Reverb\Pulse\Recorders\ReverbMessages;
+
 'recorders' => [
     ReverbConnections::class => [
         'sample_rate' => 1,
@@ -167,16 +170,12 @@ To enable the integration, you should first ensure you have [installed Pulse](/d
 ],
 ```
 
-If you wish to sample Reverb's data collection, you may set the `sample_rate` of each recorder according to your requirements.
+Next, add the Pulse cards for each recorder to your [Pulse dashboard](/docs/{{version}}/pulse#dashboard-customization):
 
-Reverb provides an accompanying Pulse card for each recorder which you may add to your dashboard:
-
-```html
+```blade
 <x-pulse>
     <livewire:reverb.connections cols="full" />
-
     <livewire:reverb.messages cols="full" />
-
     ...
 </x-pulse>
 ```
