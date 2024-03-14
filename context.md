@@ -9,6 +9,8 @@
 - [Removing Context](#removing-context)
 - [Hidden Context](#hidden-context)
 - [Events](#events)
+    - [Dehydrating](#dehydrating)
+    - [Hydrating](#hydrating)
 
 <a name="introduction"></a>
 ## Introduction
@@ -69,7 +71,7 @@ Context::add('trace_id', Str::uuid()->toString());
 ProcessPodcast::dispatch($podcast);
 ```
 
-When the job is dispatched, any information currently Context is captured and shared with the job, which is then rehydrated into Context when the job is executing. If our job's handle method was to write a log entry:
+When the job is dispatched, any information currently Context is captured and shared with the job, which is then hydrated into Context when the job is executing. If our job's handle method was to write a log entry:
 
 ```php
 class ProcessPodcast implements ShouldQueue
@@ -118,22 +120,36 @@ Context::add([
 ]);
 ```
 
-The `add` method will override any existing value that shares the same key. If you only wish to add information to Context if the key does not already exist you may use the `addIf` method.
+The `add` method will override any existing value that shares the same key. If you only wish to add information to Context if the key does not already exist you may use the `addIf` method:
 
 ```php
 Context::add('key', 'first');
+
 Context::get('key');
 // "first"
 
 Context::add('key', 'second');
+
 Context::get('key');
 // "second"
 
 Context::addIf('key', 'third');
+
 Context::get('key');
 // "second"
 ```
 
+The `addIf` method will not override the value even when the existing value is `null`:
+
+```php
+Context::add('key', null);
+
+Context::get('key');
+// null
+
+Context::addIf('key', 'value');
+// null
+```
 
 <a name="stacks"></a>
 ### Stacks
@@ -170,10 +186,22 @@ You may retrieve information for Context by using the `Context` facade's `get` m
 $value = Context::get('key');
 ```
 
+The `only` method will retrieve a subset of the information in Context:
+
+```php
+$data = Context::only(['first_key', 'second_key']);
+```
+
+If you wish to retrieve all the information stored in Context, you may use the `all` method:
+
+```php
+$data = Context::all();
+```
+
 <a name="determining-item-existence"></a>
 ### Determining Item Existence
 
-You may use the `has` method to determine if Context has any value stored for the given key.
+You may use the `has` method to determine if Context has any value stored for the given key:
 
 ```php
 if (Context::has('key')) {
@@ -181,7 +209,7 @@ if (Context::has('key')) {
 }
 ```
 
-This will return `true` regardless of the value stored, i.e., a key with a `null` value will return `true`.
+This will return `true` regardless of the value stored, i.e., a key with a `null` value will return `true`:
 
 ```php
 Context::add('key', null);
@@ -189,3 +217,114 @@ Context::add('key', null);
 Context::has('key');
 // true
 ```
+
+<a name="removing-context"></a>
+## Removing Context
+
+The `forget` method removes a key and its value from Context:
+
+```php
+Context::add(['first_key' => 'first_value', 'second_key' => 'second_value']);
+
+Context::forget('first_key');
+
+Context::all();
+
+// ['second_key' => 'second_value']
+```
+
+You may forget several keys by passing an array:
+
+```php
+Context::forget(['first_key', 'second_key']);
+```
+
+<a name="hidden-context"></a>
+## Hidden Context
+
+Context offers the ability to store "hidden" information. This hidden information is not appended to logs, unlike what we demonstrated in [how it works](#how-it-works), and is not accessible via the methods above. Context provides a different set of methods to interact with hidden information specifically.
+
+```php
+Context::addHidden('key', 'value');
+
+Context::getHidden('key');
+// 'value'
+
+Context::get('key');
+// null
+```
+
+The "hidden" methods mirror the functionality of the non-hidden methods outlined above:
+
+```php
+Context::addHidden(/* ... */);
+Context::addHiddenIf(/* ... */);
+Context::pushHidden(/* ... */);
+Context::getHidden(/* ... */);
+Context::onlyHidden(/* ... */);
+Context::allHidden(/* ... */);
+Context::hasHidden(/* ... */);
+Context::forgetHidden(/* ... */);
+```
+
+<a name="events"></a>
+## Events
+
+Context offers two events that allow you to hook into the dehydrating and hydrating process of Context.
+
+To illustrate how these events may be used, imagine in a middleware of your application you set the `app.locale` configuration value based on the incoming HTTP request's `Accept-Language` header. Context's events allow you to capture the value during the request and restore it on the queue. This will ensure that any notifications sent on the queue also have the correct `app.locale` value. We will use Context's events and [hidden](#hidden-context) information to achieve this.
+
+<a name="dehydrating"></a>
+### Dehydrating
+
+Whenever a job is dispatched to the queue the information in Context is "dehydrated" and captured alongside the job's payload. The `Context::dehydrating` hook allows you to intercept the dehydration process and make changes to the information that will be shared with the queued job.
+
+Typically, you register a callback within the `boot` method of your application's `AppServiceProvider` class:
+
+```php
+use Illuminate\Log\Context\Repository;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Context;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Context::dehydrating(function (Repository $context) {
+        $context->addHidden('locale', Config::get('app.locale'));
+    });
+}
+```
+
+> [!NOTE]
+> You should not use the `Context` facade within the callback, as that will change the Context of the current process. Ensure you only make changes to the repository passed to the callback.
+
+<a name="hydrating"></a>
+### Hydrating
+
+Whenever a queued job begins executing on the queue, any Context that was shared with the job will be "hydrated" back into Context. The `Context::hydrating` hook allows you to intercept the hydration process when needed. 
+
+Typically, you register a callback within the `boot` method of your application's `AppServiceProvider` class:
+
+
+```php
+use Illuminate\Log\Context\Repository;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Context;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Context::dehydrating(function (Repository $context) {
+        if ($context->hasHidden('locale')) {
+            Config::set('app.locale', $context->getHidden('locale'));
+        }
+    });
+}
+```
+
+> [!NOTE]
+> You should not use the `Context` facade within the callback, as that will change the Context of the current process. Ensure you only make changes to the repository passed to the callback.
