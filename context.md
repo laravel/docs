@@ -20,7 +20,7 @@ Context enables you to capture, retrieve, and share information throughout reque
 <a name="how-it-works"></a>
 ### How it Works
 
-The best way to understand Context is to see it in action with the built-in logging features. To get started, you may [add information to Context](#capturing-context) by using the `Context` facade. In this example, we use a [middleware](/docs/{{version}}/middleware) to add the request URL and a unique trace ID on every incoming request:
+The best way to understand Context is to see it in action with the built-in logging features. To get started, you may [add information to Context](#capturing-context) by using the `Context` façade. In this example, we use a [middleware](/docs/{{version}}/middleware) to add the request URL and a unique trace ID on every incoming request:
 
 ```php
 <?php
