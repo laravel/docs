@@ -161,6 +161,6 @@ You may customize the location of this cache file by specifying a path in your `
 
 ```json
 {
-    "cache-file": ".pint.json"
+    "cache-file": ".pint.result.cache"
 }
 ```
