@@ -65,7 +65,7 @@ The following first-party packages have new major releases to support Laravel 7.
 - [Envoy v2.0](https://github.com/laravel/envoy/blob/master/UPGRADE.md)
 - [Horizon v4.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
 - [Nova v3.0](https://nova.laravel.com/releases)
-- [Passport v9.0](https://github.com/laravel/passport/blob/master/UPGRADE.md)
+- [Passport v9.0](https://github.com/laravel/passport/blob/9.x/UPGRADE.md)
 - [Scout v8.0](https://github.com/laravel/scout/blob/master/UPGRADE.md)
 - [Telescope v3.0](https://github.com/laravel/telescope/releases)
 - [Tinker v2.0](https://github.com/laravel/tinker/blob/2.x/CHANGELOG.md)
