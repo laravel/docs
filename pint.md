@@ -7,6 +7,7 @@
     - [Presets](#presets)
     - [Rules](#rules)
     - [Excluding Files / Folders](#excluding-files-or-folders)
+    - [Result Caching](#result-caching)
 
 <a name="introduction"></a>
 ## Introduction
@@ -62,7 +63,7 @@ If you would like Pint to only modify the files that have uncommitted changes ac
 <a name="configuring-pint"></a>
 ## Configuring Pint
 
-As previously mentioned, Pint does not require any configuration. However, if you wish to customize the presets, rules, or inspected folders, you may do so by creating a `pint.json` file in your project's root directory:
+As previously mentioned, Pint does not require any configuration. However, if you wish to customize the presets, rules, inspected folders, or caching options, you may do so by creating a `pint.json` file in your project's root directory:
 
 ```json
 {
@@ -148,5 +149,18 @@ If you would like to exclude a file by providing an exact path to the file, you 
     "notPath": [
         "path/to/excluded-file.php"
     ]
+}
+```
+
+<a name="result-caching"></a>
+### Result Caching
+
+By default, Pint will cache its results to a temporary file on the disk to speed up subsequent runs.
+
+You may customize the location of this cache file by specifying a path in your `pint.json` file:
+
+```json
+{
+    "cache-file": ".pint.json"
 }
 ```
