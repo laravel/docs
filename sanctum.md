@@ -330,7 +330,7 @@ To protect routes so that all incoming requests must be authenticated, you shoul
 <a name="authorizing-private-broadcast-channels"></a>
 ### Authorizing Private Broadcast Channels
 
-If your SPA needs to authenticate with [private / presence broadcast channels](/docs/{{version}}/broadcasting#authorizing-channels), you should place the `Broadcast::routes` method call within your `routes/api.php` file:
+If your SPA needs to authenticate with [private / presence broadcast channels](/docs/{{version}}/broadcasting#authorizing-channels), you should place the `Broadcast::routes` method call within your `routes/channels.php` file:
 
     Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
