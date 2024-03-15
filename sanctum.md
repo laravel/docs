@@ -330,9 +330,17 @@ To protect routes so that all incoming requests must be authenticated, you shoul
 <a name="authorizing-private-broadcast-channels"></a>
 ### Authorizing Private Broadcast Channels
 
-If your SPA needs to authenticate with [private / presence broadcast channels](/docs/{{version}}/broadcasting#authorizing-channels), you should place the `Broadcast::routes` method call within your `routes/api.php` file:
+If your SPA needs to authenticate with [private / presence broadcast channels](/docs/{{version}}/broadcasting#authorizing-channels), you should remove the `channels` entry from the `withRouting` method contained in your application's `bootstrap/app.php` file. Instead, you should invoke the `withBroadcasting` method so that you may specify the correct middleware for your application's broadcasting routes:
 
-    Broadcast::routes(['middleware' => ['auth:sanctum']]);
+    return Application::configure(basePath: dirname(__DIR__))
+        ->withRouting(
+            web: __DIR__.'/../routes/web.php',
+            // ...
+        )
+        ->withBroadcasting(
+            __DIR__.'/../routes/channels.php',
+            ['middleware' => ['auth:sanctum']],
+        )
 
 Next, in order for Pusher's authorization requests to succeed, you will need to provide a custom Pusher `authorizer` when initializing [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation). This allows your application to configure Pusher to use the `axios` instance that is [properly configured for cross-domain requests](#cors-and-cookies):
 
