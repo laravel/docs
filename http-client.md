@@ -266,7 +266,7 @@ If all of the requests fail, an instance of `Illuminate\Http\Client\RequestExcep
 
     $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 
-> [!WARNING]  
+> [!WARNING]
 > If all of the requests fail because of a connection issue, a `Illuminate\Http\Client\ConnectionException` will still be thrown even when the `throw` argument is set to `false`.
 
 <a name="error-handling"></a>
@@ -442,6 +442,23 @@ As you can see, each response instance can be accessed based on the order it was
     ]);
 
     return $responses['first']->ok();
+
+<a name="retrying-asynchronous-requests"></a>
+#### Retrying Asynchronous Requests
+When making multiple HTTP requests concurrently within a pool, you can use `retry` on individual requests to handle temporary failures. You can specify the number of retries and an optional delay between attempts:
+
+```php
+use Illuminate\Http\Client\Pool;
+use Illuminate\Support\Facades\Http;
+
+Http::pool(function (Pool $pool) {
+    return [
+        $pool->retry(3)->get('http://localhost/first'),
+        $pool->retry(3)->get('http://localhost/second'),
+        $pool->retry(3)->get('http://localhost/third'),
+    ];
+});
+```
 
 <a name="customizing-concurrent-requests"></a>
 #### Customizing Concurrent Requests
