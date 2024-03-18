@@ -39,7 +39,6 @@
 - [The `Enumerable` Contract](#the-enumerable-contract)
 - [The `UserProvider` Contract](#the-user-provider-contract)
 - [The `Authenticatable` Contract](#the-authenticatable-contract)
-- [The `AuthenticationException` Class](#the-authentication-exception-class)
 
 </div>
 
@@ -161,13 +160,13 @@ The default `User` model included with Laravel receives this method automaticall
 
 #### The `AuthenticationException` Class
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Very Low**
 
-The `redirectTo()` method of the `Illuminate\Auth\AuthenticationException` class now accepts a required `Request` instance as its first argument. If you are manually catching this exception and calling the `redirectTo` method, you should update your code to pass the `Request` instance as the first argument:
+The `redirectTo` method of the `Illuminate\Auth\AuthenticationException` class now requires an `Illuminate\Http\Request` instance as its first argument. If you are manually catching this exception and calling the `redirectTo` method, you should update your code accordingly:
 
 ```php
 if ($e instanceof AuthenticationException) {
-    $path = $e->redirectTo(request());
+    $path = $e->redirectTo($request);
 }
 ```
 
