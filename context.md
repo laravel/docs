@@ -15,12 +15,12 @@
 <a name="introduction"></a>
 ## Introduction
 
-Context enables you to capture, retrieve, and share information throughout requests, jobs, and commands executing within your application. This captured information is also included in logs written by your application, giving you deeper insight into the history that occurred before a log entry was written, allowing you to trace execution flows throughout a distributed system.
+Laravel's "context" capabilities enable you to capture, retrieve, and share information throughout requests, jobs, and commands executing within your application. This captured information is also included in logs written by your application, giving you deeper insight into the surrounding code execution history that occurred before a log entry was written and allowing you to trace execution flows throughout a distributed system.
 
 <a name="how-it-works"></a>
 ### How it Works
 
-The best way to understand Laravel's context capabilities is to see it in action using  the built-in logging features. To get started, you may [add information to the context](#capturing-context) using the `Context` facade. In this example, we use a [middleware](/docs/{{version}}/middleware) to add the request URL and a unique trace ID to the context on every incoming request:
+The best way to understand Laravel's context capabilities is to see it in action using  the built-in logging features. To get started, you may [add information to the context](#capturing-context) using the `Context` facade. In this example, we will use a [middleware](/docs/{{version}}/middleware) to add the request URL and a unique trace ID to the context on every incoming request:
 
 ```php
 <?php
@@ -48,7 +48,7 @@ class AddContext
 }
 ```
 
-Information added to the context is automatically appended as metadata to any [logging](/docs/{{version}}/logging) that you perform throughout the request. Appending context as metadata allows information passed to individual log entries to be differentiated from the information shared via `Context`. For example, imagine we write the following log entry:
+Information added to the context is automatically appended as metadata to any [log entries](/docs/{{version}}/logging) that are written throughout the request. Appending context as metadata allows information passed to individual log entries to be differentiated from the information shared via `Context`. For example, imagine we write the following log entry:
 
 ```php
 Log::info('User authenticated.', ['auth_id' => Auth::id()]);
@@ -60,7 +60,7 @@ The written log will contain the `auth_id` passed to the log entry, but it will 
 User authenticated. {"auth_id":27} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
-Information added to the context is also made available to jobs dispatched to the queue. Imagine we dispatch a `ProcessPodcast` job to the queue after adding some information to the context:
+Information added to the context is also made available to jobs dispatched to the queue. For example, imagine we dispatch a `ProcessPodcast` job to the queue after adding some information to the context:
 
 ```php
 // In our middleware...
@@ -71,7 +71,7 @@ Context::add('trace_id', Str::uuid()->toString());
 ProcessPodcast::dispatch($podcast);
 ```
 
-When the job is dispatched, any information currently stored in the context is captured and shared with the job. The captured information is then hydrated into the current context while the job is executing. So, if our job's handle method was to write a log entry:
+When the job is dispatched, any information currently stored in the context is captured and shared with the job. The captured information is then hydrated back into the current context while the job is executing. So, if our job's handle method was to write to the log:
 
 ```php
 class ProcessPodcast implements ShouldQueue
@@ -94,13 +94,13 @@ class ProcessPodcast implements ShouldQueue
 }
 ```
 
-The log entry would contain the information that was added to the context during the request that originally dispatched the job:
+The resulting log entry would contain the information that was added to the context during the request that originally dispatched the job:
 
 ```
 Processing podcast. {"podcast_id":95} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
-Although we have focused on the built-in logging related features of Laravel's context, the following documentation will illustrate that how context allows you to share information across the HTTP request / queued job boundary and even add [hidden](#hidden-context) information that is not written with log entries.
+Although we have focused on the built-in logging related features of Laravel's context, the following documentation will illustrate how context allows you to share information across the HTTP request / queued job boundary and even how to add [hidden context data](#hidden-context) that is not written with log entries.
 
 <a name="capturing-context"></a>
 ## Capturing Context
@@ -178,7 +178,7 @@ use Illuminate\Support\Facades\Context;
 $value = Context::get('key');
 ```
 
-The `only` method will retrieve a subset of the information in the context:
+The `only` method may be used to retrieve a subset of the information in the context:
 
 ```php
 $data = Context::only(['first_key', 'second_key']);
@@ -238,7 +238,7 @@ Context::forget(['first_key', 'second_key']);
 <a name="hidden-context"></a>
 ## Hidden Context
 
-Context offers the ability to store "hidden" data. This hidden data is not appended to logs, and is not accessible via the data retrieval methods documented above. Context provides a different set of methods to interact with hidden context data:
+Context offers the ability to store "hidden" data. This hidden information is not appended to logs, and is not accessible via the data retrieval methods documented above. Context provides a different set of methods to interact with hidden context information:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -270,7 +270,7 @@ Context::forgetHidden(/* ... */);
 
 Context dispatches two events that allow you to hook into the dehydrating and hydrating process of the context.
 
-To illustrate how these events may be used, imagine that in a middleware of your application you set the `app.locale` configuration value based on the incoming HTTP request's `Accept-Language` header. Context's events allow you to capture this value during the request and restore it on the queue, ensuring notifications sent on the queue have the correct `app.locale` value. We can use context's events and [hidden](#hidden-context) data to achieve this.
+To illustrate how these events may be used, imagine that in a middleware of your application you set the `app.locale` configuration value based on the incoming HTTP request's `Accept-Language` header. Context's events allow you to capture this value during the request and restore it on the queue, ensuring notifications sent on the queue have the correct `app.locale` value. We can use context's events and [hidden](#hidden-context) data to achieve this, which the following documentation will illustrate.
 
 <a name="dehydrating"></a>
 ### Dehydrating
