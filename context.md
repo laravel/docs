@@ -1,7 +1,7 @@
 # Context
 
 - [Introduction](#introduction)
-    - [How It Works](#how-it-works)
+    - [How it Works](#how-it-works)
 - [Capturing Context](#capturing-context)
     - [Stacks](#stacks)
 - [Retrieving Context](#retrieving-context)
