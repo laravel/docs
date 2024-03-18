@@ -156,6 +156,20 @@ public function getAuthPasswordName()
 
 The default `User` model included with Laravel receives this method automatically since the method is included within the `Illuminate\Auth\Authenticatable` trait.
 
+<a name="the-authentication-exception-class"></a>
+
+#### The `AuthenticationException` Class
+
+**Likelihood Of Impact: Very Low**
+
+The `redirectTo` method of the `Illuminate\Auth\AuthenticationException` class now requires an `Illuminate\Http\Request` instance as its first argument. If you are manually catching this exception and calling the `redirectTo` method, you should update your code accordingly:
+
+```php
+if ($e instanceof AuthenticationException) {
+    $path = $e->redirectTo($request);
+}
+```
+
 <a name="cache"></a>
 ### Cache
 
