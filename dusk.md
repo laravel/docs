@@ -555,7 +555,7 @@ The `responsiveScreenshots` method may be used to take a series of screenshots a
 
 The `screenshotElement` method may be used to take a screenshot of a specific element on the page:
 
-    $browser->screenshotElement('selector', 'filename');
+    $browser->screenshotElement('#selector', 'filename');
 
 <a name="storing-console-output-to-disk"></a>
 ### Storing Console Output to Disk
