@@ -106,7 +106,7 @@ You may use the `withHeaders` method to customize the request's headers before i
 ```php tab=Pest
 <?php
 
-tesst('interacting with headers', function () {
+test('interacting with headers', function () {
     $response = $this->withHeaders([
         'X-Header' => 'Value',
     ])->post('/user', ['name' => 'Sally']);
