@@ -74,6 +74,7 @@ You should update the following dependencies in your application's `composer.jso
 - `laravel/jetstream` to `^5.0` (If installed)
 - `laravel/passport` to `^12.0` (If installed)
 - `laravel/sanctum` to `^4.0` (If installed)
+- `laravel/octane` to `^2.3` (If installed)
 - `laravel/spark-stripe` to `^5.0` (If installed)
 - `laravel/telescope` to `^5.0` (If installed)
 - `inertiajs/inertia-laravel` to `^1.0` (If installed)
