@@ -34,6 +34,7 @@
     - [Broadcasting](/docs/{{version}}/broadcasting)
     - [Cache](/docs/{{version}}/cache)
     - [Collections](/docs/{{version}}/collections)
+    - [Context](/docs/{{version}}/context)
     - [Contracts](/docs/{{version}}/contracts)
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
