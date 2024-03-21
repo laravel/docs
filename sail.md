@@ -88,7 +88,7 @@ php artisan sail:install --devcontainer
 <a name="rebuilding-sail-images"></a>
 ### Rebuilding Sail Images
 
-Sometimes you may want to completely rebuild your Sail images to ensure all of the image's packages and software is up to date. You may accomplish this using the `build` command:
+Sometimes you may want to completely rebuild your Sail images to ensure all of the image's packages and software are up to date. You may accomplish this using the `build` command:
 
 ```shell
 docker compose down -v
