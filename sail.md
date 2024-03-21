@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation and Setup](#installation)
     - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
+    - [Rebuilding Sail Images](#rebuilding-sail-images)
     - [Configuring A Shell Alias](#configuring-a-shell-alias)
 - [Starting and Stopping Sail](#starting-and-stopping-sail)
 - [Executing Commands](#executing-sail-commands)
@@ -82,6 +83,19 @@ If you would like to develop within a [Devcontainer](https://code.visualstudio.c
 
 ```shell
 php artisan sail:install --devcontainer
+```
+
+<a name="rebuilding-sail-images"></a>
+### Rebuilding Sail Images
+
+Sometimes you may want to completely rebuild your Sail images to ensure all of the image's packages and software is up to date. You may accomplish this using the `build` command:
+
+```shell
+docker compose down -v
+
+sail build --no-cache
+
+sail up
 ```
 
 <a name="configuring-a-shell-alias"></a>
