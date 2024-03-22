@@ -100,7 +100,7 @@ Name | Description                                                       | Defau
 <a name="configuring-the-papertrail-channel"></a>
 #### Configuring the Papertrail Channel
 
-The `papertrail` channel requires `host` and `port` configuration options. These may be defined via the `LOG_PAPERTRAIL_URL` and `LOG_PAPERTRAIL_PORT` environment variables. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
+The `papertrail` channel requires `host` and `port` configuration options. These may be defined via the `PAPERTRAIL_URL` and `PAPERTRAIL_PORT` environment variables. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
 
 <a name="configuring-the-slack-channel"></a>
 #### Configuring the Slack Channel
