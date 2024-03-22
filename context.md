@@ -117,8 +117,8 @@ To add multiple items at once, you may pass an associative array to the `add` me
 
 ```php
 Context::add([
-    'first_key' => 'value',
-    'second_key' => 'value',
+    'first_key' => 'first_value',
+    'second_key' => 'second_value',
 ]);
 ```
 
