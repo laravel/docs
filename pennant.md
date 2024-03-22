@@ -1025,3 +1025,35 @@ class AppServiceProvider extends ServiceProvider
 ### `Laravel\Pennant\Events\DynamicallyRegisteringFeatureClass`
 
 This event is dispatched when a class based feature is being dynamically checked for the first time during a request.
+
+### `Laravel\Pennant\Events\UnexpectedNullScopeEncountered`
+
+This event is dispatched when a `null` scope is passed to a feature definition that [doesn't support null](#nullable-scope).
+
+This is handled gracefully and the feature will return false. If you want to opt out of this behaviour:
+
+```php
+use Laravel\Pennant\Events\UnexpectedNullScopeEncountered;
+
+Event::listen(UnexpectedNullScopeEncountered::class, fn () => abort(500));
+```
+
+### `Laravel\Pennant\Events\FeatureUpdated`
+
+This event is dispatched when updating a feature for a scope, usually through calling `activate` or `deactivate`.
+
+### `Laravel\Pennant\Events\FeatureUpdatedForAllScopes`
+
+This event is dispatched when updating a feature for all scopes, usually through calling `activateForEveryone` or `deactivateForEveryone`.
+
+### `Laravel\Pennant\Events\FeatureDeleted`
+
+This event is dispatched when deleting a feature for a scope, usually through calling `forget`.
+
+### `Laravel\Pennant\Events\FeaturesPurged`
+
+This event is dispatched when purging specific features.
+
+### `Laravel\Pennant\Events\AllFeaturesPurged`
+
+This event is dispatched when purging all features.
