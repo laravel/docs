@@ -1475,7 +1475,7 @@ The field under validation must be lowercase.
 <a name="rule-list"></a>
 #### list
 
-The field under validation must be an array where its keys consist of consecutive numbers starting from 0.
+The field under validation must be an array that is a list. An array is considered a list if its keys consist of consecutive numbers from 0 to `count($array) - 1`.
 
 <a name="rule-mac"></a>
 #### mac_address
