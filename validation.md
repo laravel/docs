@@ -916,6 +916,7 @@ Below is a list of all available validation rules and their function:
 [JSON](#rule-json)
 [Less Than](#rule-lt)
 [Less Than Or Equal](#rule-lte)
+[List](#rule-list)
 [Lowercase](#rule-lowercase)
 [MAC Address](#rule-mac)
 [Max](#rule-max)
@@ -1470,6 +1471,11 @@ The field under validation must be less than or equal to the given _field_. The 
 #### lowercase
 
 The field under validation must be lowercase.
+
+<a name="rule-list"></a>
+#### list
+
+The field under validation must be an array that is a list. An array is considered a list if its keys consist of consecutive numbers from 0 to `count($array) - 1`.
 
 <a name="rule-mac"></a>
 #### mac_address
