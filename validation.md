@@ -1053,7 +1053,23 @@ When additional values are provided to the `array` rule, each key in the input a
         'user' => 'array:name,username',
     ]);
 
-In general, you should always specify the array keys that are allowed to be present within your array.
+In general, you should always specify the array keys that are allowed to be present within your array. Otherwise, the validator's `validate` and `validated` methods will return all of the validated data, including the array and all of its keys, even if those keys were not validated by other nested array validation rules.
+
+If you would like, you may instruct Laravel's validator to never include unvalidated array keys in the "validated" data it returns, even if you use the `array` rule without specifying a list of allowed keys. To accomplish this, you may call the validator's `excludeUnvalidatedArrayKeys` method in the `boot` method of your application's `AppServiceProvider`. After doing so, the validator will include array keys in the "validated" data it returns only when those keys were specifically validated by [nested array rules](#validating-arrays):
+
+```php
+use Illuminate\Support\Facades\Validator;
+
+/**
+ * Register any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Validator::excludeUnvalidatedArrayKeys();
+}
+```
 
 <a name="rule-ascii"></a>
 #### ascii
