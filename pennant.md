@@ -987,7 +987,7 @@ Pennant dispatches a variety of events that can be useful when tracking feature 
 
 ### `Laravel\Pennant\Events\FeatureRetrieved`
 
-This event is dispatched whenever a [feature is checked](#checking-features). It may be useful for creating and tracking metrics against a feature flag's usage throughout your application.
+This event is dispatched whenever a [feature is checked](#checking-features). This event may be useful for creating and tracking metrics against a feature flag's usage throughout your application.
 
 ### `Laravel\Pennant\Events\FeatureResolved`
 
@@ -995,9 +995,7 @@ This event is dispatched the first time a feature's value is resolved for a spec
 
 ### `Laravel\Pennant\Events\UnknownFeatureResolved`
 
-This event is dispatched the first time an unknown feature is resolved for a specific scope. This event may be useful if you have intended to remove a feature flag, but have accidentally left stray references to it throughout your application.
-
-For example, you may find it useful to listen for this event and log an error when it occurs:
+This event is dispatched the first time an unknown feature is resolved for a specific scope. Listening to this event may be useful if you have intended to remove a feature flag but have accidentally left stray references to it throughout your application:
 
 ```php
 <?php
@@ -1031,7 +1029,7 @@ This event is dispatched when a [class based feature](#class-based-features) is 
 
 This event is dispatched when a `null` scope is passed to a feature definition that [doesn't support null](#nullable-scope).
 
-This is handled gracefully and the feature will return `false`. If you wanted to opt out of this default behaviour you could register a handler in the `boot` method of the `AppServiceProvider`:
+This situation is handled gracefully and the feature will return `false`. However, if you would like to opt out of this feature's default graceful behavior, you may register a listener for this event in the `boot` method of your application's `AppServiceProvider`:
 
 ```php
 use Illuminate\Support\Facades\Log;
@@ -1049,15 +1047,15 @@ public function boot(): void
 
 ### `Laravel\Pennant\Events\FeatureUpdated`
 
-This event is dispatched when updating a feature for a scope, usually through calling `activate` or `deactivate`.
+This event is dispatched when updating a feature for a scope, usually by calling `activate` or `deactivate`.
 
 ### `Laravel\Pennant\Events\FeatureUpdatedForAllScopes`
 
-This event is dispatched when updating a feature for all scopes, usually through calling `activateForEveryone` or `deactivateForEveryone`.
+This event is dispatched when updating a feature for all scopes, usually by calling `activateForEveryone` or `deactivateForEveryone`.
 
 ### `Laravel\Pennant\Events\FeatureDeleted`
 
-This event is dispatched when deleting a feature for a scope, usually through calling `forget`.
+This event is dispatched when deleting a feature for a scope, usually by calling `forget`.
 
 ### `Laravel\Pennant\Events\FeaturesPurged`
 
