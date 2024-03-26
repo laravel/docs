@@ -53,7 +53,7 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 <a name="creating-a-laravel-project"></a>
 ## Creating a Laravel Project
 
-Before creating your first Laravel project, make sure that your local machine has PHP and [Composer](https://getcomposer.org) installed. If you are developing on macOS, PHP and Composer can be installed in minutes via [Laravel Herd](https://herd.laravel.com). In addition, we recommend [installing Node and NPM](https://nodejs.org).
+Before creating your first Laravel project, make sure that your local machine has PHP and [Composer](https://getcomposer.org) installed. If you are developing on macOS or Windows, PHP and Composer can be installed in minutes via [Laravel Herd](https://herd.laravel.com). In addition, we recommend [installing Node and NPM](https://nodejs.org).
 
 After you have installed PHP and Composer, you may create a new Laravel project via Composer's `create-project` command:
 
