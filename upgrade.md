@@ -60,6 +60,10 @@
 
 Laravel now requires PHP 8.2.0 or greater.
 
+#### curl 7.34.0 Required
+
+Laravel's HTTP client now requires curl 7.34.0 or greater.
+
 #### Composer Dependencies
 
 You should update the following dependencies in your application's `composer.json` file:
