@@ -22,7 +22,6 @@
 <div class="content-list" markdown="1">
 
 - [Carbon 3](#carbon-3)
-- [cURL Minimum Version](#curl-minimum-version)
 - [Password Rehashing](#password-rehashing)
 - [Per-Second Rate Limiting](#per-second-rate-limiting)
 
@@ -60,6 +59,10 @@
 #### PHP 8.2.0 Required
 
 Laravel now requires PHP 8.2.0 or greater.
+
+#### curl 7.34.0 Required
+
+Laravel's HTTP client now requires curl 7.34.0 or greater.
 
 #### Composer Dependencies
 
@@ -412,35 +415,6 @@ public function scalar($query, $bindings = [], $useReadPdo = true);
 **Likelihood Of Impact: Medium**
 
 Laravel 11 supports both Carbon 2 and Carbon 3. Carbon is a date manipulation library utilized extensively by Laravel and packages throughout the ecosystem. If you install Carbon 3, you should review Carbon's [change log](https://github.com/briannesbitt/Carbon/releases/tag/3.0.0).
-
-<a name="http-client"></a>
-### HTTP Client
-
-<a name="curl-minimum-version"></a>
-#### cURL 7.34.0+
-
-**Likelihood Of Impact: Medium**
-
-If your application is utilizing an [HTTP client](/docs/{{version}}/http-client) and/or [Broadcasting](/docs/{{version}}/broadcasting#reverb) via Reverb or Pusher, cURL 7.34.0 or greater is required.
-
-To lift this limitation for HTTP client, you may disable TLS 1.2 encryption and fall back to Guzzle defaults by setting `crypto_method` global option to `null` in the `boot` method of your application's `AppServiceProvider`:
-```php
-use Illuminate\Support\Facades\Http;
-
-public function boot(): void
-{
-    Http::globalOptions(['crypto_method' => null]);
-}
-```
-
-In order to do the same for your preferred broadcasting driver, set `crypto_method` option in `config/broadcasting.php` to `null` in `client_options` section of corresponding connection:
-
-```php
-'client_options' => [
-    // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
-    'crypto_method' => null,
-],
-```
 
 <a name="mail"></a>
 ### Mail
