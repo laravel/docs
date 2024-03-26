@@ -987,17 +987,17 @@ Pennant dispatches a variety of events that can be useful when tracking feature 
 
 ### `Laravel\Pennant\Events\FeatureRetrieved`
 
-This event is dispatched the first time a known feature is retrieved during a request for a specific scope. This event can be useful to create and track metrics against the feature flags that are being used throughout your application.
+This event is dispatched whenever a [feature is checked](#checking-features). It may be useful for creating and tracking metrics against a feature flag's usage throughout your application.
 
 ### `Laravel\Pennant\Events\FeatureResolved`
 
-This event is dispatched the first time a feature's value is resolved for a specific scope from it's definition or feature class resolver.
+This event is dispatched the first time a feature's value is resolved for a specific scope.
 
 ### `Laravel\Pennant\Events\UnknownFeatureResolved`
 
-This event is dispatched the first time an unknown feature is retrieved during a request for a specific scope. This event can be useful if you have intended to remove a feature flag, but may have accidentally left some stray references to it throughout your application.
+This event is dispatched the first time an unknown feature is resolved for a specific scope. This event may be useful if you have intended to remove a feature flag, but have accidentally left stray references to it throughout your application.
 
-For example, you may find it useful to listen for this event and `report` or throw an exception when it occurs:
+For example, you may find it useful to listen for this event and log an error when it occurs:
 
 ```php
 <?php
@@ -1006,6 +1006,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Laravel\Pennant\Events\UnknownFeatureResolved;
 
 class AppServiceProvider extends ServiceProvider
@@ -1016,7 +1017,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Event::listen(function (UnknownFeatureResolved $event) {
-            report("Resolving unknown feature [{$event->feature}].");
+            Log::error("Resolving unknown feature [{$event->feature}].");
         });
     }
 }
@@ -1024,18 +1025,26 @@ class AppServiceProvider extends ServiceProvider
 
 ### `Laravel\Pennant\Events\DynamicallyRegisteringFeatureClass`
 
-This event is dispatched when a class based feature is being dynamically checked for the first time during a request.
+This event is dispatched when a [class based feature](#class-based-features) is dynamically checked for the first time during a request.
 
 ### `Laravel\Pennant\Events\UnexpectedNullScopeEncountered`
 
 This event is dispatched when a `null` scope is passed to a feature definition that [doesn't support null](#nullable-scope).
 
-This is handled gracefully and the feature will return false. If you want to opt out of this behaviour:
+This is handled gracefully and the feature will return `false`. If you wanted to opt out of this default behaviour you could register a handler in the `boot` method of the `AppServiceProvider`:
 
 ```php
+use Illuminate\Support\Facades\Log;
 use Laravel\Pennant\Events\UnexpectedNullScopeEncountered;
 
-Event::listen(UnexpectedNullScopeEncountered::class, fn () => abort(500));
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Event::listen(UnexpectedNullScopeEncountered::class, fn () => abort(500));
+}
+
 ```
 
 ### `Laravel\Pennant\Events\FeatureUpdated`
