@@ -321,7 +321,7 @@ To take a random sample rate of exceptions, you may use the `throttle` exception
     use Throwable;
 
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->throttle(function (Throwable Throwable) {
+        $exceptions->throttle(function (Throwable $e) {
             return Lottery::odds(1, 1000);
         });
     })
@@ -333,7 +333,7 @@ It is also possible to conditionally sample based on the exception type. If you 
     use Throwable;
 
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->throttle(function (Throwable Throwable) {
+        $exceptions->throttle(function (Throwable $e) {
             if ($e instanceof ApiMonitoringException) {
                 return Lottery::odds(1, 1000);
             }
@@ -347,7 +347,7 @@ You may also rate limit exceptions logged or sent to an external error tracking 
     use Throwable;
 
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->throttle(function (Throwable Throwable) {
+        $exceptions->throttle(function (Throwable $e) {
             if ($e instanceof BroadcastException) {
                 return Limit::perMinute(300);
             }
@@ -361,7 +361,7 @@ By default, limits will use the exception's class as the rate limit key. You can
     use Throwable;
 
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->throttle(function (Throwable Throwable) {
+        $exceptions->throttle(function (Throwable $e) {
             if ($e instanceof BroadcastException) {
                 return Limit::perMinute(300)->by($e->getMessage());
             }
@@ -378,7 +378,7 @@ Of course, you may return a mixture of `Lottery` and `Limit` instances for diffe
     use Throwable;
 
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->throttle(function (Throwable Throwable) {
+        $exceptions->throttle(function (Throwable $e) {
             return match (true) {
                 $e instanceof BroadcastException => Limit::perMinute(300),
                 $e instanceof ApiMonitoringException => Lottery::odds(1, 1000),
