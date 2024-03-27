@@ -25,6 +25,7 @@
 - [Adding Custom User Providers](#adding-custom-user-providers)
     - [The User Provider Contract](#the-user-provider-contract)
     - [The Authenticatable Contract](#the-authenticatable-contract)
+- [Automatic Password Rehashing](#automatic-password-rehashing)
 - [Social Authentication](/docs/{{version}}/socialite)
 - [Events](#events)
 
@@ -715,6 +716,25 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
 This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" column for the user and the `getAuthIdentifier` method should return the "primary key" of the user. When using a MySQL back-end, this would likely be the auto-incrementing primary key assigned to the user record. The `getAuthPasswordName` method should return the name of the user's password column. The `getAuthPassword` method should return the user's hashed password.
 
 This interface allows the authentication system to work with any "user" class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes an `App\Models\User` class in the `app/Models` directory which implements this interface.
+
+<a name="automatic-password-rehashing"></a>
+## Automatic Password Rehashing
+
+Laravel's default password hashing algorithm is bcrypt. The "work factor" for bcrypt hashes can be adjusted via your application's `config/hashing.php` configuration file or the `BCRYPT_ROUNDS` environment variable.
+
+Typically, the bcrypt work factor should be increased over time as CPU / GPU processing power increases. If you increase the bcrypt work factor for your application, Laravel will gracefully and automatically rehash user passwords as users authenticate with your application via Laravel's starter kits or when you [manually authenticate users](#authenticating-users) via the `attempt` method.
+
+Typically, automatic password rehashing should not disrupt your application; however, you may disable this behavior by publishing the `hashing` configuration file:
+
+```shell
+php artisan config:publish hashing
+```
+
+Once the configuration file has been published, you may set the `rehash_on_login` configuration value to `false`:
+
+```php
+'rehash_on_login' => false,
+```
 
 <a name="events"></a>
 ## Events
