@@ -6,6 +6,8 @@
     - [Hashing Passwords](#hashing-passwords)
     - [Verifying That a Password Matches a Hash](#verifying-that-a-password-matches-a-hash)
     - [Determining if a Password Needs to be Rehashed](#determining-if-a-password-needs-to-be-rehashed)
+- [Automatic Rehashing](#automatic-rehashing)
+- [Mixed Hashes](#mixed-hashes)
 
 <a name="introduction"></a>
 ## Introduction
@@ -98,3 +100,38 @@ The `needsRehash` method provided by the `Hash` facade allows you to determine i
     if (Hash::needsRehash($hashed)) {
         $hashed = Hash::make('plain-text');
     }
+
+<a name="automatic-rehashing"></a>
+## Automatic Rehashing during Authentication
+
+A fresh Laravel installation is configured to use the Bcrypt algorithm with a work factor of 12. If the work factor is changed, Laravel will automatically rehash your user's passwords during authentication, to ensure that they are updated to the new work factor.
+
+Typically, this should not disrupt your application; however, you may disable this behavior by adding the `rehash_on_login` option to your application's `config/hashing.php` configuration file:
+
+    'rehash_on_login' => false,
+
+<a name="mixed-hashes"></a>
+## Supporting Mixed Hashes
+
+To prevent hash algorithm manipulation, Laravel's `Hash::check()` method will verify the given hash matches the current hashing algorithm configured for your application. This is the expected behavior for most applications, where the hashing algorithm is not expected to change.
+
+However, if you need to support multiple hashing algorithms, such as when migrating from one algorithm to another, you can override this behaviour by setting `HASH_VERIFY=false` in your `.env` file or by passing `false` to the `bcrypt.verify` and `argon.verify` options in your application's `config/hashing.php` configuration file:
+
+
+    // .env
+    HASH_VERIFY=false
+
+or
+
+    // config/hashing.php
+    'bcrypt' => [
+        // ...
+        'verify' => false,
+    ],
+
+    'argon' => [
+        // ...
+        'verify' => false,
+    ],
+
+With hash verification disabled, Laravel will check any valid password hash using PHP's `password_verify` function, regardless of the hashing algorithm used to generate the hash.
