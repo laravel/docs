@@ -6,6 +6,7 @@
 - [Configuration](#configuration)
 - [Authentication](#authentication)
     - [Routing](#routing)
+    - [Handling Errors](#handling-errors)
     - [Authentication and Storage](#authentication-and-storage)
     - [Access Scopes](#access-scopes)
     - [Slack Bot Scopes](#slack-bot-scopes)
@@ -71,6 +72,35 @@ To authenticate users using an OAuth provider, you will need two routes: one for
     });
 
 The `redirect` method provided by the `Socialite` facade takes care of redirecting the user to the OAuth provider, while the `user` method will examine the incoming request and retrieve the user's information from the provider after they have approved the authentication request.
+
+<a name="handling-errors"></a>
+### Handling Errors
+OAuth may return an error response, in which case your callback function will be triggered with the error response as the parameter. The following is an example OAuth error response.
+
+```
+  {
+    "error":"access_denied"
+  }
+```
+
+This could happen if the user denies the OAuth request.
+OAuth error responses should be handled by your callback function.
+
+```
+use \Request;
+
+Route::get('/auth/callback', function (Request $request) {
+
+    $error = $request->input('error');
+
+    if($error) {
+        return redirect('/')->with('error', $error);
+    }
+
+    ...
+});
+
+```
 
 <a name="authentication-and-storage"></a>
 ### Authentication and Storage
