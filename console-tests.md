@@ -90,6 +90,28 @@ public function test_console_command(): void
 }
 ```
 
+You can also assert that a console command does not generate any output by using the `doesntExpectOutput` method:
+
+```php tab=Pest
+test('console command', function () {
+    $this->artisan('example')
+         ->doesntExpectOutput()
+         ->assertExitCode(0);
+});
+```
+
+```php tab=PHPUnit
+/**
+ * Test a console command.
+ */
+public function test_console_command(): void
+{
+    $this->artisan('example')
+            ->doesntExpectOutput()
+            ->assertExitCode(0);
+}
+```
+
 <a name="confirmation-expectations"></a>
 #### Confirmation Expectations
 
@@ -112,6 +134,8 @@ If your command displays a table of information using Artisan's `table` method, 
             [1, 'taylor@example.com'],
             [2, 'abigail@example.com'],
         ]);
+
+####
 
 <a name="console-events"></a>
 ## Console Events
