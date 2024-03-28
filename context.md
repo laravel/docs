@@ -171,7 +171,7 @@ DB::listen(function ($event) {
 <a name="conditional-context"></a>
 ### Conditional Context
 
-The `when` method seems to conditionally execute one of two provided callback functions based on whether the current user is an admin or not.
+The `when` method may be used to fluently execute a given closure if a user is an admin. Additionally, a second closure may be provided and will be executed if the user is not admin:
 
 ```php
 Context::when(
