@@ -135,8 +135,6 @@ If your command displays a table of information using Artisan's `table` method, 
             [2, 'abigail@example.com'],
         ]);
 
-####
-
 <a name="console-events"></a>
 ## Console Events
 
