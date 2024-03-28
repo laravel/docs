@@ -43,7 +43,7 @@ In addition to scheduling using closures, you may also schedule [invokable objec
 
     Schedule::call(new DeleteRecentUsers)->daily();
 
-If you prefer to keep your `routes/console.php` only for command definitions, you may use the `withScheduler` method in your application's `bootstrap/app.php`. This method accepts a closure that receives an instance of the scheduler:
+If you prefer to keep your `routes/console.php` only for command definitions, you may use the `withSchedule` method in your application's `bootstrap/app.php`. This method accepts a closure that receives an instance of the scheduler:
 
     use Illuminate\Console\Scheduling\Schedule;
 
