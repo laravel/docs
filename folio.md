@@ -109,7 +109,7 @@ php artisan folio:list
 You may create a nested route by creating one or more directories within one of Folio's directories. For instance, to create a page that is accessible via `/user/profile`, create a `profile.blade.php` template within the `pages/user` directory:
 
 ```bash
-php artisan make:folio user/profile
+php artisan folio:page user/profile
 
 # pages/user/profile.blade.php → /user/profile
 ```
@@ -120,10 +120,10 @@ php artisan make:folio user/profile
 Sometimes, you may wish to make a given page the "index" of a directory. By placing an `index.blade.php` template within a Folio directory, any requests to the root of that directory will be routed to that page:
 
 ```bash
-php artisan make:folio index
+php artisan folio:page index
 # pages/index.blade.php → /
 
-php artisan make:folio users/index
+php artisan folio:page users/index
 # pages/users/index.blade.php → /users
 ```
 
@@ -133,7 +133,7 @@ php artisan make:folio users/index
 Often, you will need to have segments of the incoming request's URL injected into your page so that you can interact with them. For example, you may need to access the "ID" of the user whose profile is being displayed. To accomplish this, you may encapsulate a segment of the page's filename in square brackets:
 
 ```bash
-php artisan make:folio "users/[id]"
+php artisan folio:page "users/[id]"
 
 # pages/users/[id].blade.php → /users/1
 ```
@@ -149,7 +149,7 @@ Captured segments can be accessed as variables within your Blade template:
 To capture multiple segments, you can prefix the encapsulated segment with three dots `...`:
 
 ```bash
-php artisan make:folio "users/[...ids]"
+php artisan folio:page "users/[...ids]"
 
 # pages/users/[...ids].blade.php → /users/1/2/3
 ```
@@ -170,7 +170,7 @@ When capturing multiple segments, the captured segments will be injected into th
 If a wildcard segment of your page template's filename corresponds one of your application's Eloquent models, Folio will automatically take advantage of Laravel's route model binding capabilities and attempt to inject the resolved model instance into your page:
 
 ```bash
-php artisan make:folio "users/[User]"
+php artisan folio:page "users/[User]"
 
 # pages/users/[User].blade.php → /users/1
 ```
@@ -194,7 +194,7 @@ On Windows, you should use `-` to separate the model name from the key: `[Post-s
 By default, Folio will search for your model within your application's `app/Models` directory. However, if needed, you may specify the fully-qualified model class name in your template's filename:
 
 ```bash
-php artisan make:folio "users/[.App.Models.User]"
+php artisan folio:page "users/[.App.Models.User]"
 
 # pages/users/[.App.Models.User].blade.php → /users/1
 ```
