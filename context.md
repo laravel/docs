@@ -4,6 +4,7 @@
     - [How it Works](#how-it-works)
 - [Capturing Context](#capturing-context)
     - [Stacks](#stacks)
+    - [Conditional Context](#conditional-context)
 - [Retrieving Context](#retrieving-context)
     - [Determining Item Existence](#determining-item-existence)
 - [Removing Context](#removing-context)
@@ -165,6 +166,19 @@ use Illuminate\Support\Facades\DB;
 DB::listen(function ($event) {
     Context::push('queries', [$event->time, $event->sql]);
 });
+```
+
+<a name="conditional-context"></a>
+### Conditional Context
+
+The `when` method seems to conditionally execute one of two provided callback functions based on whether the current user is an admin or not.
+
+```php
+Context::when(
+    auth()->user()->isAdmin(),
+    fn ($context) => $context->add('user', ['key' => 'other data', ...auth()->user()]),
+    fn ($context) => $context->add('user', auth()->user()),
+);
 ```
 
 <a name="retrieving-context"></a>
