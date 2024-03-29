@@ -19,7 +19,6 @@
     - [Broadcast Conditions](#broadcast-conditions)
     - [Broadcasting and Database Transactions](#broadcasting-and-database-transactions)
 - [Authorizing Channels](#authorizing-channels)
-    - [Defining Authorization Routes](#defining-authorization-routes)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
     - [Defining Channel Classes](#defining-channel-classes)
 - [Broadcasting Events](#broadcasting-events)
