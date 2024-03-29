@@ -4,7 +4,6 @@
     - [How it Works](#how-it-works)
 - [Capturing Context](#capturing-context)
     - [Stacks](#stacks)
-    - [Conditional Context](#conditional-context)
 - [Retrieving Context](#retrieving-context)
     - [Determining Item Existence](#determining-item-existence)
 - [Removing Context](#removing-context)
@@ -169,7 +168,7 @@ DB::listen(function ($event) {
 ```
 
 <a name="conditional-context"></a>
-### Conditional Context
+#### Conditional Context
 
 The `when` method may be used to fluently execute a given closure if a user is an admin. Additionally, a second closure may be provided and will be executed if the user is not admin:
 
