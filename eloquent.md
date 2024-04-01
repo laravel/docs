@@ -333,7 +333,7 @@ By default, all Eloquent models will use the default database connection that is
          *
          * @var string
          */
-        protected $connection = 'sqlite';
+        protected $connection = 'mysql';
     }
 
 <a name="default-attribute-values"></a>
