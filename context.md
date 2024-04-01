@@ -136,6 +136,22 @@ Context::get('key');
 // "first"
 ```
 
+<a name="conditional-context"></a>
+#### Conditional Context
+
+The `when` method may be used to add data to the context based on a given condition. The first closure provided to the `when` method will be invoked if the given condition evaluates to `true`, while the second closure will be invoked if the condition evaluates to `false`:
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Context;
+
+Context::when(
+    Auth::user()->isAdmin(),
+    fn ($context) => $context->add('permissions', Auth::user()->permissions),
+    fn ($context) => $context->add('permissions', []),
+);
+```
+
 <a name="stacks"></a>
 ### Stacks
 
@@ -165,19 +181,6 @@ use Illuminate\Support\Facades\DB;
 DB::listen(function ($event) {
     Context::push('queries', [$event->time, $event->sql]);
 });
-```
-
-<a name="conditional-context"></a>
-#### Conditional Context
-
-The `when` method may be used to fluently execute a given closure if a user is an admin. Additionally, a second closure may be provided and will be executed if the user is not admin:
-
-```php
-Context::when(
-    auth()->user()->isAdmin(),
-    fn ($context) => $context->add('user', ['key' => 'other data', ...auth()->user()]),
-    fn ($context) => $context->add('user', auth()->user()),
-);
 ```
 
 <a name="retrieving-context"></a>
