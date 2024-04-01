@@ -136,6 +136,22 @@ Context::get('key');
 // "first"
 ```
 
+<a name="conditional-context"></a>
+#### Conditional Context
+
+The `when` method may be used to add data to the context based on a given condition. The first closure provided to the `when` method will be invoked if the given condition evaluates to `true`, while the second closure will be invoked if the condition evaluates to `false`:
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Context;
+
+Context::when(
+    Auth::user()->isAdmin(),
+    fn ($context) => $context->add('permissions', Auth::user()->permissions),
+    fn ($context) => $context->add('permissions', []),
+);
+```
+
 <a name="stacks"></a>
 ### Stacks
 
