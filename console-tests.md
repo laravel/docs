@@ -90,7 +90,7 @@ public function test_console_command(): void
 }
 ```
 
-You can also assert that a console command does not generate any output by using the `doesntExpectOutput` method:
+You may also assert that a console command does not generate any output using the `doesntExpectOutput` method:
 
 ```php tab=Pest
 test('console command', function () {
