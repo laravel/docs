@@ -858,6 +858,27 @@ If you would like to specify the connection and queue that should be used for th
         new ReleasePodcast,
     ])->onConnection('redis')->onQueue('podcasts')->dispatch();
 
+<a name="adding-jobs-to-the-chain"></a>
+#### Adding Jobs to the Chain
+
+Occasionally, you may need to prepend or append a job to an existing job chain from within another job in that chain. You may accomplish this using the `prependToChain` and `appendToChain` methods:
+
+```php
+/**
+ * Execute the job.
+ */
+public function handle(): void
+{
+    // ...
+
+    // Prepend to the current chain, run job immediately after current job...
+    $this->prependToChain(new TranscribePodcast);
+
+    // Append to the current chain, run job at end of chain...
+    $this->appendToChain(new TranscribePodcast);
+}
+```
+
 <a name="chain-failures"></a>
 #### Chain Failures
 
@@ -2272,6 +2293,29 @@ As you can see in the example above, the array of chained jobs may be an array o
 You may use the `assertDispatchedWithoutChain` method to assert that a job was pushed without a chain of jobs:
 
     Bus::assertDispatchedWithoutChain(ShipOrder::class);
+
+<a name="testing-chain-modifications"></a>
+#### Testing Chain Modifications
+
+If a chained job [prepends or appends jobs to an existing chain](#adding-jobs-to-the-chain), you may use the job's `assertHasChain` method to assert that the job has the expected chain of remaining jobs:
+
+```php
+$job = new ProcessPodcast;
+
+$job->handle();
+
+$job->assertHasChain([
+    new TranscribePodcast,
+    new OptimizePodcast,
+    new ReleasePodcast,
+]);
+```
+
+The `assertDoesntHaveChain` method may be used to assert that the job's remaining chain is empty:
+
+```php
+$job->assertDoesntHaveChain();
+```
 
 <a name="testing-chained-batches"></a>
 #### Testing Chained Batches
