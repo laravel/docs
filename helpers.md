@@ -155,6 +155,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [class_uses_recursive](#method-class-uses-recursive)
 [collect](#method-collect)
 [config](#method-config)
+[context](#method-context)
 [cookie](#method-cookie)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
@@ -1705,6 +1706,21 @@ The `config` function gets the value of a [configuration](/docs/{{version}}/conf
 You may set configuration variables at runtime by passing an array of key / value pairs. However, note that this function only affects the configuration value for the current request and does not update your actual configuration values:
 
     config(['app.debug' => true]);
+
+<a name="method-context"></a>
+#### `context()` {.collection-method}
+
+The `context` function gets the value from the [current context](/docs/{{version}}/context). A default value may be specified and is returned if the context key does not exist:
+
+    $value = context('trace_id');
+
+    $value = config('trace_id', $default);
+
+You may set context values by passing an array of key / value pairs:
+
+    use Illuminate\Support\Str;
+
+    context(['trace_id' => Str::uuid()->toString()]);
 
 <a name="method-cookie"></a>
 #### `cookie()` {.collection-method}
