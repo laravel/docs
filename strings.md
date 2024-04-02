@@ -97,6 +97,9 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::title](#method-title-case)
 [Str::toBase64](#method-str-to-base64)
 [Str::toHtmlString](#method-str-to-html-string)
+[Str::trim](#method-str-trim)
+[Str::ltrim](#method-str-ltrim)
+[Str::rtrim](#method-str-rtrim)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
 [Str::upper](#method-str-upper)
@@ -1206,6 +1209,39 @@ The `Str::toHtmlString` method converts the string instance to an instance of `I
     use Illuminate\Support\Str;
 
     $htmlString = Str::of('Nuno Maduro')->toHtmlString();
+
+<a name="method-str-trim"></a>
+#### `Str::trim()` {.collection-method}
+
+The `Str::trim` method strips whitespace (or other characters) from the beginning and end of the given string. Unlike PHP's native `trim` function, the `Str::trim` method also removes unicode whitespace characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::trim(' foo bar ');
+
+    // foo bar
+
+<a name="method-str-ltrim"></a>
+#### `Str::ltrim()` {.collection-method}
+
+The `Str::ltrim` method strips whitespace (or other characters) from the beginning of the given string. Unlike PHP's native `ltrim` function, the `Str::ltrim` method also removes unicode whitespace characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::ltrim(' foo bar');
+
+    // foo bar
+
+<a name="method-str-rtrim"></a>
+#### `Str::rtrim()` {.collection-method}
+
+The `Str::rtrim` method strips whitespace (or other characters) from the end of the given string. Unlike PHP's native `rtrim` function, the `Str::rtrim` method also removes unicode whitespace characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::rtrim('foo bar  ');
+
+    // foo bar
 
 <a name="method-str-ucfirst"></a>
 #### `Str::ucfirst()` {.collection-method}
