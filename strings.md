@@ -157,7 +157,6 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
-[ltrim](#method-fluent-str-ltrim)
 [markdown](#method-fluent-str-markdown)
 [mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
@@ -180,7 +179,6 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [replaceMatches](#method-fluent-str-replace-matches)
 [replaceStart](#method-fluent-str-replace-start)
 [replaceEnd](#method-fluent-str-replace-end)
-[rtrim](#method-fluent-str-rtrim)
 [scan](#method-fluent-str-scan)
 [singular](#method-fluent-str-singular)
 [slug](#method-fluent-str-slug)
@@ -200,6 +198,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [title](#method-fluent-str-title)
 [toBase64](#method-fluent-str-to-base64)
 [trim](#method-fluent-str-trim)
+[ltrim](#method-fluent-str-ltrim)
+[rtrim](#method-fluent-str-rtrim)
 [ucfirst](#method-fluent-str-ucfirst)
 [ucsplit](#method-fluent-str-ucsplit)
 [unwrap](#method-fluent-str-unwrap)
@@ -1219,7 +1219,7 @@ The `Str::trim` method strips whitespace (or other characters) from the beginnin
 
     $string = Str::trim(' foo bar ');
 
-    // foo bar
+    // 'foo bar'
 
 <a name="method-str-ltrim"></a>
 #### `Str::ltrim()` {.collection-method}
@@ -1228,9 +1228,9 @@ The `Str::ltrim` method strips whitespace (or other characters) from the beginni
 
     use Illuminate\Support\Str;
 
-    $string = Str::ltrim(' foo bar');
+    $string = Str::ltrim('  foo bar  ');
 
-    // foo bar
+    // 'foo bar  '
 
 <a name="method-str-rtrim"></a>
 #### `Str::rtrim()` {.collection-method}
@@ -1239,9 +1239,9 @@ The `Str::rtrim` method strips whitespace (or other characters) from the end of 
 
     use Illuminate\Support\Str;
 
-    $string = Str::rtrim('foo bar  ');
+    $string = Str::rtrim('  foo bar  ');
 
-    // foo bar
+    // '  foo bar'
 
 <a name="method-str-ucfirst"></a>
 #### `Str::ucfirst()` {.collection-method}
@@ -1954,21 +1954,6 @@ The `lower` method converts the given string to lowercase:
 
     // 'laravel'
 
-<a name="method-fluent-str-ltrim"></a>
-#### `ltrim` {.collection-method}
-
-The `ltrim` method trims the left side of the string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('  Laravel  ')->ltrim();
-
-    // 'Laravel  '
-
-    $string = Str::of('/Laravel/')->ltrim('/');
-
-    // 'Laravel/'
-
 <a name="method-fluent-str-markdown"></a>
 #### `markdown` {.collection-method}
 
@@ -2328,21 +2313,6 @@ The `replaceEnd` method replaces the last occurrence of the given value only if 
 
     // Hello World
 
-<a name="method-fluent-str-rtrim"></a>
-#### `rtrim` {.collection-method}
-
-The `rtrim` method trims the right side of the given string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('  Laravel  ')->rtrim();
-
-    // '  Laravel'
-
-    $string = Str::of('/Laravel/')->rtrim('/');
-
-    // '/Laravel'
-
 <a name="method-fluent-str-scan"></a>
 #### `scan` {.collection-method}
 
@@ -2574,7 +2544,7 @@ The `toBase64` method converts the given string to Base64:
 <a name="method-fluent-str-trim"></a>
 #### `trim` {.collection-method}
 
-The `trim` method trims the given string:
+The `trim` method trims the given string. Unlike PHP's native `trim` function, Laravel's `trim` method also removes unicode whitespace characters:
 
     use Illuminate\Support\Str;
 
@@ -2585,6 +2555,36 @@ The `trim` method trims the given string:
     $string = Str::of('/Laravel/')->trim('/');
 
     // 'Laravel'
+
+<a name="method-fluent-str-ltrim"></a>
+#### `ltrim` {.collection-method}
+
+The `ltrim` method trims the left side of the string. Unlike PHP's native `ltrim` function, Laravel's `ltrim` method also removes unicode whitespace characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('  Laravel  ')->ltrim();
+
+    // 'Laravel  '
+
+    $string = Str::of('/Laravel/')->ltrim('/');
+
+    // 'Laravel/'
+
+<a name="method-fluent-str-rtrim"></a>
+#### `rtrim` {.collection-method}
+
+The `rtrim` method trims the right side of the given string. Unlike PHP's native `rtrim` function, Laravel's `rtrim` method also removes unicode whitespace characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('  Laravel  ')->rtrim();
+
+    // '  Laravel'
+
+    $string = Str::of('/Laravel/')->rtrim('/');
+
+    // '/Laravel'
 
 <a name="method-fluent-str-ucfirst"></a>
 #### `ucfirst` {.collection-method}
