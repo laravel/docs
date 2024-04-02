@@ -253,7 +253,7 @@ If your application defines multiple connections in your `config/database.php` c
 
     use Illuminate\Support\Facades\DB;
 
-    $users = DB::connection('sqlite')->select(/* ... */);
+    $users = DB::connection('mysql')->select(/* ... */);
 
 You may access the raw, underlying PDO instance of a connection using the `getPdo` method on a connection instance:
 
@@ -424,7 +424,7 @@ In addition, you may use the following `Schema` methods to inspect your database
 
 If you would like to inspect a database connection that is not your application's default connection, you may use the `connection` method:
 
-    $columns = Schema::connection('sqlite')->getColumns('users');
+    $columns = Schema::connection('mysql')->getColumns('users');
 
 <a name="table-overview"></a>
 #### Table Overview
