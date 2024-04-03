@@ -284,7 +284,7 @@ Context::forgetHidden(/* ... */);
 <a name="events"></a>
 ## Events
 
-Context dispatches two events that allow you to hook into the dehydrating and hydrated process of the context.
+Context dispatches two events that allow you to hook into the hydration and dehydration process of the context.
 
 To illustrate how these events may be used, imagine that in a middleware of your application you set the `app.locale` configuration value based on the incoming HTTP request's `Accept-Language` header. Context's events allow you to capture this value during the request and restore it on the queue, ensuring notifications sent on the queue have the correct `app.locale` value. We can use context's events and [hidden](#hidden-context) data to achieve this, which the following documentation will illustrate.
 
