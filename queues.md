@@ -656,7 +656,7 @@ Internally, this middleware uses Laravel's cache system to implement rate limiti
         return [(new ThrottlesExceptions(10, 10))->by('key')];
     }
 
-By default, this middleware will throttle every exception. You can modify this behaviour by passing a closure to the `when` method when attaching the middleware to your job. The exception will then only be throttled if the given closure resolves to true. This may be useful if you are interacting with a third-party service and you would like to only throttle connection or server exceptions:
+By default, this middleware will throttle every exception. You can modify this behaviour by invoking the `when` method when attaching the middleware to your job. The exception will then only be throttled if closure provided to the `when` method returns `true`:
 
     use Illuminate\Http\Client\HttpClientException;
     use Illuminate\Queue\Middleware\ThrottlesExceptions;
@@ -668,7 +668,9 @@ By default, this middleware will throttle every exception. You can modify this b
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 10))->when(fn (Throwable $throwable) => $throwable instanceof HttpClientException)];
+        return [(new ThrottlesExceptions(10, 10))->when(
+            fn (Throwable $throwable) => $throwable instanceof HttpClientException
+        )];
     }
 
 > [!NOTE]  
