@@ -3397,7 +3397,7 @@ The `zip` method merges together the values of the given array with the values o
 <a name="fluent-helper"></a>
 ## Fluent Helper
 
-If you may to work with multi-dimension arrays you can use `fluent` helper instead of `collect` helper:
+If you want to work with multi-dimension arrays you can use the `fluent` helper instead of the `collect` helper:
 
 ```php
 $data = [
