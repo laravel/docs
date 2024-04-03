@@ -4,6 +4,7 @@
     - [Creating Collections](#creating-collections)
     - [Extending Collections](#extending-collections)
 - [Available Methods](#available-methods)
+- [Fluent Helper](#fluent-helper)
 - [Higher Order Messages](#higher-order-messages)
 - [Lazy Collections](#lazy-collections)
     - [Introduction](#lazy-collection-introduction)
