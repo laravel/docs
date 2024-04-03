@@ -3393,6 +3393,43 @@ The `zip` method merges together the values of the given array with the values o
 
     // [['Chair', 100], ['Desk', 200]]
 
+<a name="fluent-helper"></a>
+## Fluent Helper
+
+If you may to work with multi-dimension arrays you can use `fluent` helper instead of `collect` helper:
+
+```php
+$data = [
+    'user' => [
+        'name' => 'Philo',
+        'address' => [
+            'city' => 'Amsterdam',
+            'country' => 'Netherlands',
+        ]  
+    ],
+    'posts' => [
+        [
+            'title' => 'Post 1',                
+        ],
+        [
+            'title' => 'Post 2',               
+        ]
+    ]
+];
+
+collect($data)->get('user');
+fluent($data)->user
+
+collect($data)->get('user')['name'];
+fluent($data)->get('user.name');
+
+collect(collect($data)->get('posts'))->pluck('title');
+fluent($data)->collect('posts')->pluck('title');
+
+json_encode(collect($data)->get('user')['address']);
+fluent($data)->scope('user.address')->toJson();
+```
+
 <a name="higher-order-messages"></a>
 ## Higher Order Messages
 
