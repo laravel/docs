@@ -96,7 +96,7 @@ php artisan queue:work --queue=high,default
 In order to use the `database` queue driver, you will need a database table to hold the jobs. Typically, this is included in Laravel's default `0001_01_01_000002_create_jobs_table.php` [database migration](/docs/{{version}}/migrations); however, if your application does not contain this migration, you may use the `make:queue-table` Artisan command to create it:
 
 ```shell
-php artisan make:queue-table
+php artisan queue:table
 
 php artisan migrate
 ```
