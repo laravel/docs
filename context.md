@@ -102,6 +102,14 @@ Processing podcast. {"podcast_id":95} {"url":"https://example.com/login","trace_
 
 Although we have focused on the built-in logging related features of Laravel's context, the following documentation will illustrate how context allows you to share information across the HTTP request / queued job boundary and even how to add [hidden context data](#hidden-context) that is not written with log entries.
 
+For convenience, you can use the `context` helper:
+
+```php
+context(['url', $request->url()]);
+
+$url = context('url');
+```
+
 <a name="capturing-context"></a>
 ## Capturing Context
 
