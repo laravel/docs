@@ -673,7 +673,7 @@ By default, this middleware will throttle every exception. You can modify this b
         )];
     }
 
-If you would like to have the throttled exceptions reported, you can do so by invoking the `report` method when attaching the middleware to your job. Optionally, you can pass a closure to the `report` method and the exception will then only be reported if this closure returns `true`:
+If you would like to have the throttled exceptions reported to your application's exception handler, you can do so by invoking the `report` method when attaching the middleware to your job. Optionally, you may provide a closure to the `report` method and the exception will only be reported if the given closure returns `true`:
 
     use Illuminate\Http\Client\HttpClientException;
     use Illuminate\Queue\Middleware\ThrottlesExceptions;
