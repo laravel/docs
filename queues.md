@@ -673,6 +673,23 @@ By default, this middleware will throttle every exception. You can modify this b
         )];
     }
 
+If you would like to have the throttled exceptions reported, you can do so by invoking the `report` method when attaching the middleware to your job. Optionally, you can pass a closure to the `report` method and the exception will then only be reported if this closure returns `true`:
+
+    use Illuminate\Http\Client\HttpClientException;
+    use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array<int, object>
+     */
+    public function middleware(): array
+    {
+        return [(new ThrottlesExceptions(10, 10))->report(
+            fn (Throwable $throwable) => $throwable instanceof HttpClientException
+        )];
+    }
+
 > [!NOTE]  
 > If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
 
