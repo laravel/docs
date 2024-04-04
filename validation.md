@@ -1917,7 +1917,7 @@ Alternatively, you may use the `exclude_unless` rule to not validate a given fie
 In some situations, you may wish to run validation checks against a field **only** if that field is present in the data being validated. To quickly accomplish this, add the `sometimes` rule to your rule list:
 
     $v = Validator::make($data, [
-        'email' => 'sometimes|required|email',
+        'email' => 'sometimes',
     ]);
 
 In the example above, the `email` field will only be validated if it is present in the `$data` array.
