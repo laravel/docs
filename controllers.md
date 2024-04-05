@@ -405,7 +405,7 @@ use Illuminate\Support\Facades\Route;
 Route::singleton('profile', ProfileController::class);
 ```
 
-The singleton resource definition above will register the following routes. As you can see, "creation" routes are not registered for singleton resources, and the registered routes do not accept an identifier since only one instance of the resource may exist:
+The singleton resource definition above will register the following routes. As you can see, "creation" and "deletion" routes are not registered for singleton resources, and the registered routes do not accept an identifier since only one instance of the resource may exist:
 
 Verb      | URI                               | Action       | Route Name
 ----------|-----------------------------------|--------------|---------------------
