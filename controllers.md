@@ -405,13 +405,15 @@ use Illuminate\Support\Facades\Route;
 Route::singleton('profile', ProfileController::class);
 ```
 
-The singleton resource definition above will register the following routes. As you can see, "creation" routes are not registered for singleton resources, and the registered routes do not accept an identifier since only one instance of the resource may exist:
+The singleton resource definition above will register the following routes.
 
 Verb      | URI                               | Action       | Route Name
 ----------|-----------------------------------|--------------|---------------------
 GET       | `/profile`                        | show         | profile.show
 GET       | `/profile/edit`                   | edit         | profile.edit
 PUT/PATCH | `/profile`                        | update       | profile.update
+
+As you can see, "creation" routes are not registered for singleton resources, and the registered routes do not accept an identifier since only one instance of the resource may exist.
 
 Singleton resources may also be nested within a standard resource:
 
@@ -436,7 +438,7 @@ Occasionally, you may want to define creation and storage routes for a singleton
 Route::singleton('photos.thumbnail', ThumbnailController::class)->creatable();
 ```
 
-In this example, the following routes will be registered. As you can see, a `DELETE` route will also be registered for creatable singleton resources:
+In this example, the following routes will be registered.
 
 | Verb      | URI                                | Action  | Route Name               |
 |-----------|------------------------------------|---------|--------------------------|
@@ -446,6 +448,8 @@ In this example, the following routes will be registered. As you can see, a `DEL
 | GET       | `/photos/{photo}/thumbnail/edit`   | edit    | photos.thumbnail.edit    |
 | PUT/PATCH | `/photos/{photo}/thumbnail`        | update  | photos.thumbnail.update  |
 | DELETE    | `/photos/{photo}/thumbnail`        | destroy | photos.thumbnail.destroy |
+
+As you can see, a `DELETE` route will also be registered for creatable singleton resources.
 
 If you would like Laravel to register the `DELETE` route for a singleton resource but not register the creation or storage routes, you may utilize the `destroyable` method:
 
