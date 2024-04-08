@@ -338,6 +338,27 @@ php artisan up
 
 While your application is in maintenance mode, no [queued jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
 
+<a name="maintenance-mode-on-multiple-servers"></a>
+#### Maintenance Mode on Multiple Servers
+
+The default approach for Laravel's maintenance mode uses the `file` driver, which only applies the maintenance state to the server where the `php artisan down` command is executed. In a distributed environment, such as when your application spans multiple servers or operates in a serverless architecture, you may need a unified method to manage maintenance mode across all instances.
+
+To achieve this, configure your application to use a shared cache mechanism by editing the `config/app.php` configuration file. Within this file, locate the `maintenance` key, which specifies the `driver` and `storage` mechanism for maintenance mode:
+
+    'maintenance' => [
+        'driver' => 'file',
+        // 'store' => 'redis',
+    ],
+
+To ensure maintenance mode state is synchronized across all servers, change the driver from file to cache, and set the store key to a shared cache service like Redis:
+
+    'maintenance' => [
+        'driver' => 'cache',
+        'store' => 'redis',
+    ],
+
+If the `store` key is omitted, Laravel will use the default cache driver defined in `config/cache.php`. With these settings, executing `php artisan down` or `php artisan up` from any server will propagate the maintenance mode status to all instances, ensuring consistent behavior across your distributed system.
+
 <a name="alternatives-to-maintenance-mode"></a>
 #### Alternatives to Maintenance Mode
 
