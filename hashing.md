@@ -6,7 +6,7 @@
     - [Hashing Passwords](#hashing-passwords)
     - [Verifying That a Password Matches a Hash](#verifying-that-a-password-matches-a-hash)
     - [Determining if a Password Needs to be Rehashed](#determining-if-a-password-needs-to-be-rehashed)
-- [Mixed Hashes](#mixed-hashes)
+- [Hash Algorithm Verification](#hash-algorithm-verification)
 
 <a name="introduction"></a>
 ## Introduction
@@ -100,42 +100,13 @@ The `needsRehash` method provided by the `Hash` facade allows you to determine i
         $hashed = Hash::make('plain-text');
     }
 
-<a name="mixed-hashes"></a>
-## Supporting Mixed Hashes
+<a name="hash-algorithm-verification"></a>
+## Hash Algorithm Verification
 
-To prevent hash algorithm manipulation, Laravel's `Hash::check()` method will first verify the given hash was generated using the application's selected hashing algorithm before it checks if the plain-text password matches the given hashed password. If the algorithms are different, a `RuntimeException` exception will be thrown, halting the password hash check.
+To prevent hash algorithm manipulation, Laravel's `Hash::check` method will first verify the given hash was generated using the application's selected hashing algorithm. If the algorithms are different, a `RuntimeException` exception will be thrown.
 
-For example, if your application is configured with `bcrypt` as the default hashing driver, and passing an `argon` hash to `Hash::check()` will trigger the exception:
+This is the expected behavior for most applications, where the hashing algorithm is not expected to change and different algorithms can be an indication of a malicious attack. However, if you need to support multiple hashing algorithms within your application, such as when migrating from one algorithm to another, you can disable hash algorithm verification by setting the `HASH_VERIFY` environment variable to `false`:
 
-    $hashedPassword = '$argon2i$v=19$m=65536,t=4,p=1$Q2pBM0JmSUN6ZTVhRndXOA$VB6kqxNvqiKKYcqrS8vB8jZK51MbfUagjRgyIyzmRJk';
-    
-    try {
-        if (Hash::check("password", $hashedPassword)) {
-            return "Password matches";
-        } else {
-            return "Password doesn't match";
-        }
-    } catch (RuntimeException $e) {
-        return "Password algorithm doesn't match.";
-    }
-
-This is the expected behavior for most applications, where the hashing algorithm is not expected to change, and different algorithms can be an indication of some form of attack. However, if you need to support multiple hashing algorithms, such as when migrating from one algorithm to another, you can override this behaviour by setting `HASH_VERIFY=false` in your `.env` file or by passing `false` to either (or both of) the `bcrypt.verify` and `argon.verify` options in your application's `config/hashing.php` configuration file:
-
-
-    // .env
-    HASH_VERIFY=false
-
-or
-
-    // config/hashing.php
-    'bcrypt' => [
-        // ...
-        'verify' => false,
-    ],
-    
-    'argon' => [
-        // ...
-        'verify' => false,
-    ],
-
-With hash verification disabled, Laravel will check any valid password hash using PHP's `password_verify` function, regardless of the hashing algorithm used to generate the hash. Preventing the `RuntimeException` when different algorithms are encountered.
+```ini
+HASH_VERIFY=false
+```
