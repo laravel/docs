@@ -6,6 +6,7 @@
     - [Hashing Passwords](#hashing-passwords)
     - [Verifying That a Password Matches a Hash](#verifying-that-a-password-matches-a-hash)
     - [Determining if a Password Needs to be Rehashed](#determining-if-a-password-needs-to-be-rehashed)
+- [Hash Algorithm Verification](#hash-algorithm-verification)
 
 <a name="introduction"></a>
 ## Introduction
@@ -98,3 +99,14 @@ The `needsRehash` method provided by the `Hash` facade allows you to determine i
     if (Hash::needsRehash($hashed)) {
         $hashed = Hash::make('plain-text');
     }
+
+<a name="hash-algorithm-verification"></a>
+## Hash Algorithm Verification
+
+To prevent hash algorithm manipulation, Laravel's `Hash::check` method will first verify the given hash was generated using the application's selected hashing algorithm. If the algorithms are different, a `RuntimeException` exception will be thrown.
+
+This is the expected behavior for most applications, where the hashing algorithm is not expected to change and different algorithms can be an indication of a malicious attack. However, if you need to support multiple hashing algorithms within your application, such as when migrating from one algorithm to another, you can disable hash algorithm verification by setting the `HASH_VERIFY` environment variable to `false`:
+
+```ini
+HASH_VERIFY=false
+```
