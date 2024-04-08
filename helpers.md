@@ -1660,32 +1660,41 @@ For the inverse of `blank`, see the [`filled`](#method-filled) method.
 <a name="method-fluent"></a>
 #### `fluent()` {.collection-method}
 
-The `fluent` function helps to working with multi-dimension arrays:
+The `fluent` function simplifies array manipulation by providing intuitive methods for working with multi-dimensional arrays. With features like method chaining and dot notation access, it can streamline complex operations, improve productivity, and enhance code readability. By abstracting common array tasks into clear, expressive syntax, `fluent()` promotes maintainability in code.
+
+##### Usage Examples:
 
     $data = [
-      'user' => [
-        'name' => 'Taylor Otwell',
-          'address' => [
-            'city' => 'Amsterdam',
-            'country' => 'Netherlands',
-          ]  
-      ],
-    'posts' => [
-        [
-          'title' => 'Post 1',                
+        'user' => [
+            'name' => 'Taylor Otwell',
+            'address' => [
+                'city' => 'Amsterdam',
+                'country' => 'Netherlands',
+            ]  
         ],
-        [
-          'title' => 'Post 2',               
+        'posts' => [
+            [
+                'title' => 'Post 1',                
+            ],
+            [
+                'title' => 'Post 2',               
+            ]
         ]
-      ]
     ];
 
+    // Retrieve nested array elements:
     fluent($data)->get('user.name'); 
-    // Taylor Otwell
+    // Output: Taylor Otwell
+
+    // Perform operations on nested arrays:
     fluent($data)->collect('posts')->pluck('title'); 
-    // ['Post 1', 'Post 2']
+    // Output: ['Post 1', 'Post 2']
+
+    // Apply scopes to retrieve specific nested data:
     fluent($data)->scope('user.address')->toJson();
-    // {"city":"Amsterdam","country":"Netherlands"}
+    // Output: {"city":"Amsterdam","country":"Netherlands"}
+
+For more options and methods available in the `Fluent` class, please refer to the [Fluent Class Documentation](https://laravel.com/api/11.x/Illuminate/Support/Fluent.html).
 
 <a name="method-broadcast"></a>
 #### `broadcast()` {.collection-method}
