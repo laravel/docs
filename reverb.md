@@ -82,11 +82,11 @@ For example, you may wish to maintain a single Laravel application which, via Re
 ```php
 'apps' => [
     [
-        'id' => 'my-app-one',
+        'app_id' => 'my-app-one',
         // ...
     ],
     [
-        'id' => 'my-app-two',
+        'app_id' => 'my-app-two',
         // ...
     ],
 ],
