@@ -169,6 +169,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [event](#method-event)
 [fake](#method-fake)
 [filled](#method-filled)
+[fluent](#method-fluent)
 [info](#method-info)
 [literal](#method-literal)
 [logger](#method-logger)
@@ -1655,6 +1656,36 @@ The `blank` function determines whether the given value is "blank":
     // false
 
 For the inverse of `blank`, see the [`filled`](#method-filled) method.
+
+<a name="method-fluent"></a>
+#### `fluent()` {.collection-method}
+
+The `fluent` function helps to working with multi-dimension arrays:
+
+    $data = [
+      'user' => [
+        'name' => 'Taylor Otwell',
+          'address' => [
+            'city' => 'Amsterdam',
+            'country' => 'Netherlands',
+          ]  
+      ],
+    'posts' => [
+        [
+          'title' => 'Post 1',                
+        ],
+        [
+          'title' => 'Post 2',               
+        ]
+      ]
+    ];
+
+    fluent($data)->get('user.name'); 
+    // Taylor Otwell
+    fluent($data)->collect('posts')->pluck('title'); 
+    // ['Post 1', 'Post 2']
+    fluent($data)->scope('user.address')->toJson();
+    // {"city":"Amsterdam","country":"Netherlands"}
 
 <a name="method-broadcast"></a>
 #### `broadcast()` {.collection-method}
