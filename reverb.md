@@ -126,6 +126,16 @@ php artisan reverb:start --host=127.0.0.1 --port=9000
 
 Alternatively, you may define `REVERB_SERVER_HOST` and `REVERB_SERVER_PORT` environment variables in your application's `.env` configuration file.
 
+The `REVERB_SERVER_HOST` and `REVERB_SERVER_PORT` environment variables should not be confused with `REVERB_HOST` and `REVERB_PORT`. The former pair specify the host and port on which to run the Reverb server itself, while the latter pair instruct Laravel where to send broadcast messages. In a production environment, for example, you may route requests from your public hostname on port 443 to a Reverb server operating on 0.0.0.0:8080. In such a scenario, your environment would be configured as follows:
+
+```ini
+REVERB_SERVER_HOST=0.0.0.0
+REVERB_SERVER_PORT=8080
+
+REVERB_HOST=ws.laravel.com
+REVERB_PORT=443
+```
+
 <a name="debugging"></a>
 ### Debugging
 
