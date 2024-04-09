@@ -4,6 +4,7 @@
 - [Installation](#installation)
 - [Available Prompts](#available-prompts)
     - [Text](#text)
+    - [Textarea](#textarea)
     - [Password](#password)
     - [Confirm](#confirm)
     - [Select](#select)
@@ -112,6 +113,75 @@ Alternatively, you may leverage the power of Laravel's [validator](/docs/{{versi
 $name = text(
     label: 'What is your name?',
     validate: ['name' => 'required|max:255|unique:users,name']
+);
+```
+
+<a name="textarea"></a>
+### Textarea
+
+The `textarea` function will prompt the user with the given question, accept their input via a multi-line textarea, and then return it:
+
+```php
+use function Laravel\Prompts\textarea;
+
+$story = textarea('Tell me a story.');
+```
+
+You may also include placeholder text, a default value, and an informational hint:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    placeholder: 'This is a story about...',
+    hint: 'This will be displayed on your profile.'
+);
+```
+
+<a name="textarea-required"></a>
+#### Required Values
+
+If you require a value to be entered, you may pass the `required` argument:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    required: true
+);
+```
+
+If you would like to customize the validation message, you may also pass a string:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    required: 'A story is required.'
+);
+```
+
+<a name="textarea-validation"></a>
+#### Additional Validation
+
+Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    validate: fn (string $value) => match (true) {
+        strlen($value) < 250 => 'The story must be at least 250 characters.',
+        strlen($value) > 10000 => 'The story must not exceed 10,000 characters.',
+        default => null
+    }
+);
+```
+
+The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+
+Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    validate: ['story' => 'required|max:10000']
 );
 ```
 
