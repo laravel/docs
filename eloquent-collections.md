@@ -225,7 +225,7 @@ The `toQuery` method returns an Eloquent query builder instance containing a `wh
 <a name="method-unique"></a>
 #### `unique($key = null, $strict = false)` {.collection-method}
 
-The `unique` method returns all of the unique models in the collection. Any models of the same type with the same primary key as another model in the collection are removed:
+The `unique` method returns all of the unique models in the collection. Any models with the same primary key as another model in the collection are removed:
 
     $users = $users->unique();
 
