@@ -407,10 +407,10 @@ Besides swapping plans you'll also need to allow your customers to cancel their 
         return redirect()->route('dashboard');
     })->name('subscription.cancel');
 
-And now your subscription will get cancelled at the end of its billing period.
+And now your subscription will get canceled at the end of its billing period.
 
 > [!NOTE]  
-> As long as you have configured Cashier's webhook handling, Cashier will automatically keep your application's Cashier-related database tables in sync by inspecting the incoming webhooks from Paddle. So, for example, when you cancel a customer's subscription via Paddle's dashboard, Cashier will receive the corresponding webhook and mark the subscription as "cancelled" in your application's database.
+> As long as you have configured Cashier's webhook handling, Cashier will automatically keep your application's Cashier-related database tables in sync by inspecting the incoming webhooks from Paddle. So, for example, when you cancel a customer's subscription via Paddle's dashboard, Cashier will receive the corresponding webhook and mark the subscription as "canceled" in your application's database.
 
 <a name="checkout-sessions"></a>
 ## Checkout Sessions
