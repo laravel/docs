@@ -38,7 +38,7 @@
     - [Metered Billing](#metered-billing)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
-    - [Canceling Subscriptions](#cancelling-subscriptions)
+    - [Cancelling Subscriptions](#cancelling-subscriptions)
     - [Resuming Subscriptions](#resuming-subscriptions)
 - [Subscription Trials](#subscription-trials)
     - [With Payment Method Up Front](#with-payment-method-up-front)

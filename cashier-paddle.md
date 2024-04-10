@@ -34,7 +34,7 @@
     - [Subscriptions With Multiple Products](#subscriptions-with-multiple-products)
     - [Multiple Subscriptions](#multiple-subscriptions)
     - [Pausing Subscriptions](#pausing-subscriptions)
-    - [Canceling Subscriptions](#canceling-subscriptions)
+    - [Cancelling Subscriptions](#cancelling-subscriptions)
 - [Subscription Trials](#subscription-trials)
     - [With Payment Method Up Front](#with-payment-method-up-front)
     - [Without Payment Method Up Front](#without-payment-method-up-front)
@@ -1044,8 +1044,8 @@ To resume a paused subscription, you may invoke the `resume` method on the subsc
 > [!WARNING]  
 > A subscription cannot be modified while it is paused. If you want to swap to a different plan or update quantities you must resume the subscription first.
 
-<a name="canceling-subscriptions"></a>
-### Canceling Subscriptions
+<a name="cancelling-subscriptions"></a>
+### Cancelling Subscriptions
 
 To cancel a subscription, call the `cancel` method on the user's subscription:
 
