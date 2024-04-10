@@ -436,7 +436,7 @@ Next, let's define the route that initiates a Stripe Customer Billing Portal ses
     })->middleware(['auth'])->name('billing');
 
 > [!NOTE]  
-> As long as you have configured Cashier's webhook handling, Cashier will automatically keep your application's Cashier-related database tables in sync by inspecting the incoming webhooks from Stripe. So, for example, when a user cancels their subscription via Stripe's Customer Billing Portal, Cashier will receive the corresponding webhook and mark the subscription as "cancelled" in your application's database.
+> As long as you have configured Cashier's webhook handling, Cashier will automatically keep your application's Cashier-related database tables in sync by inspecting the incoming webhooks from Stripe. So, for example, when a user cancels their subscription via Stripe's Customer Billing Portal, Cashier will receive the corresponding webhook and mark the subscription as "canceled" in your application's database.
 
 <a name="customers"></a>
 ## Customers
@@ -833,7 +833,7 @@ Instead of collecting a customer's recurring payments automatically, you may ins
 
     $user->newSubscription('default', 'price_monthly')->createAndSendInvoice();
 
-The amount of time a customer has to pay their invoice before their subscription is cancelled is determined by the `days_until_due` option. By default, this is 30 days; however, you may provide a specific value for this option if you wish:
+The amount of time a customer has to pay their invoice before their subscription is canceled is determined by the `days_until_due` option. By default, this is 30 days; however, you may provide a specific value for this option if you wish:
 
     $user->newSubscription('default', 'price_monthly')->createAndSendInvoice([], [
         'days_until_due' => 30
