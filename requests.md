@@ -310,6 +310,14 @@ Instead of retrieving the request's input data as a primitive `string`, you may 
 
     $name = $request->string('name')->trim();
 
+<a name="retrieving-integer-input-values"></a>
+
+#### Retrieving Integer Input Values
+
+To ensure that input values are processed as integers, you may use the `integer` method. This method is ideal for handling numerical inputs, such as quantities. You can specify a default value as the second argument, which defaults to `0` if not provided:
+
+    $quantity = $request->integer('quantity', 1);
+
 <a name="retrieving-boolean-input-values"></a>
 #### Retrieving Boolean Input Values
 
