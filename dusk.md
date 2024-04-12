@@ -1939,6 +1939,7 @@ In addition to the default methods defined on pages, you may define additional m
     namespace Tests\Browser\Pages;
 
     use Laravel\Dusk\Browser;
+    use Laravel\Dusk\Page;
 
     class Dashboard extends Page
     {
