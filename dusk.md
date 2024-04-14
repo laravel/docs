@@ -914,9 +914,9 @@ If you need to interact with elements within an iframe, you may use the `withinF
 
     $browser->withinFrame('#credit-card-details', function ($browser) {
         $browser->type('input[name="cardnumber"]', '4242424242424242')
-            ->type('input[name="exp-date"]', '12/24')
-            ->type('input[name="cvc"]', '123');
-        })->press('Pay');
+            ->type('input[name="exp-date"]', '1224')
+            ->type('input[name="cvc"]', '123')
+            ->press('Pay');
     });
 
 <a name="scoping-selectors"></a>
