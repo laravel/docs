@@ -63,7 +63,7 @@ You may also include placeholder text, a default value, and an informational hin
 $name = text(
     label: 'What is your name?',
     placeholder: 'E.g. Taylor Otwell',
-    default: $user?->name,
+    default: $user->name,
     hint: 'This will be displayed on your profile.'
 );
 ```
@@ -133,7 +133,19 @@ You may also include placeholder text, a default value, and an informational hin
 $story = textarea(
     label: 'Tell me a story.',
     placeholder: 'This is a story about...',
+    default: 'This is a story about...',
     hint: 'This will be displayed on your profile.'
+);
+```
+
+Up to five rows will be displayed before the text begins to scroll. You may customize this by passing `rows` argument:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    placeholder: 'This is a story about...',
+    hint: 'This will be displayed on your profile.',
+    rows: 10
 );
 ```
 
@@ -493,7 +505,7 @@ $name = suggest(
     label: 'What is your name?',
     options: ['Taylor', 'Dayle'],
     placeholder: 'E.g. Taylor',
-    default: $user?->name,
+    default: $user->name,
     hint: 'This will be displayed on your profile.'
 );
 ```
