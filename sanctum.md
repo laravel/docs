@@ -339,7 +339,7 @@ If your SPA needs to authenticate with [private / presence broadcast channels](/
         )
         ->withBroadcasting(
             __DIR__.'/../routes/channels.php',
-            ['prefix' => 'api', 'middleware' => ['auth:sanctum']],
+            ['prefix' => 'api', 'middleware' => ['api', 'auth:sanctum']],
         )
 
 Next, in order for Pusher's authorization requests to succeed, you will need to provide a custom Pusher `authorizer` when initializing [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation). This allows your application to configure Pusher to use the `axios` instance that is [properly configured for cross-domain requests](#cors-and-cookies):
