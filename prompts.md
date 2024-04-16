@@ -12,6 +12,7 @@
     - [Search](#search)
     - [Multi-search](#multisearch)
     - [Pause](#pause)
+- [Forms](#forms)
 - [Informational Messages](#informational-messages)
 - [Tables](#tables)
 - [Spin](#spin)
@@ -649,6 +650,57 @@ use function Laravel\Prompts\pause;
 
 pause('Press ENTER to continue.');
 ```
+
+<a name="forms"></a>
+## Forms
+
+Often, you will have multiple prompts that will be executed one after the other to collect information before performing actions.
+You may use the `form` function to create a grouped set of prompts for the user to fill in:
+
+```php
+use function Laravel\Prompts\form;
+
+$responses = form()
+    ->text(label: 'What is your name?', required: true)
+    ->password('What is your password?', validate: ['password' => 'min:8'])
+    ->confirm('Do you accept the terms?')
+    ->submit();
+```
+
+The returned array will include all returned responses from the provided prompts. You may choose to provide a name for each prompt, which will be used as the key in the returned array:
+
+```php
+use function Laravel\Prompts\form;
+
+$responses = form()
+    ->text(label: 'What is your name?', required: true, name: 'name')
+    ->password('What is your password?', validate: ['password' => 'min:8'], name: 'password')
+    ->confirm('Do you accept the terms?')
+    ->submit();
+
+User::create(['name' => $responses['name'], 'password' => $responses['password']]);
+```
+
+One key benefit of forms is the ability for the user to return to previous steps in the form using either `CTRL + U` or `CMD + BACKSPACE`.
+This allows for fixing mistakes or altering selections without having to cancel and restart the command.
+
+If you need more granular control over a step in a form, you may chain the `add` method instead of calling one of the prompt functions directly:
+
+```php
+use function Laravel\Prompts\form;
+use function Laravel\Prompts\outro;
+
+$responses = form()
+    ->text(label: 'What is your name?', required: true, name: 'name')
+    ->add(function ($responses) {
+        return text("How old are you, {$responses['name']}?");
+    }, name: 'age')
+    ->submit();
+
+outro("Your name is {$responses['name']} and you are {$responses['age']} years old.");
+```
+
+Note that the `add` method is passed all previous responses provided by the user, allowing for conditional checks.
 
 <a name="informational-messages"></a>
 ## Informational Messages
