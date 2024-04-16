@@ -347,7 +347,69 @@ class ExampleTest extends TestCase
 <a name="exception-handling"></a>
 ### Exception Handling
 
-Sometimes you may want to test that your application is throwing a specific exception. To ensure that the exception does not get caught by Laravel's exception handler and returned as an HTTP response, you may invoke the `withoutExceptionHandling` method before making your request:
+Sometimes you may need to test that your application is throwing a specific exception. To accomplish this, you may "fake" the exception handler via the `Exceptions` facade. Once the exception handler has been faked, you may utilize the `assertReported` and `assertNotReported` methods to make assertions against exceptions that were thrown during the request:
+
+```php tab=Pest
+<?php
+
+use App\Exceptions\InvalidOrderException;
+use Illuminate\Support\Facades\Exceptions;
+
+test('exception is thrown', function () {
+    Exceptions::fake();
+
+    $response = $this->get('/order/1');
+
+    // Assert an exception was thrown...
+    Exceptions::assertReported(InvalidOrderException::class);
+
+    // Assert against the exception...
+    Exceptions::assertReported(function (InvalidOrderException $e) {
+        return $e->getMessage() === 'The order was invalid.';
+    });
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Exceptions\InvalidOrderException;
+use Illuminate\Support\Facades\Exceptions;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     */
+    public function test_exception_is_thrown(): void
+    {
+        Exceptions::fake();
+
+        $response = $this->get('/');
+
+        // Assert an exception was thrown...
+        Exceptions::assertReported(InvalidOrderException::class);
+
+        // Assert against the exception...
+        Exceptions::assertReported(function (InvalidOrderException $e) {
+            return $e->getMessage() === 'The order was invalid.';
+        });
+    }
+}
+```
+
+The `assertNotReported` and `assertNothingReported` methods may be used to assert that a given exception was not thrown during the request or that no exceptions were thrown:
+
+```php
+Exceptions::assertNotReported(InvalidOrderException::class);
+
+Exceptions::assertNothingReported();
+```
+
+You may totally disable exception handling for a given request by invoking the `withoutExceptionHandling` method before making your request:
 
     $response = $this->withoutExceptionHandling()->get('/');
 
@@ -815,6 +877,11 @@ You may use the `component` method to evaluate and render a [Blade component](/d
     $view = $this->component(Profile::class, ['name' => 'Taylor']);
 
     $view->assertSee('Taylor');
+
+<a name="testing-exceptions"></a>
+## Testing Exceptions
+
+If you are testing a
 
 <a name="available-assertions"></a>
 ## Available Assertions
