@@ -654,8 +654,7 @@ pause('Press ENTER to continue.');
 <a name="forms"></a>
 ## Forms
 
-Often, you will have multiple prompts that will be executed one after the other to collect information before performing actions.
-You may use the `form` function to create a grouped set of prompts for the user to fill in:
+Often, you will have multiple prompts that will be displayed in sequence to collect information before performing additional actions. You may use the `form` function to create a grouped set of prompts for the user to complete:
 
 ```php
 use function Laravel\Prompts\form;
@@ -667,24 +666,31 @@ $responses = form()
     ->submit();
 ```
 
-The returned array will include all returned responses from the provided prompts. You may choose to provide a name for each prompt, which will be used as the key in the returned array:
+The `submit` method will return a numerically indexed array containing all of the responses from the form's prompts. However, you may provide a name for each prompt via the `name` argument. When a name is provided, the named prompt's response may be accessed via that name:
 
 ```php
+use App\Models\User;
 use function Laravel\Prompts\form;
 
 $responses = form()
     ->text(label: 'What is your name?', required: true, name: 'name')
-    ->password('What is your password?', validate: ['password' => 'min:8'], name: 'password')
+    ->password(
+        'What is your password?',
+        validate: ['password' => 'min:8'],
+        name: 'password',
+    )
     ->confirm('Do you accept the terms?')
     ->submit();
 
-User::create(['name' => $responses['name'], 'password' => $responses['password']]);
+User::create([
+    'name' => $responses['name'],
+    'password' => $responses['password']
+]);
 ```
 
-One key benefit of forms is the ability for the user to return to previous steps in the form using either `CTRL + U` or `CMD + BACKSPACE`.
-This allows for fixing mistakes or altering selections without having to cancel and restart the command.
+The primary benefit of using the `form` function is the ability for the user to return to previous prompts in the form using either `CTRL + U` or `CMD + BACKSPACE`. This allows the user to fix mistakes or alter selections without needing to cancel and restart the entire form.
 
-If you need more granular control over a step in a form, you may chain the `add` method instead of calling one of the prompt functions directly:
+If you need more granular control over a prompt in a form, you may invoke the `add` method instead of calling one of the prompt functions directly. The `add` method is passed all previous responses provided by the user:
 
 ```php
 use function Laravel\Prompts\form;
@@ -699,8 +705,6 @@ $responses = form()
 
 outro("Your name is {$responses['name']} and you are {$responses['age']} years old.");
 ```
-
-Note that the `add` method is passed all previous responses provided by the user, allowing for conditional checks.
 
 <a name="informational-messages"></a>
 ## Informational Messages
