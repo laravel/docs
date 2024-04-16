@@ -32,6 +32,7 @@
 - [Query Scopes](#query-scopes)
     - [Global Scopes](#global-scopes)
     - [Local Scopes](#local-scopes)
+- [After Query Hook](#after-query-hook)
 - [Comparing Models](#comparing-models)
 - [Events](#events)
     - [Using Closures](#events-using-closures)
@@ -1372,6 +1373,17 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
 Once the expected arguments have been added to your scope method's signature, you may pass the arguments when calling the scope:
 
     $users = User::ofType('admin')->get();
+
+<a name="after-query-hook"></a>
+## After Query Hook
+
+If you want to alter models you queried from the database, you probably would do that on the result returned by the Eloquent query. The code that makes those alterations lives outside your Eloquent query code in that case. If you want to keep code within your query code, you can use the `afterQuery` method. The provided closure always receives a collection of models as its first parameter. You can make changes to those models or even remove models you don't need.
+
+    User::query()
+        ->afterQuery(function (Collection $users) {
+            // Alter users ...
+        })
+        ->get();
 
 <a name="comparing-models"></a>
 ## Comparing Models
