@@ -13,6 +13,7 @@
     - [Search](#search)
     - [Multi-search](#multisearch)
     - [Pause](#pause)
+- [Forms](#forms)
 - [Informational Messages](#informational-messages)
 - [Tables](#tables)
 - [Spin](#spin)
@@ -718,6 +719,61 @@ The `pause` function may be used to display informational text to the user and w
 use function Laravel\Prompts\pause;
 
 pause('Press ENTER to continue.');
+```
+
+<a name="forms"></a>
+## Forms
+
+Often, you will have multiple prompts that will be displayed in sequence to collect information before performing additional actions. You may use the `form` function to create a grouped set of prompts for the user to complete:
+
+```php
+use function Laravel\Prompts\form;
+
+$responses = form()
+    ->text(label: 'What is your name?', required: true)
+    ->password('What is your password?', validate: ['password' => 'min:8'])
+    ->confirm('Do you accept the terms?')
+    ->submit();
+```
+
+The `submit` method will return a numerically indexed array containing all of the responses from the form's prompts. However, you may provide a name for each prompt via the `name` argument. When a name is provided, the named prompt's response may be accessed via that name:
+
+```php
+use App\Models\User;
+use function Laravel\Prompts\form;
+
+$responses = form()
+    ->text(label: 'What is your name?', required: true, name: 'name')
+    ->password(
+        'What is your password?',
+        validate: ['password' => 'min:8'],
+        name: 'password',
+    )
+    ->confirm('Do you accept the terms?')
+    ->submit();
+
+User::create([
+    'name' => $responses['name'],
+    'password' => $responses['password']
+]);
+```
+
+The primary benefit of using the `form` function is the ability for the user to return to previous prompts in the form using either `CTRL + U` or `CMD + BACKSPACE`. This allows the user to fix mistakes or alter selections without needing to cancel and restart the entire form.
+
+If you need more granular control over a prompt in a form, you may invoke the `add` method instead of calling one of the prompt functions directly. The `add` method is passed all previous responses provided by the user:
+
+```php
+use function Laravel\Prompts\form;
+use function Laravel\Prompts\outro;
+
+$responses = form()
+    ->text(label: 'What is your name?', required: true, name: 'name')
+    ->add(function ($responses) {
+        return text("How old are you, {$responses['name']}?");
+    }, name: 'age')
+    ->submit();
+
+outro("Your name is {$responses['name']} and you are {$responses['age']} years old.");
 ```
 
 <a name="informational-messages"></a>
