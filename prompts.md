@@ -730,7 +730,7 @@ Often, you will have multiple prompts that will be displayed in sequence to coll
 use function Laravel\Prompts\form;
 
 $responses = form()
-    ->text(label: 'What is your name?', required: true)
+    ->text('What is your name?', required: true)
     ->password('What is your password?', validate: ['password' => 'min:8'])
     ->confirm('Do you accept the terms?')
     ->submit();
@@ -743,7 +743,7 @@ use App\Models\User;
 use function Laravel\Prompts\form;
 
 $responses = form()
-    ->text(label: 'What is your name?', required: true, name: 'name')
+    ->text('What is your name?', required: true, name: 'name')
     ->password(
         'What is your password?',
         validate: ['password' => 'min:8'],
@@ -767,7 +767,7 @@ use function Laravel\Prompts\form;
 use function Laravel\Prompts\outro;
 
 $responses = form()
-    ->text(label: 'What is your name?', required: true, name: 'name')
+    ->text('What is your name?', required: true, name: 'name')
     ->add(function ($responses) {
         return text("How old are you, {$responses['name']}?");
     }, name: 'age')
