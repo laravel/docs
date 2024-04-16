@@ -197,6 +197,8 @@ If you already have a valid access token for a user, you can retrieve their user
 
     $user = Socialite::driver('github')->userFromToken($token);
 
+If you are using Facebook Limited Login via an iOS application, Facebook will return an OIDC token instead of an access token. Like an access token, the OIDC token can be provided to the `userFromToken` method in order to retrieve user details.
+
 <a name="retrieving-user-details-from-a-token-and-secret-oauth1"></a>
 #### Retrieving User Details From a Token and Secret (OAuth1)
 
