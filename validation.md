@@ -948,6 +948,7 @@ Below is a list of all available validation rules and their function:
 [Required](#rule-required)
 [Required If](#rule-required-if)
 [Required If Accepted](#rule-required-if-accepted)
+[Required If Declined](#rule-required-if-declined)
 [Required Unless](#rule-required-unless)
 [Required With](#rule-required-with)
 [Required With All](#rule-required-with-all)
@@ -1731,6 +1732,11 @@ If you would like to construct a more complex condition for the `required_if` ru
 #### required_if_accepted:_anotherfield_,...
 
 The field under validation must be present and not empty if the _anotherfield_ field is equal to `"yes"`, `"on"`, `1`, `"1"`, `true`, or `"true"`.
+
+<a name="rule-required-if-declined"></a>
+#### required_if_declined:_anotherfield_,...
+
+The field under validation must be present and not empty if the _anotherfield_ field is equal to `"no"`, `"off"`, `0`, `"0"`, `false`, or `"false"`.
 
 <a name="rule-required-unless"></a>
 #### required_unless:_anotherfield_,_value_,...
