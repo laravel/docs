@@ -1184,6 +1184,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertPortIs](#assert-port-is)
 [assertPortIsNot](#assert-port-is-not)
 [assertPathBeginsWith](#assert-path-begins-with)
+[assertPathEndsWith](#assert-path-ends-with)
 [assertPathIs](#assert-path-is)
 [assertPathIsNot](#assert-path-is-not)
 [assertRouteIs](#assert-route-is)
@@ -1321,6 +1322,13 @@ Assert that the current URL port does not match the given port:
 Assert that the current URL path begins with the given path:
 
     $browser->assertPathBeginsWith('/home');
+
+<a name="assert-path-ends-with"></a>
+#### assertPathEndsWith
+
+Assert that the current URL path ends with the given path:
+
+    $browser->assertPathEndsWith('/home');
 
 <a name="assert-path-is"></a>
 #### assertPathIs
