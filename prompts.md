@@ -758,7 +758,7 @@ User::create([
 ]);
 ```
 
-The primary benefit of using the `form` function is the ability for the user to return to previous prompts in the form using either `CTRL + U` or `CMD + BACKSPACE`. This allows the user to fix mistakes or alter selections without needing to cancel and restart the entire form.
+The primary benefit of using the `form` function is the ability for the user to return to previous prompts in the form using `CTRL + U`. This allows the user to fix mistakes or alter selections without needing to cancel and restart the entire form.
 
 If you need more granular control over a prompt in a form, you may invoke the `add` method instead of calling one of the prompt functions directly. The `add` method is passed all previous responses provided by the user:
 
