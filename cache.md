@@ -444,3 +444,13 @@ Event Name |
 `Illuminate\Cache\Events\CacheMissed` |
 `Illuminate\Cache\Events\KeyForgotten` |
 `Illuminate\Cache\Events\KeyWritten` |
+
+To increase performance, you may disable cache events by setting the `events` configuration option to `false` for a given cache store in your application's `config/cache.php` configuration file:
+
+```php
+'database' => [
+    'driver' => 'database',
+    // ...
+    'events' => false,
+],
+```
