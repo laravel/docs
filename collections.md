@@ -3665,6 +3665,22 @@ While the `each` method calls the given callback for each item in the collection
     // 2
     // 3
 
+<a name="method-throttle"></a>
+#### `throttle()` {.collection-method}
+
+The `throttle` method will throttle the lazy collection such that each value is returned after the specified number of seconds. This method is especially useful for situations where you may be interacting with external APIs that rate limit incoming requests:
+
+```php
+use App\Models\User;
+
+User::where('vip', true)
+    ->cursor()
+    ->throttle(seconds: 1)
+    ->each(function (User $user) {
+        // Call external API...
+    });
+```
+
 <a name="method-remember"></a>
 #### `remember()` {.collection-method}
 
