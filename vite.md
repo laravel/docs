@@ -239,9 +239,7 @@ If needed, you may also specify the build path of your compiled assets when invo
 Sometimes it may be necessary to include the raw content of assets rather than linking to the versioned URL of the asset. For example, you may need to include asset content directly into your page when passing HTML content to a PDF generator. You may output the content of Vite assets using the `content` method provided by the `Vite` facade:
 
 ```blade
-@php
-use Illuminate\Support\Facades\Vite;
-@endphp
+@use('Illuminate\Support\Facades\Vite')
 
 <!doctype html>
 <head>
