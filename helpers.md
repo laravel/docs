@@ -1167,6 +1167,9 @@ The `last` function returns the last element in the given array:
 <a name="numbers"></a>
 ## Numbers
 
+> [!WARNING]  
+> The `Number` helpers require the PHP `intl` extension.
+
 <a name="method-number-abbreviate"></a>
 #### `Number::abbreviate()` {.collection-method}
 
