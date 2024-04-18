@@ -1492,7 +1492,7 @@ When a notification is sent, the `Illuminate\Notifications\Events\NotificationSe
         /**
          * Handle the given event.
          */
-        public function handle(NotificationSending $event): void
+        public function handle(NotificationSent $event): void
         {
             // ...
         }
