@@ -2770,14 +2770,40 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
 
     $collection->toArray();
 
+    // ['name' => 'Desk', 'price' => 200]
+
+When a model is included in the collection:
+
+    $collection = collect(['name' => 'Desk', 'price' => 200, 'model' => User::find(1)]);
+
+    $collection->toArray();
+
     /*
         [
-            ['name' => 'Desk', 'price' => 200],
+            'name' => 'Desk',
+            'price' => 200,
+            'model' => [
+                // ...model attributes
+            ],
         ]
     */
 
 > [!WARNING]
-> `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw array underlying the collection, use the [`all`](#method-all) method instead.
+> `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw array underlying the collection, use the [`all`](#method-all) method instead:
+
+    $collection = collect(['name' => 'Desk', 'price' => 200, 'model' => User::find(1)]);
+
+    $collection->all();
+
+    /*
+        [
+            'name' => 'Desk',
+            'price' => 200,
+            'model' => App\Models\User {
+                // ...model attributes
+            },
+        ]
+    */
 
 <a name="method-tojson"></a>
 #### `toJson()` {.collection-method}
