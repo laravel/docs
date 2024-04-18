@@ -13,63 +13,63 @@
 - [Maintenance Mode](#maintenance-mode)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+Todos los archivos de configuración del framework Laravel se almacenan en el directorio `config`. Cada opción está documentada, así que siéntete libre de revisar los archivos y familiarizarte con las opciones disponibles.
 
-These configuration files allow you to configure things like your database connection information, your mail server information, as well as various other core configuration values such as your application timezone and encryption key.
+Estos archivos de configuración te permiten configurar cosas como la información de conexión a tu base de datos, la información de tu servidor de correo, así como otros valores de configuración básicos como la zona horaria de tu aplicación y la clave de encriptación.
 
 <a name="the-about-command"></a>
-#### The `about` Command
+#### El comando `about
 
-Laravel can display an overview of your application's configuration, drivers, and environment via the `about` Artisan command.
+Laravel puede mostrar una visión general de la configuración, controladores y entorno de tu aplicación a través del comando `about` Artisan.
 
 ```shell
 php artisan about
 ```
 
-If you're only interested in a particular section of the application overview output, you may filter for that section using the `--only` option:
+Si sólo le interesa una sección concreta del resumen de la aplicación, puede filtrarla con la opción `--only`:
 
 ```shell
 php artisan about --only=environment
 ```
 
-Or, to explore a specific configuration file's values in detail, you may use the `config:show` Artisan command:
+O, para explorar en detalle los valores de un archivo de configuración específico, puede utilizar el comando `config:show` de Artisan:
 
 ```shell
 php artisan config:show database
 ```
 
 <a name="environment-configuration"></a>
-## Environment Configuration
+## Configuración del entorno
 
-It is often helpful to have different configuration values based on the environment where the application is running. For example, you may wish to use a different cache driver locally than you do on your production server.
+A menudo es útil tener diferentes valores de configuración basados en el entorno donde se está ejecutando la aplicación. Por ejemplo, es posible que desee utilizar un controlador de caché diferente a nivel local que en su servidor de producción.
 
-To make this a cinch, Laravel utilizes the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library. In a fresh Laravel installation, the root directory of your application will contain a `.env.example` file that defines many common environment variables. During the Laravel installation process, this file will automatically be copied to `.env`.
+Para hacer esto más fácil, Laravel utiliza la librería PHP [DotEnv](https://github.com/vlucas/phpdotenv). En una nueva instalación de Laravel, el directorio raíz de tu aplicación contendrá un archivo `.env.example` que define muchas variables de entorno comunes. Durante el proceso de instalación de Laravel, este archivo se copiará automáticamente a `.env`.
 
-Laravel's default `.env` file contains some common configuration values that may differ based on whether your application is running locally or on a production web server. These values are then read by the configuration files within the `config` directory using Laravel's `env` function.
+El archivo `.env` por defecto de Laravel contiene algunos valores de configuración comunes que pueden diferir en función de si tu aplicación se ejecuta localmente o en un servidor web de producción. Estos valores son leídos por los archivos de configuración dentro del directorio `config` usando la función `env` de Laravel.
 
-If you are developing with a team, you may wish to continue including and updating the `.env.example` file with your application. By putting placeholder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
+Si estás desarrollando con un equipo, es posible que desees seguir incluyendo y actualizando el archivo `.env.example` con tu aplicación. Al poner valores de marcador de posición en el archivo de configuración de ejemplo, otros desarrolladores de tu equipo pueden ver claramente qué variables de entorno son necesarias para ejecutar tu aplicación.
 
 > [!NOTE]
-> Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
+> Cualquier variable de tu archivo `.env` puede ser anulada por variables de entorno externas, como variables de entorno a nivel de servidor o a nivel de sistema.
 
 <a name="environment-file-security"></a>
-#### Environment File Security
+#### Seguridad del archivo de entorno
 
-Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
+Su archivo `.env` no debe ser enviado al control de código fuente de su aplicación, ya que cada desarrollador / servidor que utilice su aplicación podría requerir una configuración de entorno diferente. Además, esto supondría un riesgo de seguridad en el caso de que un intruso accediera a tu repositorio de control de código fuente, ya que cualquier credencial sensible quedaría expuesta.
 
-However, it is possible to encrypt your environment file using Laravel's built-in [environment encryption](#encrypting-environment-files). Encrypted environment files may be placed in source control safely.
+Sin embargo, es posible cifrar tu fichero de entorno usando el [cifrado de entorno] integrado de Laravel (#encrypting-environment-files). Los archivos de entorno cifrados pueden colocarse en el control de código fuente de forma segura.
 
 <a name="additional-environment-files"></a>
-#### Additional Environment Files
+#### Ficheros de entorno adicionales
 
-Before loading your application's environment variables, Laravel determines if an `APP_ENV` environment variable has been externally provided or if the `--env` CLI argument has been specified. If so, Laravel will attempt to load an `.env.[APP_ENV]` file if it exists. If it does not exist, the default `.env` file will be loaded.
+Antes de cargar las variables de entorno de tu aplicación, Laravel determina si se ha proporcionado externamente una variable de entorno `APP_ENV` o si se ha especificado el argumento CLI `--env`. Si es así, Laravel intentará cargar un archivo `.env.[APP_ENV]` si existe. Si no existe, se cargará el fichero `.env` por defecto.
 
 <a name="environment-variable-types"></a>
-### Environment Variable Types
+### Tipos de variables de entorno
 
-All variables in your `.env` files are typically parsed as strings, so some reserved values have been created to allow you to return a wider range of types from the `env()` function:
+Todas las variables en sus ficheros `.env` son típicamente interpretadas como cadenas, por lo que se han creado algunos valores reservados para permitirle devolver un rango más amplio de tipos desde la función `env()`:
 
 | `.env` Value | `env()` Value |
 |--------------|---------------|
@@ -82,31 +82,31 @@ All variables in your `.env` files are typically parsed as strings, so some rese
 | null         | (null) null   |
 | (null)       | (null) null   |
 
-If you need to define an environment variable with a value that contains spaces, you may do so by enclosing the value in double quotes:
+Si necesita definir una variable de entorno con un valor que contenga espacios, puede hacerlo encerrando el valor entre comillas dobles:
 
 ```ini
 APP_NAME="My Application"
 ```
 
 <a name="retrieving-environment-configuration"></a>
-### Retrieving Environment Configuration
+### Recuperando la Configuración del Entorno
 
-All of the variables listed in the `.env` file will be loaded into the `$_ENV` PHP super-global when your application receives a request. However, you may use the `env` function to retrieve values from these variables in your configuration files. In fact, if you review the Laravel configuration files, you will notice many of the options are already using this function:
+Todas las variables listadas en el fichero `.env` serán cargadas en el superglobal PHP `$_ENV` cuando su aplicación reciba una petición. Sin embargo, puede usar la función `env` para recuperar valores de estas variables en sus ficheros de configuración. De hecho, si revisas los archivos de configuración de Laravel, notarás que muchas de las opciones ya utilizan esta función:
 
     'debug' => env('APP_DEBUG', false),
 
-The second value passed to the `env` function is the "default value". This value will be returned if no environment variable exists for the given key.
+El segundo valor que se pasa a la función `env` es el "valor por defecto". Este valor se devolverá si no existe ninguna variable de entorno para la clave dada.
 
 <a name="determining-the-current-environment"></a>
-### Determining the Current Environment
+### Determinar el entorno actual
 
-The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
+El entorno actual de la aplicación se determina a través de la variable `APP_ENV` de tu fichero `.env`. Puede acceder a este valor mediante el método `environment` de la [fachada] `App`(/docs/{{version}}/facades):
 
     use Illuminate\Support\Facades\App;
 
     $environment = App::environment();
 
-You may also pass arguments to the `environment` method to determine if the environment matches a given value. The method will return `true` if the environment matches any of the given values:
+También puede pasar argumentos al método `environment` para determinar si el entorno coincide con un valor dado. El método devolverá `true` si el entorno coincide con alguno de los valores dados:
 
     if (App::environment('local')) {
         // The environment is local
@@ -117,76 +117,76 @@ You may also pass arguments to the `environment` method to determine if the envi
     }
 
 > [!NOTE]  
-> The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable.
+> La detección del entorno actual de la aplicación puede anularse definiendo una variable de entorno `APP_ENV` a nivel de servidor.
 
 <a name="encrypting-environment-files"></a>
-### Encrypting Environment Files
+### Cifrado de archivos de entorno
 
-Unencrypted environment files should never be stored in source control. However, Laravel allows you to encrypt your environment files so that they may safely be added to source control with the rest of your application.
+Los archivos de entorno sin cifrar nunca deben ser almacenados en el control de código fuente. Sin embargo, Laravel le permite cifrar sus archivos de entorno para que puedan ser agregados de forma segura al control de código fuente con el resto de su aplicación.
 
 <a name="encryption"></a>
-#### Encryption
+#### Cifrado
 
-To encrypt an environment file, you may use the `env:encrypt` command:
+Para cifrar un archivo de entorno, puede utilizar el comando `env:encrypt`:
 
 ```shell
 php artisan env:encrypt
 ```
 
-Running the `env:encrypt` command will encrypt your `.env` file and place the encrypted contents in an `.env.encrypted` file. The decryption key is presented in the output of the command and should be stored in a secure password manager. If you would like to provide your own encryption key you may use the `--key` option when invoking the command:
+Ejecutar el comando `env:encrypt` encriptará tu archivo `.env` y colocará el contenido encriptado en un archivo `.env.encrypted`. La clave de descifrado se muestra en la salida del comando y debe guardarse en un gestor de contraseñas seguro. Si desea proporcionar su propia clave de cifrado puede utilizar la opción `--key` al invocar el comando:
 
 ```shell
 php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
 > [!NOTE]  
-> The length of the key provided should match the key length required by the encryption cipher being used. By default, Laravel will use the `AES-256-CBC` cipher which requires a 32 character key. You are free to use any cipher supported by Laravel's [encrypter](/docs/{{version}}/encryption) by passing the `--cipher` option when invoking the command.
+> La longitud de la clave proporcionada debe coincidir con la longitud de clave requerida por el cifrado utilizado. Por defecto, Laravel utilizará el cifrado `AES-256-CBC` que requiere una clave de 32 caracteres. Eres libre de utilizar cualquier cifrado soportado por Laravel [encrypter](/docs/{{version}}/encryption) pasando la opción `--cipher` al invocar el comando.
 
-If your application has multiple environment files, such as `.env` and `.env.staging`, you may specify the environment file that should be encrypted by providing the environment name via the `--env` option:
+Si tu aplicación tiene múltiples archivos de entorno, como `.env` y `.env.staging`, puedes especificar el archivo de entorno que debe ser cifrado proporcionando el nombre del entorno a través de la opción `--env`:
 
 ```shell
 php artisan env:encrypt --env=staging
 ```
 
 <a name="decryption"></a>
-#### Decryption
+#### Descifrado
 
-To decrypt an environment file, you may use the `env:decrypt` command. This command requires a decryption key, which Laravel will retrieve from the `LARAVEL_ENV_ENCRYPTION_KEY` environment variable:
+Para desencriptar un fichero de entorno, puedes usar el comando `env:decrypt`. Este comando requiere una clave de descifrado, que Laravel recuperará de la variable de entorno `LARAVEL_ENV_ENCRYPTION_KEY`:
 
 ```shell
 php artisan env:decrypt
 ```
 
-Or, the key may be provided directly to the command via the `--key` option:
+O bien, la clave puede proporcionarse directamente al comando mediante la opción `--key`:
 
 ```shell
 php artisan env:decrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
-When the `env:decrypt` command is invoked, Laravel will decrypt the contents of the `.env.encrypted` file and place the decrypted contents in the `.env` file.
+Cuando se invoca el comando `env:decrypt`, Laravel descifrará el contenido del fichero `.env.encrypted` y colocará el contenido descifrado en el fichero `.env`.
 
-The `--cipher` option may be provided to the `env:decrypt` command in order to use a custom encryption cipher:
+La opción `--cipher` puede ser proporcionada al comando `env:decrypt` para utilizar un cifrado personalizado:
 
 ```shell
 php artisan env:decrypt --key=qUWuNRdfuImXcKxZ --cipher=AES-128-CBC
 ```
 
-If your application has multiple environment files, such as `.env` and `.env.staging`, you may specify the environment file that should be decrypted by providing the environment name via the `--env` option:
+Si su aplicación tiene varios archivos de entorno, como `.env` y `.env.staging`, puede especificar el archivo de entorno que debe descifrarse proporcionando el nombre del entorno mediante la opción `--env`:
 
 ```shell
 php artisan env:decrypt --env=staging
 ```
 
-In order to overwrite an existing environment file, you may provide the `--force` option to the `env:decrypt` command:
+Para sobrescribir un archivo de entorno existente, puede proporcionar la opción `--force` al comando `env:decrypt`:
 
 ```shell
 php artisan env:decrypt --force
 ```
 
 <a name="accessing-configuration-values"></a>
-## Accessing Configuration Values
+## Acceso a los valores de configuración
 
-You may easily access your configuration values using the `Config` facade or global `config` function from anywhere in your application. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
+Puedes acceder fácilmente a tus valores de configuración usando la fachada `Config` o la función global `config` desde cualquier parte de tu aplicación. Puede acceder a los valores de configuración utilizando la sintaxis "dot", que incluye el nombre del fichero y la opción a la que desea acceder. También puede especificarse un valor por defecto, que será devuelto si la opción de configuración no existe:
 
     use Illuminate\Support\Facades\Config;
 
@@ -197,13 +197,13 @@ You may easily access your configuration values using the `Config` facade or glo
     // Retrieve a default value if the configuration value does not exist...
     $value = config('app.timezone', 'Asia/Seoul');
 
-To set configuration values at runtime, you may invoke the `Config` facade's `set` method or pass an array to the `config` function:
+Para establecer valores de configuración en tiempo de ejecución, puedes invocar el método `set` de la fachada `Config` o pasar un array a la función `config`:
 
     Config::set('app.timezone', 'America/Chicago');
 
     config(['app.timezone' => 'America/Chicago']);
 
-To assist with static analysis, the `Config` facade also provides typed configuration retrieval methods. If the retrieved configuration value does not match the expected type, an exception will be thrown:
+Para ayudar al análisis estático, la fachada `Config` también proporciona métodos de recuperación de configuraciones tipadas. Si el valor de configuración recuperado no coincide con el tipo esperado, se lanzará una excepción:
 
     Config::string('config-key');
     Config::integer('config-key');
@@ -212,31 +212,31 @@ To assist with static analysis, the `Config` facade also provides typed configur
     Config::array('config-key');
 
 <a name="configuration-caching"></a>
-## Configuration Caching
+## Caché de configuración
 
-To give your application a speed boost, you should cache all of your configuration files into a single file using the `config:cache` Artisan command. This will combine all of the configuration options for your application into a single file which can be quickly loaded by the framework.
+Para aumentar la velocidad de tu aplicación, debes cachear todos tus archivos de configuración en un solo archivo usando el comando `config:cache` de Artisan. Esto combinará todas las opciones de configuración para tu aplicación en un solo archivo que puede ser cargado rápidamente por el framework.
 
-You should typically run the `php artisan config:cache` command as part of your production deployment process. The command should not be run during local development as configuration options will frequently need to be changed during the course of your application's development.
+Normalmente deberías ejecutar el comando `php artisan config:cache` como parte de tu proceso de despliegue de producción. El comando no debe ser ejecutado durante el desarrollo local ya que las opciones de configuración necesitarán ser cambiadas frecuentemente durante el curso del desarrollo de su aplicación.
 
-Once the configuration has been cached, your application's `.env` file will not be loaded by the framework during requests or Artisan commands; therefore, the `env` function will only return external, system level environment variables.
+Una vez que la configuración ha sido cacheada, el archivo `.env` de tu aplicación no será cargado por el framework durante las peticiones o comandos de Artisan; por lo tanto, la función `env` solo devolverá variables de entorno externas, a nivel de sistema.
 
-For this reason, you should ensure you are only calling the `env` function from within your application's configuration (`config`) files. You can see many examples of this by examining Laravel's default configuration files. Configuration values may be accessed from anywhere in your application using the `config` function [described above](#accessing-configuration-values).
+Por esta razón, debes asegurarte de que sólo llamas a la función `env` desde los archivos de configuración (`config`) de tu aplicación. Puedes ver muchos ejemplos de esto examinando los archivos de configuración por defecto de Laravel. Se puede acceder a los valores de configuración desde cualquier parte de tu aplicación usando la función `config` [descrita anteriormente](#accessing-configuration-values).
 
-The `config:clear` command may be used to purge the cached configuration:
+El comando `config:clear` se puede utilizar para purgar la configuración almacenada en caché:
 
 ```shell
 php artisan config:clear
 ```
 
 > [!WARNING]  
-> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables.
+> Si ejecutas el comando `config:cache` durante tu proceso de despliegue, debes asegurarte de que sólo estás llamando a la función `env` desde dentro de tus ficheros de configuración. Una vez que la configuración se ha almacenado en caché, el archivo `.env` no se cargará; por lo tanto, la función `env` sólo devolverá variables de entorno externas, a nivel de sistema.
 
 <a name="configuration-publishing"></a>
-## Configuration Publishing
+## Publicación de la configuración
 
-Most of Laravel's configuration files are already published in your application's `config` directory; however, certain configuration files like `cors.php` and `view.php` are not published by default, as most applications will never need to modify them.
+La mayoría de los archivos de configuración de Laravel ya están publicados en el directorio `config` de tu aplicación; sin embargo, ciertos archivos de configuración como `cors.php` y `view.php` no están publicados por defecto, ya que la mayoría de las aplicaciones nunca necesitarán modificarlos.
 
-However, you may use the `config:publish` Artisan command to publish any configuration files that are not published by default:
+Sin embargo, puede utilizar el comando `config:publish` de Artisan para publicar cualquier archivo de configuración que no esté publicado por defecto:
 
 ```shell
 php artisan config:publish
@@ -245,68 +245,68 @@ php artisan config:publish --all
 ```
 
 <a name="debug-mode"></a>
-## Debug Mode
+## Modo Depuración
 
-The `debug` option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your `.env` file.
+La opción `debug` en su fichero de configuración `config/app.php` determina cuánta información sobre un error se muestra realmente al usuario. Por defecto, esta opción está configurada para respetar el valor de la variable de entorno `APP_DEBUG`, que se almacena en su archivo `.env`.
 
 > [!WARNING]  
-> For local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
+> Para el desarrollo local, debe establecer la variable de entorno `APP_DEBUG` en `true`. **En su entorno de producción, este valor debe ser siempre `false`. Si la variable se establece en `true` en producción, corres el riesgo de exponer valores de configuración sensibles a los usuarios finales de tu aplicación.
 
 <a name="maintenance-mode"></a>
-## Maintenance Mode
+## Modo Mantenimiento
 
-When your application is in maintenance mode, a custom view will be displayed for all requests into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default middleware stack for your application. If the application is in maintenance mode, a `Symfony\Component\HttpKernel\Exception\HttpException` instance will be thrown with a status code of 503.
+Cuando su aplicación está en modo de mantenimiento, se mostrará una vista personalizada para todas las peticiones en su aplicación. Esto hace que sea fácil de "desactivar" su aplicación mientras se está actualizando o cuando se está realizando el mantenimiento. Se incluye una comprobación del modo de mantenimiento en la pila de middleware predeterminada para su aplicación. Si la aplicación está en modo mantenimiento, se lanzará una instancia `Symfony\Component\HttpKernel\Exception\HttpException` con un código de estado 503.
 
-To enable maintenance mode, execute the `down` Artisan command:
+Para habilitar el modo de mantenimiento, ejecuta el comando `down` de Artisan:
 
 ```shell
 php artisan down
 ```
 
-If you would like the `Refresh` HTTP header to be sent with all maintenance mode responses, you may provide the `refresh` option when invoking the `down` command. The `Refresh` header will instruct the browser to automatically refresh the page after the specified number of seconds:
+Si desea que la cabecera HTTP `Refresh` se envíe con todas las respuestas del modo de mantenimiento, puede proporcionar la opción `refresh` al invocar el comando `down`. La cabecera `Refresh` indicará al navegador que actualice automáticamente la página tras el número de segundos especificado:
 
 ```shell
 php artisan down --refresh=15
 ```
 
-You may also provide a `retry` option to the `down` command, which will be set as the `Retry-After` HTTP header's value, although browsers generally ignore this header:
+También puede proporcionar una opción `retry` al comando `down`, que se establecerá como valor de la cabecera HTTP `Retry-After`, aunque los navegadores suelen ignorar esta cabecera:
 
 ```shell
 php artisan down --retry=60
 ```
 
 <a name="bypassing-maintenance-mode"></a>
-#### Bypassing Maintenance Mode
+#### Anulación del modo de mantenimiento
 
-To allow maintenance mode to be bypassed using a secret token, you may use the `secret` option to specify a maintenance mode bypass token:
+Para permitir que el modo de mantenimiento sea evitado utilizando un token secreto, puede utilizar la opción `secret` para especificar un token de evasión del modo de mantenimiento:
 
 ```shell
 php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
 ```
 
-After placing the application in maintenance mode, you may navigate to the application URL matching this token and Laravel will issue a maintenance mode bypass cookie to your browser:
+Después de poner la aplicación en modo de mantenimiento, puede navegar a la URL de la aplicación que coincida con este token y Laravel emitirá una cookie de bypass de modo de mantenimiento a su navegador:
 
 ```shell
 https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
 ```
 
-If you would like Laravel to generate the secret token for you, you may use the `with-secret` option. The secret will be displayed to you once the application is in maintenance mode:
+Si quieres que Laravel genere el token secreto por ti, puedes usar la opción `with-secret`. El secreto se te mostrará una vez que la aplicación esté en modo mantenimiento:
 
 ```shell
 php artisan down --with-secret
 ```
 
-When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
+Cuando acceda a esta ruta oculta, será redirigido a la ruta `/` de la aplicación. Una vez que la cookie haya sido emitida a su navegador, podrá navegar por la aplicación normalmente como si no estuviera en modo de mantenimiento.
 
 > [!NOTE]  
 > Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?` or `&`.
 
 <a name="maintenance-mode-on-multiple-servers"></a>
-#### Maintenance Mode on Multiple Servers
+#### Modo de mantenimiento en múltiples servidores
 
-By default, Laravel determines if your application is in maintenance mode using a file-based system. This means to activate maintenance mode, the `php artisan down` command has to be executed on each server hosting your application.
+Por defecto, Laravel determina si tu aplicación está en modo mantenimiento usando un sistema basado en ficheros. Esto significa que para activar el modo de mantenimiento, el comando `php artisan down` tiene que ser ejecutado en cada servidor que aloje tu aplicación.
 
-Alternatively, Laravel offers a cache-based method for handling maintenance mode. This method requires running the `php artisan down` command on just one server. To use this approach, modify the "driver" setting in the `config/app.php` file of your application to `cache`. Then, select a cache `store` that is accessible by all your servers. This ensures the maintenance mode status is consistently maintained across every server:
+Alternativamente, Laravel ofrece un método basado en caché para manejar el modo de mantenimiento. Este método requiere ejecutar el comando `php artisan down` en un solo servidor. Para utilizar este método, modifica el parámetro "driver" en el archivo `config/app.php` de tu aplicación a `cache`. A continuación, seleccione un `almacén` de caché que sea accesible por todos sus servidores. Esto asegura que el estado del modo de mantenimiento se mantiene de forma consistente en todos los servidores:
 
 ```php
 'maintenance' => [
@@ -316,43 +316,43 @@ Alternatively, Laravel offers a cache-based method for handling maintenance mode
 ```
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
-#### Pre-Rendering the Maintenance Mode View
+#### Pre-Renderización de la Vista en Modo Mantenimiento
 
-If you utilize the `php artisan down` command during deployment, your users may still occasionally encounter errors if they access the application while your Composer dependencies or other infrastructure components are updating. This occurs because a significant part of the Laravel framework must boot in order to determine your application is in maintenance mode and render the maintenance mode view using the templating engine.
+Si utilizas el comando `php artisan down` durante el despliegue, tus usuarios pueden encontrarse ocasionalmente con errores si acceden a la aplicación mientras se están actualizando tus dependencias de Composer u otros componentes de la infraestructura. Esto ocurre porque una parte significativa del framework Laravel debe arrancar para determinar que tu aplicación está en modo mantenimiento y renderizar la vista de modo mantenimiento usando el motor de plantillas.
 
-For this reason, Laravel allows you to pre-render a maintenance mode view that will be returned at the very beginning of the request cycle. This view is rendered before any of your application's dependencies have loaded. You may pre-render a template of your choice using the `down` command's `render` option:
+Por esta razón, Laravel permite pre-renderizar una vista en modo mantenimiento que será devuelta al principio del ciclo de petición. Esta vista se renderiza antes de que se haya cargado ninguna de las dependencias de tu aplicación. Puedes pre-renderizar una plantilla de tu elección usando la opción `render` del comando `down`:
 
 ```shell
 php artisan down --render="errors::503"
 ```
 
 <a name="redirecting-maintenance-mode-requests"></a>
-#### Redirecting Maintenance Mode Requests
+#### Redireccionando Peticiones en Modo Mantenimiento
 
-While in maintenance mode, Laravel will display the maintenance mode view for all application URLs the user attempts to access. If you wish, you may instruct Laravel to redirect all requests to a specific URL. This may be accomplished using the `redirect` option. For example, you may wish to redirect all requests to the `/` URI:
+Mientras está en modo mantenimiento, Laravel mostrará la vista de modo mantenimiento para todas las URLs de la aplicación a las que el usuario intente acceder. Si lo desea, puede indicar a Laravel que redirija todas las peticiones a una URL específica. Esto puede lograrse utilizando la opción `redirect`. Por ejemplo, es posible que desee redirigir todas las solicitudes a la `/` URI:
 
 ```shell
 php artisan down --redirect=/
 ```
 
 <a name="disabling-maintenance-mode"></a>
-#### Disabling Maintenance Mode
+#### Desactivación del modo de mantenimiento
 
-To disable maintenance mode, use the `up` command:
+Para desactivar el modo de mantenimiento, utilice el comando `up`:
 
 ```shell
 php artisan up
 ```
 
 > [!NOTE]  
-> You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`.
+> Puede personalizar la plantilla predeterminada del modo de mantenimiento definiendo su propia plantilla en `resources/views/errors/503.blade.php`.
 
 <a name="maintenance-mode-queues"></a>
-#### Maintenance Mode and Queues
+#### Modo de mantenimiento y colas
 
-While your application is in maintenance mode, no [queued jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+Mientras la aplicación esté en modo de mantenimiento, no se gestionarán [trabajos en cola](/docs/{{version}}/queues). Los trabajos se seguirán gestionando normalmente una vez que la aplicación salga del modo de mantenimiento.
 
 <a name="alternatives-to-maintenance-mode"></a>
-#### Alternatives to Maintenance Mode
+#### Alternativas al modo de mantenimiento
 
-Since maintenance mode requires your application to have several seconds of downtime, consider alternatives like [Laravel Vapor](https://vapor.laravel.com) and [Envoyer](https://envoyer.io) to accomplish zero-downtime deployment with Laravel.
+Dado que el modo de mantenimiento requiere que su aplicación tenga varios segundos de tiempo de inactividad, considere alternativas como [Laravel Vapor](https://vapor.laravel.com) y [Envoyer](https://envoyer.io) para lograr un despliegue sin tiempo de inactividad con Laravel.
