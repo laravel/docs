@@ -796,7 +796,7 @@ Broadcast::on('orders.'.$order->id)
     ->send();
 ```
 
-The example above would result in a broadcast event similar to the following:
+The example above will result in a broadcast event similar to the following:
 
 ```json
 {
