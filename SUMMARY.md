@@ -8,7 +8,7 @@
 * [Comenzando](comenzando/README.md)
   * [Installation](comenzando/installation.md)
   * [Configuración](comenzando/configuration.md)
-  * [Estructura de directorios](comenzando/directory-structure.md)
+  * [Estructura de directorios](comenzando/structure.md)
   * [Frontend](comenzando/frontend.md)
   * [Starter Kits](comenzando/starter-kits.md)
   * [Deployment](comenzando/deployment.md)
