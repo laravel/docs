@@ -771,7 +771,7 @@ Alternatively, you may specify the event's broadcast connection by calling the `
 <a name="anonymous-events"></a>
 ### Anonymous Events
 
-You may use the `Broadcast` facade to directly dispatch events to the frontend of your application.
+Sometimes, you may want to broadcast a simple event to your application's frontend without creating a dedicated event class. To accommodate this, the `Broadcast` facade allows you to broadcast "anonymous events":
 
 ```php
 Broadcast::on('orders.'.$order->id)->send();
@@ -781,13 +781,13 @@ The example above will broadcast the following event:
 
 ```json
 {
-    "event":"AnonymousEvent",
-    "data":"[]",
-    "channel":"orders.1"
+    "event": "AnonymousEvent",
+    "data": "[]",
+    "channel": "orders.1"
 }
 ```
 
-You may also customize the event name and payload per your requirements:
+Using the `as` and `with` methods, you may customize the event's name and data:
 
 ```php
 Broadcast::on('orders.'.$order->id)
@@ -796,34 +796,34 @@ Broadcast::on('orders.'.$order->id)
     ->send();
 ```
 
-The example above will result in a broadcast event similar to the following:
+The example above will broadcast an event like the following:
 
 ```json
 {
-    "event":"OrderPlaced",
-    "data":"{ id: 1, total: 100 }",
-    "channel":"orders.1"
+    "event": "OrderPlaced",
+    "data": "{ id: 1, total: 100 }",
+    "channel": "orders.1"
 }
 ```
 
-Should you wish to broadcast on a private or presence channel, you may use the `private` and `presence` methods:
+If you would like to broadcast the anonymous event on a private or presence channel, you may utilize the `private` and `presence` methods:
 
 ```php
 Broadcast::private('orders.'.$order->id)->send();
 Broadcast::presence('channels.'.$channel->id)->send();
 ```
 
-Using the `send` method pushes the event to the queue for processing. If you wish to broadcast the event immediately, you may use the `sendNow()` method:
+Broadcasting an anonymous event using the `send` method dispatches the event to your application's [queue](/docs/{{version}}/queues) for processing. However, if you would like to broadcast the event immediately, you may use the `sendNow` method:
 
 ```php
 Broadcast::on('orders.'.$order->id)->sendNow();
 ```
 
-To broadcast the event to all channel subscribers except the currently authenticated user, you may chain the `toOthers` method:
+To broadcast the event to all channel subscribers except the currently authenticated user, you can invoke the `toOthers` method:
 
 ```php
 Broadcast::on('orders.'.$order->id)
-    toOthers()
+    ->toOthers()
     ->send();
 ```
 
