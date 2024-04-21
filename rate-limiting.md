@@ -34,7 +34,7 @@ The `attempt` method returns `false` when the callback has no remaining attempts
 
     $executed = RateLimiter::attempt(
         'send-message:'.$user->id,
-        $perMinute = 5,
+        $decaySeconds = 5,
         function() {
             // Send message...
         }
