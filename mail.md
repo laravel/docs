@@ -188,6 +188,14 @@ MAIL_FROM_NAME="App Name"
 MAILERSEND_API_KEY=your-api-key
 ```
 
+Add MailerSend as a Laravel Mailer in `config/mail.php` in `mailers` array:
+
+```php
+'mailersend' => [
+    'transport' => 'mailersend',
+],
+```
+
 To learn more about MailerSend, including how to use hosted templates, consult the [MailerSend driver documentation](https://github.com/mailersend/mailersend-laravel-driver#usage).
 
 <a name="failover-configuration"></a>
