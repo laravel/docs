@@ -188,7 +188,7 @@ MAIL_FROM_NAME="App Name"
 MAILERSEND_API_KEY=your-api-key
 ```
 
-Add MailerSend as a Laravel Mailer in `config/mail.php` in `mailers` array:
+Finally, add MailerSend to the `mailers` array in your application's `config/mail.php` configuration file:
 
 ```php
 'mailersend' => [
