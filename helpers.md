@@ -96,6 +96,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::fileSize](#method-number-file-size)
 [Number::forHumans](#method-number-for-humans)
 [Number::format](#method-number-format)
+[Number::mapRange](#method-number-mapRange)
 [Number::ordinal](#method-number-ordinal)
 [Number::percentage](#method-number-percentage)
 [Number::spell](#method-number-spell)
@@ -1288,6 +1289,25 @@ The `Number::format` method formats the given number into a locale specific stri
     $number = Number::format(100000, locale: 'de');
 
     // 100.000
+
+<a name="method-number-mapRange"></a>
+#### `Number::mapRange()` {.collection-method}
+
+The `Number::mapRange` method maps a number from one range to another:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::mapRange(1, 1, 10, 1, 100);
+
+    // 10
+
+    $number = Number::mapRange(10, 1, 10, 1, 100);
+
+    // 100
+
+    $number = Number::mapRange(42, 1, 100, 1, 10);
+
+    // 4.727272727272727
 
 <a name="method-number-ordinal"></a>
 #### `Number::ordinal()` {.collection-method}
