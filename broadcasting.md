@@ -24,6 +24,7 @@
 - [Broadcasting Events](#broadcasting-events)
     - [Only to Others](#only-to-others)
     - [Customizing the Connection](#customizing-the-connection)
+    - [Anonymous Events](#anonymous-events)
 - [Receiving Broadcasts](#receiving-broadcasts)
     - [Listening for Events](#listening-for-events)
     - [Leaving a Channel](#leaving-a-channel)
@@ -766,6 +767,65 @@ Alternatively, you may specify the event's broadcast connection by calling the `
             $this->broadcastVia('pusher');
         }
     }
+
+<a name="anonymous-events"></a>
+### Anonymous Events
+
+Sometimes, you may want to broadcast a simple event to your application's frontend without creating a dedicated event class. To accommodate this, the `Broadcast` facade allows you to broadcast "anonymous events":
+
+```php
+Broadcast::on('orders.'.$order->id)->send();
+```
+
+The example above will broadcast the following event:
+
+```json
+{
+    "event": "AnonymousEvent",
+    "data": "[]",
+    "channel": "orders.1"
+}
+```
+
+Using the `as` and `with` methods, you may customize the event's name and data:
+
+```php
+Broadcast::on('orders.'.$order->id)
+    ->as('OrderPlaced')
+    ->with($order)
+    ->send();
+```
+
+The example above will broadcast an event like the following:
+
+```json
+{
+    "event": "OrderPlaced",
+    "data": "{ id: 1, total: 100 }",
+    "channel": "orders.1"
+}
+```
+
+If you would like to broadcast the anonymous event on a private or presence channel, you may utilize the `private` and `presence` methods:
+
+```php
+Broadcast::private('orders.'.$order->id)->send();
+Broadcast::presence('channels.'.$channel->id)->send();
+```
+
+Broadcasting an anonymous event using the `send` method dispatches the event to your application's [queue](/docs/{{version}}/queues) for processing. However, if you would like to broadcast the event immediately, you may use the `sendNow` method:
+
+```php
+Broadcast::on('orders.'.$order->id)->sendNow();
+```
+
+To broadcast the event to all channel subscribers except the currently authenticated user, you can invoke the `toOthers` method:
+
+```php
+Broadcast::on('orders.'.$order->id)
+    ->toOthers()
+    ->send();
+```
 
 <a name="receiving-broadcasts"></a>
 ## Receiving Broadcasts
