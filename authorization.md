@@ -21,6 +21,7 @@
     - [Via the Gate Facade](#via-the-gate-facade)
     - [Via Middleware](#via-middleware)
     - [Via Blade Templates](#via-blade-templates)
+    - [Via VueJs Components with Inertia](#via-vue-components)
     - [Supplying Additional Context](#supplying-additional-context)
 
 <a name="introduction"></a>
@@ -698,6 +699,77 @@ Like most of the other authorization methods, you may pass a class name to the `
     <!-- The current user can't create posts... -->
 @endcannot
 ```
+
+<a name="via-vue-components"></a>
+### Via VueJs Components with Inertia
+
+It is worth noting that Authorization is handled on the server side. However, sometimes it makes sense to control the visibility of elements within your template, which can be done in a number of ways. As this is opinionated and completely based on your project, we don't have a convention which is supported, however, the options are:
+
+#### Define permissions as shared data
+[HandleInertiaRequests can be extended](https://inertiajs.com/shared-data) to include your policies that you wish to enforce in your components
+```php
+class HandleInertiaRequests extends Middleware
+{
+    public function share(Request $request)
+    {
+        return array_merge(parent::share($request), [
+            'can' => [
+                'post' => [
+                    'create' => $request->user->can('post:create'),
+                    // And so on
+                ]
+            ]
+        ]);
+    }
+}
+
+```
+
+Which can then be used in your components like so
+```js
+<script setup>
+import { usePage } from '@inertiajs/vue3';
+</script>
+<template>
+    <PostForm>
+        <Button v-if="usePage().props.can.post.create">Create</Button>
+    </PostForm>
+</template>
+```
+
+#### Define permissions via the component loading
+If you need permissions on specific elements, rather than defining the permissions globally, you can render the component with Inertia and pass in the permissions as required
+```
+Route::get('post/{post}', return Inertia::render('Post/View', [
+  'user' => $user,
+  'can' => [
+      'post' => [
+          'create' => $user->can('update', $post)
+      ],
+  ], 
+]);
+```
+
+Which can then be used in your components like so
+```js
+<script setup>
+import { defineProps } from 'vue';
+defineProps({
+    can: Object
+});
+
+</script>
+<template>
+    <PostForm>
+        <Button v-if="can.post.create">Create</Button>
+    </PostForm>
+</template>
+```
+
+
+> [!WARNING]  
+> Client-side permissions can only be used to provide a nicer experience for users, there is always a need for server side validation. [#Message about hackers and security possibly#]
+
 
 <a name="supplying-additional-context"></a>
 ### Supplying Additional Context
