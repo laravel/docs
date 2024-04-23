@@ -194,6 +194,32 @@ Alternatively, you may define a `withDelay` method on the notification class its
         ];
     }
 
+<a name="notification-middleware"></a>
+### Notification Middleware
+Queued notifications allow middleware to be used in the same way as (Jobs)[/docs/{{version}}/queues#job-middleware] do. Adding middleware to your queued notification reduces boilerplate code and makes it easy to reuse shared logic between notifications. The `middleware` method has access to the `$notifiable` and `$channel` objects, which enables you to customize your middleware based on the type of notification being sent.
+
+In the following example, we use notification middleware to make sure that rate limits only apply to non-admin users, after which the rate limit of the corresponding channel is applied.
+
+```php
+    public function middleware($notifiable, $channel)
+    {
+        if ($notifiable instance of User && $notifiable->isAdmin()) {
+            return [];
+        }
+
+        $middleware = match ($channel) {
+            'email' => [new RateLimited('postmark')],
+            'sms' => [new Ratelimited('twilio')],
+            'slack' => [new Ratelimited('slack')],
+            default => [],
+        }
+        
+        
+        return $middleware;
+    }
+```
+
+
 <a name="customizing-the-notification-queue-connection"></a>
 #### Customizing the Notification Queue Connection
 
