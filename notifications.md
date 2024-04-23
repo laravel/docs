@@ -200,7 +200,6 @@ Queued notifications allow middleware to be used in the same way as (Jobs)[/docs
 
 In the following example, we use notification middleware to make sure that rate limits only apply to non-admin users, after which the rate limit of the corresponding channel is applied.
 
-
     public function middleware($notifiable, $channel)
     {
         if ($notifiable instance of User && $notifiable->isAdmin()) {
