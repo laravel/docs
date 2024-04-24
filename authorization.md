@@ -22,6 +22,7 @@
     - [Via Middleware](#via-middleware)
     - [Via Blade Templates](#via-blade-templates)
     - [Supplying Additional Context](#supplying-additional-context)
+- [Authorization & Inertia](#authorization-and-inertia)
 
 <a name="introduction"></a>
 ## Introduction
@@ -728,3 +729,45 @@ When attempting to determine if the authenticated user can update a given post, 
 
         return redirect('/posts');
     }
+
+<a name="authorization-and-inertia"></a>
+## Authorization & Inertia
+
+Although authorization must always be handled on the server, it can often be convenient to provide your frontend application with authorization data in order to properly render your application's UI. Laravel does not define a required convention for exposing authorization information to an Inertia powered frontend.
+
+However, if you are using one of Laravel's Inertia-based [starter kits](/docs/{{version}}/starter-kits), your application already contains a `HandleInertiaRequests` middleware. Within this middleware's `share` method, you may return shared data that will provided to all Inertia pages in your application. This shared data can serve as a convenient location to define authorization information for the user:
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use App\Models\Post;
+use Illuminate\Http\Request;
+use Inertia\Middleware;
+
+class HandleInertiaRequests extends Middleware
+{
+    // ...
+
+    /**
+     * Define the props that are shared by default.
+     *
+     * @return array<string, mixed>
+     */
+    public function share(Request $request)
+    {
+        return [
+            ...parent::share($request),
+            'auth' => [
+                'user' => $request->user(),
+                'permissions' => [
+                    'post' => [
+                        'create' => $request->user()->can('create', Post::class),
+                    ],
+                ],
+            ],
+        ];
+    }
+}
+```
