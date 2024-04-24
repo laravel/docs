@@ -155,7 +155,7 @@ Context::when(
 <a name="stacks"></a>
 ### Stacks
 
-Context offers the ability to create "stacks", which are lists of data stored in the order that they where added. You can add information to a stack by invoking the `push` method:
+Context offers the ability to create "stacks", which are lists of data stored in the order that they were added. You can add information to a stack by invoking the `push` method:
 
 ```php
 use Illuminate\Support\Facades\Context;
