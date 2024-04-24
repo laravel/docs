@@ -38,7 +38,7 @@ The `query` method also merges any existing query parameters in the given path w
 
     echo url()->query('/posts?sort=latest', ['search' => 'Laravel']);
 
-    // http://example.com/posts?sort=oldest&search=Laravel
+    // http://example.com/posts?sort=latest&search=Laravel
 
 Providing query parameters that already exist in the path will overwrite their existing value:
 
