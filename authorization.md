@@ -21,8 +21,8 @@
     - [Via the Gate Facade](#via-the-gate-facade)
     - [Via Middleware](#via-middleware)
     - [Via Blade Templates](#via-blade-templates)
-    - [Via VueJs Components with Inertia](#via-vue-components)
     - [Supplying Additional Context](#supplying-additional-context)
+- [Authorization & Inertia](#authorization-and-inertia)
 
 <a name="introduction"></a>
 ## Introduction
@@ -700,77 +700,6 @@ Like most of the other authorization methods, you may pass a class name to the `
 @endcannot
 ```
 
-<a name="via-vue-components"></a>
-### Via VueJs Components with Inertia
-
-It is worth noting that Authorization is handled on the server side. However, sometimes it makes sense to control the visibility of elements within your template, which can be done in a number of ways. As this is opinionated and completely based on your project, we don't have a convention which is supported, however, the options are:
-
-#### Define permissions as shared data
-[HandleInertiaRequests can be extended](https://inertiajs.com/shared-data) to include your policies that you wish to enforce in your components
-```php
-class HandleInertiaRequests extends Middleware
-{
-    public function share(Request $request)
-    {
-        return array_merge(parent::share($request), [
-            'can' => [
-                'post' => [
-                    'create' => $request->user->can('post:create'),
-                    // And so on
-                ]
-            ]
-        ]);
-    }
-}
-
-```
-
-Which can then be used in your components like so
-```js
-<script setup>
-import { usePage } from '@inertiajs/vue3';
-</script>
-<template>
-    <PostForm>
-        <Button v-if="usePage().props.can.post.create">Create</Button>
-    </PostForm>
-</template>
-```
-
-#### Define permissions via the component loading
-If you need permissions on specific elements, rather than defining the permissions globally, you can render the component with Inertia and pass in the permissions as required
-```
-Route::get('post/{post}', return Inertia::render('Post/View', [
-  'user' => $user,
-  'can' => [
-      'post' => [
-          'create' => $user->can('update', $post)
-      ],
-  ], 
-]);
-```
-
-Which can then be used in your components like so
-```js
-<script setup>
-import { defineProps } from 'vue';
-defineProps({
-    can: Object
-});
-
-</script>
-<template>
-    <PostForm>
-        <Button v-if="can.post.create">Create</Button>
-    </PostForm>
-</template>
-```
-
-
-> [!WARNING]  
-> Client-side permissions can only be used to provide a nicer experience for users, there is always a need for server side validation. [#Message about hackers and security possibly#]
-
-
 <a name="supplying-additional-context"></a>
 ### Supplying Additional Context
 
@@ -800,3 +729,45 @@ When attempting to determine if the authenticated user can update a given post, 
 
         return redirect('/posts');
     }
+
+<a name="authorization-and-inertia"></a>
+## Authorization & Inertia
+
+Although authorization must always be handled on the server, it can often be convenient to provide your frontend application with authorization data in order to properly render your application's UI. Laravel does not define a required convention for exposing authorization information to an Inertia powered frontend.
+
+However, if you are using one of Laravel's Inertia-based [starter kits](/docs/{{version}}/starter-kits), your application already contains a `HandleInertiaRequests` middleware. Within this middleware's `share` method, you may return shared data that will provided to all Inertia pages in your application. This shared data can serve as a convenient location to define authorization information for the user:
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use App\Models\Post;
+use Illuminate\Http\Request;
+use Inertia\Middleware;
+
+class HandleInertiaRequests extends Middleware
+{
+    // ...
+
+    /**
+     * Define the props that are shared by default.
+     *
+     * @return array<string, mixed>
+     */
+    public function share(Request $request)
+    {
+        return [
+            ...parent::share($request),
+            'auth' => [
+                'user' => $request->user(),
+                'permissions' => [
+                    'post' => [
+                        'create' => $request->user()->can('create', Post::class),
+                    ],
+                ],
+            ],
+        ];
+    }
+}
+```
