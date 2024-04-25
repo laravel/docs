@@ -169,9 +169,6 @@ If you would like to delay the delivery of the notification, you may chain the `
 
     $user->notify((new InvoicePaid($invoice))->delay($delay));
 
-<a name="delaying-notifications-per-channel"></a>
-#### Delaying Notifications per Channel
-
 You may pass an array to the `delay` method to specify the delay amount for specific channels:
 
     $user->notify((new InvoicePaid($invoice))->delay([
@@ -192,29 +189,6 @@ Alternatively, you may define a `withDelay` method on the notification class its
             'mail' => now()->addMinutes(5),
             'sms' => now()->addMinutes(10),
         ];
-    }
-
-<a name="notification-middleware"></a>
-### Notification Middleware
-Queued notifications allow middleware to be used in the same way as (Jobs)[/docs/{{version}}/queues#job-middleware] do. Adding middleware to your queued notification reduces boilerplate code and makes it easy to reuse shared logic between notifications. The `middleware` method has access to the `$notifiable` and `$channel` variables, which allows you to customize your middleware based on the type and destination of the notification.
-
-In the following example, we use notification middleware to make sure that rate limits only apply to non-admin users, after which the rate limit of the corresponding channel is applied.
-
-    public function middleware($notifiable, $channel)
-    {
-        if ($notifiable instance of User && $notifiable->isAdmin()) {
-            return [];
-        }
-
-        $middleware = match ($channel) {
-            'email' => [new RateLimited('postmark')],
-            'sms' => [new Ratelimited('twilio')],
-            'slack' => [new Ratelimited('slack')],
-            default => [],
-        }
-        
-        
-        return $middleware;
     }
 
 <a name="customizing-the-notification-queue-connection"></a>
@@ -274,6 +248,27 @@ If you would like to specify a specific queue that should be used for each notif
             'mail' => 'mail-queue',
             'slack' => 'slack-queue',
         ];
+    }
+
+<a name="notification-middleware"></a>
+#### Queued Notification Middleware
+
+Queued notifications may define middleware [just like queued jobs](/docs/{{version}}/queues#job-middleware). To get started, define a `middleware` method on your notification class. The `middleware` method will receive `$notifiable` and `$channel` variables, which allow you to customize the returned middleware based on the notification's destination:
+
+    use Illuminate\Queue\Middleware\RateLimited;
+
+    /**
+     * Get the middleware the notification job should pass through.
+     *
+     * @return array<int, object>
+     */
+    public function middleware(object $notifiable, string $channel)
+    {
+        return match ($channel) {
+            'email' => [new RateLimited('postmark')],
+            'slack' => [new RateLimited('slack')],
+            default => [],
+        };
     }
 
 <a name="queued-notifications-and-database-transactions"></a>
