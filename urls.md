@@ -28,25 +28,23 @@ The `url` helper may be used to generate arbitrary URLs for your application. Th
 
     // http://example.com/posts/1
 
-To generate a URL with specific query parameters, you may use the `query` method. This method allows you to specify the path and an array of query parameters:
+To generate a URL with query string parameters, you may use the `query` method:
 
     echo url()->query('/posts', ['search' => 'Laravel']);
 
     // https://example.com/posts?search=Laravel
 
-The `query` method also merges any existing query parameters in the given path with the new query parameters provided:
-
     echo url()->query('/posts?sort=latest', ['search' => 'Laravel']);
 
     // http://example.com/posts?sort=latest&search=Laravel
 
-Providing query parameters that already exist in the path will overwrite their existing value:
+Providing query string parameters that already exist in the path will overwrite their existing value:
 
     echo url()->query('/posts?sort=latest', ['sort' => 'oldest']);
 
     // http://example.com/posts?sort=oldest
 
-Arrays of values may also be passed as query parameters. These will be properly keyed and encoded in the generated URL:
+Arrays of values may also be passed as query parameters. These values will be properly keyed and encoded in the generated URL:
 
     echo $url = url()->query('/posts', ['columns' => ['title', 'body']]);
 
