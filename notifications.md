@@ -169,9 +169,6 @@ If you would like to delay the delivery of the notification, you may chain the `
 
     $user->notify((new InvoicePaid($invoice))->delay($delay));
 
-<a name="delaying-notifications-per-channel"></a>
-#### Delaying Notifications per Channel
-
 You may pass an array to the `delay` method to specify the delay amount for specific channels:
 
     $user->notify((new InvoicePaid($invoice))->delay([
@@ -251,6 +248,27 @@ If you would like to specify a specific queue that should be used for each notif
             'mail' => 'mail-queue',
             'slack' => 'slack-queue',
         ];
+    }
+
+<a name="queued-notification-middleware"></a>
+#### Queued Notification Middleware
+
+Queued notifications may define middleware [just like queued jobs](/docs/{{version}}/queues#job-middleware). To get started, define a `middleware` method on your notification class. The `middleware` method will receive `$notifiable` and `$channel` variables, which allow you to customize the returned middleware based on the notification's destination:
+
+    use Illuminate\Queue\Middleware\RateLimited;
+
+    /**
+     * Get the middleware the notification job should pass through.
+     *
+     * @return array<int, object>
+     */
+    public function middleware(object $notifiable, string $channel)
+    {
+        return match ($channel) {
+            'email' => [new RateLimited('postmark')],
+            'slack' => [new RateLimited('slack')],
+            default => [],
+        };
     }
 
 <a name="queued-notifications-and-database-transactions"></a>
