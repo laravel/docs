@@ -9,6 +9,7 @@
 - [Authentication](#authentication)
     - [Customizing User Authentication](#customizing-user-authentication)
     - [Customizing the Authentication Pipeline](#customizing-the-authentication-pipeline)
+    - [Authentication Throttling](#authentication-throttling)
     - [Customizing Redirects](#customizing-authentication-redirects)
 - [Two Factor Authentication](#two-factor-authentication)
     - [Enabling Two Factor Authentication](#enabling-two-factor-authentication)
@@ -204,6 +205,18 @@ Fortify::authenticateThrough(function (Request $request) {
     ]);
 });
 ```
+
+### Authentication Throttling
+<a name="authentication-throttling"></a>
+
+Laravel Fortify can throttle login attempts using the `limiters.login` key of the `fortify` configuration, or by including `EnsureLoginIsNotThrottled` in the Authentication Pipeline. 
+
+By default, Fortify throttles login attempts that are unique to the user's username / email address and their IP address.
+
+It is important to carefully consider whether your app requires additional throttling (such as IP address throttling) and customize to your requirements. 
+
+> [!WARNING]  
+> Utilizing a mixture of throttling, [two factor authentication](/docs/{{version}}/fortify#two-factor-authentication), and an external web application firewall (WAF) will provide robust defence to your application and users.
 
 <a name="customizing-authentication-redirects"></a>
 ### Customizing Redirects
