@@ -250,7 +250,7 @@ If you would like to specify a specific queue that should be used for each notif
         ];
     }
 
-<a name="notification-middleware"></a>
+<a name="queued-notification-middleware"></a>
 #### Queued Notification Middleware
 
 Queued notifications may define middleware [just like queued jobs](/docs/{{version}}/queues#job-middleware). To get started, define a `middleware` method on your notification class. The `middleware` method will receive `$notifiable` and `$channel` variables, which allow you to customize the returned middleware based on the notification's destination:
