@@ -472,6 +472,9 @@ Once you have defined the cast on your model, the specified attribute will be au
         $server->save();
     }
 
+> [!WARNING]  
+> Remember to verify that all existing values within the corresponding database column strictly align with the defined values of your enum class.
+
 <a name="casting-arrays-of-enums"></a>
 #### Casting Arrays of Enums
 
