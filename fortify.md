@@ -215,7 +215,7 @@ By default, Fortify throttles login attempts that are unique to the user's usern
 
 It is important to carefully consider whether your application requires additional throttling (such as by IP address alone) and customize to your requirements. 
 
-> [!WARNING]  
+> [!NOTE]  
 > Utilizing a mixture of throttling, [two factor authentication](/docs/{{version}}/fortify#two-factor-authentication), and an external web application firewall (WAF) will provide the most robust defense for your legitimate application users.
 
 <a name="customizing-authentication-redirects"></a>
