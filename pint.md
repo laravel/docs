@@ -53,10 +53,19 @@ If you would like Pint to simply inspect your code for style errors without actu
 ./vendor/bin/pint --test
 ```
 
+> [!NOTE]
+> Pint will return a non-zero exit code if any issues are found.
+
 If you would like Pint to only modify the files that have uncommitted changes according to Git, you may use the `--dirty` option:
 
 ```shell
 ./vendor/bin/pint --dirty
+```
+
+If you would like Pint to return a non-zero exit code if any files are modified, you may use the `--with-exit-status` option:
+
+```shell
+./vendor/bin/pint --with-exit-status
 ```
 
 <a name="configuring-pint"></a>
