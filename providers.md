@@ -32,7 +32,7 @@ The Artisan CLI can generate a new provider via the `make:provider` command:
 php artisan make:provider RiakServiceProvider
 ```
 
-After generating provider, your provider register automatically in `bootstrap/providers.php`.
+After generating the provider, your provider is registered automatically in `bootstrap/providers.php`.
 
 <a name="the-register-method"></a>
 ### The Register Method
