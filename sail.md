@@ -12,7 +12,7 @@
     - [Executing Artisan Commands](#executing-artisan-commands)
     - [Executing Node / NPM Commands](#executing-node-npm-commands)
 - [Interacting With Databases](#interacting-with-sail-databases)
-    - [MySQL](#mysql)
+    - [MySQL and MariaDB](#mysql-and-mariadb)
     - [Redis](#redis)
     - [Meilisearch](#meilisearch)
     - [Typesense](#typesense)
@@ -32,7 +32,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Sail](https://github.com/laravel/sail) is a light-weight command-line interface for interacting with Laravel's default Docker development environment. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience.
+[Laravel Sail](https://github.com/laravel/sail) is a light-weight command-line interface for interacting with Laravel's default Docker development environment. Sail provides a great starting point for building a Laravel application using PHP, MySQL and MariaDB, and Redis without requiring prior Docker experience.
 
 At its heart, Sail is the `docker-compose.yml` file and the `sail` script that is stored at the root of your project. The `sail` script provides a CLI with convenient methods for interacting with the Docker containers defined by the `docker-compose.yml` file.
 
@@ -228,8 +228,8 @@ sail yarn
 <a name="interacting-with-sail-databases"></a>
 ## Interacting With Databases
 
-<a name="mysql"></a>
-### MySQL
+<a name="mysql-and-mariadb"></a>
+### MySQL and MariaDB
 
 As you may have noticed, your application's `docker-compose.yml` file contains an entry for a MySQL container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your database is persisted even when stopping and restarting your containers.
 
