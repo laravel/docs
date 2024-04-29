@@ -26,7 +26,7 @@ All user-defined service providers are registered in the `bootstrap/providers.ph
 
 All service providers extend the `Illuminate\Support\ServiceProvider` class. Most service providers contain a `register` and a `boot` method. Within the `register` method, you should **only bind things into the [service container](/docs/{{version}}/container)**. You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method.
 
-The Artisan CLI can generate a new provider via the `make:provider` command:
+The Artisan CLI can generate a new provider via the `make:provider` command. Laravel will automatically register your new provider in your application's `bootstrap/providers.php` file:
 
 ```shell
 php artisan make:provider RiakServiceProvider
