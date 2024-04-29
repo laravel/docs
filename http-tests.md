@@ -878,11 +878,6 @@ You may use the `component` method to evaluate and render a [Blade component](/d
 
     $view->assertSee('Taylor');
 
-<a name="testing-exceptions"></a>
-## Testing Exceptions
-
-If you are testing a
-
 <a name="available-assertions"></a>
 ## Available Assertions
 
