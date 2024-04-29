@@ -88,6 +88,8 @@ The `storage` directory contains your logs, compiled Blade templates, file based
 
 The `storage/app/public` directory may be used to store user-generated files, such as profile avatars, that should be publicly accessible. You should create a symbolic link at `public/storage` which points to this directory. You may create the link using the `php artisan storage:link` Artisan command.
 
+The location of the `storage` directory can be changed by setting the `LARAVEL_STORAGE_PATH` environment variable.
+
 <a name="the-tests-directory"></a>
 #### The Tests Directory
 
