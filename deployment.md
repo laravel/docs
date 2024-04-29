@@ -87,6 +87,15 @@ server {
 }
 ```
 
+<a name="frankenphp"></a>
+### FrankenPHP
+
+Serving your Laravel applications using FrankenPHP is as easy as running `frankenphp php-server -r public/`.
+
+To take advantage of the more powerful features supported by FrankenPHP, such as [Octane](octane.md) integration,
+HTTP/3, modern compression or the ability to package Laravel applications as standalone binaries,
+[see the FrankenPHP documentation entry dedicated to Laravel](https://frankenphp.dev/docs/laravel/).
+
 <a name="optimization"></a>
 ## Optimization
 
