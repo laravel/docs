@@ -53,9 +53,6 @@ php artisan octane:install
 <a name="frankenphp"></a>
 ### FrankenPHP
 
-> [!WARNING]  
-> FrankenPHP's Octane integration is in beta and should be used with caution in production.
-
 [FrankenPHP](https://frankenphp.dev) is a PHP application server, written in Go, that supports modern web features like early hints, Brotli, and Zstandard compression. When you install Octane and choose FrankenPHP as your server, Octane will automatically download and install the FrankenPHP binary for you.
 
 <a name="frankenphp-via-laravel-sail"></a>
