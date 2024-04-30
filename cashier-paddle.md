@@ -579,7 +579,7 @@ The currency will be determined based on the IP address of the request; however,
 
     use Laravel\Paddle\Cashier;
 
-    $prices = Cashier::productPrices(['pri_123', 'pri_456'], ['address' => [
+    $prices = Cashier::previewPrices(['pri_123', 'pri_456'], ['address' => [
         'country_code' => 'BE',
         'postal_code' => '1234',
     ]]);
