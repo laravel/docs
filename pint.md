@@ -47,7 +47,7 @@ Pint will display a thorough list of all of the files that it updates. You can v
 ./vendor/bin/pint -v
 ```
 
-If you would like Pint to simply inspect your code for style errors without actually changing the files, you may use the `--test` option:
+If you would like Pint to simply inspect your code for style errors without actually changing the files, you may use the `--test` option. Pint will return a non-zero exit code if any code style errors are found:
 
 ```shell
 ./vendor/bin/pint --test
@@ -57,6 +57,12 @@ If you would like Pint to only modify the files that have uncommitted changes ac
 
 ```shell
 ./vendor/bin/pint --dirty
+```
+
+If you would like Pint to fix any files with code style errors but also exit with a non-zero exit code if any errors were fixed, you may use the `--repair` option:
+
+```shell
+./vendor/bin/pint --repair
 ```
 
 <a name="configuring-pint"></a>
