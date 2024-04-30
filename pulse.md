@@ -35,7 +35,7 @@ For in-depth debugging of individual events, check out [Laravel Telescope](/docs
 > [!WARNING]  
 > Pulse's first-party storage implementation currently requires a MySQL, MariaDB, or PostgreSQL database. If you are using a different database engine, you will need a separate MySQL, MariaDB, or PostgreSQL database for your Pulse data.
 
-You may install Pulse using the command:
+You may install Pulse using the Composer package manager:
 
 ```sh
 composer require laravel/pulse
