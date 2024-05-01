@@ -221,7 +221,7 @@ The `<livewire:pulse.slow-queries />` card shows the database queries in your ap
 
 By default, slow queries are grouped based on the SQL query (without bindings) and the location where it occurred, but you may choose to not capture the location if you wish to group solely on the SQL query.
 
-If you have rendering performance issues due to extremely large SQL queries being highlighted, you may disable highlighting by adding the `disable-highlighting` prop.
+If you encounter rendering performance issues due to extremely large SQL queries receiving syntax highlighting, you may disable highlighting by adding the `disable-highlighting` prop:
 
 ```blade
 <livewire:pulse.slow-queries disable-highlighting />
