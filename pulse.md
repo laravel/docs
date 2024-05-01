@@ -179,7 +179,7 @@ The `<livewire:pulse.servers />` card displays system resource usage for all ser
 If your deployment strategy replaces servers, it may be handy to stop displaying older servers after a given duration. You may do this by using the `ignore-after` prop. It accepts either seconds as an integer or a relative time formatted string, such as `1 hour` or `3 days and 1 hour`.
 
 ```blade
-<livewire:pulse.servers ignore-after="6 days" />
+<livewire:pulse.servers ignore-after="3 hours" />
 ```
 
 <a name="application-usage-card"></a>
