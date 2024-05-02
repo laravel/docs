@@ -198,6 +198,23 @@ In these cases, Laravel allows you to register a custom formatting handler for t
         });
     }
 
+<a name="tag-replacement"></a>
+#### Tag Replacement
+
+You may define custom tags which will be replaced within your translation strings:
+
+    echo __(
+        'The <docs-link>documentation</docs-link> contains all you need to know!',
+        [
+            'docs-link' => fn (string $children) => "<a href=\"https://laravel.com/docs\">$children</a>"
+        ]
+    );
+
+If you are using the [Blade templating engine](/docs/{{version}}/blade) then you will need to echo them using the unescaped `{!! !!}` echo syntax to allow your tags to be rendered correctly.
+
+> [!WARNING]  
+> Tag replacements are not the same as XML/HTML tags and do not accept attributes.
+
 <a name="pluralization"></a>
 ### Pluralization
 
