@@ -261,6 +261,21 @@ server {
 }
 ```
 
+If you want Reverb to be accessible via a different path, it is very important that you add a `/` at the end of your URL in the `proxy_pass` parameter. Otherwise you will get 404 issues and Reverb will not be accessible from outside.
+
+```nginx
+server {
+    ...
+
+    location /ws {
+        ...
+
+        proxy_pass http://0.0.0.0:8080/;
+    }
+
+    ...
+}
+```
 Typically, web servers are configured to limit the number of allowed connections in order to prevent overloading the server. To increase the number of allowed connections on an Nginx web server to 10,000, the `worker_rlimit_nofile` and `worker_connections` values of the `nginx.conf` file should be updated:
 
 ```nginx
