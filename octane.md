@@ -104,7 +104,7 @@ Typically, you should access your FrankenPHP Sail application via `https://local
 <a name="frankenphp-via-docker"></a>
 #### FrankenPHP via Docker
 
-Using FrankenPHP's official Docker images can offer improved performance and the use additional extensions not included with static installations of FrankenPHP. In addition, the official Docker images provide support for running FrankenPHP on platforms it doesn't natively support, such as Windows. FrankenPHP's official Docker images are suitable for both local development and production usage.
+Using FrankenPHP's official Docker images can offer improved performance and the use of additional extensions not included with static installations of FrankenPHP. In addition, the official Docker images provide support for running FrankenPHP on platforms it doesn't natively support, such as Windows. FrankenPHP's official Docker images are suitable for both local development and production usage.
 
 You may use the following Dockerfile as a starting point for containerizing your FrankenPHP powered Laravel application:
 
