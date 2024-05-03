@@ -372,7 +372,7 @@ If the `options` argument is an associative array, then the closure will receive
 <a name="multiselect"></a>
 ### Multi-select
 
-If you need to the user to be able to select multiple options, you may use the `multiselect` function:
+If you need the user to be able to select multiple options, you may use the `multiselect` function:
 
 ```php
 use function Laravel\Prompts\multiselect;
