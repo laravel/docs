@@ -1714,7 +1714,7 @@ The `context` function gets the value from the [current context](/docs/{{version
 
     $value = context('trace_id');
 
-    $value = config('trace_id', $default);
+    $value = context('trace_id', $default);
 
 You may set context values by passing an array of key / value pairs:
 
