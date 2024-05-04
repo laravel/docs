@@ -665,7 +665,7 @@ class TopSellers extends Card
 }
 ```
 
-The `aggregate` method returns return a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
+The `aggregate` method returns a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
 
 ```
 @foreach ($topSellers as $seller)
