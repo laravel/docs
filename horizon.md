@@ -89,7 +89,7 @@ You may add additional supervisors to a given environment if you would like to d
 <a name="maintenance-mode"></a>
 #### Maintenance Mode
 
-While your application is in [maintainance mode](/docs/{{version}}/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
+While your application is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
 
     'environments' => [
         'production' => [
