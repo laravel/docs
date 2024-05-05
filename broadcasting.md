@@ -361,7 +361,7 @@ When a user is viewing one of their orders, we don't want them to have to refres
         /**
          * The order instance.
          *
-         * @var \App\Order
+         * @var \App\Models\Order
          */
         public $order;
     }
