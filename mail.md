@@ -89,7 +89,7 @@ If you are not using the United States [Mailgun region](https://documentation.ma
 <a name="postmark-driver"></a>
 #### Postmark Driver
 
-To use the Postmark driver, install Symfony's Postmark Mailer transport via Composer:
+To use the [Postmark](https://postmarkapp.com/) driver, install Symfony's Postmark Mailer transport via Composer:
 
 ```shell
 composer require symfony/postmark-mailer symfony/http-client
@@ -116,7 +116,7 @@ This way you are also able to set up multiple Postmark mailers with different me
 <a name="resend-driver"></a>
 #### Resend Driver
 
-To use the Resend driver, install Resend's PHP SDK via Composer:
+To use the [Resend](https://resend.com/) driver, install Resend's PHP SDK via Composer:
 
 ```shell
 composer require resend/resend-php
