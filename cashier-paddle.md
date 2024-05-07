@@ -1235,7 +1235,7 @@ Both events contain the full payload of the Paddle webhook. For example, if you 
          */
         public function handle(WebhookReceived $event): void
         {
-            if ($event->payload['alert_name'] === 'transaction_billed') {
+            if ($event->payload['event_type'] === 'transaction.billed') {
                 // Handle the incoming event...
             }
         }
