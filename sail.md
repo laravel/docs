@@ -92,7 +92,13 @@ By default, Sail commands are invoked using the `vendor/bin/sail` script that is
 However, instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a shell alias that allows you to execute Sail's commands more easily:
 
 ```shell
-alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+sail() {
+	if [ -f sail ]; then
+		sh sail "$@"
+	else
+		sh vendor/bin/sail "$@"
+	fi
+}
 ```
 
 To make sure this is always available, you may add this to your shell configuration file in your home directory, such as `~/.zshrc` or `~/.bashrc`, and then restart your shell.
