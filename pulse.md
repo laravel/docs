@@ -176,7 +176,7 @@ public function boot(): void
 
 The `<livewire:pulse.servers />` card displays system resource usage for all servers running the `pulse:check` command. Please refer to the documentation regarding the [servers recorder](#servers-recorder) for more information on system resource reporting.
 
-If your deployment strategy replaces servers, it may be handy to stop displaying older servers after a given duration. You may do this by using the `ignore-after` prop. It accepts either seconds as an integer or a relative time formatted string, such as `1 hour` or `3 days and 1 hour`.
+If you replace a server in your infrastructure, you may wish to stop displaying the inactive server in the Pulse dashboard after a given duration. You may accomplish this using the `ignore-after` prop, which accepts the number of seconds after which inactive servers should be removed from the Pulse dashboard. Alternatively, you may provide a relative time formatted string, such as `1 hour` or `3 days and 1 hour`:
 
 ```blade
 <livewire:pulse.servers ignore-after="3 hours" />
