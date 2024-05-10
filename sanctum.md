@@ -42,7 +42,7 @@ Laravel Sanctum offers this feature by storing user API tokens in a single datab
 <a name="how-it-works-spa-authentication"></a>
 #### SPA Authentication
 
-Second, Sanctum exists to offer a simple way to authenticate single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository, such as a SPA created using Vue CLI or a Next.js application.
+Second, Sanctum exists to offer a simple way to authenticate single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository, such as an SPA created using Vue CLI or a Next.js application.
 
 For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses Laravel's built-in cookie based session authentication services. Typically, Sanctum utilizes Laravel's `web` authentication guard to accomplish this. This provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS.
 
@@ -60,7 +60,7 @@ You may install Laravel Sanctum via the `install:api` Artisan command:
 php artisan install:api
 ```
 
-Next, if you plan to utilize Sanctum to authenticate a SPA, please refer to the [SPA Authentication](#spa-authentication) section of this documentation.
+Next, if you plan to utilize Sanctum to authenticate an SPA, please refer to the [SPA Authentication](#spa-authentication) section of this documentation.
 
 <a name="configuration"></a>
 ## Configuration
@@ -267,7 +267,7 @@ Next, you should instruct Laravel that incoming requests from your SPA can authe
 <a name="cors-and-cookies"></a>
 #### CORS and Cookies
 
-If you are having trouble authenticating with your application from a SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings.
+If you are having trouble authenticating with your application from an SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings.
 
 The `config/cors.php` configuration file is not published by default. If you need to customize Laravel's CORS options, you should publish the complete `cors` configuration file using the `config:publish` Artisan command:
 
