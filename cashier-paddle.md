@@ -56,7 +56,7 @@
 > [!WARNING]  
 > This documentation is for Cashier Paddle 2.x's integration with Paddle Billing. If you're still using Paddle Classic, you should use [Cashier Paddle 1.x](https://github.com/laravel/cashier-paddle/tree/1.x).
 
-[Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle) provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: swapping subscriptions, subscription "quantities", subscription pausing, cancelation grace periods, and more.
+[Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle) provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: swapping subscriptions, subscription "quantities", subscription pausing, cancellation grace periods, and more.
 
 Before digging into Cashier Paddle, we recommend you also review Paddle's [concept guides](https://developer.paddle.com/concepts/overview) and [API documentation](https://developer.paddle.com/api-reference/overview).
 
@@ -1063,12 +1063,12 @@ If you wish to cancel a subscription immediately, you may call the `cancelNow` m
 
     $user->subscription()->cancelNow();
 
-To stop a subscription on its grace period from canceling, you may invoke the `stopCancelation` method:
+To stop a subscription on its grace period from canceling, you may invoke the `stopCancellation` method:
 
-    $user->subscription()->stopCancelation();
+    $user->subscription()->stopCancellation();
 
 > [!WARNING]  
-> Paddle's subscriptions cannot be resumed after cancelation. If your customer wishes to resume their subscription, they will have to create a new subscription.
+> Paddle's subscriptions cannot be resumed after cancellation. If your customer wishes to resume their subscription, they will have to create a new subscription.
 
 <a name="subscription-trials"></a>
 ## Subscription Trials
@@ -1215,7 +1215,7 @@ For Paddle to be able to send your application webhooks during local development
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancelation on failed charges and other common Paddle webhooks. However, if you have additional webhook events you would like to handle, you may do so by listening to the following events that are dispatched by Cashier:
+Cashier automatically handles subscription cancellation on failed charges and other common Paddle webhooks. However, if you have additional webhook events you would like to handle, you may do so by listening to the following events that are dispatched by Cashier:
 
 - `Laravel\Paddle\Events\WebhookReceived`
 - `Laravel\Paddle\Events\WebhookHandled`
