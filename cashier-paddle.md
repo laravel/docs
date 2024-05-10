@@ -1170,7 +1170,7 @@ You may use the `onGenericTrial` method if you wish to know specifically that th
 
 You can extend an existing trial period on a subscription by invoking the `extendTrial` method and specifying the moment in time that the trial should end:
 
-    $user->subsription()->extendTrial(now()->addDays(5));
+    $user->subscription()->extendTrial(now()->addDays(5));
 
 Or, you may immediately activate a subscription by ending its trial by calling the `activate` method on the subscription:
 
