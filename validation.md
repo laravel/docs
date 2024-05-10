@@ -879,6 +879,7 @@ Below is a list of all available validation rules and their function:
 [Between](#rule-between)
 [Boolean](#rule-boolean)
 [Confirmed](#rule-confirmed)
+[Contains](#rule-contains)
 [Current Password](#rule-current-password)
 [Date](#rule-date)
 [Date Equals](#rule-date-equals)
@@ -1096,6 +1097,11 @@ The field under validation must be able to be cast as a boolean. Accepted input 
 #### confirmed
 
 The field under validation must have a matching field of `{field}_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
+
+<a name="rule-contains"></a>
+#### contains:_foo_,_bar_,...
+
+The field under validation must be an array that contains all of the given parameter values.
 
 <a name="rule-current-password"></a>
 #### current_password
