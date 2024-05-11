@@ -2022,7 +2022,17 @@ php artisan queue:flush
 
 When injecting an Eloquent model into a job, the model is automatically serialized before being placed on the queue and re-retrieved from the database when the job is processed. However, if the model has been deleted while the job was waiting to be processed by a worker, your job may fail with a `ModelNotFoundException`.
 
-For convenience, you may choose to automatically delete jobs with missing models by setting your job's `deleteWhenMissingModels` property to `true`. When this property is set to `true`, Laravel will quietly discard the job without raising an exception:
+For convenience, you may choose to automatically delete jobs with missing models by adding the `DeleteWhenMissingModels` attribute to your job, Laravel will quietly discard the job without raising an exception:
+
+    use Illuminate\Queue\Attributes\DeleteWhenMissingModels;
+    
+    #[DeleteWhenMissingModels]
+    class Job
+    {
+        //
+    }
+
+Alternatively you can set the `deleteWhenMissingModels` property to `true`:
 
     /**
      * Delete the job if its models no longer exist.
