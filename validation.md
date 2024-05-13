@@ -2021,7 +2021,7 @@ As discussed in the [`array` validation rule documentation](#rule-array), the `a
 
 In general, you should always specify the array keys that are allowed to be present within your array. Otherwise, the validator's `validate` and `validated` methods will return all of the validated data, including the array and all of its keys, even if those keys were not validated by other nested array validation rules.
 
-You can use `array` method in Rule class:
+For convenience, You can use `array` method in Rule class:
 
 ```php
 Validator::make($input, [
