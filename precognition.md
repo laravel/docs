@@ -630,7 +630,7 @@ protected function rules()
         'avatar' => [
             ...$this->isPrecognitive() ? [] : ['required'],
             'image',
-            'mimes:jpg,png'
+            'mimes:jpg,png',
             'dimensions:ratio=3/2',
         ],
         // ...
