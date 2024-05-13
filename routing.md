@@ -205,6 +205,20 @@ return Application::configure(basePath: dirname(__DIR__))
     )->create();
 ```
 
+If you want to register multiple routes, you can pass array:
+
+```php
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        web: [
+          __DIR__.'/../routes/web.php',
+          __DIR__.'/../routes/admin.php',
+        ],
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )->create();
+```
+
 However, sometimes you may want to define an entirely new file to contain a subset of your application's routes. To accomplish this, you may provide a `then` closure to the `withRouting` method. Within this closure, you may register any additional routes that are necessary for your application:
 
 ```php
