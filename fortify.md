@@ -238,6 +238,20 @@ public function register(): void
 }
 ```
 
+You can also customize redirects from `config/fortify.php` configuration file by giving the desire route name for each of the following actions. for example, if you want to redirect to the dashboard route after verifying the email address, you can set `dashboard` the value of `email-verification` key in the `redirects` array.
+
+```php
+'redirects' => [
+    'login' => null,
+    'logout' => null,
+    'password-confirmation' => null,
+    'register' => null,
+    'email-verification' => 'dashboard',
+    'password-reset' => null,
+],
+```
+
+
 <a name="two-factor-authentication"></a>
 ## Two Factor Authentication
 
