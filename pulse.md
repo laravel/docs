@@ -342,7 +342,7 @@ If no regex patterns match the request's URL, then the `'default'` value will be
 You may also configure URL grouping so that similar URLs are grouped as a single entry. For example, you may wish to remove unique IDs from URL paths or group by domain only. Groups are configured using a regular expression to "find and replace" parts of the URL. Some examples are included in the configuration file:
 
 ```php
-Recorders\OutgoingRequests::class => [
+Recorders\SlowOutgoingRequests::class => [
     // ...
     'groups' => [
         // '#^https://api\.github\.com/repos/.*$#' => 'api.github.com/repos/*',
