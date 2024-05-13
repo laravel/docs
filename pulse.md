@@ -309,6 +309,20 @@ The `SlowJobs` recorder captures information about slow jobs occurring in your a
 
 You may optionally adjust the slow job threshold, [sample rate](#sampling), and ignored job patterns.
 
+You may have some jobs that you expect to take longer than others. In those cases, you may configure per-job thresholds:
+
+```php
+Recorders\SlowJobs::class => [
+    // ...
+    'threshold' => [
+        '#^App\\Jobs\\GenerateYearlyReports$#' => 5000,
+        'default' => env('PULSE_SLOW_JOBS_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the job's classname, then the `'default'` value will be used.
+
 <a name="slow-outgoing-requests-recorder"></a>
 #### Slow Outgoing Requests
 
@@ -316,10 +330,24 @@ The `SlowOutgoingRequests` recorder captures information about outgoing HTTP req
 
 You may optionally adjust the slow outgoing request threshold, [sample rate](#sampling), and ignored URL patterns.
 
+You may have some outgoing requests that you expect to take longer than others. In those cases, you may configure per-request thresholds:
+
+```php
+Recorders\SlowOutgoingRequests::class => [
+    // ...
+    'threshold' => [
+        '#backup.zip$#' => 5000,
+        'default' => env('PULSE_SLOW_OUTGOING_REQUESTS_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the request's URL, then the `'default'` value will be used.
+
 You may also configure URL grouping so that similar URLs are grouped as a single entry. For example, you may wish to remove unique IDs from URL paths or group by domain only. Groups are configured using a regular expression to "find and replace" parts of the URL. Some examples are included in the configuration file:
 
 ```php
-Recorders\OutgoingRequests::class => [
+Recorders\SlowOutgoingRequests::class => [
     // ...
     'groups' => [
         // '#^https://api\.github\.com/repos/.*$#' => 'api.github.com/repos/*',
@@ -338,12 +366,40 @@ The `SlowQueries` recorder captures any database queries in your application tha
 
 You may optionally adjust the slow query threshold, [sample rate](#sampling), and ignored query patterns. You may also configure whether to capture the query location. The captured location will be displayed on the Pulse dashboard which can help to track down the query origin; however, if the same query is made in multiple locations then it will appear multiple times for each unique location.
 
+You may have some queries that you expect to take longer than others. In those cases, you may configure per-query thresholds:
+
+```php
+Recorders\SlowQueries::class => [
+    // ...
+    'threshold' => [
+        '#^insert into `yearly_reports`#' => 5000,
+        'default' => env('PULSE_SLOW_QUERIES_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the query's SQL, then the `'default'` value will be used.
+
 <a name="slow-requests-recorder"></a>
 #### Slow Requests
 
 The `Requests` recorder captures information about requests made to your application for display on the [Slow Requests](#slow-requests-card) and [Application Usage](#application-usage-card) cards.
 
 You may optionally adjust the slow route threshold, [sample rate](#sampling), and ignored paths.
+
+You may have some requests that you expect to take longer than others. In those cases, you may configure per-request thresholds:
+
+```php
+Recorders\SlowRequests::class => [
+    // ...
+    'threshold' => [
+        '#^/admin/#' => 5000,
+        'default' => env('PULSE_SLOW_REQUESTS_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the request's URL, then the `'default'` value will be used.
 
 <a name="servers-recorder"></a>
 #### Servers
