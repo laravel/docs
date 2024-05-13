@@ -316,7 +316,7 @@ Recorders\SlowJobs::class => [
 ],
 ```
 
-If no regex patterns match the job's classname, then the `'default'` value will be used.
+If no regular expression patterns match the job's classname, then the `'default'` value will be used.
 
 <a name="slow-outgoing-requests-recorder"></a>
 #### Slow Outgoing Requests
@@ -337,7 +337,7 @@ Recorders\SlowOutgoingRequests::class => [
 ],
 ```
 
-If no regex patterns match the request's URL, then the `'default'` value will be used.
+If no regular expression patterns match the request's URL, then the `'default'` value will be used.
 
 You may also configure URL grouping so that similar URLs are grouped as a single entry. For example, you may wish to remove unique IDs from URL paths or group by domain only. Groups are configured using a regular expression to "find and replace" parts of the URL. Some examples are included in the configuration file:
 
@@ -373,7 +373,7 @@ Recorders\SlowQueries::class => [
 ],
 ```
 
-If no regex patterns match the query's SQL, then the `'default'` value will be used.
+If no regular expression patterns match the query's SQL, then the `'default'` value will be used.
 
 <a name="slow-requests-recorder"></a>
 #### Slow Requests
@@ -394,7 +394,7 @@ Recorders\SlowRequests::class => [
 ],
 ```
 
-If no regex patterns match the request's URL, then the `'default'` value will be used.
+If no regular expression patterns match the request's URL, then the `'default'` value will be used.
 
 <a name="servers-recorder"></a>
 #### Servers
