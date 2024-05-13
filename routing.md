@@ -205,7 +205,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )->create();
 ```
 
-If you want to register multiple routes, you can pass array:
+If you want to register multiple routes, you can pass an array to the `web` parameter in `withRouting` method:
 
 ```php
 return Application::configure(basePath: dirname(__DIR__))
