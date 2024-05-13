@@ -2029,7 +2029,7 @@ Validator::make($input, [
 ]);
 ```
 
-Also, you can give an array, Collection and Enum class.
+Also, you can give an array, [Collection](https://laravel.com/docs/collections) and Enum class.
 
 <a name="validating-nested-array-input"></a>
 ### Validating Nested Array Input
