@@ -7,6 +7,8 @@
     - [Presets](#presets)
     - [Rules](#rules)
     - [Excluding Files / Folders](#excluding-files-or-folders)
+- [Continuous Integration](#continuous-integration)
+    - [GitHub Actions](#running-tests-on-github-actions)
 
 <a name="introduction"></a>
 ## Introduction
@@ -155,4 +157,39 @@ If you would like to exclude a file by providing an exact path to the file, you 
         "path/to/excluded-file.php"
     ]
 }
+```
+
+<a name="continuous-integration"></a>
+## Continuous Integration
+
+<a name="running-tests-on-github-actions"></a>
+### GitHub Actions
+
+If you are using [GitHub Actions](https://github.com/features/actions) to configure Laravel Pint to run only on the files that have been committed to Git, you may use the following configuration file as a starting point:
+
+```yaml
+name: CI
+on: [push]
+jobs:
+
+  laravel-pint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Composer Dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+      - name: Get all changed php files
+        id: changed-php-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **.php
+      - name: Check all changed PHP files with Pint
+        if: steps.changed-php-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-php-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            vendor/bin/pint --test $file
+          done
 ```
