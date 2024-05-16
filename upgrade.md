@@ -318,7 +318,7 @@ If your existing migrations utilize the `uuid` schema builder method and you cho
 
 ```php
 Schema::table('users', function (Blueprint $table) {
-    $table->char('uuid', 36);
+    $table->char('uuid', 36)->unique();
 
     // ...
 });
