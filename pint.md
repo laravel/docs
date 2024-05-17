@@ -7,6 +7,8 @@
     - [Presets](#presets)
     - [Rules](#rules)
     - [Excluding Files / Folders](#excluding-files-or-folders)
+- [Continuous Integration](#continuous-integration)
+    - [GitHub Actions](#running-tests-on-github-actions)
 
 <a name="introduction"></a>
 ## Introduction
@@ -155,4 +157,48 @@ If you would like to exclude a file by providing an exact path to the file, you 
         "path/to/excluded-file.php"
     ]
 }
+```
+
+<a name="continuous-integration"></a>
+## Continuous Integration
+
+<a name="running-tests-on-github-actions"></a>
+### GitHub Actions
+
+To automate linting your project with Laravel Pint, you can configure [GitHub Actions](https://github.com/features/actions) to run Pint whenever new code is pushed to GitHub. First, be sure to grant "Read and write permissions" to workflows within GitHub at **Settings > Actions > General > Workflow permissions**. Then, create a `.github/workflows/lint.yml` file with the following content:
+
+```yaml
+name: Fix Code Style
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.3]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: json, dom, curl, libxml, mbstring
+          coverage: none
+
+      - name: Install Pint
+        run: composer global require laravel/pint
+
+      - name: Run Pint
+        run: pint
+
+      - name: Commit linted files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Fixes coding style"
 ```
