@@ -217,5 +217,11 @@ The `stateless` method may be used to disable session state verification. This i
 
     return Socialite::driver('google')->stateless()->user();
 
+If you want the redirect URL for stateless API, you can use this method:
+
+    use Laravel\Socialite\Facades\Socialite;
+
+    return Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+
 > [!WARNING]  
 > Stateless authentication is not available for the Twitter OAuth 1.0 driver.
