@@ -796,6 +796,19 @@ If you have defined a many-to-many relationship that uses a custom pivot model, 
      */
     public $incrementing = true;
 
+#### Custom Pivot Models and Custom Table Names
+
+If you want to define your table name on the pivot model using the `$table` property, you should pass the pivot model class name as the second argument to the `belongsToMany` method:
+
+    /**
+    * The users that belong to the role.
+    */
+    public function users(): BelongsToMany
+    {
+    return $this->belongsToMany(User::class, RoleUser::class);
+    }
+
+
 <a name="polymorphic-relationships"></a>
 ## Polymorphic Relationships
 
