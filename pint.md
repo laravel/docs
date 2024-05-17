@@ -165,31 +165,40 @@ If you would like to exclude a file by providing an exact path to the file, you 
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
 
-If you are using [GitHub Actions](https://github.com/features/actions) to configure Laravel Pint to run only on the files that have been committed to Git, you may use the following configuration file as a starting point:
+To automate linting your project with Laravel Pint, you can configure [GitHub Actions](https://github.com/features/actions) to run Pint whenever new code is pushed to GitHub. First, be sure to give "Read and write permissions" to workflows at **Settings > Actions > General > Workflow permissions**. Then, create a `.github/workflows/lint.yml` file with the following content:
 
 ```yaml
-name: CI
-on: [push]
-jobs:
+name: Fixes Coding Style
 
-  laravel-pint:
+on: [push]
+
+jobs:
+  lint:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.3]
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Install Composer Dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
-      - name: Get all changed php files
-        id: changed-php-files
-        uses: tj-actions/changed-files@v44
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          files: |
-            **.php
-      - name: Check all changed PHP files with Pint
-        if: steps.changed-php-files.outputs.any_changed == 'true'
-        env:
-          ALL_CHANGED_FILES: ${{ steps.changed-php-files.outputs.all_changed_files }}
-        run: |
-          for file in ${ALL_CHANGED_FILES}; do
-            vendor/bin/pint --test $file
-          done
+          php-version: ${{ matrix.php }}
+          extensions: json, dom, curl, libxml, mbstring
+          coverage: none
+
+      - name: Install Pint
+        run: composer global require laravel/pint
+
+      - name: Run Pint
+        run: pint
+
+      - name: Commit linted files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Fixes coding style"
 ```
