@@ -1695,6 +1695,12 @@ By default, the `queue:work` command only processes jobs for the default queue o
 php artisan queue:work redis --queue=emails
 ```
 
+It is also possible to force the command to use the `default` connection in this way:
+```shell
+php artisan queue:work null --queue=emails
+php artisan queue:work "" --queue=emails
+```
+
 <a name="processing-a-specified-number-of-jobs"></a>
 #### Processing a Specified Number of Jobs
 
