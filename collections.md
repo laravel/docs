@@ -2131,7 +2131,7 @@ The `search` method searches the collection for the given value and returns its 
 
 The search is done using a "loose" comparison, meaning a string with an integer value will be considered equal to an integer of the same value. To use "strict" comparison, pass `true` as the second argument to the method:
 
-    collect([2, 4, 6, 8])->search('4', $strict = true);
+    collect([2, 4, 6, 8])->search('4', strict: true);
 
     // false
 
