@@ -98,7 +98,7 @@ Typically, you will need to publish your package's configuration file to the app
     public function boot(): void
     {
         $this->publishes([
-            __DIR__.'/../config/courier.php' => config_path('courier.php'),
+            __DIR__ . '/../config/courier.php' => config_path('courier.php'),
         ]);
     }
 
@@ -122,7 +122,7 @@ The `mergeConfigFrom` method accepts the path to your package's configuration fi
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/courier.php', 'courier'
+            __DIR__ . '/../config/courier.php', 'courier'
         );
     }
 
@@ -139,7 +139,7 @@ If your package contains routes, you may load them using the `loadRoutesFrom` me
      */
     public function boot(): void
     {
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }
 
 <a name="migrations"></a>
@@ -153,7 +153,7 @@ If your package contains [database migrations](/docs/{{version}}/migrations), yo
     public function boot(): void
     {
         $this->publishesMigrations([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
         ]);
     }
 
@@ -167,7 +167,7 @@ If your package contains [language files](/docs/{{version}}/localization), you m
      */
     public function boot(): void
     {
-        $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'courier');
     }
 
 Package translation lines are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:
@@ -182,7 +182,7 @@ You can register JSON translation files for your package using the `loadJsonTran
  */
 public function boot(): void
 {
-    $this->loadJsonTranslationsFrom(__DIR__.'/../lang');
+    $this->loadJsonTranslationsFrom(__DIR__ . '/../lang');
 }
 ```
 
@@ -196,10 +196,10 @@ If you would like to publish your package's language files to the application's 
      */
     public function boot(): void
     {
-        $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'courier');
 
         $this->publishes([
-            __DIR__.'/../lang' => $this->app->langPath('vendor/courier'),
+            __DIR__ . '/../lang' => $this->app->langPath('vendor/courier'),
         ]);
     }
 
@@ -215,7 +215,7 @@ To register your package's [views](/docs/{{version}}/views) with Laravel, you ne
      */
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'courier');
     }
 
 Package views are referenced using the `package::view` syntax convention. So, once your view path is registered in a service provider, you may load the `dashboard` view from the `courier` package like so:
@@ -239,10 +239,10 @@ If you would like to make your views available for publishing to the application
      */
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'courier');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/courier'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/courier'),
         ]);
     }
 
@@ -350,7 +350,7 @@ Your package may have assets such as JavaScript, CSS, and images. To publish the
     public function boot(): void
     {
         $this->publishes([
-            __DIR__.'/../public' => public_path('vendor/courier'),
+            __DIR__ . '/../public' => public_path('vendor/courier'),
         ], 'public');
     }
 
@@ -371,11 +371,11 @@ You may want to publish groups of package assets and resources separately. For i
     public function boot(): void
     {
         $this->publishes([
-            __DIR__.'/../config/package.php' => config_path('package.php')
+            __DIR__ . '/../config/package.php' => config_path('package.php')
         ], 'courier-config');
 
         $this->publishesMigrations([
-            __DIR__.'/../database/migrations/' => database_path('migrations')
+            __DIR__ . '/../database/migrations/' => database_path('migrations')
         ], 'courier-migrations');
     }
 
