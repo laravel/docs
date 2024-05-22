@@ -158,6 +158,19 @@ Let's take a look at an example command. Note that we are able to request any de
 > [!NOTE]  
 > For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
 
+<a name="exit-codes"></a>
+#### Exit Codes
+
+If nothing is returned from the `handle` method and the command executes successfully, the command will exit with a `0` exit code, indicating success. However, the `handle` method may optionally return an integer to manually specify command's exit code:
+
+    $this->error('Something went wrong.');
+
+    return 1;
+
+If you would like to "fail" the command from another method within the command, you may utilize the `fail` method. The `fail` method will immediately terminate execution of the command and return an exit code of `1`:
+
+    $this->fail('Something went wrong.');
+
 <a name="closure-commands"></a>
 ### Closure Commands
 
