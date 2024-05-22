@@ -167,7 +167,7 @@ If nothing is returned from the `handle` method and the command executes success
 
     return 1;
 
-If you would like to "fail" the command from another method within the command, you may utilize the `fail` method. The `fail` method will immediately terminate execution of the command and return an exit code of `1`:
+If you would like to "fail" the command from any method within the command, you may utilize the `fail` method. The `fail` method will immediately terminate execution of the command and return an exit code of `1`:
 
     $this->fail('Something went wrong.');
 
