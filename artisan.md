@@ -158,6 +158,36 @@ Let's take a look at an example command. Note that we are able to request any de
 > [!NOTE]  
 > For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
 
+<a name="force-fail"></a>
+#### Forcing Non-Zero Exit Codes
+
+The `handle` method may optionally return an integer. This integer is used to indicate whether a command exited successfully (exit code: 0) or if it encountered an error (exit code 1..255) during execution. Some of these codes can be retrieved as constants on the command's class.
+
+    $this->error('Something bad happened.');
+    return static::FAILED; // int(1)
+
+When splitting up a command's handler into smaller functions, you might run into situations where you'd prefer to have the command error out __before__ returning to the handler. In these cases you can use the `fail` convenience method.
+
+    /**
+     * Execute the console command.
+     */
+    public function handle(): void
+    {
+        $document = new Document;
+        $document->validate();
+        $this->deliverPdf($document);
+        $this->notifyOwner($document);
+    }
+
+    protected function deliverPdf(Document $document): void
+    {
+        try {
+            $document->send($document->client);
+        } catch (Exception $e) {
+            $this->fail('Document failed to send.');
+        }
+    }
+
 <a name="closure-commands"></a>
 ### Closure Commands
 
