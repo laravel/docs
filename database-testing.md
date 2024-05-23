@@ -56,7 +56,7 @@ class ExampleTest extends TestCase
 
 The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database.
 
-If you need multiple connections to be refreshed, you can set `$this->connectionsToTransact = ['database_a', 'database_b']` in the `setUp()` method.
+If you need multiple connections to be refreshed, you can set the `$connectionsToTransact` property on your test class to be an array of connection names, e.g. `private array $connectionsToTransact = ['con_a', 'con_b']`.
 
 If you would like to totally reset the database, you may use the `Illuminate\Foundation\Testing\DatabaseMigrations` or `Illuminate\Foundation\Testing\DatabaseTruncation` traits instead. However, both of these options are significantly slower than the `RefreshDatabase` trait.
 
