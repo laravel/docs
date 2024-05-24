@@ -49,7 +49,7 @@
 #### Estimated Upgrade Time: 15 Minutes
 
 > [!NOTE]
-> We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
+> We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
@@ -116,7 +116,7 @@ Finally, you may remove the `doctrine/dbal` Composer dependency if you have prev
 
 Laravel 11 introduces a new default application structure with fewer default files. Namely, new Laravel applications contain fewer service providers, middleware, and configuration files.
 
-However, we do **not recommend** that Laravel 10 applications upgrading to Laravel 11 attempt to migrate their application structure, as Laravel 11 has been carefully tuned to also support the Laravel 10 application structure.
+However, we do **not recommend** that Laravel 10 applications that are upgrading to Laravel 11 attempt to migrate their application structure, as Laravel 11 has been carefully tuned to also support the Laravel 10 application structure.
 
 <a name="authentication"></a>
 ### Authentication
@@ -214,7 +214,7 @@ If your application is utilizing an SQLite database, SQLite 3.35.0 or greater is
 
 **Likelihood Of Impact: Low**
 
-The base Eloquent model class now defines a `casts` method in order to support the definition of attribute casts. If one of your application's models is defining a `casts` relationship, it may conflict with the `casts` method now present on the base Eloquent model class.
+The base Eloquent model class now defines a `casts` method to support the definition of attribute casts. If one of your application's models is defining a `casts` relationship, it may conflict with the `casts` method now present on the base Eloquent model class.
 
 <a name="modifying-columns"></a>
 #### Modifying Columns
@@ -239,7 +239,7 @@ Schema::table('users', function (Blueprint $table) {
 });
 ```
 
-In Laravel 10, this migration would retain the `unsigned`, `default`, and `comment` attributes on the column. However, in Laravel 11, the migration must now also include all of the attributes that were previously defined on the column. Otherwise, they will be dropped:
+In Laravel 10, this migration would retain the `unsigned`, `default`, and `comment` attributes on the column. However, in Laravel 11, the migration must now also include all of the attributes that were previously defined in the column. Otherwise, they will be dropped:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
@@ -277,19 +277,19 @@ Once your migrations have been squashed, Laravel will "migrate" the database usi
 
 The `double` and `float` migration column types have been rewritten to be consistent across all databases.
 
-The `double` column type now creates a `DOUBLE` equivalent column without total digits and places (digits after decimal point), which is the standard SQL syntax. Therefore, you may remove the arguments for `$total` and `$places`:
+The `double` column type now creates a `DOUBLE` equivalent column without total digits and places (digits after the decimal point), which is the standard SQL syntax. Therefore, you may remove the arguments for `$total` and `$places`:
 
 ```php
 $table->double('amount');
 ```
 
-The `float` column type now creates a `FLOAT` equivalent column without total digits and places (digits after decimal point), but with an optional `$precision` specification to determine storage size as a 4-byte single-precision column or an 8-byte double-precision column. Therefore, you may remove the arguments for `$total` and `$places` and specify the optional `$precision` to your desired value and according to your database's documentation:
+The `float` column type now creates a `FLOAT` equivalent column without total digits and places (digits after the decimal point) but with an optional `$precision` specification to determine storage size as a 4-byte single-precision column or an 8-byte double-precision column. Therefore, you may remove the arguments for `$total` and `$places` and specify the optional `$precision` to your desired value according to your database's documentation:
 
 ```php
 $table->float('amount', precision: 53);
 ```
 
-The `unsignedDecimal`, `unsignedDouble`, and `unsignedFloat` methods have been removed, as the unsigned modifier for these column types has been deprecated by MySQL, and was never standardized on other database systems. However, if you wish to continue using the deprecated unsigned attribute for these column types, you may chain the `unsigned` method onto the column's definition:
+The `unsignedDecimal`, `unsignedDouble`, and `unsignedFloat` methods have been removed, as the `unsigned` modifier for these column types has been deprecated by MySQL, and was never standardized on other database systems. However, if you wish to continue using the deprecated `unsigned` attribute for these column types, you may chain the `unsigned` method onto the column's definition:
 
 ```php
 $table->decimal('amount', total: 8, places: 2)->unsigned();
@@ -304,7 +304,7 @@ $table->float('amount', precision: 53)->unsigned();
 
 Instead of always utilizing the MySQL driver when connecting to MariaDB databases, Laravel 11 adds a dedicated database driver for MariaDB.
 
-If your application connects to a MariaDB database, you may update the connection configuration to the new `mariadb` driver to benefit from MariaDB specific features in the future:
+If your application connects to a MariaDB database, you may update the connection configuration to the new `mariadb` driver to benefit from MariaDB-specific features in the future:
 
     'driver' => 'mariadb',
     'url' => env('DB_URL'),
@@ -314,7 +314,7 @@ If your application connects to a MariaDB database, you may update the connectio
 
 Currently, the new MariaDB driver behaves like the current MySQL driver with one exception: the `uuid` schema builder method creates native UUID columns instead of `char(36)` columns.
 
-If your existing migrations utilize the `uuid` schema builder method and you choose to use the new `mariadb` database driver, you should update your migration's invocations of the `uuid` method to `char` to avoid breaking changes or unexpected behavior:
+Suppose your existing migrations utilize the `uuid` schema builder method and you choose to use the new `mariadb` database driver. In that case, you should update your migration's invocations of the `uuid` method to `char` to avoid breaking changes or unexpected behavior:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
@@ -343,14 +343,14 @@ $table->geometry('dimension', subtype: 'polygon', srid: 0);
 $table->geography('latitude', subtype: 'point', srid: 4326);
 ```
 
-The `isGeometry` and `projection` column modifiers of the PostgreSQL grammar have been removed accordingly.
+The PostgreSQL grammar's `isGeometry` and `projection` column modifiers have been removed accordingly.
 
 <a name="doctrine-dbal-removal"></a>
 #### Doctrine DBAL Removal
 
 **Likelihood Of Impact: Low**
 
-The following list of Doctrine DBAL related classes and methods have been removed. Laravel is no longer dependent on this package and registering custom Doctrines types is no longer necessary for the proper creation and alteration of various column types that previously required custom types:
+The following list of Doctrine DBAL-related classes and methods has been removed. Laravel is no longer dependent on this package and registering custom Doctrine types is no longer necessary for the proper creation and alteration of various column types that previously required custom types:
 
 <div class="content-list" markdown="1">
 
@@ -373,7 +373,7 @@ The following list of Doctrine DBAL related classes and methods have been remove
 
 In addition, registering custom Doctrine types via `dbal.types` in your application's `database` configuration file is no longer required.
 
-If you were previously using Doctrine DBAL to inspect your database and its associated tables, you may use Laravel's new native schema methods (`Schema::getTables()`, `Schema::getColumns()`, `Schema::getIndexes()`, `Schema::getForeignKeys()`, etc.) instead.
+If you were previously using Doctrine DBAL to inspect your database and its associated tables, you might use Laravel's new native schema methods (`Schema::getTables()`, `Schema::getColumns()`, `Schema::getIndexes()`, `Schema::getForeignKeys()`, etc.) instead.
 
 <a name="deprecated-schema-methods"></a>
 #### Deprecated Schema Methods
@@ -393,14 +393,14 @@ Schema::connection('database')->hasTable('schema.table');
 
 **Likelihood Of Impact: Very Low**
 
-The `Schema::getColumnType()` method now always returns actual type of the given column, not the Doctrine DBAL equivalent type.
+The `Schema::getColumnType()` method now always returns the actual type of the given column, not the Doctrine DBAL equivalent type.
 
 <a name="database-connection-interface"></a>
 #### Database Connection Interface
 
 **Likelihood Of Impact: Very Low**
 
-The `Illuminate\Database\ConnectionInterface` interface has received a new `scalar` method. If you are defining your own implementation of this interface, you should add the `scalar` method to your implementation:
+The `Illuminate\Database\ConnectionInterface` interface has received a new `scalar` method. If you are defining your implementation of this interface, you should add the `scalar` method to your implementation:
 
 ```php
 public function scalar($query, $bindings = [], $useReadPdo = true);
@@ -440,7 +440,7 @@ public function sendNow($mailable, array $data = [], $callback = null);
 
 If you have written a Laravel package that manually publishes a service provider to the application's `app/Providers` directory and manually modifies the application's `config/app.php` configuration file to register the service provider, you should update your package to utilize the new `ServiceProvider::addProviderToBootstrapFile` method.
 
-The `addProviderToBootstrapFile` method will automatically add the service provider you have published to the application's `bootstrap/providers.php` file, since the `providers` array does not exist within the `config/app.php` configuration file in new Laravel 11 applications.
+The `addProviderToBootstrapFile` method will automatically add the service provider you have published to the application's `bootstrap/providers.php` file since the `providers` array does not exist within the `config/app.php` configuration file in new Laravel 11 applications.
 
 ```php
 use Illuminate\Support\ServiceProvider;
@@ -456,7 +456,7 @@ ServiceProvider::addProviderToBootstrapFile(Provider::class);
 
 **Likelihood Of Impact: Very Low**
 
-The `Illuminate\Bus\BatchRepository` interface has received a new `rollBack` method. If you are implementing this interface within your own package or application, you should add this method to your implementation:
+The `Illuminate\Bus\BatchRepository` interface has received a new `rollBack` method. If you are implementing this interface within your package or application, you should add this method to your implementation:
 
 ```php
 public function rollBack();
