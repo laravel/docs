@@ -1036,7 +1036,7 @@ You may use the `waitUntilMissingText` method to wait until the displayed text h
     $browser->waitUntilMissingText('Hello World', 1);
 
 <a name="waiting-for-title"></a>
-#### Waiting for Text
+#### Waiting for Title
 
 The `waitForTitle` method may be used to wait until the given title is appears in the page's title bar.
 
