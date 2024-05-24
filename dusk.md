@@ -1035,6 +1035,17 @@ You may use the `waitUntilMissingText` method to wait until the displayed text h
     // Wait a maximum of one second for the text to be removed...
     $browser->waitUntilMissingText('Hello World', 1);
 
+<a name="waiting-for-title"></a>
+#### Waiting for Text
+
+The `waitForTitle` method may be used to wait until the given title is appears in the page's title bar.
+
+    // Wait a maximum of five seconds for the text...
+    $browser->waitForTitle('Laravel');
+
+    // Wait a maximum of one second for the text...
+    $browser->waitForTitle('Laravel', 1);
+
 <a name="waiting-for-links"></a>
 #### Waiting for Links
 
