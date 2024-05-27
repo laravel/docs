@@ -595,10 +595,8 @@ Or, if you already have a collection of Eloquent models in memory, you may call 
 
     $orders->unsearchable();
 
-As an alternative to `scout:flush`, you may also flush all of a model's records from the index using the `removeAllFromSearch` method.
+To remove all of the model records from their corresponding index, you may invoke the `removeAllFromSearch` method:
 
-    use App\Models\Order;
-    
     Order::removeAllFromSearch();
 
 <a name="pausing-indexing"></a>
