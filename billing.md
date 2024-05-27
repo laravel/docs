@@ -266,8 +266,8 @@ To charge customers for non-recurring, single-charge products, we'll utilize Cas
         ]);
     })->name('checkout');
 
-    Route::view('checkout.success')->name('checkout-success');
-    Route::view('checkout.cancel')->name('checkout-cancel');
+    Route::view('/checkout/success', 'checkout.success')->name('checkout-success');
+    Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout-cancel');
 
 As you can see in the example above, we will utilize Cashier's provided `checkout` method to redirect the customer to Stripe Checkout for a given "price identifier". When using Stripe, "prices" refer to [defined prices for specific products](https://stripe.com/docs/products-prices/how-products-and-prices-work).
 
