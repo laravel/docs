@@ -421,6 +421,14 @@ $categories = multiselect(
 );
 ```
 
+You may allow the user to easily select all options via the `canSelectAll` argument:
+
+$categories = multiselect(
+    label: 'What categories should be assigned?',
+    options: Category::pluck('name', 'id'),
+    canSelectAll: true
+);
+
 <a name="multiselect-required"></a>
 #### Requiring a Value
 
