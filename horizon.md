@@ -105,6 +105,8 @@ While your application is in [maintenance mode](/docs/{{version}}/configuration#
 
 Within Horizon's default configuration file, you will notice a `defaults` configuration option. This configuration option specifies the default values for your application's [supervisors](#supervisors). The supervisor's default configuration values will be merged into the supervisor's configuration for each environment, allowing you to avoid unnecessary repetition when defining your supervisors.
 
+Horizon uses a prefix when storing all Horizon data in Redis. You may modify the prefix by configuring HORIZON_PREFIX when running multiple installations of Horizon on the same server to avoid conflicts. If you change the prefix, remember that it must end with a colon (":").
+
 <a name="balancing-strategies"></a>
 ### Balancing Strategies
 
