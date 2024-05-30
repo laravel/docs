@@ -98,6 +98,17 @@ In general, each of your tests should only make one request to your application.
 > [!NOTE]
 > For convenience, the CSRF middleware is automatically disabled when running tests.
 
+> [!NOTE]
+> If you get an ``` Did you forget to use the [uses()] function? ``` error when using pest, add this line
+```php tab=PHPUnit
+     <?PHP
+
+     use Tests\TestCase;
+
+     uses(TestCase::class);
+     //... another code below
+ ```
+
 <a name="customizing-request-headers"></a>
 ### Customizing Request Headers
 
