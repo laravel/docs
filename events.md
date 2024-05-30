@@ -328,7 +328,7 @@ If you would like to define the listener's queue connection, queue name, or dela
 <a name="conditionally-queueing-listeners"></a>
 #### Conditionally Queueing Listeners
 
-Sometimes, you may need to determine whether a listener should be queued based on some data that are only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be executed:
+Sometimes, you may need to determine whether a listener should be queued based on some data that are only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be queued:
 
     <?php
 
