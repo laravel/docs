@@ -199,6 +199,43 @@ The `dump` method of the `Illuminate\Support\Enumerable` contract has been updat
 public function dump(...$args);
 ```
 
+<a name="controllers"></a>
+### Controllers
+
+<a name="controller-middleware"></a>
+#### Controller Middleware
+
+**Likelihood Of Impact: Medium**
+
+The `middleware` method which used to be called from your Controller's constructor has removed. If you are applying middelware within your controller you should update to use the new style for [controller middleware](/docs/{{version}}/controllers#controller-middleware):
+
+```php
+<?php
+ 
+namespace App\Http\Controllers;
+ 
+use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+ 
+class UserController extends Controller implements HasMiddleware
+{
+    /**
+     * Get the middleware that should be assigned to the controller.
+     */
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+            new Middleware('log', only: ['index']),
+            new Middleware('subscribed', except: ['store']),
+        ];
+    }
+ 
+    // ...
+}
+```
+
 <a name="database"></a>
 ### Database
 
