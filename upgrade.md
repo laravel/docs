@@ -24,6 +24,7 @@
 - [Carbon 3](#carbon-3)
 - [Password Rehashing](#password-rehashing)
 - [Per-Second Rate Limiting](#per-second-rate-limiting)
+- [Controller Middleware](#controller-middleware)
 
 </div>
 
