@@ -2031,7 +2031,7 @@ The `matchAll` method will return a collection containing the portions of a stri
 
     // collect(['bar', 'bar'])
 
-If you specify a matching group within the expression, Laravel will return a collection of only the first group's matches:
+If you specify a matching group within the expression, Laravel will return a collection of the first matching group's matches:
 
     use Illuminate\Support\Str;
 
