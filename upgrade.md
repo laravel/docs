@@ -208,7 +208,7 @@ public function dump(...$args);
 
 **Likelihood Of Impact: Medium**
 
-The `middleware` method which used to be called from your Controller's constructor has removed. If you are applying middelware within your controller you should update to use the new style for [controller middleware](/docs/{{version}}/controllers#controller-middleware):
+The `middleware` method which used to be called from your Controller's constructor has removed. If you are applying middleware within your controller you should remove `$this->middleware` from your constructor and migrate to use the new style for [controller middleware](/docs/{{version}}/controllers#controller-middleware):
 
 ```php
 <?php
