@@ -5,6 +5,7 @@
 - [Laravel 9](#laravel-9)
 
 <a name="versioning-scheme"></a>
+
 ## Versioning Scheme
 
 Laravel and its other first-party packages follow [Semantic Versioning](https://semver.org). Major framework releases are released every year (~February), while minor and patch releases may be released as often as every week. Minor and patch releases should **never** contain breaking changes.
@@ -12,22 +13,24 @@ Laravel and its other first-party packages follow [Semantic Versioning](https://
 When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `^9.0`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
 
 <a name="named-arguments"></a>
+
 #### Named Arguments
 
 [Named arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments) are not covered by Laravel's backwards compatibility guidelines. We may choose to rename function arguments when necessary in order to improve the Laravel codebase. Therefore, using named arguments when calling Laravel methods should be done cautiously and with the understanding that the parameter names may change in the future.
 
 <a name="support-policy"></a>
+
 ## Support Policy
 
 For all Laravel releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest major release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
 
-| Version | PHP (*) | Release | Bug Fixes Until | Security Fixes Until |
-| --- | --- | --- | --- | --- |
-| 6 (LTS) | 7.2 - 8.0 | September 3rd, 2019 | January 25th, 2022 | September 6th, 2022 |
-| 7 | 7.2 - 8.0 | March 3rd, 2020 | October 6th, 2020 | March 3rd, 2021 |
-| 8 | 7.3 - 8.1 | September 8th, 2020 | July 26th, 2022 | January 24th, 2023 |
-| 9 | 8.0 - 8.2 | February 8th, 2022 | August 8th, 2023 | February 6th, 2024 |
-| 10 | 8.1 - 8.2 | Q1 2023 | August 6th, 2024 | February 4th, 2025 |
+| Version | PHP (\*)  | Release             | Bug Fixes Until    | Security Fixes Until |
+| ------- | --------- | ------------------- | ------------------ | -------------------- |
+| 6 (LTS) | 7.2 - 8.0 | September 3rd, 2019 | January 25th, 2022 | September 6th, 2022  |
+| 7       | 7.2 - 8.0 | March 3rd, 2020     | October 6th, 2020  | March 3rd, 2021      |
+| 8       | 7.3 - 8.1 | September 8th, 2020 | July 26th, 2022    | January 24th, 2023   |
+| 9       | 8.0 - 8.2 | February 8th, 2022  | August 8th, 2023   | February 6th, 2024   |
+| 10      | 8.1 - 8.3 | February 14th, 2023 | August 6th, 2024   | February 4th, 2025   |
 
 <div class="version-colors">
     <div class="end-of-life">
@@ -40,9 +43,10 @@ For all Laravel releases, bug fixes are provided for 18 months and security fixe
     </div>
 </div>
 
-(*) Supported PHP versions
+(\*) Supported PHP versions
 
 <a name="laravel-9"></a>
+
 ## Laravel 9
 
 As you may know, Laravel transitioned to yearly releases with the release of Laravel 8. Previously, major versions were released every 6 months. This transition is intended to ease the maintenance burden on the community and challenge our development team to ship amazing, powerful new features without introducing breaking changes. Therefore, we have shipped a variety of robust features to Laravel 8 without breaking backwards compatibility, such as parallel testing support, improved Breeze starter kits, HTTP client improvements, and even new Eloquent relationship types such as "has one of many".
@@ -52,11 +56,13 @@ Therefore, this commitment to ship great new features during the current release
 Laravel 9 continues the improvements made in Laravel 8.x by introducing support for Symfony 6.0 components, Symfony Mailer, Flysystem 3.0, improved `route:list` output, a Laravel Scout database driver, new Eloquent accessor / mutator syntax, implicit route bindings via Enums, and a variety of other bug fixes and usability improvements.
 
 <a name="php-8"></a>
+
 ### PHP 8.0
 
 Laravel 9.x requires a minimum PHP version of 8.0.
 
 <a name="symfony-mailer"></a>
+
 ### Symfony Mailer
 
 _Symfony Mailer support was contributed by [Dries Vints](https://github.com/driesvints)_, [James Brooks](https://github.com/jbrooksuk), and [Julius Kiekbusch](https://github.com/Jubeki).
@@ -66,6 +72,7 @@ Previous releases of Laravel utilized the [Swift Mailer](https://swiftmailer.sym
 Please review the [upgrade guide](/docs/{{version}}/upgrade#symfony-mailer) to learn more about ensuring your application is compatible with Symfony Mailer.
 
 <a name="flysystem-3"></a>
+
 ### Flysystem 3.x
 
 _Flysystem 3.x support was contributed by [Dries Vints](https://github.com/driesvints)_.
@@ -75,6 +82,7 @@ Laravel 9.x upgrades our upstream Flysystem dependency to Flysystem 3.x. Flysyst
 Please review the [upgrade guide](/docs/{{version}}/upgrade#flysystem-3) to learn more about ensuring your application is compatible with Flysystem 3.x.
 
 <a name="eloquent-accessors-and-mutators"></a>
+
 ### Improved Eloquent Accessors / Mutators
 
 _Improved Eloquent accessors / mutators was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
@@ -129,6 +137,7 @@ public function address(): Attribute
 ```
 
 <a name="enum-casting"></a>
+
 ### Enum Eloquent Attribute Casting
 
 > **Warning**  
@@ -158,6 +167,7 @@ Once you have defined the cast on your model, the specified attribute will be au
     }
 
 <a name="implicit-route-bindings-with-enums"></a>
+
 ### Implicit Route Bindings With Enums
 
 _Implicit Enum bindings was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
@@ -181,6 +191,7 @@ Route::get('/categories/{category}', function (Category $category) {
 ```
 
 <a name="forced-scoping-of-route-bindings"></a>
+
 ### Forced Scoping Of Route Bindings
 
 _Forced scoped bindings was contributed by [Claudio Dekker](https://github.com/claudiodekker)_.
@@ -214,6 +225,7 @@ Or, you may instruct an entire group of route definitions to use scoped bindings
     });
 
 <a name="controller-route-groups"></a>
+
 ### Controller Route Groups
 
 _Route group improvements were contributed by [Luke Downing](https://github.com/lukeraymonddowning)_.
@@ -228,6 +240,7 @@ You may now use the `controller` method to define the common controller for all 
     });
 
 <a name="full-text"></a>
+
 ### Full Text Indexes / Where Clauses
 
 _Full text indexes and "where" clauses were contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Dries Vints](https://github.com/driesvints)_.
@@ -243,6 +256,7 @@ In addition, the `whereFullText` and `orWhereFullText` methods may be used to ad
                ->get();
 
 <a name="laravel-scout-database-engine"></a>
+
 ### Laravel Scout Database Engine
 
 _The Laravel Scout database engine was contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Dries Vints](https://github.com/driesvints)_.
@@ -252,6 +266,7 @@ If your application interacts with small to medium sized databases or has a ligh
 To learn more about the Scout database engine, consult the [Scout documentation](/docs/{{version}}/scout).
 
 <a name="rendering-inline-blade-templates"></a>
+
 ### Rendering Inline Blade Templates
 
 _Rendering inline Blade templates was contributed by [Jason Beggs](https://github.com/jasonlbeggs). Rendering inline Blade components was contributed by [Toby Zerner](https://github.com/tobyzerner)_.
@@ -273,6 +288,7 @@ return Blade::renderComponent(new HelloComponent('Julian Bashir'));
 ```
 
 <a name="slot-name-shortcut"></a>
+
 ### Slot Name Shortcut
 
 _Slot name shortcuts were contributed by [Caleb Porzio](https://github.com/calebporzio)._
@@ -298,6 +314,7 @@ However, beginning in Laravel 9.x, you may specify the slot's name using a conve
 ```
 
 <a name="checked-selected-blade-directives"></a>
+
 ### Checked / Selected Blade Directives
 
 _Checked and selected Blade directives were contributed by [Ash Allen](https://github.com/ash-jc-allen) and [Taylor Otwell](https://github.com/taylorotwell)_.
@@ -324,6 +341,7 @@ Likewise, the `@selected` directive may be used to indicate if a given select op
 ```
 
 <a name="bootstrap-5-pagination-views"></a>
+
 ### Bootstrap 5 Pagination Views
 
 _Bootstrap 5 pagination views were contributed by [Jared Lewis](https://github.com/jrd-lewis)_.
@@ -343,6 +361,7 @@ Laravel now includes pagination views built using [Bootstrap 5](https://getboots
     }
 
 <a name="improved-validation-of-nested-array-data"></a>
+
 ### Improved Validation Of Nested Array Data
 
 _Improved validation of nested array inputs was contributed by [Steve Bauman](https://github.com/stevebauman)_.
@@ -363,6 +382,7 @@ Sometimes you may need to access the value for a given nested array element when
     ]);
 
 <a name="laravel-breeze-api"></a>
+
 ### Laravel Breeze API & Next.js
 
 _The Laravel Breeze API scaffolding and Next.js starter kit was contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Miguel Piedrafita](https://twitter.com/m1guelpf)_.
@@ -370,6 +390,7 @@ _The Laravel Breeze API scaffolding and Next.js starter kit was contributed by [
 The [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-next) starter kit has received an "API" scaffolding mode and complimentary [Next.js](https://nextjs.org) [frontend implementation](https://github.com/laravel/breeze-next). This starter kit scaffolding may be used to jump start your Laravel applications that are serving as a backend, Laravel Sanctum authenticated API for a JavaScript frontend.
 
 <a name="exception-page"></a>
+
 ### Improved Ignition Exception Page
 
 _Ignition is developed by [Spatie](https://spatie.be/)._
@@ -381,6 +402,7 @@ Ignition, the open source exception debug page created by Spatie, has been redes
 </p>
 
 <a name="improved-route-list"></a>
+
 ### Improved `route:list` CLI Output
 
 _Improved `route:list` CLI output was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
@@ -392,6 +414,7 @@ The `route:list` CLI output has been significantly improved for the Laravel 9.x 
 </p>
 
 <a name="test-coverage-support-on-artisan-test-Command"></a>
+
 ### Test Coverage Using Artisan `test` Command
 
 _Test coverage when using the Artisan `test` command was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
@@ -419,6 +442,7 @@ php artisan test --coverage --min=80.3
 </p>
 
 <a name="soketi-echo-server"></a>
+
 ### Soketi Echo Server
 
 _The Soketi Echo server was developed by [Alex Renoki](https://github.com/rennokki)_.
@@ -428,6 +452,7 @@ Although not exclusive to Laravel 9.x, Laravel has recently assisted with the do
 For more information on using Soketi, please consult the [broadcasting documentation](/docs/{{version}}/broadcasting) and [Soketi documentation](https://docs.soketi.app/).
 
 <a name="improved-collections-ide-support"></a>
+
 ### Improved Collections IDE Support
 
 _Improved collections IDE support was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
@@ -439,11 +464,13 @@ Laravel 9.x adds improved, "generic" style type definitions to the collections c
 </p>
 
 <a name="new-helpers"></a>
+
 ### New Helpers
 
 Laravel 9.x introduces two new, convenient helper functions that you may use in your own application.
 
 <a name="new-helpers-str"></a>
+
 #### `str`
 
 The `str` function returns a new `Illuminate\Support\Stringable` instance for the given string. This function is equivalent to the `Str::of` method:
@@ -459,6 +486,7 @@ If no argument is provided to the `str` function, the function returns an instan
     // 'laravel_framework'
 
 <a name="new-helpers-to-route"></a>
+
 #### `to_route`
 
 The `to_route` function generates a redirect HTTP response for a given named route, providing an expressive way to redirect to named routes from your routes and controllers:
