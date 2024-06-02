@@ -283,12 +283,12 @@ server {
 
     charset utf-8;
 
-    location /index.php {
-        try_files /not_exists @octane;
-    }
-
     location / {
         try_files $uri $uri/ @octane;
+    }
+
+    location ~ \.php$ {
+        include octane.conf;
     }
 
     location = /favicon.ico { access_log off; log_not_found off; }
