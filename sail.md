@@ -237,14 +237,14 @@ sail yarn
 
 啟動容器後，您可以通過將應用程式的 `.env` 文件中的 `DB_HOST` 環境變數設置為 `mysql` 來連接到應用程式內的 MySQL 實例。
 
-要從本地電腦連接到應用程式的 MySQL 資料庫，您可以使用圖形化資料庫管理應用程式，如 [TablePlus](https://tableplus.com)。預設情況下，MySQL 資料庫可在 `localhost` 埠 3306 訪問，訪問憑證對應於您的 `DB_USERNAME` 和 `DB_PASSWORD` 環境變數的值。或者，您可以作為 `root` 用戶連接，該用戶也使用您的 `DB_PASSWORD` 環境變數的值作為密碼。
+要從本地電腦連接到應用程式的 MySQL 資料庫，您可以使用圖形化資料庫管理應用程式，如 [TablePlus](https://tableplus.com)。預設情況下，MySQL 資料庫可在 `localhost` port 3306 訪問，訪問憑證對應於您的 `DB_USERNAME` 和 `DB_PASSWORD` 環境變數的值。或者，您可以作為 `root` 用戶連接，該用戶也使用您的 `DB_PASSWORD` 環境變數的值作為密碼。
 
 <a name="redis"></a>
 ### Redis
 
 您的應用程式的 `docker-compose.yml` 文件中還包含一個 [Redis](https://redis.io) 容器的條目。此容器使用 [Docker volume](https://docs.docker.com/storage/volumes/)，因此即使在停止和重啟容器時，存儲在 Redis 中的數據也會被持久化。啟動容器後，您可以通過將應用程式的 `.env` 文件中的 `REDIS_HOST` 環境變數設置為 `redis` 來連接到應用程式內的 Redis 實例。
 
-要從本地電腦連接到應用程式的 Redis 資料庫，您可以使用圖形化資料庫管理應用程式，如 [TablePlus](https://tableplus.com)。預設情況下，Redis 資料庫可在 `localhost` 埠 6379 訪問。
+要從本地電腦連接到應用程式的 Redis 資料庫，您可以使用圖形化資料庫管理應用程式，如 [TablePlus](https://tableplus.com)。預設情況下，Redis 資料庫可在 `localhost` port 6379 訪問。
 
 <a name="meilisearch"></a>
 ### Meilisearch
@@ -366,7 +366,7 @@ selenium:
 <a name="previewing-emails"></a>
 ## 預覽電子郵件
 
-Laravel Sail 的預設 `docker-compose.yml` 文件包含 [Mailpit](https://github.com/axllent/mailpit) 服務的條目。Mailpit 會攔截應用程式在本地開發期間發送的電子郵件，並提供一個方便的網頁界面，讓您可以在瀏覽器中預覽電子郵件訊息。使用 Sail 時，Mailpit 的預設主機是 `mailpit`，並通過 1025 埠可用：
+Laravel Sail 的預設 `docker-compose.yml` 文件包含 [Mailpit](https://github.com/axllent/mailpit) 服務的條目。Mailpit 會攔截應用程式在本地開發期間發送的電子郵件，並提供一個方便的網頁界面，讓您可以在瀏覽器中預覽電子郵件訊息。使用 Sail 時，Mailpit 的預設主機是 `mailpit`，並通過 1025 port可用：
 
 ```ini
 MAIL_HOST=mailpit
