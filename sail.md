@@ -231,9 +231,9 @@ sail yarn
 <a name="mysql"></a>
 ### MySQL
 
-如您所見，您的應用程式的 `docker-compose.yml` 文件中包含一個 MySQL 容器的條目。此容器使用 [Docker volume](https://docs.docker.com/storage/volumes/)，因此即使在停止和重啟容器時，存儲在資料庫中的數據也會被持久化。
+如您所見，您的應用程式的 `docker-compose.yml` 文件中包含一個 MySQL 容器的條目。此容器使用 [Docker volume](https://docs.docker.com/storage/volumes/)，因此即使在停止和重啟容器時，存儲在資料庫中的資料也會被持久化。
 
-此外，MySQL 容器首次啟動時，將為您創建兩個資料庫。第一個資料庫使用您的 `DB_DATABASE` 環境變數的值命名，用於本地開發。第二個是名為 `testing` 的專用測試資料庫，將確保您的測試不會干擾您的開發數據。
+此外，MySQL 容器首次啟動時，將為您創建兩個資料庫。第一個資料庫使用您的 `DB_DATABASE` 環境變數的值命名，用於本地開發。第二個是名為 `testing` 的專用測試資料庫，將確保您的測試不會干擾您的開發資料。
 
 啟動容器後，您可以通過將應用程式的 `.env` 文件中的 `DB_HOST` 環境變數設置為 `mysql` 來連接到應用程式內的 MySQL 實例。
 
@@ -242,7 +242,7 @@ sail yarn
 <a name="redis"></a>
 ### Redis
 
-您的應用程式的 `docker-compose.yml` 文件中還包含一個 [Redis](https://redis.io) 容器的條目。此容器使用 [Docker volume](https://docs.docker.com/storage/volumes/)，因此即使在停止和重啟容器時，存儲在 Redis 中的數據也會被持久化。啟動容器後，您可以通過將應用程式的 `.env` 文件中的 `REDIS_HOST` 環境變數設置為 `redis` 來連接到應用程式內的 Redis 實例。
+您的應用程式的 `docker-compose.yml` 文件中還包含一個 [Redis](https://redis.io) 容器的條目。此容器使用 [Docker volume](https://docs.docker.com/storage/volumes/)，因此即使在停止和重啟容器時，存儲在 Redis 中的資料也會被持久化。啟動容器後，您可以通過將應用程式的 `.env` 文件中的 `REDIS_HOST` 環境變數設置為 `redis` 來連接到應用程式內的 Redis 實例。
 
 要從本地電腦連接到應用程式的 Redis 資料庫，您可以使用圖形化資料庫管理應用程式，如 [TablePlus](https://tableplus.com)。預設情況下，Redis 資料庫可在 `localhost` port 6379 訪問。
 
