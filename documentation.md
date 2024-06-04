@@ -21,6 +21,7 @@
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
+    - [Redirects](/docs/{{version}}/redirects)
     - [Views](/docs/{{version}}/views)
     - [Blade Templates](/docs/{{version}}/blade)
     - [Asset Bundling](/docs/{{version}}/vite)
