@@ -1704,6 +1704,8 @@ Cashier automatically handles subscription cancellations for failed charges and 
 - `Laravel\Cashier\Events\WebhookReceived`
 - `Laravel\Cashier\Events\WebhookHandled`
 
+`WebhookReceived` is handled before Cashier takes over, `WebhookHandled` is after Cashier handles the event. Recommend `WebhookReceived` for any Stripe events that are not covered in this section.
+
 Both events contain the full payload of the Stripe webhook. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
 
     <?php
