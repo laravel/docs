@@ -1223,3 +1223,4 @@ For convenience, each migration operation will dispatch an [event](/docs/{{versi
 | `Illuminate\Database\Events\MigrationEnded` | A single migration has finished executing. |
 | `Illuminate\Database\Events\SchemaDumped` | A database schema dump has completed. |
 | `Illuminate\Database\Events\SchemaLoaded` | An existing database schema dump has loaded. |
+| `Illuminate\Database\Events\NoPendingMigrations` | Nothing to migrate. |
