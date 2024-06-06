@@ -225,13 +225,9 @@ forge        hard  nofile  10000
 
 Under the hood, Reverb uses a ReactPHP event loop to manage WebSocket connections on the server. By default, this event loop is powered by `stream_select`, which doesn't require any additional extensions. However, `stream_select` is typically limited to 1,024 open files. As such, if you plan to handle more than 1,000 concurrent connections, you will need to use an alternative event loop not bound to the same restrictions.
 
-Reverb will automatically switch to an `ext-event`, `ext-ev`, or `ext-uv` powered loop when available. All of these PHP extensions are available for install via PECL:
+Reverb will automatically switch to an `ext-uv` powered loop when available. This PHP extension is available for install via PECL:
 
 ```sh
-pecl install event
-# or
-pecl install ev
-# or
 pecl install uv
 ```
 
