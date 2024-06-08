@@ -1029,7 +1029,23 @@ The `updateOrInsert` method will attempt to locate a matching database record us
 Also, you allow to pass closure to check is record exists or not and return the correct value:
 
 ```php
+DB::table('users')->updateOrInsert(
+  ['user_id' => $user_id],
+  function ($exists) use ($data) {
+    if ($exists) {
+      return [
+        'name' => $data['name'],
+        'email' => $data['email'],
+      ];
+    }
 
+    return [
+      'name' => $data['name'],
+      'email' => $data['email'],
+      'optional_column' => $data['optional_column'],
+    ];
+  }
+);
 ```
 
 <a name="updating-json-columns"></a>
