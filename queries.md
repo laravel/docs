@@ -1026,6 +1026,12 @@ The `updateOrInsert` method will attempt to locate a matching database record us
             ['votes' => '2']
         );
 
+Also, you allow to pass closure to check is record exists or not and return the correct value:
+
+```php
+
+```
+
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns
 
