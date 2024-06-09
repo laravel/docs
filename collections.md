@@ -823,6 +823,16 @@ If the collection is empty, the `every` method will return true:
 
     // true
 
+Instead of a closure, you may also pass a field name which will then be evaluated on whether its value is "truthy": 
+
+	collect([ 0 => [ 'isAvailable' => true, 'isSpecial' => true, ], 1 => [ 'isAvailable' => false, 'isSpecial' => true, ] ])->every('isSpecial');
+
+    // true
+
+    collect([ 0 => [ 'isAvailable' => true, 'isSpecial' => true, ], 1 => [ 'isAvailable' => false, 'isSpecial' => true, ] ])->>every('isAvailable');
+
+    // false
+
 <a name="method-except"></a>
 #### `except()` {.collection-method}
 
