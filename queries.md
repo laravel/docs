@@ -1026,25 +1026,19 @@ The `updateOrInsert` method will attempt to locate a matching database record us
             ['votes' => '2']
         );
 
-Also, you allow to pass closure to check is record exists or not and return the correct value:
+You may provide a closure to the `updateOrInsert` method to customize the attributes that are updated or inserted into the database based on the existence of a matching record:
 
 ```php
 DB::table('users')->updateOrInsert(
-  ['user_id' => $user_id],
-  function ($exists) use ($data) {
-    if ($exists) {
-      return [
+    ['user_id' => $user_id],
+    fn ($exists) => $exists ? [
         'name' => $data['name'],
         'email' => $data['email'],
-      ];
-    }
-
-    return [
-      'name' => $data['name'],
-      'email' => $data['email'],
-      'optional_column' => $data['optional_column'],
-    ];
-  }
+    ] : [
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'marketable' => true,
+    ],
 );
 ```
 
