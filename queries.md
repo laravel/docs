@@ -1026,6 +1026,22 @@ The `updateOrInsert` method will attempt to locate a matching database record us
             ['votes' => '2']
         );
 
+You may provide a closure to the `updateOrInsert` method to customize the attributes that are updated or inserted into the database based on the existence of a matching record:
+
+```php
+DB::table('users')->updateOrInsert(
+    ['user_id' => $user_id],
+    fn ($exists) => $exists ? [
+        'name' => $data['name'],
+        'email' => $data['email'],
+    ] : [
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'marketable' => true,
+    ],
+);
+```
+
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns
 
