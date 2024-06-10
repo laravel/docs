@@ -805,7 +805,7 @@ use function Laravel\Prompts\table;
 
 table(
     ['Name', 'Email'],
-    User::all(['name', 'email'])
+    User::all(['name', 'email'])->toArray()
 );
 ```
 
