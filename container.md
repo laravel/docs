@@ -29,9 +29,7 @@ Let's look at a simple example:
 
     namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
     use App\Repositories\UserRepository;
-    use App\Models\User;
     use Illuminate\View\View;
 
     class UserController extends Controller
