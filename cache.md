@@ -207,6 +207,8 @@ You may use the `rememberForever` method to retrieve an item from the cache or s
 
 If you need to retrieve an item from the cache and then delete the item, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:
 
+    $value = Cache::pull('key');
+
     $value = Cache::pull('key', 'default');
 
 <a name="storing-items-in-the-cache"></a>
