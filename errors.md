@@ -411,3 +411,5 @@ php artisan vendor:publish --tag=laravel-errors
 #### Fallback HTTP Error Pages
 
 You may also define a "fallback" error page for a given series of HTTP status codes. This page will be rendered if there is not a corresponding page for the specific HTTP status code that occurred. To accomplish this, define a `4xx.blade.php` template and a `5xx.blade.php` template in your application's `resources/views/errors` directory.
+
+You must always create custom pages for `404`, `500` and `503` though, because Laravel has dedicated pages for these status codes that override the fallback pages.
