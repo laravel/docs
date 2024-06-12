@@ -287,6 +287,35 @@ The `avg` method returns the [average value](https://en.wikipedia.org/wiki/Avera
 
     // 2
 
+<a name="method-before"></a>
+#### `before()` {.collection-method}
+
+The `before` method returns the item before the given item. It returns `null` if the given item is not found or is the first item:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $collection->before(3);
+
+    // 2
+
+    $collection->before(1);
+
+    // null
+
+It searches for the given item using a "loose" comparison, meaning a string with an integer value will be considered equal to an integer of the same value. To use "strict" comparison, pass `true` as the second argument to the method:
+
+    collect([2, 4, 6, 8])->before('4', $strict = true);
+
+    // null
+
+Alternatively, you may provide your own closure to search for the first item that passes a given truth test:
+
+    collect([2, 4, 6, 8])->before(function (int $item, int $key) {
+        return $item > 5;
+    });
+
+    // 4
+
 <a name="method-chunk"></a>
 #### `chunk()` {.collection-method}
 
