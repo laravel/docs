@@ -209,6 +209,8 @@ If you need to retrieve an item from the cache and then delete the item, you may
 
     $value = Cache::pull('key');
 
+    $value = Cache::pull('key', 'default');
+
 <a name="storing-items-in-the-cache"></a>
 ### Storing Items in the Cache
 
