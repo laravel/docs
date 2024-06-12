@@ -258,7 +258,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 </style>
 
 <a name="method-after"></a>
-#### `after()` {.collection-method}
+#### `after()` {.collection-method .first-collection-method}
 
 The `after` method returns the item after the given item. It returns `null` if the given item is not found or is the last item:
 
@@ -287,7 +287,7 @@ Alternatively, you may provide your own closure to search for the first item tha
     // 8
 
 <a name="method-all"></a>
-#### `all()` {.collection-method .first-collection-method}
+#### `all()` {.collection-method}
 
 The `all` method returns the underlying array represented by the collection:
 
