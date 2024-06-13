@@ -8,6 +8,7 @@
     - [Class Structure](#class-structure)
     - [Unique Jobs](#unique-jobs)
     - [Encrypted Jobs](#encrypted-jobs)
+    - [Custom Job Names](#custom-job-names)
 - [Job Middleware](#job-middleware)
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
@@ -371,6 +372,35 @@ Laravel allows you to ensure the privacy and integrity of a job's data via [encr
     {
         // ...
     }
+
+<a name="custom-job-names">
+### Custom Job Names
+
+By default, Laravel will use the class name of the job as the job's name. However, you may customize the job name by defining a `displayName()` method on the job class:
+
+```php
+class MyJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+....
+
+      public function displayName(): string
+      {
+          return 'Important job working on ' . $this->some_value;
+      }
+  }
+````
+
+Which will then give output like this when the job runner processes the jobs.
+
+```text
+   INFO  Processing jobs from the [dashboard] queue.
+
+  2024-06-13 13:49:04 Important job working on time sink ... RUNNING
+  2024-06-13 13:49:14 Important job working on ignoring ...9,792.98ms DONE
+  2024-06-13 13:49:14 Important job working on procrastination ...100,487.21ms DONE
+```
 
 <a name="job-middleware"></a>
 ## Job Middleware
