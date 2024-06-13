@@ -171,7 +171,7 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 [Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since Reverb utilizes the Pusher protocol for WebSocket subscriptions, channels, and messages:
 
 ```shell
-npm install --save-dev laravel-echo pusher-js
+npm install --save laravel-echo pusher-js
 ```
 
 Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file - you simply need to uncomment it and update the `broadcaster` configuration option to `reverb`:
@@ -210,7 +210,7 @@ npm run build
 The `install:broadcasting` Artisan command automatically installs the `laravel-echo` and `pusher-js` packages for you; however, you may also install these packages manually via NPM:
 
 ```shell
-npm install --save-dev laravel-echo pusher-js
+npm install --save laravel-echo pusher-js
 ```
 
 Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. The `install:broadcasting` command creates an Echo configuration file at `resources/js/echo.js`; however, the default configuration in this file is intended for Laravel Reverb. You may copy the configuration below to transition your configuration to Pusher:
@@ -288,7 +288,7 @@ window.Echo = new Echo({
 The `install:broadcasting` Artisan command automatically installs the `laravel-echo` and `pusher-js` packages for you; however, you may also install these packages manually via NPM:
 
 ```shell
-npm install --save-dev laravel-echo pusher-js
+npm install --save laravel-echo pusher-js
 ```
 
 **Before continuing, you should enable Pusher protocol support in your Ably application settings. You may enable this feature within the "Protocol Adapter Settings" portion of your Ably application's settings dashboard.**
