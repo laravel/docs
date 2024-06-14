@@ -147,9 +147,9 @@ Herd is blazing fast, manages local routing, and keeps your development environm
 <a name="herd-on-macos"></a>
 ### Herd on macOS
 
-If you develop on macOS, you can download the Herd installer from the [Herd website](https://herd.laravel.com). The installer automatically installs the latest version of PHP and configures your Mac to always run [Nginx](https://www.nginx.com/) in the background.
+If you develop on macOS, you can download the Herd installer from the [Herd website](https://herd.laravel.com). The installer automatically downloads the latest version of PHP and configures your Mac to always run [nginx](https://www.nginx.com/) in the background.
 
-Herd for macOS uses [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq) in combination with "parked" directories. By default, Herd creates a parked directory at `~/Herd` and you can access all sites in this directory by their directory name and the `.test` domain.
+Herd for macOS uses [dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) in combination with "parked" directories. By default, Herd creates a parked directory at `~/Herd` and you can access all sites in this directory by their directory name and the `.test` domain.
 
 The fastest way to get started is by using the included command line tools of Laravel and Herd.
 
