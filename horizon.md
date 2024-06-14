@@ -74,6 +74,18 @@ After installation, the primary Horizon configuration option that you should fam
         ],
     ],
 
+You may also define a wildcard environment (`*`) which will be used when no other matching environment is found:
+
+    'environments' => [
+        // ...
+
+        '*' => [
+            'supervisor-1' => [
+                'maxProcesses' => 3,
+            ],
+        ],
+    ],
+
 When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/docs/{{version}}/configuration#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
 
 > [!WARNING]  
