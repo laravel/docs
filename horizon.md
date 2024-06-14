@@ -56,7 +56,7 @@ After publishing Horizon's assets, its primary configuration file will be locate
 <a name="environments"></a>
 #### Environments
 
-After installation, the primary Horizon configuration option that you should familiarize yourself with is the `environments` configuration option. This configuration option is an array of environments that your application runs on and defines the worker process options for each environment. By default, this entry contains a `production` and `local` environment.
+After installation, the primary Horizon configuration option that you should familiarize yourself with is the `environments` configuration option. This configuration option is an array of environments that your application runs on and defines the worker process options for each environment. By default, this entry contains a `production` and `local` environment. However, you are free to add more environments as needed:
 
     'environments' => [
         'production' => [
@@ -74,23 +74,10 @@ After installation, the primary Horizon configuration option that you should fam
         ],
     ],
 
-However, you are free to add more environments as needed. You may also add a wildcard (`*`) environment that will be used when no specific environment is found.
+You may also define a wildcard environment (`*`) which will be used when no other matching environment is found:
 
     'environments' => [
-        'production' => [
-            // ...
-        ],
-
-        'local' => [
-            // ...
-        ],
-
-        'staging' => [
-            'supervisor-1' => [
-                'maxProcesses' => 5,
-                'balanceCooldown' => 5,
-            ],
-        ],
+        // ...
 
         '*' => [
             'supervisor-1' => [
