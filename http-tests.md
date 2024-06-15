@@ -751,7 +751,7 @@ test('avatars can be uploaded', function () {
 
     $file = UploadedFile::fake()->image('avatar.jpg');
 
-    $response = $this->post('/avatar', [
+    $response = $this->call('post', '/avatar', files: [
         'avatar' => $file,
     ]);
 
