@@ -119,10 +119,20 @@ This way you are also able to set up multiple Postmark mailers with different me
 To use the [Resend](https://resend.com/) driver, install Resend's PHP SDK via Composer:
 
 ```shell
-composer require resend/resend-php
+composer require resend/resend-laravel
 ```
 
-Next, set the `default` option in your application's `config/mail.php` configuration file to `resend`. After configuring your application's default mailer, ensure that your `config/services.php` configuration file contains the following options:
+Next, set the `default` option in your application's `config/mail.php` configuration file to `resend`.
+
+    'default' => env('MAIL_MAILER', 'resend'),
+
+Add resend to the list of mail drivers in `config/mail.php`
+
+    'resend' => [
+        'transport' => 'resend',
+    ],
+
+After configuring your application's default mailer, ensure that your `config/services.php` configuration file contains the following options:
 
     'resend' => [
         'key' => env('RESEND_KEY'),
