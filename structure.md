@@ -90,6 +90,9 @@ The `storage` directory contains your logs, compiled Blade templates, file based
 
 The `storage/app/public` directory may be used to store user-generated files, such as profile avatars, that should be publicly accessible. You should create a symbolic link at `public/storage` which points to this directory. You may create the link using the `php artisan storage:link` Artisan command.
 
+> [!WARNING]  
+> The web server process owner must be able to write inside of `bootstrap/cache` and `storage` in order for the framework to edit and create files in these folders. Please confirm the user your web server operates as (often `www-data` or `apache` but please check for sure). Avoid setting the permissions of these folders to `777` which allows write access to any user.
+
 <a name="the-tests-directory"></a>
 #### The Tests Directory
 
