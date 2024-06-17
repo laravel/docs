@@ -146,6 +146,53 @@ class UserControllerTest extends TestCase
 }
 ```
 
+Or a partial mock allowing you to use other functions in the Facade:
+
+```php tab=Pest
+<?php
+
+use Illuminate\Support\Facades\Cache;
+
+test('get index', function () {
+    Cache::shouldReceive('get')
+                ->once()
+                ->with('key')
+                ->andReturn('value');
+
+    Cache::makePartial();
+
+    $response = $this->get('/users');
+
+    // ...
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Support\Facades\Cache;
+use Tests\TestCase;
+
+class UserControllerTest extends TestCase
+{
+    public function test_get_index(): void
+    {
+        Cache::shouldReceive('get')
+                    ->once()
+                    ->with('key')
+                    ->andReturn('value');
+
+        Cache::makePartial();
+
+        $response = $this->get('/users');
+
+        // ...
+    }
+}
+```
+
 > [!WARNING]  
 > You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
 
