@@ -260,7 +260,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 <a name="method-after"></a>
 #### `after()` {.collection-method .first-collection-method}
 
-The `after` method returns the item after the given item. It returns `null` if the given item is not found or is the last item:
+The `after` method returns the item after the given item. `null` is returned if the given item is not found or is the last item:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -272,9 +272,9 @@ The `after` method returns the item after the given item. It returns `null` if t
 
     // null
 
-It searches for the given item using a "loose" comparison, meaning a string with an integer value will be considered equal to an integer of the same value. To use "strict" comparison, pass `true` as the second argument to the method:
+This method searches for the given item using "loose" comparison, meaning a string containing an integer value will be considered equal to an integer of the same value. To use "strict" comparison, you may provide the `strict` argument to the method:
 
-    collect([2, 4, 6, 8])->after('4', $strict = true);
+    collect([2, 4, 6, 8])->after('4', strict: true);
 
     // null
 
@@ -321,7 +321,7 @@ The `avg` method returns the [average value](https://en.wikipedia.org/wiki/Avera
 <a name="method-before"></a>
 #### `before()` {.collection-method}
 
-The `before` method is the opposite of the [`after`](#method-after) method. It returns the item before the given item. It returns `null` if the given item is not found or is the first item:
+The `before` method is the opposite of the [`after`](#method-after) method. It returns the item before the given item. `null` is returned if the given item is not found or is the first item:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -333,7 +333,7 @@ The `before` method is the opposite of the [`after`](#method-after) method. It r
 
     // null
 
-    collect([2, 4, 6, 8])->before('4', $strict = true);
+    collect([2, 4, 6, 8])->before('4', strict: true);
 
     // null
 
