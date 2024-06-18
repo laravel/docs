@@ -94,9 +94,11 @@ For the majority of the remaining collection documentation, we'll discuss each m
 
 <div class="collection-method-list" markdown="1">
 
+[after](#method-after)
 [all](#method-all)
 [average](#method-average)
 [avg](#method-avg)
+[before](#method-before)
 [chunk](#method-chunk)
 [chunkWhile](#method-chunkwhile)
 [collapse](#method-collapse)
@@ -255,8 +257,37 @@ For the majority of the remaining collection documentation, we'll discuss each m
     }
 </style>
 
+<a name="method-after"></a>
+#### `after()` {.collection-method .first-collection-method}
+
+The `after` method returns the item after the given item. `null` is returned if the given item is not found or is the last item:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $collection->after(3);
+
+    // 4
+
+    $collection->after(5);
+
+    // null
+
+This method searches for the given item using "loose" comparison, meaning a string containing an integer value will be considered equal to an integer of the same value. To use "strict" comparison, you may provide the `strict` argument to the method:
+
+    collect([2, 4, 6, 8])->after('4', strict: true);
+
+    // null
+
+Alternatively, you may provide your own closure to search for the first item that passes a given truth test:
+
+    collect([2, 4, 6, 8])->after(function (int $item, int $key) {
+        return $item > 5;
+    });
+
+    // 8
+
 <a name="method-all"></a>
-#### `all()` {.collection-method .first-collection-method}
+#### `all()` {.collection-method}
 
 The `all` method returns the underlying array represented by the collection:
 
@@ -286,6 +317,31 @@ The `avg` method returns the [average value](https://en.wikipedia.org/wiki/Avera
     $average = collect([1, 1, 2, 4])->avg();
 
     // 2
+
+<a name="method-before"></a>
+#### `before()` {.collection-method}
+
+The `before` method is the opposite of the [`after`](#method-after) method. It returns the item before the given item. `null` is returned if the given item is not found or is the first item:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $collection->before(3);
+
+    // 2
+
+    $collection->before(1);
+
+    // null
+
+    collect([2, 4, 6, 8])->before('4', strict: true);
+
+    // null
+
+    collect([2, 4, 6, 8])->before(function (int $item, int $key) {
+        return $item > 5;
+    });
+
+    // 4
 
 <a name="method-chunk"></a>
 #### `chunk()` {.collection-method}
