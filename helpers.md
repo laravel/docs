@@ -2360,7 +2360,7 @@ Laravel provides some simple methods to allow you to easily test your applicatio
     Lottery::fix([true, false]);
 
     // Lottery will return to normal behavior...
-    Lottery::determineResultsNormally();
+    Lottery::determineResultNormally();
 
 <a name="pipeline"></a>
 ### Pipeline
