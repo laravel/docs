@@ -7,6 +7,9 @@
     - [Environment Based Configuration](#environment-based-configuration)
     - [Databases and Migrations](#databases-and-migrations)
     - [Directory Configuration](#directory-configuration)
+- [Local Installation Using Herd](#local-installation-using-herd)
+    - [Herd on macOS](#herd-on-macos)
+    - [Herd on Windows](#herd-on-windows)
 - [Docker Installation Using Sail](#docker-installation-using-sail)
     - [Sail on macOS](#sail-on-macos)
     - [Sail on Windows](#sail-on-windows)
@@ -53,7 +56,7 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 <a name="creating-a-laravel-project"></a>
 ## Creating a Laravel Project
 
-Before creating your first Laravel project, make sure that your local machine has PHP and [Composer](https://getcomposer.org) installed. If you are developing on macOS or Windows, PHP and Composer can be installed in minutes via [Laravel Herd](https://herd.laravel.com). In addition, we recommend [installing Node and NPM](https://nodejs.org).
+Before creating your first Laravel project, make sure that your local machine has PHP and [Composer](https://getcomposer.org) installed. If you are developing on macOS or Windows, PHP, Composer, Node and NPM can be installed in minutes via [Laravel Herd](#local-installation-using-herd).
 
 After you have installed PHP and Composer, you may create a new Laravel project via Composer's `create-project` command:
 
@@ -124,12 +127,62 @@ php artisan migrate
 ```
 
 > [!NOTE]
-> If you are developing on macOS and need to install MySQL, PostgreSQL, or Redis locally, consider using [DBngin](https://dbngin.com/).
+> If you are developing on macOS or Windows and need to install MySQL, PostgreSQL, or Redis locally, consider using [Herd Pro](https://herd.laravel.com/#plans).
 
 <a name="directory-configuration"></a>
 ### Directory Configuration
 
 Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
+
+<a name="local-installation-using-herd"></a>
+## Local Installation Using Herd
+
+[Laravel Herd](https://herd.laravel.com) is a blazing fast, native Laravel and PHP development environment for macOS and Windows. Herd includes everything you need to get started with Laravel development, including PHP and Nginx.
+
+Once you install Herd, you're ready to start developing with Laravel. Herd includes command line tools for `php`, `composer`, `laravel`, `expose`, `node`, `npm`, and `nvm`.
+
+> [!NOTE]
+> [Herd Pro](https://herd.laravel.com/#plans) augments Herd with additional powerful features, such as the ability to create and manage local MySQL, Postgres, and Redis databases, as well as local mail viewing and log monitoring.
+
+<a name="herd-on-macos"></a>
+### Herd on macOS
+
+If you develop on macOS, you can download the Herd installer from the [Herd website](https://herd.laravel.com). The installer automatically downloads the latest version of PHP and configures your Mac to always run [Nginx](https://www.nginx.com/) in the background.
+
+Herd for macOS uses [dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) to support "parked" directories. Any Laravel application in a parked directory will automatically be served by Herd. By default, Herd creates a parked directory at `~/Herd` and you can access any Laravel application in this directory on the `.test` domain using its directory name.
+
+After installing Herd, the fastest way to create a new Laravel project is using the Laravel CLI, which is bundled with Herd:
+
+```nothing
+cd ~/Herd
+laravel new my-app
+cd my-app
+herd open
+```
+
+Of course, you can always manage your parked directories and other PHP settings via Herd's UI, which can be opened from the Herd menu in your system tray.
+
+You can learn more about Herd by checking out the [Herd documentation](https://herd.laravel.com/docs).
+
+<a name="herd-on-windows"></a>
+### Herd on Windows
+
+You can download the Windows installer for Herd on the [Herd website](https://herd.laravel.com/windows). After the installation finishes, you can start Herd to complete the onboarding process and access the Herd UI for the first time.
+
+The Herd UI is accessible by left-clicking on Herd's system tray icon. A right-click opens the quick menu with access to all tools that you need on a daily basis.
+
+During installation, Herd creates a "parked" directory in your home directory at `%USERPROFILE%\Herd`. Any Laravel application in a parked directory will automatically be served by Herd, and you can access any Laravel application in this directory on the `.test` domain using its directory name.
+
+After installing Herd, the fastest way to create a new Laravel project is using the Laravel CLI, which is bundled with Herd. To get started, open Powershell and run the following commands:
+
+```nothing
+cd ~\Herd
+laravel new my-app
+cd my-app
+herd open
+```
+
+You can learn more about Herd by checking out the [Herd documentation for Windows](https://herd.laravel.com/docs/windows).
 
 <a name="docker-installation-using-sail"></a>
 ## Docker Installation Using Sail
