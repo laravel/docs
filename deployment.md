@@ -5,6 +5,7 @@
 - [Server Configuration](#server-configuration)
     - [Nginx](#nginx)
     - [FrankenPHP](#frankenphp)
+    - [Folder Permissions](#folder-permissions)
 - [Optimization](#optimization)
     - [Caching Configuration](#optimizing-configuration-loading)
     - [Caching Events](#caching-events)
