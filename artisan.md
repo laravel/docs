@@ -669,6 +669,7 @@ By default, Laravel automatically registers all commands within the `app/Console
     ->withProviders()
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
     ->withCommands([
