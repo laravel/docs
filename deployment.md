@@ -100,6 +100,11 @@ frankenphp php-server -r public/
 
 To take advantage of more powerful features supported by FrankenPHP, such as its [Laravel Octane](/docs/{{version}}/octane) integration, HTTP/3, modern compression, or the ability to package Laravel applications as standalone binaries, please consult FrankenPHP's [Laravel documentation](https://frankenphp.dev/docs/laravel/).
 
+<a name="folder-permissions"></a>
+### Folder Permissions
+
+The framework will need to write to the folders `storage` and `bootstrap/cache`. Please make sure the web server process owner, the user the web server acts on behalf of, can write to these folders.
+
 <a name="optimization"></a>
 ## Optimization
 
