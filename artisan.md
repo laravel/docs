@@ -655,19 +655,31 @@ Sometimes, you may need more manual control over how a progress bar is advanced.
 <a name="registering-commands"></a>
 ## Registering Commands
 
-By default, Laravel automatically registers all commands within the `app/Console/Commands` directory. However, you can instruct Laravel to scan other directories for Artisan commands using the `withCommands` method in your application's `bootstrap/app.php` file:
+By default, Laravel automatically registers all commands within the `app/Console/Commands` directory. However, you may also customize it and manually register commands by calling Application by builder and providing the command's class name to the `withCommands` in your `bootstrap/app.php` file:
 
+    use Illuminate\Foundation\Application;
+    use Illuminate\Foundation\Configuration\Exceptions;
+    use Illuminate\Foundation\Configuration\Middleware;
+    use Illuminate\Foundation\Configuration\ApplicationBuilder;
+    use App\MyCommandsDirectory\MyCommand;
+    
+    return (new ApplicationBuilder(new Application(basePath: dirname(__DIR__))))
+    ->withKernels()
+    ->withEvents()
+    ->withProviders()
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        health: '/up',
+    )
     ->withCommands([
-        __DIR__.'/../app/Domain/Orders/Commands',
+        MyCommand::class
     ])
-
-If necessary, you may also manually register commands by providing the command's class name to the `withCommands` method:
-
-    use App\Domain\Orders\Commands\SendEmails;
-
-    ->withCommands([
-        SendEmails::class,
-    ])
+    ->withMiddleware(function (Middleware $middleware) {
+        //
+    })
+    ->withExceptions(function (Exceptions $exceptions) {
+        //
+    })->create();
 
  When Artisan boots, all the commands in your application will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan.
 
