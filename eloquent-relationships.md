@@ -1675,6 +1675,17 @@ You may not always need every column from the relationships you are retrieving. 
 > [!WARNING]  
 > When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
 
+<a name="loading-specific-column-from-relationships"></a>
+#### Loading Specific Columns from Relationships
+
+Eloquent provides a way to to retrieve a specific column from the related model using the `withAggregate` method. 
+
+For instance, if a `Comment` belongs to a `Post`, and you want to retrieve the title of the related post, you can use:
+
+    $comments = Comment::withAggregate('post', 'title')->get();
+
+This will add a `post_title` attribute to each Comment model instance, which will contain the value of the title column from the related Post model.
+
 <a name="eager-loading-by-default"></a>
 #### Eager Loading by Default
 
