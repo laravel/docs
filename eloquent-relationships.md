@@ -1675,8 +1675,8 @@ You may not always need every column from the relationships you are retrieving. 
 > [!WARNING]  
 > When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
 
-<a name="loading-specific-column-from-relationships"></a>
-#### Loading Specific Columns from Relationships
+<a name="loading-specific-column-from-relationship"></a>
+#### Loading Specific Column from Relationship
 
 Eloquent provides a way to to retrieve a specific column from the related model using the `withAggregate` method. 
 
