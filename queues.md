@@ -1710,6 +1710,15 @@ The `--max-jobs` option may be used to instruct the worker to process the given 
 php artisan queue:work --max-jobs=1000
 ```
 
+<a name="handling-memory-leaks"></a>
+#### Handling Memory Leaks
+
+The `--memory` option specifies the amount of memory in megabytes that an idle queue worker may use before stopping. This acts as a failsafe if your jobs leak memory and continually drive up memory usage. The default value of 128 may be modified if your application generally uses a lot of memory while idle:
+
+```shell
+php artisan queue:work --memory=256
+```
+
 <a name="processing-all-queued-jobs-then-exiting"></a>
 #### Processing All Queued Jobs and Then Exiting
 
