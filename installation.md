@@ -72,6 +72,9 @@ composer global require laravel/installer
 laravel new example-app
 ```
 
+> [!NOTE]
+> When you are using [Laravel Valet](https://laravel.com/docs/11.x/valet), [the Laravel installer](https://github.com/laravel/installer) will check the TLD you are using. During this process, it will prompt you to enter your user password. To avoid this, run `valet trust`.
+
 Once the project has been created, start Laravel's local development server using Laravel Artisan's `serve` command:
 
 ```nothing
