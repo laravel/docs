@@ -376,6 +376,23 @@ Lastly, you can commit a transaction via the `commit` method:
 > [!NOTE]  
 > The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
 
+### Setting Transaction Isolation Level
+
+You can set the transaction isolation level for your database connections by adding the `transaction_isolation` key to your `config/database.php` configuration file. This can be particularly useful for fine-tuning the consistency and concurrency behavior of your database transactions.
+
+For example, to set the transaction isolation level for a PostgreSQL connection, you can add the following configuration:
+
+```php
+'pgsql' => [
+    //...
+    'transaction_isolation' => 'REPEATABLE READ',
+    //...
+],
+```
+
+This configuration sets the transaction isolation level once at the beginning of the runtime, ensuring consistent behavior throughout the application lifecycle.
+
+
 <a name="connecting-to-the-database-cli"></a>
 ## Connecting to the Database CLI
 
