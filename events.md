@@ -71,7 +71,7 @@ By default, Laravel will automatically find and register your event listeners by
 If you plan to store your listeners in a different directory or within multiple directories, you may instruct Laravel to scan those directories using the `withEvents` method in your application's `bootstrap/app.php` file:
 
     ->withEvents(discover: [
-        __DIR__.'/../app/Domain/Listeners',
+        __DIR__.'/../app/Domain/Orders/Listeners',
     ])
 
 The `event:list` command may be used to list all of the listeners registered within your application:
