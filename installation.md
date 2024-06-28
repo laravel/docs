@@ -2,6 +2,7 @@
 
 - [Meet Laravel](#meet-laravel)
     - [Why Laravel?](#why-laravel)
+- [Try Laravel](#try-laravel)
 - [Creating a Laravel Project](#creating-a-laravel-project)
 - [Initial Configuration](#initial-configuration)
     - [Environment Based Configuration](#environment-based-configuration)
@@ -52,6 +53,11 @@ Need extreme scaling? Platforms like [Laravel Vapor](https://vapor.laravel.com) 
 #### A Community Framework
 
 Laravel combines the best packages in the PHP ecosystem to offer the most robust and developer friendly framework available. In addition, thousands of talented developers from around the world have [contributed to the framework](https://github.com/laravel/framework). Who knows, maybe you'll even become a Laravel contributor.
+
+<a name="try-laravel"></a>
+## Try Laravel
+
+Sign up for [Googles Project IDX](https://idx.google.com/) and start a new workspace using the Laravel starting template. 
 
 <a name="creating-a-laravel-project"></a>
 ## Creating a Laravel Project
