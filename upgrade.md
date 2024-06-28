@@ -82,6 +82,7 @@ You should update the following dependencies in your application's `composer.jso
 - `laravel/scout` to `^10.0` (If installed)
 - `laravel/spark-stripe` to `^5.0` (If installed)
 - `laravel/telescope` to `^5.0` (If installed)
+- `livewire/livewire` to `^3.4` (If installed)
 - `inertiajs/inertia-laravel` to `^1.0` (If installed)
 
 </div>
