@@ -258,7 +258,7 @@ server {
 ```
 
 > [!WARNING]  
-> Reverb listens for WebSocket connections at the `/app` URI prefix and handles API requests, such as event broadcasts, at the `/apps` URI prefix. You should ensure the web server handling Reverb requests can accommodate both. 
+> Reverb listens for WebSocket connections at `/app` and handles API requests at `/apps`. You should ensure the web server handling Reverb requests can serve both of these URIs.
 
 Typically, web servers are configured to limit the number of allowed connections in order to prevent overloading the server. To increase the number of allowed connections on an Nginx web server to 10,000, the `worker_rlimit_nofile` and `worker_connections` values of the `nginx.conf` file should be updated:
 
