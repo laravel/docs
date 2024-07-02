@@ -392,7 +392,7 @@ The `Str::chopStart` method removes the first occurrence of the given value only
 
     // 'laravel.com'
 
-You may also pass an array as the second argument. If the string starts with any of the values in the array it will be removed.
+You may also pass an array as the second argument. If the string starts with any of the values in the array then that value will be removed from string:
 
     use Illuminate\Support\Str;
 
@@ -411,7 +411,7 @@ The `Str::chopEnd` method removes the last occurrence of the given value only if
 
     // 'app/Models/Photograph'
 
-You may also pass an array as the second argument. If the string ends with any of the values in the array it will be removed.
+You may also pass an array as the second argument. If the string ends with any of the values in the array then that value will be removed from string:
 
     use Illuminate\Support\Str;
 
@@ -1640,7 +1640,7 @@ The `chopStart` method removes the first occurrence of the given value only if t
 
     // 'laravel.com'
 
-You may also pass an array. If the string starts with any of the values in the array it will be removed.
+You may also pass an array. If the string starts with any of the values in the array then that value will be removed from string:
 
     use Illuminate\Support\Str;
 
@@ -1659,7 +1659,7 @@ The `chopEnd` method removes the last occurrence of the given value only if the 
 
     // 'laravel.com'
 
-You may also pass an array. If the string ends with any of the values in the array it will be removed.
+You may also pass an array. If the string ends with any of the values in the array then that value will be removed from string:
 
     use Illuminate\Support\Str;
 
