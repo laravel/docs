@@ -43,6 +43,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::betweenFirst](#method-str-between-first)
 [Str::camel](#method-camel-case)
 [Str::charAt](#method-char-at)
+[Str::chopStart](#method-str-chop-start)
+[Str::chopEnd](#method-str-chop-end)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
@@ -134,6 +136,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [camel](#method-fluent-str-camel)
 [charAt](#method-fluent-str-char-at)
 [classBasename](#method-fluent-str-class-basename)
+[chopStart](#method-fluent-str-chop-start)
+[chopEnd](#method-fluent-str-chop-end)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
 [dirname](#method-fluent-str-dirname)
@@ -376,6 +380,44 @@ The `Str::charAt` method returns the character at the specified index. If the in
     $character = Str::charAt('This is my name.', 6);
 
     // 's'
+
+<a name="method-str-chop-start"></a>
+#### `Str::chopStart()` {.collection-method}
+
+The `Str::chopStart` method removes the first occurrence of the given value only if the value appears at the start of the string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::chopStart('https://laravel.com', 'https://');
+
+    // 'laravel.com'
+
+You may also pass an array as the second argument. If the string starts with any of the values in the array then that value will be removed from string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::chopStart('http://laravel.com', ['https://', 'http://']);
+
+    // 'laravel.com'
+
+<a name="method-str-chop-end"></a>
+#### `Str::chopEnd()` {.collection-method}
+
+The `Str::chopEnd` method removes the last occurrence of the given value only if the value appears at the end of the string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::chopEnd('app/Models/Photograph.php', '.php');
+
+    // 'app/Models/Photograph'
+
+You may also pass an array as the second argument. If the string ends with any of the values in the array then that value will be removed from string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::chopEnd('laravel.com/index.php', ['/index.html', '/index.php']);
+
+    // 'laravel.com'
 
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
@@ -1586,6 +1628,44 @@ The `classBasename` method returns the class name of the given class with the cl
     $class = Str::of('Foo\Bar\Baz')->classBasename();
 
     // 'Baz'
+
+<a name="method-fluent-str-chop-start"></a>
+#### `chopStart` {.collection-method}
+
+The `chopStart` method removes the first occurrence of the given value only if the value appears at the start of the string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::of('https://laravel.com')->chopStart('https://');
+
+    // 'laravel.com'
+
+You may also pass an array. If the string starts with any of the values in the array then that value will be removed from string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::of('http://laravel.com')->chopStart(['https://', 'http://']);
+
+    // 'laravel.com'
+
+<a name="method-fluent-str-chop-end"></a>
+#### `chopEnd` {.collection-method}
+
+The `chopEnd` method removes the last occurrence of the given value only if the value appears at the end of the string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::of('https://laravel.com')->chopEnd('https://');
+
+    // 'laravel.com'
+
+You may also pass an array. If the string ends with any of the values in the array then that value will be removed from string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::of('http://laravel.com')->chopEnd(['https://', 'http://']);
+
+    // 'laravel.com'
 
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
