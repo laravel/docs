@@ -163,6 +163,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [mergeRecursive](#method-mergerecursive)
 [min](#method-min)
 [mode](#method-mode)
+[multiply](#method-multiply)
 [nth](#method-nth)
 [only](#method-only)
 [pad](#method-pad)
@@ -1688,6 +1689,25 @@ The `mode` method returns the [mode value](https://en.wikipedia.org/wiki/Mode_(s
     $mode = collect([1, 1, 2, 2])->mode();
 
     // [1, 2]
+
+<a name="method-multiply"></a>
+#### `multiply()` {.collection-method}
+
+The `multiply` method multiplies the items in the collection:
+
+```php
+$col = collect([
+    ['name' => 'User #1', 'email' => 'user1@example.com'],
+    ['name' => 'User #2', 'email' => 'user2@example.com'],
+])->multiply(2)->dd();
+
+/*
+['name' => 'User #1', 'email' => 'user1@example.com'],
+['name' => 'User #2', 'email' => 'user2@example.com'],
+['name' => 'User #1', 'email' => 'user1@example.com'],
+['name' => 'User #2', 'email' => 'user2@example.com'],
+*/
+```
 
 <a name="method-nth"></a>
 #### `nth()` {.collection-method}
