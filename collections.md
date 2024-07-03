@@ -1693,19 +1693,23 @@ The `mode` method returns the [mode value](https://en.wikipedia.org/wiki/Mode_(s
 <a name="method-multiply"></a>
 #### `multiply()` {.collection-method}
 
-The `multiply` method multiplies the items in the collection:
+The `multiply` method creates multiple copies of all of the items the collection:
 
 ```php
-$col = collect([
+$users = collect([
     ['name' => 'User #1', 'email' => 'user1@example.com'],
     ['name' => 'User #2', 'email' => 'user2@example.com'],
-])->multiply(2)->dd();
+])->multiply(3);
 
 /*
-['name' => 'User #1', 'email' => 'user1@example.com'],
-['name' => 'User #2', 'email' => 'user2@example.com'],
-['name' => 'User #1', 'email' => 'user1@example.com'],
-['name' => 'User #2', 'email' => 'user2@example.com'],
+    [
+        ['name' => 'User #1', 'email' => 'user1@example.com'],
+        ['name' => 'User #2', 'email' => 'user2@example.com'],
+        ['name' => 'User #1', 'email' => 'user1@example.com'],
+        ['name' => 'User #2', 'email' => 'user2@example.com'],
+        ['name' => 'User #1', 'email' => 'user1@example.com'],
+        ['name' => 'User #2', 'email' => 'user2@example.com'],
+    ]
 */
 ```
 
