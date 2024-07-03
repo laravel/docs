@@ -1693,7 +1693,7 @@ The `mode` method returns the [mode value](https://en.wikipedia.org/wiki/Mode_(s
 <a name="method-multiply"></a>
 #### `multiply()` {.collection-method}
 
-The `multiply` method creates multiple copies of all of the items the collection:
+The `multiply` method creates the specified number of copies of all items in the collection:
 
 ```php
 $users = collect([
