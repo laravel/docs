@@ -206,6 +206,7 @@ The PhpRedis extension may also be configured to use a variety of serializers an
             'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
             'serializer' => Redis::SERIALIZER_MSGPACK,
             'compression' => Redis::COMPRESSION_LZ4,
+            'compression_level' => 3,
         ],
 
         // ...
@@ -214,6 +215,13 @@ The PhpRedis extension may also be configured to use a variety of serializers an
 Currently supported serializers include: `Redis::SERIALIZER_NONE` (default), `Redis::SERIALIZER_PHP`, `Redis::SERIALIZER_JSON`, `Redis::SERIALIZER_IGBINARY`, and `Redis::SERIALIZER_MSGPACK`.
 
 Supported compression algorithms include: `Redis::COMPRESSION_NONE` (default), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD`, and `Redis::COMPRESSION_LZ4`.
+
+Compression level differs per algorithm.
+
+| Algorithm | Compression Levels |
+|-----------|--------------------|
+| LZ4 / LZF | 1 to 9             |
+| ZSTD      | -7 to 22           |
 
 <a name="interacting-with-redis"></a>
 ## Interacting With Redis
