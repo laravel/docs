@@ -1867,7 +1867,7 @@ An array of contextual data may also be passed to the function:
 <a name="method-literal"></a>
 #### `literal()` {.collection-method}
 
-"The `literal` function creates a new [stdClass](https://www.php.net/manual/en/class.stdclass.php) instance with the given named arguments as properties:
+The `literal` function creates a new [stdClass](https://www.php.net/manual/en/class.stdclass.php) instance with the given named arguments as properties:
 
     $obj = literal(
         name: 'Joe',
