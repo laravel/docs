@@ -1218,15 +1218,15 @@ The `Number::currency` method returns the currency representation of the given v
 
     $currency = Number::currency(1000);
 
-    // $1,000
+    // $1,000.00
 
     $currency = Number::currency(1000, in: 'EUR');
 
-    // €1,000
+    // €1,000.00
 
     $currency = Number::currency(1000, in: 'EUR', locale: 'de');
 
-    // 1.000 €
+    // 1.000,00 €
 
 <a name="method-number-file-size"></a>
 #### `Number::fileSize()` {.collection-method}
