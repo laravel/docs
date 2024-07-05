@@ -423,7 +423,7 @@ The `visit` method may be used to navigate to a given URI within your applicatio
 
 You may use the `visitRoute` method to navigate to a [named route](/docs/{{version}}/routing#named-routes):
 
-    $browser->visitRoute('login');
+    $browser->visitRoute($routeName, $parameters);
 
 You may navigate "back" and "forward" using the `back` and `forward` methods:
 
