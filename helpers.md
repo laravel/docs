@@ -1320,6 +1320,10 @@ use Illuminate\Support\Number;
 $result = Number::pairs(25, 10);
 
 // [[1, 10], [11, 20], [21, 25]]
+
+$result = Number::pairs(25, 10, 0);
+ 
+// [[0, 10], [10, 20], [20, 25]]
 ```
 
 <a name="method-number-percentage"></a>
