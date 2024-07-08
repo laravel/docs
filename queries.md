@@ -552,7 +552,7 @@ WHERE published = true AND (
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+, and SQLite 3.39.0+ (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
+Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MariaDB 10.3+, MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+, and SQLite 3.39.0+. To query a JSON column, use the `->` operator:
 
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
@@ -564,7 +564,7 @@ You may use `whereJsonContains` to query JSON arrays:
                     ->whereJsonContains('options->languages', 'en')
                     ->get();
 
-If your application uses the MySQL or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
+If your application uses the MariaDB, MySQL, or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', ['en', 'de'])
@@ -1045,7 +1045,7 @@ DB::table('users')->updateOrInsert(
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns
 
-When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MySQL 5.7+ and PostgreSQL 9.5+:
+When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MariaDB 10.3+, MySQL 5.7+, and PostgreSQL 9.5+:
 
     $affected = DB::table('users')
                   ->where('id', 1)
