@@ -1312,7 +1312,7 @@ The `Number::ordinal` method returns a number's ordinal representation:
 <a name="method-number-pairs"></a>
 #### `Number::pairs()` {.collection-method}
 
-The `Number::pairs` method generates a list of pairs or ranges that add up to a specified total value, with each pair not exceeding a certain maximum value and return a list of pairs or ranges, where each pair is an array of two values [start, end]:
+The `Number::pairs` method generates an array of number pairs (sub-ranges) based on a specified range and step value. This method can be useful for dividing a larger range of numbers into smaller, manageable sub-ranges for things like pagination or batching tasks:
 
 ```php
 use Illuminate\Support\Number;
@@ -1321,7 +1321,7 @@ $result = Number::pairs(25, 10);
 
 // [[1, 10], [11, 20], [21, 25]]
 
-$result = Number::pairs(25, 10, 0);
+$result = Number::pairs(25, 10, offset: 0);
  
 // [[0, 10], [10, 20], [20, 25]]
 ```
