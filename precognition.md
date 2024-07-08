@@ -247,7 +247,7 @@ export default function Form() {
 
     return (
         <form onSubmit={submit}>
-            <label for="name">Name</label>
+            <label htmlFor="name">Name</label>
             <input
                 id="name"
                 value={form.data.name}
@@ -256,7 +256,7 @@ export default function Form() {
             />
             {form.invalid('name') && <div>{form.errors.name}</div>}
 
-            <label for="email">Email</label>
+            <label htmlFor="email">Email</label>
             <input
                 id="email"
                 value={form.data.email}
