@@ -1312,7 +1312,7 @@ The `Number::ordinal` method returns a number's ordinal representation:
 <a name="method-number-pairs"></a>
 #### `Number::pairs()` {.collection-method}
 
-The `Number::pairs` method provides the ability to 'split' a number into pairs of min/max values:
+The `Number::pairs` method generates a list of pairs or ranges that add up to a specified total value, with each pair not exceeding a certain maximum value and return a list of pairs or ranges, where each pair is an array of two values [start, end]:
 
 ```php
 use Illuminate\Support\Number;
