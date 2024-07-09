@@ -97,6 +97,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::forHumans](#method-number-for-humans)
 [Number::format](#method-number-format)
 [Number::ordinal](#method-number-ordinal)
+[Number::pairs](#method-number-pairs)
 [Number::percentage](#method-number-percentage)
 [Number::spell](#method-number-spell)
 [Number::useLocale](#method-number-use-locale)
@@ -1307,6 +1308,23 @@ The `Number::ordinal` method returns a number's ordinal representation:
     $number = Number::ordinal(21);
 
     // 21st
+
+<a name="method-number-pairs"></a>
+#### `Number::pairs()` {.collection-method}
+
+The `Number::pairs` method generates an array of number pairs (sub-ranges) based on a specified range and step value. This method can be useful for dividing a larger range of numbers into smaller, manageable sub-ranges for things like pagination or batching tasks. The `pairs` method returns an array of arrays, where each inner array represents a pair (sub-range) of numbers:
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::pairs(25, 10);
+
+// [[1, 10], [11, 20], [21, 25]]
+
+$result = Number::pairs(25, 10, offset: 0);
+ 
+// [[0, 10], [10, 20], [20, 25]]
+```
 
 <a name="method-number-percentage"></a>
 #### `Number::percentage()` {.collection-method}
