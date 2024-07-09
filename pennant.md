@@ -407,9 +407,9 @@ public function boot(): void
 <a name="intercepting-feature-checks"></a>
 ### Intercepting Feature Checks
 
-Sometimes it can be useful to perform some in-memory checks before retrieving the stored value of a given feature. Imagine you are developing a rebuilt API behind a feature flag and want the ability to disable the new API without losing any of the resolved feature values in storage. If you notice a bug in the new API you could easily disable it for everyone except internal team members, fix the bug, and then re-enable the new API for the users that previously had access to the feature.
+Sometimes it can be useful to perform some in-memory checks before retrieving the stored value of a given feature. Imagine you are developing a new API behind a feature flag and want the ability to disable the new API without losing any of the resolved feature values in storage. If you notice a bug in the new API, you could easily disable it for everyone except internal team members, fix the bug, and then re-enable the new API for the users that previously had access to the feature.
 
-You can achieve this with a [class-based feature's](#class-based-features) `before` method. When present, the `before` method is always run in-memory before retrieving the value from storage. If a non-`null` value is returned from the method, it will be used in place of the feature's stored value for the duration of the request.
+You can achieve this with a [class-based feature's](#class-based-features) `before` method. When present, the `before` method is always run in-memory before retrieving the value from storage. If a non-`null` value is returned from the method, it will be used in place of the feature's stored value for the duration of the request:
 
 ```php
 <?php
@@ -475,8 +475,6 @@ class NewApi
     // ...
 }
 ```
-
-Likewise, you could do the inverse and disable a feature and start rolling it out after a given date.
 
 <a name="in-memory-cache"></a>
 ### In-Memory Cache
