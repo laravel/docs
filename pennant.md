@@ -10,6 +10,7 @@
     - [The `HasFeatures` Trait](#the-has-features-trait)
     - [Blade Directive](#blade-directive)
     - [Middleware](#middleware)
+    - [Intercepting Feature Checks](#intercepting-feature-checks)
     - [In-Memory Cache](#in-memory-cache)
 - [Scope](#scope)
     - [Specifying the Scope](#specifying-the-scope)
@@ -123,6 +124,7 @@ When writing a feature class, you only need to define a `resolve` method, which 
 
 namespace App\Features;
 
+use App\Models\User;
 use Illuminate\Support\Lottery;
 
 class NewApi
@@ -397,6 +399,78 @@ public function boot(): void
             return new Response(status: 403);
         }
     );
+
+    // ...
+}
+```
+
+<a name="intercepting-feature-checks"></a>
+### Intercepting Feature Checks
+
+Sometimes it can be useful to perform some in-memory checks before retrieving the stored value of a given feature. Imagine you are developing a new API behind a feature flag and want the ability to disable the new API without losing any of the resolved feature values in storage. If you notice a bug in the new API, you could easily disable it for everyone except internal team members, fix the bug, and then re-enable the new API for the users that previously had access to the feature.
+
+You can achieve this with a [class-based feature's](#class-based-features) `before` method. When present, the `before` method is always run in-memory before retrieving the value from storage. If a non-`null` value is returned from the method, it will be used in place of the feature's stored value for the duration of the request:
+
+```php
+<?php
+
+namespace App\Features;
+
+use App\Models\User;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Lottery;
+
+class NewApi
+{
+    /**
+     * Run an always-in-memory check before the stored value is retrieved.
+     */
+    public function before(User $user): mixed
+    {
+        if (Config::get('features.new-api.disabled')) {
+            return $user->isInternalTeamMember();
+        }
+    }
+
+    /**
+     * Resolve the feature's initial value.
+     */
+    public function resolve(User $user): mixed
+    {
+        return match (true) {
+            $user->isInternalTeamMember() => true,
+            $user->isHighTrafficCustomer() => false,
+            default => Lottery::odds(1 / 100),
+        };
+    }
+}
+```
+
+You could also use this feature to schedule the global rollout of a feature that was previously behind a feature flag:
+
+```php
+<?php
+
+namespace App\Features;
+
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
+
+class NewApi
+{
+    /**
+     * Run an always-in-memory check before the stored value is retrieved.
+     */
+    public function before(User $user): mixed
+    {
+        if (Config::get('features.new-api.disabled')) {
+            return $user->isInternalTeamMember();
+        }
+
+        if (Carbon::parse(Config::get('features.new-api.rollout-date'))->isPast()) {
+            return true;
+        }
+    }
 
     // ...
 }
