@@ -101,7 +101,7 @@ If you wish, you may also set the preset in your project's `pint.json` file:
 }
 ```
 
-Pint's currently supported presets are: `laravel`, `per`, `psr12`, `symfony` and `empty`.
+Pint's currently supported presets are: `laravel`, `per`, `psr12`, `symfony`, and `empty`.
 
 <a name="rules"></a>
 ### Rules
