@@ -87,7 +87,7 @@ pint --config vendor/my-company/coding-style/pint.json
 <a name="presets"></a>
 ### Presets
 
-Presets defines a set of rules that can be used to fix code style issues in your code. By default, Pint uses the `laravel` preset, which fixes issues by following the opinionated coding style of Laravel. However, you may specify a different preset by providing the `--preset` option to Pint:
+Presets define a set of rules that can be used to fix code style issues in your code. By default, Pint uses the `laravel` preset, which fixes issues by following the opinionated coding style of Laravel. However, you may specify a different preset by providing the `--preset` option to Pint:
 
 ```shell
 pint --preset psr12
@@ -101,14 +101,14 @@ If you wish, you may also set the preset in your project's `pint.json` file:
 }
 ```
 
-Pint's currently supported presets are: `laravel`, `per`, `psr12`, and `symfony`.
+Pint's currently supported presets are: `laravel`, `per`, `psr12`, `symfony`, and `empty`.
 
 <a name="rules"></a>
 ### Rules
 
 Rules are style guidelines that Pint will use to fix code style issues in your code. As mentioned above, presets are predefined groups of rules that should be perfect for most PHP projects, so you typically will not need to worry about the individual rules they contain.
 
-However, if you wish, you may enable or disable specific rules in your `pint.json` file:
+However, if you wish, you may enable or disable specific rules in your `pint.json` file or use the `empty` preset and define the rules from scratch:
 
 ```json
 {
