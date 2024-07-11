@@ -608,6 +608,9 @@ To solve this, you may enable the `Illuminate\Http\Middleware\TrustProxies` midd
         ]);
     })
 
+> [!NOTE]  
+> Since access to the configuration in the `withMiddleware` method is currently not available, it is possible to parameterize these values by generating the appropriate `trustedproxy.php` configuration file by valuing with the `proxies` key.
+
 In addition to configuring the trusted proxies, you may also configure the proxy headers that should be trusted:
 
     ->withMiddleware(function (Middleware $middleware) {
