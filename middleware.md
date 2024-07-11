@@ -123,6 +123,9 @@ If you want a middleware to run during every HTTP request to your application, y
 
 The `$middleware` object provided to the `withMiddleware` closure is an instance of `Illuminate\Foundation\Configuration\Middleware` and is responsible for managing the middleware assigned to your application's routes. The `append` method adds the middleware to the end of the list of global middleware. If you would like to add a middleware to the beginning of the list, you should use the `prepend` method.
 
+> [!NOTE]  
+> Access to the configuration in `withMiddleware` method is currently unavailable.
+
 <a name="manually-managing-laravels-default-global-middleware"></a>
 #### Manually Managing Laravel's Default Global Middleware
 
