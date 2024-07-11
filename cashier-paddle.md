@@ -48,6 +48,10 @@
     - [Crediting Transactions](#crediting-transactions)
 - [Transactions](#transactions)
     - [Past and Upcoming Payments](#past-and-upcoming-payments)
+- [Bill for non-catalog items](#bill-non-catalog-items)
+    - [Bill single non-catalog item](#non-catalog-single-item)
+    - [Bill multiple non-catalog items](#non-catalog-multiple-items)
+    - [Subscribe to a non-catalog item](#non-catalog-subscription)
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -1397,6 +1401,23 @@ Both of these methods will return an instance of `Laravel\Paddle\Payment`; howev
 ```blade
 Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
 ```
+
+<a name="bill-non-catalog-items"></a>
+## Bill for non-catalog items
+
+Sometimes you need to manage your product catalog outside of Paddle. With this option, you can create transactions for products and prices that are not in your paddle catalog.
+
+<a name="non-catalog-single-item"></a>
+### Bill single non-catalog item
+WIP
+
+<a name="non-catalog-multiple-items"></a>
+### Bill multiple non-catalog items
+WIP
+
+<a name="non-catalog-subscription"></a>
+### Subscribe to a non-catalog item
+WIP
 
 <a name="testing"></a>
 ## Testing
