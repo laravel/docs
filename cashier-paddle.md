@@ -52,6 +52,7 @@
     - [Bill single non-catalog item](#non-catalog-single-item)
     - [Bill multiple non-catalog items](#non-catalog-multiple-items)
     - [Subscribe to a non-catalog item](#non-catalog-subscription)
+    - [Change currency](#non-catalog-currency)
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -1402,22 +1403,98 @@ Both of these methods will return an instance of `Laravel\Paddle\Payment`; howev
 Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
 ```
 
+  
 <a name="bill-non-catalog-items"></a>
 ## Bill for non-catalog items
 
 Sometimes you need to manage your product catalog outside of Paddle. With this option, you can create transactions for products and prices that are not in your paddle catalog.
 
+> [!WARNING]  
+> All non-catalog actions will call Paddle's API and create an incomplete transaction on their end, beware of where you place this code as it might affect the performance of your app. 
+
 <a name="non-catalog-single-item"></a>
 ### Bill single non-catalog item
-WIP
 
+You may create a single transaction for a non-catalog item by calling the `charge` method:
+```php
+use Illuminate\Http\Request;
+
+Route::get('/buy', function (Request $request) {
+    $checkout = $user->charge(1000, 'T-shirt');
+
+    return view('billing', ['checkout' => $checkout]);
+});
+```
+
+If you need to modify the quantity, you can pass a third parameter which will override the defaults and set the desired quantity like so:
+
+```php
+use Illuminate\Http\Request;
+
+Route::get('/buy', function (Request $request) {
+    $checkout = $user->charge(1000, 'T-shirt', ['quantity' => 3]);
+
+    return view('billing', ['checkout' => $checkout]);
+});
+```
 <a name="non-catalog-multiple-items"></a>
 ### Bill multiple non-catalog items
 WIP
 
 <a name="non-catalog-subscription"></a>
 ### Subscribe to a non-catalog item
-WIP
+
+To subscribe a user to a non-catalog item you should call the method `newSubscription`:
+
+```php
+use Illuminate\Http\Request;
+
+Route::get('/buy', function (Request $request) {
+    $checkout = $user->newSubscription(1000, 'Gym subscription')
+        ->checkout();
+
+    return view('billing', ['checkout' => $checkout]);
+});
+```
+
+The subscription default interval is monthly, if you need to set another type of interval you can chain either `yearly`,  `monthly`, `weekly`, `daily`, for example:
+
+```php
+use Illuminate\Http\Request;
+
+Route::get('/buy', function (Request $request) {
+    $checkout = $user->newSubscription(1000, 'Gym subscription')
+        ->yearly()
+        ->checkout();
+
+    return view('billing', ['checkout' => $checkout]);
+});
+```
+
+To set the number of seats you should chain the `quantity` method as follows:
+
+```php
+use Illuminate\Http\Request;
+
+Route::get('/buy', function (Request $request) {
+    $checkout = $user->newSubscription(1000, 'Gym subscription')
+        ->quantity(3)
+        ->checkout();
+
+    return view('billing', ['checkout' => $checkout]);
+});
+```
+
+<a name="non-catalog-currency"></a>
+### Change currency
+
+The default currency for non-catalog transactions is `USD`, you might change it by setting `CASHIER_CURRENCY` within your application's `.env` file:
+
+```ini
+CASHIER_CURRENCY=true
+```
+
+You can find a list of supported currencies by Paddle on the following link: https://developer.paddle.com/concepts/sell/supported-currencies
 
 <a name="testing"></a>
 ## Testing
