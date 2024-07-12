@@ -181,15 +181,12 @@ Job classes are very simple, normally containing only a `handle` method that is 
 
     use App\Models\Podcast;
     use App\Services\AudioProcessor;
-    use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
-    use Illuminate\Foundation\Bus\Dispatchable;
-    use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Queue\SerializesModels;
+    use Illuminate\Foundation\Queue\Queueable;
 
     class ProcessPodcast implements ShouldQueue
     {
-        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         /**
          * Create a new job instance.
@@ -207,7 +204,7 @@ Job classes are very simple, normally containing only a `handle` method that is 
         }
     }
 
-In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models and their loaded relationships will be gracefully serialized and unserialized when the job is processing.
+In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `Queueable` trait that the job is using, Eloquent models and their loaded relationships will be gracefully serialized and unserialized when the job is processing.
 
 If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance and its loaded relationships from the database. This approach to model serialization allows for much smaller job payloads to be sent to your queue driver.
 
@@ -973,15 +970,12 @@ Alternatively, you may specify the job's queue by calling the `onQueue` method w
 
     namespace App\Jobs;
 
-     use Illuminate\Bus\Queueable;
      use Illuminate\Contracts\Queue\ShouldQueue;
-     use Illuminate\Foundation\Bus\Dispatchable;
-     use Illuminate\Queue\InteractsWithQueue;
-     use Illuminate\Queue\SerializesModels;
+     use Illuminate\Foundation\Queue\Queueable;
 
     class ProcessPodcast implements ShouldQueue
     {
-        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         /**
          * Create a new job instance.
@@ -1036,15 +1030,12 @@ Alternatively, you may specify the job's connection by calling the `onConnection
 
     namespace App\Jobs;
 
-     use Illuminate\Bus\Queueable;
      use Illuminate\Contracts\Queue\ShouldQueue;
-     use Illuminate\Foundation\Bus\Dispatchable;
-     use Illuminate\Queue\InteractsWithQueue;
-     use Illuminate\Queue\SerializesModels;
+     use Illuminate\Foundation\Queue\Queueable;
 
     class ProcessPodcast implements ShouldQueue
     {
-        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         /**
          * Create a new job instance.
@@ -1277,15 +1268,12 @@ To define a batchable job, you should [create a queueable job](#creating-jobs) a
     namespace App\Jobs;
 
     use Illuminate\Bus\Batchable;
-    use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
-    use Illuminate\Foundation\Bus\Dispatchable;
-    use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Queue\SerializesModels;
+    use Illuminate\Foundation\Queue\Queueable;
 
     class ImportCsv implements ShouldQueue
     {
-        use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Batchable, Queueable;
 
         /**
          * Execute the job.
@@ -1932,15 +1920,13 @@ When a particular job fails, you may want to send an alert to your users or reve
 
     use App\Models\Podcast;
     use App\Services\AudioProcessor;
-    use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
-    use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Queue\SerializesModels;
+    use Illuminate\Foundation\Queue\Queueable;
     use Throwable;
 
     class ProcessPodcast implements ShouldQueue
     {
-        use InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         /**
          * Create a new job instance.

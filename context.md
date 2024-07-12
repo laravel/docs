@@ -76,7 +76,7 @@ When the job is dispatched, any information currently stored in the context is c
 ```php
 class ProcessPodcast implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Queueable;
 
     // ...
 
