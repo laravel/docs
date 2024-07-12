@@ -804,9 +804,9 @@ Or, you may need to construct a "where" clause that compares a column to the res
 ### Full Text Where Clauses
 
 > [!WARNING]  
-> Full text where clauses are currently supported by MySQL and PostgreSQL.
+> Full text where clauses are currently supported by MariaDB, MySQL, and PostgreSQL.
 
-The `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MySQL:
+The `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MariaDB or MySQL:
 
     $users = DB::table('users')
                ->whereFullText('bio', 'web developer')
@@ -1002,7 +1002,7 @@ The `upsert` method will insert records that do not exist and update the records
 In the example above, Laravel will attempt to insert two records. If a record already exists with the same `departure` and `destination` column values, Laravel will update that record's `price` column.
 
 > [!WARNING]  
-> All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the "primary" and "unique" indexes of the table to detect existing records.
+> All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MariaDB and MySQL database drivers ignore the second argument of the `upsert` method and always use the "primary" and "unique" indexes of the table to detect existing records.
 
 <a name="update-statements"></a>
 ## Update Statements
