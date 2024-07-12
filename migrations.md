@@ -71,7 +71,7 @@ php artisan schema:dump --database=testing --prune
 You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
 
 > [!WARNING]  
-> Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases and utilizes the database's command-line client.
+> Migration squashing is only available for the MariaDB, MySQL, PostgreSQL, and SQLite databases and utilizes the database's command-line client.
 
 <a name="migration-structure"></a>
 ## Migration Structure
@@ -290,7 +290,7 @@ If you want to perform a schema operation on a database connection that is not y
         $table->id();
     });
 
-In addition, a few other properties and methods may be used to define other aspects of the table's creation. The `engine` property may be used to specify the table's storage engine when using MySQL:
+In addition, a few other properties and methods may be used to define other aspects of the table's creation. The `engine` property may be used to specify the table's storage engine when using MariaDB or MySQL:
 
     Schema::create('users', function (Blueprint $table) {
         $table->engine('InnoDB');
@@ -298,7 +298,7 @@ In addition, a few other properties and methods may be used to define other aspe
         // ...
     });
 
-The `charset` and `collation` properties may be used to specify the character set and collation for the created table when using MySQL:
+The `charset` and `collation` properties may be used to specify the character set and collation for the created table when using MariaDB or MySQL:
 
     Schema::create('users', function (Blueprint $table) {
         $table->charset('utf8mb4');
@@ -315,7 +315,7 @@ The `temporary` method may be used to indicate that the table should be "tempora
         // ...
     });
 
-If you would like to add a "comment" to a database table, you may invoke the `comment` method on the table instance. Table comments are currently only supported by MySQL and PostgreSQL:
+If you would like to add a "comment" to a database table, you may invoke the `comment` method on the table instance. Table comments are currently only supported by MariaDB, MySQL, and PostgreSQL:
 
     Schema::create('calculations', function (Blueprint $table) {
         $table->comment('Business calculations');
@@ -941,21 +941,21 @@ The following table contains all of the available column modifiers. This list do
 
 Modifier  |  Description
 --------  |  -----------
-`->after('column')`  |  Place the column "after" another column (MySQL).
+`->after('column')`  |  Place the column "after" another column (MariaDB / MySQL).
 `->autoIncrement()`  |  Set INTEGER columns as auto-incrementing (primary key).
-`->charset('utf8mb4')`  |  Specify a character set for the column (MySQL).
+`->charset('utf8mb4')`  |  Specify a character set for the column (MariaDB / MySQL).
 `->collation('utf8mb4_unicode_ci')`  |  Specify a collation for the column.
-`->comment('my comment')`  |  Add a comment to a column (MySQL / PostgreSQL).
+`->comment('my comment')`  |  Add a comment to a column (MariaDB / MySQL / PostgreSQL).
 `->default($value)`  |  Specify a "default" value for the column.
-`->first()`  |  Place the column "first" in the table (MySQL).
-`->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL).
-`->invisible()`  |  Make the column "invisible" to `SELECT *` queries (MySQL).
+`->first()`  |  Place the column "first" in the table (MariaDB / MySQL).
+`->from($integer)`  |  Set the starting value of an auto-incrementing field (MariaDB / MySQL / PostgreSQL).
+`->invisible()`  |  Make the column "invisible" to `SELECT *` queries (MariaDB / MySQL).
 `->nullable($value = true)`  |  Allow NULL values to be inserted into the column.
-`->storedAs($expression)`  |  Create a stored generated column (MySQL / PostgreSQL / SQLite).
-`->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
+`->storedAs($expression)`  |  Create a stored generated column (MariaDB / MySQL / PostgreSQL / SQLite).
+`->unsigned()`  |  Set INTEGER columns as UNSIGNED (MariaDB / MySQL).
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.
-`->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated (MySQL).
-`->virtualAs($expression)`  |  Create a virtual generated column (MySQL / SQLite).
+`->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated (MariaDB / MySQL).
+`->virtualAs($expression)`  |  Create a virtual generated column (MariaDB / MySQL / SQLite).
 `->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL).
 `->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL).
 
@@ -992,7 +992,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
 <a name="column-order"></a>
 #### Column Order
 
-When using the MySQL database, the `after` method may be used to add columns after an existing column in the schema:
+When using the MariaDB or MySQL database, the `after` method may be used to add columns after an existing column in the schema:
 
     $table->after('password', function (Blueprint $table) {
         $table->string('address_line1');
@@ -1101,7 +1101,7 @@ Command  |  Description
 `$table->primary(['id', 'parent_id']);`  |  Adds composite keys.
 `$table->unique('email');`  |  Adds a unique index.
 `$table->index('state');`  |  Adds an index.
-`$table->fullText('body');`  |  Adds a full text index (MySQL / PostgreSQL).
+`$table->fullText('body');`  |  Adds a full text index (MariaDB / MySQL / PostgreSQL).
 `$table->fullText('body')->language('english');`  |  Adds a full text index of the specified language (PostgreSQL).
 `$table->spatialIndex('location');`  |  Adds a spatial index (except SQLite).
 
