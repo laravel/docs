@@ -1531,7 +1531,7 @@ Route::get('/buy', function (Request $request) {
 The default currency for non-catalog transactions is `USD`, you might change it by setting `CASHIER_CURRENCY` within your application's `.env` file:
 
 ```ini
-CASHIER_CURRENCY=true
+CASHIER_CURRENCY=EUR
 ```
 
 You can find a list of supported currencies by Paddle on the following link: https://developer.paddle.com/concepts/sell/supported-currencies
