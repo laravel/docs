@@ -1439,7 +1439,47 @@ Route::get('/buy', function (Request $request) {
 ```
 <a name="non-catalog-multiple-items"></a>
 ### Bill multiple non-catalog items
-WIP
+
+If you need to bill multiple items in a single transaction you should use `chargeMany` method, keep in mind that you need to construct each item's object as required by [Paddle](https://developer.paddle.com/api-reference/transactions/create-transaction#request-body)
+
+```php
+use Illuminate\Http\Request;
+
+Route::get('/buy', function (Request $request) {
+    $checkout = $user->chargeMany([
+        [
+            'price' => [
+                'description' => 'T-shirt',
+                'unit_price' => [
+                    'amount' => '1000',
+                    'currency_code' => config('cashier.currency'),
+                ],
+                'product' => [
+                    'name' => 'T-shirt',
+                    'tax_category' => 'standard',
+                ],
+            ],
+            'quantity' => 1,
+        ],
+        [
+            'price' => [
+                'description' => 'Jeans',
+                'unit_price' => [
+                    'amount' => '3500',
+                    'currency_code' => config('cashier.currency'),
+                ],
+                'product' => [
+                    'name' => 'Jeans',
+                    'tax_category' => 'standard',
+                ],
+            ],
+            'quantity' => 1,
+        ],
+    ]);
+
+    return view('billing', ['checkout' => $checkout]);
+});
+```
 
 <a name="non-catalog-subscription"></a>
 ### Subscribe to a non-catalog item
