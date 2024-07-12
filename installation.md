@@ -64,7 +64,7 @@ After you have installed PHP and Composer, you may create a new Laravel project 
 composer create-project laravel/laravel example-app
 ```
 
-Or, you may create new Laravel projects by globally installing [the Laravel installer](https://github.com/laravel/installer) via Composer:
+Or, you may create new Laravel projects by globally installing [the Laravel installer](https://github.com/laravel/installer) via Composer. The Laravel installer allows you to select your preferred testing framework, database, and starter kit when creating new applications:
 
 ```nothing
 composer global require laravel/installer
