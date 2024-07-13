@@ -87,7 +87,7 @@ You will also need to configure and run a [queue worker](/docs/{{version}}/queue
 You may install Reverb using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
 
 ```sh
-composer require laravel/reverb:@beta
+composer require laravel/reverb
 ```
 
 Once the package is installed, you may run Reverb's installation command to publish the configuration, update your applications's broadcasting configuration, and add Reverb's required environment variables:
