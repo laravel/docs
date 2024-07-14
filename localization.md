@@ -150,6 +150,14 @@ You may retrieve translation strings from your language files using the `__` hel
 
     echo __('messages.welcome');
 
+Translation files could be structured using folders. To retrieve translation strings in this case, you must specify the path to the translation file:
+
+    echo __('path/to/messages.welcome');
+
+If you want to retrieve translations from a package, prepend the path with the package name and double colon:
+
+    echo __('package::path/to/messages.welcome');
+
 If the specified translation string does not exist, the `__` function will return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist.
 
  If you are using your [default translation strings as your translation keys](#using-translation-strings-as-keys), you should pass the default translation of your string to the `__` function;
