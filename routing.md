@@ -845,6 +845,19 @@ Rate limiters may be attached to routes or route groups using the `throttle` [mi
         });
     });
 
+<a name="api-throttling"></a>
+#### API Throttling
+
+You can specify manually `throttle:api` middleware or use a method that will do it for you in each `api` route. Add the `throttleApi` method in your application's `bootstrap/app.php` file:
+
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->throttleApi();
+        // ...
+    })
+
+> [!WARNING]  
+> Before adding the method, you must specify a [definition](/docs/{{version}}/routing#defining-rate-limiters) `RateLimiter` for the `api` name.
+
 <a name="throttling-with-redis"></a>
 #### Throttling With Redis
 
