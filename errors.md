@@ -187,7 +187,7 @@ The closure passed to the `render` method should return an instance of `Illumina
 
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (InvalidOrderException $e, Request $request) {
-            return response()->view('errors.invalid-order', [], 500);
+            return response()->view('errors.invalid-order', status: 500);
         });
     })
 
