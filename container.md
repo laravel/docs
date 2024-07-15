@@ -29,30 +29,30 @@ Let's look at a simple example:
 
     namespace App\Http\Controllers;
 
-    use App\Repositories\UserRepository;
+    use App\Services\AppleMusic;
     use Illuminate\View\View;
 
-    class UserController extends Controller
+    class PodcastController extends Controller
     {
         /**
          * Create a new controller instance.
          */
         public function __construct(
-            protected UserRepository $users,
+            protected AppleMusic $apple,
         ) {}
 
         /**
-         * Show the profile for the given user.
+         * Show information about the given podcast.
          */
         public function show(string $id): View
         {
-            $user = $this->users->find($id);
-
-            return view('user.profile', ['user' => $user]);
+            return view('podcasts.show', [
+                'podcast' => $this->apple->findPodcast($id)
+            ]);
         }
     }
 
-In this example, the `UserController` needs to retrieve users from a data source. So, we will **inject** a service that is able to retrieve users. In this context, our `UserRepository` most likely uses [Eloquent](/docs/{{version}}/eloquent) to retrieve user information from the database. However, since the repository is injected, we are able to easily swap it out with another implementation. We are also able to easily "mock", or create a dummy implementation of the `UserRepository` when testing our application.
+In this example, the `PodcastController` needs to retrieve podcasts from a data source such as Apple Music. So, we will **inject** a service that is able to retrieve podcasts. Since the service is injected, we are able to easily "mock", or create a dummy implementation of the `AppleMusic` service when testing our application.
 
 A deep understanding of the Laravel service container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself.
 
@@ -394,26 +394,23 @@ For example, you may type-hint a repository defined by your application in a con
 
     namespace App\Http\Controllers;
 
-    use App\Repositories\UserRepository;
-    use App\Models\User;
+    use App\Services\AppleMusic;
 
-    class UserController extends Controller
+    class PodcastController extends Controller
     {
         /**
          * Create a new controller instance.
          */
         public function __construct(
-            protected UserRepository $users,
+            protected AppleMusic $apple,
         ) {}
 
         /**
-         * Show the user with the given ID.
+         * Show information about the given podcast.
          */
-        public function show(string $id): User
+        public function show(string $id): Podcast
         {
-            $user = $this->users->findOrFail($id);
-
-            return $user;
+            return $this->apple->findPodcast($id);
         }
     }
 
@@ -426,14 +423,14 @@ Sometimes you may wish to invoke a method on an object instance while allowing t
 
     namespace App;
 
-    use App\Repositories\UserRepository;
+    use App\Services\AppleMusic;
 
-    class UserReport
+    class PodcastStats
     {
         /**
-         * Generate a new user report.
+         * Generate a new podcast stats report.
          */
-        public function generate(UserRepository $repository): array
+        public function generate(AppleMusic $apple): array
         {
             return [
                 // ...
@@ -443,17 +440,17 @@ Sometimes you may wish to invoke a method on an object instance while allowing t
 
 You may invoke the `generate` method via the container like so:
 
-    use App\UserReport;
+    use App\PodcastStats;
     use Illuminate\Support\Facades\App;
 
-    $report = App::call([new UserReport, 'generate']);
+    $stats = App::call([new PodcastStats, 'generate']);
 
 The `call` method accepts any PHP callable. The container's `call` method may even be used to invoke a closure while automatically injecting its dependencies:
 
-    use App\Repositories\UserRepository;
+    use App\Services\AppleMusic;
     use Illuminate\Support\Facades\App;
 
-    $result = App::call(function (UserRepository $repository) {
+    $result = App::call(function (AppleMusic $apple) {
         // ...
     });
 
