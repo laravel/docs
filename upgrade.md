@@ -24,6 +24,7 @@
 - [Carbon 3](#carbon-3)
 - [Password Rehashing](#password-rehashing)
 - [Per-Second Rate Limiting](#per-second-rate-limiting)
+- [Spatie Once Package](#spatie-once-package)
 
 </div>
 
@@ -35,7 +36,6 @@
 - [Doctrine DBAL Removal](#doctrine-dbal-removal)
 - [Eloquent Model `casts` Method](#eloquent-model-casts-method)
 - [Spatial Types](#spatial-types)
-- [Spatie Once Package](#spatie-once-package)
 - [The `Enumerable` Contract](#the-enumerable-contract)
 - [The `UserProvider` Contract](#the-user-provider-contract)
 - [The `Authenticatable` Contract](#the-authenticatable-contract)
