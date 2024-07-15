@@ -201,7 +201,7 @@ If your file changes are not being reflected in the browser while the developmen
 With your Vite entry points configured, you may now reference them in a `@vite()` Blade directive that you add to the `<head>` of your application's root template:
 
 ```blade
-<!doctype html>
+<!DOCTYPE html>
 <head>
     {{-- ... --}}
 
@@ -212,7 +212,7 @@ With your Vite entry points configured, you may now reference them in a `@vite()
 If you're importing your CSS via JavaScript, you only need to include the JavaScript entry point:
 
 ```blade
-<!doctype html>
+<!DOCTYPE html>
 <head>
     {{-- ... --}}
 
