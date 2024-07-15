@@ -177,7 +177,7 @@ When someone visits a signed URL that has expired, they will receive a generic e
 
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (InvalidSignatureException $e) {
-            return response()->view('error.link-expired', [], 403);
+            return response()->view('errors.link-expired', status: 403);
         });
     })
 
