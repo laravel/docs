@@ -737,6 +737,7 @@ Like all other mail notifications, notifications that use Markdown templates sho
 Markdown mail notifications use a combination of Blade components and Markdown syntax which allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
 
 ```blade
+{{-- template in resources/views/vendor/mail/invoice/paid.blade.php --}}
 <x-mail::message>
 # Invoice Paid
 
