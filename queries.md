@@ -613,6 +613,43 @@ The `whereNotBetweenColumns` method verifies that a column's value lies outside 
                            ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
                            ->get();
 
+**whereLike / orWhereLike / whereNotLike / orWhereNotLike**
+
+The `whereLike` method allows you to add "LIKE" clauses to your query for pattern matching. They provide a database-agnostic way of performing string matching queries. By default, it performs a case-insensitive search:
+
+    $users = DB::table('users')
+               ->whereLike('name', '%John%')
+               ->get();
+
+You can perform a case-sensitive search by passing `true` as the third argument:
+
+    $users = DB::table('users')
+               ->whereLike('name', '%John%', true)
+               ->get();
+
+The `orWhereLike` method allows you to add an "or" clause with a LIKE condition:
+
+    $users = DB::table('users')
+               ->where('votes', '>', 100)
+               ->orWhereLike('name', '%John%')
+               ->get();
+
+The `whereNotLike` method allows you to add "NOT LIKE" clauses to your query:
+
+    $users = DB::table('users')
+               ->whereNotLike('name', '%John%')
+               ->get();
+
+Similarly, you can use `orWhereNotLike` to add an "or" clause with a NOT LIKE condition:
+
+    $users = DB::table('users')
+               ->where('votes', '>', 100)
+               ->orWhereNotLike('name', '%John%')
+               ->get();
+
+> [!WARNING]
+> The `whereLike` case-sensitive search option is currently not supported on SQL Server.
+
 **whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
 The `whereIn` method verifies that a given column's value is contained within the given array:
