@@ -40,6 +40,8 @@ The `local` driver interacts with files stored locally on the server running the
 > [!NOTE]  
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
 
+The default filesystem disk will use the `local` disk. This can be overriden by setting the environment variable `FILESYSTEM_DISK`.
+
 <a name="the-local-driver"></a>
 ### The Local Driver
 
