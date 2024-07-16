@@ -388,7 +388,7 @@ If you would like to have the Laravel container instance itself injected into a 
 
 Alternatively, and importantly, you may type-hint the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). In practice, this is how most of your objects should be resolved by the container.
 
-For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:
+For example, you may type-hint a service defined by your application in a controller's constructor. The service will automatically be resolved and injected into the class:
 
     <?php
 
