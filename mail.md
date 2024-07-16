@@ -700,7 +700,7 @@ Laravel's mail capabilities are powered by Symfony Mailer. Laravel allows you to
 
     use Illuminate\Mail\Mailables\Envelope;
     use Symfony\Component\Mime\Email;
-    
+
     /**
      * Get the message envelope.
      */
@@ -1133,6 +1133,12 @@ test('orders can be shipped', function () {
     // Assert a mailable was sent twice...
     Mail::assertSent(OrderShipped::class, 2);
 
+    // Assert a mailable was sent to an email address...
+    Mail::assertSent(OrderShipped::class, 'example@laravel.com');
+
+    // Assert a mailable was sent to multiple email addresses...
+    Mail::assertSent(OrderShipped::class, ['example@laravel.com', '...']);
+
     // Assert a mailable was not sent...
     Mail::assertNotSent(AnotherMailable::class);
 
@@ -1166,6 +1172,12 @@ class ExampleTest extends TestCase
 
         // Assert a mailable was sent twice...
         Mail::assertSent(OrderShipped::class, 2);
+
+        // Assert a mailable was sent to an email address...
+        Mail::assertSent(OrderShipped::class, 'example@laravel.com');
+
+        // Assert a mailable was sent to multiple email addresses...
+        Mail::assertSent(OrderShipped::class, ['example@laravel.com', '...']);
 
         // Assert a mailable was not sent...
         Mail::assertNotSent(AnotherMailable::class);
