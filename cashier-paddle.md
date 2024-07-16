@@ -48,11 +48,11 @@
     - [Crediting Transactions](#crediting-transactions)
 - [Transactions](#transactions)
     - [Past and Upcoming Payments](#past-and-upcoming-payments)
-- [Bill for non-catalog items](#bill-non-catalog-items)
-    - [Bill single non-catalog item](#non-catalog-single-item)
-    - [Bill multiple non-catalog items](#non-catalog-multiple-items)
-    - [Subscribe to a non-catalog item](#non-catalog-subscription)
-    - [Change currency](#non-catalog-currency)
+- [Bill for Non-Catalog Items](#bill-non-catalog-items)
+    - [Bill Single Non-Catalog Item](#non-catalog-single-item)
+    - [Bill Multiple Non-Catalog Items](#non-catalog-multiple-items)
+    - [Subscribe to a Non-Catalog Item](#non-catalog-subscription)
+    - [Change Currency](#non-catalog-currency)
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -1405,7 +1405,7 @@ Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->forma
 
   
 <a name="bill-non-catalog-items"></a>
-## Bill for non-catalog items
+## Bill for Non-Catalog Items
 
 Sometimes you need to manage your product catalog outside of Paddle. With this option, you can create transactions for products and prices that are not in your paddle catalog.
 
@@ -1413,7 +1413,7 @@ Sometimes you need to manage your product catalog outside of Paddle. With this o
 > All non-catalog actions will call Paddle's API and create an incomplete transaction on their end, beware of where you place this code as it might affect the performance of your app. 
 
 <a name="non-catalog-single-item"></a>
-### Bill single non-catalog item
+### Bill Single Non-Catalog Item
 
 You may create a single transaction for a non-catalog item by calling the `charge` method:
 ```php
@@ -1438,7 +1438,7 @@ Route::get('/buy', function (Request $request) {
 });
 ```
 <a name="non-catalog-multiple-items"></a>
-### Bill multiple non-catalog items
+### Bill Multiple Non-Catalog Items
 
 If you need to bill multiple items in a single transaction you should use `chargeMany` method, keep in mind that you need to construct each item's object as required by [Paddle](https://developer.paddle.com/api-reference/transactions/create-transaction#request-body)
 
@@ -1482,7 +1482,7 @@ Route::get('/buy', function (Request $request) {
 ```
 
 <a name="non-catalog-subscription"></a>
-### Subscribe to a non-catalog item
+### Subscribe to a Non-Catalog Item
 
 To subscribe a user to a non-catalog item you should call the method `newSubscription`:
 
@@ -1526,7 +1526,7 @@ Route::get('/buy', function (Request $request) {
 ```
 
 <a name="non-catalog-currency"></a>
-### Change currency
+### Change Currency
 
 The default currency for non-catalog transactions is `USD`, you might change it by setting `CASHIER_CURRENCY` within your application's `.env` file:
 
