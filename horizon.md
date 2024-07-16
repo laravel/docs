@@ -189,7 +189,7 @@ Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Co
 
     class ProcessPodcast implements ShouldQueue, Silenced
     {
-        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         // ...
     }
@@ -307,15 +307,12 @@ Horizon allows you to assign “tags” to jobs, including mailables, broadcast 
     namespace App\Jobs;
 
     use App\Models\Video;
-    use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
-    use Illuminate\Foundation\Bus\Dispatchable;
-    use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Queue\SerializesModels;
+    use Illuminate\Foundation\Queue\Queueable;
 
     class RenderVideo implements ShouldQueue
     {
-        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         /**
          * Create a new job instance.
