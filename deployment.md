@@ -34,6 +34,7 @@ The Laravel framework has a few system requirements. You should ensure that your
 - Fileinfo PHP Extension
 - Filter PHP Extension
 - Hash PHP Extension
+- Intl Extension
 - Mbstring PHP Extension
 - OpenSSL PHP Extension
 - PCRE PHP Extension
