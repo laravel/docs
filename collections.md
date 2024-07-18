@@ -136,6 +136,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [forget](#method-forget)
 [forPage](#method-forpage)
 [get](#method-get)
+[getOrPut](#method-getorput)
 [groupBy](#method-groupby)
 [has](#method-has)
 [hasAny](#method-hasany)
@@ -1120,6 +1121,26 @@ You may even pass a callback as the method's default value. The result of the ca
     });
 
     // taylor@example.com
+
+<a name="method-getorput"></a>
+#### `getOrPut()` {.collection-method}
+
+The `getOrPut` method returns the item at a given key. If the key does not exist, it inserts and returns the given default value:
+
+    $collection = collect(['name' => 'Taylor']);
+
+    $collection->getOrPut('framework', 'Laravel');
+
+    // Laravel
+
+    $collection->all()
+
+    /*
+        [
+            'name' => 'Taylor',
+            'framework' => 'Laravel',
+        ]
+    */
 
 <a name="method-groupby"></a>
 #### `groupBy()` {.collection-method}
