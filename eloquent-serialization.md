@@ -61,7 +61,7 @@ Alternatively, you may cast a model or collection to a string, which will automa
 
 Since models and collections are converted to JSON when cast to a string, you can return Eloquent objects directly from your application's routes or controllers. Laravel will automatically serialize your Eloquent models and collections to JSON when they are returned from routes or controllers:
 
-    Route::get('users', function () {
+    Route::get('/users', function () {
         return User::all();
     });
 
