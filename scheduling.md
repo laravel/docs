@@ -120,46 +120,46 @@ We've already seen a few examples of how you may configure a task to run at spec
 
 <div class="overflow-auto">
 
-Method  | Description
-------------- | -------------
-`->cron('* * * * *');`  |  Run the task on a custom cron schedule
-`->everySecond();`  |  Run the task every second
-`->everyTwoSeconds();`  |  Run the task every two seconds
-`->everyFiveSeconds();`  |  Run the task every five seconds
-`->everyTenSeconds();`  |  Run the task every ten seconds
-`->everyFifteenSeconds();`  |  Run the task every fifteen seconds
-`->everyTwentySeconds();`  |  Run the task every twenty seconds
-`->everyThirtySeconds();`  |  Run the task every thirty seconds
-`->everyMinute();`  |  Run the task every minute
-`->everyTwoMinutes();`  |  Run the task every two minutes
-`->everyThreeMinutes();`  |  Run the task every three minutes
-`->everyFourMinutes();`  |  Run the task every four minutes
-`->everyFiveMinutes();`  |  Run the task every five minutes
-`->everyTenMinutes();`  |  Run the task every ten minutes
-`->everyFifteenMinutes();`  |  Run the task every fifteen minutes
-`->everyThirtyMinutes();`  |  Run the task every thirty minutes
-`->hourly();`  |  Run the task every hour
-`->hourlyAt(17);`  |  Run the task every hour at 17 minutes past the hour
-`->everyOddHour($minutes = 0);`  |  Run the task every odd hour
-`->everyTwoHours($minutes = 0);`  |  Run the task every two hours
-`->everyThreeHours($minutes = 0);`  |  Run the task every three hours
-`->everyFourHours($minutes = 0);`  |  Run the task every four hours
-`->everySixHours($minutes = 0);`  |  Run the task every six hours
-`->daily();`  |  Run the task every day at midnight
-`->dailyAt('13:00');`  |  Run the task every day at 13:00
-`->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
-`->twiceDailyAt(1, 13, 15);`  |  Run the task daily at 1:15 & 13:15
-`->weekly();`  |  Run the task every Sunday at 00:00
-`->weeklyOn(1, '8:00');`  |  Run the task every week on Monday at 8:00
-`->monthly();`  |  Run the task on the first day of every month at 00:00
-`->monthlyOn(4, '15:00');`  |  Run the task every month on the 4th at 15:00
-`->twiceMonthly(1, 16, '13:00');`  |  Run the task monthly on the 1st and 16th at 13:00
-`->lastDayOfMonth('15:00');` | Run the task on the last day of the month at 15:00
-`->quarterly();` |  Run the task on the first day of every quarter at 00:00
-`->quarterlyOn(4, '14:00');` |  Run the task every quarter on the 4th at 14:00
-`->yearly();`  |  Run the task on the first day of every year at 00:00
-`->yearlyOn(6, 1, '17:00');`  |  Run the task every year on June 1st at 17:00
-`->timezone('America/New_York');` | Set the timezone for the task
+| Method                             | Description                                              |
+| ---------------------------------- | -------------------------------------------------------- |
+| `->cron('* * * * *');`             | Run the task on a custom cron schedule.                  |
+| `->everySecond();`                 | Run the task every second.                               |
+| `->everyTwoSeconds();`             | Run the task every two seconds.                          |
+| `->everyFiveSeconds();`            | Run the task every five seconds.                         |
+| `->everyTenSeconds();`             | Run the task every ten seconds.                          |
+| `->everyFifteenSeconds();`         | Run the task every fifteen seconds.                      |
+| `->everyTwentySeconds();`          | Run the task every twenty seconds.                       |
+| `->everyThirtySeconds();`          | Run the task every thirty seconds.                       |
+| `->everyMinute();`                 | Run the task every minute.                               |
+| `->everyTwoMinutes();`             | Run the task every two minutes.                          |
+| `->everyThreeMinutes();`           | Run the task every three minutes.                        |
+| `->everyFourMinutes();`            | Run the task every four minutes.                         |
+| `->everyFiveMinutes();`            | Run the task every five minutes.                         |
+| `->everyTenMinutes();`             | Run the task every ten minutes.                          |
+| `->everyFifteenMinutes();`         | Run the task every fifteen minutes.                      |
+| `->everyThirtyMinutes();`          | Run the task every thirty minutes.                       |
+| `->hourly();`                      | Run the task every hour.                                 |
+| `->hourlyAt(17);`                  | Run the task every hour at 17 minutes past the hour.     |
+| `->everyOddHour($minutes = 0);`    | Run the task every odd hour.                             |
+| `->everyTwoHours($minutes = 0);`   | Run the task every two hours.                            |
+| `->everyThreeHours($minutes = 0);` | Run the task every three hours.                          |
+| `->everyFourHours($minutes = 0);`  | Run the task every four hours.                           |
+| `->everySixHours($minutes = 0);`   | Run the task every six hours.                            |
+| `->daily();`                       | Run the task every day at midnight.                      |
+| `->dailyAt('13:00');`              | Run the task every day at 13:00.                         |
+| `->twiceDaily(1, 13);`             | Run the task daily at 1:00 & 13:00.                      |
+| `->twiceDailyAt(1, 13, 15);`       | Run the task daily at 1:15 & 13:15.                      |
+| `->weekly();`                      | Run the task every Sunday at 00:00.                      |
+| `->weeklyOn(1, '8:00');`           | Run the task every week on Monday at 8:00.               |
+| `->monthly();`                     | Run the task on the first day of every month at 00:00.   |
+| `->monthlyOn(4, '15:00');`         | Run the task every month on the 4th at 15:00.            |
+| `->twiceMonthly(1, 16, '13:00');`  | Run the task monthly on the 1st and 16th at 13:00.       |
+| `->lastDayOfMonth('15:00');`       | Run the task on the last day of the month at 15:00.      |
+| `->quarterly();`                   | Run the task on the first day of every quarter at 00:00. |
+| `->quarterlyOn(4, '14:00');`       | Run the task every quarter on the 4th at 14:00.          |
+| `->yearly();`                      | Run the task on the first day of every year at 00:00.    |
+| `->yearlyOn(6, 1, '17:00');`       | Run the task every year on June 1st at 17:00.            |
+| `->timezone('America/New_York');`  | Set the timezone for the task.                           |
 
 </div>
 
@@ -183,22 +183,22 @@ A list of additional schedule constraints may be found below:
 
 <div class="overflow-auto">
 
-Method  | Description
-------------- | -------------
-`->weekdays();`  |  Limit the task to weekdays
-`->weekends();`  |  Limit the task to weekends
-`->sundays();`  |  Limit the task to Sunday
-`->mondays();`  |  Limit the task to Monday
-`->tuesdays();`  |  Limit the task to Tuesday
-`->wednesdays();`  |  Limit the task to Wednesday
-`->thursdays();`  |  Limit the task to Thursday
-`->fridays();`  |  Limit the task to Friday
-`->saturdays();`  |  Limit the task to Saturday
-`->days(array\|mixed);`  |  Limit the task to specific days
-`->between($startTime, $endTime);`  |  Limit the task to run between start and end times
-`->unlessBetween($startTime, $endTime);`  |  Limit the task to not run between start and end times
-`->when(Closure);`  |  Limit the task based on a truth test
-`->environments($env);`  |  Limit the task to specific environments
+| Method                                   | Description                                            |
+| ---------------------------------------- | ------------------------------------------------------ |
+| `->weekdays();`                          | Limit the task to weekdays.                            |
+| `->weekends();`                          | Limit the task to weekends.                            |
+| `->sundays();`                           | Limit the task to Sunday.                              |
+| `->mondays();`                           | Limit the task to Monday.                              |
+| `->tuesdays();`                          | Limit the task to Tuesday.                             |
+| `->wednesdays();`                        | Limit the task to Wednesday.                           |
+| `->thursdays();`                         | Limit the task to Thursday.                            |
+| `->fridays();`                           | Limit the task to Friday.                              |
+| `->saturdays();`                         | Limit the task to Saturday.                            |
+| `->days(array\|mixed);`                  | Limit the task to specific days.                       |
+| `->between($startTime, $endTime);`       | Limit the task to run between start and end times.     |
+| `->unlessBetween($startTime, $endTime);` | Limit the task to not run between start and end times. |
+| `->when(Closure);`                       | Limit the task based on a truth test.                  |
+| `->environments($env);`                  | Limit the task to specific environments.               |
 
 </div>
 
@@ -519,10 +519,14 @@ The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL 
 
 Laravel dispatches a variety of [events](/docs/{{version}}/events) during the scheduling process. You may [define listeners](/docs/{{version}}/events) for any of the following events:
 
-Event Name |
-------------- |
-`Illuminate\Console\Events\ScheduledTaskStarting` |
-`Illuminate\Console\Events\ScheduledTaskFinished` |
-`Illuminate\Console\Events\ScheduledBackgroundTaskFinished` |
-`Illuminate\Console\Events\ScheduledTaskSkipped` |
-`Illuminate\Console\Events\ScheduledTaskFailed` |
+<div class="overflow-auto">
+
+| Event Name |
+| --- |
+| `Illuminate\Console\Events\ScheduledTaskStarting` |
+| `Illuminate\Console\Events\ScheduledTaskFinished` |
+| `Illuminate\Console\Events\ScheduledBackgroundTaskFinished` |
+| `Illuminate\Console\Events\ScheduledTaskSkipped` |
+| `Illuminate\Console\Events\ScheduledTaskFailed` |
+
+</div>

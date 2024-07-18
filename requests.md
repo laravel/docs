@@ -649,4 +649,3 @@ By default, requests coming from subdomains of the application's URL are also au
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustHosts(at: ['laravel.test'], subdomains: false);
     })
-

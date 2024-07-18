@@ -423,8 +423,10 @@ If you are in a nested loop, you may access the parent loop's `$loop` variable v
 
 The `$loop` variable also contains a variety of other useful properties:
 
+<div class="overflow-auto">
+
 | Property           | Description                                            |
-|--------------------|--------------------------------------------------------|
+| ------------------ | ------------------------------------------------------ |
 | `$loop->index`     | The index of the current loop iteration (starts at 0). |
 | `$loop->iteration` | The current loop iteration (starts at 1).              |
 | `$loop->remaining` | The iterations remaining in the loop.                  |
@@ -435,6 +437,8 @@ The `$loop` variable also contains a variety of other useful properties:
 | `$loop->odd`       | Whether this is an odd iteration through the loop.     |
 | `$loop->depth`     | The nesting level of the current loop.                 |
 | `$loop->parent`    | When in a nested loop, the parent's loop variable.     |
+
+</div>
 
 <a name="conditional-classes"></a>
 ### Conditional Classes & Styles
