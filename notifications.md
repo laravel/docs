@@ -780,10 +780,10 @@ The table component allows you to transform a Markdown table into an HTML table.
 
 ```blade
 <x-mail::table>
-| Laravel  | Table         | Example |
-| -------- | :-----------: | ------: |
-| Col 2 is | Centered      | $10     |
-| Col 3 is | Right-Aligned | $20     |
+| Laravel       | Table         | Example       |
+| ------------- | :-----------: | ------------: |
+| Col 2 is      | Centered      | $10           |
+| Col 3 is      | Right-Aligned | $20           |
 </x-mail::table>
 ```
 
