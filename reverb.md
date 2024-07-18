@@ -283,7 +283,7 @@ The configuration above will allow up to 10,000 Nginx workers per process to be 
 Unix-based operating systems typically limit the number of ports which can be opened on the server. You may see the current allowed range via the following command:
 
  ```sh
- cat /proc/sys/net/ipv4/ip_local_port_range
+cat /proc/sys/net/ipv4/ip_local_port_range
 # 32768	60999
 ```
 
