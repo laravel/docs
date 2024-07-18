@@ -513,7 +513,7 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
         }
     }
 
- If you would like to conditionally dispatch an event, you may use the `dispatchIf` and `dispatchUnless` methods:
+If you would like to conditionally dispatch an event, you may use the `dispatchIf` and `dispatchUnless` methods:
 
     OrderShipped::dispatchIf($condition, $order);
 

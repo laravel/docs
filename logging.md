@@ -421,9 +421,9 @@ If you are using a Monolog handler that is capable of providing its own formatte
  <a name="monolog-processors"></a>
  #### Monolog Processors
 
- Monolog can also process messages before logging them. You can create your own processors or use the [existing processors offered by Monolog](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor).
+Monolog can also process messages before logging them. You can create your own processors or use the [existing processors offered by Monolog](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor).
 
- If you would like to customize the processors for a `monolog` driver, add a `processors` configuration value to your channel's configuration:
+If you would like to customize the processors for a `monolog` driver, add a `processors` configuration value to your channel's configuration:
 
      'memory' => [
          'driver' => 'monolog',

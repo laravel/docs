@@ -116,7 +116,7 @@ If you would like to retrieve an `Illuminate\Support\Collection` instance contai
         echo $title;
     }
 
- You may specify the column that the resulting collection should use as its keys by providing a second argument to the `pluck` method:
+You may specify the column that the resulting collection should use as its keys by providing a second argument to the `pluck` method:
 
     $titles = DB::table('users')->pluck('title', 'name');
 

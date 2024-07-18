@@ -337,7 +337,7 @@ By default, `Route::resource` will create the route parameters for your resource
         'users' => 'admin_user'
     ]);
 
- The example above generates the following URI for the resource's `show` route:
+The example above generates the following URI for the resource's `show` route:
 
     /users/{admin_user}
 
