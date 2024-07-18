@@ -128,7 +128,7 @@ services:
   frankenphp:
     build:
       context: .
-    entrypoint: php artisan octane:frankenphp --max-requests=1
+    entrypoint: php artisan octane:frankenphp --max-requests=1 --workers=1
     ports:
       - "8000:8000"
     volumes:
