@@ -1129,6 +1129,10 @@ The `getOrPut` method returns the item at a given key. If the key does not exist
 
     $collection = collect(['name' => 'Taylor']);
 
+    $collection->getOrPut('name', 'Dries');
+
+    // Taylor
+
     $collection->getOrPut('framework', 'Laravel');
 
     // Laravel
