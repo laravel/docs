@@ -49,7 +49,7 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Scout](https://github.com/laravel/scout)
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
-- [Laravel Website](https://github.com/laravel/laravel.com-next)
+- [Laravel Website](https://github.com/laravel/laravel.com)
 
 </div>
 
