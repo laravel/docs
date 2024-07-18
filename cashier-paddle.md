@@ -201,7 +201,7 @@ After defining your model, you may instruct Cashier to use your custom model via
 <a name="quickstart-selling-products"></a>
 ### Selling Products
 
-> [!NOTE]
+> [!NOTE]  
 > Before utilizing Paddle Checkout, you should define Products with fixed prices in your Paddle dashboard. In addition, you should [configure Paddle's webhook handling](#handling-paddle-webhooks).
 
 Offering product and subscription billing via your application can be intimidating. However, thanks to Cashier and [Paddle's Checkout Overlay](https://www.paddle.com/billing/checkout), you can easily build modern, robust payment integrations.
@@ -235,11 +235,11 @@ In the `buy` view, we will include a button to display the Checkout Overlay. The
 When selling products, it's common to keep track of completed orders and purchased products via `Cart` and `Order` models defined by your own application. When redirecting customers to Paddle's Checkout Overlay to complete a purchase, you may need to provide an existing order identifier so that you can associate the completed purchase with the corresponding order when the customer is redirected back to your application.
 
 To accomplish this, you may provide an array of custom data to the `checkout` method. Let's imagine that a pending `Order` is created within our application when a user begins the checkout process. Remember, the `Cart` and `Order` models in this example are illustrative and not provided by Cashier. You are free to implement these concepts based on the needs of your own application:
-    
+
     use App\Models\Cart;
     use App\Models\Order;
     use Illuminate\Http\Request;
-    
+
     Route::get('/cart/{cart}/checkout', function (Request $request, Cart $cart) {
         $order = Order::create([
             'cart_id' => $cart->id,

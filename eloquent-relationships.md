@@ -1941,7 +1941,7 @@ The `createQuietly` and `createManyQuietly` methods may be used to create a mode
     $user->posts()->createQuietly([
         'title' => 'Post title.',
     ]);
-    
+
     $user->posts()->createManyQuietly([
         ['title' => 'First post.'],
         ['title' => 'Second post.'],

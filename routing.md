@@ -323,7 +323,7 @@ For convenience, some commonly used regular expression patterns have helper meth
     Route::get('/category/{category}', function (string $category) {
         // ...
     })->whereIn('category', ['movie', 'song', 'painting']);
-    
+
     Route::get('/category/{category}', function (string $category) {
         // ...
     })->whereIn('category', CategoryEnum::cases());

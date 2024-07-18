@@ -493,7 +493,7 @@ If you would like to customize the information included in the `links` or `meta`
 
         return $default;
     }
-    
+
 <a name="conditional-attributes"></a>
 ### Conditional Attributes
 

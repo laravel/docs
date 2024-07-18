@@ -627,7 +627,7 @@ The `integer` method creates an `INTEGER` equivalent column:
 The `ipAddress` method creates a `VARCHAR` equivalent column:
 
     $table->ipAddress('visitor');
-    
+
 When using PostgreSQL, an `INET` column will be created.
 
 <a name="column-method-json"></a>

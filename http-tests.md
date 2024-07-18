@@ -95,7 +95,7 @@ class ExampleTest extends TestCase
 
 In general, each of your tests should only make one request to your application. Unexpected behavior may occur if multiple requests are executed within a single test method.
 
-> [!NOTE]
+> [!NOTE]  
 > For convenience, the CSRF middleware is automatically disabled when running tests.
 
 <a name="customizing-request-headers"></a>
@@ -480,7 +480,7 @@ expect($response['created'])->toBeTrue();
 $this->assertTrue($response['created']);
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
 <a name="verifying-exact-match"></a>
@@ -1312,7 +1312,7 @@ Assert that the response has a moved permanently (301) HTTP status code:
 Assert that the response has the given URI value in the `Location` header:
 
     $response->assertLocation($uri);
-    
+
 <a name="assert-content"></a>
 #### assertContent
 

@@ -143,7 +143,8 @@ class NewApi
 }
 ```
 
-> [!NOTE] Feature classes are resolved via the [container](/docs/{{version}}/container), so you may inject dependencies into the feature class's constructor when needed.
+> [!NOTE]   
+> Feature classes are resolved via the [container](/docs/{{version}}/container), so you may inject dependencies into the feature class's constructor when needed.
 
 #### Customizing the Stored Feature Name
 
@@ -679,7 +680,8 @@ Pennant's included Blade directive also makes it easy to conditionally render co
 @endfeature
 ```
 
-> [!NOTE] When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
+> [!NOTE]   
+> When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
 
 When calling the [conditional `when`](#conditional-execution) method, the feature's rich value will be provided to the first closure:
 
@@ -847,7 +849,8 @@ Alternatively, you may deactivate the feature for all users:
 Feature::deactivateForEveryone('new-api');
 ```
 
-> [!NOTE] This will only update the resolved feature values that have been stored by Pennant's storage driver. You will also need to update the feature definition in your application.
+> [!NOTE]   
+> This will only update the resolved feature values that have been stored by Pennant's storage driver. You will also need to update the feature definition in your application.
 
 <a name="purging-features"></a>
 ### Purging Features

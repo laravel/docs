@@ -38,7 +38,7 @@ Let's take a look at an example of a basic controller. A controller may have any
     <?php
 
     namespace App\Http\Controllers;
-    
+
     use App\Models\User;
     use Illuminate\View\View;
 

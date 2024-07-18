@@ -649,7 +649,7 @@ Sometimes, you may need more manual control over how a progress bar is advanced.
 
     $bar->finish();
 
-> [!NOTE]
+> [!NOTE]  
 > For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/7.0/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>
