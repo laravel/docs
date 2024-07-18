@@ -222,18 +222,18 @@ Middleware groups may be assigned to routes and controller actions using the sam
 
 Laravel includes predefined `web` and `api` middleware groups that contain common middleware you may want to apply to your web and API routes. Remember, Laravel automatically applies these middleware groups to the corresponding `routes/web.php` and `routes/api.php` files:
 
-| The `web` Middleware Group
-|--------------
-| `Illuminate\Cookie\Middleware\EncryptCookies`
-| `Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse`
-| `Illuminate\Session\Middleware\StartSession`
-| `Illuminate\View\Middleware\ShareErrorsFromSession`
-| `Illuminate\Foundation\Http\Middleware\ValidateCsrfToken`
-| `Illuminate\Routing\Middleware\SubstituteBindings`
+| The `web` Middleware Group |
+| --- |
+| `Illuminate\Cookie\Middleware\EncryptCookies` |
+| `Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse` |
+| `Illuminate\Session\Middleware\StartSession` |
+| `Illuminate\View\Middleware\ShareErrorsFromSession` |
+| `Illuminate\Foundation\Http\Middleware\ValidateCsrfToken` |
+| `Illuminate\Routing\Middleware\SubstituteBindings` |
 
-| The `api` Middleware Group
-|--------------
-| `Illuminate\Routing\Middleware\SubstituteBindings`
+| The `api` Middleware Group |
+| --- |
+| `Illuminate\Routing\Middleware\SubstituteBindings` |
 
 If you would like to append or prepend middleware to these groups, you may use the `web` and `api` methods within your application's `bootstrap/app.php` file. The `web` and `api` methods are convenient alternatives to the `appendToGroup` method:
 
@@ -312,20 +312,20 @@ Once the middleware alias has been defined in your application's `bootstrap/app.
 
 For convenience, some of Laravel's built-in middleware are aliased by default. For example, the `auth` middleware is an alias for the `Illuminate\Auth\Middleware\Authenticate` middleware. Below is a list of the default middleware aliases:
 
-| Alias | Middleware
-|-------|------------
-`auth` | `Illuminate\Auth\Middleware\Authenticate`
-`auth.basic` | `Illuminate\Auth\Middleware\AuthenticateWithBasicAuth`
-`auth.session` | `Illuminate\Session\Middleware\AuthenticateSession`
-`cache.headers` | `Illuminate\Http\Middleware\SetCacheHeaders`
-`can` | `Illuminate\Auth\Middleware\Authorize`
-`guest` | `Illuminate\Auth\Middleware\RedirectIfAuthenticated`
-`password.confirm` | `Illuminate\Auth\Middleware\RequirePassword`
-`precognitive` | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests`
-`signed` | `Illuminate\Routing\Middleware\ValidateSignature`
-`subscribed` | `\Spark\Http\Middleware\VerifyBillableIsSubscribed`
-`throttle` | `Illuminate\Routing\Middleware\ThrottleRequests` or `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis`
-`verified` | `Illuminate\Auth\Middleware\EnsureEmailIsVerified`
+| Alias | Middleware |
+| --- | --- |
+| `auth` | `Illuminate\Auth\Middleware\Authenticate` |
+| `auth.basic` | `Illuminate\Auth\Middleware\AuthenticateWithBasicAuth` |
+| `auth.session` | `Illuminate\Session\Middleware\AuthenticateSession` |
+| `cache.headers` | `Illuminate\Http\Middleware\SetCacheHeaders` |
+| `can` | `Illuminate\Auth\Middleware\Authorize` |
+| `guest` | `Illuminate\Auth\Middleware\RedirectIfAuthenticated` |
+| `password.confirm` | `Illuminate\Auth\Middleware\RequirePassword` |
+| `precognitive` | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests` |
+| `signed` | `Illuminate\Routing\Middleware\ValidateSignature` |
+| `subscribed` | `\Spark\Http\Middleware\VerifyBillableIsSubscribed` |
+| `throttle` | `Illuminate\Routing\Middleware\ThrottleRequests` or `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` |
+| `verified` | `Illuminate\Auth\Middleware\EnsureEmailIsVerified` |
 
 <a name="sorting-middleware"></a>
 ### Sorting Middleware

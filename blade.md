@@ -424,7 +424,7 @@ If you are in a nested loop, you may access the parent loop's `$loop` variable v
 The `$loop` variable also contains a variety of other useful properties:
 
 | Property           | Description                                            |
-|--------------------|--------------------------------------------------------|
+| ------------------ | ------------------------------------------------------ |
 | `$loop->index`     | The index of the current loop iteration (starts at 0). |
 | `$loop->iteration` | The current loop iteration (starts at 1).              |
 | `$loop->remaining` | The iterations remaining in the loop.                  |
