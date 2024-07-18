@@ -942,7 +942,7 @@ The following table contains all of the available column modifiers. This list do
 | Modifier                            | Description                                                                                    |
 | ----------------------------------- | ---------------------------------------------------------------------------------------------- |
 | `->after('column')`                 | Place the column "after" another column (MariaDB / MySQL).                                     |
-| `->autoIncrement()`                 | Set INTEGER columns as auto-incrementing (primary key).                                        |
+| `->autoIncrement()`                 | Set `INTEGER` columns as auto-incrementing (primary key).                                      |
 | `->charset('utf8mb4')`              | Specify a character set for the column (MariaDB / MySQL).                                      |
 | `->collation('utf8mb4_unicode_ci')` | Specify a collation for the column.                                                            |
 | `->comment('my comment')`           | Add a comment to a column (MariaDB / MySQL / PostgreSQL).                                      |
@@ -950,7 +950,7 @@ The following table contains all of the available column modifiers. This list do
 | `->first()`                         | Place the column "first" in the table (MariaDB / MySQL).                                       |
 | `->from($integer)`                  | Set the starting value of an auto-incrementing field (MariaDB / MySQL / PostgreSQL).           |
 | `->invisible()`                     | Make the column "invisible" to `SELECT *` queries (MariaDB / MySQL).                           |
-| `->nullable($value = true)`         | Allow NULL values to be inserted into the column.                                              |
+| `->nullable($value = true)`         | Allow `NULL` values to be inserted into the column.                                            |
 | `->storedAs($expression)`           | Create a stored generated column (MariaDB / MySQL / PostgreSQL / SQLite).                      |
 | `->unsigned()`                      | Set `INTEGER` columns as `UNSIGNED` (MariaDB / MySQL).                                         |
 | `->useCurrent()`                    | Set `TIMESTAMP` columns to use `CURRENT_TIMESTAMP` as default value.                           |
