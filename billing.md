@@ -963,7 +963,7 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
         {
             if ($request->user() && ! $request->user()->subscribed('default')) {
                 // This user is not a paying customer...
-                return redirect('billing');
+                return redirect('/billing');
             }
 
             return $next($request);

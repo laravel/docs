@@ -559,7 +559,7 @@ If you do not want to use the `validate` method on the request, you may create a
             ]);
 
             if ($validator->fails()) {
-                return redirect('post/create')
+                return redirect('/post/create')
                             ->withErrors($validator)
                             ->withInput();
             }
@@ -611,7 +611,7 @@ You may use the `validateWithBag` method to store the error messages in a [named
 
 If you have multiple forms on a single page, you may wish to name the `MessageBag` containing the validation errors, allowing you to retrieve the error messages for a specific form. To achieve this, pass a name as the second argument to `withErrors`:
 
-    return redirect('register')->withErrors($validator, 'login');
+    return redirect('/register')->withErrors($validator, 'login');
 
 You may then access the named `MessageBag` instance from the `$errors` variable:
 
