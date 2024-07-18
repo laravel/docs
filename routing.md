@@ -479,7 +479,7 @@ If a group of routes all utilize the same [controller](/docs/{{version}}/control
 Route groups may also be used to handle subdomain routing. Subdomains may be assigned route parameters just like route URIs, allowing you to capture a portion of the subdomain for usage in your route or controller. The subdomain may be specified by calling the `domain` method before defining the group:
 
     Route::domain('{account}.example.com')->group(function () {
-        Route::get('user/{id}', function (string $account, string $id) {
+        Route::get('/user/{id}', function (string $account, string $id) {
             // ...
         });
     });

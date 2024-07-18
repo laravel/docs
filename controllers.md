@@ -106,7 +106,7 @@ php artisan make:controller ProvisionServer --invokable
 
 [Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:
 
-    Route::get('profile', [UserController::class, 'show'])->middleware('auth');
+    Route::get('/profile', [UserController::class, 'show'])->middleware('auth');
 
 Or, you may find it convenient to specify middleware within your controller class. To do so, your controller should implement the `HasMiddleware` interface, which dictates that the controller should have a static `middleware` method. From this method, you may return an array of middleware that should be applied to the controller's actions:
 
