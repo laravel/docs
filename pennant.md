@@ -524,7 +524,7 @@ You will notice that the closure we have defined is not expecting a `User`, but 
 
 ```php
 if (Feature::for($user->team)->active('billing-v2')) {
-    return redirect()->to('/billing/v2');
+    return redirect('/billing/v2');
 }
 
 // ...
