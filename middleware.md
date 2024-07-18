@@ -27,7 +27,7 @@ To create a new middleware, use the `make:middleware` Artisan command:
 php artisan make:middleware EnsureTokenIsValid
 ```
 
-This command will place a new `EnsureTokenIsValid` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `token` input matches a specified value. Otherwise, we will redirect the users back to the `home` URI:
+This command will place a new `EnsureTokenIsValid` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `token` input matches a specified value. Otherwise, we will redirect the users back to the `/home` URI:
 
     <?php
 
@@ -47,7 +47,7 @@ This command will place a new `EnsureTokenIsValid` class within your `app/Http/M
         public function handle(Request $request, Closure $next): Response
         {
             if ($request->input('token') !== 'my-secret-token') {
-                return redirect('home');
+                return redirect('/home');
             }
 
             return $next($request);

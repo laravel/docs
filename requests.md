@@ -471,11 +471,11 @@ You may also use the `flashOnly` and `flashExcept` methods to flash a subset of 
 
 Since you often will want to flash input to the session and then redirect to the previous page, you may easily chain input flashing onto a redirect using the `withInput` method:
 
-    return redirect('form')->withInput();
+    return redirect('/form')->withInput();
 
     return redirect()->route('user.create')->withInput();
 
-    return redirect('form')->withInput(
+    return redirect('/form')->withInput(
         $request->except('password')
     );
 

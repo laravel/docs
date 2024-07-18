@@ -152,7 +152,7 @@ By default, thanks to the `Illuminate\Cookie\Middleware\EncryptCookies` middlewa
 Redirect responses are instances of the `Illuminate\Http\RedirectResponse` class, and contain the proper headers needed to redirect the user to another URL. There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the global `redirect` helper:
 
     Route::get('/dashboard', function () {
-        return redirect('home/dashboard');
+        return redirect('/home/dashboard');
     });
 
 Sometimes you may wish to redirect the user to their previous location, such as when a submitted form is invalid. You may do so by using the global `back` helper function. Since this feature utilizes the [session](/docs/{{version}}/session), make sure the route calling the `back` function is using the `web` middleware group:
@@ -225,7 +225,7 @@ Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/se
     Route::post('/user/profile', function () {
         // ...
 
-        return redirect('dashboard')->with('status', 'Profile updated!');
+        return redirect('/dashboard')->with('status', 'Profile updated!');
     });
 
 After the user is redirected, you may display the flashed message from the [session](/docs/{{version}}/session). For example, using [Blade syntax](/docs/{{version}}/blade):
