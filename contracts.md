@@ -71,6 +71,8 @@ When the event listener is resolved, the service container will read the type-hi
 
 This table provides a quick reference to all of the Laravel contracts and their equivalent facades:
 
+<div class="overflow-auto">
+
 | Contract | References Facade |
 | --- | --- |
 | [Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php) | &nbsp; |
@@ -151,3 +153,5 @@ This table provides a quick reference to all of the Laravel contracts and their 
 | [Illuminate\Contracts\View\Engine](https://github.com/illuminate/contracts/blob/{{version}}/View/Engine.php) | &nbsp; |
 | [Illuminate\Contracts\View\Factory](https://github.com/illuminate/contracts/blob/{{version}}/View/Factory.php) | `View` |
 | [Illuminate\Contracts\View\View](https://github.com/illuminate/contracts/blob/{{version}}/View/View.php) | `View::make()` |
+
+</div>

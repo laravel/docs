@@ -332,6 +332,8 @@ Laravel includes pagination views built using [Bootstrap CSS](https://getbootstr
 
 Each paginator instance provides additional pagination information via the following methods:
 
+<div class="overflow-auto">
+
 | Method | Description |
 | --- | --- |
 | `$paginator->count()` | Get the number of items for the current page. |
@@ -354,10 +356,14 @@ Each paginator instance provides additional pagination information via the follo
 | `$paginator->setPageName($name)` | Set the query string variable used to store the page. |
 | `$paginator->through($callback)` | Transform each item using a callback. |
 
+</div>
+
 <a name="cursor-paginator-instance-methods"></a>
 ## Cursor Paginator Instance Methods
 
 Each cursor paginator instance provides additional pagination information via the following methods:
+
+<div class="overflow-auto">
 
 | Method                          | Description                                                       |
 | ------------------------------- | ----------------------------------------------------------------- |
@@ -377,3 +383,5 @@ Each cursor paginator instance provides additional pagination information via th
 | `$paginator->previousPageUrl()` | Get the URL for the previous page.                                |
 | `$paginator->setCursorName()`   | Set the query string variable used to store the cursor.           |
 | `$paginator->url($cursor)`      | Get the URL for a given cursor instance.                          |
+
+</div>

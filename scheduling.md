@@ -519,6 +519,8 @@ The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL 
 
 Laravel dispatches a variety of [events](/docs/{{version}}/events) during the scheduling process. You may [define listeners](/docs/{{version}}/events) for any of the following events:
 
+<div class="overflow-auto">
+
 | Event Name |
 | --- |
 | `Illuminate\Console\Events\ScheduledTaskStarting` |
@@ -526,3 +528,5 @@ Laravel dispatches a variety of [events](/docs/{{version}}/events) during the sc
 | `Illuminate\Console\Events\ScheduledBackgroundTaskFinished` |
 | `Illuminate\Console\Events\ScheduledTaskSkipped` |
 | `Illuminate\Console\Events\ScheduledTaskFailed` |
+
+</div>

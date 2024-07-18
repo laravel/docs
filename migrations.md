@@ -939,6 +939,8 @@ In addition to the column types listed above, there are several column "modifier
 
 The following table contains all of the available column modifiers. This list does not include [index modifiers](#creating-indexes):
 
+<div class="overflow-auto">
+
 | Modifier                            | Description                                                                                    |
 | ----------------------------------- | ---------------------------------------------------------------------------------------------- |
 | `->after('column')`                 | Place the column "after" another column (MariaDB / MySQL).                                     |
@@ -958,6 +960,8 @@ The following table contains all of the available column modifiers. This list do
 | `->virtualAs($expression)`          | Create a virtual generated column (MariaDB / MySQL / SQLite).                                  |
 | `->generatedAs($expression)`        | Create an identity column with specified sequence options (PostgreSQL).                        |
 | `->always()`                        | Defines the precedence of sequence values over input for an identity column (PostgreSQL).      |
+
+</div>
 
 <a name="default-expressions"></a>
 #### Default Expressions
@@ -1054,6 +1058,8 @@ You may drop multiple columns from a table by passing an array of column names t
 
 Laravel provides several convenient methods related to dropping common types of columns. Each of these methods is described in the table below:
 
+<div class="overflow-auto">
+
 | Command                             | Description                                           |
 | ----------------------------------- | ----------------------------------------------------- |
 | `$table->dropMorphs('morphable');`  | Drop the `morphable_id` and `morphable_type` columns. |
@@ -1062,6 +1068,8 @@ Laravel provides several convenient methods related to dropping common types of 
 | `$table->dropSoftDeletesTz();`      | Alias of `dropSoftDeletes()` method.                  |
 | `$table->dropTimestamps();`         | Drop the `created_at` and `updated_at` columns.       |
 | `$table->dropTimestampsTz();`       | Alias of `dropTimestamps()` method.                   |
+
+</div>
 
 <a name="indexes"></a>
 ## Indexes
@@ -1095,6 +1103,8 @@ When creating an index, Laravel will automatically generate an index name based 
 
 Laravel's schema builder blueprint class provides methods for creating each type of index supported by Laravel. Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s) used for the index, as well as the index type. Each of the available index methods is described in the table below:
 
+<div class="overflow-auto">
+
 | Command                                          | Description                                                    |
 | ------------------------------------------------ | -------------------------------------------------------------- |
 | `$table->primary('id');`                         | Adds a primary key.                                            |
@@ -1104,6 +1114,8 @@ Laravel's schema builder blueprint class provides methods for creating each type
 | `$table->fullText('body');`                      | Adds a full text index (MariaDB / MySQL / PostgreSQL).         |
 | `$table->fullText('body')->language('english');` | Adds a full text index of the specified language (PostgreSQL). |
 | `$table->spatialIndex('location');`              | Adds a spatial index (except SQLite).                          |
+
+</div>
 
 <a name="renaming-indexes"></a>
 ### Renaming Indexes
@@ -1117,6 +1129,8 @@ To rename an index, you may use the `renameIndex` method provided by the schema 
 
 To drop an index, you must specify the index's name. By default, Laravel automatically assigns an index name based on the table name, the name of the indexed column, and the index type. Here are some examples:
 
+<div class="overflow-auto">
+
 | Command                                                  | Description                                                 |
 | -------------------------------------------------------- | ----------------------------------------------------------- |
 | `$table->dropPrimary('users_id_primary');`               | Drop a primary key from the "users" table.                  |
@@ -1124,6 +1138,8 @@ To drop an index, you must specify the index's name. By default, Laravel automat
 | `$table->dropIndex('geo_state_index');`                  | Drop a basic index from the "geo" table.                    |
 | `$table->dropFullText('posts_body_fulltext');`           | Drop a full text index from the "posts" table.              |
 | `$table->dropSpatialIndex('geo_location_spatialindex');` | Drop a spatial index from the "geo" table  (except SQLite). |
+
+</div>
 
 If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns, and index type:
 
@@ -1168,6 +1184,8 @@ You may also specify the desired action for the "on delete" and "on update" prop
 
 An alternative, expressive syntax is also provided for these actions:
 
+<div class="overflow-auto">
+
 | Method                        | Description                                       |
 | ----------------------------- | ------------------------------------------------- |
 | `$table->cascadeOnUpdate();`  | Updates should cascade.                           |
@@ -1176,6 +1194,8 @@ An alternative, expressive syntax is also provided for these actions:
 | `$table->cascadeOnDelete();`  | Deletes should cascade.                           |
 | `$table->restrictOnDelete();` | Deletes should be restricted.                     |
 | `$table->nullOnDelete();`     | Deletes should set the foreign key value to null. |
+
+</div>
 
 Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:
 
@@ -1215,6 +1235,8 @@ You may enable or disable foreign key constraints within your migrations by usin
 
 For convenience, each migration operation will dispatch an [event](/docs/{{version}}/events). All of the following events extend the base `Illuminate\Database\Events\MigrationEvent` class:
 
+<div class="overflow-auto">
+
 | Class                                            | Description                                      |
 | ------------------------------------------------ | ------------------------------------------------ |
 | `Illuminate\Database\Events\MigrationsStarted`   | A batch of migrations is about to be executed.   |
@@ -1224,3 +1246,5 @@ For convenience, each migration operation will dispatch an [event](/docs/{{versi
 | `Illuminate\Database\Events\NoPendingMigrations` | A migration command found no pending migrations. |
 | `Illuminate\Database\Events\SchemaDumped`        | A database schema dump has completed.            |
 | `Illuminate\Database\Events\SchemaLoaded`        | An existing database schema dump has loaded.     |
+
+</div>

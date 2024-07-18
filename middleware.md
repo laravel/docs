@@ -222,6 +222,8 @@ Middleware groups may be assigned to routes and controller actions using the sam
 
 Laravel includes predefined `web` and `api` middleware groups that contain common middleware you may want to apply to your web and API routes. Remember, Laravel automatically applies these middleware groups to the corresponding `routes/web.php` and `routes/api.php` files:
 
+<div class="overflow-auto">
+
 | The `web` Middleware Group |
 | --- |
 | `Illuminate\Cookie\Middleware\EncryptCookies` |
@@ -231,9 +233,15 @@ Laravel includes predefined `web` and `api` middleware groups that contain commo
 | `Illuminate\Foundation\Http\Middleware\ValidateCsrfToken` |
 | `Illuminate\Routing\Middleware\SubstituteBindings` |
 
+</div>
+
+<div class="overflow-auto">
+
 | The `api` Middleware Group |
 | --- |
 | `Illuminate\Routing\Middleware\SubstituteBindings` |
+
+</div>
 
 If you would like to append or prepend middleware to these groups, you may use the `web` and `api` methods within your application's `bootstrap/app.php` file. The `web` and `api` methods are convenient alternatives to the `appendToGroup` method:
 
@@ -312,6 +320,8 @@ Once the middleware alias has been defined in your application's `bootstrap/app.
 
 For convenience, some of Laravel's built-in middleware are aliased by default. For example, the `auth` middleware is an alias for the `Illuminate\Auth\Middleware\Authenticate` middleware. Below is a list of the default middleware aliases:
 
+<div class="overflow-auto">
+
 | Alias | Middleware |
 | --- | --- |
 | `auth` | `Illuminate\Auth\Middleware\Authenticate` |
@@ -326,6 +336,8 @@ For convenience, some of Laravel's built-in middleware are aliased by default. F
 | `subscribed` | `\Spark\Http\Middleware\VerifyBillableIsSubscribed` |
 | `throttle` | `Illuminate\Routing\Middleware\ThrottleRequests` or `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` |
 | `verified` | `Illuminate\Auth\Middleware\EnsureEmailIsVerified` |
+
+</div>
 
 <a name="sorting-middleware"></a>
 ### Sorting Middleware
