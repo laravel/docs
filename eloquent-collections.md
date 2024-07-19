@@ -11,21 +11,25 @@ All Eloquent methods that return more than one model result will return instance
 
 All collections also serve as iterators, allowing you to loop over them as if they were simple PHP arrays:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    $users = User::where('active', 1)->get();
+$users = User::where('active', 1)->get();
 
-    foreach ($users as $user) {
-        echo $user->name;
-    }
+foreach ($users as $user) {
+    echo $user->name;
+}
+```
 
 However, as previously mentioned, collections are much more powerful than arrays and expose a variety of map / reduce operations that may be chained using an intuitive interface. For example, we may remove all inactive models and then gather the first name for each remaining user:
 
-    $names = User::all()->reject(function (User $user) {
-        return $user->active === false;
-    })->map(function (User $user) {
-        return $user->name;
-    });
+```php
+$names = User::all()->reject(function (User $user) {
+    return $user->active === false;
+})->map(function (User $user) {
+    return $user->name;
+});
+```
 
 <a name="eloquent-collection-conversion"></a>
 #### Eloquent Collection Conversion
@@ -87,173 +91,209 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 
 The `append` method may be used to indicate that an attribute should be [appended](/docs/{{version}}/eloquent-serialization#appending-values-to-json) for every model in the collection. This method accepts an array of attributes or a single attribute:
 
-    $users->append('team');
-    
-    $users->append(['team', 'is_admin']);
+```php
+$users->append('team');
+
+$users->append(['team', 'is_admin']);
+```
 
 <a name="method-contains"></a>
 #### `contains($key, $operator = null, $value = null)` {.collection-method}
 
 The `contains` method may be used to determine if a given model instance is contained by the collection. This method accepts a primary key or a model instance:
 
-    $users->contains(1);
+```php
+$users->contains(1);
 
-    $users->contains(User::find(1));
+$users->contains(User::find(1));
+```
 
 <a name="method-diff"></a>
 #### `diff($items)` {.collection-method}
 
 The `diff` method returns all of the models that are not present in the given collection:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    $users = $users->diff(User::whereIn('id', [1, 2, 3])->get());
+$users = $users->diff(User::whereIn('id', [1, 2, 3])->get());
+```
 
 <a name="method-except"></a>
 #### `except($keys)` {.collection-method}
 
 The `except` method returns all of the models that do not have the given primary keys:
 
-    $users = $users->except([1, 2, 3]);
+```php
+$users = $users->except([1, 2, 3]);
+```
 
 <a name="method-find"></a>
 #### `find($key)` {.collection-method}
 
 The `find` method returns the model that has a primary key matching the given key. If `$key` is a model instance, `find` will attempt to return a model matching the primary key. If `$key` is an array of keys, `find` will return all models which have a primary key in the given array:
 
-    $users = User::all();
+```php
+$users = User::all();
 
-    $user = $users->find(1);
+$user = $users->find(1);
+```
 
 <a name="method-fresh"></a>
 #### `fresh($with = [])` {.collection-method}
 
 The `fresh` method retrieves a fresh instance of each model in the collection from the database. In addition, any specified relationships will be eager loaded:
 
-    $users = $users->fresh();
+```php
+$users = $users->fresh();
 
-    $users = $users->fresh('comments');
+$users = $users->fresh('comments');
+```
 
 <a name="method-intersect"></a>
 #### `intersect($items)` {.collection-method}
 
 The `intersect` method returns all of the models that are also present in the given collection:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    $users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());
+$users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());
+```
 
 <a name="method-load"></a>
 #### `load($relations)` {.collection-method}
 
 The `load` method eager loads the given relationships for all models in the collection:
 
-    $users->load(['comments', 'posts']);
+```php
+$users->load(['comments', 'posts']);
 
-    $users->load('comments.author');
-    
-    $users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
+$users->load('comments.author');
+
+$users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
+```
 
 <a name="method-loadMissing"></a>
 #### `loadMissing($relations)` {.collection-method}
 
 The `loadMissing` method eager loads the given relationships for all models in the collection if the relationships are not already loaded:
 
-    $users->loadMissing(['comments', 'posts']);
+```php
+$users->loadMissing(['comments', 'posts']);
 
-    $users->loadMissing('comments.author');
-    
-    $users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
+$users->loadMissing('comments.author');
+
+$users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
+```
 
 <a name="method-modelKeys"></a>
 #### `modelKeys()` {.collection-method}
 
 The `modelKeys` method returns the primary keys for all models in the collection:
 
-    $users->modelKeys();
+```php
+$users->modelKeys();
 
-    // [1, 2, 3, 4, 5]
+// [1, 2, 3, 4, 5]
+```
 
 <a name="method-makeVisible"></a>
 #### `makeVisible($attributes)` {.collection-method}
 
 The `makeVisible` method [makes attributes visible](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that are typically "hidden" on each model in the collection:
 
-    $users = $users->makeVisible(['address', 'phone_number']);
+```php
+$users = $users->makeVisible(['address', 'phone_number']);
+```
 
 <a name="method-makeHidden"></a>
 #### `makeHidden($attributes)` {.collection-method}
 
 The `makeHidden` method [hides attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that are typically "visible" on each model in the collection:
 
-    $users = $users->makeHidden(['address', 'phone_number']);
+```php
+$users = $users->makeHidden(['address', 'phone_number']);
+```
 
 <a name="method-only"></a>
 #### `only($keys)` {.collection-method}
 
 The `only` method returns all of the models that have the given primary keys:
 
-    $users = $users->only([1, 2, 3]);
+```php
+$users = $users->only([1, 2, 3]);
+```
 
 <a name="method-setVisible"></a>
 #### `setVisible($attributes)` {.collection-method}
 
 The `setVisible` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the visible attributes on each model in the collection:
 
-    $users = $users->setVisible(['id', 'name']);
+```php
+$users = $users->setVisible(['id', 'name']);
+```
 
 <a name="method-setHidden"></a>
 #### `setHidden($attributes)` {.collection-method}
 
 The `setHidden` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the hidden attributes on each model in the collection:
 
-    $users = $users->setHidden(['email', 'password', 'remember_token']);
+```php
+$users = $users->setHidden(['email', 'password', 'remember_token']);
+```
 
 <a name="method-toquery"></a>
 #### `toQuery()` {.collection-method}
 
 The `toQuery` method returns an Eloquent query builder instance containing a `whereIn` constraint on the collection model's primary keys:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    $users = User::where('status', 'VIP')->get();
+$users = User::where('status', 'VIP')->get();
 
-    $users->toQuery()->update([
-        'status' => 'Administrator',
-    ]);
+$users->toQuery()->update([
+    'status' => 'Administrator',
+]);
+```
 
 <a name="method-unique"></a>
 #### `unique($key = null, $strict = false)` {.collection-method}
 
 The `unique` method returns all of the unique models in the collection. Any models with the same primary key as another model in the collection are removed:
 
-    $users = $users->unique();
+```php
+$users = $users->unique();
+```
 
 <a name="custom-collections"></a>
 ## Custom Collections
 
 If you would like to use a custom `Collection` object when interacting with a given model, you may define a `newCollection` method on your model:
 
-    <?php
+```php
+<?php
 
-    namespace App\Models;
+namespace App\Models;
 
-    use App\Support\UserCollection;
-    use Illuminate\Database\Eloquent\Collection;
-    use Illuminate\Database\Eloquent\Model;
+use App\Support\UserCollection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
-    class User extends Model
+class User extends Model
+{
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models
+     * @return \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Database\Eloquent\Model>
+     */
+    public function newCollection(array $models = []): Collection
     {
-        /**
-         * Create a new Eloquent Collection instance.
-         *
-         * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models
-         * @return \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Database\Eloquent\Model>
-         */
-        public function newCollection(array $models = []): Collection
-        {
-            return new UserCollection($models);
-        }
+        return new UserCollection($models);
     }
+}
+```
 
 Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\Database\Eloquent\Collection` instance. If you would like to use a custom collection for every model in your application, you should define the `newCollection` method on a base model class that is extended by all of your application's models.
