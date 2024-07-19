@@ -22,7 +22,7 @@
 
 For example, to create a page that is accessible at the `/greeting` URL, just create a `greeting.blade.php` file in your application's `resources/views/pages` directory:
 
-```php
+```html
 <div>
     Hello World
 </div>
@@ -140,7 +140,7 @@ php artisan folio:page "users/[id]"
 
 Captured segments can be accessed as variables within your Blade template:
 
-```html
+```blade
 <div>
     User {{ $id }}
 </div>
@@ -156,7 +156,7 @@ php artisan folio:page "users/[...ids]"
 
 When capturing multiple segments, the captured segments will be injected into the page as an array:
 
-```html
+```blade
 <ul>
     @foreach ($ids as $id)
         <li>User {{ $id }}</li>
@@ -177,7 +177,7 @@ php artisan folio:page "users/[User]"
 
 Captured models can be accessed as variables within your Blade template. The model's variable name will be converted to "camel case":
 
-```html
+```blade
 <div>
     User {{ $user->id }}
 </div>
@@ -266,7 +266,7 @@ name('users.index');
 
 Just like Laravel's named routes, you may use the `route` function to generate URLs to Folio pages that have been assigned a name:
 
-```php
+```blade
 <a href="{{ route('users.index') }}">
     All Users
 </a>
