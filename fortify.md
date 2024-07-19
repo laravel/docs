@@ -122,19 +122,21 @@ To get started, we need to instruct Fortify how to return our "login" view. Reme
 
 All of the authentication view's rendering logic may be customized using the appropriate methods available via the `Laravel\Fortify\Fortify` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\FortifyServiceProvider` class. Fortify will take care of defining the `/login` route that returns this view:
 
-    use Laravel\Fortify\Fortify;
+```php
+use Laravel\Fortify\Fortify;
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Fortify::loginView(function () {
-            return view('auth.login');
-        });
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Fortify::loginView(function () {
+        return view('auth.login');
+    });
 
-        // ...
-    }
+    // ...
+}
+```
 
 Your login template should include a form that makes a POST request to `/login`. The `/login` endpoint expects a string `email` / `username` and a `password`. The name of the email / username field should match the `username` value within the `config/fortify.php` configuration file. In addition, a boolean `remember` field may be provided to indicate that the user would like to use the "remember me" functionality provided by Laravel.
 
@@ -258,7 +260,7 @@ class User extends Authenticatable
 {
     use Notifiable, TwoFactorAuthenticatable;
 }
- ```
+```
 
 Next, you should build a screen within your application where users can manage their two factor authentication settings. This screen should allow the user to enable and disable two factor authentication, as well as regenerate their two factor authentication recovery codes.
 
@@ -271,7 +273,7 @@ To begin enabling two factor authentication, your application should make a POST
 
 After choosing to enable two factor authentication, the user must still "confirm" their two factor authentication configuration by providing a valid two factor authentication code. So, your "success" message should instruct the user that two factor authentication confirmation is still required:
 
-```html
+```blade
 @if (session('status') == 'two-factor-authentication-enabled')
     <div class="mb-4 font-medium text-sm">
         Please finish configuring two factor authentication below.
@@ -294,7 +296,7 @@ In addition to displaying the user's two factor authentication QR code, you shou
 
 If the request is successful, the user will be redirected back to the previous URL and the `status` session variable will be set to `two-factor-authentication-confirmed`:
 
-```html
+```blade
 @if (session('status') == 'two-factor-authentication-confirmed')
     <div class="mb-4 font-medium text-sm">
         Two factor authentication confirmed and enabled successfully.
@@ -426,7 +428,7 @@ After being redirected back to the `/forgot-password` endpoint after a successfu
 
 The value of the `$status` session variable will match one of the translation strings defined within your application's `passwords` [language file](/docs/{{version}}/localization). If you would like to customize this value and have not published Laravel's language files, you may do so via the `lang:publish` Artisan command:
 
-```html
+```blade
 @if (session('status'))
     <div class="mb-4 font-medium text-sm text-green-600">
         {{ session('status') }}
