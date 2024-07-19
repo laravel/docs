@@ -144,51 +144,55 @@ Occasionally, you may need to prepare certain resources used by your application
 
 Using the `ParallelTesting` facade, you may specify code to be executed on the `setUp` and `tearDown` of a process or test case. The given closures receive the `$token` and `$testCase` variables that contain the process token and the current test case, respectively:
 
-    <?php
+```php
+<?php
 
-    namespace App\Providers;
+namespace App\Providers;
 
-    use Illuminate\Support\Facades\Artisan;
-    use Illuminate\Support\Facades\ParallelTesting;
-    use Illuminate\Support\ServiceProvider;
-    use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\ParallelTesting;
+use Illuminate\Support\ServiceProvider;
+use PHPUnit\Framework\TestCase;
 
-    class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
     {
-        /**
-         * Bootstrap any application services.
-         */
-        public function boot(): void
-        {
-            ParallelTesting::setUpProcess(function (int $token) {
-                // ...
-            });
+        ParallelTesting::setUpProcess(function (int $token) {
+            // ...
+        });
 
-            ParallelTesting::setUpTestCase(function (int $token, TestCase $testCase) {
-                // ...
-            });
+        ParallelTesting::setUpTestCase(function (int $token, TestCase $testCase) {
+            // ...
+        });
 
-            // Executed when a test database is created...
-            ParallelTesting::setUpTestDatabase(function (string $database, int $token) {
-                Artisan::call('db:seed');
-            });
+        // Executed when a test database is created...
+        ParallelTesting::setUpTestDatabase(function (string $database, int $token) {
+            Artisan::call('db:seed');
+        });
 
-            ParallelTesting::tearDownTestCase(function (int $token, TestCase $testCase) {
-                // ...
-            });
+        ParallelTesting::tearDownTestCase(function (int $token, TestCase $testCase) {
+            // ...
+        });
 
-            ParallelTesting::tearDownProcess(function (int $token) {
-                // ...
-            });
-        }
+        ParallelTesting::tearDownProcess(function (int $token) {
+            // ...
+        });
     }
+}
+```
 
 <a name="accessing-the-parallel-testing-token"></a>
 #### Accessing the Parallel Testing Token
 
 If you would like to access the current parallel process "token" from any other location in your application's test code, you may use the `token` method. This token is a unique, string identifier for an individual test process and may be used to segment resources across parallel test processes. For example, Laravel automatically appends this token to the end of the test databases created by each parallel testing process:
 
-    $token = ParallelTesting::token();
+```php
+$token = ParallelTesting::token();
+```
 
 <a name="reporting-test-coverage"></a>
 ### Reporting Test Coverage
