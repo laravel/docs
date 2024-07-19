@@ -135,7 +135,7 @@ You may also seed your database using the `migrate:fresh` command in combination
 ```shell
 php artisan migrate:fresh --seed
 
-php artisan migrate:fresh --seed --seeder=UserSeeder 
+php artisan migrate:fresh --seed --seeder=UserSeeder
 ```
 
 <a name="forcing-seeding-production"></a>

@@ -46,7 +46,7 @@ If you would like to create a test within the `tests/Unit` directory, you may us
 php artisan make:test UserTest --unit
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 Once the test has been generated, you may define test as you normally would using Pest or PHPUnit. To run your tests, execute the `vendor/bin/pest`, `vendor/bin/phpunit`, or `php artisan test` command from your terminal:
@@ -78,7 +78,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-> [!WARNING]
+> [!WARNING]  
 > If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class. Typically, you should invoke `parent::setUp()` at the start of your own `setUp` method, and `parent::tearDown()` at the end of your `tearDown` method.
 
 <a name="running-tests"></a>

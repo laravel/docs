@@ -315,7 +315,7 @@ class AssignRequestId
 }
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > If you need to share log context while processing queued jobs, you may utilize [job middleware](/docs/{{version}}/queues#job-middleware).
 
 <a name="writing-to-specific-channels"></a>

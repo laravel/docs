@@ -314,7 +314,7 @@ If you are validating a subset of a form's inputs with Precognition, it can be u
 <input
     id="avatar"
     type="file"
-    onChange={(e) => 
+    onChange={(e) =>
         form.setData('avatar', e.target.value);
 
         form.forgetError('avatar');
@@ -526,7 +526,7 @@ In the user creation example discussed above, we are using Precognition to perfo
 Alternatively, if you would like to submit the form via XHR you may use the form's `submit` function, which returns an Axios request promise:
 
 ```html
-<form 
+<form
     x-data="{
         form: $form('post', '/register', {
             name: '',
