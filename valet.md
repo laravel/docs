@@ -232,7 +232,9 @@ valet unsecure laravel
 
 Sometimes, you may wish to configure Valet to serve a "default" site instead of a `404` when visiting an unknown `test` domain. To accomplish this, you may add a `default` option to your `~/.config/valet/config.json` configuration file containing the path to the site that should serve as your default site:
 
-    "default": "/Users/Sally/Sites/example-site",
+```json
+"default": "/Users/Sally/Sites/example-site",
+```
 
 <a name="per-site-php-versions"></a>
 ### Per-Site PHP Versions
@@ -332,19 +334,21 @@ Once you have updated your Nginx configuration, run the `valet restart` command 
 
 Some applications using other frameworks may depend on server environment variables but do not provide a way for those variables to be configured within your project. Valet allows you to configure site specific environment variables by adding a `.valet-env.php` file within the root of your project. This file should return an array of site / environment variable pairs which will be added to the global `$_SERVER` array for each site specified in the array:
 
-    <?php
+```php
+<?php
 
-    return [
-        // Set $_SERVER['key'] to "value" for the laravel.test site...
-        'laravel' => [
-            'key' => 'value',
-        ],
+return [
+    // Set $_SERVER['key'] to "value" for the laravel.test site...
+    'laravel' => [
+        'key' => 'value',
+    ],
 
-        // Set $_SERVER['key'] to "value" for all sites...
-        '*' => [
-            'key' => 'value',
-        ],
-    ];
+    // Set $_SERVER['key'] to "value" for all sites...
+    '*' => [
+        'key' => 'value',
+    ],
+];
+```
 
 <a name="proxying-services"></a>
 ## Proxying Services
@@ -391,32 +395,36 @@ The `serves` method should return `true` if your driver should handle the incomi
 
 For example, let's imagine we are writing a `WordPressValetDriver`. Our `serves` method might look something like this:
 
-    /**
-     * Determine if the driver serves the request.
-     */
-    public function serves(string $sitePath, string $siteName, string $uri): bool
-    {
-        return is_dir($sitePath.'/wp-admin');
-    }
+```php
+/**
+ * Determine if the driver serves the request.
+ */
+public function serves(string $sitePath, string $siteName, string $uri): bool
+{
+    return is_dir($sitePath.'/wp-admin');
+}
+```
 
 <a name="the-isstaticfile-method"></a>
 #### The `isStaticFile` Method
 
 The `isStaticFile` should determine if the incoming request is for a file that is "static", such as an image or a stylesheet. If the file is static, the method should return the fully qualified path to the static file on disk. If the incoming request is not for a static file, the method should return `false`:
 
-    /**
-     * Determine if the incoming request is for a static file.
-     *
-     * @return string|false
-     */
-    public function isStaticFile(string $sitePath, string $siteName, string $uri)
-    {
-        if (file_exists($staticFilePath = $sitePath.'/public/'.$uri)) {
-            return $staticFilePath;
-        }
-
-        return false;
+```php
+/**
+ * Determine if the incoming request is for a static file.
+ *
+ * @return string|false
+ */
+public function isStaticFile(string $sitePath, string $siteName, string $uri)
+{
+    if (file_exists($staticFilePath = $sitePath.'/public/'.$uri)) {
+        return $staticFilePath;
     }
+
+    return false;
+}
+```
 
 > [!WARNING]  
 > The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
@@ -426,39 +434,43 @@ The `isStaticFile` should determine if the incoming request is for a file that i
 
 The `frontControllerPath` method should return the fully qualified path to your application's "front controller", which is typically an "index.php" file or equivalent:
 
-    /**
-     * Get the fully resolved path to the application's front controller.
-     */
-    public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
-    {
-        return $sitePath.'/public/index.php';
-    }
+```php
+/**
+ * Get the fully resolved path to the application's front controller.
+ */
+public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
+{
+    return $sitePath.'/public/index.php';
+}
+```
 
 <a name="local-drivers"></a>
 ### Local Drivers
 
 If you would like to define a custom Valet driver for a single application, create a `LocalValetDriver.php` file in the application's root directory. Your custom driver may extend the base `ValetDriver` class or extend an existing application specific driver such as the `LaravelValetDriver`:
 
-    use Valet\Drivers\LaravelValetDriver;
+```php
+use Valet\Drivers\LaravelValetDriver;
 
-    class LocalValetDriver extends LaravelValetDriver
+class LocalValetDriver extends LaravelValetDriver
+{
+    /**
+     * Determine if the driver serves the request.
+     */
+    public function serves(string $sitePath, string $siteName, string $uri): bool
     {
-        /**
-         * Determine if the driver serves the request.
-         */
-        public function serves(string $sitePath, string $siteName, string $uri): bool
-        {
-            return true;
-        }
-
-        /**
-         * Get the fully resolved path to the application's front controller.
-         */
-        public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
-        {
-            return $sitePath.'/public_html/index.php';
-        }
+        return true;
     }
+
+    /**
+     * Get the fully resolved path to the application's front controller.
+     */
+    public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
+    {
+        return $sitePath.'/public_html/index.php';
+    }
+}
+```
 
 <a name="other-valet-commands"></a>
 ## Other Valet Commands
