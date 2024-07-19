@@ -19,9 +19,11 @@ Laravel includes a simple to use rate limiting abstraction which, in conjunction
 
 Typically, the rate limiter utilizes your default application cache as defined by the `default` key within your application's `cache` configuration file. However, you may specify which cache driver the rate limiter should use by defining a `limiter` key within your application's `cache` configuration file:
 
-    'default' => env('CACHE_STORE', 'database'),
+```php
+'default' => env('CACHE_STORE', 'database'),
 
-    'limiter' => 'redis',
+'limiter' => 'redis',
+```
 
 <a name="basic-usage"></a>
 ## Basic Usage
@@ -30,93 +32,107 @@ The `Illuminate\Support\Facades\RateLimiter` facade may be used to interact with
 
 The `attempt` method returns `false` when the callback has no remaining attempts available; otherwise, the `attempt` method will return the callback's result or `true`. The first argument accepted by the `attempt` method is a rate limiter "key", which may be any string of your choosing that represents the action being rate limited:
 
-    use Illuminate\Support\Facades\RateLimiter;
+```php
+use Illuminate\Support\Facades\RateLimiter;
 
-    $executed = RateLimiter::attempt(
-        'send-message:'.$user->id,
-        $perMinute = 5,
-        function() {
-            // Send message...
-        }
-    );
-
-    if (! $executed) {
-      return 'Too many messages sent!';
+$executed = RateLimiter::attempt(
+    'send-message:'.$user->id,
+    $perMinute = 5,
+    function() {
+        // Send message...
     }
+);
+
+if (! $executed) {
+    return 'Too many messages sent!';
+}
+```
 
 If necessary, you may provide a fourth argument to the `attempt` method, which is the "decay rate", or the number of seconds until the available attempts are reset. For example, we can modify the example above to allow five attempts every two minutes:
 
-    $executed = RateLimiter::attempt(
-        'send-message:'.$user->id,
-        $perTwoMinutes = 5,
-        function() {
-            // Send message...
-        },
-        $decayRate = 120,
-    );
+```php
+$executed = RateLimiter::attempt(
+    'send-message:'.$user->id,
+    $perTwoMinutes = 5,
+    function() {
+        // Send message...
+    },
+    $decayRate = 120,
+);
+```
 
 <a name="manually-incrementing-attempts"></a>
 ### Manually Incrementing Attempts
 
 If you would like to manually interact with the rate limiter, a variety of other methods are available. For example, you may invoke the `tooManyAttempts` method to determine if a given rate limiter key has exceeded its maximum number of allowed attempts per minute:
 
-    use Illuminate\Support\Facades\RateLimiter;
+```php
+use Illuminate\Support\Facades\RateLimiter;
 
-    if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
-        return 'Too many attempts!';
-    }
+if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
+    return 'Too many attempts!';
+}
 
-    RateLimiter::increment('send-message:'.$user->id);
+RateLimiter::increment('send-message:'.$user->id);
 
-    // Send message...
+// Send message...
+```
 
 Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `increment` method to increment the number of total attempts:
 
-    use Illuminate\Support\Facades\RateLimiter;
+```php
+use Illuminate\Support\Facades\RateLimiter;
 
-    if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {
-        RateLimiter::increment('send-message:'.$user->id);
+if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {
+    RateLimiter::increment('send-message:'.$user->id);
 
-        // Send message...
-    }
+    // Send message...
+}
+```
 
 If you would like to increment the value for a given rate limiter key by more than one, you may provide the desired amount to the `increment` method:
 
-    RateLimiter::increment('send-message:'.$user->id, amount: 5);
+```php
+RateLimiter::increment('send-message:'.$user->id, amount: 5);
+```
 
 <a name="determining-limiter-availability"></a>
 #### Determining Limiter Availability
 
 When a key has no more attempts left, the `availableIn` method returns the number of seconds remaining until more attempts will be available:
 
-    use Illuminate\Support\Facades\RateLimiter;
+```php
+use Illuminate\Support\Facades\RateLimiter;
 
-    if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
-        $seconds = RateLimiter::availableIn('send-message:'.$user->id);
+if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
+    $seconds = RateLimiter::availableIn('send-message:'.$user->id);
 
-        return 'You may try again in '.$seconds.' seconds.';
-    }
+    return 'You may try again in '.$seconds.' seconds.';
+}
 
-    RateLimiter::increment('send-message:'.$user->id);
+RateLimiter::increment('send-message:'.$user->id);
 
-    // Send message...
+// Send message...
+```
 
 <a name="clearing-attempts"></a>
 ### Clearing Attempts
 
 You may reset the number of attempts for a given rate limiter key using the `clear` method. For example, you may reset the number of attempts when a given message is read by the receiver:
 
-    use App\Models\Message;
-    use Illuminate\Support\Facades\RateLimiter;
+```php
+use App\Models\Message;
+use Illuminate\Support\Facades\RateLimiter;
 
-    /**
-     * Mark the message as read.
-     */
-    public function read(Message $message): Message
-    {
-        $message->markAsRead();
+/**
+ * Mark the message as read.
+ */
+public function read(Message $message): Message
+{
+    $message->markAsRead();
 
-        RateLimiter::clear('send-message:'.$message->user_id);
+    RateLimiter::clear('send-message:'.$message->user_id);
 
-        return $message;
-    }
+    return $message;
+}
+```
