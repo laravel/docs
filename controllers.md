@@ -35,31 +35,35 @@ php artisan make:controller UserController
 
 Let's take a look at an example of a basic controller. A controller may have any number of public methods which will respond to incoming HTTP requests:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
-    
-    use App\Models\User;
-    use Illuminate\View\View;
+namespace App\Http\Controllers;
 
-    class UserController extends Controller
+use App\Models\User;
+use Illuminate\View\View;
+
+class UserController extends Controller
+{
+    /**
+     * Show the profile for a given user.
+     */
+    public function show(string $id): View
     {
-        /**
-         * Show the profile for a given user.
-         */
-        public function show(string $id): View
-        {
-            return view('user.profile', [
-                'user' => User::findOrFail($id)
-            ]);
-        }
+        return view('user.profile', [
+            'user' => User::findOrFail($id),
+        ]);
     }
+}
+```
 
 Once you have written a controller class and method, you may define a route to the controller method like so:
 
-    use App\Http\Controllers\UserController;
+```php
+use App\Http\Controllers\UserController;
 
-    Route::get('/user/{id}', [UserController::class, 'show']);
+Route::get('/user/{id}', [UserController::class, 'show']);
+```
 
 When an incoming request matches the specified route URI, the `show` method on the `App\Http\Controllers\UserController` class will be invoked and the route parameters will be passed to the method.
 
@@ -71,26 +75,30 @@ When an incoming request matches the specified route URI, the `show` method on t
 
 If a controller action is particularly complex, you might find it convenient to dedicate an entire controller class to that single action. To accomplish this, you may define a single `__invoke` method within the controller:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    class ProvisionServer extends Controller
+class ProvisionServer extends Controller
+{
+    /**
+     * Provision a new web server.
+     */
+    public function __invoke()
     {
-        /**
-         * Provision a new web server.
-         */
-        public function __invoke()
-        {
-            // ...
-        }
+        // ...
     }
+}
+```
 
 When registering routes for single action controllers, you do not need to specify a controller method. Instead, you may simply pass the name of the controller to the router:
 
-    use App\Http\Controllers\ProvisionServer;
+```php
+use App\Http\Controllers\ProvisionServer;
 
-    Route::post('/server', ProvisionServer::class);
+Route::post('/server', ProvisionServer::class);
+```
 
 You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command:
 
@@ -106,51 +114,57 @@ php artisan make:controller ProvisionServer --invokable
 
 [Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:
 
-    Route::get('/profile', [UserController::class, 'show'])->middleware('auth');
+```php
+Route::get('/profile', [UserController::class, 'show'])->middleware('auth');
+```
 
 Or, you may find it convenient to specify middleware within your controller class. To do so, your controller should implement the `HasMiddleware` interface, which dictates that the controller should have a static `middleware` method. From this method, you may return an array of middleware that should be applied to the controller's actions:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
-    use Illuminate\Routing\Controllers\HasMiddleware;
-    use Illuminate\Routing\Controllers\Middleware;
+use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-    class UserController extends Controller implements HasMiddleware
-    {
-        /**
-         * Get the middleware that should be assigned to the controller.
-         */
-        public static function middleware(): array
-        {
-            return [
-                'auth',
-                new Middleware('log', only: ['index']),
-                new Middleware('subscribed', except: ['store']),
-            ];
-        }
-
-        // ...
-    }
-
-You may also define controller middleware as closures, which provides a convenient way to define an inline middleware without writing an entire middleware class:
-
-    use Closure;
-    use Illuminate\Http\Request;
-
+class UserController extends Controller implements HasMiddleware
+{
     /**
      * Get the middleware that should be assigned to the controller.
      */
     public static function middleware(): array
     {
         return [
-            function (Request $request, Closure $next) {
-                return $next($request);
-            },
+            'auth',
+            new Middleware('log', only: ['index']),
+            new Middleware('subscribed', except: ['store']),
         ];
     }
+
+    // ...
+}
+```
+
+You may also define controller middleware as closures, which provides a convenient way to define an inline middleware without writing an entire middleware class:
+
+```php
+use Closure;
+use Illuminate\Http\Request;
+
+/**
+ * Get the middleware that should be assigned to the controller.
+ */
+public static function middleware(): array
+{
+    return [
+        function (Request $request, Closure $next) {
+            return $next($request);
+        },
+    ];
+}
+```
 
 <a name="resource-controllers"></a>
 ## Resource Controllers
@@ -165,18 +179,22 @@ php artisan make:controller PhotoController --resource
 
 This command will generate a controller at `app/Http/Controllers/PhotoController.php`. The controller will contain a method for each of the available resource operations. Next, you may register a resource route that points to the controller:
 
-    use App\Http\Controllers\PhotoController;
+```php
+use App\Http\Controllers\PhotoController;
 
-    Route::resource('photos', PhotoController::class);
+Route::resource('photos', PhotoController::class);
+```
 
 This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions. Remember, you can always get a quick overview of your application's routes by running the `route:list` Artisan command.
 
 You may even register many resource controllers at once by passing an array to the `resources` method:
 
-    Route::resources([
-        'photos' => PhotoController::class,
-        'posts' => PostController::class,
-    ]);
+```php
+Route::resources([
+    'photos' => PhotoController::class,
+    'posts' => PostController::class,
+]);
+```
 
 <a name="actions-handled-by-resource-controllers"></a>
 #### Actions Handled by Resource Controllers
@@ -200,27 +218,33 @@ You may even register many resource controllers at once by passing an array to t
 
 Typically, a 404 HTTP response will be generated if an implicitly bound resource model is not found. However, you may customize this behavior by calling the `missing` method when defining your resource route. The `missing` method accepts a closure that will be invoked if an implicitly bound model can not be found for any of the resource's routes:
 
-    use App\Http\Controllers\PhotoController;
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Redirect;
+```php
+use App\Http\Controllers\PhotoController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
-    Route::resource('photos', PhotoController::class)
-            ->missing(function (Request $request) {
-                return Redirect::route('photos.index');
-            });
+Route::resource('photos', PhotoController::class)
+    ->missing(function (Request $request) {
+        return Redirect::route('photos.index');
+    });
+```
 
 <a name="soft-deleted-models"></a>
 #### Soft Deleted Models
 
 Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/{{version}}/eloquent#soft-deleting), and will instead return a 404 HTTP response. However, you can instruct the framework to allow soft deleted models by invoking the `withTrashed` method when defining your resource route:
 
-    use App\Http\Controllers\PhotoController;
+```php
+use App\Http\Controllers\PhotoController;
 
-    Route::resource('photos', PhotoController::class)->withTrashed();
+Route::resource('photos', PhotoController::class)->withTrashed();
+```
 
 Calling `withTrashed` with no arguments will allow soft deleted models for the `show`, `edit`, and `update` resource routes. You may specify a subset of these routes by passing an array to the `withTrashed` method:
 
-    Route::resource('photos', PhotoController::class)->withTrashed(['show']);
+```php
+Route::resource('photos', PhotoController::class)->withTrashed(['show']);
+```
 
 <a name="specifying-the-resource-model"></a>
 #### Specifying the Resource Model
@@ -245,34 +269,40 @@ php artisan make:controller PhotoController --model=Photo --resource --requests
 
 When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
 
-    use App\Http\Controllers\PhotoController;
+```php
+use App\Http\Controllers\PhotoController;
 
-    Route::resource('photos', PhotoController::class)->only([
-        'index', 'show'
-    ]);
+Route::resource('photos', PhotoController::class)->only([
+    'index', 'show'
+]);
 
-    Route::resource('photos', PhotoController::class)->except([
-        'create', 'store', 'update', 'destroy'
-    ]);
+Route::resource('photos', PhotoController::class)->except([
+    'create', 'store', 'update', 'destroy'
+]);
+```
 
 <a name="api-resource-routes"></a>
 #### API Resource Routes
 
 When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
 
-    use App\Http\Controllers\PhotoController;
+```php
+use App\Http\Controllers\PhotoController;
 
-    Route::apiResource('photos', PhotoController::class);
+Route::apiResource('photos', PhotoController::class);
+```
 
 You may register many API resource controllers at once by passing an array to the `apiResources` method:
 
-    use App\Http\Controllers\PhotoController;
-    use App\Http\Controllers\PostController;
+```php
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\PostController;
 
-    Route::apiResources([
-        'photos' => PhotoController::class,
-        'posts' => PostController::class,
-    ]);
+Route::apiResources([
+    'photos' => PhotoController::class,
+    'posts' => PostController::class,
+]);
+```
 
 To quickly generate an API resource controller that does not include the `create` or `edit` methods, use the `--api` switch when executing the `make:controller` command:
 
@@ -285,13 +315,17 @@ php artisan make:controller PhotoController --api
 
 Sometimes you may need to define routes to a nested resource. For example, a photo resource may have multiple comments that may be attached to the photo. To nest the resource controllers, you may use "dot" notation in your route declaration:
 
-    use App\Http\Controllers\PhotoCommentController;
+```php
+use App\Http\Controllers\PhotoCommentController;
 
-    Route::resource('photos.comments', PhotoCommentController::class);
+Route::resource('photos.comments', PhotoCommentController::class);
+```
 
 This route will register a nested resource that may be accessed with URIs like the following:
 
-    /photos/{photo}/comments/{comment}
+```
+/photos/{photo}/comments/{comment}
+```
 
 <a name="scoping-nested-resources"></a>
 #### Scoping Nested Resources
@@ -303,9 +337,11 @@ Laravel's [implicit model binding](/docs/{{version}}/routing#implicit-model-bind
 
 Often, it is not entirely necessary to have both the parent and the child IDs within a URI since the child ID is already a unique identifier. When using unique identifiers such as auto-incrementing primary keys to identify your models in URI segments, you may choose to use "shallow nesting":
 
-    use App\Http\Controllers\CommentController;
+```php
+use App\Http\Controllers\CommentController;
 
-    Route::resource('photos.comments', CommentController::class)->shallow();
+Route::resource('photos.comments', CommentController::class)->shallow();
+```
 
 This route definition will define the following routes:
 
@@ -328,41 +364,51 @@ This route definition will define the following routes:
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your desired route names:
 
-    use App\Http\Controllers\PhotoController;
+```php
+use App\Http\Controllers\PhotoController;
 
-    Route::resource('photos', PhotoController::class)->names([
-        'create' => 'photos.build'
-    ]);
+Route::resource('photos', PhotoController::class)->names([
+    'create' => 'photos.build',
+]);
+```
 
 <a name="restful-naming-resource-route-parameters"></a>
 ### Naming Resource Route Parameters
 
 By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis using the `parameters` method. The array passed into the `parameters` method should be an associative array of resource names and parameter names:
 
-    use App\Http\Controllers\AdminUserController;
+```php
+use App\Http\Controllers\AdminUserController;
 
-    Route::resource('users', AdminUserController::class)->parameters([
-        'users' => 'admin_user'
-    ]);
+Route::resource('users', AdminUserController::class)->parameters([
+    'users' => 'admin_user',
+]);
+```
 
 The example above generates the following URI for the resource's `show` route:
 
-    /users/{admin_user}
+```
+/users/{admin_user}
+```
 
 <a name="restful-scoping-resource-routes"></a>
 ### Scoping Resource Routes
 
 Laravel's [scoped implicit model binding](/docs/{{version}}/routing#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by:
 
+    ```php
     use App\Http\Controllers\PhotoCommentController;
 
     Route::resource('photos.comments', PhotoCommentController::class)->scoped([
         'comment' => 'slug',
     ]);
+    ```
 
 This route will register a scoped nested resource that may be accessed with URIs like the following:
 
-    /photos/{photo}/comments/{comment:slug}
+```
+/photos/{photo}/comments/{comment:slug}
+```
 
 When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `Photo` model has a relationship named `comments` (the plural of the route parameter name) which can be used to retrieve the `Comment` model.
 
@@ -371,32 +417,38 @@ When using a custom keyed implicit binding as a nested route parameter, Laravel 
 
 By default, `Route::resource` will create resource URIs using English verbs and plural rules. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\Providers\AppServiceProvider`:
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Route::resourceVerbs([
-            'create' => 'crear',
-            'edit' => 'editar',
-        ]);
-    }
+```php
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Route::resourceVerbs([
+        'create' => 'crear',
+        'edit' => 'editar',
+    ]);
+}
+```
 
 Laravel's pluralizer supports [several different languages which you may configure based on your needs](/docs/{{version}}/localization#pluralization-language). Once the verbs and pluralization language have been customized, a resource route registration such as `Route::resource('publicacion', PublicacionController::class)` will produce the following URIs:
 
-    /publicacion/crear
+```
+/publicacion/crear
 
-    /publicacion/{publicaciones}/editar
+/publicacion/{publicaciones}/editar
+```
 
 <a name="restful-supplementing-resource-controllers"></a>
 ### Supplementing Resource Controllers
 
 If you need to add additional routes to a resource controller beyond the default set of resource routes, you should define those routes before your call to the `Route::resource` method; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
 
-    use App\Http\Controller\PhotoController;
+```php
+use App\Http\Controller\PhotoController;
 
-    Route::get('/photos/popular', [PhotoController::class, 'popular']);
-    Route::resource('photos', PhotoController::class);
+Route::get('/photos/popular', [PhotoController::class, 'popular']);
+Route::resource('photos', PhotoController::class);
+```
 
 > [!NOTE]  
 > Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
@@ -496,73 +548,81 @@ Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
 
 The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use App\Repositories\UserRepository;
+use App\Repositories\UserRepository;
 
-    class UserController extends Controller
-    {
-        /**
-         * Create a new controller instance.
-         */
-        public function __construct(
-            protected UserRepository $users,
-        ) {}
-    }
+class UserController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(
+        protected UserRepository $users,
+    ) {}
+}
+```
 
 <a name="method-injection"></a>
 #### Method Injection
 
 In addition to constructor injection, you may also type-hint dependencies on your controller's methods. A common use-case for method injection is injecting the `Illuminate\Http\Request` instance into your controller methods:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use Illuminate\Http\RedirectResponse;
-    use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * Store a new user.
+     */
+    public function store(Request $request): RedirectResponse
     {
-        /**
-         * Store a new user.
-         */
-        public function store(Request $request): RedirectResponse
-        {
-            $name = $request->name;
+        $name = $request->name;
 
-            // Store the user...
+        // Store the user...
 
-            return redirect('/users');
-        }
+        return redirect('/users');
     }
+}
+```
 
 If your controller method is also expecting input from a route parameter, list your route arguments after your other dependencies. For example, if your route is defined like so:
 
-    use App\Http\Controllers\UserController;
+```php
+use App\Http\Controllers\UserController;
 
-    Route::put('/user/{id}', [UserController::class, 'update']);
+Route::put('/user/{id}', [UserController::class, 'update']);
+```
 
 You may still type-hint the `Illuminate\Http\Request` and access your `id` parameter by defining your controller method as follows:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use Illuminate\Http\RedirectResponse;
-    use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * Update the given user.
+     */
+    public function update(Request $request, string $id): RedirectResponse
     {
-        /**
-         * Update the given user.
-         */
-        public function update(Request $request, string $id): RedirectResponse
-        {
-            // Update the user...
+        // Update the user...
 
-            return redirect('/users');
-        }
+        return redirect('/users');
     }
+}
+```
