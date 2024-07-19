@@ -295,7 +295,7 @@ If you would like to share contextual information across _all_ logging channels,
         }
     }
 
-> [!NOTE]
+> [!NOTE]  
 > If you need to share log context while processing queued jobs, you may utilize [job middleware](/docs/{{version}}/queues#job-middleware).
 
 <a name="writing-to-specific-channels"></a>

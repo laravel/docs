@@ -88,7 +88,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 The `append` method may be used to indicate that an attribute should be [appended](/docs/{{version}}/eloquent-serialization#appending-values-to-json) for every model in the collection. This method accepts an array of attributes or a single attribute:
 
     $users->append('team');
-    
+
     $users->append(['team', 'is_admin']);
 
 <a name="method-contains"></a>
@@ -151,7 +151,7 @@ The `load` method eager loads the given relationships for all models in the coll
     $users->load(['comments', 'posts']);
 
     $users->load('comments.author');
-    
+
     $users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
 
 <a name="method-loadMissing"></a>
@@ -162,7 +162,7 @@ The `loadMissing` method eager loads the given relationships for all models in t
     $users->loadMissing(['comments', 'posts']);
 
     $users->loadMissing('comments.author');
-    
+
     $users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
 
 <a name="method-modelKeys"></a>

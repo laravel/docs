@@ -48,7 +48,7 @@
 <a name="estimated-upgrade-time-??-minutes"></a>
 #### Estimated Upgrade Time: 15 Minutes
 
-> [!NOTE]
+> [!NOTE]  
 > We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
 
 <a name="updating-dependencies"></a>

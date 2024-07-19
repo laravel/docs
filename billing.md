@@ -251,7 +251,7 @@ Offering product and subscription billing via your application can be intimidati
 To charge customers for non-recurring, single-charge products, we'll utilize Cashier to direct customers to Stripe Checkout, where they will provide their payment details and confirm their purchase. Once the payment has been made via Checkout, the customer will be redirected to a success URL of your choosing within your application:
 
     use Illuminate\Http\Request;
-    
+
     Route::get('/checkout', function (Request $request) {
         $stripePriceId = 'price_deluxe_album';
 
@@ -276,11 +276,11 @@ If necessary, the `checkout` method will automatically create a customer in Stri
 When selling products, it's common to keep track of completed orders and purchased products via `Cart` and `Order` models defined by your own application. When redirecting customers to Stripe Checkout to complete a purchase, you may need to provide an existing order identifier so that you can associate the completed purchase with the corresponding order when the customer is redirected back to your application.
 
 To accomplish this, you may provide an array of `metadata` to the `checkout` method. Let's imagine that a pending `Order` is created within our application when a user begins the checkout process. Remember, the `Cart` and `Order` models in this example are illustrative and not provided by Cashier. You are free to implement these concepts based on the needs of your own application:
-    
+
     use App\Models\Cart;
     use App\Models\Order;
     use Illuminate\Http\Request;
-    
+
     Route::get('/cart/{cart}/checkout', function (Request $request, Cart $cart) {
         $order = Order::create([
             'cart_id' => $cart->id,
@@ -340,7 +340,7 @@ To learn how to sell subscriptions using Cashier and Stripe Checkout, let's cons
 First, let's discover how a customer can subscribe to our services. Of course, you can imagine the customer might click a "subscribe" button for the Basic plan on our application's pricing page. This button or link should direct the user to a Laravel route which creates the Stripe Checkout session for their chosen plan:
 
     use Illuminate\Http\Request;
-    
+
     Route::get('/subscription-checkout', function (Request $request) {
         return $request->user()
             ->newSubscription('default', 'price_basic_monthly')
@@ -2215,7 +2215,7 @@ Some payment methods require additional data in order to confirm payments. For e
     $subscription->withPaymentConfirmationOptions([
         'mandate_data' => '...',
     ])->swap('price_xxx');
-    
+
 You may consult the [Stripe API documentation](https://stripe.com/docs/api/payment_intents/confirm) to review all of the options accepted when confirming payments.
 
 <a name="strong-customer-authentication"></a>

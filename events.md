@@ -234,7 +234,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
         }
     }
 
-> [!NOTE]
+> [!NOTE]  
 > Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
 
 <a name="stopping-the-propagation-of-an-event"></a>
@@ -404,7 +404,7 @@ If your queue connection's `after_commit` configuration option is set to `false`
         use InteractsWithQueue;
     }
 
-> [!NOTE]
+> [!NOTE]  
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="handling-failed-jobs"></a>
@@ -519,7 +519,7 @@ If you would like to conditionally dispatch an event, you may use the `dispatchI
 
     OrderShipped::dispatchUnless($condition, $order);
 
-> [!NOTE]
+> [!NOTE]  
 > When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
 
 <a name="dispatching-events-after-database-transactions"></a>

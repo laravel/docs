@@ -1322,7 +1322,7 @@ $result = Number::pairs(25, 10);
 // [[1, 10], [11, 20], [21, 25]]
 
 $result = Number::pairs(25, 10, offset: 0);
- 
+
 // [[0, 10], [10, 20], [20, 25]]
 ```
 
@@ -2260,7 +2260,7 @@ Additional arguments may be passed to the `value` function. If the first argumen
     $result = value(function (string $name) {
         return $name;
     }, 'Taylor');
-    
+
     // 'Taylor'
 
 <a name="method-view"></a>
