@@ -701,11 +701,11 @@ The first argument provided to the `record` method is the `type` for the entry y
 
 The available aggregation methods are:
 
-* `avg`
-* `count`
-* `max`
-* `min`
-* `sum`
+- `avg`
+- `count`
+- `max`
+- `min`
+- `sum`
 
 > [!NOTE]  
 > When building a card package that captures the currently authenticated user ID, you should use the `Pulse::resolveAuthenticatedUserId()` method, which respects any [user resolver customizations](#dashboard-resolving-users) made to the application.
@@ -729,7 +729,7 @@ class TopSellers extends Card
 
 The `aggregate` method returns a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
 
-```
+```blade
 @foreach ($topSellers as $seller)
     {{ $seller->key }}
     {{ $seller->sum }}
