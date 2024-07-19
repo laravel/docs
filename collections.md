@@ -2733,7 +2733,7 @@ $collection->sole();
 // ['product' => 'Desk', 'price' => 200]
 ```
 
-If there are no elements in the collection that should be returned by the `sole` method, an `\Illuminate\Collections\ItemNotFoundException` exception will be thrown. If there is more than one element that should be returned, an `\Illuminate\Collections\MultipleItemsFoundException` will be thrown.
+If there are no elements in the collection that should be returned by the `sole` method, an `Illuminate\Collections\ItemNotFoundException` exception will be thrown. If there is more than one element that should be returned, an `Illuminate\Collections\MultipleItemsFoundException` will be thrown.
 
 <a name="method-some"></a>
 #### `some()` {.collection-method}
