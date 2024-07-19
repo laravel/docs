@@ -176,7 +176,7 @@ use Laravel\Reverb\Pulse\Recorders\ReverbMessages;
         'sample_rate' => 1,
     ],
 
-    ...
+    // ...
 ],
 ```
 
@@ -186,7 +186,8 @@ Next, add the Pulse cards for each recorder to your [Pulse dashboard](/docs/{{ve
 <x-pulse>
     <livewire:reverb.connections cols="full" />
     <livewire:reverb.messages cols="full" />
-    ...
+    
+    {{-- ... --}}
 </x-pulse>
 ```
 
@@ -238,7 +239,7 @@ In most cases, Reverb runs on a non web-facing port on your server. So, in order
 
 ```nginx
 server {
-    ...
+    # ...
 
     location / {
         proxy_http_version 1.1;
@@ -253,7 +254,7 @@ server {
         proxy_pass http://0.0.0.0:8080;
     }
 
-    ...
+    # ...
 }
 ```
 
@@ -296,7 +297,7 @@ In most cases, you should use a process manager such as Supervisor to ensure the
 
 ```conf
 [supervisord]
-...
+# ...
 minfds=10000
 ```
 

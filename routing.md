@@ -133,7 +133,8 @@ Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes 
 ```blade
 <form method="POST" action="/profile">
     @csrf
-    ...
+    
+    {{-- ... --}}
 </form>
 ```
 

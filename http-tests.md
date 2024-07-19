@@ -694,7 +694,7 @@ Sometimes, your application's routes will return JSON collections that are assig
 ```php
 Route::get('/users', function () {
     return [
-        'meta' => [...],
+        'meta' => [/* ... */],
         'users' => User::all(),
     ];
 });

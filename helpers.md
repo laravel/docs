@@ -2020,7 +2020,7 @@ The `dd` function dumps the given variables and ends the execution of the script
 ```php
 dd($value);
 
-dd($value1, $value2, $value3, ...);
+dd($value1, $value2, $value3, /* ... */);
 ```
 
 If you do not want to halt the execution of your script, use the [`dump`](#method-dump) function instead.
@@ -2051,7 +2051,7 @@ The `dump` function dumps the given variables:
 ```php
 dump($value);
 
-dump($value1, $value2, $value3, ...);
+dump($value1, $value2, $value3, /* ... */);
 ```
 
 If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.

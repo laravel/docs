@@ -790,7 +790,7 @@ class LogRequest
      */
     public function handle(RequestSending $event): void
     {
-        // $event->request ...
+        // $event->request...
     }
 }
 ```

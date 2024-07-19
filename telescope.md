@@ -289,7 +289,7 @@ Some watchers also allow you to provide additional customization options:
         'slow' => 100,
     ],
 
-    //...
+    // ...
 ],
 ```
 

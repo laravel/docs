@@ -155,7 +155,7 @@ Paddle relies on its own JavaScript library to initiate the Paddle checkout widg
 
 ```blade
 <head>
-    ...
+    // ...
 
     @paddleJS
 </head>

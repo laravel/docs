@@ -107,7 +107,7 @@ Within this file, the `<x-pulse>` component is responsible for rendering the das
 
 ```blade
 <x-pulse full-width>
-    ...
+    {{-- ... --}}
 </x-pulse>
 ```
 
@@ -115,7 +115,7 @@ By default, the `<x-pulse>` component will create a 12 column grid, but you may 
 
 ```blade
 <x-pulse cols="16">
-    ...
+    {{-- ... --}}
 </x-pulse>
 ```
 
@@ -571,12 +571,12 @@ When writing your Pulse card's corresponding view, you may leverage Pulse's Blad
 <x-pulse::card :cols="$cols" :rows="$rows" :class="$class" wire:poll.5s="">
     <x-pulse::card-header name="Top Sellers">
         <x-slot:icon>
-            ...
+            {{-- ... --}}
         </x-slot:icon>
     </x-pulse::card-header>
 
     <x-pulse::scroll :expand="$expand">
-        ...
+        {{-- ... --}}
     </x-pulse::scroll>
 </x-pulse::card>
 ```
@@ -587,7 +587,7 @@ Once you have defined your Livewire component and template, the card may be incl
 
 ```blade
 <x-pulse>
-    ...
+    {{-- ... --}}
 
     <livewire:pulse.top-sellers cols="4" />
 </x-pulse>
@@ -621,7 +621,7 @@ You may then use the `@vite` Blade directive in your [dashboard view](#dashboard
 <x-pulse>
     @vite('resources/css/pulse/top-sellers.css')
 
-    ...
+    {{-- ... --}}
 </x-pulse>
 ```
 
@@ -675,7 +675,7 @@ You will also need to include an `id` or `class` attribute in your card's view t
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">
-    ...
+    {{-- ... --}}
 </x-pulse::card>
 ```
 
