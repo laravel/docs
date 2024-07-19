@@ -152,14 +152,16 @@ Like routing and middleware, exception handling can now be customized from your 
 
 The base controller included in new Laravel applications has been simplified. It no longer extends Laravel's internal `Controller` class, and the `AuthorizesRequests` and `ValidatesRequests` traits have been removed, as they may be included in your application's individual controllers if desired:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    abstract class Controller
-    {
-        //
-    }
+abstract class Controller
+{
+    //
+}
+```
 
 <a name="application-defaults"></a>
 #### Application Defaults
@@ -307,20 +309,22 @@ _Model casts improvements were contributed by [Nuno Maduro](https://github.com/n
 
 Laravel 11 supports defining your model's casts using a method instead of a property. This allows for streamlined, fluent cast definitions, especially when using casts with arguments:
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'options' => AsCollection::using(OptionCollection::class),
-                      // AsEncryptedCollection::using(OptionCollection::class),
-                      // AsEnumArrayObject::using(OptionEnum::class),
-                      // AsEnumCollection::using(OptionEnum::class),
-        ];
-    }
+```php
+/**
+ * Get the attributes that should be cast.
+ *
+ * @return array<string, string>
+ */
+protected function casts(): array
+{
+    return [
+        'options' => AsCollection::using(OptionCollection::class),
+                  // AsEncryptedCollection::using(OptionCollection::class),
+                  // AsEnumArrayObject::using(OptionEnum::class),
+                  // AsEnumCollection::using(OptionEnum::class),
+    ];
+}
+```
 
 For more information on attribute casting, review the [Eloquent documentation](/docs/{{version}}/eloquent-mutators#attribute-casting).
 
@@ -331,16 +335,18 @@ _The `once` helper was contributed by [Taylor Otwell](https://github.com/tayloro
 
 The `once` helper function executes the given callback and caches the result in memory for the duration of the request. Any subsequent calls to the `once` function with the same callback will return the previously cached result:
 
-    function random(): int
-    {
-        return once(function () {
-            return random_int(1, 1000);
-        });
-    }
+```php
+function random(): int
+{
+    return once(function () {
+        return random_int(1, 1000);
+    });
+}
 
-    random(); // 123
-    random(); // 123 (cached result)
-    random(); // 123 (cached result)
+random(); // 123
+random(); // 123 (cached result)
+random(); // 123 (cached result)
+```
 
 For more information on the `once` helper, check out the [helpers documentation](/docs/{{version}}/helpers#method-once).
 
@@ -367,10 +373,12 @@ _Improved schema operations and database inspection was contributed by [Hafez Di
 
 Laravel 11 provides additional database schema operation and inspection methods, including the native modifying, renaming, and dropping of columns. Furthermore, advanced spatial types, non-default schema names, and native schema methods for manipulating tables, views, columns, indexes, and foreign keys are provided:
 
-    use Illuminate\Support\Facades\Schema;
+```php
+use Illuminate\Support\Facades\Schema;
 
-    $tables = Schema::getTables();
-    $views = Schema::getViews();
-    $columns = Schema::getColumns('users');
-    $indexes = Schema::getIndexes('users');
-    $foreignKeys = Schema::getForeignKeys('users');
+$tables = Schema::getTables();
+$views = Schema::getViews();
+$columns = Schema::getColumns('users');
+$indexes = Schema::getIndexes('users');
+$foreignKeys = Schema::getForeignKeys('users');
+```
