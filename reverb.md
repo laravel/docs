@@ -294,7 +294,7 @@ The output above shows the server can handle a maximum of 28,231 (60,999 - 32,76
 
 In most cases, you should use a process manager such as Supervisor to ensure the Reverb server is continually running. If you are using Supervisor to run Reverb, you should update the `minfds` setting of your server's `supervisor.conf` file to ensure Supervisor is able to open the files required to handle connections to your Reverb server:
 
-```ini
+```conf
 [supervisord]
 ...
 minfds=10000
