@@ -529,7 +529,7 @@ public function paginationInformation($request, $paginated, $default)
     return $default;
 }
 ```
-    
+
 <a name="conditional-attributes"></a>
 ### Conditional Attributes
 

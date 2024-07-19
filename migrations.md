@@ -699,7 +699,7 @@ The `ipAddress` method creates a `VARCHAR` equivalent column:
 ```php
 $table->ipAddress('visitor');
 ```
-    
+
 When using PostgreSQL, an `INET` column will be created.
 
 <a name="column-method-json"></a>

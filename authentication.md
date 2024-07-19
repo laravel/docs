@@ -297,8 +297,8 @@ For complex query conditions, you may provide a closure in your array of credent
 use Illuminate\Database\Eloquent\Builder;
 
 if (Auth::attempt([
-    'email' => $email, 
-    'password' => $password, 
+    'email' => $email,
+    'password' => $password,
     fn (Builder $query) => $query->has('activeSubscription'),
 ])) {
     // Authentication was successful...

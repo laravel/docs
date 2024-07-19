@@ -2561,7 +2561,7 @@ $subscription->withPaymentConfirmationOptions([
     'mandate_data' => '...',
 ])->swap('price_xxx');
 ```
-    
+
 You may consult the [Stripe API documentation](https://stripe.com/docs/api/payment_intents/confirm) to review all of the options accepted when confirming payments.
 
 <a name="strong-customer-authentication"></a>

@@ -979,7 +979,7 @@ Flight::upsert([
     ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
 ], uniqueBy: ['departure', 'destination'], update: ['price']);
 ```
-    
+
 > [!WARNING]  
 > All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MariaDB and MySQL database drivers ignore the second argument of the `upsert` method and always use the "primary" and "unique" indexes of the table to detect existing records.
 
@@ -1677,7 +1677,7 @@ class UserObserver
     {
         // ...
     }
-    
+
     /**
      * Handle the User "restored" event.
      */

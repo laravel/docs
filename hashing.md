@@ -33,7 +33,7 @@ php artisan config:publish hashing
 ### Hashing Passwords
 
 You may hash a password by calling the `make` method on the `Hash` facade:
-    
+
 ```php
 <?php
 

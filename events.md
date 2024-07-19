@@ -254,7 +254,7 @@ class SendShipmentNotification
 }
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
 
 <a name="stopping-the-propagation-of-an-event"></a>
@@ -436,7 +436,7 @@ class SendShipmentNotification implements ShouldQueue, ShouldHandleEventsAfterCo
 }
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="handling-failed-jobs"></a>
@@ -561,7 +561,7 @@ OrderShipped::dispatchIf($condition, $order);
 OrderShipped::dispatchUnless($condition, $order);
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
 
 <a name="dispatching-events-after-database-transactions"></a>

@@ -209,7 +209,7 @@ public function boot(): void
 <a name="quickstart-selling-products"></a>
 ### Selling Products
 
-> [!NOTE]
+> [!NOTE]  
 > Before utilizing Paddle Checkout, you should define Products with fixed prices in your Paddle dashboard. In addition, you should [configure Paddle's webhook handling](#handling-paddle-webhooks).
 
 Offering product and subscription billing via your application can be intimidating. However, thanks to Cashier and [Paddle's Checkout Overlay](https://www.paddle.com/billing/checkout), you can easily build modern, robust payment integrations.

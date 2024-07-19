@@ -232,7 +232,7 @@ The `assertSoftDeleted` method may be used to assert a given Eloquent model has 
 ```php
 $this->assertSoftDeleted($user);
 ```
-    
+
 <a name="assert-not-deleted"></a>
 #### assertNotSoftDeleted
 

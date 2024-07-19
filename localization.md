@@ -100,9 +100,9 @@ use Illuminate\Support\Pluralizer;
  */
 public function boot(): void
 {
-    Pluralizer::useLanguage('spanish');     
+    Pluralizer::useLanguage('spanish');
 
-    // ...     
+    // ...
 }
 ```
 
