@@ -187,7 +187,9 @@ init.bat
 
 The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox` or `parallels`:
 
-    provider: virtualbox
+```yaml
+provider: virtualbox
+```
 
 > [!WARNING]  
 > If you are using Apple Silicon the Parallels provider is required.
@@ -266,7 +268,9 @@ Homestead publishes hostnames using `mDNS` for automatic host resolution. If you
 
 Using automatic hostnames works best for [per project installations](#per-project-installation) of Homestead. If you host multiple sites on a single Homestead instance, you may add the "domains" for your web sites to the `hosts` file on your machine. The `hosts` file will redirect requests for your Homestead sites into your Homestead virtual machine. On macOS and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
-    192.168.56.56  homestead.test
+```none
+192.168.56.56  homestead.test
+```
 
 Make sure the IP address listed is the one set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file and launched the Vagrant box you will be able to access the site via your web browser:
 
@@ -473,8 +477,10 @@ sites:
 
 If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well. On macOS and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`:
 
-    192.168.56.56  homestead.test
-    192.168.56.56  another.test
+```none
+192.168.56.56  homestead.test
+192.168.56.56  another.test
+```
 
 Once the site has been added, execute the `vagrant reload --provision` terminal command from your Homestead directory.
 
@@ -616,7 +622,9 @@ A `homestead` database is configured for both MySQL and PostgreSQL out of the bo
 
 Homestead can automatically backup your database when your Homestead virtual machine is destroyed. To utilize this feature, you must be using Vagrant 2.1.0 or greater. Or, if you are using an older version of Vagrant, you must install the `vagrant-triggers` plug-in. To enable automatic database backups, add the following line to your `Homestead.yaml` file:
 
-    backup: true
+```yaml
+backup: true
+```
 
 Once configured, Homestead will export your databases to `.backup/mysql_backup` and `.backup/postgres_backup` directories when the `vagrant destroy` command is executed. These directories can be found in the folder where you installed Homestead or in the root of your project if you are using the [per project installation](#per-project-installation) method.
 
@@ -657,7 +665,9 @@ Once Mailpit has been configured, you may access the Mailpit dashboard at `http:
 
 [Minio](https://github.com/minio/minio) is an open source object storage server with an Amazon S3 compatible API. To install Minio, update your `Homestead.yaml` file with the following configuration option in the [features](#installing-optional-features) section:
 
-    minio: true
+```yaml
+minio: true
+```
 
 By default, Minio is available on port 9600. You may access the Minio control panel by visiting `http://localhost:9600`. The default access key is `homestead`, while the default secret key is `secretkey`. When accessing Minio, you should always use region `us-east-1`.
 
@@ -747,7 +757,9 @@ xdebug.start_with_request = yes
 
 To debug a PHP CLI application, use the `xphp` shell alias inside your Homestead virtual machine:
 
-    xphp /path/to/script
+```none
+xphp /path/to/script
+```
 
 <a name="profiling-applications-with-blackfire"></a>
 ### Profiling Applications With Blackfire
