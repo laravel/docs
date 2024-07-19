@@ -271,7 +271,7 @@ If you are having trouble authenticating with your application from an SPA that 
 
 The `config/cors.php` configuration file is not published by default. If you need to customize Laravel's CORS options, you should publish the complete `cors` configuration file using the `config:publish` Artisan command:
 
-```bash
+```shell
 php artisan config:publish cors
 ```
 

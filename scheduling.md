@@ -53,7 +53,7 @@ If you prefer to reserve your `routes/console.php` file for command definitions 
 
 If you would like to view an overview of your scheduled tasks and the next time they are scheduled to run, you may use the `schedule:list` Artisan command:
 
-```bash
+```shell
 php artisan schedule:list
 ```
 

@@ -60,13 +60,13 @@ Before creating your first Laravel project, make sure that your local machine ha
 
 After you have installed PHP and Composer, you may create a new Laravel project via Composer's `create-project` command:
 
-```nothing
+```shell
 composer create-project laravel/laravel example-app
 ```
 
 Or, you may create new Laravel projects by globally installing [the Laravel installer](https://github.com/laravel/installer) via Composer. The Laravel installer allows you to select your preferred testing framework, database, and starter kit when creating new applications:
 
-```nothing
+```shell
 composer global require laravel/installer
 
 laravel new example-app
@@ -74,7 +74,7 @@ laravel new example-app
 
 Once the project has been created, start Laravel's local development server using Laravel Artisan's `serve` command:
 
-```nothing
+```shell
 cd example-app
 
 php artisan serve
@@ -153,7 +153,7 @@ Herd for macOS uses [dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) to support 
 
 After installing Herd, the fastest way to create a new Laravel project is using the Laravel CLI, which is bundled with Herd:
 
-```nothing
+```shell
 cd ~/Herd
 laravel new my-app
 cd my-app
@@ -175,7 +175,7 @@ During installation, Herd creates a "parked" directory in your home directory at
 
 After installing Herd, the fastest way to create a new Laravel project is using the Laravel CLI, which is bundled with Herd. To get started, open Powershell and run the following commands:
 
-```nothing
+```shell
 cd ~\Herd
 laravel new my-app
 cd my-app

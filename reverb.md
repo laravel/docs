@@ -29,7 +29,7 @@
 
 You may install Reverb using the `install:broadcasting` Artisan command:
 
-```
+```shell
 php artisan install:broadcasting
 ```
 
@@ -91,7 +91,7 @@ In most cases, secure WebSocket connections are handled by the upstream web serv
 
 However, it can sometimes be useful, such as during local development, for the Reverb server to handle secure connections directly. If you are using [Laravel Herd's](https://herd.laravel.com) secure site feature or you are using [Laravel Valet](/docs/{{version}}/valet) and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may use the Herd / Valet certificate generated for your site to secure your Reverb connections. To do so, set the `REVERB_HOST` environment variable to your site's hostname or explicitly pass the hostname option when starting the Reverb server:
 
-```sh
+```shell
 php artisan reverb:start --host="0.0.0.0" --port=8080 --hostname="laravel.test"
 ```
 
@@ -112,7 +112,7 @@ You may also manually choose a certificate by defining `tls` options in your app
 
 The Reverb server can be started using the `reverb:start` Artisan command:
 
-```sh
+```shell
 php artisan reverb:start
 ```
 
@@ -120,7 +120,7 @@ By default, the Reverb server will be started at `0.0.0.0:8080`, making it acces
 
 If you need to specify a custom host or port, you may do so via the `--host` and `--port` options when starting the server:
 
-```sh
+```shell
 php artisan reverb:start --host=127.0.0.1 --port=9000
 ```
 
@@ -141,7 +141,7 @@ REVERB_PORT=443
 
 To improve performance, Reverb does not output any debug information by default. If you would like to see the stream of data passing through your Reverb server, you may provide the `--debug` option to the `reverb:start` command:
 
-```sh
+```shell
 php artisan reverb:start --debug
 ```
 
@@ -152,7 +152,7 @@ Since Reverb is a long-running process, changes to your code will not be reflect
 
 The `reverb:restart` command ensures all connections are gracefully terminated before stopping the server. If you are running Reverb with a process manager such as Supervisor, the server will be automatically restarted by the process manager after all connections have been terminated:
 
-```sh
+```shell
 php artisan reverb:restart
 ```
 
@@ -208,7 +208,7 @@ Each WebSocket connection is held in memory until either the client or server di
 
 On a Unix based operating system, you may determine the allowed number of open files using the `ulimit` command:
 
-```sh
+```shell
 ulimit -n
 ```
 
@@ -227,7 +227,7 @@ Under the hood, Reverb uses a ReactPHP event loop to manage WebSocket connection
 
 Reverb will automatically switch to an `ext-uv` powered loop when available. This PHP extension is available for install via PECL:
 
-```sh
+```shell
 pecl install uv
 ```
 
@@ -282,7 +282,7 @@ The configuration above will allow up to 10,000 Nginx workers per process to be 
 
 Unix-based operating systems typically limit the number of ports which can be opened on the server. You may see the current allowed range via the following command:
 
- ```sh
+ ```shell
 cat /proc/sys/net/ipv4/ip_local_port_range
 # 32768	60999
 ```
@@ -307,7 +307,7 @@ If you need to handle more connections than a single server will allow, you may 
 
 To enable horizontal scaling, you should set the `REVERB_SCALING_ENABLED` environment variable to `true` in your application's `.env` configuration file:
 
-```env
+```ini
 REVERB_SCALING_ENABLED=true
 ```
 

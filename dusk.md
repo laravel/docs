@@ -1856,7 +1856,9 @@ Sometimes, tests require several complicated actions to be performed in sequence
 
 To generate a page object, execute the `dusk:page` Artisan command. All page objects will be placed in your application's `tests/Browser/Pages` directory:
 
-    php artisan dusk:page Login
+```shell
+php artisan dusk:page Login
+```
 
 <a name="configuring-pages"></a>
 ### Configuring Pages
@@ -1990,7 +1992,9 @@ Components are similar to Dusk’s “page objects”, but are intended for piec
 
 To generate a component, execute the `dusk:component` Artisan command. New components are placed in the `tests/Browser/Components` directory:
 
-    php artisan dusk:component DatePicker
+```shell
+php artisan dusk:component DatePicker
+```
 
 As shown above, a "date picker" is an example of a component that might exist throughout your application on a variety of pages. It can become cumbersome to manually write the browser automation logic to select a date in dozens of tests throughout your test suite. Instead, we can define a Dusk component to represent the date picker, allowing us to encapsulate that logic within the component:
 

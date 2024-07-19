@@ -86,7 +86,9 @@ To specify the connection and queue that your Scout jobs utilize, you may define
 
 Of course, if you customize the connection and queue that Scout jobs utilize, you should run a queue worker to process jobs on that connection and queue:
 
-    php artisan queue:work redis --queue=scout
+```shell
+php artisan queue:work redis --queue=scout
+```
 
 <a name="driver-prerequisites"></a>
 ## Driver Prerequisites
@@ -141,7 +143,7 @@ composer require typesense/typesense-php
 
 Then, set the `SCOUT_DRIVER` environment variable as well as your Typesense host and API key credentials within your application's .env file:
 
-```env
+```ini
 SCOUT_DRIVER=typesense
 TYPESENSE_API_KEY=masterKey
 TYPESENSE_HOST=localhost
@@ -149,7 +151,7 @@ TYPESENSE_HOST=localhost
 
 If needed, you may also specify your installation's port, path, and protocol:
 
-```env
+```ini
 TYPESENSE_PORT=8108
 TYPESENSE_PATH=
 TYPESENSE_PROTOCOL=http

@@ -89,7 +89,7 @@ You should update the following dependencies in your application's `composer.jso
 
 If your application is using Laravel Cashier Stripe, Passport, Sanctum, Spark Stripe, or Telescope, you will need to publish their migrations to your application. Cashier Stripe, Passport, Sanctum, Spark Stripe, and Telescope **no longer automatically load migrations from their own migrations** directory. Therefore, you should run the following command to publish their migrations to your application:
 
-```bash
+```shell
 php artisan vendor:publish --tag=cashier-migrations
 php artisan vendor:publish --tag=passport-migrations
 php artisan vendor:publish --tag=sanctum-migrations
@@ -107,7 +107,7 @@ In addition, you should review the upgrade guides for each of these packages to 
 
 If you have manually installed the Laravel installer, you should update the installer via Composer:
 
-```bash
+```shell
 composer global require laravel/installer:^5.6
 ```
 
@@ -266,7 +266,7 @@ $table->char('postal_code', 10)->unique(false)->change();
 
 If you do not want to update all of the existing "change" migrations in your application to retain the column's existing attributes, you may simply [squash your migrations](/docs/{{version}}/migrations#squashing-migrations):
 
-```bash
+```shell
 php artisan schema:dump
 ```
 

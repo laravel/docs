@@ -1011,7 +1011,9 @@ If you would like to customize which channel that an entity's broadcast notifica
 
 Sending SMS notifications in Laravel is powered by [Vonage](https://www.vonage.com/) (formerly known as Nexmo). Before you can send notifications via Vonage, you need to install the `laravel/vonage-notification-channel` and `guzzlehttp/guzzle` packages:
 
-    composer require laravel/vonage-notification-channel guzzlehttp/guzzle
+```shell
+composer require laravel/vonage-notification-channel guzzlehttp/guzzle
+```
 
 The package includes a [configuration file](https://github.com/laravel/vonage-notification-channel/blob/3.x/config/vonage.php). However, you are not required to export this configuration file to your own application. You can simply use the `VONAGE_KEY` and `VONAGE_SECRET` environment variables to define your Vonage public and secret keys.
 

@@ -492,7 +492,7 @@ Laravel Pail is a package that allows you to easily dive into your Laravel appli
 
 To get started, install Pail into your project using the Composer package manager:
 
-```bash
+```shell
 composer require laravel/pail
 ```
 
@@ -501,19 +501,19 @@ composer require laravel/pail
 
 To start tailing logs, run the `pail` command:
 
-```bash
+```shell
 php artisan pail
 ```
 
 To increase the verbosity of the output and avoid truncation (…), use the `-v` option:
 
-```bash
+```shell
 php artisan pail -v
 ```
 
 For maximum verbosity and to display exception stack traces, use the `-vv` option:
 
-```bash
+```shell
 php artisan pail -vv
 ```
 
@@ -527,7 +527,7 @@ To stop tailing logs, press `Ctrl+C` at any time.
 
 You may use the `--filter` option to filter logs by their type, file, message, and stack trace content:
 
-```bash
+```shell
 php artisan pail --filter="QueryException"
 ```
 
@@ -536,7 +536,7 @@ php artisan pail --filter="QueryException"
 
 To filter logs by only their message, you may use the `--message` option:
 
-```bash
+```shell
 php artisan pail --message="User created"
 ```
 
@@ -545,7 +545,7 @@ php artisan pail --message="User created"
 
 The `--level` option may be used to filter logs by their [log level](#log-levels):
 
-```bash
+```shell
 php artisan pail --level=error
 ```
 
@@ -554,6 +554,6 @@ php artisan pail --level=error
 
 To only display logs that were written while a given user was authenticated, you may provide the user's ID to the `--user` option:
 
-```bash
+```shell
 php artisan pail --user=1
 ```

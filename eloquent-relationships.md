@@ -403,19 +403,21 @@ The "has-one-through" relationship defines a one-to-one relationship with anothe
 
 For example, in a vehicle repair shop application, each `Mechanic` model may be associated with one `Car` model, and each `Car` model may be associated with one `Owner` model. While the mechanic and the owner have no direct relationship within the database, the mechanic can access the owner _through_ the `Car` model. Let's look at the tables necessary to define this relationship:
 
-    mechanics
-        id - integer
-        name - string
+```none
+mechanics
+    id - integer
+    name - string
 
-    cars
-        id - integer
-        model - string
-        mechanic_id - integer
+cars
+    id - integer
+    model - string
+    mechanic_id - integer
 
-    owners
-        id - integer
-        name - string
-        car_id - integer
+owners
+    id - integer
+    name - string
+    car_id - integer
+```
 
 Now that we have examined the table structure for the relationship, let's define the relationship on the `Mechanic` model:
 
@@ -487,19 +489,21 @@ return $this->throughCars()->hasOwner();
 
 The "has-many-through" relationship provides a convenient way to access distant relations via an intermediate relation. For example, let's assume we are building a deployment platform like [Laravel Vapor](https://vapor.laravel.com). A `Project` model might access many `Deployment` models through an intermediate `Environment` model. Using this example, you could easily gather all deployments for a given project. Let's look at the tables required to define this relationship:
 
-    projects
-        id - integer
-        name - string
+```none
+projects
+    id - integer
+    name - string
 
-    environments
-        id - integer
-        project_id - integer
-        name - string
+environments
+    id - integer
+    project_id - integer
+    name - string
 
-    deployments
-        id - integer
-        environment_id - integer
-        commit_hash - string
+deployments
+    id - integer
+    environment_id - integer
+    commit_hash - string
+```
 
 Now that we have examined the table structure for the relationship, let's define the relationship on the `Project` model:
 
@@ -577,17 +581,19 @@ To define this relationship, three database tables are needed: `users`, `roles`,
 
 Remember, since a role can belong to many users, we cannot simply place a `user_id` column on the `roles` table. This would mean that a role could only belong to a single user. In order to provide support for roles being assigned to multiple users, the `role_user` table is needed. We can summarize the relationship's table structure like so:
 
-    users
-        id - integer
-        name - string
+```none
+users
+    id - integer
+    name - string
 
-    roles
-        id - integer
-        name - string
+roles
+    id - integer
+    name - string
 
-    role_user
-        user_id - integer
-        role_id - integer
+role_user
+    user_id - integer
+    role_id - integer
+```
 
 <a name="many-to-many-model-structure"></a>
 #### Model Structure
@@ -809,19 +815,21 @@ A polymorphic relationship allows the child model to belong to more than one typ
 
 A one-to-one polymorphic relation is similar to a typical one-to-one relation; however, the child model can belong to more than one type of model using a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a one-to-one polymorphic relation allows you to have a single table of unique images that may be associated with posts and users. First, let's examine the table structure:
 
-    posts
-        id - integer
-        name - string
+```none
+posts
+    id - integer
+    name - string
 
-    users
-        id - integer
-        name - string
+users
+    id - integer
+    name - string
 
-    images
-        id - integer
-        url - string
-        imageable_id - integer
-        imageable_type - string
+images
+    id - integer
+    url - string
+    imageable_id - integer
+    imageable_type - string
+```
 
 Note the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Eloquent to determine which "type" of parent model to return when accessing the `imageable` relation. In this case, the column would contain either `App\Models\Post` or `App\Models\User`.
 
@@ -918,21 +926,23 @@ If necessary, you may specify the name of the "id" and "type" columns utilized b
 
 A one-to-many polymorphic relation is similar to a typical one-to-many relation; however, the child model can belong to more than one type of model using a single association. For example, imagine users of your application can "comment" on posts and videos. Using polymorphic relationships, you may use a single `comments` table to contain comments for both posts and videos. First, let's examine the table structure required to build this relationship:
 
-    posts
-        id - integer
-        title - string
-        body - text
+```none
+posts
+    id - integer
+    title - string
+    body - text
 
-    videos
-        id - integer
-        title - string
-        url - string
+videos
+    id - integer
+    title - string
+    url - string
 
-    comments
-        id - integer
-        body - text
-        commentable_id - integer
-        commentable_type - string
+comments
+    id - integer
+    body - text
+    commentable_id - integer
+    commentable_type - string
+```
 
 <a name="one-to-many-polymorphic-model-structure"></a>
 #### Model Structure
@@ -1060,22 +1070,24 @@ public function bestImage(): MorphOne
 
 Many-to-many polymorphic relations are slightly more complicated than "morph one" and "morph many" relationships. For example, a `Post` model and `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation in this situation would allow your application to have a single table of unique tags that may be associated with posts or videos. First, let's examine the table structure required to build this relationship:
 
-    posts
-        id - integer
-        name - string
+```none
+posts
+    id - integer
+    name - string
 
-    videos
-        id - integer
-        name - string
+videos
+    id - integer
+    name - string
 
-    tags
-        id - integer
-        name - string
+tags
+    id - integer
+    name - string
 
-    taggables
-        tag_id - integer
-        taggable_id - integer
-        taggable_type - string
+taggables
+    tag_id - integer
+    taggable_id - integer
+    taggable_type - string
+```
 
 > [!NOTE]  
 > Before diving into polymorphic many-to-many relationships, you may benefit from reading the documentation on typical [many-to-many relationships](#many-to-many).
