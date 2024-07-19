@@ -398,7 +398,7 @@ $permissions = multiselect(
 
 You may also pass an associative array to the `options` argument to return the selected options' keys instead of their values:
 
-```
+```php
 $permissions = multiselect(
     label: 'What permissions should be assigned?',
     options: [
@@ -423,11 +423,13 @@ $categories = multiselect(
 
 You may allow the user to easily select all options via the `canSelectAll` argument:
 
+```php
 $categories = multiselect(
     label: 'What categories should be assigned?',
     options: Category::pluck('name', 'id'),
     canSelectAll: true
 );
+```
 
 <a name="multiselect-required"></a>
 #### Requiring a Value
@@ -457,7 +459,7 @@ $categories = multiselect(
 
 You may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
 
-```
+```php
 $permissions = multiselect(
     label: 'What permissions should the user have?',
     options: [
