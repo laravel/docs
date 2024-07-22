@@ -1655,17 +1655,17 @@ The `chopEnd` method removes the last occurrence of the given value only if the 
 
     use Illuminate\Support\Str;
 
-    $url = Str::of('https://laravel.com')->chopEnd('https://');
+    $url = Str::of('https://laravel.com')->chopEnd('.com');
 
-    // 'laravel.com'
+    // 'https://laravel'
 
 You may also pass an array. If the string ends with any of the values in the array then that value will be removed from string:
 
     use Illuminate\Support\Str;
 
-    $url = Str::of('http://laravel.com')->chopEnd(['https://', 'http://']);
+    $url = Str::of('http://laravel.com')->chopEnd(['.com', '.io']);
 
-    // 'laravel.com'
+    // 'http://laravel'
 
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
