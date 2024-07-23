@@ -695,17 +695,17 @@ The `Str::limit` method truncates the given string to the specified length:
 
     // The quick brown fox...
 
-If you would like to preserve complete words when truncating the string, you may utilize the `preserveWords` argument. When this argument is `true`, the string will be truncated to the nearest complete word boundary:
-
-    $truncated = Str::limit('The quick brown fox', 12, preserveWords: true);
-
-    // The quick...
-
 You may pass a third argument to the method to change the string that will be appended to the end of the truncated string:
 
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
 
     // The quick brown fox (...)
+
+If you would like to preserve complete words when truncating the string, you may utilize the `preserveWords` argument. When this argument is `true`, the string will be truncated to the nearest complete word boundary:
+
+    $truncated = Str::limit('The quick brown fox', 12, preserveWords: true);
+
+    // The quick...
 
 <a name="method-str-lower"></a>
 #### `Str::lower()` {.collection-method}
@@ -2021,11 +2021,15 @@ The `limit` method truncates the given string to the specified length:
 
 You may also pass a second argument to change the string that will be appended to the end of the truncated string:
 
-    use Illuminate\Support\Str;
-
     $truncated = Str::of('The quick brown fox jumps over the lazy dog')->limit(20, ' (...)');
 
     // The quick brown fox (...)
+
+If you would like to preserve complete words when truncating the string, you may utilize the `preserveWords` argument. When this argument is `true`, the string will be truncated to the nearest complete word boundary:
+
+    $truncated = Str::of('The quick brown fox')->limit(12, preserveWords: true);
+
+    // The quick...
 
 <a name="method-fluent-str-lower"></a>
 #### `lower` {.collection-method}
