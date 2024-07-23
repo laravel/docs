@@ -426,6 +426,15 @@ $this->assertThrows(
 );
 ```
 
+If you would like to inspect and make assertions against the exception that is thrown, you may provide a closure as the second argument to the `assertThrows` method:
+
+```php
+$this->assertThrows(
+    fn () => (new ProcessOrder)->execute(),
+    fn (OrderInvalid $e) => $e->orderId() === 123;
+);
+```
+
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
 
