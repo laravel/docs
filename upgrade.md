@@ -205,11 +205,11 @@ public function dump(...$args);
 ### Database
 
 <a name="sqlite-minimum-version"></a>
-#### SQLite 3.35.0+
+#### SQLite 3.26.0+
 
 **Likelihood Of Impact: High**
 
-If your application is utilizing an SQLite database, SQLite 3.35.0 or greater is required.
+If your application is utilizing an SQLite database, SQLite 3.26.0 or greater is required.
 
 <a name="eloquent-model-casts-method"></a>
 #### Eloquent Model `casts` Method
