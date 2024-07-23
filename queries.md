@@ -583,48 +583,18 @@ You may use `whereJsonLength` method to query JSON arrays by their length:
 <a name="additional-where-clauses"></a>
 ### Additional Where Clauses
 
-**whereBetween / orWhereBetween**
-
-The `whereBetween` method verifies that a column's value is between two values:
-
-    $users = DB::table('users')
-               ->whereBetween('votes', [1, 100])
-               ->get();
-
-**whereNotBetween / orWhereNotBetween**
-
-The `whereNotBetween` method verifies that a column's value lies outside of two values:
-
-    $users = DB::table('users')
-                        ->whereNotBetween('votes', [1, 100])
-                        ->get();
-
-**whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
-
-The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:
-
-    $patients = DB::table('patients')
-                           ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
-                           ->get();
-
-The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:
-
-    $patients = DB::table('patients')
-                           ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
-                           ->get();
-
 **whereLike / orWhereLike / whereNotLike / orWhereNotLike**
 
-The `whereLike` method allows you to add "LIKE" clauses to your query for pattern matching. They provide a database-agnostic way of performing string matching queries. By default, it performs a case-insensitive search:
+The `whereLike` method allows you to add "LIKE" clauses to your query for pattern matching. These methods provide a database-agnostic way of performing string matching queries, with the ability to toggle case-sensitivity:
 
     $users = DB::table('users')
                ->whereLike('name', '%John%')
                ->get();
 
-You can perform a case-sensitive search by passing `true` as the third argument:
+You can enable a case-sensitive search via the `caseSensitive` argument:
 
     $users = DB::table('users')
-               ->whereLike('name', '%John%', true)
+               ->whereLike('name', '%John%', caseSensitive: true)
                ->get();
 
 The `orWhereLike` method allows you to add an "or" clause with a LIKE condition:
@@ -684,6 +654,36 @@ select * from comments where user_id in (
 
 > [!WARNING]  
 > If you are adding a large array of integer bindings to your query, the `whereIntegerInRaw` or `whereIntegerNotInRaw` methods may be used to greatly reduce your memory usage.
+
+**whereBetween / orWhereBetween**
+
+The `whereBetween` method verifies that a column's value is between two values:
+
+    $users = DB::table('users')
+               ->whereBetween('votes', [1, 100])
+               ->get();
+
+**whereNotBetween / orWhereNotBetween**
+
+The `whereNotBetween` method verifies that a column's value lies outside of two values:
+
+    $users = DB::table('users')
+                        ->whereNotBetween('votes', [1, 100])
+                        ->get();
+
+**whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
+
+The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:
+
+    $patients = DB::table('patients')
+                           ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+                           ->get();
+
+The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:
+
+    $patients = DB::table('patients')
+                           ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+                           ->get();
 
 **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
