@@ -583,35 +583,42 @@ You may use `whereJsonLength` method to query JSON arrays by their length:
 <a name="additional-where-clauses"></a>
 ### Additional Where Clauses
 
-**whereBetween / orWhereBetween**
+**whereLike / orWhereLike / whereNotLike / orWhereNotLike**
 
-The `whereBetween` method verifies that a column's value is between two values:
+The `whereLike` method allows you to add "LIKE" clauses to your query for pattern matching. These methods provide a database-agnostic way of performing string matching queries, with the ability to toggle case-sensitivity. By default, string matching is case-insensitive:
 
     $users = DB::table('users')
-               ->whereBetween('votes', [1, 100])
+               ->whereLike('name', '%John%')
                ->get();
 
-**whereNotBetween / orWhereNotBetween**
-
-The `whereNotBetween` method verifies that a column's value lies outside of two values:
+You can enable a case-sensitive search via the `caseSensitive` argument:
 
     $users = DB::table('users')
-                        ->whereNotBetween('votes', [1, 100])
-                        ->get();
+               ->whereLike('name', '%John%', caseSensitive: true)
+               ->get();
 
-**whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
+The `orWhereLike` method allows you to add an "or" clause with a LIKE condition:
 
-The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:
+    $users = DB::table('users')
+               ->where('votes', '>', 100)
+               ->orWhereLike('name', '%John%')
+               ->get();
 
-    $patients = DB::table('patients')
-                           ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
-                           ->get();
+The `whereNotLike` method allows you to add "NOT LIKE" clauses to your query:
 
-The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:
+    $users = DB::table('users')
+               ->whereNotLike('name', '%John%')
+               ->get();
 
-    $patients = DB::table('patients')
-                           ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
-                           ->get();
+Similarly, you can use `orWhereNotLike` to add an "or" clause with a NOT LIKE condition:
+
+    $users = DB::table('users')
+               ->where('votes', '>', 100)
+               ->orWhereNotLike('name', '%John%')
+               ->get();
+
+> [!WARNING]
+> The `whereLike` case-sensitive search option is currently not supported on SQL Server.
 
 **whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
@@ -647,6 +654,36 @@ select * from comments where user_id in (
 
 > [!WARNING]  
 > If you are adding a large array of integer bindings to your query, the `whereIntegerInRaw` or `whereIntegerNotInRaw` methods may be used to greatly reduce your memory usage.
+
+**whereBetween / orWhereBetween**
+
+The `whereBetween` method verifies that a column's value is between two values:
+
+    $users = DB::table('users')
+               ->whereBetween('votes', [1, 100])
+               ->get();
+
+**whereNotBetween / orWhereNotBetween**
+
+The `whereNotBetween` method verifies that a column's value lies outside of two values:
+
+    $users = DB::table('users')
+                        ->whereNotBetween('votes', [1, 100])
+                        ->get();
+
+**whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
+
+The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:
+
+    $patients = DB::table('patients')
+                           ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+                           ->get();
+
+The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:
+
+    $patients = DB::table('patients')
+                           ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+                           ->get();
 
 **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
