@@ -288,6 +288,7 @@ If you would like to specify a closure that is invoked for each SQL query execut
         public function boot(): void
         {
             DB::listen(function (QueryExecuted $query) {
+                // $query->toRawSql();
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
