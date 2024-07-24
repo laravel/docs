@@ -513,7 +513,7 @@ Sometimes you may need to apply the same query constraints to multiple columns. 
                     'name',
                     'email',
                     'phone',
-                ], 'LIKE', 'Example%')
+                ], 'like', 'Example%')
                 ->get();
 
 The query above will result in the following SQL:
@@ -535,7 +535,7 @@ Similarly, the `whereAll` method may be used to retrieve records where all of th
                 ->whereAll([
                     'title',
                     'content',
-                ], 'LIKE', '%Laravel%')
+                ], 'like', '%Laravel%')
                 ->get();
 
 The query above will result in the following SQL:
