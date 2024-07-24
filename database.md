@@ -291,6 +291,7 @@ If you would like to specify a closure that is invoked for each SQL query execut
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
+                // $query->toRawSql();
             });
         }
     }
