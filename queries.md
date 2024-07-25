@@ -13,7 +13,7 @@
     - [Where Clauses](#where-clauses)
     - [Or Where Clauses](#or-where-clauses)
     - [Where Not Clauses](#where-not-clauses)
-    - [Where Any / All Clauses](#where-any-all-clauses)
+    - [Where Any / All / None Clauses](#where-any-all-none-clauses)
     - [JSON Where Clauses](#json-where-clauses)
     - [Additional Where Clauses](#additional-where-clauses)
     - [Logical Grouping](#logical-grouping)
@@ -502,8 +502,8 @@ The `whereNot` and `orWhereNot` methods may be used to negate a given group of q
                     })
                     ->get();
 
-<a name="where-any-all-clauses"></a>
-### Where Any / All Clauses
+<a name="where-any-all-none-clauses"></a>
+### Where Any / All / None Clauses
 
 Sometimes you may need to apply the same query constraints to multiple columns. For example, you may want to retrieve all records where any columns in a given list are `LIKE` a given value. You may accomplish this using the `whereAny` method:
 
@@ -546,6 +546,29 @@ FROM posts
 WHERE published = true AND (
     title LIKE '%Laravel%' AND
     content LIKE '%Laravel%'
+)
+```
+
+The `whereNone` method may be used to retrieve records where none of the given columns match a given constraint:
+
+    $posts = DB::table('albums')
+                ->where('published', true)
+                ->whereNone([
+                    'title',
+                    'lyrics',
+                    'tags',
+                ], 'like', '%explicit%')
+                ->get();
+
+The query above will result in the following SQL:
+
+```sql
+SELECT *
+FROM albums
+WHERE published = true AND NOT (
+    title LIKE '%explicit%' OR
+    lyrics LIKE '%explicit%' OR
+    tags LIKE '%explicit%'
 )
 ```
 
