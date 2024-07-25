@@ -275,7 +275,7 @@ If your route has dependencies that you would like the Laravel service container
 <a name="parameters-optional-parameters"></a>
 ### Optional Parameters
 
-Occasionally you may need to specify a route parameter that may not always be present in the URI. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
+Occasionally you may need to specify a route parameter that may not always be present in the URI. You may do so by placing a `?` mark before the parameter type. Make sure to give the route's corresponding variable a default value:
 
     Route::get('/user/{name?}', function (?string $name = null) {
         return $name;
