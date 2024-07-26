@@ -126,7 +126,7 @@ Unlike Laravel's default queue system, Horizon allows you to choose from three w
 
 The `auto` strategy, which is the configuration file's default, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
 
-When using the `auto` strategy, you may define the `minProcesses` and `maxProcesses` configuration options to control the minimum **per queue** and the maximum number of worker processes **in total** Horizon should scale up and down to:
+When using the `auto` strategy, you may define the `minProcesses` and `maxProcesses` configuration options to control the minimum number of processes per queue and the maximum number of worker processes in total Horizon should scale up and down to:
 
     'environments' => [
         'production' => [
@@ -149,15 +149,6 @@ The `autoScalingStrategy` configuration value determines if Horizon will assign 
 The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
 
 When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration.
-
-<a name="process-counts"></a>
-### Process counts
-
-The `minProcesses` configuration sets the number of minimum processes **per queue**, so if you have 7 queues configured with a `minProcess` of 2 you will run at least 14 processes **up to** the maximum number of total processes configured with `maxProcesses`. The `minProcesses` cannot be set to a value lower than 1, because at least one process needs to run per queue to monitor when to scale up and down.
-
-Make sure that `minProcesses` multiplied by the number of queues is never higher than the total number of processes, otherwise the supervisor will scale down below the number of `minProcesses` and divide the available `maxProcesses` equally between the queues. If the number of queues times the `minProcesses` configuration is equal to `maxProcesses`, no scaling will happen as there is no remaining room for new processes.
-
-If you want horizon to scale using resources as efficiently as possible, it is important to note that at least 1 process will run per queue. When setting `maxProcesses` to 10, with 2 queues the busiest queue can scale up to 9 processes, while with 8 queues the busiest queue can only scale up to 2 processes. So if due to some CPU or memory constraints only a certain amount of processes can run at the same time, using fewer queues will result in more efficient server usage.
 
 <a name="dashboard-authorization"></a>
 ### Dashboard Authorization
