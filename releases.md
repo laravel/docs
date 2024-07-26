@@ -21,7 +21,6 @@ When referencing the Laravel framework or its components from your application o
 
 For all Laravel releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest major release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
 
-
 <div class="overflow-auto">
 
 | Version | PHP (*) | Release | Bug Fixes Until | Security Fixes Until |

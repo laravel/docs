@@ -105,7 +105,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 </div>
 
-
 <a name="paths-method-list"></a>
 ### Paths
 
@@ -243,7 +242,6 @@ The `Arr::add` method adds a given key / value pair to an array if the given key
     $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
 
     // ['name' => 'Desk', 'price' => 100]
-
 
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
@@ -1363,7 +1361,6 @@ The `Number::spell` method transforms the given number into a string of words:
     $number = Number::spell(88, locale: 'fr');
 
     // quatre-vingt-huit
-
 
 The `after` argument allows you to specify a value after which all numbers should be spelled out:
 

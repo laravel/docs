@@ -368,7 +368,6 @@ By default, limits will use the exception's class as the rate limit key. You can
         });
     })
 
-
 Of course, you may return a mixture of `Lottery` and `Limit` instances for different exceptions:
 
     use App\Exceptions\ApiMonitoringException;
