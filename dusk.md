@@ -2198,13 +2198,13 @@ jobs:
         run: php artisan dusk
       - name: Upload Screenshots
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: screenshots
           path: tests/Browser/screenshots
       - name: Upload Console Logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: console
           path: tests/Browser/console
