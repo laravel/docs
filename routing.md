@@ -8,8 +8,8 @@
     - [Routing Customization](#routing-customization)
 - [Route Parameters](#route-parameters)
     - [Required Parameters](#required-parameters)
-    - [Optional Parameters](#parameters-optional-parameters)
-    - [Regular Expression Constraints](#parameters-regular-expression-constraints)
+    - [Optional Parameters](#optional-parameters)
+    - [Regular Expression Constraints](#regular-expression-constraints)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
     - [Middleware](#route-group-middleware)
@@ -272,7 +272,7 @@ If your route has dependencies that you would like the Laravel service container
         return 'User '.$id;
     });
 
-<a name="parameters-optional-parameters"></a>
+<a name="optional-parameters"></a>
 ### Optional Parameters
 
 Occasionally you may need to specify a route parameter that may not always be present in the URI. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
@@ -285,7 +285,7 @@ Occasionally you may need to specify a route parameter that may not always be pr
         return $name;
     });
 
-<a name="parameters-regular-expression-constraints"></a>
+<a name="regular-expression-constraints"></a>
 ### Regular Expression Constraints
 
 You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
@@ -553,7 +553,6 @@ Typically, implicit model binding will not retrieve models that have been [soft 
     })->withTrashed();
 
 <a name="customizing-the-key"></a>
-<a name="customizing-the-default-key-name"></a>
 #### Customizing the Key
 
 Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
