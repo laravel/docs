@@ -2140,7 +2140,7 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
 language: php
 
 php:
-  - 7.3
+  - 8.2
 
 addons:
   chrome: stable
