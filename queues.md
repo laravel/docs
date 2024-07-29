@@ -572,7 +572,6 @@ class ProviderIsDown
 {
     // ...
 
-
     public function middleware(): array
     {
         return [
@@ -584,7 +583,6 @@ class ProviderIsDown
 class ProviderIsUp
 {
     // ...
-
 
     public function middleware(): array
     {

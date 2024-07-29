@@ -460,7 +460,6 @@ The `Str::endsWith` method determines if the given string ends with the given va
 
     // true
 
-
 You may also pass an array of values to determine if the given string ends with any of the values in the array:
 
     use Illuminate\Support\Str;
@@ -1895,7 +1894,6 @@ The `isEmpty` method determines if the given string is empty:
 
 The `isNotEmpty` method determines if the given string is not empty:
 
-
     use Illuminate\Support\Str;
 
     $result = Str::of('  ')->trim()->isNotEmpty();
@@ -1995,7 +1993,6 @@ The `lcfirst` method returns the given string with the first character lowercase
     $string = Str::of('Foo Bar')->lcfirst();
 
     // foo Bar
-
 
 <a name="method-fluent-str-length"></a>
 #### `length` {.collection-method}

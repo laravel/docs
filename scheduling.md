@@ -343,7 +343,6 @@ Schedule::call(fn () => User::resetApiRequestCount())
     ->onOneServer();
 ```
 
-
 <a name="background-tasks"></a>
 ### Background Tasks
 

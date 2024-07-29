@@ -3434,7 +3434,6 @@ The `whereNull` method returns items from the collection where the given key is 
         ]
     */
 
-
 <a name="method-wrap"></a>
 #### `wrap()` {.collection-method}
 

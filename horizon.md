@@ -375,7 +375,6 @@ When retrieving the tags for a queued event listener, Horizon will automatically
         }
     }
 
-
 <a name="notifications"></a>
 ## Notifications
 

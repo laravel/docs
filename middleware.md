@@ -140,7 +140,6 @@ If you would like to manage Laravel's global middleware stack manually, you may 
         ]);
     })
 
-
 <a name="assigning-middleware-to-routes"></a>
 ### Assigning Middleware to Routes
 
