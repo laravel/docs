@@ -569,7 +569,6 @@ In addition, the query builder's `orderBy` function supports subqueries. Continu
         Flight::select('arrived_at')
             ->whereColumn('destination_id', 'destinations.id')
             ->orderByDesc('arrived_at')
-            ->limit(1)
     )->get();
 
 <a name="retrieving-single-models"></a>
