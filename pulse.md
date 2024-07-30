@@ -721,7 +721,7 @@ class TopSellers extends Card
     public function render()
     {
         return view('livewire.pulse.top-sellers', [
-            'topSellers' => $this->aggregate('user_sale', ['sum', 'count']);
+            'topSellers' => $this->aggregate('user_sale', ['sum', 'count'])
         ]);
     }
 }
