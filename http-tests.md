@@ -922,6 +922,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertDontSeeText](#assert-dont-see-text)
 [assertDownload](#assert-download)
 [assertExactJson](#assert-exact-json)
+[assertExactJsonStructure](#assert-exact-json-structure)
 [assertForbidden](#assert-forbidden)
 [assertFound](#assert-found)
 [assertGone](#assert-gone)
@@ -1072,6 +1073,13 @@ If you wish, you may assert that the downloadable file was assigned a given file
 Assert that the response contains an exact match of the given JSON data:
 
     $response->assertExactJson(array $data);
+
+<a name="assert-exact-json-structure"></a>
+#### assertExactJsonStructure
+
+Assert that the response contains an exact match of the given JSON structure:
+
+    $response->assertExactJsonStructure(array $data);
 
 <a name="assert-forbidden"></a>
 #### assertForbidden
