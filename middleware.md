@@ -301,7 +301,7 @@ If you would like to manually manage all of the middleware within Laravel's defa
 <a name="middleware-aliases"></a>
 ### Middleware Aliases
 
-You may assign aliases to middleware in your application's `bootstrap/app.php` file. Middleware aliases allows you to define a short alias for a given middleware class, which can be especially useful for middleware with long class names:
+You may assign aliases to middleware in your application's `bootstrap/app.php` file. Middleware aliases allow you to define a short alias for a given middleware class, which can be especially useful for middleware with long class names:
 
     use App\Http\Middleware\EnsureUserIsSubscribed;
 
