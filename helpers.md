@@ -100,6 +100,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::pairs](#method-number-pairs)
 [Number::percentage](#method-number-percentage)
 [Number::spell](#method-number-spell)
+[Number::trim](#method-number-trim)
 [Number::useLocale](#method-number-use-locale)
 [Number::withLocale](#method-number-with-locale)
 
@@ -1381,6 +1382,21 @@ The `until` argument allows you to specify a value before which all numbers shou
     $number = Number::spell(10, until: 10);
 
     // 10
+
+<a name="method-number-trim"></a>
+#### `Number::trim()` {.collection-method}
+
+The `Number::trim` method removes any trailing zero digits after the decimal point of the given number:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::trim(12.0);
+
+    // 12
+
+    $number = Number::trim(12.30);
+
+    // 12.3
 
 <a name="method-number-use-locale"></a>
 #### `Number::useLocale()` {.collection-method}
