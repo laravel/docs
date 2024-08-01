@@ -93,10 +93,10 @@ php artisan queue:work --queue=high,default
 <a name="database"></a>
 #### Database
 
-In order to use the `database` queue driver, you will need a database table to hold the jobs. Typically, this is included in Laravel's default `0001_01_01_000002_create_jobs_table.php` [database migration](/docs/{{version}}/migrations); however, if your application does not contain this migration, you may use the `make:queue-table` Artisan command to create it:
+In order to use the `database` queue driver, you will need a database table to hold the jobs. Typically, this is included in Laravel's default `0001_01_01_000002_create_jobs_table.php` [database migration](/docs/{{version}}/migrations); however, if your application does not contain this migration, you may use the `queue:table` Artisan command to create it:
 
 ```shell
-php artisan make:queue-table
+php artisan queue:table
 
 php artisan migrate
 ```
@@ -1248,10 +1248,10 @@ If you would like to mark your job as failed because of an exception that you ha
 <a name="job-batching"></a>
 ## Job Batching
 
-Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing. Before getting started, you should create a database migration to build a table which will contain meta information about your job batches, such as their completion percentage. This migration may be generated using the `make:queue-batches-table` Artisan command:
+Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing. Before getting started, you should create a database migration to build a table which will contain meta information about your job batches, such as their completion percentage. This migration may be generated using the `queue:batches-table` Artisan command:
 
 ```shell
-php artisan make:queue-batches-table
+php artisan queue:batches-table
 
 php artisan migrate
 ```
@@ -1856,10 +1856,10 @@ For more information on Supervisor, consult the [Supervisor documentation](http:
 
 Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to [specify the maximum number of times a job should be attempted](#max-job-attempts-and-timeout). After an asynchronous job has exceeded this number of attempts, it will be inserted into the `failed_jobs` database table. [Synchronously dispatched jobs](/docs/{{version}}/queues#synchronous-dispatching) that fail are not stored in this table and their exceptions are immediately handled by the application.
 
-A migration to create the `failed_jobs` table is typically already present in new Laravel applications. However, if your application does not contain a migration for this table, you may use the `make:queue-failed-table` command to create the migration:
+A migration to create the `failed_jobs` table is typically already present in new Laravel applications. However, if your application does not contain a migration for this table, you may use the `queue:failed-table` command to create the migration:
 
 ```shell
-php artisan make:queue-failed-table
+php artisan queue:failed-table
 
 php artisan migrate
 ```
