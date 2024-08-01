@@ -1081,6 +1081,8 @@ Assert that the response contains an exact match of the given JSON structure:
 
     $response->assertExactJsonStructure(array $data);
 
+This method is a more strict variant of [assertJsonStructure](#assert-json-structure). In contrast with `assertJsonStructure`, this method will fail if the response contains any keys that aren't explicitly included in the expected JSON structure.
+
 <a name="assert-forbidden"></a>
 #### assertForbidden
 
