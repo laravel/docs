@@ -241,7 +241,7 @@ Alternatively, you can add contexual attributes directly to method parameters to
         }
     }
 
-There are contextual attributes available for each of Laravel's built-in drivers: `Cache`, `Database`, `Guard`, `Log` and `Storage`. You can also retrieve the currently authed user using the `Authed` contextual attribute:
+There are contextual attributes available for each of Laravel's built-in drivers: `Cache`, `Config`, `Database`, `Guard`, `Log` and `Storage`. You can also retrieve the currently authed user using the `Authed` contextual attribute:
 
     use App\Models\User;
     use Illuminate\Container\Attributes\Authed;
