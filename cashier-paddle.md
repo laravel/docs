@@ -276,8 +276,8 @@ In this example, the `CompleteOrder` listener might look like the following:
     namespace App\Listeners;
 
     use App\Models\Order;
-    use Laravel\Cashier\Cashier;
-    use Laravel\Cashier\Events\TransactionCompleted;
+    use Laravel\Paddle\Cashier;
+    use Laravel\Paddle\Events\TransactionCompleted;
 
     class CompleteOrder
     {
@@ -669,7 +669,7 @@ These defaults will be used for every action in Cashier that generates a [checko
 
 You can retrieve a customer by their Paddle Customer ID using the `Cashier::findBillable` method. This method will return an instance of the billable model:
 
-    use Laravel\Cashier\Cashier;
+    use Laravel\Paddle\Cashier;
 
     $user = Cashier::findBillable($customerId);
 
@@ -1372,7 +1372,7 @@ When listing the transactions for a customer, you may use the transaction instan
 The `download-invoice` route may look like the following:
 
     use Illuminate\Http\Request;
-    use Laravel\Cashier\Transaction;
+    use Laravel\Paddle\Transaction;
 
     Route::get('/download-invoice/{transaction}', function (Request $request, Transaction $transaction) {
         return $transaction->redirectToInvoicePdf();
