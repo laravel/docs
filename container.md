@@ -7,6 +7,7 @@
     - [Binding Basics](#binding-basics)
     - [Binding Interfaces to Implementations](#binding-interfaces-to-implementations)
     - [Contextual Binding](#contextual-binding)
+    - [Contextual Attributes](#contextual-attributes)
     - [Binding Primitives](#binding-primitives)
     - [Binding Typed Variadics](#binding-typed-variadics)
     - [Tagging](#tagging)
@@ -224,6 +225,51 @@ Sometimes you may have two classes that utilize the same interface, but you wish
               ->give(function () {
                   return Storage::disk('s3');
               });
+
+<a name="contextual-attributes"></a>
+### Contextual Attributes
+
+Alternatively, you can add contexual attributes directly to method parameters to tell the container which implementation to inject. For example, the `Illuminate\Container\Attributes\Storage` attribute allows you to specify the filesystem a controller requires:
+
+    use Illuminate\Container\Attributes\Storage;
+    use Illuminate\Contracts\Filesystem\Filesystem;
+
+    class PhotoController
+    {
+        public function __construct(#[Storage('local')] protected Filesystem $filesystem)
+        {
+        }
+    }
+
+There are contextual attributes available for each of Laravel's built-in drivers: `Cache`, `Database`, `Guard`, `Log` and `Storage`. You can also retrieve the currently authed user using the `Authed` contextual attribute:
+
+    use App\Models\User;
+    use Illuminate\Container\Attributes\Authed;
+
+    class UserController
+    {
+        public function __construct(#[Authed] protected ?User $user = null)
+        {
+        }
+    }
+
+You can create your own contextual attributes by implementing the `Illuminate\Contracts\Container\ContextualAttribute` contract. The container will call your attribute's `resolve` method, which may contain the necessary logic to retrieve your implementation from the container:
+
+    use Illuminate\Contracts\Container\ContextualAttribute;
+
+    #[Attribute(Attribute::TARGET_PARAMETER)]
+    class Custom implements ContextualAttribute
+    {
+        public function __construct()
+        {
+            // Any properties needed to identify the implementation...
+        }
+        
+        public static function resolve(self $attribute, Container $container)
+        {
+            // Return the implementation from the container...
+        }
+    }
 
 <a name="binding-primitives"></a>
 ### Binding Primitives
