@@ -183,6 +183,29 @@ DB::listen(function ($event) {
 });
 ```
 
+You may determine if a value is in a stack using the `stackContains` and `hiddenStackContains` methods:
+
+```php
+if (Context::stackContains('breadcrumbs', 'first_value')) {
+    //
+}
+
+if (Context::hiddenStackContains('secrets', 'first_value')) {
+    //
+}
+```
+
+The `stackContains` and `hiddenStackContains` methods also accept a closure as their second argument, allowing more control over the value comparison operation:
+
+```php
+use Illuminate\Support\Facades\Context;
+use Illuminate\Support\Str;
+
+return Context::stackContains('breadcrumbs', function ($value) {
+    return Str::startsWith($value, 'query_');
+});
+```
+
 <a name="retrieving-context"></a>
 ## Retrieving Context
 
