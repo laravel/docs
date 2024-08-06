@@ -1072,11 +1072,13 @@ The `forget` method removes an item from the collection by its key:
 
     $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
 
+    // Forget a single key...
     $collection->forget('name');
-
-    $collection->all();
-
     // ['framework' => 'laravel']
+
+    // Forget multiple keys...
+    $collection->forget(['name', 'framework']);
+    // []
 
 > [!WARNING]  
 > Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
