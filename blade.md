@@ -869,7 +869,7 @@ You may execute this method from your component template by invoking the variabl
 <a name="using-attributes-slots-within-component-class"></a>
 #### Accessing Attributes and Slots Within Component Classes
 
-Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method. The closure will receive a `$data` array as its only argument. This array will contain several elements that provide information about the component:
+Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method:
 
     use Closure;
 
@@ -878,14 +878,23 @@ Blade components also allow you to access the component name, attributes, and sl
      */
     public function render(): Closure
     {
-        return function (array $data) {
-            // $data['componentName'];
-            // $data['attributes'];
-            // $data['slot'];
-
-            return '<div>Components content</div>';
+        return function () {
+            return '<div {{ $attributes }}>Components content</div>';
         };
     }
+
+The closure returned by your component's `render` method may also receive a `$data` array as its only argument. This array will contain several elements that provide information about the component:
+
+    return function (array $data) {
+        // $data['componentName'];
+        // $data['attributes'];
+        // $data['slot'];
+
+        return '<div {{ $attributes }}>Components content</div>';
+    }
+
+> [!WARNING]
+> The elements in the `$data` array should never be directly embedded into the Blade string returned by your `render` method, as doing so could allow remote code execution via malicious attribute content.
 
 The `componentName` is equal to the name used in the HTML tag after the `x-` prefix. So `<x-alert />`'s `componentName` will be `alert`. The `attributes` element will contain all of the attributes that were present on the HTML tag. The `slot` element is an `Illuminate\Support\HtmlString` instance with the contents of the component's slot.
 
