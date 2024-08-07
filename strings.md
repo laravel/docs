@@ -37,6 +37,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::afterLast](#method-str-after-last)
 [Str::apa](#method-str-apa)
 [Str::ascii](#method-str-ascii)
+[Str::transliterate](#method-str-transliterate)
 [Str::before](#method-str-before)
 [Str::beforeLast](#method-str-before-last)
 [Str::between](#method-str-between)
@@ -128,6 +129,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [apa](#method-fluent-str-apa)
 [append](#method-fluent-str-append)
 [ascii](#method-fluent-str-ascii)
+[transliterate](#method-fluent-str-transliterate)
 [basename](#method-fluent-str-basename)
 [before](#method-fluent-str-before)
 [beforeLast](#method-fluent-str-before-last)
@@ -313,6 +315,17 @@ The `Str::ascii` method will attempt to transliterate the string into an ASCII v
     $slice = Str::ascii('û');
 
     // 'u'
+
+<a name="method-str-transliterate"></a>
+#### `Str::transliterate()` {.collection-method}
+
+The `Str::transliterate` method will attempt to convert a given string into its closest ASCII representation:
+
+    use Illuminate\Support\Str;
+
+    $email = Str::transliterate('ⓣⓔⓢⓣ@ⓛⓐⓡⓐⓥⓔⓛ.ⓒⓞⓜ');
+
+    // 'test@laravel.com'
 
 <a name="method-str-before"></a>
 #### `Str::before()` {.collection-method}
@@ -1535,6 +1548,17 @@ The `ascii` method will attempt to transliterate the string into an ASCII value:
     $string = Str::of('ü')->ascii();
 
     // 'u'
+
+<a name="method-fluent-str-transliterate"></a>
+#### `transliterate` {.collection-method}
+
+The `transliterate` method will attempt to convert a given string into its closest ASCII representation:
+
+    use Illuminate\Support\Str;
+
+    $email = Str::of('ⓣⓔⓢⓣ@ⓛⓐⓡⓐⓥⓔⓛ.ⓒⓞⓜ')->transliterate()
+
+    // 'test@laravel.com'
 
 <a name="method-fluent-str-basename"></a>
 #### `basename` {.collection-method}
