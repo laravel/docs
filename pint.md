@@ -179,6 +179,9 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.3]
+    
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
