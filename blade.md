@@ -1496,6 +1496,9 @@ For example, imagine we are building a "todo" list application. We might define 
 </html>
 ```
 
+> [!NOTE]  
+> The `$slot` variable is not escaped, so you may pass HTML to it without using the `{!! !!}` syntax. Any content within the slot variable will follow the appropriate behavior of however it was echoed.
+
 <a name="applying-the-layout-component"></a>
 #### Applying the Layout Component
 
@@ -1506,7 +1509,7 @@ Once the `layout` component has been defined, we may create a Blade view that ut
 
 <x-layout>
     @foreach ($tasks as $task)
-        {{ $task }}
+        <div>{{ $task }}</div>
     @endforeach
 </x-layout>
 ```
@@ -1522,7 +1525,7 @@ Remember, content that is injected into a component will be supplied to the defa
     </x-slot>
 
     @foreach ($tasks as $task)
-        {{ $task }}
+        <div>{{ $task }}</div>
     @endforeach
 </x-layout>
 ```
