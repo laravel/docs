@@ -165,7 +165,7 @@ If you would like to exclude a file by providing an exact path to the file, you 
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
 
-To automate linting your project with Laravel Pint, you can configure [GitHub Actions](https://github.com/features/actions) to run Pint whenever new code is pushed to GitHub. First, be sure to grant "Read and write permissions" to workflows within GitHub at **Settings > Actions > General > Workflow permissions**. Then, create a `.github/workflows/lint.yml` file with the following content:
+To automate linting your project with Laravel Pint, you can configure [GitHub Actions](https://github.com/features/actions) to run Pint whenever new code is pushed to GitHub. Create a `.github/workflows/lint.yml` file with the following content:
 
 ```yaml
 name: Fix Code Style
