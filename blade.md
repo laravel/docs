@@ -1506,7 +1506,7 @@ Once the `layout` component has been defined, we may create a Blade view that ut
 
 <x-layout>
     @foreach ($tasks as $task)
-        {{ $task }}
+        <div>{{ $task }}</div>
     @endforeach
 </x-layout>
 ```
@@ -1522,7 +1522,7 @@ Remember, content that is injected into a component will be supplied to the defa
     </x-slot>
 
     @foreach ($tasks as $task)
-        {{ $task }}
+        <div>{{ $task }}</div>
     @endforeach
 </x-layout>
 ```
