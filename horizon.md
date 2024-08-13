@@ -424,6 +424,12 @@ If you would like to delete a failed job, you may use the `horizon:forget` comma
 php artisan horizon:forget 5
 ```
 
+If you would like to delete all failed jobs, you may provide the `--all` option to the `horizon:forget` command:
+
+```shell
+php artisan horizon:forget --all
+```
+
 <a name="clearing-jobs-from-queues"></a>
 ## Clearing Jobs From Queues
 
