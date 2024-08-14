@@ -741,6 +741,8 @@ Once the configuration file has been published, you may set the `rehash_on_login
 
 Laravel dispatches a variety of [events](/docs/{{version}}/events) during the authentication process. You may [define listeners](/docs/{{version}}/events) for any of the following events:
 
+<div class="overflow-auto">
+
 | Event Name |
 | --- |
 | `Illuminate\Auth\Events\Registered` |
@@ -755,3 +757,5 @@ Laravel dispatches a variety of [events](/docs/{{version}}/events) during the au
 | `Illuminate\Auth\Events\OtherDeviceLogout` |
 | `Illuminate\Auth\Events\Lockout` |
 | `Illuminate\Auth\Events\PasswordReset` |
+
+</div>
