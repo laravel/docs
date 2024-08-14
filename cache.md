@@ -440,12 +440,16 @@ Once your extension is registered, update the `CACHE_STORE` environment variable
 
 To execute code on every cache operation, you may listen for various [events](/docs/{{version}}/events) dispatched by the cache:
 
+<div class="overflow-auto">
+
 | Event Name |
 | --- |
 | `Illuminate\Cache\Events\CacheHit` |
 | `Illuminate\Cache\Events\CacheMissed` |
 | `Illuminate\Cache\Events\KeyForgotten` |
 | `Illuminate\Cache\Events\KeyWritten` |
+
+</div>
 
 To increase performance, you may disable cache events by setting the `events` configuration option to `false` for a given cache store in your application's `config/cache.php` configuration file:
 

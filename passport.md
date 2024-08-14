@@ -1162,10 +1162,14 @@ When using this method of authentication, you will need to ensure a valid CSRF t
 
 Passport raises events when issuing access tokens and refresh tokens. You may [listen for these events](/docs/{{version}}/events) to prune or revoke other access tokens in your database:
 
+<div class="overflow-auto">
+
 | Event Name |
 | --- |
 | `Laravel\Passport\Events\AccessTokenCreated` |
 | `Laravel\Passport\Events\RefreshTokenCreated` |
+
+</div>
 
 <a name="testing"></a>
 ## Testing
