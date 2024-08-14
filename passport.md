@@ -18,6 +18,7 @@
 - [Authorization Code Grant With PKCE](#code-grant-pkce)
     - [Creating the Client](#creating-a-auth-pkce-grant-client)
     - [Requesting Tokens](#requesting-auth-pkce-grant-tokens)
+- [Device Authorization Grant](#device-code-grant)
 - [Password Grant](#password-grant-tokens)
     - [Creating a Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
@@ -521,6 +522,11 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
 
         return $response->json();
     });
+
+<a name="device-code-grant"></a>
+## Device Authorization Grant
+
+TBD
 
 <a name="password-grant-tokens"></a>
 ## Password Grant
