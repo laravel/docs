@@ -271,7 +271,7 @@ http://example.com/callback,http://examplefoo.com/callback
 <a name="managing-clients-via-jetstream"></a>
 #### Via Laravel Jetstream
 
-Since your application's users will not be able to utilize the `passport:client` command, Laravel Jetstream provides first-party integration with Passport that your application's users may use to manage their clients. This saves you the trouble of having to manually code logics for creating, updating, and deleting clients.
+Since your application's users will not be able to utilize the `passport:client` command, [Laravel Jetstream](https://jetstream.laravel.com) provides first-party integration with Passport that your application's users may use to manage their clients. This saves you the trouble of having to manually code logics for creating, updating, and deleting clients.
 
 <a name="requesting-tokens"></a>
 ### Requesting Tokens
