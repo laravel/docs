@@ -604,7 +604,7 @@ To solve this, you may enable the `Illuminate\Http\Middleware\TrustProxies` midd
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies(at: [
             '192.168.1.1',
-            '192.168.1.2',
+            '10.0.0.0/8',
         ]);
     })
 
