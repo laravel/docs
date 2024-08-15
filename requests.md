@@ -649,3 +649,9 @@ By default, requests coming from subdomains of the application's URL are also au
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustHosts(at: ['laravel.test'], subdomains: false);
     })
+
+If you need to access your application's configuration files or database to determine your trusted hosts, you may provide a closure to the `at` argument:
+
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustHosts(at: fn () => config('app.trusted_hosts'));
+    })
