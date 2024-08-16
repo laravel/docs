@@ -544,6 +544,11 @@ Route::get('/dashboard', function () {
 })->middleware(['verified']);
 ```
 
+<a name="email-verification-throttling">
+### Email Verification Throttling
+
+Fortify allows you to specify your own [rate limiter](/docs/{{version}}/routing#rate-limiting) for sending verification emails via the `fortify.limiters.verification` configuration option located in your application's `config/fortify.php` file.
+
 <a name="password-confirmation"></a>
 ## Password Confirmation
 
