@@ -33,7 +33,7 @@ Artisan là giao diện dòng lệnh được tích hợp sẵn trong Laravel. A
 php artisan list
 ```
 
-Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, precede the name of the command with `help`:
+Mỗi lệnh cũng bao gồm một màn hình "trợ giúp" hiển thị và mô tả các đối số và tùy chọn có sẵn của lệnh. Để xem màn hình trợ giúp, hãy đặt `help` trước tên lệnh:
 
 ```shell
 php artisan help migrate
@@ -42,7 +42,7 @@ php artisan help migrate
 <a name="laravel-sail"></a>
 #### Laravel Sail
 
-If you are using [Laravel Sail](/docs/{{version}}/sail) as your local development environment, remember to use the `sail` command line to invoke Artisan commands. Sail will execute your Artisan commands within your application's Docker containers:
+Nếu bạn đang sử dụng [Laravel Sail](/docs/{{version}}/sail) làm môi trường phát triển cục bộ, hãy nhớ sử dụng dòng lệnh `sail`  để gọi các lệnh Artisan. Sail sẽ thực thi lệnh Artisan của bạn trong các vùng chứa Docker của ứng dụng:
 
 ```shell
 ./vendor/bin/sail artisan list
@@ -51,24 +51,24 @@ If you are using [Laravel Sail](/docs/{{version}}/sail) as your local developmen
 <a name="tinker"></a>
 ### Tinker (REPL)
 
-Laravel Tinker is a powerful REPL for the Laravel framework, powered by the [PsySH](https://github.com/bobthecow/psysh) package.
+Laravel Tinker là REPL mạnh mẽ dành cho framework Laravel, được hỗ trợ bởi gói [PsySH](https://github.com/bobthecow/psysh).
 
 <a name="installation"></a>
 #### Installation
 
-All Laravel applications include Tinker by default. However, you may install Tinker using Composer if you have previously removed it from your application:
+Tất cả các ứng dụng Laravel đều bao gồm Tinker theo mặc định. Tuy nhiên, bạn có thể cài đặt Tinker bằng Composer nếu trước đó bạn đã xóa nó khỏi ứng dụng của mình:
 
 ```shell
 composer require laravel/tinker
 ```
 
 > [!NOTE]  
-> Looking for hot reloading, multiline code editing, and autocompletion when interacting with your Laravel application? Check out [Tinkerwell](https://tinkerwell.app)!
+> Bạn đang tìm kiếm tính năng hot reloading, chỉnh sửa code nhiều dòng, và tự động hoàn thành khi tương tác với ứng dụng Laravel của bạn? Hãy thử  [Tinkerwell](https://tinkerwell.app)!
 
 <a name="usage"></a>
 #### Usage
 
-Tinker allows you to interact with your entire Laravel application on the command line, including your Eloquent models, jobs, events, and more. To enter the Tinker environment, run the `tinker` Artisan command:
+Tinker cho phép bạn tương tác với toàn bộ ứng dụng Laravel của mình trên dòng lệnh, bao gồm các mô hình Eloquent, jobs, events, and more. Để vào môi trường Tinker, hãy chạy lệnh Artisan `tinker`:
 
 ```shell
 php artisan tinker
