@@ -2530,7 +2530,7 @@ it('checks if ready three times', function () {
 ```
 
 ```php tab=PHPUnit
-public function test_it_checks_if_ready_four_times()
+public function test_it_checks_if_ready_three_times()
 {
     Sleep::fake();
 
