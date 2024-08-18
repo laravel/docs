@@ -595,7 +595,7 @@ When using the password grant or client credentials grant, you may wish to autho
 <a name="customizing-the-user-provider"></a>
 ### Customizing the User Provider
 
-If your application uses more than one [authentication user provider](/docs/{{version}}/authentication#introduction), you may specify which user provider the password grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --password` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#via-middleware) to ensure that only users from the guard's specified provider are authorized.
+If your application uses more than one [authentication user provider](/docs/{{version}}/authentication#introduction), you may specify which user provider the password grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --password` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#multiple-authentication-guards) to ensure that only users from the guard's specified provider are authorized.
 
 <a name="customizing-the-username-field"></a>
 ### Customizing the Username Field
@@ -770,7 +770,6 @@ PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
 <a name="customizing-the-user-provider-for-pat"></a>
 ### Customizing the User Provider
 
-If your application uses more than one [authentication user provider](/docs/{{version}}/authentication#introduction), you may specify which user provider the personal access grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --personal` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#via-middleware) to ensure that only users from the guard's specified provider are authorized.
 
 Finally, in your application's `config/passport.php` configuration file, you should set the client ID and secret for each user provider separately:
 
@@ -786,6 +785,7 @@ Finally, in your application's `config/passport.php` configuration file, you sho
     ]
 ],
 ```
+If your application uses more than one [authentication user provider](/docs/{{version}}/authentication#introduction), you may specify which user provider the personal access grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --personal` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#multiple-authentication-guards) to ensure that only users from the guard's specified provider are authorized.
 
 <a name="managing-personal-access-tokens"></a>
 ### Managing Personal Access Tokens
@@ -825,14 +825,16 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
 
 If your application authenticates different types of users that perhaps use entirely different Eloquent models, you will likely need to define a guard configuration for each user provider type in your application. This allows you to protect requests intended for specific user providers. For example, given the following guard configuration the `config/auth.php` configuration file:
 
-    'api' => [
-        'driver' => 'passport',
-        'provider' => 'users',
-    ],
-
-    'api-customers' => [
-        'driver' => 'passport',
-        'provider' => 'customers',
+    'guards' => [
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
+    
+        'api-customers' => [
+            'driver' => 'passport',
+            'provider' => 'customers',
+        ],
     ],
 
 The following route will utilize the `api-customers` guard, which uses the `customers` user provider, to authenticate incoming requests:
