@@ -440,11 +440,11 @@ You may also pass an array of values to determine if the given string contains a
 
     // true
 
-You can ignore the case by passing `true` as the third parameter:
+You can ignore the case by setting the `ignoreCase` argument to `true`:
 
     use Illuminate\Support\Str;
 
-    $contains = Str::contains('This is my name', 'MY', true);
+    $contains = Str::contains('This is my name', 'MY', ignoreCase: true);
 
     // true
 
@@ -459,11 +459,11 @@ The `Str::containsAll` method determines if the given string contains all of the
 
     // true
 
-The `Str::containsAll` method also supports ignoring the case by passing `true` as the third parameter:
+The `Str::containsAll` method also supports ignoring the case by setting the `ignoreCase` argument to `true`:
 
     use Illuminate\Support\Str;
 
-    $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], true);
+    $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], ignoreCase: true);
 
     // true
     
@@ -1718,11 +1718,11 @@ You may also pass an array of values to determine if the given string contains a
 
     // true
 
-You can ignore the case by passing `true` as the second parameter:
+You can ignore the case by setting the `ignoreCase` argument to `true`:
 
     use Illuminate\Support\Str;
 
-    $contains = Str::of('This is my name')->contains('MY', true);
+    $contains = Str::of('This is my name')->contains('MY', ignoreCase: true);
 
     // true
 
@@ -1737,11 +1737,11 @@ The `containsAll` method determines if the given string contains all of the valu
 
     // true
 
-The `containsAll` method also allows ignoring the case by passing `true` as the second parameter:
+The `containsAll` method also supports ignoring the case by setting the `ignoreCase` argument to `true`:
 
     use Illuminate\Support\Str;
 
-    $containsAll = Str::of('This is my name')->containsAll(['MY', 'NAME'], true);
+    $containsAll = Str::of('This is my name')->containsAll(['MY', 'NAME'], ignoreCase: true);
 
     // true
     
