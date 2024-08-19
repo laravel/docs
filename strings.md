@@ -440,7 +440,7 @@ You may also pass an array of values to determine if the given string contains a
 
     // true
 
-You can ignore the case by setting the `ignoreCase` argument to `true`:
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
 
     use Illuminate\Support\Str;
 
@@ -459,7 +459,7 @@ The `Str::containsAll` method determines if the given string contains all of the
 
     // true
 
-The `Str::containsAll` method also supports ignoring the case by setting the `ignoreCase` argument to `true`:
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
 
     use Illuminate\Support\Str;
 
