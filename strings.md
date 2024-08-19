@@ -424,7 +424,7 @@ You may also pass an array as the second argument. If the string ends with any o
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
 
-The `Str::contains` method determines if the given string contains the given value. This method is case sensitive:
+The `Str::contains` method determines if the given string contains the given value. By default this method is case sensitive:
 
     use Illuminate\Support\Str;
 
@@ -440,6 +440,14 @@ You may also pass an array of values to determine if the given string contains a
 
     // true
 
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $contains = Str::contains('This is my name', 'MY', ignoreCase: true);
+
+    // true
+
 <a name="method-str-contains-all"></a>
 #### `Str::containsAll()` {.collection-method}
 
@@ -451,6 +459,14 @@ The `Str::containsAll` method determines if the given string contains all of the
 
     // true
 
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], ignoreCase: true);
+
+    // true
+    
 <a name="method-ends-with"></a>
 #### `Str::endsWith()` {.collection-method}
 
@@ -1686,7 +1702,7 @@ You may also pass an array. If the string ends with any of the values in the arr
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
 
-The `contains` method determines if the given string contains the given value. This method is case sensitive:
+The `contains` method determines if the given string contains the given value. By default this method is case sensitive:
 
     use Illuminate\Support\Str;
 
@@ -1702,6 +1718,14 @@ You may also pass an array of values to determine if the given string contains a
 
     // true
 
+You can disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $contains = Str::of('This is my name')->contains('MY', ignoreCase: true);
+
+    // true
+
 <a name="method-fluent-str-contains-all"></a>
 #### `containsAll` {.collection-method}
 
@@ -1713,6 +1737,14 @@ The `containsAll` method determines if the given string contains all of the valu
 
     // true
 
+You can disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $containsAll = Str::of('This is my name')->containsAll(['MY', 'NAME'], ignoreCase: true);
+
+    // true
+    
 <a name="method-fluent-str-dirname"></a>
 #### `dirname` {.collection-method}
 
