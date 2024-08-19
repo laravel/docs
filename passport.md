@@ -760,31 +760,9 @@ Before your application can issue personal access tokens, you will need to creat
 php artisan passport:client --personal
 ```
 
-After creating your personal access client, place the client's ID and plain-text secret value in your application's `.env` file:
-
-```ini
-PASSPORT_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
-PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
-```
-
 <a name="customizing-the-user-provider-for-pat"></a>
 ### Customizing the User Provider
 
-
-Finally, in your application's `config/passport.php` configuration file, you should set the client ID and secret for each user provider separately:
-
-```php
-'personal_access_client' => [
-    'users' => [
-        'id' => env('PASSPORT_USERS_PERSONAL_ACCESS_CLIENT_ID'),
-        'secret' => env('PASSPORT_USERS_PERSONAL_ACCESS_CLIENT_SECRET'),
-    ],
-    'customers' => [
-        'id' => env('PASSPORT_CUSTOMERS_PERSONAL_ACCESS_CLIENT_ID'),
-        'secret' => env('PASSPORT_CUSTOMERS_PERSONAL_ACCESS_CLIENT_SECRET'),    
-    ]
-],
-```
 If your application uses more than one [authentication user provider](/docs/{{version}}/authentication#introduction), you may specify which user provider the personal access grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --personal` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#multiple-authentication-guards) to ensure that only users from the guard's specified provider are authorized.
 
 <a name="managing-personal-access-tokens"></a>
