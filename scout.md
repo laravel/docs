@@ -10,6 +10,7 @@
 - [Configuration](#configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
+    - [Versioning Indexes](#versioning-indexes)
     - [Configuring the Model ID](#configuring-the-model-id)
     - [Configuring Search Engines per Model](#configuring-search-engines-per-model)
     - [Identifying Users](#identifying-users)
@@ -237,6 +238,47 @@ Each Eloquent model is synced with a given search "index", which contains all of
         {
             return 'posts_index';
         }
+    }
+
+<a name="versioning-indexes"></a>
+### Versioning Indexes
+Scout allows you to version your search indexes, enabling you to search in one index while updating another. This feature can be especially useful when making significant changes to the data structure or content of your indexes. Once you have confirmed the updates are correct, you can switch to the new version seamlessly.
+
+To implement this, you can use the indexableAs method on your model. This method is similar to the searchableAs method but is used for updating/deleting/creating the index:
+
+    <?php
+
+    namespace App\Models;
+    
+    use Illuminate\Database\Eloquent\Model;
+    use Laravel\Scout\Searchable;
+    
+    class Post extends Model
+    {
+      use Searchable;
+  
+      /**
+      * Get the name of the index associated with the model.
+      */
+      public function searchableAs(): string
+      {
+          return 'posts_index';
+      }
+  
+      /**
+       * Get the versioned name of the index associated with the model.
+       */
+      public function indexableAs(): string
+      {
+          return 'posts_index_v2';
+      }
+    }
+
+When you are ready to switch to the new version, simply update the method to point to the new index:
+    
+    public function searchableAs(): string
+    {
+        return 'posts_index_v2';
     }
 
 <a name="configuring-searchable-data"></a>
