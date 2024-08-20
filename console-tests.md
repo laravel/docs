@@ -86,6 +86,36 @@ public function test_console_command(): void
 }
 ```
 
+If you are utilizing the `search` or `multisearch` functions provided by [Laravel Prompts](/docs/{{version}}/prompts), you may use the `expectsSearch` assertion to mock the user's input, search results, and selection:
+
+```php tab=Pest
+test('console command', function () {
+    $this->artisan('example')
+         ->expectsSearch('What is your name?', search: 'Tay', answers: [
+            'Taylor Otwell',
+            'Taylor Swift',
+            'Darian Taylor'
+         ], answer: 'Taylor Otwell')
+         ->assertExitCode(0);
+});
+```
+
+```php tab=PHPUnit
+/**
+ * Test a console command.
+ */
+public function test_console_command(): void
+{
+    $this->artisan('example')
+         ->expectsSearch('What is your name?', search: 'Tay', answers: [
+            'Taylor Otwell',
+            'Taylor Swift',
+            'Darian Taylor'
+         ], answer: 'Taylor Otwell')
+         ->assertExitCode(0);
+}
+```
+
 You may also assert that a console command does not generate any output using the `doesntExpectOutput` method:
 
 ```php tab=Pest
