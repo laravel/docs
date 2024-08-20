@@ -360,7 +360,7 @@ To authenticate a user using their database record's primary key, you may use th
 
     Auth::loginUsingId(1);
 
-You may pass a boolean value as the second argument to the `loginUsingId` method. This value indicates if "remember me" functionality is desired for the authenticated session. Remember, this means that the session will be authenticated indefinitely or until the user manually logs out of the application:
+You may pass a boolean value to the `remember` argument of the `loginUsingId` method. This value indicates if "remember me" functionality is desired for the authenticated session. Remember, this means that the session will be authenticated indefinitely or until the user manually logs out of the application:
 
     Auth::loginUsingId(1, remember: true);
 
