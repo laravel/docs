@@ -230,7 +230,7 @@ You may check the current status of the Horizon process using the `horizon:statu
 php artisan horizon:status
 ```
 
-You may gracefully terminate the Horizon process using the `horizon:terminate` Artisan command. Any jobs that are currently being processed by will be completed and then Horizon will stop executing:
+You may gracefully terminate the Horizon process using the `horizon:terminate` Artisan command. Any jobs that are currently being processed will be completed and then Horizon will stop executing:
 
 ```shell
 php artisan horizon:terminate
