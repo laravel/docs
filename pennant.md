@@ -143,6 +143,14 @@ class NewApi
 }
 ```
 
+If you would like to manually resolve an instance of a class based feature, you may invoke the `instance` method on the `Feature` facade:
+
+```php
+use Illuminate\Support\Facades\Feature;
+
+$instance = Feature::instance(NewApi::class);
+```
+
 > [!NOTE]   
 > Feature classes are resolved via the [container](/docs/{{version}}/container), so you may inject dependencies into the feature class's constructor when needed.
 
