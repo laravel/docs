@@ -927,6 +927,10 @@ In the example above, we are retrieving the model from the database before calli
 
     Flight::destroy(collect([1, 2, 3]));
 
+If you are utilizing [soft deleting models](#soft-deleting), you may permanently delete models via the `forceDestroy` method:
+
+    Flight::forceDestroy(1);
+
 > [!WARNING]  
 > The `destroy` method loads each model individually and calls the `delete` method so that the `deleting` and `deleted` events are properly dispatched for each model.
 
