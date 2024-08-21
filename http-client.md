@@ -38,6 +38,7 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
     $response->json($key = null, $default = null) : mixed;
     $response->object() : object;
     $response->collect($key = null) : Illuminate\Support\Collection;
+    $response->resource() : resource;
     $response->status() : int;
     $response->successful() : bool;
     $response->redirect(): bool;
