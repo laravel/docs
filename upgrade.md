@@ -164,7 +164,6 @@ public function getAuthPasswordName()
 The default `User` model included with Laravel receives this method automatically since the method is included within the `Illuminate\Auth\Authenticatable` trait.
 
 <a name="the-authentication-exception-class"></a>
-
 #### The `AuthenticationException` Class
 
 **Likelihood Of Impact: Very Low**
