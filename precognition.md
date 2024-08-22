@@ -328,11 +328,11 @@ If you are validating a subset of a form's inputs with Precognition, it can be u
 <input
     id="avatar"
     type="file"
-    onChange={(e) =>
+    onChange={(e) => {
         form.setData('avatar', e.target.value);
 
         form.forgetError('avatar');
-    }
+    }}
 >
 ```
 
