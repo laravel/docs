@@ -262,8 +262,6 @@ The simplest way to create a client is using the `passport:client` Artisan comma
 php artisan passport:client
 ```
 
-**Redirect URIs**
-
 If you would like to allow multiple redirect URIs for your client, you may specify them using a comma-delimited list when prompted for the URI by the `passport:client` command. Any URIs which contain commas should be URI encoded:
 
 ```shell
@@ -369,6 +367,11 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 
 > [!NOTE]  
 > Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by Passport. There is no need to manually define this route.
+
+<a name="managing-tokens-via-jetstream"></a>
+#### Managing Authorized Tokens Via Laravel Jetstream
+
+[Laravel Jetstream](https://jetstream.laravel.com) provides first-party integration with Passport and offer your users a dashboard to manage their authorized access tokens and keep track of their connections with third-party clients. This saves you the trouble of having to manually code logics for revoking access to third-party clients.
 
 <a name="refreshing-tokens"></a>
 ### Refreshing Tokens
@@ -783,6 +786,11 @@ Once you have created a personal access client, you may issue tokens for a given
     // Creating a token with all scopes...
     $token = $user->createToken('My Token', ['*'])->accessToken;
 
+<a name="managing-personal-access-tokens-via-jetstream"></a>
+#### Via Laravel Jetstream
+
+[Laravel Jetstream](https://jetstream.laravel.com) provides first-party integration with Passport and offer your users a dashboard to manage their personal access tokens. This saves you the trouble of having to manually code logics for creating and deleting personal access tokens.
+
 <a name="protecting-routes"></a>
 ## Protecting Routes
 
@@ -862,7 +870,7 @@ You may define your API's scopes using the `Passport::tokensCan` method in the `
 <a name="default-scope"></a>
 ### Default Scope
 
-If a client does not request any specific scopes, you may configure your Passport server to attach default scope(s) to the token using the `setDefaultScope` method. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class:
+If a client does not request any specific scopes, you may configure your Passport server to attach default scopes to the token using the `defaultScopes` method. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
     use Laravel\Passport\Passport;
 
