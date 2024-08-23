@@ -143,7 +143,7 @@ PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
 <a name="upgrading-passport"></a>
 ### Upgrading Passport
 
-When upgrading to a new major version of Passport, it's important that you carefully review [the upgrade guide](https://github.com/laravel/passport/blob/{{version}}/UPGRADE.md).
+When upgrading to a new major version of Passport, it's important that you carefully review [the upgrade guide](https://github.com/laravel/passport/blob/master/UPGRADE.md).
 
 <a name="configuration"></a>
 ## Configuration
@@ -213,7 +213,7 @@ Sometimes you may wish to customize the routes defined by Passport. To achieve t
         Passport::ignoreRoutes();
     }
 
-Then, you may copy the routes defined by Passport in [its routes file](https://github.com/laravel/passport/blob/{{version}}/routes/web.php) to your application's `routes/web.php` file and modify them to your liking:
+Then, you may copy the routes defined by Passport in [its routes file](https://github.com/laravel/passport/blob/master/routes/web.php) to your application's `routes/web.php` file and modify them to your liking:
 
     Route::group([
         'as' => 'passport.',
