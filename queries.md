@@ -979,7 +979,7 @@ Alternatively, you may use the `limit` and `offset` methods. These methods are f
 
 Sometimes you may want certain query clauses to apply to a query based on another condition. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming HTTP request. You may accomplish this using the `when` method:
 
-    $role = $request->string('role');
+    $role = $request->input('role');
 
     $users = DB::table('users')
                     ->when($role, function (Builder $query, string $role) {
