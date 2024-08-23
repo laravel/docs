@@ -184,6 +184,7 @@ After defining your model, you may instruct Passport to use your custom model vi
 
     use App\Models\Passport\AuthCode;
     use App\Models\Passport\Client;
+    use App\Models\Passport\DeviceCode;
     use App\Models\Passport\RefreshToken;
     use App\Models\Passport\Token;
 
@@ -196,6 +197,7 @@ After defining your model, you may instruct Passport to use your custom model vi
         Passport::useRefreshTokenModel(RefreshToken::class);
         Passport::useAuthCodeModel(AuthCode::class);
         Passport::useClientModel(Client::class);
+        Passport::useDeviceCodeModel(DeviceCode::class)
     }
 
 <a name="overriding-routes"></a>
@@ -315,27 +317,25 @@ When receiving authorization requests, Passport will automatically respond based
 
 Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately, unless the consuming application has explicitly set the `prompt` parameter when redirecting for authorization:
 
-```php
-<?php
-
-namespace App\Models\Passport;
-
-use Illuminate\Contracts\Auth\Authenticatable;
-use Laravel\Passport\Client as BaseClient;
-
-class Client extends BaseClient
-{
-    /**
-     * Determine if the client should skip the authorization prompt.
-     *
-     * @param  \Laravel\Passport\Scope[]  $scopes 
-     */
-    public function skipsAuthorization(Authenticatable $user, array $scopes): bool
+    <?php
+    
+    namespace App\Models\Passport;
+    
+    use Illuminate\Contracts\Auth\Authenticatable;
+    use Laravel\Passport\Client as BaseClient;
+    
+    class Client extends BaseClient
     {
-        return $this->isFirstParty();
+        /**
+         * Determine if the client should skip the authorization prompt.
+         *
+         * @param  \Laravel\Passport\Scope[]  $scopes 
+         */
+        public function skipsAuthorization(Authenticatable $user, array $scopes): bool
+        {
+            return $this->firstParty();
+        }
     }
-}
-```
 
 <a name="requesting-tokens-converting-authorization-codes-to-access-tokens"></a>
 #### Converting Authorization Codes to Access Tokens
