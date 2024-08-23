@@ -318,12 +318,12 @@ When receiving authorization requests, Passport will automatically respond based
 Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately, unless the consuming application has explicitly set the `prompt` parameter when redirecting for authorization:
 
     <?php
-    
+
     namespace App\Models\Passport;
-    
+
     use Illuminate\Contracts\Auth\Authenticatable;
     use Laravel\Passport\Client as BaseClient;
-    
+
     class Client extends BaseClient
     {
         /**
