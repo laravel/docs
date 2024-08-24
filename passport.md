@@ -19,6 +19,8 @@
     - [Creating the Client](#creating-a-auth-pkce-grant-client)
     - [Requesting Tokens](#requesting-auth-pkce-grant-tokens)
 - [Device Authorization Grant](#device-code-grant)
+    - [Creating a Device Code Grant Client](#creating-a-device-code-grant-client)
+    - [Requesting Tokens](#requesting-device-authorization-grant-tokens)
 - [Password Grant](#password-grant-tokens)
     - [Creating a Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
@@ -529,7 +531,98 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
 <a name="device-code-grant"></a>
 ## Device Authorization Grant
 
-TBD
+The OAuth2 device authorization grant allows browserless or limited input devices, such as TVs and game consoles, to obtain an access token by exchanging a "device code". When using device flow, the device client will instruct the user to use a secondary device, such as a computer or a smartphone and connect to your server where they will enter the provided "user code" and either approve or deny the access request.
+
+To get started, we need to instruct Passport how to return our "user code", "authorization", and "authorization result" views. Remember, Passport is a headless OAuth2 library. If you would like a frontend implementation of Laravel's OAuth features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits).
+
+All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class. Passport will take care of defining the routes that returns these views:
+
+```php
+use Laravel\Passport\Passport;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Passport::deviceUserCodeView('auth.oauth.device.user-code');
+    Passport::deviceAuthorizationView('auth.oauth.device.authorize');
+    Passport::deviceAuthorizationResultView('auth.oauth.device.authorize-result');
+
+    // ...
+}
+```
+
+<a name="creating-a-device-code-grant-client"></a>
+### Creating a Device Code Grant Client
+
+Before your application can issue tokens via the device authorization grant, you will need to create a device flow enabled client. You may do this using the `passport:client` Artisan command with the `--device` option:
+
+```shell
+php artisan passport:client --device
+```
+
+<a name="requesting-device-authorization-grant-tokens"></a>
+### Requesting Tokens
+
+<a name="device-code"></a>
+#### Requesting Device Code
+
+Once a client has been created, developers may use their client ID to request a device code from your application. First, the consuming device should make a `POST` request to your application's `/oauth/device/code` route to request a device code:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+$response = Http::asForm()->post('http://passport-app.test/oauth/device/code', [
+    'client_id' => 'client-id',
+    'scope' => '',
+]);
+
+return $response->json();
+```
+
+This will return a JSON response containing `device_code`, `user_code`, `verification_uri`, `interval` and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the device code expires. The `interval` attribute contains the number of seconds, the consuming device should wait between requests, when polling `\oauth\token` route to avoid rate limit errors.
+
+> [!NOTE]  
+> Remember, the `/oauth/device/code` route is already defined by Passport. You do not need to manually define this route.
+
+<a name="user-code"></a>
+#### Displaying Verification URI and User Code
+
+Once a device code request has been obtained, the consuming device should instruct the user to use another device and visit the provided `verification_uri` and enter the `user_code` in order to review the authorization request.
+
+<a name="polling-token-request"></a>
+#### Polling Token Request
+
+Since the user will be using a separate device to grant (or deny) access, the consuming device should poll your application's `/oauth/token` route to determine when the user has responded to the request. The consuming device should use the minimum polling `interval` provided in the JSON response when requesting device code to avoid rate limit errors:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+$response = null;
+$interval = 5;
+
+do {
+    if ($response) {
+        sleep($interval);
+    }
+
+    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
+        'grant_type' => 'urn:ietf:params:oauth:grant-type:device_code',
+        'client_id' => 'client-id',
+        // 'client_secret' => 'client-secret', // required for confidential clients only
+        'device_code' => 'device-code',
+    ]);
+    
+    if ($response->json('error') === 'slow_down') {
+        $interval += 5;
+    }
+} while (in_array($response->json('error'), ['authorization_pending', 'slow_down']));
+
+return $response->json();
+```
+
+If the user has approved the authorization request, this will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
 
 <a name="password-grant-tokens"></a>
 ## Password Grant
