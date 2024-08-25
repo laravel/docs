@@ -386,7 +386,7 @@ If your application issues short-lived access tokens, users will need to refresh
         'grant_type' => 'refresh_token',
         'refresh_token' => 'the-refresh-token',
         'client_id' => 'client-id',
-        'client_secret' => 'client-secret',
+        'client_secret' => 'client-secret', // required for confidential clients only
         'scope' => '',
     ]);
 
@@ -603,14 +603,12 @@ $response = null;
 $interval = 5;
 
 do {
-    if ($response) {
-        sleep($interval);
-    }
+    sleep($interval);
 
     $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'urn:ietf:params:oauth:grant-type:device_code',
         'client_id' => 'client-id',
-        // 'client_secret' => 'client-secret', // required for confidential clients only
+        'client_secret' => 'client-secret', // required for confidential clients only
         'device_code' => 'device-code',
     ]);
     
@@ -661,7 +659,7 @@ Once you have enabled the grant and have created a password grant client, you ma
     $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'password',
         'client_id' => 'client-id',
-        'client_secret' => 'client-secret',
+        'client_secret' => 'client-secret', // required for confidential clients only
         'username' => 'taylor@laravel.com',
         'password' => 'my-password',
         'scope' => '',
@@ -682,7 +680,7 @@ When using the password grant or client credentials grant, you may wish to autho
     $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'password',
         'client_id' => 'client-id',
-        'client_secret' => 'client-secret',
+        'client_secret' => 'client-secret', // required for confidential clients only
         'username' => 'taylor@laravel.com',
         'password' => 'my-password',
         'scope' => '*',
