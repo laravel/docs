@@ -564,7 +564,7 @@ Once a macro has been defined, it can be invoked within your templates. For exam
 <img src="{{ Vite::image('logo.png') }}" alt="Laravel Logo">
 ```
 
-<a name="asset-prefectching"></a>
+<a name="asset-prefetching"></a>
 ## Asset Prefetching
 
 When building a SPA using Vite's code splitting feature, required assets are fetched on each page navigation. This can lead to delayed UI rendering. If this is a problem for your front-end framework of choice, Laravel offers the ability to eagerly prefetch your application's JavaScript and CSS assets on initial page load.
@@ -609,6 +609,28 @@ public function boot(): void
 {
     Vite::prefetch();
 }
+```
+
+By default, prefetching will begin when the [page _load_ event](https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event) fires. If you would like to customise when prefetching begins, you may specify an event that Vite will listen for:
+
+```php
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Vite::prefetch(event: 'vite:prefetch');
+}
+```
+
+Prefetching will now begin when you manually dispatch the `vite:prefetch` event on the `window`. For example, you could have prefetching being three seconds after the page loads:
+
+```html
+<script>
+    addEventListener('load', () => setTimeout(() => {
+        dispatchEvent(new Event('vite:prefetch'))
+    }, 3000))
+</script>
 ```
 
 <a name="custom-base-urls"></a>
