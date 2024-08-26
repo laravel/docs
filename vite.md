@@ -623,7 +623,7 @@ public function boot(): void
 }
 ```
 
-Prefetching will now begin when you manually dispatch the `vite:prefetch` event on the `window`. For example, you could have prefetching being three seconds after the page loads:
+Prefetching will now begin when you manually dispatch the `vite:prefetch` event on the `window`. For example, you could have prefetching begin three seconds after the page loads:
 
 ```html
 <script>
