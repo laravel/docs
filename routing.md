@@ -469,7 +469,6 @@ Typically, implicit model binding will not retrieve models that have been [soft 
         return $user->email;
     })->withTrashed();
 
-<a name="customizing-the-key"></a>
 <a name="customizing-the-default-key-name"></a>
 #### Customizing the Key
 
