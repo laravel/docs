@@ -133,7 +133,7 @@ After upgrading, it may be necessary to re-park or re-link your sites.
 Once Valet is installed, you're ready to start serving sites. Valet provides two commands to help you serve your Laravel sites: `park` and `link`.
 
 <a name="the-park-command"></a>
-**The `park` Command**
+### The `park` Command
 
 <div class="content-list" markdown="1">
 
@@ -146,7 +146,7 @@ Once Valet is installed, you're ready to start serving sites. Valet provides two
 **That's all there is to it.** Now, any Laravel project you create within your "parked" directory will automatically be served using the `http://folder-name.test` convention. To view a list of all of your parked directory's sites, you may execute the `valet parked` command.
 
 <a name="the-link-command"></a>
-**The `link` Command**
+### The `link` Command
 
 The `link` command may also be used to serve your Laravel sites. This command is useful if you want to serve a single site in a directory and not the entire directory.
 
@@ -162,7 +162,7 @@ To see a listing of all of your linked directories, run the `valet links` comman
 > {tip} You can use `valet link` to serve the same project from multiple (sub)domains. To add a subdomain or another domain to your project run `valet link subdomain.app-name` from the project folder.
 
 <a name="securing-sites"></a>
-**Securing Sites With TLS**
+### Securing Sites With TLS
 
 By default, Valet serves sites over plain HTTP. However, if you would like to serve a site over encrypted TLS using HTTP/2, use the `secure` command. For example, if your site is being served by Valet on the `laravel.test` domain, you should run the following command to secure it:
 
