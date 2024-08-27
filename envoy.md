@@ -149,7 +149,6 @@ To run a task from your `Envoy.blade.php` file, execute Envoy's `run` command, p
     envoy run task
 
 <a name="envoy-notifications"></a>
-<a name="envoy-hipchat-notifications"></a>
 ## Notifications
 
 <a name="hipchat"></a>

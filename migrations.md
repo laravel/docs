@@ -232,7 +232,6 @@ Modifier  | Description
 `->unsigned()`  |  Set `integer` columns to `UNSIGNED`
 `->comment('my comment')`  |  Add a comment to a column
 
-<a name="changing-columns"></a>
 <a name="modifying-columns"></a>
 ### Modifying Columns
 

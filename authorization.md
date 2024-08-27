@@ -56,7 +56,6 @@ In addition to registering `Closures` as authorization callbacks, you may regist
 
     $gate->define('update-post', 'Class@method');
 
-<a name="intercepting-all-checks"></a>
 <a name="intercepting-authorization-checks"></a>
 #### Intercepting Authorization Checks
 
