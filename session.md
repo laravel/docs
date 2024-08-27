@@ -187,7 +187,7 @@ The `pull` method will retrieve and delete an item from the session in a single 
 
     $value = $request->session()->pull('key', 'default');
 
-<a name="#incrementing-and-decrementing-session-values"></a>
+<a name="incrementing-and-decrementing-session-values"></a>
 #### Incrementing & Decrementing Session Values
 
 If your session data contains an integer you wish to increment or decrement, you may use the `increment` and `decrement` methods:
