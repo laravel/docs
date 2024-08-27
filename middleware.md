@@ -60,7 +60,6 @@ It's best to envision middleware as a series of "layers" HTTP requests must pass
 > **Note**  
 > All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor.
 
-<a name="before-after-middleware"></a>
 <a name="middleware-and-responses"></a>
 #### Middleware & Responses
 
