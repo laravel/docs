@@ -200,6 +200,6 @@ Now you can call your macro using its name:
 
 
 <a name="generating-urls"></a>
-##Generating URLs
+## Generating URLs
 
 For more information on generating URL's, check out the documentation on [helpers](/docs/4.2/helpers#urls).
