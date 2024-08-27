@@ -234,7 +234,6 @@ Modifier  | Description
 `->default($value)`  |  Specify a "default" value for the column
 `->unsigned()`  |  Set `integer` columns to `UNSIGNED`
 
-<a name="changing-columns"></a>
 <a name="modifying-columns"></a>
 ### Modifying Columns
 
