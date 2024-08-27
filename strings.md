@@ -363,7 +363,6 @@ The `Str::camel` method converts the given string to `camelCase`:
     // 'fooBar'
 
 <a name="method-char-at"></a>
-
 #### `Str::charAt()` {.collection-method}
 
 The `Str::charAt` method returns the character at the specified index. If the index is out of bounds, `false` is returned:
