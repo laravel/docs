@@ -272,7 +272,6 @@ Modifier  | Description
 `->unsigned()`  |  Set `integer` columns to `UNSIGNED`
 `->virtualAs($expression)`  |  Create a virtual generated column (MySQL Only)
 
-<a name="changing-columns"></a>
 <a name="modifying-columns"></a>
 ### Modifying Columns
 
