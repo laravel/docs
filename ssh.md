@@ -47,8 +47,8 @@ You may catch the "live" output of your remote commands by passing a Closure int
 		echo $line.PHP_EOL;
 	});
 
-## Tasks
 <a name="tasks"></a>
+## Tasks
 
 If you need to define a group of commands that should always be run together, you may use the `define` method to define a `task`:
 
