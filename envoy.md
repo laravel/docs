@@ -159,7 +159,6 @@ If you would like to be prompted for confirmation before running a given task on
     @endtask
 
 <a name="notifications"></a>
-<a name="hipchat-notifications"></a>
 ## Notifications
 
 <a name="slack"></a>
