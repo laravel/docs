@@ -431,7 +431,7 @@ Singleton resources may also be nested within a standard resource:
 Route::singleton('photos.thumbnail', ThumbnailController::class);
 ```
 
-In this example, the `photos` resource would receive all of the [standard resource routes](#actions-handled-by-resource-controller); however, the `thumbnail` resource would be a singleton resource with the following routes:
+In this example, the `photos` resource would receive all of the [standard resource routes](#actions-handled-by-resource-controllers); however, the `thumbnail` resource would be a singleton resource with the following routes:
 
 <div class="overflow-auto">
 

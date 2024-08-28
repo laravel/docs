@@ -69,7 +69,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
-[Arr::sortRecursiveDesc](#method-array-sort-recursive-desc)
 [Arr::take](#method-array-take)
 [Arr::toCssClasses](#method-array-to-css-classes)
 [Arr::toCssStyles](#method-array-to-css-styles)
@@ -1603,7 +1602,7 @@ If no path is provided, an `Illuminate\Routing\UrlGenerator` instance is returne
 <a name="method-abort"></a>
 #### `abort()` {.collection-method}
 
-The `abort` function throws [an HTTP exception](/docs/{{version}}/errors#http-exceptions) which will be rendered by the [exception handler](/docs/{{version}}/errors#the-exception-handler):
+The `abort` function throws [an HTTP exception](/docs/{{version}}/errors#http-exceptions) which will be rendered by the [exception handler](/docs/{{version}}/errors#handling-exceptions):
 
     abort(403);
 
@@ -1919,7 +1918,7 @@ An array of contextual data may also be passed to the function:
 
     logger('User has logged in.', ['id' => $user->id]);
 
-A [logger](/docs/{{version}}/errors#logging) instance will be returned if no value is passed to the function:
+A [logger](/docs/{{version}}/logging) instance will be returned if no value is passed to the function:
 
     logger()->error('You are not allowed here.');
 
@@ -2031,7 +2030,7 @@ The `redirect` function returns a [redirect HTTP response](/docs/{{version}}/res
 <a name="method-report"></a>
 #### `report()` {.collection-method}
 
-The `report` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler):
+The `report` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions):
 
     report($e);
 
@@ -2042,7 +2041,7 @@ The `report` function also accepts a string as an argument. When a string is giv
 <a name="method-report-if"></a>
 #### `report_if()` {.collection-method}
 
-The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler) if the given condition is `true`:
+The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if the given condition is `true`:
 
     report_if($shouldReport, $e);
 
@@ -2051,7 +2050,7 @@ The `report_if` function will report an exception using your [exception handler]
 <a name="method-report-unless"></a>
 #### `report_unless()` {.collection-method}
 
-The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler) if the given condition is `false`:
+The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if the given condition is `false`:
 
     report_unless($reportingDisabled, $e);
 
@@ -2069,7 +2068,7 @@ The `request` function returns the current [request](/docs/{{version}}/requests)
 <a name="method-rescue"></a>
 #### `rescue()` {.collection-method}
 
-The `rescue` function executes the given closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your [exception handler](/docs/{{version}}/errors#the-exception-handler); however, the request will continue processing:
+The `rescue` function executes the given closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your [exception handler](/docs/{{version}}/errors#handling-exceptions); however, the request will continue processing:
 
     return rescue(function () {
         return $this->method();
