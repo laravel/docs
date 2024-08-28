@@ -10,6 +10,7 @@
 - [Configuration](#configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
+    - [Configuring additional MetaData](#configuring-metadata)
     - [Configuring the Model ID](#configuring-the-model-id)
     - [Configuring Search Engines per Model](#configuring-search-engines-per-model)
     - [Identifying Users](#identifying-users)
@@ -280,6 +281,20 @@ Some search engines such as Meilisearch will only perform filter operations (`>`
             'price' => (float) $this->price,
         ];
     }
+
+
+<a name="configuring-metadata"></a>
+### Configuring additional metadata
+
+If you need to add some custom data to the search results items, you can add a `scoutMetadata()` method to the model, like this:
+
+```php
+    public function scoutMetadata(){
+        return [
+            'url' => url("/semi/{$this->id}"),
+        ];
+    }
+```
 
 <a name="configuring-filterable-data-for-meilisearch"></a>
 #### Configuring Filterable Data and Index Settings (Meilisearch)
