@@ -1370,7 +1370,7 @@ You may use "dot" notation to execute a query against a nested relationship. For
     use Illuminate\Database\Eloquent\Builder;
 
     $posts = Post::whereDoesntHave('comments.author', function (Builder $query) {
-        $query->where('banned', 0);
+        $query->where('banned', 1);
     })->get();
 
 <a name="querying-morph-to-relationships"></a>
