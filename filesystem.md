@@ -219,7 +219,7 @@ AWS_URL=http://localhost:9000/local
 ```
 
 > [!WARNING]  
-> Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
+> Generating temporary storage URLs via the `temporaryUrl` method may not work when using MinIO if the `endpoint` is not accessible by the client.
 
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances
