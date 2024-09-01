@@ -610,7 +610,7 @@ For example, let's imagine a queued job that interacts with a third-party API th
      */
     public function middleware(): array
     {
-        return [new ThrottlesExceptions(10, 5)];
+        return [new ThrottlesExceptions(10, 5 * 60)];
     }
 
     /**
@@ -621,7 +621,7 @@ For example, let's imagine a queued job that interacts with a third-party API th
         return now()->addMinutes(5);
     }
 
-The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again.
+The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of seconds that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again.
 
 When a job throws an exception but the exception threshold has not yet been reached, the job will typically be retried immediately. However, you may specify the number of minutes such a job should be delayed by calling the `backoff` method when attaching the middleware to the job:
 
@@ -634,7 +634,7 @@ When a job throws an exception but the exception threshold has not yet been reac
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 5))->backoff(5)];
+        return [(new ThrottlesExceptions(10, 5 * 60))->backoff(5)];
     }
 
 Internally, this middleware uses Laravel's cache system to implement rate limiting, and the job's class name is utilized as the cache "key". You may override this key by calling the `by` method when attaching the middleware to your job. This may be useful if you have multiple jobs interacting with the same third-party service and you would like them to share a common throttling "bucket":
@@ -648,7 +648,7 @@ Internally, this middleware uses Laravel's cache system to implement rate limiti
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 10))->by('key')];
+        return [(new ThrottlesExceptions(10, 10 * 60))->by('key')];
     }
 
 By default, this middleware will throttle every exception. You can modify this behaviour by invoking the `when` method when attaching the middleware to your job. The exception will then only be throttled if closure provided to the `when` method returns `true`:
@@ -663,7 +663,7 @@ By default, this middleware will throttle every exception. You can modify this b
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 10))->when(
+        return [(new ThrottlesExceptions(10, 10 * 60))->when(
             fn (Throwable $throwable) => $throwable instanceof HttpClientException
         )];
     }
@@ -680,7 +680,7 @@ If you would like to have the throttled exceptions reported to your application'
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 10))->report(
+        return [(new ThrottlesExceptions(10, 10 * 60))->report(
             fn (Throwable $throwable) => $throwable instanceof HttpClientException
         )];
     }
