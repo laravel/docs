@@ -19,6 +19,7 @@
 - [Authorization Code Grant With PKCE](#code-grant-pkce)
     - [Creating the Client](#creating-a-auth-pkce-grant-client)
     - [Requesting Tokens](#requesting-auth-pkce-grant-tokens)
+    - [Customizing the Authorization View](#customizing-the-authorization-view)
 - [Password Grant Tokens](#password-grant-tokens)
     - [Creating a Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
@@ -615,6 +616,45 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
 
         return $response->json();
     });
+
+<a name="customizing-the-authorization-view"></a>
+### Customizing the Authorization View
+
+When a client visits your applications `/oauth/authorize` route, an authorization view will be presented requiring the user to approve the authorization request. By default, the package presents a generic blade view containing a form to approve the request.
+
+All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class. Passport will take care of defining the `/oauth/authorize` route that returns the view:
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Passport::authorizationView('passport.authorize');
+    }
+
+Your authorization template should include a form that makes a `POST` request to `/oauth/authorize`. The `/oauth/authorize` endpoint expects the string `state`, `client_id`, `auth_token` and the CSRF token as `_token` if not already being passed. 
+
+When using a custom authorization view, you may either pass the view name or a `Closure`. Both instances receive an array of parameters to help with building the template. Both the view and the `Closure` receive  the following parameters: The Passport `client`, the `user` approving the authorization, the requested `scopes`, the current `request` and the `authToken`. 
+
+Inertia is also supported as a valid authorization view response:
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Passport::authorizationView(function ($parameters) {
+            return Inertia::render('passport/Authorize', [
+                'client' => $parameters['client']->id,
+                'description' => $parameters['client']->description,
+                'name' => $parameters['client']->name,
+                'scopes' => $parameters['scopes'],
+                'state' => $parameters['request']->state,
+                'authToken' => $parameters['authToken'],
+                'csrfToken' => csrf_token(),
+            ]);
+        });
+    }
 
 <a name="password-grant-tokens"></a>
 ## Password Grant Tokens
