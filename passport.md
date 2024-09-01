@@ -620,7 +620,7 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
 <a name="customizing-the-authorization-view"></a>
 ### Customizing the Authorization View
 
-When a client visits your applications `/oauth/authorize` route, an authorization view will be presented requiring the user to approve the authorization request. By default, the package presents a generic blade view containing a form to approve the request.
+When a client visits your application's `/oauth/authorize` route, an authorization view will be presented requiring the user to approve the authorization request. By default, the package presents a generic blade view containing a form to approve the request.
 
 All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class. Passport will take care of defining the `/oauth/authorize` route that returns the view:
 
@@ -634,7 +634,7 @@ All the authorization view's rendering logic may be customized using the appropr
 
 Your authorization template should include a form that makes a `POST` request to `/oauth/authorize`. The `/oauth/authorize` endpoint expects the string `state`, `client_id`, `auth_token` and the CSRF token as `_token` if not already being passed. 
 
-When using a custom authorization view, you may either pass the view name or a `Closure`. Both instances receive an array of parameters to help with building the template. Both the view and the `Closure` receive  the following parameters: The Passport `client`, the `user` approving the authorization, the requested `scopes`, the current `request` and the `authToken`. 
+When using `Passport::authorizationView()`, you may either pass the view name or a `Closure`. Both instances receive an array of parameters to help with building the template. Both the view and the `Closure` receive  the following parameters: The Passport `client`, the `user` approving the authorization, the requested `scopes`, the current `request` and the `authToken`. 
 
 Inertia is also supported as a valid authorization view response:
 
