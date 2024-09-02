@@ -81,7 +81,7 @@ As previously mentioned, Pint does not require any configuration. However, if yo
 In addition, if you wish to use a `pint.json` from a specific directory, you may provide the `--config` option when invoking Pint:
 
 ```shell
-pint --config vendor/my-company/coding-style/pint.json
+./vendor/bin/pint --config vendor/my-company/coding-style/pint.json
 ```
 
 <a name="presets"></a>
@@ -90,7 +90,7 @@ pint --config vendor/my-company/coding-style/pint.json
 Presets define a set of rules that can be used to fix code style issues in your code. By default, Pint uses the `laravel` preset, which fixes issues by following the opinionated coding style of Laravel. However, you may specify a different preset by providing the `--preset` option to Pint:
 
 ```shell
-pint --preset psr12
+./vendor/bin/pint --preset psr12
 ```
 
 If you wish, you may also set the preset in your project's `pint.json` file:
