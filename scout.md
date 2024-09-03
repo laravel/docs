@@ -10,7 +10,7 @@
 - [Configuration](#configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
-    - [Configuring additional MetaData](#configuring-metadata)
+    - [Configuring additional metadata](#configuring-metadata)
     - [Configuring the Model ID](#configuring-the-model-id)
     - [Configuring Search Engines per Model](#configuring-search-engines-per-model)
     - [Identifying Users](#identifying-users)
@@ -282,20 +282,6 @@ Some search engines such as Meilisearch will only perform filter operations (`>`
         ];
     }
 
-
-<a name="configuring-metadata"></a>
-### Configuring additional metadata
-
-If you need to add some custom data to the search results items, you can add a `scoutMetadata()` method to the model, like this:
-
-```php
-    public function scoutMetadata(){
-        return [
-            'url' => url("/semi/{$this->id}"),
-        ];
-    }
-```
-
 <a name="configuring-filterable-data-for-meilisearch"></a>
 #### Configuring Filterable Data and Index Settings (Meilisearch)
 
@@ -337,6 +323,21 @@ After configuring your application's index settings, you must invoke the `scout:
 ```shell
 php artisan scout:sync-index-settings
 ```
+
+<a name="configuring-metadata"></a>
+### Configuring additional metadata
+
+If you need to add some custom data to the search results items, you can add a `scoutMetadata` method to the model, like this:
+    
+    <?php
+    
+    public function scoutMetadata()
+    {
+        return [
+            'some_data' => 'some_value'
+        ];
+    }
+
 
 <a name="configuring-the-model-id"></a>
 ### Configuring the Model ID
