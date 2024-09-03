@@ -352,11 +352,11 @@ sail dusk
 <a name="selenium-on-apple-silicon"></a>
 #### Selenium on Apple Silicon
 
-If your local machine contains an Apple Silicon chip, your `selenium` service must use the `seleniarm/standalone-chromium` image:
+If your local machine contains an Apple Silicon chip, your `selenium` service must use the `selenium/standalone-chromium` image:
 
 ```yaml
 selenium:
-    image: 'seleniarm/standalone-chromium'
+    image: 'selenium/standalone-chromium'
     extra_hosts:
         - 'host.docker.internal:host-gateway'
     volumes:
