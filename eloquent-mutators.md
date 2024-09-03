@@ -16,6 +16,7 @@
     - [Inbound Casting](#inbound-casting)
     - [Cast Parameters](#cast-parameters)
     - [Castables](#castables)
+- [Custom Attributes](#custom-attributes)
 
 <a name="introduction"></a>
 ## Introduction
@@ -838,4 +839,19 @@ By combining "castables" with PHP's [anonymous classes](https://www.php.net/manu
                 }
             };
         }
+    }
+
+
+
+
+<a name="custom-attributes"></a>
+#### Custom Attributes
+
+By adding a function in the form of getPropertyNameAttribute() to your model, you can add custom attributes.
+
+    <?php
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
