@@ -567,7 +567,7 @@ Once a macro has been defined, it can be invoked within your templates. For exam
 <a name="asset-prefetching"></a>
 ## Asset Prefetching
 
-When building a SPA using Vite's code splitting feature, required assets are fetched on each page navigation. This can lead to delayed UI rendering. If this is a problem for your front-end framework of choice, Laravel offers the ability to eagerly prefetch your application's JavaScript and CSS assets on initial page load.
+When building an SPA using Vite's code splitting feature, required assets are fetched on each page navigation. This can lead to delayed UI rendering. If this is a problem for your front-end framework of choice, Laravel offers the ability to eagerly prefetch your application's JavaScript and CSS assets on initial page load.
 
 You can instruct Laravel to eagerly prefetch your assets by calling the `Vite::prefetch` method in the `boot` method of a [service provider](/docs/{{version}}/providers):
 
