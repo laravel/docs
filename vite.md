@@ -18,6 +18,7 @@
   - [Processing Static Assets With Vite](#blade-processing-static-assets)
   - [Refreshing on Save](#blade-refreshing-on-save)
   - [Aliases](#blade-aliases)
+- [Asset Prefetching](#asset-prefetching)
 - [Custom Base URLs](#custom-base-urls)
 - [Environment Variables](#environment-variables)
 - [Disabling Vite in Tests](#disabling-vite-in-tests)
@@ -405,6 +406,8 @@ createInertiaApp({
 });
 ```
 
+If you are using Vite's code splitting feature with Inertia, we recommend configuring [asset prefetching](#asset-prefetching).
+
 > [!NOTE]  
 > Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia, and Vite.
 
@@ -560,6 +563,75 @@ Once a macro has been defined, it can be invoked within your templates. For exam
 
 ```blade
 <img src="{{ Vite::image('logo.png') }}" alt="Laravel Logo">
+```
+
+<a name="asset-prefetching"></a>
+## Asset Prefetching
+
+When building an SPA using Vite's code splitting feature, required assets are fetched on each page navigation. This behavior can lead to delayed UI rendering. If this is a problem for your frontend framework of choice, Laravel offers the ability to eagerly prefetch your application's JavaScript and CSS assets on initial page load.
+
+You can instruct Laravel to eagerly prefetch your assets by invoking the `Vite::prefetch` method in the `boot` method of a [service provider](/docs/{{version}}/providers):
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        // ...
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Vite::prefetch(concurrency: 3);
+    }
+}
+```
+
+In the example above, assets will be prefetched with a maximum of `3` concurrent downloads on each page load. You can modify the concurrency to suit your application's needs or specify no concurrency limit if the application should download all assets at once:
+
+```php
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Vite::prefetch();
+}
+```
+
+By default, prefetching will begin when the [page _load_ event](https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event) fires. If you would like to customize when prefetching begins, you may specify an event that Vite will listen for:
+
+```php
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Vite::prefetch(event: 'vite:prefetch');
+}
+```
+
+Given the code above, prefetching will now begin when you manually dispatch the `vite:prefetch` event on the `window` object. For example, you could have prefetching begin three seconds after the page loads:
+
+```html
+<script>
+    addEventListener('load', () => setTimeout(() => {
+        dispatchEvent(new Event('vite:prefetch'))
+    }, 3000))
+</script>
 ```
 
 <a name="custom-base-urls"></a>
