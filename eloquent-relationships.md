@@ -401,7 +401,7 @@ public function currentPricing(): HasOne
 
 The "has-one-through" relationship defines a one-to-one relationship with another model. However, this relationship indicates that the declaring model can be matched with one instance of another model by proceeding _through_ a third model.
 
-For example, in a vehicle repair shop application, each `Mechanic` model may be associated with one `Car` model, and each `Car` model may be associated with one `Owner` model. While the mechanic and the owner have no direct relationship within the database, the mechanic can access the owner _through_ the `Car` model. Let's look at the tables necessary to define this relationship:
+For example, in a vehicle repair shop application, each `Owner` model may be associated with one `Car` model, and each `Car` model may be associated with one `Mechanic` model. While the owner and the mechanic have no direct relationship within the database, the owner can access the mechanic _through_ the `Car` model. Let's look at the tables necessary to define this relationship:
 
     mechanics
         id - integer
@@ -426,27 +426,27 @@ Now that we have examined the table structure for the relationship, let's define
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
-    class Mechanic extends Model
+    class Owner extends Model
     {
         /**
-         * Get the car's owner.
+         * Get the car's mechanic.
          */
-        public function carOwner(): HasOneThrough
+        public function carMechanic(): HasOneThrough
         {
-            return $this->hasOneThrough(Owner::class, Car::class);
+            return $this->hasOneThrough(Mechanic::class, Car::class);
         }
     }
 
 The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
-Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-one-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Mechanic` model has a `cars` relationship and the `Car` model has an `owner` relationship, you may define a "has-one-through" relationship connecting the mechanic and the owner like so:
+Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-one-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Owner` model has a `car` relationship and the `Car` model has an `owner` relationship, you may define a "has-one-through" relationship connecting the mechanic and the owner like so:
 
 ```php
 // String based syntax...
-return $this->through('cars')->has('owner');
+return $this->through('car')->has('mechanic');
 
 // Dynamic syntax...
-return $this->throughCars()->hasOwner();
+return $this->throughCar()->hasMechanic();
 ```
 
 <a name="has-one-through-key-conventions"></a>
@@ -454,15 +454,15 @@ return $this->throughCars()->hasOwner();
 
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
 
-    class Mechanic extends Model
+    class Owner extends Model
     {
         /**
-         * Get the car's owner.
+         * Get the car's mechanic.
          */
-        public function carOwner(): HasOneThrough
+        public function carMechanic(): HasOneThrough
         {
             return $this->hasOneThrough(
-                Owner::class,
+                Mechanic::class,
                 Car::class,
                 'mechanic_id', // Foreign key on the cars table...
                 'car_id', // Foreign key on the owners table...
@@ -476,10 +476,10 @@ Or, as discussed earlier, if the relevant relationships have already been define
 
 ```php
 // String based syntax...
-return $this->through('cars')->has('owner');
+return $this->through('car')->has('owner');
 
 // Dynamic syntax...
-return $this->throughCars()->hasOwner();
+return $this->throughCar()->hasOwner();
 ```
 
 <a name="has-many-through"></a>
