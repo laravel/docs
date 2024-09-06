@@ -634,7 +634,7 @@ All the authorization view's rendering logic may be customized using the appropr
 
 Your authorization template should include a form that makes a `POST` request to `/oauth/authorize`. The `/oauth/authorize` endpoint expects the string `state`, `client_id`, `auth_token` and the CSRF token as `_token` if not already being passed. 
 
-When using `Passport::authorizationView()`, you may either pass the view name or a `Closure`. Both instances receive an array of parameters to help with building the template. Both the view and the `Closure` receive  the following parameters: The Passport `client`, the `user` approving the authorization, the requested `scopes`, the current `request` and the `authToken`. 
+When using `Passport::authorizationView()`, you may either pass the view name or a `Closure`. Both instances receive an array of parameters to help with building the template. Both the view and the `Closure` receive the following parameters: The Passport `client`, the `user` approving the authorization, the requested `scopes`, the current `request` and the `authToken`. 
 
 Inertia is also supported as a valid authorization view response:
 
@@ -645,8 +645,7 @@ Inertia is also supported as a valid authorization view response:
     {
         Passport::authorizationView(function ($parameters) {
             return Inertia::render('passport/Authorize', [
-                'client' => $parameters['client']->id,
-                'description' => $parameters['client']->description,
+                'clientId' => $parameters['client']->getKey(),
                 'name' => $parameters['client']->name,
                 'scopes' => $parameters['scopes'],
                 'state' => $parameters['request']->state,
