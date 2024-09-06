@@ -313,7 +313,7 @@ By streaming data to the client as it is generated, you can significantly reduce
                 echo $chunk;
                 ob_flush();
                 flush();
-                sleep(2); // Simulate delay between chunks
+                sleep(2); // Simulate delay between chunks...
             }
         }, 200, ['X-Accel-Buffering' => 'no']);
     });
