@@ -236,8 +236,9 @@ Or, to prevent relations from being serialized, you can call the `withoutRelatio
     /**
      * Create a new job instance.
      */
-    public function __construct(Podcast $podcast)
-    {
+    public function __construct(
+        Podcast $podcast,
+    ) {
         $this->podcast = $podcast->withoutRelations();
     }
 
@@ -250,9 +251,8 @@ If you are using PHP constructor property promotion and would like to indicate t
      */
     public function __construct(
         #[WithoutRelations]
-        public Podcast $podcast
-    ) {
-    }
+        public Podcast $podcast,
+    ) {}
 
 If a job receives a collection or array of Eloquent models instead of a single model, the models within that collection will not have their relationships restored when the job is deserialized and executed. This is to prevent excessive resource usage on jobs that deal with large numbers of models.
 

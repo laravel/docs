@@ -220,10 +220,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
         /**
          * Create the event listener.
          */
-        public function __construct()
-        {
-            // ...
-        }
+        public function __construct() {}
 
         /**
          * Handle the event.

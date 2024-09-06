@@ -199,7 +199,7 @@ This statement tells the container that it should inject the `RedisEventPusher` 
      * Create a new class instance.
      */
     public function __construct(
-        protected EventPusher $pusher
+        protected EventPusher $pusher,
     ) {}
 
 <a name="contextual-binding"></a>
@@ -380,7 +380,7 @@ If you would like to have the Laravel container instance itself injected into a 
      * Create a new class instance.
      */
     public function __construct(
-        protected Container $container
+        protected Container $container,
     ) {}
 
 <a name="automatic-injection"></a>
