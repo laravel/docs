@@ -14,6 +14,7 @@
     - [JSON Responses](#json-responses)
     - [File Downloads](#file-downloads)
     - [File Responses](#file-responses)
+    - [Streamed Responses](#streamed-responses)
 - [Response Macros](#response-macros)
 
 <a name="creating-responses"></a>
@@ -287,6 +288,52 @@ The `download` method may be used to generate a response that forces the user's 
 > [!WARNING]  
 > Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII filename.
 
+<a name="file-responses"></a>
+### File Responses
+
+The `file` method may be used to display a file, such as an image or PDF, directly in the user's browser instead of initiating a download. This method accepts the absolute path to the file as its first argument and an array of headers as its second argument:
+
+    return response()->file($pathToFile);
+
+    return response()->file($pathToFile, $headers);
+
+<a name="streamed-responses"></a>
+### Streamed Responses
+
+By streaming data to the client as it is generated, you can significantly reduce memory usage and improve performance, especially for very large responses. Streamed responses allow the client to begin processing data before the server has finished sending it:
+
+    function streamedContent(): Generator {
+        yield 'Hello, ';
+        yield 'World!';
+    }
+
+    Route::get('/stream', function () {
+        return response()->stream(function (): void {
+            foreach (streamedContent() as $chunk) {
+                echo $chunk;
+                ob_flush();
+                flush();
+                sleep(2); // Simulate delay between chunks...
+            }
+        }, 200, ['X-Accel-Buffering' => 'no']);
+    });
+
+> [!NOTE]
+> Internally, Laravel utilizes PHP's output buffering functionality. As you can see in the example above, you should use the `ob_flush` and `flush` functions to push buffered content to the client.
+
+<a name="streamed-json-responses"></a>
+#### Streamed JSON Responses
+
+If you need to stream JSON data incrementally, you may utilize the `streamJson` method. This method is especially useful for large datasets that need to be sent progressively to the browser in a format that can be easily parsed by JavaScript:
+
+    use App\Models\User;
+
+    Route::get('/users.json', function () {
+        return response()->streamJson([
+            'users' => User::cursor(),
+        ]);
+    });
+
 <a name="streamed-downloads"></a>
 #### Streamed Downloads
 
@@ -299,15 +346,6 @@ Sometimes you may wish to turn the string response of a given operation into a d
                     ->contents()
                     ->readme('laravel', 'laravel')['contents'];
     }, 'laravel-readme.md');
-
-<a name="file-responses"></a>
-### File Responses
-
-The `file` method may be used to display a file, such as an image or PDF, directly in the user's browser instead of initiating a download. This method accepts the absolute path to the file as its first argument and an array of headers as its second argument:
-
-    return response()->file($pathToFile);
-
-    return response()->file($pathToFile, $headers);
 
 <a name="response-macros"></a>
 ## Response Macros
