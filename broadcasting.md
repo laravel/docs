@@ -672,10 +672,7 @@ Finally, you may place the authorization logic for your channel in the channel c
         /**
          * Create a new channel instance.
          */
-        public function __construct()
-        {
-            // ...
-        }
+        public function __construct() {}
 
         /**
          * Authenticate the user's access to the channel.
