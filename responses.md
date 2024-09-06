@@ -300,7 +300,7 @@ The `file` method may be used to display a file, such as an image or PDF, direct
 <a name="streamed-responses"></a>
 ### Streamed Responses
 
-Streamed responses in Laravel provide a powerful way to handle large amounts of data efficiently. By streaming data to the client as it is generated, you can significantly reduce memory usage and improve performance, especially for very large responses. This approach allows the client to begin processing data before the server has finished sending it.
+By streaming data to the client as it is generated, you can significantly reduce memory usage and improve performance, especially for very large responses. Streamed responses allow the client to begin processing data before the server has finished sending it:
 
     function streamedContent(): Generator {
         yield 'Hello, ';
@@ -318,13 +318,13 @@ Streamed responses in Laravel provide a powerful way to handle large amounts of 
         }, 200, ['X-Accel-Buffering' => 'no']);
     });
 
-> [!NOTE]  
-> Laravel activates PHP output buffer. Use `ob_flush()` to send the buffer contents and `flush()` to push them to the client. Combining both ensures real-time delivery but aren't guaranteed in all environments. The `X-Accel-Buffering: no` header prevents Nginx reverse proxies from buffering the output.
+> [!NOTE]
+> Internally, Laravel utilizes PHP's output buffering functionality. As you can see in the example above, you should use the `ob_flush` and `flush` functions to push buffered content to the client.
 
 <a name="streamed-json-responses"></a>
 #### Streamed JSON Responses
 
-For cases where you need to stream JSON data incrementally, Laravel provides the `streamJson` method. This is especially useful for large datasets that need to be sent progressively to the browser in a format that can be easily parsed by JavaScript.
+If you need to stream JSON data incrementally, you may utilize the `streamJson` method. This method is especially useful for large datasets that need to be sent progressively to the browser in a format that can be easily parsed by JavaScript:
 
     use App\Models\User;
 
