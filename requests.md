@@ -405,6 +405,18 @@ If you would like to determine if a value is present on the request and is not a
         // ...
     }
 
+If you would like to determine if a value is missing from the request or is an empty string, you may use the `isNotFilled` method:
+
+    if ($request->isNotFilled('name')) {
+        // ...
+    }
+
+When given an array, the `isNotFilled` method will determine if all of the specified values are missing or empty:
+
+    if ($request->isNotFilled(['name', 'email'])) {
+        // ...
+    }
+
 The `anyFilled` method returns `true` if any of the specified values is not an empty string:
 
     if ($request->anyFilled(['name', 'email'])) {
