@@ -12,6 +12,7 @@
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
     - [Throttling Exceptions](#throttling-exceptions)
+    - [Skipping Jobs](#skipping-jobs)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
@@ -687,6 +688,57 @@ If you would like to have the throttled exceptions reported to your application'
 
 > [!NOTE]  
 > If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
+
+<a name="skipping-jobs"></a>
+### Skipping Jobs
+
+Laravel provides a convenient way to skip the execution of certain jobs based on custom conditions using the `Skip` middleware. This middleware allows you to specify conditions where a job should be bypassed, without modifying the job's logic.
+
+You can use the `Skip::when()` or `Skip::unless()` methods to conditionally skip jobs. The `Skip::when()` method will skip the job if the given condition evaluates to true, while the `Skip::unless()` method will skip the job if the condition evaluates to false.
+
+    use Illuminate\Queue\Middleware\Skip;
+    
+    /**
+    * Get the middleware the job should pass through.
+    */
+    public function middleware()
+    {
+        return [
+            Skip::when($someCondition),
+        ];
+    }
+
+In this example, the job will be skipped if `$someCondition` evaluates to `true`.
+
+You can also use the `Skip::unless()` method to skip the job unless a condition is true:
+
+    use Illuminate\Queue\Middleware\Skip;
+    
+    /**
+    * Get the middleware the job should pass through.
+    */
+    public function middleware()
+    {
+        return [
+            Skip::unless($someCondition),
+        ];
+    }
+
+You can also pass a `Closure` to either `when()` or `unless()` for more complex condition evaluation:
+
+    use Illuminate\Queue\Middleware\Skip;
+    
+    /**
+    * Get the middleware the job should pass through.
+    */
+    public function middleware()
+    {
+        return [
+            Skip::when(function (): bool {
+                return $this->shouldSkip();
+            }),
+        ];
+    }
 
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
