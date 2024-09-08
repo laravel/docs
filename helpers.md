@@ -5,6 +5,7 @@
 - [Other Utilities](#other-utilities)
     - [Benchmarking](#benchmarking)
     - [Dates](#dates)
+    - [Deferred Functions](#deferred-functions)
     - [Lottery](#lottery)
     - [Pipeline](#pipeline)
     - [Sleep](#sleep)
@@ -2352,6 +2353,36 @@ $now = Carbon::now();
 
 For a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/docs/).
 
+<a name="deferred-functions"></a>
+### Deferred Functions
+
+> [!WARNING]
+> Deferred functions are currently in beta while we gather community feedback.
+
+While Laravel's [queued jobs](/docs/{{version}}/queues) allow you to queue tasks for background processing, sometimes you may have simple tasks you would like to defer without configuring or maintaining a long-running queue worker.
+
+Deferred functions allow you to defer the execution of a closure until after the HTTP response has been sent to the user, keeping your application feeling fast and responsive. To defer the execution of a closure, simply pass the closure to the `defer` function:
+
+```php
+use App\Services\Metrics;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+Route::post('/orders', function (Request $request) {
+    // Create order...
+
+    defer(fn () => Metrics::reportOrder($order));
+
+    return $order;
+});
+```
+
+By default, deferred functions will only be executed if the HTTP response, Artisan command, or queued job from which `defer` is invoked completes successfully. This means that deferred functions will not be executed if a request results in a `4xx` or `5xx` HTTP response. If you would like a deferred function to always execute, you may chain the `always` method onto your deferred function:
+
+```php
+defer(fn () => Metrics::reportOrder($order))->always();
+```
+
 <a name="lottery"></a>
 ### Lottery
 
@@ -2450,6 +2481,12 @@ Laravel's `Sleep` class is a light-weight wrapper around PHP's native `sleep` an
     }
 
 The `Sleep` class offers a variety of methods that allow you to work with different units of time:
+
+    // Return a value after sleeping...
+    $result = Sleep::for(1)->second()->then(fn () => 1 + 1);
+
+    // Sleep while a given value is true...
+    Sleep::for(1)->second()->while(fn () => shouldKeepSleeping());
 
     // Pause execution for 90 seconds...
     Sleep::for(1.5)->minutes();
