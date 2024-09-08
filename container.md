@@ -7,6 +7,7 @@
     - [Binding Basics](#binding-basics)
     - [Binding Interfaces to Implementations](#binding-interfaces-to-implementations)
     - [Contextual Binding](#contextual-binding)
+    - [Contextual Attributes](#contextual-attributes)
     - [Binding Primitives](#binding-primitives)
     - [Binding Typed Variadics](#binding-typed-variadics)
     - [Tagging](#tagging)
@@ -224,6 +225,75 @@ Sometimes you may have two classes that utilize the same interface, but you wish
               ->give(function () {
                   return Storage::disk('s3');
               });
+
+<a name="contextual-attributes"></a>
+### Contextual Attributes
+
+Since contextual binding is often used to inject implementations of drivers or configuration values, Laravel offers a variety of contextual binding attributes that allow to inject these types of values without manually defining the contextual bindings in your service providers.
+
+For example, the `Storage` attribute may be used to inject a specific [storage disk](/docs/{{version}}/filesystem):
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Container\Attributes\Storage;
+use Illuminate\Contracts\Filesystem\Filesystem;
+
+class PhotoController extends Controller
+{
+    public function __construct(
+        #[Storage('local')] protected Filesystem $filesystem
+    )
+    {
+        // ...
+    }
+}
+```
+
+In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `DB`, and `Log` attributes:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Container\Attributes\Auth;
+use Illuminate\Container\Attributes\Cache;
+use Illuminate\Container\Attributes\Config;
+use Illuminate\Container\Attributes\DB;
+use Illuminate\Container\Attributes\Log;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Database\Connection;
+use Psr\Log\LoggerInterface;
+
+class PhotoController extends Controller
+{
+    public function __construct(
+        #[Auth('web')] protected Guard $auth,
+        #[Cache('redis')] protected Repository $cache,
+        #[Config('app.timezone')] protected string $timezone,
+        #[DB('mysql')] protected Connection $connection,
+        #[Log('daily')] protected LoggerInterface $log,
+    )
+    {
+        // ...
+    }
+}
+```
+
+Furthermore, Laravel provides a `CurrentUser` attribute for injecting the currently authenticated user into a given route or class:
+
+```php
+use App\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
+
+Route::get('/user', function (#[CurrentUser] User $user) {
+    return $user;
+})->middleware('auth');
+```
 
 <a name="binding-primitives"></a>
 ### Binding Primitives
