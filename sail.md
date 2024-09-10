@@ -483,18 +483,28 @@ SAIL_XDEBUG_MODE=develop,debug,coverage
 
 #### Linux Host IP Configuration
 
-Internally, the `XDEBUG_CONFIG` environment variable is defined as `client_host=host.docker.internal` so that Xdebug will be properly configured for Mac and Windows (WSL2). If your local machine is running Linux, you should ensure that you are running Docker Engine 17.06.0+ and Compose 1.16.0+. Otherwise, you will need to manually define this environment variable as shown below.
+Internally, the `XDEBUG_CONFIG` environment variable is defined as `client_host=host.docker.internal` so that Xdebug will be properly configured for Mac and Windows (WSL2). If your local machine is running Linux and you're using **Docker 20.10+**, `host.docker.internal` is available, and no manual configuration is required.
 
-First, you should determine the correct host IP address to add to the environment variable by running the following command. Typically, the `<container-name>` should be the name of the container that serves your application and often ends with `_laravel.test_1`:
+For **Docker versions older than 20.10**, `host.docker.internal` is not supported on Linux, and you will need to manually define the host IP. To do this, configure a static IP for your container by defining a custom network in your `docker-compose.yml` file:
 
-```shell
-docker inspect -f {{range.NetworkSettings.Networks}}{{.Gateway}}{{end}} <container-name>
+```yaml
+networks:
+  custom_network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+services:
+  laravel.test:
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.2
 ```
 
-Once you have obtained the correct host IP address, you should define the `SAIL_XDEBUG_CONFIG` variable within your application's `.env` file:
+Once you have set the static IP, define the SAIL_XDEBUG_CONFIG variable within your application's .env file:
 
 ```ini
-SAIL_XDEBUG_CONFIG="client_host=<host-ip-address>"
+SAIL_XDEBUG_CONFIG="client_host=172.20.0.2"
 ```
 
 <a name="xdebug-cli-usage"></a>
