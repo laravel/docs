@@ -764,6 +764,18 @@ If you would like to specify that a job should not be immediately available for 
 > [!WARNING]  
 > The Amazon SQS queue service has a maximum delay time of 15 minutes.
 
+<a name="dispatching-without-delay"></a>
+#### Dispatching Without Delay
+
+In some cases, jobs may have a default delay configured. If you need to bypass this default and dispatch a job for immediate processing, you may use the `withoutDelay()` method.
+
+For example, the following code will dispatch a `ProcessPodcast` job without any delay:
+
+    ProcessPodcast::dispatch($podcast)->withoutDelay();
+
+> [!NOTE]  
+> The `withoutDelay()` method is useful when you want to override any default delay configurations and ensure the job is processed as soon as possible.
+
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
 #### Dispatching After the Response is Sent to the Browser
 
