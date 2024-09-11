@@ -19,6 +19,7 @@
 - [Tables](#tables)
 - [Spin](#spin)
 - [Progress Bar](#progress)
+- [Clearing the Terminal](#clear)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments and Fallbacks](#fallbacks)
 
@@ -886,6 +887,17 @@ foreach ($users as $user) {
 }
 
 $progress->finish();
+```
+
+<a name="clear"></a>
+## Clearing the Terminal
+
+The `clear` function may be used to clear the user's terminal:
+
+```
+use function Laravel\Prompts\clear;
+
+clear();
 ```
 
 <a name="terminal-considerations"></a>
