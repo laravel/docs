@@ -194,6 +194,53 @@ Like the `hasOne` method, you may also override the foreign and local keys by pa
 
     return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
 
+<a name="automatically-hydrating-parent-models-on-children"></a>
+#### Automatically Hydrating Parent Models on Children
+
+Even when utilizing Eloquent eager loading, "N + 1" query problems can arise if you try to access the parent model from a child model while looping through the child models:
+
+```php
+$posts = Post::with('comments')->get();
+
+foreach ($posts as $post) {
+    foreach ($post->comments as $comment) {
+        echo $comment->post->title;
+    }
+}
+```
+
+In the example above, an "N + 1" query problem has been introduced because, even though comments were eager loaded for every `Post` model, Eloquent does not automatically hydrate the parent `Post` on each child `Comment` model.
+
+If you would like Eloquent to automatically hydrate parent models onto their children, you may invoke the `chaperone` method when defining a `hasMany` relationship:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+
+    class Post extends Model
+    {
+        /**
+         * Get the comments for the blog post.
+         */
+        public function comments(): HasMany
+        {
+            return $this->hasMany(Comment::class)->chaperone();
+        }
+    }
+
+Or, if you would like to opt-in to automatic parent hydration at run time, you may invoke the `chaperone` model when eager loading the relationship:
+
+```php
+use App\Models\Post;
+
+$posts = Post::with([
+    'comments' => fn ($comments) => $comments->chaperone(),
+])->get();
+```
+
 <a name="one-to-many-inverse"></a>
 ### One to Many (Inverse) / Belongs To
 
@@ -1007,6 +1054,46 @@ You may also retrieve the parent of a polymorphic child model by accessing the n
     $commentable = $comment->commentable;
 
 The `commentable` relation on the `Comment` model will return either a `Post` or `Video` instance, depending on which type of model is the comment's parent.
+
+<a name="polymorphic-automatically-hydrating-parent-models-on-children"></a>
+#### Automatically Hydrating Parent Models on Children
+
+Even when utilizing Eloquent eager loading, "N + 1" query problems can arise if you try to access the parent model from a child model while looping through the child models:
+
+```php
+$posts = Post::with('comments')->get();
+
+foreach ($posts as $post) {
+    foreach ($post->comments as $comment) {
+        echo $comment->commentable->title;
+    }
+}
+```
+
+In the example above, an "N + 1" query problem has been introduced because, even though comments were eager loaded for every `Post` model, Eloquent does not automatically hydrate the parent `Post` on each child `Comment` model.
+
+If you would like Eloquent to automatically hydrate parent models onto their children, you may invoke the `chaperone` method when defining a `hasMany` relationship:
+
+    class Post extends Model
+    {
+        /**
+         * Get all of the post's comments.
+         */
+        public function comments(): MorphMany
+        {
+            return $this->morphMany(Comment::class, 'commentable')->chaperone();
+        }
+    }
+
+Or, if you would like to opt-in to automatic parent hydration at run time, you may invoke the `chaperone` model when eager loading the relationship:
+
+```php
+use App\Models\Post;
+
+$posts = Post::with([
+    'comments' => fn ($comments) => $comments->chaperone(),
+])->get();
+```
 
 <a name="one-of-many-polymorphic-relations"></a>
 ### One of Many (Polymorphic)

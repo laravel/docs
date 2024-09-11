@@ -34,6 +34,7 @@
     - [Broadcasting](/docs/{{version}}/broadcasting)
     - [Cache](/docs/{{version}}/cache)
     - [Collections](/docs/{{version}}/collections)
+    - [Concurrency](/docs/{{version}}/concurrency)
     - [Context](/docs/{{version}}/context)
     - [Contracts](/docs/{{version}}/contracts)
     - [Events](/docs/{{version}}/events)
