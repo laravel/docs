@@ -202,6 +202,19 @@ You may use the `rememberForever` method to retrieve an item from the cache or s
         return DB::table('users')->get();
     });
 
+<a name="swr"></a>
+#### Stale While Revalidate
+
+When using the `Cache::remember` method, some users may experience slow response times if the cached value has expired. For certain types of data, it can be useful to allow partially stale data to be served while the cached value is recalculated in the background, preventing some users from experiencing slow response times while cached values are calculated. This is often referred to as the "stale-while-revalidate" pattern, and the `Cache::flexible` method provides an implementation of this pattern.
+
+The flexible method accepts an array that specifies how long the cached value is considered “fresh” and when it becomes “stale.” The first value in the array represents the number of seconds the cache is considered fresh, while the second value defines how long it can be served as stale data before recalculation is necessary.
+
+If a request is made within the fresh period (before the first value), the cache is returned immediately without recalculation. If a request is made during the stale period (between the two values), the stale value is served to the user, and a [deferred function](/docs/{{version}}/helpers#deferred-functions) is registered to refresh the cached value after the response is sent to the user. If a request is made after the second value, the cache is considered expired, and the value is recalculated immediately, which may result in a slower response for the user:
+
+    $value = Cache::flexible('users', [5, 10], function () {
+        return DB::table('users')->get();
+    });
+
 <a name="retrieve-delete"></a>
 #### Retrieve and Delete
 
