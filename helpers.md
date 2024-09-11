@@ -2308,7 +2308,7 @@ The `with` function returns the value it is given. If a closure is passed as the
 <a name="method-when"></a>
 #### `when()` {.collection-method}
 
-The `when` function returns the value it is given if the given condition evaluates to `true`. Otherwise, `null` is returned. If a closure is passed as the second argument to the function, the closure will be executed and its returned value will be returned:
+The `when` function returns the value it is given if a given condition evaluates to `true`. Otherwise, `null` is returned. If a closure is passed as the second argument to the function, the closure will be executed and its returned value will be returned:
 
     $value = when(true, 'Hello World');
 
