@@ -12,6 +12,7 @@
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
     - [Throttling Exceptions](#throttling-exceptions)
+    - [Skipping Jobs](#skipping-jobs)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
@@ -687,6 +688,39 @@ If you would like to have the throttled exceptions reported to your application'
 
 > [!NOTE]  
 > If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
+
+<a name="skipping-jobs"></a>
+### Skipping Jobs
+
+The `Skip` middleware allows you to specify that a job should be skipped / deleted without needing to modify the job's logic. The `Skip::when` method will delete the job if the given condition evaluates to `true`, while the `Skip::unless` method will delete the job if the condition evaluates to `false`:
+
+    use Illuminate\Queue\Middleware\Skip;
+
+    /**
+    * Get the middleware the job should pass through.
+    */
+    public function middleware(): array
+    {
+        return [
+            Skip::when($someCondition),
+        ];
+    }
+
+You can also pass a `Closure` to the `when` and `unless` methods for more complex conditional evaluation:
+
+    use Illuminate\Queue\Middleware\Skip;
+
+    /**
+    * Get the middleware the job should pass through.
+    */
+    public function middleware(): array
+    {
+        return [
+            Skip::when(function (): bool {
+                return $this->shouldSkip();
+            }),
+        ];
+    }
 
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
