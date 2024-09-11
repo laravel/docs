@@ -67,6 +67,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [diff](#method-diff)
 [except](#method-except)
 [find](#method-find)
+[findOrFail](#method-find-or-fail)
 [fresh](#method-fresh)
 [intersect](#method-intersect)
 [load](#method-load)
@@ -124,6 +125,15 @@ The `find` method returns the model that has a primary key matching the given ke
     $users = User::all();
 
     $user = $users->find(1);
+
+<a name="method-find-or-fail"></a>
+#### `findOrFail($key)` {.collection-method}
+
+The `findOrFail` method returns the model that has a primary key matching the given key or throws an `Illuminate\Database\Eloquent\ModelNotFoundException` exception if no matching model can be found in the collection:
+
+    $users = User::all();
+
+    $user = $users->findOrFail(1);
 
 <a name="method-fresh"></a>
 #### `fresh($with = [])` {.collection-method}
