@@ -692,46 +692,28 @@ If you would like to have the throttled exceptions reported to your application'
 <a name="skipping-jobs"></a>
 ### Skipping Jobs
 
-Laravel provides a convenient way to skip the execution of certain jobs based on custom conditions using the `Skip` middleware. This middleware allows you to specify conditions where a job should be bypassed, without modifying the job's logic.
-
-You can use the `Skip::when()` or `Skip::unless()` methods to conditionally skip jobs. The `Skip::when()` method will skip the job if the given condition evaluates to true, while the `Skip::unless()` method will skip the job if the condition evaluates to false.
+The `Skip` middleware allows you to specify that a job should be skipped / deleted without needing to modify the job's logic. The `Skip::when` method will delete the job if the given condition evaluates to `true`, while the `Skip::unless` method will delete the job if the condition evaluates to `false`:
 
     use Illuminate\Queue\Middleware\Skip;
-    
+
     /**
     * Get the middleware the job should pass through.
     */
-    public function middleware()
+    public function middleware(): array
     {
         return [
             Skip::when($someCondition),
         ];
     }
 
-In this example, the job will be skipped if `$someCondition` evaluates to `true`.
-
-You can also use the `Skip::unless()` method to skip the job unless a condition is true:
+You can also pass a `Closure` to the `when` and `unless` methods for more complex conditional evaluation:
 
     use Illuminate\Queue\Middleware\Skip;
-    
+
     /**
     * Get the middleware the job should pass through.
     */
-    public function middleware()
-    {
-        return [
-            Skip::unless($someCondition),
-        ];
-    }
-
-You can also pass a `Closure` to either `when()` or `unless()` for more complex condition evaluation:
-
-    use Illuminate\Queue\Middleware\Skip;
-    
-    /**
-    * Get the middleware the job should pass through.
-    */
-    public function middleware()
+    public function middleware(): array
     {
         return [
             Skip::when(function (): bool {
