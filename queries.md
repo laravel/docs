@@ -95,6 +95,10 @@ If you just need to retrieve a single row from a database table, you may use the
 
     return $user->email;
 
+If you would like to retrieve a single row from the database table, but throw a `Illuminate\Database\RecordNotFoundException` is no matching row is found, you may use the `firstOrFail` method. If the `RecordNotFoundException` is not caught, a 404 HTTP response is automatically sent back to the client:
+
+    $user = DB::table('users')->where('name', 'John')->firstOrFail();
+
 If you don't need an entire row, you may extract a single value from a record using the `value` method. This method will return the value of the column directly:
 
     $email = DB::table('users')->where('name', 'John')->value('email');
