@@ -199,6 +199,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [value](#method-value)
 [view](#method-view)
 [with](#method-with)
+[when](#method-when)
 
 </div>
 
@@ -2303,6 +2304,23 @@ The `with` function returns the value it is given. If a closure is passed as the
     $result = with(5, null);
 
     // 5
+
+<a name="method-when"></a>
+#### `when()` {.collection-method}
+
+The `when` function returns the value it is given if the given condition evaluates to `true`. Otherwise, `null` is returned. If a closure is passed as the second argument to the function, the closure will be executed and its returned value will be returned:
+
+    $value = when(true, 'Hello World');
+
+    $value = when(true, fn () => 'Hello World');
+
+The `when` function is primarily useful for conditionally rendering HTML attributes:
+
+```blade
+<div {{ when($condition, 'wire:poll="calculate"') }}>
+    ...
+</div>
+```
 
 <a name="other-utilities"></a>
 ## Other Utilities
