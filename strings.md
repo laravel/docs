@@ -471,21 +471,21 @@ You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
 <a name="method-deduplicate"></a>
 #### `Str::deduplicate()` {.collection-method}
 
-The `Str::deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string:
+The `Str::deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string. By default, the method deduplicates spaces:
 
     use Illuminate\Support\Str;
 
-    $result = Str::deduplicate('This    is    my    name');
+    $result = Str::deduplicate('The   Laravel   Framework');
 
-    // This is my name
+    // The Laravel Framework
 
-By default, the method deduplicates spaces. You can specify a different character by passing it in as the second argument:
+You may specify a different character to deduplicate by passing it in as the second argument to the method:
 
     use Illuminate\Support\Str;
 
-    $result = Str::deduplicate('This----is----my----name', '-');
+    $result = Str::deduplicate('The---Laravel---Framework', '-');
 
-    // This-is-my-name
+    // The-Laravel-Framework
 
 <a name="method-ends-with"></a>
 #### `Str::endsWith()` {.collection-method}
@@ -1768,21 +1768,21 @@ You can disable case sensitivity by setting the `ignoreCase` argument to `true`:
 <a name="method-fluent-str-deduplicate"></a>
 #### `deduplicate` {.collection-method}
 
-The `deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string:
+The `deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string. By default, the method deduplicates spaces:
 
     use Illuminate\Support\Str;
 
-    $result = Str::of('This    is    my    name')->deduplicate();
+    $result = Str::of('The   Laravel   Framework')->deduplicate();
 
-    // This is my name
+    // The Laravel Framework
 
-By default, the method deduplicates spaces. You can specify a different character:
+You may specify a different character to deduplicate by passing it in as the second argument to the method:
 
     use Illuminate\Support\Str;
 
-    $result = Str::of('This----is----my----name')->deduplicate('-');
+    $result = Str::of('The---Laravel---Framework')->deduplicate('-');
 
-    // This-is-my-name
+    // The-Laravel-Framework
 
 <a name="method-fluent-str-dirname"></a>
 #### `dirname` {.collection-method}
