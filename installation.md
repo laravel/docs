@@ -15,6 +15,9 @@
     - [Sail on Windows](#sail-on-windows)
     - [Sail on Linux](#sail-on-linux)
     - [Choosing Your Sail Services](#choosing-your-sail-services)
+- [Alternative Local Installation Options](#other-local-installation-options)
+    - [Laravel Valet / Homebrew (macOS)](#laravel-valet-homebrew)
+    - [Laravel Homestead](#laravel-homestead)
 - [IDE Support](#ide-support)
 - [Next Steps](#next-steps)
     - [Laravel the Full Stack Framework](#laravel-the-fullstack-framework)
@@ -327,6 +330,25 @@ You may instruct Sail to install a default [Devcontainer](/docs/{{version}}/sail
 ```shell
 curl -s "https://laravel.build/example-app?with=mysql,redis&devcontainer" | bash
 ```
+
+<a name="other-local-installation-options"></a>
+## Alternative Local Installation Options
+
+While [Laravel Herd](#local-installation-using-herd) and [Sail](#docker-installation-using-sail) are the recommended options for local development, there are a variety of other options available to you when developing Laravel applications locally.
+
+<a name="laravel-valet-homebrew"></a>
+### Laravel Valet / Homebrew (macOS)
+
+Developers familiar with Homebrew may prefer installing PHP and its extensions through Brew. In such cases, Laravel Valet offers a simple, fast, and lightweight environment tailored for macOS users. Valet integrates smoothly with Brew, making it an excellent choice for those who prefer this method.
+
+For more on setting up Valet, visit [Laravel Valet's documentation](/docs/{{version}}/valet).
+
+<a name="laravel-homestead"></a>
+### Laravel Homestead
+
+For developers seeking a robust virtualized environment, Laravel Homestead is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, or any other server software on your local machine. Homestead runs on any Windows, macOS, or Linux system.
+
+For more on setting up Homestead, visit [Laravel Homestead's documentation](/docs/{{version}}/homestead).
 
 <a name="ide-support"></a>
 ## IDE Support
