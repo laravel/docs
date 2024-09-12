@@ -147,7 +147,7 @@ TYPESENSE_API_KEY=masterKey
 TYPESENSE_HOST=localhost
 ```
 
-If needed, you may also specify your installation's port, path, and protocol:
+If you are using [Laravel Sail](/docs/{{version}}/sail), you may need to adjust the `TYPESENSE_HOST` environment variable to match the Docker container name. You may also optionally specify your installation's port, path, and protocol:
 
 ```env
 TYPESENSE_PORT=8108
