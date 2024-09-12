@@ -47,6 +47,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::chopEnd](#method-str-chop-end)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
+[Str::deduplicate](#method-deduplicate)
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
@@ -142,6 +143,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
 [dirname](#method-fluent-str-dirname)
+[deduplicate](#method-fluent-str-deduplicate)
 [endsWith](#method-fluent-str-ends-with)
 [excerpt](#method-fluent-str-excerpt)
 [exactly](#method-fluent-str-exactly)
@@ -466,6 +468,25 @@ You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
 
     // true
     
+<a name="method-deduplicate"></a>
+#### `Str::deduplicate()` {.collection-method}
+
+The `Str::deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::deduplicate('This    is    my    name');
+
+    // This is my name
+
+By default, the method deduplicates spaces. You can specify a different character by passing it in as the second argument:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::deduplicate('This----is----my----name', '-');
+
+    // This-is-my-name
+
 <a name="method-ends-with"></a>
 #### `Str::endsWith()` {.collection-method}
 
@@ -1788,6 +1809,25 @@ In addition, you may use the `omission` option to change the string that will be
     ]);
 
     // '(...) my name'
+
+<a name="method-fluent-str-deduplicate"></a>
+#### `deduplicate` {.collection-method}
+
+The `deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('This    is    my    name')->deduplicate();
+
+    // This is my name
+
+By default, the method deduplicates spaces. You can specify a different character:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('This----is----my----name')->deduplicate('-');
+
+    // This-is-my-name
 
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}
