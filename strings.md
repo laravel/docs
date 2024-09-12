@@ -1763,32 +1763,6 @@ If necessary, you may specify how many directory levels you wish to trim from th
 
     // '/foo'
 
-<a name="method-fluent-str-excerpt"></a>
-#### `excerpt` {.collection-method}
-
-The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::of('This is my name')->excerpt('my', [
-        'radius' => 3
-    ]);
-
-    // '...is my na...'
-
-The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
-
-In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::of('This is my name')->excerpt('name', [
-        'radius' => 3,
-        'omission' => '(...) '
-    ]);
-
-    // '(...) my name'
-
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}
 
@@ -1822,6 +1796,32 @@ The `exactly` method determines if the given string is an exact match with anoth
     $result = Str::of('Laravel')->exactly('Laravel');
 
     // true
+
+<a name="method-fluent-str-excerpt"></a>
+#### `excerpt` {.collection-method}
+
+The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('my', [
+        'radius' => 3
+    ]);
+
+    // '...is my na...'
+
+The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
+
+In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('name', [
+        'radius' => 3,
+        'omission' => '(...) '
+    ]);
+
+    // '(...) my name'
 
 <a name="method-fluent-str-explode"></a>
 #### `explode` {.collection-method}
