@@ -17,7 +17,16 @@ Sometimes you may need to execute several slow tasks which do not depend on one 
 
 Laravel achieves concurrency by serializing the given closures and dispatching them to a hidden Artisan CLI command, which unserializes the closures and invokes it within its own PHP process. After the closure has been invoked, the resulting value is serialized back to the parent process.
 
-The `Concurrency` facade supports three drivers: `process` (the default), `fork`, and `sync`. The `fork` driver offers improved performance compared to the default `process` driver, but it may only be used within PHP's CLI context, as PHP does not support forking during web requests. The `sync` driver is primarily useful during testing when you want to disable all concurrency and simple execute the given closure in sequence within the parent process.
+The `Concurrency` facade supports three drivers: `process` (the default), `fork`, and `sync`. 
+
+
+The `fork` driver offers improved performance compared to the default `process` driver, but it may only be used within PHP's CLI context, as PHP does not support forking during web requests. Before using the `fork` driver, you need to install the `spatie/fork` package:
+
+```bash
+composer require spatie/fork
+```
+
+The `sync` driver is primarily useful during testing when you want to disable all concurrency and simple execute the given closure in sequence within the parent process.
 
 <a name="running-concurrent-tasks"></a>
 ## Running Concurrent Tasks
@@ -47,4 +56,19 @@ Concurrency::defer([
     fn () => Metrics::report('users'),
     fn () => Metrics::report('orders'),
 ]);
+```
+
+The `defer` method cannot be used within PHP's CLI context as no HTTP response is generated and the task will never run.
+
+<a name="switching-the-concurrency-driver"></a>
+## Switching the Concurrency Driver
+
+Laravel's `Concurrency` facade supports multiple drivers. 
+
+To switch the driver, use this syntax:
+
+```php
+use Illuminate\Support\Facades\Concurrency;
+
+Concurrency::setDefaultInstance('fork');
 ```
