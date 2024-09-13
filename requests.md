@@ -317,6 +317,13 @@ When dealing with HTML elements like checkboxes, your application may receive "t
 
     $archived = $request->boolean('archived');
 
+<a name="retrieving-integer-input-values"></a>
+#### Retrieving Integer Input Values
+
+To retrieve input values as integers, you may use the `integer` method. This method will attempt to cast the input value to an integer. If the input is not present or the cast fails, it will return the default value you specify. This is particularly useful for pagination or other numeric inputs:
+
+    $perPage = $request->integer('per_page');
+
 <a name="retrieving-date-input-values"></a>
 #### Retrieving Date Input Values
 
