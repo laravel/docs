@@ -761,7 +761,7 @@ If you would like to specify that a job should not be immediately available for 
         }
     }
 
-In some cases, jobs may have a default delay configured. If you need to bypass this delay and dispatch a job for immediate processing, you may use the `withoutDelay()` method:
+In some cases, jobs may have a default delay configured. If you need to bypass this delay and dispatch a job for immediate processing, you may use the `withoutDelay` method:
 
     ProcessPodcast::dispatch($podcast)->withoutDelay();
 
