@@ -2401,6 +2401,9 @@ By default, deferred functions will only be executed if the HTTP response, Artis
 defer(fn () => Metrics::reportOrder($order))->always();
 ```
 
+> [!NOTE]
+> If your project had been upgraded from an earlier version of Laravel, you may not have the current Laravel structure. Consequently, your global middleware stack may not include the `Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks` middleware. If this is the case, make sure you add it to your global middleware stack in `app/Http/Kernel.php` to enable deferred functions.
+
 <a name="lottery"></a>
 ### Lottery
 
