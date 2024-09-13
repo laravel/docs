@@ -17,7 +17,15 @@ Sometimes you may need to execute several slow tasks which do not depend on one 
 
 Laravel achieves concurrency by serializing the given closures and dispatching them to a hidden Artisan CLI command, which unserializes the closures and invokes it within its own PHP process. After the closure has been invoked, the resulting value is serialized back to the parent process.
 
-The `Concurrency` facade supports three drivers: `process` (the default), `fork`, and `sync`. The `fork` driver offers improved performance compared to the default `process` driver, but it may only be used within PHP's CLI context, as PHP does not support forking during web requests. The `sync` driver is primarily useful during testing when you want to disable all concurrency and simple execute the given closure in sequence within the parent process.
+The `Concurrency` facade supports three drivers: `process` (the default), `fork`, and `sync`. 
+
+The `fork` driver offers improved performance compared to the default `process` driver, but it may only be used within PHP's CLI context, as PHP does not support forking during web requests. Before using the `fork` driver, you need to install the `spatie/fork` package:
+
+```bash
+composer require spatie/fork
+```
+
+The `sync` driver is primarily useful during testing when you want to disable all concurrency and simply execute the given closures in sequence within the parent process.
 
 <a name="running-concurrent-tasks"></a>
 ## Running Concurrent Tasks
@@ -32,6 +40,18 @@ use Illuminate\Support\Facades\DB;
     fn () => DB::table('users')->count(),
     fn () => DB::table('orders')->count(),
 ]);
+```
+
+To use a specific driver, you may use the `driver` method:
+
+```php
+$results = Concurrency::driver('fork')->run(...);
+```
+
+Or, to change the default concurrency driver, you should publish the `concurrency` configuration file via the `config:publish` Artisan command and update the `default` option within the file:
+
+```bash
+php artisan config:publish concurrency
 ```
 
 <a name="deferring-concurrent-tasks"></a>
