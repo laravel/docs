@@ -27,6 +27,10 @@ composer require spatie/fork
 
 The `sync` driver is primarily useful during testing when you want to disable all concurrency and simply execute the given closures in sequence within the parent process.
 
+> [!NOTE]
+> If your project had been upgraded from an earlier version of Laravel, you may not have the current Laravel structure. Consequently, your service provider stack may not include the `Illuminate\Concurrency\ConcurrencyServiceProvider` class. If this is the case, make sure you add this class to your `providers` array in `config/app.php` to enable concurrency.
+
+
 <a name="running-concurrent-tasks"></a>
 ## Running Concurrent Tasks
 
