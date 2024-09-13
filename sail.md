@@ -115,6 +115,14 @@ alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 
 To make sure this is always available, you may add this to your shell configuration file in your home directory, such as `~/.zshrc` or `~/.bashrc`, and then restart your shell.
 
+> [!TIP]  
+> Alternatively, you may wish to configure your shell alias (IE: on Intel MacOS machines) using your machine's `$PATH` list and a global composer instance, which looks more like this:
+> ```shell
+> # ~/.zshrc
+> export PATH="$PATH:$HOME/.composer/vendor/bin"
+> alias -g sail='bash vendor/bin/sail'
+> ```
+
 Once the shell alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:
 
 ```shell
