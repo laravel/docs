@@ -2408,7 +2408,7 @@ If you upgraded to Laravel 11.x from a Laravel 10.x application and your applica
 
 ```php
 protected $middleware = [
-    \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
+    \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class, // [tl! add]
     \App\Http\Middleware\TrustProxies::class,
     // ...
 ];
