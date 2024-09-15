@@ -312,13 +312,30 @@ If you would like to modify the host for URLs generated using the `Storage` faca
 <a name="temporary-urls"></a>
 ### Temporary URLs
 
-Using the `temporaryUrl` method, you may create temporary URLs to files stored using the `s3` driver. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
+Using the `temporaryUrl` method, you may create temporary URLs to files stored using the `local` and `s3` drivers. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
 
     use Illuminate\Support\Facades\Storage;
 
     $url = Storage::temporaryUrl(
         'file.jpg', now()->addMinutes(5)
     );
+
+<a name="enabling-local-temporary-urls"></a>
+#### Enabling Local Temporary URLs
+
+If you started developing your application before support for temporary URLs was introduced to the `local` driver, you may need to enable local temporary URLs. To do so, add the `serve` option to your `local` disk's configuration array within the `config/filesystems.php` configuration file:
+
+```php
+'local' => [
+    'driver' => 'local',
+    'root' => storage_path('app/private'),
+    'serve' => true, // [tl! add]
+    'throw' => false,
+],
+```
+
+<a name="s3-request-parameters"></a>
+#### S3 Request Parameters
 
 If you need to specify additional [S3 request parameters](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html#RESTObjectGET-requests), you may pass the array of request parameters as the third argument to the `temporaryUrl` method:
 
@@ -330,6 +347,9 @@ If you need to specify additional [S3 request parameters](https://docs.aws.amazo
             'ResponseContentDisposition' => 'attachment; filename=file2.jpg',
         ]
     );
+
+<a name="customizing-temporary-urls"></a>
+#### Customizing Temporary URLs
 
 If you need to customize how temporary URLs are created for a specific storage disk, you can use the `buildTemporaryUrlsUsing` method. For example, this can be useful if you have a controller that allows you to download files stored via a disk that doesn't typically support temporary URLs. Usually, this method should be called from the `boot` method of a service provider:
 
