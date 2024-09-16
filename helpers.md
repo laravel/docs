@@ -2317,7 +2317,7 @@ The `when` function returns the value it is given if a given condition evaluates
 The `when` function is primarily useful for conditionally rendering HTML attributes:
 
 ```blade
-<div {{ when($condition, 'wire:poll="calculate"') }}>
+<div {!! when($condition, 'wire:poll="calculate"') !!}>
     ...
 </div>
 ```
