@@ -12,6 +12,29 @@
 
 Sometimes you may need to execute several slow tasks which do not depend on one another. In many cases, significant performance improvements can be realized by executing the tasks concurrently. Laravel's `Concurrency` facade provides a simple, convenient API for executing closures concurrently.
 
+<a name="concurrency-compatibility"></a>
+#### Concurrency Compatibility
+
+If you upgraded to Laravel 11.x from a Laravel 10.x application, you may need to add the `ConcurrencyServiceProvider` to the `providers` array in your application's `config/app.php` configuration file:
+
+```php
+'providers' => ServiceProvider::defaultProviders()->merge([
+    /*
+     * Package Service Providers...
+     */
+    Illuminate\Concurrency\ConcurrencyServiceProvider::class, // [tl! add]
+
+    /*
+     * Application Service Providers...
+     */
+    App\Providers\AppServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
+    // App\Providers\BroadcastServiceProvider::class,
+    App\Providers\EventServiceProvider::class,
+    App\Providers\RouteServiceProvider::class,
+])->toArray(),
+```
+
 <a name="how-it-works"></a>
 #### How it Works
 
