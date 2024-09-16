@@ -12,6 +12,29 @@
 
 Sometimes you may need to execute several slow tasks which do not depend on one another. In many cases, significant performance improvements can be realized by executing the tasks concurrently. Laravel's `Concurrency` facade provides a simple, convenient API for executing closures concurrently.
 
+<a name="concurrency-compatibility"></a>
+#### Concurrency Compatibility
+
+If you upgraded to Laravel 11.x from a Laravel 10.x application, you may need to add the `ConcurrencyServiceProvider` to the `providers` array in your application's `config/app.php` configuration file:
+
+```php
+'providers' => ServiceProvider::defaultProviders()->merge([
+    /*
+     * Package Service Providers...
+     */
+    Illuminate\Concurrency\ConcurrencyServiceProvider::class, // [tl! add]
+
+    /*
+     * Application Service Providers...
+     */
+    App\Providers\AppServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
+    // App\Providers\BroadcastServiceProvider::class,
+    App\Providers\EventServiceProvider::class,
+    App\Providers\RouteServiceProvider::class,
+])->toArray(),
+```
+
 <a name="how-it-works"></a>
 #### How it Works
 
@@ -26,10 +49,6 @@ composer require spatie/fork
 ```
 
 The `sync` driver is primarily useful during testing when you want to disable all concurrency and simply execute the given closures in sequence within the parent process.
-
-> [!NOTE]
-> If your project had been upgraded from an earlier version of Laravel, you may not have the current Laravel structure. Consequently, your service provider stack may not include the `Illuminate\Concurrency\ConcurrencyServiceProvider` class. If this is the case, make sure you add this class to your `providers` array in `config/app.php` to enable concurrency.
-
 
 <a name="running-concurrent-tasks"></a>
 ## Running Concurrent Tasks
