@@ -518,7 +518,7 @@ php artisan passport:purge --expired
 
 You may also configure a [scheduled job](/docs/{{version}}/scheduling) in your application's `routes/console.php` file to automatically prune your tokens on a schedule:
 
-    use Laravel\Support\Facades\Schedule;
+    use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('passport:purge')->hourly();
 
