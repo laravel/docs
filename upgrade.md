@@ -126,9 +126,15 @@ However, we do **not recommend** that Laravel 10 applications upgrading to Larav
 <a name="password-rehashing"></a>
 #### Password Rehashing
 
+**Likelihood Of Impact: Low**
+
 Laravel 11 will automatically rehash your user's passwords during authentication if your hashing algorithm's "work factor" has been updated since the password was last hashed.
 
-Typically, this should not disrupt your application; however, you may disable this behavior by adding the `rehash_on_login` option to your application's `config/hashing.php` configuration file:
+Typically, this should not disrupt your application; however, if your User model uses a password field other than `password`, this must be specified in the User model:
+
+    protected $authPasswordName = 'my_password_field';
+
+Alternatively, you may disable this behavior by adding the `rehash_on_login` option to your application's `config/hashing.php` configuration file:
 
     'rehash_on_login' => false,
 
