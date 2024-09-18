@@ -228,6 +228,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [whenTest](#method-fluent-str-when-test)
 [wordCount](#method-fluent-str-word-count)
 [words](#method-fluent-str-words)
+[wrap](#method-fluent-str-wrap)
 
 </div>
 
@@ -3051,3 +3052,18 @@ The `words` method limits the number of words in a string. If necessary, you may
     $string = Str::of('Perfectly balanced, as all things should be.')->words(3, ' >>>');
 
     // Perfectly balanced, as >>>
+
+<a name="method-fluent-str-wrap"></a>
+#### `wrap` {.collection-method}
+
+The `wrap` method wraps the given string with an additional string or pair of strings:
+
+    use Illuminate\Support\Str;
+
+    Str::of('Laravel')->wrap('"');
+
+    // "Laravel"
+
+    Str::is('is')->wrap(before: 'This ', after: ' Laravel!');
+
+    // This is Laravel!
