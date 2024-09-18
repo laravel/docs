@@ -62,17 +62,17 @@ Typically, you should declare collection macros in a [service provider](/docs/{{
 For the remainder of this documentation, we'll discuss each method available on the `Collection` class. Remember, all of these methods may be chained to fluently manipulate the underlying array. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary:
 
 <style>
-    #collection-method-list > p {
+    .collection-method-list > p {
         column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
         column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
     }
 
-    #collection-method-list a {
+    .collection-method-list a {
         display: block;
     }
 </style>
 
-<div id="collection-method-list" markdown="1">
+<div class="collection-method-list" markdown="1">
 
 [all](#method-all)
 [average](#method-average)
@@ -2615,7 +2615,7 @@ To create a lazy collection instance, you should pass a PHP generator function t
 
 Almost all methods available on the `Collection` class are also available on the `LazyCollection` class. Both of these classes implement the `Illuminate\Support\Enumerable` contract, which defines the following methods:
 
-<div id="collection-method-list" markdown="1">
+<div class="collection-method-list" markdown="1">
 
 [all](#method-all)
 [average](#method-average)
