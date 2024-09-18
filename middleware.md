@@ -392,6 +392,16 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 
     }
 
+To use this middleware, you need to register an alias for it in your application's `bootstrap/app.php` file:
+
+    use App\Http\Middleware\EnsureUserHasRole;
+    
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'role' => EnsureUserHasRole::class,
+        ]);
+    })
+
 Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`:
 
     Route::put('/post/{id}', function (string $id) {
