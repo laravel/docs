@@ -2401,19 +2401,14 @@ By default, deferred functions will only be executed if the HTTP response, Artis
 defer(fn () => Metrics::reportOrder($order))->always();
 ```
 
+<a name="cancelling-deferred-functions"></a>
 #### Cancelling Deferred Functions
 
-If you need to cancel a specific deferred function before it is executed, you can use the `forget` method. This allows you to remove a deferred task by referencing the name you provided when you initially set up the deferred function.
-
-To name a deferred function, pass a second argument to the defer function:
+If you need to cancel a specific deferred function before it is executed, you can use the `forget` method to cancel a function by its name. To name a deferred function, provide a second argument to the `defer` function:
 
 ```php
 defer(fn () => Metrics::report(), 'reportMetrics');
-```
 
-Then, if needed, you can cancel the execution of this deferred function using forget:
-
-```php
 defer()->forget('reportMetrics');
 ```
 
