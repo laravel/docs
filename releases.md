@@ -184,7 +184,7 @@ Laravel 5.6 introduces two new methods for generating UUIDs: `Str::uuid` and `St
 
 The default `laravel/laravel` application now contains a `dev` Composer dependency for the [Collision](https://github.com/nunomaduro/collision) package maintained by Nuno Maduro. This packages provides beautiful error reporting when interacting with your Laravel application on the command line:
 
-<img src="https://raw.githubusercontent.com/nunomaduro/collision/stable/docs/example.png" width="600" height="388">
+<img src="https://raw.githubusercontent.com/nunomaduro/collision/v7.x/docs/example.png" width="600" height="388">
 
 ### Bootstrap 4
 
