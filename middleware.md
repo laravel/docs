@@ -394,15 +394,17 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 
 Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`:
 
+    use App\Http\Middleware\EnsureUserHasRole;
+
     Route::put('/post/{id}', function (string $id) {
         // ...
-    })->middleware('role:editor');
+    })->middleware(EnsureUserHasRole::class.':editor');
 
 Multiple parameters may be delimited by commas:
 
     Route::put('/post/{id}', function (string $id) {
         // ...
-    })->middleware('role:editor,publisher');
+    })->middleware(EnsureUserHasRole::class.':editor,publisher');
 
 <a name="terminable-middleware"></a>
 ## Terminable Middleware
