@@ -101,7 +101,7 @@ The `HasFactory` trait's `factory` method will use conventions to determine the 
     /**
      * Create a new factory instance for the model.
      */
-    protected static function newFactory(): Factory
+    protected static function newFactory()
     {
         return FlightFactory::new();
     }
