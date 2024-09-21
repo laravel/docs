@@ -79,6 +79,9 @@ The `storage:unlink` command may be used to destroy your configured symbolic lin
 php artisan storage:unlink
 ```
 
+> [!NOTE]  
+> If your application is served by Sail, the symbolic link must be created from within the docker container to avoid permission issues delivering the assets through Vite.
+
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
