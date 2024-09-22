@@ -100,8 +100,6 @@ The `HasFactory` trait's `factory` method will use conventions to determine the 
 
     /**
      * Create a new factory instance for the model.
-     *
-     * @return TFactory|null
      */
     protected static function newFactory()
     {
