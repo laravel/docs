@@ -1194,6 +1194,7 @@ An alternative, expressive syntax is also provided for these actions:
 | `$table->cascadeOnDelete();`  | Deletes should cascade.                           |
 | `$table->restrictOnDelete();` | Deletes should be restricted.                     |
 | `$table->nullOnDelete();`     | Deletes should set the foreign key value to null. |
+| `$table->noActionOnDelete();` | Prevents deletes if child records exist.          |
 
 </div>
 
