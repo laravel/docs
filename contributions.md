@@ -28,6 +28,7 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 
 - [Laravel Application](https://github.com/laravel/laravel)
 - [Laravel Art](https://github.com/laravel/art)
+- [Laravel Breeze](https://github.com/laravel/breeze)
 - [Laravel Documentation](https://github.com/laravel/docs)
 - [Laravel Dusk](https://github.com/laravel/dusk)
 - [Laravel Cashier Stripe](https://github.com/laravel/cashier)
