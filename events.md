@@ -631,7 +631,7 @@ If your event listener methods are defined within the subscriber itself, you may
 <a name="registering-event-subscribers"></a>
 ### Registering Event Subscribers
 
-After writing the subscriber, you are ready to register it with the event dispatcher. You may register subscribers using the `subscribe` method of the `Event` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider`:
+After writing the subscriber, Laravel will automatically register it if it follows the [event-discovery](/docs/{{version}}/events#event-discovery) rules. If your subscriber isn't auto-registered by Laravel, you may register it manually using the `subscribe` method of the `Event` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider`:
 
     <?php
 
