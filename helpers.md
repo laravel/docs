@@ -2385,6 +2385,7 @@ Deferred functions allow you to defer the execution of a closure until after the
 use App\Services\Metrics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use function Illuminate\Support\defer;
 
 Route::post('/orders', function (Request $request) {
     // Create order...
