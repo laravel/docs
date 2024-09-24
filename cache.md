@@ -88,6 +88,8 @@ For more information on configuring Redis, consult its [Laravel documentation pa
 
 Before using the [DynamoDB](https://aws.amazon.com/dynamodb) cache driver, you must create a DynamoDB table to store all of the cached data. Typically, this table should be named `cache`. However, you should name the table based on the value of the `stores.dynamodb.table` configuration value within the `cache` configuration file. The table name may also be set via the `DYNAMODB_CACHE_TABLE` environment variable.
 
+By default, DynamoDB will not proactively remove expired items from a table.  To avoid persisting items in cache that are no longer relevant, you should [enable Time to Live (TTL)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) on the table.  When configuring the table's TTL settings, be sure to set the `TTL attribute name` to `expires_at`.
+
 This table should also have a string partition key with a name that corresponds to the value of the `stores.dynamodb.attributes.key` configuration item within your application's `cache` configuration file. By default, the partition key should be named `key`.
 
 Next, install the AWS SDK so that your Laravel application can communicate with DynamoDB:
