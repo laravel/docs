@@ -198,6 +198,33 @@ User::class => [
 ],
 ```
 
+An alternative to defining your collection schema and searchable parameters inside the `config/scout.php` is to define them in your searchable model directly by implementing these functions:
+
+```php
+    public function typesenseCollectionSchema()
+    {
+        return [
+            'fields' => [
+                [
+                  'name' => 'id',
+                  'type' => 'string'
+                ],
+                //...
+            ],
+            'default_sorting_field' => 'created_at',
+        ];
+    }
+```
+
+```php
+    public function typesenseSearchParameters()
+    {
+        return  [
+            'query_by' => 'name'
+        ];
+    }
+```
+
 <a name="typesense-dynamic-search-parameters"></a>
 #### Dynamic Search Parameters
 
