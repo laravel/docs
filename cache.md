@@ -90,6 +90,8 @@ Before using the [DynamoDB](https://aws.amazon.com/dynamodb) cache driver, you m
 
 This table should also have a string partition key with a name that corresponds to the value of the `stores.dynamodb.attributes.key` configuration item within your application's `cache` configuration file. By default, the partition key should be named `key`.
 
+Typically, DynamoDB will not proactively remove expired items from a table. Therefore, you should [enable Time to Live (TTL)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) on the table. When configuring the table's TTL settings, you should set the TTL attribute name to `expires_at`.
+
 Next, install the AWS SDK so that your Laravel application can communicate with DynamoDB:
 
 ```shell
