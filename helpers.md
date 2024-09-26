@@ -2379,12 +2379,13 @@ For a thorough discussion of Carbon and its features, please consult the [offici
 
 While Laravel's [queued jobs](/docs/{{version}}/queues) allow you to queue tasks for background processing, sometimes you may have simple tasks you would like to defer without configuring or maintaining a long-running queue worker.
 
-Deferred functions allow you to defer the execution of a closure until after the HTTP response has been sent to the user, keeping your application feeling fast and responsive. To defer the execution of a closure, simply pass the closure to the `defer` function:
+Deferred functions allow you to defer the execution of a closure until after the HTTP response has been sent to the user, keeping your application feeling fast and responsive. To defer the execution of a closure, simply pass the closure to the `Illuminate\Support\defer` function:
 
 ```php
 use App\Services\Metrics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use function Illuminate\Support\defer;
 
 Route::post('/orders', function (Request $request) {
     // Create order...
@@ -2395,7 +2396,7 @@ Route::post('/orders', function (Request $request) {
 });
 ```
 
-By default, deferred functions will only be executed if the HTTP response, Artisan command, or queued job from which `defer` is invoked completes successfully. This means that deferred functions will not be executed if a request results in a `4xx` or `5xx` HTTP response. If you would like a deferred function to always execute, you may chain the `always` method onto your deferred function:
+By default, deferred functions will only be executed if the HTTP response, Artisan command, or queued job from which `Illuminate\Support\defer` is invoked completes successfully. This means that deferred functions will not be executed if a request results in a `4xx` or `5xx` HTTP response. If you would like a deferred function to always execute, you may chain the `always` method onto your deferred function:
 
 ```php
 defer(fn () => Metrics::reportOrder($order))->always();
@@ -2404,7 +2405,7 @@ defer(fn () => Metrics::reportOrder($order))->always();
 <a name="cancelling-deferred-functions"></a>
 #### Cancelling Deferred Functions
 
-If you need to cancel a deferred function before it is executed, you can use the `forget` method to cancel the function by its name. To name a deferred function, provide a second argument to the `defer` function:
+If you need to cancel a deferred function before it is executed, you can use the `forget` method to cancel the function by its name. To name a deferred function, provide a second argument to the `Illuminate\Support\defer` function:
 
 ```php
 defer(fn () => Metrics::report(), 'reportMetrics');
