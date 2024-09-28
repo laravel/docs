@@ -426,7 +426,7 @@ You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
 
 The `UserRequests` recorder captures information about the users making requests to your application for display on the [Application Usage](#application-usage-card) card.
 
-You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
+You may optionally adjust the [sample rate](#sampling) and ignored URL patterns.
 
 <a name="filtering"></a>
 ### Filtering
