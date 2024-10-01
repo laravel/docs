@@ -482,6 +482,19 @@ Flight::where('departed', true)
     }, $column = 'id');
 ```
 
+When using `chunkById` or `lazyById`, if your query uses `orWhere` or any "or" clause, you will need to logically group your query:
+
+```php
+Flight::where(function ($query) {
+    $query->where('delayed', true)->orWhere('cancelled', true);
+})->chunkById(200, function (Collection $flights) {
+    $flights->each->update([
+        'departed' => false,
+        'cancelled' => true
+    ]);
+}, $column = 'id');
+```
+
 <a name="chunking-using-lazy-collections"></a>
 ### Chunking Using Lazy Collections
 
