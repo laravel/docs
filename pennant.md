@@ -364,7 +364,7 @@ $user->features()->unless('new-api',
 <a name="blade-directive"></a>
 ### Blade Directive
 
-To make checking features in Blade a seamless experience, Pennant offers a `@feature` directive:
+To make checking features in Blade a seamless experience, Pennant offers the `@feature` and `@featureany` directive:
 
 ```blade
 @feature('site-redesign')
@@ -372,6 +372,10 @@ To make checking features in Blade a seamless experience, Pennant offers a `@fea
 @else
     <!-- 'site-redesign' is inactive -->
 @endfeature
+
+@featureany(['site-redesign', 'beta'])
+    <!-- 'site-redesign' or `beta` is active -->
+@endfeatureany
 ```
 
 <a name="middleware"></a>
