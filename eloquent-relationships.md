@@ -83,6 +83,8 @@ A one-to-one relationship is a very basic type of database relationship. For exa
     {
         /**
          * Get the phone associated with the user.
+         *
+         * @return HasOne<Phone, $this>
          */
         public function phone(): HasOne
         {
@@ -118,6 +120,8 @@ So, we can access the `Phone` model from our `User` model. Next, let's define a 
     {
         /**
          * Get the user that owns the phone.
+         *
+         * @return BelongsTo<User, $this>
          */
         public function user(): BelongsTo
         {
@@ -131,6 +135,8 @@ Eloquent determines the foreign key name by examining the name of the relationsh
 
     /**
      * Get the user that owns the phone.
+     *
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -141,6 +147,8 @@ If the parent model does not use `id` as its primary key, or you wish to find th
 
     /**
      * Get the user that owns the phone.
+     *
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -163,6 +171,8 @@ A one-to-many relationship is used to define relationships where a single model 
     {
         /**
          * Get the comments for the blog post.
+         *
+         * @return HasMany<Comment, $this>
          */
         public function comments(): HasMany
         {
@@ -224,6 +234,8 @@ If you would like Eloquent to automatically hydrate parent models onto their chi
     {
         /**
          * Get the comments for the blog post.
+         *
+         * @return HasMany<Comment, $this>
          */
         public function comments(): HasMany
         {
@@ -257,6 +269,8 @@ Now that we can access all of a post's comments, let's define a relationship to 
     {
         /**
          * Get the post that owns the comment.
+         *
+         * @return BelongsTo<Post, $this>
          */
         public function post(): BelongsTo
         {
@@ -280,6 +294,8 @@ However, if the foreign key for your relationship does not follow these conventi
 
     /**
      * Get the post that owns the comment.
+     *
+     * @return BelongsTo<Post, $this>
      */
     public function post(): BelongsTo
     {
@@ -290,6 +306,8 @@ If your parent model does not use `id` as its primary key, or you wish to find t
 
     /**
      * Get the post that owns the comment.
+     *
+     * @return BelongsTo<Post, $this>
      */
     public function post(): BelongsTo
     {
@@ -303,6 +321,8 @@ The `belongsTo`, `hasOne`, `hasOneThrough`, and `morphOne` relationships allow y
 
     /**
      * Get the author of the post.
+     *
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -313,6 +333,8 @@ To populate the default model with attributes, you may pass an array or closure 
 
     /**
      * Get the author of the post.
+     *
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -323,6 +345,8 @@ To populate the default model with attributes, you may pass an array or closure 
 
     /**
      * Get the author of the post.
+     *
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -362,6 +386,8 @@ Sometimes a model may have many related models, yet you want to easily retrieve 
 ```php
 /**
  * Get the user's most recent order.
+ *
+ * @return HasOne<Order, $this>
  */
 public function latestOrder(): HasOne
 {
@@ -374,6 +400,8 @@ Likewise, you may define a method to retrieve the "oldest", or first, related mo
 ```php
 /**
  * Get the user's oldest order.
+ *
+ * @return HasOne<Order, $this>
  */
 public function oldestOrder(): HasOne
 {
@@ -388,6 +416,8 @@ For example, using the `ofMany` method, you may retrieve the user's most expensi
 ```php
 /**
  * Get the user's largest order.
+ *
+ * @return HasOne<Order, $this>
  */
 public function largestOrder(): HasOne
 {
@@ -406,6 +436,8 @@ Often, when retrieving a single model using the `latestOfMany`, `oldestOfMany`, 
 ```php
 /**
  * Get the user's orders.
+ *
+ * @return HasMany<Order, $this>
  */
 public function orders(): HasMany
 {
@@ -414,6 +446,8 @@ public function orders(): HasMany
 
 /**
  * Get the user's largest order.
+ *
+ * @return HasOne<Order, $this>
  */
 public function largestOrder(): HasOne
 {
@@ -431,6 +465,8 @@ So, in summary, we need to retrieve the latest published pricing where the publi
 ```php
 /**
  * Get the current pricing for the product.
+ *
+ * @return HasOne<Price, $this>
  */
 public function currentPricing(): HasOne
 {
@@ -477,6 +513,8 @@ Now that we have examined the table structure for the relationship, let's define
     {
         /**
          * Get the car's owner.
+         *
+         * @return HasOneThrough<Owner, Car, $this>
          */
         public function carOwner(): HasOneThrough
         {
@@ -505,6 +543,8 @@ Typical Eloquent foreign key conventions will be used when performing the relati
     {
         /**
          * Get the car's owner.
+         *
+         * @return HasOneThrough<Owner, Car, $this>
          */
         public function carOwner(): HasOneThrough
         {
@@ -561,6 +601,8 @@ Now that we have examined the table structure for the relationship, let's define
     {
         /**
          * Get all of the deployments for the project.
+         *
+         * @return HasOneThrough<Deployment, Environment, $this>
          */
         public function deployments(): HasManyThrough
         {
@@ -589,6 +631,11 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 
     class Project extends Model
     {
+        /**
+         * Get all of the deployments for the project.
+         *
+         * @return HasOneThrough<Deployment, Environment, $this>
+         */
         public function deployments(): HasManyThrough
         {
             return $this->hasManyThrough(
@@ -652,6 +699,8 @@ Many-to-many relationships are defined by writing a method that returns the resu
     {
         /**
          * The roles that belong to the user.
+         *
+         * @return BelongsToMany<Role, $this>
          */
         public function roles(): BelongsToMany
         {
@@ -697,6 +746,8 @@ To define the "inverse" of a many-to-many relationship, you should define a meth
     {
         /**
          * The users that belong to the role.
+         *
+         * @return BelongsToMany<User, $this>
          */
         public function users(): BelongsToMany
         {
@@ -808,6 +859,8 @@ Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent
     {
         /**
          * The users that belong to the role.
+         *
+         * @return BelongsToMany<User, $this>
          */
         public function users(): BelongsToMany
         {
@@ -888,6 +941,8 @@ Next, let's examine the model definitions needed to build this relationship:
     {
         /**
          * Get the parent imageable model (user or post).
+         *
+         * @return MorphTo<Model, $this>
          */
         public function imageable(): MorphTo
         {
@@ -902,6 +957,8 @@ Next, let's examine the model definitions needed to build this relationship:
     {
         /**
          * Get the post's image.
+         *
+         * @return MorphOne<Image, $this>
          */
         public function image(): MorphOne
         {
@@ -916,6 +973,8 @@ Next, let's examine the model definitions needed to build this relationship:
     {
         /**
          * Get the user's image.
+         *
+         * @return MorphOne<Image, $this>
          */
         public function image(): MorphOne
         {
@@ -951,6 +1010,8 @@ If necessary, you may specify the name of the "id" and "type" columns utilized b
 
     /**
      * Get the model that the image belongs to.
+     *
+     * @return MorphTo<Model, $this>
      */
     public function imageable(): MorphTo
     {
@@ -997,6 +1058,8 @@ Next, let's examine the model definitions needed to build this relationship:
     {
         /**
          * Get the parent commentable model (post or video).
+         *
+         * @return MorphTo<Post|Video, $this>
          */
         public function commentable(): MorphTo
         {
@@ -1011,6 +1074,8 @@ Next, let's examine the model definitions needed to build this relationship:
     {
         /**
          * Get all of the post's comments.
+         *
+         * @return MorphMany<Comment, $this>
          */
         public function comments(): MorphMany
         {
@@ -1025,6 +1090,8 @@ Next, let's examine the model definitions needed to build this relationship:
     {
         /**
          * Get all of the video's comments.
+         *
+         * @return MorphMany<Comment, $this>
          */
         public function comments(): MorphMany
         {
@@ -1078,6 +1145,8 @@ If you would like Eloquent to automatically hydrate parent models onto their chi
     {
         /**
          * Get all of the post's comments.
+         *
+         * @return MorphMany<Comment, $this>
          */
         public function comments(): MorphMany
         {
@@ -1103,6 +1172,8 @@ Sometimes a model may have many related models, yet you want to easily retrieve 
 ```php
 /**
  * Get the user's most recent image.
+ *
+ * @return MorphOne<Image, $this>
  */
 public function latestImage(): MorphOne
 {
@@ -1115,6 +1186,8 @@ Likewise, you may define a method to retrieve the "oldest", or first, related mo
 ```php
 /**
  * Get the user's oldest image.
+ *
+ * @return MorphOne<Image, $this>
  */
 public function oldestImage(): MorphOne
 {
@@ -1129,6 +1202,8 @@ For example, using the `ofMany` method, you may retrieve the user's most "liked"
 ```php
 /**
  * Get the user's most popular image.
+ *
+ * @return MorphOne<Image, $this>
  */
 public function bestImage(): MorphOne
 {
@@ -1185,6 +1260,8 @@ The `morphToMany` method accepts the name of the related model as well as the "r
     {
         /**
          * Get all of the tags for the post.
+         *
+         * @return MorphToMany<Tag, $this>
          */
         public function tags(): MorphToMany
         {
@@ -1210,6 +1287,8 @@ The `morphedByMany` method accepts the name of the related model as well as the 
     {
         /**
          * Get all of the posts that are assigned this tag.
+         *
+         * @return MorphToMany<Post, $this>
          */
         public function posts(): MorphToMany
         {
@@ -1218,6 +1297,8 @@ The `morphedByMany` method accepts the name of the related model as well as the 
 
         /**
          * Get all of the videos that are assigned this tag.
+         *
+         * @return MorphToMany<Video, $this>
          */
         public function videos(): MorphToMany
         {
@@ -1314,6 +1395,8 @@ For example, imagine a blog application in which a `User` model has many associa
     {
         /**
          * Get all of the posts for the user.
+         *
+         * @return HasMany<Post, $this>
          */
         public function posts(): HasMany
         {
@@ -1658,6 +1741,8 @@ When accessing Eloquent relationships as properties, the related models are "laz
     {
         /**
          * Get the author that wrote the book.
+         *
+         * @return BelongsTo<Author, $this>
          */
         public function author(): BelongsTo
         {
@@ -1730,6 +1815,8 @@ If you would like to eager load a `morphTo` relationship, as well as nested rela
     {
         /**
          * Get the parent of the activity feed record.
+         *
+         * @return MorphTo<Model, $this>
          */
         public function parentable(): MorphTo
         {
@@ -1785,6 +1872,8 @@ Sometimes you might want to always load some relationships when retrieving a mod
 
         /**
          * Get the author that wrote the book.
+         *
+         * @return BelongsTo<Author, $this>
          */
         public function author(): BelongsTo
         {
@@ -1793,6 +1882,8 @@ Sometimes you might want to always load some relationships when retrieving a mod
 
         /**
          * Get the genre of the book.
+         *
+         * @return BelongsTo<Genre, $this>
          */
         public function genre(): BelongsTo
         {
@@ -1896,6 +1987,8 @@ This method accepts the name of the `morphTo` relationship as its first argument
     {
         /**
          * Get the parent of the activity feed record.
+         *
+         * @return MorphTo<Model, $this>
          */
         public function parentable(): MorphTo
         {
@@ -2164,6 +2257,8 @@ For example, when a `Comment` model is updated, you may want to automatically "t
 
         /**
          * Get the post that the comment belongs to.
+         *
+         * @return BelongsTo<Post, $this>
          */
         public function post(): BelongsTo
         {
