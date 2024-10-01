@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Defining Relationships](#defining-relationships)
     - [One to One](#one-to-one)
-    - [One to Many](#one-to-many)
+    - [One to Many / Has Many](#one-to-many)
     - [One to Many (Inverse) / Belongs To](#one-to-many-inverse)
     - [Has One of Many](#has-one-of-many)
     - [Has One Through](#has-one-through)
@@ -148,7 +148,7 @@ If the parent model does not use `id` as its primary key, or you wish to find th
     }
 
 <a name="one-to-many"></a>
-### One to Many
+### One to Many / Has Many
 
 A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a blog post may have an infinite number of comments. Like all other Eloquent relationships, one-to-many relationships are defined by defining a method on your Eloquent model:
 
