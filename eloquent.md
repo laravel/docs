@@ -482,7 +482,7 @@ Flight::where('departed', true)
     }, $column = 'id');
 ```
 
-When using `chunkById` or `lazyById`, if your query uses `orWhere` or any "or" clause, you will need to logically group your query:
+Since the `chunkById` and `lazyById` methods add their own "where" conditions to the query being executed, you should typically [logically group](/docs/{{version}}/queries#logical-grouping) your own conditions within a closure:
 
 ```php
 Flight::where(function ($query) {
@@ -492,7 +492,7 @@ Flight::where(function ($query) {
         'departed' => false,
         'cancelled' => true
     ]);
-}, $column = 'id');
+}, column: 'id');
 ```
 
 <a name="chunking-using-lazy-collections"></a>
