@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Defining Relationships](#defining-relationships)
-    - [One to One](#one-to-one)
+    - [One to One / Has One](#one-to-one)
     - [One to Many / Has Many](#one-to-many)
     - [One to Many (Inverse) / Belongs To](#one-to-many-inverse)
     - [Has One of Many](#has-one-of-many)
@@ -68,7 +68,7 @@ Eloquent relationships are defined as methods on your Eloquent model classes. Si
 But, before diving too deep into using relationships, let's learn how to define each type of relationship supported by Eloquent.
 
 <a name="one-to-one"></a>
-### One to One
+### One to One / Has One
 
 A one-to-one relationship is a very basic type of database relationship. For example, a `User` model might be associated with one `Phone` model. To define this relationship, we will place a `phone` method on the `User` model. The `phone` method should call the `hasOne` method and return its result. The `hasOne` method is available to your model via the model's `Illuminate\Database\Eloquent\Model` base class:
 
