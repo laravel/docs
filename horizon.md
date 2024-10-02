@@ -230,7 +230,7 @@ You may check the current status of the Horizon process using the `horizon:statu
 php artisan horizon:status
 ```
 
-You may also check the current status of specific Horizon [supervisors](#supervisors) using the `horizon:supervisor-status` Artisan command:
+You may check the current status of a specific Horizon [supervisor](#supervisors) using the `horizon:supervisor-status` Artisan command:
 
 ```shell
 php artisan horizon:supervisor-status supervisor-1
