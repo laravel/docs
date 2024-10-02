@@ -230,6 +230,12 @@ You may check the current status of the Horizon process using the `horizon:statu
 php artisan horizon:status
 ```
 
+You may check the current status of a specific Horizon [supervisor](#supervisors) using the `horizon:supervisor-status` Artisan command:
+
+```shell
+php artisan horizon:supervisor-status supervisor-1
+```
+
 You may gracefully terminate the Horizon process using the `horizon:terminate` Artisan command. Any jobs that are currently being processed will be completed and then Horizon will stop executing:
 
 ```shell
