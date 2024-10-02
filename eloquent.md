@@ -385,6 +385,12 @@ Also, you may instruct Laravel to throw an exception when attempting to fill an 
 Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
 ```
 
+Lastly, you may instruct Laravel to throw an exception when attempting to access an attribute that either does not exist or was not retrieved by invoking the `preventAccessingMissingAttributes` method. This can help prevent unexpected errors during local development when attempting to access an attribute that has not been defined in the model's table structure, or has not been included in a `select()` statement:
+
+```php
+Model::preventAccessingMissingAttributes(!$this->app->isProduction());
+```
+
 <a name="retrieving-models"></a>
 ## Retrieving Models
 
