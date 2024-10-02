@@ -13,6 +13,7 @@
 - [Modifying Columns](#modifying-columns)
 - [SQLite Minimum Version](#sqlite-minimum-version)
 - [Updating Sanctum](#updating-sanctum)
+- [Task Scheduling](#task-scheduling)
 
 </div>
 
@@ -119,6 +120,15 @@ Finally, you may remove the `doctrine/dbal` Composer dependency if you have prev
 Laravel 11 introduces a new default application structure with fewer default files. Namely, new Laravel applications contain fewer service providers, middleware, and configuration files.
 
 However, we do **not recommend** that Laravel 10 applications upgrading to Laravel 11 attempt to migrate their application structure, as Laravel 11 has been carefully tuned to also support the Laravel 10 application structure.
+
+<a name="task-scheduling"></a>
+### Task Scheduling
+
+**Likelyhood Of Impact: High**
+
+Laravel 11 no longer support the use of `app/Console/Kernel.php` to manage scheduled tasks, Your scheduled tasks should now be defined in the application's `routes/console.php` file.
+
+Refer to the [Task Scheduling](/docs/{{version}}/scheduling) documentation page to understand how to use the Schedule Facade through the examples provided for the different cases.
 
 <a name="authentication"></a>
 ### Authentication
