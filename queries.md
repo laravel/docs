@@ -161,20 +161,22 @@ If you are updating database records while chunking results, your chunk results 
             }
         });
 
+Since the `chunkById` and `lazyById` methods add their own "where" conditions to the query being executed, you should typically [logically group](#logical-grouping) your own conditions within a closure:
+
+```php
+DB::table('users')->where(function ($query) {
+    $query->where('credits', 1)->orWhere('credits', 2);
+})->chunkById(100, function (Collection $users) {
+    foreach ($users as $user) {
+        DB::table('users')
+          ->where('id', $user->id)
+          ->update(['credits' => 3]);
+    }
+});
+```
+
 > [!WARNING]  
 > When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results.
-
-When using `chunkById` or `lazyById`, if your query uses `orWhere` or any "or" clause, you will need to logically group your query:
-    
-    DB::table('users')->where(function ($query) {
-        $query->where('credits', 1)->orWhere('credits', 4);
-    })->chunkById(100, function (Collection $users) {
-        foreach ($users as $user) {
-            DB::table('users')
-              ->where('id', $user->id)
-              ->update(['credits' => 5]);
-        }
-    });
 
 <a name="streaming-results-lazily"></a>
 ### Streaming Results Lazily
