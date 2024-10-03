@@ -1649,7 +1649,7 @@ If you defined your DynamoDB table with a `ttl` attribute, you may define config
 <a name="queueing-closures"></a>
 ## Queueing Closures
 
-Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it can not be modified in transit:
+Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it cannot be modified in transit:
 
     $podcast = App\Podcast::find(1);
 
