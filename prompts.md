@@ -571,6 +571,20 @@ $id = search(
 
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
 
+When filtering an array where you intend to return the value, you should use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
+
+```php
+$names = collect(['Taylor', 'Abigail']);
+
+$selected = search(
+    label: 'Search for the user that should receive the mail',
+    options: fn (string $value) => $names
+        ->filter(fn ($name) => Str::contains($name, $value, ignoreCase: true))
+        ->values()
+        ->all(),
+);
+```
+
 You may also include placeholder text and an informational hint:
 
 ```php
@@ -636,6 +650,20 @@ $ids = multisearch(
 ```
 
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected options' keys will be returned; otherwise, their values will be returned instead.
+
+When filtering an array where you intend to return the value, you should use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
+
+```php
+$names = collect(['Taylor', 'Abigail']);
+
+$selected = multisearch(
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => $names
+        ->filter(fn ($name) => Str::contains($name, $value, ignoreCase: true))
+        ->values()
+        ->all(),
+);
+```
 
 You may also include placeholder text and an informational hint:
 
