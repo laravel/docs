@@ -571,7 +571,7 @@ $id = search(
 
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
 
-When filtering an array where you intend to return the value, be sure to use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
+When filtering an array where you intend to return the value, you should use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
 
 ```php
 $names = collect(['Taylor', 'Abigail']);
@@ -651,7 +651,7 @@ $ids = multisearch(
 
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected options' keys will be returned; otherwise, their values will be returned instead.
 
-When filtering an array where you intend to return the values, be sure to use the `array_values` function the or `values` Collection method to ensure the array doesn't become associative:
+When filtering an array where you intend to return the value, you should use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
 
 ```php
 $names = collect(['Taylor', 'Abigail']);
