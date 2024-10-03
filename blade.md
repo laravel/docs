@@ -1435,7 +1435,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 ```
 
 > [!WARNING]  
-> The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
+> The `@aware` directive cannot access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component cannot be accessed by the `@aware` directive.
 
 <a name="anonymous-component-paths"></a>
 ### Anonymous Component Paths
