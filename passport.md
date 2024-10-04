@@ -799,27 +799,27 @@ Before your application can issue tokens via the client credentials grant, you w
 php artisan passport:client --client
 ```
 
-Next, to use this grant type, register a middleware alias for the `CheckClientCredentials` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
+Next, register a middleware alias for the `CheckToken` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
 
-    use Laravel\Passport\Http\Middleware\CheckClientCredentials;
+    use Laravel\Passport\Http\Middleware\CheckToken;
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'client' => CheckClientCredentials::class
+            'token' => CheckToken::class,
         ]);
     })
 
 Then, attach the middleware to a route:
 
     Route::get('/orders', function (Request $request) {
-        ...
-    })->middleware('client');
+        // Access token is valid...
+    })->middleware('token');
 
-To restrict access to the route to specific scopes, you may provide a comma-delimited list of the required scopes when attaching the `client` middleware to the route:
+To restrict access to the route to specific scopes, you may provide a comma-delimited list of the required scopes when attaching the `token` middleware to the route:
 
     Route::get('/orders', function (Request $request) {
-        ...
-    })->middleware('client:check-status,your-scope');
+        // Access token has either "check-status" or "place-orders" scope...
+    })->middleware('token:check-status,place-orders');
 
 <a name="retrieving-tokens"></a>
 ### Retrieving Tokens
