@@ -323,6 +323,9 @@ After configuring your application's index settings, you must invoke the `scout:
 php artisan scout:sync-index-settings
 ```
 
+> [!WARNING]  
+> If an index setting is later removed from the `index_settings` array, default settings will not be automatically restored by the `scout:sync-index-settings` artisan command. The setting must be explicitly defined as its default value before running this command for the change to be reflected.
+
 <a name="configuring-the-model-id"></a>
 ### Configuring the Model ID
 
