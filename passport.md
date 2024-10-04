@@ -460,7 +460,7 @@ The code verifier should be a random string of between 43 and 128 characters con
 
 The code challenge should be a Base64 encoded string with URL and filename-safe characters. The trailing `'='` characters should be removed and no line breaks, whitespace, or other additional characters should be present.
 
-    $encoded = base64_encode(hash('sha256', $code_verifier, true));
+    $encoded = base64_encode(hash('sha256', $codeVerifier, true));
 
     $codeChallenge = strtr(rtrim($encoded, '='), '+/', '-_');
 
@@ -476,11 +476,11 @@ Once a client has been created, you may use the client ID and the generated code
         $request->session()->put('state', $state = Str::random(40));
 
         $request->session()->put(
-            'code_verifier', $code_verifier = Str::random(128)
+            'code_verifier', $codeVerifier = Str::random(128)
         );
 
         $codeChallenge = strtr(rtrim(
-            base64_encode(hash('sha256', $code_verifier, true))
+            base64_encode(hash('sha256', $codeVerifier, true))
         , '='), '+/', '-_');
 
         $query = http_build_query([
