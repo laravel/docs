@@ -1031,7 +1031,7 @@ The `scopes` middleware may be assigned to a route to verify that the incoming r
 The `scope` middleware may be assigned to a route to verify that the incoming request's access token has *at least one* of the listed scopes:
 
     Route::get('/orders', function () {
-        // Access token has either "check-status" or "place-orders" scope...
+        // Access token has either "check-status" or "place-orders" scopes...
     })->middleware(['auth:api', 'scope:check-status,place-orders']);
 
 <a name="checking-scopes-on-a-token-instance"></a>
