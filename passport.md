@@ -818,7 +818,7 @@ Then, attach the middleware to a route:
 To restrict access to the route to specific scopes, you may provide a comma-delimited list of the required scopes when attaching the `token` middleware to the route:
 
     Route::get('/orders', function (Request $request) {
-        // Access token has either "check-status" or "place-orders" scope...
+        // Access token has both "check-status" and "place-orders" scope...
     })->middleware('token:check-status,place-orders');
 
 <a name="retrieving-tokens"></a>
