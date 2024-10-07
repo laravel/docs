@@ -1502,6 +1502,10 @@ You may occasionally need to add query constraints based on the "type" of the re
         }
     )->get();
 
+Sometimes you may want to query for the children of a "morph to" relationship. You may find it more convenient to use the `whereMorphedTo` method, which will automatically determine the proper morph type mapping for the given model:
+
+    $comments = Comment::whereMorphedTo('commentable', $post);
+
 <a name="querying-all-morph-to-related-models"></a>
 #### Querying All Related Models
 
