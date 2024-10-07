@@ -1502,7 +1502,7 @@ You may occasionally need to add query constraints based on the "type" of the re
         }
     )->get();
 
-Sometimes you may want to query for the children of a "morph to" relationship. You may find it more convenient to use the `whereMorphedTo` and `whereNotMorphedTo` methods, which will automatically determine the proper morph type mapping for the given model. These methods accepts the name of the `morphTo` relationship as its first argument, and the related parent model as its second argument. For example, we may query all for all comments that belongs to either a specific `$post` or a specific `$video`:
+Sometimes you may want to query for the children of a "morph to" relationship's parent. You may accomplish this using the `whereMorphedTo` and `whereNotMorphedTo` methods, which will automatically determine the proper morph type mapping for the given model. These methods accept the name of the `morphTo` relationship as their first argument and the related parent model as their second argument:
 
     $comments = Comment::whereMorphedTo('commentable', $post)
                           ->orWhereMorphedTo('commentable', $video)
