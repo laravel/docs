@@ -69,7 +69,7 @@ If you don't have PHP and Composer installed on your local machine, the followin
 /bin/bash -c "$(curl -fsSL https://php.new/install/mac)"
 ```
 
-```shell tab=Windows Powershell
+```shell tab=Windows PowerShell
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows'))
 ```
 
@@ -78,6 +78,9 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 ```
 
 After running one of the commands above, you should restart your terminal session. To update PHP, Composer, and the Laravel installer after installing them via `php.new`, you can re-run the command in your terminal.
+
+> [!NOTE]
+> For a fully-featured, graphical PHP installation and management experience, check out [Laravel Herd](#local-installation-using-herd).
 
 <a name="creating-an-application"></a>
 ### Creating an Application
