@@ -2,7 +2,9 @@
 
 - [Meet Laravel](#meet-laravel)
     - [Why Laravel?](#why-laravel)
-- [Creating a Laravel Project](#creating-a-laravel-project)
+- [Creating a Laravel Application](#creating-a-laravel-project)
+    - [Installing PHP and the Laravel Installer](#installing-php)
+    - [Creating an Application](#creating-an-application)
 - [Initial Configuration](#initial-configuration)
     - [Environment Based Configuration](#environment-based-configuration)
     - [Databases and Migrations](#databases-and-migrations)
@@ -54,25 +56,39 @@ Need extreme scaling? Platforms like [Laravel Vapor](https://vapor.laravel.com) 
 Laravel combines the best packages in the PHP ecosystem to offer the most robust and developer friendly framework available. In addition, thousands of talented developers from around the world have [contributed to the framework](https://github.com/laravel/framework). Who knows, maybe you'll even become a Laravel contributor.
 
 <a name="creating-a-laravel-project"></a>
-## Creating a Laravel Project
+## Creating a Laravel Application
 
-Before creating your first Laravel project, make sure that your local machine has PHP and [Composer](https://getcomposer.org) installed. If you are developing on macOS or Windows, PHP, Composer, Node and NPM can be installed in minutes via [Laravel Herd](#local-installation-using-herd).
+<a name="installing-php"></a>
+### Installing PHP and the Laravel Installer
 
-After you have installed PHP and Composer, you may create a new Laravel project via Composer's `create-project` command:
+Before creating your first Laravel application, make sure that your local machine has [PHP](https://php.net) and [Composer](https://getcomposer.org) installed. In addition, you should install [Node and NPM](https://nodejs.org).
 
-```nothing
-composer create-project laravel/laravel example-app
+If you don't have PHP and Composer installed on your local machine, the following commands will install PHP, Composer, and the Laravel installer on macOS, Windows, or Linux:
+
+```shell tab=macOS
+/bin/bash -c "$(curl -fsSL https://php.new/install/mac)"
 ```
 
-Or, you may create new Laravel projects by globally installing [the Laravel installer](https://github.com/laravel/installer) via Composer. The Laravel installer allows you to select your preferred testing framework, database, and starter kit when creating new applications:
+```shell tab=Windows Powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows'))
+```
+
+```shell tab=Linux
+/bin/bash -c "$(curl -fsSL https://php.new/install/linux)"
+```
+
+After running one of the commands above, you should restart your terminal session. To update PHP, Composer, and the Laravel installer after installing them via `php.new`, you can re-run the command in your terminal.
+
+<a name="creating-an-application"></a>
+### Creating an Application
+
+After you have installed PHP, Composer, and the Laravel installer, you may create a new Laravel application. The Laravel installer allows you to select your preferred testing framework, database, and starter kit when creating new applications:
 
 ```nothing
-composer global require laravel/installer
-
 laravel new example-app
 ```
 
-Once the project has been created, start Laravel's local development server using Laravel Artisan's `serve` command:
+Once the application has been created, start Laravel's local development server using Laravel Artisan's `serve` command:
 
 ```nothing
 cd example-app
@@ -107,7 +123,7 @@ Your `.env` file should not be committed to your application's source control, s
 
 Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with a SQLite database.
 
-During the creation of the project, Laravel created a `database/database.sqlite` file for you, and ran the necessary migrations to create the application's database tables.
+During the creation of the application, Laravel created a `database/database.sqlite` file for you, and ran the necessary migrations to create the application's database tables.
 
 If you prefer to use another database driver such as MySQL or PostgreSQL, you can update your `.env` configuration file to use the appropriate database. For example, if you wish to use MySQL, update your `.env` configuration file's `DB_*` variables like so:
 
@@ -151,7 +167,7 @@ If you develop on macOS, you can download the Herd installer from the [Herd webs
 
 Herd for macOS uses [dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) to support "parked" directories. Any Laravel application in a parked directory will automatically be served by Herd. By default, Herd creates a parked directory at `~/Herd` and you can access any Laravel application in this directory on the `.test` domain using its directory name.
 
-After installing Herd, the fastest way to create a new Laravel project is using the Laravel CLI, which is bundled with Herd:
+After installing Herd, the fastest way to create a new Laravel application is using the Laravel CLI, which is bundled with Herd:
 
 ```nothing
 cd ~/Herd
@@ -173,7 +189,7 @@ The Herd UI is accessible by left-clicking on Herd's system tray icon. A right-c
 
 During installation, Herd creates a "parked" directory in your home directory at `%USERPROFILE%\Herd`. Any Laravel application in a parked directory will automatically be served by Herd, and you can access any Laravel application in this directory on the `.test` domain using its directory name.
 
-After installing Herd, the fastest way to create a new Laravel project is using the Laravel CLI, which is bundled with Herd. To get started, open Powershell and run the following commands:
+After installing Herd, the fastest way to create a new Laravel application is using the Laravel CLI, which is bundled with Herd. To get started, open Powershell and run the following commands:
 
 ```nothing
 cd ~\Herd
@@ -187,7 +203,7 @@ You can learn more about Herd by checking out the [Herd documentation for Window
 <a name="docker-installation-using-sail"></a>
 ## Docker Installation Using Sail
 
-We want it to be as easy as possible to get started with Laravel regardless of your preferred operating system. So, there are a variety of options for developing and running a Laravel project on your local machine. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
+We want it to be as easy as possible to get started with Laravel regardless of your preferred operating system. So, there are a variety of options for developing and running a Laravel application on your local machine. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel application using [Docker](https://www.docker.com).
 
 Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local machine's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your local machine. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
@@ -199,7 +215,7 @@ Laravel Sail is a light-weight command-line interface for interacting with Larav
 <a name="sail-on-macos"></a>
 ### Sail on macOS
 
-If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
+If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel application. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
 ```shell
 curl -s "https://laravel.build/example-app" | bash
@@ -209,7 +225,7 @@ Of course, you can change "example-app" in this URL to anything you like - just 
 
 Sail installation may take several minutes while Sail's application containers are built on your local machine.
 
-After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
+After the application has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
 ```shell
 cd example-app
@@ -236,7 +252,7 @@ Before we create a new Laravel application on your Windows machine, make sure to
 > [!NOTE]  
 > After installing and enabling WSL2, you should ensure that Docker Desktop is [configured to use the WSL2 backend](https://docs.docker.com/docker-for-windows/wsl/).
 
-Next, you are ready to create your first Laravel project. Launch [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab) and begin a new terminal session for your WSL2 Linux operating system. Next, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
+Next, you are ready to create your first Laravel application. Launch [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab) and begin a new terminal session for your WSL2 Linux operating system. Next, you can use a simple terminal command to create a new Laravel application. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
 ```shell
 curl -s https://laravel.build/example-app | bash
@@ -246,7 +262,7 @@ Of course, you can change "example-app" in this URL to anything you like - just 
 
 Sail installation may take several minutes while Sail's application containers are built on your local machine.
 
-After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
+After the application has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
 ```shell
 cd example-app
@@ -269,12 +285,12 @@ Finally, you can access the application in your web browser at: http://localhost
 
 Of course, you will need to be able to modify the Laravel application files that were created within your WSL2 installation. To accomplish this, we recommend using Microsoft's [Visual Studio Code](https://code.visualstudio.com) editor and their first-party extension for [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
 
-Once these tools are installed, you may open any Laravel project by executing the `code .` command from your application's root directory using Windows Terminal.
+Once these tools are installed, you may open any Laravel application by executing the `code .` command from your application's root directory using Windows Terminal.
 
 <a name="sail-on-linux"></a>
 ### Sail on Linux
 
-If you're developing on Linux and [Docker Compose](https://docs.docker.com/compose/install/) is already installed, you can use a simple terminal command to create a new Laravel project.
+If you're developing on Linux and [Docker Compose](https://docs.docker.com/compose/install/) is already installed, you can use a simple terminal command to create a new Laravel application.
 
 First, if you are using Docker Desktop for Linux, you should execute the following command. If you are not using Docker Desktop for Linux, you may skip this step:
 
@@ -292,7 +308,7 @@ Of course, you can change "example-app" in this URL to anything you like - just 
 
 Sail installation may take several minutes while Sail's application containers are built on your local machine.
 
-After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
+After the application has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
 ```shell
 cd example-app
@@ -338,7 +354,7 @@ In addition, the community maintained [Laravel Idea](https://laravel-idea.com/) 
 <a name="next-steps"></a>
 ## Next Steps
 
-Now that you have created your Laravel project, you may be wondering what to learn next. First, we strongly recommend becoming familiar with how Laravel works by reading the following documentation:
+Now that you have created your Laravel application, you may be wondering what to learn next. First, we strongly recommend becoming familiar with how Laravel works by reading the following documentation:
 
 <div class="content-list" markdown="1">
 
