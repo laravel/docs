@@ -829,12 +829,12 @@ If needed, you may return an array of rate limits for a given rate limiter confi
         ];
     });
 
-If using multiple rate limits on the same segmented value, note that each limit must have a unique key. This can be achieved by prefixing the value passed to the `by` method. For example, if you wish to have both a per-minute and per-day rate on authenticated users, this could be done like so:
+If you're assigning multiple rate limits segmented by identical `by` values, you should ensure that each `by` value is unique. The easiest way to achieve this is to prefix the values given to the `by` method:
 
     RateLimiter::for('uploads', function (Request $request) {
         return [
-            Limit::perMinute(10)->by('per-minute:' . $request->user()->id),
-            Limit::perDay(1000)->by('per-day:' . $request->user()->id),
+            Limit::perMinute(10)->by('minute:'.$request->user()->id),
+            Limit::perDay(1000)->by('day:'.$request->user()->id),
         ];
     });
 
