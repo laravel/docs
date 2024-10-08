@@ -82,7 +82,7 @@ After running one of the commands above, you should restart your terminal sessio
 <a name="creating-an-application"></a>
 ### Creating an Application
 
-After you have installed PHP, Composer, and the Laravel installer, you may create a new Laravel application. The Laravel installer allows you to select your preferred testing framework, database, and starter kit when creating new applications:
+After you have installed PHP, Composer, and the Laravel installer, you're ready to create a new Laravel application. The Laravel installer will prompt you to select your preferred testing framework, database, and starter kit:
 
 ```nothing
 laravel new example-app
