@@ -88,7 +88,7 @@ After you have installed PHP, Composer, and the Laravel installer, you're ready 
 laravel new example-app
 ```
 
-Once the application has been created, start Laravel's local development server using Laravel Artisan's `serve` command:
+Once the application has been created, start Laravel's local development server using the `serve` command:
 
 ```nothing
 cd example-app
