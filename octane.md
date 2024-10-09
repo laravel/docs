@@ -138,9 +138,11 @@ services:
 You may consult [the official FrankenPHP documentation](https://frankenphp.dev/docs/docker/) for more information on running FrankenPHP with Docker.
 
 <a name="frankenphp-configuration"></a>
-## Configuring FrankenPHP
+#### Configuring FrankenPHP
 
-When using FrankenPHP with Laravel, note that the default system `php.ini` does not apply to the FrankenPHP worker environment. To configure PHP settings, create a `php.ini` file in your project's root directory:
+When using FrankenPHP with Laravel, note that in order for you to modify the `php.ini` variables, it will search for a `php.ini` file in either the `/lib` directory or in the same directory as the binary (this is in the project root folder by default).
+
+To configure PHP settings, create a `php.ini` file in either of these places and add the desired settings. For example, to increase the memory limit and file upload size, you can add the following to your `./php.ini` file:
 
 ```ini
 # php.ini
@@ -149,10 +151,13 @@ upload_max_filesize = 100M
 post_max_size = 100M
 ```
 
-FrankenPHP will use these settings for your Laravel application, allowing environment-specific configurations without affecting system-wide PHP settings.
+When using the Docker image, you can specify the `$PHP_INI_DIR` environment variable. Doing so will make FrankenPHP scan for and load `$PHP_INI_DIR/*.ini`.
+
+You can read more about this behaviour in the [FrankenPHP configuration documentation](https://frankenphp.dev/docs/config/).
+
 
 > [!NOTE]
-> Restart your FrankenPHP worker for changes to take effect.
+> You must restart your FrankenPHP worker for changes to take effect.
 
 <a name="roadrunner"></a>
 ### RoadRunner
