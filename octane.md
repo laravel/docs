@@ -151,7 +151,7 @@ upload_max_filesize = 100M
 post_max_size = 100M
 ```
 
-If you're using the Docker image, you can set the `$PHP_INI_DIR` environment variable. FrankenPHP will then scan and load configuration files from `$PHP_INI_DIR/*.ini`.
+If you're using the Docker image, you must store your `php.ini` in the directory specified in the `$PHP_INI_DIR` environment variable. FrankenPHP will then scan and load configuration files from `$PHP_INI_DIR/*.ini`.
 
 For more details, refer to the [FrankenPHP configuration documentation](https://frankenphp.dev/docs/config/).
 
