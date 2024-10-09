@@ -479,6 +479,9 @@ You may also pass an array of conditions to the `where` function. Each element o
 > [!WARNING]  
 > PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
 
+> [!WARNING]
+> MySQL and MariaDB automatically typecast strings to integers in string-number comparisons. In this process, non-numeric strings are converted to `0`, which can lead to unexpected results. For example, if your table has a `secret` column with a value of `aaa` and you run `User::where('secret', 0)`, that row will be returned. To avoid this, ensure all values are typecast to their appropriate types before using them in queries.
+
 <a name="or-where-clauses"></a>
 ### Or Where Clauses
 
