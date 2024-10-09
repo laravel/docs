@@ -103,6 +103,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::trim](#method-number-trim)
 [Number::useLocale](#method-number-use-locale)
 [Number::withLocale](#method-number-with-locale)
+[Number::useCurrency](#method-number-use-currency)
+[Number::withCurrency](#method-number-with-currency)
 
 </div>
 
@@ -1423,6 +1425,32 @@ The `Number::withLocale` method executes the given closure using the specified l
 
     $number = Number::withLocale('de', function () {
         return Number::format(1500);
+    });
+
+<a name="method-number-use-currency"></a>
+#### `Number::useCurrency()` {.collection-method}
+
+The `Number::useCurrency` method sets the default number currency globally, which affects how the currency is formatted by subsequent invocations to the `Number` class's methods:
+
+    use Illuminate\Support\Number;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Number::useCurrency('GBP');
+    }
+
+<a name="method-number-with-currency"></a>
+#### `Number::withCurrency()` {.collection-method}
+
+The `Number::withCurrency` method executes the given closure using the specified currency and then restores the original currency after the callback has executed:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::withCurrency('GBP', function () {
+        // ...
     });
 
 <a name="paths"></a>
