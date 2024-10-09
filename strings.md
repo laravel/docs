@@ -47,6 +47,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::chopEnd](#method-str-chop-end)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
+[Str::doesntContain](#method-str-doesnt-contain)
 [Str::deduplicate](#method-deduplicate)
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
@@ -466,6 +467,33 @@ You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
     use Illuminate\Support\Str;
 
     $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], ignoreCase: true);
+
+    // true
+
+<a name="method-str-doesnt-contain"></a>
+#### `Str::doesntContain()` {.collection-method}
+
+The `Str::doesntContain` method determines if the given string doesn't contain the given value. By default this method is case sensitive:
+
+    use Illuminate\Support\Str;
+
+    $doesntContain = Str::doesntContain('This is name', 'my');
+
+    // true
+
+You may also pass an array of values to determine if the given string doesn't contain any of the values in the array:
+
+    use Illuminate\Support\Str;
+
+    $doesntContain = Str::doesntContain('This is name', ['my', 'foo']);
+
+    // true
+
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $doesntContain = Str::doesntContain('This is name', 'MY', ignoreCase: true);
 
     // true
     
