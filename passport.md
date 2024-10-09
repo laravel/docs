@@ -799,27 +799,27 @@ Before your application can issue tokens via the client credentials grant, you w
 php artisan passport:client --client
 ```
 
-Next, register a middleware alias for the `CheckToken` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
+Next, register a middleware alias for the `EnsureClientIsResourceOwner` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
 
-    use Laravel\Passport\Http\Middleware\CheckToken;
+    use Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner;
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'token' => CheckToken::class,
+            'client' => EnsureClientIsResourceOwner::class,
         ]);
     })
 
 Then, attach the middleware to a route:
 
     Route::get('/orders', function (Request $request) {
-        // Access token is valid...
-    })->middleware('token');
+        // Access token is valid and the client is resource owner...
+    })->middleware('client');
 
-To restrict access to the route to specific scopes, you may provide a comma-delimited list of the required scopes when attaching the `token` middleware to the route:
+To restrict access to the route to specific scopes, you may provide a comma-delimited list of the required scopes when attaching the `client` middleware to the route:
 
     Route::get('/orders', function (Request $request) {
-        // Access token has both "check-status" and "place-orders" scope...
-    })->middleware('token:check-status,place-orders');
+        // Access token is valid, the client is resource owner, and has both "check-status" and "place-orders" scopes...
+    })->middleware('client:check-status,place-orders');
 
 <a name="retrieving-tokens"></a>
 ### Retrieving Tokens
@@ -1006,13 +1006,13 @@ If you are issuing personal access tokens using the `App\Models\User` model's `c
 
 Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope. To get started, define the following middleware aliases in your application's `bootstrap/app.php` file:
 
-    use Laravel\Passport\Http\Middleware\CheckForAnyScope;
-    use Laravel\Passport\Http\Middleware\CheckScopes;
+    use Laravel\Passport\Http\Middleware\CheckToken;
+    use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'scopes' => CheckScopes::class,
-            'scope' => CheckForAnyScope::class,
+            'scopes' => CheckToken::class,
+            'scope' => CheckTokenForAnyScope::class,
         ]);
     })
 
