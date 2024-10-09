@@ -138,11 +138,11 @@ services:
 You may consult [the official FrankenPHP documentation](https://frankenphp.dev/docs/docker/) for more information on running FrankenPHP with Docker.
 
 <a name="frankenphp-configuration"></a>
-#### Configuring FrankenPHP
+#### Configuring FrankenPHP with Laravel
 
-When using FrankenPHP with Laravel, note that in order for you to modify the `php.ini` variables, it will search for a `php.ini` file in either the `/lib` directory or in the same directory as the binary (this is in the project root folder by default).
+When integrating FrankenPHP with Laravel, modifying `php.ini` settings requires placing the `php.ini` file in one of two locations: either the `/lib` directory or the same directory as the binary (by default, the project root).
 
-To configure PHP settings, create a `php.ini` file in either of these places and add the desired settings. For example, to increase the memory limit and file upload size, you can add the following to your `./php.ini` file:
+To adjust PHP configuration, create a `php.ini` file in one of these locations and define your settings. For example, to increase the memory limit and file upload size, you can add the following to your `./php.ini` file:
 
 ```ini
 # php.ini
@@ -151,13 +151,12 @@ upload_max_filesize = 100M
 post_max_size = 100M
 ```
 
-When using the Docker image, you can specify the `$PHP_INI_DIR` environment variable. Doing so will make FrankenPHP scan for and load `$PHP_INI_DIR/*.ini`.
+If you're using the Docker image, you can set the `$PHP_INI_DIR` environment variable. FrankenPHP will then scan and load configuration files from `$PHP_INI_DIR/*.ini`.
 
-You can read more about this behaviour in the [FrankenPHP configuration documentation](https://frankenphp.dev/docs/config/).
-
+For more details, refer to the [FrankenPHP configuration documentation](https://frankenphp.dev/docs/config/).
 
 > [!NOTE]
-> You must restart your FrankenPHP worker for changes to take effect.
+> After making changes to `php.ini`, restart your FrankenPHP worker for the updates to take effect.
 
 <a name="roadrunner"></a>
 ### RoadRunner
