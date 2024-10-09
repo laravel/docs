@@ -102,8 +102,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::spell](#method-number-spell)
 [Number::trim](#method-number-trim)
 [Number::useLocale](#method-number-use-locale)
-[Number::useCurrency](#method-number-use-currency)
 [Number::withLocale](#method-number-with-locale)
+[Number::useCurrency](#method-number-use-currency)
+[Number::withCurrency](#method-number-with-currency)
 
 </div>
 
