@@ -211,13 +211,13 @@ If you would like to quickly add a bearer token to the request's `Authorization`
 
 The `timeout` method may be used to specify the maximum number of seconds to wait for a response. By default, the HTTP client will timeout after 30 seconds:
 
-    $response = Http::timeout(3)->get(/* ... */);
+    $response = Http::timeout(30)->get(/* ... */);
 
 If the given timeout is exceeded, an instance of `Illuminate\Http\Client\ConnectionException` will  be thrown.
 
 You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method:
 
-    $response = Http::connectTimeout(3)->get(/* ... */);
+    $response = Http::connectTimeout(30)->get(/* ... */);
 
 <a name="retries"></a>
 ### Retries
