@@ -2016,13 +2016,13 @@ class NumberService
 
 $service = new NumberService;
 
-$service->all();
-$service->all(); // (cached result)
+$service->all(); // 2
+$service->all(); // 2 (cached result)
 
 $secondService = new NumberService;
 
-$secondService->all();
-$secondService->all(); // (cached result)
+$secondService->all(); // 1
+$secondService->all(); // 1 (cached result)
 ```
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}
