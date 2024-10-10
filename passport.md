@@ -533,7 +533,7 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
 
 The OAuth2 device authorization grant allows browserless or limited input devices, such as TVs and game consoles, to obtain an access token by exchanging a "device code". When using device flow, the device client will instruct the user to use a secondary device, such as a computer or a smartphone and connect to your server where they will enter the provided "user code" and either approve or deny the access request.
 
-To get started, we need to instruct Passport how to return our "user code", "authorization", and "authorization result" views. Remember, Passport is a headless OAuth2 library. If you would like a frontend implementation of Laravel's OAuth features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits).
+To get started, we need to instruct Passport how to return our "user code" and "authorization" views. Remember, Passport is a headless OAuth2 library. If you would like a frontend implementation of Laravel's OAuth features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits).
 
 All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class. Passport will take care of defining the routes that returns these views:
 
@@ -547,7 +547,6 @@ public function boot(): void
 {
     Passport::deviceUserCodeView('auth.oauth.device.user-code');
     Passport::deviceAuthorizationView('auth.oauth.device.authorize');
-    Passport::deviceAuthorizationResultView('auth.oauth.device.authorize-result');
 
     // ...
 }
@@ -1031,7 +1030,7 @@ The `scopes` middleware may be assigned to a route to verify that the incoming r
 The `scope` middleware may be assigned to a route to verify that the incoming request's access token has *at least one* of the listed scopes:
 
     Route::get('/orders', function () {
-        // Access token has either "check-status" or "place-orders" scopes...
+        // Access token has either "check-status" or "place-orders" scope...
     })->middleware(['auth:api', 'scope:check-status,place-orders']);
 
 <a name="checking-scopes-on-a-token-instance"></a>
