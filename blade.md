@@ -1721,6 +1721,26 @@ If you would like to prepend content onto the beginning of a stack, you should u
 @endprepend
 ```
 
+If you are using `@push` inside of a layout component, make sure the `@push` is declared either before or inside the component. `@push` directives after the component closing tag will not work correctly:
+
+```blade
+@push('scripts')
+    This will work...
+@endpush
+
+<x-layout>
+
+@push('scripts')
+    This will work...
+@endpush
+
+</x-layout>
+
+@push('scripts')
+    This will NOT work...
+@endpush
+```
+
 <a name="service-injection"></a>
 ## Service Injection
 
