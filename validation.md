@@ -1100,6 +1100,8 @@ The field under validation must be able to be cast as a boolean. Accepted input 
 
 The field under validation must have a matching field of `{field}_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
 
+You may also pass a second parameter to specify a custom confirmation field. For example, `confirmed:repeat_username` will expect the field `repeat_username` to match the field under validation.
+
 <a name="rule-contains"></a>
 #### contains:_foo_,_bar_,...
 
