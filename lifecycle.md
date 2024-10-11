@@ -51,7 +51,7 @@ While the framework internally uses dozens of service providers, you also have t
 <a name="routing"></a>
 ### Routing
 
-Once the application has been bootstrapped and all service providers have been registered, the `Request` will be handed off to the router for dispatching. The router will dispatch the request to a route or controller, as well as run any route specific middleware.
+Once the application has been bootstrapped and all service providers have been registered, the `Request` will be handed off to the [router](/docs/{{version}}/routing) for dispatching. The router will dispatch the request to a route or controller, as well as run any route specific middleware.
 
 Middleware provide a convenient mechanism for filtering or examining HTTP requests entering your application. For example, Laravel includes a middleware that verifies if the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to the login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application. Some middleware are assigned to all routes within the application, like `PreventRequestsDuringMaintenance`, while some are only assigned to specific routes or route groups. You can learn more about middleware by reading the complete [middleware documentation](/docs/{{version}}/middleware).
 
