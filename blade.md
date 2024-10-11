@@ -482,10 +482,12 @@ Likewise, the `@style` directive may be used to conditionally add inline CSS sty
 For convenience, you may use the `@checked` directive to easily indicate if a given HTML checkbox input is "checked". This directive will echo `checked` if the provided condition evaluates to `true`:
 
 ```blade
-<input type="checkbox"
-        name="active"
-        value="active"
-        @checked(old('active', $user->active)) />
+<input
+    type="checkbox"
+    name="active"
+    value="active"
+    @checked(old('active', $user->active))
+/>
 ```
 
 Likewise, the `@selected` directive may be used to indicate if a given select option should be "selected":
@@ -509,19 +511,23 @@ Additionally, the `@disabled` directive may be used to indicate if a given eleme
 Moreover, the `@readonly` directive may be used to indicate if a given element should be "readonly":
 
 ```blade
-<input type="email"
-        name="email"
-        value="email@laravel.com"
-        @readonly($user->isNotAdmin()) />
+<input
+    type="email"
+    name="email"
+    value="email@laravel.com"
+    @readonly($user->isNotAdmin())
+/>
 ```
 
 In addition, the `@required` directive may be used to indicate if a given element should be "required":
 
 ```blade
-<input type="text"
-        name="title"
-        value="title"
-        @required($user->isAdmin()) />
+<input
+    type="text"
+    name="title"
+    value="title"
+    @required($user->isAdmin())
+/>
 ```
 
 <a name="including-subviews"></a>
@@ -1641,9 +1647,11 @@ The `@error` directive may be used to quickly check if [validation error message
 
 <label for="title">Post Title</label>
 
-<input id="title"
+<input
+    id="title"
     type="text"
-    class="@error('title') is-invalid @enderror">
+    class="@error('title') is-invalid @enderror"
+/>
 
 @error('title')
     <div class="alert alert-danger">{{ $message }}</div>
@@ -1657,9 +1665,11 @@ Since the `@error` directive compiles to an "if" statement, you may use the `@el
 
 <label for="email">Email address</label>
 
-<input id="email"
+<input
+    id="email"
     type="email"
-    class="@error('email') is-invalid @else is-valid @enderror">
+    class="@error('email') is-invalid @else is-valid @enderror"
+/>
 ```
 
 You may pass [the name of a specific error bag](/docs/{{version}}/validation#named-error-bags) as the second parameter to the `@error` directive to retrieve validation error messages on pages containing multiple forms:
@@ -1669,9 +1679,11 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
 
 <label for="email">Email address</label>
 
-<input id="email"
+<input
+    id="email"
     type="email"
-    class="@error('email', 'login') is-invalid @enderror">
+    class="@error('email', 'login') is-invalid @enderror"
+/>
 
 @error('email', 'login')
     <div class="alert alert-danger">{{ $message }}</div>
