@@ -76,6 +76,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::undot](#method-array-undot)
 [Arr::where](#method-array-where)
 [Arr::whereNotNull](#method-array-where-not-null)
+[Arr::extractMatchingKeys](#method-array-extract-matching-keys)
 [Arr::wrap](#method-array-wrap)
 [data_fill](#method-data-fill)
 [data_get](#method-data-get)
@@ -977,6 +978,53 @@ The `Arr::whereNotNull` method removes all `null` values from the given array:
     $filtered = Arr::whereNotNull($array);
 
     // [0 => 0]
+
+<a name="method-array-extract-matching-keys"></a>
+#### `Arr::extractMatchingKeys()` {.collection-method}
+
+The `Arr::extractMatchingKeys` method extracts key-value pairs from the second array where the keys and value types match those in the first array. Optionally, it can ignore pairs where the values in both arrays are identical.
+
+    use Illuminate\Support\Arr;
+
+    $sourceArray = [
+        'name' => 'John',
+        'age' => 30,
+        'address' => [
+            'city' => 'New York'
+        ]
+    ];
+
+    $targetArray = [
+        'name' => 'Jane',
+        'age' => 30,
+        'address' => [
+            'city' => 'Los Angeles',
+            'phone' => '123-456'
+        ]
+    ];
+
+    // Extracting matching key-value pairs
+    $extracted = Arr::extractMatchingKeys($sourceArray, $targetArray);
+
+    // Result: 
+    // [
+    //     'name' => 'Jane',
+    //     'age' => 30,
+    //     'address' => [
+    //         'city' => 'Los Angeles'
+    //     ]
+    // ]
+
+    // Extracting while ignoring identical values
+    $extractedIgnoringSameValue = Arr::extractMatchingKeys($sourceArray, $targetArray, true);
+
+    // Result: 
+    // [
+    //     'name' => 'Jane',
+    //     'address' => [
+    //         'city' => 'Los Angeles'
+    //     ]
+    // ]
 
 <a name="method-array-wrap"></a>
 #### `Arr::wrap()` {.collection-method}
