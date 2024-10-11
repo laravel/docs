@@ -70,7 +70,7 @@ If you don't have PHP and Composer installed on your local machine, the followin
 ```
 
 ```shell tab=Windows PowerShell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; irm https://php.new/install/windows | iex
 ```
 
 ```shell tab=Linux
