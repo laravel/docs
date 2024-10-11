@@ -51,29 +51,29 @@ The `bootstrap` directory contains the `app.php` file which bootstraps the frame
 <a name="the-config-directory"></a>
 #### The Config Directory
 
-The `config` directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
+The `config` directory, as the name implies, contains all of your application's [configuration](/docs/{{version}}/configuration) files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
 
 <a name="the-database-directory"></a>
 #### The Database Directory
 
-The `database` directory contains your database migrations, model factories, and seeds. If you wish, you may also use this directory to hold an SQLite database.
+The [`database` directory](/docs/{{version}}/database) contains your [database migrations](/docs/{{version}}/migrations), [model factories, and seeds](/docs/{{version}}/seeding). If you wish, you may also use this directory to hold an SQLite database.
 
 <a name="the-public-directory"></a>
 #### The Public Directory
 
-The `public` directory contains the `index.php` file, which is the entry point for all requests entering your application and configures autoloading. This directory also houses your assets such as images, JavaScript, and CSS.
+The `public` directory contains the `index.php` file, which is the entry point for all requests entering your application and configures autoloading. This directory also houses your [assets](/docs/{{version}}/vite) such as images, JavaScript, and CSS.
 
 <a name="the-resources-directory"></a>
 #### The Resources Directory
 
-The `resources` directory contains your [views](/docs/{{version}}/views) as well as your raw, un-compiled assets such as CSS or JavaScript.
+The `resources` directory contains your [views](/docs/{{version}}/views) as well as your raw, un-compiled [assets](/docs/{{version}}/vite) such as CSS or JavaScript.
 
 <a name="the-routes-directory"></a>
 #### The Routes Directory
 
-The `routes` directory contains all of the route definitions for your application. By default, two route files are included with Laravel: `web.php` and `console.php`.
+The `routes` directory contains all of the [route definitions](/docs/{{version}}/routing) for your application. By default, two route files are included with Laravel: `web.php` and `console.php`.
 
-The `web.php` file contains routes that Laravel places in the `web` middleware group, which provides session state, CSRF protection, and cookie encryption. If your application does not offer a stateless, RESTful API then all your routes will most likely be defined in the `web.php` file.
+The `web.php` file contains routes that Laravel places in the `web` [middleware](/docs/{{version}}/middleware) group, which provides [session state](/docs/{{version}}/session), [CSRF protection](/docs/{{version}}/csrf), and cookie encryption. If your application does not offer a stateless, RESTful API then all your routes will most likely be defined in the `web.php` file.
 
 The `console.php` file is where you may define all of your closure based console commands. Each closure is bound to a command instance allowing a simple approach to interacting with each command's IO methods. Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. You may also [schedule](/docs/{{version}}/scheduling) tasks in the `console.php` file.
 
@@ -93,7 +93,7 @@ The `storage/app/public` directory may be used to store user-generated files, su
 <a name="the-tests-directory"></a>
 #### The Tests Directory
 
-The `tests` directory contains your automated tests. Example [Pest](https://pestphp.com) or [PHPUnit](https://phpunit.de/) unit tests and feature tests are provided out of the box. Each test class should be suffixed with the word `Test`. You may run your tests using the `/vendor/bin/pest` or `/vendor/bin/phpunit` commands. Or, if you would like a more detailed and beautiful representation of your test results, you may run your tests using the `php artisan test` Artisan command.
+The `tests` directory contains your [automated tests](/docs/{{version}}/testing). Example [Pest](https://pestphp.com) or [PHPUnit](https://phpunit.de/) unit tests and feature tests are provided out of the box. Each test class should be suffixed with the word `Test`. You may run your tests using the `/vendor/bin/pest` or `/vendor/bin/phpunit` commands. Or, if you would like a more detailed and beautiful representation of your test results, you may run your tests using the `php artisan test` Artisan command.
 
 <a name="the-vendor-directory"></a>
 #### The Vendor Directory
@@ -105,7 +105,7 @@ The `vendor` directory contains your [Composer](https://getcomposer.org) depende
 
 The majority of your application is housed in the `app` directory. By default, this directory is namespaced under `App` and is autoloaded by Composer using the [PSR-4 autoloading standard](https://www.php-fig.org/psr/psr-4/).
 
-By default, the `app` directory contains the `Http`, `Models`, and `Providers` directories. However, over time, a variety of other directories will be generated inside the app directory as you use the make Artisan commands to generate classes. For example, the `app/Console` directory will not exist until you execute the `make:command` Artisan command to generate a command class.
+By default, the `app` directory contains the `Http`, `Models`, and `Providers` directories. However, over time, a variety of other directories will be generated inside the app directory as you use the make Artisan commands to generate classes. For example, the `app/Console` directory will not exist until you execute the `make:command` Artisan command to generate a [command class](/docs/{{version}}/artisan#writing-commands).
 
 Both the `Console` and `Http` directories are further explained in their respective sections below, but think of the `Console` and `Http` directories as providing an API into the core of your application. The HTTP protocol and CLI are both mechanisms to interact with your application, but do not actually contain application logic. In other words, they are two ways of issuing commands to your application. The `Console` directory contains all of your Artisan commands, while the `Http` directory contains your controllers, middleware, and requests.
 
@@ -130,12 +130,12 @@ This directory does not exist by default, but will be created for you by the `ev
 <a name="the-exceptions-directory"></a>
 #### The Exceptions Directory
 
-The `Exceptions` directory contains all of the custom exceptions for your application. These exceptions may be generated using the `make:exception` command.
+The `Exceptions` directory contains all of the [custom exceptions](/docs/{{version}}/errors) for your application. These exceptions may be generated using the `make:exception` command.
 
 <a name="the-http-directory"></a>
 #### The Http Directory
 
-The `Http` directory contains your controllers, middleware, and form requests. Almost all of the logic to handle requests entering your application will be placed in this directory.
+The `Http` directory contains your [controllers](/docs/{{version}}/controllers), middleware, and [form requests](/docs/{{version}}/validation#form-request-validation). Almost all of the logic to handle requests entering your application will be placed in this directory.
 
 <a name="the-jobs-directory"></a>
 #### The Jobs Directory
@@ -155,7 +155,7 @@ This directory does not exist by default, but will be created for you if you exe
 <a name="the-models-directory"></a>
 #### The Models Directory
 
-The `Models` directory contains all of your [Eloquent model classes](/docs/{{version}}/eloquent). The Eloquent ORM included with Laravel provides a beautiful, simple ActiveRecord implementation for working with your database. Each database table has a corresponding "Model" which is used to interact with that table. Models allow you to query for data in your tables, as well as insert new records into the table.
+The `Models` directory contains all of your [Eloquent model classes](/docs/{{version}}/eloquent). The Eloquent ORM included with Laravel provides a beautiful, simple [ActiveRecord](https://martinfowler.com/eaaCatalog/activeRecord.html) implementation for working with your database. Each database table has a corresponding "Model" which is used to interact with that table. Models allow you to query for data in your tables, as well as insert new records into the table.
 
 <a name="the-notifications-directory"></a>
 #### The Notifications Directory
