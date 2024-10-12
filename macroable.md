@@ -90,7 +90,7 @@ $translated = $collection->toLocale('es'); // [tl! focus]
 <a name="response-macros"></a>
 ## Response Macros
 
-If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `macro` method on the `Response` facader:
+If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `macro` method on the `Response` facade:
 
 ```php
 namespace App\Providers;
