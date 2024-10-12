@@ -37,42 +37,8 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 <a name="extending-collections"></a>
 ### Extending Collections
 
-Collections are "macroable", which allows you to add additional methods to the `Collection` class at run time. The `Illuminate\Support\Collection` class' `macro` method accepts a closure that will be executed when your macro is called. The macro closure may access the collection's other methods via `$this`, just as if it were a real method of the collection class. For example, the following code adds a `toUpper` method to the `Collection` class:
-
-    use Illuminate\Support\Collection;
-    use Illuminate\Support\Str;
-
-    Collection::macro('toUpper', function () {
-        return $this->map(function (string $value) {
-            return Str::upper($value);
-        });
-    });
-
-    $collection = collect(['first', 'second']);
-
-    $upper = $collection->toUpper();
-
-    // ['FIRST', 'SECOND']
-
-Typically, you should declare collection macros in the `boot` method of a [service provider](/docs/{{version}}/providers).
-
-<a name="macro-arguments"></a>
-#### Macro Arguments
-
-If necessary, you may define macros that accept additional arguments:
-
-    use Illuminate\Support\Collection;
-    use Illuminate\Support\Facades\Lang;
-
-    Collection::macro('toLocale', function (string $locale) {
-        return $this->map(function (string $value) use ($locale) {
-            return Lang::get($value, [], $locale);
-        });
-    });
-
-    $collection = collect(['first', 'second']);
-
-    $translated = $collection->toLocale('es');
+> [!NOTE]  
+Collections can be extended via macros. The comprehensive [macro](/docs/{{version}}/macroable) documentation includes additional information on the functionality of macros and mixins, as well as their usage.
 
 <a name="available-methods"></a>
 ## Available Methods
