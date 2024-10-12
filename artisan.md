@@ -163,9 +163,13 @@ Let's take a look at an example command. Note that we are able to request any de
 
 If nothing is returned from the `handle` method and the command executes successfully, the command will exit with a `0` exit code, indicating success. However, the `handle` method may optionally return an integer to manually specify command's exit code:
 
-    $this->error('Something went wrong.');
+   public function handle(): int
+   {
+     //...
+     $this->error('Something went wrong.');
 
-    return 1;
+     return self::FAILURE; // 1
+   }
 
 If you would like to "fail" the command from any method within the command, you may utilize the `fail` method. The `fail` method will immediately terminate execution of the command and return an exit code of `1`:
 
