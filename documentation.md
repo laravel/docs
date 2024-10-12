@@ -14,6 +14,7 @@
     - [Service Container](/docs/{{version}}/container)
     - [Service Providers](/docs/{{version}}/providers)
     - [Facades](/docs/{{version}}/facades)
+    - [Macros & Mixins](/docs/{{version}}/macroable)
 - ## The Basics
     - [Routing](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
