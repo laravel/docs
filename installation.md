@@ -91,15 +91,15 @@ After you have installed PHP, Composer, and the Laravel installer, you're ready 
 laravel new example-app
 ```
 
-Once the application has been created, start Laravel's local development server using the `serve` command:
+Once the application has been created, you can start Laravel's local development server, queue worker, and Vite development server using the `dev` Composer script:
 
 ```nothing
 cd example-app
 
-php artisan serve
+composer run dev
 ```
 
-Once you have started the Artisan development server, your application will be accessible in your web browser at [http://localhost:8000](http://localhost:8000). Next, you're ready to [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also want to [configure a database](#databases-and-migrations).
+Once you have started the development server, your application will be accessible in your web browser at [http://localhost:8000](http://localhost:8000). Next, you're ready to [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also want to [configure a database](#databases-and-migrations).
 
 > [!NOTE]  
 > If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
