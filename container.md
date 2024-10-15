@@ -252,7 +252,7 @@ class PhotoController extends Controller
 }
 ```
 
-In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `DB`, `Log`, and [`Tag`](#tagging) attributes:
+In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `DB`, `Log`, `RouteParameter`, and [`Tag`](#tagging) attributes:
 
 ```php
 <?php
