@@ -1236,7 +1236,7 @@ The `Number::currency` method returns the currency representation of the given v
 <a name="method-default-currency"></a>
 #### `Number::defaultCurrency()` {.collection-method}
 
-The `Number::defaultCurrency` method returns the default currency for your application:
+The `Number::defaultCurrency` method returns the default currency being used by the `Number` class:
 
     use Illuminate\Support\Number;
 
@@ -1247,7 +1247,7 @@ The `Number::defaultCurrency` method returns the default currency for your appli
 <a name="method-default-locale"></a>
 #### `Number::defaultLocale()` {.collection-method}
 
-The `Number::defaultLocale` method returns the default number locale for your application:
+The `Number::defaultLocale` method returns the default locale being used by the `Number` class:
 
     use Illuminate\Support\Number;
 
