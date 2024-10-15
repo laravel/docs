@@ -93,6 +93,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::abbreviate](#method-number-abbreviate)
 [Number::clamp](#method-number-clamp)
 [Number::currency](#method-number-currency)
+[Number::defaultCurrency](#method-default-currency)
 [Number::defaultLocale](#method-default-locale)
 [Number::fileSize](#method-number-file-size)
 [Number::forHumans](#method-number-for-humans)
@@ -1232,6 +1233,17 @@ The `Number::currency` method returns the currency representation of the given v
 
     // 1.000,00 €
 
+<a name="method-default-currency"></a>
+#### `Number::defaultCurrency()` {.collection-method}
+
+The `Number::defaultCurrency` method returns the default currency for your application:
+
+    use Illuminate\Support\Number;
+
+    $currency = Number::defaultCurrency();
+
+    // USD
+
 <a name="method-default-locale"></a>
 #### `Number::defaultLocale()` {.collection-method}
 
@@ -1242,7 +1254,6 @@ The `Number::defaultLocale` method returns the default number locale for your ap
     $locale = Number::defaultLocale();
 
     // en
-
 
 <a name="method-number-file-size"></a>
 #### `Number::fileSize()` {.collection-method}
