@@ -135,6 +135,8 @@ services:
       - .:/app
 ```
 
+If the `--log-level` option is explicitly passed to the `php artisan octane:start` command, Octane will use FrankenPHP's native logger and, unless configured differently, will produce structured JSON logs.
+
 You may consult [the official FrankenPHP documentation](https://frankenphp.dev/docs/docker/) for more information on running FrankenPHP with Docker.
 
 <a name="roadrunner"></a>
