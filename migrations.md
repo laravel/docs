@@ -1191,6 +1191,7 @@ An alternative, expressive syntax is also provided for these actions:
 | `$table->cascadeOnUpdate();`  | Updates should cascade.                           |
 | `$table->restrictOnUpdate();` | Updates should be restricted.                     |
 | `$table->noActionOnUpdate();` | No action on updates.                             |
+| `$table->nullOnUpdate();`     | Updates should set the foreign key value to null. |
 | `$table->cascadeOnDelete();`  | Deletes should cascade.                           |
 | `$table->restrictOnDelete();` | Deletes should be restricted.                     |
 | `$table->nullOnDelete();`     | Deletes should set the foreign key value to null. |
