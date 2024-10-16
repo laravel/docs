@@ -82,13 +82,23 @@ After running one of the commands above, you should restart your terminal sessio
 > [!NOTE]
 > For a fully-featured, graphical PHP installation and management experience, check out [Laravel Herd](#local-installation-using-herd).
 
+In case you already have PHP and Composer configured, you may install the Laravel installer binary using:
+
+```shell
+composer global require laravel/installer
+```
+
 <a name="creating-an-application"></a>
 ### Creating an Application
 
-After you have installed PHP, Composer, and the Laravel installer, you're ready to create a new Laravel application. The Laravel installer will prompt you to select your preferred testing framework, database, and starter kit:
+After you have installed PHP, Composer, and the Laravel installer, you're ready to create a new Laravel application. The Laravel installer will prompt you to select your preferred testing framework, database, and starter kit. Optionally, if you want to configure your application manually, you may create a new Laravel application using a Composer command:
 
-```nothing
+```nothing tab=Using Laravel installer
 laravel new example-app
+```
+
+```nothing tab=Using Composer
+composer create-project --prefer-dist laravel/laravel example-app
 ```
 
 Once the application has been created, you can start Laravel's local development server, queue worker, and Vite development server using the `dev` Composer script:
