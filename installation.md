@@ -79,26 +79,22 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 
 After running one of the commands above, you should restart your terminal session. To update PHP, Composer, and the Laravel installer after installing them via `php.new`, you can re-run the command in your terminal.
 
-> [!NOTE]
-> For a fully-featured, graphical PHP installation and management experience, check out [Laravel Herd](#local-installation-using-herd).
-
-In case you already have PHP and Composer configured, you may install the Laravel installer binary using:
+In you already have PHP and Composer installed, you may install the Laravel installer via Composer:
 
 ```shell
 composer global require laravel/installer
 ```
+
+> [!NOTE]
+> For a fully-featured, graphical PHP installation and management experience, check out [Laravel Herd](#local-installation-using-herd).
 
 <a name="creating-an-application"></a>
 ### Creating an Application
 
 After you have installed PHP, Composer, and the Laravel installer, you're ready to create a new Laravel application. The Laravel installer will prompt you to select your preferred testing framework, database, and starter kit. Optionally, if you want to configure your application manually, you may create a new Laravel application using a Composer command:
 
-```nothing tab=Using Laravel installer
+```nothing
 laravel new example-app
-```
-
-```nothing tab=Using Composer
-composer create-project --prefer-dist laravel/laravel example-app
 ```
 
 Once the application has been created, you can start Laravel's local development server, queue worker, and Vite development server using the `dev` Composer script:
