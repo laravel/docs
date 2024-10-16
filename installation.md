@@ -79,6 +79,12 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 
 After running one of the commands above, you should restart your terminal session. To update PHP, Composer, and the Laravel installer after installing them via `php.new`, you can re-run the command in your terminal.
 
+In you already have PHP and Composer installed, you may install the Laravel installer via Composer:
+
+```shell
+composer global require laravel/installer
+```
+
 > [!NOTE]
 > For a fully-featured, graphical PHP installation and management experience, check out [Laravel Herd](#local-installation-using-herd).
 
