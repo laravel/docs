@@ -68,6 +68,16 @@ By default, Laravel will automatically find and register your event listeners by
         }
     }
 
+You may listen to multiple events using PHP's union types:
+
+    /**
+     * Handle the given event.
+     */
+    public function handle(PodcastProcessed|PodcastPublished $event): void
+    {
+        // ...
+    }
+
 If you plan to store your listeners in a different directory or within multiple directories, you may instruct Laravel to scan those directories using the `withEvents` method in your application's `bootstrap/app.php` file:
 
     ->withEvents(discover: [
