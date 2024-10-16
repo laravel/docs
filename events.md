@@ -231,19 +231,18 @@ Next, let's take a look at the listener for our example event. Event listeners r
         }
     }
 
+You may listen to multiple events using PHP's union types:
+
+    /**
+     * Handle the event.
+     */
+    public function handle(OrderShipped|OrderDelivered $event): void
+    {
+        // ...
+    }
+
 > [!NOTE]  
 > Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
-
-If you need to listen to multiple events, you can do so by using a union type in your listener’s `handle` method parameter. This allows your listener to accept more than one event type:
-
-    public function handle(Login|Logout $event): void
-    {
-        if ($event instanceof Login) {
-            // Handle Login event
-        } elseif ($event instanceof Logout) {
-            // Handle Logout event
-        }
-    }
 
 <a name="stopping-the-propagation-of-an-event"></a>
 #### Stopping The Propagation Of An Event
