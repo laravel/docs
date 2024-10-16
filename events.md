@@ -55,7 +55,7 @@ php artisan make:listener
 
 By default, Laravel will automatically find and register your event listeners by scanning your application's `Listeners` directory. When Laravel finds any listener class method that begins with `handle` or `__invoke`, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature:
 
-    use App\Events\PodcastProcessed;
+    use App\Listeners\PodcastProcessed;
 
     class SendPodcastNotification
     {
