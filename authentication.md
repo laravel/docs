@@ -53,7 +53,7 @@ Want to get started fast? Install a [Laravel application starter kit](/docs/{{ve
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
 
-By default, Laravel includes an `App\Models\User` [Eloquent model](/docs/{{version}}/eloquent) in your `app/Models` directory. This model may be used with the default Eloquent authentication driver. If your application is not using Eloquent, you may use the `database` authentication provider which uses the Laravel query builder.
+By default, Laravel includes an `App\Models\User` [Eloquent model](/docs/{{version}}/eloquent) in your `app/Models` directory. This model may be used with the default Eloquent authentication driver. If your application is not using Eloquent, you may use the `database` authentication provider which uses the Laravel query builder. If your application is using MongoDB, see the [User Authentication](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/user-authentication/) page in the `mongodb/laravel-mongodb` package's documentation for additional information.
 
 When building the database schema for the `App\Models\User` model, make sure the password column is at least 60 characters in length. Of course, the `users` table migration that is included in new Laravel applications already creates a column that exceeds this length.
 
