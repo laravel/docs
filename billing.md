@@ -1337,10 +1337,45 @@ You may also start a metered subscription via [Stripe Checkout](#checkout):
         'checkout' => $checkout,
     ]);
 
+You will also need to create a [meter](https://docs.stripe.com/billing/subscriptions/usage-based/recording-usage#configuring-meter) from your dashboard to track usage, remember to store the associated event name and meter id, you will need them to report and retrieve usage.
+
 <a name="reporting-usage"></a>
 #### Reporting Usage
 
-As your customer uses your application, you will report their usage to Stripe so that they can be billed accurately. To increment the usage of a metered subscription, you may use the `reportUsage` method:
+As your customer uses your application, you will report their usage to Stripe so that they can be billed accurately. To increment the usage of a metered subscription, you may use the `reportMeterEvent` method on your `Billable` model:
+
+    $user = User::find(1);
+
+    $user->reportMeterEvent('emails-sent');
+
+By default, a "usage quantity" of 1 is added to the billing period. Alternatively, you may pass a specific amount of "usage" to add to the customer's usage for the billing period:
+
+    $user = User::find(1);
+
+    $user->reportMeterEvent('emails-sent', 15);
+
+To retrieve a customer's event summary for a meter, you may use a `Billable` instance's `meterEventSummaries` method, note that this requires passing the meter's ID (not name):
+
+    $user = User::find(1);
+
+    $meterUsage = $user->meterEventSummaries(self::$meterId);
+
+    $meterUsage->first()->aggregated_value // 10
+
+Please see the [Meter Event Summary object documentation](https://docs.stripe.com/api/billing/meter-event_summary/object) on stripe for more information on available data.
+
+
+To list all meters, you can use a `Billable` instance's `meters` method:
+
+    $user = User::find(1);
+
+    $user->meters();
+
+Please see [stripe's documentation](https://docs.stripe.com/api/billing/meter/list) for information about available optional request parameters and options
+
+#### Reporting Usage Using Legacy Usage Records (Not recommended)
+
+Please note that this method is not recommended and is currently considered legacy by stripe, and marked as deprecated in cashier, however, if you still use Usage Records in your legacy codebase, you can continue to increment the usage of a metered subscription by using the the `reportUsage` method:
 
     $user = User::find(1);
 
@@ -1388,6 +1423,8 @@ The `usageRecords` and `usageRecordsFor` methods return a Collection instance co
     @endforeach
 
 For a full reference of all usage data returned and how to use Stripe's cursor based pagination, please consult [the official Stripe API documentation](https://stripe.com/docs/api/usage_records/subscription_item_summary_list).
+
+We recommend that you migrate from Usage Records to Billing Meters as soon as possible to avoid disruption in service if stripe decides to take them down, check stripe's [migration guide](https://docs.stripe.com/billing/subscriptions/usage-based-legacy/migration-guide) for more information.
 
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
@@ -2221,7 +2258,7 @@ You may consult the [Stripe API documentation](https://stripe.com/docs/api/payme
 <a name="strong-customer-authentication"></a>
 ## Strong Customer Authentication
 
-If your business or one of your customers is based in Europe you will need to abide by the EU's Strong Customer Authentication (SCA) regulations. These regulations were imposed in September 2019 by the European Union to prevent payment fraud. Luckily, Stripe and Cashier are prepared for building SCA compliant applications.
+If your business or one of your customers is based in Europe you will need to abide by the EU's Strong Customer Authentication (SCA) regulations. These regulations were imposed in September 2019 by the European Union to prevent payment fraud. Luckily, Stripe and Cashier are prepared for building SCA compliant applications.
 
 > [!WARNING]  
 > Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/guides/strong-customer-authentication) as well as their [documentation on the new SCA APIs](https://stripe.com/docs/strong-customer-authentication).
