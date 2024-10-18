@@ -64,6 +64,7 @@
     - [Migrations](/docs/{{version}}/migrations)
     - [Seeding](/docs/{{version}}/seeding)
     - [Redis](/docs/{{version}}/redis)
+    - [MongoDB](/docs/{{version}}/mongodb)
 - ## Eloquent ORM
     - [Getting Started](/docs/{{version}}/eloquent)
     - [Relationships](/docs/{{version}}/eloquent-relationships)
