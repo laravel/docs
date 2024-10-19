@@ -2,7 +2,20 @@
 
 - [Introduction](#introduction)
 - [The Root Directory](#the-root-directory)
-    - [The `app` Directory](#the-root-app-directory)
+    - [The `app` Directory](#the-app-directory)
+        - [The `Broadcasting` Directory](#the-broadcasting-directory)
+        - [The `Console` Directory](#the-console-directory)
+        - [The `Events` Directory](#the-events-directory)
+        - [The `Exceptions` Directory](#the-exceptions-directory)
+        - [The `Http` Directory](#the-http-directory)
+        - [The `Jobs` Directory](#the-jobs-directory)
+        - [The `Listeners` Directory](#the-listeners-directory)
+        - [The `Mail` Directory](#the-mail-directory)
+        - [The `Models` Directory](#the-models-directory)
+        - [The `Notifications` Directory](#the-notifications-directory)
+        - [The `Policies` Directory](#the-policies-directory)
+        - [The `Providers` Directory](#the-providers-directory)
+        - [The `Rules` Directory](#the-rules-directory)
     - [The `bootstrap` Directory](#the-bootstrap-directory)
     - [The `config` Directory](#the-config-directory)
     - [The `database` Directory](#the-database-directory)
@@ -12,20 +25,6 @@
     - [The `storage` Directory](#the-storage-directory)
     - [The `tests` Directory](#the-tests-directory)
     - [The `vendor` Directory](#the-vendor-directory)
-- [The App Directory](#the-app-directory)
-    - [The `Broadcasting` Directory](#the-broadcasting-directory)
-    - [The `Console` Directory](#the-console-directory)
-    - [The `Events` Directory](#the-events-directory)
-    - [The `Exceptions` Directory](#the-exceptions-directory)
-    - [The `Http` Directory](#the-http-directory)
-    - [The `Jobs` Directory](#the-jobs-directory)
-    - [The `Listeners` Directory](#the-listeners-directory)
-    - [The `Mail` Directory](#the-mail-directory)
-    - [The `Models` Directory](#the-models-directory)
-    - [The `Notifications` Directory](#the-notifications-directory)
-    - [The `Policies` Directory](#the-policies-directory)
-    - [The `Providers` Directory](#the-providers-directory)
-    - [The `Rules` Directory](#the-rules-directory)
 
 <a name="introduction"></a>
 ## Introduction
@@ -38,70 +37,10 @@ The default Laravel application structure is intended to provide a great startin
 <a name="the-root-directory"></a>
 ## The Root Directory
 
-<a name="the-root-app-directory"></a>
-#### The App Directory
+<a name="the-app-directory"></a>
+### The App Directory
 
 The `app` directory contains the core code of your application. We'll explore this directory in more detail soon; however, almost all of the classes in your application will be in this directory.
-
-<a name="the-bootstrap-directory"></a>
-#### The Bootstrap Directory
-
-The `bootstrap` directory contains the `app.php` file which bootstraps the framework. This directory also houses a `cache` directory which contains framework generated files for performance optimization such as the route and services cache files.
-
-<a name="the-config-directory"></a>
-#### The Config Directory
-
-The `config` directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
-
-<a name="the-database-directory"></a>
-#### The Database Directory
-
-The `database` directory contains your database migrations, model factories, and seeds. If you wish, you may also use this directory to hold an SQLite database.
-
-<a name="the-public-directory"></a>
-#### The Public Directory
-
-The `public` directory contains the `index.php` file, which is the entry point for all requests entering your application and configures autoloading. This directory also houses your assets such as images, JavaScript, and CSS.
-
-<a name="the-resources-directory"></a>
-#### The Resources Directory
-
-The `resources` directory contains your [views](/docs/{{version}}/views) as well as your raw, un-compiled assets such as CSS or JavaScript.
-
-<a name="the-routes-directory"></a>
-#### The Routes Directory
-
-The `routes` directory contains all of the route definitions for your application. By default, two route files are included with Laravel: `web.php` and `console.php`.
-
-The `web.php` file contains routes that Laravel places in the `web` middleware group, which provides session state, CSRF protection, and cookie encryption. If your application does not offer a stateless, RESTful API then all your routes will most likely be defined in the `web.php` file.
-
-The `console.php` file is where you may define all of your closure based console commands. Each closure is bound to a command instance allowing a simple approach to interacting with each command's IO methods. Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. You may also [schedule](/docs/{{version}}/scheduling) tasks in the `console.php` file.
-
-Optionally, you may install additional route files for API routes (`api.php`) and broadcasting channels (`channels.php`), via the `install:api` and `install:broadcasting` Artisan commands.
-
-The `api.php` file contains routes that are intended to be stateless, so requests entering the application through these routes are intended to be authenticated [via tokens](/docs/{{version}}/sanctum) and will not have access to session state.
-
-The `channels.php` file is where you may register all of the [event broadcasting](/docs/{{version}}/broadcasting) channels that your application supports.
-
-<a name="the-storage-directory"></a>
-#### The Storage Directory
-
-The `storage` directory contains your logs, compiled Blade templates, file based sessions, file caches, and other files generated by the framework. This directory is segregated into `app`, `framework`, and `logs` directories. The `app` directory may be used to store any files generated by your application. The `framework` directory is used to store framework generated files and caches. Finally, the `logs` directory contains your application's log files.
-
-The `storage/app/public` directory may be used to store user-generated files, such as profile avatars, that should be publicly accessible. You should create a symbolic link at `public/storage` which points to this directory. You may create the link using the `php artisan storage:link` Artisan command.
-
-<a name="the-tests-directory"></a>
-#### The Tests Directory
-
-The `tests` directory contains your automated tests. Example [Pest](https://pestphp.com) or [PHPUnit](https://phpunit.de/) unit tests and feature tests are provided out of the box. Each test class should be suffixed with the word `Test`. You may run your tests using the `/vendor/bin/pest` or `/vendor/bin/phpunit` commands. Or, if you would like a more detailed and beautiful representation of your test results, you may run your tests using the `php artisan test` Artisan command.
-
-<a name="the-vendor-directory"></a>
-#### The Vendor Directory
-
-The `vendor` directory contains your [Composer](https://getcomposer.org) dependencies.
-
-<a name="the-app-directory"></a>
-## The App Directory
 
 The majority of your application is housed in the `app` directory. By default, this directory is namespaced under `App` and is autoloaded by Composer using the [PSR-4 autoloading standard](https://www.php-fig.org/psr/psr-4/).
 
@@ -178,3 +117,60 @@ In a fresh Laravel application, this directory will already contain the `AppServ
 #### The Rules Directory
 
 This directory does not exist by default, but will be created for you if you execute the `make:rule` Artisan command. The `Rules` directory contains the custom validation rule objects for your application. Rules are used to encapsulate complicated validation logic in a simple object. For more information, check out the [validation documentation](/docs/{{version}}/validation).
+
+<a name="the-bootstrap-directory"></a>
+### The Bootstrap Directory
+
+The `bootstrap` directory contains the `app.php` file which bootstraps the framework. This directory also houses a `cache` directory which contains framework generated files for performance optimization such as the route and services cache files.
+
+<a name="the-config-directory"></a>
+### The Config Directory
+
+The `config` directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
+
+<a name="the-database-directory"></a>
+### The Database Directory
+
+The `database` directory contains your database migrations, model factories, and seeds. If you wish, you may also use this directory to hold an SQLite database.
+
+<a name="the-public-directory"></a>
+### The Public Directory
+
+The `public` directory contains the `index.php` file, which is the entry point for all requests entering your application and configures autoloading. This directory also houses your assets such as images, JavaScript, and CSS.
+
+<a name="the-resources-directory"></a>
+### The Resources Directory
+
+The `resources` directory contains your [views](/docs/{{version}}/views) as well as your raw, un-compiled assets such as CSS or JavaScript.
+
+<a name="the-routes-directory"></a>
+### The Routes Directory
+
+The `routes` directory contains all of the route definitions for your application. By default, two route files are included with Laravel: `web.php` and `console.php`.
+
+The `web.php` file contains routes that Laravel places in the `web` middleware group, which provides session state, CSRF protection, and cookie encryption. If your application does not offer a stateless, RESTful API then all your routes will most likely be defined in the `web.php` file.
+
+The `console.php` file is where you may define all of your closure based console commands. Each closure is bound to a command instance allowing a simple approach to interacting with each command's IO methods. Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. You may also [schedule](/docs/{{version}}/scheduling) tasks in the `console.php` file.
+
+Optionally, you may install additional route files for API routes (`api.php`) and broadcasting channels (`channels.php`), via the `install:api` and `install:broadcasting` Artisan commands.
+
+The `api.php` file contains routes that are intended to be stateless, so requests entering the application through these routes are intended to be authenticated [via tokens](/docs/{{version}}/sanctum) and will not have access to session state.
+
+The `channels.php` file is where you may register all of the [event broadcasting](/docs/{{version}}/broadcasting) channels that your application supports.
+
+<a name="the-storage-directory"></a>
+### The Storage Directory
+
+The `storage` directory contains your logs, compiled Blade templates, file based sessions, file caches, and other files generated by the framework. This directory is segregated into `app`, `framework`, and `logs` directories. The `app` directory may be used to store any files generated by your application. The `framework` directory is used to store framework generated files and caches. Finally, the `logs` directory contains your application's log files.
+
+The `storage/app/public` directory may be used to store user-generated files, such as profile avatars, that should be publicly accessible. You should create a symbolic link at `public/storage` which points to this directory. You may create the link using the `php artisan storage:link` Artisan command.
+
+<a name="the-tests-directory"></a>
+### The Tests Directory
+
+The `tests` directory contains your automated tests. Example [Pest](https://pestphp.com) or [PHPUnit](https://phpunit.de/) unit tests and feature tests are provided out of the box. Each test class should be suffixed with the word `Test`. You may run your tests using the `/vendor/bin/pest` or `/vendor/bin/phpunit` commands. Or, if you would like a more detailed and beautiful representation of your test results, you may run your tests using the `php artisan test` Artisan command.
+
+<a name="the-vendor-directory"></a>
+### The Vendor Directory
+
+The `vendor` directory contains your [Composer](https://getcomposer.org) dependencies.
