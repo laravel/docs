@@ -14,6 +14,7 @@
     - [Service Container](/docs/{{version}}/container)
     - [Service Providers](/docs/{{version}}/providers)
     - [Facades](/docs/{{version}}/facades)
+    - [Contracts](/docs/{{version}}/contracts)
 - ## The Basics
     - [Routing](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
@@ -36,7 +37,6 @@
     - [Collections](/docs/{{version}}/collections)
     - [Concurrency](/docs/{{version}}/concurrency)
     - [Context](/docs/{{version}}/context)
-    - [Contracts](/docs/{{version}}/contracts)
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
     - [Helpers](/docs/{{version}}/helpers)
