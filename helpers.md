@@ -170,6 +170,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [dispatch_sync](#method-dispatch-sync)
 [dump](#method-dump)
 [encrypt](#method-encrypt)
+[enum_value](#method-enum-value)
 [env](#method-env)
 [event](#method-event)
 [fake](#method-fake)
@@ -1876,6 +1877,15 @@ If you want to stop executing the script after dumping the variables, use the [`
 The `encrypt` function [encrypts](/docs/{{version}}/encryption) the given value. You may use this function as an alternative to the `Crypt` facade:
 
     $secret = encrypt('my-secret-value');
+
+<a name="method-enum-value"></a>
+#### `enum_value()` {.collection-method}
+
+The `enum_value` function retrieve an enum and return the value of the enum:
+
+```php
+enum_value(TestEnum::NAME) // Return the NAME value
+```
 
 <a name="method-env"></a>
 #### `env()` {.collection-method}
