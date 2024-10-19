@@ -242,45 +242,47 @@ The `unique` method returns all of the unique models in the collection. Any mode
 <a name="custom-collections"></a>
 ## Custom Collections
 
-If you would like to use a custom `Collection` object when interacting with a given model, you may add the `CollectedBy` attribute to your model:
+If you would like to use a custom `Collection` object when interacting with a given model, you may add the `CollectedBy` attribute to your model. Alternatively, you may define a `newCollection` method on your model:
 
-    <?php
+```php tab=Attribute
+<?php
 
-    namespace App\Models;
+namespace App\Models;
 
-    use App\Support\UserCollection;
-    use Illuminate\Database\Eloquent\Attributes\CollectedBy;
-    use Illuminate\Database\Eloquent\Model;
+use App\Support\UserCollection;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Model;
 
-    #[CollectedBy(UserCollection::class)]
-    class User extends Model
+#[CollectedBy(UserCollection::class)]
+class User extends Model
+{
+    // ...
+}
+```
+
+```php tab=Manually
+<?php
+
+namespace App\Models;
+
+use App\Support\UserCollection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models
+     * @return \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Database\Eloquent\Model>
+     */
+    public function newCollection(array $models = []): Collection
     {
-        // ...
+        return new UserCollection($models);
     }
-
-Alternatively, you may define a `newCollection` method on your model:
-
-    <?php
-
-    namespace App\Models;
-
-    use App\Support\UserCollection;
-    use Illuminate\Database\Eloquent\Collection;
-    use Illuminate\Database\Eloquent\Model;
-
-    class User extends Model
-    {
-        /**
-         * Create a new Eloquent Collection instance.
-         *
-         * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models
-         * @return \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Database\Eloquent\Model>
-         */
-        public function newCollection(array $models = []): Collection
-        {
-            return new UserCollection($models);
-        }
-    }
+}
+```
 
 Once you have defined a `newCollection` method or added the `CollectedBy` attribute to your model, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\Database\Eloquent\Collection` instance.
 

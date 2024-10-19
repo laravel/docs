@@ -1224,40 +1224,42 @@ Writing a global scope is simple. First, use the `make:scope` command to generat
 <a name="applying-global-scopes"></a>
 #### Applying Global Scopes
 
-To assign a global scope to a model, you may simply place the `ScopedBy` attribute on the model:
+To assign a global scope to a model, you may simply place the `ScopedBy` attribute on the model. Or, you may manually register the global scope by overriding the model's `booted` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:
 
-    <?php
+```php tab=Attribute
+<?php
 
-    namespace App\Models;
+namespace App\Models;
 
-    use App\Models\Scopes\AncientScope;
-    use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use App\Models\Scopes\AncientScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
-    #[ScopedBy([AncientScope::class])]
-    class User extends Model
+#[ScopedBy([AncientScope::class])]
+class User extends Model
+{
+    //
+}
+```
+
+```php tab=Manually
+<?php
+
+namespace App\Models;
+
+use App\Models\Scopes\AncientScope;
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
     {
-        //
+        static::addGlobalScope(new AncientScope);
     }
-
-Or, you may manually register the global scope by overriding the model's `booted` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:
-
-    <?php
-
-    namespace App\Models;
-
-    use App\Models\Scopes\AncientScope;
-    use Illuminate\Database\Eloquent\Model;
-
-    class User extends Model
-    {
-        /**
-         * The "booted" method of the model.
-         */
-        protected static function booted(): void
-        {
-            static::addGlobalScope(new AncientScope);
-        }
-    }
+}
+```
 
 After adding the scope in the example above to the `App\Models\User` model, a call to the `User::all()` method will execute the following SQL query:
 
@@ -1545,29 +1547,31 @@ This command will place the new observer in your `app/Observers` directory. If t
         }
     }
 
-To register an observer, you may place the `ObservedBy` attribute on the corresponding model:
+To register an observer, you may place the `ObservedBy` attribute on the corresponding model. Or, you may manually register an observer by invoking the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `AppServiceProvider` class:
 
-    use App\Observers\UserObserver;
-    use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+```php tab=Attribute
+use App\Observers\UserObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
-    #[ObservedBy([UserObserver::class])]
-    class User extends Authenticatable
-    {
-        //
-    }
+#[ObservedBy([UserObserver::class])]
+class User extends Authenticatable
+{
+    //
+}
+```
 
-Or, you may manually register an observer by invoking the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `AppServiceProvider` class:
+```php tab=Manually
+use App\Models\User;
+use App\Observers\UserObserver;
 
-    use App\Models\User;
-    use App\Observers\UserObserver;
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        User::observe(UserObserver::class);
-    }
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    User::observe(UserObserver::class);
+}
+```
 
 > [!NOTE]  
 > There are additional events an observer can listen to, such as `saving` and `retrieved`. These events are described within the [events](#events) documentation.
