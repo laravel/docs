@@ -195,7 +195,7 @@ composer require mailersend/laravel-driver
 
 Once the package is installed, add the `MAILERSEND_API_KEY` environment variable to your application's `.env` file. In addition, the `MAIL_MAILER` environment variable should be defined as `mailersend`:
 
-```shell
+```ini
 MAIL_MAILER=mailersend
 MAIL_FROM_ADDRESS=app@yourdomain.com
 MAIL_FROM_NAME="App Name"
