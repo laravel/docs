@@ -1488,73 +1488,77 @@ If needed, you may utilize [queueable anonymous event listeners](/docs/{{version
 <a name="defining-observers"></a>
 #### Defining Observers
 
-If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
+If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class.
 
-```shell
+This command will place the new observer in your `app/Observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following.
+
+To register an observer, you may place the `ObservedBy` attribute on the corresponding model.
+
+```shell tab=Definition
 php artisan make:observer UserObserver --model=User
 ```
 
-This command will place the new observer in your `app/Observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
+```php tab=Definition filename=app/Observers/UserObserver.php
+<?php
 
-    <?php
+namespace App\Observers;
 
-    namespace App\Observers;
+use App\Models\User;
 
-    use App\Models\User;
-
-    class UserObserver
+class UserObserver
+{
+    /**
+     * Handle the User "created" event.
+     */
+    public function created(User $user): void
     {
-        /**
-         * Handle the User "created" event.
-         */
-        public function created(User $user): void
-        {
-            // ...
-        }
-
-        /**
-         * Handle the User "updated" event.
-         */
-        public function updated(User $user): void
-        {
-            // ...
-        }
-
-        /**
-         * Handle the User "deleted" event.
-         */
-        public function deleted(User $user): void
-        {
-            // ...
-        }
-
-        /**
-         * Handle the User "restored" event.
-         */
-        public function restored(User $user): void
-        {
-            // ...
-        }
-
-        /**
-         * Handle the User "forceDeleted" event.
-         */
-        public function forceDeleted(User $user): void
-        {
-            // ...
-        }
+        // ...
     }
 
-To register an observer, you may place the `ObservedBy` attribute on the corresponding model:
-
-    use App\Observers\UserObserver;
-    use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-
-    #[ObservedBy([UserObserver::class])]
-    class User extends Authenticatable
+    /**
+     * Handle the User "updated" event.
+     */
+    public function updated(User $user): void
     {
-        //
+        // ...
     }
+
+    /**
+     * Handle the User "deleted" event.
+     */
+    public function deleted(User $user): void
+    {
+        // ...
+    }
+
+    /**
+     * Handle the User "restored" event.
+     */
+    public function restored(User $user): void
+    {
+        // ...
+    }
+
+    /**
+     * Handle the User "forceDeleted" event.
+     */
+    public function forceDeleted(User $user): void
+    {
+        // ...
+    }
+}
+```
+
+```php tab=Usage filename=app/Models/User.php
+use App\Observers\UserObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+
+#[ObservedBy([UserObserver::class])]
+class User extends Authenticatable
+{
+    //
+}
+```
 
 Or, you may manually register an observer by invoking the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `AppServiceProvider` class:
 

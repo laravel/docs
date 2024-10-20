@@ -85,15 +85,15 @@ php artisan storage:unlink
 <a name="s3-driver-configuration"></a>
 #### S3 Driver Configuration
 
-Before using the S3 driver, you will need to install the Flysystem S3 package via the Composer package manager:
+Before using the S3 driver, you will need to install the Flysystem S3 package via the Composer package manager.
 
-```shell
+An S3 disk configuration array is located in your `config/filesystems.php` configuration file. Typically, you should configure your S3 information and credentials using the following environment variables which are referenced by the `config/filesystems.php` configuration file.
+
+```shell tab=Installation
 composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
 ```
 
-An S3 disk configuration array is located in your `config/filesystems.php` configuration file. Typically, you should configure your S3 information and credentials using the following environment variables which are referenced by the `config/filesystems.php` configuration file:
-
-```
+```ini tab=Configuration filename=.env
 AWS_ACCESS_KEY_ID=<your-key-id>
 AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
 AWS_DEFAULT_REGION=us-east-1
@@ -106,77 +106,81 @@ For convenience, these environment variables match the naming convention used by
 <a name="ftp-driver-configuration"></a>
 #### FTP Driver Configuration
 
-Before using the FTP driver, you will need to install the Flysystem FTP package via the Composer package manager:
+Before using the FTP driver, you will need to install the Flysystem FTP package via the Composer package manager.
 
-```shell
+Laravel's Flysystem integrations work great with FTP; however, a sample configuration is not included with the framework's default `config/filesystems.php` configuration file. If you need to configure an FTP filesystem, you may use the configuration example below.
+
+```shell tab=Installation
 composer require league/flysystem-ftp "^3.0"
 ```
 
-Laravel's Flysystem integrations work great with FTP; however, a sample configuration is not included with the framework's default `config/filesystems.php` configuration file. If you need to configure an FTP filesystem, you may use the configuration example below:
+```php tab=Configuration filename=config/filesystem.php
+'ftp' => [
+    'driver' => 'ftp',
+    'host' => env('FTP_HOST'),
+    'username' => env('FTP_USERNAME'),
+    'password' => env('FTP_PASSWORD'),
 
-    'ftp' => [
-        'driver' => 'ftp',
-        'host' => env('FTP_HOST'),
-        'username' => env('FTP_USERNAME'),
-        'password' => env('FTP_PASSWORD'),
-
-        // Optional FTP Settings...
-        // 'port' => env('FTP_PORT', 21),
-        // 'root' => env('FTP_ROOT'),
-        // 'passive' => true,
-        // 'ssl' => true,
-        // 'timeout' => 30,
-    ],
+    // Optional FTP Settings...
+    // 'port' => env('FTP_PORT', 21),
+    // 'root' => env('FTP_ROOT'),
+    // 'passive' => true,
+    // 'ssl' => true,
+    // 'timeout' => 30,
+],
+```
 
 <a name="sftp-driver-configuration"></a>
 #### SFTP Driver Configuration
 
-Before using the SFTP driver, you will need to install the Flysystem SFTP package via the Composer package manager:
+Before using the SFTP driver, you will need to install the Flysystem SFTP package via the Composer package manager.
 
-```shell
+Laravel's Flysystem integrations work great with SFTP; however, a sample configuration is not included with the framework's default `config/filesystems.php` configuration file. If you need to configure an SFTP filesystem, you may use the configuration example below.
+
+```shell tab=Installation
 composer require league/flysystem-sftp-v3 "^3.0"
 ```
 
-Laravel's Flysystem integrations work great with SFTP; however, a sample configuration is not included with the framework's default `config/filesystems.php` configuration file. If you need to configure an SFTP filesystem, you may use the configuration example below:
+```php tab=Configuration filename=config/filesystem.php
+'sftp' => [
+    'driver' => 'sftp',
+    'host' => env('SFTP_HOST'),
 
-    'sftp' => [
-        'driver' => 'sftp',
-        'host' => env('SFTP_HOST'),
+    // Settings for basic authentication...
+    'username' => env('SFTP_USERNAME'),
+    'password' => env('SFTP_PASSWORD'),
 
-        // Settings for basic authentication...
-        'username' => env('SFTP_USERNAME'),
-        'password' => env('SFTP_PASSWORD'),
+    // Settings for SSH key based authentication with encryption password...
+    'privateKey' => env('SFTP_PRIVATE_KEY'),
+    'passphrase' => env('SFTP_PASSPHRASE'),
 
-        // Settings for SSH key based authentication with encryption password...
-        'privateKey' => env('SFTP_PRIVATE_KEY'),
-        'passphrase' => env('SFTP_PASSPHRASE'),
+    // Settings for file / directory permissions...
+    'visibility' => 'private', // `private` = 0600, `public` = 0644
+    'directory_visibility' => 'private', // `private` = 0700, `public` = 0755
 
-        // Settings for file / directory permissions...
-        'visibility' => 'private', // `private` = 0600, `public` = 0644
-        'directory_visibility' => 'private', // `private` = 0700, `public` = 0755
-
-        // Optional SFTP Settings...
-        // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
-        // 'maxTries' => 4,
-        // 'passphrase' => env('SFTP_PASSPHRASE'),
-        // 'port' => env('SFTP_PORT', 22),
-        // 'root' => env('SFTP_ROOT', ''),
-        // 'timeout' => 30,
-        // 'useAgent' => true,
-    ],
+    // Optional SFTP Settings...
+    // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
+    // 'maxTries' => 4,
+    // 'passphrase' => env('SFTP_PASSPHRASE'),
+    // 'port' => env('SFTP_PORT', 22),
+    // 'root' => env('SFTP_ROOT', ''),
+    // 'timeout' => 30,
+    // 'useAgent' => true,
+],
+```
 
 <a name="scoped-and-read-only-filesystems"></a>
 ### Scoped and Read-Only Filesystems
 
-Scoped disks allow you to define a filesystem where all paths are automatically prefixed with a given path prefix. Before creating a scoped filesystem disk, you will need to install an additional Flysystem package via the Composer package manager:
-
-```shell
-composer require league/flysystem-path-prefixing "^3.0"
-```
+Scoped disks allow you to define a filesystem where all paths are automatically prefixed with a given path prefix. Before creating a scoped filesystem disk, you will need to install an additional Flysystem package via the Composer package manager.
 
 You may create a path scoped instance of any existing filesystem disk by defining a disk that utilizes the `scoped` driver. For example, you may create a disk which scopes your existing `s3` disk to a specific path prefix, and then every file operation using your scoped disk will utilize the specified prefix:
 
-```php
+```shell tab=Installation
+composer require league/flysystem-path-prefixing "^3.0"
+```
+
+```php tab=Configuration filename=config/filesystem.php
 's3-videos' => [
     'driver' => 'scoped',
     'disk' => 's3',
@@ -184,15 +188,13 @@ You may create a path scoped instance of any existing filesystem disk by definin
 ],
 ```
 
-"Read-only" disks allow you to create filesystem disks that do not allow write operations. Before using the `read-only` configuration option, you will need to install an additional Flysystem package via the Composer package manager:
+"Read-only" disks allow you to create filesystem disks that do not allow write operations. Before using the `read-only` configuration option, you will need to install an additional Flysystem package via the Composer package manager. Next, you may include the `read-only` configuration option in one or more of your disk's configuration arrays:
 
-```shell
+```shell tab=Installation
 composer require league/flysystem-read-only "^3.0"
 ```
 
-Next, you may include the `read-only` configuration option in one or more of your disk's configuration arrays:
-
-```php
+```php tab=Configuration filename=config/filesystem.php
 's3-videos' => [
     'driver' => 's3',
     // ...
@@ -750,54 +752,54 @@ By default, the `fake` method will delete all files in its temporary directory. 
 
 Laravel's Flysystem integration provides support for several "drivers" out of the box; however, Flysystem is not limited to these and has adapters for many other storage systems. You can create a custom driver if you want to use one of these additional adapters in your Laravel application.
 
-In order to define a custom filesystem you will need a Flysystem adapter. Let's add a community maintained Dropbox adapter to our project:
+In order to define a custom filesystem you will need a Flysystem adapter. Let's add a community maintained Dropbox adapter to our project. Next, you can register the driver within the `boot` method of one of your application's [service providers](/docs/{{version}}/providers). To accomplish this, you should use the `extend` method of the `Storage` facade:
 
-```shell
+```shell tab=Installation
 composer require spatie/flysystem-dropbox
 ```
 
-Next, you can register the driver within the `boot` method of one of your application's [service providers](/docs/{{version}}/providers). To accomplish this, you should use the `extend` method of the `Storage` facade:
+```php tab=Registration filename=app/Providers/AppServiceProvider.php
+<?php
 
-    <?php
+namespace App\Providers;
 
-    namespace App\Providers;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\ServiceProvider;
+use League\Flysystem\Filesystem;
+use Spatie\Dropbox\Client as DropboxClient;
+use Spatie\FlysystemDropbox\DropboxAdapter;
 
-    use Illuminate\Contracts\Foundation\Application;
-    use Illuminate\Filesystem\FilesystemAdapter;
-    use Illuminate\Support\Facades\Storage;
-    use Illuminate\Support\ServiceProvider;
-    use League\Flysystem\Filesystem;
-    use Spatie\Dropbox\Client as DropboxClient;
-    use Spatie\FlysystemDropbox\DropboxAdapter;
-
-    class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
     {
-        /**
-         * Register any application services.
-         */
-        public function register(): void
-        {
-            // ...
-        }
-
-        /**
-         * Bootstrap any application services.
-         */
-        public function boot(): void
-        {
-            Storage::extend('dropbox', function (Application $app, array $config) {
-                $adapter = new DropboxAdapter(new DropboxClient(
-                    $config['authorization_token']
-                ));
-
-                return new FilesystemAdapter(
-                    new Filesystem($adapter, $config),
-                    $adapter,
-                    $config
-                );
-            });
-        }
+        // ...
     }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Storage::extend('dropbox', function (Application $app, array $config) {
+            $adapter = new DropboxAdapter(new DropboxClient(
+                $config['authorization_token']
+            ));
+
+            return new FilesystemAdapter(
+                new Filesystem($adapter, $config),
+                $adapter,
+                $config
+            );
+        });
+    }
+}
+```
 
 The first argument of the `extend` method is the name of the driver and the second is a closure that receives the `$app` and `$config` variables. The closure must return an instance of `Illuminate\Filesystem\FilesystemAdapter`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk.
 

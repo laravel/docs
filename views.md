@@ -48,19 +48,21 @@ Our Breeze and Jetstream [starter kits](/docs/{{version}}/starter-kits) give you
 <a name="creating-and-rendering-views"></a>
 ## Creating and Rendering Views
 
-You may create a view by placing a file with the `.blade.php` extension in your application's `resources/views` directory or by using the `make:view` Artisan command:
+You may create a view by placing a file with the `.blade.php` extension in your application's `resources/views` directory or by using the `make:view` Artisan command.
 
-```shell
+Once you have created a view, you may return it from one of your application's routes or controllers using the global `view` helper.
+
+```shell tab=Creation
 php artisan make:view greeting
 ```
 
+```php tab=Usage filename=routes/web.php
+Route::get('/', function () {
+    return view('greeting', ['name' => 'James']);
+});
+```
+
 The `.blade.php` extension informs the framework that the file contains a [Blade template](/docs/{{version}}/blade). Blade templates contain HTML as well as Blade directives that allow you to easily echo values, create "if" statements, iterate over data, and more.
-
-Once you have created a view, you may return it from one of your application's routes or controllers using the global `view` helper:
-
-    Route::get('/', function () {
-        return view('greeting', ['name' => 'James']);
-    });
 
 Views may also be returned using the `View` facade:
 

@@ -47,44 +47,50 @@ php artisan make:resource UserCollection
 > [!NOTE]  
 > This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources.
 
-Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` resource class:
+Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` resource class.
 
-    <?php
+Once the resource is defined, it may be returned from a route or controller. The resource accepts the underlying model instance via its constructor.
 
-    namespace App\Http\Resources;
+```php tab=Definition filename=app/Http/Resources/UserResource.php
+<?php
 
-    use Illuminate\Http\Request;
-    use Illuminate\Http\Resources\Json\JsonResource;
+namespace App\Http\Resources;
 
-    class UserResource extends JsonResource
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class UserResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
     {
-        /**
-         * Transform the resource into an array.
-         *
-         * @return array<string, mixed>
-         */
-        public function toArray(Request $request): array
-        {
-            return [
-                'id' => $this->id,
-                'name' => $this->name,
-                'email' => $this->email,
-                'created_at' => $this->created_at,
-                'updated_at' => $this->updated_at,
-            ];
-        }
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
+}
+```
+
+```php tab=Usage filename=routes/web.php
+use App\Http\Resources\UserResource;
+use App\Models\User;
+
+Route::get('/user/{id}', function (string $id) {
+    return new UserResource(User::findOrFail($id));
+});
+```
 
 Every resource class defines a `toArray` method which returns the array of attributes that should be converted to JSON when the resource is returned as a response from a route or controller method.
 
-Note that we can access model properties directly from the `$this` variable. This is because a resource class will automatically proxy property and method access down to the underlying model for convenient access. Once the resource is defined, it may be returned from a route or controller. The resource accepts the underlying model instance via its constructor:
-
-    use App\Http\Resources\UserResource;
-    use App\Models\User;
-
-    Route::get('/user/{id}', function (string $id) {
-        return new UserResource(User::findOrFail($id));
-    });
+Note that we can access model properties directly from the `$this` variable. This is because a resource class will automatically proxy property and method access down to the underlying model for convenient access.
 
 <a name="resource-collections"></a>
 ### Resource Collections
@@ -98,47 +104,47 @@ If you are returning a collection of resources or a paginated response, you shou
         return UserResource::collection(User::all());
     });
 
-Note that this does not allow any addition of custom meta data that may need to be returned with your collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:
+Note that this does not allow any addition of custom meta data that may need to be returned with your collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection. Once the resource collection class has been generated, you may easily define any meta data that should be included with the response. After defining your resource collection, it may be returned from a route or controller.
 
-```shell
+```shell tab=Creation
 php artisan make:resource UserCollection
 ```
 
-Once the resource collection class has been generated, you may easily define any meta data that should be included with the response:
+```php tab=Definition filename=app/Http/Resources/UserCollection.php
+<?php
 
-    <?php
+namespace App\Http\Resources;
 
-    namespace App\Http\Resources;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-    use Illuminate\Http\Request;
-    use Illuminate\Http\Resources\Json\ResourceCollection;
-
-    class UserCollection extends ResourceCollection
+class UserCollection extends ResourceCollection
+{
+    /**
+     * Transform the resource collection into an array.
+     *
+     * @return array<int|string, mixed>
+     */
+    public function toArray(Request $request): array
     {
-        /**
-         * Transform the resource collection into an array.
-         *
-         * @return array<int|string, mixed>
-         */
-        public function toArray(Request $request): array
-        {
-            return [
-                'data' => $this->collection,
-                'links' => [
-                    'self' => 'link-value',
-                ],
-            ];
-        }
+        return [
+            'data' => $this->collection,
+            'links' => [
+                'self' => 'link-value',
+            ],
+        ];
     }
+}
+```
 
-After defining your resource collection, it may be returned from a route or controller:
+```php tab=Usage filename=routes/web.php
+use App\Http\Resources\UserCollection;
+use App\Models\User;
 
-    use App\Http\Resources\UserCollection;
-    use App\Models\User;
-
-    Route::get('/users', function () {
-        return new UserCollection(User::all());
-    });
+Route::get('/users', function () {
+    return new UserCollection(User::all());
+});
+```
 
 <a name="preserving-collection-keys"></a>
 #### Preserving Collection Keys

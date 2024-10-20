@@ -53,29 +53,33 @@ The API based drivers such as Mailgun, Postmark, Resend, and MailerSend are ofte
 <a name="mailgun-driver"></a>
 #### Mailgun Driver
 
-To use the Mailgun driver, install Symfony's Mailgun Mailer transport via Composer:
+To use the Mailgun driver,
 
-```shell
+1. install Symfony's Mailgun Mailer transport via Composer
+2. Next, set the `default` option in your application's `config/mail.php` configuration file to `mailgun` and add the following configuration array to your array of `mailers`
+3. After configuring your application's default mailer, add the following options to your `config/services.php` configuration file
+
+```shell tab=Installation
 composer require symfony/mailgun-mailer symfony/http-client
 ```
 
-Next, set the `default` option in your application's `config/mail.php` configuration file to `mailgun` and add the following configuration array to your array of `mailers`:
+```php tab=Mailer configuration filename=config/mail.php
+'mailgun' => [
+    'transport' => 'mailgun',
+    // 'client' => [
+    //     'timeout' => 5,
+    // ],
+],
+```
 
-    'mailgun' => [
-        'transport' => 'mailgun',
-        // 'client' => [
-        //     'timeout' => 5,
-        // ],
-    ],
-
-After configuring your application's default mailer, add the following options to your `config/services.php` configuration file:
-
-    'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
-        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
-        'scheme' => 'https',
-    ],
+```php tab=Service configuration filename=config/servives.php
+'mailgun' => [
+    'domain' => env('MAILGUN_DOMAIN'),
+    'secret' => env('MAILGUN_SECRET'),
+    'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+    'scheme' => 'https',
+],
+```
 
 If you are not using the United States [Mailgun region](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions), you may define your region's endpoint in the `services` configuration file:
 
@@ -89,17 +93,17 @@ If you are not using the United States [Mailgun region](https://documentation.ma
 <a name="postmark-driver"></a>
 #### Postmark Driver
 
-To use the [Postmark](https://postmarkapp.com/) driver, install Symfony's Postmark Mailer transport via Composer:
+To use the [Postmark](https://postmarkapp.com/) driver, install Symfony's Postmark Mailer transport via Composer. Next, set the `default` option in your application's `config/mail.php` configuration file to `postmark`. After configuring your application's default mailer, ensure that your `config/services.php` configuration file contains the following options.
 
-```shell
+```shell tab=Installation
 composer require symfony/postmark-mailer symfony/http-client
 ```
 
-Next, set the `default` option in your application's `config/mail.php` configuration file to `postmark`. After configuring your application's default mailer, ensure that your `config/services.php` configuration file contains the following options:
-
-    'postmark' => [
-        'token' => env('POSTMARK_TOKEN'),
-    ],
+```php tab=Configuration filename=config/services.php
+'postmark' => [
+    'token' => env('POSTMARK_TOKEN'),
+],
+```
 
 If you would like to specify the Postmark message stream that should be used by a given mailer, you may add the `message_stream_id` configuration option to the mailer's configuration array. This configuration array can be found in your application's `config/mail.php` configuration file:
 
@@ -116,34 +120,34 @@ This way you are also able to set up multiple Postmark mailers with different me
 <a name="resend-driver"></a>
 #### Resend Driver
 
-To use the [Resend](https://resend.com/) driver, install Resend's PHP SDK via Composer:
+To use the [Resend](https://resend.com/) driver, install Resend's PHP SDK via Composer. Next, set the `default` option in your application's `config/mail.php` configuration file to `resend`. After configuring your application's default mailer, ensure that your `config/services.php` configuration file contains the following options.
 
-```shell
+```shell tab=Installation
 composer require resend/resend-php
 ```
 
-Next, set the `default` option in your application's `config/mail.php` configuration file to `resend`. After configuring your application's default mailer, ensure that your `config/services.php` configuration file contains the following options:
-
-    'resend' => [
-        'key' => env('RESEND_KEY'),
-    ],
+```php tab=Configuration filename=config/services.php
+'resend' => [
+    'key' => env('RESEND_KEY'),
+],
+```
 
 <a name="ses-driver"></a>
 #### SES Driver
 
-To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. You may install this library via the Composer package manager:
+To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. You may install this library via the Composer package manager. Next, set the `default` option in your `config/mail.php` configuration file to `ses` and verify that your `config/services.php` configuration file contains the following options.
 
-```shell
+```shell tab=Installation
 composer require aws/aws-sdk-php
 ```
 
-Next, set the `default` option in your `config/mail.php` configuration file to `ses` and verify that your `config/services.php` configuration file contains the following options:
-
-    'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-    ],
+```php tab=Configuration filename=config/services.php
+'ses' => [
+    'key' => env('AWS_ACCESS_KEY_ID'),
+    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+],
+```
 
 To utilize AWS [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) via a session token, you may add a `token` key to your application's SES configuration:
 
@@ -187,15 +191,15 @@ If you would like to define [additional options](https://docs.aws.amazon.com/aws
 <a name="mailersend-driver"></a>
 #### MailerSend Driver
 
-[MailerSend](https://www.mailersend.com/), a transactional email and SMS service, maintains their own API based mail driver for Laravel. The package containing the driver may be installed via the Composer package manager:
+[MailerSend](https://www.mailersend.com/), a transactional email and SMS service, maintains their own API based mail driver for Laravel. The package containing the driver may be installed via the Composer package manager. Once the package is installed, add the `MAILERSEND_API_KEY` environment variable to your application's `.env` file. In addition, the `MAIL_MAILER` environment variable should be defined as `mailersend`.
 
-```shell
+Finally, add MailerSend to the `mailers` array in your application's `config/mail.php` configuration file:
+
+```shell tab=Installation
 composer require mailersend/laravel-driver
 ```
 
-Once the package is installed, add the `MAILERSEND_API_KEY` environment variable to your application's `.env` file. In addition, the `MAIL_MAILER` environment variable should be defined as `mailersend`:
-
-```shell
+```ini tab=Environment variables filename=.env
 MAIL_MAILER=mailersend
 MAIL_FROM_ADDRESS=app@yourdomain.com
 MAIL_FROM_NAME="App Name"
@@ -203,9 +207,7 @@ MAIL_FROM_NAME="App Name"
 MAILERSEND_API_KEY=your-api-key
 ```
 
-Finally, add MailerSend to the `mailers` array in your application's `config/mail.php` configuration file:
-
-```php
+```php tab=Configuration filename=config/mail..php
 'mailersend' => [
     'transport' => 'mailersend',
 ],
@@ -724,28 +726,28 @@ Markdown mailable messages allow you to take advantage of the pre-built template
 <a name="generating-markdown-mailables"></a>
 ### Generating Markdown Mailables
 
-To generate a mailable with a corresponding Markdown template, you may use the `--markdown` option of the `make:mail` Artisan command:
+To generate a mailable with a corresponding Markdown template, you may use the `--markdown` option of the `make:mail` Artisan command. Then, when configuring the mailable `Content` definition within its `content` method, use the `markdown` parameter instead of the `view` parameter.
 
-```shell
+```shell tab=Creation
 php artisan make:mail OrderShipped --markdown=mail.orders.shipped
 ```
 
-Then, when configuring the mailable `Content` definition within its `content` method, use the `markdown` parameter instead of the `view` parameter:
+```php tab=Usage filename=app/Mail/OrderShipped.php
+use Illuminate\Mail\Mailables\Content;
 
-    use Illuminate\Mail\Mailables\Content;
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'mail.orders.shipped',
-            with: [
-                'url' => $this->orderUrl,
-            ],
-        );
-    }
+/**
+ * Get the message content definition.
+ */
+public function content(): Content
+{
+    return new Content(
+        markdown: 'mail.orders.shipped',
+        with: [
+            'url' => $this->orderUrl,
+        ],
+    );
+}
+```
 
 <a name="writing-markdown-messages"></a>
 ### Writing Markdown Messages

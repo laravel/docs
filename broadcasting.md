@@ -108,15 +108,15 @@ You can find detailed Reverb installation and usage instructions in the [Reverb 
 <a name="pusher-channels"></a>
 ### Pusher Channels
 
-If you plan to broadcast your events using [Pusher Channels](https://pusher.com/channels), you should install the Pusher Channels PHP SDK using the Composer package manager:
+If you plan to broadcast your events using [Pusher Channels](https://pusher.com/channels), you should install the Pusher Channels PHP SDK using the Composer package manager.
 
-```shell
+Next, you should configure your Pusher Channels credentials in the `config/broadcasting.php` configuration file. An example Pusher Channels configuration is already included in this file, allowing you to quickly specify your key, secret, and application ID. Typically, you should configure your Pusher Channels credentials in your application's `.env` file.
+
+```shell tab=Installation
 composer require pusher/pusher-php-server
 ```
 
-Next, you should configure your Pusher Channels credentials in the `config/broadcasting.php` configuration file. An example Pusher Channels configuration is already included in this file, allowing you to quickly specify your key, secret, and application ID. Typically, you should configure your Pusher Channels credentials in your application's `.env` file:
-
-```ini
+```ini tab=Configuration filename=.env
 PUSHER_APP_ID="your-pusher-app-id"
 PUSHER_APP_KEY="your-pusher-key"
 PUSHER_APP_SECRET="your-pusher-secret"
@@ -646,42 +646,46 @@ Private and presence broadcast channels authenticate the current user via your a
 <a name="defining-channel-classes"></a>
 ### Defining Channel Classes
 
-If your application is consuming many different channels, your `routes/channels.php` file could become bulky. So, instead of using closures to authorize channels, you may use channel classes. To generate a channel class, use the `make:channel` Artisan command. This command will place a new channel class in the `App/Broadcasting` directory.
+If your application is consuming many different channels, your `routes/channels.php` file could become bulky. So, instead of using closures to authorize channels, you may use channel classes.
 
-```shell
+1. To generate a channel class, use the `make:channel` Artisan command. This command will place a new channel class in the `App/Broadcasting` directory.
+2. Next, register your channel in your `routes/channels.php` file.
+3. Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization closure. You may also take advantage of channel model binding:
+
+```shell tab=Creation
 php artisan make:channel OrderChannel
 ```
 
-Next, register your channel in your `routes/channels.php` file:
+```php tab=Registration filename=routes/channels.php
+use App\Broadcasting\OrderChannel;
 
-    use App\Broadcasting\OrderChannel;
+Broadcast::channel('orders.{order}', OrderChannel::class);
+```
 
-    Broadcast::channel('orders.{order}', OrderChannel::class);
+```php tab=Usage filename=app/Broadcasting/OrderChannel.php
+<?php
 
-Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization closure. You may also take advantage of channel model binding:
+namespace App\Broadcasting;
 
-    <?php
+use App\Models\Order;
+use App\Models\User;
 
-    namespace App\Broadcasting;
+class OrderChannel
+{
+    /**
+     * Create a new channel instance.
+     */
+    public function __construct() {}
 
-    use App\Models\Order;
-    use App\Models\User;
-
-    class OrderChannel
+    /**
+     * Authenticate the user's access to the channel.
+     */
+    public function join(User $user, Order $order): array|bool
     {
-        /**
-         * Create a new channel instance.
-         */
-        public function __construct() {}
-
-        /**
-         * Authenticate the user's access to the channel.
-         */
-        public function join(User $user, Order $order): array|bool
-        {
-            return $user->id === $order->user_id;
-        }
+        return $user->id === $order->user_id;
     }
+}
+```
 
 > [!NOTE]  
 > Like many other classes in Laravel, channel classes will automatically be resolved by the [service container](/docs/{{version}}/container). So, you may type-hint any dependencies required by your channel in its constructor.

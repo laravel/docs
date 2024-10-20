@@ -27,39 +27,41 @@ Instead of defining all of your request handling logic as closures in your route
 <a name="basic-controllers"></a>
 ### Basic Controllers
 
-To quickly generate a new controller, you may run the `make:controller` Artisan command. By default, all of the controllers for your application are stored in the `app/Http/Controllers` directory:
+1. To quickly generate a new controller, you may run the `make:controller` Artisan command. By default, all of the controllers for your application are stored in the `app/Http/Controllers` directory
+2. Let's take a look at an example of a basic controller. A controller may have any number of public methods which will respond to incoming HTTP requests
+3. Once you have written a controller class and method, you may define a route to the controller method like so:
 
-```shell
+```shell tab=Creation
 php artisan make:controller UserController
 ```
 
-Let's take a look at an example of a basic controller. A controller may have any number of public methods which will respond to incoming HTTP requests:
+```php tab=Definition filename=app/Http/Controllers/UserController.php
+<?php
 
-    <?php
+namespace App\Http\Controllers;
 
-    namespace App\Http\Controllers;
+use App\Models\User;
+use Illuminate\View\View;
 
-    use App\Models\User;
-    use Illuminate\View\View;
-
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * Show the profile for a given user.
+     */
+    public function show(string $id): View
     {
-        /**
-         * Show the profile for a given user.
-         */
-        public function show(string $id): View
-        {
-            return view('user.profile', [
-                'user' => User::findOrFail($id)
-            ]);
-        }
+        return view('user.profile', [
+            'user' => User::findOrFail($id)
+        ]);
     }
+}
+```
 
-Once you have written a controller class and method, you may define a route to the controller method like so:
+```php tab=Usage filename=routes/web.php
+use App\Http\Controllers\UserController;
 
-    use App\Http\Controllers\UserController;
-
-    Route::get('/user/{id}', [UserController::class, 'show']);
+Route::get('/user/{id}', [UserController::class, 'show']);
+```
 
 When an incoming request matches the specified route URI, the `show` method on the `App\Http\Controllers\UserController` class will be invoked and the route parameters will be passed to the method.
 
@@ -69,33 +71,37 @@ When an incoming request matches the specified route URI, the `show` method on t
 <a name="single-action-controllers"></a>
 ### Single Action Controllers
 
-If a controller action is particularly complex, you might find it convenient to dedicate an entire controller class to that single action. To accomplish this, you may define a single `__invoke` method within the controller:
+If a controller action is particularly complex, you might find it convenient to dedicate an entire controller class to that single action. To accomplish this, you may define a single `__invoke` method within the controller.
 
-    <?php
+You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command.
 
-    namespace App\Http\Controllers;
+When registering routes for single action controllers, you do not need to specify a controller method. Instead, you may simply pass the name of the controller to the router.
 
-    class ProvisionServer extends Controller
-    {
-        /**
-         * Provision a new web server.
-         */
-        public function __invoke()
-        {
-            // ...
-        }
-    }
-
-When registering routes for single action controllers, you do not need to specify a controller method. Instead, you may simply pass the name of the controller to the router:
-
-    use App\Http\Controllers\ProvisionServer;
-
-    Route::post('/server', ProvisionServer::class);
-
-You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command:
-
-```shell
+```shell tab=Creation
 php artisan make:controller ProvisionServer --invokable
+```
+
+```php tab=Definition filename=app/Http/Controllers/ProvisionServer.php
+<?php
+
+namespace App\Http\Controllers;
+
+class ProvisionServer extends Controller
+{
+    /**
+     * Provision a new web server.
+     */
+    public function __invoke()
+    {
+        // ...
+    }
+}
+```
+
+```php tab=Usage filename=routes/web.php
+use App\Http\Controllers\ProvisionServer;
+
+Route::post('/server', ProvisionServer::class);
 ```
 
 > [!NOTE]  
@@ -157,17 +163,20 @@ You may also define controller middleware as closures, which provides a convenie
 
 If you think of each Eloquent model in your application as a "resource", it is typical to perform the same sets of actions against each resource in your application. For example, imagine your application contains a `Photo` model and a `Movie` model. It is likely that users can create, read, update, or delete these resources.
 
-Because of this common use case, Laravel resource routing assigns the typical create, read, update, and delete ("CRUD") routes to a controller with a single line of code. To get started, we can use the `make:controller` Artisan command's `--resource` option to quickly create a controller to handle these actions:
+Because of this common use case, Laravel resource routing assigns the typical create, read, update, and delete ("CRUD") routes to a controller with a single line of code.
 
-```shell
+1. To get started, we can use the `make:controller` Artisan command's `--resource` option to quickly create a controller to handle these actions.
+2. This command will generate a controller at `app/Http/Controllers/PhotoController.php`. The controller will contain a method for each of the available resource operations. Next, you may register a resource route that points to the controller.
+
+```shell tab=Creation
 php artisan make:controller PhotoController --resource
 ```
 
-This command will generate a controller at `app/Http/Controllers/PhotoController.php`. The controller will contain a method for each of the available resource operations. Next, you may register a resource route that points to the controller:
+```php tab=Usage filename=routes/web.php
+use App\Http\Controllers\PhotoController;
 
-    use App\Http\Controllers\PhotoController;
-
-    Route::resource('photos', PhotoController::class);
+Route::resource('photos', PhotoController::class);
+```
 
 This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions. Remember, you can always get a quick overview of your application's routes by running the `route:list` Artisan command.
 

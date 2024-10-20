@@ -33,15 +33,13 @@ When using Horizon, all of your queue worker configuration is stored in a single
 > [!WARNING]  
 > Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file.
 
-You may install Horizon into your project using the Composer package manager:
+You may install Horizon into your project using the Composer package manager. After installing Horizon, publish its assets using the `horizon:install` Artisan command.
 
-```shell
+```shell tab=Installation
 composer require laravel/horizon
 ```
 
-After installing Horizon, publish its assets using the `horizon:install` Artisan command:
-
-```shell
+```shell tab=Setup
 php artisan horizon:install
 ```
 

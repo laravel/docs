@@ -92,15 +92,13 @@ This table should also have a string partition key with a name that corresponds 
 
 Typically, DynamoDB will not proactively remove expired items from a table. Therefore, you should [enable Time to Live (TTL)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) on the table. When configuring the table's TTL settings, you should set the TTL attribute name to `expires_at`.
 
-Next, install the AWS SDK so that your Laravel application can communicate with DynamoDB:
+Next, install the AWS SDK so that your Laravel application can communicate with DynamoDB. In addition, you should ensure that values are provided for the DynamoDB cache store configuration options. Typically these options, such as `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, should be defined in your application's `.env` configuration file:
 
-```shell
+```shell tab=Installation
 composer require aws/aws-sdk-php
 ```
 
-In addition, you should ensure that values are provided for the DynamoDB cache store configuration options. Typically these options, such as `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, should be defined in your application's `.env` configuration file:
-
-```php
+```php tab=Configuration filename=config/cache.php
 'dynamodb' => [
     'driver' => 'dynamodb',
     'key' => env('AWS_ACCESS_KEY_ID'),

@@ -105,15 +105,13 @@ composer require algolia/algoliasearch-client-php
 
 [Meilisearch](https://www.meilisearch.com) is a blazingly fast and open source search engine. If you aren't sure how to install Meilisearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
 
-When using the Meilisearch driver you will need to install the Meilisearch PHP SDK via the Composer package manager:
+When using the Meilisearch driver you will need to install the Meilisearch PHP SDK via the Composer package manager. Then, set the `SCOUT_DRIVER` environment variable as well as your Meilisearch `host` and `key` credentials within your application's `.env` file:
 
-```shell
+```shell tab=Installation
 composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
 ```
 
-Then, set the `SCOUT_DRIVER` environment variable as well as your Meilisearch `host` and `key` credentials within your application's `.env` file:
-
-```ini
+```ini tab=Configuration filename=.env
 SCOUT_DRIVER=meilisearch
 MEILISEARCH_HOST=http://127.0.0.1:7700
 MEILISEARCH_KEY=masterKey
@@ -133,15 +131,13 @@ In addition, you should ensure that you install a version of `meilisearch/meilis
 
 You can [self-host](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-self-hosting) Typesense or use [Typesense Cloud](https://cloud.typesense.org).
 
-To get started using Typesense with Scout, install the Typesense PHP SDK via the Composer package manager:
+To get started using Typesense with Scout, install the Typesense PHP SDK via the Composer package manager. Then, set the `SCOUT_DRIVER` environment variable as well as your Typesense host and API key credentials within your application's .env file:
 
-```shell
+```shell tab=Installation
 composer require typesense/typesense-php
 ```
 
-Then, set the `SCOUT_DRIVER` environment variable as well as your Typesense host and API key credentials within your application's .env file:
-
-```env
+```ini tab=Configuration filename=.env
 SCOUT_DRIVER=typesense
 TYPESENSE_API_KEY=masterKey
 TYPESENSE_HOST=localhost

@@ -61,45 +61,49 @@ However, if you are attempting to authenticate a single-page application, mobile
 <a name="installation"></a>
 ## Installation
 
-You may install Laravel Passport via the `install:api` Artisan command:
-
-```shell
-php artisan install:api --passport
-```
+You may install Laravel Passport via the `install:api` Artisan command.
 
 This command will publish and run the database migrations necessary for creating the tables your application needs to store OAuth2 clients and access tokens. The command will also create the encryption keys required to generate secure access tokens.
 
 Additionally, this command will ask if you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers.
 
-After running the `install:api` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
+After running the `install:api` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes.
 
-    <?php
+Finally, in your application's `config/auth.php` configuration file, you should define an `api` authentication guard and set the `driver` option to `passport`. This will instruct your application to use Passport's `TokenGuard` when authenticating incoming API requests.
 
-    namespace App\Models;
+```shell tab=Installation
+php artisan install:api --passport
+```
 
-    use Illuminate\Database\Eloquent\Factories\HasFactory;
-    use Illuminate\Foundation\Auth\User as Authenticatable;
-    use Illuminate\Notifications\Notifiable;
-    use Laravel\Passport\HasApiTokens;
+```php tab=Usage filename=app/Models/User.php
+<?php
 
-    class User extends Authenticatable
-    {
-        use HasApiTokens, HasFactory, Notifiable;
-    }
+namespace App\Models;
 
-Finally, in your application's `config/auth.php` configuration file, you should define an `api` authentication guard and set the `driver` option to `passport`. This will instruct your application to use Passport's `TokenGuard` when authenticating incoming API requests:
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable;
+}
+```
 
-        'api' => [
-            'driver' => 'passport',
-            'provider' => 'users',
-        ],
+```php tab=Configuration filename=config/auth.php
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
+
+    'api' => [
+        'driver' => 'passport',
+        'provider' => 'users',
+    ],
+],
+```
 
 <a name="deploying-passport"></a>
 ### Deploying Passport
@@ -781,27 +785,31 @@ Once the grant has been enabled, developers may use their client ID to request a
 
 The client credentials grant is suitable for machine-to-machine authentication. For example, you might use this grant in a scheduled job which is performing maintenance tasks over an API.
 
-Before your application can issue tokens via the client credentials grant, you will need to create a client credentials grant client. You may do this using the `--client` option of the `passport:client` Artisan command:
+Before your application can issue tokens via the client credentials grant, you will need to create a client credentials grant client. You may do this using the `--client` option of the `passport:client` Artisan command.
 
-```shell
+Next, to use this grant type, register a middleware alias for the `CheckClientCredentials` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file.
+
+Then, attach the middleware to a route.
+
+```shell tab=Installation
 php artisan passport:client --client
 ```
 
-Next, to use this grant type, register a middleware alias for the `CheckClientCredentials` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
+```php tab=Definition filename=bootstrap/app.php
+use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
-    use Laravel\Passport\Http\Middleware\CheckClientCredentials;
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->alias([
+        'client' => CheckClientCredentials::class
+    ]);
+})
+```
 
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'client' => CheckClientCredentials::class
-        ]);
-    })
-
-Then, attach the middleware to a route:
-
-    Route::get('/orders', function (Request $request) {
-        ...
-    })->middleware('client');
+```php tab=Usage filename=routes/web.php
+Route::get('/orders', function (Request $request) {
+    ...
+})->middleware('client');
+```
 
 To restrict access to the route to specific scopes, you may provide a comma-delimited list of the required scopes when attaching the `client` middleware to the route:
 
@@ -836,15 +844,13 @@ Sometimes, your users may want to issue access tokens to themselves without goin
 <a name="creating-a-personal-access-client"></a>
 ### Creating a Personal Access Client
 
-Before your application can issue personal access tokens, you will need to create a personal access client. You may do this by executing the `passport:client` Artisan command with the `--personal` option. If you have already run the `passport:install` command, you do not need to run this command:
+Before your application can issue personal access tokens, you will need to create a personal access client. You may do this by executing the `passport:client` Artisan command with the `--personal` option. If you have already run the `passport:install` command, you do not need to run this command. After creating your personal access client, place the client's ID and plain-text secret value in your application's `.env` file:
 
-```shell
+```shell tab=Installation
 php artisan passport:client --personal
 ```
 
-After creating your personal access client, place the client's ID and plain-text secret value in your application's `.env` file:
-
-```ini
+```ini tab=Configuration
 PASSPORT_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
 PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
 ```

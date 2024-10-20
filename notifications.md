@@ -711,25 +711,27 @@ Markdown mail notifications allow you to take advantage of the pre-built templat
 <a name="generating-the-message"></a>
 ### Generating the Message
 
-To generate a notification with a corresponding Markdown template, you may use the `--markdown` option of the `make:notification` Artisan command:
-
-```shell
-php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
-```
+To generate a notification with a corresponding Markdown template, you may use the `--markdown` option of the `make:notification` Artisan command.
 
 Like all other mail notifications, notifications that use Markdown templates should define a `toMail` method on their notification class. However, instead of using the `line` and `action` methods to construct the notification, use the `markdown` method to specify the name of the Markdown template that should be used. An array of data you wish to make available to the template may be passed as the method's second argument:
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        $url = url('/invoice/'.$this->invoice->id);
+```shell tab=Creation
+php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
+```
 
-        return (new MailMessage)
-                    ->subject('Invoice Paid')
-                    ->markdown('mail.invoice.paid', ['url' => $url]);
-    }
+```php tab=Definition filename=app/Notifications/InvoicePaid.php
+/**
+ * Get the mail representation of the notification.
+ */
+public function toMail(object $notifiable): MailMessage
+{
+    $url = url('/invoice/'.$this->invoice->id);
+
+    return (new MailMessage)
+                ->subject('Invoice Paid')
+                ->markdown('mail.invoice.paid', ['url' => $url]);
+}
+```
 
 <a name="writing-the-message"></a>
 ### Writing the Message
@@ -1118,11 +1120,7 @@ To route Vonage notifications to the proper phone number, define a `routeNotific
 <a name="slack-prerequisites"></a>
 ### Prerequisites
 
-Before sending Slack notifications, you should install the Slack notification channel via Composer:
-
-```shell
-composer require laravel/slack-notification-channel
-```
+Before sending Slack notifications, you should install the Slack notification channel via Composer.
 
 Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your Slack workspace.
 
@@ -1130,12 +1128,18 @@ If you only need to send notifications to the same Slack workspace that the App 
 
 Next, copy the App's "Bot User OAuth Token" and place it within a `slack` configuration array in your application's `services.php` configuration file. This token can be found on the "OAuth & Permissions" tab within Slack:
 
-    'slack' => [
-        'notifications' => [
-            'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
-            'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
-        ],
+```shell tab=Installation
+composer require laravel/slack-notification-channel
+```
+
+```php tab=Configuration filename=config/services.php
+'slack' => [
+    'notifications' => [
+        'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
+        'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
     ],
+],
+```
 
 <a name="slack-app-distribution"></a>
 #### App Distribution
