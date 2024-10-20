@@ -248,19 +248,23 @@ You can override the UUID generation process for a given model by defining a `ne
 
 If you wish, you may choose to utilize "ULIDs" instead of UUIDs. ULIDs are similar to UUIDs; however, they are only 26 characters in length. Like ordered UUIDs, ULIDs are lexicographically sortable for efficient database indexing. To utilize ULIDs, you should use the `Illuminate\Database\Eloquent\Concerns\HasUlids` trait on your model. You should also ensure that the model has a [ULID equivalent primary key column](/docs/{{version}}/migrations#column-method-ulid):
 
-    use Illuminate\Database\Eloquent\Concerns\HasUlids;
-    use Illuminate\Database\Eloquent\Model;
+```php tab=Definition filename=app/Models/Article.php
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Model;
 
-    class Article extends Model
-    {
-        use HasUlids;
+class Article extends Model
+{
+    use HasUlids;
 
-        // ...
-    }
+    // ...
+}
+```
 
-    $article = Article::create(['title' => 'Traveling to Asia']);
+```php tab=Usage
+$article = Article::create(['title' => 'Traveling to Asia']);
 
-    $article->id; // "01gd4d3tgrrfqeda94gdbtdk5c"
+$article->id; // "01gd4d3tgrrfqeda94gdbtdk5c"
+```
 
 <a name="timestamps"></a>
 ### Timestamps
