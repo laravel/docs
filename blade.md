@@ -1133,9 +1133,7 @@ By default, some keywords are reserved for Blade's internal use in order to rend
 
 You will often need to pass additional content to your component via "slots". Component slots are rendered by echoing the `$slot` variable. To explore this concept, let's imagine that an `alert` component has the following markup:
 
-```blade
-<!-- /resources/views/components/alert.blade.php -->
-
+```blade filename=/resources/views/components/alert.blade.php
 <div class="alert alert-danger">
     {{ $slot }}
 </div>
@@ -1151,9 +1149,7 @@ We may pass content to the `slot` by injecting content into the component:
 
 Sometimes a component may need to render multiple different slots in different locations within the component. Let's modify our alert component to allow for the injection of a "title" slot:
 
-```blade
-<!-- /resources/views/components/alert.blade.php -->
-
+```blade filename=/resources/views/components/alert.blade.php
 <span class="alert-title">{{ $title }}</span>
 
 <div class="alert alert-danger">
@@ -1388,9 +1384,7 @@ Since anonymous components do not have any associated class, you may wonder how 
 
 You may specify which attributes should be considered data variables using the `@props` directive at the top of your component's Blade template. All other attributes on the component will be available via the component's attribute bag. If you wish to give a data variable a default value, you may specify the variable's name as the array key and the default value as the array value:
 
-```blade
-<!-- /resources/views/components/alert.blade.php -->
-
+```blade filename=/resources/views/components/alert.blade.php
 @props(['type' => 'info', 'message'])
 
 <div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
@@ -1418,9 +1412,7 @@ Sometimes you may want to access data from a parent component inside a child com
 
 The `<x-menu>` component may have an implementation like the following:
 
-```blade
-<!-- /resources/views/components/menu/index.blade.php -->
-
+```blade filename=/resources/views/components/menu/index.blade.php
 @props(['color' => 'gray'])
 
 <ul {{ $attributes->merge(['class' => 'bg-'.$color.'-200']) }}>
@@ -1430,9 +1422,7 @@ The `<x-menu>` component may have an implementation like the following:
 
 Because the `color` prop was only passed into the parent (`<x-menu>`), it won't be available inside `<x-menu.item>`. However, if we use the `@aware` directive, we can make it available inside `<x-menu.item>` as well:
 
-```blade
-<!-- /resources/views/components/menu/item.blade.php -->
-
+```blade filename=/resources/views/components/menu/item.blade.php
 @aware(['color' => 'gray'])
 
 <li {{ $attributes->merge(['class' => 'text-'.$color.'-800']) }}>
@@ -1487,9 +1477,7 @@ Most web applications maintain the same general layout across various pages. It 
 
 For example, imagine we are building a "todo" list application. We might define a `layout` component that looks like the following:
 
-```blade
-<!-- resources/views/components/layout.blade.php -->
-
+```blade filename=/resources/views/components/layout.blade.php
 <html>
     <head>
         <title>{{ $title ?? 'Todo Manager' }}</title>
@@ -1507,9 +1495,7 @@ For example, imagine we are building a "todo" list application. We might define 
 
 Once the `layout` component has been defined, we may create a Blade view that utilizes the component. In this example, we will define a simple view that displays our task list:
 
-```blade
-<!-- resources/views/tasks.blade.php -->
-
+```blade filename=/resources/views/tasks.blade.php
 <x-layout>
     @foreach ($tasks as $task)
         <div>{{ $task }}</div>
@@ -1519,9 +1505,7 @@ Once the `layout` component has been defined, we may create a Blade view that ut
 
 Remember, content that is injected into a component will be supplied to the default `$slot` variable within our `layout` component. As you may have noticed, our `layout` also respects a `$title` slot if one is provided; otherwise, a default title is shown. We may inject a custom title from our task list view using the standard slot syntax discussed in the [component documentation](#components):
 
-```blade
-<!-- resources/views/tasks.blade.php -->
-
+```blade filename=/resources/views/tasks.blade.php
 <x-layout>
     <x-slot:title>
         Custom Title
@@ -1551,9 +1535,7 @@ Layouts may also be created via "template inheritance". This was the primary way
 
 To get started, let's take a look at a simple example. First, we will examine a page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
 
-```blade
-<!-- resources/views/layouts/app.blade.php -->
-
+```blade filename=resources/views/layouts/app.blade.php
 <html>
     <head>
         <title>App Name - @yield('title')</title>
@@ -1579,9 +1561,7 @@ Now that we have defined a layout for our application, let's define a child page
 
 When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
-```blade
-<!-- resources/views/child.blade.php -->
-
+```blade filename=/resources/views/child.blade.php
 @extends('layouts.app')
 
 @section('title', 'Page Title')
@@ -1642,9 +1622,7 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
 
 The `@error` directive may be used to quickly check if [validation error messages](/docs/{{version}}/validation#quick-displaying-the-validation-errors) exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
 
-```blade
-<!-- /resources/views/post/create.blade.php -->
-
+```blade filename=/resources/views/post/create.blade.php
 <label for="title">Post Title</label>
 
 <input
@@ -1660,9 +1638,7 @@ The `@error` directive may be used to quickly check if [validation error message
 
 Since the `@error` directive compiles to an "if" statement, you may use the `@else` directive to render content when there is not an error for an attribute:
 
-```blade
-<!-- /resources/views/auth.blade.php -->
-
+```blade filename=/resources/views/auth.blade.php
 <label for="email">Email address</label>
 
 <input
@@ -1674,8 +1650,7 @@ Since the `@error` directive compiles to an "if" statement, you may use the `@el
 
 You may pass [the name of a specific error bag](/docs/{{version}}/validation#named-error-bags) as the second parameter to the `@error` directive to retrieve validation error messages on pages containing multiple forms:
 
-```blade
-<!-- /resources/views/auth.blade.php -->
+```blade filename=/resources/views/auth.blade.php
 
 <label for="email">Email address</label>
 
