@@ -761,7 +761,7 @@ If you would like to conditionally render your component, you may define a `shou
 
 You may pass data to Blade components using HTML attributes. Hard-coded, primitive values may be passed to the component using simple HTML attribute strings. PHP expressions and variables should be passed to the component via attributes that use the `:` character as a prefix:
 
-```blade
+```blade tab=Usage
 <x-alert type="error" :message="$message"/>
 ```
 
@@ -1855,22 +1855,22 @@ As you can see, we will chain the `format` method onto whatever expression is pa
 
 If you attempt to "echo" an object using Blade, the object's `__toString` method will be invoked. The [`__toString`](https://www.php.net/manual/en/language.oop5.magic.php#object.tostring) method is one of PHP's built-in "magic methods". However, sometimes you may not have control over the `__toString` method of a given class, such as when the class that you are interacting with belongs to a third-party library.
 
-In these cases, Blade allows you to register a custom echo handler for that particular type of object. To accomplish this, you should invoke Blade's `stringable` method. The `stringable` method accepts a closure. This closure should type-hint the type of object that it is responsible for rendering. Typically, the `stringable` method should be invoked within the `boot` method of your application's `AppServiceProvider` class:
+In these cases, Blade allows you to register a custom echo handler for that particular type of object. To accomplish this, you should invoke Blade's `stringable` method. The `stringable` method accepts a closure. This closure should type-hint the type of object that it is responsible for rendering. Typically, the `stringable` method should be invoked within the `boot` method of your application's `AppServiceProvider` class. Once your custom echo handler has been defined, you may simply echo the object in your Blade template:
 
-    use Illuminate\Support\Facades\Blade;
-    use Money\Money;
+```php tab=Definition filename=app/Providers/AppServiceProvider.php
+use Illuminate\Support\Facades\Blade;
+use Money\Money;
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Blade::stringable(function (Money $money) {
-            return $money->formatTo('en_GB');
-        });
-    }
-
-Once your custom echo handler has been defined, you may simply echo the object in your Blade template:
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Blade::stringable(function (Money $money) {
+        return $money->formatTo('en_GB');
+    });
+}
+```
 
 ```blade
 Cost: {{ $money }}
@@ -1879,23 +1879,23 @@ Cost: {{ $money }}
 <a name="custom-if-statements"></a>
 ### Custom If Statements
 
-Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using closures. For example, let's define a custom conditional that checks the configured default "disk" for the application. We may do this in the `boot` method of our `AppServiceProvider`:
+Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using closures. For example, let's define a custom conditional that checks the configured default "disk" for the application. We may do this in the `boot` method of our `AppServiceProvider`. Once the custom conditional has been defined, you can use it within your templates:
 
-    use Illuminate\Support\Facades\Blade;
+```php tab=Definition filename=app/Providers/AppServiceProvider.php
+use Illuminate\Support\Facades\Blade;
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Blade::if('disk', function (string $value) {
-            return config('filesystems.default') === $value;
-        });
-    }
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Blade::if('disk', function (string $value) {
+        return config('filesystems.default') === $value;
+    });
+}
+```
 
-Once the custom conditional has been defined, you can use it within your templates:
-
-```blade
+```blade tab=Usage
 @disk('local')
     <!-- The application is using the local disk... -->
 @elsedisk('s3')

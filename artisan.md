@@ -111,8 +111,47 @@ In addition to the commands provided with Artisan, you may build your own custom
 
 To create a new command, you may use the `make:command` Artisan command. This command will create a new command class in the `app/Console/Commands` directory. Don't worry if this directory does not exist in your application - it will be created the first time you run the `make:command` Artisan command:
 
-```shell
+```shell tab=Creation
 php artisan make:command SendEmails
+```
+
+```php tab=Definition filename=app/Console/Commands/SendEmails.php
+<?php
+
+namespace App\Console\Commands;
+
+use App\Models\User;
+use App\Support\DripEmailer;
+use Illuminate\Console\Command;
+
+class SendEmails extends Command
+{
+    /**
+        * The name and signature of the console command.
+        *
+        * @var string
+        */
+    protected $signature = 'mail:send {user}';
+
+    /**
+        * The console command description.
+        *
+        * @var string
+        */
+    protected $description = 'Send a marketing email to a user';
+
+    /**
+        * Execute the console command.
+        */
+    public function handle(DripEmailer $drip): void
+    {
+        $drip->send(User::find($this->argument('user')));
+    }
+}
+```
+
+```shell tab=Usage
+php artisan mail:send 1
 ```
 
 <a name="command-structure"></a>
@@ -120,40 +159,7 @@ php artisan make:command SendEmails
 
 After generating your command, you should define appropriate values for the `signature` and `description` properties of the class. These properties will be used when displaying your command on the `list` screen. The `signature` property also allows you to define [your command's input expectations](#defining-input-expectations). The `handle` method will be called when your command is executed. You may place your command logic in this method.
 
-Let's take a look at an example command. Note that we are able to request any dependencies we need via the command's `handle` method. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies that are type-hinted in this method's signature:
-
-    <?php
-
-    namespace App\Console\Commands;
-
-    use App\Models\User;
-    use App\Support\DripEmailer;
-    use Illuminate\Console\Command;
-
-    class SendEmails extends Command
-    {
-        /**
-         * The name and signature of the console command.
-         *
-         * @var string
-         */
-        protected $signature = 'mail:send {user}';
-
-        /**
-         * The console command description.
-         *
-         * @var string
-         */
-        protected $description = 'Send a marketing email to a user';
-
-        /**
-         * Execute the console command.
-         */
-        public function handle(DripEmailer $drip): void
-        {
-            $drip->send(User::find($this->argument('user')));
-        }
-    }
+Let's take a look at an example command. Note that we are able to request any dependencies we need via the command's `handle` method. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies that are type-hinted in this method's signature.
 
 > [!NOTE]  
 > For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
@@ -300,36 +306,40 @@ You may also make arguments optional or define default values for arguments:
 
 Options, like arguments, are another form of user input. Options are prefixed by two hyphens (`--`) when they are provided via the command line. There are two types of options: those that receive a value and those that don't. Options that don't receive a value serve as a boolean "switch". Let's take a look at an example of this type of option:
 
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'mail:send {user} {--queue}';
+```php tab=Definition filename=app/Console/Commands/SendEmails.php
+/**
+ * The name and signature of the console command.
+ *
+ * @var string
+ */
+protected $signature = 'mail:send {user} {--queue}';
+```
 
-In this example, the `--queue` switch may be specified when calling the Artisan command. If the `--queue` switch is passed, the value of the option will be `true`. Otherwise, the value will be `false`:
-
-```shell
+```shell tab=Usage
 php artisan mail:send 1 --queue
 ```
+
+In this example, the `--queue` switch may be specified when calling the Artisan command. If the `--queue` switch is passed, the value of the option will be `true`. Otherwise, the value will be `false`:
 
 <a name="options-with-values"></a>
 #### Options With Values
 
 Next, let's take a look at an option that expects a value. If the user must specify a value for an option, you should suffix the option name with a `=` sign:
 
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'mail:send {user} {--queue=}';
+```php tab=Definition filename=app/Console/Commands/SendEmails.php
+/**
+ * The name and signature of the console command.
+ *
+ * @var string
+ */
+protected $signature = 'mail:send {user} {--queue=}';
+```
 
-In this example, the user may pass a value for the option like so. If the option is not specified when invoking the command, its value will be `null`:
-
-```shell
+```shell tab=Usage
 php artisan mail:send 1 --queue=default
 ```
+
+In this example, the user may pass a value for the option like so. If the option is not specified when invoking the command, its value will be `null`.
 
 You may assign default values to options by specifying the default value after the option name. If no option value is passed by the user, the default value will be used:
 

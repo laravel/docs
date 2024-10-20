@@ -21,38 +21,48 @@ Additional middleware can be written to perform a variety of tasks besides authe
 <a name="defining-middleware"></a>
 ## Defining Middleware
 
-To create a new middleware, use the `make:middleware` Artisan command:
+1. To create a new middleware, use the `make:middleware` Artisan command
+2. This command will place a new `EnsureTokenIsValid` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `token` input matches a specified value. Otherwise, we will redirect the users back to the `/home` URI.
+3. If you would like to assign middleware to specific routes, you may invoke the `middleware` method when defining the route (there are other options, we'll explore below)
 
-```shell
+```shell tab=Creation
 php artisan make:middleware EnsureTokenIsValid
 ```
 
-This command will place a new `EnsureTokenIsValid` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `token` input matches a specified value. Otherwise, we will redirect the users back to the `/home` URI:
+```php tab=Definition filename=app/Http/Middleware/EnsureTokenIsValid.php
+<?php
 
-    <?php
+namespace App\Http\Middleware;
 
-    namespace App\Http\Middleware;
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-    use Closure;
-    use Illuminate\Http\Request;
-    use Symfony\Component\HttpFoundation\Response;
-
-    class EnsureTokenIsValid
+class EnsureTokenIsValid
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
     {
-        /**
-         * Handle an incoming request.
-         *
-         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-         */
-        public function handle(Request $request, Closure $next): Response
-        {
-            if ($request->input('token') !== 'my-secret-token') {
-                return redirect('/home');
-            }
-
-            return $next($request);
+        if ($request->input('token') !== 'my-secret-token') {
+            return redirect('/home');
         }
+
+        return $next($request);
     }
+}
+```
+
+```php tab=Usage filename=routes/web.php
+use App\Http\Middleware\EnsureTokenIsValid;
+
+Route::get('/profile', function () {
+    // ...
+})->middleware(EnsureTokenIsValid::class);
+```
 
 As you can see, if the given `token` does not match our secret token, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to "pass"), you should call the `$next` callback with the `$request`.
 
