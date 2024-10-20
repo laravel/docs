@@ -737,19 +737,21 @@ If you would like your intermediate table to have `created_at` and `updated_at` 
 
 As noted previously, attributes from the intermediate table may be accessed on models via the `pivot` attribute. However, you are free to customize the name of this attribute to better reflect its purpose within your application.
 
-For example, if your application contains users that may subscribe to podcasts, you likely have a many-to-many relationship between users and podcasts. If this is the case, you may wish to rename your intermediate table attribute to `subscription` instead of `pivot`. This can be done using the `as` method when defining the relationship:
+For example, if your application contains users that may subscribe to podcasts, you likely have a many-to-many relationship between users and podcasts. If this is the case, you may wish to rename your intermediate table attribute to `subscription` instead of `pivot`. This can be done using the `as` method when defining the relationship. Once the custom intermediate table attribute has been specified, you may access the intermediate table data using the customized name:
 
-    return $this->belongsToMany(Podcast::class)
-                    ->as('subscription')
-                    ->withTimestamps();
+```php tab=Definition
+return $this->belongsToMany(Podcast::class)
+                ->as('subscription')
+                ->withTimestamps();
+```
 
-Once the custom intermediate table attribute has been specified, you may access the intermediate table data using the customized name:
+```php tab=Usage
+$users = User::with('podcasts')->get();
 
-    $users = User::with('podcasts')->get();
-
-    foreach ($users->flatMap->podcasts as $podcast) {
-        echo $podcast->subscription->created_at;
-    }
+foreach ($users->flatMap->podcasts as $podcast) {
+    echo $podcast->subscription->created_at;
+}
+```
 
 <a name="filtering-queries-via-intermediate-table-columns"></a>
 ### Filtering Queries via Intermediate Table Columns
