@@ -1535,7 +1535,7 @@ Layouts may also be created via "template inheritance". This was the primary way
 
 To get started, let's take a look at a simple example. First, we will examine a page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
 
-```blade filename=resources/views/layouts/app.blade.php
+```blade filename=/resources/views/layouts/app.blade.php
 <html>
     <head>
         <title>App Name - @yield('title')</title>
