@@ -38,6 +38,20 @@ At its heart, Sail is the `docker-compose.yml` file and the `sail` script that i
 
 Laravel Sail is supported on macOS, Linux, and Windows (via [WSL2](https://docs.microsoft.com/en-us/windows/wsl/about)).
 
+<a name="compatibility-with-docker-desktop-for-linux"></a>
+### Compatibility with Docker Desktop for Linux
+
+Docker Desktop for Linux runs Docker from within a rootless virtual machine, and will not have storage file access permissions by default. To add access, you may create a new user and group and grant it access to a specific project folder or your projects directory:
+
+```shell
+sudo addgroup docker-desktop
+sudo groupmod -g 100999 docker-desktop
+sudo usermod -aG docker-desktop $USER
+newgrp
+chmod -R g+wx /home/$USER/Code
+sudo chgrp -R docker-desktop /home/$USER/Code
+```
+
 <a name="installation"></a>
 ## Installation and Setup
 
@@ -63,9 +77,6 @@ Finally, you may start Sail. To continue learning how to use Sail, please contin
 ```shell
 ./vendor/bin/sail up
 ```
-
-> [!WARNING]  
-> If you are using Docker Desktop for Linux, you should use the `default` Docker context by executing the following command: `docker context use default`.
 
 <a name="adding-additional-services"></a>
 #### Adding Additional Services
