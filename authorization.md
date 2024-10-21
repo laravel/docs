@@ -241,7 +241,7 @@ You may use the `after` method to define a closure to be executed after all othe
         }
     });
 
-Similar to the `before` method, if the `after` closure returns a non-null result that result will be considered the result of the authorization check.
+Values returned by `after` closures will not override the result of the authorization check unless the gate or policy returned `null`.
 
 <a name="inline-authorization"></a>
 ### Inline Authorization
