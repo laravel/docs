@@ -479,7 +479,7 @@ If you are filtering the results of the `chunk` method based on a column that yo
 Flight::where('departed', true)
     ->chunkById(200, function (Collection $flights) {
         $flights->each->update(['departed' => false]);
-    }, $column = 'id');
+    }, column: 'id');
 ```
 
 Since the `chunkById` and `lazyById` methods add their own "where" conditions to the query being executed, you should typically [logically group](/docs/{{version}}/queries#logical-grouping) your own conditions within a closure:
@@ -512,7 +512,7 @@ If you are filtering the results of the `lazy` method based on a column that you
 
 ```php
 Flight::where('departed', true)
-    ->lazyById(200, $column = 'id')
+    ->lazyById(200, column: 'id')
     ->each->update(['departed' => false]);
 ```
 
