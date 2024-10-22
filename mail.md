@@ -491,6 +491,22 @@ When attaching files to a message, you may also specify the display name and / o
         ];
     }
 
+Sometimes you need to add attachment from an url, so you can use `fromUrl` method:
+
+```php
+/**
+ * Get the attachments for the message.
+ *
+ * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+ */
+public function attachments(): array
+{
+    return [
+        Attachment::fromPath('https://laravel.com/files/file.pdf'),
+    ];
+}
+```
+
 <a name="attaching-files-from-disk"></a>
 #### Attaching Files From Disk
 
