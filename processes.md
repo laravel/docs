@@ -291,6 +291,16 @@ $process = Process::start('bash import.sh', function (string $type, string $outp
 $result = $process->wait();
 ```
 
+Instead of waiting until the process has finished, you may use the `waitUntil` method to stop waiting based on the output of the process. Laravel will stop waiting for the process to finish when the closure given to the `waitUntil` method returns `true`:
+
+```php
+$process = Process::start('bash import.sh');
+
+$process->waitUntil(function (string $type, string $output) {
+    return $output === 'Ready...';
+});
+```
+
 <a name="concurrent-processes"></a>
 ## Concurrent Processes
 
