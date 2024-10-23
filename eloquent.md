@@ -262,6 +262,9 @@ If you wish, you may choose to utilize "ULIDs" instead of UUIDs. ULIDs are simil
 
     $article->id; // "01gd4d3tgrrfqeda94gdbtdk5c"
 
+> [!NOTE]  
+> If you are using UUIDs or ULIDs for any authenticatable model with [Laravel Sanctum](/docs/{{version}}/sanctum), make sure that the `tokenable_id` column in the `personal_access_tokens` table is properly configured to match the chosen ID format. This can be accomplished by utilizing the `ulidMorphs()` or `uuidMorphs()` methods, respectively, in your migration.
+
 <a name="timestamps"></a>
 ### Timestamps
 
