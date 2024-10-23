@@ -1,7 +1,5 @@
-# Laravel Documentation
+# Issue
+`Package` in [Package development](https://laravel.com/docs/11.x/packages) is not indexed by the search
 
-You can find the online version of the Laravel documentation at [https://laravel.com/docs](https://laravel.com/docs)
+https://github.com/user-attachments/assets/0ecf2ac5-c332-4f07-8c9a-e9d27833dabe
 
-## Contribution Guidelines
-
-If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 11 would be submitted to the `11.x` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.
