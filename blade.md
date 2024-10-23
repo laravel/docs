@@ -18,6 +18,7 @@
     - [Comments](#comments)
 - [Components](#components)
     - [Rendering Components](#rendering-components)
+    - [Index Components](#index-components)
     - [Passing Data to Components](#passing-data-to-components)
     - [Component Attributes](#component-attributes)
     - [Reserved Keywords](#reserved-keywords)
@@ -755,6 +756,28 @@ If you would like to conditionally render your component, you may define a `shou
     {
         return Str::length($this->message) > 0;
     }
+
+<a name="index-components"></a>
+### Index Components
+
+Sometimes components are part of a component group, and you may wish to group the given components within a single directory. For example, imagine a "card" component with the following class structure:
+
+```none
+App\Views\Components\Card\Card
+App\Views\Components\Card\Header
+App\Views\Components\Card\Body
+```
+
+This class structure allows you to render the card component and its children like so:
+
+```blade
+<x-card>
+    <x-card.header>...</x-card.header>
+    <x-card.body>...</x-card.body>
+</x-card>
+```
+
+You will notice we are referencing the `Card` component as `<x-card>` and not as `<x-card.card>`. This will work as long as the component shares the same name as the directory it is contained in.
 
 <a name="passing-data-to-components"></a>
 ### Passing Data to Components
