@@ -1083,7 +1083,7 @@ The `forget` method removes an item from the collection by its key:
     // []
 
 > [!WARNING]  
-> Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
+> Unlike most other collection methods, `forget` does not return a new modified collection; it modifies and returns the collection it is called on.
 
 <a name="method-forpage"></a>
 #### `forPage()` {.collection-method}
