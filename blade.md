@@ -760,7 +760,7 @@ If you would like to conditionally render your component, you may define a `shou
 <a name="index-components"></a>
 ### Index Components
 
-Sometimes components are part of a component group, and you may wish to group the given components within a single directory. For example, imagine a "card" component with the following class structure:
+Sometimes components are part of a component group and you may wish to group the related components within a single directory. For example, imagine a "card" component with the following class structure:
 
 ```none
 App\Views\Components\Card\Card
@@ -768,7 +768,7 @@ App\Views\Components\Card\Header
 App\Views\Components\Card\Body
 ```
 
-This class structure allows you to render the card component and its children like so:
+Since the root `Card` component is nested within a `Card` directory, you might expect that you would need to render the component via `<x-card.card>`. However, when a component's file name matches the name of the component's directory, Laravel automatically assumes that component is the "root" component and allows you to render the component without repeating the directory name:
 
 ```blade
 <x-card>
@@ -776,8 +776,6 @@ This class structure allows you to render the card component and its children li
     <x-card.body>...</x-card.body>
 </x-card>
 ```
-
-You will notice we are referencing the `Card` component as `<x-card>` and not as `<x-card.card>`. This will work as long as the component shares the same name as the directory it is contained in.
 
 <a name="passing-data-to-components"></a>
 ### Passing Data to Components
