@@ -1,33 +1,39 @@
 # Laravel Sail
 
 - [Introduction](#introduction)
-- [Installation and Setup](#installation)
-    - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
-    - [Rebuilding Sail Images](#rebuilding-sail-images)
-    - [Configuring A Shell Alias](#configuring-a-shell-alias)
+  - [Compatibility with Docker Desktop for Linux](#compatibility-with-docker-desktop-for-linux)
+- [Installation and Setup](#installation-and-setup)
+  - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
+    - [Adding Additional Services](#adding-additional-services)
+    - [Using Devcontainers](#using-devcontainers)
+  - [Rebuilding Sail Images](#rebuilding-sail-images)
+  - [Configuring A Shell Alias](#configuring-a-shell-alias)
 - [Starting and Stopping Sail](#starting-and-stopping-sail)
-- [Executing Commands](#executing-sail-commands)
-    - [Executing PHP Commands](#executing-php-commands)
-    - [Executing Composer Commands](#executing-composer-commands)
-    - [Executing Artisan Commands](#executing-artisan-commands)
-    - [Executing Node / NPM Commands](#executing-node-npm-commands)
-- [Interacting With Databases](#interacting-with-sail-databases)
-    - [MySQL](#mysql)
-    - [Redis](#redis)
-    - [Meilisearch](#meilisearch)
-    - [Typesense](#typesense)
+- [Executing Commands](#executing-commands)
+  - [Executing PHP Commands](#executing-php-commands)
+  - [Executing Composer Commands](#executing-composer-commands)
+    - [Installing Composer Dependencies for Existing Applications](#installing-composer-dependencies-for-existing-applications)
+  - [Executing Artisan Commands](#executing-artisan-commands)
+  - [Executing Node / NPM Commands](#executing-node--npm-commands)
+- [Interacting With Databases](#interacting-with-databases)
+  - [MySQL](#mysql)
+  - [Redis](#redis)
+  - [Meilisearch](#meilisearch)
+  - [Typesense](#typesense)
 - [File Storage](#file-storage)
 - [Running Tests](#running-tests)
-    - [Laravel Dusk](#laravel-dusk)
+  - [Laravel Dusk](#laravel-dusk)
+    - [Selenium on Apple Silicon](#selenium-on-apple-silicon)
 - [Previewing Emails](#previewing-emails)
-- [Container CLI](#sail-container-cli)
-- [PHP Versions](#sail-php-versions)
-- [Node Versions](#sail-node-versions)
+- [Container CLI](#container-cli)
+- [PHP Versions](#php-versions)
+- [Node Versions](#node-versions)
 - [Sharing Your Site](#sharing-your-site)
 - [Debugging With Xdebug](#debugging-with-xdebug)
+    - [Linux Host IP Configuration](#linux-host-ip-configuration)
   - [Xdebug CLI Usage](#xdebug-cli-usage)
   - [Xdebug Browser Usage](#xdebug-browser-usage)
-- [Customization](#sail-customization)
+- [Customization](#customization)
 
 <a name="introduction"></a>
 ## Introduction
@@ -37,6 +43,20 @@
 At its heart, Sail is the `docker-compose.yml` file and the `sail` script that is stored at the root of your project. The `sail` script provides a CLI with convenient methods for interacting with the Docker containers defined by the `docker-compose.yml` file.
 
 Laravel Sail is supported on macOS, Linux, and Windows (via [WSL2](https://docs.microsoft.com/en-us/windows/wsl/about)).
+
+<a name="compatibility-with-docker-desktop-for-linux"></a>
+### Compatibility with Docker Desktop for Linux
+
+Docker Desktop for Linux runs Docker from within a rootless virtual machine, and will not have storage file access permissions by default. To add access, you may create a new user and group and grant it access to a specific project folder or your projects directory:
+
+```shell
+sudo addgroup docker-desktop
+sudo groupmod -g 100999 docker-desktop
+sudo usermod -aG docker-desktop $USER
+newgrp
+chmod -R g+wx /home/$USER/Code
+sudo chgrp -R docker-desktop /home/$USER/Code
+```
 
 <a name="installation"></a>
 ## Installation and Setup
@@ -63,9 +83,6 @@ Finally, you may start Sail. To continue learning how to use Sail, please contin
 ```shell
 ./vendor/bin/sail up
 ```
-
-> [!WARNING]  
-> If you are using Docker Desktop for Linux, you should use the `default` Docker context by executing the following command: `docker context use default`.
 
 <a name="adding-additional-services"></a>
 #### Adding Additional Services
