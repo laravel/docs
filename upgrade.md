@@ -34,6 +34,7 @@
 <div class="content-list" markdown="1">
 
 - [Doctrine DBAL Removal](#doctrine-dbal-removal)
+- [Renaming And Adding Columns](#renaming-and-adding-columns)
 - [Eloquent Model `casts` Method](#eloquent-model-casts-method)
 - [Spatial Types](#spatial-types)
 - [The `Enumerable` Contract](#the-enumerable-contract)
@@ -276,6 +277,31 @@ php artisan schema:dump
 ```
 
 Once your migrations have been squashed, Laravel will "migrate" the database using your application's schema file before running any pending migrations.
+
+<a name="renaming-and-adding-columns"></a>
+#### Renaming And Adding Columns
+
+**Likelihood Of Impact: Low**
+
+When renaming a column and adding a new column after the renamed column, using the `after()` modifier, changes are required because the order of operations performed by `Schema::table()` has changed.
+
+For example, imagine you have a migration that renames a `votes` column, and then adds a `description` column:
+
+```php
+Schema::table('users', function (Blueprint $table) {
+    $table->string('description')->after('votes');
+    $table->renameColumn('votes', 'vote_count');
+});
+```
+
+In Laravel 10, this works as expected. However, in Laravel 11, this causes an error because the renaming operation occurs first. Instead, the `after()` modifier must now refer to the new column name:
+
+```php
+Schema::table('users', function (Blueprint $table) {
+    $table->renameColumn('votes', 'vote_count');
+    $table->string('description')->after('vote_count');
+});
+```
 
 <a name="floating-point-types"></a>
 #### Floating-Point Types
