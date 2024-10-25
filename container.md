@@ -17,6 +17,7 @@
     - [Automatic Injection](#automatic-injection)
 - [Method Invocation and Injection](#method-invocation-and-injection)
 - [Container Events](#container-events)
+	- [Rebinding](#rebinding)
 - [PSR-11](#psr-11)
 
 <a name="introduction"></a>
@@ -577,6 +578,28 @@ The service container fires an event each time it resolves an object. You may li
     });
 
 As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer.
+
+<a name="rebinding"></a>
+### Rebinding
+
+Also, the Laravel container has the ability to fire an event whenever you want to redefine an existing binding. You may listen to this event using the `rebining` method:
+
+    use App\Contracts\Podcast;
+    use App\Services\SpotifyPodcast;
+    use App\Services\SoundcloudPodcast;
+
+    $this->app()->bind(Podcast::class, SpotifyPodcast::class);
+
+    $this->app()->rebinding(Podcast::class, function($container, Podcast $instanse) {
+        //
+    });
+    /**
+    * Call to rebinding callbacks of Podcast::class
+    */
+    $this->app()->bind(Podcast::class, SoundcloudPodcast::class);
+
+
+when listening, passes an instance of the service container and a new binding instance, in this example `SoundcloudPodcast`, as parameters to the closure.
 
 <a name="psr-11"></a>
 ## PSR-11
