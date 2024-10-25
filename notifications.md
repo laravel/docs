@@ -1174,6 +1174,50 @@ If a notification supports being sent as a Slack message, you should define a `t
                 });
     }
 
+<a name="using-slacks-block-kit-builder-template"></a>
+#### Using Slack's Block Kit Builder Template
+
+Alternatively, you may utilize the generated JSON payload from Slack's Block Kit Builder via the `usingBlockKitTemplate` method. This approach is particularly useful when the Slack messages are defined by your users.
+
+    use Illuminate\Notifications\Slack\SlackMessage;
+    use Illuminate\Support\Str;
+
+    /**
+     * Get the Slack representation of the notification.
+     */
+    public function toSlack(object $notifiable): SlackMessage
+    {
+        $userTemplate = Str::swap(
+          [
+            '{{header}}' => "Team Announcement",
+            '{{message}}' => "It's Pizza Time!",
+          ], 
+          <<<JSON
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "{{header}}"
+                  }
+                }, 
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "{{message}}"
+                  }
+                }
+              ]
+            }
+          JSON
+        );
+
+        return (new SlackMessage)
+                ->usingBlockKitTemplate($userTemplate);
+    }
+
 <a name="slack-interactivity"></a>
 ### Slack Interactivity
 
