@@ -101,7 +101,7 @@ Once the application has been created, you can start Laravel's local development
 
 ```nothing
 cd example-app
-
+npm install && npm run build
 composer run dev
 ```
 
