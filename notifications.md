@@ -50,6 +50,9 @@
 - [Testing](#testing)
 - [Notification Events](#notification-events)
 - [Custom Channels](#custom-channels)
+    - [Writing the Channel](#writing-the-channel)
+    - [Registering the Channel](#registering-the-channel)
+    - [Using the Channel](#using-the-channel)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1532,6 +1535,9 @@ Within an event listener, you may access the `notifiable`, `notification`, `chan
 <a name="custom-channels"></a>
 ## Custom Channels
 
+<a name="writing-the-channel"></a>
+### Writing the Channel
+
 Laravel ships with a handful of notification channels, but you may want to write your own drivers to deliver notifications via other channels. Laravel makes it simple. To get started, define a class that contains a `send` method. The method should receive two arguments: a `$notifiable` and a `$notification`.
 
 Within the `send` method, you may call methods on the notification to retrieve a message object understood by your channel and then send the notification to the `$notifiable` instance however you wish:
@@ -1555,14 +1561,50 @@ Within the `send` method, you may call methods on the notification to retrieve a
         }
     }
 
-Once your notification channel class has been defined, you may return the class name from the `via` method of any of your notifications. In this example, the `toVoice` method of your notification can return whatever object you choose to represent voice messages. For example, you might define your own `VoiceMessage` class to represent these messages:
+<a name="registering-the-channel"></a>
+### Registering the Channel
+
+To register your custom notification channel with Laravel, we will use the `extend` method on the `Notification` facade. We will pass to that method the name of the custom channel and a closure that instantiates and returns an instance of it.
+
+    <?php
+     
+    namespace App\Providers;
+     
+    use App\Notifications\VoiceChannel;
+    use Illuminate\Support\Facades\Notification;
+    use Illuminate\Support\ServiceProvider;
+     
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         */
+        public function register(): void
+        {
+            // ...
+        }
+     
+        /**
+         * Bootstrap any application services.
+         */
+        public function boot(): void
+        {
+            Notification::extend('voice', function () {
+                return new VoiceChannel();
+            });
+        }
+    }
+
+<a name="using-the-channel"></a>
+### Using the Channel
+
+Once your notification channel class has been defined and registered, you may include the channel's name in the array returned by the `via` method of any of your notifications. In this example, the `toVoice` method of your notification can return whatever object you choose to represent voice messages. For example, you might define your own `VoiceMessage` class to represent these messages:
 
     <?php
 
     namespace App\Notifications;
 
     use App\Notifications\Messages\VoiceMessage;
-    use App\Notifications\VoiceChannel;
     use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Notifications\Notification;
@@ -1574,9 +1616,9 @@ Once your notification channel class has been defined, you may return the class 
         /**
          * Get the notification channels.
          */
-        public function via(object $notifiable): string
+        public function via(object $notifiable): array
         {
-            return VoiceChannel::class;
+            return ['voice'];
         }
 
         /**
