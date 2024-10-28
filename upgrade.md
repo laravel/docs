@@ -406,6 +406,10 @@ Storage::extend('dropbox', function ($app, $config) {
 
 If your application is using Flysystem's SFTP adapter and private-public key authentication, the `password` configuration item that is used to decrypt the private key should be renamed to `passphrase`.
 
+#### AWS S3 V3 - Checking file/directory exists
+
+Since [Flysystem v3 3.12.1](https://github.com/thephpleague/flysystem/tree/3.12.1), the way checking file / directory existence was changed. More information can be found [here](https://github.com/laravel/framework/issues/45639) but you may need to catch `League\Flysystem\UnableToCheckFileExistence` exceptions when using `Storage::exists()`, based on your AWS permission settings.
+
 ### Helpers
 
 <a name="data-get-function"></a>
