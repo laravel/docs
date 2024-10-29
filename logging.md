@@ -355,9 +355,9 @@ To get started, define a `tap` array on the channel's configuration. The `tap` a
 Once you have configured the `tap` option on your channel, you're ready to define the class that will customize your Monolog instance. This class only needs a single method: `__invoke`, which receives an `Illuminate\Log\Logger` instance. The `Illuminate\Log\Logger` instance proxies all method calls to the underlying Monolog instance:
 
     <?php
-    
+
     namespace App\Logging;
-    
+
     use Illuminate\Log\Logger;
     use Monolog\Formatter\JsonFormatter;
 
