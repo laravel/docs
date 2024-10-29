@@ -355,11 +355,11 @@ To get started, define a `tap` array on the channel's configuration. The `tap` a
 Once you have configured the `tap` option on your channel, you're ready to define the class that will customize your Monolog instance. This class only needs a single method: `__invoke`, which receives an `Illuminate\Log\Logger` instance. The `Illuminate\Log\Logger` instance proxies all method calls to the underlying Monolog instance:
 
     <?php
-
+    
     namespace App\Logging;
-
+    
     use Illuminate\Log\Logger;
-    use Monolog\Formatter\LineFormatter;
+    use Monolog\Formatter\JsonFormatter;
 
     class CustomizeFormatter
     {
@@ -369,12 +369,12 @@ Once you have configured the `tap` option on your channel, you're ready to defin
         public function __invoke(Logger $logger): void
         {
             foreach ($logger->getHandlers() as $handler) {
-                $handler->setFormatter(new LineFormatter(
-                    '[%datetime%] %channel%.%level_name%: %message% %context% %extra%'
-                ));
+                $handler->setFormatter(new JsonFormatter());
             }
         }
     }
+
+This change configures Laravel to log entries as individual JSON objects per line (JSONL format), making it easier to parse the log files.
 
 > [!NOTE]  
 > All of your "tap" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected.
