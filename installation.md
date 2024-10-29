@@ -130,7 +130,7 @@ Your `.env` file should not be committed to your application's source control, s
 <a name="databases-and-migrations"></a>
 ### Databases and Migrations
 
-Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with a SQLite database.
+Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with an SQLite database.
 
 During the creation of the application, Laravel created a `database/database.sqlite` file for you, and ran the necessary migrations to create the application's database tables.
 
