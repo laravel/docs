@@ -878,7 +878,7 @@ When chaining jobs, you may use the `catch` method to specify a closure that sho
 > Since chain callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within chain callbacks.
 
 <a name="customizing-the-queue-and-connection"></a>
-### Customizing The Queue a Connection
+### Customizing The Queue and Connection
 
 <a name="dispatching-to-a-particular-queue"></a>
 #### Dispatching to a Particular Queue
