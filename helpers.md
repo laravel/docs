@@ -2478,6 +2478,53 @@ protected $middleware = [
 ];
 ```
 
+<a name="disabling-defer-in-tests"></a>
+#### Disabling Deferred Functions in Tests
+
+When writing unit tests, it may be useful to disable deferred functions. You may call `withoutDefer` in your test to have deferred functions invoked immediately.
+
+```php tab=Pest
+test('without defer example', function () {
+    $this->withoutDefer();
+
+    // ...
+});
+```
+
+```php tab=PHPUnit
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_without_defer_example(): void
+    {
+        $this->withoutDefer();
+
+        // ...
+    }
+}
+```
+
+If you would like to disable deferred functions for all tests, you may call the `withoutDefer` method from the `setUp` method on your base `TestCase` class:
+
+```php
+<?php
+
+namespace Tests;
+
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase
+{
+    protected function setUp(): void// [tl! add:start]
+    {
+        parent::setUp();
+
+        $this->withoutDefer();
+    }// [tl! add:end]
+}
+```
+
 <a name="lottery"></a>
 ### Lottery
 
