@@ -1713,6 +1713,9 @@ The `partition` method may be combined with PHP array destructuring to separate 
 
     // [3, 4, 5, 6]
 
+> [!NOTE]
+> This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-partition).
+
 <a name="method-percentage"></a>
 #### `percentage()` {.collection-method}
 
