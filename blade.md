@@ -530,6 +530,24 @@ In addition, the `@required` directive may be used to indicate if a given elemen
     @required($user->isAdmin())
 />
 ```
+The `@bool` directive allows for printing boolean values as pure true or false without quotation marks. This function is useful when conditions need to be evaluated and boolean values need to be directly represented in views.
+
+```blade
+@php
+    $isActive = 1;
+    $isOpen = false;
+@endphp
+
+<div class="dropdown" aria-popup="@bool($isOpen)"></div>
+
+<script>
+    let config = {
+        isActive: @bool($isActive)
+    };
+</script>
+```
+> [!NOTE]
+> `@bool` takes any value and evaluates it in a boolean context. If the value is "truthy" (true in PHP’s context), it will print true; if the value is "falsy" (false in PHP’s context), it will print false.
 
 <a name="including-subviews"></a>
 ### Including Subviews
