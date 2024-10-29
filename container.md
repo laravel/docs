@@ -17,7 +17,7 @@
     - [Automatic Injection](#automatic-injection)
 - [Method Invocation and Injection](#method-invocation-and-injection)
 - [Container Events](#container-events)
-	- [Rebinding](#rebinding)
+    - [Rebinding](#rebinding)
 - [PSR-11](#psr-11)
 
 <a name="introduction"></a>
@@ -582,24 +582,24 @@ As you can see, the object being resolved will be passed to the callback, allowi
 <a name="rebinding"></a>
 ### Rebinding
 
-Also, the Laravel container has the ability to fire an event whenever you want to redefine an existing binding. You may listen to this event using the `rebining` method:
+The `rebinding` method allows you to listen for when a service is re-bound to the container, meaning it is registered again or overridden after its initial binding. This can be useful when you need to update dependencies or modify behavior each time a specific binding is updated:
 
-    use App\Contracts\Podcast;
-    use App\Services\SpotifyPodcast;
-    use App\Services\SoundcloudPodcast;
+    use App\Contracts\PodcastPublisher;
+    use App\Services\SpotifyPublisher;
+    use App\Services\TransistorPublisher;
+    use Illuminate\Contracts\Foundation\Application;
 
-    $this->app()->bind(Podcast::class, SpotifyPodcast::class);
+    $this->app->bind(PodcastPublisher::class, SpotifyPublisher::class);
 
-    $this->app()->rebinding(Podcast::class, function($container, Podcast $instanse) {
-        //
-    });
-    /**
-    * Call to rebinding callbacks of Podcast::class
-    */
-    $this->app()->bind(Podcast::class, SoundcloudPodcast::class);
+    $this->app->rebinding(
+        PodcastPublisher::class,
+        function (Application $app, PodcastPublisher $newInstance) {
+            //
+        },
+    );
 
-
-when listening, passes an instance of the service container and a new binding instance, in this example `SoundcloudPodcast`, as parameters to the closure.
+    // New binding will trigger rebinding closure...
+    $this->app->bind(PodcastPublisher::class, TransistorPublisher::class);
 
 <a name="psr-11"></a>
 ## PSR-11
