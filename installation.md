@@ -61,7 +61,7 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 <a name="installing-php"></a>
 ### Installing PHP and the Laravel Installer
 
-Before creating your first Laravel application, make sure that your local machine has [PHP](https://php.net), [Composer](https://getcomposer.org), and [the Laravel installer](https://github.com/laravel/installer) installed. In addition, you should install [Node and NPM](https://nodejs.org) so that you can compile your application's frontend assets.
+Before creating your first Laravel application, make sure that your local machine has [PHP](https://php.net), [Composer](https://getcomposer.org), and [the Laravel installer](https://github.com/laravel/installer) installed. In addition, you should install either [Node and NPM](https://nodejs.org) or [Bun](https://bun.sh/) so that you can compile your application's frontend assets.
 
 If you don't have PHP and Composer installed on your local machine, the following commands will install PHP, Composer, and the Laravel installer on macOS, Windows, or Linux:
 
