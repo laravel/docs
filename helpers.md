@@ -2478,7 +2478,7 @@ protected $middleware = [
 ];
 ```
 
-<a name="disabling-defer-in-tests"></a>
+<a name="disabling-deferred-functions-in-tests"></a>
 #### Disabling Deferred Functions in Tests
 
 When writing tests, it may be useful to disable deferred functions. You may call `withoutDefer` in your test to instruct Laravel to invoke all deferred functions immediately:
