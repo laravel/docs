@@ -306,9 +306,6 @@ Since the purpose of these methods is not readily understandable, here is an ove
 
 </div>
 
-> [!NOTE]
-> If you are looking for an official MongoDB session driver, you can use the `cache` session driver with a `mongodb` cache store. Check out the [MongoDB Cache Driver documentation](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/cache/) for more information.
-
 <a name="registering-the-driver"></a>
 ### Registering the Driver
 
