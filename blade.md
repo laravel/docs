@@ -719,11 +719,11 @@ Alternatively, you may use the `componentNamespace` method to autoload component
         Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
     }
 
-This will allow the usage of package components by their vendor namespace using the `package-name::` syntax:
+This will allow the usage of package components by their vendor namespace using the `package-name:` syntax:
 
 ```blade
-<x-nightshade::calendar />
-<x-nightshade::color-picker />
+<nightshade:calendar />
+<nightshade:color-picker />
 ```
 
 Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using "dot" notation.
