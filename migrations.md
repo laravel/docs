@@ -458,6 +458,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [uuidMorphs](#column-method-uuidMorphs)
 [ulid](#column-method-ulid)
 [uuid](#column-method-uuid)
+[vector](#column-method-vector)
 [year](#column-method-year)
 
 </div>
@@ -917,6 +918,13 @@ The `ulid` method creates a `ULID` equivalent column:
 The `uuid` method creates a `UUID` equivalent column:
 
     $table->uuid('id');
+
+<a name="column-method-vector"></a>
+#### `vector()` {.collection-method}
+
+The `vector` method creates a `vector` equivalent column:
+
+    $table->vector('embedding', dimensions: 100);
 
 <a name="column-method-year"></a>
 #### `year()` {.collection-method}
