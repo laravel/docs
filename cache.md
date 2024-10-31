@@ -114,9 +114,9 @@ In addition, you should ensure that values are provided for the DynamoDB cache s
 <a name="mongodb"></a>
 #### MongoDB
 
-If you are using MongoDB, a `mongodb` cache driver is provided by the `mongodb/laravel-mongodb` package and can be configured using a `mongodb` database connection. MongoDB supports TTL indexes, which can be used to automatically clear expired cache items.
+If you are using MongoDB, a `mongodb` cache driver is provided by the official `mongodb/laravel-mongodb` package and can be configured using a `mongodb` database connection. MongoDB supports TTL indexes, which can be used to automatically clear expired cache items.
 
-For more information on configuring MongoDB, see the [Cache and Locks](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/cache/) page in its documentation.
+For more information on configuring MongoDB, please refer to the MongoDB [Cache and Locks documentation](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/cache/).
 
 <a name="cache-usage"></a>
 ## Cache Usage

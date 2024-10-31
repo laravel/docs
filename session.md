@@ -245,7 +245,7 @@ If you need to regenerate the session ID and remove all data from the session in
 ## Session Blocking
 
 > [!WARNING]  
-> To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, `mongodb` (included in `mongodb/laravel-mongodb` package), `database`, `file`, and `array` drivers. In addition, you may not use the `cookie` session driver.
+> To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, `mongodb` (included in the official `mongodb/laravel-mongodb` package), `database`, `file`, and `array` drivers. In addition, you may not use the `cookie` session driver.
 
 By default, Laravel allows requests using the same session to execute concurrently. So, for example, if you use a JavaScript HTTP library to make two HTTP requests to your application, they will both execute at the same time. For many applications, this is not a problem; however, session data loss can occur in a small subset of applications that make concurrent requests to two different application endpoints which both write data to the session.
 
@@ -291,13 +291,9 @@ If none of the existing session drivers fit your application's needs, Laravel ma
         public function gc($lifetime) {}
     }
 
-> [!NOTE]  
-> Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`.
+Since Laravel does not include a default directory to house your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`.
 
-> [!NOTE]
-> We use MongoDB as an example, but if you are looking for a MongoDB session driver, you can use the `cache` session driver with a `mongodb` cache store. Read more about the [MongoDB Cache Driver](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/cache/).
-
-Since the purpose of these methods is not readily understandable, let's quickly cover what each of the methods do:
+Since the purpose of these methods is not readily understandable, here is an overview of the purpose of each method:
 
 <div class="content-list" markdown="1">
 
@@ -309,6 +305,9 @@ Since the purpose of these methods is not readily understandable, let's quickly 
 - The `gc` method should destroy all session data that is older than the given `$lifetime`, which is a UNIX timestamp. For self-expiring systems like Memcached and Redis, this method may be left empty.
 
 </div>
+
+> [!NOTE]
+> If you are looking for an official MongoDB session driver, you can use the `cache` session driver with a `mongodb` cache store. Check out the [MongoDB Cache Driver documentation](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/cache/) for more information.
 
 <a name="registering-the-driver"></a>
 ### Registering the Driver
