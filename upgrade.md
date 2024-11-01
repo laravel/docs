@@ -182,6 +182,7 @@ if ($e instanceof AuthenticationException) {
 }
 ```
 
+<a name="email-verification-notification-on-registration"></a>
 #### Email verification notification on registration
 
 **Likelihood Of Impact: Low**
