@@ -182,6 +182,19 @@ if ($e instanceof AuthenticationException) {
 }
 ```
 
+#### Email verification notification on registration
+
+**Likelihood Of Impact: Low**
+
+The `SendEmailVerificationNotification` listener is now automatically registered for the `Registered` event if it's not there yet. In case you are using a custom listener instead or don't need this listener for other reasons, you should override the `configureEmailVerification` method on your `EventServiceProvider`:
+
+```php
+protected function configureEmailVerification()
+{
+    // ...
+}
+```
+
 <a name="cache"></a>
 ### Cache
 
