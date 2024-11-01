@@ -183,11 +183,11 @@ if ($e instanceof AuthenticationException) {
 ```
 
 <a name="email-verification-notification-on-registration"></a>
-#### Email verification notification on registration
+#### Email Verification Notification on Registration
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Very Low**
 
-The `SendEmailVerificationNotification` listener is now automatically registered for the `Registered` event if it's not there yet. In case you are using a custom listener instead or don't need this listener for other reasons, you should override the `configureEmailVerification` method on your `EventServiceProvider`:
+The `SendEmailVerificationNotification` listener is now automatically registered for the `Registered` event if it is not already registered by your application's `EventServiceProvider`. If your application's `EventServiceProvider` does not register this listener and you do not want Laravel to automatically register it for you, you should define an empty `configureEmailVerification` method in your application's `EventServiceProvider`:
 
 ```php
 protected function configureEmailVerification()
