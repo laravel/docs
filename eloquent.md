@@ -379,10 +379,24 @@ public function boot(): void
 }
 ```
 
-Also, you may instruct Laravel to throw an exception when attempting to fill an unfillable attribute by invoking the `preventSilentlyDiscardingAttributes` method. This can help prevent unexpected errors during local development when attempting to set an attribute that has not been added to the model's `fillable` array:
+You can also configure Laravel to throw exceptions when interacting with unfillable or missing attributes, which helps prevent unexpected behavior during development.
+
+By default, attempting to access an attribute that does not exist on a model will return `null`, which may hide potential errors. To ensure Laravel throws an exception when accessing a missing attribute, use the `preventAccessingMissingAttributes` method:
+
+```php
+Model::preventAccessingMissingAttributes(! $this->app->isProduction());
+```
+
+Similarly, you can use the `preventSilentlyDiscardingAttributes` method to throw an exception when trying to set an attribute that is not in the model's `fillable` array:
 
 ```php
 Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
+```
+
+To enable all three strict checks at once, use the `shouldBeStrict` method instead of calling each method individually:
+
+```php
+Model::shouldBeStrict(! $this->app->isProduction());
 ```
 
 <a name="retrieving-models"></a>
