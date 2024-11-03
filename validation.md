@@ -1887,6 +1887,12 @@ The field under validation must be a valid [Universally Unique Lexicographically
 
 The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) universally unique identifier (UUID).
 
+You can also limit the given UUID to a specific version:
+
+```php
+'uuidV4' => 'uuid:4'
+```
+
 <a name="conditionally-adding-rules"></a>
 ## Conditionally Adding Rules
 
