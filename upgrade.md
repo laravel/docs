@@ -120,6 +120,19 @@ Laravel 11 introduces a new default application structure with fewer default fil
 
 However, we do **not recommend** that Laravel 10 applications upgrading to Laravel 11 attempt to migrate their application structure, as Laravel 11 has been carefully tuned to also support the Laravel 10 application structure.
 
+<a name="configuration-merging"></a>
+#### Configuration Merging
+
+**Likelihood Of Impact: Very Low**
+
+Laravel 11 will merge your configuration with the framework's [default configuration](https://github.com/laravel/framework/tree/11.x/config). This will ensure any existing and upcoming configuration keys will always be defined on your app with reasonable default values.
+
+However, this means you should avoid looping over configuration entries as new ones can appear there during and after upgrade to Laravel 11. If you need to disable the merging behaviour, you can call the `dontMergeFrameworkConfiguration` method on the application instance in `bootstrap/app.php`:
+
+```php
+$app->dontMergeFrameworkConfiguration();
+```
+
 <a name="authentication"></a>
 ### Authentication
 
