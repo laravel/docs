@@ -5,7 +5,8 @@
 - [Capturing Context](#capturing-context)
     - [Stacks](#stacks)
 - [Retrieving Context](#retrieving-context)
-    - [Determining Item Existence](#determining-item-existence)
+    - [Popping from a stackable item list](#popping-stackable-item)
+    - [Determining Item Existence](#determining-item-existence) 
 - [Removing Context](#removing-context)
 - [Hidden Context](#hidden-context)
 - [Events](#events)
@@ -235,6 +236,27 @@ If you would like to retrieve all of the information stored in the context, you 
 $data = Context::all();
 ```
 
+<a name="popping-stackable-item"></a>
+### Popping from a stackable item list
+
+As with regular arrays, you are able to pop an item from a stackable item if you use stacks.  When popping a list item from a stack, the item will be returned and removed from the stack:
+
+```php
+use Illuminate\Support\Facades\Context;
+
+Context::push('breadcrumbs', 'foo', 'bar');
+
+Context::pop('breadcrumbs')
+// bar
+
+Context::pop('breadcrumbs');
+// foo
+
+Context::get('breadcrumbs');
+// [] 
+```
+
+
 <a name="determining-item-existence"></a>
 ### Determining Item Existence
 
@@ -303,6 +325,7 @@ The "hidden" methods mirror the functionality of the non-hidden methods document
 Context::addHidden(/* ... */);
 Context::addHiddenIf(/* ... */);
 Context::pushHidden(/* ... */);
+Context::popHidden(/* ... */);
 Context::getHidden(/* ... */);
 Context::pullHidden(/* ... */);
 Context::onlyHidden(/* ... */);
