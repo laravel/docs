@@ -575,12 +575,20 @@ The service container fires an event each time it resolves an object. You may li
     use App\Services\Transistor;
     use Illuminate\Contracts\Foundation\Application;
 
+	$this->app->beforeResolving(Transistor::class, function (string $abstract, array $parameters, Container $app) {
+        // Called before the container resolves an instance of "Transistor"
+    });
+
     $this->app->resolving(Transistor::class, function (Transistor $transistor, Application $app) {
         // Called when container resolves objects of type "Transistor"...
     });
 
     $this->app->resolving(function (mixed $object, Application $app) {
         // Called when container resolves object of any type...
+    });
+
+    $this->app->afterResolving(Transistor::class, function (Transistor $transistor, Application $app) {
+        // Called after the container resolves an instance of "Transistor"
     });
 
 As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer.
