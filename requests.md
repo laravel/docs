@@ -394,16 +394,20 @@ The `hasAny` method returns `true` if any of the specified values are present:
 
 The `whenHas` method will execute the given closure if a value is present on the request:
 
-    $request->whenHas('name', function (string $input) {
-        // ...
+    $request->whenHas('name', function (?string $input) {
+        // "$input" represents the value of the 'name' key.
+        // The 'name' parameter is present in the request, even if its value is null or an empty string.
+        // It is recommended that you validate the input before invoking the whenHas method.
     });
 
 A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:
 
-    $request->whenHas('name', function (string $input) {
-        // The "name" value is present...
+    $request->whenHas('name', function (?string $input) {
+        // "$input" represents the value of the 'name' key.
+        // The 'name' parameter is present in the request, even if its value is null or an empty string.
+        // It is recommended that you validate the input before invoking the whenHas method.
     }, function () {
-        // The "name" value is not present...
+        // The "name" parameter is not present...
     });
 
 If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:
