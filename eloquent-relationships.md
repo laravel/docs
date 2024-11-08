@@ -1435,6 +1435,12 @@ Of course, like calls to the query builder's `where` method, you may also specif
         'comments', 'created_at', '>=', now()->subHour()
     )->get();
 
+You can also use the method `whereRelationIn` for simple where in statement attached to the relationship query, for example we may query for all posts that belong to certain users:
+
+    use App\Models\Post;
+
+    $posts = Post::whereRelationIn('user', 'id', [1, 2, 3]);
+
 <a name="querying-relationship-absence"></a>
 ### Querying Relationship Absence
 
