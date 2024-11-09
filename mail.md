@@ -884,6 +884,25 @@ By default, Laravel will send email using the mailer configured as the `default`
             ->to($request->user())
             ->send(new OrderShipped($order));
 
+
+<a name="sending-mail-via-a-on-demand-mailer"></a>
+#### Sending Mail via an On-Demand Mailer
+
+It is also possible to create an on-demand mailer by providing the configuration at runtime without that configuration being present in your application's mail configuration file.
+To accomplish this, you may pass a configuration array to the Mail facade's `build` method:
+
+    $mailer = Mail::build([
+        'transport' => 'smtp',
+        'host' => '127.0.0.1',
+        'port' => 587,
+        'encryption' => 'tls',
+        'username' => 'usr',
+        'password' => 'pwd',
+        'timeout' => 5,
+    ]);
+
+    $mailer->send($mailable);
+
 <a name="queueing-mail"></a>
 ### Queueing Mail
 
