@@ -17,6 +17,7 @@
     - [Automatic Injection](#automatic-injection)
 - [Method Invocation and Injection](#method-invocation-and-injection)
 - [Container Events](#container-events)
+    - [Rebinding](#rebinding)
 - [PSR-11](#psr-11)
 
 <a name="introduction"></a>
@@ -167,6 +168,12 @@ The `scoped` method binds a class or interface into the container that should on
     use Illuminate\Contracts\Foundation\Application;
 
     $this->app->scoped(Transistor::class, function (Application $app) {
+        return new Transistor($app->make(PodcastParser::class));
+    });
+
+You may use the `scopedIf` method to register a scoped container binding only if a binding has not already been registered for the given type:
+
+    $this->app->scopedIf(Transistor::class, function (Application $app) {
         return new Transistor($app->make(PodcastParser::class));
     });
 
@@ -577,6 +584,28 @@ The service container fires an event each time it resolves an object. You may li
     });
 
 As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer.
+
+<a name="rebinding"></a>
+### Rebinding
+
+The `rebinding` method allows you to listen for when a service is re-bound to the container, meaning it is registered again or overridden after its initial binding. This can be useful when you need to update dependencies or modify behavior each time a specific binding is updated:
+
+    use App\Contracts\PodcastPublisher;
+    use App\Services\SpotifyPublisher;
+    use App\Services\TransistorPublisher;
+    use Illuminate\Contracts\Foundation\Application;
+
+    $this->app->bind(PodcastPublisher::class, SpotifyPublisher::class);
+
+    $this->app->rebinding(
+        PodcastPublisher::class,
+        function (Application $app, PodcastPublisher $newInstance) {
+            //
+        },
+    );
+
+    // New binding will trigger rebinding closure...
+    $this->app->bind(PodcastPublisher::class, TransistorPublisher::class);
 
 <a name="psr-11"></a>
 ## PSR-11

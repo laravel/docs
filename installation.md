@@ -61,7 +61,7 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 <a name="installing-php"></a>
 ### Installing PHP and the Laravel Installer
 
-Before creating your first Laravel application, make sure that your local machine has [PHP](https://php.net), [Composer](https://getcomposer.org), and [the Laravel installer](https://github.com/laravel/installer) installed. In addition, you should install [Node and NPM](https://nodejs.org) so that you can compile your application's frontend assets.
+Before creating your first Laravel application, make sure that your local machine has [PHP](https://php.net), [Composer](https://getcomposer.org), and [the Laravel installer](https://github.com/laravel/installer) installed. In addition, you should install either [Node and NPM](https://nodejs.org) or [Bun](https://bun.sh/) so that you can compile your application's frontend assets.
 
 If you don't have PHP and Composer installed on your local machine, the following commands will install PHP, Composer, and the Laravel installer on macOS, Windows, or Linux:
 
@@ -101,7 +101,7 @@ Once the application has been created, you can start Laravel's local development
 
 ```nothing
 cd example-app
-
+npm install && npm run build
 composer run dev
 ```
 
@@ -130,7 +130,7 @@ Your `.env` file should not be committed to your application's source control, s
 <a name="databases-and-migrations"></a>
 ### Databases and Migrations
 
-Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with a SQLite database.
+Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with an SQLite database.
 
 During the creation of the application, Laravel created a `database/database.sqlite` file for you, and ran the necessary migrations to create the application's database tables.
 

@@ -151,6 +151,7 @@ The following dependencies are needed for the listed queue drivers. These depend
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~5.0`
 - Redis: `predis/predis ~2.0` or phpredis PHP extension
+- [MongoDB](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/queues/): `mongodb/laravel-mongodb`
 
 </div>
 
