@@ -77,6 +77,9 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 /bin/bash -c "$(curl -fsSL https://php.new/install/linux)"
 ```
 
+> [!NOTE]
+> On Windows you should run PowerShell as an administrator before running the command.
+
 After running one of the commands above, you should restart your terminal session. To update PHP, Composer, and the Laravel installer after installing them via `php.new`, you can re-run the command in your terminal.
 
 If you already have PHP and Composer installed, you may install the Laravel installer via Composer:
