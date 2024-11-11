@@ -70,15 +70,13 @@ If you don't have PHP and Composer installed on your local machine, the followin
 ```
 
 ```shell tab=Windows PowerShell
+# Run as administrator...
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows'))
 ```
 
 ```shell tab=Linux
 /bin/bash -c "$(curl -fsSL https://php.new/install/linux)"
 ```
-
-> [!NOTE]
-> On Windows you should run PowerShell as an administrator before running the command.
 
 After running one of the commands above, you should restart your terminal session. To update PHP, Composer, and the Laravel installer after installing them via `php.new`, you can re-run the command in your terminal.
 
