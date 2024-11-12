@@ -235,10 +235,10 @@ If context data is stored in a [stack](#stacks), you may pop items from the stac
 Context::push('breadcrumbs', 'first_value', 'second_value');
 
 Context::pop('breadcrumbs')
-// first_value
+// second_value
 
 Context::get('breadcrumbs');
-// ['second_value'] 
+// ['first_value'] 
 ```
 
 If you would like to retrieve all of the information stored in the context, you may invoke the `all` method:
