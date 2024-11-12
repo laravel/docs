@@ -229,6 +229,18 @@ The `pull` method may be used to retrieve information from the context and immed
 $value = Context::pull('key');
 ```
 
+If context data is stored in a [stack](#stacks), you may pop items from the stack using the `pop` method:
+
+```php
+Context::push('breadcrumbs', 'first_value', 'second_value');
+
+Context::pop('breadcrumbs')
+// second_value
+
+Context::get('breadcrumbs');
+// ['first_value'] 
+```
+
 If you would like to retrieve all of the information stored in the context, you may invoke the `all` method:
 
 ```php
@@ -305,6 +317,7 @@ Context::addHiddenIf(/* ... */);
 Context::pushHidden(/* ... */);
 Context::getHidden(/* ... */);
 Context::pullHidden(/* ... */);
+Context::popHidden(/* ... */);
 Context::onlyHidden(/* ... */);
 Context::allHidden(/* ... */);
 Context::hasHidden(/* ... */);
