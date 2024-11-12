@@ -93,7 +93,7 @@ Additionally, the retention policy for the `daily` channel can be configured via
 
 | Name   | Description                                                 | Default |
 | ------ | ----------------------------------------------------------- | ------- |
-| `days` | The number of days that daily log files should be retained. | `7`     |
+| `days` | The number of days that daily log files should be retained. | `14`    |
 
 </div>
 
