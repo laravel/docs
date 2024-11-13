@@ -737,9 +737,6 @@ Using the `Route::fallback` method, you may define a route that will be executed
         // ...
     });
 
-> [!WARNING]  
-> The fallback route should always be the last route registered by your application.
-
 <a name="rate-limiting"></a>
 ## Rate Limiting
 
