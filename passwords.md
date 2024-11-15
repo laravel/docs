@@ -190,7 +190,7 @@ You may customize the password reset link URL using the `createUrlUsing` method 
 
 Although the default reset email notification should satisfy the requirements of most applications, Laravel allows you to customize how the reset email mail message is constructed.
 
-To get started, pass a closure to the `toMailUsing` method provided by the `Illuminate\Auth\Notifications\PasswordReset` notification. The closure will receive the notifiable model instance that is receiving the notification as well as the password reset token that the user must visit to verify their email address. The closure should return an instance of `Illuminate\Notifications\Messages\MailMessage`. Typically, you should call the `toMailUsing` method from the `boot` method of your application's `AppServiceProvider` class:
+To get started, pass a closure to the `toMailUsing` method provided by the `Illuminate\Auth\Notifications\PasswordReset` notification. The closure will receive the notifiable model instance that is receiving the notification as well as the password reset token as the second argument. The closure should return an instance of `Illuminate\Notifications\Messages\MailMessage`. Typically, you should call the `toMailUsing` method from the `boot` method of your application's `AppServiceProvider` class:
 
     use Illuminate\Auth\Notifications\PasswordReset;
     use Illuminate\Notifications\Messages\MailMessage;
