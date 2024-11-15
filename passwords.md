@@ -188,7 +188,31 @@ You may customize the password reset link URL using the `createUrlUsing` method 
 <a name="reset-email-customization"></a>
 #### Reset Email Customization
 
-You may easily modify the notification class used to send the password reset link to the user. To get started, override the `sendPasswordResetNotification` method on your `App\Models\User` model. Within this method, you may send the notification using any [notification class](/docs/{{version}}/notifications) of your own creation. The password reset `$token` is the first argument received by the method. You may use this `$token` to build the password reset URL of your choice and send your notification to the user:
+Although the default reset email notification should satisfy the requirements of most applications, Laravel allows you to customize how the reset email mail message is constructed.
+
+To get started, pass a closure to the `toMailUsing` method provided by the `Illuminate\Auth\Notifications\PasswordReset` notification. The closure will receive the notifiable model instance that is receiving the notification as well as the password reset token that the user must visit to verify their email address. The closure should return an instance of `Illuminate\Notifications\Messages\MailMessage`. Typically, you should call the `toMailUsing` method from the `boot` method of your application's `AppServiceProvider` class:
+
+    use Illuminate\Auth\Notifications\PasswordReset;
+    use Illuminate\Notifications\Messages\MailMessage;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        // ...
+
+        PasswordReset::toMailUsing(function (object $notifiable, string $token) {
+            $url = 'https://example.com/reset-password?token='.$token;
+
+            return (new MailMessage)
+                ->subject('Reset Your Password')
+                ->line('Click the button below to reset your password.')
+                ->action('Reset Password', $url);
+        });
+    }
+
+If you need a full control of the notification, you can also override the `sendPasswordResetNotification` method on your `App\Models\User` model. Within this method, you may send the notification using any [notification class](/docs/{{version}}/notifications) of your own creation. The password reset `$token` is the first argument received by the method. You may use this `$token` to build the password reset URL of your choice and send your notification to the user:
 
     use App\Notifications\ResetPasswordNotification;
 
