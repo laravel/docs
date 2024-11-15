@@ -1077,9 +1077,9 @@ Once the driver has been registered, you may use the `redis` driver in your appl
     ],
 
 <a name="defining-features-externally"></a>
-#### Defining Features Externally
+### Defining Features Externally
 
-If your driver is a wrapper around a 3rd-party feature flag platform, you will likely define features on the platform rather than using Pennant's `Feature::define` method. If that is the case, your custom driver should also implement the `Laravel\Pennant\Contracts\DefinesFeaturesExternally` interface:
+If your driver is a wrapper around a third-party feature flag platform, you will likely define features on the platform rather than using Pennant's `Feature::define` method. If that is the case, your custom driver should also implement the `Laravel\Pennant\Contracts\DefinesFeaturesExternally` interface:
 
 ```php
 <?php
@@ -1091,13 +1091,16 @@ use Laravel\Pennant\Contracts\DefinesFeaturesExternally;
 
 class FeatureFlagServiceDriver implements Driver, DefinesFeaturesExternally
 {
+    /**
+     * Get the features defined for the given scope.
+     */
     public function definedFeaturesForScope(mixed $scope): array {}
 
     /* ... */
 }
 ```
 
-The `definedFeaturesForScope` method should return a list of feature names defined for the scope provided.
+The `definedFeaturesForScope` method should return a list of feature names defined for the provided scope.
 
 <a name="events"></a>
 ## Events
