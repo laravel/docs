@@ -396,12 +396,13 @@ Typically, you will make a request to the token endpoint from your mobile applic
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            return response()->json([
+                'message' => 'Invalid credentials.',
+            ], 401);
         }
-
-        return $user->createToken($request->device_name)->plainTextToken;
+        return response()->json([
+            'token' => $user->createToken($request->device_name)->plainTextToken,
+        ]);
     });
 
 When the mobile application uses the token to make an API request to your application, it should pass the token in the `Authorization` header as a `Bearer` token.
