@@ -346,6 +346,12 @@ Input values that correspond to [PHP enums](https://www.php.net/manual/en/langua
 
     $status = $request->enum('status', Status::class);
 
+If the input value is an array of values that correspond to a PHP enum, you may use the `enums` method to retrieve the array of values as enum instances:
+
+    use App\Enums\Product;
+
+    $products = $request->enums('products', Product::class);
+
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input via Dynamic Properties
 
