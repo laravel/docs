@@ -530,6 +530,15 @@ If you would like to specify a fallback URL pattern that will stub all unmatched
         '*' => Http::response('Hello World', 200, ['Headers']),
     ]);
 
+<a name="faking-connection-exceptions"></a>
+#### Faking Connection Exceptions
+
+Sometimes you may need to test your application's behavior if the HTTP client encounters an `Illuminate\Http\Client\ConnectionException` when attempting to make a request. You can instruct the HTTP client to throw a connection exception using the `failedConnection` method:
+
+    Http::fake([
+        'github.com/*' => Http::failedConnection(),
+    ]);
+
 <a name="faking-response-sequences"></a>
 #### Faking Response Sequences
 
