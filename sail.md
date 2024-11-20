@@ -75,7 +75,7 @@ docker run --rm \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
     laravelsail/php83-composer:latest \
-    sh -c "composer install --ignore-platform-reqs && php artisan sail:install"
+    sh -c "composer install --ignore-platform-reqs &&  composer require laravel/sail --dev && php artisan sail:install"
 ```
 
 > [!WARNING]  
