@@ -71,6 +71,8 @@ Before loading your application's environment variables, Laravel determines if a
 
 All variables in your `.env` files are typically parsed as strings, so some reserved values have been created to allow you to return a wider range of types from the `env()` function:
 
+<div class="overflow-auto">
+
 | `.env` Value | `env()` Value |
 | ------------ | ------------- |
 | true         | (bool) true   |
@@ -81,6 +83,8 @@ All variables in your `.env` files are typically parsed as strings, so some rese
 | (empty)      | (string) ''   |
 | null         | (null) null   |
 | (null)       | (null) null   |
+
+</div>
 
 If you need to define an environment variable with a value that contains spaces, you may do so by enclosing the value in double quotes:
 

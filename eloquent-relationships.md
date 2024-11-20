@@ -2,8 +2,8 @@
 
 - [Introduction](#introduction)
 - [Defining Relationships](#defining-relationships)
-    - [One to One](#one-to-one)
-    - [One to Many](#one-to-many)
+    - [One to One / Has One](#one-to-one)
+    - [One to Many / Has Many](#one-to-many)
     - [One to Many (Inverse) / Belongs To](#one-to-many-inverse)
     - [Has One of Many](#has-one-of-many)
     - [Has One Through](#has-one-through)
@@ -68,7 +68,7 @@ Eloquent relationships are defined as methods on your Eloquent model classes. Si
 But, before diving too deep into using relationships, let's learn how to define each type of relationship supported by Eloquent.
 
 <a name="one-to-one"></a>
-### One to One
+### One to One / Has One
 
 A one-to-one relationship is a very basic type of database relationship. For example, a `User` model might be associated with one `Phone` model. To define this relationship, we will place a `phone` method on the `User` model. The `phone` method should call the `hasOne` method and return its result. The `hasOne` method is available to your model via the model's `Illuminate\Database\Eloquent\Model` base class:
 
@@ -148,7 +148,7 @@ If the parent model does not use `id` as its primary key, or you wish to find th
     }
 
 <a name="one-to-many"></a>
-### One to Many
+### One to Many / Has Many
 
 A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a blog post may have an infinite number of comments. Like all other Eloquent relationships, one-to-many relationships are defined by defining a method on your Eloquent model:
 
@@ -193,6 +193,53 @@ Like the `hasOne` method, you may also override the foreign and local keys by pa
     return $this->hasMany(Comment::class, 'foreign_key');
 
     return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
+
+<a name="automatically-hydrating-parent-models-on-children"></a>
+#### Automatically Hydrating Parent Models on Children
+
+Even when utilizing Eloquent eager loading, "N + 1" query problems can arise if you try to access the parent model from a child model while looping through the child models:
+
+```php
+$posts = Post::with('comments')->get();
+
+foreach ($posts as $post) {
+    foreach ($post->comments as $comment) {
+        echo $comment->post->title;
+    }
+}
+```
+
+In the example above, an "N + 1" query problem has been introduced because, even though comments were eager loaded for every `Post` model, Eloquent does not automatically hydrate the parent `Post` on each child `Comment` model.
+
+If you would like Eloquent to automatically hydrate parent models onto their children, you may invoke the `chaperone` method when defining a `hasMany` relationship:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+
+    class Post extends Model
+    {
+        /**
+         * Get the comments for the blog post.
+         */
+        public function comments(): HasMany
+        {
+            return $this->hasMany(Comment::class)->chaperone();
+        }
+    }
+
+Or, if you would like to opt-in to automatic parent hydration at run time, you may invoke the `chaperone` model when eager loading the relationship:
+
+```php
+use App\Models\Post;
+
+$posts = Post::with([
+    'comments' => fn ($comments) => $comments->chaperone(),
+])->get();
+```
 
 <a name="one-to-many-inverse"></a>
 ### One to Many (Inverse) / Belongs To
@@ -1008,6 +1055,46 @@ You may also retrieve the parent of a polymorphic child model by accessing the n
 
 The `commentable` relation on the `Comment` model will return either a `Post` or `Video` instance, depending on which type of model is the comment's parent.
 
+<a name="polymorphic-automatically-hydrating-parent-models-on-children"></a>
+#### Automatically Hydrating Parent Models on Children
+
+Even when utilizing Eloquent eager loading, "N + 1" query problems can arise if you try to access the parent model from a child model while looping through the child models:
+
+```php
+$posts = Post::with('comments')->get();
+
+foreach ($posts as $post) {
+    foreach ($post->comments as $comment) {
+        echo $comment->commentable->title;
+    }
+}
+```
+
+In the example above, an "N + 1" query problem has been introduced because, even though comments were eager loaded for every `Post` model, Eloquent does not automatically hydrate the parent `Post` on each child `Comment` model.
+
+If you would like Eloquent to automatically hydrate parent models onto their children, you may invoke the `chaperone` method when defining a `morphMany` relationship:
+
+    class Post extends Model
+    {
+        /**
+         * Get all of the post's comments.
+         */
+        public function comments(): MorphMany
+        {
+            return $this->morphMany(Comment::class, 'commentable')->chaperone();
+        }
+    }
+
+Or, if you would like to opt-in to automatic parent hydration at run time, you may invoke the `chaperone` model when eager loading the relationship:
+
+```php
+use App\Models\Post;
+
+$posts = Post::with([
+    'comments' => fn ($comments) => $comments->chaperone(),
+])->get();
+```
+
 <a name="one-of-many-polymorphic-relations"></a>
 ### One of Many (Polymorphic)
 
@@ -1414,6 +1501,12 @@ You may occasionally need to add query constraints based on the "type" of the re
             $query->where($column, 'like', 'code%');
         }
     )->get();
+
+Sometimes you may want to query for the children of a "morph to" relationship's parent. You may accomplish this using the `whereMorphedTo` and `whereNotMorphedTo` methods, which will automatically determine the proper morph type mapping for the given model. These methods accept the name of the `morphTo` relationship as their first argument and the related parent model as their second argument:
+
+    $comments = Comment::whereMorphedTo('commentable', $post)
+                          ->orWhereMorphedTo('commentable', $video)
+                          ->get();
 
 <a name="querying-all-morph-to-related-models"></a>
 #### Querying All Related Models

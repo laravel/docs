@@ -126,9 +126,15 @@ However, we do **not recommend** that Laravel 10 applications upgrading to Larav
 <a name="password-rehashing"></a>
 #### Password Rehashing
 
-Laravel 11 will automatically rehash your user's passwords during authentication if your hashing algorithm's "work factor" has been updated since the password was last hashed.
+**Likelihood Of Impact: Low**
 
-Typically, this should not disrupt your application; however, you may disable this behavior by adding the `rehash_on_login` option to your application's `config/hashing.php` configuration file:
+Laravel 11 will automatically rehash your user's passwords during authentication if your hashing algorithm's "work factor" has been updated since the password was last hashed. 
+
+Typically, this should not disrupt your application; however, if your `User` model's "password" field has a name other than `password`, you should specify the field's name via the model's `authPasswordName` property:
+
+    protected $authPasswordName = 'custom_password_field';
+
+Alternatively, you may disable password rehashing by adding the `rehash_on_login` option to your application's `config/hashing.php` configuration file:
 
     'rehash_on_login' => false,
 
@@ -164,7 +170,6 @@ public function getAuthPasswordName()
 The default `User` model included with Laravel receives this method automatically since the method is included within the `Illuminate\Auth\Authenticatable` trait.
 
 <a name="the-authentication-exception-class"></a>
-
 #### The `AuthenticationException` Class
 
 **Likelihood Of Impact: Very Low**
@@ -174,6 +179,20 @@ The `redirectTo` method of the `Illuminate\Auth\AuthenticationException` class n
 ```php
 if ($e instanceof AuthenticationException) {
     $path = $e->redirectTo($request);
+}
+```
+
+<a name="email-verification-notification-on-registration"></a>
+#### Email Verification Notification on Registration
+
+**Likelihood Of Impact: Very Low**
+
+The `SendEmailVerificationNotification` listener is now automatically registered for the `Registered` event if it is not already registered by your application's `EventServiceProvider`. If your application's `EventServiceProvider` does not register this listener and you do not want Laravel to automatically register it for you, you should define an empty `configureEmailVerification` method in your application's `EventServiceProvider`:
+
+```php
+protected function configureEmailVerification()
+{
+    // ...
 }
 ```
 
@@ -416,7 +435,7 @@ public function scalar($query, $bindings = [], $useReadPdo = true);
 
 **Likelihood Of Impact: Medium**
 
-Laravel 11 supports both Carbon 2 and Carbon 3. Carbon is a date manipulation library utilized extensively by Laravel and packages throughout the ecosystem. If you upgrade to Carbon 3, be aware that `diffIn*` methods now return floating-point numbers and may return negative values to indicate time direction, which is a significant change from Carbon 2. Review Carbon's [change log](https://github.com/briannesbitt/Carbon/releases/tag/3.0.0) for detailed information on how to handle these and other changes.
+Laravel 11 supports both Carbon 2 and Carbon 3. Carbon is a date manipulation library utilized extensively by Laravel and packages throughout the ecosystem. If you upgrade to Carbon 3, be aware that `diffIn*` methods now return floating-point numbers and may return negative values to indicate time direction, which is a significant change from Carbon 2. Review Carbon's [change log](https://github.com/briannesbitt/Carbon/releases/tag/3.0.0) and [documentation](https://carbon.nesbot.com/docs/#api-carbon-3) for detailed information on how to handle these and other changes.
 
 <a name="mail"></a>
 ### Mail

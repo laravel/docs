@@ -11,6 +11,7 @@
     - [Running Tasks on One Server](#running-tasks-on-one-server)
     - [Background Tasks](#background-tasks)
     - [Maintenance Mode](#maintenance-mode)
+    - [Schedule Groups](#schedule-groups)
 - [Running the Scheduler](#running-the-scheduler)
     - [Sub-Minute Scheduled Tasks](#sub-minute-scheduled-tasks)
     - [Running the Scheduler Locally](#running-the-scheduler-locally)
@@ -363,6 +364,25 @@ By default, multiple tasks scheduled at the same time will execute sequentially 
 Your application's scheduled tasks will not run when the application is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), since we don't want your tasks to interfere with any unfinished maintenance you may be performing on your server. However, if you would like to force a task to run even in maintenance mode, you may call the `evenInMaintenanceMode` method when defining the task:
 
     Schedule::command('emails:send')->evenInMaintenanceMode();
+
+<a name="schedule-groups"></a>
+### Schedule Groups
+
+When defining multiple scheduled tasks with similar configurations, you can use Laravel’s task grouping feature to avoid repeating the same settings for each task. Grouping tasks simplifies your code and ensures consistency across related tasks.
+
+To create a group of scheduled tasks, invoke the desired task configuration methods, followed by the `group` method. The `group` method accepts a closure that is responsible for defining the tasks that share the specified configuration:
+
+```php
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::daily()
+    ->onOneServer()
+    ->timezone('America/New_York')
+    ->group(function () {
+        Schedule::command('emails:send --force');
+        Schedule::command('emails:prune');
+    });
+```
 
 <a name="running-the-scheduler"></a>
 ## Running the Scheduler

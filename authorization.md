@@ -241,7 +241,7 @@ You may use the `after` method to define a closure to be executed after all othe
         }
     });
 
-Similar to the `before` method, if the `after` closure returns a non-null result that result will be considered the result of the authorization check.
+Values returned by `after` closures will not override the result of the authorization check unless the gate or policy returned `null`.
 
 <a name="inline-authorization"></a>
 ### Inline Authorization
@@ -607,7 +607,7 @@ As previously discussed, some policy methods like `create` do not require a mode
 <a name="via-middleware"></a>
 ### Via Middleware
 
-Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware may be attached to a route using the `can` [middleware alias](/docs/{{version}}/middleware#middleware-alias), which is automatically registered by Laravel. Let's explore an example of using the `can` middleware to authorize that a user can update a post:
+Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware may be attached to a route using the `can` [middleware alias](/docs/{{version}}/middleware#middleware-aliases), which is automatically registered by Laravel. Let's explore an example of using the `can` middleware to authorize that a user can update a post:
 
     use App\Models\Post;
 

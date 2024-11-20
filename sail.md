@@ -13,6 +13,7 @@
     - [Executing Node / NPM Commands](#executing-node-npm-commands)
 - [Interacting With Databases](#interacting-with-sail-databases)
     - [MySQL](#mysql)
+    - [MongoDB](#mongodb)
     - [Redis](#redis)
     - [Meilisearch](#meilisearch)
     - [Typesense](#typesense)
@@ -177,7 +178,7 @@ sail php script.php
 
 Composer commands may be executed using the `composer` command. Laravel Sail's application container includes a Composer installation:
 
-```nothing
+```shell
 sail composer require laravel/sanctum
 ```
 
@@ -238,6 +239,23 @@ In addition, the first time the MySQL container starts, it will create two datab
 Once you have started your containers, you may connect to the MySQL instance within your application by setting your `DB_HOST` environment variable within your application's `.env` file to `mysql`.
 
 To connect to your application's MySQL database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the MySQL database is accessible at `localhost` port 3306 and the access credentials correspond to the values of your `DB_USERNAME` and `DB_PASSWORD` environment variables. Or, you may connect as the `root` user, which also utilizes the value of your `DB_PASSWORD` environment variable as its password.
+
+<a name="mongodb"></a>
+### MongoDB
+
+If you chose to install the [MongoDB](https://www.mongodb.com/) service when installing Sail, your application's `docker-compose.yml` file contains an entry for a [MongoDB Atlas Local](https://www.mongodb.com/docs/atlas/cli/current/atlas-cli-local-cloud/) container which provides the MongoDB document database with Atlas features like [Search Indexes](https://www.mongodb.com/docs/atlas/atlas-search/). This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your database is persisted even when stopping and restarting your containers.
+
+Once you have started your containers, you may connect to the MongoDB instance within your application by setting your `MONGODB_URI` environment variable within your application's `.env` file to `mongodb://mongodb:27017`. Authentication is disabled by default, but you can set the `MONGODB_USERNAME` and `MONGODB_PASSWORD` environment variables to enable authentication before starting the `mongodb` container. Then, add the credentials to the connection string:
+
+```ini
+MONGODB_USERNAME=user
+MONGODB_PASSWORD=laravel
+MONGODB_URI=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017
+```
+
+For seamless integration of MongoDB with your application, you can install the [official package maintained by MongoDB](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/).
+
+To connect to your application's MongoDB database from your local machine, you may use a graphical interface such as [Compass](https://www.mongodb.com/products/tools/compass). By default, the MongoDB database is accessible at `localhost` port `27017`.
 
 <a name="redis"></a>
 ### Redis
@@ -352,11 +370,11 @@ sail dusk
 <a name="selenium-on-apple-silicon"></a>
 #### Selenium on Apple Silicon
 
-If your local machine contains an Apple Silicon chip, your `selenium` service must use the `seleniarm/standalone-chromium` image:
+If your local machine contains an Apple Silicon chip, your `selenium` service must use the `selenium/standalone-chromium` image:
 
 ```yaml
 selenium:
-    image: 'seleniarm/standalone-chromium'
+    image: 'selenium/standalone-chromium'
     extra_hosts:
         - 'host.docker.internal:host-gateway'
     volumes:
@@ -398,9 +416,12 @@ sail tinker
 <a name="sail-php-versions"></a>
 ## PHP Versions
 
-Sail currently supports serving your application via PHP 8.3, 8.2, 8.1, or PHP 8.0. The default PHP version used by Sail is currently PHP 8.3. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:
+Sail currently supports serving your application via PHP 8.4, 8.3, 8.2, 8.1, or PHP 8.0. The default PHP version used by Sail is currently PHP 8.3. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:
 
 ```yaml
+# PHP 8.4
+context: ./vendor/laravel/sail/runtimes/8.4
+
 # PHP 8.3
 context: ./vendor/laravel/sail/runtimes/8.3
 
@@ -460,9 +481,7 @@ sail share
 When sharing your site via the `share` command, you should configure your application's trusted proxies using the `trustProxies` middleware method in your application's `bootstrap/app.php` file. Otherwise, URL generation helpers such as `url` and `route` will be unable to determine the correct HTTP host that should be used during URL generation:
 
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->trustProxies(at: [
-            '*',
-        ]);
+        $middleware->trustProxies(at: '*');
     })
 
 If you would like to choose the subdomain for your shared site, you may provide the `subdomain` option when executing the `share` command:
@@ -485,18 +504,28 @@ SAIL_XDEBUG_MODE=develop,debug,coverage
 
 #### Linux Host IP Configuration
 
-Internally, the `XDEBUG_CONFIG` environment variable is defined as `client_host=host.docker.internal` so that Xdebug will be properly configured for Mac and Windows (WSL2). If your local machine is running Linux, you should ensure that you are running Docker Engine 17.06.0+ and Compose 1.16.0+. Otherwise, you will need to manually define this environment variable as shown below.
+Internally, the `XDEBUG_CONFIG` environment variable is defined as `client_host=host.docker.internal` so that Xdebug will be properly configured for Mac and Windows (WSL2). If your local machine is running Linux and you're using Docker 20.10+, `host.docker.internal` is available, and no manual configuration is required.
 
-First, you should determine the correct host IP address to add to the environment variable by running the following command. Typically, the `<container-name>` should be the name of the container that serves your application and often ends with `_laravel.test_1`:
+For Docker versions older than 20.10, `host.docker.internal` is not supported on Linux, and you will need to manually define the host IP. To do this, configure a static IP for your container by defining a custom network in your `docker-compose.yml` file:
 
-```shell
-docker inspect -f {{range.NetworkSettings.Networks}}{{.Gateway}}{{end}} <container-name>
+```yaml
+networks:
+  custom_network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+services:
+  laravel.test:
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.2
 ```
 
-Once you have obtained the correct host IP address, you should define the `SAIL_XDEBUG_CONFIG` variable within your application's `.env` file:
+Once you have set the static IP, define the SAIL_XDEBUG_CONFIG variable within your application's .env file:
 
 ```ini
-SAIL_XDEBUG_CONFIG="client_host=<host-ip-address>"
+SAIL_XDEBUG_CONFIG="client_host=172.20.0.2"
 ```
 
 <a name="xdebug-cli-usage"></a>

@@ -552,7 +552,6 @@ Typically, implicit model binding will not retrieve models that have been [soft 
         return $user->email;
     })->withTrashed();
 
-<a name="customizing-the-key"></a>
 <a name="customizing-the-default-key-name"></a>
 #### Customizing the Key
 
@@ -614,7 +613,7 @@ Similarly, you may explicitly instruct Laravel to not scope bindings by invoking
 <a name="customizing-missing-model-behavior"></a>
 #### Customizing Missing Model Behavior
 
-Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` method accepts a closure that will be invoked if an implicitly bound model can not be found:
+Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` method accepts a closure that will be invoked if an implicitly bound model cannot be found:
 
     use App\Http\Controllers\LocationsController;
     use Illuminate\Http\Request;
@@ -738,9 +737,6 @@ Using the `Route::fallback` method, you may define a route that will be executed
         // ...
     });
 
-> [!WARNING]  
-> The fallback route should always be the last route registered by your application.
-
 <a name="rate-limiting"></a>
 ## Rate Limiting
 
@@ -827,6 +823,15 @@ If needed, you may return an array of rate limits for a given rate limiter confi
         return [
             Limit::perMinute(500),
             Limit::perMinute(3)->by($request->input('email')),
+        ];
+    });
+
+If you're assigning multiple rate limits segmented by identical `by` values, you should ensure that each `by` value is unique. The easiest way to achieve this is to prefix the values given to the `by` method:
+
+    RateLimiter::for('uploads', function (Request $request) {
+        return [
+            Limit::perMinute(10)->by('minute:'.$request->user()->id),
+            Limit::perDay(1000)->by('day:'.$request->user()->id),
         ];
     });
 

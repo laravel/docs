@@ -12,6 +12,7 @@
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
     - [Throttling Exceptions](#throttling-exceptions)
+    - [Skipping Jobs](#skipping-jobs)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
@@ -150,6 +151,7 @@ The following dependencies are needed for the listed queue drivers. These depend
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~5.0`
 - Redis: `predis/predis ~2.0` or phpredis PHP extension
+- [MongoDB](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/queues/): `mongodb/laravel-mongodb`
 
 </div>
 
@@ -236,8 +238,9 @@ Or, to prevent relations from being serialized, you can call the `withoutRelatio
     /**
      * Create a new job instance.
      */
-    public function __construct(Podcast $podcast)
-    {
+    public function __construct(
+        Podcast $podcast,
+    ) {
         $this->podcast = $podcast->withoutRelations();
     }
 
@@ -250,9 +253,8 @@ If you are using PHP constructor property promotion and would like to indicate t
      */
     public function __construct(
         #[WithoutRelations]
-        public Podcast $podcast
-    ) {
-    }
+        public Podcast $podcast,
+    ) {}
 
 If a job receives a collection or array of Eloquent models instead of a single model, the models within that collection will not have their relationships restored when the job is deserialized and executed. This is to prevent excessive resource usage on jobs that deal with large numbers of models.
 
@@ -610,7 +612,7 @@ For example, let's imagine a queued job that interacts with a third-party API th
      */
     public function middleware(): array
     {
-        return [new ThrottlesExceptions(10, 5)];
+        return [new ThrottlesExceptions(10, 5 * 60)];
     }
 
     /**
@@ -618,10 +620,10 @@ For example, let's imagine a queued job that interacts with a third-party API th
      */
     public function retryUntil(): DateTime
     {
-        return now()->addMinutes(5);
+        return now()->addMinutes(30);
     }
 
-The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again.
+The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of seconds that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 consecutive exceptions, we will wait 5 minutes before attempting the job again, constrained by the 30-minute time limit.
 
 When a job throws an exception but the exception threshold has not yet been reached, the job will typically be retried immediately. However, you may specify the number of minutes such a job should be delayed by calling the `backoff` method when attaching the middleware to the job:
 
@@ -634,7 +636,7 @@ When a job throws an exception but the exception threshold has not yet been reac
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 5))->backoff(5)];
+        return [(new ThrottlesExceptions(10, 5 * 60))->backoff(5)];
     }
 
 Internally, this middleware uses Laravel's cache system to implement rate limiting, and the job's class name is utilized as the cache "key". You may override this key by calling the `by` method when attaching the middleware to your job. This may be useful if you have multiple jobs interacting with the same third-party service and you would like them to share a common throttling "bucket":
@@ -648,7 +650,7 @@ Internally, this middleware uses Laravel's cache system to implement rate limiti
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 10))->by('key')];
+        return [(new ThrottlesExceptions(10, 10 * 60))->by('key')];
     }
 
 By default, this middleware will throttle every exception. You can modify this behaviour by invoking the `when` method when attaching the middleware to your job. The exception will then only be throttled if closure provided to the `when` method returns `true`:
@@ -663,7 +665,7 @@ By default, this middleware will throttle every exception. You can modify this b
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 10))->when(
+        return [(new ThrottlesExceptions(10, 10 * 60))->when(
             fn (Throwable $throwable) => $throwable instanceof HttpClientException
         )];
     }
@@ -680,13 +682,46 @@ If you would like to have the throttled exceptions reported to your application'
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 10))->report(
+        return [(new ThrottlesExceptions(10, 10 * 60))->report(
             fn (Throwable $throwable) => $throwable instanceof HttpClientException
         )];
     }
 
 > [!NOTE]  
 > If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
+
+<a name="skipping-jobs"></a>
+### Skipping Jobs
+
+The `Skip` middleware allows you to specify that a job should be skipped / deleted without needing to modify the job's logic. The `Skip::when` method will delete the job if the given condition evaluates to `true`, while the `Skip::unless` method will delete the job if the condition evaluates to `false`:
+
+    use Illuminate\Queue\Middleware\Skip;
+
+    /**
+    * Get the middleware the job should pass through.
+    */
+    public function middleware(): array
+    {
+        return [
+            Skip::when($someCondition),
+        ];
+    }
+
+You can also pass a `Closure` to the `when` and `unless` methods for more complex conditional evaluation:
+
+    use Illuminate\Queue\Middleware\Skip;
+
+    /**
+    * Get the middleware the job should pass through.
+    */
+    public function middleware(): array
+    {
+        return [
+            Skip::when(function (): bool {
+                return $this->shouldSkip();
+            }),
+        ];
+    }
 
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
@@ -760,6 +795,10 @@ If you would like to specify that a job should not be immediately available for 
             return redirect('/podcasts');
         }
     }
+
+In some cases, jobs may have a default delay configured. If you need to bypass this delay and dispatch a job for immediate processing, you may use the `withoutDelay` method:
+
+    ProcessPodcast::dispatch($podcast)->withoutDelay();
 
 > [!WARNING]  
 > The Amazon SQS queue service has a maximum delay time of 15 minutes.
@@ -1611,7 +1650,7 @@ If you defined your DynamoDB table with a `ttl` attribute, you may define config
 <a name="queueing-closures"></a>
 ## Queueing Closures
 
-Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it can not be modified in transit:
+Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it cannot be modified in transit:
 
     $podcast = App\Podcast::find(1);
 

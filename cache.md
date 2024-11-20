@@ -90,6 +90,8 @@ Before using the [DynamoDB](https://aws.amazon.com/dynamodb) cache driver, you m
 
 This table should also have a string partition key with a name that corresponds to the value of the `stores.dynamodb.attributes.key` configuration item within your application's `cache` configuration file. By default, the partition key should be named `key`.
 
+Typically, DynamoDB will not proactively remove expired items from a table. Therefore, you should [enable Time to Live (TTL)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) on the table. When configuring the table's TTL settings, you should set the TTL attribute name to `expires_at`.
+
 Next, install the AWS SDK so that your Laravel application can communicate with DynamoDB:
 
 ```shell
@@ -108,6 +110,13 @@ In addition, you should ensure that values are provided for the DynamoDB cache s
     'endpoint' => env('DYNAMODB_ENDPOINT'),
 ],
 ```
+
+<a name="mongodb"></a>
+#### MongoDB
+
+If you are using MongoDB, a `mongodb` cache driver is provided by the official `mongodb/laravel-mongodb` package and can be configured using a `mongodb` database connection. MongoDB supports TTL indexes, which can be used to automatically clear expired cache items.
+
+For more information on configuring MongoDB, please refer to the MongoDB [Cache and Locks documentation](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/cache/).
 
 <a name="cache-usage"></a>
 ## Cache Usage
@@ -199,6 +208,19 @@ If the item does not exist in the cache, the closure passed to the `remember` me
 You may use the `rememberForever` method to retrieve an item from the cache or store it forever if it does not exist:
 
     $value = Cache::rememberForever('users', function () {
+        return DB::table('users')->get();
+    });
+
+<a name="swr"></a>
+#### Stale While Revalidate
+
+When using the `Cache::remember` method, some users may experience slow response times if the cached value has expired. For certain types of data, it can be useful to allow partially stale data to be served while the cached value is recalculated in the background, preventing some users from experiencing slow response times while cached values are calculated. This is often referred to as the "stale-while-revalidate" pattern, and the `Cache::flexible` method provides an implementation of this pattern.
+
+The flexible method accepts an array that specifies how long the cached value is considered “fresh” and when it becomes “stale.” The first value in the array represents the number of seconds the cache is considered fresh, while the second value defines how long it can be served as stale data before recalculation is necessary.
+
+If a request is made within the fresh period (before the first value), the cache is returned immediately without recalculation. If a request is made during the stale period (between the two values), the stale value is served to the user, and a [deferred function](/docs/{{version}}/helpers#deferred-functions) is registered to refresh the cached value after the response is sent to the user. If a request is made after the second value, the cache is considered expired, and the value is recalculated immediately, which may result in a slower response for the user:
+
+    $value = Cache::flexible('users', [5, 10], function () {
         return DB::table('users')->get();
     });
 
@@ -312,7 +334,7 @@ The `get` method also accepts a closure. After the closure is executed, Laravel 
         // Lock acquired for 10 seconds and automatically released...
     });
 
-If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
+If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock cannot be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
 
     use Illuminate\Contracts\Cache\LockTimeoutException;
 
@@ -440,12 +462,16 @@ Once your extension is registered, update the `CACHE_STORE` environment variable
 
 To execute code on every cache operation, you may listen for various [events](/docs/{{version}}/events) dispatched by the cache:
 
+<div class="overflow-auto">
+
 | Event Name |
 | --- |
 | `Illuminate\Cache\Events\CacheHit` |
 | `Illuminate\Cache\Events\CacheMissed` |
 | `Illuminate\Cache\Events\KeyForgotten` |
 | `Illuminate\Cache\Events\KeyWritten` |
+
+</div>
 
 To increase performance, you may disable cache events by setting the `events` configuration option to `false` for a given cache store in your application's `config/cache.php` configuration file:
 

@@ -675,7 +675,7 @@ If your intermediate table is using an accessor other than `pivot`, you may use 
 <a name="adding-meta-data"></a>
 ### Adding Meta Data
 
-Some JSON API standards require the addition of meta data to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or meta data about the resource itself. If you need to return additional meta data about a resource, include it in your `toArray` method. For example, you might include `link` information when transforming a resource collection:
+Some JSON API standards require the addition of meta data to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or meta data about the resource itself. If you need to return additional meta data about a resource, include it in your `toArray` method. For example, you might include `links` information when transforming a resource collection:
 
     /**
      * Transform the resource into an array.

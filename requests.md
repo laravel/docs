@@ -306,9 +306,16 @@ When sending JSON requests to your application, you may access the JSON data via
 <a name="retrieving-stringable-input-values"></a>
 #### Retrieving Stringable Input Values
 
-Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\Support\Stringable`](/docs/{{version}}/helpers#fluent-strings):
+Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\Support\Stringable`](/docs/{{version}}/strings):
 
     $name = $request->string('name')->trim();
+
+<a name="retrieving-integer-input-values"></a>
+#### Retrieving Integer Input Values
+
+To retrieve input values as integers, you may use the `integer` method. This method will attempt to cast the input value to an integer. If the input is not present or the cast fails, it will return the default value you specify. This is particularly useful for pagination or other numeric inputs:
+
+    $perPage = $request->integer('per_page');
 
 <a name="retrieving-boolean-input-values"></a>
 #### Retrieving Boolean Input Values
@@ -338,6 +345,12 @@ Input values that correspond to [PHP enums](https://www.php.net/manual/en/langua
     use App\Enums\Status;
 
     $status = $request->enum('status', Status::class);
+
+If the input value is an array of values that correspond to a PHP enum, you may use the `enums` method to retrieve the array of values as enum instances:
+
+    use App\Enums\Product;
+
+    $products = $request->enums('products', Product::class);
 
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input via Dynamic Properties
@@ -402,6 +415,18 @@ A second closure may be passed to the `whenHas` method that will be executed if 
 If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:
 
     if ($request->filled('name')) {
+        // ...
+    }
+
+If you would like to determine if a value is missing from the request or is an empty string, you may use the `isNotFilled` method:
+
+    if ($request->isNotFilled('name')) {
+        // ...
+    }
+
+When given an array, the `isNotFilled` method will determine if all of the specified values are missing or empty:
+
+    if ($request->isNotFilled(['name', 'email'])) {
         // ...
     }
 
@@ -604,7 +629,7 @@ To solve this, you may enable the `Illuminate\Http\Middleware\TrustProxies` midd
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies(at: [
             '192.168.1.1',
-            '192.168.1.2',
+            '10.0.0.0/8',
         ]);
     })
 
@@ -648,4 +673,10 @@ By default, requests coming from subdomains of the application's URL are also au
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustHosts(at: ['laravel.test'], subdomains: false);
+    })
+
+If you need to access your application's configuration files or database to determine your trusted hosts, you may provide a closure to the `at` argument:
+
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustHosts(at: fn () => config('app.trusted_hosts'));
     })

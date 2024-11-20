@@ -95,6 +95,10 @@ If you just need to retrieve a single row from a database table, you may use the
 
     return $user->email;
 
+If you would like to retrieve a single row from a database table, but throw an `Illuminate\Database\RecordNotFoundException` if no matching row is found, you may use the `firstOrFail` method. If the `RecordNotFoundException` is not caught, a 404 HTTP response is automatically sent back to the client:
+
+    $user = DB::table('users')->where('name', 'John')->firstOrFail();
+
 If you don't need an entire row, you may extract a single value from a record using the `value` method. This method will return the value of the column directly:
 
     $email = DB::table('users')->where('name', 'John')->value('email');
@@ -156,6 +160,20 @@ If you are updating database records while chunking results, your chunk results 
                     ->update(['active' => true]);
             }
         });
+
+Since the `chunkById` and `lazyById` methods add their own "where" conditions to the query being executed, you should typically [logically group](#logical-grouping) your own conditions within a closure:
+
+```php
+DB::table('users')->where(function ($query) {
+    $query->where('credits', 1)->orWhere('credits', 2);
+})->chunkById(100, function (Collection $users) {
+    foreach ($users as $user) {
+        DB::table('users')
+          ->where('id', $user->id)
+          ->update(['credits' => 3]);
+    }
+});
+```
 
 > [!WARNING]  
 > When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results.
@@ -258,7 +276,7 @@ Sometimes you may need to insert an arbitrary string into a query. To create a r
 <a name="raw-methods"></a>
 ### Raw Methods
 
-Instead of using the `DB::raw` method, you may also use the following methods to insert a raw expression into various parts of your query. **Remember, Laravel can not guarantee that any query using raw expressions is protected against SQL injection vulnerabilities.**
+Instead of using the `DB::raw` method, you may also use the following methods to insert a raw expression into various parts of your query. **Remember, Laravel cannot guarantee that any query using raw expressions is protected against SQL injection vulnerabilities.**
 
 <a name="selectraw"></a>
 #### `selectRaw`
@@ -460,6 +478,9 @@ You may also pass an array of conditions to the `where` function. Each element o
 
 > [!WARNING]  
 > PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
+
+> [!WARNING]
+> MySQL and MariaDB automatically typecast strings to integers in string-number comparisons. In this process, non-numeric strings are converted to `0`, which can lead to unexpected results. For example, if your table has a `secret` column with a value of `aaa` and you run `User::where('secret', 0)`, that row will be returned. To avoid this, ensure all values are typecast to their appropriate types before using them in queries.
 
 <a name="or-where-clauses"></a>
 ### Or Where Clauses
@@ -979,7 +1000,7 @@ Alternatively, you may use the `limit` and `offset` methods. These methods are f
 
 Sometimes you may want certain query clauses to apply to a query based on another condition. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming HTTP request. You may accomplish this using the `when` method:
 
-    $role = $request->string('role');
+    $role = $request->input('role');
 
     $users = DB::table('users')
                     ->when($role, function (Builder $query, string $role) {
@@ -1078,7 +1099,7 @@ In addition to inserting records into the database, the query builder can also u
 
 Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs indicating the columns to be updated.
 
-The `updateOrInsert` method will attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new record will be inserted with the merged attributes of both arguments:
+The `updateOrInsert` method will attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record cannot be found, a new record will be inserted with the merged attributes of both arguments:
 
     DB::table('users')
         ->updateOrInsert(

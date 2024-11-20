@@ -28,6 +28,7 @@
 - [Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)
     - [Implementing the Driver](#implementing-the-driver)
     - [Registering the Driver](#registering-the-driver)
+    - [Defining Features Externally](#defining-features-externally)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -141,6 +142,14 @@ class NewApi
         };
     }
 }
+```
+
+If you would like to manually resolve an instance of a class based feature, you may invoke the `instance` method on the `Feature` facade:
+
+```php
+use Illuminate\Support\Facades\Feature;
+
+$instance = Feature::instance(NewApi::class);
 ```
 
 > [!NOTE]   
@@ -356,7 +365,7 @@ $user->features()->unless('new-api',
 <a name="blade-directive"></a>
 ### Blade Directive
 
-To make checking features in Blade a seamless experience, Pennant offers a `@feature` directive:
+To make checking features in Blade a seamless experience, Pennant offers the `@feature` and `@featureany` directive:
 
 ```blade
 @feature('site-redesign')
@@ -364,6 +373,10 @@ To make checking features in Blade a seamless experience, Pennant offers a `@fea
 @else
     <!-- 'site-redesign' is inactive -->
 @endfeature
+
+@featureany(['site-redesign', 'beta'])
+    <!-- 'site-redesign' or `beta` is active -->
+@endfeatureany
 ```
 
 <a name="middleware"></a>
@@ -1010,7 +1023,7 @@ class RedisFeatureDriver implements Driver
 
 Now, we just need to implement each of these methods using a Redis connection. For an example of how to implement each of these methods, take a look at the `Laravel\Pennant\Drivers\DatabaseDriver` in the [Pennant source code](https://github.com/laravel/pennant/blob/1.x/src/Drivers/DatabaseDriver.php)
 
-> [!NOTE]  
+> [!NOTE]
 > Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`.
 
 <a name="registering-the-driver"></a>
@@ -1062,6 +1075,32 @@ Once the driver has been registered, you may use the `redis` driver in your appl
         // ...
 
     ],
+
+<a name="defining-features-externally"></a>
+### Defining Features Externally
+
+If your driver is a wrapper around a third-party feature flag platform, you will likely define features on the platform rather than using Pennant's `Feature::define` method. If that is the case, your custom driver should also implement the `Laravel\Pennant\Contracts\DefinesFeaturesExternally` interface:
+
+```php
+<?php
+
+namespace App\Extensions;
+
+use Laravel\Pennant\Contracts\Driver;
+use Laravel\Pennant\Contracts\DefinesFeaturesExternally;
+
+class FeatureFlagServiceDriver implements Driver, DefinesFeaturesExternally
+{
+    /**
+     * Get the features defined for the given scope.
+     */
+    public function definedFeaturesForScope(mixed $scope): array {}
+
+    /* ... */
+}
+```
+
+The `definedFeaturesForScope` method should return a list of feature names defined for the provided scope.
 
 <a name="events"></a>
 ## Events

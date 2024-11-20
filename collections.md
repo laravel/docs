@@ -1083,7 +1083,7 @@ The `forget` method removes an item from the collection by its key:
     // []
 
 > [!WARNING]  
-> Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
+> Unlike most other collection methods, `forget` does not return a new modified collection; it modifies and returns the collection it is called on.
 
 <a name="method-forpage"></a>
 #### `forPage()` {.collection-method}
@@ -1488,7 +1488,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
          * Create a new currency instance.
          */
         function __construct(
-            public string $code
+            public string $code,
         ) {}
     }
 
@@ -1842,7 +1842,7 @@ The `pipeInto` method creates a new instance of the given class and passes the c
          * Create a new ResourceCollection instance.
          */
         public function __construct(
-          public Collection $collection,
+            public Collection $collection,
         ) {}
     }
 

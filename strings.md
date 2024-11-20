@@ -47,6 +47,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::chopEnd](#method-str-chop-end)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
+[Str::doesntContain](#method-str-doesnt-contain)
+[Str::deduplicate](#method-deduplicate)
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
@@ -141,10 +143,11 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [chopEnd](#method-fluent-str-chop-end)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
+[deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
 [endsWith](#method-fluent-str-ends-with)
-[excerpt](#method-fluent-str-excerpt)
 [exactly](#method-fluent-str-exactly)
+[excerpt](#method-fluent-str-excerpt)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
 [headline](#method-fluent-str-headline)
@@ -226,6 +229,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [whenTest](#method-fluent-str-when-test)
 [wordCount](#method-fluent-str-word-count)
 [words](#method-fluent-str-words)
+[wrap](#method-fluent-str-wrap)
 
 </div>
 
@@ -372,7 +376,6 @@ The `Str::camel` method converts the given string to `camelCase`:
     // 'fooBar'
 
 <a name="method-char-at"></a>
-
 #### `Str::charAt()` {.collection-method}
 
 The `Str::charAt` method returns the character at the specified index. If the index is out of bounds, `false` is returned:
@@ -424,7 +427,7 @@ You may also pass an array as the second argument. If the string ends with any o
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
 
-The `Str::contains` method determines if the given string contains the given value. This method is case sensitive:
+The `Str::contains` method determines if the given string contains the given value. By default this method is case sensitive:
 
     use Illuminate\Support\Str;
 
@@ -440,6 +443,14 @@ You may also pass an array of values to determine if the given string contains a
 
     // true
 
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $contains = Str::contains('This is my name', 'MY', ignoreCase: true);
+
+    // true
+
 <a name="method-str-contains-all"></a>
 #### `Str::containsAll()` {.collection-method}
 
@@ -450,6 +461,60 @@ The `Str::containsAll` method determines if the given string contains all of the
     $containsAll = Str::containsAll('This is my name', ['my', 'name']);
 
     // true
+
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], ignoreCase: true);
+
+    // true
+
+<a name="method-str-doesnt-contain"></a>
+#### `Str::doesntContain()` {.collection-method}
+
+The `Str::doesntContain` method determines if the given string doesn't contain the given value. By default this method is case sensitive:
+
+    use Illuminate\Support\Str;
+
+    $doesntContain = Str::doesntContain('This is name', 'my');
+
+    // true
+
+You may also pass an array of values to determine if the given string doesn't contain any of the values in the array:
+
+    use Illuminate\Support\Str;
+
+    $doesntContain = Str::doesntContain('This is name', ['my', 'foo']);
+
+    // true
+
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $doesntContain = Str::doesntContain('This is name', 'MY', ignoreCase: true);
+
+    // true
+    
+<a name="method-deduplicate"></a>
+#### `Str::deduplicate()` {.collection-method}
+
+The `Str::deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string. By default, the method deduplicates spaces:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::deduplicate('The   Laravel   Framework');
+
+    // The Laravel Framework
+
+You may specify a different character to deduplicate by passing it in as the second argument to the method:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::deduplicate('The---Laravel---Framework', '-');
+
+    // The-Laravel-Framework
 
 <a name="method-ends-with"></a>
 #### `Str::endsWith()` {.collection-method}
@@ -1686,7 +1751,7 @@ You may also pass an array. If the string ends with any of the values in the arr
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
 
-The `contains` method determines if the given string contains the given value. This method is case sensitive:
+The `contains` method determines if the given string contains the given value. By default this method is case sensitive:
 
     use Illuminate\Support\Str;
 
@@ -1702,6 +1767,14 @@ You may also pass an array of values to determine if the given string contains a
 
     // true
 
+You can disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $contains = Str::of('This is my name')->contains('MY', ignoreCase: true);
+
+    // true
+
 <a name="method-fluent-str-contains-all"></a>
 #### `containsAll` {.collection-method}
 
@@ -1712,6 +1785,33 @@ The `containsAll` method determines if the given string contains all of the valu
     $containsAll = Str::of('This is my name')->containsAll(['my', 'name']);
 
     // true
+
+You can disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $containsAll = Str::of('This is my name')->containsAll(['MY', 'NAME'], ignoreCase: true);
+
+    // true
+    
+<a name="method-fluent-str-deduplicate"></a>
+#### `deduplicate` {.collection-method}
+
+The `deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string. By default, the method deduplicates spaces:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('The   Laravel   Framework')->deduplicate();
+
+    // The Laravel Framework
+
+You may specify a different character to deduplicate by passing it in as the second argument to the method:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('The---Laravel---Framework')->deduplicate('-');
+
+    // The-Laravel-Framework
 
 <a name="method-fluent-str-dirname"></a>
 #### `dirname` {.collection-method}
@@ -1731,32 +1831,6 @@ If necessary, you may specify how many directory levels you wish to trim from th
     $string = Str::of('/foo/bar/baz')->dirname(2);
 
     // '/foo'
-
-<a name="method-fluent-str-excerpt"></a>
-#### `excerpt` {.collection-method}
-
-The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::of('This is my name')->excerpt('my', [
-        'radius' => 3
-    ]);
-
-    // '...is my na...'
-
-The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
-
-In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::of('This is my name')->excerpt('name', [
-        'radius' => 3,
-        'omission' => '(...) '
-    ]);
-
-    // '(...) my name'
 
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}
@@ -1791,6 +1865,32 @@ The `exactly` method determines if the given string is an exact match with anoth
     $result = Str::of('Laravel')->exactly('Laravel');
 
     // true
+
+<a name="method-fluent-str-excerpt"></a>
+#### `excerpt` {.collection-method}
+
+The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('my', [
+        'radius' => 3
+    ]);
+
+    // '...is my na...'
+
+The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
+
+In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('name', [
+        'radius' => 3,
+        'omission' => '(...) '
+    ]);
+
+    // '(...) my name'
 
 <a name="method-fluent-str-explode"></a>
 #### `explode` {.collection-method}
@@ -2980,3 +3080,18 @@ The `words` method limits the number of words in a string. If necessary, you may
     $string = Str::of('Perfectly balanced, as all things should be.')->words(3, ' >>>');
 
     // Perfectly balanced, as >>>
+
+<a name="method-fluent-str-wrap"></a>
+#### `wrap` {.collection-method}
+
+The `wrap` method wraps the given string with an additional string or pair of strings:
+
+    use Illuminate\Support\Str;
+
+    Str::of('Laravel')->wrap('"');
+
+    // "Laravel"
+
+    Str::is('is')->wrap(before: 'This ', after: ' Laravel!');
+
+    // This is Laravel!

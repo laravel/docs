@@ -84,9 +84,9 @@ Sometimes you may wish to limit the attributes, such as passwords, that are incl
     class User extends Model
     {
         /**
-         * The attributes that should be hidden for arrays.
+         * The attributes that should be hidden for serialization.
          *
-         * @var array
+         * @var array<string>
          */
         protected $hidden = ['password'];
     }

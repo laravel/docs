@@ -68,6 +68,16 @@ By default, Laravel will automatically find and register your event listeners by
         }
     }
 
+You may listen to multiple events using PHP's union types:
+
+    /**
+     * Handle the given event.
+     */
+    public function handle(PodcastProcessed|PodcastPublished $event): void
+    {
+        // ...
+    }
+
 If you plan to store your listeners in a different directory or within multiple directories, you may instruct Laravel to scan those directories using the `withEvents` method in your application's `bootstrap/app.php` file:
 
     ->withEvents(discover: [
@@ -220,10 +230,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
         /**
          * Create the event listener.
          */
-        public function __construct()
-        {
-            // ...
-        }
+        public function __construct() {}
 
         /**
          * Handle the event.
@@ -634,7 +641,7 @@ If your event listener methods are defined within the subscriber itself, you may
 <a name="registering-event-subscribers"></a>
 ### Registering Event Subscribers
 
-After writing the subscriber, you are ready to register it with the event dispatcher. You may register subscribers using the `subscribe` method of the `Event` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider`:
+After writing the subscriber, Laravel will automatically register handler methods within the subscriber if they follow Laravel's [event discovery conventions](#event-discovery). Otherwise, you may manually register your subscriber using the `subscribe` method of the `Event` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider`:
 
     <?php
 

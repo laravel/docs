@@ -13,11 +13,13 @@
     - [Search](#search)
     - [Multi-search](#multisearch)
     - [Pause](#pause)
+- [Transforming Input Before Validation](#transforming-input-before-validation)
 - [Forms](#forms)
 - [Informational Messages](#informational-messages)
 - [Tables](#tables)
 - [Spin](#spin)
 - [Progress Bar](#progress)
+- [Clearing the Terminal](#clear)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments and Fallbacks](#fallbacks)
 
@@ -421,16 +423,6 @@ $categories = multiselect(
 );
 ```
 
-You may allow the user to easily select all options via the `canSelectAll` argument:
-
-```php
-$categories = multiselect(
-    label: 'What categories should be assigned?',
-    options: Category::pluck('name', 'id'),
-    canSelectAll: true
-);
-```
-
 <a name="multiselect-required"></a>
 #### Requiring a Value
 
@@ -579,6 +571,20 @@ $id = search(
 
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
 
+When filtering an array where you intend to return the value, you should use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
+
+```php
+$names = collect(['Taylor', 'Abigail']);
+
+$selected = search(
+    label: 'Search for the user that should receive the mail',
+    options: fn (string $value) => $names
+        ->filter(fn ($name) => Str::contains($name, $value, ignoreCase: true))
+        ->values()
+        ->all(),
+);
+```
+
 You may also include placeholder text and an informational hint:
 
 ```php
@@ -644,6 +650,20 @@ $ids = multisearch(
 ```
 
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected options' keys will be returned; otherwise, their values will be returned instead.
+
+When filtering an array where you intend to return the value, you should use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
+
+```php
+$names = collect(['Taylor', 'Abigail']);
+
+$selected = multisearch(
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => $names
+        ->filter(fn ($name) => Str::contains($name, $value, ignoreCase: true))
+        ->values()
+        ->all(),
+);
+```
 
 You may also include placeholder text and an informational hint:
 
@@ -729,6 +749,23 @@ The `pause` function may be used to display informational text to the user and w
 use function Laravel\Prompts\pause;
 
 pause('Press ENTER to continue.');
+```
+
+<a name="transforming-input-before-validation"></a>
+## Transforming Input Before Validation
+
+Sometimes you may want to transform the prompt input before validation takes place. For example, you may wish to remove white space from any provided strings. To accomplish this, many of the prompt functions provide a `transform` argument, which accepts a closure:
+
+```php
+$name = text(
+    label: 'What is your name?',
+    transform: fn (string $value) => trim($value),
+    validate: fn (string $value) => match (true) {
+        strlen($value) < 3 => 'The name must be at least 3 characters.',
+        strlen($value) > 255 => 'The name must not exceed 255 characters.',
+        default => null
+    }
+);
 ```
 
 <a name="forms"></a>
@@ -878,6 +915,17 @@ foreach ($users as $user) {
 }
 
 $progress->finish();
+```
+
+<a name="clear"></a>
+## Clearing the Terminal
+
+The `clear` function may be used to clear the user's terminal:
+
+```
+use function Laravel\Prompts\clear;
+
+clear();
 ```
 
 <a name="terminal-considerations"></a>

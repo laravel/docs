@@ -18,6 +18,7 @@
     - [Comments](#comments)
 - [Components](#components)
     - [Rendering Components](#rendering-components)
+    - [Index Components](#index-components)
     - [Passing Data to Components](#passing-data-to-components)
     - [Component Attributes](#component-attributes)
     - [Reserved Keywords](#reserved-keywords)
@@ -482,10 +483,12 @@ Likewise, the `@style` directive may be used to conditionally add inline CSS sty
 For convenience, you may use the `@checked` directive to easily indicate if a given HTML checkbox input is "checked". This directive will echo `checked` if the provided condition evaluates to `true`:
 
 ```blade
-<input type="checkbox"
-        name="active"
-        value="active"
-        @checked(old('active', $user->active)) />
+<input
+    type="checkbox"
+    name="active"
+    value="active"
+    @checked(old('active', $user->active))
+/>
 ```
 
 Likewise, the `@selected` directive may be used to indicate if a given select option should be "selected":
@@ -509,19 +512,23 @@ Additionally, the `@disabled` directive may be used to indicate if a given eleme
 Moreover, the `@readonly` directive may be used to indicate if a given element should be "readonly":
 
 ```blade
-<input type="email"
-        name="email"
-        value="email@laravel.com"
-        @readonly($user->isNotAdmin()) />
+<input
+    type="email"
+    name="email"
+    value="email@laravel.com"
+    @readonly($user->isNotAdmin())
+/>
 ```
 
 In addition, the `@required` directive may be used to indicate if a given element should be "required":
 
 ```blade
-<input type="text"
-        name="title"
-        value="title"
-        @required($user->isAdmin()) />
+<input
+    type="text"
+    name="title"
+    value="title"
+    @required($user->isAdmin())
+/>
 ```
 
 <a name="including-subviews"></a>
@@ -749,6 +756,26 @@ If you would like to conditionally render your component, you may define a `shou
     {
         return Str::length($this->message) > 0;
     }
+
+<a name="index-components"></a>
+### Index Components
+
+Sometimes components are part of a component group and you may wish to group the related components within a single directory. For example, imagine a "card" component with the following class structure:
+
+```none
+App\Views\Components\Card\Card
+App\Views\Components\Card\Header
+App\Views\Components\Card\Body
+```
+
+Since the root `Card` component is nested within a `Card` directory, you might expect that you would need to render the component via `<x-card.card>`. However, when a component's file name matches the name of the component's directory, Laravel automatically assumes that component is the "root" component and allows you to render the component without repeating the directory name:
+
+```blade
+<x-card>
+    <x-card.header>...</x-card.header>
+    <x-card.body>...</x-card.body>
+</x-card>
+```
 
 <a name="passing-data-to-components"></a>
 ### Passing Data to Components
@@ -1368,10 +1395,10 @@ This directory structure allows you to render the accordion component and its it
 
 However, in order to render the accordion component via `x-accordion`, we were forced to place the "index" accordion component template in the `resources/views/components` directory instead of nesting it within the `accordion` directory with the other accordion related templates.
 
-Thankfully, Blade allows you to place an `index.blade.php` file within a component's template directory. When an `index.blade.php` template exists for the component, it will be rendered as the "root" node of the component. So, we can continue to use the same Blade syntax given in the example above; however, we will adjust our directory structure like so:
+Thankfully, Blade allows you to place a file matching the component's directory name within the component's directory itself. When this template exists, it can be rendered as the "root" element of the component even though it is nested within a directory. So, we can continue to use the same Blade syntax given in the example above; however, we will adjust our directory structure like so:
 
 ```none
-/resources/views/components/accordion/index.blade.php
+/resources/views/components/accordion/accordion.blade.php
 /resources/views/components/accordion/item.blade.php
 ```
 
@@ -1435,7 +1462,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 ```
 
 > [!WARNING]  
-> The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
+> The `@aware` directive cannot access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component cannot be accessed by the `@aware` directive.
 
 <a name="anonymous-component-paths"></a>
 ### Anonymous Component Paths
@@ -1641,9 +1668,11 @@ The `@error` directive may be used to quickly check if [validation error message
 
 <label for="title">Post Title</label>
 
-<input id="title"
+<input
+    id="title"
     type="text"
-    class="@error('title') is-invalid @enderror">
+    class="@error('title') is-invalid @enderror"
+/>
 
 @error('title')
     <div class="alert alert-danger">{{ $message }}</div>
@@ -1657,9 +1686,11 @@ Since the `@error` directive compiles to an "if" statement, you may use the `@el
 
 <label for="email">Email address</label>
 
-<input id="email"
+<input
+    id="email"
     type="email"
-    class="@error('email') is-invalid @else is-valid @enderror">
+    class="@error('email') is-invalid @else is-valid @enderror"
+/>
 ```
 
 You may pass [the name of a specific error bag](/docs/{{version}}/validation#named-error-bags) as the second parameter to the `@error` directive to retrieve validation error messages on pages containing multiple forms:
@@ -1669,9 +1700,11 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
 
 <label for="email">Email address</label>
 
-<input id="email"
+<input
+    id="email"
     type="email"
-    class="@error('email', 'login') is-invalid @enderror">
+    class="@error('email', 'login') is-invalid @enderror"
+/>
 
 @error('email', 'login')
     <div class="alert alert-danger">{{ $message }}</div>

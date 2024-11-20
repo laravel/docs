@@ -61,7 +61,6 @@ It's best to envision middleware as a series of "layers" HTTP requests must pass
 > [!NOTE]  
 > All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor.
 
-<a name="before-after-middleware"></a>
 <a name="middleware-and-responses"></a>
 #### Middleware and Responses
 
@@ -130,6 +129,7 @@ If you would like to manage Laravel's global middleware stack manually, you may 
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->use([
+            \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
             // \Illuminate\Http\Middleware\TrustHosts::class,
             \Illuminate\Http\Middleware\TrustProxies::class,
             \Illuminate\Http\Middleware\HandleCors::class,
@@ -395,15 +395,17 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 
 Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`:
 
+    use App\Http\Middleware\EnsureUserHasRole;
+
     Route::put('/post/{id}', function (string $id) {
         // ...
-    })->middleware('role:editor');
+    })->middleware(EnsureUserHasRole::class.':editor');
 
 Multiple parameters may be delimited by commas:
 
     Route::put('/post/{id}', function (string $id) {
         // ...
-    })->middleware('role:editor,publisher');
+    })->middleware(EnsureUserHasRole::class.':editor,publisher');
 
 <a name="terminable-middleware"></a>
 ## Terminable Middleware

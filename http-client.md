@@ -38,6 +38,7 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
     $response->json($key = null, $default = null) : mixed;
     $response->object() : object;
     $response->collect($key = null) : Illuminate\Support\Collection;
+    $response->resource() : resource;
     $response->status() : int;
     $response->successful() : bool;
     $response->redirect(): bool;
@@ -527,6 +528,15 @@ If you would like to specify a fallback URL pattern that will stub all unmatched
 
         // Stub a string response for all other endpoints...
         '*' => Http::response('Hello World', 200, ['Headers']),
+    ]);
+
+<a name="faking-connection-exceptions"></a>
+#### Faking Connection Exceptions
+
+Sometimes you may need to test your application's behavior if the HTTP client encounters an `Illuminate\Http\Client\ConnectionException` when attempting to make a request. You can instruct the HTTP client to throw a connection exception using the `failedConnection` method:
+
+    Http::fake([
+        'github.com/*' => Http::failedConnection(),
     ]);
 
 <a name="faking-response-sequences"></a>

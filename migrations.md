@@ -458,6 +458,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [uuidMorphs](#column-method-uuidMorphs)
 [ulid](#column-method-ulid)
 [uuid](#column-method-uuid)
+[vector](#column-method-vector)
 [year](#column-method-year)
 
 </div>
@@ -918,6 +919,13 @@ The `uuid` method creates a `UUID` equivalent column:
 
     $table->uuid('id');
 
+<a name="column-method-vector"></a>
+#### `vector()` {.collection-method}
+
+The `vector` method creates a `vector` equivalent column:
+
+    $table->vector('embedding', dimensions: 100);
+
 <a name="column-method-year"></a>
 #### `year()` {.collection-method}
 
@@ -1190,10 +1198,12 @@ An alternative, expressive syntax is also provided for these actions:
 | ----------------------------- | ------------------------------------------------- |
 | `$table->cascadeOnUpdate();`  | Updates should cascade.                           |
 | `$table->restrictOnUpdate();` | Updates should be restricted.                     |
+| `$table->nullOnUpdate();`     | Updates should set the foreign key value to null. |
 | `$table->noActionOnUpdate();` | No action on updates.                             |
 | `$table->cascadeOnDelete();`  | Deletes should cascade.                           |
 | `$table->restrictOnDelete();` | Deletes should be restricted.                     |
 | `$table->nullOnDelete();`     | Deletes should set the foreign key value to null. |
+| `$table->noActionOnDelete();` | Prevents deletes if child records exist.          |
 
 </div>
 

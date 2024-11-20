@@ -15,7 +15,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, Twitter, LinkedIn, Google, GitHub, GitLab, Bitbucket, and Slack.
+In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, X, LinkedIn, Google, GitHub, GitLab, Bitbucket, and Slack.
 
 > [!NOTE]  
 > Adapters for other platforms are available via the community driven [Socialite Providers](https://socialiteproviders.com/) website.
@@ -39,7 +39,7 @@ When upgrading to a new major version of Socialite, it's important that you care
 
 Before using Socialite, you will need to add credentials for the OAuth providers your application utilizes. Typically, these credentials may be retrieved by creating a "developer application" within the dashboard of the service you will be authenticating with.
 
-These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `twitter` (OAuth 1.0), `twitter-oauth-2` (OAuth 2.0), `linkedin-openid`, `google`, `github`, `gitlab`, `bitbucket`, `slack`, or `slack-openid`, depending on the providers your application requires:
+These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `x`, `linkedin-openid`, `google`, `github`, `gitlab`, `bitbucket`, `slack`, or `slack-openid`, depending on the providers your application requires:
 
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),
@@ -189,7 +189,7 @@ Differing properties and methods may be available on this object depending on wh
     });
 
 <a name="retrieving-user-details-from-a-token-oauth2"></a>
-#### Retrieving User Details From a Token (OAuth2)
+#### Retrieving User Details From a Token
 
 If you already have a valid access token for a user, you can retrieve their user details using Socialite's `userFromToken` method:
 
@@ -199,15 +199,6 @@ If you already have a valid access token for a user, you can retrieve their user
 
 If you are using Facebook Limited Login via an iOS application, Facebook will return an OIDC token instead of an access token. Like an access token, the OIDC token can be provided to the `userFromToken` method in order to retrieve user details.
 
-<a name="retrieving-user-details-from-a-token-and-secret-oauth1"></a>
-#### Retrieving User Details From a Token and Secret (OAuth1)
-
-If you already have a valid token and secret for a user, you can retrieve their user details using Socialite's `userFromTokenAndSecret` method:
-
-    use Laravel\Socialite\Facades\Socialite;
-
-    $user = Socialite::driver('twitter')->userFromTokenAndSecret($token, $secret);
-
 <a name="stateless-authentication"></a>
 #### Stateless Authentication
 
@@ -216,6 +207,3 @@ The `stateless` method may be used to disable session state verification. This i
     use Laravel\Socialite\Facades\Socialite;
 
     return Socialite::driver('google')->stateless()->user();
-
-> [!WARNING]  
-> Stateless authentication is not available for the Twitter OAuth 1.0 driver.

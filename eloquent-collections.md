@@ -67,6 +67,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [diff](#method-diff)
 [except](#method-except)
 [find](#method-find)
+[findOrFail](#method-find-or-fail)
 [fresh](#method-fresh)
 [intersect](#method-intersect)
 [load](#method-load)
@@ -124,6 +125,15 @@ The `find` method returns the model that has a primary key matching the given ke
     $users = User::all();
 
     $user = $users->find(1);
+
+<a name="method-find-or-fail"></a>
+#### `findOrFail($key)` {.collection-method}
+
+The `findOrFail` method returns the model that has a primary key matching the given key or throws an `Illuminate\Database\Eloquent\ModelNotFoundException` exception if no matching model can be found in the collection:
+
+    $users = User::all();
+
+    $user = $users->findOrFail(1);
 
 <a name="method-fresh"></a>
 #### `fresh($with = [])` {.collection-method}
@@ -232,7 +242,23 @@ The `unique` method returns all of the unique models in the collection. Any mode
 <a name="custom-collections"></a>
 ## Custom Collections
 
-If you would like to use a custom `Collection` object when interacting with a given model, you may define a `newCollection` method on your model:
+If you would like to use a custom `Collection` object when interacting with a given model, you may add the `CollectedBy` attribute to your model:
+
+    <?php
+
+    namespace App\Models;
+
+    use App\Support\UserCollection;
+    use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+    use Illuminate\Database\Eloquent\Model;
+
+    #[CollectedBy(UserCollection::class)]
+    class User extends Model
+    {
+        // ...
+    }
+
+Alternatively, you may define a `newCollection` method on your model:
 
     <?php
 
@@ -256,4 +282,6 @@ If you would like to use a custom `Collection` object when interacting with a gi
         }
     }
 
-Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\Database\Eloquent\Collection` instance. If you would like to use a custom collection for every model in your application, you should define the `newCollection` method on a base model class that is extended by all of your application's models.
+Once you have defined a `newCollection` method or added the `CollectedBy` attribute to your model, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\Database\Eloquent\Collection` instance.
+
+If you would like to use a custom collection for every model in your application, you should define the `newCollection` method on a base model class that is extended by all of your application's models.
