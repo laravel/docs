@@ -1105,7 +1105,7 @@ You may also pass a custom confirmation field name. For example, `confirmed:repe
 <a name="rule-contains"></a>
 #### contains:_foo_,_bar_,...
 
-The field under validation must be an array that contains all of the given parameter values.
+The field under validation must be an array or string that contains all of the given parameter values.
 
 <a name="rule-current-password"></a>
 #### current_password
