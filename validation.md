@@ -1354,7 +1354,7 @@ If you would like to customize the query executed by the validation rule, you ma
         'email' => [
             'required',
             Rule::exists('staff')->where(function (Builder $query) {
-                return $query->where('account_id', 1);
+                $query->where('account_id', 1);
             }),
         ],
     ]);
