@@ -826,10 +826,10 @@ To customize the theme for an individual notification, you may call the `theme` 
 
 The `database` notification channel stores the notification information in a database table. This table will contain information such as the notification type as well as a JSON data structure that describes the notification.
 
-You can query the table to display the notifications in your application's user interface. But, before you can do that, you will need to create a database table to hold your notifications. You may use the `make:notifications-table` command to generate a [migration](/docs/{{version}}/migrations) with the proper table schema:
+You can query the table to display the notifications in your application's user interface. But, before you can do that, you will need to create a database table to hold your notifications. You may use the `notifications:table` command to generate a [migration](/docs/{{version}}/migrations) with the proper table schema:
 
 ```shell
-php artisan make:notifications-table
+php artisan notifications:table
 
 php artisan migrate
 ```
