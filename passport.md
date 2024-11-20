@@ -51,7 +51,7 @@
 
 [Laravel Passport](https://github.com/laravel/passport) provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
 
-> [!WARNING]  
+> [!NOTE]  
 > This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing.
 
 <a name="passport-or-sanctum"></a>
@@ -407,7 +407,7 @@ You may revoke a token by using the `revoke` method on the `Laravel\Passport\Tok
     $token->revoke();
 
     // Revoke the token's refresh token...
-    $token->refreshToken->revoke();
+    $token->refreshToken?->revoke();
 
 <a name="purging-tokens"></a>
 ### Purging Tokens
@@ -1068,7 +1068,7 @@ You may determine if a given scope has been defined using the `hasScope` method:
     Passport::hasScope('place-orders');
 
 <a name="consuming-your-api-with-javascript"></a>
-## Consuming Your API With JavaScript
+## SPA Authentication
 
 When building an API, it can be extremely useful to be able to consume your own API from your JavaScript application. This approach to API development allows your own application to consume the same API that you are sharing with the world. The same API may be consumed by your web application, mobile applications, third-party applications, and any SDKs that you may publish on various package managers.
 
