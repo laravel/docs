@@ -65,6 +65,19 @@ Finally, you may start Sail. To continue learning how to use Sail, please contin
 ./vendor/bin/sail up
 ```
 
+### Installing Sail Into Existing Applications using Docker
+
+If you are interested in using Sail with an existing Laravel application, you may simply install Sail using the Composer package manager. The following steps asume you have Docker installed on your system already.
+
+```shell
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php83-composer:latest \
+    sh -c "composer install --ignore-platform-reqs && php artisan sail:install"
+```
+
 > [!WARNING]  
 > If you are using Docker Desktop for Linux, you should use the `default` Docker context by executing the following command: `docker context use default`.
 
