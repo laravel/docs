@@ -17,7 +17,7 @@
     - [Installation](#pail-installation)
     - [Usage](#pail-usage)
     - [Filtering Logs](#pail-filtering-logs)
-    - [Excluding Logs](#pail-excluding-logs)
+    - [Except Logs](#pail-except-logs)
 
 <a name="introduction"></a>
 ## Introduction
@@ -557,20 +557,20 @@ To only display logs that were written while a given user was authenticated, you
 php artisan pail --user=1
 ```
 
-<a name="pail-excluding-logs"></a>
+<a name="pail-except-logs"></a>
 ### Excluding Logs
 
-<a name="pail-excluding-logs-option"></a>
-#### `--exclude`
+<a name="pail-except-logs-option"></a>
+#### `--except`
 
-You may use the `--exclude` option to exclude logs by their type, file, message, and stack trace content:
+You may use the `--except` option to exclude logs by their type, file, message, and stack trace content:
 
 ```bash
-php artisan pail --exclude="User"
+php artisan pail --except="User"
 ```
 
 You may also exclude multiple patterns by separating them with a comma:
 
 ```bash
-php artisan pail --exclude="User, Processing"
+php artisan pail --except="User, Processing"
 ```
