@@ -558,7 +558,7 @@ php artisan pail --user=1
 ```
 
 <a name="pail-except-logs"></a>
-### Excluding Logs
+### Except Logs
 
 <a name="pail-except-logs-option"></a>
 #### `--except`
