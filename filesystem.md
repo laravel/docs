@@ -703,6 +703,9 @@ test('albums can be uploaded', function () {
 
     // Assert that a given directory is empty...
     Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');
+
+    // Assert that the number of files in path equals the expected count...
+    Storage::disk('photos')->assertCount('./', 2);
 });
 ```
 
@@ -736,6 +739,9 @@ class ExampleTest extends TestCase
 
         // Assert that a given directory is empty...
         Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');
+
+        // Assert that the number of files in path equals the expected count...
+        Storage::disk('photos')->assertCount('./', 2);
     }
 }
 ```
