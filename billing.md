@@ -1337,57 +1337,41 @@ You may also start a metered subscription via [Stripe Checkout](#checkout):
         'checkout' => $checkout,
     ]);
 
+You will also need to create a [meter](https://docs.stripe.com/billing/subscriptions/usage-based/recording-usage#configuring-meter) from your dashboard to track usage, remember to store the associated event name and meter id, you will need them to report and retrieve usage.
+
 <a name="reporting-usage"></a>
 #### Reporting Usage
 
-As your customer uses your application, you will report their usage to Stripe so that they can be billed accurately. To increment the usage of a metered subscription, you may use the `reportUsage` method:
+As your customer uses your application, you will report their usage to Stripe so that they can be billed accurately. To report the usage of a metered event, you may use the `reportMeterEvent` method on your `Billable` model:
 
     $user = User::find(1);
 
-    $user->subscription('default')->reportUsage();
+    $user->reportMeterEvent('emails-sent');
 
 By default, a "usage quantity" of 1 is added to the billing period. Alternatively, you may pass a specific amount of "usage" to add to the customer's usage for the billing period:
 
     $user = User::find(1);
 
-    $user->subscription('default')->reportUsage(15);
+    $user->reportMeterEvent('emails-sent', quantity: 15);
 
-If your application offers multiple prices on a single subscription, you will need to use the `reportUsageFor` method to specify the metered price you want to report usage for:
-
-    $user = User::find(1);
-
-    $user->subscription('default')->reportUsageFor('price_metered', 15);
-
-Sometimes, you may need to update usage which you have previously reported. To accomplish this, you may pass a timestamp or a `DateTimeInterface` instance as the second parameter to `reportUsage`. When doing so, Stripe will update the usage that was reported at that given time. You can continue to update previous usage records as the given date and time is still within the current billing period:
+To retrieve a customer's event summary for a meter, you may use a `Billable` instance's `meterEventSummaries` method, note that this requires passing the meter's ID (NOT event name):
 
     $user = User::find(1);
 
-    $user->subscription('default')->reportUsage(5, $timestamp);
+    $meterUsage = $user->meterEventSummaries(self::$meterId);
 
-<a name="retrieving-usage-records"></a>
-#### Retrieving Usage Records
+    $meterUsage->first()->aggregated_value // 10
 
-To retrieve a customer's past usage, you may use a subscription instance's `usageRecords` method:
+Please see the [Meter Event Summary object documentation](https://docs.stripe.com/api/billing/meter-event_summary/object) on stripe for more information on available data.
 
-    $user = User::find(1);
 
-    $usageRecords = $user->subscription('default')->usageRecords();
-
-If your application offers multiple prices on a single subscription, you may use the `usageRecordsFor` method to specify the metered price that you wish to retrieve usage records for:
+To list all meters, you can use a `Billable` instance's `meters` method:
 
     $user = User::find(1);
 
-    $usageRecords = $user->subscription('default')->usageRecordsFor('price_metered');
+    $user->meters();
 
-The `usageRecords` and `usageRecordsFor` methods return a Collection instance containing an associative array of usage records. You may iterate over this array to display a customer's total usage:
-
-    @foreach ($usageRecords as $usageRecord)
-        - Period Starting: {{ $usageRecord['period']['start'] }}
-        - Period Ending: {{ $usageRecord['period']['end'] }}
-        - Total Usage: {{ $usageRecord['total_usage'] }}
-    @endforeach
-
-For a full reference of all usage data returned and how to use Stripe's cursor based pagination, please consult [the official Stripe API documentation](https://stripe.com/docs/api/usage_records/subscription_item_summary_list).
+Please see [stripe's documentation](https://docs.stripe.com/api/billing/meter/list) for information about available optional request parameters and options
 
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
