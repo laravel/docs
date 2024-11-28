@@ -792,6 +792,40 @@ The `getOriginal` method returns an array containing the original attributes of 
     $user->getOriginal('name'); // John
     $user->getOriginal(); // Array of original attributes...
 
+Eloquent provides the `getDirty` method to retrieve all attributes of the model that have been modified since the model was last loaded or saved. This method is particularly useful when you need to examine the exact values of attributes that have changed without persisting those changes yet.
+
+```php
+use App\Models\User;
+
+$user = User::find(1);
+
+$user->name = 'Victoria';
+$user->email = 'victoria@example.com';
+
+$dirtyAttributes = $user->getDirty();
+
+// Output the changed attributes
+var_dump($dirtyAttributes);
+
+// Example output:
+// array(2) {
+//   ["name"]=>
+//   string(8) "Victoria"
+//   ["email"]=>
+//   string(20) "victoria@example.com"
+// }
+
+$user->save();
+
+// `isDirty` is now empty:
+var_dump($user->getDirty())
+
+// array(0) {
+// }
+```
+
+The `getDirty` method returns an associative array, where the keys are the names of the attributes that have been changed, and the values are the updated values of those attributes. Attributes that remain unchanged will not appear in the returned array. Note that after you call `save` on a model, there are no 'dirty' attributes anymore, so the returned array will be empty. So retrieve them before you `save`, if you need the information.
+
 <a name="mass-assignment"></a>
 ### Mass Assignment
 
