@@ -555,3 +555,16 @@ To only display logs that were written while a given user was authenticated, you
 ```bash
 php artisan pail --user=1
 ```
+
+<a name="pail-timeout"></a>
+### Timeout
+
+By default, the command will exit after 1 hour, you can customize this behavior by setting the numebr of seconds with the `--timeout` option:
+```bash
+php artisan pail --timeout=3600
+```
+
+To disable the timeout completely, set the `--timeout` option to `0`:
+```bash
+php artisan pail --timeout=0
+```
