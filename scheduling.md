@@ -430,7 +430,7 @@ php artisan schedule:interrupt
 <a name="running-the-scheduler-locally"></a>
 ### Running the Scheduler Locally
 
-Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command:
+Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command. When sub-minute tasks are defined, the scheduler will continue running within each minute to process those tasks:
 
 ```shell
 php artisan schedule:work
