@@ -8,6 +8,7 @@
     - [Middleware Groups](#middleware-groups)
     - [Middleware Aliases](#middleware-aliases)
     - [Sorting Middleware](#sorting-middleware)
+    - [Dynamic Middleware](#dynamic-middleware)
 - [Middleware Parameters](#middleware-parameters)
 - [Terminable Middleware](#terminable-middleware)
 
@@ -359,6 +360,116 @@ Rarely, you may need your middleware to execute in a specific order but not have
             \Illuminate\Auth\Middleware\Authorize::class,
         ]);
     })
+
+
+<a name="dynamic-middleware"></a>
+### Dynamic Middleware
+
+Dynamic middleware allows you to register middleware at runtime based on specific conditions, such as the application's environment, feature flags, or tenant configuration. This approach is especially useful for optimizing application performance by applying middleware only when necessary, reducing unnecessary overhead in production environments.
+
+---
+
+#### Registering Middleware Dynamically
+
+Laravel provides the ability to dynamically register middleware using the `router` instance. For example:
+
+```php
+use Illuminate\Routing\Router;
+use App\Http\Middleware\DynamicMiddleware;
+
+// Register middleware dynamically
+app()->router->aliasMiddleware('dynamic', DynamicMiddleware::class);
+```
+
+The registered middleware can then be assigned to routes like any other middleware:
+
+```php
+Route::get('/dynamic', function () {
+    return 'Dynamic Middleware Example';
+})->middleware('dynamic');
+```
+
+This method is particularly useful when middleware needs to be applied selectively at runtime, based on application logic.
+
+---
+
+#### Conditional Middleware Registration
+
+In addition to dynamic registration, you can conditionally register middleware using Laravel's service providers. This technique allows you to enable middleware only in specific environments or application states:
+
+```php
+use Illuminate\Support\ServiceProvider;
+use App\Http\Middleware\DevelopmentOnlyMiddleware;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        // Register middleware only in the local environment
+        if (app()->environment('local')) {
+            app()->router->aliasMiddleware('dev-only', DevelopmentOnlyMiddleware::class);
+        }
+    }
+}
+```
+
+In this example, the `DevelopmentOnlyMiddleware` is registered exclusively for the `local` environment, ensuring it does not affect production performance.
+
+---
+
+#### Use Cases for Dynamic Middleware
+
+Dynamic middleware is a powerful tool for specific scenarios:
+
+- **Environment-Specific Middleware**:  
+  Enable middleware only in development or staging environments, such as middleware for logging, debugging, or testing.
+
+- **Feature Flags**:  
+  Apply middleware conditionally based on feature toggles or configurations stored in a database or configuration file. For example, enable rate-limiting middleware only when a specific feature is active.
+
+- **Tenant-Specific Middleware**:  
+  In multi-tenant applications, register middleware dynamically for individual tenants to handle tenant-specific logic, such as access control or request customization.
+
+---
+
+#### Benefits of Dynamic Middleware
+
+- **Performance Optimization**: By only enabling middleware when necessary, you reduce unnecessary overhead, improving request handling times in production.
+- **Flexibility**: Dynamic registration allows middleware to adapt to runtime conditions, making it suitable for complex applications.
+- **Maintainability**: Middleware logic becomes easier to manage and extend as the application scales.
+
+---
+
+#### Testing Dynamic Middleware
+
+When working with dynamic middleware, it's important to ensure its correct behavior through unit tests. Here's an example of testing middleware functionality:
+
+```php
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class DynamicMiddlewareTest extends TestCase
+{
+    public function test_dynamic_middleware_is_applied()
+    {
+        // Ensure the dynamic middleware is not applied
+        $this->withoutMiddleware('dynamic');
+
+        $response = $this->get('/dynamic');
+
+        $response->assertStatus(200)
+                 ->assertSee('Dynamic Middleware Example');
+    }
+}
+```
+
+This test verifies that the `dynamic` middleware behaves as expected under specific conditions.
+
+---
+
+By leveraging dynamic middleware, you can build highly adaptable and performance-optimized applications tailored to diverse runtime scenarios.
+
 
 <a name="middleware-parameters"></a>
 ## Middleware Parameters
