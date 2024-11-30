@@ -597,12 +597,12 @@ Since the user will be using a separate device to grant (or deny) access, the co
 
 ```php
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Sleep;
 
-$response = null;
 $interval = 5;
 
 do {
-    sleep($interval);
+    Sleep::for($interval)->seconds();
 
     $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'urn:ietf:params:oauth:grant-type:device_code',
