@@ -152,6 +152,8 @@ $expression = DB::raw('select 1');
 $string = $expression->getValue(DB::connection()->getQueryGrammar());
 ```
 
+This also means that methods like `orderByRaw` or `groupByRaw` can no longer accept expressions returned by `DB::raw(...)` and only accept strings.
+
 <a name="query-exception-constructor"></a>
 #### Query Exception Constructor
 
