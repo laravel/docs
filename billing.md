@@ -35,7 +35,7 @@
     - [Subscription Quantity](#subscription-quantity)
     - [Subscriptions With Multiple Products](#subscriptions-with-multiple-products)
     - [Multiple Subscriptions](#multiple-subscriptions)
-    - [Metered Billing](#metered-billing)
+    - [Usage Based Billing](#usage-based-billing)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
     - [Canceling Subscriptions](#cancelling-subscriptions)
@@ -1309,12 +1309,12 @@ Of course, you may also cancel the subscription entirely:
 
     $user->subscription('swimming')->cancel();
 
-<a name="metered-billing"></a>
-### Metered Billing
+<a name="usage-based-billing"></a>
+### Usage Based Billing
 
-[Metered billing](https://stripe.com/docs/billing/subscriptions/metered-billing) allows you to charge customers based on their product usage during a billing cycle. For example, you may charge customers based on the number of text messages or emails they send per month.
+[Usage Based Billing](https://stripe.com/docs/billing/subscriptions/metered-billing) allows you to charge customers based on their product usage during a billing cycle. For example, you may charge customers based on the number of text messages or emails they send per month.
 
-To start using metered billing, you will first need to create a new product in your Stripe dashboard with a [usage based billing model](https://docs.stripe.com/billing/subscriptions/usage-based/implementation-guide) and a [meter](https://docs.stripe.com/billing/subscriptions/usage-based/recording-usage#configure-meter). After creating the meter, store the associated event name and meter ID, which you will need to report and retrieve usage. Then, use the `meteredPrice` method to add the metered price ID to a customer subscription:
+To start using usage billing, you will first need to create a new product in your Stripe dashboard with a [usage based billing model](https://docs.stripe.com/billing/subscriptions/usage-based/implementation-guide) and a [meter](https://docs.stripe.com/billing/subscriptions/usage-based/recording-usage#configure-meter). After creating the meter, store the associated event name and meter ID, which you will need to report and retrieve usage. Then, use the `meteredPrice` method to add the metered price ID to a customer subscription:
 
     use Illuminate\Http\Request;
 
