@@ -2304,7 +2304,7 @@ The `skip` method returns a new collection, with the given number of elements re
 <a name="method-skipuntil"></a>
 #### `skipUntil()` {.collection-method}
 
-The `skipUntil` method skips over items from the collection until the given callback returns `true` and then returns the remaining items in the collection as a new collection instance:
+The `skipUntil` method skips over items from the collection while the given callback returns `false`. Once the callback returns `true` all of the remaining items in the collection will be returned as a new collection:
 
     $collection = collect([1, 2, 3, 4]);
 
@@ -2332,7 +2332,7 @@ You may also pass a simple value to the `skipUntil` method to skip all items unt
 <a name="method-skipwhile"></a>
 #### `skipWhile()` {.collection-method}
 
-The `skipWhile` method skips over items from the collection while the given callback returns `true` and then returns the remaining items in the collection as a new collection:
+The `skipWhile` method skips over items from the collection while the given callback returns `true`. Once the callback returns `false` all of the remaining items in the collection will be returned as a new collection:
 
     $collection = collect([1, 2, 3, 4]);
 
