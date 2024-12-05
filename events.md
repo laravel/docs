@@ -499,7 +499,7 @@ If you would like to configure how many seconds Laravel should wait before retry
      */
     public $backoff = 3;
 
-If you require more complex logic for determining the listeners's backoff time, you may define a backoff method on your job class:
+If you require more complex logic for determining the listeners's backoff time, you may define a backoff method on your listener class:
 
     /**
      * Calculate the number of seconds to wait before retrying the queued listener.
