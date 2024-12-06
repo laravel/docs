@@ -490,7 +490,7 @@ As an alternative to defining how many times a listener may be attempted before 
 <a name="specifying-queued-listener-backoff"></a>
 #### Specifying Queued Listener Backoff
 
-If you would like to configure how many seconds Laravel should wait before retrying a listener that has encountered an exception, you may do so by defining a backoff property on your listener class:
+If you would like to configure how many seconds Laravel should wait before retrying a listener that has encountered an exception, you may do so by defining a `backoff` property on your listener class:
     
     /**
      * The number of seconds to wait before retrying the queued listener.
@@ -499,7 +499,7 @@ If you would like to configure how many seconds Laravel should wait before retry
      */
     public $backoff = 3;
 
-If you require more complex logic for determining the listeners's backoff time, you may define a backoff method on your listener class:
+If you require more complex logic for determining the listeners's backoff time, you may define a `backoff` method on your listener class:
 
     /**
      * Calculate the number of seconds to wait before retrying the queued listener.
@@ -509,7 +509,7 @@ If you require more complex logic for determining the listeners's backoff time, 
         return 3;
     }
 
-You may easily configure "exponential" backoffs by returning an array of backoff values from the backoff method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, 10 seconds for the third retry, and 10 seconds for every subsequent retry if there are more attempts remaining:
+You may easily configure "exponential" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, 10 seconds for the third retry, and 10 seconds for every subsequent retry if there are more attempts remaining:
 
     /**
      * Calculate the number of seconds to wait before retrying the queued listener.
