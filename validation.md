@@ -963,6 +963,7 @@ Below is a list of all available validation rules and their function:
 [Sometimes](#validating-when-present)
 [Starts With](#rule-starts-with)
 [String](#rule-string)
+[String Contains](#rule-str-contains)
 [Timezone](#rule-timezone)
 [Unique (Database)](#rule-unique)
 [Uppercase](#rule-uppercase)
@@ -1809,6 +1810,11 @@ The field under validation must start with one of the given values.
 #### string
 
 The field under validation must be a string. If you would like to allow the field to also be `null`, you should assign the `nullable` rule to the field.
+
+<a name="rule-str-contains"></a>
+#### str_contains:foo,bar
+
+The field under validation must be a string that contains all of the given parameter values.
 
 <a name="rule-timezone"></a>
 #### timezone
