@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Model Preparation](#model-preparation)
     - [Database Preparation](#database-preparation)
+    - [Cache Preparation](#cache-preparation)
     - [Configuring Trusted Hosts](#configuring-trusted-hosts)
 - [Routing](#routing)
     - [Requesting the Password Reset Link](#requesting-the-password-reset-link)
@@ -28,7 +29,12 @@ Next, verify that your `App\Models\User` model implements the `Illuminate\Contra
 <a name="database-preparation"></a>
 ### Database Preparation
 
-A table must be created to store your application's password reset tokens. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` database migration.
+If you are using the default database driver for password resets, a table must be created to store your application's password reset tokens. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` database migration.
+
+<a name="cache-preparation"></a>
+### Cache Preparation
+
+You may also use a cache driver for handling password resets. In your `config/auth.php` add a `'driver' => 'cache'` entry for the desired connection. While you *can* use the default cache store, to avoid accidentally wiping the passwords reset cache it is **recommended** to create a dedicated store, and then designating that store with `'store' => 'password-store'`.
 
 <a name="configuring-trusted-hosts"></a>
 ### Configuring Trusted Hosts
