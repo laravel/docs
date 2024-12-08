@@ -215,6 +215,7 @@ The `casts` method should return an array where the key is the name of the attri
 - `encrypted`
 - `encrypted:array`
 - `encrypted:collection`
+- `encrypted:json`
 - `encrypted:object`
 - `float`
 - `hashed`
@@ -495,7 +496,7 @@ Sometimes you may need your model to store an array of enum values within a sing
 <a name="encrypted-casting"></a>
 ### Encrypted Casting
 
-The `encrypted` cast will encrypt a model's attribute value using Laravel's built-in [encryption](/docs/{{version}}/encryption) features. In addition, the `encrypted:array`, `encrypted:collection`, `encrypted:object`, `AsEncryptedArrayObject`, and `AsEncryptedCollection` casts work like their unencrypted counterparts; however, as you might expect, the underlying value is encrypted when stored in your database.
+The `encrypted` cast will encrypt a model's attribute value using Laravel's built-in [encryption](/docs/{{version}}/encryption) features. In addition, the `encrypted:array`, `encrypted:collection`, `encrypted:json`, `encrypted:object`, `AsEncryptedArrayObject`, and `AsEncryptedCollection` casts work like their unencrypted counterparts; however, as you might expect, the underlying value is encrypted when stored in your database.
 
 As the final length of the encrypted text is not predictable and is longer than its plain text counterpart, make sure the associated database column is of `TEXT` type or larger. In addition, since the values are encrypted in the database, you will not be able to query or search encrypted attribute values.
 
