@@ -519,19 +519,24 @@ Using the `pingBefore` and `thenPing` methods, the scheduler can automatically p
              ->pingBefore($url)
              ->thenPing($url);
 
-The `pingBeforeIf` and `thenPingIf` methods may be used to ping a given URL only if a given condition is `true`:
-
-    Schedule::command('emails:send')
-             ->daily()
-             ->pingBeforeIf($condition, $url)
-             ->thenPingIf($condition, $url);
-
 The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL only if the task succeeds or fails. A failure indicates that the scheduled Artisan or system command terminated with a non-zero exit code:
 
     Schedule::command('emails:send')
              ->daily()
              ->pingOnSuccess($successUrl)
              ->pingOnFailure($failureUrl);
+
+The `pingBeforeIf`,`thenPingIf`,`pingOnSuccessIf`, and `pingOnFailureIf` methods may be used to ping a given URL only if a given condition is `true`:
+
+    Schedule::command('emails:send')
+             ->daily()
+             ->pingBeforeIf($condition, $url)
+             ->thenPingIf($condition, $url);             
+
+    Schedule::command('emails:send')
+             ->daily()
+             ->pingOnSuccessIf($condition, $successUrl)
+             ->pingOnFailureIf($condition, $failureUrl);
 
 <a name="events"></a>
 ## Events
