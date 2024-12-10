@@ -882,7 +882,7 @@ If you do not set the `after_commit` queue connection configuration option to `t
 
     ProcessPodcast::dispatch($podcast)->afterCommit();
 
-Likewise, if the `after_commit` configuration option is set to `true`, you may indicate that a specific job should be dispatched immediately without waiting for any open database transactions to commit:
+Likewise, if the `after_commit` configuration option is set to `false`, you may indicate that a specific job should be dispatched immediately without waiting for any open database transactions to commit:
 
     ProcessPodcast::dispatch($podcast)->beforeCommit();
 
