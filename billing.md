@@ -35,7 +35,7 @@
     - [Subscription Quantity](#subscription-quantity)
     - [Subscriptions With Multiple Products](#subscriptions-with-multiple-products)
     - [Multiple Subscriptions](#multiple-subscriptions)
-    - [Metered Billing](#metered-billing)
+    - [Usage Based Billing](#usage-based-billing)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
     - [Canceling Subscriptions](#cancelling-subscriptions)
@@ -1309,12 +1309,12 @@ Of course, you may also cancel the subscription entirely:
 
     $user->subscription('swimming')->cancel();
 
-<a name="metered-billing"></a>
-### Metered Billing
+<a name="usage-based-billing"></a>
+### Usage Based Billing
 
-[Metered billing](https://stripe.com/docs/billing/subscriptions/metered-billing) allows you to charge customers based on their product usage during a billing cycle. For example, you may charge customers based on the number of text messages or emails they send per month.
+[Usage based billing](https://stripe.com/docs/billing/subscriptions/metered-billing) allows you to charge customers based on their product usage during a billing cycle. For example, you may charge customers based on the number of text messages or emails they send per month.
 
-To start using metered billing, you will first need to create a new product in your Stripe dashboard with a metered price. Then, use the `meteredPrice` to add the metered price ID to a customer subscription:
+To start using usage billing, you will first need to create a new product in your Stripe dashboard with a [usage based billing model](https://docs.stripe.com/billing/subscriptions/usage-based/implementation-guide) and a [meter](https://docs.stripe.com/billing/subscriptions/usage-based/recording-usage#configure-meter). After creating the meter, store the associated event name and meter ID, which you will need to report and retrieve usage. Then, use the `meteredPrice` method to add the metered price ID to a customer subscription:
 
     use Illuminate\Http\Request;
 
@@ -1340,54 +1340,33 @@ You may also start a metered subscription via [Stripe Checkout](#checkout):
 <a name="reporting-usage"></a>
 #### Reporting Usage
 
-As your customer uses your application, you will report their usage to Stripe so that they can be billed accurately. To increment the usage of a metered subscription, you may use the `reportUsage` method:
+As your customer uses your application, you will report their usage to Stripe so that they can be billed accurately. To report the usage of a metered event, you may use the `reportMeterEvent` method on your `Billable` model:
 
     $user = User::find(1);
 
-    $user->subscription('default')->reportUsage();
+    $user->reportMeterEvent('emails-sent');
 
 By default, a "usage quantity" of 1 is added to the billing period. Alternatively, you may pass a specific amount of "usage" to add to the customer's usage for the billing period:
 
     $user = User::find(1);
 
-    $user->subscription('default')->reportUsage(15);
+    $user->reportMeterEvent('emails-sent', quantity: 15);
 
-If your application offers multiple prices on a single subscription, you will need to use the `reportUsageFor` method to specify the metered price you want to report usage for:
-
-    $user = User::find(1);
-
-    $user->subscription('default')->reportUsageFor('price_metered', 15);
-
-Sometimes, you may need to update usage which you have previously reported. To accomplish this, you may pass a timestamp or a `DateTimeInterface` instance as the second parameter to `reportUsage`. When doing so, Stripe will update the usage that was reported at that given time. You can continue to update previous usage records as the given date and time is still within the current billing period:
+To retrieve a customer's event summary for a meter, you may use a `Billable` instance's `meterEventSummaries` method:
 
     $user = User::find(1);
 
-    $user->subscription('default')->reportUsage(5, $timestamp);
+    $meterUsage = $user->meterEventSummaries($meterId);
 
-<a name="retrieving-usage-records"></a>
-#### Retrieving Usage Records
+    $meterUsage->first()->aggregated_value // 10
 
-To retrieve a customer's past usage, you may use a subscription instance's `usageRecords` method:
+Please refer to Stripe's [Meter Event Summary object documentation](https://docs.stripe.com/api/billing/meter-event_summary/object) for more information on meter event summaries.
 
-    $user = User::find(1);
-
-    $usageRecords = $user->subscription('default')->usageRecords();
-
-If your application offers multiple prices on a single subscription, you may use the `usageRecordsFor` method to specify the metered price that you wish to retrieve usage records for:
+To [list all meters](https://docs.stripe.com/api/billing/meter/list), you may use a `Billable` instance's `meters` method:
 
     $user = User::find(1);
 
-    $usageRecords = $user->subscription('default')->usageRecordsFor('price_metered');
-
-The `usageRecords` and `usageRecordsFor` methods return a Collection instance containing an associative array of usage records. You may iterate over this array to display a customer's total usage:
-
-    @foreach ($usageRecords as $usageRecord)
-        - Period Starting: {{ $usageRecord['period']['start'] }}
-        - Period Ending: {{ $usageRecord['period']['end'] }}
-        - Total Usage: {{ $usageRecord['total_usage'] }}
-    @endforeach
-
-For a full reference of all usage data returned and how to use Stripe's cursor based pagination, please consult [the official Stripe API documentation](https://stripe.com/docs/api/usage_records/subscription_item_summary_list).
+    $user->meters();
 
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
