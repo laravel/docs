@@ -337,6 +337,16 @@ If you would like to perform some additional logic before the exception is throw
         // ...
     })->json();
 
+By default, `RequestException` messages are truncated to 120 characters when logged or reported. To customize or disable this behavior, you may utilize the `truncateRequestExceptionsAt` and `dontTruncateRequestExceptions` methods when configuring your application's exception handling behavior in your `bootstrap/app.php` file:
+
+    ->withExceptions(function (Exceptions $exceptions) {
+        // Truncate request exception messages to 240 characters...
+        $exceptions->truncateRequestExceptionsAt(240);
+
+        // Disable request exception message truncation...
+        $exceptions->dontTruncateRequestExceptions();
+    })
+
 <a name="guzzle-middleware"></a>
 ### Guzzle Middleware
 
