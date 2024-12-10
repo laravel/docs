@@ -526,7 +526,7 @@ The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL 
              ->pingOnSuccess($successUrl)
              ->pingOnFailure($failureUrl);
 
-The `pingBeforeIf`,`thenPingIf`,`pingOnSuccessIf` and `pingOnFailureIf` methods may be used to ping a given URL only if a given condition is `true`:
+The `pingBeforeIf`,`thenPingIf`,`pingOnSuccessIf`, and `pingOnFailureIf` methods may be used to ping a given URL only if a given condition is `true`:
 
     Schedule::command('emails:send')
              ->daily()
