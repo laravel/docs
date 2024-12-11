@@ -54,7 +54,7 @@ When using the `local` driver, all file operations are relative to the `root` di
 
 The `public` disk included in your application's `filesystems` configuration file is intended for files that are going to be publicly accessible. By default, the `public` disk uses the `local` driver and stores its files in `storage/app/public`.
 
-To make these files accessible from the web, you should create a symbolic link from `public/storage` to `storage/app/public`. Utilizing this folder convention will keep your publicly accessible files in one directory that can be easily shared across deployments when using zero down-time deployment systems like [Envoyer](https://envoyer.io).
+To make these files accessible from the web, you should create a symbolic link from source directory `storage/app/public` to target directory `public/storage`. Utilizing this folder convention will keep your publicly accessible files in one directory that can be easily shared across deployments when using zero down-time deployment systems like [Envoyer](https://envoyer.io).
 
 To create the symbolic link, you may use the `storage:link` Artisan command:
 
