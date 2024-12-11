@@ -509,7 +509,7 @@ Next, ensure that your published `php.ini` file includes the following configura
 xdebug.mode=${XDEBUG_MODE}
 ```
 
-After modifying the `php.ini` file, remember to rebuild your Docker images for the changes to take effect:
+After modifying the `php.ini` file, remember to rebuild your Docker images so that your changes to the `php.ini` file take effect:
 
 ```shell
 sail build --no-cache
