@@ -629,6 +629,13 @@ php artisan vendor:publish --tag=telescope-migrations
 
 Laravel 11 now provides its own [`once` function](/docs/{{version}}/helpers#method-once) to ensure that a given closure is only executed once. Therefore, if your application has a dependency on the `spatie/once` package, you should remove it from your application's `composer.json` file to avoid conflicts.
 
+<a name="broadcasting"></a>
+### Broadcasting
+
+**Likelihood Of Impact: Medium**
+
+The `BROADCAST_DRIVER` environment variable has been renamed to `BROADCAST_CONNECTION`. Update it in your `.env` file.
+
 <a name="miscellaneous"></a>
 ### Miscellaneous
 
