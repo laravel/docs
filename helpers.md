@@ -38,6 +38,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 [Arr::accessible](#method-array-accessible)
 [Arr::add](#method-array-add)
+[Arr::chunk](#method-array-chunk)
 [Arr::collapse](#method-array-collapse)
 [Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
@@ -248,6 +249,19 @@ The `Arr::add` method adds a given key / value pair to an array if the given key
     $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
 
     // ['name' => 'Desk', 'price' => 100]
+
+<a name="method-array-chunk"></a>
+#### `Arr::chunk()` {.collection-method}
+
+The `Arr::chunk` method chunks an array into arrays with `length` elements. The last chunk may contain less than `length` elements.:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['a', 'b', 'c', 'd', 'e'];
+
+    $chunked = Arr::chunk($array, 2);
+
+    // [[a, b],[c, d],[e]]
 
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
