@@ -25,10 +25,10 @@
 - [PHP Versions](#sail-php-versions)
 - [Node Versions](#sail-node-versions)
 - [Sharing Your Site](#sharing-your-site)
-- [Customization](#sail-customization)
 - [Debugging With Xdebug](#debugging-with-xdebug)
   - [Xdebug CLI Usage](#xdebug-cli-usage)
   - [Xdebug Browser Usage](#xdebug-browser-usage)
+- [Customization](#sail-customization)
 
 <a name="introduction"></a>
 ## Introduction
@@ -493,50 +493,27 @@ sail share --subdomain=my-sail-site
 > [!NOTE]  
 > The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de).
 
-<a name="sail-customization"></a>
-## Customization
-
-Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` command:
-
-```shell
-sail artisan sail:publish
-```
-
-After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. After customizing your Sail installation, you may wish to change the image name for the application container in your application's `docker-compose.yml` file. After doing so, rebuild your application's containers using the `build` command. Assigning a unique name to the application image is particularly important if you are using Sail to develop multiple Laravel applications on a single machine:
-
-```shell
-sail build --no-cache
-```
-
 <a name="debugging-with-xdebug"></a>
 ## Debugging With Xdebug
 
-Laravel Sail's Docker configuration includes support for [Xdebug](https://xdebug.org/), a popular and powerful debugger for PHP. To enable Xdebug, ensure you have published your Sail configuration as described in the [Customization section](#sail-customization). Then, add the following variables to your application's `.env` file to configure Xdebug:
+Laravel Sail's Docker configuration includes support for [Xdebug](https://xdebug.org/), a popular and powerful debugger for PHP. To enable Xdebug, ensure you have [published your Sail configuration](#sail-customization). Then, add the following variables to your application's `.env` file to configure Xdebug:
 
 ```ini
 SAIL_XDEBUG_MODE=develop,debug,coverage
 ```
 
-Ensure that your `php.ini` file includes this line to activate the specified modes:
+Next, ensure that your published `php.ini` file includes the following configuration so that Xdebug is activated in the specified modes:
 
 ```ini
 [xdebug]
 xdebug.mode=${XDEBUG_MODE}
 ```
 
-After modifying the `php.ini` file, remember to rebuild your Docker container for the changes to take effect:
+After modifying the `php.ini` file, remember to rebuild your Docker images for the changes to take effect:
 
 ```shell
 sail build --no-cache
 ```
-
-To verify that Xdebug is correctly set, run:
-
-```shell
-sail php -i | grep xdebug.mode
-```
-
-This command should return the value set in `SAIL_XDEBUG_MODE`, confirming the correct configuration.
 
 #### Linux Host IP Configuration
 
@@ -586,3 +563,18 @@ If you're using PhpStorm, please review JetBrains' documentation regarding [zero
 
 > [!WARNING]  
 > Laravel Sail relies on `artisan serve` to serve your application. The `artisan serve` command only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) do not support these variables and will not accept debug connections.
+
+<a name="sail-customization"></a>
+## Customization
+
+Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` command:
+
+```shell
+sail artisan sail:publish
+```
+
+After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. After customizing your Sail installation, you may wish to change the image name for the application container in your application's `docker-compose.yml` file. After doing so, rebuild your application's containers using the `build` command. Assigning a unique name to the application image is particularly important if you are using Sail to develop multiple Laravel applications on a single machine:
+
+```shell
+sail build --no-cache
+```
