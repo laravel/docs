@@ -97,9 +97,11 @@ Adjusting this value based on your queue load can be more efficient than continu
 The following dependencies are needed for the listed queue drivers:
 
 <div class="content-list" markdown="1">
+
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~3.0`
 - Redis: `predis/predis ~1.0`
+
 </div>
 
 <a name="creating-jobs"></a>
