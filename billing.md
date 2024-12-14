@@ -95,9 +95,11 @@ Next, you should configure your Stripe key in your `services.php` configuration 
 For many operations, the Stripe and Braintree implementations of Cashier function the same. Both services provide subscription billing with credit cards but Braintree also supports payments via PayPal. However, Braintree also lacks some features that are supported by Stripe. You should keep the following in mind when deciding to use Stripe or Braintree:
 
 <div class="content-list" markdown="1">
+
 - Braintree supports PayPal while Stripe does not.
 - Braintree does not support the `increment` and `decrement` methods on subscriptions. This is a Braintree limitation, not a Cashier limitation.
 - Braintree does not support percentage based discounts. This is a Braintree limitation, not a Cashier limitation.
+
 </div>
 
 #### Composer
