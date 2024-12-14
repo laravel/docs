@@ -2,29 +2,33 @@
 
 - [Introduction](#introduction)
 - [Writing Controllers](#writing-controllers)
-    - [Basic Controllers](#basic-controllers)
-    - [Single Action Controllers](#single-action-controllers)
+  - [Basic Controllers](#basic-controllers)
+  - [Manually Specify the Controller Type](#manually-specify-the-controller-type)
+  - [Single Action Controllers](#single-action-controllers)
 - [Controller Middleware](#controller-middleware)
 - [Resource Controllers](#resource-controllers)
-    - [Partial Resource Routes](#restful-partial-resource-routes)
-    - [Nested Resources](#restful-nested-resources)
-    - [Naming Resource Routes](#restful-naming-resource-routes)
-    - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
-    - [Scoping Resource Routes](#restful-scoping-resource-routes)
-    - [Localizing Resource URIs](#restful-localizing-resource-uris)
-    - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
-    - [Singleton Resource Controllers](#singleton-resource-controllers)
+  - [Partial Resource Routes](#restful-partial-resource-routes)
+  - [Nested Resources](#restful-nested-resources)
+  - [Naming Resource Routes](#restful-naming-resource-routes)
+  - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
+  - [Scoping Resource Routes](#restful-scoping-resource-routes)
+  - [Localizing Resource URIs](#restful-localizing-resource-uris)
+  - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
+  - [Singleton Resource Controllers](#singleton-resource-controllers)
 - [Dependency Injection and Controllers](#dependency-injection-and-controllers)
 
 <a name="introduction"></a>
+
 ## Introduction
 
 Instead of defining all of your request handling logic as closures in your route files, you may wish to organize this behavior using "controller" classes. Controllers can group related request handling logic into a single class. For example, a `UserController` class might handle all incoming requests related to users, including showing, creating, updating, and deleting users. By default, controllers are stored in the `app/Http/Controllers` directory.
 
 <a name="writing-controllers"></a>
+
 ## Writing Controllers
 
 <a name="basic-controllers"></a>
+
 ### Basic Controllers
 
 To quickly generate a new controller, you may run the `make:controller` Artisan command. By default, all of the controllers for your application are stored in the `app/Http/Controllers` directory:
@@ -66,7 +70,20 @@ When an incoming request matches the specified route URI, the `show` method on t
 > [!NOTE]  
 > Controllers are not **required** to extend a base class. However, it is sometimes convenient to extend a base controller class that contains methods that should be shared across all of your controllers.
 
+<a name="manually-specify-the-controller-type"></a>
+
+### Manually Specify the Controller Type
+
+If you want to specify manually the type of your controller (Single Action Controller or Api Controller),, you may use the `--type` option when generating the controller :
+
+```shell
+php artisan make:controller UserController --type=invokable
+```
+
+The Controller stub will be customized according to the `type` provided.
+
 <a name="single-action-controllers"></a>
+
 ### Single Action Controllers
 
 If a controller action is particularly complex, you might find it convenient to dedicate an entire controller class to that single action. To accomplish this, you may define a single `__invoke` method within the controller:
@@ -102,6 +119,7 @@ php artisan make:controller ProvisionServer --invokable
 > Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="controller-middleware"></a>
+
 ## Controller Middleware
 
 [Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:
@@ -153,6 +171,7 @@ You may also define controller middleware as closures, which provides a convenie
     }
 
 <a name="resource-controllers"></a>
+
 ## Resource Controllers
 
 If you think of each Eloquent model in your application as a "resource", it is typical to perform the same sets of actions against each resource in your application. For example, imagine your application contains a `Photo` model and a `Movie` model. It is likely that users can create, read, update, or delete these resources.
@@ -179,6 +198,7 @@ You may even register many resource controllers at once by passing an array to t
     ]);
 
 <a name="actions-handled-by-resource-controllers"></a>
+
 #### Actions Handled by Resource Controllers
 
 <div class="overflow-auto">
@@ -196,6 +216,7 @@ You may even register many resource controllers at once by passing an array to t
 </div>
 
 <a name="customizing-missing-model-behavior"></a>
+
 #### Customizing Missing Model Behavior
 
 Typically, a 404 HTTP response will be generated if an implicitly bound resource model is not found. However, you may customize this behavior by calling the `missing` method when defining your resource route. The `missing` method accepts a closure that will be invoked if an implicitly bound model cannot be found for any of the resource's routes:
@@ -210,6 +231,7 @@ Typically, a 404 HTTP response will be generated if an implicitly bound resource
             });
 
 <a name="soft-deleted-models"></a>
+
 #### Soft Deleted Models
 
 Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/{{version}}/eloquent#soft-deleting), and will instead return a 404 HTTP response. However, you can instruct the framework to allow soft deleted models by invoking the `withTrashed` method when defining your resource route:
@@ -223,6 +245,7 @@ Calling `withTrashed` with no arguments will allow soft deleted models for the `
     Route::resource('photos', PhotoController::class)->withTrashed(['show']);
 
 <a name="specifying-the-resource-model"></a>
+
 #### Specifying the Resource Model
 
 If you are using [route model binding](/docs/{{version}}/routing#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
@@ -232,6 +255,7 @@ php artisan make:controller PhotoController --model=Photo --resource
 ```
 
 <a name="generating-form-requests"></a>
+
 #### Generating Form Requests
 
 You may provide the `--requests` option when generating a resource controller to instruct Artisan to generate [form request classes](/docs/{{version}}/validation#form-request-validation) for the controller's storage and update methods:
@@ -241,6 +265,7 @@ php artisan make:controller PhotoController --model=Photo --resource --requests
 ```
 
 <a name="restful-partial-resource-routes"></a>
+
 ### Partial Resource Routes
 
 When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
@@ -256,6 +281,7 @@ When declaring a resource route, you may specify a subset of actions the control
     ]);
 
 <a name="api-resource-routes"></a>
+
 #### API Resource Routes
 
 When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
@@ -281,6 +307,7 @@ php artisan make:controller PhotoController --api
 ```
 
 <a name="restful-nested-resources"></a>
+
 ### Nested Resources
 
 Sometimes you may need to define routes to a nested resource. For example, a photo resource may have multiple comments that may be attached to the photo. To nest the resource controllers, you may use "dot" notation in your route declaration:
@@ -294,11 +321,13 @@ This route will register a nested resource that may be accessed with URIs like t
     /photos/{photo}/comments/{comment}
 
 <a name="scoping-nested-resources"></a>
+
 #### Scoping Nested Resources
 
 Laravel's [implicit model binding](/docs/{{version}}/routing#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by. For more information on how to accomplish this, please see the documentation on [scoping resource routes](#restful-scoping-resource-routes).
 
 <a name="shallow-nesting"></a>
+
 #### Shallow Nesting
 
 Often, it is not entirely necessary to have both the parent and the child IDs within a URI since the child ID is already a unique identifier. When using unique identifiers such as auto-incrementing primary keys to identify your models in URI segments, you may choose to use "shallow nesting":
@@ -324,6 +353,7 @@ This route definition will define the following routes:
 </div>
 
 <a name="restful-naming-resource-routes"></a>
+
 ### Naming Resource Routes
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your desired route names:
@@ -335,6 +365,7 @@ By default, all resource controller actions have a route name; however, you can 
     ]);
 
 <a name="restful-naming-resource-route-parameters"></a>
+
 ### Naming Resource Route Parameters
 
 By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis using the `parameters` method. The array passed into the `parameters` method should be an associative array of resource names and parameter names:
@@ -350,6 +381,7 @@ The example above generates the following URI for the resource's `show` route:
     /users/{admin_user}
 
 <a name="restful-scoping-resource-routes"></a>
+
 ### Scoping Resource Routes
 
 Laravel's [scoped implicit model binding](/docs/{{version}}/routing#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by:
@@ -367,6 +399,7 @@ This route will register a scoped nested resource that may be accessed with URIs
 When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `Photo` model has a relationship named `comments` (the plural of the route parameter name) which can be used to retrieve the `Comment` model.
 
 <a name="restful-localizing-resource-uris"></a>
+
 ### Localizing Resource URIs
 
 By default, `Route::resource` will create resource URIs using English verbs and plural rules. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\Providers\AppServiceProvider`:
@@ -389,6 +422,7 @@ Laravel's pluralizer supports [several different languages which you may configu
     /publicacion/{publicaciones}/editar
 
 <a name="restful-supplementing-resource-controllers"></a>
+
 ### Supplementing Resource Controllers
 
 If you need to add additional routes to a resource controller beyond the default set of resource routes, you should define those routes before your call to the `Route::resource` method; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
@@ -402,6 +436,7 @@ If you need to add additional routes to a resource controller beyond the default
 > Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
 
 <a name="singleton-resource-controllers"></a>
+
 ### Singleton Resource Controllers
 
 Sometimes, your application will have resources that may only have a single instance. For example, a user's "profile" can be edited or updated, but a user may not have more than one "profile". Likewise, an image may have a single "thumbnail". These resources are called "singleton resources", meaning one and only one instance of the resource may exist. In these scenarios, you may register a "singleton" resource controller:
@@ -444,6 +479,7 @@ In this example, the `photos` resource would receive all of the [standard resour
 </div>
 
 <a name="creatable-singleton-resources"></a>
+
 #### Creatable Singleton Resources
 
 Occasionally, you may want to define creation and storage routes for a singleton resource. To accomplish this, you may invoke the `creatable` method when registering the singleton resource route:
@@ -474,6 +510,7 @@ Route::singleton(...)->destroyable();
 ```
 
 <a name="api-singleton-resources"></a>
+
 #### API Singleton Resources
 
 The `apiSingleton` method may be used to register a singleton resource that will be manipulated via an API, thus rendering the `create` and `edit` routes unnecessary:
@@ -489,9 +526,11 @@ Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
 ```
 
 <a name="dependency-injection-and-controllers"></a>
+
 ## Dependency Injection and Controllers
 
 <a name="constructor-injection"></a>
+
 #### Constructor Injection
 
 The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:
@@ -513,6 +552,7 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
     }
 
 <a name="method-injection"></a>
+
 #### Method Injection
 
 In addition to constructor injection, you may also type-hint dependencies on your controller's methods. A common use-case for method injection is injecting the `Illuminate\Http\Request` instance into your controller methods:
