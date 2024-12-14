@@ -41,6 +41,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 ### Included Software
 
 <div class="content-list" markdown="1">
+
 - Ubuntu 16.04
 - Git
 - PHP 7.2
@@ -61,6 +62,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Mailhog
 - Elasticsearch (Optional)
 - ngrok
+
 </div>
 
 <a name="installation-and-setup"></a>
