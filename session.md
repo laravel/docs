@@ -18,11 +18,13 @@ The session configuration file is stored at `config/session.php`. Be sure to rev
 The session `driver` defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:
 
 <div class="content-list" markdown="1">
+
 - `file` - sessions are stored in `storage/framework/sessions`.
 - `cookie` - sessions are stored in secure, encrypted cookies.
 - `database` - sessions are stored in a database used by your application.
 - `memcached` / `redis` - sessions are stored in one of these fast, cache based stores.
 - `array` - sessions are stored in a simple PHP array and will not be persisted across requests.
+
 </div>
 
 > **Note:** The array driver is typically used for running [tests](/docs/{{version}}/testing) to prevent session data from persisting.
@@ -224,12 +226,14 @@ Note that your custom session driver should implement the `SessionHandlerInterfa
 Since these methods are not as readily understandable as the cache `StoreInterface`, let's quickly cover what each of the methods do:
 
 <div class="content-list" markdown="1">
+
 - The `open` method would typically be used in file based session store systems. Since Laravel ships with a `file` session driver, you will almost never need to put anything in this method. You can leave it as an empty stub. It is simply a fact of poor interface design (which we'll discuss later) that PHP requires us to implement this method.
 - The `close` method, like the `open` method, can also usually be disregarded. For most drivers, it is not needed.
 - The `read` method should return the string version of the session data associated with the given `$sessionId`. There is no need to do any serialization or other encoding when retrieving or storing session data in your driver, as Laravel will perform the serialization for you.
 - The `write` method should write the given `$data` string associated with the `$sessionId` to some persistent storage system, such as MongoDB, Dynamo, etc.
 - The `destroy` method should remove the data associated with the `$sessionId` from persistent storage.
 - The `gc` method should destroy all session data that is older than the given `$lifetime`, which is a UNIX timestamp. For self-expiring systems like Memcached and Redis, this method may be left empty.
+
 </div>
 
 Once the session driver has been registered, you may use the `mongo` driver in your `config/session.php` configuration file.
