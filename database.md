@@ -14,10 +14,12 @@
 Laravel makes interacting with databases extremely simple across a variety of database backends using either raw SQL, the [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel supports four databases:
 
 <div class="content-list" markdown="1">
+
 - MySQL
 - PostgreSQL
 - SQLite
 - SQL Server
+
 </div>
 
 <a name="configuration"></a>

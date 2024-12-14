@@ -57,9 +57,11 @@ If you are using the `laravel/browser-kit-testing` package, you should update th
 In addition, if you are using the following first-party Laravel packages, you should upgrade them to their latest release:
 
 <div class="content-list" markdown="1">
+
 - Dusk (Upgrade To `^3.0`)
 - Passport (Upgrade To `^6.0`)
 - Scout (Upgrade To `^4.0`)
+
 </div>
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.6 support.
