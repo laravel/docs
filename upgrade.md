@@ -341,11 +341,13 @@ The `request` helper will no longer retrieve nested keys. If needed, you may use
 Some authentication assertions were renamed for better consistency with the rest of the framework's assertions:
 
 <div class="content-list" markdown="1">
+
 - `seeIsAuthenticated` was renamed to `assertAuthenticated`.
 - `dontSeeIsAuthenticated` was renamed to `assertGuest`.
 - `seeIsAuthenticatedAs` was renamed to `assertAuthenticatedAs`.
 - `seeCredentials` was renamed to `assertCredentials`.
 - `dontSeeCredentials` was renamed to `assertInvalidCredentials`.
+
 </div>
 
 #### Mail Fake
