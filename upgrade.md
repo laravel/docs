@@ -1026,6 +1026,7 @@ If you are using the Amazon S3 filesystem driver, you will need to update the co
 The following Laravel features have been deprecated and will be removed entirely with the release of Laravel 5.2 in December 2015:
 
 <div class="content-list" markdown="1">
+
 - Route filters have been deprecated in preference of [middleware](/docs/{{version}}/middleware).
 - The `Illuminate\Contracts\Routing\Middleware` contract has been deprecated. No contract is required on your middleware. In addition, the `TerminableMiddleware` contract has also been deprecated. Instead of implementing the interface, simply define a `terminate` method on your middleware.
 - The `Illuminate\Contracts\Queue\ShouldBeQueued` contract has been deprecated in favor of `Illuminate\Contracts\Queue\ShouldQueue`.
@@ -1036,6 +1037,7 @@ The following Laravel features have been deprecated and will be removed entirely
 - The Eloquent and query builder `pluck` method has been deprecated and renamed to `value`.
 - The collection `fetch` method has been deprecated in favor of the `pluck` method.
 - The `array_fetch` helper has been deprecated in favor of the `array_pluck` method.
+
 </div>
 
 <a name="upgrade-5.0.16"></a>
