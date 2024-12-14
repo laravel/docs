@@ -21,6 +21,7 @@ Remember, bug reports are created in the hope that others with the same problem 
 The Laravel source code is managed on GitHub, and there are repositories for each of the Laravel projects:
 
 <div class="content-list" markdown="1">
+
 - [Laravel Application](https://github.com/laravel/laravel)
 - [Laravel Art](https://github.com/laravel/art)
 - [Laravel Documentation](https://github.com/laravel/docs)
@@ -36,6 +37,7 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
 - [Laravel Website](https://github.com/laravel/laravel.com)
+
 </div>
 
 <a name="core-development-discussion"></a>

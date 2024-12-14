@@ -47,6 +47,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 ### Included Software
 
 <div class="content-list" markdown="1">
+
 - Ubuntu 18.04
 - Git
 - PHP 7.3
@@ -72,6 +73,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Zend Z-Ray
 - Go
 - Minio
+
 </div>
 
 <a name="installation-and-setup"></a>
@@ -449,6 +451,7 @@ Supported `policy` values include: `none`, `download`, `upload`, and `public`.
 By default, the following ports are forwarded to your Homestead environment:
 
 <div class="content-list" markdown="1">
+
 - **SSH:** 2222 &rarr; Forwards To 22
 - **ngrok UI:** 4040 &rarr; Forwards To 4040
 - **HTTP:** 8000 &rarr; Forwards To 80
@@ -458,6 +461,7 @@ By default, the following ports are forwarded to your Homestead environment:
 - **MongoDB:** 27017 &rarr; Forwards To 27017
 - **Mailhog:** 8025 &rarr; Forwards To 8025
 - **Minio:** 9600 &rarr; Forwards To 9600
+
 </div>
 
 #### Forwarding Additional Ports
