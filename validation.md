@@ -175,9 +175,7 @@ An `$errors` variable is shared with all of your application's views by the `Ill
 
 So, in our example, the user will be redirected to our controller's `create` method when validation fails, allowing us to display the error messages in the view:
 
-```blade
-<!-- /resources/views/post/create.blade.php -->
-
+```blade filename=/resources/views/post/create.blade.php
 <h1>Create Post</h1>
 
 @if ($errors->any())
@@ -215,9 +213,7 @@ In this example, we used a traditional form to send data to the application. How
 
 You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly determine if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
 
-```blade
-<!-- /resources/views/post/create.blade.php -->
-
+```blade filename=/resources/views/post/create.blade.php
 <label for="title">Post Title</label>
 
 <input
