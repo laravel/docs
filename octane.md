@@ -94,7 +94,7 @@ services:
         - '443:443' # [tl! add]
         - '443:443/udp' # [tl! add]
     environment:
-      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --host=localhost --port=443 --admin-port=2019 --https" # [tl! add]
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --port=443 --admin-port=2019 --https" # [tl! add]
       XDG_CONFIG_HOME:  /var/www/html/config # [tl! add]
       XDG_DATA_HOME:  /var/www/html/data # [tl! add]
 ```
