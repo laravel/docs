@@ -133,9 +133,13 @@ Sanctum allows you to assign "abilities" to tokens. Abilities serve a similar pu
 
     return $user->createToken('token-name', ['server:update'])->plainTextToken;
 
-When handling an incoming request authenticated by Sanctum, you may determine if the token has a given ability using the `tokenCan` method:
+When handling an incoming request authenticated by Sanctum, you may determine if the token has a given ability using the `tokenCan` or `tokenCant` methods:
 
     if ($user->tokenCan('server:update')) {
+        // ...
+    }
+
+    if ($user->tokenCant('server:update')) {
         // ...
     }
 
