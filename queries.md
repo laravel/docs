@@ -820,7 +820,7 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 > You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
 
 <a name="advanced-where-clauses"></a>
-### Advanced Where Clauses
+## Advanced Where Clauses
 
 <a name="where-exists-clauses"></a>
 ### Where Exists Clauses
