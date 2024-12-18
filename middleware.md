@@ -99,11 +99,9 @@ However, this middleware would perform its task **after** the request is handled
     {
         public function handle(Request $request, Closure $next): Response
         {
-            $response = $next($request);
-
-            // Perform action
-
-            return $response;
+            return tap($next($request), function(Response $response) {
+                // Perform action
+            });
         }
     }
 
