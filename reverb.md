@@ -190,6 +190,8 @@ Next, add the Pulse cards for each recorder to your [Pulse dashboard](/docs/{{ve
 </x-pulse>
 ```
 
+Connection activity is recorded by polling for new updates on a periodic basis. To ensure this information is rendered correctly on the Pulse dashboard, you must run the `pulse:check` daemon on your Reverb server. If you are running Reverb in a [horizontally scaled](#scaling) configuration, you should only run this daemon on one of your servers.
+
 <a name="production"></a>
 ## Running Reverb in Production
 
