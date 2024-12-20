@@ -2720,7 +2720,7 @@ The `title` method converts the given string to `Title Case`:
     // A Nice Title Uses The Correct Case
 
 <a name="method-fluent-str-to-base64"></a>
-#### `toBase64()` {.collection-method}
+#### `toBase64` {.collection-method}
 
 The `toBase64` method converts the given string to Base64:
 
@@ -2731,9 +2731,9 @@ The `toBase64` method converts the given string to Base64:
     // TGFyYXZlbA==
 
 <a name="method-fluent-str-to-html-string"></a>
-#### `toHtmlString()` {.collection-method}
+#### `toHtmlString` {.collection-method}
 
-The `toHtmlString` method converts the given string to an instance of `Illuminate\Support\HtmlString`, which may be displayed in Blade templates:
+The `toHtmlString` method converts the given string to an instance of `Illuminate\Support\HtmlString`, which will not be escaped when rendered in Blade templates:
 
     use Illuminate\Support\Str;
 
