@@ -19,9 +19,7 @@ Of course, it's not practical to return entire HTML documents strings directly f
 
 Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. When using Laravel, view templates are usually written using the [Blade templating language](/docs/{{version}}/blade). A simple view might look something like this:
 
-```blade
-<!-- View stored in resources/views/greeting.blade.php -->
-
+```blade filenname=/resources/views/greeting.blade.php
 <html>
     <body>
         <h1>Hello, {{ $name }}</h1>
