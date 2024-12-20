@@ -152,12 +152,13 @@ If you are validating a subset of a form's inputs with Precognition, it can be u
 
 As we have seen, you can hook into an input's `change` event and validate individual inputs as the user interacts with them; however, you may need to validate inputs that the user has not yet interacted with. This is common when building a "wizard", where you want to validate all visible inputs, whether the user has interacted with them or not, before moving to the next step.
 
-To do this with Precognition, you should mark the fields you wish to validate as "touched" by passing their names to the `touch` method. Then, call the `validate` method with `onSuccess` or `onValidationError` callbacks:
+To do this with Precognition, you should call the `validate` method passing the field names you wish to validate to the `only` configuration key. You may handle the validation result with `onSuccess` or `onValidationError` callbacks:
 
 ```html
 <button
     type="button" 
-    @click="form.touch(['name', 'email', 'phone']).validate({
+    @click="form.validate({
+        only: ['name', 'email', 'phone'],
         onSuccess: (response) => nextStep(),
         onValidationError: (response) => /* ... */,
     })"
@@ -338,12 +339,13 @@ If you are validating a subset of a form's inputs with Precognition, it can be u
 
 As we have seen, you can hook into an input's `blur` event and validate individual inputs as the user interacts with them; however, you may need to validate inputs that the user has not yet interacted with. This is common when building a "wizard", where you want to validate all visible inputs, whether the user has interacted with them or not, before moving to the next step.
 
-To do this with Precognition, you should mark the fields you wish to validate as "touched" by passing their names to the `touch` method. Then, call the `validate` method with `onSuccess` or `onValidationError` callbacks:
+To do this with Precognition, you should call the `validate` method passing the field names you wish to validate to the `only` configuration key. You may handle the validation result with `onSuccess` or `onValidationError` callbacks:
 
 ```jsx
 <button
     type="button"
-    onClick={() => form.touch(['name', 'email', 'phone']).validate({
+    onClick={() => form.validate({
+        only: ['name', 'email', 'phone'],
         onSuccess: (response) => nextStep(),
         onValidationError: (response) => /* ... */,
     })}
@@ -531,12 +533,13 @@ You may also determine if an input has passed or failed validation by passing th
 
 As we have seen, you can hook into an input's `change` event and validate individual inputs as the user interacts with them; however, you may need to validate inputs that the user has not yet interacted with. This is common when building a "wizard", where you want to validate all visible inputs, whether the user has interacted with them or not, before moving to the next step.
 
-To do this with Precognition, you should mark the fields you wish to validate as "touched" by passing their names to the `touch` method. Then, call the `validate` method with `onSuccess` or `onValidationError` callbacks:
+To do this with Precognition, you should call the `validate` method passing the field names you wish to validate to the `only` configuration key. You may handle the validation result with `onSuccess` or `onValidationError` callbacks:
 
 ```html
 <button
     type="button"
-    @change="form.touch(['name', 'email', 'phone']).validate({
+    @click="form.validate({
+        only: ['name', 'email', 'phone'],
         onSuccess: (response) => nextStep(),
         onValidationError: (response) => /* ... */,
     })"
