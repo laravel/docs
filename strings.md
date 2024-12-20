@@ -634,6 +634,14 @@ The `Str::is` method determines if a given string matches a given pattern. Aster
 
     // false
 
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $matches = Str::is('*.jpg', 'photo.JPG', ignoreCase: true);     
+
+    // true
+
 <a name="method-str-is-ascii"></a>
 #### `Str::isAscii()` {.collection-method}
 
