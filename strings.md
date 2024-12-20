@@ -100,7 +100,6 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::take](#method-take)
 [Str::title](#method-title-case)
 [Str::toBase64](#method-str-to-base64)
-[Str::toHtmlString](#method-str-to-html-string)
 [Str::transliterate](#method-str-transliterate)
 [Str::trim](#method-str-trim)
 [Str::ltrim](#method-str-ltrim)
@@ -205,6 +204,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
 [toBase64](#method-fluent-str-to-base64)
+[toHtmlString](#method-fluent-str-to-html-string)
 [transliterate](#method-fluent-str-transliterate)
 [trim](#method-fluent-str-trim)
 [ltrim](#method-fluent-str-ltrim)
@@ -496,7 +496,7 @@ You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
     $doesntContain = Str::doesntContain('This is name', 'MY', ignoreCase: true);
 
     // true
-    
+
 <a name="method-deduplicate"></a>
 #### `Str::deduplicate()` {.collection-method}
 
@@ -1313,15 +1313,6 @@ The `Str::toBase64` method converts the given string to Base64:
 
     // TGFyYXZlbA==
 
-<a name="method-str-to-html-string"></a>
-#### `Str::toHtmlString()` {.collection-method}
-
-The `Str::toHtmlString` method converts the string instance to an instance of `Illuminate\Support\HtmlString`, which may be displayed in Blade templates:
-
-    use Illuminate\Support\Str;
-
-    $htmlString = Str::of('Nuno Maduro')->toHtmlString();
-
 <a name="method-str-transliterate"></a>
 #### `Str::transliterate()` {.collection-method}
 
@@ -1793,7 +1784,7 @@ You can disable case sensitivity by setting the `ignoreCase` argument to `true`:
     $containsAll = Str::of('This is my name')->containsAll(['MY', 'NAME'], ignoreCase: true);
 
     // true
-    
+
 <a name="method-fluent-str-deduplicate"></a>
 #### `deduplicate` {.collection-method}
 
@@ -2729,7 +2720,7 @@ The `title` method converts the given string to `Title Case`:
     // A Nice Title Uses The Correct Case
 
 <a name="method-fluent-str-to-base64"></a>
-#### `toBase64()` {.collection-method}
+#### `toBase64` {.collection-method}
 
 The `toBase64` method converts the given string to Base64:
 
@@ -2738,6 +2729,15 @@ The `toBase64` method converts the given string to Base64:
     $base64 = Str::of('Laravel')->toBase64();
 
     // TGFyYXZlbA==
+
+<a name="method-fluent-str-to-html-string"></a>
+#### `toHtmlString` {.collection-method}
+
+The `toHtmlString` method converts the given string to an instance of `Illuminate\Support\HtmlString`, which will not be escaped when rendered in Blade templates:
+
+    use Illuminate\Support\Str;
+
+    $htmlString = Str::of('Nuno Maduro')->toHtmlString();
 
 <a name="method-fluent-str-transliterate"></a>
 #### `transliterate` {.collection-method}
