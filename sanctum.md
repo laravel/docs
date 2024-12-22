@@ -288,6 +288,21 @@ axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 ```
 
+Axios will automatically decode the URI component of the token with the above settings. If you are using an alternative library, be sure to decode it before passing it to the header.
+
+```js
+// Example using fetch
+fetch('/my-protected-route', {
+    method: 'POST',
+    headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(token),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    },
+    credentials: 'include'
+})
+```
+
 Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may accomplish this by prefixing the domain with a leading `.` within your application's `config/session.php` configuration file:
 
     'domain' => '.domain.com',
