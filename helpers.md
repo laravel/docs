@@ -6,6 +6,7 @@
     - [Benchmarking](#benchmarking)
     - [Dates](#dates)
     - [Deferred Functions](#deferred-functions)
+    - [Fluent Interfaces](#fluent)
     - [Lottery](#lottery)
     - [Pipeline](#pipeline)
     - [Sleep](#sleep)
@@ -2524,6 +2525,109 @@ abstract class TestCase extends BaseTestCase
     }// [tl! add:end]
 }
 ```
+
+<a name="fluent"></a>
+### Fluent
+
+The `Illuminate\Support\Fluent` class provides a convenient, fluent interface for working with arrays by allowing you to chain method calls. This can be particularly useful when you need a simple object wrapper around array data, such as for configuration objects, simple data transfer objects, or working with API responses:
+
+```php
+$user = new Fluent([
+    'name' => 'Taylor',
+    'framework' => 'Laravel'
+]);
+
+$name = $user->name; // Taylor
+```
+
+<a name="fluent-accessing-data"></a>
+#### Accessing Data
+
+You may access the data in a `Fluent` instance as if it were an array or object. For example, you may access the data using the object's properties or array syntax:
+
+```php
+$fluent = new Fluent([
+    'name' => 'Taylor',
+    'theme' => 'dark'
+]);
+
+// As object properties
+$name = $fluent->name;
+
+// As array keys
+$name = $fluent['name'];
+
+// Using get() method
+$name = $fluent->get('name');
+
+// With a default value
+$role = $fluent->get('role', 'light');
+
+```
+
+The `Fluent` class also provides methods for retrieving data with specific types:
+
+```php
+$fluent->boolean('is_active');
+$fluent->integer('count');
+$fluent->float('price'); 
+$fluent->string('name'); 
+$fluent->collect('items'); 
+$fluent->date('created_at');
+$fluent->enum('status', StatusEnum::class);
+$fluent->enums('statuses', StatusesEnum::class);
+```
+
+Nested data may be accessed using dot notation using the `scope` method:
+
+```php
+$fluent = new Fluent([
+    'preferences' => [
+        'theme' => 'dark',
+    ],
+]);
+
+$theme = $fluent->scope('preferences.theme');
+```
+
+<a name="fluent-setting-data"></a>
+#### Setting Data
+
+Data may be set on the `Fluent` instance using several approaches:
+
+```php
+use Illuminate\Support\Fluent;
+
+$fluent = new Fluent();
+
+// Using method chaining
+$fluent->name('Taylor')
+       ->email('taylor@example.com');
+       ->framework('Laravel');
+
+// Using set() method
+$fluent->set('name', 'Taylor')
+    ->set('email', 'taylor@example.com')
+    ->set('framework', 'Laravel');
+
+// As object properties
+$fluent->name = 'Taylor';
+
+// As array keys
+$fluent['name'] = 'Taylor';
+```
+
+<a name="fluent-conversion"></a>
+#### Converting Fluent Instances
+
+You may convert a Fluent instance back to your expected format:
+
+```php
+$array = $fluent->toArray();
+$json = $fluent->toJson();
+$collection = $fluent->collect();
+```
+
 
 <a name="lottery"></a>
 ### Lottery
