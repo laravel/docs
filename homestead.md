@@ -57,6 +57,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 </style>
 
 <div id="software-list" markdown="1">
+
 - Ubuntu 18.04
 - Git
 - PHP 7.3
@@ -80,6 +81,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 - Xdebug
 - XHProf / Tideways / XHGui
 - wp-cli
+
 </div>
 
 <a name="optional-software"></a>
@@ -94,6 +96,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 </style>
 
 <div id="software-list" markdown="1">
+
 - Apache
 - Blackfire
 - Cassandra
@@ -118,6 +121,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 - RabbitMQ
 - Solr
 - Webdriver & Laravel Dusk Utilities
+
 </div>
 
 <a name="installation-and-setup"></a>
