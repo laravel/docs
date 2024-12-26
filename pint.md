@@ -178,7 +178,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.3]
+        php: [8.4]
 
     steps:
       - name: Checkout code
@@ -199,6 +199,4 @@ jobs:
 
       - name: Commit linted files
         uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Fixes coding style"
 ```
