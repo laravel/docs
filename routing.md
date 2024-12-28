@@ -67,6 +67,10 @@ The `install:api` command installs [Laravel Sanctum](/docs/{{version}}/sanctum),
         return $request->user();
     })->middleware('auth:sanctum');
 
+Alternatively, you may choose to install [Laravel Passport](/docs/{{version}}/passport) by utilizing the --passport command option. Passport provides a full OAuth2 server implementation. When using Passport, the generated routes/api.php file will utilize the auth:api middleware:
+
+    ->middleware('auth:api');
+
 The routes in `routes/api.php` are stateless and are assigned to the `api` [middleware group](/docs/{{version}}/middleware#laravels-default-middleware-groups). Additionally, the `/api` URI prefix is automatically applied to these routes, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your application's `bootstrap/app.php` file:
 
     ->withRouting(
