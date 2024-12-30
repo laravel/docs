@@ -1444,13 +1444,17 @@ When retrieving model records, you may wish to limit your results based on the a
 
     $posts = Post::doesntHave('comments')->get();
 
-If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to add additional query constraints to your `doesntHave` queries, such as inspecting the content of a comment:
+If you need even more power, you may use the `whereDoesntHave`, `orWhereDoesntHave`, `whereDoesntHaveRelation`, and `orWhereDoesntHaveRelation` methods to add additional query constraints to your `doesntHave` queries, such as inspecting the content of a comment or applying conditions to specific attributes of a relationship:
 
     use Illuminate\Database\Eloquent\Builder;
 
     $posts = Post::whereDoesntHave('comments', function (Builder $query) {
         $query->where('content', 'like', 'code%');
     })->get();
+
+    // Using whereDoesntHaveRelation
+
+    $posts = Post::whereDoesntHave('comments', 'content', 'like', 'code%' )->get();
 
 You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments; however, posts that have comments from authors that are not banned will be included in the results:
 
@@ -1460,10 +1464,14 @@ You may use "dot" notation to execute a query against a nested relationship. For
         $query->where('banned', 0);
     })->get();
 
+    // Using whereDoesntHaveRelation
+
+    $posts = Post::whereDoesntHave('comments.author', 'banned', 0)->get();
+
 <a name="querying-morph-to-relationships"></a>
 ### Querying Morph To Relationships
 
-To query the existence of "morph to" relationships, you may use the `whereHasMorph` and `whereDoesntHaveMorph` methods. These methods accept the name of the relationship as their first argument. Next, the methods accept the names of the related models that you wish to include in the query. Finally, you may provide a closure which customizes the relationship query:
+To query the existence of "morph to" relationships, you may use the `whereHasMorph`, `whereDoesntHaveMorph`, `whereMorphDoesntHaveRelation`, and `orWhereMorphDoesntHaveRelation` methods. These methods accept the name of the relationship as their first argument. Next, the methods accept the names of the related models that you wish to include in the query. Finally, you may provide a closure or specific conditions to customize the relationship query:
 
     use App\Models\Comment;
     use App\Models\Post;
@@ -1486,6 +1494,12 @@ To query the existence of "morph to" relationships, you may use the `whereHasMor
         function (Builder $query) {
             $query->where('title', 'like', 'code%');
         }
+    )->get();
+
+    // Retrieve comments where the associated post or video does not have a title like code% using whereMorphDoesntHaveRelation...
+
+    $comments = Comment::whereMorphDoesntHaveRelation(
+          'commentable', [Post::class, Video::class], 'title', 'like', 'code%'
     )->get();
 
 You may occasionally need to add query constraints based on the "type" of the related polymorphic model. The closure passed to the `whereHasMorph` method may receive a `$type` value as its second argument. This argument allows you to inspect the "type" of the query that is being built:
