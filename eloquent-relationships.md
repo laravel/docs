@@ -1452,10 +1452,6 @@ If you need even more power, you may use the `whereDoesntHave`, `orWhereDoesntHa
         $query->where('content', 'like', 'code%');
     })->get();
 
-    // Using whereDoesntHaveRelation
-
-    $posts = Post::whereDoesntHave('comments', 'content', 'like', 'code%' )->get();
-
 You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments; however, posts that have comments from authors that are not banned will be included in the results:
 
     use Illuminate\Database\Eloquent\Builder;
