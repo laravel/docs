@@ -1460,10 +1460,6 @@ You may use "dot" notation to execute a query against a nested relationship. For
         $query->where('banned', 0);
     })->get();
 
-    // Using whereDoesntHaveRelation
-
-    $posts = Post::whereDoesntHave('comments.author', 'banned', 0)->get();
-
 <a name="querying-morph-to-relationships"></a>
 ### Querying Morph To Relationships
 
@@ -1490,12 +1486,6 @@ To query the existence of "morph to" relationships, you may use the `whereHasMor
         function (Builder $query) {
             $query->where('title', 'like', 'code%');
         }
-    )->get();
-
-    // Retrieve comments where the associated post or video does not have a title like code% using whereMorphDoesntHaveRelation...
-
-    $comments = Comment::whereMorphDoesntHaveRelation(
-          'commentable', [Post::class, Video::class], 'title', 'like', 'code%'
     )->get();
 
 You may occasionally need to add query constraints based on the "type" of the related polymorphic model. The closure passed to the `whereHasMorph` method may receive a `$type` value as its second argument. This argument allows you to inspect the "type" of the query that is being built:
