@@ -73,7 +73,7 @@ Next, we will define a route that handles the form submission request from the "
             $request->only('email')
         );
 
-        return $status === Password::RESET_LINK_SENT
+        return $status === Password::ResetLinkSent
                     ? back()->with(['status' => __($status)])
                     : back()->withErrors(['email' => __($status)]);
     })->middleware('guest')->name('password.email');
@@ -136,7 +136,7 @@ Of course, we need to define a route to actually handle the password reset form 
             }
         );
 
-        return $status === Password::PASSWORD_RESET
+        return $status === Password::PasswordReset
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withErrors(['email' => [__($status)]]);
     })->middleware('guest')->name('password.update');
