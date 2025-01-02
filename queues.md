@@ -2437,6 +2437,7 @@ Sometimes, you may need to test that a queued job [releases itself back onto the
 Once the job's queue interactions have been faked, you may invoke the `handle` method on the job. After invoking the job, the `assertReleased`, `assertDeleted`, `assertNotDeleted`, `assertFailed`, `assertFailedWith`, and `assertNotFailed` methods may be used to make assertions against the job's queue interactions:
 
 ```php
+use App\Exceptions\CorruptedAudioException;
 use App\Jobs\ProcessPodcast;
 
 $job = (new ProcessPodcast)->withFakeQueueInteractions();
@@ -2447,7 +2448,7 @@ $job->assertReleased(delay: 30);
 $job->assertDeleted();
 $job->assertNotDeleted();
 $job->assertFailed();
-$job->assertFailedWith(Exception::class);
+$job->assertFailedWith(CorruptedAudioException::class);
 $job->assertNotFailed();
 ```
 
