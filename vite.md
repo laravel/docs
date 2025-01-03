@@ -414,9 +414,7 @@ If you are using Vite's code splitting feature with Inertia, we recommend config
 <a name="url-processing"></a>
 ### URL Processing
 
-When using Vite and referencing assets in your application's HTML, CSS, or JS, there are a couple of caveats to consider. First, if you reference assets with an absolute path, Vite will not include the asset in the build; therefore, you should ensure that the asset is available in your public directory. You should avoid using absolute paths when using a [dedicated CSS entrypoint](#configuring-vite) because, during development, browsers will try to load these paths from the Vite development server, where the CSS is hosted, rather than from your public directory.
-
-When referencing relative asset paths, you should remember that the paths are relative to the file where they are referenced. Any assets referenced via a relative path will be re-written, versioned, and bundled by Vite.
+When referencing assets in front-end frameworks (e.g., Vue, React), use relative paths to ensure Vite processes, versions, and bundles them. Avoid absolute paths unless the asset is located in the public directory, as Vite does not process assets with absolute paths.
 
 Consider the following project structure:
 
