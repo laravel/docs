@@ -340,13 +340,13 @@ Sometimes you may need to send a notification to someone who is not stored as a 
 If you would like to provide the recipient's name when sending an on-demand notification to the `mail` route, you may provide an array that contains the email address as the key and the name as the value of the first element in the array:
 
     Notification::route('mail', [
-        'barrett@example.com' => 'Barrett Blair',
+        ['barrett@example.com' => 'Barrett Blair'],
     ])->notify(new InvoicePaid($invoice));
 
 Using the `routes` method, you may provide ad-hoc routing information for multiple notification channels at once:
 
     Notification::routes([
-        'mail' => ['barrett@example.com' => 'Barrett Blair'],
+        'mail' => [['barrett@example.com' => 'Barrett Blair']],
         'vonage' => '5555555555',
     ])->notify(new InvoicePaid($invoice));
 
