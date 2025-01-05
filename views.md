@@ -56,6 +56,15 @@ php artisan make:view greeting
 
 The `.blade.php` extension informs the framework that the file contains a [Blade template](/docs/{{version}}/blade). Blade templates contain HTML as well as Blade directives that allow you to easily echo values, create "if" statements, iterate over data, and more.
 
+To specify the view's file extension, use the `--extension` option when generating the view:
+
+````shell
+php artisan make:view book --extension=html
+````
+
+> [!WARNING]  
+> Views created with extensions other than `.blade.php` will not be processed by the Blade templating engine. If you intend to use Blade directives, ensure the file has the .blade.php extension.
+
 Once you have created a view, you may return it from one of your application's routes or controllers using the global `view` helper:
 
     Route::get('/', function () {
