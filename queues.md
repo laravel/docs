@@ -2139,6 +2139,41 @@ If you would like to register an event listener that will be invoked when a job 
         }
     }
 
+
+Another useful event method in the `Queue` facade is `exceptionOccurred`, which is fired when a PHP `Exception` is thrown inside of a Job, which can be similarly registered in `AppServiceProvider`:
+
+    <?php
+
+    namespace App\Providers;
+    
+    use Illuminate\Support\Facades\Queue;
+    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Queue\Events\JobExceptionOccurred;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         */
+        public function register(): void
+        {
+            // ...
+        }
+
+        /**
+         * Bootstrap any application services.
+         */
+        public function boot(): void
+        {
+            Queue::exceptionOccurred(function (JobExceptionOccurred $event) {
+                // $event->connectionName
+                // $event->job
+                // $event->exception
+            });
+        }
+    }
+
+
 <a name="clearing-jobs-from-queues"></a>
 ## Clearing Jobs From Queues
 
