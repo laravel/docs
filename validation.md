@@ -53,12 +53,12 @@ To learn about Laravel's powerful validation features, let's look at a complete 
 
 First, let's assume we have the following routes defined in our `routes/web.php` file:
 
-    use App\Http\Controllers\PostController;
+    use App\Http\Controllers\BlogController;
 
-    Route::get('/post/create', [PostController::class, 'create']);
-    Route::post('/post', [PostController::class, 'store']);
+    Route::get('/blog/create', [BlogController::class, 'create']);
+    Route::post('/blog', [BlogController::class, 'store']);
 
-The `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database.
+The `GET` route will display a form for the user to create a new blog entry, while the `POST` route will store the new blog entry in the database.
 
 <a name="quick-creating-the-controller"></a>
 ### Creating the Controller
@@ -73,51 +73,51 @@ Next, let's take a look at a simple controller that handles incoming requests to
     use Illuminate\Http\Request;
     use Illuminate\View\View;
 
-    class PostController extends Controller
+    class BlogController extends Controller
     {
         /**
-         * Show the form to create a new blog post.
+         * Show the form to create a new blog entry.
          */
         public function create(): View
         {
-            return view('post.create');
+            return view('blog.create');
         }
 
         /**
-         * Store a new blog post.
+         * Store a new blog entry.
          */
         public function store(Request $request): RedirectResponse
         {
-            // Validate and store the blog post...
+            // Validate and store the blog entry...
 
-            $post = /** ... */
+            $blog = /** ... */
 
-            return to_route('post.show', ['post' => $post->id]);
+            return to_route('blog.show', ['blog' => $blog->id]);
         }
     }
 
 <a name="quick-writing-the-validation-logic"></a>
 ### Writing the Validation Logic
 
-Now we are ready to fill in our `store` method with the logic to validate the new blog post. To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an `Illuminate\Validation\ValidationException` exception will be thrown and the proper error response will automatically be sent back to the user.
+Now we are ready to fill in our `store` method with the logic to validate the new blog entry. To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an `Illuminate\Validation\ValidationException` exception will be thrown and the proper error response will automatically be sent back to the user.
 
 If validation fails during a traditional HTTP request, a redirect response to the previous URL will be generated. If the incoming request is an XHR request, a [JSON response containing the validation error messages](#validation-error-response-format) will be returned.
 
 To get a better understanding of the `validate` method, let's jump back into the `store` method:
 
     /**
-     * Store a new blog post.
+     * Store a new blog entry.
      */
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'title' => 'required|unique:posts|max:255',
+            'title' => 'required|unique:blogs|max:255',
             'body' => 'required',
         ]);
 
-        // The blog post is valid...
+        // The blog entry is valid...
 
-        return redirect('/posts');
+        return redirect('/blogs');
     }
 
 As you can see, the validation rules are passed into the `validate` method. Don't worry - all available validation rules are [documented](#available-validation-rules). Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
@@ -125,14 +125,14 @@ As you can see, the validation rules are passed into the `validate` method. Don'
 Alternatively, validation rules may be specified as arrays of rules instead of a single `|` delimited string:
 
     $validatedData = $request->validate([
-        'title' => ['required', 'unique:posts', 'max:255'],
+        'title' => ['required', 'unique:blogs', 'max:255'],
         'body' => ['required'],
     ]);
 
 In addition, you may use the `validateWithBag` method to validate a request and store any error messages within a [named error bag](#named-error-bags):
 
-    $validatedData = $request->validateWithBag('post', [
-        'title' => ['required', 'unique:posts', 'max:255'],
+    $validatedData = $request->validateWithBag('blog', [
+        'title' => ['required', 'unique:blogs', 'max:255'],
         'body' => ['required'],
     ]);
 
@@ -142,7 +142,7 @@ In addition, you may use the `validateWithBag` method to validate a request and 
 Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:
 
     $request->validate([
-        'title' => 'bail|required|unique:posts|max:255',
+        'title' => 'bail|required|unique:blogs|max:255',
         'body' => 'required',
     ]);
 
@@ -154,7 +154,7 @@ In this example, if the `unique` rule on the `title` attribute fails, the `max` 
 If the incoming HTTP request contains "nested" field data, you may specify these fields in your validation rules using "dot" syntax:
 
     $request->validate([
-        'title' => 'required|unique:posts|max:255',
+        'title' => 'required|unique:blogs|max:255',
         'author.name' => 'required',
         'author.description' => 'required',
     ]);
@@ -162,7 +162,7 @@ If the incoming HTTP request contains "nested" field data, you may specify these
 On the other hand, if your field name contains a literal period, you can explicitly prevent this from being interpreted as "dot" syntax by escaping the period with a backslash:
 
     $request->validate([
-        'title' => 'required|unique:posts|max:255',
+        'title' => 'required|unique:blogs|max:255',
         'v1\.0' => 'required',
     ]);
 
@@ -176,9 +176,9 @@ An `$errors` variable is shared with all of your application's views by the `Ill
 So, in our example, the user will be redirected to our controller's `create` method when validation fails, allowing us to display the error messages in the view:
 
 ```blade
-<!-- /resources/views/post/create.blade.php -->
+<!-- /resources/views/blog/create.blade.php -->
 
-<h1>Create Post</h1>
+<h1>Create Blog</h1>
 
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -190,7 +190,7 @@ So, in our example, the user will be redirected to our controller's `create` met
     </div>
 @endif
 
-<!-- Create Post Form -->
+<!-- Create Blog Form -->
 ```
 
 <a name="quick-customizing-the-error-messages"></a>
@@ -216,9 +216,9 @@ In this example, we used a traditional form to send data to the application. How
 You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly determine if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
 
 ```blade
-<!-- /resources/views/post/create.blade.php -->
+<!-- /resources/views/blog/create.blade.php -->
 
-<label for="title">Post Title</label>
+<label for="title">Blog Title</label>
 
 <input
     id="title"
@@ -235,7 +235,7 @@ You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly d
 If you are using [named error bags](#named-error-bags), you may pass the name of the error bag as the second argument to the `@error` directive:
 
 ```blade
-<input ... class="@error('title', 'post') is-invalid @enderror">
+<input ... class="@error('title', 'blog') is-invalid @enderror">
 ```
 
 <a name="repopulating-forms"></a>
@@ -259,7 +259,7 @@ Laravel also provides a global `old` helper. If you are displaying old input wit
 By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. Because of this, you will often need to mark your "optional" request fields as `nullable` if you do not want the validator to consider `null` values as invalid. For example:
 
     $request->validate([
-        'title' => 'required|unique:posts|max:255',
+        'title' => 'required|unique:blogs|max:255',
         'body' => 'required',
         'publish_at' => 'nullable|date',
     ]);
@@ -303,7 +303,7 @@ Below, you can review an example of the JSON response format for validation erro
 For more complex validation scenarios, you may wish to create a "form request". Form requests are custom request classes that encapsulate their own validation and authorization logic. To create a form request class, you may use the `make:request` Artisan CLI command:
 
 ```shell
-php artisan make:request StorePostRequest
+php artisan make:request StoreBlogRequest
 ```
 
 The generated form request class will be placed in the `app/Http/Requests` directory. If this directory does not exist, it will be created when you run the `make:request` command. Each form request generated by Laravel has two methods: `authorize` and `rules`.
@@ -318,7 +318,7 @@ As you might have guessed, the `authorize` method is responsible for determining
     public function rules(): array
     {
         return [
-            'title' => 'required|unique:posts|max:255',
+            'title' => 'required|unique:blogs|max:255',
             'body' => 'required',
         ];
     }
@@ -329,9 +329,9 @@ As you might have guessed, the `authorize` method is responsible for determining
 So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
 
     /**
-     * Store a new blog post.
+     * Store a new blog entry.
      */
-    public function store(StorePostRequest $request): RedirectResponse
+    public function store(StoreBlogRequest $request): RedirectResponse
     {
         // The incoming request is valid...
 
@@ -342,9 +342,9 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
         $validated = $request->safe()->only(['name', 'email']);
         $validated = $request->safe()->except(['name', 'email']);
 
-        // Store the blog post...
+        // Store the blog entry...
 
-        return redirect('/posts');
+        return redirect('/blogs');
     }
 
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a [JSON representation of the validation errors](#validation-error-response-format).
@@ -548,20 +548,20 @@ If you do not want to use the `validate` method on the request, you may create a
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Validator;
 
-    class PostController extends Controller
+    class BlogController extends Controller
     {
         /**
-         * Store a new blog post.
+         * Store a new blog entry.
          */
         public function store(Request $request): RedirectResponse
         {
             $validator = Validator::make($request->all(), [
-                'title' => 'required|unique:posts|max:255',
+                'title' => 'required|unique:blogs|max:255',
                 'body' => 'required',
             ]);
 
             if ($validator->fails()) {
-                return redirect('/post/create')
+                return redirect('/blog/create')
                             ->withErrors($validator)
                             ->withInput();
             }
@@ -573,9 +573,9 @@ If you do not want to use the `validate` method on the request, you may create a
             $validated = $validator->safe()->only(['name', 'email']);
             $validated = $validator->safe()->except(['name', 'email']);
 
-            // Store the blog post...
+            // Store the blog entry...
 
-            return redirect('/posts');
+            return redirect('/blogs');
         }
     }
 
@@ -597,16 +597,16 @@ The `stopOnFirstFailure` method will inform the validator that it should stop va
 If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the HTTP request's `validate` method, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an XHR request, a [JSON response will be returned](#validation-error-response-format):
 
     Validator::make($request->all(), [
-        'title' => 'required|unique:posts|max:255',
+        'title' => 'required|unique:blogs|max:255',
         'body' => 'required',
     ])->validate();
 
 You may use the `validateWithBag` method to store the error messages in a [named error bag](#named-error-bags) if validation fails:
 
     Validator::make($request->all(), [
-        'title' => 'required|unique:posts|max:255',
+        'title' => 'required|unique:blogs|max:255',
         'body' => 'required',
-    ])->validateWithBag('post');
+    ])->validateWithBag('blog');
 
 <a name="named-error-bags"></a>
 ### Named Error Bags
