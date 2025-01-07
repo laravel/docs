@@ -1227,6 +1227,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertValue](#assert-value)
 [assertValueIsNot](#assert-value-is-not)
 [assertAttribute](#assert-attribute)
+[assertAttributeMissing](#assert-attribute-missing)
 [assertAttributeContains](#assert-attribute-contains)
 [assertAttributeDoesntContain](#assert-attribute-doesnt-contain)
 [assertAriaAttribute](#assert-aria-attribute)
