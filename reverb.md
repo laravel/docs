@@ -57,7 +57,7 @@ You may also define the origins from which client requests may originate by upda
 ```php
 'apps' => [
     [
-        'id' => 'my-app-id',
+        'app_id' => 'my-app-id',
         'allowed_origins' => ['laravel.com'],
         // ...
     ]
