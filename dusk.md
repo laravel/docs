@@ -1630,6 +1630,14 @@ Assert that the element matching the given selector has the given value in the p
 
     $browser->assertAttribute($selector, $attribute, $value);
 
+<a name="assert-attribute-missing"></a>
+#### assertAttributeMissing
+
+Assert that the element matching the given selector is missing the provided attribute:
+
+    $browser->assertAttributeMissing($selector, $attribute);
+
+
 <a name="assert-attribute-contains"></a>
 #### assertAttributeContains
 
