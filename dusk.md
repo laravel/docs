@@ -1227,6 +1227,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertValue](#assert-value)
 [assertValueIsNot](#assert-value-is-not)
 [assertAttribute](#assert-attribute)
+[assertAttributeMissing](#assert-attribute-missing)
 [assertAttributeContains](#assert-attribute-contains)
 [assertAttributeDoesntContain](#assert-attribute-doesnt-contain)
 [assertAriaAttribute](#assert-aria-attribute)
@@ -1629,6 +1630,14 @@ Assert that the element matching the given selector does not have the given valu
 Assert that the element matching the given selector has the given value in the provided attribute:
 
     $browser->assertAttribute($selector, $attribute, $value);
+
+<a name="assert-attribute-missing"></a>
+#### assertAttributeMissing
+
+Assert that the element matching the given selector is missing the provided attribute:
+
+    $browser->assertAttributeMissing($selector, $attribute);
+
 
 <a name="assert-attribute-contains"></a>
 #### assertAttributeContains
