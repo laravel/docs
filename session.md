@@ -253,11 +253,11 @@ To mitigate this, Laravel provides functionality that allows you to limit concur
 
     Route::post('/profile', function () {
         // ...
-    })->block($lockSeconds = 10, $waitSeconds = 10)
+    })->block($lockSeconds = 10, $waitSeconds = 10);
 
     Route::post('/order', function () {
         // ...
-    })->block($lockSeconds = 10, $waitSeconds = 10)
+    })->block($lockSeconds = 10, $waitSeconds = 10);
 
 The `block` method accepts two optional arguments. The first argument accepted by the `block` method is the maximum number of seconds the session lock should be held for before it is released. Of course, if the request finishes executing before this time the lock will be released earlier.
 
@@ -267,7 +267,7 @@ If neither of these arguments is passed, the lock will be obtained for a maximum
 
     Route::post('/profile', function () {
         // ...
-    })->block()
+    })->block();
 
 <a name="adding-custom-session-drivers"></a>
 ## Adding Custom Session Drivers
