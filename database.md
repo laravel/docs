@@ -58,7 +58,7 @@ DB_FOREIGN_KEYS=false
 <a name="mysql-configuration"></a>
 #### MySQL Configuration
 
-By default, the MySQL connector runs an explicit `USE database_name` statement right after the connection has been establish (even though the database name is already passed in the DSN string). To disable this behavior, you can set the `use_db_after_connecting` config value to `false`.
+By default, the MySQL connector issues an explicit `USE database_name` statement after the connection is established, even though the DSN string already includes the database name. To disable this behavior, set the `use_db_after_connecting` configuration value to `false`.
 
 <a name="mssql-configuration"></a>
 #### Microsoft SQL Server Configuration
