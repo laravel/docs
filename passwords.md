@@ -136,7 +136,7 @@ Of course, we need to define a route to actually handle the password reset form 
             }
         );
 
-        return $status === Password::PasswordReset
+        return $status === Password::PASSWORD_RESET
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withErrors(['email' => [__($status)]]);
     })->middleware('guest')->name('password.update');
