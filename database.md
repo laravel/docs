@@ -55,6 +55,11 @@ DB_FOREIGN_KEYS=false
 > [!NOTE]  
 > If you use the [Laravel installer](/docs/{{version}}/installation#creating-a-laravel-project) to create your Laravel application and select SQLite as your database, Laravel will automatically create a `database/database.sqlite` file and run the default [database migrations](/docs/{{version}}/migrations) for you.
 
+<a name="mysql-configuration"></a>
+#### MySQL Configuration
+
+By default, the MySQL connector runs an explicit `USE database_name` statement right after the connection has been establish (even though the database name is already passed in the DSN string). To disable this behavior, you can set the `use_db_after_connecting` config value to `false`.
+
 <a name="mssql-configuration"></a>
 #### Microsoft SQL Server Configuration
 
