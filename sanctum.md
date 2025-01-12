@@ -320,6 +320,12 @@ Of course, if your user's session expires due to lack of activity, subsequent re
 > [!WARNING]  
 > You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard.
 
+> [!NOTE]  
+> If your login requests are failing with CORS errors, verify that your authentication endpoint (eg: '/login') is included in the paths configuration. This is particularly important when building SPA applications or consuming your API from different domains.
+```php
+'paths' => [ 'login', 'api/*', 'sanctum/csrf-cookie' ],
+```
+
 <a name="protecting-spa-routes"></a>
 ### Protecting Routes
 
