@@ -25,8 +25,10 @@
 - [Password Rehashing](#password-rehashing)
 - [Per-Second Rate Limiting](#per-second-rate-limiting)
 - [Spatie Once Package](#spatie-once-package)
+- [Queue Batching Configuration](#queue-batching-configuration)
 
 </div>
+
 
 <a name="low-impact-changes"></a>
 ## Low Impact Changes
@@ -128,7 +130,7 @@ However, we do **not recommend** that Laravel 10 applications upgrading to Larav
 
 **Likelihood Of Impact: Low**
 
-Laravel 11 will automatically rehash your user's passwords during authentication if your hashing algorithm's "work factor" has been updated since the password was last hashed. 
+Laravel 11 will automatically rehash your user's passwords during authentication if your hashing algorithm's "work factor" has been updated since the password was last hashed.
 
 Typically, this should not disrupt your application; however, if your `User` model's "password" field has a name other than `password`, you should specify the field's name via the model's `authPasswordName` property:
 
@@ -628,6 +630,23 @@ php artisan vendor:publish --tag=telescope-migrations
 **Likelihood Of Impact: Medium**
 
 Laravel 11 now provides its own [`once` function](/docs/{{version}}/helpers#method-once) to ensure that a given closure is only executed once. Therefore, if your application has a dependency on the `spatie/once` package, you should remove it from your application's `composer.json` file to avoid conflicts.
+
+<a name="queue-batching-configuration"></a>
+### Queue Batching Configuration
+
+**Likelihood Of Impact: Medium**
+
+In Laravel 11, the `queue.php` configuration file introduces a new `batching` key, which is required for managing job batching when using the database queue. This configuration ensures that job batches are stored and managed properly in the database.
+
+Make sure your `queue.php` file includes the following:
+
+```php
+'batching' => [
+    'database' => env('DB_CONNECTION', 'mysql'),  // The database connection to use
+    'table' => 'job_batches',  // The table where job batches will be stored
+],
+```
+This configuration is essential for processing batched jobs without errors, and it should be added to your queue configuration to avoid issues during job processing.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
