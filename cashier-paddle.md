@@ -558,7 +558,7 @@ Sometimes, you may need to create a checkout session for users that do not need 
     use Laravel\Paddle\Checkout;
 
     Route::get('/buy', function (Request $request) {
-        $checkout = Checkout::guest('pri_34567')
+        $checkout = Checkout::guest(['pri_34567'])
             ->returnTo(route('home'));
 
         return view('billing', ['checkout' => $checkout]);
