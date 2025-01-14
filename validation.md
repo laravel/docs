@@ -31,6 +31,7 @@
     - [Error Message Indexes and Positions](#error-message-indexes-and-positions)
 - [Validating Files](#validating-files)
 - [Validating Passwords](#validating-passwords)
+- [Validating Emails](#validating-emails)
 - [Custom Validation Rules](#custom-validation-rules)
     - [Using Rule Objects](#using-rule-objects)
     - [Using Closures](#using-closures)
@@ -2240,6 +2241,80 @@ Occasionally, you may want to attach additional validation rules to your default
 
         // ...
     });
+
+<a name="validating-emails"></a>
+## Validating Emails
+
+To ensure that emails are valid according to your application's requirements, you may use Laravel's `Email` rule via the ` Rule::email()` helper:
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+$validator = Validator::make($request->all(), [
+    'email' => ['required', Rule::email()],
+]);
+```
+The Email rule object allows you to easily customize how emails are validated for your application, such as specifying that emails require RFC compliance, DNS checks, native PHP filtering, or spoof detection:
+
+```php
+// Basic RFC compliance...
+Rule::email()->rfcCompliant();
+
+// Strict RFC compliance...
+Rule::email()->rfcCompliant(strict: true);
+
+// Check for valid MX records...
+Rule::email()->validateMxRecord();
+
+// Prevent spoofing...
+Rule::email()->preventSpoofing();
+```
+Of course, you may chain all the methods in the examples above:
+
+```php
+Rule::email()
+    ->rfcCompliant(strict: true)
+    ->validateMxRecord()
+    ->preventSpoofing();
+```
+
+<a name="defining-default-email-rules"></a>
+
+Defining Default Email Rules
+You may find it convenient to specify the default validation rules for emails in a single location of your application. You can easily accomplish this using the Email::defaults method, which accepts a closure. The closure given to the defaults method should return the default configuration of the Email rule. Typically, the defaults rule should be called within the boot method of one of your application's service providers:
+
+```php
+use Illuminate\Validation\Rules\Email;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Email::defaults(function () {
+        $rule = (new Email())->rfcCompliant(strict: true)->preventSpoofing(),
+
+        return $this->app->isProduction()
+                    ? $rule->validateMxRecord()
+                    : $rule;
+    });
+}
+```
+Then, when you would like to apply the default rules to a particular email undergoing validation, you may invoke the defaults method with no arguments:
+
+```php
+'email' => ['required', Email::defaults()],
+```
+Occasionally, you may want to attach additional validation rules to your default email validation rules. You may use the rules method to accomplish this:
+
+```php
+Email::defaults(function () {
+    return (new Email())->rfcCompliant(strict: true)
+      ->preventSpoofing()
+      ->rules(['ends_with:@example.com']);
+});
+```
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
