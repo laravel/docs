@@ -1241,6 +1241,8 @@ The `filter` validator, which uses PHP's `filter_var` function, ships with Larav
 > [!WARNING]  
 > The `dns` and `spoof` validators require the PHP `intl` extension.
 
+Since email validation can be quite complex, you may use (Rule::email(#validating-emails) to fluently construct the rule.
+
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...
 
@@ -2245,7 +2247,8 @@ Occasionally, you may want to attach additional validation rules to your default
 <a name="validating-emails"></a>
 ## Validating Emails
 
-To ensure that emails are valid according to your application's requirements, you may use Laravel's `Email` rule via the ` Rule::email()` helper:
+Laravel provides a variety of validation rules that may be used to validate uploaded files, such as `rfc`, `strict` and `dns`. While you are free to specify these rules individually when validating emails, Laravel also offers a fluent file validation rule builder that you may find convenient:
+To ensure that emails are valid according to your application's requirements, you may use `Rule` class to fluently define the rule via ` Rule::email()`:
 
 ```php
 use Illuminate\Support\Facades\Validator;
@@ -2278,6 +2281,9 @@ Rule::email()
     ->validateMxRecord()
     ->preventSpoofing();
 ```
+
+> [!WARNING]  
+> The `validateMxRecord()` and `preventSpoofing()` validators require the PHP `intl` extension.
 
 <a name="defining-default-email-rules"></a>
 
