@@ -55,7 +55,7 @@ If you would like Pint to simply inspect your code for style errors without actu
 ./vendor/bin/pint --test
 ```
 
-If you would like Pint to only modify the files that differ from the provided branch according to Git, you may use the `--diff=[branch]` option. This can be effectively used in your Continuous Integration environment (like GitHub actions) to save time by only inspecting new or modified files:
+If you would like Pint to only modify the files that differ from the provided branch according to Git, you may use the `--diff=[branch]` option. This can be effectively used in your CI environment (like GitHub actions) to save time by only inspecting new or modified files:
 
 ```shell
 ./vendor/bin/pint --diff=main
