@@ -1072,15 +1072,22 @@ If you wish to truncate an entire table, which will remove all records from the 
 
     DB::table('users')->truncate();
 
+#### Engine-specific notes
 <a name="table-truncation-and-mysql"></a>
-#### Table Truncation and MySQL
+##### MySQL
 
-To use truncate on a table referenced by foreign keys, you will need to temporarily [disable foreign key constrains](/docs/{{version}}/migrations#toggling-foreign-key-constraints). This will result in inconsistent data unless you call truncate recursively on all tables that have foreign-key references to this table.
+To use truncate on a table referenced by foreign keys, you will need to temporarily [disable foreign key constrains](/docs/{{version}}/migrations#toggling-foreign-key-constraints).
+
+> [!WARNING]
+> This will result in inconsistent data unless you call truncate recursively on all tables that have foreign-key references to this table.
 
 <a name="table-truncation-and-postgresql"></a>
-#### Table Truncation and PostgreSQL
+##### PostgreSQL
 
-When truncating a PostgreSQL database, the `CASCADE` behavior will be applied. This means that all records in all tables that have foreign-key references to this table (and recursively in all tables referencing them) will be deleted as well.
+When truncating a PostgreSQL database, the `CASCADE` behavior will be applied.
+
+> [!WARNING]
+> This means that all records in all tables that have foreign-key references to this table (and recursively in all tables referencing them) will be deleted as well.
 
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
