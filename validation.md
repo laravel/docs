@@ -2286,7 +2286,6 @@ Rule::email()
 > The `validateMxRecord()` and `preventSpoofing()` validators require the PHP `intl` extension.
 
 <a name="defining-default-email-rules"></a>
-
 #### Defining Default Email Rules
 You may find it convenient to specify the default validation rules for emails in a single location of your application. You can easily accomplish this using the Email::defaults method, which accepts a closure. The closure given to the defaults method should return the default configuration of the `Email` rule. Typically, the `defaults` rule should be called within the boot method of one of your application's service providers:
 
@@ -2324,99 +2323,95 @@ Email::defaults(function () {
 
 ### Use Cases & Examples
 
-Each method on the `Email` rule addresses different aspects of email validation. Below are guidelines and examples demonstrating **when** and **how** to use each rule:
+Each method on the `Email` rule addresses a different aspect of email validation. Below are guidelines and examples of **when** and **how** to use each rule.
 
 #### `rfcCompliant(strict: bool)`
 
-- **What It Does:**
-  - Ensures the email is valid according to [RFC standards](https://datatracker.ietf.org/doc/html/rfc5322).
-  - When `strict: true`, Laravel uses `NoRFCWarningsValidation` behind the scenes, which rejects edge-case addresses (such as `invalid.@example.com`).
+- **What It Does**
+  - Validates the email according to [RFC 5322](https://datatracker.ietf.org/doc/html/rfc5322).
+  - Passing `true` enforces strict RFC rules (rejecting edge-case addresses like `invalid.@example.com`).
 
-- **When To Use It:**
-  - Use **without** `strict: true` if you allow less common but technically valid email formats.
-  - Use **with** `strict: true` if you want **strict** RFC compliance, rejecting any non-standard formats.
+- **When To Use It**
+  - Use `rfcCompliant()` for typical RFC checks.
+  - Use `rfcCompliant(true)` to reject uncommon but technically valid formats.
 
-- **Example Code:**
+- **Example Code**
 ```php
-  // Basic RFC compliance:
+  // Basic RFC compliance
   Rule::email()->rfcCompliant();
 
-  // Strict RFC validation:
+  // Strict RFC validation
   Rule::email()->rfcCompliant(true);
 ```
 
 #### `validateMxRecord()`
 
-- **What It Does:**
-  - Checks if the domain has a valid MX record.
-  - This rule is useful for ensuring the email domain is valid and can receive emails.
+- **What It Does**
+  - Confirms the domain has a valid MX record so it can receive mail.
 
-- **When To Use It:**
-  - Use when you want to ensure the email domain is valid and can receive emails.
-  - Commonly used for sign-up flows or mission-critical notifications where deliverability matters.
+- **When To Use It**
+  - Use when deliverability is crucial (e.g. sign-ups, password resets).
 
-- **Example Code:**
+- **Example Code**
 ```php
-  // Email must have a valid DNS MX record:
   Rule::email()->validateMxRecord();
 ```
 
 #### `preventSpoofing()`
 
-- **What It Does:**
-  - Uses spoof checks (via `SpoofCheckValidation`) to detect homograph attacks or deceptive Unicode usage (e.g., Cyrillic р vs. Latin r).
-  - Helps prevent phishing or impersonation attempts where characters look alike but differ in ASCII/Unicode.
-  - This rule is useful for preventing spam and ensuring the email address is not disposable.
+- **What It Does**
+  - Detects homograph attacks or deceptive Unicode usage (e.g., Cyrillic “р” vs. Latin “r”), helping prevent spoofing or phishing.
 
-- **When To Use It:**
-- When there is a higher chance of spam or abuse. For example when the email address is shown publicly or when the email address is used for critical notifications.
+- **When To Use It**
+  - Useful in security-sensitive contexts or when addresses must not be impersonated.
 
-- **Example Code:**
-```php
-  // Prevent spoofing attacks:
+- **Example Code**  
   Rule::email()->preventSpoofing();
-```
+
+> **Note**  
+> The `validateMxRecord()` and `preventSpoofing()` methods require the **PHP `intl` extension**.
 
 #### `withNativeValidation(bool $allowUnicode = false)`
 
-- **What It Does:**
-  - Uses PHP's native `filter_var` function to validate the email.
-  - When `allowUnicode: true`, allows Unicode characters in the local part of the email address.
+- **What It Does**
+  - Applies PHP’s native `FILTER_VALIDATE_EMAIL`.
+  - When `allowUnicode` is `true`, some Unicode characters are allowed.
 
-- **When To Use It:**
-- Use when you want to rely on PHP's built-in email validation.
+- **When To Use It**
+  - If you prefer an additional pass of PHP’s built-in validation.
+  - Typically for ASCII-only emails unless you explicitly need Unicode.
 
-> [!NOTE]  
->  This used to be the default behavior in Laravel. However, it is less strict than RFC validation and may allow some edge-case but technically invalid email addresses. If you want to ensure strict RFC compliance, use `rfcCompliant(true)` instead.
-
-- **Example Code:**
+- **Example Code**
 ```php
-  // Use PHP's native email validation:
+  // Use native PHP validation (ASCII-only)
   Rule::email()->withNativeValidation();
 
-  // Allow Unicode characters in the local part:
+  // Allow Unicode
   Rule::email()->withNativeValidation(true);
 ```
 
+> [!NOTE]
+> `withNativeValidation()` is **less strict** than RFC validation and was previously the default in Laravel.
+> If you need **strict RFC compliance**, use `rfcCompliant(true)` instead.
+
 ### Combining Methods
+
 You can chain these methods to cover multiple scenarios. For example:
 
-```php
-$validator = Validator::make($request->all(), [
-    'email' => [
-        'required',
-        Rule::email()
-            ->rfcCompliant(true)     // Strict RFC validation
-            ->validateMxRecord()     // Ensures domain can receive mail
-            ->preventSpoofing()      // Guards against homograph attacks
-    ],
-]);
-```
+    $validator = Validator::make($request->all(), [
+        'email' => [
+            'required',
+            Rule::email()
+                ->rfcCompliant(true)   // Strict RFC validation
+                ->validateMxRecord()   // Check domain has MX record
+                ->preventSpoofing()    // Guard against homograph attacks
+        ],
+    ]);
 
-The above This covers common pitfalls, including invalid syntax, non-existent domains, and deceptive Unicode usage. Adjust the methods as needed for your application’s security, compliance, and user experience requirements.
+This covers invalid syntax, non-existent domains, and deceptive Unicode usage. Adjust the methods as needed for your application’s requirements.
 
-> [!NOTE]  
->  If you’d prefer **less strict** RFC enforcement (allowing edge-case but valid addresses), omit `true` in `->rfcCompliant(true)`. Likewise, if your application doesn’t require DNS validation or spoof checking, you can remove those methods from your chain.
+> **Note**  
+> If you prefer **less strict** RFC enforcement, omit `true` in `->rfcCompliant(true)`. If your application doesn’t require domain or spoof checks, you can remove those methods from your chain.
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
