@@ -941,6 +941,10 @@ Of course, you may build an Eloquent query to delete all models matching your qu
 
     $deleted = Flight::where('active', 0)->delete();
 
+To delete all models in table:
+
+    $deleted = Flight::query()->delete();
+
 > [!WARNING]  
 > When executing a mass delete statement via Eloquent, the `deleting` and `deleted` model events will not be dispatched for the deleted models. This is because the models are never actually retrieved when executing the delete statement.
 
