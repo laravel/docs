@@ -1165,15 +1165,6 @@ The query builder's `delete` method may be used to delete records from the table
 
     $deleted = DB::table('users')->where('votes', '>', 100)->delete();
 
-If you wish to truncate an entire table, which will remove all records from the table and reset the auto-incrementing ID to zero, you may use the `truncate` method:
-
-    DB::table('users')->truncate();
-
-<a name="table-truncation-and-postgresql"></a>
-#### Table Truncation and PostgreSQL
-
-When truncating a PostgreSQL database, the `CASCADE` behavior will be applied. This means that all foreign key related records in other tables will be deleted as well.
-
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
 
