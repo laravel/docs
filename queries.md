@@ -1072,7 +1072,9 @@ If you wish to truncate an entire table, which will remove all records from the 
 
     DB::table('users')->truncate();
 
+<a name="table-truncation-engine-specific-notes"></a>
 #### Engine-specific notes
+
 <a name="table-truncation-and-mysql"></a>
 ##### MySQL
 

@@ -914,6 +914,10 @@ You may call the `truncate` method to delete all of the model's associated datab
 
     Flight::truncate();
 
+> [!WARNING]
+> Using `truncate` method can lead to [data loss](/docs/{{version}}/queries#table-truncation-and-postgresql) or [inconsistency](/docs/{{version}}/queries#table-truncation-and-mysql).
+> [Deleting with queries](#deleting-models-using-queries) is better choice in most cases.
+
 <a name="deleting-an-existing-model-by-its-primary-key"></a>
 #### Deleting an Existing Model by its Primary Key
 
