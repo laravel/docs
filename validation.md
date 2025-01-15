@@ -1241,7 +1241,7 @@ The `filter` validator, which uses PHP's `filter_var` function, ships with Larav
 > [!WARNING]  
 > The `dns` and `spoof` validators require the PHP `intl` extension.
 
-Since email validation can be quite complex, you may use (Rule::email(#validating-emails) to fluently construct the rule.
+Since email validation can be quite complex, you may use [Rule::email()](#validating-emails) to fluently construct the rule.
 
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...
@@ -2247,7 +2247,7 @@ Occasionally, you may want to attach additional validation rules to your default
 <a name="validating-emails"></a>
 ## Validating Emails
 
-Laravel provides a variety of validation rules that may be used to validate uploaded files, such as `rfc`, `strict` and `dns`. While you are free to specify these rules individually when validating emails, Laravel also offers a fluent file validation rule builder that you may find convenient:
+Laravel provides a variety of validation rules that may be used to validate uploaded files, such as `rfc`, `strict` and `dns`. While you are free to specify these rules individually when validating emails, Laravel also offers a fluent email validation rule builder that you may find convenient:
 To ensure that emails are valid according to your application's requirements, you may use `Rule` class to fluently define the rule via ` Rule::email()`:
 
 ```php
@@ -2258,7 +2258,7 @@ $validator = Validator::make($request->all(), [
     'email' => ['required', Rule::email()],
 ]);
 ```
-The Email rule object allows you to easily customize how emails are validated for your application, such as specifying that emails require RFC compliance, DNS checks, native PHP filtering, or spoof detection:
+The `Email` rule object allows you to easily customize how emails are validated for your application, such as specifying that emails require RFC compliance, DNS checks, native PHP filtering, or spoof detection:
 
 ```php
 // Basic RFC compliance...
@@ -2287,8 +2287,8 @@ Rule::email()
 
 <a name="defining-default-email-rules"></a>
 
-Defining Default Email Rules
-You may find it convenient to specify the default validation rules for emails in a single location of your application. You can easily accomplish this using the Email::defaults method, which accepts a closure. The closure given to the defaults method should return the default configuration of the Email rule. Typically, the defaults rule should be called within the boot method of one of your application's service providers:
+#### Defining Default Email Rules
+You may find it convenient to specify the default validation rules for emails in a single location of your application. You can easily accomplish this using the Email::defaults method, which accepts a closure. The closure given to the defaults method should return the default configuration of the `Email` rule. Typically, the `defaults` rule should be called within the boot method of one of your application's service providers:
 
 ```php
 use Illuminate\Validation\Rules\Email;
