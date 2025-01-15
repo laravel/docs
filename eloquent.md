@@ -954,7 +954,7 @@ Of course, you may build an Eloquent query to delete all models matching your qu
 
     $deleted = Flight::where('active', 0)->delete();
 
-To delete all models you can build query without conditions:
+To delete all models in a table, you should execute a query without adding any conditions:
 
     $deleted = Flight::query()->delete();
 
