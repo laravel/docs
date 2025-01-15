@@ -1298,7 +1298,7 @@ php artisan migrate
 <a name="defining-batchable-jobs"></a>
 ### Defining Batchable Jobs
 
-To define a batchable job, you should [create a queueable job](#creating-jobs) as normal; however, you should add the `Illuminate\Bus\Batchable` trait to the job class. This trait provides access to a `batch` method which may be used to retrieve the current batch that the job is executing within:
+To define a batchable job, you should [create a queueable job](#creating-jobs) as normal; however, you should add the `Illuminate\Bus\Batchable` and the `\Illuminate\Queue\InteractsWithQueue` traits to the job class. The `Batchable` trait provides access to a `batch` method which may be used to retrieve the current batch that the job is executing within:
 
     <?php
 
@@ -1307,10 +1307,11 @@ To define a batchable job, you should [create a queueable job](#creating-jobs) a
     use Illuminate\Bus\Batchable;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Foundation\Queue\Queueable;
+    use Illuminate\Queue\InteractsWithQueue;
 
     class ImportCsv implements ShouldQueue
     {
-        use Batchable, Queueable;
+        use Batchable, InteractsWithQueue, Queueable;
 
         /**
          * Execute the job.
