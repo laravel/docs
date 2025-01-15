@@ -1191,7 +1191,7 @@ Alternatively, you may use the `lockForUpdate` method. A "for update" lock preve
             ->lockForUpdate()
             ->get();
 
-It is recommended, but not obligatory, to wrap pessimistic locks inside a [transaction](/docs/{{version}}/database#database-transactions), especially when you require the data retrieved to not be altered on the database until the entire transaction is finished. If the transaction fails, the locks will be freed and any changes will be rolled back:
+While not obligatory, it is recommended to wrap pessimistic locks within a [transaction](/docs/{{version}}/database#database-transactions). This ensures that the data retrieved remains unaltered in the database until the entire operation completes. In case of a failure, the transaction will roll back any changes and release the locks automatically:
 
     DB::transaction(function () {
         $sender = DB::table('users')
