@@ -1191,7 +1191,7 @@ Alternatively, you may use the `lockForUpdate` method. A "for update" lock preve
             ->lockForUpdate()
             ->get();
 
-It is recommended, but not obligatory, to wrap pessimistic locks inside a [transaction](/docs/{{version}}/database#database-transactions), especially when you require the data retrieved not to be altered on the database until the entire logic is executed. In case of failure, the locks will be freed and any changes will be rolled back.
+It is recommended, but not obligatory, to wrap pessimistic locks inside a [transaction](/docs/{{version}}/database#database-transactions), especially when you require the data retrieved to not be altered on the database until the entire transaction is finished. If the transaction fails, the locks will be freed and any changes will be rolled back:
 
     DB::transaction(function () {
         $sender = DB::table('users')
@@ -1203,7 +1203,7 @@ It is recommended, but not obligatory, to wrap pessimistic locks inside a [trans
             ->find(2);
 
         if ($user->balance < 100) {
-            throw new RuntimeException('The sender has not enough balance');
+            throw new RuntimeException('Balance too low.');
         }
         
         DB::table('users')
