@@ -2258,7 +2258,7 @@ $validator = Validator::make($request->all(), [
     'email' => ['required', Rule::email()],
 ]);
 ```
-The `Email` rule object allows you to easily customize how emails are validated for your application, such as specifying that emails require RFC compliance, DNS checks, native PHP filtering, or spoof detection:
+The `Email` rule object allows you to easily customize how emails are validated for your application, such as specifying that emails require RFC compliance, DNS checks, or spoof detection:
 
 ```php
 // Basic RFC compliance...
