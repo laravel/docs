@@ -2416,17 +2416,18 @@ Below is a single table showcasing **ten** example email addresses, highlighting
 - ✅ = Pass
 - ❌ = Fail</sub>
 
-| **Email Address**                | **rfcCompliant()** | **rfcCompliant(true)** | **withNativeValidation()** | **withNativeValidation(true)** | **validateMxRecord()** | **preventSpoofing()** |
-|----------------------------------|--------------------|------------------------|----------------------------|--------------------------------|------------------------|-----------------------|
-| `"has space"@example.com`        | ✅                  | ❌                      | ❌                          | ❌                              | ✅                      | ✅                     |
-| `abc."test"@example.com`         | ✅                  | ❌                      | ✅                          | ✅                              | ✅                      | ✅                     |
-| `test@example` <br>(no TLD)      | ✅                  | ❌                      | ❌                          | ❌                              | ❌                      | ✅                     |
-| `test@localhost` <br>(no TLD)    | ✅                  | ❌                      | ❌                          | ❌                              | ❌                      | ✅                     |
-| `plainaddress@example.com`       | ✅                  | ✅                      | ✅                          | ✅                              | ✅                      | ✅                     |
-| `tést@example.com`               | ✅                  | ✅                      | ❌                          | ✅                              | ✅                      | ✅                     |
-| `user@üñîçødé.com`               | ✅                  | ✅                      | ❌                          | ❌                              | ✅                      | ✅                     |
-| `user@subdomain.example.com`     | ✅                  | ✅                      | ✅                          | ✅                              | ✅                      | ✅                     |
-| `test@@example.com`              | ❌                  | ❌                      | ❌                          | ❌                              | ❌                      | ❌                     |
+| **Email Address**                    | **rfcCompliant()** | **rfcCompliant(true)** | **withNativeValidation()** | **withNativeValidation(true)** | **validateMxRecord()** | **preventSpoofing()** |
+|--------------------------------------|--------------------|------------------------|----------------------------|--------------------------------|------------------------|-----------------------|
+| `"has space"@example.com`            | ✅                  | ❌                      | ❌                          | ❌                              | ✅                      | ✅                     |
+| `abc."test"@example.com`             | ✅                  | ❌                      | ✅                          | ✅                              | ✅                      | ✅                     |
+| `test@example` <br>(no TLD)          | ✅                  | ❌                      | ❌                          | ❌                              | ❌                      | ✅                     |
+| `test@localhost` <br>(no TLD)        | ✅                  | ❌                      | ❌                          | ❌                              | ❌                      | ✅                     |
+| `plainaddress@example.com`           | ✅                  | ✅                      | ✅                          | ✅                              | ✅                      | ✅                     |
+| `tést@example.com`                   | ✅                  | ✅                      | ❌                          | ✅                              | ✅                      | ✅                     |
+| `user@üñîçødé.com`                   | ✅                  | ✅                      | ❌                          | ❌                              | ✅                      | ✅                     |
+| `admin@examрle.com` <br>(Cyrillic р) | ✅                  | ✅                      | ✅                          | ✅                              | ✅                      | ❌                     |
+| `admin@exam<U+0440>le.com`           | ✅                  | ✅                      | ✅                          | ✅                              | ✅                      | ❌                     |
+| `test@@example.com`                  | ❌                  | ❌                      | ❌                          | ❌                              | ❌                      | ❌                     |
 
 > [!NOTE]
 > `withNativeValidation()` is **less strict** than RFC validation and was previously the default in Laravel. If you need strict RFC compliance, use `rfcCompliant(strict: true)` instead.
