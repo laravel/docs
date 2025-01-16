@@ -2327,13 +2327,20 @@ Each method on the `Email` rule addresses a different aspect of email validation
 
 #### `rfcCompliant(strict: bool)`
 
-**What It Does**
+**What it does**
 - Validates the email according to [RFC 5322](https://datatracker.ietf.org/doc/html/rfc5322).
-- Passing `true` enforces stricter RFC checks (e.g., rejects `invalid.@example.com`).
+- Passing `true` enforces stricter RFC checks (e.g., rejects trailing dots or multiple consecutive dots).
 
-**When to Use It**
-- Use `rfcCompliant()` if you need standard RFC validation while allowing some unusual formats.
-- Use `rfcCompliant(true)` if you want to reject less typical but technically valid addresses.
+**When to use it**
+- Use `rfcCompliant()` for typical RFC validation while allowing some uncommon formats.
+- Use `rfcCompliant(true)` to reject unusual but technically valid addresses.
+
+**Examples**
+- **Addresses that pass on `rfcCompliant()` but fail on `rfcCompliant(true)`**
+  - `invalid.@example.com` (local part ends with a dot)
+  - `some..dots@example.com` (double dots in local part)
+- **Address that fail on both**
+  - `test@example..com` (double dots in the domain part) typically fails in *both* modes.
 
 **Example**
 ```php
@@ -2344,31 +2351,28 @@ Each method on the `Email` rule addresses a different aspect of email validation
   Rule::email()->rfcCompliant(true);
 ```
 
-- **Addresses that pass `rfcCompliant()` but fail `rfcCompliant(true)`:**
-- `invalid.@example.com` (local part ends with a dot)
-- `some..dots@example.com` (double dots in the local part)
-- `"has space"@example.com` (quoted local part containing spaces)
-- `test@example..com` (double dots in the domain)
-
 #### `validateMxRecord()`
 
-**What It Does**
+**What it does**
 - Ensures the domain has a valid MX record so it can receive mail.
 
-**When to Use It**
-- Useful when deliverability matters (e.g., sign-ups, password resets).
+**When to use it**
+- Especially useful for sign-ups, password resets, or anywhere deliverability matters.
 
+> [!NOTE]
+> This rule triggers DNS lookups, which adds latency to the request and can fail if the domain’s DNS is temporarily unreachable or down.
+
+**Example**
 ```php
-  **Example**  
   Rule::email()->validateMxRecord();
 ```
 
 #### `preventSpoofing()`
 
-**What It Does**
+**What it does**
 - Detects homograph or deceptive Unicode usage (e.g., Cyrillic “р” vs. Latin “r”) to prevent phishing or impersonation.
 
-**When to Use It**
+**When to use it**
 - Ideal in security-sensitive contexts or where email spoofing is a concern.
 
 **Example**  
@@ -2381,13 +2385,19 @@ Each method on the `Email` rule addresses a different aspect of email validation
 
 #### `withNativeValidation(bool $allowUnicode = false)`
 
-**What It Does**
+**What it does**
 - Uses PHP’s `FILTER_VALIDATE_EMAIL` for validation.
 - When `allowUnicode` is `true`, some Unicode characters are allowed.
 
-**When to Use It**
+**When to use it**
 - If you want an additional layer of PHP’s built-in validation.
 - Typically for ASCII addresses unless you explicitly allow Unicode.
+
+*Comparing `withNativeValidation(true)` vs. `rfcCompliant(true)`*
+- **`rfcCompliant(true)`** follows strict RFC rules, potentially rejecting addresses with unusual local parts or domain syntax.
+- **`withNativeValidation(true)`** might allow some Unicode addresses that strict RFC rules would reject. For example:
+  - `"Name With Space"@example.com` could fail under strict RFC but pass native validation if quoted properly.
+  - `user@üñîçødé.com` might fail strict RFC but pass `withNativeValidation(true)`.
 
 **Example**  
 ```php
