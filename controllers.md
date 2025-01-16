@@ -152,6 +152,9 @@ You may also define controller middleware as closures, which provides a convenie
         ];
     }
 
+> [!WARNING]  
+> Controllers implementing `Illuminate\Routing\Controllers\HasMiddleware` should not extend `Illuminate\Routing\Controller`.
+
 <a name="resource-controllers"></a>
 ## Resource Controllers
 
