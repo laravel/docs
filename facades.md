@@ -5,6 +5,7 @@
     - [Facades vs. Dependency Injection](#facades-vs-dependency-injection)
     - [Facades vs. Helper Functions](#facades-vs-helper-functions)
 - [How Facades Work](#how-facades-work)
+- [Create Custom Facades](#create-custom-facades)
 - [Real-Time Facades](#real-time-facades)
 - [Facade Class Reference](#facade-class-reference)
 
@@ -178,6 +179,96 @@ If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that the
     }
 
 Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. This method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
+
+> [!WARNING]  
+> Since the function arguments are passed through the facade not by reference, it is not possible to modify the variables.
+> 
+> This example will not work:  
+> 
+>     //Helper function
+>     public function example(&$var)
+>     {
+>        $var++;
+>     }
+> 
+>     //Calling through the facade will not work
+>     $var = 1
+>     ExampleFacade::example($var)
+>     //$var not change
+
+<a name="create-custom-facades"></a>
+## Create Custom Facades
+To create a custom facade in Laravel, you’ll need to perform the following steps:
+
+1. [Create a helper class](#create-a-helper-class)
+2. [Register helper in AppServiceProvider](#register-helper-in-appserviceprovider)
+3. [Create a facade class](#create-a-facade-class)
+4. [Using the facade](#using-the-facade)
+
+<a name="create-a-helper-class"></a>
+### Create a helper class
+Create an App/Examples folder and create a PHP helper class Example in that folder.
+
+    <?php
+    namespace App\Examples;
+    class Example
+    {
+         public function example()
+         {
+              return "Example";
+         }
+    }
+
+<a name="register-helper-in-appserviceprovider"></a>
+### Register helper in AppServiceProvider
+Then add the below code in your Service Provider at the register method.
+
+    /**
+    * Register any application services.
+    *
+    * @return void
+    */
+    public function register()
+    {
+      //
+      $this->app->bind(\App\Facades\Example::class, function(){
+        return new \App\Examples\Example();
+      });
+    }
+
+<a name="create-a-facade-class"></a>
+### Create a facade class
+Now create the class Example in the App/Facades folder, which extends Illuminate\Support\Facades\Facade and add the below code to this class.
+
+    <?php
+    namespace App\Facades;
+    use Illuminate\Support\Facades\Facade;
+
+    /**
+    * @mixin \App\Examples\Example
+    */
+    class Example extends Facade
+    {
+         protected static function getFacadeAccessor()
+         {
+              return self::class;
+         }
+    }
+
+> [!NOTE]  
+> When a class delegates unknown method calls and property accesses to a different class using __call, __callStatic and __get/__set, we can describe the relationship using @mixin PHPDoc tag
+
+<a name="using-the-facade"></a>
+### Using the facade
+Finally, we get to use the facade that we have created. Here is an example code to show its usage.
+
+In your web.php file:
+    
+    use App\Facades\Example;
+
+    Route::get('/example-custom-facade', function () {
+      return Example::example();
+    })->name('example-custom-facade');
 
 <a name="real-time-facades"></a>
 ## Real-Time Facades
