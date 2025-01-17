@@ -2339,7 +2339,9 @@ Each method on the `Email` rule addresses a different aspect of email validation
 
 **Email addresses that pass on `rfcCompliant()` but fail on `rfcCompliant(strict: true)`**
   - `test@example` (No TLD)
-  - `"has space"@example.com` (local part ends with a dot)
+  - `"has space"@example.com` (quoted local part with space)
+  - `name@[127.0.0.1]` (Local-part with domain-literal IPv4 address)
+  - `some(comment)@example.com` (Comment in local part)
 
 **Code sample**
 ```php
