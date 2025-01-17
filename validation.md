@@ -2342,7 +2342,7 @@ Each method on the `Email` rule addresses a different aspect of email validation
 - **Address that fail on both**
   - `test@example..com` (double dots in the domain part) typically fails in *both* modes.
 
-**Example**
+**Code sample**
 ```php
   // Basic RFC validation
   Rule::email()->rfcCompliant();
@@ -2362,7 +2362,7 @@ Each method on the `Email` rule addresses a different aspect of email validation
 > [!NOTE]
 > This rule triggers DNS lookups, which adds latency to the request and can fail if the domain’s DNS is temporarily unreachable or down.
 
-**Example**
+**Code sample**
 ```php
   Rule::email()->validateMxRecord();
 ```
@@ -2375,7 +2375,7 @@ Each method on the `Email` rule addresses a different aspect of email validation
 **When to use it**
 - Ideal in security-sensitive contexts or where email spoofing is a concern.
 
-**Example**  
+**Code sample**  
 ```php
   Rule::email()->preventSpoofing();
 ```
@@ -2399,7 +2399,7 @@ Each method on the `Email` rule addresses a different aspect of email validation
   - `"Name With Space"@example.com` could fail under strict RFC but pass native validation if quoted properly.
   - `user@üñîçødé.com` might fail strict RFC but pass `withNativeValidation(allowUnicode: true)`.
 
-**Example**  
+**Code sample**  
 ```php
   // Use native PHP validation (ASCII-only)
   Rule::email()->withNativeValidation();
