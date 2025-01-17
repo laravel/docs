@@ -2321,10 +2321,12 @@ Email::defaults(function () {
 });
 ```
 
+<a name="email-validation-use-cases-examples"></a>
 ### Use Cases & Examples
 
 Each method on the `Email` rule addresses a different aspect of email validation.
 
+<a name="rfc-compliant-email-validation"></a>
 #### `rfcCompliant(strict: bool)`
 
 **What it does**
@@ -2335,12 +2337,9 @@ Each method on the `Email` rule addresses a different aspect of email validation
 - Use `rfcCompliant()` for typical RFC validation while allowing some uncommon formats.
 - Use `rfcCompliant(strict: true)` to reject unusual but technically valid addresses.
 
-**Examples**
-- **Addresses that pass on `rfcCompliant()` but fail on `rfcCompliant(strict: true)`**
-  - `invalid.@example.com` (local part ends with a dot)
-  - `some..dots@example.com` (double dots in local part)
-- **Address that fail on both**
-  - `test@example..com` (double dots in the domain part) typically fails in *both* modes.
+**Email addresses that pass on `rfcCompliant()` but fail on `rfcCompliant(strict: true)`**
+  - `test@example` (No TLD)
+  - `"has space"@example.com` (local part ends with a dot)
 
 **Code sample**
 ```php
@@ -2351,6 +2350,7 @@ Each method on the `Email` rule addresses a different aspect of email validation
   Rule::email()->rfcCompliant(strict: true);
 ```
 
+<a name="validate-mx-record-email-validation"></a>
 #### `validateMxRecord()`
 
 **What it does**
@@ -2360,13 +2360,14 @@ Each method on the `Email` rule addresses a different aspect of email validation
 - Especially useful for sign-ups, password resets, or anywhere deliverability matters.
 
 > [!NOTE]
-> This rule triggers DNS lookups, which adds latency to the request and can fail if the domain’s DNS is temporarily unreachable or down.
+> This rule triggers DNS lookups, which adds latency to the request and can fail if the domain’s DNS is temporarily unreachable.
 
 **Code sample**
 ```php
   Rule::email()->validateMxRecord();
 ```
 
+<a name="prevent-spoofing-email-validation"></a>
 #### `preventSpoofing()`
 
 **What it does**
@@ -2383,7 +2384,8 @@ Each method on the `Email` rule addresses a different aspect of email validation
 > [!NOTE]
 > The `validateMxRecord()` and `preventSpoofing()` methods require the PHP `intl` extension.
 
-#### `withNativeValidation(bool $allowUnicode = false)`
+<a name="with-native-email-validation"></a>
+#### `withNativeValidation()`
 
 **What it does**
 - Uses PHP’s `FILTER_VALIDATE_EMAIL` for validation.
@@ -2393,11 +2395,13 @@ Each method on the `Email` rule addresses a different aspect of email validation
 - If you want an additional layer of PHP’s built-in validation.
 - Typically for ASCII addresses unless you explicitly allow Unicode.
 
-*Comparing `withNativeValidation(allowUnicode: true)` vs. `rfcCompliant(strict: true)`*
-- **`rfcCompliant(strict: true)`** follows strict RFC rules, potentially rejecting addresses with unusual local parts or domain syntax.
-- **`withNativeValidation(allowUnicode: true)`** might allow some Unicode addresses that strict RFC rules would reject. For example:
-  - `"Name With Space"@example.com` could fail under strict RFC but pass native validation if quoted properly.
-  - `user@üñîçødé.com` might fail strict RFC but pass `withNativeValidation(allowUnicode: true)`.
+**Email addresses that pass on `withNativeValidation()` but fail on `rfcCompliant(strict: true)`**
+- `abc."test"@example.com`
+- `name@[127.0.0.1]`
+- `"ab\\(c"@example.com`
+
+> [!NOTE]
+> `withNativeValidation()` is **less strict** than RFC validation and was previously the default in Laravel. If you need strict RFC compliance, use `rfcCompliant(strict: true)` instead.
 
 **Code sample**  
 ```php
@@ -2408,30 +2412,27 @@ Each method on the `Email` rule addresses a different aspect of email validation
   Rule::email()->withNativeValidation(allowUnicode: true);
 ```
 
-### Email Validation Rules Matrix
+<a name="email-validation-rule-matrix"></a>
+### Email Validation Rule Matrix
 
-Below is a single table showcasing **ten** example email addresses, highlighting whether each **passes** or **fails** the four similar validation methods:
+Below is a single table showcasing different email address formats, highlighting whether each ✅ **passes** or ❌ **fails** the validation methods:
 
-<sub>**Legend**
-- ✅ = Pass
-- ❌ = Fail</sub>
+| **Email Address**                    | **rfcCompliant()** | **rfcCompliant(strict: true)** | **withNativeValidation()** | **withNativeValidation(allowUnicode: true)** | **validateMxRecord()** | **preventSpoofing()** |
+|--------------------------------------|--------------------|--------------------------------|----------------------------|----------------------------------------------|------------------------|-----------------------|
+| `"has space"@example.com`            | ✅                  | ❌                              | ❌                          | ❌                                            | ✅                      | ✅                     |
+| `abc."test"@example.com`             | ✅                  | ❌                              | ✅                          | ✅                                            | ✅                      | ✅                     |
+| `"ab\\(c"@example.com`               | ✅                  | ❌                              | ✅                          | ✅                                            | ✅                      | ✅                     |
+| `name@[127.0.0.1]`                   | ✅                  | ❌                              | ✅                          | ✅                                            | ✅                      | ✅                     |
+| `test@example` <br>(no TLD)          | ✅                  | ❌                              | ❌                          | ❌                                            | ❌                      | ✅                     |
+| `test@localhost` <br>(no TLD)        | ✅                  | ❌                              | ❌                          | ❌                                            | ❌                      | ✅                     |
+| `plainaddress@example.com`           | ✅                  | ✅                              | ✅                          | ✅                                            | ✅                      | ✅                     |
+| `tést@example.com`                   | ✅                  | ✅                              | ❌                          | ✅                                            | ✅                      | ✅                     |
+| `user@üñîçødé.com`                   | ✅                  | ✅                              | ❌                          | ❌                                            | ✅                      | ✅                     |
+| `admin@examрle.com` <br>(Cyrillic р) | ✅                  | ✅                              | ✅                          | ✅                                            | ✅                      | ❌                     |
+| `admin@exam<U+0440>le.com`           | ✅                  | ✅                              | ✅                          | ✅                                            | ✅                      | ❌                     |
+| `test@@example.com`                  | ❌                  | ❌                              | ❌                          | ❌                                            | ❌                      | ❌                     |
 
-| **Email Address**                    | **rfcCompliant()** | **rfcCompliant(true)** | **withNativeValidation()** | **withNativeValidation(true)** | **validateMxRecord()** | **preventSpoofing()** |
-|--------------------------------------|--------------------|------------------------|----------------------------|--------------------------------|------------------------|-----------------------|
-| `"has space"@example.com`            | ✅                  | ❌                      | ❌                          | ❌                              | ✅                      | ✅                     |
-| `abc."test"@example.com`             | ✅                  | ❌                      | ✅                          | ✅                              | ✅                      | ✅                     |
-| `test@example` <br>(no TLD)          | ✅                  | ❌                      | ❌                          | ❌                              | ❌                      | ✅                     |
-| `test@localhost` <br>(no TLD)        | ✅                  | ❌                      | ❌                          | ❌                              | ❌                      | ✅                     |
-| `plainaddress@example.com`           | ✅                  | ✅                      | ✅                          | ✅                              | ✅                      | ✅                     |
-| `tést@example.com`                   | ✅                  | ✅                      | ❌                          | ✅                              | ✅                      | ✅                     |
-| `user@üñîçødé.com`                   | ✅                  | ✅                      | ❌                          | ❌                              | ✅                      | ✅                     |
-| `admin@examрle.com` <br>(Cyrillic р) | ✅                  | ✅                      | ✅                          | ✅                              | ✅                      | ❌                     |
-| `admin@exam<U+0440>le.com`           | ✅                  | ✅                      | ✅                          | ✅                              | ✅                      | ❌                     |
-| `test@@example.com`                  | ❌                  | ❌                      | ❌                          | ❌                              | ❌                      | ❌                     |
-
-> [!NOTE]
-> `withNativeValidation()` is **less strict** than RFC validation and was previously the default in Laravel. If you need strict RFC compliance, use `rfcCompliant(strict: true)` instead.
-
+<a name="combining-email-validation-methods"></a>
 ### Combining Methods
 
 You can **chain** multiple methods to cover various scenarios:
@@ -2441,15 +2442,12 @@ You can **chain** multiple methods to cover various scenarios:
       'email' => [
           'required',
           Rule::email()
-              ->rfcCompliant(strict: true)   // Strict RFC validation
-              ->validateMxRecord()   // Requires valid MX record
-              ->preventSpoofing()    // Detects homograph attacks
+              ->rfcCompliant(strict: true)  // Strict RFC validation
+              ->validateMxRecord()          // Requires valid MX record
+              ->preventSpoofing()           // Detects homograph attacks
       ],
   ]);
 ```
-
-> **Note**  
-> If you want **less strict** RFC enforcement, omit `true` in `->rfcCompliant(strict: true)`. If your application doesn’t require domain or spoof checks, you can remove those methods from the chain.
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
