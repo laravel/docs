@@ -1226,16 +1226,30 @@ The example above will apply the `RFCValidation` and `DNSCheckValidation` valida
 
 <div class="content-list" markdown="1">
 
-- `rfc`: `RFCValidation`
-- `strict`: `NoRFCWarningsValidation`
-- `dns`: `DNSCheckValidation`
-- `spoof`: `SpoofCheckValidation`
-- `filter`: `FilterEmailValidation`
-- `filter_unicode`: `FilterEmailValidation::unicode()`
+- `rfc`: `RFCValidation` - Validate the email address according to RFC 5322.
+- `strict`: `NoRFCWarningsValidation` - Validate the email according to RFC 5322, rejecting trailing periods or multiple consecutive periods.
+- `dns`: `DNSCheckValidation` - Ensure the email address's domain has a valid MX record.
+- `spoof`: `SpoofCheckValidation` - Ensure the email address does not contain homograph or deceptive Unicode characters.
+- `filter`: `FilterEmailValidation` - Ensure the email address is valid according to PHP's `filter_var` function.
+- `filter_unicode`: `FilterEmailValidation::unicode()` - Ensure the email address is valid according to PHP's `filter_var` function, allowing some Unicode characters.
 
 </div>
 
-The `filter` validator, which uses PHP's `filter_var` function, ships with Laravel and was Laravel's default email validation behavior prior to Laravel version 5.8.
+For convenience, email validation rules may be built using the fluent rule builder:
+
+```php
+use Illuminate\Validation\Rule;
+
+$request->validate([
+    'email' => [
+        'required',
+        Rule::email()
+            ->rfcCompliant(strict: false)
+            ->validateMxRecord()
+            ->preventSpoofing()
+    ],
+]);
+```
 
 > [!WARNING]  
 > The `dns` and `spoof` validators require the PHP `intl` extension.
