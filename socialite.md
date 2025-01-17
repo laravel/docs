@@ -104,19 +104,34 @@ Once the user has been retrieved from the OAuth provider, you may determine if t
 <a name="access-scopes"></a>
 ### Access Scopes
 
-Before redirecting the user, you may use the `scopes` method to specify the "scopes" that should be included in the authentication request. This method will merge all previously specified scopes with the scopes that you specify:
+You can specify the "scopes" that should be included in an authentication request when using Laravel Socialite. Scopes define the level of access requested for a user's data. By default, scopes defined in the configuration are respected, unless explicitly overwritten using the `setScopes` method.
 
-    use Laravel\Socialite\Facades\Socialite;
+#### Specifying Scopes in Configuration
+With this update, you can now define the scopes directly in the application's `config/services.php` file. The scopes defined in the configuration file will be automatically merged with the provider's default scopes. For example:
+``` php
+'github' => [
+    'client_id'     => env('GITHUB_CLIENT_ID'),
+    'client_secret' => env('GITHUB_CLIENT_SECRET'),
+    'redirect'      => env('GITHUB_REDIRECT_URI'),
+    'scopes'        => ['read:user', 'user:email'],
+],
+```
+This eliminates the need for setting scopes programmatically for common use cases. Scopes defined in the configuration file ensure that the required level of access for your application is easily managed.
+#### Programmatically Setting Scopes
+If needed, you can still set additional or custom scopes programmatically. Before redirecting the user, the `scopes` method can be used to specify the scopes you need. This method merges the provided scopes with those already defined either in the provider's class or in the configuration file:
+``` php
+use Laravel\Socialite\Facades\Socialite;
 
-    return Socialite::driver('github')
-        ->scopes(['read:user', 'public_repo'])
-        ->redirect();
-
-You can overwrite all existing scopes on the authentication request using the `setScopes` method:
-
-    return Socialite::driver('github')
-        ->setScopes(['read:user', 'public_repo'])
-        ->redirect();
+return Socialite::driver('github')
+    ->scopes(['read:user', 'public_repo'])
+    ->redirect();
+```
+You can overwrite all existing scopes (including those from the configuration) by using the `setScopes` method:
+``` php
+return Socialite::driver('github')
+    ->setScopes(['read:user', 'public_repo'])
+    ->redirect();
+```
 
 <a name="slack-bot-scopes"></a>
 ### Slack Bot Scopes
