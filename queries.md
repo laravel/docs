@@ -1193,7 +1193,7 @@ While not obligatory, it is recommended to wrap pessimistic locks within a [tran
             ->lockForUpdate();
             ->find(2);
 
-        if ($user->balance < 100) {
+        if ($sender->balance < 100) {
             throw new RuntimeException('Balance too low.');
         }
         
