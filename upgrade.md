@@ -39,6 +39,9 @@
 - [The `Enumerable` Contract](#the-enumerable-contract)
 - [The `UserProvider` Contract](#the-user-provider-contract)
 - [The `Authenticatable` Contract](#the-authenticatable-contract)
+- [The `AuthenticationException` Class](#the-authentication-exception-class)
+- [Auto Discovery of Event Listeners](#auto-discovery-of-event-listeners)
+- [Email Verification Notification on Registration](#email-verification-notification-on-registration)
 
 </div>
 
@@ -182,12 +185,23 @@ if ($e instanceof AuthenticationException) {
 }
 ```
 
+<a name="auto-discovery-of-event-listeners"></a>
+#### Auto Discovery of Event Listeners
+
+**Likelihood Of Impact: Very Low**
+
+Laravel will now automatically find and register event listeners by scanning the application's Listeners directory. When Laravel finds any listener class method that begins with `handle` or `__invoke`, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature. If you have listener classes in this folder that were intentionally not registered before, this could now cause Laravel to include them. You may prevent scanning for listeners altogether in `bootstrap/app.php`:
+
+```php
+->withEvents([])
+```
+
 <a name="email-verification-notification-on-registration"></a>
 #### Email Verification Notification on Registration
 
 **Likelihood Of Impact: Very Low**
 
-The `SendEmailVerificationNotification` listener is now automatically registered for the `Registered` event if it is not already registered by your application's `EventServiceProvider`. If your application's `EventServiceProvider` does not register this listener and you do not want Laravel to automatically register it for you, you should define an empty `configureEmailVerification` method in your application's `EventServiceProvider`:
+The `SendEmailVerificationNotification` listener is now [automatically registered](#auto-discovery-of-events) for the `Registered` event if it is not already registered by your application's `EventServiceProvider`. If your application's `EventServiceProvider` does not register this listener and you do not want Laravel to automatically register it for you, you should define an empty `configureEmailVerification` method in your application's `EventServiceProvider`:
 
 ```php
 protected function configureEmailVerification()
