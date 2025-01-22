@@ -102,6 +102,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [chunk](#method-chunk)
 [chunkWhile](#method-chunkwhile)
 [collapse](#method-collapse)
+[collapseWithKeys](#method-collapsewithkeys)
 [collect](#method-collect)
 [combine](#method-combine)
 [concat](#method-concat)
@@ -400,6 +401,28 @@ The `collapse` method collapses a collection of arrays into a single, flat colle
     $collapsed->all();
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+<a name="method-collapsewithkeys"></a>
+#### `collapseWithKeys()` {.collection-method}
+
+The `collapseWithKeys` method flattens a collection of arrays or collections into a single collection, keeping the original keys intact:
+
+    $collection = collect([
+      ['first'  => collect([1, 2, 3])],
+      ['second' => [4, 5, 6]],
+      ['third'  => collect([7, 8, 9])]
+    ]);
+
+
+    $collapsed = $collection->collapseWithKeys();
+
+    $collapsed->all();
+
+    // [
+    //     'first'  => [1, 2, 3],
+    //     'second' => [4, 5, 6],
+    //     'third'  => [7, 8, 9],
+    // ]
 
 <a name="method-collect"></a>
 #### `collect()` {.collection-method}
