@@ -863,81 +863,156 @@ Below is a list of all available validation rules and their function:
     }
 </style>
 
+#### Booleans
+
 <div class="collection-method-list" markdown="1">
 
 [Accepted](#rule-accepted)
 [Accepted If](#rule-accepted-if)
+[Boolean](#rule-boolean)
+[Declined](#rule-declined)
+[Declined If](#rule-declined-if)
+
+</div>
+
+#### Strings
+
+<div class="collection-method-list" markdown="1">
+
 [Active URL](#rule-active-url)
-[After (Date)](#rule-after)
-[After Or Equal (Date)](#rule-after-or-equal)
 [Alpha](#rule-alpha)
 [Alpha Dash](#rule-alpha-dash)
 [Alpha Numeric](#rule-alpha-num)
-[Array](#rule-array)
 [Ascii](#rule-ascii)
-[Bail](#rule-bail)
-[Before (Date)](#rule-before)
-[Before Or Equal (Date)](#rule-before-or-equal)
-[Between](#rule-between)
-[Boolean](#rule-boolean)
 [Confirmed](#rule-confirmed)
-[Contains](#rule-contains)
 [Current Password](#rule-current-password)
-[Date](#rule-date)
-[Date Equals](#rule-date-equals)
-[Date Format](#rule-date-format)
-[Decimal](#rule-decimal)
-[Declined](#rule-declined)
-[Declined If](#rule-declined-if)
 [Different](#rule-different)
-[Digits](#rule-digits)
-[Digits Between](#rule-digits-between)
-[Dimensions (Image Files)](#rule-dimensions)
-[Distinct](#rule-distinct)
 [Doesnt Start With](#rule-doesnt-start-with)
 [Doesnt End With](#rule-doesnt-end-with)
 [Email](#rule-email)
 [Ends With](#rule-ends-with)
 [Enum](#rule-enum)
+[Hex Color](#rule-hex-color)
+[In](#rule-in)
+[IP Address](#rule-ip)
+[JSON](#rule-json)
+[Lowercase](#rule-lowercase)
+[MAC Address](#rule-mac)
+[Max](#rule-max)
+[Min](#rule-min)
+[Not In](#rule-not-in)
+[Regular Expression](#rule-regex)
+[Not Regular Expression](#rule-not-regex)
+[Same](#rule-same)
+[Size](#rule-size)
+[Starts With](#rule-starts-with)
+[String](#rule-string)
+[Uppercase](#rule-uppercase)
+[URL](#rule-url)
+[ULID](#rule-ulid)
+[UUID](#rule-uuid)
+
+</div>
+
+#### Numbers
+
+<div class="collection-method-list" markdown="1">
+
+[Between](#rule-between)
+[Decimal](#rule-decimal)
+[Different](#rule-different)
+[Digits](#rule-digits)
+[Digits Between](#rule-digits-between)
+[Greater Than](#rule-gt)
+[Greater Than Or Equal](#rule-gte)
+[Integer](#rule-integer)
+[Less Than](#rule-lt)
+[Less Than Or Equal](#rule-lte)
+[Max](#rule-max)
+[Max Digits](#rule-max-digits)
+[Min](#rule-min)
+[Min Digits](#rule-min-digits)
+[Multiple Of](#rule-multiple-of)
+[Numeric](#rule-numeric)
+[Same](#rule-same)
+[Size](#rule-size)
+
+</div>
+
+#### Arrays
+
+<div class="collection-method-list" markdown="1">
+
+[Array](#rule-array)
+[Between](#rule-between)
+[Contains](#rule-contains)
+[Distinct](#rule-distinct)
+[In Array](#rule-in-array)
+[List](#rule-list)
+[Max](#rule-max)
+[Min](#rule-min)
+[Size](#rule-size)
+
+</div>
+
+#### Dates
+
+<div class="collection-method-list" markdown="1">
+
+[After](#rule-after)
+[After Or Equal](#rule-after-or-equal)
+[Before](#rule-before)
+[Before Or Equal](#rule-before-or-equal)
+[Date](#rule-date)
+[Date Equals](#rule-date-equals)
+[Date Format](#rule-date-format)
+[Different](#rule-different)
+[Timezone](#rule-timezone)
+
+</div>
+
+#### Files
+
+<div class="collection-method-list" markdown="1">
+
+[Between](#rule-between)
+[Dimensions](#rule-dimensions)
+[Extensions](#rule-extensions)
+[File](#rule-file)
+[Image](#rule-image)
+[Max](#rule-max)
+[MIME Types](#rule-mimetypes)
+[MIME Type By File Extension](#rule-mimes)
+[Size](#rule-size)
+
+</div>
+
+#### Database
+
+<div class="collection-method-list" markdown="1">
+
+[Exists](#rule-exists)
+[Unique](#rule-unique)
+
+</div>
+
+#### Utilities
+
+<div class="collection-method-list" markdown="1">
+
+[Bail](#rule-bail)
 [Exclude](#rule-exclude)
 [Exclude If](#rule-exclude-if)
 [Exclude Unless](#rule-exclude-unless)
 [Exclude With](#rule-exclude-with)
 [Exclude Without](#rule-exclude-without)
-[Exists (Database)](#rule-exists)
-[Extensions](#rule-extensions)
-[File](#rule-file)
 [Filled](#rule-filled)
-[Greater Than](#rule-gt)
-[Greater Than Or Equal](#rule-gte)
-[Hex Color](#rule-hex-color)
-[Image (File)](#rule-image)
-[In](#rule-in)
-[In Array](#rule-in-array)
-[Integer](#rule-integer)
-[IP Address](#rule-ip)
-[JSON](#rule-json)
-[Less Than](#rule-lt)
-[Less Than Or Equal](#rule-lte)
-[List](#rule-list)
-[Lowercase](#rule-lowercase)
-[MAC Address](#rule-mac)
-[Max](#rule-max)
-[Max Digits](#rule-max-digits)
-[MIME Types](#rule-mimetypes)
-[MIME Type By File Extension](#rule-mimes)
-[Min](#rule-min)
-[Min Digits](#rule-min-digits)
 [Missing](#rule-missing)
 [Missing If](#rule-missing-if)
 [Missing Unless](#rule-missing-unless)
 [Missing With](#rule-missing-with)
 [Missing With All](#rule-missing-with-all)
-[Multiple Of](#rule-multiple-of)
-[Not In](#rule-not-in)
-[Not Regex](#rule-not-regex)
 [Nullable](#rule-nullable)
-[Numeric](#rule-numeric)
 [Present](#rule-present)
 [Present If](#rule-present-if)
 [Present Unless](#rule-present-unless)
@@ -947,7 +1022,6 @@ Below is a list of all available validation rules and their function:
 [Prohibited If](#rule-prohibited-if)
 [Prohibited Unless](#rule-prohibited-unless)
 [Prohibits](#rule-prohibits)
-[Regular Expression](#rule-regex)
 [Required](#rule-required)
 [Required If](#rule-required-if)
 [Required If Accepted](#rule-required-if-accepted)
@@ -958,17 +1032,7 @@ Below is a list of all available validation rules and their function:
 [Required Without](#rule-required-without)
 [Required Without All](#rule-required-without-all)
 [Required Array Keys](#rule-required-array-keys)
-[Same](#rule-same)
-[Size](#rule-size)
 [Sometimes](#validating-when-present)
-[Starts With](#rule-starts-with)
-[String](#rule-string)
-[Timezone](#rule-timezone)
-[Unique (Database)](#rule-unique)
-[Uppercase](#rule-uppercase)
-[URL](#rule-url)
-[ULID](#rule-ulid)
-[UUID](#rule-uuid)
 
 </div>
 
