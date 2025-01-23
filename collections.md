@@ -1352,18 +1352,18 @@ The `intersectAssoc` method compares the original collection against another col
 <a name="method-intersectassocusing"></a>
 #### `intersectAssocUsing()` {.collection-method}
 
-The `intersectAssocUsing` method compares the original collection against another collection or `array`, returning the key/value pairs that are present in both, using a custom comparison callback to determine equality for both keys and values
+The `intersectAssocUsing` method compares the original collection against another collection or `array`, returning the key / value pairs that are present in both, using a custom comparison callback to determine equality for both keys and values:
 
     $collection = collect([
         'color' => 'red',
         'Size' => 'M',
-        'material' => 'cotton'
+        'material' => 'cotton',
     ]);
 
     $intersect = $collection->intersectAssocUsing([
         'color' => 'blue',
         'size' => 'M',
-        'material' => 'polyester'
+        'material' => 'polyester',
     ], function ($a, $b) {
         return strcasecmp($a, $b);
     });
