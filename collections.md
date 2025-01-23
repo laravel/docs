@@ -142,7 +142,9 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [hasAny](#method-hasany)
 [implode](#method-implode)
 [intersect](#method-intersect)
+[intersectUsing](#method-intersectusing)
 [intersectAssoc](#method-intersectAssoc)
+[intersectAssocUsing](#method-intersectassocusing)
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)
@@ -1311,6 +1313,21 @@ The `intersect` method removes any values from the original collection that are 
 > [!NOTE]  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-intersect).
 
+<a name="method-intersectusing"></a>
+#### `intersectUsing()` {.collection-method}
+
+The `intersectUsing` method removes any values from the original collection that are not present in the given `array` or collection, using a custom callback to compare the values. The resulting collection will preserve the original collection's keys:
+
+    $collection = collect(['Desk', 'Sofa', 'Chair']);
+
+    $intersect = $collection->intersectUsing(['desk', 'chair', 'bookcase'], function ($a, $b) {
+        return strcasecmp($a, $b);
+    });
+    
+    $intersect->all();
+    
+    // [0 => 'Desk', 2 => 'Chair']
+
 <a name="method-intersectAssoc"></a>
 #### `intersectAssoc()` {.collection-method}
 
@@ -1331,6 +1348,27 @@ The `intersectAssoc` method compares the original collection against another col
     $intersect->all();
 
     // ['size' => 'M']
+
+<a name="method-intersectassocusing"></a>
+#### `intersectAssocUsing()` {.collection-method}
+
+The `intersectAssocUsing` method compares the original collection against another collection or `array`, returning the key/value pairs that are present in both, using a custom comparison callback to determine equality for both keys and values
+
+    $collection = collect([
+        'color' => 'red',
+        'Size' => 'M',
+        'material' => 'cotton'
+    ]);
+
+    $intersect = $collection->intersectAssocUsing([
+        'color' => 'blue',
+        'size' => 'M',
+        'material' => 'polyester'
+    ], function ($a, $b) {
+        return strcasecmp($a, $b);
+    });
+
+    // ['Size' => 'M']
 
 <a name="method-intersectbykeys"></a>
 #### `intersectByKeys()` {.collection-method}
