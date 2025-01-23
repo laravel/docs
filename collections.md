@@ -1368,6 +1368,8 @@ The `intersectAssocUsing` method compares the original collection against anothe
         return strcasecmp($a, $b);
     });
 
+    $intersect->all();
+
     // ['Size' => 'M']
 
 <a name="method-intersectbykeys"></a>
