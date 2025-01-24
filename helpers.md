@@ -25,6 +25,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 ### Arrays
 
 <div class="collection-method-list" markdown="1">
+
 [array_add](#method-array-add)
 [array_collapse](#method-array-collapse)
 [array_divide](#method-array-divide)
@@ -44,11 +45,13 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_where](#method-array-where)
 [head](#method-head)
 [last](#method-last)
+
 </div>
 
 ### Paths
 
 <div class="collection-method-list" markdown="1">
+
 [app_path](#method-app-path)
 [base_path](#method-base-path)
 [config_path](#method-config-path)
@@ -56,11 +59,13 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [elixir](#method-elixir)
 [public_path](#method-public-path)
 [storage_path](#method-storage-path)
+
 </div>
 
 ### Strings
 
 <div class="collection-method-list" markdown="1">
+
 [camel_case](#method-camel-case)
 [class_basename](#method-class-basename)
 [e](#method-e)
@@ -78,21 +83,25 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [studly_case](#method-studly-case)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
+
 </div>
 
 ### URLs
 
 <div class="collection-method-list" markdown="1">
+
 [action](#method-action)
 [asset](#method-asset)
 [secure_asset](#method-secure-asset)
 [route](#method-route)
 [url](#method-url)
+
 </div>
 
 ### Miscellaneous
 
 <div class="collection-method-list" markdown="1">
+
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
@@ -113,6 +122,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [value](#method-value)
 [view](#method-view)
 [with](#method-with)
+
 </div>
 
 <a name="method-listing"></a>
