@@ -486,6 +486,7 @@ Below is a list of all available validation rules and their function:
 [Timezone](#rule-timezone)
 [Unique (Database)](#rule-unique)
 [URL](#rule-url)
+
 </div>
 
 <a name="rule-accepted"></a>
