@@ -96,6 +96,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 
 [after](#method-after)
 [all](#method-all)
+[add](#method-add)
 [average](#method-average)
 [avg](#method-avg)
 [before](#method-before)
@@ -168,6 +169,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [mode](#method-mode)
 [multiply](#method-multiply)
 [nth](#method-nth)
+[offsetExists](#method-offsetexists)
 [only](#method-only)
 [pad](#method-pad)
 [partition](#method-partition)
@@ -218,6 +220,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [times](#method-times)
 [toArray](#method-toarray)
 [toJson](#method-tojson)
+[toBase](#method-tobase)
 [transform](#method-transform)
 [undot](#method-undot)
 [union](#method-union)
@@ -298,6 +301,17 @@ The `all` method returns the underlying array represented by the collection:
     collect([1, 2, 3])->all();
 
     // [1, 2, 3]
+
+<a name="method-add"></a>
+#### `add()` {.collection-method}
+
+The `add` method appends an item to the collection and returns the collection instance:
+
+    $collection = collect([1, 2, 3]);
+    
+    $collection->add(4);
+
+    // [1, 2, 3, 4]
 
 <a name="method-average"></a>
 #### `average()` {.collection-method}
@@ -1820,6 +1834,17 @@ For the inverse of `only`, see the [except](#method-except) method.
 > [!NOTE]  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-only).
 
+<a name="method-offsetexists"></a>
+#### `offsetExists()` {.collection-method}
+
+The `offsetExists` method checks if a key exists in the collection:
+
+    $collection = collect(['color' => 'red', 'size' => 'M']);
+
+    $collection->offsetExists('color'); // true
+
+    $collection->offsetExists('material'); // false    
+
 <a name="method-pad"></a>
 #### `pad()` {.collection-method}
 
@@ -2936,6 +2961,19 @@ The `toJson` method converts the collection into a JSON serialized string:
     $collection->toJson();
 
     // '{"name":"Desk", "price":200}'
+
+<a name="method-tobase"></a>
+#### `toBase()` {.collection-method}
+
+The `toBase` method converts a custom collection into a base Laravel Collection:
+
+    $customCollection = new CustomCollection(['color' => 'red', 'size' => 'M']);
+
+    $baseCollection = $customCollection->toBase();
+
+    $baseCollection->all();
+
+    // ['color' => 'red', 'size' => 'M']
 
 <a name="method-transform"></a>
 #### `transform()` {.collection-method}
