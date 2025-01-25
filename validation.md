@@ -2219,36 +2219,21 @@ The `File::image()` rule makes sure that the file under validation must be an im
 > By default the File::image() rule does not allow SVG files due to possible XSS attacks.
 > If you need to allow SVG files, you can pass `allowSvg: true` as argument, e.g. `File::image(allowSvg: true)` and handle potentially unsafe SVG files manually.
 
-<a name="validating-files-file-sizes"></a>
-#### File Dimensions
+<a name="validating-files-file-sizes-and-dimensions"></a>
+#### File Sizes & Dimensions
 
+For convenience, minimum and maximum file sizes may be specified as a string with a suffix indicating the file size units. The `kb`, `mb`, `gb`, and `tb` suffixes are supported.
 You may also validate the dimensions of an image. For example, to validate that an uploaded image is at least 1000 pixels wide and 500 pixels tall, you may use the `dimensions` rule:
-
-    use Illuminate\Support\Facades\Validator;
-    use Illuminate\Validation\Rule;
-    use Illuminate\Validation\Rules\File;
-
-    Validator::validate($input, [
-        'photo' => [
-            'required',
-            File::image()
-                ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500)),
-        ],
-    ]);
-
-> [!NOTE]  
-> More information regarding validating image dimensions may be found in the [dimension rule documentation](#rule-dimensions).
-
-<a name="validating-files-file-sizes"></a>
-#### File Sizes
-
-For convenience, minimum and maximum file sizes may be specified as a string with a suffix indicating the file size units. The `kb`, `mb`, `gb`, and `tb` suffixes are supported:
 
 ```php
 File::image()
     ->min('1kb')
     ->max('10mb')
+    ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500))
 ```
+
+> [!NOTE]  
+> More information regarding validating image dimensions may be found in the [dimension rule documentation](#rule-dimensions).
 
 <a name="validating-files-file-types"></a>
 #### File Types
