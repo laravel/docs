@@ -695,7 +695,7 @@ To create a subscription, first retrieve an instance of your billable model from
     use Illuminate\Http\Request;
 
     Route::get('/user/subscribe', function (Request $request) {
-        $checkout = $request->user()->subscribe($premium = 12345, 'default')
+        $checkout = $request->user()->subscribe($premium = 'pri_123', 'default')
             ->returnTo(route('home'));
 
         return view('billing', ['checkout' => $checkout]);
@@ -705,7 +705,7 @@ The first argument given to the `subscribe` method is the specific price the use
 
 You may also provide an array of custom metadata regarding the subscription using the `customData` method:
 
-    $checkout = $request->user()->subscribe($premium = 12345, 'default')
+    $checkout = $request->user()->subscribe($premium = 'pri_123', 'default')
         ->customData(['key' => 'value'])
         ->returnTo(route('home'));
 
