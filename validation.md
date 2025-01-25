@@ -2200,7 +2200,6 @@ Laravel provides a variety of validation rules that may be used to validate uplo
         ],
     ]);
 
-
 <a name="validating-files-file-sizes"></a>
 #### Validating File Sizes
 
