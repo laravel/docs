@@ -2213,6 +2213,8 @@ If your application accepts images uploaded by your users, you may use the `File
         ],
     ]);
 
+The `File::image()` rule makes sure that the file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
+
 > [!WARNING]  
 > By default the File::image() rule does not allow SVG files due to possible XSS attacks.
 > If you need to allow SVG files, you can pass `allowSvg: true` as argument, e.g. `File::image(allowSvg: true)` and handle potentially unsafe SVG files manually.
