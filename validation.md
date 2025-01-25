@@ -2108,7 +2108,7 @@ Laravel provides a variety of validation rules that may be used to validate uplo
 
 
 <a name="validating-files-file-sizes"></a>
-#### File Sizes
+#### Validating File Sizes
 
 For convenience, minimum and maximum file sizes may be specified as a string with a suffix indicating the file size units. The `kb`, `mb`, `gb`, and `tb` suffixes are supported.
 You may also validate the dimensions of an image. For example, to validate that an uploaded image is at least 1000 pixels wide and 500 pixels tall, you may use the `dimensions` rule:
@@ -2122,7 +2122,7 @@ File::types(['mp3', 'wav'])
 <a name="validating-files-image-files"></a>
 #### Validating Image Files
 
-If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to indicate that the uploaded file should be an image.
+To validate that uploaded files are images, you can use the `File` rule's image constructor method.
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -2155,7 +2155,7 @@ File::image()
 > More information regarding validating image dimensions may be found in the [dimension rule documentation](#rule-dimensions).
 
 <a name="validating-files-file-types"></a>
-#### File Types
+#### Validating File Types
 
 Even though you only need to specify the extensions when invoking the `types` method, this method actually validates the MIME type of the file by reading the file's contents and guessing its MIME type. A full listing of MIME types and their corresponding extensions may be found at the following location:
 
