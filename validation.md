@@ -2200,6 +2200,22 @@ Laravel provides a variety of validation rules that may be used to validate uplo
         ],
     ]);
 
+
+<a name="validating-files-file-sizes"></a>
+#### File Sizes
+
+For convenience, minimum and maximum file sizes may be specified as a string with a suffix indicating the file size units. The `kb`, `mb`, `gb`, and `tb` suffixes are supported.
+You may also validate the dimensions of an image. For example, to validate that an uploaded image is at least 1000 pixels wide and 500 pixels tall, you may use the `dimensions` rule:
+
+```php
+File::types(['mp3', 'wav'])
+    ->min('1kb')
+    ->max('10mb');
+```
+
+<a name="validating-files-image-files"></a>
+#### Validating Image Files
+
 If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to indicate that the uploaded file should be an image.
 
     use Illuminate\Support\Facades\Validator;
@@ -2219,16 +2235,13 @@ The `File::image()` rule makes sure that the file under validation must be an im
 > By default the File::image() rule does not allow SVG files due to possible XSS attacks.
 > If you need to allow SVG files, you can pass `allowSvg: true` as argument, e.g. `File::image(allowSvg: true)` and handle potentially unsafe SVG files manually.
 
-<a name="validating-files-file-sizes-and-dimensions"></a>
-#### File Sizes & Dimensions
+<a name="validating-files-image-dimensions"></a>
+#### Validating Image Dimensions
 
-For convenience, minimum and maximum file sizes may be specified as a string with a suffix indicating the file size units. The `kb`, `mb`, `gb`, and `tb` suffixes are supported.
-You may also validate the dimensions of an image. For example, to validate that an uploaded image is at least 1000 pixels wide and 500 pixels tall, you may use the `dimensions` rule:
+You may validate the dimensions of an image. For example, to validate that an uploaded image is at least 1000 pixels wide and 500 pixels tall, you may use the `dimensions` rule:
 
 ```php
 File::image()
-    ->min('1kb')
-    ->max('10mb')
     ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500))
 ```
 
