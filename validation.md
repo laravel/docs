@@ -1389,7 +1389,11 @@ The field under validation must contain a valid color value in [hexadecimal](htt
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpg, jpeg, png, bmp, gif, svg, or webp).
+The file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
+
+> [!WARNING]  
+> By default the image rule does not allow SVG files due to possible XSS attacks.
+> If you need to allow SVG files, you can use the `image:allow_svg` rule and handle potentially unsafe SVG files manually.
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
@@ -2102,7 +2106,27 @@ Laravel provides a variety of validation rules that may be used to validate uplo
         ],
     ]);
 
-If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to indicate that the uploaded file should be an image. In addition, the `dimensions` rule may be used to limit the dimensions of the image:
+If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to indicate that the uploaded file should be an image.
+
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Rule;
+    use Illuminate\Validation\Rules\File;
+
+    Validator::validate($input, [
+        'photo' => [
+            'required',
+            File::image(),
+        ],
+    ]);
+
+> [!WARNING]  
+> By default the File::image() rule does not allow SVG files due to possible XSS attacks.
+> If you need to allow SVG files, you can pass `allowSvg: true` as argument, e.g. `File::image(allowSvg: true)` and handle potentially unsafe SVG files manually.
+
+<a name="validating-files-file-sizes"></a>
+#### File Dimensions
+
+You may also validate the dimensions of an image. For example, to validate that an uploaded image is at least 1000 pixels wide and 500 pixels tall, you may use the `dimensions` rule:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -2112,8 +2136,6 @@ If your application accepts images uploaded by your users, you may use the `File
         'photo' => [
             'required',
             File::image()
-                ->min(1024)
-                ->max(12 * 1024)
                 ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500)),
         ],
     ]);
