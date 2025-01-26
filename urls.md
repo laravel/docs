@@ -68,6 +68,9 @@ If no path is provided to the `url` helper, an `Illuminate\Routing\UrlGenerator`
     // Get the full URL for the previous request...
     echo url()->previous();
 
+    // Get the path for the previous request...
+    echo url()->previousPath();
+
 Each of these methods may also be accessed via the `URL` [facade](/docs/{{version}}/facades):
 
     use Illuminate\Support\Facades\URL;
