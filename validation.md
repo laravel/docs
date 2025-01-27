@@ -2106,29 +2106,13 @@ Laravel provides a variety of validation rules that may be used to validate uplo
         ],
     ]);
 
-If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to indicate that the uploaded file should be an image.
+If your application accepts images uploaded by your users, you may use the `File::image()` rule to make sure that the file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
 
-    use Illuminate\Support\Facades\Validator;
-    use Illuminate\Validation\Rule;
-    use Illuminate\Validation\Rules\File;
-
-    Validator::validate($input, [
-        'photo' => [
-            'required',
-            File::image(),
-        ],
-    ]);
-
-The `File::image()` rule makes sure that the file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
-
-> [!WARNING]  
+> [!WARNING]
 > By default the File::image() rule does not allow SVG files due to possible XSS attacks.
 > If you need to allow SVG files, you can pass `allowSvg: true` as argument, e.g. `File::image(allowSvg: true)` and handle potentially unsafe SVG files manually.
 
-<a name="validating-files-file-sizes"></a>
-#### File Dimensions
-
-You may also validate the dimensions of an image. For example, to validate that an uploaded image is at least 1000 pixels wide and 500 pixels tall, you may use the `dimensions` rule:
+In addition, the `dimensions` rule may be used to limit the dimensions of the image:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -2138,6 +2122,8 @@ You may also validate the dimensions of an image. For example, to validate that 
         'photo' => [
             'required',
             File::image()
+                ->min(1024)
+                ->max(12 * 1024)
                 ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500)),
         ],
     ]);
