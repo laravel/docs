@@ -1479,7 +1479,10 @@ The field under validation must contain a valid color value in [hexadecimal](htt
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpg, jpeg, png, bmp, gif, svg, or webp).
+The file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
+
+> [!WARNING]  
+> By default, the image rule does not allow SVG files due to the possibility of XSS vulnerabilities. If you need to allow SVG files, you may provide the `allow_svg` directive to the `image` rule (`image:allow_svg`).
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
@@ -2202,7 +2205,9 @@ Laravel provides a variety of validation rules that may be used to validate uplo
         ],
     ]);
 
-If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to indicate that the uploaded file should be an image. In addition, the `dimensions` rule may be used to limit the dimensions of the image:
+If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to ensure that the file under validation is an image (jpg, jpeg, png, bmp, gif, or webp).
+
+In addition, the `dimensions` rule may be used to limit the dimensions of the image:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -2220,6 +2225,9 @@ If your application accepts images uploaded by your users, you may use the `File
 
 > [!NOTE]  
 > More information regarding validating image dimensions may be found in the [dimension rule documentation](#rule-dimensions).
+
+> [!WARNING]
+> By default, the `image` rule does not allow SVG files due to the possibility of XSS vulnerabilities. If you need to allow SVG files, you may pass `allowSvg: true` to the `image` rule: `File::image(allowSvg: true)`.
 
 <a name="validating-files-file-sizes"></a>
 #### File Sizes
