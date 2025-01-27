@@ -1,6 +1,6 @@
 # Upgrade Guide
 
-- [Upgrading To 11.0 From 10.x](#upgrade-11.0)
+- [Upgrading To 10.x From 11.x](#upgrade-11.0)
 
 <a name="high-impact-changes"></a>
 ## High Impact Changes
@@ -43,7 +43,7 @@
 </div>
 
 <a name="upgrade-11.0"></a>
-## Upgrading To 11.0 From 10.x
+## Upgrading To 10.x From 11.0
 
 <a name="estimated-upgrade-time-??-minutes"></a>
 #### Estimated Upgrade Time: 15 Minutes
