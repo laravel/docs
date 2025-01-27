@@ -1242,7 +1242,7 @@ A _ratio_ constraint should be represented as width divided by height. This can 
 
     'avatar' => 'dimensions:ratio=3/2'
 
-Since this rule requires several arguments, you may use the `Rule::dimensions` method to fluently construct the rule:
+Since this rule requires several arguments, it is often more convenient to use use the `Rule::dimensions` method to fluently construct the rule:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -1250,7 +1250,10 @@ Since this rule requires several arguments, you may use the `Rule::dimensions` m
     Validator::make($data, [
         'avatar' => [
             'required',
-            Rule::dimensions()->maxWidth(1000)->maxHeight(500)->ratio(3 / 2),
+            Rule::dimensions()
+                ->maxWidth(1000)
+                ->maxHeight(500)
+                ->ratio(3 / 2),
         ],
     ]);
 
@@ -2196,11 +2199,17 @@ Laravel provides a variety of validation rules that may be used to validate uplo
         ],
     ]);
 
+<a name="validating-files-file-types"></a>
+#### Validating File Types
+
+Even though you only need to specify the extensions when invoking the `types` method, this method actually validates the MIME type of the file by reading the file's contents and guessing its MIME type. A full listing of MIME types and their corresponding extensions may be found at the following location:
+
+[https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+
 <a name="validating-files-file-sizes"></a>
 #### Validating File Sizes
 
-For convenience, minimum and maximum file sizes may be specified as a string with a suffix indicating the file size units. The `kb`, `mb`, `gb`, and `tb` suffixes are supported.
-You may also validate the dimensions of an image. For example, to validate that an uploaded image is at least 1000 pixels wide and 500 pixels tall, you may use the `dimensions` rule:
+For convenience, minimum and maximum file sizes may be specified as a string with a suffix indicating the file size units. The `kb`, `mb`, `gb`, and `tb` suffixes are supported:
 
 ```php
 File::types(['mp3', 'wav'])
@@ -2211,40 +2220,39 @@ File::types(['mp3', 'wav'])
 <a name="validating-files-image-files"></a>
 #### Validating Image Files
 
-To validate that uploaded files are images, you can use the `File` rule's image constructor method.
+To validate that uploaded files are images, you can use the `File` rule's `image` constructor method. The `File::image()` rule ensures that the file under validation is an image (jpg, jpeg, png, bmp, gif, svg, or webp):
 
-    use Illuminate\Support\Facades\Validator;
-    use Illuminate\Validation\Rule;
-    use Illuminate\Validation\Rules\File;
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
-    Validator::validate($input, [
-        'photo' => [
-            'required',
-            File::image(),
-        ],
-    ]);
-
-The `File::image()` rule makes sure that the file under validation must be an image (jpg, jpeg, png, bmp, gif, svg, or webp).
+Validator::validate($input, [
+    'photo' => [
+        'required',
+        File::image(),
+    ],
+]);
+```
 
 <a name="validating-files-image-dimensions"></a>
 #### Validating Image Dimensions
 
-You may validate the dimensions of an image. For example, to validate that an uploaded image is at least 1000 pixels wide and 500 pixels tall, you may use the `dimensions` rule:
+You may also validate the dimensions of an image. For example, to validate that an uploaded image is at least 1000 pixels wide and 500 pixels tall, you may use the `dimensions` rule:
 
 ```php
-File::image()
-    ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500))
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
+
+File::image()->dimensions(
+    Rule::dimensions()
+        ->maxWidth(1000)
+        ->maxHeight(500)
+)
 ```
 
 > [!NOTE]  
 > More information regarding validating image dimensions may be found in the [dimension rule documentation](#rule-dimensions).
-
-<a name="validating-files-file-types"></a>
-#### Validating File Types
-
-Even though you only need to specify the extensions when invoking the `types` method, this method actually validates the MIME type of the file by reading the file's contents and guessing its MIME type. A full listing of MIME types and their corresponding extensions may be found at the following location:
-
-[https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 
 <a name="validating-passwords"></a>
 ## Validating Passwords
