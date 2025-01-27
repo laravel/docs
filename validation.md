@@ -1389,7 +1389,7 @@ The field under validation must contain a valid color value in [hexadecimal](htt
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpg, jpeg, png, bmp, gif or webp).
+The file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
 
 > [!WARNING]  
 > By default the image rule does not allow SVG files due to possible XSS attacks.
@@ -2106,7 +2106,7 @@ Laravel provides a variety of validation rules that may be used to validate uplo
         ],
     ]);
 
-If your application accepts images uploaded by your users, you may use the `File::image()` rule to make sure that the file under validation must be an image (jpg, jpeg, png, bmp, gif or webp).
+If your application accepts images uploaded by your users, you may use the `File::image()` rule to make sure that the file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
 
 > [!WARNING]
 > By default the File::image() rule does not allow SVG files due to possible XSS attacks.
