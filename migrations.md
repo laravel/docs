@@ -638,12 +638,16 @@ The `json` method creates a `JSON` equivalent column:
 
     $table->json('options');
 
+When using SQLite, a `TEXT` column will be created.
+
 <a name="column-method-jsonb"></a>
 #### `jsonb()` {.collection-method}
 
 The `jsonb` method creates a `JSONB` equivalent column:
 
     $table->jsonb('options');
+
+When using SQLite, a `TEXT` column will be created.
 
 <a name="column-method-longText"></a>
 #### `longText()` {.collection-method}
