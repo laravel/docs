@@ -175,6 +175,11 @@ You may also instruct Laravel to only show routes that begin with a given URI:
 php artisan route:list --path=api
 ```
 
+You may filter out routes containing specific path segments using the --except-path option. Multiple paths can be excluded by separating them with commas:
+```shell
+php artisan route:list --except-path=admin,api/v1
+```
+
 In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:
 
 ```shell
