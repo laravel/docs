@@ -1479,11 +1479,7 @@ The field under validation must contain a valid color value in [hexadecimal](htt
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
-
-> [!WARNING]  
-> By default the image rule does not allow SVG files due to possible XSS attacks.
-> If you need to allow SVG files, you can use the `image:allow_svg` rule and handle potentially unsafe SVG files manually.
+The file under validation must be an image (jpg, jpeg, png, bmp, gif, svg or webp).
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
@@ -2228,11 +2224,7 @@ To validate that uploaded files are images, you can use the `File` rule's image 
         ],
     ]);
 
-The `File::image()` rule makes sure that the file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
-
-> [!WARNING]  
-> By default the File::image() rule does not allow SVG files due to possible XSS attacks.
-> If you need to allow SVG files, you can pass `allowSvg: true` as argument, e.g. `File::image(allowSvg: true)` and handle potentially unsafe SVG files manually.
+The `File::image()` rule makes sure that the file under validation must be an image (jpg, jpeg, png, bmp, gif, svg or webp).
 
 <a name="validating-files-image-dimensions"></a>
 #### Validating Image Dimensions
