@@ -67,6 +67,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [diff](#method-diff)
 [except](#method-except)
 [find](#method-find)
+[findOrFail](#method-find-or-fail)
 [fresh](#method-fresh)
 [intersect](#method-intersect)
 [load](#method-load)
@@ -88,7 +89,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 The `append` method may be used to indicate that an attribute should be [appended](/docs/{{version}}/eloquent-serialization#appending-values-to-json) for every model in the collection. This method accepts an array of attributes or a single attribute:
 
     $users->append('team');
-    
+
     $users->append(['team', 'is_admin']);
 
 <a name="method-contains"></a>
@@ -125,6 +126,15 @@ The `find` method returns the model that has a primary key matching the given ke
 
     $user = $users->find(1);
 
+<a name="method-find-or-fail"></a>
+#### `findOrFail($key)` {.collection-method}
+
+The `findOrFail` method returns the model that has a primary key matching the given key or throws an `Illuminate\Database\Eloquent\ModelNotFoundException` exception if no matching model can be found in the collection:
+
+    $users = User::all();
+
+    $user = $users->findOrFail(1);
+
 <a name="method-fresh"></a>
 #### `fresh($with = [])` {.collection-method}
 
@@ -151,7 +161,7 @@ The `load` method eager loads the given relationships for all models in the coll
     $users->load(['comments', 'posts']);
 
     $users->load('comments.author');
-    
+
     $users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
 
 <a name="method-loadMissing"></a>
@@ -162,7 +172,7 @@ The `loadMissing` method eager loads the given relationships for all models in t
     $users->loadMissing(['comments', 'posts']);
 
     $users->loadMissing('comments.author');
-    
+
     $users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
 
 <a name="method-modelKeys"></a>
@@ -225,14 +235,30 @@ The `toQuery` method returns an Eloquent query builder instance containing a `wh
 <a name="method-unique"></a>
 #### `unique($key = null, $strict = false)` {.collection-method}
 
-The `unique` method returns all of the unique models in the collection. Any models of the same type with the same primary key as another model in the collection are removed:
+The `unique` method returns all of the unique models in the collection. Any models with the same primary key as another model in the collection are removed:
 
     $users = $users->unique();
 
 <a name="custom-collections"></a>
 ## Custom Collections
 
-If you would like to use a custom `Collection` object when interacting with a given model, you may define a `newCollection` method on your model:
+If you would like to use a custom `Collection` object when interacting with a given model, you may add the `CollectedBy` attribute to your model:
+
+    <?php
+
+    namespace App\Models;
+
+    use App\Support\UserCollection;
+    use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+    use Illuminate\Database\Eloquent\Model;
+
+    #[CollectedBy(UserCollection::class)]
+    class User extends Model
+    {
+        // ...
+    }
+
+Alternatively, you may define a `newCollection` method on your model:
 
     <?php
 
@@ -256,4 +282,6 @@ If you would like to use a custom `Collection` object when interacting with a gi
         }
     }
 
-Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\Database\Eloquent\Collection` instance. If you would like to use a custom collection for every model in your application, you should define the `newCollection` method on a base model class that is extended by all of your application's models.
+Once you have defined a `newCollection` method or added the `CollectedBy` attribute to your model, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\Database\Eloquent\Collection` instance.
+
+If you would like to use a custom collection for every model in your application, you should define the `newCollection` method on a base model class that is extended by all of your application's models.

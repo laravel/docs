@@ -4,6 +4,7 @@
 - [Installation](#installation)
 - [Available Prompts](#available-prompts)
     - [Text](#text)
+    - [Textarea](#textarea)
     - [Password](#password)
     - [Confirm](#confirm)
     - [Select](#select)
@@ -12,10 +13,13 @@
     - [Search](#search)
     - [Multi-search](#multisearch)
     - [Pause](#pause)
+- [Transforming Input Before Validation](#transforming-input-before-validation)
+- [Forms](#forms)
 - [Informational Messages](#informational-messages)
 - [Tables](#tables)
 - [Spin](#spin)
 - [Progress Bar](#progress)
+- [Clearing the Terminal](#clear)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments and Fallbacks](#fallbacks)
 
@@ -111,7 +115,76 @@ Alternatively, you may leverage the power of Laravel's [validator](/docs/{{versi
 ```php
 $name = text(
     label: 'What is your name?',
-    validate: ['name' => 'required|max:255|unique:users,name']
+    validate: ['name' => 'required|max:255|unique:users']
+);
+```
+
+<a name="textarea"></a>
+### Textarea
+
+The `textarea` function will prompt the user with the given question, accept their input via a multi-line textarea, and then return it:
+
+```php
+use function Laravel\Prompts\textarea;
+
+$story = textarea('Tell me a story.');
+```
+
+You may also include placeholder text, a default value, and an informational hint:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    placeholder: 'This is a story about...',
+    hint: 'This will be displayed on your profile.'
+);
+```
+
+<a name="textarea-required"></a>
+#### Required Values
+
+If you require a value to be entered, you may pass the `required` argument:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    required: true
+);
+```
+
+If you would like to customize the validation message, you may also pass a string:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    required: 'A story is required.'
+);
+```
+
+<a name="textarea-validation"></a>
+#### Additional Validation
+
+Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    validate: fn (string $value) => match (true) {
+        strlen($value) < 250 => 'The story must be at least 250 characters.',
+        strlen($value) > 10000 => 'The story must not exceed 10,000 characters.',
+        default => null
+    }
+);
+```
+
+The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+
+Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+
+```php
+$story = textarea(
+    label: 'Tell me a story.',
+    validate: ['story' => 'required|max:10000']
 );
 ```
 
@@ -236,8 +309,8 @@ If you need the user to select from a predefined set of choices, you may use the
 use function Laravel\Prompts\select;
 
 $role = select(
-    'What role should the user have?',
-    ['Member', 'Contributor', 'Owner'],
+    label: 'What role should the user have?',
+    options: ['Member', 'Contributor', 'Owner']
 );
 ```
 
@@ -260,7 +333,7 @@ $role = select(
     options: [
         'member' => 'Member',
         'contributor' => 'Contributor',
-        'owner' => 'Owner'
+        'owner' => 'Owner',
     ],
     default: 'owner'
 );
@@ -277,7 +350,7 @@ $role = select(
 ```
 
 <a name="select-validation"></a>
-#### Validation
+#### Additional Validation
 
 Unlike other prompt functions, the `select` function doesn't accept the `required` argument because it is not possible to select nothing. However, you may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
 
@@ -287,7 +360,7 @@ $role = select(
     options: [
         'member' => 'Member',
         'contributor' => 'Contributor',
-        'owner' => 'Owner'
+        'owner' => 'Owner',
     ],
     validate: fn (string $value) =>
         $value === 'owner' && User::where('role', 'owner')->exists()
@@ -301,14 +374,14 @@ If the `options` argument is an associative array, then the closure will receive
 <a name="multiselect"></a>
 ### Multi-select
 
-If you need to the user to be able to select multiple options, you may use the `multiselect` function:
+If you need the user to be able to select multiple options, you may use the `multiselect` function:
 
 ```php
 use function Laravel\Prompts\multiselect;
 
 $permissions = multiselect(
-    'What permissions should be assigned?',
-    ['Read', 'Create', 'Update', 'Delete']
+    label: 'What permissions should be assigned?',
+    options: ['Read', 'Create', 'Update', 'Delete']
 );
 ```
 
@@ -327,14 +400,14 @@ $permissions = multiselect(
 
 You may also pass an associative array to the `options` argument to return the selected options' keys instead of their values:
 
-```
+```php
 $permissions = multiselect(
     label: 'What permissions should be assigned?',
     options: [
         'read' => 'Read',
         'create' => 'Create',
         'update' => 'Update',
-        'delete' => 'Delete'
+        'delete' => 'Delete',
     ],
     default: ['read', 'create']
 );
@@ -359,7 +432,7 @@ By default, the user may select zero or more options. You may pass the `required
 $categories = multiselect(
     label: 'What categories should be assigned?',
     options: Category::pluck('name', 'id'),
-    required: true,
+    required: true
 );
 ```
 
@@ -369,23 +442,23 @@ If you would like to customize the validation message, you may provide a string 
 $categories = multiselect(
     label: 'What categories should be assigned?',
     options: Category::pluck('name', 'id'),
-    required: 'You must select at least one category',
+    required: 'You must select at least one category'
 );
 ```
 
 <a name="multiselect-validation"></a>
-#### Validation
+#### Additional Validation
 
 You may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
 
-```
+```php
 $permissions = multiselect(
     label: 'What permissions should the user have?',
     options: [
         'read' => 'Read',
         'create' => 'Create',
         'update' => 'Update',
-        'delete' => 'Delete'
+        'delete' => 'Delete',
     ],
     validate: fn (array $values) => ! in_array('read', $values)
         ? 'All users require the read permission.'
@@ -410,8 +483,8 @@ Alternatively, you may pass a closure as the second argument to the `suggest` fu
 
 ```php
 $name = suggest(
-    'What is your name?',
-    fn ($value) => collect(['Taylor', 'Dayle'])
+    label: 'What is your name?',
+    options: fn ($value) => collect(['Taylor', 'Dayle'])
         ->filter(fn ($name) => Str::contains($name, $value, ignoreCase: true))
 )
 ```
@@ -489,14 +562,28 @@ If you have a lot of options for the user to select from, the `search` function 
 use function Laravel\Prompts\search;
 
 $id = search(
-    'Search for the user that should receive the mail',
-    fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+    label: 'Search for the user that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : []
 );
 ```
 
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
+
+When filtering an array where you intend to return the value, you should use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
+
+```php
+$names = collect(['Taylor', 'Abigail']);
+
+$selected = search(
+    label: 'Search for the user that should receive the mail',
+    options: fn (string $value) => $names
+        ->filter(fn ($name) => Str::contains($name, $value, ignoreCase: true))
+        ->values()
+        ->all(),
+);
+```
 
 You may also include placeholder text and an informational hint:
 
@@ -505,7 +592,7 @@ $id = search(
     label: 'Search for the user that should receive the mail',
     placeholder: 'E.g. Taylor Otwell',
     options: fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : [],
     hint: 'The user will receive an email immediately.'
 );
@@ -517,14 +604,14 @@ Up to five options will be displayed before the list begins to scroll. You may c
 $id = search(
     label: 'Search for the user that should receive the mail',
     options: fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : [],
     scroll: 10
 );
 ```
 
 <a name="search-validation"></a>
-#### Validation
+#### Additional Validation
 
 If you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
 
@@ -532,7 +619,7 @@ If you would like to perform additional validation logic, you may pass a closure
 $id = search(
     label: 'Search for the user that should receive the mail',
     options: fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : [],
     validate: function (int|string $value) {
         $user = User::findOrFail($value);
@@ -557,12 +644,26 @@ use function Laravel\Prompts\multisearch;
 $ids = multisearch(
     'Search for the users that should receive the mail',
     fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : []
 );
 ```
 
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected options' keys will be returned; otherwise, their values will be returned instead.
+
+When filtering an array where you intend to return the value, you should use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
+
+```php
+$names = collect(['Taylor', 'Abigail']);
+
+$selected = multisearch(
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => $names
+        ->filter(fn ($name) => Str::contains($name, $value, ignoreCase: true))
+        ->values()
+        ->all(),
+);
+```
 
 You may also include placeholder text and an informational hint:
 
@@ -571,7 +672,7 @@ $ids = multisearch(
     label: 'Search for the users that should receive the mail',
     placeholder: 'E.g. Taylor Otwell',
     options: fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : [],
     hint: 'The user will receive an email immediately.'
 );
@@ -583,7 +684,7 @@ Up to five options will be displayed before the list begins to scroll. You may c
 $ids = multisearch(
     label: 'Search for the users that should receive the mail',
     options: fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : [],
     scroll: 10
 );
@@ -596,11 +697,11 @@ By default, the user may select zero or more options. You may pass the `required
 
 ```php
 $ids = multisearch(
-    'Search for the users that should receive the mail',
-    fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : [],
-    required: true,
+    required: true
 );
 ```
 
@@ -608,16 +709,16 @@ If you would like to customize the validation message, you may also provide a st
 
 ```php
 $ids = multisearch(
-    'Search for the users that should receive the mail',
-    fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : [],
     required: 'You must select at least one user.'
 );
 ```
 
 <a name="multisearch-validation"></a>
-#### Validation
+#### Additional Validation
 
 If you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
 
@@ -625,10 +726,10 @@ If you would like to perform additional validation logic, you may pass a closure
 $ids = multisearch(
     label: 'Search for the users that should receive the mail',
     options: fn (string $value) => strlen($value) > 0
-        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : [],
     validate: function (array $values) {
-        $optedOut = User::where('name', 'like', '%a%')->findMany($values);
+        $optedOut = User::whereLike('name', '%a%')->findMany($values);
 
         if ($optedOut->isNotEmpty()) {
             return $optedOut->pluck('name')->join(', ', ', and ').' have opted out.';
@@ -648,6 +749,78 @@ The `pause` function may be used to display informational text to the user and w
 use function Laravel\Prompts\pause;
 
 pause('Press ENTER to continue.');
+```
+
+<a name="transforming-input-before-validation"></a>
+## Transforming Input Before Validation
+
+Sometimes you may want to transform the prompt input before validation takes place. For example, you may wish to remove white space from any provided strings. To accomplish this, many of the prompt functions provide a `transform` argument, which accepts a closure:
+
+```php
+$name = text(
+    label: 'What is your name?',
+    transform: fn (string $value) => trim($value),
+    validate: fn (string $value) => match (true) {
+        strlen($value) < 3 => 'The name must be at least 3 characters.',
+        strlen($value) > 255 => 'The name must not exceed 255 characters.',
+        default => null
+    }
+);
+```
+
+<a name="forms"></a>
+## Forms
+
+Often, you will have multiple prompts that will be displayed in sequence to collect information before performing additional actions. You may use the `form` function to create a grouped set of prompts for the user to complete:
+
+```php
+use function Laravel\Prompts\form;
+
+$responses = form()
+    ->text('What is your name?', required: true)
+    ->password('What is your password?', validate: ['password' => 'min:8'])
+    ->confirm('Do you accept the terms?')
+    ->submit();
+```
+
+The `submit` method will return a numerically indexed array containing all of the responses from the form's prompts. However, you may provide a name for each prompt via the `name` argument. When a name is provided, the named prompt's response may be accessed via that name:
+
+```php
+use App\Models\User;
+use function Laravel\Prompts\form;
+
+$responses = form()
+    ->text('What is your name?', required: true, name: 'name')
+    ->password(
+        label: 'What is your password?',
+        validate: ['password' => 'min:8'],
+        name: 'password'
+    )
+    ->confirm('Do you accept the terms?')
+    ->submit();
+
+User::create([
+    'name' => $responses['name'],
+    'password' => $responses['password'],
+]);
+```
+
+The primary benefit of using the `form` function is the ability for the user to return to previous prompts in the form using `CTRL + U`. This allows the user to fix mistakes or alter selections without needing to cancel and restart the entire form.
+
+If you need more granular control over a prompt in a form, you may invoke the `add` method instead of calling one of the prompt functions directly. The `add` method is passed all previous responses provided by the user:
+
+```php
+use function Laravel\Prompts\form;
+use function Laravel\Prompts\outro;
+
+$responses = form()
+    ->text('What is your name?', required: true, name: 'name')
+    ->add(function ($responses) {
+        return text("How old are you, {$responses['name']}?");
+    }, name: 'age')
+    ->submit();
+
+outro("Your name is {$responses['name']} and you are {$responses['age']} years old.");
 ```
 
 <a name="informational-messages"></a>
@@ -670,8 +843,8 @@ The `table` function makes it easy to display multiple rows and columns of data.
 use function Laravel\Prompts\table;
 
 table(
-    ['Name', 'Email'],
-    User::all(['name', 'email'])
+    headers: ['Name', 'Email'],
+    rows: User::all(['name', 'email'])->toArray()
 );
 ```
 
@@ -684,8 +857,8 @@ The `spin` function displays a spinner along with an optional message while exec
 use function Laravel\Prompts\spin;
 
 $response = spin(
-    fn () => Http::get('http://example.com'),
-    'Fetching response...'
+    message: 'Fetching response...',
+    callback: fn () => Http::get('http://example.com')
 );
 ```
 
@@ -703,13 +876,13 @@ use function Laravel\Prompts\progress;
 $users = progress(
     label: 'Updating users',
     steps: User::all(),
-    callback: fn ($user) => $this->performTask($user),
+    callback: fn ($user) => $this->performTask($user)
 );
 ```
 
 The `progress` function acts like a map function and will return an array containing the return value of each iteration of your callback.
 
-The callback may also accept the `\Laravel\Prompts\Progress` instance, allowing you to modify the label and hint on each iteration:
+The callback may also accept the `Laravel\Prompts\Progress` instance, allowing you to modify the label and hint on each iteration:
 
 ```php
 $users = progress(
@@ -722,7 +895,7 @@ $users = progress(
 
         return $this->performTask($user);
     },
-    hint: 'This may take some time.',
+    hint: 'This may take some time.'
 );
 ```
 
@@ -742,6 +915,17 @@ foreach ($users as $user) {
 }
 
 $progress->finish();
+```
+
+<a name="clear"></a>
+## Clearing the Terminal
+
+The `clear` function may be used to clear the user's terminal:
+
+```
+use function Laravel\Prompts\clear;
+
+clear();
 ```
 
 <a name="terminal-considerations"></a>
@@ -794,7 +978,9 @@ TextPrompt::fallbackUsing(function (TextPrompt $prompt) use ($input, $output) {
     $question = (new Question($prompt->label, $prompt->default ?: null))
         ->setValidator(function ($answer) use ($prompt) {
             if ($prompt->required && $answer === null) {
-                throw new \RuntimeException(is_string($prompt->required) ? $prompt->required : 'Required.');
+                throw new \RuntimeException(
+                    is_string($prompt->required) ? $prompt->required : 'Required.'
+                );
             }
 
             if ($prompt->validate) {

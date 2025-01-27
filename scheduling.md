@@ -11,6 +11,7 @@
     - [Running Tasks on One Server](#running-tasks-on-one-server)
     - [Background Tasks](#background-tasks)
     - [Maintenance Mode](#maintenance-mode)
+    - [Schedule Groups](#schedule-groups)
 - [Running the Scheduler](#running-the-scheduler)
     - [Sub-Minute Scheduled Tasks](#sub-minute-scheduled-tasks)
     - [Running the Scheduler Locally](#running-the-scheduler-locally)
@@ -42,6 +43,14 @@ You may define all of your scheduled tasks in your application's `routes/console
 In addition to scheduling using closures, you may also schedule [invokable objects](https://secure.php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
 
     Schedule::call(new DeleteRecentUsers)->daily();
+
+If you prefer to reserve your `routes/console.php` file for command definitions only, you may use the `withSchedule` method in your application's `bootstrap/app.php` file to define your scheduled tasks. This method accepts a closure that receives an instance of the scheduler:
+
+    use Illuminate\Console\Scheduling\Schedule;
+
+    ->withSchedule(function (Schedule $schedule) {
+        $schedule->call(new DeleteRecentUsers)->daily();
+    })
 
 If you would like to view an overview of your scheduled tasks and the next time they are scheduled to run, you may use the `schedule:list` Artisan command:
 
@@ -112,46 +121,46 @@ We've already seen a few examples of how you may configure a task to run at spec
 
 <div class="overflow-auto">
 
-Method  | Description
-------------- | -------------
-`->cron('* * * * *');`  |  Run the task on a custom cron schedule
-`->everySecond();`  |  Run the task every second
-`->everyTwoSeconds();`  |  Run the task every two seconds
-`->everyFiveSeconds();`  |  Run the task every five seconds
-`->everyTenSeconds();`  |  Run the task every ten seconds
-`->everyFifteenSeconds();`  |  Run the task every fifteen seconds
-`->everyTwentySeconds();`  |  Run the task every twenty seconds
-`->everyThirtySeconds();`  |  Run the task every thirty seconds
-`->everyMinute();`  |  Run the task every minute
-`->everyTwoMinutes();`  |  Run the task every two minutes
-`->everyThreeMinutes();`  |  Run the task every three minutes
-`->everyFourMinutes();`  |  Run the task every four minutes
-`->everyFiveMinutes();`  |  Run the task every five minutes
-`->everyTenMinutes();`  |  Run the task every ten minutes
-`->everyFifteenMinutes();`  |  Run the task every fifteen minutes
-`->everyThirtyMinutes();`  |  Run the task every thirty minutes
-`->hourly();`  |  Run the task every hour
-`->hourlyAt(17);`  |  Run the task every hour at 17 minutes past the hour
-`->everyOddHour($minutes = 0);`  |  Run the task every odd hour
-`->everyTwoHours($minutes = 0);`  |  Run the task every two hours
-`->everyThreeHours($minutes = 0);`  |  Run the task every three hours
-`->everyFourHours($minutes = 0);`  |  Run the task every four hours
-`->everySixHours($minutes = 0);`  |  Run the task every six hours
-`->daily();`  |  Run the task every day at midnight
-`->dailyAt('13:00');`  |  Run the task every day at 13:00
-`->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
-`->twiceDailyAt(1, 13, 15);`  |  Run the task daily at 1:15 & 13:15
-`->weekly();`  |  Run the task every Sunday at 00:00
-`->weeklyOn(1, '8:00');`  |  Run the task every week on Monday at 8:00
-`->monthly();`  |  Run the task on the first day of every month at 00:00
-`->monthlyOn(4, '15:00');`  |  Run the task every month on the 4th at 15:00
-`->twiceMonthly(1, 16, '13:00');`  |  Run the task monthly on the 1st and 16th at 13:00
-`->lastDayOfMonth('15:00');` | Run the task on the last day of the month at 15:00
-`->quarterly();` |  Run the task on the first day of every quarter at 00:00
-`->quarterlyOn(4, '14:00');` |  Run the task every quarter on the 4th at 14:00
-`->yearly();`  |  Run the task on the first day of every year at 00:00
-`->yearlyOn(6, 1, '17:00');`  |  Run the task every year on June 1st at 17:00
-`->timezone('America/New_York');` | Set the timezone for the task
+| Method                             | Description                                              |
+| ---------------------------------- | -------------------------------------------------------- |
+| `->cron('* * * * *');`             | Run the task on a custom cron schedule.                  |
+| `->everySecond();`                 | Run the task every second.                               |
+| `->everyTwoSeconds();`             | Run the task every two seconds.                          |
+| `->everyFiveSeconds();`            | Run the task every five seconds.                         |
+| `->everyTenSeconds();`             | Run the task every ten seconds.                          |
+| `->everyFifteenSeconds();`         | Run the task every fifteen seconds.                      |
+| `->everyTwentySeconds();`          | Run the task every twenty seconds.                       |
+| `->everyThirtySeconds();`          | Run the task every thirty seconds.                       |
+| `->everyMinute();`                 | Run the task every minute.                               |
+| `->everyTwoMinutes();`             | Run the task every two minutes.                          |
+| `->everyThreeMinutes();`           | Run the task every three minutes.                        |
+| `->everyFourMinutes();`            | Run the task every four minutes.                         |
+| `->everyFiveMinutes();`            | Run the task every five minutes.                         |
+| `->everyTenMinutes();`             | Run the task every ten minutes.                          |
+| `->everyFifteenMinutes();`         | Run the task every fifteen minutes.                      |
+| `->everyThirtyMinutes();`          | Run the task every thirty minutes.                       |
+| `->hourly();`                      | Run the task every hour.                                 |
+| `->hourlyAt(17);`                  | Run the task every hour at 17 minutes past the hour.     |
+| `->everyOddHour($minutes = 0);`    | Run the task every odd hour.                             |
+| `->everyTwoHours($minutes = 0);`   | Run the task every two hours.                            |
+| `->everyThreeHours($minutes = 0);` | Run the task every three hours.                          |
+| `->everyFourHours($minutes = 0);`  | Run the task every four hours.                           |
+| `->everySixHours($minutes = 0);`   | Run the task every six hours.                            |
+| `->daily();`                       | Run the task every day at midnight.                      |
+| `->dailyAt('13:00');`              | Run the task every day at 13:00.                         |
+| `->twiceDaily(1, 13);`             | Run the task daily at 1:00 & 13:00.                      |
+| `->twiceDailyAt(1, 13, 15);`       | Run the task daily at 1:15 & 13:15.                      |
+| `->weekly();`                      | Run the task every Sunday at 00:00.                      |
+| `->weeklyOn(1, '8:00');`           | Run the task every week on Monday at 8:00.               |
+| `->monthly();`                     | Run the task on the first day of every month at 00:00.   |
+| `->monthlyOn(4, '15:00');`         | Run the task every month on the 4th at 15:00.            |
+| `->twiceMonthly(1, 16, '13:00');`  | Run the task monthly on the 1st and 16th at 13:00.       |
+| `->lastDayOfMonth('15:00');`       | Run the task on the last day of the month at 15:00.      |
+| `->quarterly();`                   | Run the task on the first day of every quarter at 00:00. |
+| `->quarterlyOn(4, '14:00');`       | Run the task every quarter on the 4th at 14:00.          |
+| `->yearly();`                      | Run the task on the first day of every year at 00:00.    |
+| `->yearlyOn(6, 1, '17:00');`       | Run the task every year on June 1st at 17:00.            |
+| `->timezone('America/New_York');`  | Set the timezone for the task.                           |
 
 </div>
 
@@ -175,22 +184,22 @@ A list of additional schedule constraints may be found below:
 
 <div class="overflow-auto">
 
-Method  | Description
-------------- | -------------
-`->weekdays();`  |  Limit the task to weekdays
-`->weekends();`  |  Limit the task to weekends
-`->sundays();`  |  Limit the task to Sunday
-`->mondays();`  |  Limit the task to Monday
-`->tuesdays();`  |  Limit the task to Tuesday
-`->wednesdays();`  |  Limit the task to Wednesday
-`->thursdays();`  |  Limit the task to Thursday
-`->fridays();`  |  Limit the task to Friday
-`->saturdays();`  |  Limit the task to Saturday
-`->days(array\|mixed);`  |  Limit the task to specific days
-`->between($startTime, $endTime);`  |  Limit the task to run between start and end times
-`->unlessBetween($startTime, $endTime);`  |  Limit the task to not run between start and end times
-`->when(Closure);`  |  Limit the task based on a truth test
-`->environments($env);`  |  Limit the task to specific environments
+| Method                                   | Description                                            |
+| ---------------------------------------- | ------------------------------------------------------ |
+| `->weekdays();`                          | Limit the task to weekdays.                            |
+| `->weekends();`                          | Limit the task to weekends.                            |
+| `->sundays();`                           | Limit the task to Sunday.                              |
+| `->mondays();`                           | Limit the task to Monday.                              |
+| `->tuesdays();`                          | Limit the task to Tuesday.                             |
+| `->wednesdays();`                        | Limit the task to Wednesday.                           |
+| `->thursdays();`                         | Limit the task to Thursday.                            |
+| `->fridays();`                           | Limit the task to Friday.                              |
+| `->saturdays();`                         | Limit the task to Saturday.                            |
+| `->days(array\|mixed);`                  | Limit the task to specific days.                       |
+| `->between($startTime, $endTime);`       | Limit the task to run between start and end times.     |
+| `->unlessBetween($startTime, $endTime);` | Limit the task to not run between start and end times. |
+| `->when(Closure);`                       | Limit the task based on a truth test.                  |
+| `->environments($env);`                  | Limit the task to specific environments.               |
 
 </div>
 
@@ -335,7 +344,6 @@ Schedule::call(fn () => User::resetApiRequestCount())
     ->onOneServer();
 ```
 
-
 <a name="background-tasks"></a>
 ### Background Tasks
 
@@ -356,6 +364,25 @@ By default, multiple tasks scheduled at the same time will execute sequentially 
 Your application's scheduled tasks will not run when the application is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), since we don't want your tasks to interfere with any unfinished maintenance you may be performing on your server. However, if you would like to force a task to run even in maintenance mode, you may call the `evenInMaintenanceMode` method when defining the task:
 
     Schedule::command('emails:send')->evenInMaintenanceMode();
+
+<a name="schedule-groups"></a>
+### Schedule Groups
+
+When defining multiple scheduled tasks with similar configurations, you can use Laravel’s task grouping feature to avoid repeating the same settings for each task. Grouping tasks simplifies your code and ensures consistency across related tasks.
+
+To create a group of scheduled tasks, invoke the desired task configuration methods, followed by the `group` method. The `group` method accepts a closure that is responsible for defining the tasks that share the specified configuration:
+
+```php
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::daily()
+    ->onOneServer()
+    ->timezone('America/New_York')
+    ->group(function () {
+        Schedule::command('emails:send --force');
+        Schedule::command('emails:prune');
+    });
+```
 
 <a name="running-the-scheduler"></a>
 ## Running the Scheduler
@@ -381,7 +408,7 @@ On most operating systems, cron jobs are limited to running a maximum of once pe
 
 When sub-minute tasks are defined within your application, the `schedule:run` command will continue running until the end of the current minute instead of exiting immediately. This allows the command to invoke all required sub-minute tasks throughout the minute.
 
-Since sub-minute tasks that take longer than expected to run could delay the execution of later sub-minute tasks, it is recommend that all sub-minute tasks dispatch queued jobs or background commands to handle the actual task processing:
+Since sub-minute tasks that take longer than expected to run could delay the execution of later sub-minute tasks, it is recommended that all sub-minute tasks dispatch queued jobs or background commands to handle the actual task processing:
 
     use App\Jobs\DeleteRecentUsers;
 
@@ -403,7 +430,7 @@ php artisan schedule:interrupt
 <a name="running-the-scheduler-locally"></a>
 ### Running the Scheduler Locally
 
-Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command:
+Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command. When sub-minute tasks are defined, the scheduler will continue running within each minute to process those tasks:
 
 ```shell
 php artisan schedule:work
@@ -492,13 +519,6 @@ Using the `pingBefore` and `thenPing` methods, the scheduler can automatically p
              ->pingBefore($url)
              ->thenPing($url);
 
-The `pingBeforeIf` and `thenPingIf` methods may be used to ping a given URL only if a given condition is `true`:
-
-    Schedule::command('emails:send')
-             ->daily()
-             ->pingBeforeIf($condition, $url)
-             ->thenPingIf($condition, $url);
-
 The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL only if the task succeeds or fails. A failure indicates that the scheduled Artisan or system command terminated with a non-zero exit code:
 
     Schedule::command('emails:send')
@@ -506,15 +526,31 @@ The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL 
              ->pingOnSuccess($successUrl)
              ->pingOnFailure($failureUrl);
 
+The `pingBeforeIf`,`thenPingIf`,`pingOnSuccessIf`, and `pingOnFailureIf` methods may be used to ping a given URL only if a given condition is `true`:
+
+    Schedule::command('emails:send')
+             ->daily()
+             ->pingBeforeIf($condition, $url)
+             ->thenPingIf($condition, $url);             
+
+    Schedule::command('emails:send')
+             ->daily()
+             ->pingOnSuccessIf($condition, $successUrl)
+             ->pingOnFailureIf($condition, $failureUrl);
+
 <a name="events"></a>
 ## Events
 
 Laravel dispatches a variety of [events](/docs/{{version}}/events) during the scheduling process. You may [define listeners](/docs/{{version}}/events) for any of the following events:
 
-Event Name |
-------------- |
-`Illuminate\Console\Events\ScheduledTaskStarting` |
-`Illuminate\Console\Events\ScheduledTaskFinished` |
-`Illuminate\Console\Events\ScheduledBackgroundTaskFinished` |
-`Illuminate\Console\Events\ScheduledTaskSkipped` |
-`Illuminate\Console\Events\ScheduledTaskFailed` |
+<div class="overflow-auto">
+
+| Event Name |
+| --- |
+| `Illuminate\Console\Events\ScheduledTaskStarting` |
+| `Illuminate\Console\Events\ScheduledTaskFinished` |
+| `Illuminate\Console\Events\ScheduledBackgroundTaskFinished` |
+| `Illuminate\Console\Events\ScheduledTaskSkipped` |
+| `Illuminate\Console\Events\ScheduledTaskFailed` |
+
+</div>

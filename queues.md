@@ -12,6 +12,7 @@
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
     - [Throttling Exceptions](#throttling-exceptions)
+    - [Skipping Jobs](#skipping-jobs)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
@@ -150,6 +151,7 @@ The following dependencies are needed for the listed queue drivers. These depend
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~5.0`
 - Redis: `predis/predis ~2.0` or phpredis PHP extension
+- [MongoDB](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/queues/): `mongodb/laravel-mongodb`
 
 </div>
 
@@ -181,15 +183,12 @@ Job classes are very simple, normally containing only a `handle` method that is 
 
     use App\Models\Podcast;
     use App\Services\AudioProcessor;
-    use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
-    use Illuminate\Foundation\Bus\Dispatchable;
-    use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Queue\SerializesModels;
+    use Illuminate\Foundation\Queue\Queueable;
 
     class ProcessPodcast implements ShouldQueue
     {
-        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         /**
          * Create a new job instance.
@@ -207,7 +206,7 @@ Job classes are very simple, normally containing only a `handle` method that is 
         }
     }
 
-In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models and their loaded relationships will be gracefully serialized and unserialized when the job is processing.
+In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `Queueable` trait that the job is using, Eloquent models and their loaded relationships will be gracefully serialized and unserialized when the job is processing.
 
 If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance and its loaded relationships from the database. This approach to model serialization allows for much smaller job payloads to be sent to your queue driver.
 
@@ -239,8 +238,9 @@ Or, to prevent relations from being serialized, you can call the `withoutRelatio
     /**
      * Create a new job instance.
      */
-    public function __construct(Podcast $podcast)
-    {
+    public function __construct(
+        Podcast $podcast,
+    ) {
         $this->podcast = $podcast->withoutRelations();
     }
 
@@ -253,9 +253,8 @@ If you are using PHP constructor property promotion and would like to indicate t
      */
     public function __construct(
         #[WithoutRelations]
-        public Podcast $podcast
-    ) {
-    }
+        public Podcast $podcast,
+    ) {}
 
 If a job receives a collection or array of Eloquent models instead of a single model, the models within that collection will not have their relationships restored when the job is deserialized and executed. This is to prevent excessive resource usage on jobs that deal with large numbers of models.
 
@@ -575,7 +574,6 @@ class ProviderIsDown
 {
     // ...
 
-
     public function middleware(): array
     {
         return [
@@ -587,7 +585,6 @@ class ProviderIsDown
 class ProviderIsUp
 {
     // ...
-
 
     public function middleware(): array
     {
@@ -615,7 +612,7 @@ For example, let's imagine a queued job that interacts with a third-party API th
      */
     public function middleware(): array
     {
-        return [new ThrottlesExceptions(10, 5)];
+        return [new ThrottlesExceptions(10, 5 * 60)];
     }
 
     /**
@@ -623,10 +620,10 @@ For example, let's imagine a queued job that interacts with a third-party API th
      */
     public function retryUntil(): DateTime
     {
-        return now()->addMinutes(5);
+        return now()->addMinutes(30);
     }
 
-The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again.
+The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of seconds that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 consecutive exceptions, we will wait 5 minutes before attempting the job again, constrained by the 30-minute time limit.
 
 When a job throws an exception but the exception threshold has not yet been reached, the job will typically be retried immediately. However, you may specify the number of minutes such a job should be delayed by calling the `backoff` method when attaching the middleware to the job:
 
@@ -639,7 +636,7 @@ When a job throws an exception but the exception threshold has not yet been reac
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 5))->backoff(5)];
+        return [(new ThrottlesExceptions(10, 5 * 60))->backoff(5)];
     }
 
 Internally, this middleware uses Laravel's cache system to implement rate limiting, and the job's class name is utilized as the cache "key". You may override this key by calling the `by` method when attaching the middleware to your job. This may be useful if you have multiple jobs interacting with the same third-party service and you would like them to share a common throttling "bucket":
@@ -653,11 +650,78 @@ Internally, this middleware uses Laravel's cache system to implement rate limiti
      */
     public function middleware(): array
     {
-        return [(new ThrottlesExceptions(10, 10))->by('key')];
+        return [(new ThrottlesExceptions(10, 10 * 60))->by('key')];
+    }
+
+By default, this middleware will throttle every exception. You can modify this behaviour by invoking the `when` method when attaching the middleware to your job. The exception will then only be throttled if closure provided to the `when` method returns `true`:
+
+    use Illuminate\Http\Client\HttpClientException;
+    use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array<int, object>
+     */
+    public function middleware(): array
+    {
+        return [(new ThrottlesExceptions(10, 10 * 60))->when(
+            fn (Throwable $throwable) => $throwable instanceof HttpClientException
+        )];
+    }
+
+If you would like to have the throttled exceptions reported to your application's exception handler, you can do so by invoking the `report` method when attaching the middleware to your job. Optionally, you may provide a closure to the `report` method and the exception will only be reported if the given closure returns `true`:
+
+    use Illuminate\Http\Client\HttpClientException;
+    use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array<int, object>
+     */
+    public function middleware(): array
+    {
+        return [(new ThrottlesExceptions(10, 10 * 60))->report(
+            fn (Throwable $throwable) => $throwable instanceof HttpClientException
+        )];
     }
 
 > [!NOTE]  
 > If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
+
+<a name="skipping-jobs"></a>
+### Skipping Jobs
+
+The `Skip` middleware allows you to specify that a job should be skipped / deleted without needing to modify the job's logic. The `Skip::when` method will delete the job if the given condition evaluates to `true`, while the `Skip::unless` method will delete the job if the condition evaluates to `false`:
+
+    use Illuminate\Queue\Middleware\Skip;
+
+    /**
+    * Get the middleware the job should pass through.
+    */
+    public function middleware(): array
+    {
+        return [
+            Skip::when($someCondition),
+        ];
+    }
+
+You can also pass a `Closure` to the `when` and `unless` methods for more complex conditional evaluation:
+
+    use Illuminate\Queue\Middleware\Skip;
+
+    /**
+    * Get the middleware the job should pass through.
+    */
+    public function middleware(): array
+    {
+        return [
+            Skip::when(function (): bool {
+                return $this->shouldSkip();
+            }),
+        ];
+    }
 
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
@@ -731,6 +795,10 @@ If you would like to specify that a job should not be immediately available for 
             return redirect('/podcasts');
         }
     }
+
+In some cases, jobs may have a default delay configured. If you need to bypass this delay and dispatch a job for immediate processing, you may use the `withoutDelay` method:
+
+    ProcessPodcast::dispatch($podcast)->withoutDelay();
 
 > [!WARNING]  
 > The Amazon SQS queue service has a maximum delay time of 15 minutes.
@@ -858,6 +926,27 @@ If you would like to specify the connection and queue that should be used for th
         new ReleasePodcast,
     ])->onConnection('redis')->onQueue('podcasts')->dispatch();
 
+<a name="adding-jobs-to-the-chain"></a>
+#### Adding Jobs to the Chain
+
+Occasionally, you may need to prepend or append a job to an existing job chain from within another job in that chain. You may accomplish this using the `prependToChain` and `appendToChain` methods:
+
+```php
+/**
+ * Execute the job.
+ */
+public function handle(): void
+{
+    // ...
+
+    // Prepend to the current chain, run job immediately after current job...
+    $this->prependToChain(new TranscribePodcast);
+
+    // Append to the current chain, run job at end of chain...
+    $this->appendToChain(new TranscribePodcast);
+}
+```
+
 <a name="chain-failures"></a>
 #### Chain Failures
 
@@ -878,7 +967,7 @@ When chaining jobs, you may use the `catch` method to specify a closure that sho
 > Since chain callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within chain callbacks.
 
 <a name="customizing-the-queue-and-connection"></a>
-### Customizing The Queue and Connection
+### Customizing the Queue and Connection
 
 <a name="dispatching-to-a-particular-queue"></a>
 #### Dispatching to a Particular Queue
@@ -918,15 +1007,12 @@ Alternatively, you may specify the job's queue by calling the `onQueue` method w
 
     namespace App\Jobs;
 
-     use Illuminate\Bus\Queueable;
      use Illuminate\Contracts\Queue\ShouldQueue;
-     use Illuminate\Foundation\Bus\Dispatchable;
-     use Illuminate\Queue\InteractsWithQueue;
-     use Illuminate\Queue\SerializesModels;
+     use Illuminate\Foundation\Queue\Queueable;
 
     class ProcessPodcast implements ShouldQueue
     {
-        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         /**
          * Create a new job instance.
@@ -981,15 +1067,12 @@ Alternatively, you may specify the job's connection by calling the `onConnection
 
     namespace App\Jobs;
 
-     use Illuminate\Bus\Queueable;
      use Illuminate\Contracts\Queue\ShouldQueue;
-     use Illuminate\Foundation\Bus\Dispatchable;
-     use Illuminate\Queue\InteractsWithQueue;
-     use Illuminate\Queue\SerializesModels;
+     use Illuminate\Foundation\Queue\Queueable;
 
     class ProcessPodcast implements ShouldQueue
     {
-        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         /**
          * Create a new job instance.
@@ -1222,15 +1305,12 @@ To define a batchable job, you should [create a queueable job](#creating-jobs) a
     namespace App\Jobs;
 
     use Illuminate\Bus\Batchable;
-    use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
-    use Illuminate\Foundation\Bus\Dispatchable;
-    use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Queue\SerializesModels;
+    use Illuminate\Foundation\Queue\Queueable;
 
     class ImportCsv implements ShouldQueue
     {
-        use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Batchable, Queueable;
 
         /**
          * Execute the job.
@@ -1540,7 +1620,7 @@ Then, set the `queue.batching.driver` configuration option's value to `dynamodb`
 
 ```php
 'batching' => [
-    'driver' => env('QUEUE_FAILED_DRIVER', 'dynamodb'),
+    'driver' => env('QUEUE_BATCHING_DRIVER', 'dynamodb'),
     'key' => env('AWS_ACCESS_KEY_ID'),
     'secret' => env('AWS_SECRET_ACCESS_KEY'),
     'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
@@ -1570,7 +1650,7 @@ If you defined your DynamoDB table with a `ttl` attribute, you may define config
 <a name="queueing-closures"></a>
 ## Queueing Closures
 
-Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it can not be modified in transit:
+Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it cannot be modified in transit:
 
     $podcast = App\Podcast::find(1);
 
@@ -1877,15 +1957,13 @@ When a particular job fails, you may want to send an alert to your users or reve
 
     use App\Models\Podcast;
     use App\Services\AudioProcessor;
-    use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
-    use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Queue\SerializesModels;
+    use Illuminate\Foundation\Queue\Queueable;
     use Throwable;
 
     class ProcessPodcast implements ShouldQueue
     {
-        use InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         /**
          * Create a new job instance.
@@ -2273,6 +2351,29 @@ You may use the `assertDispatchedWithoutChain` method to assert that a job was p
 
     Bus::assertDispatchedWithoutChain(ShipOrder::class);
 
+<a name="testing-chain-modifications"></a>
+#### Testing Chain Modifications
+
+If a chained job [prepends or appends jobs to an existing chain](#adding-jobs-to-the-chain), you may use the job's `assertHasChain` method to assert that the job has the expected chain of remaining jobs:
+
+```php
+$job = new ProcessPodcast;
+
+$job->handle();
+
+$job->assertHasChain([
+    new TranscribePodcast,
+    new OptimizePodcast,
+    new ReleasePodcast,
+]);
+```
+
+The `assertDoesntHaveChain` method may be used to assert that the job's remaining chain is empty:
+
+```php
+$job->assertDoesntHaveChain();
+```
+
 <a name="testing-chained-batches"></a>
 #### Testing Chained Batches
 
@@ -2333,9 +2434,10 @@ In addition, you may occasionally need to test an individual job's interaction w
 
 Sometimes, you may need to test that a queued job [releases itself back onto the queue](#manually-releasing-a-job). Or, you may need to test that the job deleted itself. You may test these queue interactions by instantiating the job and invoking the `withFakeQueueInteractions` method.
 
-Once the job's queue interactions have been faked, you may invoke the `handle` method on the job. After invoking the job, the `assetReleased`, `assertDeleted`, and `assertFailed` methods may be used to make assertions against the job's queue interactions:
+Once the job's queue interactions have been faked, you may invoke the `handle` method on the job. After invoking the job, the `assertReleased`, `assertDeleted`, `assertNotDeleted`, `assertFailed`, `assertFailedWith`, and `assertNotFailed` methods may be used to make assertions against the job's queue interactions:
 
 ```php
+use App\Exceptions\CorruptedAudioException;
 use App\Jobs\ProcessPodcast;
 
 $job = (new ProcessPodcast)->withFakeQueueInteractions();
@@ -2344,7 +2446,10 @@ $job->handle();
 
 $job->assertReleased(delay: 30);
 $job->assertDeleted();
+$job->assertNotDeleted();
 $job->assertFailed();
+$job->assertFailedWith(CorruptedAudioException::class);
+$job->assertNotFailed();
 ```
 
 <a name="job-events"></a>

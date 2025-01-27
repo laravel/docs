@@ -141,15 +141,15 @@ composer require typesense/typesense-php
 
 Then, set the `SCOUT_DRIVER` environment variable as well as your Typesense host and API key credentials within your application's .env file:
 
-```env
+```ini
 SCOUT_DRIVER=typesense
 TYPESENSE_API_KEY=masterKey
 TYPESENSE_HOST=localhost
 ```
 
-If needed, you may also specify your installation's port, path, and protocol:
+If you are using [Laravel Sail](/docs/{{version}}/sail), you may need to adjust the `TYPESENSE_HOST` environment variable to match the Docker container name. You may also optionally specify your installation's port, path, and protocol:
 
-```env
+```ini
 TYPESENSE_PORT=8108
 TYPESENSE_PATH=
 TYPESENSE_PROTOCOL=http
@@ -177,7 +177,7 @@ public function toSearchableArray()
 }
 ```
 
-You should also define your Typesense collection schemas in your application's `config/scout.php` file. A collection schema describes the data types of each field that is searchable via Typesense. For more information on all available schema options, please consult the [Typesense documentation](https://typesense.org/docs/latest/api/collections.html#schema-parameters). 
+You should also define your Typesense collection schemas in your application's `config/scout.php` file. A collection schema describes the data types of each field that is searchable via Typesense. For more information on all available schema options, please consult the [Typesense documentation](https://typesense.org/docs/latest/api/collections.html#schema-parameters).
 
 If you need to change your Typesense collection's schema after it has been defined, you may either run `scout:flush` and `scout:import`, which will delete all existing indexed data and recreate the schema. Or, you may use Typesense's API to modify the collection's schema without removing any indexed data.
 
@@ -594,6 +594,10 @@ If you would like to remove the search index records for all of the models in a 
 Or, if you already have a collection of Eloquent models in memory, you may call the `unsearchable` method on the collection instance to remove the model instances from their corresponding index:
 
     $orders->unsearchable();
+
+To remove all of the model records from their corresponding index, you may invoke the `removeAllFromSearch` method:
+
+    Order::removeAllFromSearch();
 
 <a name="pausing-indexing"></a>
 ### Pausing Indexing

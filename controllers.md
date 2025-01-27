@@ -38,7 +38,7 @@ Let's take a look at an example of a basic controller. A controller may have any
     <?php
 
     namespace App\Http\Controllers;
-    
+
     use App\Models\User;
     use Illuminate\View\View;
 
@@ -106,7 +106,7 @@ php artisan make:controller ProvisionServer --invokable
 
 [Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:
 
-    Route::get('profile', [UserController::class, 'show'])->middleware('auth');
+    Route::get('/profile', [UserController::class, 'show'])->middleware('auth');
 
 Or, you may find it convenient to specify middleware within your controller class. To do so, your controller should implement the `HasMiddleware` interface, which dictates that the controller should have a static `middleware` method. From this method, you may return an array of middleware that should be applied to the controller's actions:
 
@@ -152,6 +152,9 @@ You may also define controller middleware as closures, which provides a convenie
         ];
     }
 
+> [!WARNING]  
+> Controllers implementing `Illuminate\Routing\Controllers\HasMiddleware` should not extend `Illuminate\Routing\Controller`.
+
 <a name="resource-controllers"></a>
 ## Resource Controllers
 
@@ -181,20 +184,24 @@ You may even register many resource controllers at once by passing an array to t
 <a name="actions-handled-by-resource-controllers"></a>
 #### Actions Handled by Resource Controllers
 
-Verb      | URI                    | Action       | Route Name
-----------|------------------------|--------------|---------------------
-GET       | `/photos`              | index        | photos.index
-GET       | `/photos/create`       | create       | photos.create
-POST      | `/photos`              | store        | photos.store
-GET       | `/photos/{photo}`      | show         | photos.show
-GET       | `/photos/{photo}/edit` | edit         | photos.edit
-PUT/PATCH | `/photos/{photo}`      | update       | photos.update
-DELETE    | `/photos/{photo}`      | destroy      | photos.destroy
+<div class="overflow-auto">
+
+| Verb      | URI                    | Action  | Route Name     |
+| --------- | ---------------------- | ------- | -------------- |
+| GET       | `/photos`              | index   | photos.index   |
+| GET       | `/photos/create`       | create  | photos.create  |
+| POST      | `/photos`              | store   | photos.store   |
+| GET       | `/photos/{photo}`      | show    | photos.show    |
+| GET       | `/photos/{photo}/edit` | edit    | photos.edit    |
+| PUT/PATCH | `/photos/{photo}`      | update  | photos.update  |
+| DELETE    | `/photos/{photo}`      | destroy | photos.destroy |
+
+</div>
 
 <a name="customizing-missing-model-behavior"></a>
 #### Customizing Missing Model Behavior
 
-Typically, a 404 HTTP response will be generated if an implicitly bound resource model is not found. However, you may customize this behavior by calling the `missing` method when defining your resource route. The `missing` method accepts a closure that will be invoked if an implicitly bound model can not be found for any of the resource's routes:
+Typically, a 404 HTTP response will be generated if an implicitly bound resource model is not found. However, you may customize this behavior by calling the `missing` method when defining your resource route. The `missing` method accepts a closure that will be invoked if an implicitly bound model cannot be found for any of the resource's routes:
 
     use App\Http\Controllers\PhotoController;
     use Illuminate\Http\Request;
@@ -305,15 +312,19 @@ Often, it is not entirely necessary to have both the parent and the child IDs wi
 
 This route definition will define the following routes:
 
-Verb      | URI                               | Action       | Route Name
-----------|-----------------------------------|--------------|---------------------
-GET       | `/photos/{photo}/comments`        | index        | photos.comments.index
-GET       | `/photos/{photo}/comments/create` | create       | photos.comments.create
-POST      | `/photos/{photo}/comments`        | store        | photos.comments.store
-GET       | `/comments/{comment}`             | show         | comments.show
-GET       | `/comments/{comment}/edit`        | edit         | comments.edit
-PUT/PATCH | `/comments/{comment}`             | update       | comments.update
-DELETE    | `/comments/{comment}`             | destroy      | comments.destroy
+<div class="overflow-auto">
+
+| Verb      | URI                               | Action  | Route Name             |
+| --------- | --------------------------------- | ------- | ---------------------- |
+| GET       | `/photos/{photo}/comments`        | index   | photos.comments.index  |
+| GET       | `/photos/{photo}/comments/create` | create  | photos.comments.create |
+| POST      | `/photos/{photo}/comments`        | store   | photos.comments.store  |
+| GET       | `/comments/{comment}`             | show    | comments.show          |
+| GET       | `/comments/{comment}/edit`        | edit    | comments.edit          |
+| PUT/PATCH | `/comments/{comment}`             | update  | comments.update        |
+| DELETE    | `/comments/{comment}`             | destroy | comments.destroy       |
+
+</div>
 
 <a name="restful-naming-resource-routes"></a>
 ### Naming Resource Routes
@@ -337,7 +348,7 @@ By default, `Route::resource` will create the route parameters for your resource
         'users' => 'admin_user'
     ]);
 
- The example above generates the following URI for the resource's `show` route:
+The example above generates the following URI for the resource's `show` route:
 
     /users/{admin_user}
 
@@ -407,11 +418,15 @@ Route::singleton('profile', ProfileController::class);
 
 The singleton resource definition above will register the following routes. As you can see, "creation" routes are not registered for singleton resources, and the registered routes do not accept an identifier since only one instance of the resource may exist:
 
-Verb      | URI                               | Action       | Route Name
-----------|-----------------------------------|--------------|---------------------
-GET       | `/profile`                        | show         | profile.show
-GET       | `/profile/edit`                   | edit         | profile.edit
-PUT/PATCH | `/profile`                        | update       | profile.update
+<div class="overflow-auto">
+
+| Verb      | URI             | Action | Route Name     |
+| --------- | --------------- | ------ | -------------- |
+| GET       | `/profile`      | show   | profile.show   |
+| GET       | `/profile/edit` | edit   | profile.edit   |
+| PUT/PATCH | `/profile`      | update | profile.update |
+
+</div>
 
 Singleton resources may also be nested within a standard resource:
 
@@ -419,13 +434,17 @@ Singleton resources may also be nested within a standard resource:
 Route::singleton('photos.thumbnail', ThumbnailController::class);
 ```
 
-In this example, the `photos` resource would receive all of the [standard resource routes](#actions-handled-by-resource-controller); however, the `thumbnail` resource would be a singleton resource with the following routes:
+In this example, the `photos` resource would receive all of the [standard resource routes](#actions-handled-by-resource-controllers); however, the `thumbnail` resource would be a singleton resource with the following routes:
 
-| Verb      | URI                              | Action  | Route Name               |
-|-----------|----------------------------------|---------|--------------------------|
-| GET       | `/photos/{photo}/thumbnail`      | show    | photos.thumbnail.show    |
-| GET       | `/photos/{photo}/thumbnail/edit` | edit    | photos.thumbnail.edit    |
-| PUT/PATCH | `/photos/{photo}/thumbnail`      | update  | photos.thumbnail.update  |
+<div class="overflow-auto">
+
+| Verb      | URI                              | Action | Route Name              |
+| --------- | -------------------------------- | ------ | ----------------------- |
+| GET       | `/photos/{photo}/thumbnail`      | show   | photos.thumbnail.show   |
+| GET       | `/photos/{photo}/thumbnail/edit` | edit   | photos.thumbnail.edit   |
+| PUT/PATCH | `/photos/{photo}/thumbnail`      | update | photos.thumbnail.update |
+
+</div>
 
 <a name="creatable-singleton-resources"></a>
 #### Creatable Singleton Resources
@@ -438,14 +457,18 @@ Route::singleton('photos.thumbnail', ThumbnailController::class)->creatable();
 
 In this example, the following routes will be registered. As you can see, a `DELETE` route will also be registered for creatable singleton resources:
 
+<div class="overflow-auto">
+
 | Verb      | URI                                | Action  | Route Name               |
-|-----------|------------------------------------|---------|--------------------------|
+| --------- | ---------------------------------- | ------- | ------------------------ |
 | GET       | `/photos/{photo}/thumbnail/create` | create  | photos.thumbnail.create  |
 | POST      | `/photos/{photo}/thumbnail`        | store   | photos.thumbnail.store   |
 | GET       | `/photos/{photo}/thumbnail`        | show    | photos.thumbnail.show    |
 | GET       | `/photos/{photo}/thumbnail/edit`   | edit    | photos.thumbnail.edit    |
 | PUT/PATCH | `/photos/{photo}/thumbnail`        | update  | photos.thumbnail.update  |
 | DELETE    | `/photos/{photo}/thumbnail`        | destroy | photos.thumbnail.destroy |
+
+</div>
 
 If you would like Laravel to register the `DELETE` route for a singleton resource but not register the creation or storage routes, you may utilize the `destroyable` method:
 

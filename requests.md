@@ -306,9 +306,16 @@ When sending JSON requests to your application, you may access the JSON data via
 <a name="retrieving-stringable-input-values"></a>
 #### Retrieving Stringable Input Values
 
-Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\Support\Stringable`](/docs/{{version}}/helpers#fluent-strings):
+Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\Support\Stringable`](/docs/{{version}}/strings):
 
     $name = $request->string('name')->trim();
+
+<a name="retrieving-integer-input-values"></a>
+#### Retrieving Integer Input Values
+
+To retrieve input values as integers, you may use the `integer` method. This method will attempt to cast the input value to an integer. If the input is not present or the cast fails, it will return the default value you specify. This is particularly useful for pagination or other numeric inputs:
+
+    $perPage = $request->integer('per_page');
 
 <a name="retrieving-boolean-input-values"></a>
 #### Retrieving Boolean Input Values
@@ -338,6 +345,12 @@ Input values that correspond to [PHP enums](https://www.php.net/manual/en/langua
     use App\Enums\Status;
 
     $status = $request->enum('status', Status::class);
+
+If the input value is an array of values that correspond to a PHP enum, you may use the `enums` method to retrieve the array of values as enum instances:
+
+    use App\Enums\Product;
+
+    $products = $request->enums('products', Product::class);
 
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input via Dynamic Properties
@@ -405,6 +418,18 @@ If you would like to determine if a value is present on the request and is not a
         // ...
     }
 
+If you would like to determine if a value is missing from the request or is an empty string, you may use the `isNotFilled` method:
+
+    if ($request->isNotFilled('name')) {
+        // ...
+    }
+
+When given an array, the `isNotFilled` method will determine if all of the specified values are missing or empty:
+
+    if ($request->isNotFilled(['name', 'email'])) {
+        // ...
+    }
+
 The `anyFilled` method returns `true` if any of the specified values is not an empty string:
 
     if ($request->anyFilled(['name', 'email'])) {
@@ -431,7 +456,7 @@ To determine if a given key is absent from the request, you may use the `missing
         // ...
     }
 
-    $request->whenMissing('name', function (array $input) {
+    $request->whenMissing('name', function () {
         // The "name" value is missing...
     }, function () {
         // The "name" value is present...
@@ -471,11 +496,11 @@ You may also use the `flashOnly` and `flashExcept` methods to flash a subset of 
 
 Since you often will want to flash input to the session and then redirect to the previous page, you may easily chain input flashing onto a redirect using the `withInput` method:
 
-    return redirect('form')->withInput();
+    return redirect('/form')->withInput();
 
     return redirect()->route('user.create')->withInput();
 
-    return redirect('form')->withInput(
+    return redirect('/form')->withInput(
         $request->except('password')
     );
 
@@ -604,7 +629,7 @@ To solve this, you may enable the `Illuminate\Http\Middleware\TrustProxies` midd
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies(at: [
             '192.168.1.1',
-            '192.168.1.2',
+            '10.0.0.0/8',
         ]);
     })
 
@@ -620,7 +645,7 @@ In addition to configuring the trusted proxies, you may also configure the proxy
     })
 
 > [!NOTE]  
-> If you are using AWS Elastic Load Balancing, your `headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `headers` value, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/7.0/deployment/proxies.html).
+> If you are using AWS Elastic Load Balancing, the `headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. If your load balancer uses the standard `Forwarded` header from [RFC 7239](https://www.rfc-editor.org/rfc/rfc7239#section-4), the `headers` value should be `Request::HEADER_FORWARDED`. For more information on the constants that may be used in the `headers` value, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/7.0/deployment/proxies.html).
 
 <a name="trusting-all-proxies"></a>
 #### Trusting All Proxies
@@ -650,3 +675,8 @@ By default, requests coming from subdomains of the application's URL are also au
         $middleware->trustHosts(at: ['laravel.test'], subdomains: false);
     })
 
+If you need to access your application's configuration files or database to determine your trusted hosts, you may provide a closure to the `at` argument:
+
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustHosts(at: fn () => config('app.trusted_hosts'));
+    })

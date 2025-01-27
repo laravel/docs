@@ -185,7 +185,7 @@ The `pull` method will retrieve and delete an item from the session in a single 
 
     $value = $request->session()->pull('key', 'default');
 
-<a name="#incrementing-and-decrementing-session-values"></a>
+<a name="incrementing-and-decrementing-session-values"></a>
 #### Incrementing and Decrementing Session Values
 
 If your session data contains an integer you wish to increment or decrement, you may use the `increment` and `decrement` methods:
@@ -245,7 +245,7 @@ If you need to regenerate the session ID and remove all data from the session in
 ## Session Blocking
 
 > [!WARNING]  
-> To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, `database`, `file`, and `array` drivers. In addition, you may not use the `cookie` session driver.
+> To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, `mongodb` (included in the official `mongodb/laravel-mongodb` package), `database`, `file`, and `array` drivers. In addition, you may not use the `cookie` session driver.
 
 By default, Laravel allows requests using the same session to execute concurrently. So, for example, if you use a JavaScript HTTP library to make two HTTP requests to your application, they will both execute at the same time. For many applications, this is not a problem; however, session data loss can occur in a small subset of applications that make concurrent requests to two different application endpoints which both write data to the session.
 
@@ -253,11 +253,11 @@ To mitigate this, Laravel provides functionality that allows you to limit concur
 
     Route::post('/profile', function () {
         // ...
-    })->block($lockSeconds = 10, $waitSeconds = 10)
+    })->block($lockSeconds = 10, $waitSeconds = 10);
 
     Route::post('/order', function () {
         // ...
-    })->block($lockSeconds = 10, $waitSeconds = 10)
+    })->block($lockSeconds = 10, $waitSeconds = 10);
 
 The `block` method accepts two optional arguments. The first argument accepted by the `block` method is the maximum number of seconds the session lock should be held for before it is released. Of course, if the request finishes executing before this time the lock will be released earlier.
 
@@ -267,7 +267,7 @@ If neither of these arguments is passed, the lock will be obtained for a maximum
 
     Route::post('/profile', function () {
         // ...
-    })->block()
+    })->block();
 
 <a name="adding-custom-session-drivers"></a>
 ## Adding Custom Session Drivers
@@ -291,10 +291,9 @@ If none of the existing session drivers fit your application's needs, Laravel ma
         public function gc($lifetime) {}
     }
 
-> [!NOTE]  
-> Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`.
+Since Laravel does not include a default directory to house your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`.
 
-Since the purpose of these methods is not readily understandable, let's quickly cover what each of the methods do:
+Since the purpose of these methods is not readily understandable, here is an overview of the purpose of each method:
 
 <div class="content-list" markdown="1">
 

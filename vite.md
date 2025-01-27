@@ -18,6 +18,7 @@
   - [Processing Static Assets With Vite](#blade-processing-static-assets)
   - [Refreshing on Save](#blade-refreshing-on-save)
   - [Aliases](#blade-aliases)
+- [Asset Prefetching](#asset-prefetching)
 - [Custom Base URLs](#custom-base-urls)
 - [Environment Variables](#environment-variables)
 - [Disabling Vite in Tests](#disabling-vite-in-tests)
@@ -27,6 +28,7 @@
   - [Subresource Integrity (SRI)](#subresource-integrity-sri)
   - [Arbitrary Attributes](#arbitrary-attributes)
 - [Advanced Customization](#advanced-customization)
+  - [Dev Server Cross-Origin Resource Sharing (CORS)](#cors)
   - [Correcting Dev Server URLs](#correcting-dev-server-urls)
 
 <a name="introduction"></a>
@@ -201,7 +203,7 @@ If your file changes are not being reflected in the browser while the developmen
 With your Vite entry points configured, you may now reference them in a `@vite()` Blade directive that you add to the `<head>` of your application's root template:
 
 ```blade
-<!doctype html>
+<!DOCTYPE html>
 <head>
     {{-- ... --}}
 
@@ -212,7 +214,7 @@ With your Vite entry points configured, you may now reference them in a `@vite()
 If you're importing your CSS via JavaScript, you only need to include the JavaScript entry point:
 
 ```blade
-<!doctype html>
+<!DOCTYPE html>
 <head>
     {{-- ... --}}
 
@@ -239,9 +241,7 @@ If needed, you may also specify the build path of your compiled assets when invo
 Sometimes it may be necessary to include the raw content of assets rather than linking to the versioned URL of the asset. For example, you may need to include asset content directly into your page when passing HTML content to a PDF generator. You may output the content of Vite assets using the `content` method provided by the `Vite` facade:
 
 ```blade
-@php
-use Illuminate\Support\Facades\Vite;
-@endphp
+@use('Illuminate\Support\Facades\Vite')
 
 <!doctype html>
 <head>
@@ -400,12 +400,14 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 createInertiaApp({
   resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
   setup({ el, App, props, plugin }) {
-    return createApp({ render: () => h(App, props) })
+    createApp({ render: () => h(App, props) })
       .use(plugin)
       .mount(el)
   },
 });
 ```
+
+If you are using Vite's code splitting feature with Inertia, we recommend configuring [asset prefetching](#asset-prefetching).
 
 > [!NOTE]  
 > Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia, and Vite.
@@ -413,7 +415,7 @@ createInertiaApp({
 <a name="url-processing"></a>
 ### URL Processing
 
-When using Vite and referencing assets in your application's HTML, CSS, or JS, there are a couple of caveats to consider. First, if you reference assets with an absolute path, Vite will not include the asset in the build; therefore, you should ensure that the asset is available in your public directory.
+When using Vite and referencing assets in your application's HTML, CSS, or JS, there are a couple of caveats to consider. First, if you reference assets with an absolute path, Vite will not include the asset in the build; therefore, you should ensure that the asset is available in your public directory. You should avoid using absolute paths when using a [dedicated CSS entrypoint](#configuring-vite) because, during development, browsers will try to load these paths from the Vite development server, where the CSS is hosted, rather than from your public directory.
 
 When referencing relative asset paths, you should remember that the paths are relative to the file where they are referenced. Any assets referenced via a relative path will be re-written, versioned, and bundled by Vite.
 
@@ -501,6 +503,7 @@ export default defineConfig({
 
 When the `refresh` option is `true`, saving files in the following directories will trigger the browser to perform a full page refresh while you are running `npm run dev`:
 
+- `app/Livewire/**`
 - `app/View/Components/**`
 - `lang/**`
 - `resources/lang/**`
@@ -561,6 +564,75 @@ Once a macro has been defined, it can be invoked within your templates. For exam
 
 ```blade
 <img src="{{ Vite::image('logo.png') }}" alt="Laravel Logo">
+```
+
+<a name="asset-prefetching"></a>
+## Asset Prefetching
+
+When building an SPA using Vite's code splitting feature, required assets are fetched on each page navigation. This behavior can lead to delayed UI rendering. If this is a problem for your frontend framework of choice, Laravel offers the ability to eagerly prefetch your application's JavaScript and CSS assets on initial page load.
+
+You can instruct Laravel to eagerly prefetch your assets by invoking the `Vite::prefetch` method in the `boot` method of a [service provider](/docs/{{version}}/providers):
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        // ...
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Vite::prefetch(concurrency: 3);
+    }
+}
+```
+
+In the example above, assets will be prefetched with a maximum of `3` concurrent downloads on each page load. You can modify the concurrency to suit your application's needs or specify no concurrency limit if the application should download all assets at once:
+
+```php
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Vite::prefetch();
+}
+```
+
+By default, prefetching will begin when the [page _load_ event](https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event) fires. If you would like to customize when prefetching begins, you may specify an event that Vite will listen for:
+
+```php
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Vite::prefetch(event: 'vite:prefetch');
+}
+```
+
+Given the code above, prefetching will now begin when you manually dispatch the `vite:prefetch` event on the `window` object. For example, you could have prefetching begin three seconds after the page loads:
+
+```html
+<script>
+    addEventListener('load', () => setTimeout(() => {
+        dispatchEvent(new Event('vite:prefetch'))
+    }, 3000))
+</script>
 ```
 
 <a name="custom-base-urls"></a>
@@ -857,6 +929,72 @@ export default defineConfig({
 });
 ```
 
+<a name="cors"></a>
+### Dev Server Cross-Origin Resource Sharing (CORS)
+
+If you are experiencing Cross-Origin Resource Sharing (CORS) issues in the browser while fetching assets from the Vite dev server, you may need to grant your custom origin access to the dev server. Vite combined with the Laravel plugin allows the following origins without any additional configuration:
+
+- `::1`
+- `127.0.0.1`
+- `localhost`
+- `*.test`
+- `*.localhost`
+- `APP_URL` in the project's `.env`
+
+The easiest way to allow a custom origin for your project is to ensure that your application's `APP_URL` environment variable matches the origin you are visiting in your browser. For example, if you visiting `https://my-app.laravel`, you should update your `.env` to match:
+
+```env
+APP_URL=https://my-app.laravel
+```
+
+If you need more fine-grained control over the origins, such as supporting multiple origins, you should utilize [Vite's comprehensive and flexible built-in CORS server configuration](https://vite.dev/config/server-options.html#server-cors). For example, you may specify multiple origins in the `server.cors.origin` configuration option in the project's `vite.config.js` file:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: 'resources/js/app.js',
+            refresh: true,
+        }),
+    ],
+    server: {  // [tl! add]
+        cors: {  // [tl! add]
+            origin: [  // [tl! add]
+                'https://backend.laravel',  // [tl! add]
+                'http://admin.laravel:8566',  // [tl! add]
+            ],  // [tl! add]
+        },  // [tl! add]
+    },  // [tl! add]
+});
+```
+
+You may also include regex patterns, which can be helpful if you would like to allow all origins for a given top-level domain, such as `*.laravel`:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: 'resources/js/app.js',
+            refresh: true,
+        }),
+    ],
+    server: {  // [tl! add]
+        cors: {  // [tl! add]
+            origin: [ // [tl! add]
+                // Supports: SCHEME://DOMAIN.laravel[:PORT] [tl! add]
+                /^https?:\/\/.*\.laravel(:\d+)?$/, //[tl! add]
+            ], // [tl! add]
+        }, // [tl! add]
+    }, // [tl! add]
+});
+```
+
 <a name="correcting-dev-server-urls"></a>
 ### Correcting Dev Server URLs
 
@@ -868,7 +1006,7 @@ For example, the `vite-imagetools` plugin outputs URLs like the following while 
 <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520">
 ```
 
-The `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option. 
+The `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option.
 
 In this particular example, we will prepend the dev server URL to all occurrences of `/@imagetools` within the generated code:
 

@@ -220,7 +220,7 @@ class ExampleTest extends DuskTestCase
 
 By default, this trait will truncate all tables except the `migrations` table. If you would like to customize the tables that should be truncated, you may define a `$tablesToTruncate` property on your test class:
 
-> [!NOTE]
+> [!NOTE]  
 > If you are using Pest, you should define properties or methods on the base `DuskTestCase` class or on any class your test file extends.
 
     /**
@@ -423,7 +423,7 @@ The `visit` method may be used to navigate to a given URI within your applicatio
 
 You may use the `visitRoute` method to navigate to a [named route](/docs/{{version}}/routing#named-routes):
 
-    $browser->visitRoute('login');
+    $browser->visitRoute($routeName, $parameters);
 
 You may navigate "back" and "forward" using the `back` and `forward` methods:
 
@@ -552,6 +552,10 @@ You may use the `screenshot` method to take a screenshot and store it with the g
 The `responsiveScreenshots` method may be used to take a series of screenshots at various breakpoints:
 
     $browser->responsiveScreenshots('filename');
+
+The `screenshotElement` method may be used to take a screenshot of a specific element on the page:
+
+    $browser->screenshotElement('#selector', 'filename');
 
 <a name="storing-console-output-to-disk"></a>
 ### Storing Console Output to Disk
@@ -910,9 +914,9 @@ If you need to interact with elements within an iframe, you may use the `withinF
 
     $browser->withinFrame('#credit-card-details', function ($browser) {
         $browser->type('input[name="cardnumber"]', '4242424242424242')
-            ->type('input[name="exp-date"]', '12/24')
-            ->type('input[name="cvc"]', '123');
-        })->press('Pay');
+            ->type('input[name="exp-date"]', '1224')
+            ->type('input[name="cvc"]', '123')
+            ->press('Pay');
     });
 
 <a name="scoping-selectors"></a>
@@ -1180,6 +1184,8 @@ Dusk provides a variety of assertions that you may make against your application
 [assertPortIs](#assert-port-is)
 [assertPortIsNot](#assert-port-is-not)
 [assertPathBeginsWith](#assert-path-begins-with)
+[assertPathEndsWith](#assert-path-ends-with)
+[assertPathContains](#assert-path-contains)
 [assertPathIs](#assert-path-is)
 [assertPathIsNot](#assert-path-is-not)
 [assertRouteIs](#assert-route-is)
@@ -1221,6 +1227,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertValue](#assert-value)
 [assertValueIsNot](#assert-value-is-not)
 [assertAttribute](#assert-attribute)
+[assertAttributeMissing](#assert-attribute-missing)
 [assertAttributeContains](#assert-attribute-contains)
 [assertAttributeDoesntContain](#assert-attribute-doesnt-contain)
 [assertAriaAttribute](#assert-aria-attribute)
@@ -1317,6 +1324,20 @@ Assert that the current URL port does not match the given port:
 Assert that the current URL path begins with the given path:
 
     $browser->assertPathBeginsWith('/home');
+
+<a name="assert-path-ends-with"></a>
+#### assertPathEndsWith
+
+Assert that the current URL path ends with the given path:
+
+    $browser->assertPathEndsWith('/home');
+
+<a name="assert-path-contains"></a>
+#### assertPathContains
+
+Assert that the current URL path contains the given path:
+
+    $browser->assertPathContains('/home');
 
 <a name="assert-path-is"></a>
 #### assertPathIs
@@ -1609,6 +1630,14 @@ Assert that the element matching the given selector does not have the given valu
 Assert that the element matching the given selector has the given value in the provided attribute:
 
     $browser->assertAttribute($selector, $attribute, $value);
+
+<a name="assert-attribute-missing"></a>
+#### assertAttributeMissing
+
+Assert that the element matching the given selector is missing the provided attribute:
+
+    $browser->assertAttributeMissing($selector, $attribute);
+
 
 <a name="assert-attribute-contains"></a>
 #### assertAttributeContains
@@ -1935,6 +1964,7 @@ In addition to the default methods defined on pages, you may define additional m
     namespace Tests\Browser\Pages;
 
     use Laravel\Dusk\Browser;
+    use Laravel\Dusk\Page;
 
     class Dashboard extends Page
     {
@@ -2100,11 +2130,11 @@ To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration),
         "test": {
           "buildpacks": [
             { "url": "heroku/php" },
-            { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
+            { "url": "https://github.com/heroku/heroku-buildpack-chrome-for-testing" }
           ],
           "scripts": {
             "test-setup": "cp .env.testing .env",
-            "test": "nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &' && nohup bash -c 'php artisan serve --no-reload > /dev/null 2>&1 &' && php artisan dusk"
+            "test": "nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux --port=9515 > /dev/null 2>&1 &' && nohup bash -c 'php artisan serve --no-reload > /dev/null 2>&1 &' && php artisan dusk"
           }
         }
       }
@@ -2119,7 +2149,7 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
 language: php
 
 php:
-  - 7.3
+  - 8.2
 
 addons:
   chrome: stable
@@ -2170,20 +2200,20 @@ jobs:
       - name: Upgrade Chrome Driver
         run: php artisan dusk:chrome-driver --detect
       - name: Start Chrome Driver
-        run: ./vendor/laravel/dusk/bin/chromedriver-linux &
+        run: ./vendor/laravel/dusk/bin/chromedriver-linux --port=9515 &
       - name: Run Laravel Server
         run: php artisan serve --no-reload &
       - name: Run Dusk Tests
         run: php artisan dusk
       - name: Upload Screenshots
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: screenshots
           path: tests/Browser/screenshots
       - name: Upload Console Logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: console
           path: tests/Browser/console
@@ -2217,7 +2247,7 @@ pipeline:
       cp -v .env.example .env
       composer install --no-interaction --prefer-dist --optimize-autoloader
       php artisan key:generate
-      
+
       # Create a dusk env file, ensuring APP_URL uses BUILD_HOST
       cp -v .env .env.dusk.ci
       sed -i "s@APP_URL=.*@APP_URL=http://$BUILD_HOST:8000@g" .env.dusk.ci

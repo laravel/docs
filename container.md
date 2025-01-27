@@ -7,6 +7,7 @@
     - [Binding Basics](#binding-basics)
     - [Binding Interfaces to Implementations](#binding-interfaces-to-implementations)
     - [Contextual Binding](#contextual-binding)
+    - [Contextual Attributes](#contextual-attributes)
     - [Binding Primitives](#binding-primitives)
     - [Binding Typed Variadics](#binding-typed-variadics)
     - [Tagging](#tagging)
@@ -16,6 +17,7 @@
     - [Automatic Injection](#automatic-injection)
 - [Method Invocation and Injection](#method-invocation-and-injection)
 - [Container Events](#container-events)
+    - [Rebinding](#rebinding)
 - [PSR-11](#psr-11)
 
 <a name="introduction"></a>
@@ -29,32 +31,30 @@ Let's look at a simple example:
 
     namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
-    use App\Repositories\UserRepository;
-    use App\Models\User;
+    use App\Services\AppleMusic;
     use Illuminate\View\View;
 
-    class UserController extends Controller
+    class PodcastController extends Controller
     {
         /**
          * Create a new controller instance.
          */
         public function __construct(
-            protected UserRepository $users,
+            protected AppleMusic $apple,
         ) {}
 
         /**
-         * Show the profile for the given user.
+         * Show information about the given podcast.
          */
         public function show(string $id): View
         {
-            $user = $this->users->find($id);
-
-            return view('user.profile', ['user' => $user]);
+            return view('podcasts.show', [
+                'podcast' => $this->apple->findPodcast($id)
+            ]);
         }
     }
 
-In this example, the `UserController` needs to retrieve users from a data source. So, we will **inject** a service that is able to retrieve users. In this context, our `UserRepository` most likely uses [Eloquent](/docs/{{version}}/eloquent) to retrieve user information from the database. However, since the repository is injected, we are able to easily swap it out with another implementation. We are also able to easily "mock", or create a dummy implementation of the `UserRepository` when testing our application.
+In this example, the `PodcastController` needs to retrieve podcasts from a data source such as Apple Music. So, we will **inject** a service that is able to retrieve podcasts. Since the service is injected, we are able to easily "mock", or create a dummy implementation of the `AppleMusic` service when testing our application.
 
 A deep understanding of the Laravel service container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself.
 
@@ -171,6 +171,12 @@ The `scoped` method binds a class or interface into the container that should on
         return new Transistor($app->make(PodcastParser::class));
     });
 
+You may use the `scopedIf` method to register a scoped container binding only if a binding has not already been registered for the given type:
+
+    $this->app->scopedIf(Transistor::class, function (Application $app) {
+        return new Transistor($app->make(PodcastParser::class));
+    });
+
 <a name="binding-instances"></a>
 #### Binding Instances
 
@@ -201,7 +207,7 @@ This statement tells the container that it should inject the `RedisEventPusher` 
      * Create a new class instance.
      */
     public function __construct(
-        protected EventPusher $pusher
+        protected EventPusher $pusher,
     ) {}
 
 <a name="contextual-binding"></a>
@@ -227,13 +233,121 @@ Sometimes you may have two classes that utilize the same interface, but you wish
                   return Storage::disk('s3');
               });
 
+<a name="contextual-attributes"></a>
+### Contextual Attributes
+
+Since contextual binding is often used to inject implementations of drivers or configuration values, Laravel offers a variety of contextual binding attributes that allow to inject these types of values without manually defining the contextual bindings in your service providers.
+
+For example, the `Storage` attribute may be used to inject a specific [storage disk](/docs/{{version}}/filesystem):
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Container\Attributes\Storage;
+use Illuminate\Contracts\Filesystem\Filesystem;
+
+class PhotoController extends Controller
+{
+    public function __construct(
+        #[Storage('local')] protected Filesystem $filesystem
+    )
+    {
+        // ...
+    }
+}
+```
+
+In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `DB`, `Log`, `RouteParameter`, and [`Tag`](#tagging) attributes:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Photo;
+use Illuminate\Container\Attributes\Auth;
+use Illuminate\Container\Attributes\Cache;
+use Illuminate\Container\Attributes\Config;
+use Illuminate\Container\Attributes\DB;
+use Illuminate\Container\Attributes\Log;
+use Illuminate\Container\Attributes\RouteParameter;
+use Illuminate\Container\Attributes\Tag;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Database\Connection;
+use Psr\Log\LoggerInterface;
+
+class PhotoController extends Controller
+{
+    public function __construct(
+        #[Auth('web')] protected Guard $auth,
+        #[Cache('redis')] protected Repository $cache,
+        #[Config('app.timezone')] protected string $timezone,
+        #[DB('mysql')] protected Connection $connection,
+        #[Log('daily')] protected LoggerInterface $log,
+        #[RouteParameter('photo')] protected Photo $photo,
+        #[Tag('reports')] protected iterable $reports,
+    )
+    {
+        // ...
+    }
+}
+```
+
+Furthermore, Laravel provides a `CurrentUser` attribute for injecting the currently authenticated user into a given route or class:
+
+```php
+use App\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
+
+Route::get('/user', function (#[CurrentUser] User $user) {
+    return $user;
+})->middleware('auth');
+```
+
+<a name="defining-custom-attributes"></a>
+#### Defining Custom Attributes
+
+You can create your own contextual attributes by implementing the `Illuminate\Contracts\Container\ContextualAttribute` contract. The container will call your attribute's `resolve` method, which should resolve the value that should be injected into the class utilizing the attribute. In the example below, we will re-implement Laravel's built-in `Config` attribute:
+
+    <?php
+
+    namespace App\Attributes;
+
+    use Illuminate\Contracts\Container\ContextualAttribute;
+
+    #[Attribute(Attribute::TARGET_PARAMETER)]
+    class Config implements ContextualAttribute
+    {
+        /**
+         * Create a new attribute instance.
+         */
+        public function __construct(public string $key, public mixed $default = null)
+        {
+        }
+
+        /**
+         * Resolve the configuration value.
+         *
+         * @param  self  $attribute
+         * @param  \Illuminate\Contracts\Container\Container  $container
+         * @return mixed
+         */
+        public static function resolve(self $attribute, Container $container)
+        {
+            return $container->make('config')->get($attribute->key, $attribute->default);
+        }
+    }
+
 <a name="binding-primitives"></a>
 ### Binding Primitives
 
 Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:
 
     use App\Http\Controllers\UserController;
-    
+
     $this->app->when(UserController::class)
               ->needs('$variableName')
               ->give($value);
@@ -382,7 +496,7 @@ If you would like to have the Laravel container instance itself injected into a 
      * Create a new class instance.
      */
     public function __construct(
-        protected Container $container
+        protected Container $container,
     ) {}
 
 <a name="automatic-injection"></a>
@@ -390,32 +504,29 @@ If you would like to have the Laravel container instance itself injected into a 
 
 Alternatively, and importantly, you may type-hint the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). In practice, this is how most of your objects should be resolved by the container.
 
-For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:
+For example, you may type-hint a service defined by your application in a controller's constructor. The service will automatically be resolved and injected into the class:
 
     <?php
 
     namespace App\Http\Controllers;
 
-    use App\Repositories\UserRepository;
-    use App\Models\User;
+    use App\Services\AppleMusic;
 
-    class UserController extends Controller
+    class PodcastController extends Controller
     {
         /**
          * Create a new controller instance.
          */
         public function __construct(
-            protected UserRepository $users,
+            protected AppleMusic $apple,
         ) {}
 
         /**
-         * Show the user with the given ID.
+         * Show information about the given podcast.
          */
-        public function show(string $id): User
+        public function show(string $id): Podcast
         {
-            $user = $this->users->findOrFail($id);
-
-            return $user;
+            return $this->apple->findPodcast($id);
         }
     }
 
@@ -428,14 +539,14 @@ Sometimes you may wish to invoke a method on an object instance while allowing t
 
     namespace App;
 
-    use App\Repositories\UserRepository;
+    use App\Services\AppleMusic;
 
-    class UserReport
+    class PodcastStats
     {
         /**
-         * Generate a new user report.
+         * Generate a new podcast stats report.
          */
-        public function generate(UserRepository $repository): array
+        public function generate(AppleMusic $apple): array
         {
             return [
                 // ...
@@ -445,17 +556,17 @@ Sometimes you may wish to invoke a method on an object instance while allowing t
 
 You may invoke the `generate` method via the container like so:
 
-    use App\UserReport;
+    use App\PodcastStats;
     use Illuminate\Support\Facades\App;
 
-    $report = App::call([new UserReport, 'generate']);
+    $stats = App::call([new PodcastStats, 'generate']);
 
 The `call` method accepts any PHP callable. The container's `call` method may even be used to invoke a closure while automatically injecting its dependencies:
 
-    use App\Repositories\UserRepository;
+    use App\Services\AppleMusic;
     use Illuminate\Support\Facades\App;
 
-    $result = App::call(function (UserRepository $repository) {
+    $result = App::call(function (AppleMusic $apple) {
         // ...
     });
 
@@ -476,6 +587,28 @@ The service container fires an event each time it resolves an object. You may li
     });
 
 As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer.
+
+<a name="rebinding"></a>
+### Rebinding
+
+The `rebinding` method allows you to listen for when a service is re-bound to the container, meaning it is registered again or overridden after its initial binding. This can be useful when you need to update dependencies or modify behavior each time a specific binding is updated:
+
+    use App\Contracts\PodcastPublisher;
+    use App\Services\SpotifyPublisher;
+    use App\Services\TransistorPublisher;
+    use Illuminate\Contracts\Foundation\Application;
+
+    $this->app->bind(PodcastPublisher::class, SpotifyPublisher::class);
+
+    $this->app->rebinding(
+        PodcastPublisher::class,
+        function (Application $app, PodcastPublisher $newInstance) {
+            //
+        },
+    );
+
+    // New binding will trigger rebinding closure...
+    $this->app->bind(PodcastPublisher::class, TransistorPublisher::class);
 
 <a name="psr-11"></a>
 ## PSR-11

@@ -43,7 +43,7 @@ The `local` driver interacts with files stored locally on the server running the
 <a name="the-local-driver"></a>
 ### The Local Driver
 
-When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would write to `storage/app/example.txt`:
+When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems` configuration file. By default, this value is set to the `storage/app/private` directory. Therefore, the following method would write to `storage/app/private/example.txt`:
 
     use Illuminate\Support\Facades\Storage;
 
@@ -54,7 +54,7 @@ When using the `local` driver, all file operations are relative to the `root` di
 
 The `public` disk included in your application's `filesystems` configuration file is intended for files that are going to be publicly accessible. By default, the `public` disk uses the `local` driver and stores its files in `storage/app/public`.
 
-To make these files accessible from the web, you should create a symbolic link from `public/storage` to `storage/app/public`. Utilizing this folder convention will keep your publicly accessible files in one directory that can be easily shared across deployments when using zero down-time deployment systems like [Envoyer](https://envoyer.io).
+If your `public` disk uses the `local` driver and you want to make these files accessible from the web, you should create a symbolic link from source directory `storage/app/public` to target directory `public/storage`:
 
 To create the symbolic link, you may use the `storage:link` Artisan command:
 
@@ -203,7 +203,7 @@ Next, you may include the `read-only` configuration option in one or more of you
 <a name="amazon-s3-compatible-filesystems"></a>
 ### Amazon S3 Compatible Filesystems
 
-By default, your application's `filesystems` configuration file contains a disk configuration for the `s3` disk. In addition to using this disk to interact with Amazon S3, you may use it to interact with any S3 compatible file storage service such as [MinIO](https://github.com/minio/minio) or [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/).
+By default, your application's `filesystems` configuration file contains a disk configuration for the `s3` disk. In addition to using this disk to interact with [Amazon S3](https://aws.amazon.com/s3/), you may use it to interact with any S3-compatible file storage service such as [MinIO](https://github.com/minio/minio), [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/), [Akamai / Linode Object Storage](https://www.linode.com/products/object-storage/), [Vultr Object Storage](https://www.vultr.com/products/object-storage/), or [Hetzner Cloud Storage](https://www.hetzner.com/storage/object-storage/).
 
 Typically, after updating the disk's credentials to match the credentials of the service you are planning to use, you only need to update the value of the `endpoint` configuration option. This option's value is typically defined via the `AWS_ENDPOINT` environment variable:
 
@@ -219,7 +219,7 @@ AWS_URL=http://localhost:9000/local
 ```
 
 > [!WARNING]  
-> Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
+> Generating temporary storage URLs via the `temporaryUrl` method may not work when using MinIO if the `endpoint` is not accessible by the client.
 
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances
@@ -312,13 +312,30 @@ If you would like to modify the host for URLs generated using the `Storage` faca
 <a name="temporary-urls"></a>
 ### Temporary URLs
 
-Using the `temporaryUrl` method, you may create temporary URLs to files stored using the `s3` driver. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
+Using the `temporaryUrl` method, you may create temporary URLs to files stored using the `local` and `s3` drivers. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
 
     use Illuminate\Support\Facades\Storage;
 
     $url = Storage::temporaryUrl(
         'file.jpg', now()->addMinutes(5)
     );
+
+<a name="enabling-local-temporary-urls"></a>
+#### Enabling Local Temporary URLs
+
+If you started developing your application before support for temporary URLs was introduced to the `local` driver, you may need to enable local temporary URLs. To do so, add the `serve` option to your `local` disk's configuration array within the `config/filesystems.php` configuration file:
+
+```php
+'local' => [
+    'driver' => 'local',
+    'root' => storage_path('app/private'),
+    'serve' => true, // [tl! add]
+    'throw' => false,
+],
+```
+
+<a name="s3-request-parameters"></a>
+#### S3 Request Parameters
 
 If you need to specify additional [S3 request parameters](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html#RESTObjectGET-requests), you may pass the array of request parameters as the third argument to the `temporaryUrl` method:
 
@@ -330,6 +347,9 @@ If you need to specify additional [S3 request parameters](https://docs.aws.amazo
             'ResponseContentDisposition' => 'attachment; filename=file2.jpg',
         ]
     );
+
+<a name="customizing-temporary-urls"></a>
+#### Customizing Temporary URLs
 
 If you need to customize how temporary URLs are created for a specific storage disk, you can use the `buildTemporaryUrlsUsing` method. For example, this can be useful if you have a controller that allows you to download files stored via a disk that doesn't typically support temporary URLs. Usually, this method should be called from the `boot` method of a service provider:
 
@@ -681,6 +701,9 @@ test('albums can be uploaded', function () {
     Storage::disk('photos')->assertMissing('missing.jpg');
     Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
 
+    // Assert that the number of files in a given directory matches the expected count...
+    Storage::disk('photos')->assertCount('/wallpapers', 2);
+
     // Assert that a given directory is empty...
     Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');
 });
@@ -713,6 +736,9 @@ class ExampleTest extends TestCase
         // Assert one or more files were not stored...
         Storage::disk('photos')->assertMissing('missing.jpg');
         Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
+
+        // Assert that the number of files in a given directory matches the expected count...
+        Storage::disk('photos')->assertCount('/wallpapers', 2);
 
         // Assert that a given directory is empty...
         Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');

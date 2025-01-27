@@ -65,7 +65,7 @@ The `install:api` command installs [Laravel Sanctum](/docs/{{version}}/sanctum),
 
     Route::get('/user', function (Request $request) {
         return $request->user();
-    })->middleware(Authenticate::using('sanctum'));
+    })->middleware('auth:sanctum');
 
 The routes in `routes/api.php` are stateless and are assigned to the `api` [middleware group](/docs/{{version}}/middleware#laravels-default-middleware-groups). Additionally, the `/api` URI prefix is automatically applied to these routes, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your application's `bootstrap/app.php` file:
 
@@ -317,12 +317,16 @@ For convenience, some commonly used regular expression patterns have helper meth
     })->whereUuid('id');
 
     Route::get('/user/{id}', function (string $id) {
-        //
+        // ...
     })->whereUlid('id');
 
     Route::get('/category/{category}', function (string $category) {
         // ...
     })->whereIn('category', ['movie', 'song', 'painting']);
+
+    Route::get('/category/{category}', function (string $category) {
+        // ...
+    })->whereIn('category', CategoryEnum::cases());
 
 If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.
 
@@ -475,7 +479,7 @@ If a group of routes all utilize the same [controller](/docs/{{version}}/control
 Route groups may also be used to handle subdomain routing. Subdomains may be assigned route parameters just like route URIs, allowing you to capture a portion of the subdomain for usage in your route or controller. The subdomain may be specified by calling the `domain` method before defining the group:
 
     Route::domain('{account}.example.com')->group(function () {
-        Route::get('user/{id}', function (string $account, string $id) {
+        Route::get('/user/{id}', function (string $account, string $id) {
             // ...
         });
     });
@@ -548,7 +552,6 @@ Typically, implicit model binding will not retrieve models that have been [soft 
         return $user->email;
     })->withTrashed();
 
-<a name="customizing-the-key"></a>
 <a name="customizing-the-default-key-name"></a>
 #### Customizing the Key
 
@@ -610,7 +613,7 @@ Similarly, you may explicitly instruct Laravel to not scope bindings by invoking
 <a name="customizing-missing-model-behavior"></a>
 #### Customizing Missing Model Behavior
 
-Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` method accepts a closure that will be invoked if an implicitly bound model can not be found:
+Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` method accepts a closure that will be invoked if an implicitly bound model cannot be found:
 
     use App\Http\Controllers\LocationsController;
     use Illuminate\Http\Request;
@@ -625,7 +628,7 @@ Typically, a 404 HTTP response will be generated if an implicitly bound model is
 <a name="implicit-enum-binding"></a>
 ### Implicit Enum Binding
 
-PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To complement this feature, Laravel allows you to type-hint a [string-backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
+PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To complement this feature, Laravel allows you to type-hint a [backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
 
 ```php
 <?php
@@ -734,9 +737,6 @@ Using the `Route::fallback` method, you may define a route that will be executed
         // ...
     });
 
-> [!WARNING]  
-> The fallback route should always be the last route registered by your application.
-
 <a name="rate-limiting"></a>
 ## Rate Limiting
 
@@ -823,6 +823,15 @@ If needed, you may return an array of rate limits for a given rate limiter confi
         return [
             Limit::perMinute(500),
             Limit::perMinute(3)->by($request->input('email')),
+        ];
+    });
+
+If you're assigning multiple rate limits segmented by identical `by` values, you should ensure that each `by` value is unique. The easiest way to achieve this is to prefix the values given to the `by` method:
+
+    RateLimiter::for('uploads', function (Request $request) {
+        return [
+            Limit::perMinute(10)->by('minute:'.$request->user()->id),
+            Limit::perDay(1000)->by('day:'.$request->user()->id),
         ];
     });
 

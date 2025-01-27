@@ -68,10 +68,20 @@ By default, Laravel will automatically find and register your event listeners by
         }
     }
 
+You may listen to multiple events using PHP's union types:
+
+    /**
+     * Handle the given event.
+     */
+    public function handle(PodcastProcessed|PodcastPublished $event): void
+    {
+        // ...
+    }
+
 If you plan to store your listeners in a different directory or within multiple directories, you may instruct Laravel to scan those directories using the `withEvents` method in your application's `bootstrap/app.php` file:
 
     ->withEvents(discover: [
-        __DIR__.'/../app/Domain/Listeners',
+        __DIR__.'/../app/Domain/Orders/Listeners',
     ])
 
 The `event:list` command may be used to list all of the listeners registered within your application:
@@ -220,10 +230,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
         /**
          * Create the event listener.
          */
-        public function __construct()
-        {
-            // ...
-        }
+        public function __construct() {}
 
         /**
          * Handle the event.
@@ -234,7 +241,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
         }
     }
 
-> [!NOTE]
+> [!NOTE]  
 > Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
 
 <a name="stopping-the-propagation-of-an-event"></a>
@@ -328,7 +335,7 @@ If you would like to define the listener's queue connection, queue name, or dela
 <a name="conditionally-queueing-listeners"></a>
 #### Conditionally Queueing Listeners
 
-Sometimes, you may need to determine whether a listener should be queued based on some data that are only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be executed:
+Sometimes, you may need to determine whether a listener should be queued based on some data that are only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be queued:
 
     <?php
 
@@ -389,22 +396,21 @@ If you need to manually access the listener's underlying queue job's `delete` an
 
 When queued listeners are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can occur when the job that dispatches the queued listener is processed.
 
-If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued listener should be dispatched after all open database transactions have been committed by implementing the `ShouldHandleEventsAfterCommit` interface on the listener class:
+If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued listener should be dispatched after all open database transactions have been committed by implementing the `ShouldQueueAfterCommit` interface on the listener class:
 
     <?php
 
     namespace App\Listeners;
 
-    use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
-    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
     use Illuminate\Queue\InteractsWithQueue;
 
-    class SendShipmentNotification implements ShouldQueue, ShouldHandleEventsAfterCommit
+    class SendShipmentNotification implements ShouldQueueAfterCommit
     {
         use InteractsWithQueue;
     }
 
-> [!NOTE]
+> [!NOTE]  
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="handling-failed-jobs"></a>
@@ -481,6 +487,40 @@ As an alternative to defining how many times a listener may be attempted before 
         return now()->addMinutes(5);
     }
 
+<a name="specifying-queued-listener-backoff"></a>
+#### Specifying Queued Listener Backoff
+
+If you would like to configure how many seconds Laravel should wait before retrying a listener that has encountered an exception, you may do so by defining a `backoff` property on your listener class:
+    
+    /**
+     * The number of seconds to wait before retrying the queued listener.
+     *
+     * @var int
+     */
+    public $backoff = 3;
+
+If you require more complex logic for determining the listeners's backoff time, you may define a `backoff` method on your listener class:
+
+    /**
+     * Calculate the number of seconds to wait before retrying the queued listener.
+     */
+    public function backoff(): int
+    {
+        return 3;
+    }
+
+You may easily configure "exponential" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, 10 seconds for the third retry, and 10 seconds for every subsequent retry if there are more attempts remaining:
+
+    /**
+     * Calculate the number of seconds to wait before retrying the queued listener.
+     *
+     * @return array<int, int>
+     */
+    public function backoff(): array
+    {
+        return [1, 5, 10];
+    }
+
 <a name="dispatching-events"></a>
 ## Dispatching Events
 
@@ -513,13 +553,13 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
         }
     }
 
- If you would like to conditionally dispatch an event, you may use the `dispatchIf` and `dispatchUnless` methods:
+If you would like to conditionally dispatch an event, you may use the `dispatchIf` and `dispatchUnless` methods:
 
     OrderShipped::dispatchIf($condition, $order);
 
     OrderShipped::dispatchUnless($condition, $order);
 
-> [!NOTE]
+> [!NOTE]  
 > When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
 
 <a name="dispatching-events-after-database-transactions"></a>
@@ -635,7 +675,7 @@ If your event listener methods are defined within the subscriber itself, you may
 <a name="registering-event-subscribers"></a>
 ### Registering Event Subscribers
 
-After writing the subscriber, you are ready to register it with the event dispatcher. You may register subscribers using the `subscribe` method of the `Event` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider`:
+After writing the subscriber, Laravel will automatically register handler methods within the subscriber if they follow Laravel's [event discovery conventions](#event-discovery). Otherwise, you may manually register your subscriber using the `subscribe` method of the `Event` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider`:
 
     <?php
 

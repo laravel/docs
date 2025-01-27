@@ -43,8 +43,12 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::betweenFirst](#method-str-between-first)
 [Str::camel](#method-camel-case)
 [Str::charAt](#method-char-at)
+[Str::chopStart](#method-str-chop-start)
+[Str::chopEnd](#method-str-chop-end)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
+[Str::doesntContain](#method-str-doesnt-contain)
+[Str::deduplicate](#method-deduplicate)
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
@@ -96,7 +100,10 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::take](#method-take)
 [Str::title](#method-title-case)
 [Str::toBase64](#method-str-to-base64)
-[Str::toHtmlString](#method-str-to-html-string)
+[Str::transliterate](#method-str-transliterate)
+[Str::trim](#method-str-trim)
+[Str::ltrim](#method-str-ltrim)
+[Str::rtrim](#method-str-rtrim)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
 [Str::upper](#method-str-upper)
@@ -131,12 +138,15 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [camel](#method-fluent-str-camel)
 [charAt](#method-fluent-str-char-at)
 [classBasename](#method-fluent-str-class-basename)
+[chopStart](#method-fluent-str-chop-start)
+[chopEnd](#method-fluent-str-chop-end)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
+[deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
 [endsWith](#method-fluent-str-ends-with)
-[excerpt](#method-fluent-str-excerpt)
 [exactly](#method-fluent-str-exactly)
+[excerpt](#method-fluent-str-excerpt)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
 [headline](#method-fluent-str-headline)
@@ -154,7 +164,6 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
-[ltrim](#method-fluent-str-ltrim)
 [markdown](#method-fluent-str-markdown)
 [mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
@@ -177,7 +186,6 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [replaceMatches](#method-fluent-str-replace-matches)
 [replaceStart](#method-fluent-str-replace-start)
 [replaceEnd](#method-fluent-str-replace-end)
-[rtrim](#method-fluent-str-rtrim)
 [scan](#method-fluent-str-scan)
 [singular](#method-fluent-str-singular)
 [slug](#method-fluent-str-slug)
@@ -196,7 +204,11 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
 [toBase64](#method-fluent-str-to-base64)
+[toHtmlString](#method-fluent-str-to-html-string)
+[transliterate](#method-fluent-str-transliterate)
 [trim](#method-fluent-str-trim)
+[ltrim](#method-fluent-str-ltrim)
+[rtrim](#method-fluent-str-rtrim)
 [ucfirst](#method-fluent-str-ucfirst)
 [ucsplit](#method-fluent-str-ucsplit)
 [unwrap](#method-fluent-str-unwrap)
@@ -217,6 +229,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [whenTest](#method-fluent-str-when-test)
 [wordCount](#method-fluent-str-word-count)
 [words](#method-fluent-str-words)
+[wrap](#method-fluent-str-wrap)
 
 </div>
 
@@ -363,7 +376,6 @@ The `Str::camel` method converts the given string to `camelCase`:
     // 'fooBar'
 
 <a name="method-char-at"></a>
-
 #### `Str::charAt()` {.collection-method}
 
 The `Str::charAt` method returns the character at the specified index. If the index is out of bounds, `false` is returned:
@@ -374,10 +386,48 @@ The `Str::charAt` method returns the character at the specified index. If the in
 
     // 's'
 
+<a name="method-str-chop-start"></a>
+#### `Str::chopStart()` {.collection-method}
+
+The `Str::chopStart` method removes the first occurrence of the given value only if the value appears at the start of the string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::chopStart('https://laravel.com', 'https://');
+
+    // 'laravel.com'
+
+You may also pass an array as the second argument. If the string starts with any of the values in the array then that value will be removed from string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::chopStart('http://laravel.com', ['https://', 'http://']);
+
+    // 'laravel.com'
+
+<a name="method-str-chop-end"></a>
+#### `Str::chopEnd()` {.collection-method}
+
+The `Str::chopEnd` method removes the last occurrence of the given value only if the value appears at the end of the string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::chopEnd('app/Models/Photograph.php', '.php');
+
+    // 'app/Models/Photograph'
+
+You may also pass an array as the second argument. If the string ends with any of the values in the array then that value will be removed from string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::chopEnd('laravel.com/index.php', ['/index.html', '/index.php']);
+
+    // 'laravel.com'
+
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
 
-The `Str::contains` method determines if the given string contains the given value. This method is case sensitive:
+The `Str::contains` method determines if the given string contains the given value. By default this method is case sensitive:
 
     use Illuminate\Support\Str;
 
@@ -393,6 +443,14 @@ You may also pass an array of values to determine if the given string contains a
 
     // true
 
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $contains = Str::contains('This is my name', 'MY', ignoreCase: true);
+
+    // true
+
 <a name="method-str-contains-all"></a>
 #### `Str::containsAll()` {.collection-method}
 
@@ -404,6 +462,60 @@ The `Str::containsAll` method determines if the given string contains all of the
 
     // true
 
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], ignoreCase: true);
+
+    // true
+
+<a name="method-str-doesnt-contain"></a>
+#### `Str::doesntContain()` {.collection-method}
+
+The `Str::doesntContain` method determines if the given string doesn't contain the given value. By default this method is case sensitive:
+
+    use Illuminate\Support\Str;
+
+    $doesntContain = Str::doesntContain('This is name', 'my');
+
+    // true
+
+You may also pass an array of values to determine if the given string doesn't contain any of the values in the array:
+
+    use Illuminate\Support\Str;
+
+    $doesntContain = Str::doesntContain('This is name', ['my', 'foo']);
+
+    // true
+
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $doesntContain = Str::doesntContain('This is name', 'MY', ignoreCase: true);
+
+    // true
+
+<a name="method-deduplicate"></a>
+#### `Str::deduplicate()` {.collection-method}
+
+The `Str::deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string. By default, the method deduplicates spaces:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::deduplicate('The   Laravel   Framework');
+
+    // The Laravel Framework
+
+You may specify a different character to deduplicate by passing it in as the second argument to the method:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::deduplicate('The---Laravel---Framework', '-');
+
+    // The-Laravel-Framework
+
 <a name="method-ends-with"></a>
 #### `Str::endsWith()` {.collection-method}
 
@@ -414,7 +526,6 @@ The `Str::endsWith` method determines if the given string ends with the given va
     $result = Str::endsWith('This is my name', 'name');
 
     // true
-
 
 You may also pass an array of values to determine if the given string ends with any of the values in the array:
 
@@ -500,12 +611,12 @@ The `Str::inlineMarkdown` method converts GitHub flavored Markdown into inline H
 By default, Markdown supports raw HTML, which will expose Cross-Site Scripting (XSS) vulnerabilities when used with raw user input. As per the [CommonMark Security documentation](https://commonmark.thephpleague.com/security/), you may use the `html_input` option to either escape or strip raw HTML, and the `allow_unsafe_links` option to specify whether to allow unsafe links. If you need to allow some raw HTML, you should pass your compiled Markdown through an HTML Purifier:
 
     use Illuminate\Support\Str;
-    
+
     Str::inlineMarkdown('Inject: <script>alert("Hello XSS!");</script>', [
         'html_input' => 'strip',
         'allow_unsafe_links' => false,
     ]);
-    
+
     // Inject: alert(&quot;Hello XSS!&quot;);
 
 <a name="method-str-is"></a>
@@ -522,6 +633,14 @@ The `Str::is` method determines if a given string matches a given pattern. Aster
     $matches = Str::is('baz*', 'foobar');
 
     // false
+
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $matches = Str::is('*.jpg', 'photo.JPG', ignoreCase: true);     
+
+    // true
 
 <a name="method-str-is-ascii"></a>
 #### `Str::isAscii()` {.collection-method}
@@ -652,11 +771,15 @@ The `Str::limit` method truncates the given string to the specified length:
 
 You may pass a third argument to the method to change the string that will be appended to the end of the truncated string:
 
-    use Illuminate\Support\Str;
-
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
 
     // The quick brown fox (...)
+
+If you would like to preserve complete words when truncating the string, you may utilize the `preserveWords` argument. When this argument is `true`, the string will be truncated to the nearest complete word boundary:
+
+    $truncated = Str::limit('The quick brown fox', 12, preserveWords: true);
+
+    // The quick...
 
 <a name="method-str-lower"></a>
 #### `Str::lower()` {.collection-method}
@@ -1198,14 +1321,49 @@ The `Str::toBase64` method converts the given string to Base64:
 
     // TGFyYXZlbA==
 
-<a name="method-str-to-html-string"></a>
-#### `Str::toHtmlString()` {.collection-method}
+<a name="method-str-transliterate"></a>
+#### `Str::transliterate()` {.collection-method}
 
-The `Str::toHtmlString` method converts the string instance to an instance of `Illuminate\Support\HtmlString`, which may be displayed in Blade templates:
+The `Str::transliterate` method will attempt to convert a given string into its closest ASCII representation:
 
     use Illuminate\Support\Str;
 
-    $htmlString = Str::of('Nuno Maduro')->toHtmlString();
+    $email = Str::transliterate('ⓣⓔⓢⓣ@ⓛⓐⓡⓐⓥⓔⓛ.ⓒⓞⓜ');
+
+    // 'test@laravel.com'
+
+<a name="method-str-trim"></a>
+#### `Str::trim()` {.collection-method}
+
+The `Str::trim` method strips whitespace (or other characters) from the beginning and end of the given string. Unlike PHP's native `trim` function, the `Str::trim` method also removes unicode whitespace characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::trim(' foo bar ');
+
+    // 'foo bar'
+
+<a name="method-str-ltrim"></a>
+#### `Str::ltrim()` {.collection-method}
+
+The `Str::ltrim` method strips whitespace (or other characters) from the beginning of the given string. Unlike PHP's native `ltrim` function, the `Str::ltrim` method also removes unicode whitespace characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::ltrim('  foo bar  ');
+
+    // 'foo bar  '
+
+<a name="method-str-rtrim"></a>
+#### `Str::rtrim()` {.collection-method}
+
+The `Str::rtrim` method strips whitespace (or other characters) from the end of the given string. Unlike PHP's native `rtrim` function, the `Str::rtrim` method also removes unicode whitespace characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::rtrim('  foo bar  ');
+
+    // '  foo bar'
 
 <a name="method-str-ucfirst"></a>
 #### `Str::ucfirst()` {.collection-method}
@@ -1248,7 +1406,7 @@ The `Str::ulid` method generates a ULID, which is a compact, time-ordered unique
     use Illuminate\Support\Str;
 
     return (string) Str::ulid();
-    
+
     // 01gd6r360bp37zj17nxb55yv40
 
 If you would like to retrieve a `Illuminate\Support\Carbon` date instance representing the date and time that a given ULID was created, you may use the `createFromId` method provided by Laravel's Carbon integration:
@@ -1551,10 +1709,48 @@ The `classBasename` method returns the class name of the given class with the cl
 
     // 'Baz'
 
+<a name="method-fluent-str-chop-start"></a>
+#### `chopStart` {.collection-method}
+
+The `chopStart` method removes the first occurrence of the given value only if the value appears at the start of the string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::of('https://laravel.com')->chopStart('https://');
+
+    // 'laravel.com'
+
+You may also pass an array. If the string starts with any of the values in the array then that value will be removed from string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::of('http://laravel.com')->chopStart(['https://', 'http://']);
+
+    // 'laravel.com'
+
+<a name="method-fluent-str-chop-end"></a>
+#### `chopEnd` {.collection-method}
+
+The `chopEnd` method removes the last occurrence of the given value only if the value appears at the end of the string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::of('https://laravel.com')->chopEnd('.com');
+
+    // 'https://laravel'
+
+You may also pass an array. If the string ends with any of the values in the array then that value will be removed from string:
+
+    use Illuminate\Support\Str;
+
+    $url = Str::of('http://laravel.com')->chopEnd(['.com', '.io']);
+
+    // 'http://laravel'
+
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
 
-The `contains` method determines if the given string contains the given value. This method is case sensitive:
+The `contains` method determines if the given string contains the given value. By default this method is case sensitive:
 
     use Illuminate\Support\Str;
 
@@ -1570,6 +1766,14 @@ You may also pass an array of values to determine if the given string contains a
 
     // true
 
+You can disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $contains = Str::of('This is my name')->contains('MY', ignoreCase: true);
+
+    // true
+
 <a name="method-fluent-str-contains-all"></a>
 #### `containsAll` {.collection-method}
 
@@ -1580,6 +1784,33 @@ The `containsAll` method determines if the given string contains all of the valu
     $containsAll = Str::of('This is my name')->containsAll(['my', 'name']);
 
     // true
+
+You can disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+    use Illuminate\Support\Str;
+
+    $containsAll = Str::of('This is my name')->containsAll(['MY', 'NAME'], ignoreCase: true);
+
+    // true
+
+<a name="method-fluent-str-deduplicate"></a>
+#### `deduplicate` {.collection-method}
+
+The `deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string. By default, the method deduplicates spaces:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('The   Laravel   Framework')->deduplicate();
+
+    // The Laravel Framework
+
+You may specify a different character to deduplicate by passing it in as the second argument to the method:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('The---Laravel---Framework')->deduplicate('-');
+
+    // The-Laravel-Framework
 
 <a name="method-fluent-str-dirname"></a>
 #### `dirname` {.collection-method}
@@ -1599,32 +1830,6 @@ If necessary, you may specify how many directory levels you wish to trim from th
     $string = Str::of('/foo/bar/baz')->dirname(2);
 
     // '/foo'
-
-<a name="method-fluent-str-excerpt"></a>
-#### `excerpt` {.collection-method}
-
-The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::of('This is my name')->excerpt('my', [
-        'radius' => 3
-    ]);
-
-    // '...is my na...'
-
-The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
-
-In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
-
-    use Illuminate\Support\Str;
-
-    $excerpt = Str::of('This is my name')->excerpt('name', [
-        'radius' => 3,
-        'omission' => '(...) '
-    ]);
-
-    // '(...) my name'
 
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}
@@ -1659,6 +1864,32 @@ The `exactly` method determines if the given string is an exact match with anoth
     $result = Str::of('Laravel')->exactly('Laravel');
 
     // true
+
+<a name="method-fluent-str-excerpt"></a>
+#### `excerpt` {.collection-method}
+
+The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('my', [
+        'radius' => 3
+    ]);
+
+    // '...is my na...'
+
+The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
+
+In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('name', [
+        'radius' => 3,
+        'omission' => '(...) '
+    ]);
+
+    // '(...) my name'
 
 <a name="method-fluent-str-explode"></a>
 #### `explode` {.collection-method}
@@ -1775,7 +2006,6 @@ The `isEmpty` method determines if the given string is empty:
 
 The `isNotEmpty` method determines if the given string is not empty:
 
-
     use Illuminate\Support\Str;
 
     $result = Str::of('  ')->trim()->isNotEmpty();
@@ -1876,7 +2106,6 @@ The `lcfirst` method returns the given string with the first character lowercase
 
     // foo Bar
 
-
 <a name="method-fluent-str-length"></a>
 #### `length` {.collection-method}
 
@@ -1901,11 +2130,15 @@ The `limit` method truncates the given string to the specified length:
 
 You may also pass a second argument to change the string that will be appended to the end of the truncated string:
 
-    use Illuminate\Support\Str;
-
     $truncated = Str::of('The quick brown fox jumps over the lazy dog')->limit(20, ' (...)');
 
     // The quick brown fox (...)
+
+If you would like to preserve complete words when truncating the string, you may utilize the `preserveWords` argument. When this argument is `true`, the string will be truncated to the nearest complete word boundary:
+
+    $truncated = Str::of('The quick brown fox')->limit(12, preserveWords: true);
+
+    // The quick...
 
 <a name="method-fluent-str-lower"></a>
 #### `lower` {.collection-method}
@@ -1917,21 +2150,6 @@ The `lower` method converts the given string to lowercase:
     $result = Str::of('LARAVEL')->lower();
 
     // 'laravel'
-
-<a name="method-fluent-str-ltrim"></a>
-#### `ltrim` {.collection-method}
-
-The `ltrim` method trims the left side of the string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('  Laravel  ')->ltrim();
-
-    // 'Laravel  '
-
-    $string = Str::of('/Laravel/')->ltrim('/');
-
-    // 'Laravel/'
 
 <a name="method-fluent-str-markdown"></a>
 #### `markdown` {.collection-method}
@@ -2010,7 +2228,7 @@ The `matchAll` method will return a collection containing the portions of a stri
 
     // collect(['bar', 'bar'])
 
-If you specify a matching group within the expression, Laravel will return a collection of that group's matches:
+If you specify a matching group within the expression, Laravel will return a collection of the first matching group's matches:
 
     use Illuminate\Support\Str;
 
@@ -2292,21 +2510,6 @@ The `replaceEnd` method replaces the last occurrence of the given value only if 
 
     // Hello World
 
-<a name="method-fluent-str-rtrim"></a>
-#### `rtrim` {.collection-method}
-
-The `rtrim` method trims the right side of the given string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('  Laravel  ')->rtrim();
-
-    // '  Laravel'
-
-    $string = Str::of('/Laravel/')->rtrim('/');
-
-    // '/Laravel'
-
 <a name="method-fluent-str-scan"></a>
 #### `scan` {.collection-method}
 
@@ -2525,7 +2728,7 @@ The `title` method converts the given string to `Title Case`:
     // A Nice Title Uses The Correct Case
 
 <a name="method-fluent-str-to-base64"></a>
-#### `toBase64()` {.collection-method}
+#### `toBase64` {.collection-method}
 
 The `toBase64` method converts the given string to Base64:
 
@@ -2535,10 +2738,30 @@ The `toBase64` method converts the given string to Base64:
 
     // TGFyYXZlbA==
 
+<a name="method-fluent-str-to-html-string"></a>
+#### `toHtmlString` {.collection-method}
+
+The `toHtmlString` method converts the given string to an instance of `Illuminate\Support\HtmlString`, which will not be escaped when rendered in Blade templates:
+
+    use Illuminate\Support\Str;
+
+    $htmlString = Str::of('Nuno Maduro')->toHtmlString();
+
+<a name="method-fluent-str-transliterate"></a>
+#### `transliterate` {.collection-method}
+
+The `transliterate` method will attempt to convert a given string into its closest ASCII representation:
+
+    use Illuminate\Support\Str;
+
+    $email = Str::of('ⓣⓔⓢⓣ@ⓛⓐⓡⓐⓥⓔⓛ.ⓒⓞⓜ')->transliterate()
+
+    // 'test@laravel.com'
+
 <a name="method-fluent-str-trim"></a>
 #### `trim` {.collection-method}
 
-The `trim` method trims the given string:
+The `trim` method trims the given string. Unlike PHP's native `trim` function, Laravel's `trim` method also removes unicode whitespace characters:
 
     use Illuminate\Support\Str;
 
@@ -2549,6 +2772,36 @@ The `trim` method trims the given string:
     $string = Str::of('/Laravel/')->trim('/');
 
     // 'Laravel'
+
+<a name="method-fluent-str-ltrim"></a>
+#### `ltrim` {.collection-method}
+
+The `ltrim` method trims the left side of the string. Unlike PHP's native `ltrim` function, Laravel's `ltrim` method also removes unicode whitespace characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('  Laravel  ')->ltrim();
+
+    // 'Laravel  '
+
+    $string = Str::of('/Laravel/')->ltrim('/');
+
+    // 'Laravel/'
+
+<a name="method-fluent-str-rtrim"></a>
+#### `rtrim` {.collection-method}
+
+The `rtrim` method trims the right side of the given string. Unlike PHP's native `rtrim` function, Laravel's `rtrim` method also removes unicode whitespace characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('  Laravel  ')->rtrim();
+
+    // '  Laravel'
+
+    $string = Str::of('/Laravel/')->rtrim('/');
+
+    // '/Laravel'
 
 <a name="method-fluent-str-ucfirst"></a>
 #### `ucfirst` {.collection-method}
@@ -2835,3 +3088,18 @@ The `words` method limits the number of words in a string. If necessary, you may
     $string = Str::of('Perfectly balanced, as all things should be.')->words(3, ' >>>');
 
     // Perfectly balanced, as >>>
+
+<a name="method-fluent-str-wrap"></a>
+#### `wrap` {.collection-method}
+
+The `wrap` method wraps the given string with an additional string or pair of strings:
+
+    use Illuminate\Support\Str;
+
+    Str::of('Laravel')->wrap('"');
+
+    // "Laravel"
+
+    Str::is('is')->wrap(before: 'This ', after: ' Laravel!');
+
+    // This is Laravel!

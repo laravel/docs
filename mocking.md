@@ -240,7 +240,7 @@ You may also provide a closure to the various time travel methods. The closure w
     $this->travel(5)->days(function () {
         // Test something five days into the future...
     });
-    
+
     $this->travelTo(now()->subDays(10), function () {
         // Test something during a given moment...
     });

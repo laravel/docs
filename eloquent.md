@@ -313,7 +313,7 @@ If you need to customize the names of the columns used to store the timestamps, 
 
 If you would like to perform model operations without the model having its `updated_at` timestamp modified, you may operate on the model within a closure given to the `withoutTimestamps` method:
 
-    Model::withoutTimestamps(fn () => $post->increment(['reads']));
+    Model::withoutTimestamps(fn () => $post->increment('reads'));
 
 <a name="database-connections"></a>
 ### Database Connections
@@ -333,7 +333,7 @@ By default, all Eloquent models will use the default database connection that is
          *
          * @var string
          */
-        protected $connection = 'sqlite';
+        protected $connection = 'mysql';
     }
 
 <a name="default-attribute-values"></a>
@@ -388,7 +388,7 @@ Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
 <a name="retrieving-models"></a>
 ## Retrieving Models
 
-Once you have created a model and [its associated database table](/docs/{{version}}/migrations#writing-migrations), you are ready to start retrieving data from your database. You can think of each Eloquent model as a powerful [query builder](/docs/{{version}}/queries) allowing you to fluently query the database table associated with the model. The model's `all` method will retrieve all of the records from the model's associated database table:
+Once you have created a model and [its associated database table](/docs/{{version}}/migrations#generating-migrations), you are ready to start retrieving data from your database. You can think of each Eloquent model as a powerful [query builder](/docs/{{version}}/queries) allowing you to fluently query the database table associated with the model. The model's `all` method will retrieve all of the records from the model's associated database table:
 
     use App\Models\Flight;
 
@@ -479,7 +479,20 @@ If you are filtering the results of the `chunk` method based on a column that yo
 Flight::where('departed', true)
     ->chunkById(200, function (Collection $flights) {
         $flights->each->update(['departed' => false]);
-    }, $column = 'id');
+    }, column: 'id');
+```
+
+Since the `chunkById` and `lazyById` methods add their own "where" conditions to the query being executed, you should typically [logically group](/docs/{{version}}/queries#logical-grouping) your own conditions within a closure:
+
+```php
+Flight::where(function ($query) {
+    $query->where('delayed', true)->orWhere('cancelled', true);
+})->chunkById(200, function (Collection $flights) {
+    $flights->each->update([
+        'departed' => false,
+        'cancelled' => true
+    ]);
+}, column: 'id');
 ```
 
 <a name="chunking-using-lazy-collections"></a>
@@ -499,7 +512,7 @@ If you are filtering the results of the `lazy` method based on a column that you
 
 ```php
 Flight::where('departed', true)
-    ->lazyById(200, $column = 'id')
+    ->lazyById(200, column: 'id')
     ->each->update(['departed' => false]);
 ```
 
@@ -618,7 +631,7 @@ If the `ModelNotFoundException` is not caught, a 404 HTTP response is automatica
 <a name="retrieving-or-creating-models"></a>
 ### Retrieving or Creating Models
 
-The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the attributes resulting from merging the first array argument with the optional second array argument:
+The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model cannot be found in the database, a record will be inserted with the attributes resulting from merging the first array argument with the optional second array argument:
 
 The `firstOrNew` method, like `firstOrCreate`, will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to manually call the `save` method to persist it:
 
@@ -830,7 +843,7 @@ So, to get started, you should define which model attributes you want to make ma
         /**
          * The attributes that are mass assignable.
          *
-         * @var array
+         * @var array<int, string>
          */
         protected $fillable = ['name'];
     }
@@ -851,7 +864,7 @@ When assigning JSON columns, each column's mass assignable key must be specified
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'options->enabled',
@@ -865,7 +878,7 @@ If you would like to make all of your attributes mass assignable, you may define
     /**
      * The attributes that aren't mass assignable.
      *
-     * @var array
+     * @var array<string>|bool
      */
     protected $guarded = [];
 
@@ -895,9 +908,9 @@ Eloquent's `upsert` method may be used to update or create records in a single, 
         ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
         ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
     ], uniqueBy: ['departure', 'destination'], update: ['price']);
-    
+
 > [!WARNING]  
-> All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the "primary" and "unique" indexes of the table to detect existing records.
+> All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MariaDB and MySQL database drivers ignore the second argument of the `upsert` method and always use the "primary" and "unique" indexes of the table to detect existing records.
 
 <a name="deleting-models"></a>
 ## Deleting Models
@@ -909,10 +922,6 @@ To delete a model, you may call the `delete` method on the model instance:
     $flight = Flight::find(1);
 
     $flight->delete();
-
-You may call the `truncate` method to delete all of the model's associated database records. The `truncate` operation will also reset any auto-incrementing IDs on the model's associated table:
-
-    Flight::truncate();
 
 <a name="deleting-an-existing-model-by-its-primary-key"></a>
 #### Deleting an Existing Model by its Primary Key
@@ -927,6 +936,10 @@ In the example above, we are retrieving the model from the database before calli
 
     Flight::destroy(collect([1, 2, 3]));
 
+If you are utilizing [soft deleting models](#soft-deleting), you may permanently delete models via the `forceDestroy` method:
+
+    Flight::forceDestroy(1);
+
 > [!WARNING]  
 > The `destroy` method loads each model individually and calls the `delete` method so that the `deleting` and `deleted` events are properly dispatched for each model.
 
@@ -936,6 +949,10 @@ In the example above, we are retrieving the model from the database before calli
 Of course, you may build an Eloquent query to delete all models matching your query's criteria. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not dispatch model events for the models that are deleted:
 
     $deleted = Flight::where('active', 0)->delete();
+
+To delete all models in a table, you should execute a query without adding any conditions:
+
+    $deleted = Flight::query()->delete();
 
 > [!WARNING]  
 > When executing a mass delete statement via Eloquent, the `deleting` and `deleted` model events will not be dispatched for the deleted models. This is because the models are never actually retrieved when executing the delete statement.
@@ -1510,7 +1527,7 @@ This command will place the new observer in your `app/Observers` directory. If t
         {
             // ...
         }
-        
+
         /**
          * Handle the User "restored" event.
          */

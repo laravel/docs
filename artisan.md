@@ -86,7 +86,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 <a name="command-allow-list"></a>
 #### Command Allow List
 
-Tinker utilizes an "allow" list to determine which Artisan commands are allowed to be run within its shell. By default, you may run the `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize`, and `up` commands. If you would like to allow more commands you may add them to the `commands` array in your `tinker.php` configuration file:
+Tinker utilizes an "allow" list to determine which Artisan commands are allowed to be run within its shell. By default, you may run the `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `migrate:install`, `up`, and `optimize` commands. If you would like to allow more commands you may add them to the `commands` array in your `tinker.php` configuration file:
 
     'commands' => [
         // App\Console\Commands\ExampleCommand::class,
@@ -158,12 +158,25 @@ Let's take a look at an example command. Note that we are able to request any de
 > [!NOTE]  
 > For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
 
+<a name="exit-codes"></a>
+#### Exit Codes
+
+If nothing is returned from the `handle` method and the command executes successfully, the command will exit with a `0` exit code, indicating success. However, the `handle` method may optionally return an integer to manually specify command's exit code:
+
+    $this->error('Something went wrong.');
+
+    return 1;
+
+If you would like to "fail" the command from any method within the command, you may utilize the `fail` method. The `fail` method will immediately terminate execution of the command and return an exit code of `1`:
+
+    $this->fail('Something went wrong.');
+
 <a name="closure-commands"></a>
 ### Closure Commands
 
 Closure based commands provide an alternative to defining console commands as classes. In the same way that route closures are an alternative to controllers, think of command closures as an alternative to command classes.
 
-Even though the `routes/console.php` file file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your closure based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:
+Even though the `routes/console.php` file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your closure based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:
 
     Artisan::command('mail:send {user}', function (string $user) {
         $this->info("Sending email to: {$user}!");
@@ -636,7 +649,7 @@ Sometimes, you may need more manual control over how a progress bar is advanced.
 
     $bar->finish();
 
-> [!NOTE]
+> [!NOTE]  
 > For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/7.0/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>
@@ -645,7 +658,7 @@ Sometimes, you may need more manual control over how a progress bar is advanced.
 By default, Laravel automatically registers all commands within the `app/Console/Commands` directory. However, you can instruct Laravel to scan other directories for Artisan commands using the `withCommands` method in your application's `bootstrap/app.php` file:
 
     ->withCommands([
-        __DIR__.'../app/Domain/Orders/Commands',
+        __DIR__.'/../app/Domain/Orders/Commands',
     ])
 
 If necessary, you may also manually register commands by providing the command's class name to the `withCommands` method:
@@ -656,7 +669,7 @@ If necessary, you may also manually register commands by providing the command's
         SendEmails::class,
     ])
 
- When Artisan boots, all the commands in your application will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan.
+When Artisan boots, all the commands in your application will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan.
 
 <a name="programmatically-executing-commands"></a>
 ## Programmatically Executing Commands

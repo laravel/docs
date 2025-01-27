@@ -5,6 +5,7 @@
 - [Other Utilities](#other-utilities)
     - [Benchmarking](#benchmarking)
     - [Dates](#dates)
+    - [Deferred Functions](#deferred-functions)
     - [Lottery](#lottery)
     - [Pipeline](#pipeline)
     - [Sleep](#sleep)
@@ -55,6 +56,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
 [Arr::map](#method-array-map)
+[Arr::mapSpread](#method-array-map-spread)
 [Arr::mapWithKeys](#method-array-map-with-keys)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
@@ -68,7 +70,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
-[Arr::sortRecursiveDesc](#method-array-sort-recursive-desc)
 [Arr::take](#method-array-take)
 [Arr::toCssClasses](#method-array-to-css-classes)
 [Arr::toCssStyles](#method-array-to-css-styles)
@@ -92,17 +93,22 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::abbreviate](#method-number-abbreviate)
 [Number::clamp](#method-number-clamp)
 [Number::currency](#method-number-currency)
+[Number::defaultCurrency](#method-default-currency)
+[Number::defaultLocale](#method-default-locale)
 [Number::fileSize](#method-number-file-size)
 [Number::forHumans](#method-number-for-humans)
 [Number::format](#method-number-format)
 [Number::ordinal](#method-number-ordinal)
+[Number::pairs](#method-number-pairs)
 [Number::percentage](#method-number-percentage)
 [Number::spell](#method-number-spell)
+[Number::trim](#method-number-trim)
 [Number::useLocale](#method-number-use-locale)
 [Number::withLocale](#method-number-with-locale)
+[Number::useCurrency](#method-number-use-currency)
+[Number::withCurrency](#method-number-with-currency)
 
 </div>
-
 
 <a name="paths-method-list"></a>
 ### Paths
@@ -154,6 +160,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [class_uses_recursive](#method-class-uses-recursive)
 [collect](#method-collect)
 [config](#method-config)
+[context](#method-context)
 [cookie](#method-cookie)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
@@ -196,6 +203,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [value](#method-value)
 [view](#method-view)
 [with](#method-with)
+[when](#method-when)
 
 </div>
 
@@ -240,7 +248,6 @@ The `Arr::add` method adds a given key / value pair to an array if the given key
     $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
 
     // ['name' => 'Desk', 'price' => 100]
-
 
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
@@ -551,6 +558,29 @@ The `Arr::map` method iterates through the array and passes each value and key t
     });
 
     // ['first' => 'James', 'last' => 'Kirk']
+
+<a name="method-array-map-spread"></a>
+#### `Arr::mapSpread()` {.collection-method}
+
+The `Arr::mapSpread` method iterates over the array, passing each nested item value into the given closure. The closure is free to modify the item and return it, thus forming a new array of modified items:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        [0, 1],
+        [2, 3],
+        [4, 5],
+        [6, 7],
+        [8, 9],
+    ];
+
+    $mapped = Arr::mapSpread($array, function (int $even, int $odd) {
+        return $even + $odd;
+    });
+
+    /*
+        [1, 5, 9, 13, 17]
+    */
 
 <a name="method-array-map-with-keys"></a>
 #### `Arr::mapWithKeys()` {.collection-method}
@@ -1193,15 +1223,37 @@ The `Number::currency` method returns the currency representation of the given v
 
     $currency = Number::currency(1000);
 
-    // $1,000
+    // $1,000.00
 
     $currency = Number::currency(1000, in: 'EUR');
 
-    // €1,000
+    // €1,000.00
 
     $currency = Number::currency(1000, in: 'EUR', locale: 'de');
 
-    // 1.000 €
+    // 1.000,00 €
+
+<a name="method-default-currency"></a>
+#### `Number::defaultCurrency()` {.collection-method}
+
+The `Number::defaultCurrency` method returns the default currency being used by the `Number` class:
+
+    use Illuminate\Support\Number;
+
+    $currency = Number::defaultCurrency();
+
+    // USD
+
+<a name="method-default-locale"></a>
+#### `Number::defaultLocale()` {.collection-method}
+
+The `Number::defaultLocale` method returns the default locale being used by the `Number` class:
+
+    use Illuminate\Support\Number;
+
+    $locale = Number::defaultLocale();
+
+    // en
 
 <a name="method-number-file-size"></a>
 #### `Number::fileSize()` {.collection-method}
@@ -1283,6 +1335,23 @@ The `Number::ordinal` method returns a number's ordinal representation:
 
     // 21st
 
+<a name="method-number-pairs"></a>
+#### `Number::pairs()` {.collection-method}
+
+The `Number::pairs` method generates an array of number pairs (sub-ranges) based on a specified range and step value. This method can be useful for dividing a larger range of numbers into smaller, manageable sub-ranges for things like pagination or batching tasks. The `pairs` method returns an array of arrays, where each inner array represents a pair (sub-range) of numbers:
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::pairs(25, 10);
+
+// [[1, 10], [11, 20], [21, 25]]
+
+$result = Number::pairs(25, 10, offset: 0);
+
+// [[0, 10], [10, 20], [20, 25]]
+```
+
 <a name="method-number-percentage"></a>
 #### `Number::percentage()` {.collection-method}
 
@@ -1321,7 +1390,6 @@ The `Number::spell` method transforms the given number into a string of words:
 
     // quatre-vingt-huit
 
-
 The `after` argument allows you to specify a value after which all numbers should be spelled out:
 
     $number = Number::spell(10, after: 10);
@@ -1341,6 +1409,21 @@ The `until` argument allows you to specify a value before which all numbers shou
     $number = Number::spell(10, until: 10);
 
     // 10
+
+<a name="method-number-trim"></a>
+#### `Number::trim()` {.collection-method}
+
+The `Number::trim` method removes any trailing zero digits after the decimal point of the given number:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::trim(12.0);
+
+    // 12
+
+    $number = Number::trim(12.30);
+
+    // 12.3
 
 <a name="method-number-use-locale"></a>
 #### `Number::useLocale()` {.collection-method}
@@ -1366,6 +1449,32 @@ The `Number::withLocale` method executes the given closure using the specified l
 
     $number = Number::withLocale('de', function () {
         return Number::format(1500);
+    });
+
+<a name="method-number-use-currency"></a>
+#### `Number::useCurrency()` {.collection-method}
+
+The `Number::useCurrency` method sets the default number currency globally, which affects how the currency is formatted by subsequent invocations to the `Number` class's methods:
+
+    use Illuminate\Support\Number;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Number::useCurrency('GBP');
+    }
+
+<a name="method-number-with-currency"></a>
+#### `Number::withCurrency()` {.collection-method}
+
+The `Number::withCurrency` method executes the given closure using the specified currency and then restores the original currency after the callback has executed:
+
+    use Illuminate\Support\Number;
+
+    $number = Number::withCurrency('GBP', function () {
+        // ...
     });
 
 <a name="paths"></a>
@@ -1547,7 +1656,7 @@ If no path is provided, an `Illuminate\Routing\UrlGenerator` instance is returne
 <a name="method-abort"></a>
 #### `abort()` {.collection-method}
 
-The `abort` function throws [an HTTP exception](/docs/{{version}}/errors#http-exceptions) which will be rendered by the [exception handler](/docs/{{version}}/errors#the-exception-handler):
+The `abort` function throws [an HTTP exception](/docs/{{version}}/errors#http-exceptions) which will be rendered by the [exception handler](/docs/{{version}}/errors#handling-exceptions):
 
     abort(403);
 
@@ -1681,6 +1790,21 @@ The `config` function gets the value of a [configuration](/docs/{{version}}/conf
 You may set configuration variables at runtime by passing an array of key / value pairs. However, note that this function only affects the configuration value for the current request and does not update your actual configuration values:
 
     config(['app.debug' => true]);
+
+<a name="method-context"></a>
+#### `context()` {.collection-method}
+
+The `context` function gets the value from the [current context](/docs/{{version}}/context). A default value may be specified and is returned if the context key does not exist:
+
+    $value = context('trace_id');
+
+    $value = context('trace_id', $default);
+
+You may set context values by passing an array of key / value pairs:
+
+    use Illuminate\Support\Str;
+
+    context(['trace_id' => Str::uuid()->toString()]);
 
 <a name="method-cookie"></a>
 #### `cookie()` {.collection-method}
@@ -1827,7 +1951,7 @@ An array of contextual data may also be passed to the function:
 <a name="method-literal"></a>
 #### `literal()` {.collection-method}
 
-"The `literal` function creates a new [stdClass](https://www.php.net/manual/en/class.stdclass.php) instance with the given named arguments as properties:
+The `literal` function creates a new [stdClass](https://www.php.net/manual/en/class.stdclass.php) instance with the given named arguments as properties:
 
     $obj = literal(
         name: 'Joe',
@@ -1848,7 +1972,7 @@ An array of contextual data may also be passed to the function:
 
     logger('User has logged in.', ['id' => $user->id]);
 
-A [logger](/docs/{{version}}/errors#logging) instance will be returned if no value is passed to the function:
+A [logger](/docs/{{version}}/logging) instance will be returned if no value is passed to the function:
 
     logger()->error('You are not allowed here.');
 
@@ -1960,7 +2084,7 @@ The `redirect` function returns a [redirect HTTP response](/docs/{{version}}/res
 <a name="method-report"></a>
 #### `report()` {.collection-method}
 
-The `report` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler):
+The `report` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions):
 
     report($e);
 
@@ -1971,7 +2095,7 @@ The `report` function also accepts a string as an argument. When a string is giv
 <a name="method-report-if"></a>
 #### `report_if()` {.collection-method}
 
-The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler) if the given condition is `true`:
+The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if the given condition is `true`:
 
     report_if($shouldReport, $e);
 
@@ -1980,7 +2104,7 @@ The `report_if` function will report an exception using your [exception handler]
 <a name="method-report-unless"></a>
 #### `report_unless()` {.collection-method}
 
-The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler) if the given condition is `false`:
+The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if the given condition is `false`:
 
     report_unless($reportingDisabled, $e);
 
@@ -1998,7 +2122,7 @@ The `request` function returns the current [request](/docs/{{version}}/requests)
 <a name="method-rescue"></a>
 #### `rescue()` {.collection-method}
 
-The `rescue` function executes the given closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your [exception handler](/docs/{{version}}/errors#the-exception-handler); however, the request will continue processing:
+The `rescue` function executes the given closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your [exception handler](/docs/{{version}}/errors#handling-exceptions); however, the request will continue processing:
 
     return rescue(function () {
         return $this->method();
@@ -2202,7 +2326,7 @@ Additional arguments may be passed to the `value` function. If the first argumen
     $result = value(function (string $name) {
         return $name;
     }, 'Taylor');
-    
+
     // 'Taylor'
 
 <a name="method-view"></a>
@@ -2232,6 +2356,23 @@ The `with` function returns the value it is given. If a closure is passed as the
     $result = with(5, null);
 
     // 5
+
+<a name="method-when"></a>
+#### `when()` {.collection-method}
+
+The `when` function returns the value it is given if a given condition evaluates to `true`. Otherwise, `null` is returned. If a closure is passed as the second argument to the function, the closure will be executed and its returned value will be returned:
+
+    $value = when(true, 'Hello World');
+
+    $value = when(true, fn () => 'Hello World');
+
+The `when` function is primarily useful for conditionally rendering HTML attributes:
+
+```blade
+<div {!! when($condition, 'wire:poll="calculate"') !!}>
+    ...
+</div>
+```
 
 <a name="other-utilities"></a>
 ## Other Utilities
@@ -2281,6 +2422,108 @@ $now = Carbon::now();
 ```
 
 For a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/docs/).
+
+<a name="deferred-functions"></a>
+### Deferred Functions
+
+> [!WARNING]
+> Deferred functions are currently in beta while we gather community feedback.
+
+While Laravel's [queued jobs](/docs/{{version}}/queues) allow you to queue tasks for background processing, sometimes you may have simple tasks you would like to defer without configuring or maintaining a long-running queue worker.
+
+Deferred functions allow you to defer the execution of a closure until after the HTTP response has been sent to the user, keeping your application feeling fast and responsive. To defer the execution of a closure, simply pass the closure to the `Illuminate\Support\defer` function:
+
+```php
+use App\Services\Metrics;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use function Illuminate\Support\defer;
+
+Route::post('/orders', function (Request $request) {
+    // Create order...
+
+    defer(fn () => Metrics::reportOrder($order));
+
+    return $order;
+});
+```
+
+By default, deferred functions will only be executed if the HTTP response, Artisan command, or queued job from which `Illuminate\Support\defer` is invoked completes successfully. This means that deferred functions will not be executed if a request results in a `4xx` or `5xx` HTTP response. If you would like a deferred function to always execute, you may chain the `always` method onto your deferred function:
+
+```php
+defer(fn () => Metrics::reportOrder($order))->always();
+```
+
+<a name="cancelling-deferred-functions"></a>
+#### Cancelling Deferred Functions
+
+If you need to cancel a deferred function before it is executed, you can use the `forget` method to cancel the function by its name. To name a deferred function, provide a second argument to the `Illuminate\Support\defer` function:
+
+```php
+defer(fn () => Metrics::report(), 'reportMetrics');
+
+defer()->forget('reportMetrics');
+```
+
+<a name="deferred-function-compatibility"></a>
+#### Deferred Function Compatibility
+
+If you upgraded to Laravel 11.x from a Laravel 10.x application and your application's skeleton still contains an `app/Http/Kernel.php` file, you should add the `InvokeDeferredCallbacks` middleware to the beginning of the kernel's `$middleware` property:
+
+```php
+protected $middleware = [
+    \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class, // [tl! add]
+    \App\Http\Middleware\TrustProxies::class,
+    // ...
+];
+```
+
+<a name="disabling-deferred-functions-in-tests"></a>
+#### Disabling Deferred Functions in Tests
+
+When writing tests, it may be useful to disable deferred functions. You may call `withoutDefer` in your test to instruct Laravel to invoke all deferred functions immediately:
+
+```php tab=Pest
+test('without defer', function () {
+    $this->withoutDefer();
+
+    // ...
+});
+```
+
+```php tab=PHPUnit
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_without_defer(): void
+    {
+        $this->withoutDefer();
+
+        // ...
+    }
+}
+```
+
+If you would like to disable deferred functions for all tests within a test case, you may call the `withoutDefer` method from the `setUp` method on your base `TestCase` class:
+
+```php
+<?php
+
+namespace Tests;
+
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase
+{
+    protected function setUp(): void// [tl! add:start]
+    {
+        parent::setUp();
+
+        $this->withoutDefer();
+    }// [tl! add:end]
+}
+```
 
 <a name="lottery"></a>
 ### Lottery
@@ -2381,6 +2624,12 @@ Laravel's `Sleep` class is a light-weight wrapper around PHP's native `sleep` an
 
 The `Sleep` class offers a variety of methods that allow you to work with different units of time:
 
+    // Return a value after sleeping...
+    $result = Sleep::for(1)->second()->then(fn () => 1 + 1);
+
+    // Sleep while a given value is true...
+    Sleep::for(1)->second()->while(fn () => shouldKeepSleeping());
+
     // Pause execution for 90 seconds...
     Sleep::for(1.5)->minutes();
 
@@ -2459,7 +2708,7 @@ it('checks if ready three times', function () {
 ```
 
 ```php tab=PHPUnit
-public function test_it_checks_if_ready_four_times()
+public function test_it_checks_if_ready_three_times()
 {
     Sleep::fake();
 
@@ -2505,6 +2754,18 @@ Sleep::whenFakingSleep(function (Duration $duration) {
     // Progress time when faking sleep...
     $this->travel($duration->totalMilliseconds)->milliseconds();
 });
+```
+
+As progressing time is a common requirement, the `fake` method accepts a `syncWithCarbon` argument to keep Carbon in sync when sleeping within a test:
+
+```php
+Sleep::fake(syncWithCarbon: true);
+
+$start = now();
+
+Sleep::for(1)->second();
+
+$start->diffForHumans(); // 1 second ago
 ```
 
 Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [`retry`](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.

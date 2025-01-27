@@ -91,9 +91,9 @@ You may instruct Laravel's "pluralizer", which is used by Eloquent and other por
      */
     public function boot(): void
     {
-        Pluralizer::useLanguage('spanish');     
+        Pluralizer::useLanguage('spanish');
 
-        // ...     
+        // ...
     }
 
 > [!WARNING]  
@@ -152,7 +152,7 @@ You may retrieve translation strings from your language files using the `__` hel
 
 If the specified translation string does not exist, the `__` function will return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist.
 
- If you are using your [default translation strings as your translation keys](#using-translation-strings-as-keys), you should pass the default translation of your string to the `__` function;
+If you are using your [default translation strings as your translation keys](#using-translation-strings-as-keys), you should pass the default translation of your string to the `__` function;
 
     echo __('I love programming.');
 

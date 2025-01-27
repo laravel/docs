@@ -95,7 +95,7 @@ class ExampleTest extends TestCase
 
 In general, each of your tests should only make one request to your application. Unexpected behavior may occur if multiple requests are executed within a single test method.
 
-> [!NOTE]
+> [!NOTE]  
 > For convenience, the CSRF middleware is automatically disabled when running tests.
 
 <a name="customizing-request-headers"></a>
@@ -106,7 +106,7 @@ You may use the `withHeaders` method to customize the request's headers before i
 ```php tab=Pest
 <?php
 
-tesst('interacting with headers', function () {
+test('interacting with headers', function () {
     $response = $this->withHeaders([
         'X-Header' => 'Value',
     ])->post('/user', ['name' => 'Sally']);
@@ -347,7 +347,69 @@ class ExampleTest extends TestCase
 <a name="exception-handling"></a>
 ### Exception Handling
 
-Sometimes you may want to test that your application is throwing a specific exception. To ensure that the exception does not get caught by Laravel's exception handler and returned as an HTTP response, you may invoke the `withoutExceptionHandling` method before making your request:
+Sometimes you may need to test that your application is throwing a specific exception. To accomplish this, you may "fake" the exception handler via the `Exceptions` facade. Once the exception handler has been faked, you may utilize the `assertReported` and `assertNotReported` methods to make assertions against exceptions that were thrown during the request:
+
+```php tab=Pest
+<?php
+
+use App\Exceptions\InvalidOrderException;
+use Illuminate\Support\Facades\Exceptions;
+
+test('exception is thrown', function () {
+    Exceptions::fake();
+
+    $response = $this->get('/order/1');
+
+    // Assert an exception was thrown...
+    Exceptions::assertReported(InvalidOrderException::class);
+
+    // Assert against the exception...
+    Exceptions::assertReported(function (InvalidOrderException $e) {
+        return $e->getMessage() === 'The order was invalid.';
+    });
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Exceptions\InvalidOrderException;
+use Illuminate\Support\Facades\Exceptions;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     */
+    public function test_exception_is_thrown(): void
+    {
+        Exceptions::fake();
+
+        $response = $this->get('/');
+
+        // Assert an exception was thrown...
+        Exceptions::assertReported(InvalidOrderException::class);
+
+        // Assert against the exception...
+        Exceptions::assertReported(function (InvalidOrderException $e) {
+            return $e->getMessage() === 'The order was invalid.';
+        });
+    }
+}
+```
+
+The `assertNotReported` and `assertNothingReported` methods may be used to assert that a given exception was not thrown during the request or that no exceptions were thrown:
+
+```php
+Exceptions::assertNotReported(InvalidOrderException::class);
+
+Exceptions::assertNothingReported();
+```
+
+You may totally disable exception handling for a given request by invoking the `withoutExceptionHandling` method before making your request:
 
     $response = $this->withoutExceptionHandling()->get('/');
 
@@ -361,6 +423,15 @@ The `assertThrows` method may be used to assert that code within a given closure
 $this->assertThrows(
     fn () => (new ProcessOrder)->execute(),
     OrderInvalid::class
+);
+```
+
+If you would like to inspect and make assertions against the exception that is thrown, you may provide a closure as the second argument to the `assertThrows` method:
+
+```php
+$this->assertThrows(
+    fn () => (new ProcessOrder)->execute(),
+    fn (OrderInvalid $e) => $e->orderId() === 123;
 );
 ```
 
@@ -418,8 +489,8 @@ expect($response['created'])->toBeTrue();
 $this->assertTrue($response['created']);
 ```
 
-> [!NOTE]
-> The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
+> [!NOTE]  
+> The `assertJson` method converts the response to an array to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
 <a name="verifying-exact-match"></a>
 #### Asserting Exact JSON Matches
@@ -851,6 +922,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertDontSeeText](#assert-dont-see-text)
 [assertDownload](#assert-download)
 [assertExactJson](#assert-exact-json)
+[assertExactJsonStructure](#assert-exact-json-structure)
 [assertForbidden](#assert-forbidden)
 [assertFound](#assert-found)
 [assertGone](#assert-gone)
@@ -1002,6 +1074,15 @@ Assert that the response contains an exact match of the given JSON data:
 
     $response->assertExactJson(array $data);
 
+<a name="assert-exact-json-structure"></a>
+#### assertExactJsonStructure
+
+Assert that the response contains an exact match of the given JSON structure:
+
+    $response->assertExactJsonStructure(array $data);
+
+This method is a more strict variant of [assertJsonStructure](#assert-json-structure). In contrast with `assertJsonStructure`, this method will fail if the response contains any keys that aren't explicitly included in the expected JSON structure.
+
 <a name="assert-forbidden"></a>
 #### assertForbidden
 
@@ -1051,7 +1132,7 @@ Assert that the response contains the given JSON data:
 
     $response->assertJson(array $data, $strict = false);
 
-The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
+The `assertJson` method converts the response to an array to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
 <a name="assert-json-count"></a>
 #### assertJsonCount
@@ -1250,7 +1331,7 @@ Assert that the response has a moved permanently (301) HTTP status code:
 Assert that the response has the given URI value in the `Location` header:
 
     $response->assertLocation($uri);
-    
+
 <a name="assert-content"></a>
 #### assertContent
 

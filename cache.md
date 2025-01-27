@@ -90,6 +90,34 @@ Before using the [DynamoDB](https://aws.amazon.com/dynamodb) cache driver, you m
 
 This table should also have a string partition key with a name that corresponds to the value of the `stores.dynamodb.attributes.key` configuration item within your application's `cache` configuration file. By default, the partition key should be named `key`.
 
+Typically, DynamoDB will not proactively remove expired items from a table. Therefore, you should [enable Time to Live (TTL)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) on the table. When configuring the table's TTL settings, you should set the TTL attribute name to `expires_at`.
+
+Next, install the AWS SDK so that your Laravel application can communicate with DynamoDB:
+
+```shell
+composer require aws/aws-sdk-php
+```
+
+In addition, you should ensure that values are provided for the DynamoDB cache store configuration options. Typically these options, such as `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, should be defined in your application's `.env` configuration file:
+
+```php
+'dynamodb' => [
+    'driver' => 'dynamodb',
+    'key' => env('AWS_ACCESS_KEY_ID'),
+    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    'table' => env('DYNAMODB_CACHE_TABLE', 'cache'),
+    'endpoint' => env('DYNAMODB_ENDPOINT'),
+],
+```
+
+<a name="mongodb"></a>
+#### MongoDB
+
+If you are using MongoDB, a `mongodb` cache driver is provided by the official `mongodb/laravel-mongodb` package and can be configured using a `mongodb` database connection. MongoDB supports TTL indexes, which can be used to automatically clear expired cache items.
+
+For more information on configuring MongoDB, please refer to the MongoDB [Cache and Locks documentation](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/cache/).
+
 <a name="cache-usage"></a>
 ## Cache Usage
 
@@ -183,12 +211,27 @@ You may use the `rememberForever` method to retrieve an item from the cache or s
         return DB::table('users')->get();
     });
 
+<a name="swr"></a>
+#### Stale While Revalidate
+
+When using the `Cache::remember` method, some users may experience slow response times if the cached value has expired. For certain types of data, it can be useful to allow partially stale data to be served while the cached value is recalculated in the background, preventing some users from experiencing slow response times while cached values are calculated. This is often referred to as the "stale-while-revalidate" pattern, and the `Cache::flexible` method provides an implementation of this pattern.
+
+The flexible method accepts an array that specifies how long the cached value is considered “fresh” and when it becomes “stale.” The first value in the array represents the number of seconds the cache is considered fresh, while the second value defines how long it can be served as stale data before recalculation is necessary.
+
+If a request is made within the fresh period (before the first value), the cache is returned immediately without recalculation. If a request is made during the stale period (between the two values), the stale value is served to the user, and a [deferred function](/docs/{{version}}/helpers#deferred-functions) is registered to refresh the cached value after the response is sent to the user. If a request is made after the second value, the cache is considered expired, and the value is recalculated immediately, which may result in a slower response for the user:
+
+    $value = Cache::flexible('users', [5, 10], function () {
+        return DB::table('users')->get();
+    });
+
 <a name="retrieve-delete"></a>
 #### Retrieve and Delete
 
 If you need to retrieve an item from the cache and then delete the item, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:
 
     $value = Cache::pull('key');
+
+    $value = Cache::pull('key', 'default');
 
 <a name="storing-items-in-the-cache"></a>
 ### Storing Items in the Cache
@@ -291,7 +334,7 @@ The `get` method also accepts a closure. After the closure is executed, Laravel 
         // Lock acquired for 10 seconds and automatically released...
     });
 
-If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
+If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock cannot be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
 
     use Illuminate\Contracts\Cache\LockTimeoutException;
 
@@ -304,7 +347,7 @@ If the lock is not available at the moment you request it, you may instruct Lara
     } catch (LockTimeoutException $e) {
         // Unable to acquire lock...
     } finally {
-        $lock?->release();
+        $lock->release();
     }
 
 The example above may be simplified by passing a closure to the `block` method. When a closure is passed to this method, Laravel will attempt to acquire the lock for the specified number of seconds and will automatically release the lock once the closure has been executed:
@@ -419,9 +462,23 @@ Once your extension is registered, update the `CACHE_STORE` environment variable
 
 To execute code on every cache operation, you may listen for various [events](/docs/{{version}}/events) dispatched by the cache:
 
-Event Name |
-------------- |
-`Illuminate\Cache\Events\CacheHit` |
-`Illuminate\Cache\Events\CacheMissed` |
-`Illuminate\Cache\Events\KeyForgotten` |
-`Illuminate\Cache\Events\KeyWritten` |
+<div class="overflow-auto">
+
+| Event Name |
+| --- |
+| `Illuminate\Cache\Events\CacheHit` |
+| `Illuminate\Cache\Events\CacheMissed` |
+| `Illuminate\Cache\Events\KeyForgotten` |
+| `Illuminate\Cache\Events\KeyWritten` |
+
+</div>
+
+To increase performance, you may disable cache events by setting the `events` configuration option to `false` for a given cache store in your application's `config/cache.php` configuration file:
+
+```php
+'database' => [
+    'driver' => 'database',
+    // ...
+    'events' => false,
+],
+```

@@ -160,7 +160,7 @@ Paddle relies on its own JavaScript library to initiate the Paddle checkout widg
 <a name="currency-configuration"></a>
 ### Currency Configuration
 
-You can specify a locale to be used when formatting money values for display on invoices. Internally, Cashier utilizes [PHP's `NumberFormatter` class](https://www.php.net/manual/en/class.numberformatter.php) class to set the currency locale:
+You can specify a locale to be used when formatting money values for display on invoices. Internally, Cashier utilizes [PHP's `NumberFormatter` class](https://www.php.net/manual/en/class.numberformatter.php) to set the currency locale:
 
 ```ini
 CASHIER_CURRENCY_LOCALE=nl_BE
@@ -201,7 +201,7 @@ After defining your model, you may instruct Cashier to use your custom model via
 <a name="quickstart-selling-products"></a>
 ### Selling Products
 
-> [!NOTE]
+> [!NOTE]  
 > Before utilizing Paddle Checkout, you should define Products with fixed prices in your Paddle dashboard. In addition, you should [configure Paddle's webhook handling](#handling-paddle-webhooks).
 
 Offering product and subscription billing via your application can be intimidating. However, thanks to Cashier and [Paddle's Checkout Overlay](https://www.paddle.com/billing/checkout), you can easily build modern, robust payment integrations.
@@ -235,11 +235,11 @@ In the `buy` view, we will include a button to display the Checkout Overlay. The
 When selling products, it's common to keep track of completed orders and purchased products via `Cart` and `Order` models defined by your own application. When redirecting customers to Paddle's Checkout Overlay to complete a purchase, you may need to provide an existing order identifier so that you can associate the completed purchase with the corresponding order when the customer is redirected back to your application.
 
 To accomplish this, you may provide an array of custom data to the `checkout` method. Let's imagine that a pending `Order` is created within our application when a user begins the checkout process. Remember, the `Cart` and `Order` models in this example are illustrative and not provided by Cashier. You are free to implement these concepts based on the needs of your own application:
-    
+
     use App\Models\Cart;
     use App\Models\Order;
     use Illuminate\Http\Request;
-    
+
     Route::get('/cart/{cart}/checkout', function (Request $request, Cart $cart) {
         $order = Order::create([
             'cart_id' => $cart->id,
@@ -276,8 +276,8 @@ In this example, the `CompleteOrder` listener might look like the following:
     namespace App\Listeners;
 
     use App\Models\Order;
-    use Laravel\Cashier\Cashier;
-    use Laravel\Cashier\Events\TransactionCompleted;
+    use Laravel\Paddle\Cashier;
+    use Laravel\Paddle\Events\TransactionCompleted;
 
     class CompleteOrder
     {
@@ -407,10 +407,10 @@ Besides swapping plans you'll also need to allow your customers to cancel their 
         return redirect()->route('dashboard');
     })->name('subscription.cancel');
 
-And now your subscription will get cancelled at the end of its billing period.
+And now your subscription will get canceled at the end of its billing period.
 
 > [!NOTE]  
-> As long as you have configured Cashier's webhook handling, Cashier will automatically keep your application's Cashier-related database tables in sync by inspecting the incoming webhooks from Paddle. So, for example, when you cancel a customer's subscription via Paddle's dashboard, Cashier will receive the corresponding webhook and mark the subscription as "cancelled" in your application's database.
+> As long as you have configured Cashier's webhook handling, Cashier will automatically keep your application's Cashier-related database tables in sync by inspecting the incoming webhooks from Paddle. So, for example, when you cancel a customer's subscription via Paddle's dashboard, Cashier will receive the corresponding webhook and mark the subscription as "canceled" in your application's database.
 
 <a name="checkout-sessions"></a>
 ## Checkout Sessions
@@ -444,7 +444,7 @@ Cashier includes a `paddle-button` [Blade component](/docs/{{version}}/blade#com
 By default, this will display the widget using Paddle's default styling. You can customize the widget by adding [Paddle supported attributes](https://developer.paddle.com/paddlejs/html-data-attributes) like the  `data-theme='light'` attribute to the component:
 
 ```html
-<x-paddle-button :url="$payLink" class="px-8 py-4" data-theme="light">
+<x-paddle-button :checkout="$checkout" class="px-8 py-4" data-theme="light">
     Subscribe
 </x-paddle-button>
 ```
@@ -558,7 +558,7 @@ Sometimes, you may need to create a checkout session for users that do not need 
     use Laravel\Paddle\Checkout;
 
     Route::get('/buy', function (Request $request) {
-        $checkout = Checkout::guest('pri_34567')
+        $checkout = Checkout::guest(['pri_34567'])
             ->returnTo(route('home'));
 
         return view('billing', ['checkout' => $checkout]);
@@ -579,7 +579,7 @@ The currency will be determined based on the IP address of the request; however,
 
     use Laravel\Paddle\Cashier;
 
-    $prices = Cashier::productPrices(['pri_123', 'pri_456'], ['address' => [
+    $prices = Cashier::previewPrices(['pri_123', 'pri_456'], ['address' => [
         'country_code' => 'BE',
         'postal_code' => '1234',
     ]]);
@@ -599,7 +599,7 @@ You may also display the subtotal price and tax amount separately:
 ```blade
 <ul>
     @foreach ($prices as $price)
-        <li>{{ $price->product_title }} - {{ $price->subtotal() }} (+ {{ $price->tax() }} tax)</li>
+        <li>{{ $price->product['name'] }} - {{ $price->subtotal() }} (+ {{ $price->tax() }} tax)</li>
     @endforeach
 </ul>
 ```
@@ -669,7 +669,7 @@ These defaults will be used for every action in Cashier that generates a [checko
 
 You can retrieve a customer by their Paddle Customer ID using the `Cashier::findBillable` method. This method will return an instance of the billable model:
 
-    use Laravel\Cashier\Cashier;
+    use Laravel\Paddle\Cashier;
 
     $user = Cashier::findBillable($customerId);
 
@@ -703,7 +703,7 @@ To create a subscription, first retrieve an instance of your billable model from
 
 The first argument given to the `subscribe` method is the specific price the user is subscribing to. This value should correspond to the price's identifier in Paddle. The `returnTo` method accepts a URL that your user will be redirected to after they successfully complete the checkout. The second argument passed to the `subscribe` method should be the internal "type" of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. This subscription type is only for internal application usage and is not meant to be displayed to users. In addition, it should not contain spaces and it should never be changed after creating the subscription.
 
-You may also provide an array of custom meta data regarding the subscription using the `customData` method:
+You may also provide an array of custom metadata regarding the subscription using the `customData` method:
 
     $checkout = $request->user()->subscribe($premium = 12345, 'default')
         ->customData(['key' => 'value'])
@@ -722,7 +722,7 @@ After the user has finished their checkout, a `subscription_created` webhook wil
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
 
-Once a user is subscribed to your application, you may check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an valid subscription, even if the subscription is currently within its trial period:
+Once a user is subscribed to your application, you may check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has a valid subscription, even if the subscription is currently within its trial period:
 
     if ($user->subscribed()) {
         // ...
@@ -755,7 +755,7 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
         {
             if ($request->user() && ! $request->user()->subscribed()) {
                 // This user is not a paying customer...
-                return redirect('billing');
+                return redirect('/billing');
             }
 
             return $next($request);
@@ -1170,7 +1170,7 @@ You may use the `onGenericTrial` method if you wish to know specifically that th
 
 You can extend an existing trial period on a subscription by invoking the `extendTrial` method and specifying the moment in time that the trial should end:
 
-    $user->subsription()->extendTrial(now()->addDays(5));
+    $user->subscription()->extendTrial(now()->addDays(5));
 
 Or, you may immediately activate a subscription by ending its trial by calling the `activate` method on the subscription:
 
@@ -1220,7 +1220,7 @@ Cashier automatically handles subscription cancelation on failed charges and oth
 - `Laravel\Paddle\Events\WebhookReceived`
 - `Laravel\Paddle\Events\WebhookHandled`
 
-Both events contain the full payload of the Paddle webhook. For example, if you wish to handle the `transaction_billed` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
+Both events contain the full payload of the Paddle webhook. For example, if you wish to handle the `transaction.billed` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
 
     <?php
 
@@ -1235,7 +1235,7 @@ Both events contain the full payload of the Paddle webhook. For example, if you 
          */
         public function handle(WebhookReceived $event): void
         {
-            if ($event->payload['alert_name'] === 'transaction_billed') {
+            if ($event->payload['event_type'] === 'transaction.billed') {
                 // Handle the incoming event...
             }
         }
@@ -1372,7 +1372,7 @@ When listing the transactions for a customer, you may use the transaction instan
 The `download-invoice` route may look like the following:
 
     use Illuminate\Http\Request;
-    use Laravel\Cashier\Transaction;
+    use Laravel\Paddle\Transaction;
 
     Route::get('/download-invoice/{transaction}', function (Request $request, Transaction $transaction) {
         return $transaction->redirectToInvoicePdf();

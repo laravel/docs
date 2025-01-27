@@ -13,6 +13,7 @@
     - [View Components](#view-components)
     - ["About" Artisan Command](#about-artisan-command)
 - [Commands](#commands)
+    - [Optimize Commands](#optimize-commands)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 
@@ -107,7 +108,7 @@ Now, when users of your package execute Laravel's `vendor:publish` command, your
     $value = config('courier.option');
 
 > [!WARNING]  
-> You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
+> You should not define closures in your configuration files. They cannot be serialized correctly when users execute the `config:cache` Artisan command.
 
 <a name="default-package-configuration"></a>
 #### Default Package Configuration
@@ -336,6 +337,24 @@ To register your package's Artisan commands with Laravel, you may use the `comma
                 InstallCommand::class,
                 NetworkCommand::class,
             ]);
+        }
+    }
+
+<a name="optimize-commands"></a>
+### Optimize Commands
+
+Laravel's [`optimize` command](/docs/{{version}}/deployment#optimization) caches the application's configuration, events, routes, and views. Using the `optimizes` method, you may register your package's own Artisan commands that should be invoked when the `optimize` and `optimize:clear` commands are executed:
+
+    /**
+     * Bootstrap any package services.
+     */
+    public function boot(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->optimizes(
+                optimize: 'package:optimize',
+                clear: 'package:clear-optimizations',
+            );
         }
     }
 

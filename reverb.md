@@ -10,6 +10,7 @@
 - [Running the Server](#running-server)
     - [Debugging](#debugging)
     - [Restarting](#restarting)
+- [Monitoring](#monitoring)
 - [Running Reverb in Production](#production)
     - [Open Files](#open-files)
     - [Event Loop](#event-loop)
@@ -56,7 +57,7 @@ You may also define the origins from which client requests may originate by upda
 ```php
 'apps' => [
     [
-        'id' => 'my-app-id',
+        'app_id' => 'my-app-id',
         'allowed_origins' => ['laravel.com'],
         // ...
     ]
@@ -73,11 +74,11 @@ For example, you may wish to maintain a single Laravel application which, via Re
 ```php
 'apps' => [
     [
-        'id' => 'my-app-one',
+        'app_id' => 'my-app-one',
         // ...
     ],
     [
-        'id' => 'my-app-two',
+        'app_id' => 'my-app-two',
         // ...
     ],
 ],
@@ -125,6 +126,16 @@ php artisan reverb:start --host=127.0.0.1 --port=9000
 
 Alternatively, you may define `REVERB_SERVER_HOST` and `REVERB_SERVER_PORT` environment variables in your application's `.env` configuration file.
 
+The `REVERB_SERVER_HOST` and `REVERB_SERVER_PORT` environment variables should not be confused with `REVERB_HOST` and `REVERB_PORT`. The former specify the host and port on which to run the Reverb server itself, while the latter pair instruct Laravel where to send broadcast messages. For example, in a production environment, you may route requests from your public Reverb hostname on port `443` to a Reverb server operating on `0.0.0.0:8080`. In this scenario, your environment variables would be defined as follows:
+
+```ini
+REVERB_SERVER_HOST=0.0.0.0
+REVERB_SERVER_PORT=8080
+
+REVERB_HOST=ws.laravel.com
+REVERB_PORT=443
+```
+
 <a name="debugging"></a>
 ### Debugging
 
@@ -144,6 +155,42 @@ The `reverb:restart` command ensures all connections are gracefully terminated b
 ```sh
 php artisan reverb:restart
 ```
+
+<a name="monitoring"></a>
+## Monitoring
+
+Reverb may be monitored via an integration with [Laravel Pulse](/docs/{{version}}/pulse). By enabling Reverb's Pulse integration, you may track the number of connections and messages being handled by your server.
+
+To enable the integration, you should first ensure you have [installed Pulse](/docs/{{version}}/pulse#installation). Then, add any of Reverb's recorders to your application's `config/pulse.php` configuration file:
+
+```php
+use Laravel\Reverb\Pulse\Recorders\ReverbConnections;
+use Laravel\Reverb\Pulse\Recorders\ReverbMessages;
+
+'recorders' => [
+    ReverbConnections::class => [
+        'sample_rate' => 1,
+    ],
+
+    ReverbMessages::class => [
+        'sample_rate' => 1,
+    ],
+
+    ...
+],
+```
+
+Next, add the Pulse cards for each recorder to your [Pulse dashboard](/docs/{{version}}/pulse#dashboard-customization):
+
+```blade
+<x-pulse>
+    <livewire:reverb.connections cols="full" />
+    <livewire:reverb.messages cols="full" />
+    ...
+</x-pulse>
+```
+
+Connection activity is recorded by polling for new updates on a periodic basis. To ensure this information is rendered correctly on the Pulse dashboard, you must run the `pulse:check` daemon on your Reverb server. If you are running Reverb in a [horizontally scaled](#scaling) configuration, you should only run this daemon on one of your servers.
 
 <a name="production"></a>
 ## Running Reverb in Production
@@ -180,13 +227,9 @@ forge        hard  nofile  10000
 
 Under the hood, Reverb uses a ReactPHP event loop to manage WebSocket connections on the server. By default, this event loop is powered by `stream_select`, which doesn't require any additional extensions. However, `stream_select` is typically limited to 1,024 open files. As such, if you plan to handle more than 1,000 concurrent connections, you will need to use an alternative event loop not bound to the same restrictions.
 
-Reverb will automatically switch to an `ext-event`, `ext-ev`, or `ext-uv` powered loop when available. All of these PHP extensions are available for install via PECL:
+Reverb will automatically switch to an `ext-uv` powered loop when available. This PHP extension is available for install via PECL:
 
 ```sh
-pecl install event
-# or
-pecl install ev
-# or
 pecl install uv
 ```
 
@@ -216,6 +259,9 @@ server {
 }
 ```
 
+> [!WARNING]  
+> Reverb listens for WebSocket connections at `/app` and handles API requests at `/apps`. You should ensure the web server handling Reverb requests can serve both of these URIs. If you are using [Laravel Forge](https://forge.laravel.com) to manage your servers, your Reverb server will be correctly configured by default.
+
 Typically, web servers are configured to limit the number of allowed connections in order to prevent overloading the server. To increase the number of allowed connections on an Nginx web server to 10,000, the `worker_rlimit_nofile` and `worker_connections` values of the `nginx.conf` file should be updated:
 
 ```nginx
@@ -239,7 +285,7 @@ The configuration above will allow up to 10,000 Nginx workers per process to be 
 Unix-based operating systems typically limit the number of ports which can be opened on the server. You may see the current allowed range via the following command:
 
  ```sh
- cat /proc/sys/net/ipv4/ip_local_port_range
+cat /proc/sys/net/ipv4/ip_local_port_range
 # 32768	60999
 ```
 

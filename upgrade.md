@@ -43,8 +43,6 @@
 
 **Likelihood Of Impact: High**
 
-#### Composer Dependencies
-
 You should update the following dependencies in your application's `composer.json` file:
 
 <div class="content-list" markdown="1">

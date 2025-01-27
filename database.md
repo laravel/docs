@@ -22,10 +22,12 @@ Almost every modern web application interacts with a database. Laravel makes int
 - MariaDB 10.3+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))
 - MySQL 5.7+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
 - PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))
-- SQLite 3.35.0+
+- SQLite 3.26.0+
 - SQL Server 2017+ ([Version Policy](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
 </div>
+
+Additionally, MongoDB is supported via the `mongodb/laravel-mongodb` package, which is officially maintained by MongoDB. Check out the [Laravel MongoDB](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/) documentation for more information.
 
 <a name="configuration"></a>
 ### Configuration
@@ -50,7 +52,7 @@ By default, foreign key constraints are enabled for SQLite connections. If you w
 DB_FOREIGN_KEYS=false
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > If you use the [Laravel installer](/docs/{{version}}/installation#creating-a-laravel-project) to create your Laravel application and select SQLite as your database, Laravel will automatically create a `database/database.sqlite` file and run the default [database migrations](/docs/{{version}}/migrations) for you.
 
 <a name="mssql-configuration"></a>
@@ -75,7 +77,7 @@ These URLs typically follow a standard schema convention:
 driver://username:password@host:port/database?options
 ```
 
-For convenience, Laravel supports these URLs as an alternative to configuring your database with multiple configuration options. If the `url` (or corresponding `DATABASE_URL` environment variable) configuration option is present, it will be used to extract the database connection and credential information.
+For convenience, Laravel supports these URLs as an alternative to configuring your database with multiple configuration options. If the `url` (or corresponding `DB_URL` environment variable) configuration option is present, it will be used to extract the database connection and credential information.
 
 <a name="read-and-write-connections"></a>
 ### Read and Write Connections
@@ -103,7 +105,7 @@ To see how read / write connections should be configured, let's look at this exa
         'password' => env('DB_PASSWORD', ''),
         'unix_socket' => env('DB_SOCKET', ''),
         'charset' => env('DB_CHARSET', 'utf8mb4'),
-        'collation' => env('DB_COLLATION', 'utf8mb4_0900_ai_ci'),
+        'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
         'prefix' => '',
         'prefix_indexes' => true,
         'strict' => true,
@@ -291,6 +293,7 @@ If you would like to specify a closure that is invoked for each SQL query execut
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
+                // $query->toRawSql();
             });
         }
     }

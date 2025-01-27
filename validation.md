@@ -220,10 +220,12 @@ You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly d
 
 <label for="title">Post Title</label>
 
-<input id="title"
+<input
+    id="title"
     type="text"
     name="title"
-    class="@error('title') is-invalid @enderror">
+    class="@error('title') is-invalid @enderror"
+/>
 
 @error('title')
     <div class="alert alert-danger">{{ $message }}</div>
@@ -311,7 +313,7 @@ As you might have guessed, the `authorize` method is responsible for determining
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -413,7 +415,7 @@ By adding a `stopOnFirstFailure` property to your request class, you may inform 
 <a name="customizing-the-redirect-location"></a>
 #### Customizing the Redirect Location
 
-As previously discussed, a redirect response will be generated to send the user back to their previous location when form request validation fails. However, you are free to customize this behavior. To do so, define a `$redirect` property on your form request:
+When form request validation fails, a redirect response will be generated to send the user back to their previous location. However, you are free to customize this behavior. To do so, define a `$redirect` property on your form request:
 
     /**
      * The URI that users should be redirected to if validation fails.
@@ -559,7 +561,7 @@ If you do not want to use the `validate` method on the request, you may create a
             ]);
 
             if ($validator->fails()) {
-                return redirect('post/create')
+                return redirect('/post/create')
                             ->withErrors($validator)
                             ->withInput();
             }
@@ -611,7 +613,7 @@ You may use the `validateWithBag` method to store the error messages in a [named
 
 If you have multiple forms on a single page, you may wish to name the `MessageBag` containing the validation errors, allowing you to retrieve the error messages for a specific form. To achieve this, pass a name as the second argument to `withErrors`:
 
-    return redirect('register')->withErrors($validator, 'login');
+    return redirect('/register')->withErrors($validator, 'login');
 
 You may then access the named `MessageBag` instance from the `$errors` variable:
 
@@ -861,79 +863,156 @@ Below is a list of all available validation rules and their function:
     }
 </style>
 
+#### Booleans
+
 <div class="collection-method-list" markdown="1">
 
 [Accepted](#rule-accepted)
 [Accepted If](#rule-accepted-if)
+[Boolean](#rule-boolean)
+[Declined](#rule-declined)
+[Declined If](#rule-declined-if)
+
+</div>
+
+#### Strings
+
+<div class="collection-method-list" markdown="1">
+
 [Active URL](#rule-active-url)
-[After (Date)](#rule-after)
-[After Or Equal (Date)](#rule-after-or-equal)
 [Alpha](#rule-alpha)
 [Alpha Dash](#rule-alpha-dash)
 [Alpha Numeric](#rule-alpha-num)
-[Array](#rule-array)
 [Ascii](#rule-ascii)
-[Bail](#rule-bail)
-[Before (Date)](#rule-before)
-[Before Or Equal (Date)](#rule-before-or-equal)
-[Between](#rule-between)
-[Boolean](#rule-boolean)
 [Confirmed](#rule-confirmed)
 [Current Password](#rule-current-password)
-[Date](#rule-date)
-[Date Equals](#rule-date-equals)
-[Date Format](#rule-date-format)
-[Decimal](#rule-decimal)
-[Declined](#rule-declined)
-[Declined If](#rule-declined-if)
 [Different](#rule-different)
-[Digits](#rule-digits)
-[Digits Between](#rule-digits-between)
-[Dimensions (Image Files)](#rule-dimensions)
-[Distinct](#rule-distinct)
 [Doesnt Start With](#rule-doesnt-start-with)
 [Doesnt End With](#rule-doesnt-end-with)
 [Email](#rule-email)
 [Ends With](#rule-ends-with)
 [Enum](#rule-enum)
+[Hex Color](#rule-hex-color)
+[In](#rule-in)
+[IP Address](#rule-ip)
+[JSON](#rule-json)
+[Lowercase](#rule-lowercase)
+[MAC Address](#rule-mac)
+[Max](#rule-max)
+[Min](#rule-min)
+[Not In](#rule-not-in)
+[Regular Expression](#rule-regex)
+[Not Regular Expression](#rule-not-regex)
+[Same](#rule-same)
+[Size](#rule-size)
+[Starts With](#rule-starts-with)
+[String](#rule-string)
+[Uppercase](#rule-uppercase)
+[URL](#rule-url)
+[ULID](#rule-ulid)
+[UUID](#rule-uuid)
+
+</div>
+
+#### Numbers
+
+<div class="collection-method-list" markdown="1">
+
+[Between](#rule-between)
+[Decimal](#rule-decimal)
+[Different](#rule-different)
+[Digits](#rule-digits)
+[Digits Between](#rule-digits-between)
+[Greater Than](#rule-gt)
+[Greater Than Or Equal](#rule-gte)
+[Integer](#rule-integer)
+[Less Than](#rule-lt)
+[Less Than Or Equal](#rule-lte)
+[Max](#rule-max)
+[Max Digits](#rule-max-digits)
+[Min](#rule-min)
+[Min Digits](#rule-min-digits)
+[Multiple Of](#rule-multiple-of)
+[Numeric](#rule-numeric)
+[Same](#rule-same)
+[Size](#rule-size)
+
+</div>
+
+#### Arrays
+
+<div class="collection-method-list" markdown="1">
+
+[Array](#rule-array)
+[Between](#rule-between)
+[Contains](#rule-contains)
+[Distinct](#rule-distinct)
+[In Array](#rule-in-array)
+[List](#rule-list)
+[Max](#rule-max)
+[Min](#rule-min)
+[Size](#rule-size)
+
+</div>
+
+#### Dates
+
+<div class="collection-method-list" markdown="1">
+
+[After](#rule-after)
+[After Or Equal](#rule-after-or-equal)
+[Before](#rule-before)
+[Before Or Equal](#rule-before-or-equal)
+[Date](#rule-date)
+[Date Equals](#rule-date-equals)
+[Date Format](#rule-date-format)
+[Different](#rule-different)
+[Timezone](#rule-timezone)
+
+</div>
+
+#### Files
+
+<div class="collection-method-list" markdown="1">
+
+[Between](#rule-between)
+[Dimensions](#rule-dimensions)
+[Extensions](#rule-extensions)
+[File](#rule-file)
+[Image](#rule-image)
+[Max](#rule-max)
+[MIME Types](#rule-mimetypes)
+[MIME Type By File Extension](#rule-mimes)
+[Size](#rule-size)
+
+</div>
+
+#### Database
+
+<div class="collection-method-list" markdown="1">
+
+[Exists](#rule-exists)
+[Unique](#rule-unique)
+
+</div>
+
+#### Utilities
+
+<div class="collection-method-list" markdown="1">
+
+[Bail](#rule-bail)
 [Exclude](#rule-exclude)
 [Exclude If](#rule-exclude-if)
 [Exclude Unless](#rule-exclude-unless)
 [Exclude With](#rule-exclude-with)
 [Exclude Without](#rule-exclude-without)
-[Exists (Database)](#rule-exists)
-[Extensions](#rule-extensions)
-[File](#rule-file)
 [Filled](#rule-filled)
-[Greater Than](#rule-gt)
-[Greater Than Or Equal](#rule-gte)
-[Hex Color](#rule-hex-color)
-[Image (File)](#rule-image)
-[In](#rule-in)
-[In Array](#rule-in-array)
-[Integer](#rule-integer)
-[IP Address](#rule-ip)
-[JSON](#rule-json)
-[Less Than](#rule-lt)
-[Less Than Or Equal](#rule-lte)
-[Lowercase](#rule-lowercase)
-[MAC Address](#rule-mac)
-[Max](#rule-max)
-[Max Digits](#rule-max-digits)
-[MIME Types](#rule-mimetypes)
-[MIME Type By File Extension](#rule-mimes)
-[Min](#rule-min)
-[Min Digits](#rule-min-digits)
 [Missing](#rule-missing)
 [Missing If](#rule-missing-if)
 [Missing Unless](#rule-missing-unless)
 [Missing With](#rule-missing-with)
 [Missing With All](#rule-missing-with-all)
-[Multiple Of](#rule-multiple-of)
-[Not In](#rule-not-in)
-[Not Regex](#rule-not-regex)
 [Nullable](#rule-nullable)
-[Numeric](#rule-numeric)
 [Present](#rule-present)
 [Present If](#rule-present-if)
 [Present Unless](#rule-present-unless)
@@ -943,27 +1022,17 @@ Below is a list of all available validation rules and their function:
 [Prohibited If](#rule-prohibited-if)
 [Prohibited Unless](#rule-prohibited-unless)
 [Prohibits](#rule-prohibits)
-[Regular Expression](#rule-regex)
 [Required](#rule-required)
 [Required If](#rule-required-if)
 [Required If Accepted](#rule-required-if-accepted)
+[Required If Declined](#rule-required-if-declined)
 [Required Unless](#rule-required-unless)
 [Required With](#rule-required-with)
 [Required With All](#rule-required-with-all)
 [Required Without](#rule-required-without)
 [Required Without All](#rule-required-without-all)
 [Required Array Keys](#rule-required-array-keys)
-[Same](#rule-same)
-[Size](#rule-size)
 [Sometimes](#validating-when-present)
-[Starts With](#rule-starts-with)
-[String](#rule-string)
-[Timezone](#rule-timezone)
-[Unique (Database)](#rule-unique)
-[Uppercase](#rule-uppercase)
-[URL](#rule-url)
-[ULID](#rule-ulid)
-[UUID](#rule-uuid)
 
 </div>
 
@@ -1095,6 +1164,13 @@ The field under validation must be able to be cast as a boolean. Accepted input 
 
 The field under validation must have a matching field of `{field}_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
 
+You may also pass a custom confirmation field name. For example, `confirmed:repeat_username` will expect the field `repeat_username` to match the field under validation.
+
+<a name="rule-contains"></a>
+#### contains:_foo_,_bar_,...
+
+The field under validation must be an array that contains all of the given parameter values.
+
 <a name="rule-current-password"></a>
 #### current_password
 
@@ -1214,16 +1290,30 @@ The example above will apply the `RFCValidation` and `DNSCheckValidation` valida
 
 <div class="content-list" markdown="1">
 
-- `rfc`: `RFCValidation`
-- `strict`: `NoRFCWarningsValidation`
-- `dns`: `DNSCheckValidation`
-- `spoof`: `SpoofCheckValidation`
-- `filter`: `FilterEmailValidation`
-- `filter_unicode`: `FilterEmailValidation::unicode()`
+- `rfc`: `RFCValidation` - Validate the email address according to RFC 5322.
+- `strict`: `NoRFCWarningsValidation` - Validate the email according to RFC 5322, rejecting trailing periods or multiple consecutive periods.
+- `dns`: `DNSCheckValidation` - Ensure the email address's domain has a valid MX record.
+- `spoof`: `SpoofCheckValidation` - Ensure the email address does not contain homograph or deceptive Unicode characters.
+- `filter`: `FilterEmailValidation` - Ensure the email address is valid according to PHP's `filter_var` function.
+- `filter_unicode`: `FilterEmailValidation::unicode()` - Ensure the email address is valid according to PHP's `filter_var` function, allowing some Unicode characters.
 
 </div>
 
-The `filter` validator, which uses PHP's `filter_var` function, ships with Laravel and was Laravel's default email validation behavior prior to Laravel version 5.8.
+For convenience, email validation rules may be built using the fluent rule builder:
+
+```php
+use Illuminate\Validation\Rule;
+
+$request->validate([
+    'email' => [
+        'required',
+        Rule::email()
+            ->rfcCompliant(strict: false)
+            ->validateMxRecord()
+            ->preventSpoofing()
+    ],
+]);
+```
 
 > [!WARNING]  
 > The `dns` and `spoof` validators require the PHP `intl` extension.
@@ -1342,7 +1432,7 @@ If you would like to customize the query executed by the validation rule, you ma
         'email' => [
             'required',
             Rule::exists('staff')->where(function (Builder $query) {
-                return $query->where('account_id', 1);
+                $query->where('account_id', 1);
             }),
         ],
     ]);
@@ -1471,6 +1561,11 @@ The field under validation must be less than or equal to the given _field_. The 
 
 The field under validation must be lowercase.
 
+<a name="rule-list"></a>
+#### list
+
+The field under validation must be an array that is a list. An array is considered a list if its keys consist of consecutive numbers from 0 to `count($array) - 1`.
+
 <a name="rule-mac"></a>
 #### mac_address
 
@@ -1531,25 +1626,25 @@ The field under validation must be a multiple of _value_.
 
 The field under validation must not be present in the input data.
 
- <a name="rule-missing-if"></a>
- #### missing_if:_anotherfield_,_value_,...
+<a name="rule-missing-if"></a>
+#### missing_if:_anotherfield_,_value_,...
 
- The field under validation must not be present if the _anotherfield_ field is equal to any _value_.
+The field under validation must not be present if the _anotherfield_ field is equal to any _value_.
 
- <a name="rule-missing-unless"></a>
- #### missing_unless:_anotherfield_,_value_
+<a name="rule-missing-unless"></a>
+#### missing_unless:_anotherfield_,_value_
 
 The field under validation must not be present unless the _anotherfield_ field is equal to any _value_.
 
- <a name="rule-missing-with"></a>
- #### missing_with:_foo_,_bar_,...
+<a name="rule-missing-with"></a>
+#### missing_with:_foo_,_bar_,...
 
- The field under validation must not be present _only if_ any of the other specified fields are present.
+The field under validation must not be present _only if_ any of the other specified fields are present.
 
- <a name="rule-missing-with-all"></a>
- #### missing_with_all:_foo_,_bar_,...
+<a name="rule-missing-with-all"></a>
+#### missing_with_all:_foo_,_bar_,...
 
- The field under validation must not be present _only if_ all of the other specified fields are present.
+The field under validation must not be present _only if_ all of the other specified fields are present.
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
@@ -1726,6 +1821,11 @@ If you would like to construct a more complex condition for the `required_if` ru
 
 The field under validation must be present and not empty if the _anotherfield_ field is equal to `"yes"`, `"on"`, `1`, `"1"`, `true`, or `"true"`.
 
+<a name="rule-required-if-declined"></a>
+#### required_if_declined:_anotherfield_,...
+
+The field under validation must be present and not empty if the _anotherfield_ field is equal to `"no"`, `"off"`, `0`, `"0"`, `false`, or `"false"`.
+
 <a name="rule-required-unless"></a>
 #### required_unless:_anotherfield_,_value_,...
 
@@ -1885,7 +1985,7 @@ The field under validation must be a valid [Universally Unique Lexicographically
 <a name="rule-uuid"></a>
 #### uuid
 
-The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) universally unique identifier (UUID).
+The field under validation must be a valid RFC 9562 (version 1, 3, 4, 5, 6, 7, or 8) universally unique identifier (UUID).
 
 You may also validate that the given UUID matches a UUID specification by version:
 
@@ -1922,7 +2022,7 @@ Alternatively, you may use the `exclude_unless` rule to not validate a given fie
 
 In some situations, you may wish to run validation checks against a field **only** if that field is present in the data being validated. To quickly accomplish this, add the `sometimes` rule to your rule list:
 
-    $v = Validator::make($data, [
+    $validator = Validator::make($data, [
         'email' => 'sometimes|required|email',
     ]);
 

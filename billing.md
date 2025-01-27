@@ -35,7 +35,7 @@
     - [Subscription Quantity](#subscription-quantity)
     - [Subscriptions With Multiple Products](#subscriptions-with-multiple-products)
     - [Multiple Subscriptions](#multiple-subscriptions)
-    - [Metered Billing](#metered-billing)
+    - [Usage Based Billing](#usage-based-billing)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
     - [Canceling Subscriptions](#cancelling-subscriptions)
@@ -200,9 +200,6 @@ Once tax calculation has been enabled, any new subscriptions and any one-off inv
 
 For this feature to work properly, your customer's billing details, such as the customer's name, address, and tax ID, need to be synced to Stripe. You may use the [customer data synchronization](#syncing-customer-data-with-stripe) and [Tax ID](#tax-ids) methods offered by Cashier to accomplish this.
 
-> [!WARNING]  
-> No tax is calculated for [single charges](#single-charges) or [single charge checkouts](#single-charge-checkouts).
-
 <a name="logging"></a>
 ### Logging
 
@@ -254,7 +251,7 @@ Offering product and subscription billing via your application can be intimidati
 To charge customers for non-recurring, single-charge products, we'll utilize Cashier to direct customers to Stripe Checkout, where they will provide their payment details and confirm their purchase. Once the payment has been made via Checkout, the customer will be redirected to a success URL of your choosing within your application:
 
     use Illuminate\Http\Request;
-    
+
     Route::get('/checkout', function (Request $request) {
         $stripePriceId = 'price_deluxe_album';
 
@@ -266,8 +263,8 @@ To charge customers for non-recurring, single-charge products, we'll utilize Cas
         ]);
     })->name('checkout');
 
-    Route::view('checkout.success')->name('checkout-success');
-    Route::view('checkout.cancel')->name('checkout-cancel');
+    Route::view('/checkout/success', 'checkout.success')->name('checkout-success');
+    Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout-cancel');
 
 As you can see in the example above, we will utilize Cashier's provided `checkout` method to redirect the customer to Stripe Checkout for a given "price identifier". When using Stripe, "prices" refer to [defined prices for specific products](https://stripe.com/docs/products-prices/how-products-and-prices-work).
 
@@ -279,11 +276,11 @@ If necessary, the `checkout` method will automatically create a customer in Stri
 When selling products, it's common to keep track of completed orders and purchased products via `Cart` and `Order` models defined by your own application. When redirecting customers to Stripe Checkout to complete a purchase, you may need to provide an existing order identifier so that you can associate the completed purchase with the corresponding order when the customer is redirected back to your application.
 
 To accomplish this, you may provide an array of `metadata` to the `checkout` method. Let's imagine that a pending `Order` is created within our application when a user begins the checkout process. Remember, the `Cart` and `Order` models in this example are illustrative and not provided by Cashier. You are free to implement these concepts based on the needs of your own application:
-    
+
     use App\Models\Cart;
     use App\Models\Order;
     use Illuminate\Http\Request;
-    
+
     Route::get('/cart/{cart}/checkout', function (Request $request, Cart $cart) {
         $order = Order::create([
             'cart_id' => $cart->id,
@@ -343,7 +340,7 @@ To learn how to sell subscriptions using Cashier and Stripe Checkout, let's cons
 First, let's discover how a customer can subscribe to our services. Of course, you can imagine the customer might click a "subscribe" button for the Basic plan on our application's pricing page. This button or link should direct the user to a Laravel route which creates the Stripe Checkout session for their chosen plan:
 
     use Illuminate\Http\Request;
-    
+
     Route::get('/subscription-checkout', function (Request $request) {
         return $request->user()
             ->newSubscription('default', 'price_basic_monthly')
@@ -436,7 +433,7 @@ Next, let's define the route that initiates a Stripe Customer Billing Portal ses
     })->middleware(['auth'])->name('billing');
 
 > [!NOTE]  
-> As long as you have configured Cashier's webhook handling, Cashier will automatically keep your application's Cashier-related database tables in sync by inspecting the incoming webhooks from Stripe. So, for example, when a user cancels their subscription via Stripe's Customer Billing Portal, Cashier will receive the corresponding webhook and mark the subscription as "cancelled" in your application's database.
+> As long as you have configured Cashier's webhook handling, Cashier will automatically keep your application's Cashier-related database tables in sync by inspecting the incoming webhooks from Stripe. So, for example, when a user cancels their subscription via Stripe's Customer Billing Portal, Cashier will receive the corresponding webhook and mark the subscription as "canceled" in your application's database.
 
 <a name="customers"></a>
 ## Customers
@@ -833,7 +830,7 @@ Instead of collecting a customer's recurring payments automatically, you may ins
 
     $user->newSubscription('default', 'price_monthly')->createAndSendInvoice();
 
-The amount of time a customer has to pay their invoice before their subscription is cancelled is determined by the `days_until_due` option. By default, this is 30 days; however, you may provide a specific value for this option if you wish:
+The amount of time a customer has to pay their invoice before their subscription is canceled is determined by the `days_until_due` option. By default, this is 30 days; however, you may provide a specific value for this option if you wish:
 
     $user->newSubscription('default', 'price_monthly')->createAndSendInvoice([], [
         'days_until_due' => 30
@@ -966,7 +963,7 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
         {
             if ($request->user() && ! $request->user()->subscribed('default')) {
                 // This user is not a paying customer...
-                return redirect('billing');
+                return redirect('/billing');
             }
 
             return $next($request);
@@ -1312,12 +1309,12 @@ Of course, you may also cancel the subscription entirely:
 
     $user->subscription('swimming')->cancel();
 
-<a name="metered-billing"></a>
-### Metered Billing
+<a name="usage-based-billing"></a>
+### Usage Based Billing
 
-[Metered billing](https://stripe.com/docs/billing/subscriptions/metered-billing) allows you to charge customers based on their product usage during a billing cycle. For example, you may charge customers based on the number of text messages or emails they send per month.
+[Usage based billing](https://stripe.com/docs/billing/subscriptions/metered-billing) allows you to charge customers based on their product usage during a billing cycle. For example, you may charge customers based on the number of text messages or emails they send per month.
 
-To start using metered billing, you will first need to create a new product in your Stripe dashboard with a metered price. Then, use the `meteredPrice` to add the metered price ID to a customer subscription:
+To start using usage billing, you will first need to create a new product in your Stripe dashboard with a [usage based billing model](https://docs.stripe.com/billing/subscriptions/usage-based/implementation-guide) and a [meter](https://docs.stripe.com/billing/subscriptions/usage-based/recording-usage#configure-meter). After creating the meter, store the associated event name and meter ID, which you will need to report and retrieve usage. Then, use the `meteredPrice` method to add the metered price ID to a customer subscription:
 
     use Illuminate\Http\Request;
 
@@ -1343,54 +1340,33 @@ You may also start a metered subscription via [Stripe Checkout](#checkout):
 <a name="reporting-usage"></a>
 #### Reporting Usage
 
-As your customer uses your application, you will report their usage to Stripe so that they can be billed accurately. To increment the usage of a metered subscription, you may use the `reportUsage` method:
+As your customer uses your application, you will report their usage to Stripe so that they can be billed accurately. To report the usage of a metered event, you may use the `reportMeterEvent` method on your `Billable` model:
 
     $user = User::find(1);
 
-    $user->subscription('default')->reportUsage();
+    $user->reportMeterEvent('emails-sent');
 
 By default, a "usage quantity" of 1 is added to the billing period. Alternatively, you may pass a specific amount of "usage" to add to the customer's usage for the billing period:
 
     $user = User::find(1);
 
-    $user->subscription('default')->reportUsage(15);
+    $user->reportMeterEvent('emails-sent', quantity: 15);
 
-If your application offers multiple prices on a single subscription, you will need to use the `reportUsageFor` method to specify the metered price you want to report usage for:
-
-    $user = User::find(1);
-
-    $user->subscription('default')->reportUsageFor('price_metered', 15);
-
-Sometimes, you may need to update usage which you have previously reported. To accomplish this, you may pass a timestamp or a `DateTimeInterface` instance as the second parameter to `reportUsage`. When doing so, Stripe will update the usage that was reported at that given time. You can continue to update previous usage records as the given date and time is still within the current billing period:
+To retrieve a customer's event summary for a meter, you may use a `Billable` instance's `meterEventSummaries` method:
 
     $user = User::find(1);
 
-    $user->subscription('default')->reportUsage(5, $timestamp);
+    $meterUsage = $user->meterEventSummaries($meterId);
 
-<a name="retrieving-usage-records"></a>
-#### Retrieving Usage Records
+    $meterUsage->first()->aggregated_value // 10
 
-To retrieve a customer's past usage, you may use a subscription instance's `usageRecords` method:
+Please refer to Stripe's [Meter Event Summary object documentation](https://docs.stripe.com/api/billing/meter-event_summary/object) for more information on meter event summaries.
 
-    $user = User::find(1);
-
-    $usageRecords = $user->subscription('default')->usageRecords();
-
-If your application offers multiple prices on a single subscription, you may use the `usageRecordsFor` method to specify the metered price that you wish to retrieve usage records for:
+To [list all meters](https://docs.stripe.com/api/billing/meter/list), you may use a `Billable` instance's `meters` method:
 
     $user = User::find(1);
 
-    $usageRecords = $user->subscription('default')->usageRecordsFor('price_metered');
-
-The `usageRecords` and `usageRecordsFor` methods return a Collection instance containing an associative array of usage records. You may iterate over this array to display a customer's total usage:
-
-    @foreach ($usageRecords as $usageRecord)
-        - Period Starting: {{ $usageRecord['period']['start'] }}
-        - Period Ending: {{ $usageRecord['period']['end'] }}
-        - Total Usage: {{ $usageRecord['total_usage'] }}
-    @endforeach
-
-For a full reference of all usage data returned and how to use Stripe's cursor based pagination, please consult [the official Stripe API documentation](https://stripe.com/docs/api/usage_records/subscription_item_summary_list).
+    $user->meters();
 
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
@@ -2218,7 +2194,7 @@ Some payment methods require additional data in order to confirm payments. For e
     $subscription->withPaymentConfirmationOptions([
         'mandate_data' => '...',
     ])->swap('price_xxx');
-    
+
 You may consult the [Stripe API documentation](https://stripe.com/docs/api/payment_intents/confirm) to review all of the options accepted when confirming payments.
 
 <a name="strong-customer-authentication"></a>

@@ -19,12 +19,12 @@
     - [Broadcast Conditions](#broadcast-conditions)
     - [Broadcasting and Database Transactions](#broadcasting-and-database-transactions)
 - [Authorizing Channels](#authorizing-channels)
-    - [Defining Authorization Routes](#defining-authorization-routes)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
     - [Defining Channel Classes](#defining-channel-classes)
 - [Broadcasting Events](#broadcasting-events)
     - [Only to Others](#only-to-others)
     - [Customizing the Connection](#customizing-the-connection)
+    - [Anonymous Events](#anonymous-events)
 - [Receiving Broadcasts](#receiving-broadcasts)
     - [Listening for Events](#listening-for-events)
     - [Leaving a Channel](#leaving-a-channel)
@@ -68,7 +68,9 @@ Event broadcasting is accomplished by a server-side broadcasting driver that bro
 <a name="configuration"></a>
 ### Configuration
 
-All of your application's event broadcasting configuration is stored in the `config/broadcasting.php` configuration file. Laravel supports several broadcast drivers out of the box: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to totally disable broadcasting during testing. A configuration example is included for each of these drivers in the `config/broadcasting.php` configuration file.
+All of your application's event broadcasting configuration is stored in the `config/broadcasting.php` configuration file. Don't worry if this directory does not exist in your application; it will be created when you run the `install:broadcasting` Artisan command.
+
+Laravel supports several broadcast drivers out of the box: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to disable broadcasting during testing. A configuration example is included for each of these drivers in the `config/broadcasting.php` configuration file.
 
 <a name="installation"></a>
 #### Installation
@@ -79,7 +81,7 @@ By default, broadcasting is not enabled in new Laravel applications. You may ena
 php artisan install:broadcasting
 ```
 
-The `install:broadcasting` command will create a `routes/channels.php` file where you may register your application's broadcast authorization routes and callbacks.
+The `install:broadcasting` command will create the `config/broadcasting.php` configuration file. In addition, the command will create the `routes/channels.php` file where you may register your application's broadcast authorization routes and callbacks.
 
 <a name="queue-configuration"></a>
 #### Queue Configuration
@@ -89,30 +91,13 @@ Before broadcasting any events, you should first configure and run a [queue work
 <a name="reverb"></a>
 ### Reverb
 
-When running the `install:broadcasting` command, you will be prompted to install [Laravel Reverb](/docs/{{version}}/reverb). Of course, you may also install Reverb manually using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
+When running the `install:broadcasting` command, you will be prompted to install [Laravel Reverb](/docs/{{version}}/reverb). Of course, you may also install Reverb manually using the Composer package manager.
 
 ```sh
-composer require laravel/reverb:@beta
+composer require laravel/reverb
 ```
 
 Once the package is installed, you may run Reverb's installation command to publish the configuration, add Reverb's required environment variables, and enable event broadcasting in your application:
-
-```sh
-php artisan reverb:install
-```
-
-You can find detailed Reverb installation and usage instructions in the [Reverb documentation](/docs/{{version}}/reverb).
-
-<a name="reverb"></a>
-### Reverb
-
-You may install Reverb using the Composer package manager. Since Reverb is currently in beta, you will need to explicitly install the beta release:
-
-```sh
-composer require laravel/reverb:@beta
-```
-
-Once the package is installed, you may run Reverb's installation command to publish the configuration, update your applications's broadcasting configuration, and add Reverb's required environment variables:
 
 ```sh
 php artisan reverb:install
@@ -216,45 +201,6 @@ npm run build
 
 > [!WARNING]  
 > The Laravel Echo `reverb` broadcaster requires laravel-echo v1.16.0+.
-
-<a name="client-pusher-channels"></a>
-### Pusher Channels
-
-[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. Echo also leverages the `pusher-js` NPM package to implement the Pusher protocol for WebSocket subscriptions, channels, and messages.
-
-The `install:broadcasting` Artisan command automatically installs the `laravel-echo` and `pusher-js` packages for you; however, you may also install these packages manually via NPM:
-
-```shell
-npm install --save-dev laravel-echo pusher-js
-```
-
-Once `laravel-echo` and `pusher-js` are installed, you are ready to create a fresh Echo instance in your application's JavaScript. The `install:broadcasting` Artisan command creates a `resources/js/echo.js` file that handles this for you:
-
-```js
-import Echo from 'laravel-echo';
-
-import Pusher from 'pusher-js';
-window.Pusher = Pusher;
-
-window.Echo = new Echo({
-    broadcaster: 'reverb',
-    key: import.meta.env.VITE_REVERB_APP_KEY,
-    wsHost: import.meta.env.VITE_REVERB_HOST,
-    wsPort: import.meta.env.VITE_REVERB_PORT,
-    wssPort: import.meta.env.VITE_REVERB_PORT,
-    forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
-    enabledTransports: ['ws', 'wss'],
-});
-```
-
-Next, you only need to compile your application's assets:
-
-```shell
-npm run build
-```
-
-> [!NOTE]
-> To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
 
 <a name="client-pusher-channels"></a>
 ### Pusher Channels
@@ -415,7 +361,7 @@ When a user is viewing one of their orders, we don't want them to have to refres
         /**
          * The order instance.
          *
-         * @var \App\Order
+         * @var \App\Models\Order
          */
         public $order;
     }
@@ -726,10 +672,7 @@ Finally, you may place the authorization logic for your channel in the channel c
         /**
          * Create a new channel instance.
          */
-        public function __construct()
-        {
-            // ...
-        }
+        public function __construct() {}
 
         /**
          * Authenticate the user's access to the channel.
@@ -778,7 +721,7 @@ However, remember that we also broadcast the task's creation. If your JavaScript
 <a name="only-to-others-configuration"></a>
 #### Configuration
 
-When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using a global [Axios](https://github.com/mzabriskie/axios) instance to make HTTP requests from your JavaScript application, the socket ID will automatically be attached to every outgoing request as an `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID.
+When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using a global [Axios](https://github.com/axios/axios) instance to make HTTP requests from your JavaScript application, the socket ID will automatically be attached to every outgoing request as an `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID.
 
 If you are not using a global Axios instance, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header with all outgoing requests. You may retrieve the socket ID using the `Echo.socketId` method:
 
@@ -821,6 +764,65 @@ Alternatively, you may specify the event's broadcast connection by calling the `
             $this->broadcastVia('pusher');
         }
     }
+
+<a name="anonymous-events"></a>
+### Anonymous Events
+
+Sometimes, you may want to broadcast a simple event to your application's frontend without creating a dedicated event class. To accommodate this, the `Broadcast` facade allows you to broadcast "anonymous events":
+
+```php
+Broadcast::on('orders.'.$order->id)->send();
+```
+
+The example above will broadcast the following event:
+
+```json
+{
+    "event": "AnonymousEvent",
+    "data": "[]",
+    "channel": "orders.1"
+}
+```
+
+Using the `as` and `with` methods, you may customize the event's name and data:
+
+```php
+Broadcast::on('orders.'.$order->id)
+    ->as('OrderPlaced')
+    ->with($order)
+    ->send();
+```
+
+The example above will broadcast an event like the following:
+
+```json
+{
+    "event": "OrderPlaced",
+    "data": "{ id: 1, total: 100 }",
+    "channel": "orders.1"
+}
+```
+
+If you would like to broadcast the anonymous event on a private or presence channel, you may utilize the `private` and `presence` methods:
+
+```php
+Broadcast::private('orders.'.$order->id)->send();
+Broadcast::presence('channels.'.$channel->id)->send();
+```
+
+Broadcasting an anonymous event using the `send` method dispatches the event to your application's [queue](/docs/{{version}}/queues) for processing. However, if you would like to broadcast the event immediately, you may use the `sendNow` method:
+
+```php
+Broadcast::on('orders.'.$order->id)->sendNow();
+```
+
+To broadcast the event to all channel subscribers except the currently authenticated user, you can invoke the `toOthers` method:
+
+```php
+Broadcast::on('orders.'.$order->id)
+    ->toOthers()
+    ->send();
+```
 
 <a name="receiving-broadcasts"></a>
 ## Receiving Broadcasts

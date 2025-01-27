@@ -74,6 +74,18 @@ After installation, the primary Horizon configuration option that you should fam
         ],
     ],
 
+You may also define a wildcard environment (`*`) which will be used when no other matching environment is found:
+
+    'environments' => [
+        // ...
+
+        '*' => [
+            'supervisor-1' => [
+                'maxProcesses' => 3,
+            ],
+        ],
+    ],
+
 When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/docs/{{version}}/configuration#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
 
 > [!WARNING]  
@@ -89,7 +101,7 @@ You may add additional supervisors to a given environment if you would like to d
 <a name="maintenance-mode"></a>
 #### Maintenance Mode
 
-While your application is in [maintainance mode](/docs/{{version}}/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
+While your application is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
 
     'environments' => [
         'production' => [
@@ -114,7 +126,7 @@ Unlike Laravel's default queue system, Horizon allows you to choose from three w
 
 The `auto` strategy, which is the configuration file's default, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
 
-When using the `auto` strategy, you may define the `minProcesses` and `maxProcesses` configuration options to control the minimum and the maximum number of worker processes Horizon should scale up and down to:
+When using the `auto` strategy, you may define the `minProcesses` and `maxProcesses` configuration options to control the minimum number of processes per queue and the maximum number of worker processes in total Horizon should scale up and down to:
 
     'environments' => [
         'production' => [
@@ -177,7 +189,7 @@ Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Co
 
     class ProcessPodcast implements ShouldQueue, Silenced
     {
-        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         // ...
     }
@@ -185,23 +197,7 @@ Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Co
 <a name="upgrading-horizon"></a>
 ## Upgrading Horizon
 
-When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md). In addition, when upgrading to any new Horizon version, you should re-publish Horizon's assets:
-
-```shell
-php artisan horizon:publish
-```
-
-To keep the assets up-to-date and avoid issues in future updates, you may add the `vendor:publish --tag=laravel-assets` command to the `post-update-cmd` scripts in your application's `composer.json` file:
-
-```json
-{
-    "scripts": {
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
-        ]
-    }
-}
-```
+When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
 
 <a name="running-horizon"></a>
 ## Running Horizon
@@ -234,7 +230,13 @@ You may check the current status of the Horizon process using the `horizon:statu
 php artisan horizon:status
 ```
 
-You may gracefully terminate the Horizon process using the `horizon:terminate` Artisan command. Any jobs that are currently being processed by will be completed and then Horizon will stop executing:
+You may check the current status of a specific Horizon [supervisor](#supervisors) using the `horizon:supervisor-status` Artisan command:
+
+```shell
+php artisan horizon:supervisor-status supervisor-1
+```
+
+You may gracefully terminate the Horizon process using the `horizon:terminate` Artisan command. Any jobs that are currently being processed will be completed and then Horizon will stop executing:
 
 ```shell
 php artisan horizon:terminate
@@ -311,15 +313,12 @@ Horizon allows you to assign “tags” to jobs, including mailables, broadcast 
     namespace App\Jobs;
 
     use App\Models\Video;
-    use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
-    use Illuminate\Foundation\Bus\Dispatchable;
-    use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Queue\SerializesModels;
+    use Illuminate\Foundation\Queue\Queueable;
 
     class RenderVideo implements ShouldQueue
     {
-        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        use Queueable;
 
         /**
          * Create a new job instance.
@@ -382,7 +381,6 @@ When retrieving the tags for a queued event listener, Horizon will automatically
         }
     }
 
-
 <a name="notifications"></a>
 ## Notifications
 
@@ -430,6 +428,12 @@ If you would like to delete a failed job, you may use the `horizon:forget` comma
 
 ```shell
 php artisan horizon:forget 5
+```
+
+If you would like to delete all failed jobs, you may provide the `--all` option to the `horizon:forget` command:
+
+```shell
+php artisan horizon:forget --all
 ```
 
 <a name="clearing-jobs-from-queues"></a>

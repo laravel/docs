@@ -33,16 +33,9 @@ For in-depth debugging of individual events, check out [Laravel Telescope](/docs
 ## Installation
 
 > [!WARNING]  
-> Pulse's first-party storage implementation currently requires a MySQL or PostgreSQL database. If you are using a different database engine, you will need a separate MySQL or PostgreSQL database for your Pulse data.
+> Pulse's first-party storage implementation currently requires a MySQL, MariaDB, or PostgreSQL database. If you are using a different database engine, you will need a separate MySQL, MariaDB, or PostgreSQL database for your Pulse data.
 
-Since Pulse is currently in beta, you may need to adjust your application's `composer.json` file to allow beta package releases to be installed:
-
-```json
-"minimum-stability": "beta",
-"prefer-stable": true
-```
-
-Then, you may use the Composer package manager to install Pulse into your Laravel project:
+You may install Pulse using the Composer package manager:
 
 ```sh
 composer require laravel/pulse
@@ -165,7 +158,7 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > You may completely customize how the authenticated user is captured and retrieved by implementing the `Laravel\Pulse\Contracts\ResolvesUsers` contract and binding it in Laravel's [service container](/docs/{{version}}/container#binding-a-singleton).
 
 <a name="dashboard-cards"></a>
@@ -175,6 +168,12 @@ public function boot(): void
 #### Servers
 
 The `<livewire:pulse.servers />` card displays system resource usage for all servers running the `pulse:check` command. Please refer to the documentation regarding the [servers recorder](#servers-recorder) for more information on system resource reporting.
+
+If you replace a server in your infrastructure, you may wish to stop displaying the inactive server in the Pulse dashboard after a given duration. You may accomplish this using the `ignore-after` prop, which accepts the number of seconds after which inactive servers should be removed from the Pulse dashboard. Alternatively, you may provide a relative time formatted string, such as `1 hour` or `3 days and 1 hour`:
+
+```blade
+<livewire:pulse.servers ignore-after="3 hours" />
+```
 
 <a name="application-usage-card"></a>
 #### Application Usage
@@ -191,7 +190,7 @@ If you wish to view all usage metrics on screen at the same time, you may includ
 
 To learn how to customize how Pulse retrieves and displays user information, consult our documentation on [resolving users](#dashboard-resolving-users).
 
-> [!NOTE]
+> [!NOTE]  
 > If your application receives a lot of requests or dispatches a lot of jobs, you may wish to enable [sampling](#sampling). See the [user requests recorder](#user-requests-recorder), [user jobs recorder](#user-jobs-recorder), and [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
 
 <a name="exceptions-card"></a>
@@ -221,6 +220,12 @@ The `<livewire:pulse.slow-queries />` card shows the database queries in your ap
 
 By default, slow queries are grouped based on the SQL query (without bindings) and the location where it occurred, but you may choose to not capture the location if you wish to group solely on the SQL query.
 
+If you encounter rendering performance issues due to extremely large SQL queries receiving syntax highlighting, you may disable highlighting by adding the `without-highlighting` prop:
+
+```blade
+<livewire:pulse.slow-queries without-highlighting />
+```
+
 See the [slow queries recorder](#slow-queries-recorder) documentation for more information.
 
 <a name="slow-outgoing-requests-card"></a>
@@ -246,7 +251,7 @@ Most Pulse recorders will automatically capture entries based on framework event
 php artisan pulse:check
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > To keep the `pulse:check` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the command does not stop running.
 
 As the `pulse:check` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
@@ -304,6 +309,20 @@ The `SlowJobs` recorder captures information about slow jobs occurring in your a
 
 You may optionally adjust the slow job threshold, [sample rate](#sampling), and ignored job patterns.
 
+You may have some jobs that you expect to take longer than others. In those cases, you may configure per-job thresholds:
+
+```php
+Recorders\SlowJobs::class => [
+    // ...
+    'threshold' => [
+        '#^App\\Jobs\\GenerateYearlyReports$#' => 5000,
+        'default' => env('PULSE_SLOW_JOBS_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the job's classname, then the `'default'` value will be used.
+
 <a name="slow-outgoing-requests-recorder"></a>
 #### Slow Outgoing Requests
 
@@ -311,10 +330,24 @@ The `SlowOutgoingRequests` recorder captures information about outgoing HTTP req
 
 You may optionally adjust the slow outgoing request threshold, [sample rate](#sampling), and ignored URL patterns.
 
+You may have some outgoing requests that you expect to take longer than others. In those cases, you may configure per-request thresholds:
+
+```php
+Recorders\SlowOutgoingRequests::class => [
+    // ...
+    'threshold' => [
+        '#backup.zip$#' => 5000,
+        'default' => env('PULSE_SLOW_OUTGOING_REQUESTS_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the request's URL, then the `'default'` value will be used.
+
 You may also configure URL grouping so that similar URLs are grouped as a single entry. For example, you may wish to remove unique IDs from URL paths or group by domain only. Groups are configured using a regular expression to "find and replace" parts of the URL. Some examples are included in the configuration file:
 
 ```php
-Recorders\OutgoingRequests::class => [
+Recorders\SlowOutgoingRequests::class => [
     // ...
     'groups' => [
         // '#^https://api\.github\.com/repos/.*$#' => 'api.github.com/repos/*',
@@ -333,12 +366,40 @@ The `SlowQueries` recorder captures any database queries in your application tha
 
 You may optionally adjust the slow query threshold, [sample rate](#sampling), and ignored query patterns. You may also configure whether to capture the query location. The captured location will be displayed on the Pulse dashboard which can help to track down the query origin; however, if the same query is made in multiple locations then it will appear multiple times for each unique location.
 
+You may have some queries that you expect to take longer than others. In those cases, you may configure per-query thresholds:
+
+```php
+Recorders\SlowQueries::class => [
+    // ...
+    'threshold' => [
+        '#^insert into `yearly_reports`#' => 5000,
+        'default' => env('PULSE_SLOW_QUERIES_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the query's SQL, then the `'default'` value will be used.
+
 <a name="slow-requests-recorder"></a>
 #### Slow Requests
 
 The `Requests` recorder captures information about requests made to your application for display on the [Slow Requests](#slow-requests-card) and [Application Usage](#application-usage-card) cards.
 
 You may optionally adjust the slow route threshold, [sample rate](#sampling), and ignored paths.
+
+You may have some requests that you expect to take longer than others. In those cases, you may configure per-request thresholds:
+
+```php
+Recorders\SlowRequests::class => [
+    // ...
+    'threshold' => [
+        '#^/admin/#' => 5000,
+        'default' => env('PULSE_SLOW_REQUESTS_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the request's URL, then the `'default'` value will be used.
 
 <a name="servers-recorder"></a>
 #### Servers
@@ -365,7 +426,7 @@ You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
 
 The `UserRequests` recorder captures information about the users making requests to your application for display on the [Application Usage](#application-usage-card) card.
 
-You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
+You may optionally adjust the [sample rate](#sampling) and ignored URL patterns.
 
 <a name="filtering"></a>
 ### Filtering
@@ -410,7 +471,7 @@ PULSE_DB_CONNECTION=pulse
 <a name="ingest"></a>
 ### Redis Ingest
 
-> [!WARNING]
+> [!WARNING]  
 > The Redis Ingest requires Redis 6.2 or greater and `phpredis` or `predis` as the application's configured Redis client driver.
 
 By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the HTTP response has been sent to the client or a job has been processed; however, you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
@@ -431,7 +492,7 @@ When using the Redis ingest, you will need to run the `pulse:work` command to mo
 php artisan pulse:work
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > To keep the `pulse:work` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the Pulse worker does not stop running.
 
 As the `pulse:work` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
@@ -532,7 +593,7 @@ Once you have defined your Livewire component and template, the card may be incl
 </x-pulse>
 ```
 
-> [!NOTE]
+> [!NOTE]  
 > If your card is included in a package, you will need to register the component with Livewire using the `Livewire::component` method.
 
 <a name="custom-card-styling"></a>
@@ -646,7 +707,7 @@ The available aggregation methods are:
 * `min`
 * `sum`
 
-> [!NOTE]
+> [!NOTE]  
 > When building a card package that captures the currently authenticated user ID, you should use the `Pulse::resolveAuthenticatedUserId()` method, which respects any [user resolver customizations](#dashboard-resolving-users) made to the application.
 
 <a name="custom-card-data-retrieval"></a>
@@ -660,13 +721,13 @@ class TopSellers extends Card
     public function render()
     {
         return view('livewire.pulse.top-sellers', [
-            'topSellers' => $this->aggregate('user_sale', ['sum', 'count']);
+            'topSellers' => $this->aggregate('user_sale', ['sum', 'count'])
         ]);
     }
 }
 ```
 
-The `aggregate` method returns return a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
+The `aggregate` method returns a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
 
 ```
 @foreach ($topSellers as $seller)

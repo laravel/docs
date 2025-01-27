@@ -438,7 +438,7 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 <a name="tokens-json-api"></a>
 #### JSON API
 
-Passport also includes a JSON API for managing authorized access tokens. You may pair this with your own frontend to offer your users a dashboard for managing access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints. The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application.
+Passport also includes a JSON API for managing authorized access tokens. You may pair this with your own frontend to offer your users a dashboard for managing access tokens. For convenience, we'll use [Axios](https://github.com/axios/axios) to demonstrate making HTTP requests to the endpoints. The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application.
 
 <a name="get-oauthtokens"></a>
 #### `GET /oauth/tokens`
@@ -518,7 +518,7 @@ php artisan passport:purge --expired
 
 You may also configure a [scheduled job](/docs/{{version}}/scheduling) in your application's `routes/console.php` file to automatically prune your tokens on a schedule:
 
-    use Laravel\Support\Facades\Schedule;
+    use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('passport:purge')->hourly();
 
@@ -867,7 +867,7 @@ Once you have created a personal access client, you may issue tokens for a given
 <a name="personal-access-tokens-json-api"></a>
 #### JSON API
 
-Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
+Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Axios](https://github.com/axios/axios) to demonstrate making HTTP requests to the endpoints.
 
 The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
 
@@ -1162,10 +1162,14 @@ When using this method of authentication, you will need to ensure a valid CSRF t
 
 Passport raises events when issuing access tokens and refresh tokens. You may [listen for these events](/docs/{{version}}/events) to prune or revoke other access tokens in your database:
 
-Event Name |
-------------- |
-`Laravel\Passport\Events\AccessTokenCreated` |
-`Laravel\Passport\Events\RefreshTokenCreated` |
+<div class="overflow-auto">
+
+| Event Name |
+| --- |
+| `Laravel\Passport\Events\AccessTokenCreated` |
+| `Laravel\Passport\Events\RefreshTokenCreated` |
+
+</div>
 
 <a name="testing"></a>
 ## Testing

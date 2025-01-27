@@ -58,7 +58,7 @@ Laravel allows you to easily "mock" user input for your console commands using t
         $this->line('Your name is '.$name.' and you prefer '.$language.'.');
     });
 
-You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, `doesntExpectOutput`, `expectsOutputToContain`, `doesntExpectOutputToContain`, and `assertExitCode` methods:
+You may test this command with the following test:
 
 ```php tab=Pest
 test('console command', function () {
@@ -67,8 +67,6 @@ test('console command', function () {
          ->expectsQuestion('Which language do you prefer?', 'PHP')
          ->expectsOutput('Your name is Taylor Otwell and you prefer PHP.')
          ->doesntExpectOutput('Your name is Taylor Otwell and you prefer Ruby.')
-         ->expectsOutputToContain('Taylor Otwell')
-         ->doesntExpectOutputToContain('you prefer Ruby')
          ->assertExitCode(0);
 });
 ```
@@ -84,9 +82,81 @@ public function test_console_command(): void
          ->expectsQuestion('Which language do you prefer?', 'PHP')
          ->expectsOutput('Your name is Taylor Otwell and you prefer PHP.')
          ->doesntExpectOutput('Your name is Taylor Otwell and you prefer Ruby.')
-         ->expectsOutputToContain('Taylor Otwell')
-         ->doesntExpectOutputToContain('you prefer Ruby')
          ->assertExitCode(0);
+}
+```
+
+If you are utilizing the `search` or `multisearch` functions provided by [Laravel Prompts](/docs/{{version}}/prompts), you may use the `expectsSearch` assertion to mock the user's input, search results, and selection:
+
+```php tab=Pest
+test('console command', function () {
+    $this->artisan('example')
+         ->expectsSearch('What is your name?', search: 'Tay', answers: [
+            'Taylor Otwell',
+            'Taylor Swift',
+            'Darian Taylor'
+         ], answer: 'Taylor Otwell')
+         ->assertExitCode(0);
+});
+```
+
+```php tab=PHPUnit
+/**
+ * Test a console command.
+ */
+public function test_console_command(): void
+{
+    $this->artisan('example')
+         ->expectsSearch('What is your name?', search: 'Tay', answers: [
+            'Taylor Otwell',
+            'Taylor Swift',
+            'Darian Taylor'
+         ], answer: 'Taylor Otwell')
+         ->assertExitCode(0);
+}
+```
+
+You may also assert that a console command does not generate any output using the `doesntExpectOutput` method:
+
+```php tab=Pest
+test('console command', function () {
+    $this->artisan('example')
+         ->doesntExpectOutput()
+         ->assertExitCode(0);
+});
+```
+
+```php tab=PHPUnit
+/**
+ * Test a console command.
+ */
+public function test_console_command(): void
+{
+    $this->artisan('example')
+            ->doesntExpectOutput()
+            ->assertExitCode(0);
+}
+```
+
+The `expectsOutputToContain` and `doesntExpectOutputToContain` methods may be used to make assertions against a portion of the output:
+
+```php tab=Pest
+test('console command', function () {
+    $this->artisan('example')
+         ->expectsOutputToContain('Taylor')
+         ->assertExitCode(0);
+});
+```
+
+```php tab=PHPUnit
+/**
+ * Test a console command.
+ */
+public function test_console_command(): void
+{
+    $this->artisan('example')
+            ->expectsOutputToContain('Taylor')
+            ->assertExitCode(0);
 }
 ```
 

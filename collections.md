@@ -31,7 +31,7 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 
     $collection = collect([1, 2, 3]);
 
-> [!NOTE]
+> [!NOTE]  
 > The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
 
 <a name="extending-collections"></a>
@@ -94,12 +94,15 @@ For the majority of the remaining collection documentation, we'll discuss each m
 
 <div class="collection-method-list" markdown="1">
 
+[after](#method-after)
 [all](#method-all)
 [average](#method-average)
 [avg](#method-avg)
+[before](#method-before)
 [chunk](#method-chunk)
 [chunkWhile](#method-chunkwhile)
 [collapse](#method-collapse)
+[collapseWithKeys](#method-collapsewithkeys)
 [collect](#method-collect)
 [combine](#method-combine)
 [concat](#method-concat)
@@ -139,7 +142,9 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [hasAny](#method-hasany)
 [implode](#method-implode)
 [intersect](#method-intersect)
+[intersectUsing](#method-intersectusing)
 [intersectAssoc](#method-intersectAssoc)
+[intersectAssocUsing](#method-intersectassocusing)
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)
@@ -161,6 +166,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [mergeRecursive](#method-mergerecursive)
 [min](#method-min)
 [mode](#method-mode)
+[multiply](#method-multiply)
 [nth](#method-nth)
 [only](#method-only)
 [pad](#method-pad)
@@ -255,8 +261,37 @@ For the majority of the remaining collection documentation, we'll discuss each m
     }
 </style>
 
+<a name="method-after"></a>
+#### `after()` {.collection-method .first-collection-method}
+
+The `after` method returns the item after the given item. `null` is returned if the given item is not found or is the last item:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $collection->after(3);
+
+    // 4
+
+    $collection->after(5);
+
+    // null
+
+This method searches for the given item using "loose" comparison, meaning a string containing an integer value will be considered equal to an integer of the same value. To use "strict" comparison, you may provide the `strict` argument to the method:
+
+    collect([2, 4, 6, 8])->after('4', strict: true);
+
+    // null
+
+Alternatively, you may provide your own closure to search for the first item that passes a given truth test:
+
+    collect([2, 4, 6, 8])->after(function (int $item, int $key) {
+        return $item > 5;
+    });
+
+    // 8
+
 <a name="method-all"></a>
-#### `all()` {.collection-method .first-collection-method}
+#### `all()` {.collection-method}
 
 The `all` method returns the underlying array represented by the collection:
 
@@ -286,6 +321,31 @@ The `avg` method returns the [average value](https://en.wikipedia.org/wiki/Avera
     $average = collect([1, 1, 2, 4])->avg();
 
     // 2
+
+<a name="method-before"></a>
+#### `before()` {.collection-method}
+
+The `before` method is the opposite of the [`after`](#method-after) method. It returns the item before the given item. `null` is returned if the given item is not found or is the first item:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $collection->before(3);
+
+    // 2
+
+    $collection->before(1);
+
+    // null
+
+    collect([2, 4, 6, 8])->before('4', strict: true);
+
+    // null
+
+    collect([2, 4, 6, 8])->before(function (int $item, int $key) {
+        return $item > 5;
+    });
+
+    // 4
 
 <a name="method-chunk"></a>
 #### `chunk()` {.collection-method}
@@ -344,6 +404,28 @@ The `collapse` method collapses a collection of arrays into a single, flat colle
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
+<a name="method-collapsewithkeys"></a>
+#### `collapseWithKeys()` {.collection-method}
+
+The `collapseWithKeys` method flattens a collection of arrays or collections into a single collection, keeping the original keys intact:
+
+    $collection = collect([
+      ['first'  => collect([1, 2, 3])],
+      ['second' => [4, 5, 6]],
+      ['third'  => collect([7, 8, 9])]
+    ]);
+
+
+    $collapsed = $collection->collapseWithKeys();
+
+    $collapsed->all();
+
+    // [
+    //     'first'  => [1, 2, 3],
+    //     'second' => [4, 5, 6],
+    //     'third'  => [7, 8, 9],
+    // ]
+
 <a name="method-collect"></a>
 #### `collect()` {.collection-method}
 
@@ -375,7 +457,7 @@ The `collect` method is primarily useful for converting [lazy collections](#lazy
 
     // [1, 2, 3]
 
-> [!NOTE]
+> [!NOTE]  
 > The `collect` method is especially useful when you have an instance of `Enumerable` and need a non-lazy collection instance. Since `collect()` is part of the `Enumerable` contract, you can safely use it to get a `Collection` instance.
 
 <a name="method-combine"></a>
@@ -468,7 +550,7 @@ The `containsOneItem` method determines whether the collection contains a single
 
 This method has the same signature as the [`contains`](#method-contains) method; however, all values are compared using "strict" comparisons.
 
-> [!NOTE]
+> [!NOTE]  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-contains).
 
 <a name="method-count"></a>
@@ -579,7 +661,7 @@ The `diff` method compares the collection against another collection or a plain 
 
     // [1, 3, 5]
 
-> [!NOTE]
+> [!NOTE]  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-diff).
 
 <a name="method-diffassoc"></a>
@@ -799,7 +881,7 @@ Primitive types such as `string`, `int`, `float`, `bool`, and `array` may also b
 
     return $collection->ensure('int');
 
-> [!WARNING]
+> [!WARNING]  
 > The `ensure` method does not guarantee that elements of different types will not be added to the collection at a later time.
 
 <a name="method-every"></a>
@@ -838,7 +920,7 @@ The `except` method returns all items in the collection except for those with th
 
 For the inverse of `except`, see the [only](#method-only) method.
 
-> [!NOTE]
+> [!NOTE]  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-except).
 
 <a name="method-filter"></a>
@@ -1015,14 +1097,18 @@ The `forget` method removes an item from the collection by its key:
 
     $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
 
+    // Forget a single key...
     $collection->forget('name');
-
-    $collection->all();
 
     // ['framework' => 'laravel']
 
-> [!WARNING]
-> Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
+    // Forget multiple keys...
+    $collection->forget(['name', 'framework']);
+
+    // []
+
+> [!WARNING]  
+> Unlike most other collection methods, `forget` does not return a new modified collection; it modifies and returns the collection it is called on.
 
 <a name="method-forpage"></a>
 #### `forPage()` {.collection-method}
@@ -1224,8 +1310,23 @@ The `intersect` method removes any values from the original collection that are 
 
     // [0 => 'Desk', 2 => 'Chair']
 
-> [!NOTE]
+> [!NOTE]  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-intersect).
+
+<a name="method-intersectusing"></a>
+#### `intersectUsing()` {.collection-method}
+
+The `intersectUsing` method removes any values from the original collection that are not present in the given `array` or collection, using a custom callback to compare the values. The resulting collection will preserve the original collection's keys:
+
+    $collection = collect(['Desk', 'Sofa', 'Chair']);
+
+    $intersect = $collection->intersectUsing(['desk', 'chair', 'bookcase'], function ($a, $b) {
+        return strcasecmp($a, $b);
+    });
+    
+    $intersect->all();
+    
+    // [0 => 'Desk', 2 => 'Chair']
 
 <a name="method-intersectAssoc"></a>
 #### `intersectAssoc()` {.collection-method}
@@ -1247,6 +1348,29 @@ The `intersectAssoc` method compares the original collection against another col
     $intersect->all();
 
     // ['size' => 'M']
+
+<a name="method-intersectassocusing"></a>
+#### `intersectAssocUsing()` {.collection-method}
+
+The `intersectAssocUsing` method compares the original collection against another collection or `array`, returning the key / value pairs that are present in both, using a custom comparison callback to determine equality for both keys and values:
+
+    $collection = collect([
+        'color' => 'red',
+        'Size' => 'M',
+        'material' => 'cotton',
+    ]);
+
+    $intersect = $collection->intersectAssocUsing([
+        'color' => 'blue',
+        'size' => 'M',
+        'material' => 'polyester',
+    ], function ($a, $b) {
+        return strcasecmp($a, $b);
+    });
+
+    $intersect->all();
+
+    // ['Size' => 'M']
 
 <a name="method-intersectbykeys"></a>
 #### `intersectByKeys()` {.collection-method}
@@ -1413,7 +1537,7 @@ The `map` method iterates through the collection and passes each value to the gi
 
     // [2, 4, 6, 8, 10]
 
-> [!WARNING]
+> [!WARNING]  
 > Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
 
 <a name="method-mapinto"></a>
@@ -1427,7 +1551,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
          * Create a new currency instance.
          */
         function __construct(
-            public string $code
+            public string $code,
         ) {}
     }
 
@@ -1633,6 +1757,29 @@ The `mode` method returns the [mode value](https://en.wikipedia.org/wiki/Mode_(s
 
     // [1, 2]
 
+<a name="method-multiply"></a>
+#### `multiply()` {.collection-method}
+
+The `multiply` method creates the specified number of copies of all items in the collection:
+
+```php
+$users = collect([
+    ['name' => 'User #1', 'email' => 'user1@example.com'],
+    ['name' => 'User #2', 'email' => 'user2@example.com'],
+])->multiply(3);
+
+/*
+    [
+        ['name' => 'User #1', 'email' => 'user1@example.com'],
+        ['name' => 'User #2', 'email' => 'user2@example.com'],
+        ['name' => 'User #1', 'email' => 'user1@example.com'],
+        ['name' => 'User #2', 'email' => 'user2@example.com'],
+        ['name' => 'User #1', 'email' => 'user1@example.com'],
+        ['name' => 'User #2', 'email' => 'user2@example.com'],
+    ]
+*/
+```
+
 <a name="method-nth"></a>
 #### `nth()` {.collection-method}
 
@@ -1670,7 +1817,7 @@ The `only` method returns the items in the collection with the specified keys:
 
 For the inverse of `only`, see the [except](#method-except) method.
 
-> [!NOTE]
+> [!NOTE]  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-only).
 
 <a name="method-pad"></a>
@@ -1758,7 +1905,7 @@ The `pipeInto` method creates a new instance of the given class and passes the c
          * Create a new ResourceCollection instance.
          */
         public function __construct(
-          public Collection $collection,
+            public Collection $collection,
         ) {}
     }
 
@@ -2131,7 +2278,7 @@ The `search` method searches the collection for the given value and returns its 
 
 The search is done using a "loose" comparison, meaning a string with an integer value will be considered equal to an integer of the same value. To use "strict" comparison, pass `true` as the second argument to the method:
 
-    collect([2, 4, 6, 8])->search('4', $strict = true);
+    collect([2, 4, 6, 8])->search('4', strict: true);
 
     // false
 
@@ -2220,7 +2367,7 @@ The `skip` method returns a new collection, with the given number of elements re
 <a name="method-skipuntil"></a>
 #### `skipUntil()` {.collection-method}
 
-The `skipUntil` method skips over items from the collection until the given callback returns `true` and then returns the remaining items in the collection as a new collection instance:
+The `skipUntil` method skips over items from the collection while the given callback returns `false`. Once the callback returns `true` all of the remaining items in the collection will be returned as a new collection:
 
     $collection = collect([1, 2, 3, 4]);
 
@@ -2242,13 +2389,13 @@ You may also pass a simple value to the `skipUntil` method to skip all items unt
 
     // [3, 4]
 
-> [!WARNING]
+> [!WARNING]  
 > If the given value is not found or the callback never returns `true`, the `skipUntil` method will return an empty collection.
 
 <a name="method-skipwhile"></a>
 #### `skipWhile()` {.collection-method}
 
-The `skipWhile` method skips over items from the collection while the given callback returns `true` and then returns the remaining items in the collection as a new collection:
+The `skipWhile` method skips over items from the collection while the given callback returns `true`. Once the callback returns `false` all of the remaining items in the collection will be returned as a new collection:
 
     $collection = collect([1, 2, 3, 4]);
 
@@ -2260,7 +2407,7 @@ The `skipWhile` method skips over items from the collection while the given call
 
     // [4]
 
-> [!WARNING]
+> [!WARNING]  
 > If the callback never returns `false`, the `skipWhile` method will return an empty collection.
 
 <a name="method-slice"></a>
@@ -2369,7 +2516,7 @@ The `sort` method sorts the collection. The sorted collection keeps the original
 
 If your sorting needs are more advanced, you may pass a callback to `sort` with your own algorithm. Refer to the PHP documentation on [`uasort`](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters), which is what the collection's `sort` method calls utilizes internally.
 
-> [!NOTE]
+> [!NOTE]  
 > If you need to sort a collection of nested arrays or objects, see the [`sortBy`](#method-sortby) and [`sortByDesc`](#method-sortbydesc) methods.
 
 <a name="method-sortby"></a>
@@ -2713,7 +2860,7 @@ You may also pass a simple value to the `takeUntil` method to get the items unti
 
     // [1, 2]
 
-> [!WARNING]
+> [!WARNING]  
 > If the given value is not found or the callback never returns `true`, the `takeUntil` method will return all items in the collection.
 
 <a name="method-takewhile"></a>
@@ -2731,7 +2878,7 @@ The `takeWhile` method returns items in the collection until the given callback 
 
     // [1, 2]
 
-> [!WARNING]
+> [!WARNING]  
 > If the callback never returns `false`, the `takeWhile` method will return all items in the collection.
 
 <a name="method-tap"></a>
@@ -2776,7 +2923,7 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
         ]
     */
 
-> [!WARNING]
+> [!WARNING]  
 > `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw array underlying the collection, use the [`all`](#method-all) method instead.
 
 <a name="method-tojson"></a>
@@ -2805,7 +2952,7 @@ The `transform` method iterates over the collection and calls the given callback
 
     // [2, 4, 6, 8, 10]
 
-> [!WARNING]
+> [!WARNING]  
 > Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.
 
 <a name="method-undot"></a>
@@ -2909,7 +3056,7 @@ Finally, you may also pass your own closure to the `unique` method to specify wh
 
 The `unique` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`uniqueStrict`](#method-uniquestrict) method to filter using "strict" comparisons.
 
-> [!NOTE]
+> [!NOTE]  
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-unique).
 
 <a name="method-uniquestrict"></a>
@@ -3354,7 +3501,6 @@ The `whereNull` method returns items from the collection where the given key is 
         ]
     */
 
-
 <a name="method-wrap"></a>
 #### `wrap()` {.collection-method}
 
@@ -3418,7 +3564,7 @@ Likewise, we can use the `sum` higher order message to gather the total number o
 <a name="lazy-collection-introduction"></a>
 ### Introduction
 
-> [!WARNING]
+> [!WARNING]  
 > Before learning more about Laravel's lazy collections, take some time to familiarize yourself with [PHP generators](https://www.php.net/manual/en/language.generators.overview.php).
 
 To supplement the already powerful `Collection` class, the `LazyCollection` class leverages PHP's [generators](https://www.php.net/manual/en/language.generators.overview.php) to allow you to work with very large datasets while keeping memory usage low.
@@ -3609,7 +3755,7 @@ Almost all methods available on the `Collection` class are also available on the
 
 </div>
 
-> [!WARNING]
+> [!WARNING]  
 > Methods that mutate the collection (such as `shift`, `pop`, `prepend` etc.) are **not** available on the `LazyCollection` class.
 
 <a name="lazy-collection-methods"></a>
@@ -3664,6 +3810,22 @@ While the `each` method calls the given callback for each item in the collection
     // 1
     // 2
     // 3
+
+<a name="method-throttle"></a>
+#### `throttle()` {.collection-method}
+
+The `throttle` method will throttle the lazy collection such that each value is returned after the specified number of seconds. This method is especially useful for situations where you may be interacting with external APIs that rate limit incoming requests:
+
+```php
+use App\Models\User;
+
+User::where('vip', true)
+    ->cursor()
+    ->throttle(seconds: 1)
+    ->each(function (User $user) {
+        // Call external API...
+    });
+```
 
 <a name="method-remember"></a>
 #### `remember()` {.collection-method}

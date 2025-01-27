@@ -28,6 +28,32 @@ The `url` helper may be used to generate arbitrary URLs for your application. Th
 
     // http://example.com/posts/1
 
+To generate a URL with query string parameters, you may use the `query` method:
+
+    echo url()->query('/posts', ['search' => 'Laravel']);
+
+    // https://example.com/posts?search=Laravel
+
+    echo url()->query('/posts?sort=latest', ['search' => 'Laravel']);
+
+    // http://example.com/posts?sort=latest&search=Laravel
+
+Providing query string parameters that already exist in the path will overwrite their existing value:
+
+    echo url()->query('/posts?sort=latest', ['sort' => 'oldest']);
+
+    // http://example.com/posts?sort=oldest
+
+Arrays of values may also be passed as query parameters. These values will be properly keyed and encoded in the generated URL:
+
+    echo $url = url()->query('/posts', ['columns' => ['title', 'body']]);
+
+    // http://example.com/posts?columns%5B0%5D=title&columns%5B1%5D=body
+
+    echo urldecode($url);
+
+    // http://example.com/posts?columns[0]=title&columns[1]=body
+
 <a name="accessing-the-current-url"></a>
 ### Accessing the Current URL
 
@@ -41,6 +67,9 @@ If no path is provided to the `url` helper, an `Illuminate\Routing\UrlGenerator`
 
     // Get the full URL for the previous request...
     echo url()->previous();
+
+    // Get the path for the previous request...
+    echo url()->previousPath();
 
 Each of these methods may also be accessed via the `URL` [facade](/docs/{{version}}/facades):
 
@@ -151,7 +180,7 @@ When someone visits a signed URL that has expired, they will receive a generic e
 
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (InvalidSignatureException $e) {
-            return response()->view('error.link-expired', [], 403);
+            return response()->view('errors.link-expired', status: 403);
         });
     })
 
@@ -212,20 +241,9 @@ Setting URL default values can interfere with Laravel's handling of implicit mod
 
 ```php
 ->withMiddleware(function (Middleware $middleware) {
-    $middleware->priority([
-        \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
-        \Illuminate\Cookie\Middleware\EncryptCookies::class,
-        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-        \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
-        \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
-        \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
-        \Illuminate\Session\Middleware\AuthenticateSession::class,
-        \App\Http\Middleware\SetDefaultLocaleForUrls::class, // [tl! add]
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        \Illuminate\Auth\Middleware\Authorize::class,
-    ]);
+    $middleware->prependToPriorityList(
+        before: \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        prepend: \App\Http\Middleware\SetDefaultLocaleForUrls::class,
+    );
 })
 ```

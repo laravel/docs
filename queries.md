@@ -13,7 +13,7 @@
     - [Where Clauses](#where-clauses)
     - [Or Where Clauses](#or-where-clauses)
     - [Where Not Clauses](#where-not-clauses)
-    - [Where Any / All Clauses](#where-any-all-clauses)
+    - [Where Any / All / None Clauses](#where-any-all-none-clauses)
     - [JSON Where Clauses](#json-where-clauses)
     - [Additional Where Clauses](#additional-where-clauses)
     - [Logical Grouping](#logical-grouping)
@@ -95,6 +95,10 @@ If you just need to retrieve a single row from a database table, you may use the
 
     return $user->email;
 
+If you would like to retrieve a single row from a database table, but throw an `Illuminate\Database\RecordNotFoundException` if no matching row is found, you may use the `firstOrFail` method. If the `RecordNotFoundException` is not caught, a 404 HTTP response is automatically sent back to the client:
+
+    $user = DB::table('users')->where('name', 'John')->firstOrFail();
+
 If you don't need an entire row, you may extract a single value from a record using the `value` method. This method will return the value of the column directly:
 
     $email = DB::table('users')->where('name', 'John')->value('email');
@@ -116,7 +120,7 @@ If you would like to retrieve an `Illuminate\Support\Collection` instance contai
         echo $title;
     }
 
- You may specify the column that the resulting collection should use as its keys by providing a second argument to the `pluck` method:
+You may specify the column that the resulting collection should use as its keys by providing a second argument to the `pluck` method:
 
     $titles = DB::table('users')->pluck('title', 'name');
 
@@ -156,6 +160,20 @@ If you are updating database records while chunking results, your chunk results 
                     ->update(['active' => true]);
             }
         });
+
+Since the `chunkById` and `lazyById` methods add their own "where" conditions to the query being executed, you should typically [logically group](#logical-grouping) your own conditions within a closure:
+
+```php
+DB::table('users')->where(function ($query) {
+    $query->where('credits', 1)->orWhere('credits', 2);
+})->chunkById(100, function (Collection $users) {
+    foreach ($users as $user) {
+        DB::table('users')
+          ->where('id', $user->id)
+          ->update(['credits' => 3]);
+    }
+});
+```
 
 > [!WARNING]  
 > When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results.
@@ -258,7 +276,7 @@ Sometimes you may need to insert an arbitrary string into a query. To create a r
 <a name="raw-methods"></a>
 ### Raw Methods
 
-Instead of using the `DB::raw` method, you may also use the following methods to insert a raw expression into various parts of your query. **Remember, Laravel can not guarantee that any query using raw expressions is protected against SQL injection vulnerabilities.**
+Instead of using the `DB::raw` method, you may also use the following methods to insert a raw expression into various parts of your query. **Remember, Laravel cannot guarantee that any query using raw expressions is protected against SQL injection vulnerabilities.**
 
 <a name="selectraw"></a>
 #### `selectRaw`
@@ -461,6 +479,9 @@ You may also pass an array of conditions to the `where` function. Each element o
 > [!WARNING]  
 > PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
 
+> [!WARNING]
+> MySQL and MariaDB automatically typecast strings to integers in string-number comparisons. In this process, non-numeric strings are converted to `0`, which can lead to unexpected results. For example, if your table has a `secret` column with a value of `aaa` and you run `User::where('secret', 0)`, that row will be returned. To avoid this, ensure all values are typecast to their appropriate types before using them in queries.
+
 <a name="or-where-clauses"></a>
 ### Or Where Clauses
 
@@ -502,8 +523,8 @@ The `whereNot` and `orWhereNot` methods may be used to negate a given group of q
                     })
                     ->get();
 
-<a name="where-any-all-clauses"></a>
-### Where Any / All Clauses
+<a name="where-any-all-none-clauses"></a>
+### Where Any / All / None Clauses
 
 Sometimes you may need to apply the same query constraints to multiple columns. For example, you may want to retrieve all records where any columns in a given list are `LIKE` a given value. You may accomplish this using the `whereAny` method:
 
@@ -513,7 +534,7 @@ Sometimes you may need to apply the same query constraints to multiple columns. 
                     'name',
                     'email',
                     'phone',
-                ], 'LIKE', 'Example%')
+                ], 'like', 'Example%')
                 ->get();
 
 The query above will result in the following SQL:
@@ -535,7 +556,7 @@ Similarly, the `whereAll` method may be used to retrieve records where all of th
                 ->whereAll([
                     'title',
                     'content',
-                ], 'LIKE', '%Laravel%')
+                ], 'like', '%Laravel%')
                 ->get();
 
 The query above will result in the following SQL:
@@ -549,10 +570,33 @@ WHERE published = true AND (
 )
 ```
 
+The `whereNone` method may be used to retrieve records where none of the given columns match a given constraint:
+
+    $posts = DB::table('albums')
+                ->where('published', true)
+                ->whereNone([
+                    'title',
+                    'lyrics',
+                    'tags',
+                ], 'like', '%explicit%')
+                ->get();
+
+The query above will result in the following SQL:
+
+```sql
+SELECT *
+FROM albums
+WHERE published = true AND NOT (
+    title LIKE '%explicit%' OR
+    lyrics LIKE '%explicit%' OR
+    tags LIKE '%explicit%'
+)
+```
+
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+, and SQLite 3.39.0+ (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
+Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MariaDB 10.3+, MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+, and SQLite 3.39.0+. To query a JSON column, use the `->` operator:
 
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
@@ -564,7 +608,7 @@ You may use `whereJsonContains` to query JSON arrays:
                     ->whereJsonContains('options->languages', 'en')
                     ->get();
 
-If your application uses the MySQL or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
+If your application uses the MariaDB, MySQL, or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', ['en', 'de'])
@@ -583,35 +627,42 @@ You may use `whereJsonLength` method to query JSON arrays by their length:
 <a name="additional-where-clauses"></a>
 ### Additional Where Clauses
 
-**whereBetween / orWhereBetween**
+**whereLike / orWhereLike / whereNotLike / orWhereNotLike**
 
-The `whereBetween` method verifies that a column's value is between two values:
+The `whereLike` method allows you to add "LIKE" clauses to your query for pattern matching. These methods provide a database-agnostic way of performing string matching queries, with the ability to toggle case-sensitivity. By default, string matching is case-insensitive:
 
     $users = DB::table('users')
-               ->whereBetween('votes', [1, 100])
+               ->whereLike('name', '%John%')
                ->get();
 
-**whereNotBetween / orWhereNotBetween**
-
-The `whereNotBetween` method verifies that a column's value lies outside of two values:
+You can enable a case-sensitive search via the `caseSensitive` argument:
 
     $users = DB::table('users')
-                        ->whereNotBetween('votes', [1, 100])
-                        ->get();
+               ->whereLike('name', '%John%', caseSensitive: true)
+               ->get();
 
-**whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
+The `orWhereLike` method allows you to add an "or" clause with a LIKE condition:
 
-The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:
+    $users = DB::table('users')
+               ->where('votes', '>', 100)
+               ->orWhereLike('name', '%John%')
+               ->get();
 
-    $patients = DB::table('patients')
-                           ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
-                           ->get();
+The `whereNotLike` method allows you to add "NOT LIKE" clauses to your query:
 
-The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:
+    $users = DB::table('users')
+               ->whereNotLike('name', '%John%')
+               ->get();
 
-    $patients = DB::table('patients')
-                           ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
-                           ->get();
+Similarly, you can use `orWhereNotLike` to add an "or" clause with a NOT LIKE condition:
+
+    $users = DB::table('users')
+               ->where('votes', '>', 100)
+               ->orWhereNotLike('name', '%John%')
+               ->get();
+
+> [!WARNING]
+> The `whereLike` case-sensitive search option is currently not supported on SQL Server.
 
 **whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
@@ -647,6 +698,36 @@ select * from comments where user_id in (
 
 > [!WARNING]  
 > If you are adding a large array of integer bindings to your query, the `whereIntegerInRaw` or `whereIntegerNotInRaw` methods may be used to greatly reduce your memory usage.
+
+**whereBetween / orWhereBetween**
+
+The `whereBetween` method verifies that a column's value is between two values:
+
+    $users = DB::table('users')
+               ->whereBetween('votes', [1, 100])
+               ->get();
+
+**whereNotBetween / orWhereNotBetween**
+
+The `whereNotBetween` method verifies that a column's value lies outside of two values:
+
+    $users = DB::table('users')
+                        ->whereNotBetween('votes', [1, 100])
+                        ->get();
+
+**whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
+
+The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:
+
+    $patients = DB::table('patients')
+                           ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+                           ->get();
+
+The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:
+
+    $patients = DB::table('patients')
+                           ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+                           ->get();
 
 **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
@@ -739,7 +820,7 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 > You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
 
 <a name="advanced-where-clauses"></a>
-### Advanced Where Clauses
+## Advanced Where Clauses
 
 <a name="where-exists-clauses"></a>
 ### Where Exists Clauses
@@ -804,9 +885,9 @@ Or, you may need to construct a "where" clause that compares a column to the res
 ### Full Text Where Clauses
 
 > [!WARNING]  
-> Full text where clauses are currently supported by MySQL and PostgreSQL.
+> Full text where clauses are currently supported by MariaDB, MySQL, and PostgreSQL.
 
-The `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MySQL:
+The `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MariaDB or MySQL:
 
     $users = DB::table('users')
                ->whereFullText('bio', 'web developer')
@@ -919,7 +1000,7 @@ Alternatively, you may use the `limit` and `offset` methods. These methods are f
 
 Sometimes you may want certain query clauses to apply to a query based on another condition. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming HTTP request. You may accomplish this using the `when` method:
 
-    $role = $request->string('role');
+    $role = $request->input('role');
 
     $users = DB::table('users')
                     ->when($role, function (Builder $query, string $role) {
@@ -1002,7 +1083,7 @@ The `upsert` method will insert records that do not exist and update the records
 In the example above, Laravel will attempt to insert two records. If a record already exists with the same `departure` and `destination` column values, Laravel will update that record's `price` column.
 
 > [!WARNING]  
-> All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the "primary" and "unique" indexes of the table to detect existing records.
+> All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MariaDB and MySQL database drivers ignore the second argument of the `upsert` method and always use the "primary" and "unique" indexes of the table to detect existing records.
 
 <a name="update-statements"></a>
 ## Update Statements
@@ -1018,7 +1099,7 @@ In addition to inserting records into the database, the query builder can also u
 
 Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs indicating the columns to be updated.
 
-The `updateOrInsert` method will attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new record will be inserted with the merged attributes of both arguments:
+The `updateOrInsert` method will attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record cannot be found, a new record will be inserted with the merged attributes of both arguments:
 
     DB::table('users')
         ->updateOrInsert(
@@ -1026,10 +1107,26 @@ The `updateOrInsert` method will attempt to locate a matching database record us
             ['votes' => '2']
         );
 
+You may provide a closure to the `updateOrInsert` method to customize the attributes that are updated or inserted into the database based on the existence of a matching record:
+
+```php
+DB::table('users')->updateOrInsert(
+    ['user_id' => $user_id],
+    fn ($exists) => $exists ? [
+        'name' => $data['name'],
+        'email' => $data['email'],
+    ] : [
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'marketable' => true,
+    ],
+);
+```
+
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns
 
-When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MySQL 5.7+ and PostgreSQL 9.5+:
+When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MariaDB 10.3+, MySQL 5.7+, and PostgreSQL 9.5+:
 
     $affected = DB::table('users')
                   ->where('id', 1)
@@ -1068,15 +1165,6 @@ The query builder's `delete` method may be used to delete records from the table
 
     $deleted = DB::table('users')->where('votes', '>', 100)->delete();
 
-If you wish to truncate an entire table, which will remove all records from the table and reset the auto-incrementing ID to zero, you may use the `truncate` method:
-
-    DB::table('users')->truncate();
-
-<a name="table-truncation-and-postgresql"></a>
-#### Table Truncation and PostgreSQL
-
-When truncating a PostgreSQL database, the `CASCADE` behavior will be applied. This means that all foreign key related records in other tables will be deleted as well.
-
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
 
@@ -1093,6 +1181,34 @@ Alternatively, you may use the `lockForUpdate` method. A "for update" lock preve
             ->where('votes', '>', 100)
             ->lockForUpdate()
             ->get();
+
+While not obligatory, it is recommended to wrap pessimistic locks within a [transaction](/docs/{{version}}/database#database-transactions). This ensures that the data retrieved remains unaltered in the database until the entire operation completes. In case of a failure, the transaction will roll back any changes and release the locks automatically:
+
+    DB::transaction(function () {
+        $sender = DB::table('users')
+            ->lockForUpdate()
+            ->find(1);
+
+        $receiver = DB::table('users')
+            ->lockForUpdate();
+            ->find(2);
+
+        if ($sender->balance < 100) {
+            throw new RuntimeException('Balance too low.');
+        }
+        
+        DB::table('users')
+            ->where('id', $sender->id)
+            ->update([
+                'balance' => $sender->balance - 100
+            ]);
+
+        DB::table('users')
+            ->where('id', $receiver->id)
+            ->update([
+                'balance' => $receiver->balance + 100
+            ]);
+    });
 
 <a name="debugging"></a>
 ## Debugging

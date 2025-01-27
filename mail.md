@@ -36,7 +36,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [Symfony Mailer](https://symfony.com/doc/7.0/mailer.html) component. Laravel and Symfony Mailer provide drivers for sending email via SMTP, Mailgun, Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
+Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [Symfony Mailer](https://symfony.com/doc/7.0/mailer.html) component. Laravel and Symfony Mailer provide drivers for sending email via SMTP, Mailgun, Postmark, Resend, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
 
 <a name="configuration"></a>
 ### Configuration
@@ -48,7 +48,7 @@ Within your `mail` configuration file, you will find a `mailers` configuration a
 <a name="driver-prerequisites"></a>
 ### Driver / Transport Prerequisites
 
-The API based drivers such as Mailgun, Postmark, and MailerSend are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
+The API based drivers such as Mailgun, Postmark, Resend, and MailerSend are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
 
 <a name="mailgun-driver"></a>
 #### Mailgun Driver
@@ -89,7 +89,7 @@ If you are not using the United States [Mailgun region](https://documentation.ma
 <a name="postmark-driver"></a>
 #### Postmark Driver
 
-To use the Postmark driver, install Symfony's Postmark Mailer transport via Composer:
+To use the [Postmark](https://postmarkapp.com/) driver, install Symfony's Postmark Mailer transport via Composer:
 
 ```shell
 composer require symfony/postmark-mailer symfony/http-client
@@ -112,6 +112,21 @@ If you would like to specify the Postmark message stream that should be used by 
     ],
 
 This way you are also able to set up multiple Postmark mailers with different message streams.
+
+<a name="resend-driver"></a>
+#### Resend Driver
+
+To use the [Resend](https://resend.com/) driver, install Resend's PHP SDK via Composer:
+
+```shell
+composer require resend/resend-php
+```
+
+Next, set the `default` option in your application's `config/mail.php` configuration file to `resend`. After configuring your application's default mailer, ensure that your `config/services.php` configuration file contains the following options:
+
+    'resend' => [
+        'key' => env('RESEND_KEY'),
+    ],
 
 <a name="ses-driver"></a>
 #### SES Driver
@@ -139,6 +154,22 @@ To utilize AWS [temporary credentials](https://docs.aws.amazon.com/IAM/latest/Us
         'token' => env('AWS_SESSION_TOKEN'),
     ],
 
+To interact with SES's [subscription management features](https://docs.aws.amazon.com/ses/latest/dg/sending-email-subscription-management.html), you may return the `X-Ses-List-Management-Options` header in the array returned by the [`headers`](#headers) method of a mail message:
+
+```php
+/**
+ * Get the message headers.
+ */
+public function headers(): Headers
+{
+    return new Headers(
+        text: [
+            'X-Ses-List-Management-Options' => 'contactListName=MyContactList;topicName=MyTopic',
+        ],
+    );
+}
+```
+
 If you would like to define [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-sesv2-2019-09-27.html#sendemail) that Laravel should pass to the AWS SDK's `SendEmail` method when sending an email, you may define an `options` array within your `ses` configuration:
 
     'ses' => [
@@ -164,12 +195,20 @@ composer require mailersend/laravel-driver
 
 Once the package is installed, add the `MAILERSEND_API_KEY` environment variable to your application's `.env` file. In addition, the `MAIL_MAILER` environment variable should be defined as `mailersend`:
 
-```shell
+```ini
 MAIL_MAILER=mailersend
 MAIL_FROM_ADDRESS=app@yourdomain.com
 MAIL_FROM_NAME="App Name"
 
 MAILERSEND_API_KEY=your-api-key
+```
+
+Finally, add MailerSend to the `mailers` array in your application's `config/mail.php` configuration file:
+
+```php
+'mailersend' => [
+    'transport' => 'mailersend',
+],
 ```
 
 To learn more about MailerSend, including how to use hosted templates, consult the [MailerSend driver documentation](https://github.com/mailersend/mailersend-laravel-driver#usage).
@@ -650,7 +689,7 @@ Some third-party email providers such as Mailgun and Postmark support message "t
         );
     }
 
-If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
+If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#tagging) and [metadata](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
 
 If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message.
 
@@ -661,7 +700,7 @@ Laravel's mail capabilities are powered by Symfony Mailer. Laravel allows you to
 
     use Illuminate\Mail\Mailables\Envelope;
     use Symfony\Component\Mime\Email;
-    
+
     /**
      * Get the message envelope.
      */
@@ -760,10 +799,10 @@ The table component allows you to transform a Markdown table into an HTML table.
 
 ```blade
 <x-mail::table>
-| Laravel       | Table         | Example  |
-| ------------- |:-------------:| --------:|
-| Col 2 is      | Centered      | $10      |
-| Col 3 is      | Right-Aligned | $20      |
+| Laravel       | Table         | Example       |
+| ------------- | :-----------: | ------------: |
+| Col 2 is      | Centered      | $10           |
+| Col 3 is      | Right-Aligned | $20           |
 </x-mail::table>
 ```
 
@@ -1094,6 +1133,12 @@ test('orders can be shipped', function () {
     // Assert a mailable was sent twice...
     Mail::assertSent(OrderShipped::class, 2);
 
+    // Assert a mailable was sent to an email address...
+    Mail::assertSent(OrderShipped::class, 'example@laravel.com');
+
+    // Assert a mailable was sent to multiple email addresses...
+    Mail::assertSent(OrderShipped::class, ['example@laravel.com', '...']);
+
     // Assert a mailable was not sent...
     Mail::assertNotSent(AnotherMailable::class);
 
@@ -1127,6 +1172,12 @@ class ExampleTest extends TestCase
 
         // Assert a mailable was sent twice...
         Mail::assertSent(OrderShipped::class, 2);
+
+        // Assert a mailable was sent to an email address...
+        Mail::assertSent(OrderShipped::class, 'example@laravel.com');
+
+        // Assert a mailable was sent to multiple email addresses...
+        Mail::assertSent(OrderShipped::class, ['example@laravel.com', '...']);
 
         // Assert a mailable was not sent...
         Mail::assertNotSent(AnotherMailable::class);
