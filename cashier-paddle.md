@@ -417,7 +417,7 @@ And now your subscription will get canceled at the end of its billing period.
 
 Most operations to bill customers are performed using "checkouts" via Paddle's [Checkout Overlay widget](https://developer.paddle.com/build/checkout/build-overlay-checkout) or by utilizing [inline checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout).
 
-Before processing checkout payments using Paddle, you should define your application's [default payment link](https://developer.paddle.com/build/transactions/default-payment-link#set-default-link) in your Paddle checkout settings dashboard.
+Before processing checkout payments using Paddle, you should define your application's [default payment link](https://developer.paddle.com/build/transactions/default-payment-link#set-default-link) in your Paddle checkout settings dashboard. On your application's side, this doesn't need to be anything more than a route pointing to a blank page including the `@paddleJS` directive in its head. The Paddle JavaScript library will take care of displaying the checkout modal if a transaction ID is passed by the `?_ptxn=` query string parameter, though do not need to handle checkout this way and this documentation won't refer to this method anymore; you just need to have this page because Paddle requires it.
 
 <a name="overlay-checkout"></a>
 ### Overlay Checkout
