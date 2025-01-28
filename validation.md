@@ -1062,10 +1062,35 @@ Instead of passing a date string to be evaluated by `strtotime`, you may specify
 
     'finish_date' => 'required|date|after:start_date'
 
+For convenience, date based rules may be constructed using the fluent `date` rule builder:
+
+    use Illuminate\Validation\Rule;
+
+    'start_date' => [
+        'required',
+        Rule::date()->after(today()->addDays(7)),
+    ],
+
+The `afterToday` and `todayOrAfter` methods may be used to fluently express the date must be after today or or today or after, respectively:
+
+    'start_date' => [
+        'required',
+        Rule::date()->afterToday(),
+    ],
+
 <a name="rule-after-or-equal"></a>
 #### after\_or\_equal:_date_
 
 The field under validation must be a value after or equal to the given date. For more information, see the [after](#rule-after) rule.
+
+For convenience, date based rules may be constructed using the fluent `date` rule builder:
+
+    use Illuminate\Validation\Rule;
+
+    'start_date' => [
+        'required',
+        Rule::date()->afterOrEqual(today()->addDays(7)),
+    ],
 
 <a name="rule-alpha"></a>
 #### alpha
@@ -1144,10 +1169,35 @@ While the `bail` rule will only stop validating a specific field when it encount
 
 The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
+For convenience, date based rules may also be constructed using the fluent `date` rule builder:
+
+    use Illuminate\Validation\Rule;
+
+    'start_date' => [
+        'required',
+        Rule::date()->before(today()->subDays(7)),
+    ],
+
+The `beforeToday` and `todayOrBefore` methods may be used to fluently express the date must be before today or or today or before, respectively:
+
+    'start_date' => [
+        'required',
+        Rule::date()->beforeToday(),
+    ],
+
 <a name="rule-before-or-equal"></a>
 #### before\_or\_equal:_date_
 
 The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
+
+For convenience, date based rules may also be constructed using the fluent `date` rule builder:
+
+    use Illuminate\Validation\Rule;
+
+    'start_date' => [
+        'required',
+        Rule::date()->beforeOrEqual(today()->subDays(7)),
+    ],
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
@@ -1192,6 +1242,15 @@ The field under validation must be equal to the given date. The dates will be pa
 #### date_format:_format_,...
 
 The field under validation must match one of the given _formats_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
+
+For convenience, date based rules may be constructed using the fluent `date` rule builder:
+
+    use Illuminate\Validation\Rule;
+
+    'start_date' => [
+        'required',
+        Rule::date()->format('Y-m-d'),
+    ],
 
 <a name="rule-decimal"></a>
 #### decimal:_min_,_max_
