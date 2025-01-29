@@ -810,9 +810,6 @@ Many of Laravel's built-in error messages include an `:attribute` placeholder th
         'email' => 'email address',
     ],
 
-> [!WARNING]  
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
-
 <a name="specifying-values-in-language-files"></a>
 ### Specifying Values in Language Files
 
@@ -835,9 +832,6 @@ Instead of displaying `cc` as the payment type value, you may specify a more use
             'cc' => 'credit card'
         ],
     ],
-
-> [!WARNING]  
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 After defining this value, the validation rule will produce the following error message:
 
