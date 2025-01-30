@@ -421,6 +421,8 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [unsignedSmallInteger](#column-method-unsignedSmallInteger)
 [unsignedTinyInteger](#column-method-unsignedTinyInteger)
 
+</div>
+
 <a name="strings-and-texts-method-list"></a>
 ### String & Text Types
 
@@ -433,6 +435,8 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [text](#column-method-text)
 [tinyText](#column-method-tinyText)
 [longText](#column-method-longText)
+
+</div>
 
 <a name="dates-and-times-method-list"></a>
 ### Date & Time Types
@@ -451,6 +455,8 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [softDeletesTz](#column-method-softDeletesTz)
 [year](#column-method-year)
 
+</div>
+
 <a name="booleans-method-list"></a>
 ### Boolean Types
 
@@ -461,9 +467,13 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 <a name="binaries-method-list"></a>
 ### Binary Types
 
+</div>
+
 <div class="collection-method-list" markdown="1">
 
 [binary](#column-method-binary)
+
+</div>
 
 <a name="object-and-jsons-method-list"></a>
 ### Object & Json Types
@@ -472,6 +482,8 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 
 [json](#column-method-json)
 [jsonb](#column-method-jsonb)
+
+</div>
 
 <a name="uuids-and-ulids-method-list"></a>
 ### UUID & ULID Types
@@ -485,6 +497,8 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [nullableUlidMorphs](#column-method-nullableUlidMorphs)
 [nullableUuidMorphs](#column-method-nullableUuidMorphs)
 
+</div>
+
 <a name="spatials-method-list"></a>
 ### Spatial Types
 
@@ -492,6 +506,8 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 
 [geography](#column-method-geography)
 [geometry](#column-method-geometry)
+
+</div>
 
 <a name="spacifics-method-list"></a>
 ### Specific Types
