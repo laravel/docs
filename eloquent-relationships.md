@@ -8,6 +8,7 @@
     - [Has One of Many](#has-one-of-many)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
+- [Scoped Relationships](#scoped-relationships)
 - [Many to Many Relationships](#many-to-many)
     - [Retrieving Intermediate Table Columns](#retrieving-intermediate-table-columns)
     - [Filtering Queries via Intermediate Table Columns](#filtering-queries-via-intermediate-table-columns)
@@ -612,6 +613,50 @@ return $this->through('environments')->has('deployments');
 return $this->throughEnvironments()->hasDeployments();
 ```
 
+<a name="scoped-relationships"></a>
+### Scoped relationships
+
+Of course, you may add constraints and other query methods in your relationship definitions if you need a more specific query every time. And existing scopes can be used to define other, more narrowly scoped relationships.
+
+    class User extends Model
+    {
+        public function posts(): HasMany
+        {
+            return $this->hasMany(Post::class)->latest();
+        }
+
+        public function highlights(): HasMany
+        {
+            return $this->posts()->where('featured', true)->take(3);
+        }
+    }
+
+You can also use [query scopes](/docs/{{version}}/eloquent#query-scopes) and [pending attributes](/docs/{{version}}/eloquent#pending-attributes) in your relationship definitions.
+
+    class User extends Model
+    {
+        public function posts(): HasMany
+        {
+            return $this->hasMany(Post::class);
+        }
+
+        /**
+         * The posts that are only visible to owner.
+         */
+        public function drafts(): HasMany
+        {
+            return $this->posts()->withAttributes('hidden', true);
+        }
+    }
+
+The use of `withAttributes` allows you to both query and create models with the specified constraints applied:
+
+    // Retrieve user's hidden posts
+    $user->drafts;
+
+    // Create a new hidden post belonging to $user
+    $user->drafts()->create(['title' => 'WIP...']);
+
 <a name="many-to-many"></a>
 ## Many to Many Relationships
 
@@ -780,6 +825,11 @@ You can also filter the results returned by `belongsToMany` relationship queries
     return $this->belongsToMany(Podcast::class)
                     ->as('subscriptions')
                     ->wherePivotNotNull('expired_at');
+
+Note that `wherePivot` adds a constraint for querying but does not add the specified value when creating new models via the defined relationship. If you need to both query and create relationships with a "scoped" pivot, you may use the `withPivotValue` method:
+
+    return $this->belongsToMany(Role::class)
+                ->withPivotValue('approved', 1);
 
 <a name="ordering-queries-via-intermediate-table-columns"></a>
 ### Ordering Queries via Intermediate Table Columns

@@ -32,6 +32,7 @@
 - [Query Scopes](#query-scopes)
     - [Global Scopes](#global-scopes)
     - [Local Scopes](#local-scopes)
+    - [Pending Attributes](#pending-attributes)
 - [Comparing Models](#comparing-models)
 - [Events](#events)
     - [Using Closures](#events-using-closures)
@@ -1389,6 +1390,38 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
 Once the expected arguments have been added to your scope method's signature, you may pass the arguments when calling the scope:
 
     $users = User::ofType('admin')->get();
+
+<a name="pending-attributes"></a>
+### Pending attributes
+
+If you want to utilize the scopes to create models in the "same scope", you should use the `withAttributes` method.
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Database\Eloquent\Model;
+
+    class Post extends Model
+    {
+        public function scopeDraft(Builder $query): void
+        {
+            $query->withAttributes([
+                'hidden' => true,
+            ]);
+        }
+    }
+
+It will add the specified attributes to newly created models:
+
+    // Create a post with `hidden` set to `true`
+    $draft = Post::draft()->create(['title' => 'WIP article']);
+
+The `withAttributes` method also adds the specified attributes as constraints. This allows to use the same scope for querying without any additional `where` calls.
+
+    // Retrieve the "hidden" posts
+    $drafts = Post::draft()->get();
 
 <a name="comparing-models"></a>
 ## Comparing Models
