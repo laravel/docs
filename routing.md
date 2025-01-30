@@ -567,6 +567,8 @@ If you would like model binding to always use a database column other than `id` 
 
     /**
      * Get the route key for the model.
+     *
+     * @return string
      */
     public function getRouteKeyName(): string
     {
