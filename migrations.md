@@ -396,8 +396,32 @@ The schema builder blueprint offers a variety of methods that correspond to the 
     }
 </style>
 
+<a name="booleans-method-list"></a>
+#### Boolean Types
+
+<div class="collection-method-list" markdown="1">
+
+[boolean](#column-method-boolean)
+
+</div>
+
+<a name="strings-and-texts-method-list"></a>
+#### String & Text Types
+
+<div class="collection-method-list" markdown="1">
+
+[char](#column-method-char)
+[longText](#column-method-longText)
+[mediumText](#column-method-mediumText)
+[string](#column-method-string)
+[text](#column-method-text)
+[tinyText](#column-method-tinyText)
+[longText](#column-method-longText)
+
+</div>
+
 <a name="numbers--method-list"></a>
-### Numeric Types
+#### Numeric Types
 
 <div class="collection-method-list" markdown="1">
 
@@ -423,23 +447,8 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 
 </div>
 
-<a name="strings-and-texts-method-list"></a>
-### String & Text Types
-
-<div class="collection-method-list" markdown="1">
-
-[char](#column-method-char)
-[longText](#column-method-longText)
-[mediumText](#column-method-mediumText)
-[string](#column-method-string)
-[text](#column-method-text)
-[tinyText](#column-method-tinyText)
-[longText](#column-method-longText)
-
-</div>
-
 <a name="dates-and-times-method-list"></a>
-### Date & Time Types
+#### Date & Time Types
 
 <div class="collection-method-list" markdown="1">
 
@@ -450,6 +459,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [timeTz](#column-method-timeTz)
 [timestamp](#column-method-timestamp)
 [timestamps](#column-method-timestamps)
+[nullableTimestamps](#column-method-nullableTimestamps)
 [timestampsTz](#column-method-timestampsTz)
 [softDeletes](#column-method-softDeletes)
 [softDeletesTz](#column-method-softDeletesTz)
@@ -457,17 +467,8 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 
 </div>
 
-<a name="booleans-method-list"></a>
-### Boolean Types
-
-<div class="collection-method-list" markdown="1">
-
-[boolean](#column-method-boolean)
-
 <a name="binaries-method-list"></a>
-### Binary Types
-
-</div>
+#### Binary Types
 
 <div class="collection-method-list" markdown="1">
 
@@ -476,7 +477,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="object-and-jsons-method-list"></a>
-### Object & Json Types
+#### Object & Json Types
 
 <div class="collection-method-list" markdown="1">
 
@@ -486,7 +487,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="uuids-and-ulids-method-list"></a>
-### UUID & ULID Types
+#### UUID & ULID Types
 
 <div class="collection-method-list" markdown="1">
 
@@ -500,7 +501,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="spatials-method-list"></a>
-### Spatial Types
+#### Spatial Types
 
 <div class="collection-method-list" markdown="1">
 
@@ -509,8 +510,21 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 
 </div>
 
+#### Relationship Types
+
+<div class="collection-method-list" markdown="1">
+
+[foreignId](#column-method-foreignId)
+[foreignIdFor](#column-method-foreignIdFor)
+[foreignUlid](#column-method-foreignUlid)
+[foreignUuid](#column-method-foreignUuid)
+[morphs](#column-method-morphs)
+[nullableMorphs](#column-method-nullableMorphs)
+
+</div>
+
 <a name="spacifics-method-list"></a>
-### Specific Types
+#### Specialty Types
 
 <div class="collection-method-list" markdown="1">
 
@@ -518,14 +532,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [set](#column-method-set)
 [macAddress](#column-method-macAddress)
 [ipAddress](#column-method-ipAddress)
-[morphs](#column-method-morphs)
-[nullableMorphs](#column-method-nullableMorphs)
 [rememberToken](#column-method-rememberToken)
-[foreignId](#column-method-foreignId)
-[foreignIdFor](#column-method-foreignIdFor)
-[foreignUlid](#column-method-foreignUlid)
-[foreignUuid](#column-method-foreignUuid)
-[nullableTimestamps](#column-method-nullableTimestamps)
 [vector](#column-method-vector)
 
 </div>
