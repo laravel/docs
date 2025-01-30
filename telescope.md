@@ -105,6 +105,12 @@ If desired, you may disable Telescope's data collection entirely using the `enab
 
     'enabled' => env('TELESCOPE_ENABLED', true),
 
+The `delay` option lets you set a delay for jobs within the Telescope (not for application jobs). If you set it to 0, it will turn off the delay for jobs. This is helpful for queues like Amazon SQS FIFO, which [don’t support delays for individual messages](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SendMessage.html#API_SendMessage_RequestSyntax).
+
+    'queue' => [
+        'delay' => env('TELESCOPE_QUEUE_DELAY', 0),
+    ]
+
 <a name="data-pruning"></a>
 ### Data Pruning
 
