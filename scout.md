@@ -326,7 +326,7 @@ php artisan scout:sync-index-settings
 <a name="configuring-indexes-for-algolia"></a>
 #### Configuring Index Settings (Algolia)
 
-You may want to configure additional settings on your Algolia indexes. For example, you can configure filterable attributes, ranking or faceting or [any other setting supported](https://www.algolia.com/doc/rest-api/search/#tag/Indices/operation/setSettings).
+You may want to configure additional settings on your Algolia indexes. While you can manage these settings via the Algolia UI, it is often more efficient to manage the desired state of your index configuration directly from your codebase. This approach allows you to deploy these settings through your automation pipeline, avoiding manual configuration and ensuring consistency across multiple environments. You can configure filterable attributes, ranking, faceting, or [any other supported setting](https://www.algolia.com/doc/rest-api/search/#tag/Indices/operation/setSettings).
 
 You can do so by adding the settings for each index in the `scout.php` configuration file:
 
