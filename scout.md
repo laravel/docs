@@ -281,6 +281,49 @@ Some search engines such as Meilisearch will only perform filter operations (`>`
         ];
     }
 
+<a name="configuring-indexes-for-algolia"></a>
+#### Configuring Index Settings (Algolia)
+
+Sometimes you may want to configure additional settings on your Algolia indexes. While you can manage these settings via the Algolia UI, it is sometimes more efficient to manage the desired state of your index configuration directly from your application's `config/scout.php` configuration file.
+
+This approach allows you to deploy these settings through your application's automated deployment pipeline, avoiding manual configuration and ensuring consistency across multiple environments. You may configure filterable attributes, ranking, faceting, or [any other supported settings](https://www.algolia.com/doc/rest-api/search/#tag/Indices/operation/setSettings).
+
+To get started, add settings for each index in your application's `config/scout.php` configuration file:
+
+```php
+use App\Models\User;
+use App\Models\Flight;
+
+'algolia' => [
+    'id' => env('ALGOLIA_APP_ID', ''),
+    'secret' => env('ALGOLIA_SECRET', ''),
+    'index-settings' => [
+        User::class => [
+            'searchableAttributes' => ['id', 'name', 'email'],
+            'attributesForFaceting'=> ['filterOnly(email)'],
+            // Other settings fields...
+        ],
+        Flight::class => [
+            'searchableAttributes'=> ['id', 'destination'],
+        ],
+    ],
+],
+```
+
+If the model underlying a given index is soft deletable and is included in the `index-settings` array, Scout will automatically include support for faceting on soft deleted models on that index. If you have no other faceting attributes to define for a soft deletable model index, you may simply add an empty entry to the `index-settings` array for that model:
+
+```php
+'index-settings' => [
+    Flight::class => []
+],
+```
+
+After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform Algolia of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
+
+```shell
+php artisan scout:sync-index-settings
+```
+
 <a name="configuring-filterable-data-for-meilisearch"></a>
 #### Configuring Filterable Data and Index Settings (Meilisearch)
 
@@ -318,47 +361,6 @@ If the model underlying a given index is soft deletable and is included in the `
 ```
 
 After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform Meilisearch of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
-
-```shell
-php artisan scout:sync-index-settings
-```
-
-<a name="configuring-indexes-for-algolia"></a>
-#### Configuring Index Settings (Algolia)
-
-You may want to configure additional settings on your Algolia indexes. While you can manage these settings via the Algolia UI, it is often more efficient to manage the desired state of your index configuration directly from your codebase. This approach allows you to deploy these settings through your automation pipeline, avoiding manual configuration and ensuring consistency across multiple environments. You can configure filterable attributes, ranking, faceting, or [any other supported setting](https://www.algolia.com/doc/rest-api/search/#tag/Indices/operation/setSettings).
-
-You can do so by adding the settings for each index in the `scout.php` configuration file:
-
-```php
-use App\Models\User;
-use App\Models\Flight;
-
-'algolia' => [
-    'id' => env('ALGOLIA_APP_ID', ''),
-    'secret' => env('ALGOLIA_SECRET', ''),
-    'index-settings' => [
-        User::class => [
-            'searchableAttributes' => ['id', 'name', 'email'],
-            'attributesForFaceting'=> ['filterOnly(email)'],
-            // Other settings fields...
-        ],
-        Flight::class => [
-            'searchableAttributes'=> ['id', 'destination'],
-        ],
-    ],
-],
-```
-
-If the model underlying a given index is soft deletable and is included in the `index-settings` array, Scout will automatically include support for faceting on soft deleted models on that index. If you have no other faceting attributes to define for a soft deletable model index, you may simply add an empty entry to the `index-settings` array for that model:
-
-```php
-'index-settings' => [
-    Flight::class => []
-],
-```
-
-After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform Algolia of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
 
 ```shell
 php artisan scout:sync-index-settings
