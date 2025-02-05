@@ -416,7 +416,6 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [string](#column-method-string)
 [text](#column-method-text)
 [tinyText](#column-method-tinyText)
-[longText](#column-method-longText)
 
 </div>
 
