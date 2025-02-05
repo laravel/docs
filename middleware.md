@@ -360,6 +360,14 @@ Rarely, you may need your middleware to execute in a specific order but not have
         ]);
     })
 
+Another method would be to append/prepend to the existing priority, if you need to just have your middleware be the highest priority before or after kernel level middlewares. You can both `appendToPriorityList` and `prependToPriorityList`. The first variable being your middleware(s) as a string or an array followed by the name of the middleware you are trying to append/prepend it to, you can also leave it blank with `''`
+file:
+
+    ->withMiddleware(function (Middleware $middleware) {
+         $middleware->appendToPriorityList([
+            \App\Http\Middleware\SpecialUsecaseMiddleware::class,
+        ], '');
+
 <a name="middleware-parameters"></a>
 ## Middleware Parameters
 
