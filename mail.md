@@ -59,7 +59,11 @@ To use the Mailgun driver, install Symfony's Mailgun Mailer transport via Compos
 composer require symfony/mailgun-mailer symfony/http-client
 ```
 
-Next, set the `default` option in your application's `config/mail.php` configuration file to `mailgun` and add the following configuration array to your array of `mailers`:
+Next, you will need to make two changes in your application's `config/mail.php` configuration file. First, set your default mailer to `mailgun`:
+
+    'default' => env('MAIL_MAILER', 'mailgun'),
+
+Second, add the following configuration array to your array of `mailers`:
 
     'mailgun' => [
         'transport' => 'mailgun',
