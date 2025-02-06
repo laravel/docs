@@ -12,6 +12,7 @@
 - [Authorization Code Grant](#authorization-code-grant)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
+    - [Managing Tokens](#managing-tokens)
     - [Refreshing Tokens](#refreshing-tokens)
     - [Revoking Tokens](#revoking-tokens)
     - [Purging Tokens](#purging-tokens)
@@ -255,8 +256,8 @@ public function boot(): void
 
 First, developers building applications that need to interact with your application's API will need to register their application with yours by creating a "client". Typically, this consists of providing the name of their application and a URI that your application can redirect to after users approve their request for authorization.
 
-<a name="the-passportclient-command"></a>
-#### The `passport:client` Command
+<a name="managing-first-party-clients"></a>
+#### First-party clients
 
 The simplest way to create a client is using the `passport:client` Artisan command. This command may be used to create first-party clients or testing your OAuth2 functionality. When you run the `passport:client` command, Passport will prompt you for more information about your client and will provide you with a client ID and secret:
 
@@ -270,10 +271,31 @@ If you would like to allow multiple redirect URIs for your client, you may speci
 http://example.com/callback,http://examplefoo.com/callback
 ```
 
-<a name="managing-clients-via-jetstream"></a>
-#### Via Laravel Jetstream
+<a name="managing-third-party-clients"></a>
+#### Third-party clients
 
-Since your application's users will not be able to utilize the `passport:client` command, [Laravel Jetstream](https://jetstream.laravel.com) provides first-party integration with Passport that your application's users may use to manage their clients. This saves you the trouble of having to manually code logics for creating, updating, and deleting third-party clients.
+Since your application's users will not be able to utilize the `passport:client` command, you may use `createAuthorizationCodeGrantClient` method on the `ClientRepository` class to register a client for the given user:
+
+```php
+use App\Models\User;
+use Laravel\Passport\ClientRepository;
+
+$user = User::find($userId);
+
+// Creating a client that belongs to the given user...
+$client = app(ClientRepository::class)->createAuthorizationCodeGrantClient(
+    user: $user,
+    name: 'Example App',
+    redirectUris: ['https://example.com/callback'],
+    confidential: true,
+    enableDeviceFlow: true
+);
+
+// Retrieving all the clients that belong to the user...
+$clients = $user->clients()->get();
+```
+
+The `createAuthorizationCodeGrantClient` method returns an instance of `Laravel\Passport\Client`. You may display the `$client->id` as the client ID and `$client->plainSecret` as the client secret to the user.
 
 <a name="requesting-tokens"></a>
 ### Requesting Tokens
@@ -370,10 +392,36 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 > [!NOTE]  
 > Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by Passport. There is no need to manually define this route.
 
-<a name="managing-tokens-via-jetstream"></a>
-#### Managing Authorized Tokens Via Laravel Jetstream
+<a name="managing-tokens"></a>
+### Managing Tokens
 
-[Laravel Jetstream](https://jetstream.laravel.com) provides first-party integration with Passport and offer your users a dashboard to manage their authorized access tokens and keep track of their connections with third-party clients. This saves you the trouble of having to manually code logics for revoking access to third-party clients.
+You may retrieve user's authorized tokens using the `tokens` method of the `Laravel\Passport\HasApiTokens`. For example, to offer your users a dashboard to keep track of their connections with third-party applications:
+
+```php
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Date;
+use Laravel\Passport\Token;
+
+$user = User::find($userId);
+
+// Retrieving all valid tokens for the user...
+$tokens = $user->tokens()
+    ->where('revoked', false)
+    ->where('expires_at', '>', Date::now())
+    ->get();
+
+// Retrieving all the user's connections to third-party clients...
+$connections = $tokens->load('client')
+    ->reject(fn (Token $token) => $token->client->firstParty())
+    ->groupBy('client_id')
+    ->map(fn (Collection $tokens) => [
+        'client' => $tokens->first()->client,
+        'scopes' => $tokens->pluck('scopes')->flatten()->unique()->values()->all(),
+        'tokens_count' => $tokens->count(),
+    ])
+    ->values();
+```
 
 <a name="refreshing-tokens"></a>
 ### Refreshing Tokens
@@ -555,10 +603,25 @@ public function boot(): void
 <a name="creating-a-device-code-grant-client"></a>
 ### Creating a Device Code Grant Client
 
-Before your application can issue tokens via the device authorization grant, you will need to create a device flow enabled client. You may do this using the `passport:client` Artisan command with the `--device` option:
+Before your application can issue tokens via the device authorization grant, you will need to create a device flow enabled client. You may do this using the `passport:client` Artisan command with the `--device` option. This command will create a first-party device flow enabled client and provide you with a client ID and secret:
 
 ```shell
 php artisan passport:client --device
+```
+
+Additionally, you may use `createDeviceAuthorizationGrantClient` method on the `ClientRepository` class to register a third-party client that belongs to the given user:
+
+```php
+use App\Models\User;
+use Laravel\Passport\ClientRepository;
+
+$user = User::find($userId);
+
+$client = app(ClientRepository::class)->createDeviceAuthorizationGrantClient(
+    user: $user,
+    name: 'Example Device',
+    confidential: false,
+);
 ```
 
 <a name="requesting-device-authorization-grant-tokens"></a>
@@ -864,8 +927,10 @@ If your application uses more than one [authentication user provider](/docs/{{ve
 Once you have created a personal access client, you may issue tokens for a given user using the `createToken` method on the `App\Models\User` model instance. The `createToken` method accepts the name of the token as its first argument and an optional array of [scopes](#token-scopes) as its second argument:
 
     use App\Models\User;
+    use Illuminate\Support\Facades\Date;
+    use Laravel\Passport\Token;
 
-    $user = User::find(1);
+    $user = User::find($userId);
 
     // Creating a token without scopes...
     $token = $user->createToken('Token Name')->accessToken;
@@ -876,10 +941,13 @@ Once you have created a personal access client, you may issue tokens for a given
     // Creating a token with all scopes...
     $token = $user->createToken('My Token', ['*'])->accessToken;
 
-<a name="managing-personal-access-tokens-via-jetstream"></a>
-#### Via Laravel Jetstream
-
-[Laravel Jetstream](https://jetstream.laravel.com) provides first-party integration with Passport and offer your users a dashboard to manage their personal access tokens. This saves you the trouble of having to manually code logics for creating and deleting personal access tokens.
+    // Retrieving all the valid personal access tokens...
+    $tokens = $user->tokens()
+        ->with('client')
+        ->where('revoked', false)
+        ->where('expires_at', '>', Date::now())
+        ->get()
+        ->filter(fn (Token $token) => $token->client->hasGrantType('personal_access'));
 
 <a name="protecting-routes"></a>
 ## Protecting Routes
