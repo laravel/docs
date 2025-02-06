@@ -242,6 +242,9 @@ You may gracefully terminate the Horizon process using the `horizon:terminate` A
 php artisan horizon:terminate
 ```
 
+> [!Warning]
+> The user running `artisan horizon:terminate` must be the same user running `artisan horizon`.
+
 <a name="deploying-horizon"></a>
 ### Deploying Horizon
 
