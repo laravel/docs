@@ -54,7 +54,13 @@ Sanctum will only attempt to authenticate using cookies when the incoming reques
 <a name="installation"></a>
 ## Installation
 
-You may install Laravel Sanctum via the `install:api` Artisan command:
+You may install Laravel Sanctum via composer:
+
+```
+composer require laravel/sanctum
+```
+
+and then activate it using the `install:api` Artisan command:
 
 ```shell
 php artisan install:api
