@@ -269,6 +269,14 @@ Context::has('key');
 // true
 ```
 
+To determine if a key is not present in the context, you may use the `missing` method. The missing method returns true if the key has not been added to the context:
+
+```php
+if (Context::missing('key')) {
+    // ...
+}
+```
+
 <a name="removing-context"></a>
 ## Removing Context
 
