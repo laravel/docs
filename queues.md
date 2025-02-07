@@ -1763,6 +1763,15 @@ When jobs are available on the queue, the worker will keep processing jobs with 
 php artisan queue:work --sleep=3
 ```
 
+<a name="worker-sleep-duration"></a>
+#### Rest Between Jobs
+
+The `rest` option specifies the number of seconds to rest between jobs:
+
+```shell
+php artisan queue:work --rest=3
+```
+
 <a name="maintenance-mode-queues"></a>
 #### Maintenance Mode and Queues
 
