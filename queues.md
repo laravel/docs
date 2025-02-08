@@ -1376,7 +1376,7 @@ Some tools such as Laravel Horizon and Laravel Telescope may provide more user-f
 <a name="batch-connection-queue"></a>
 #### Batch Connection and Queue
 
-If you would like to specify the connection and queue that should be used for the batched jobs, you may use the `onConnection` and `onQueue` methods. All batched jobs must execute within the same connection and queue:
+Unlike [chains](#chain-connection-and-queue), batches ignore queue and connection explicitly assigned to jobs. If you would like to specify the connection and queue that should be used for the batched jobs, you may use the `onConnection` and `onQueue` methods. All batched jobs must execute within the same connection and queue:
 
     $batch = Bus::batch([
         // ...
