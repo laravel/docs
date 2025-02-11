@@ -775,6 +775,52 @@ The `whereTime` method may be used to compare a column's value against a specifi
                     ->whereTime('created_at', '=', '11:20:45')
                     ->get();
 
+**wherePast / whereFuture / whereToday / whereBeforeToday / whereAfterToday**
+
+The `wherePast` and `whereFuture` methods may be used to determine if a column's value is in the past or future:
+
+    $invoices = DB::table('invoices')
+                    ->wherePast('due_at')
+                    ->get();
+
+    $invoices = DB::table('invoices')
+                    ->whereFuture('due_at')
+                    ->get();
+
+The `whereNowOrPast` and `whereNowOrFuture` methods may be used to determine if a column's value is in the past or future, inclusive of the current date and time:
+
+    $invoices = DB::table('invoices')
+                    ->whereNowOrPast('due_at')
+                    ->get();
+
+    $invoices = DB::table('invoices')
+                    ->whereNowOrFuture('due_at')
+                    ->get();
+
+The `whereToday`, `whereBeforeToday`, and `whereAfterToday` methods may be used to determine if a column's value is today, before today, or after today, respectively:
+
+    $invoices = DB::table('invoices')
+                    ->whereToday('due_at')
+                    ->get();
+
+    $invoices = DB::table('invoices')
+                    ->whereBeforeToday('due_at')
+                    ->get();
+
+    $invoices = DB::table('invoices')
+                    ->whereAfterToday('due_at')
+                    ->get();
+
+Similarly, the `whereTodayOrBefore` and `whereTodayOrAfter` methods may be used to determine if a column's value is before today or after today, inclusive of today's date:
+
+    $invoices = DB::table('invoices')
+                    ->whereTodayOrBefore('due_at')
+                    ->get();
+
+    $invoices = DB::table('invoices')
+                    ->whereTodayOrAfter('due_at')
+                    ->get();
+
 **whereColumn / orWhereColumn**
 
 The `whereColumn` method may be used to verify that two columns are equal:
