@@ -2015,23 +2015,21 @@ By default, the `unique` rule will check the uniqueness of the column matching t
 
     Rule::unique('users', 'email_address')->ignore($user->id)
 
-**Ignoring Soft Deleted Records in Unique Checks:**
-
-By default, the unique rule includes soft deleted records in its uniqueness check.  To explicitly ensure soft deleted records are excluded from the uniqueness check (effectively making the rule ignore soft-deleted records), you can use the withoutTrashed method:
-
-    Rule::unique('users')->withoutTrashed();
-
-If your model uses a column name other than deleted_at for soft deletes, you can specify the column name as the $deletedAtColumn parameter in withoutTrashed():
-
-    Rule::unique('users')->withoutTrashed('custom_deleted_column');
-
-This allows you to use withoutTrashed with models that have a custom soft delete column name. If no parameter is provided, deleted_at is used as the default.
-
 **Adding Additional Where Clauses:**
 
 You may specify additional query conditions by customizing the query using the `where` method. For example, let's add a query condition that scopes the query to only search records that have an `account_id` column value of `1`:
 
     'email' => Rule::unique('users')->where(fn (Builder $query) => $query->where('account_id', 1))
+
+**Ignoring Soft Deleteded Records in Unique Checks:**
+
+By default, the unique rule includes soft deleted records when determining uniqueness. To exclude soft deleted records from the uniqueness check, you may invoke the `withoutTrashed` method:
+
+    Rule::unique('users')->withoutTrashed();
+
+If your model uses a column name other than `deleted_at` for soft deleted records, you may provide the column name when invoking the `withoutTrashed` method:
+
+    Rule::unique('users')->withoutTrashed('was_deleted_at');
 
 <a name="rule-uppercase"></a>
 #### uppercase
