@@ -2021,6 +2021,16 @@ You may specify additional query conditions by customizing the query using the `
 
     'email' => Rule::unique('users')->where(fn (Builder $query) => $query->where('account_id', 1))
 
+**Ignoring Soft Deleteded Records in Unique Checks:**
+
+By default, the unique rule includes soft deleted records when determining uniqueness. To exclude soft deleted records from the uniqueness check, you may invoke the `withoutTrashed` method:
+
+    Rule::unique('users')->withoutTrashed();
+
+If your model uses a column name other than `deleted_at` for soft deleted records, you may provide the column name when invoking the `withoutTrashed` method:
+
+    Rule::unique('users')->withoutTrashed('was_deleted_at');
+
 <a name="rule-uppercase"></a>
 #### uppercase
 
