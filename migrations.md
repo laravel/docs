@@ -458,7 +458,6 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [timeTz](#column-method-timeTz)
 [timestamp](#column-method-timestamp)
 [timestamps](#column-method-timestamps)
-[nullableTimestamps](#column-method-nullableTimestamps)
 [timestampsTz](#column-method-timestampsTz)
 [softDeletes](#column-method-softDeletes)
 [softDeletesTz](#column-method-softDeletesTz)
@@ -773,13 +772,6 @@ The `morphs` method is a convenience method that adds a `{column}_id` equivalent
 This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships). In the following example, `taggable_id` and `taggable_type` columns would be created:
 
     $table->morphs('taggable');
-
-<a name="column-method-nullableTimestamps"></a>
-#### `nullableTimestamps()` {.collection-method}
-
-The `nullableTimestamps` method is an alias of the [timestamps](#column-method-timestamps) method:
-
-    $table->nullableTimestamps(precision: 0);
 
 <a name="column-method-nullableMorphs"></a>
 #### `nullableMorphs()` {.collection-method}
