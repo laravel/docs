@@ -250,12 +250,16 @@ $data = Context::all();
 <a name="determining-item-existence"></a>
 ### Determining Item Existence
 
-You may use the `has` method to determine if the context has any value stored for the given key:
+You may use the `has` and `missing` methods to determine if the context has any value stored for the given key:
 
 ```php
 use Illuminate\Support\Facades\Context;
 
 if (Context::has('key')) {
+    // ...
+}
+
+if (Context::missing('key')) {
     // ...
 }
 ```
@@ -267,14 +271,6 @@ Context::add('key', null);
 
 Context::has('key');
 // true
-```
-
-To determine if a key is not present in the context, you may use the `missing` method. The missing method returns true if the key has not been added to the context:
-
-```php
-if (Context::missing('key')) {
-    // ...
-}
 ```
 
 <a name="removing-context"></a>
