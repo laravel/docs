@@ -277,7 +277,7 @@ Using the `timezone` method, you may specify that a scheduled task's time should
 
 If you are repeatedly assigning the same timezone to all of your scheduled tasks, you can specify which timezone should be assigned to all schedules by defining a `schedule_timezone` option within your application's `app` configuration file:
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'timezone' => 'UTC',
 
     'schedule_timezone' => 'America/Chicago',
 
