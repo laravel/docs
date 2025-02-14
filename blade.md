@@ -192,6 +192,25 @@ If you are displaying JavaScript variables in a large portion of your template, 
 
 In addition to template inheritance and displaying data, Blade also provides convenient shortcuts for common PHP control structures, such as conditional statements and loops. These shortcuts provide a very clean, terse way of working with PHP control structures while also remaining familiar to their PHP counterparts.
 
+<div class="content-list" markdown="1">
+
+- [If Statements](#if-statements)
+- [Authentication Directives](#authentication-directives)
+- [Environment Directives](#environment-directives)
+- [Section Directives](#section-directives)
+- [Session Directives](#session-directives)
+- [Switch Statements](#switch-statements)
+- [Loops](#loops)
+- [Conditional Classes & Styles](#conditional-classes)
+- [Additional Attributes](#additional-attributes)
+- [Including Subviews](#including-subviews)
+- [Rendering Views For Collections](#rendering-views-for-collections)
+- [The `@once` Directive](#the-once-directive)
+- [Raw PHP](#raw-php)
+- [Comments](#comments)
+
+</div>
+
 <a name="if-statements"></a>
 ### If Statements
 
