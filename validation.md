@@ -2389,8 +2389,8 @@ public function boot(): void
         $rule = Password::min(8);
 
         return $this->app->isProduction()
-                    ? $rule->mixedCase()->uncompromised()
-                    : $rule;
+            ? $rule->mixedCase()->uncompromised()
+            : $rule;
     });
 }
 ```

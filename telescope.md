@@ -246,8 +246,8 @@ Telescope allows you to search entries by "tag". Often, tags are Eloquent model 
 
         Telescope::tag(function (IncomingEntry $entry) {
             return $entry->type === 'request'
-                        ? ['status:'.$entry->content['response_status']]
-                        : [];
+                ? ['status:'.$entry->content['response_status']]
+                : [];
         });
      }
 

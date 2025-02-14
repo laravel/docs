@@ -681,8 +681,8 @@ If you are sending an [on-demand notification](#on-demand-notifications), the `$
     public function toMail(object $notifiable): Mailable
     {
         $address = $notifiable instanceof AnonymousNotifiable
-                ? $notifiable->routeNotificationFor('mail')
-                : $notifiable->email;
+            ? $notifiable->routeNotificationFor('mail')
+            : $notifiable->email;
 
         return (new InvoicePaidMailable($this->invoice))
                     ->to($address);

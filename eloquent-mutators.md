@@ -727,8 +727,8 @@ A classic example of an inbound only cast is a "hashing" cast. For example, we m
         public function set(Model $model, string $key, mixed $value, array $attributes): string
         {
             return is_null($this->algorithm)
-                        ? bcrypt($value)
-                        : hash($this->algorithm, $value);
+                ? bcrypt($value)
+                : hash($this->algorithm, $value);
         }
     }
 

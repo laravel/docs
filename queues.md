@@ -464,8 +464,8 @@ For example, you may wish to allow users to backup their data once per hour whil
     {
         RateLimiter::for('backups', function (object $job) {
             return $job->user->vipCustomer()
-                        ? Limit::none()
-                        : Limit::perHour(1)->by($job->user->id);
+                ? Limit::none()
+                : Limit::perHour(1)->by($job->user->id);
         });
     }
 

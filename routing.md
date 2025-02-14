@@ -791,8 +791,8 @@ Since rate limiter callbacks receive the incoming HTTP request instance, you may
 
     RateLimiter::for('uploads', function (Request $request) {
         return $request->user()->vipCustomer()
-                    ? Limit::none()
-                    : Limit::perMinute(100);
+            ? Limit::none()
+            : Limit::perMinute(100);
     });
 
 <a name="segmenting-rate-limits"></a>
@@ -802,16 +802,16 @@ Sometimes you may wish to segment rate limits by some arbitrary value. For examp
 
     RateLimiter::for('uploads', function (Request $request) {
         return $request->user()->vipCustomer()
-                    ? Limit::none()
-                    : Limit::perMinute(100)->by($request->ip());
+            ? Limit::none()
+            : Limit::perMinute(100)->by($request->ip());
     });
 
 To illustrate this feature using another example, we can limit access to the route to 100 times per minute per authenticated user ID or 10 times per minute per IP address for guests:
 
     RateLimiter::for('uploads', function (Request $request) {
         return $request->user()
-                    ? Limit::perMinute(100)->by($request->user()->id)
-                    : Limit::perMinute(10)->by($request->ip());
+            ? Limit::perMinute(100)->by($request->user()->id)
+            : Limit::perMinute(10)->by($request->ip());
     });
 
 <a name="multiple-rate-limits"></a>
