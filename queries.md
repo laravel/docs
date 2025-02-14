@@ -219,8 +219,8 @@ The query builder also provides a variety of methods for retrieving aggregate va
 Of course, you may combine these methods with other clauses to fine-tune how your aggregate value is calculated:
 
     $price = DB::table('orders')
-                    ->where('finalized', 1)
-                    ->avg('price');
+        ->where('finalized', 1)
+        ->avg('price');
 
 <a name="determining-if-records-exist"></a>
 #### Determining if Records Exist
@@ -246,8 +246,8 @@ You may not always want to select all columns from a database table. Using the `
     use Illuminate\Support\Facades\DB;
 
     $users = DB::table('users')
-                ->select('name', 'email as user_email')
-                ->get();
+        ->select('name', 'email as user_email')
+        ->get();
 
 The `distinct` method allows you to force the query to return distinct results:
 
@@ -265,10 +265,10 @@ If you already have a query builder instance and you wish to add a column to its
 Sometimes you may need to insert an arbitrary string into a query. To create a raw string expression, you may use the `raw` method provided by the `DB` facade:
 
     $users = DB::table('users')
-                 ->select(DB::raw('count(*) as user_count, status'))
-                 ->where('status', '<>', 1)
-                 ->groupBy('status')
-                 ->get();
+        ->select(DB::raw('count(*) as user_count, status'))
+        ->where('status', '<>', 1)
+        ->groupBy('status')
+        ->get();
 
 > [!WARNING]  
 > Raw statements will be injected into the query as strings, so you should be extremely careful to avoid creating SQL injection vulnerabilities.
@@ -284,8 +284,8 @@ Instead of using the `DB::raw` method, you may also use the following methods to
 The `selectRaw` method can be used in place of `addSelect(DB::raw(/* ... */))`. This method accepts an optional array of bindings as its second argument:
 
     $orders = DB::table('orders')
-                    ->selectRaw('price * ? as price_with_tax', [1.0825])
-                    ->get();
+        ->selectRaw('price * ? as price_with_tax', [1.0825])
+        ->get();
 
 <a name="whereraw-orwhereraw"></a>
 #### `whereRaw / orWhereRaw`
@@ -293,8 +293,8 @@ The `selectRaw` method can be used in place of `addSelect(DB::raw(/* ... */))`. 
 The `whereRaw` and `orWhereRaw` methods can be used to inject a raw "where" clause into your query. These methods accept an optional array of bindings as their second argument:
 
     $orders = DB::table('orders')
-                    ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
-                    ->get();
+        ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
+        ->get();
 
 <a name="havingraw-orhavingraw"></a>
 #### `havingRaw / orHavingRaw`
@@ -302,10 +302,10 @@ The `whereRaw` and `orWhereRaw` methods can be used to inject a raw "where" clau
 The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as the value of the "having" clause. These methods accept an optional array of bindings as their second argument:
 
     $orders = DB::table('orders')
-                    ->select('department', DB::raw('SUM(price) as total_sales'))
-                    ->groupBy('department')
-                    ->havingRaw('SUM(price) > ?', [2500])
-                    ->get();
+        ->select('department', DB::raw('SUM(price) as total_sales'))
+        ->groupBy('department')
+        ->havingRaw('SUM(price) > ?', [2500])
+        ->get();
 
 <a name="orderbyraw"></a>
 #### `orderByRaw`
@@ -313,8 +313,8 @@ The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as
 The `orderByRaw` method may be used to provide a raw string as the value of the "order by" clause:
 
     $orders = DB::table('orders')
-                    ->orderByRaw('updated_at - created_at DESC')
-                    ->get();
+        ->orderByRaw('updated_at - created_at DESC')
+        ->get();
 
 <a name="groupbyraw"></a>
 ### `groupByRaw`
@@ -322,9 +322,9 @@ The `orderByRaw` method may be used to provide a raw string as the value of the 
 The `groupByRaw` method may be used to provide a raw string as the value of the `group by` clause:
 
     $orders = DB::table('orders')
-                    ->select('city', 'state')
-                    ->groupByRaw('city, state')
-                    ->get();
+        ->select('city', 'state')
+        ->groupByRaw('city, state')
+        ->get();
 
 <a name="joins"></a>
 ## Joins
@@ -337,10 +337,10 @@ The query builder may also be used to add join clauses to your queries. To perfo
     use Illuminate\Support\Facades\DB;
 
     $users = DB::table('users')
-                ->join('contacts', 'users.id', '=', 'contacts.user_id')
-                ->join('orders', 'users.id', '=', 'orders.user_id')
-                ->select('users.*', 'contacts.phone', 'orders.price')
-                ->get();
+        ->join('contacts', 'users.id', '=', 'contacts.user_id')
+        ->join('orders', 'users.id', '=', 'orders.user_id')
+        ->select('users.*', 'contacts.phone', 'orders.price')
+        ->get();
 
 <a name="left-join-right-join-clause"></a>
 #### Left Join / Right Join Clause
@@ -348,12 +348,12 @@ The query builder may also be used to add join clauses to your queries. To perfo
 If you would like to perform a "left join" or "right join" instead of an "inner join", use the `leftJoin` or `rightJoin` methods. These methods have the same signature as the `join` method:
 
     $users = DB::table('users')
-                ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
-                ->get();
+        ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+        ->get();
 
     $users = DB::table('users')
-                ->rightJoin('posts', 'users.id', '=', 'posts.user_id')
-                ->get();
+        ->rightJoin('posts', 'users.id', '=', 'posts.user_id')
+        ->get();
 
 <a name="cross-join-clause"></a>
 #### Cross Join Clause
@@ -361,8 +361,8 @@ If you would like to perform a "left join" or "right join" instead of an "inner 
 You may use the `crossJoin` method to perform a "cross join". Cross joins generate a cartesian product between the first table and the joined table:
 
     $sizes = DB::table('sizes')
-                ->crossJoin('colors')
-                ->get();
+        ->crossJoin('colors')
+        ->get();
 
 <a name="advanced-join-clauses"></a>
 #### Advanced Join Clauses
@@ -370,19 +370,19 @@ You may use the `crossJoin` method to perform a "cross join". Cross joins genera
 You may also specify more advanced join clauses. To get started, pass a closure as the second argument to the `join` method. The closure will receive a `Illuminate\Database\Query\JoinClause` instance which allows you to specify constraints on the "join" clause:
 
     DB::table('users')
-            ->join('contacts', function (JoinClause $join) {
-                $join->on('users.id', '=', 'contacts.user_id')->orOn(/* ... */);
-            })
-            ->get();
+        ->join('contacts', function (JoinClause $join) {
+            $join->on('users.id', '=', 'contacts.user_id')->orOn(/* ... */);
+        })
+        ->get();
 
 If you would like to use a "where" clause on your joins, you may use the `where` and `orWhere` methods provided by the `JoinClause` instance. Instead of comparing two columns, these methods will compare the column against a value:
 
     DB::table('users')
-            ->join('contacts', function (JoinClause $join) {
-                $join->on('users.id', '=', 'contacts.user_id')
-                     ->where('contacts.user_id', '>', 5);
-            })
-            ->get();
+        ->join('contacts', function (JoinClause $join) {
+            $join->on('users.id', '=', 'contacts.user_id')
+                 ->where('contacts.user_id', '>', 5);
+        })
+        ->get();
 
 <a name="subquery-joins"></a>
 #### Subquery Joins
@@ -390,14 +390,14 @@ If you would like to use a "where" clause on your joins, you may use the `where`
 You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receives three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:
 
     $latestPosts = DB::table('posts')
-                       ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
-                       ->where('is_published', true)
-                       ->groupBy('user_id');
+        ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
+        ->where('is_published', true)
+        ->groupBy('user_id');
 
     $users = DB::table('users')
-            ->joinSub($latestPosts, 'latest_posts', function (JoinClause $join) {
-                $join->on('users.id', '=', 'latest_posts.user_id');
-            })->get();
+        ->joinSub($latestPosts, 'latest_posts', function (JoinClause $join) {
+            $join->on('users.id', '=', 'latest_posts.user_id');
+        })->get();
 
 <a name="lateral-joins"></a>
 #### Lateral Joins
@@ -410,14 +410,14 @@ You may use the `joinLateral` and `leftJoinLateral` methods to perform a "latera
 In this example, we will retrieve a collection of users as well as the user's three most recent blog posts. Each user can produce up to three rows in the result set: one for each of their most recent blog posts. The join condition is specified with a `whereColumn` clause within the subquery, referencing the current user row:
 
     $latestPosts = DB::table('posts')
-                       ->select('id as post_id', 'title as post_title', 'created_at as post_created_at')
-                       ->whereColumn('user_id', 'users.id')
-                       ->orderBy('created_at', 'desc')
-                       ->limit(3);
+        ->select('id as post_id', 'title as post_title', 'created_at as post_created_at')
+        ->whereColumn('user_id', 'users.id')
+        ->orderBy('created_at', 'desc')
+        ->limit(3);
 
     $users = DB::table('users')
-                ->joinLateral($latestPosts, 'latest_posts')
-                ->get();
+        ->joinLateral($latestPosts, 'latest_posts')
+        ->get();
 
 <a name="unions"></a>
 ## Unions
@@ -427,12 +427,12 @@ The query builder also provides a convenient method to "union" two or more queri
     use Illuminate\Support\Facades\DB;
 
     $first = DB::table('users')
-                ->whereNull('first_name');
+        ->whereNull('first_name');
 
     $users = DB::table('users')
-                ->whereNull('last_name')
-                ->union($first)
-                ->get();
+        ->whereNull('last_name')
+        ->union($first)
+        ->get();
 
 In addition to the `union` method, the query builder provides a `unionAll` method. Queries that are combined using the `unionAll` method will not have their duplicate results removed. The `unionAll` method has the same method signature as the `union` method.
 
@@ -447,9 +447,9 @@ You may use the query builder's `where` method to add "where" clauses to the que
 For example, the following query retrieves users where the value of the `votes` column is equal to `100` and the value of the `age` column is greater than `35`:
 
     $users = DB::table('users')
-                    ->where('votes', '=', 100)
-                    ->where('age', '>', 35)
-                    ->get();
+        ->where('votes', '=', 100)
+        ->where('age', '>', 35)
+        ->get();
 
 For convenience, if you want to verify that a column is `=` to a given value, you may pass the value as the second argument to the `where` method. Laravel will assume you would like to use the `=` operator:
 
@@ -458,16 +458,16 @@ For convenience, if you want to verify that a column is `=` to a given value, yo
 As previously mentioned, you may use any operator that is supported by your database system:
 
     $users = DB::table('users')
-                    ->where('votes', '>=', 100)
-                    ->get();
+        ->where('votes', '>=', 100)
+        ->get();
 
     $users = DB::table('users')
-                    ->where('votes', '<>', 100)
-                    ->get();
+        ->where('votes', '<>', 100)
+        ->get();
 
     $users = DB::table('users')
-                    ->where('name', 'like', 'T%')
-                    ->get();
+        ->where('name', 'like', 'T%')
+        ->get();
 
 You may also pass an array of conditions to the `where` function. Each element of the array should be an array containing the three arguments typically passed to the `where` method:
 
@@ -488,19 +488,19 @@ You may also pass an array of conditions to the `where` function. Each element o
 When chaining together calls to the query builder's `where` method, the "where" clauses will be joined together using the `and` operator. However, you may use the `orWhere` method to join a clause to the query using the `or` operator. The `orWhere` method accepts the same arguments as the `where` method:
 
     $users = DB::table('users')
-                        ->where('votes', '>', 100)
-                        ->orWhere('name', 'John')
-                        ->get();
+        ->where('votes', '>', 100)
+        ->orWhere('name', 'John')
+        ->get();
 
 If you need to group an "or" condition within parentheses, you may pass a closure as the first argument to the `orWhere` method:
 
     $users = DB::table('users')
-                ->where('votes', '>', 100)
-                ->orWhere(function (Builder $query) {
-                    $query->where('name', 'Abigail')
-                          ->where('votes', '>', 50);
-                })
-                ->get();
+        ->where('votes', '>', 100)
+        ->orWhere(function (Builder $query) {
+            $query->where('name', 'Abigail')
+                ->where('votes', '>', 50);
+            })
+        ->get();
 
 The example above will produce the following SQL:
 
@@ -517,11 +517,11 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 The `whereNot` and `orWhereNot` methods may be used to negate a given group of query constraints. For example, the following query excludes products that are on clearance or which have a price that is less than ten:
 
     $products = DB::table('products')
-                    ->whereNot(function (Builder $query) {
-                        $query->where('clearance', true)
-                              ->orWhere('price', '<', 10);
-                    })
-                    ->get();
+        ->whereNot(function (Builder $query) {
+            $query->where('clearance', true)
+                ->orWhere('price', '<', 10);
+            })
+        ->get();
 
 <a name="where-any-all-none-clauses"></a>
 ### Where Any / All / None Clauses
@@ -529,13 +529,13 @@ The `whereNot` and `orWhereNot` methods may be used to negate a given group of q
 Sometimes you may need to apply the same query constraints to multiple columns. For example, you may want to retrieve all records where any columns in a given list are `LIKE` a given value. You may accomplish this using the `whereAny` method:
 
     $users = DB::table('users')
-                ->where('active', true)
-                ->whereAny([
-                    'name',
-                    'email',
-                    'phone',
-                ], 'like', 'Example%')
-                ->get();
+        ->where('active', true)
+        ->whereAny([
+            'name',
+            'email',
+            'phone',
+        ], 'like', 'Example%')
+        ->get();
 
 The query above will result in the following SQL:
 
@@ -552,12 +552,12 @@ WHERE active = true AND (
 Similarly, the `whereAll` method may be used to retrieve records where all of the given columns match a given constraint:
 
     $posts = DB::table('posts')
-                ->where('published', true)
-                ->whereAll([
-                    'title',
-                    'content',
-                ], 'like', '%Laravel%')
-                ->get();
+        ->where('published', true)
+        ->whereAll([
+            'title',
+            'content',
+        ], 'like', '%Laravel%')
+        ->get();
 
 The query above will result in the following SQL:
 
@@ -573,13 +573,13 @@ WHERE published = true AND (
 The `whereNone` method may be used to retrieve records where none of the given columns match a given constraint:
 
     $posts = DB::table('albums')
-                ->where('published', true)
-                ->whereNone([
-                    'title',
-                    'lyrics',
-                    'tags',
-                ], 'like', '%explicit%')
-                ->get();
+        ->where('published', true)
+        ->whereNone([
+            'title',
+            'lyrics',
+            'tags',
+        ], 'like', '%explicit%')
+        ->get();
 
 The query above will result in the following SQL:
 
@@ -599,30 +599,30 @@ WHERE published = true AND NOT (
 Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MariaDB 10.3+, MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+, and SQLite 3.39.0+. To query a JSON column, use the `->` operator:
 
     $users = DB::table('users')
-                    ->where('preferences->dining->meal', 'salad')
-                    ->get();
+        ->where('preferences->dining->meal', 'salad')
+        ->get();
 
 You may use `whereJsonContains` to query JSON arrays:
 
     $users = DB::table('users')
-                    ->whereJsonContains('options->languages', 'en')
-                    ->get();
+        ->whereJsonContains('options->languages', 'en')
+        ->get();
 
 If your application uses the MariaDB, MySQL, or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
 
     $users = DB::table('users')
-                    ->whereJsonContains('options->languages', ['en', 'de'])
-                    ->get();
+        ->whereJsonContains('options->languages', ['en', 'de'])
+        ->get();
 
 You may use `whereJsonLength` method to query JSON arrays by their length:
 
     $users = DB::table('users')
-                    ->whereJsonLength('options->languages', 0)
-                    ->get();
+        ->whereJsonLength('options->languages', 0)
+        ->get();
 
     $users = DB::table('users')
-                    ->whereJsonLength('options->languages', '>', 1)
-                    ->get();
+        ->whereJsonLength('options->languages', '>', 1)
+        ->get();
 
 <a name="additional-where-clauses"></a>
 ### Additional Where Clauses
@@ -632,34 +632,34 @@ You may use `whereJsonLength` method to query JSON arrays by their length:
 The `whereLike` method allows you to add "LIKE" clauses to your query for pattern matching. These methods provide a database-agnostic way of performing string matching queries, with the ability to toggle case-sensitivity. By default, string matching is case-insensitive:
 
     $users = DB::table('users')
-               ->whereLike('name', '%John%')
-               ->get();
+        ->whereLike('name', '%John%')
+        ->get();
 
 You can enable a case-sensitive search via the `caseSensitive` argument:
 
     $users = DB::table('users')
-               ->whereLike('name', '%John%', caseSensitive: true)
-               ->get();
+        ->whereLike('name', '%John%', caseSensitive: true)
+        ->get();
 
 The `orWhereLike` method allows you to add an "or" clause with a LIKE condition:
 
     $users = DB::table('users')
-               ->where('votes', '>', 100)
-               ->orWhereLike('name', '%John%')
-               ->get();
+        ->where('votes', '>', 100)
+        ->orWhereLike('name', '%John%')
+        ->get();
 
 The `whereNotLike` method allows you to add "NOT LIKE" clauses to your query:
 
     $users = DB::table('users')
-               ->whereNotLike('name', '%John%')
-               ->get();
+        ->whereNotLike('name', '%John%')
+        ->get();
 
 Similarly, you can use `orWhereNotLike` to add an "or" clause with a NOT LIKE condition:
 
     $users = DB::table('users')
-               ->where('votes', '>', 100)
-               ->orWhereNotLike('name', '%John%')
-               ->get();
+        ->where('votes', '>', 100)
+        ->orWhereNotLike('name', '%John%')
+        ->get();
 
 > [!WARNING]
 > The `whereLike` case-sensitive search option is currently not supported on SQL Server.
@@ -669,22 +669,22 @@ Similarly, you can use `orWhereNotLike` to add an "or" clause with a NOT LIKE co
 The `whereIn` method verifies that a given column's value is contained within the given array:
 
     $users = DB::table('users')
-                        ->whereIn('id', [1, 2, 3])
-                        ->get();
+        ->whereIn('id', [1, 2, 3])
+        ->get();
 
 The `whereNotIn` method verifies that the given column's value is not contained in the given array:
 
     $users = DB::table('users')
-                        ->whereNotIn('id', [1, 2, 3])
-                        ->get();
+        ->whereNotIn('id', [1, 2, 3])
+        ->get();
 
 You may also provide a query object as the `whereIn` method's second argument:
 
     $activeUsers = DB::table('users')->select('id')->where('is_active', 1);
 
     $users = DB::table('comments')
-                        ->whereIn('user_id', $activeUsers)
-                        ->get();
+        ->whereIn('user_id', $activeUsers)
+        ->get();
 
 The example above will produce the following SQL:
 
@@ -704,144 +704,144 @@ select * from comments where user_id in (
 The `whereBetween` method verifies that a column's value is between two values:
 
     $users = DB::table('users')
-               ->whereBetween('votes', [1, 100])
-               ->get();
+        ->whereBetween('votes', [1, 100])
+        ->get();
 
 **whereNotBetween / orWhereNotBetween**
 
 The `whereNotBetween` method verifies that a column's value lies outside of two values:
 
     $users = DB::table('users')
-                        ->whereNotBetween('votes', [1, 100])
-                        ->get();
+        ->whereNotBetween('votes', [1, 100])
+        ->get();
 
 **whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
 
 The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:
 
     $patients = DB::table('patients')
-                           ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
-                           ->get();
+        ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+        ->get();
 
 The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:
 
     $patients = DB::table('patients')
-                           ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
-                           ->get();
+        ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+        ->get();
 
 **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
 The `whereNull` method verifies that the value of the given column is `NULL`:
 
     $users = DB::table('users')
-                    ->whereNull('updated_at')
-                    ->get();
+        ->whereNull('updated_at')
+        ->get();
 
 The `whereNotNull` method verifies that the column's value is not `NULL`:
 
     $users = DB::table('users')
-                    ->whereNotNull('updated_at')
-                    ->get();
+        ->whereNotNull('updated_at')
+        ->get();
 
 **whereDate / whereMonth / whereDay / whereYear / whereTime**
 
 The `whereDate` method may be used to compare a column's value against a date:
 
     $users = DB::table('users')
-                    ->whereDate('created_at', '2016-12-31')
-                    ->get();
+        ->whereDate('created_at', '2016-12-31')
+        ->get();
 
 The `whereMonth` method may be used to compare a column's value against a specific month:
 
     $users = DB::table('users')
-                    ->whereMonth('created_at', '12')
-                    ->get();
+        ->whereMonth('created_at', '12')
+        ->get();
 
 The `whereDay` method may be used to compare a column's value against a specific day of the month:
 
     $users = DB::table('users')
-                    ->whereDay('created_at', '31')
-                    ->get();
+        ->whereDay('created_at', '31')
+        ->get();
 
 The `whereYear` method may be used to compare a column's value against a specific year:
 
     $users = DB::table('users')
-                    ->whereYear('created_at', '2016')
-                    ->get();
+        ->whereYear('created_at', '2016')
+        ->get();
 
 The `whereTime` method may be used to compare a column's value against a specific time:
 
     $users = DB::table('users')
-                    ->whereTime('created_at', '=', '11:20:45')
-                    ->get();
+        ->whereTime('created_at', '=', '11:20:45')
+        ->get();
 
 **wherePast / whereFuture / whereToday / whereBeforeToday / whereAfterToday**
 
 The `wherePast` and `whereFuture` methods may be used to determine if a column's value is in the past or future:
 
     $invoices = DB::table('invoices')
-                    ->wherePast('due_at')
-                    ->get();
+        ->wherePast('due_at')
+        ->get();
 
     $invoices = DB::table('invoices')
-                    ->whereFuture('due_at')
-                    ->get();
+        ->whereFuture('due_at')
+        ->get();
 
 The `whereNowOrPast` and `whereNowOrFuture` methods may be used to determine if a column's value is in the past or future, inclusive of the current date and time:
 
     $invoices = DB::table('invoices')
-                    ->whereNowOrPast('due_at')
-                    ->get();
+        ->whereNowOrPast('due_at')
+        ->get();
 
     $invoices = DB::table('invoices')
-                    ->whereNowOrFuture('due_at')
-                    ->get();
+        ->whereNowOrFuture('due_at')
+        ->get();
 
 The `whereToday`, `whereBeforeToday`, and `whereAfterToday` methods may be used to determine if a column's value is today, before today, or after today, respectively:
 
     $invoices = DB::table('invoices')
-                    ->whereToday('due_at')
-                    ->get();
+        ->whereToday('due_at')
+        ->get();
 
     $invoices = DB::table('invoices')
-                    ->whereBeforeToday('due_at')
-                    ->get();
+        ->whereBeforeToday('due_at')
+        ->get();
 
     $invoices = DB::table('invoices')
-                    ->whereAfterToday('due_at')
-                    ->get();
+        ->whereAfterToday('due_at')
+        ->get();
 
 Similarly, the `whereTodayOrBefore` and `whereTodayOrAfter` methods may be used to determine if a column's value is before today or after today, inclusive of today's date:
 
     $invoices = DB::table('invoices')
-                    ->whereTodayOrBefore('due_at')
-                    ->get();
+        ->whereTodayOrBefore('due_at')
+        ->get();
 
     $invoices = DB::table('invoices')
-                    ->whereTodayOrAfter('due_at')
-                    ->get();
+        ->whereTodayOrAfter('due_at')
+        ->get();
 
 **whereColumn / orWhereColumn**
 
 The `whereColumn` method may be used to verify that two columns are equal:
 
     $users = DB::table('users')
-                    ->whereColumn('first_name', 'last_name')
-                    ->get();
+        ->whereColumn('first_name', 'last_name')
+        ->get();
 
 You may also pass a comparison operator to the `whereColumn` method:
 
     $users = DB::table('users')
-                    ->whereColumn('updated_at', '>', 'created_at')
-                    ->get();
+        ->whereColumn('updated_at', '>', 'created_at')
+        ->get();
 
 You may also pass an array of column comparisons to the `whereColumn` method. These conditions will be joined using the `and` operator:
 
     $users = DB::table('users')
-                    ->whereColumn([
-                        ['first_name', '=', 'last_name'],
-                        ['updated_at', '>', 'created_at'],
-                    ])->get();
+        ->whereColumn([
+            ['first_name', '=', 'last_name'],
+            ['updated_at', '>', 'created_at'],
+        ])->get();
 
 <a name="logical-grouping"></a>
 ### Logical Grouping
@@ -849,12 +849,12 @@ You may also pass an array of column comparisons to the `whereColumn` method. Th
 Sometimes you may need to group several "where" clauses within parentheses in order to achieve your query's desired logical grouping. In fact, you should generally always group calls to the `orWhere` method in parentheses in order to avoid unexpected query behavior. To accomplish this, you may pass a closure to the `where` method:
 
     $users = DB::table('users')
-               ->where('name', '=', 'John')
-               ->where(function (Builder $query) {
-                   $query->where('votes', '>', 100)
-                         ->orWhere('title', '=', 'Admin');
-               })
-               ->get();
+        ->where('name', '=', 'John')
+        ->where(function (Builder $query) {
+            $query->where('votes', '>', 100)
+                ->orWhere('title', '=', 'Admin');
+        })
+        ->get();
 
 As you can see, passing a closure into the `where` method instructs the query builder to begin a constraint group. The closure will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
 
@@ -874,22 +874,22 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 The `whereExists` method allows you to write "where exists" SQL clauses. The `whereExists` method accepts a closure which will receive a query builder instance, allowing you to define the query that should be placed inside of the "exists" clause:
 
     $users = DB::table('users')
-               ->whereExists(function (Builder $query) {
-                   $query->select(DB::raw(1))
-                         ->from('orders')
-                         ->whereColumn('orders.user_id', 'users.id');
-               })
-               ->get();
+        ->whereExists(function (Builder $query) {
+            $query->select(DB::raw(1))
+                ->from('orders')
+                ->whereColumn('orders.user_id', 'users.id');
+        })
+        ->get();
 
 Alternatively, you may provide a query object to the `whereExists` method instead of a closure:
 
     $orders = DB::table('orders')
-                    ->select(DB::raw(1))
-                    ->whereColumn('orders.user_id', 'users.id');
+        ->select(DB::raw(1))
+        ->whereColumn('orders.user_id', 'users.id');
 
     $users = DB::table('users')
-                        ->whereExists($orders)
-                        ->get();
+        ->whereExists($orders)
+        ->get();
 
 Both of the examples above will produce the following SQL:
 
@@ -936,8 +936,8 @@ Or, you may need to construct a "where" clause that compares a column to the res
 The `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MariaDB or MySQL:
 
     $users = DB::table('users')
-               ->whereFullText('bio', 'web developer')
-               ->get();
+        ->whereFullText('bio', 'web developer')
+        ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit and Offset
@@ -951,15 +951,15 @@ The `whereFullText` and `orWhereFullText` methods may be used to add full text "
 The `orderBy` method allows you to sort the results of the query by a given column. The first argument accepted by the `orderBy` method should be the column you wish to sort by, while the second argument determines the direction of the sort and may be either `asc` or `desc`:
 
     $users = DB::table('users')
-                    ->orderBy('name', 'desc')
-                    ->get();
+        ->orderBy('name', 'desc')
+        ->get();
 
 To sort by multiple columns, you may simply invoke `orderBy` as many times as necessary:
 
     $users = DB::table('users')
-                    ->orderBy('name', 'desc')
-                    ->orderBy('email', 'asc')
-                    ->get();
+        ->orderBy('name', 'desc')
+        ->orderBy('email', 'asc')
+        ->get();
 
 <a name="latest-oldest"></a>
 #### The `latest` and `oldest` Methods
@@ -967,8 +967,8 @@ To sort by multiple columns, you may simply invoke `orderBy` as many times as ne
 The `latest` and `oldest` methods allow you to easily order results by date. By default, the result will be ordered by the table's `created_at` column. Or, you may pass the column name that you wish to sort by:
 
     $user = DB::table('users')
-                    ->latest()
-                    ->first();
+        ->latest()
+        ->first();
 
 <a name="random-ordering"></a>
 #### Random Ordering
@@ -976,8 +976,8 @@ The `latest` and `oldest` methods allow you to easily order results by date. By 
 The `inRandomOrder` method may be used to sort the query results randomly. For example, you may use this method to fetch a random user:
 
     $randomUser = DB::table('users')
-                    ->inRandomOrder()
-                    ->first();
+        ->inRandomOrder()
+        ->first();
 
 <a name="removing-existing-orderings"></a>
 #### Removing Existing Orderings
@@ -1003,24 +1003,24 @@ You may pass a column and direction when calling the `reorder` method in order t
 As you might expect, the `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
 
     $users = DB::table('users')
-                    ->groupBy('account_id')
-                    ->having('account_id', '>', 100)
-                    ->get();
+        ->groupBy('account_id')
+        ->having('account_id', '>', 100)
+        ->get();
 
 You can use the `havingBetween` method to filter the results within a given range:
 
     $report = DB::table('orders')
-                    ->selectRaw('count(id) as number_of_orders, customer_id')
-                    ->groupBy('customer_id')
-                    ->havingBetween('number_of_orders', [5, 15])
-                    ->get();
+        ->selectRaw('count(id) as number_of_orders, customer_id')
+        ->groupBy('customer_id')
+        ->havingBetween('number_of_orders', [5, 15])
+        ->get();
 
 You may pass multiple arguments to the `groupBy` method to group by multiple columns:
 
     $users = DB::table('users')
-                    ->groupBy('first_name', 'status')
-                    ->having('account_id', '>', 100)
-                    ->get();
+        ->groupBy('first_name', 'status')
+        ->having('account_id', '>', 100)
+        ->get();
 
 To build more advanced `having` statements, see the [`havingRaw`](#raw-methods) method.
 
@@ -1037,9 +1037,9 @@ You may use the `skip` and `take` methods to limit the number of results returne
 Alternatively, you may use the `limit` and `offset` methods. These methods are functionally equivalent to the `take` and `skip` methods, respectively:
 
     $users = DB::table('users')
-                    ->offset(10)
-                    ->limit(5)
-                    ->get();
+        ->offset(10)
+        ->limit(5)
+        ->get();
 
 <a name="conditional-clauses"></a>
 ## Conditional Clauses
@@ -1049,10 +1049,10 @@ Sometimes you may want certain query clauses to apply to a query based on anothe
     $role = $request->input('role');
 
     $users = DB::table('users')
-                    ->when($role, function (Builder $query, string $role) {
-                        $query->where('role_id', $role);
-                    })
-                    ->get();
+        ->when($role, function (Builder $query, string $role) {
+            $query->where('role_id', $role);
+        })
+        ->get();
 
 The `when` method only executes the given closure when the first argument is `true`. If the first argument is `false`, the closure will not be executed. So, in the example above, the closure given to the `when` method will only be invoked if the `role` field is present on the incoming request and evaluates to `true`.
 
@@ -1061,12 +1061,12 @@ You may pass another closure as the third argument to the `when` method. This cl
     $sortByVotes = $request->boolean('sort_by_votes');
 
     $users = DB::table('users')
-                    ->when($sortByVotes, function (Builder $query, bool $sortByVotes) {
-                        $query->orderBy('votes');
-                    }, function (Builder $query) {
-                        $query->orderBy('name');
-                    })
-                    ->get();
+        ->when($sortByVotes, function (Builder $query, bool $sortByVotes) {
+            $query->orderBy('votes');
+        }, function (Builder $query) {
+            $query->orderBy('name');
+        })
+        ->get();
 
 <a name="insert-statements"></a>
 ## Insert Statements
@@ -1175,8 +1175,8 @@ DB::table('users')->updateOrInsert(
 When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MariaDB 10.3+, MySQL 5.7+, and PostgreSQL 9.5+:
 
     $affected = DB::table('users')
-                  ->where('id', 1)
-                  ->update(['options->enabled' => true]);
+        ->where('id', 1)
+        ->update(['options->enabled' => true]);
 
 <a name="increment-and-decrement"></a>
 ### Increment and Decrement
@@ -1217,16 +1217,16 @@ The query builder's `delete` method may be used to delete records from the table
 The query builder also includes a few functions to help you achieve "pessimistic locking" when executing your `select` statements. To execute a statement with a "shared lock", you may call the `sharedLock` method. A shared lock prevents the selected rows from being modified until your transaction is committed:
 
     DB::table('users')
-            ->where('votes', '>', 100)
-            ->sharedLock()
-            ->get();
+        ->where('votes', '>', 100)
+        ->sharedLock()
+        ->get();
 
 Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the selected records from being modified or from being selected with another shared lock:
 
     DB::table('users')
-            ->where('votes', '>', 100)
-            ->lockForUpdate()
-            ->get();
+        ->where('votes', '>', 100)
+        ->lockForUpdate()
+        ->get();
 
 While not obligatory, it is recommended to wrap pessimistic locks within a [transaction](/docs/{{version}}/database#database-transactions). This ensures that the data retrieved remains unaltered in the database until the entire operation completes. In case of a failure, the transaction will roll back any changes and release the locks automatically:
 
