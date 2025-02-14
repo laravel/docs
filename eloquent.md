@@ -1392,9 +1392,9 @@ Once the expected arguments have been added to your scope method's signature, yo
     $users = User::ofType('admin')->get();
 
 <a name="pending-attributes"></a>
-### Pending attributes
+### Pending Attributes
 
-If you want to utilize the scopes to create models in the "same scope", you should use the `withAttributes` method.
+If you would like to use scopes to create models that have the same attributes as those used to constrain the scope, you may use the `withAttributes` method when building the scope query:
 
     <?php
 
@@ -1405,6 +1405,9 @@ If you want to utilize the scopes to create models in the "same scope", you shou
 
     class Post extends Model
     {
+        /**
+         * Scope the query to only include drafts.
+         */
         public function scopeDraft(Builder $query): void
         {
             $query->withAttributes([
@@ -1413,15 +1416,11 @@ If you want to utilize the scopes to create models in the "same scope", you shou
         }
     }
 
-It will add the specified attributes to newly created models:
+The `withAttributes` method will add `where` clause constraints to the query using the given attributes, and it will also add the given attributes to any models created via the scope:
 
-    // Create a post with `hidden` set to `true`
-    $draft = Post::draft()->create(['title' => 'WIP article']);
+    $draft = Post::draft()->create(['title' => 'In Progress']);
 
-The `withAttributes` method also adds the specified attributes as constraints. This allows to use the same scope for querying without any additional `where` calls.
-
-    // Retrieve the "hidden" posts
-    $drafts = Post::draft()->get();
+    $draft->hidden; // true
 
 <a name="comparing-models"></a>
 ## Comparing Models

@@ -614,48 +614,51 @@ return $this->throughEnvironments()->hasDeployments();
 ```
 
 <a name="scoped-relationships"></a>
-### Scoped relationships
+### Scoped Relationships
 
-Of course, you may add constraints and other query methods in your relationship definitions if you need a more specific query every time. And existing scopes can be used to define other, more narrowly scoped relationships.
+It's common to add additional methods to models that constrain relationships. For example, you might add a `featuredPosts` method to a `User` model which constrains the broader `posts` relationship with an additional `where` constraint:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
 
     class User extends Model
     {
+        /**
+         * Get the user's posts.
+         */
         public function posts(): HasMany
         {
             return $this->hasMany(Post::class)->latest();
         }
 
-        public function highlights(): HasMany
-        {
-            return $this->posts()->where('featured', true)->take(3);
-        }
-    }
-
-You can also use [query scopes](/docs/{{version}}/eloquent#query-scopes) and [pending attributes](/docs/{{version}}/eloquent#pending-attributes) in your relationship definitions.
-
-    class User extends Model
-    {
-        public function posts(): HasMany
-        {
-            return $this->hasMany(Post::class);
-        }
-
         /**
-         * The posts that are only visible to owner.
+         * Get the user's featured posts.
          */
-        public function drafts(): HasMany
+        public function featuredPosts(): HasMany
         {
-            return $this->posts()->withAttributes('hidden', true);
+            return $this->posts()->where('featured', true);
         }
     }
 
-The use of `withAttributes` allows you to both query and create models with the specified constraints applied:
+However, if you attempt to create a model via the `featuredPosts` method, its `featured` attribute would not be set to `true`. If you would like to create models via relationship methods and also specify attributes that should be added to all models created via that relationship, you may use the `withAttributes` method when building the relationship query:
 
-    // Retrieve user's hidden posts
-    $user->drafts;
+    /**
+     * Get the user's featured posts.
+     */
+    public function featuredPosts(): HasMany
+    {
+        return $this->posts()->withAttributes(['featured' => true]);
+    }
 
-    // Create a new hidden post belonging to $user
-    $user->drafts()->create(['title' => 'WIP...']);
+The `withAttributes` method will add `where` clause constraints to the query using the given attributes, and it will also add the given attributes to any models created via the relationship method:
+
+    $post = $user->featuredPosts()->create(['title' => 'Featured Post']);
+
+    $post->featured; // true
 
 <a name="many-to-many"></a>
 ## Many to Many Relationships
