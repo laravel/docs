@@ -8,6 +8,7 @@
     - [Has One of Many](#has-one-of-many)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
+- [Scoped Relationships](#scoped-relationships)
 - [Many to Many Relationships](#many-to-many)
     - [Retrieving Intermediate Table Columns](#retrieving-intermediate-table-columns)
     - [Filtering Queries via Intermediate Table Columns](#filtering-queries-via-intermediate-table-columns)
@@ -612,6 +613,53 @@ return $this->through('environments')->has('deployments');
 return $this->throughEnvironments()->hasDeployments();
 ```
 
+<a name="scoped-relationships"></a>
+### Scoped Relationships
+
+It's common to add additional methods to models that constrain relationships. For example, you might add a `featuredPosts` method to a `User` model which constrains the broader `posts` relationship with an additional `where` constraint:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+
+    class User extends Model
+    {
+        /**
+         * Get the user's posts.
+         */
+        public function posts(): HasMany
+        {
+            return $this->hasMany(Post::class)->latest();
+        }
+
+        /**
+         * Get the user's featured posts.
+         */
+        public function featuredPosts(): HasMany
+        {
+            return $this->posts()->where('featured', true);
+        }
+    }
+
+However, if you attempt to create a model via the `featuredPosts` method, its `featured` attribute would not be set to `true`. If you would like to create models via relationship methods and also specify attributes that should be added to all models created via that relationship, you may use the `withAttributes` method when building the relationship query:
+
+    /**
+     * Get the user's featured posts.
+     */
+    public function featuredPosts(): HasMany
+    {
+        return $this->posts()->withAttributes(['featured' => true]);
+    }
+
+The `withAttributes` method will add `where` clause constraints to the query using the given attributes, and it will also add the given attributes to any models created via the relationship method:
+
+    $post = $user->featuredPosts()->create(['title' => 'Featured Post']);
+
+    $post->featured; // true
+
 <a name="many-to-many"></a>
 ## Many to Many Relationships
 
@@ -780,6 +828,11 @@ You can also filter the results returned by `belongsToMany` relationship queries
     return $this->belongsToMany(Podcast::class)
         ->as('subscriptions')
         ->wherePivotNotNull('expired_at');
+
+The `wherePivot` adds a where clause constraint to the query, but does not add the specified value when creating new models via the defined relationship. If you need to both query and create relationships with a particular pivot value, you may use the `withPivotValue` method:
+
+    return $this->belongsToMany(Role::class)
+            ->withPivotValue('approved', 1);
 
 <a name="ordering-queries-via-intermediate-table-columns"></a>
 ### Ordering Queries via Intermediate Table Columns
