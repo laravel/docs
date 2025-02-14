@@ -829,10 +829,10 @@ You can also filter the results returned by `belongsToMany` relationship queries
                     ->as('subscriptions')
                     ->wherePivotNotNull('expired_at');
 
-Note that `wherePivot` adds a constraint for querying but does not add the specified value when creating new models via the defined relationship. If you need to both query and create relationships with a "scoped" pivot, you may use the `withPivotValue` method:
+The `wherePivot` adds a where clause constraint to the query, but does not add the specified value when creating new models via the defined relationship. If you need to both query and create relationships with a particular pivot value, you may use the `withPivotValue` method:
 
     return $this->belongsToMany(Role::class)
-                ->withPivotValue('approved', 1);
+            ->withPivotValue('approved', 1);
 
 <a name="ordering-queries-via-intermediate-table-columns"></a>
 ### Ordering Queries via Intermediate Table Columns
