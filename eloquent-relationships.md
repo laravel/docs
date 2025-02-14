@@ -185,8 +185,8 @@ Once the relationship method has been defined, we can access the [collection](/d
 Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `comments` method and continuing to chain conditions onto the query:
 
     $comment = Post::find(1)->comments()
-                        ->where('title', 'foo')
-                        ->first();
+        ->where('title', 'foo')
+        ->first();
 
 Like the `hasOne` method, you may also override the foreign and local keys by passing additional arguments to the `hasMany` method:
 
@@ -740,8 +740,8 @@ As noted previously, attributes from the intermediate table may be accessed on m
 For example, if your application contains users that may subscribe to podcasts, you likely have a many-to-many relationship between users and podcasts. If this is the case, you may wish to rename your intermediate table attribute to `subscription` instead of `pivot`. This can be done using the `as` method when defining the relationship:
 
     return $this->belongsToMany(Podcast::class)
-                    ->as('subscription')
-                    ->withTimestamps();
+        ->as('subscription')
+        ->withTimestamps();
 
 Once the custom intermediate table attribute has been specified, you may access the intermediate table data using the customized name:
 
@@ -757,29 +757,29 @@ Once the custom intermediate table attribute has been specified, you may access 
 You can also filter the results returned by `belongsToMany` relationship queries using the `wherePivot`, `wherePivotIn`, `wherePivotNotIn`, `wherePivotBetween`, `wherePivotNotBetween`, `wherePivotNull`, and `wherePivotNotNull` methods when defining the relationship:
 
     return $this->belongsToMany(Role::class)
-                    ->wherePivot('approved', 1);
+        ->wherePivot('approved', 1);
 
     return $this->belongsToMany(Role::class)
-                    ->wherePivotIn('priority', [1, 2]);
+        ->wherePivotIn('priority', [1, 2]);
 
     return $this->belongsToMany(Role::class)
-                    ->wherePivotNotIn('priority', [1, 2]);
+        ->wherePivotNotIn('priority', [1, 2]);
 
     return $this->belongsToMany(Podcast::class)
-                    ->as('subscriptions')
-                    ->wherePivotBetween('created_at', ['2020-01-01 00:00:00', '2020-12-31 00:00:00']);
+        ->as('subscriptions')
+        ->wherePivotBetween('created_at', ['2020-01-01 00:00:00', '2020-12-31 00:00:00']);
 
     return $this->belongsToMany(Podcast::class)
-                    ->as('subscriptions')
-                    ->wherePivotNotBetween('created_at', ['2020-01-01 00:00:00', '2020-12-31 00:00:00']);
+        ->as('subscriptions')
+        ->wherePivotNotBetween('created_at', ['2020-01-01 00:00:00', '2020-12-31 00:00:00']);
 
     return $this->belongsToMany(Podcast::class)
-                    ->as('subscriptions')
-                    ->wherePivotNull('expired_at');
+        ->as('subscriptions')
+        ->wherePivotNull('expired_at');
 
     return $this->belongsToMany(Podcast::class)
-                    ->as('subscriptions')
-                    ->wherePivotNotNull('expired_at');
+        ->as('subscriptions')
+        ->wherePivotNotNull('expired_at');
 
 <a name="ordering-queries-via-intermediate-table-columns"></a>
 ### Ordering Queries via Intermediate Table Columns
@@ -787,8 +787,8 @@ You can also filter the results returned by `belongsToMany` relationship queries
 You can order the results returned by `belongsToMany` relationship queries using the `orderByPivot` method. In the following example, we will retrieve all of the latest badges for the user:
 
     return $this->belongsToMany(Badge::class)
-                    ->where('rank', 'gold')
-                    ->orderByPivot('created_at', 'desc');
+        ->where('rank', 'gold')
+        ->orderByPivot('created_at', 'desc');
 
 <a name="defining-custom-intermediate-table-models"></a>
 ### Defining Custom Intermediate Table Models
@@ -1354,11 +1354,11 @@ In most situations, you should use [logical groups](/docs/{{version}}/queries#lo
     use Illuminate\Database\Eloquent\Builder;
 
     $user->posts()
-            ->where(function (Builder $query) {
-                return $query->where('active', 1)
-                             ->orWhere('votes', '>=', 100);
-            })
-            ->get();
+        ->where(function (Builder $query) {
+            return $query->where('active', 1)
+                ->orWhere('votes', '>=', 100);
+        })
+        ->get();
 
 The example above will produce the following SQL. Note that the logical grouping has properly grouped the constraints and the query remains constrained to a specific user:
 
@@ -1505,8 +1505,8 @@ You may occasionally need to add query constraints based on the "type" of the re
 Sometimes you may want to query for the children of a "morph to" relationship's parent. You may accomplish this using the `whereMorphedTo` and `whereNotMorphedTo` methods, which will automatically determine the proper morph type mapping for the given model. These methods accept the name of the `morphTo` relationship as their first argument and the related parent model as their second argument:
 
     $comments = Comment::whereMorphedTo('commentable', $post)
-                          ->orWhereMorphedTo('commentable', $video)
-                          ->get();
+        ->orWhereMorphedTo('commentable', $video)
+        ->get();
 
 <a name="querying-all-morph-to-related-models"></a>
 #### Querying All Related Models
@@ -1581,8 +1581,8 @@ If you need to set additional query constraints on the count query, you may pass
 If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
 
     $posts = Post::select(['title', 'body'])
-                    ->withCount('comments')
-                    ->get();
+        ->withCount('comments')
+        ->get();
 
 <a name="other-aggregate-functions"></a>
 ### Other Aggregate Functions
@@ -1614,8 +1614,8 @@ Like the `loadCount` method, deferred versions of these methods are also availab
 If you're combining these aggregate methods with a `select` statement, ensure that you call the aggregate methods after the `select` method:
 
     $posts = Post::select(['title', 'body'])
-                    ->withExists('comments')
-                    ->get();
+        ->withExists('comments')
+        ->get();
 
 <a name="counting-related-models-on-morph-to-relationships"></a>
 ### Counting Related Models on Morph To Relationships

@@ -842,8 +842,8 @@ The amount of time a customer has to pay their invoice before their subscription
 If you would like to set a specific [quantity](https://stripe.com/docs/billing/subscriptions/quantities) for the price when creating the subscription, you should invoke the `quantity` method on the subscription builder before creating the subscription:
 
     $user->newSubscription('default', 'price_monthly')
-         ->quantity(5)
-         ->create($paymentMethod);
+        ->quantity(5)
+        ->create($paymentMethod);
 
 <a name="additional-details"></a>
 #### Additional Details
@@ -862,14 +862,14 @@ If you would like to specify additional [customer](https://stripe.com/docs/api/c
 If you would like to apply a coupon when creating the subscription, you may use the `withCoupon` method:
 
     $user->newSubscription('default', 'price_monthly')
-         ->withCoupon('code')
-         ->create($paymentMethod);
+        ->withCoupon('code')
+        ->create($paymentMethod);
 
 Or, if you would like to apply a [Stripe promotion code](https://stripe.com/docs/billing/subscriptions/discounts/codes), you may use the `withPromotionCode` method:
 
     $user->newSubscription('default', 'price_monthly')
-         ->withPromotionCode('promo_code_id')
-         ->create($paymentMethod);
+        ->withPromotionCode('promo_code_id')
+        ->create($paymentMethod);
 
 The given promotion code ID should be the Stripe API ID assigned to the promotion code and not the customer facing promotion code. If you need to find a promotion code ID based on a given customer facing promotion code, you may use the `findPromotionCode` method:
 
@@ -1104,8 +1104,8 @@ If the customer is on trial, the trial period will be maintained. Additionally, 
 If you would like to swap prices and cancel any trial period the customer is currently on, you may invoke the `skipTrial` method:
 
     $user->subscription('default')
-            ->skipTrial()
-            ->swap('price_yearly');
+        ->skipTrial()
+        ->swap('price_yearly');
 
 If you would like to swap prices and immediately invoice the customer instead of waiting for their next billing cycle, you may use the `swapAndInvoice` method:
 
@@ -1237,8 +1237,8 @@ If you want to swap a single price on a subscription, you may do so using the `s
     $user = User::find(1);
 
     $user->subscription('default')
-            ->findItemOrFail('price_basic')
-            ->swap('price_pro');
+        ->findItemOrFail('price_basic')
+        ->swap('price_pro');
 
 <a name="proration"></a>
 #### Proration
@@ -1329,9 +1329,9 @@ To start using usage billing, you will first need to create a new product in you
 You may also start a metered subscription via [Stripe Checkout](#checkout):
 
     $checkout = Auth::user()
-            ->newSubscription('default', [])
-            ->meteredPrice('price_metered')
-            ->checkout();
+        ->newSubscription('default', [])
+        ->meteredPrice('price_metered')
+        ->checkout();
 
     return view('your-checkout-view', [
         'checkout' => $checkout,
@@ -1441,8 +1441,8 @@ By default, the billing cycle anchor is the date the subscription was created or
         $anchor = Carbon::parse('first day of next month');
 
         $request->user()->newSubscription('default', 'price_monthly')
-                    ->anchorBillingCycleOn($anchor->startOfDay())
-                    ->create($request->paymentMethodId);
+            ->anchorBillingCycleOn($anchor->startOfDay())
+            ->create($request->paymentMethodId);
 
         // ...
     });
@@ -1507,8 +1507,8 @@ If you would like to offer trial periods to your customers while still collectin
 
     Route::post('/user/subscribe', function (Request $request) {
         $request->user()->newSubscription('default', 'price_monthly')
-                    ->trialDays(10)
-                    ->create($request->paymentMethodId);
+            ->trialDays(10)
+            ->create($request->paymentMethodId);
 
         // ...
     });
@@ -1523,8 +1523,8 @@ The `trialUntil` method allows you to provide a `DateTime` instance that specifi
     use Carbon\Carbon;
 
     $user->newSubscription('default', 'price_monthly')
-                ->trialUntil(Carbon::now()->addDays(10))
-                ->create($paymentMethod);
+        ->trialUntil(Carbon::now()->addDays(10))
+        ->create($paymentMethod);
 
 You may determine if a user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
 
@@ -2131,7 +2131,7 @@ First, you could redirect your customer to the dedicated payment confirmation pa
 
     try {
         $subscription = $user->newSubscription('default', 'price_monthly')
-                                ->create($paymentMethod);
+            ->create($paymentMethod);
     } catch (IncompletePayment $exception) {
         return redirect()->route(
             'cashier.payment',

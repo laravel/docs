@@ -225,8 +225,8 @@ test('an action that requires authentication', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)
-                     ->withSession(['banned' => false])
-                     ->get('/');
+        ->withSession(['banned' => false])
+        ->get('/');
 
     //
 });
@@ -247,8 +247,8 @@ class ExampleTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
-                         ->withSession(['banned' => false])
-                         ->get('/');
+            ->withSession(['banned' => false])
+            ->get('/');
 
         //
     }
@@ -450,7 +450,7 @@ test('making an api request', function () {
         ->assertStatus(201)
         ->assertJson([
             'created' => true,
-         ]);
+        ]);
 });
 ```
 
@@ -595,11 +595,11 @@ test('fluent json', function () {
     $response
         ->assertJson(fn (AssertableJson $json) =>
             $json->where('id', 1)
-                 ->where('name', 'Victoria Faith')
-                 ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
-                 ->whereNot('status', 'pending')
-                 ->missing('password')
-                 ->etc()
+                ->where('name', 'Victoria Faith')
+                ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
+                ->whereNot('status', 'pending')
+                ->missing('password')
+                ->etc()
         );
 });
 ```
@@ -617,11 +617,11 @@ public function test_fluent_json(): void
     $response
         ->assertJson(fn (AssertableJson $json) =>
             $json->where('id', 1)
-                 ->where('name', 'Victoria Faith')
-                 ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
-                 ->whereNot('status', 'pending')
-                 ->missing('password')
-                 ->etc()
+                ->where('name', 'Victoria Faith')
+                ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
+                ->whereNot('status', 'pending')
+                ->missing('password')
+                ->etc()
         );
 }
 ```
@@ -641,21 +641,21 @@ To assert that an attribute is present or absent, you may use the `has` and `mis
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->has('data')
-             ->missing('message')
+            ->missing('message')
     );
 
 In addition, the `hasAll` and `missingAll` methods allow asserting the presence or absence of multiple attributes simultaneously:
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->hasAll(['status', 'data'])
-             ->missingAll(['message', 'code'])
+            ->missingAll(['message', 'code'])
     );
 
 You may use the `hasAny` method to determine if at least one of a given list of attributes is present:
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->has('status')
-             ->hasAny('data', 'message', 'code')
+            ->hasAny('data', 'message', 'code')
     );
 
 <a name="asserting-against-json-collections"></a>
@@ -672,13 +672,13 @@ In these situations, we may use the fluent JSON object's `has` method to make as
     $response
         ->assertJson(fn (AssertableJson $json) =>
             $json->has(3)
-                 ->first(fn (AssertableJson $json) =>
+                ->first(fn (AssertableJson $json) =>
                     $json->where('id', 1)
-                         ->where('name', 'Victoria Faith')
-                         ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
-                         ->missing('password')
-                         ->etc()
-                 )
+                        ->where('name', 'Victoria Faith')
+                        ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
+                        ->missing('password')
+                        ->etc()
+                )
         );
 
 <a name="scoping-json-collection-assertions"></a>
@@ -698,14 +698,14 @@ When testing these routes, you may use the `has` method to assert against the nu
     $response
         ->assertJson(fn (AssertableJson $json) =>
             $json->has('meta')
-                 ->has('users', 3)
-                 ->has('users.0', fn (AssertableJson $json) =>
+                ->has('users', 3)
+                ->has('users.0', fn (AssertableJson $json) =>
                     $json->where('id', 1)
-                         ->where('name', 'Victoria Faith')
-                         ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
-                         ->missing('password')
-                         ->etc()
-                 )
+                        ->where('name', 'Victoria Faith')
+                        ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
+                        ->missing('password')
+                        ->etc()
+                )
         );
 
 However, instead of making two separate calls to the `has` method to assert against the `users` collection, you may make a single call which provides a closure as its third parameter. When doing so, the closure will automatically be invoked and scoped to the first item in the collection:
@@ -713,13 +713,13 @@ However, instead of making two separate calls to the `has` method to assert agai
     $response
         ->assertJson(fn (AssertableJson $json) =>
             $json->has('meta')
-                 ->has('users', 3, fn (AssertableJson $json) =>
+                ->has('users', 3, fn (AssertableJson $json) =>
                     $json->where('id', 1)
-                         ->where('name', 'Victoria Faith')
-                         ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
-                         ->missing('password')
-                         ->etc()
-                 )
+                        ->where('name', 'Victoria Faith')
+                        ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))
+                        ->missing('password')
+                        ->etc()
+                )
         );
 
 <a name="asserting-json-types"></a>

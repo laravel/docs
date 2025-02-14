@@ -562,8 +562,8 @@ If you do not want to use the `validate` method on the request, you may create a
 
             if ($validator->fails()) {
                 return redirect('/post/create')
-                            ->withErrors($validator)
-                            ->withInput();
+                    ->withErrors($validator)
+                    ->withInput();
             }
 
             // Retrieve the validated input...
