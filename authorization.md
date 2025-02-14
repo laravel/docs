@@ -168,8 +168,8 @@ So far, we have only examined gates that return simple boolean values. However, 
 
     Gate::define('edit-settings', function (User $user) {
         return $user->isAdmin
-                    ? Response::allow()
-                    : Response::deny('You must be an administrator.');
+            ? Response::allow()
+            : Response::deny('You must be an administrator.');
     });
 
 Even when you return an authorization response from your gate, the `Gate::allows` method will still return a simple boolean value; however, you may use the `Gate::inspect` method to get the full authorization response returned by the gate:
@@ -199,8 +199,8 @@ When an action is denied via a Gate, a `403` HTTP response is returned; however,
 
     Gate::define('edit-settings', function (User $user) {
         return $user->isAdmin
-                    ? Response::allow()
-                    : Response::denyWithStatus(404);
+            ? Response::allow()
+            : Response::denyWithStatus(404);
     });
 
 Because hiding resources via a `404` response is such a common pattern for web applications, the `denyAsNotFound` method is offered for convenience:
@@ -211,8 +211,8 @@ Because hiding resources via a `404` response is such a common pattern for web a
 
     Gate::define('edit-settings', function (User $user) {
         return $user->isAdmin
-                    ? Response::allow()
-                    : Response::denyAsNotFound();
+            ? Response::allow()
+            : Response::denyAsNotFound();
     });
 
 <a name="intercepting-gate-checks"></a>
@@ -362,8 +362,8 @@ So far, we have only examined policy methods that return simple boolean values. 
     public function update(User $user, Post $post): Response
     {
         return $user->id === $post->user_id
-                    ? Response::allow()
-                    : Response::deny('You do not own this post.');
+            ? Response::allow()
+            : Response::deny('You do not own this post.');
     }
 
 When returning an authorization response from your policy, the `Gate::allows` method will still return a simple boolean value; however, you may use the `Gate::inspect` method to get the full authorization response returned by the gate:
@@ -399,8 +399,8 @@ When an action is denied via a policy method, a `403` HTTP response is returned;
     public function update(User $user, Post $post): Response
     {
         return $user->id === $post->user_id
-                    ? Response::allow()
-                    : Response::denyWithStatus(404);
+            ? Response::allow()
+            : Response::denyWithStatus(404);
     }
 
 Because hiding resources via a `404` response is such a common pattern for web applications, the `denyAsNotFound` method is offered for convenience:
@@ -415,8 +415,8 @@ Because hiding resources via a `404` response is such a common pattern for web a
     public function update(User $user, Post $post): Response
     {
         return $user->id === $post->user_id
-                    ? Response::allow()
-                    : Response::denyAsNotFound();
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
 <a name="methods-without-models"></a>
