@@ -868,7 +868,12 @@ The `charge` method will not actually charge the customer until the next billing
 <a name="updating-payment-information"></a>
 ### Updating Payment Information
 
-Paddle always saves a payment method per subscription. If you want to update the default payment method for a subscription, you should redirect your customer to Paddle's hosted payment method update page using the `redirectToUpdatePaymentMethod` method on the subscription model:
+Paddle always saves a payment method per subscription. If you want to update the default payment method for a subscription, you have two options: either redirecting your customer to Paddle's hosted payment method update page in their billing portal, or getting and handling a payment method update transaction which will be the most recent `past_due` transaction of the corresponding subscription or, if no such one exists, a new zero amount transaction for the items of the subscription.
+
+<a name="redirecting-a-user-to-the-payment-method-update-url"></a>
+#### Redirecting a user to the payment method update URL
+
+Use the `redirectToUpdatePaymentMethod` method on the subscription model:
 
     use Illuminate\Http\Request;
 
@@ -879,6 +884,21 @@ Paddle always saves a payment method per subscription. If you want to update the
     });
 
 When a user has finished updating their information, a `subscription_updated` webhook will be dispatched by Paddle and the subscription details will be updated in your application's database.
+
+<a name="handling-payment-method-updating-using-your-checkout-view"></a>
+#### Handling payment method updating using your checkout view
+
+Use the `paymentMethodUpdateTransaction` method on the subscription model to get a transaction that will allow the user to change their payment method, then create a new checkout and pass it to your checkout view:
+
+    use Illuminate\Http\Request;
+    use Laravel\Paddle\Checkout;
+
+    Route::get('/update-payment-method', function (Request $request) {
+        $checkout = Checkout::transaction($request->user()->paymentMethodUpdateTransaction())
+            ->returnTo(route('home'));
+
+        return view('billing', ['checkout' => $checkout]);
+    });
 
 <a name="changing-plans"></a>
 ### Changing Plans
