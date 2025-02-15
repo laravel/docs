@@ -620,10 +620,10 @@ Typically, a 404 HTTP response will be generated if an implicitly bound model is
     use Illuminate\Support\Facades\Redirect;
 
     Route::get('/locations/{location:slug}', [LocationsController::class, 'show'])
-            ->name('locations.view')
-            ->missing(function (Request $request) {
-                return Redirect::route('locations.index');
-            });
+        ->name('locations.view')
+        ->missing(function (Request $request) {
+            return Redirect::route('locations.index');
+        });
 
 <a name="implicit-enum-binding"></a>
 ### Implicit Enum Binding

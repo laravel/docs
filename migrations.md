@@ -1255,9 +1255,9 @@ The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, while the
 You may also specify the desired action for the "on delete" and "on update" properties of the constraint:
 
     $table->foreignId('user_id')
-          ->constrained()
-          ->onUpdate('cascade')
-          ->onDelete('cascade');
+        ->constrained()
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
 
 An alternative, expressive syntax is also provided for these actions:
 
@@ -1279,8 +1279,8 @@ An alternative, expressive syntax is also provided for these actions:
 Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:
 
     $table->foreignId('user_id')
-          ->nullable()
-          ->constrained();
+        ->nullable()
+        ->constrained();
 
 <a name="dropping-foreign-keys"></a>
 #### Dropping Foreign Keys

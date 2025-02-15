@@ -729,7 +729,7 @@ You may only want to assert that the properties in the JSON response are of a ce
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->whereType('id', 'integer')
-             ->whereAllType([
+            ->whereAllType([
                 'users.0.name' => 'string',
                 'meta' => 'array'
             ])
@@ -739,7 +739,7 @@ You may specify multiple types using the `|` character, or passing an array of t
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->whereType('name', 'string|null')
-             ->whereType('id', ['string', 'integer'])
+            ->whereType('id', ['string', 'integer'])
     );
 
 The `whereType` and `whereAllType` methods recognize the following types: `string`, `integer`, `double`, `boolean`, `array`, and `null`.

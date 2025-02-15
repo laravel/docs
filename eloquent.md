@@ -403,9 +403,9 @@ Once you have created a model and [its associated database table](/docs/{{versio
 The Eloquent `all` method will return all of the results in the model's table. However, since each Eloquent model serves as a [query builder](/docs/{{version}}/queries), you may add additional constraints to queries and then invoke the `get` method to retrieve the results:
 
     $flights = Flight::where('active', 1)
-                   ->orderBy('name')
-                   ->take(10)
-                   ->get();
+        ->orderBy('name')
+        ->take(10)
+        ->get();
 
 > [!NOTE]  
 > Since Eloquent models are query builders, you should review all of the methods provided by Laravel's [query builder](/docs/{{version}}/queries). You may use any of these methods when writing your Eloquent queries.
@@ -745,8 +745,8 @@ In the example below, if a flight exists with a `departure` location of `Oakland
 Updates can also be performed against models that match a given query. In this example, all flights that are `active` and have a `destination` of `San Diego` will be marked as delayed:
 
     Flight::where('active', 1)
-          ->where('destination', 'San Diego')
-          ->update(['delayed' => 1]);
+        ->where('destination', 'San Diego')
+        ->update(['delayed' => 1]);
 
 The `update` method expects an array of column and value pairs representing the columns that should be updated. The `update` method returns the number of affected rows.
 
@@ -1038,8 +1038,8 @@ As noted above, soft deleted models will automatically be excluded from query re
     use App\Models\Flight;
 
     $flights = Flight::withTrashed()
-                    ->where('account_id', 1)
-                    ->get();
+        ->where('account_id', 1)
+        ->get();
 
 The `withTrashed` method may also be called when building a [relationship](/docs/{{version}}/eloquent-relationships) query:
 
@@ -1051,8 +1051,8 @@ The `withTrashed` method may also be called when building a [relationship](/docs
 The `onlyTrashed` method will retrieve **only** soft deleted models:
 
     $flights = Flight::onlyTrashed()
-                    ->where('airline_id', 1)
-                    ->get();
+        ->where('airline_id', 1)
+        ->get();
 
 <a name="pruning-models"></a>
 ## Pruning Models

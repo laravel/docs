@@ -74,8 +74,8 @@ use Illuminate\Support\Facades\Cache;
 
 test('basic example', function () {
     Cache::shouldReceive('get')
-         ->with('key')
-         ->andReturn('value');
+        ->with('key')
+        ->andReturn('value');
 
     $response = $this->get('/cache');
 
@@ -92,8 +92,8 @@ use Illuminate\Support\Facades\Cache;
 public function test_basic_example(): void
 {
     Cache::shouldReceive('get')
-         ->with('key')
-         ->andReturn('value');
+        ->with('key')
+        ->andReturn('value');
 
     $response = $this->get('/cache');
 
@@ -126,8 +126,8 @@ The `cache` helper is going to call the `get` method on the class underlying the
     public function test_basic_example(): void
     {
         Cache::shouldReceive('get')
-             ->with('key')
-             ->andReturn('value');
+            ->with('key')
+            ->andReturn('value');
 
         $response = $this->get('/cache');
 

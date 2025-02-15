@@ -111,16 +111,16 @@ Environment variables may be provided to the process via the `env` method. The i
 
 ```php
 $result = Process::forever()
-            ->env(['IMPORT_PATH' => __DIR__])
-            ->run('bash import.sh');
+    ->env(['IMPORT_PATH' => __DIR__])
+    ->run('bash import.sh');
 ```
 
 If you wish to remove an inherited environment variable from the invoked process, you may provide that environment variable with a value of `false`:
 
 ```php
 $result = Process::forever()
-            ->env(['LOAD_PATH' => false])
-            ->run('bash import.sh');
+    ->env(['LOAD_PATH' => false])
+    ->run('bash import.sh');
 ```
 
 <a name="tty-mode"></a>
@@ -504,8 +504,8 @@ If the code you are testing invokes multiple processes with the same command, yo
 ```php
 Process::fake([
     'ls *' => Process::sequence()
-                ->push(Process::result('First invocation'))
-                ->push(Process::result('Second invocation')),
+        ->push(Process::result('First invocation'))
+        ->push(Process::result('Second invocation')),
 ]);
 ```
 
@@ -537,11 +537,11 @@ To properly fake this process, we need to be able to describe how many times the
 ```php
 Process::fake([
     'bash import.sh' => Process::describe()
-            ->output('First line of standard output')
-            ->errorOutput('First line of error output')
-            ->output('Second line of standard output')
-            ->exitCode(0)
-            ->iterations(3),
+        ->output('First line of standard output')
+        ->errorOutput('First line of error output')
+        ->output('Second line of standard output')
+        ->exitCode(0)
+        ->iterations(3),
 ]);
 ```
 

@@ -222,16 +222,16 @@ Sometimes you may have two classes that utilize the same interface, but you wish
     use Illuminate\Support\Facades\Storage;
 
     $this->app->when(PhotoController::class)
-              ->needs(Filesystem::class)
-              ->give(function () {
-                  return Storage::disk('local');
-              });
+        ->needs(Filesystem::class)
+        ->give(function () {
+            return Storage::disk('local');
+        });
 
     $this->app->when([VideoController::class, UploadController::class])
-              ->needs(Filesystem::class)
-              ->give(function () {
-                  return Storage::disk('s3');
-              });
+        ->needs(Filesystem::class)
+        ->give(function () {
+            return Storage::disk('s3');
+        });
 
 <a name="contextual-attributes"></a>
 ### Contextual Attributes
@@ -349,8 +349,8 @@ Sometimes you may have a class that receives some injected classes, but also nee
     use App\Http\Controllers\UserController;
 
     $this->app->when(UserController::class)
-              ->needs('$variableName')
-              ->give($value);
+        ->needs('$variableName')
+        ->give($value);
 
 Sometimes a class may depend on an array of [tagged](#tagging) instances. Using the `giveTagged` method, you may easily inject all of the container bindings with that tag:
 
@@ -397,24 +397,24 @@ Occasionally, you may have a class that receives an array of typed objects using
 Using contextual binding, you may resolve this dependency by providing the `give` method with a closure that returns an array of resolved `Filter` instances:
 
     $this->app->when(Firewall::class)
-              ->needs(Filter::class)
-              ->give(function (Application $app) {
-                    return [
-                        $app->make(NullFilter::class),
-                        $app->make(ProfanityFilter::class),
-                        $app->make(TooLongFilter::class),
-                    ];
-              });
+        ->needs(Filter::class)
+        ->give(function (Application $app) {
+              return [
+                  $app->make(NullFilter::class),
+                  $app->make(ProfanityFilter::class),
+                  $app->make(TooLongFilter::class),
+              ];
+        });
 
 For convenience, you may also just provide an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances:
 
     $this->app->when(Firewall::class)
-              ->needs(Filter::class)
-              ->give([
-                  NullFilter::class,
-                  ProfanityFilter::class,
-                  TooLongFilter::class,
-              ]);
+        ->needs(Filter::class)
+        ->give([
+            NullFilter::class,
+            ProfanityFilter::class,
+            TooLongFilter::class,
+        ]);
 
 <a name="variadic-tag-dependencies"></a>
 #### Variadic Tag Dependencies

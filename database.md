@@ -464,10 +464,10 @@ public function boot(): void
 {
     Event::listen(function (DatabaseBusy $event) {
         Notification::route('mail', 'dev@example.com')
-                ->notify(new DatabaseApproachingMaxConnections(
-                    $event->connectionName,
-                    $event->connections
-                ));
+            ->notify(new DatabaseApproachingMaxConnections(
+                $event->connectionName,
+                $event->connections
+            ));
     });
 }
 ```

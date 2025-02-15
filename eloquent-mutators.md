@@ -515,7 +515,7 @@ Sometimes you may need to apply casts while executing a query, such as when sele
     $users = User::select([
         'users.*',
         'last_posted_at' => Post::selectRaw('MAX(created_at)')
-                ->whereColumn('user_id', 'users.id')
+            ->whereColumn('user_id', 'users.id')
     ])->get();
 
 The `last_posted_at` attribute on the results of this query will be a simple string. It would be wonderful if we could apply a `datetime` cast to this attribute when executing the query. Thankfully, we may accomplish this using the `withCasts` method:
@@ -523,7 +523,7 @@ The `last_posted_at` attribute on the results of this query will be a simple str
     $users = User::select([
         'users.*',
         'last_posted_at' => Post::selectRaw('MAX(created_at)')
-                ->whereColumn('user_id', 'users.id')
+            ->whereColumn('user_id', 'users.id')
     ])->withCasts([
         'last_posted_at' => 'datetime'
     ])->get();

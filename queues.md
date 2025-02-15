@@ -415,16 +415,16 @@ Instead of rate limiting in the handle method, we could define a job middleware 
         public function handle(object $job, Closure $next): void
         {
             Redis::throttle('key')
-                    ->block(0)->allow(1)->every(5)
-                    ->then(function () use ($job, $next) {
-                        // Lock obtained...
-
-                        $next($job);
-                    }, function () use ($job) {
-                        // Could not obtain lock...
-
-                        $job->release(5);
-                    });
+                ->block(0)->allow(1)->every(5)
+                ->then(function () use ($job, $next) {
+                    // Lock obtained...
+    
+                    $next($job);
+                }, function () use ($job) {
+                    // Could not obtain lock...
+    
+                    $job->release(5);
+                });
         }
     }
 
@@ -790,7 +790,7 @@ If you would like to specify that a job should not be immediately available for 
             // ...
 
             ProcessPodcast::dispatch($podcast)
-                        ->delay(now()->addMinutes(10));
+                ->delay(now()->addMinutes(10));
 
             return redirect('/podcasts');
         }
@@ -1058,8 +1058,8 @@ If your application interacts with multiple queue connections, you may specify w
 You may chain the `onConnection` and `onQueue` methods together to specify the connection and the queue for a job:
 
     ProcessPodcast::dispatch($podcast)
-                  ->onConnection('sqs')
-                  ->onQueue('processing');
+        ->onConnection('sqs')
+        ->onQueue('processing');
 
 Alternatively, you may specify the job's connection by calling the `onConnection` method within the job's constructor:
 
@@ -2186,11 +2186,11 @@ public function boot(): void
 {
     Event::listen(function (QueueBusy $event) {
         Notification::route('mail', 'dev@example.com')
-                ->notify(new QueueHasLongWaitTime(
-                    $event->connection,
-                    $event->queue,
-                    $event->size
-                ));
+            ->notify(new QueueHasLongWaitTime(
+                $event->connection,
+                $event->queue,
+                $event->size
+            ));
     });
 }
 ```
