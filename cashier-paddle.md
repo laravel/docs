@@ -1092,13 +1092,13 @@ When your application receives the `subscription_created` event, Cashier will se
 > [!WARNING]  
 > If the customer's subscription is not canceled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
 
-You may determine if the user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
+You may determine if the user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. However, please note that the `->subscription()` method will return `null` if the user doesn't have a subscription and only the `onTrial` method of the user, not the one of the subscription will return `true` if the user is on a [generic trial](#without-payment-method-up-front).
 
     if ($user->onTrial()) {
         // ...
     }
 
-    if ($user->subscription()->onTrial()) {
+    if ($user->subscription()?->onTrial()) {
         // ...
     }
 To determine if an existing trial has expired, you may use the `hasExpiredTrial` methods:
