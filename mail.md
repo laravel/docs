@@ -490,8 +490,8 @@ When attaching files to a message, you may also specify the display name and / o
     {
         return [
             Attachment::fromPath('/path/to/file')
-                    ->as('name.pdf')
-                    ->withMime('application/pdf'),
+                ->as('name.pdf')
+                ->withMime('application/pdf'),
         ];
     }
 
@@ -523,8 +523,8 @@ Of course, you may also specify the attachment's name and MIME type:
     {
         return [
             Attachment::fromStorage('/path/to/file')
-                    ->as('name.pdf')
-                    ->withMime('application/pdf'),
+                ->as('name.pdf')
+                ->withMime('application/pdf'),
         ];
     }
 
@@ -539,8 +539,8 @@ The `fromStorageDisk` method may be used if you need to specify a storage disk o
     {
         return [
             Attachment::fromStorageDisk('s3', '/path/to/file')
-                    ->as('name.pdf')
-                    ->withMime('application/pdf'),
+                ->as('name.pdf')
+                ->withMime('application/pdf'),
         ];
     }
 
@@ -558,7 +558,7 @@ The `fromData` attachment method may be used to attach a raw string of bytes as 
     {
         return [
             Attachment::fromData(fn () => $this->pdf, 'Report.pdf')
-                    ->withMime('application/pdf'),
+                ->withMime('application/pdf'),
         ];
     }
 
@@ -644,8 +644,8 @@ In addition, you may create attachment instances via data that you have in memor
 Laravel also provides additional methods that you may use to customize your attachments. For example, you may use the `as` and `withMime` methods to customize the file's name and MIME type:
 
     return Attachment::fromPath('/path/to/file')
-            ->as('Photo Name')
-            ->withMime('image/jpeg');
+        ->as('Photo Name')
+        ->withMime('image/jpeg');
 
 <a name="headers"></a>
 ### Headers
@@ -885,8 +885,8 @@ Occasionally, you may need to send a mailable to a list of recipients by iterati
 By default, Laravel will send email using the mailer configured as the `default` mailer in your application's `mail` configuration file. However, you may use the `mailer` method to send a message using a specific mailer configuration:
 
     Mail::mailer('postmark')
-            ->to($request->user())
-            ->send(new OrderShipped($order));
+        ->to($request->user())
+        ->send(new OrderShipped($order));
 
 <a name="queueing-mail"></a>
 ### Queueing Mail
@@ -919,8 +919,8 @@ If you wish to delay the delivery of a queued email message, you may use the `la
 Since all mailable classes generated using the `make:mail` command make use of the `Illuminate\Bus\Queueable` trait, you may call the `onQueue` and `onConnection` methods on any mailable class instance, allowing you to specify the connection and queue name for the message:
 
     $message = (new OrderShipped($order))
-                    ->onConnection('sqs')
-                    ->onQueue('emails');
+        ->onConnection('sqs')
+        ->onQueue('emails');
 
     Mail::to($request->user())
         ->cc($moreUsers)
@@ -1223,8 +1223,8 @@ The mailable instance also includes several helpful methods for examining the at
     Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) {
         return $mail->hasAttachment(
             Attachment::fromPath('/path/to/file')
-                    ->as('name.pdf')
-                    ->withMime('application/pdf')
+                ->as('name.pdf')
+                ->withMime('application/pdf')
         );
     });
 

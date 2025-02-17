@@ -175,10 +175,10 @@ These methods may be combined with additional constraints to create even more fi
 
     // Run hourly from 8 AM to 5 PM on weekdays...
     Schedule::command('foo')
-              ->weekdays()
-              ->hourly()
-              ->timezone('America/Chicago')
-              ->between('8:00', '17:00');
+        ->weekdays()
+        ->hourly()
+        ->timezone('America/Chicago')
+        ->between('8:00', '17:00');
 
 A list of additional schedule constraints may be found below:
 
@@ -211,8 +211,8 @@ The `days` method may be used to limit the execution of a task to specific days 
     use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('emails:send')
-                    ->hourly()
-                    ->days([0, 3]);
+        ->hourly()
+        ->days([0, 3]);
 
 Alternatively, you may use the constants available on the `Illuminate\Console\Scheduling\Schedule` class when defining the days on which a task should run:
 
@@ -220,8 +220,8 @@ Alternatively, you may use the constants available on the `Illuminate\Console\Sc
     use Illuminate\Console\Scheduling\Schedule;
 
     Facades\Schedule::command('emails:send')
-                    ->hourly()
-                    ->days([Schedule::SUNDAY, Schedule::WEDNESDAY]);
+        ->hourly()
+        ->days([Schedule::SUNDAY, Schedule::WEDNESDAY]);
 
 <a name="between-time-constraints"></a>
 #### Between Time Constraints
@@ -229,14 +229,14 @@ Alternatively, you may use the constants available on the `Illuminate\Console\Sc
 The `between` method may be used to limit the execution of a task based on the time of day:
 
     Schedule::command('emails:send')
-                        ->hourly()
-                        ->between('7:00', '22:00');
+        ->hourly()
+        ->between('7:00', '22:00');
 
 Similarly, the `unlessBetween` method can be used to exclude the execution of a task for a period of time:
 
     Schedule::command('emails:send')
-                        ->hourly()
-                        ->unlessBetween('23:00', '4:00');
+        ->hourly()
+        ->unlessBetween('23:00', '4:00');
 
 <a name="truth-test-constraints"></a>
 #### Truth Test Constraints
@@ -261,8 +261,8 @@ When using chained `when` methods, the scheduled command will only execute if al
 The `environments` method may be used to execute tasks only on the given environments (as defined by the `APP_ENV` [environment variable](/docs/{{version}}/configuration#environment-configuration)):
 
     Schedule::command('emails:send')
-                ->daily()
-                ->environments(['staging', 'production']);
+        ->daily()
+        ->environments(['staging', 'production']);
 
 <a name="timezones"></a>
 ### Timezones
@@ -272,8 +272,8 @@ Using the `timezone` method, you may specify that a scheduled task's time should
     use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('report:generate')
-             ->timezone('America/New_York')
-             ->at('2:00')
+        ->timezone('America/New_York')
+        ->at('2:00')
 
 If you are repeatedly assigning the same timezone to all of your scheduled tasks, you can specify which timezone should be assigned to all schedules by defining a `schedule_timezone` option within your application's `app` configuration file:
 
@@ -314,9 +314,9 @@ To indicate that the task should run on only one server, use the `onOneServer` m
     use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('report:generate')
-                    ->fridays()
-                    ->at('17:00')
-                    ->onOneServer();
+        ->fridays()
+        ->at('17:00')
+        ->onOneServer();
 
 <a name="naming-unique-jobs"></a>
 #### Naming Single Server Jobs
@@ -325,14 +325,14 @@ Sometimes you may need to schedule the same job to be dispatched with different 
 
 ```php
 Schedule::job(new CheckUptime('https://laravel.com'))
-            ->name('check_uptime:laravel.com')
-            ->everyFiveMinutes()
-            ->onOneServer();
+    ->name('check_uptime:laravel.com')
+    ->everyFiveMinutes()
+    ->onOneServer();
 
 Schedule::job(new CheckUptime('https://vapor.laravel.com'))
-            ->name('check_uptime:vapor.laravel.com')
-            ->everyFiveMinutes()
-            ->onOneServer();
+    ->name('check_uptime:vapor.laravel.com')
+    ->everyFiveMinutes()
+    ->onOneServer();
 ```
 
 Similarly, scheduled closures must be assigned a name if they are intended to be run on one server:
@@ -352,8 +352,8 @@ By default, multiple tasks scheduled at the same time will execute sequentially 
     use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('analytics:report')
-             ->daily()
-             ->runInBackground();
+        ->daily()
+        ->runInBackground();
 
 > [!WARNING]  
 > The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods.
@@ -444,27 +444,27 @@ The Laravel scheduler provides several convenient methods for working with the o
     use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('emails:send')
-             ->daily()
-             ->sendOutputTo($filePath);
+        ->daily()
+        ->sendOutputTo($filePath);
 
 If you would like to append the output to a given file, you may use the `appendOutputTo` method:
 
     Schedule::command('emails:send')
-             ->daily()
-             ->appendOutputTo($filePath);
+        ->daily()
+        ->appendOutputTo($filePath);
 
 Using the `emailOutputTo` method, you may email the output to an email address of your choice. Before emailing the output of a task, you should configure Laravel's [email services](/docs/{{version}}/mail):
 
     Schedule::command('report:generate')
-             ->daily()
-             ->sendOutputTo($filePath)
-             ->emailOutputTo('taylor@example.com');
+        ->daily()
+        ->sendOutputTo($filePath)
+        ->emailOutputTo('taylor@example.com');
 
 If you only want to email the output if the scheduled Artisan or system command terminates with a non-zero exit code, use the `emailOutputOnFailure` method:
 
     Schedule::command('report:generate')
-             ->daily()
-             ->emailOutputOnFailure('taylor@example.com');
+        ->daily()
+        ->emailOutputOnFailure('taylor@example.com');
 
 > [!WARNING]  
 > The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods.
@@ -477,37 +477,37 @@ Using the `before` and `after` methods, you may specify code to be executed befo
     use Illuminate\Support\Facades\Schedule;
 
     Schedule::command('emails:send')
-             ->daily()
-             ->before(function () {
-                 // The task is about to execute...
-             })
-             ->after(function () {
-                 // The task has executed...
-             });
+        ->daily()
+        ->before(function () {
+            // The task is about to execute...
+        })
+        ->after(function () {
+            // The task has executed...
+        });
 
 The `onSuccess` and `onFailure` methods allow you to specify code to be executed if the scheduled task succeeds or fails. A failure indicates that the scheduled Artisan or system command terminated with a non-zero exit code:
 
     Schedule::command('emails:send')
-             ->daily()
-             ->onSuccess(function () {
-                 // The task succeeded...
-             })
-             ->onFailure(function () {
-                 // The task failed...
-             });
+        ->daily()
+        ->onSuccess(function () {
+            // The task succeeded...
+        })
+        ->onFailure(function () {
+            // The task failed...
+        });
 
 If output is available from your command, you may access it in your `after`, `onSuccess` or `onFailure` hooks by type-hinting an `Illuminate\Support\Stringable` instance as the `$output` argument of your hook's closure definition:
 
     use Illuminate\Support\Stringable;
 
     Schedule::command('emails:send')
-             ->daily()
-             ->onSuccess(function (Stringable $output) {
-                 // The task succeeded...
-             })
-             ->onFailure(function (Stringable $output) {
-                 // The task failed...
-             });
+        ->daily()
+        ->onSuccess(function (Stringable $output) {
+            // The task succeeded...
+        })
+        ->onFailure(function (Stringable $output) {
+            // The task failed...
+        });
 
 <a name="pinging-urls"></a>
 #### Pinging URLs
@@ -515,28 +515,28 @@ If output is available from your command, you may access it in your `after`, `on
 Using the `pingBefore` and `thenPing` methods, the scheduler can automatically ping a given URL before or after a task is executed. This method is useful for notifying an external service, such as [Envoyer](https://envoyer.io), that your scheduled task is beginning or has finished execution:
 
     Schedule::command('emails:send')
-             ->daily()
-             ->pingBefore($url)
-             ->thenPing($url);
+        ->daily()
+        ->pingBefore($url)
+        ->thenPing($url);
 
 The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL only if the task succeeds or fails. A failure indicates that the scheduled Artisan or system command terminated with a non-zero exit code:
 
     Schedule::command('emails:send')
-             ->daily()
-             ->pingOnSuccess($successUrl)
-             ->pingOnFailure($failureUrl);
+        ->daily()
+        ->pingOnSuccess($successUrl)
+        ->pingOnFailure($failureUrl);
 
 The `pingBeforeIf`,`thenPingIf`,`pingOnSuccessIf`, and `pingOnFailureIf` methods may be used to ping a given URL only if a given condition is `true`:
 
     Schedule::command('emails:send')
-             ->daily()
-             ->pingBeforeIf($condition, $url)
-             ->thenPingIf($condition, $url);             
+        ->daily()
+        ->pingBeforeIf($condition, $url)
+        ->thenPingIf($condition, $url);             
 
     Schedule::command('emails:send')
-             ->daily()
-             ->pingOnSuccessIf($condition, $successUrl)
-             ->pingOnFailureIf($condition, $failureUrl);
+        ->daily()
+        ->pingOnSuccessIf($condition, $successUrl)
+        ->pingOnFailureIf($condition, $failureUrl);
 
 <a name="events"></a>
 ## Events

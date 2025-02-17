@@ -169,8 +169,8 @@ DB::table('users')->where(function ($query) {
 })->chunkById(100, function (Collection $users) {
     foreach ($users as $user) {
         DB::table('users')
-          ->where('id', $user->id)
-          ->update(['credits' => 3]);
+            ->where('id', $user->id)
+            ->update(['credits' => 3]);
     }
 });
 ```
@@ -380,7 +380,7 @@ If you would like to use a "where" clause on your joins, you may use the `where`
     DB::table('users')
         ->join('contacts', function (JoinClause $join) {
             $join->on('users.id', '=', 'contacts.user_id')
-                 ->where('contacts.user_id', '>', 5);
+                ->where('contacts.user_id', '>', 5);
         })
         ->get();
 
@@ -1137,8 +1137,8 @@ In the example above, Laravel will attempt to insert two records. If a record al
 In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs indicating the columns to be updated. The `update` method returns the number of affected rows. You may constrain the `update` query using `where` clauses:
 
     $affected = DB::table('users')
-                  ->where('id', 1)
-                  ->update(['votes' => 1]);
+        ->where('id', 1)
+        ->update(['votes' => 1]);
 
 <a name="update-or-insert"></a>
 #### Update or Insert

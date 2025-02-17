@@ -112,9 +112,9 @@ use Illuminate\Support\Facades\Cache;
 
 test('get index', function () {
     Cache::shouldReceive('get')
-                ->once()
-                ->with('key')
-                ->andReturn('value');
+        ->once()
+        ->with('key')
+        ->andReturn('value');
 
     $response = $this->get('/users');
 
@@ -135,9 +135,9 @@ class UserControllerTest extends TestCase
     public function test_get_index(): void
     {
         Cache::shouldReceive('get')
-                    ->once()
-                    ->with('key')
-                    ->andReturn('value');
+            ->once()
+            ->with('key')
+            ->andReturn('value');
 
         $response = $this->get('/users');
 

@@ -2860,9 +2860,9 @@ The `when` method invokes the given closure if a given condition is `true`. The 
     use Illuminate\Support\Stringable;
 
     $string = Str::of('Taylor')
-                    ->when(true, function (Stringable $string) {
-                        return $string->append(' Otwell');
-                    });
+        ->when(true, function (Stringable $string) {
+            return $string->append(' Otwell');
+        });
 
     // 'Taylor Otwell'
 
@@ -2877,9 +2877,9 @@ The `whenContains` method invokes the given closure if the string contains the g
     use Illuminate\Support\Stringable;
 
     $string = Str::of('tony stark')
-                ->whenContains('tony', function (Stringable $string) {
-                    return $string->title();
-                });
+        ->whenContains('tony', function (Stringable $string) {
+            return $string->title();
+        });
 
     // 'Tony Stark'
 
@@ -2891,9 +2891,9 @@ You may also pass an array of values to determine if the given string contains a
     use Illuminate\Support\Stringable;
 
     $string = Str::of('tony stark')
-                ->whenContains(['tony', 'hulk'], function (Stringable $string) {
-                    return $string->title();
-                });
+        ->whenContains(['tony', 'hulk'], function (Stringable $string) {
+            return $string->title();
+        });
 
     // Tony Stark
 
@@ -2906,9 +2906,9 @@ The `whenContainsAll` method invokes the given closure if the string contains al
     use Illuminate\Support\Stringable;
 
     $string = Str::of('tony stark')
-                    ->whenContainsAll(['tony', 'stark'], function (Stringable $string) {
-                        return $string->title();
-                    });
+        ->whenContainsAll(['tony', 'stark'], function (Stringable $string) {
+            return $string->title();
+        });
 
     // 'Tony Stark'
 

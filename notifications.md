@@ -332,10 +332,10 @@ Sometimes you may need to send a notification to someone who is not stored as a 
     use Illuminate\Support\Facades\Notification;
 
     Notification::route('mail', 'taylor@example.com')
-                ->route('vonage', '5555555555')
-                ->route('slack', '#slack-channel')
-                ->route('broadcast', [new Channel('channel-name')])
-                ->notify(new InvoicePaid($invoice));
+        ->route('vonage', '5555555555')
+        ->route('slack', '#slack-channel')
+        ->route('broadcast', [new Channel('channel-name')])
+        ->notify(new InvoicePaid($invoice));
 
 If you would like to provide the recipient's name when sending an on-demand notification to the `mail` route, you may provide an array that contains the email address as the key and the name as the value of the first element in the array:
 
@@ -368,11 +368,11 @@ The `MailMessage` class contains a few simple methods to help you build transact
         $url = url('/invoice/'.$this->invoice->id);
 
         return (new MailMessage)
-                    ->greeting('Hello!')
-                    ->line('One of your invoices has been paid!')
-                    ->lineIf($this->amount > 0, "Amount paid: {$this->amount}")
-                    ->action('View Invoice', $url)
-                    ->line('Thank you for using our application!');
+            ->greeting('Hello!')
+            ->line('One of your invoices has been paid!')
+            ->lineIf($this->amount > 0, "Amount paid: {$this->amount}")
+            ->action('View Invoice', $url)
+            ->line('Thank you for using our application!');
     }
 
 > [!NOTE]  
@@ -396,9 +396,9 @@ Some notifications inform users of errors, such as a failed invoice payment. You
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->error()
-                    ->subject('Invoice Payment Failed')
-                    ->line('...');
+            ->error()
+            ->subject('Invoice Payment Failed')
+            ->line('...');
     }
 
 <a name="other-mail-notification-formatting-options"></a>
@@ -452,8 +452,8 @@ By default, the email's sender / from address is defined in the `config/mail.php
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->from('barrett@example.com', 'Barrett Blair')
-                    ->line('...');
+            ->from('barrett@example.com', 'Barrett Blair')
+            ->line('...');
     }
 
 <a name="customizing-the-recipient"></a>
@@ -499,8 +499,8 @@ By default, the email's subject is the class name of the notification formatted 
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('Notification Subject')
-                    ->line('...');
+            ->subject('Notification Subject')
+            ->line('...');
     }
 
 <a name="customizing-the-mailer"></a>
@@ -514,8 +514,8 @@ By default, the email notification will be sent using the default mailer defined
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->mailer('postmark')
-                    ->line('...');
+            ->mailer('postmark')
+            ->line('...');
     }
 
 <a name="customizing-the-templates"></a>
@@ -538,8 +538,8 @@ To add attachments to an email notification, use the `attach` method while build
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->greeting('Hello!')
-                    ->attach('/path/to/file');
+            ->greeting('Hello!')
+            ->attach('/path/to/file');
     }
 
 > [!NOTE]  
@@ -553,11 +553,11 @@ When attaching files to a message, you may also specify the display name and / o
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->greeting('Hello!')
-                    ->attach('/path/to/file', [
-                        'as' => 'name.pdf',
-                        'mime' => 'application/pdf',
-                    ]);
+            ->greeting('Hello!')
+            ->attach('/path/to/file', [
+                'as' => 'name.pdf',
+                'mime' => 'application/pdf',
+            ]);
     }
 
 Unlike attaching files in mailable objects, you may not attach a file directly from a storage disk using `attachFromStorage`. You should rather use the `attach` method with an absolute path to the file on the storage disk. Alternatively, you could return a [mailable](/docs/{{version}}/mail#generating-mailables) from the `toMail` method:
@@ -570,8 +570,8 @@ Unlike attaching files in mailable objects, you may not attach a file directly f
     public function toMail(object $notifiable): Mailable
     {
         return (new InvoicePaidMailable($this->invoice))
-                    ->to($notifiable->email)
-                    ->attachFromStorage('/path/to/file');
+            ->to($notifiable->email)
+            ->attachFromStorage('/path/to/file');
     }
 
 When necessary, multiple files may be attached to a message using the `attachMany` method:
@@ -582,14 +582,14 @@ When necessary, multiple files may be attached to a message using the `attachMan
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->greeting('Hello!')
-                    ->attachMany([
-                        '/path/to/forge.svg',
-                        '/path/to/vapor.svg' => [
-                            'as' => 'Logo.svg',
-                            'mime' => 'image/svg+xml',
-                        ],
-                    ]);
+            ->greeting('Hello!')
+            ->attachMany([
+                '/path/to/forge.svg',
+                '/path/to/vapor.svg' => [
+                    'as' => 'Logo.svg',
+                    'mime' => 'image/svg+xml',
+                ],
+            ]);
     }
 
 <a name="raw-data-attachments"></a>
@@ -603,10 +603,10 @@ The `attachData` method may be used to attach a raw string of bytes as an attach
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->greeting('Hello!')
-                    ->attachData($this->pdf, 'name.pdf', [
-                        'mime' => 'application/pdf',
-                    ]);
+            ->greeting('Hello!')
+            ->attachData($this->pdf, 'name.pdf', [
+                'mime' => 'application/pdf',
+            ]);
     }
 
 <a name="adding-tags-metadata"></a>
@@ -620,9 +620,9 @@ Some third-party email providers such as Mailgun and Postmark support message "t
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->greeting('Comment Upvoted!')
-                    ->tag('upvote')
-                    ->metadata('comment_id', $this->comment->id);
+            ->greeting('Comment Upvoted!')
+            ->tag('upvote')
+            ->metadata('comment_id', $this->comment->id);
     }
 
 If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
@@ -642,11 +642,11 @@ The `withSymfonyMessage` method of the `MailMessage` class allows you to registe
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->withSymfonyMessage(function (Email $message) {
-                        $message->getHeaders()->addTextHeader(
-                            'Custom-Header', 'Header Value'
-                        );
-                    });
+            ->withSymfonyMessage(function (Email $message) {
+                $message->getHeaders()->addTextHeader(
+                    'Custom-Header', 'Header Value'
+                );
+            });
     }
 
 <a name="using-mailables"></a>
@@ -663,7 +663,7 @@ If needed, you may return a full [mailable object](/docs/{{version}}/mail) from 
     public function toMail(object $notifiable): Mailable
     {
         return (new InvoicePaidMailable($this->invoice))
-                    ->to($notifiable->email);
+            ->to($notifiable->email);
     }
 
 <a name="mailables-and-on-demand-notifications"></a>
@@ -685,7 +685,7 @@ If you are sending an [on-demand notification](#on-demand-notifications), the `$
             : $notifiable->email;
 
         return (new InvoicePaidMailable($this->invoice))
-                    ->to($address);
+            ->to($address);
     }
 
 <a name="previewing-mail-notifications"></a>
@@ -700,7 +700,7 @@ When designing a mail notification template, it is convenient to quickly preview
         $invoice = Invoice::find(1);
 
         return (new InvoicePaid($invoice))
-                    ->toMail($invoice->user);
+            ->toMail($invoice->user);
     });
 
 <a name="markdown-mail-notifications"></a>
@@ -727,8 +727,8 @@ Like all other mail notifications, notifications that use Markdown templates sho
         $url = url('/invoice/'.$this->invoice->id);
 
         return (new MailMessage)
-                    ->subject('Invoice Paid')
-                    ->markdown('mail.invoice.paid', ['url' => $url]);
+            ->subject('Invoice Paid')
+            ->markdown('mail.invoice.paid', ['url' => $url]);
     }
 
 <a name="writing-the-message"></a>
@@ -813,9 +813,9 @@ To customize the theme for an individual notification, you may call the `theme` 
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->theme('invoice')
-                    ->subject('Invoice Paid')
-                    ->markdown('mail.invoice.paid', ['url' => $url]);
+            ->theme('invoice')
+            ->subject('Invoice Paid')
+            ->markdown('mail.invoice.paid', ['url' => $url]);
     }
 
 <a name="database-notifications"></a>
@@ -951,8 +951,8 @@ The `broadcast` channel broadcasts notifications using Laravel's [event broadcas
 All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:
 
     return (new BroadcastMessage($data))
-                    ->onConnection('sqs')
-                    ->onQueue('broadcasts');
+        ->onConnection('sqs')
+        ->onQueue('broadcasts');
 
 <a name="customizing-the-notification-type"></a>
 #### Customizing the Notification Type
@@ -1032,7 +1032,7 @@ If a notification supports being sent as an SMS, you should define a `toVonage` 
     public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
-                    ->content('Your SMS message content');
+            ->content('Your SMS message content');
     }
 
 <a name="unicode-content"></a>
@@ -1048,8 +1048,8 @@ If your SMS message will contain unicode characters, you should call the `unicod
     public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
-                    ->content('Your unicode message')
-                    ->unicode();
+            ->content('Your unicode message')
+            ->unicode();
     }
 
 <a name="customizing-the-from-number"></a>
@@ -1065,8 +1065,8 @@ If you would like to send some notifications from a phone number that is differe
     public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
-                    ->content('Your SMS message content')
-                    ->from('15554443333');
+            ->content('Your SMS message content')
+            ->from('15554443333');
     }
 
 <a name="adding-a-client-reference"></a>
@@ -1082,8 +1082,8 @@ If you would like to keep track of costs per user, team, or client, you may add 
     public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
-                    ->clientReference((string) $notifiable->id)
-                    ->content('Your SMS message content');
+            ->clientReference((string) $notifiable->id)
+            ->content('Your SMS message content');
     }
 
 <a name="routing-sms-notifications"></a>
@@ -1158,20 +1158,20 @@ If a notification supports being sent as a Slack message, you should define a `t
     public function toSlack(object $notifiable): SlackMessage
     {
         return (new SlackMessage)
-                ->text('One of your invoices has been paid!')
-                ->headerBlock('Invoice Paid')
-                ->contextBlock(function (ContextBlock $block) {
-                    $block->text('Customer #1234');
-                })
-                ->sectionBlock(function (SectionBlock $block) {
-                    $block->text('An invoice has been paid.');
-                    $block->field("*Invoice No:*\n1000")->markdown();
-                    $block->field("*Invoice Recipient:*\ntaylor@laravel.com")->markdown();
-                })
-                ->dividerBlock()
-                ->sectionBlock(function (SectionBlock $block) {
-                    $block->text('Congratulations!');
-                });
+            ->text('One of your invoices has been paid!')
+            ->headerBlock('Invoice Paid')
+            ->contextBlock(function (ContextBlock $block) {
+                $block->text('Customer #1234');
+            })
+            ->sectionBlock(function (SectionBlock $block) {
+                $block->text('An invoice has been paid.');
+                $block->field("*Invoice No:*\n1000")->markdown();
+                $block->field("*Invoice Recipient:*\ntaylor@laravel.com")->markdown();
+            })
+            ->dividerBlock()
+            ->sectionBlock(function (SectionBlock $block) {
+                $block->text('Congratulations!');
+            });
     }
 
 <a name="using-slacks-block-kit-builder-template"></a>
@@ -1209,7 +1209,7 @@ Instead of using the fluent message builder methods to construct your Block Kit 
         JSON;
 
         return (new SlackMessage)
-                ->usingBlockKitTemplate($template);
+            ->usingBlockKitTemplate($template);
     }
 
 <a name="slack-interactivity"></a>
@@ -1230,21 +1230,21 @@ In the following example, which utilizes the `actionsBlock` method, Slack will s
     public function toSlack(object $notifiable): SlackMessage
     {
         return (new SlackMessage)
-                ->text('One of your invoices has been paid!')
-                ->headerBlock('Invoice Paid')
-                ->contextBlock(function (ContextBlock $block) {
-                    $block->text('Customer #1234');
-                })
-                ->sectionBlock(function (SectionBlock $block) {
-                    $block->text('An invoice has been paid.');
-                })
-                ->actionsBlock(function (ActionsBlock $block) {
-                     // ID defaults to "button_acknowledge_invoice"...
-                    $block->button('Acknowledge Invoice')->primary();
-
-                    // Manually configure the ID...
-                    $block->button('Deny')->danger()->id('deny_invoice');
-                });
+            ->text('One of your invoices has been paid!')
+            ->headerBlock('Invoice Paid')
+            ->contextBlock(function (ContextBlock $block) {
+                $block->text('Customer #1234');
+            })
+            ->sectionBlock(function (SectionBlock $block) {
+                $block->text('An invoice has been paid.');
+            })
+            ->actionsBlock(function (ActionsBlock $block) {
+                 // ID defaults to "button_acknowledge_invoice"...
+                $block->button('Acknowledge Invoice')->primary();
+    
+                // Manually configure the ID...
+                $block->button('Deny')->danger()->id('deny_invoice');
+            });
     }
 
 <a name="slack-confirmation-modals"></a>
@@ -1264,25 +1264,25 @@ If you would like users to be required to confirm an action before it is perform
     public function toSlack(object $notifiable): SlackMessage
     {
         return (new SlackMessage)
-                ->text('One of your invoices has been paid!')
-                ->headerBlock('Invoice Paid')
-                ->contextBlock(function (ContextBlock $block) {
-                    $block->text('Customer #1234');
-                })
-                ->sectionBlock(function (SectionBlock $block) {
-                    $block->text('An invoice has been paid.');
-                })
-                ->actionsBlock(function (ActionsBlock $block) {
-                    $block->button('Acknowledge Invoice')
-                        ->primary()
-                        ->confirm(
-                            'Acknowledge the payment and send a thank you email?',
-                            function (ConfirmObject $dialog) {
-                                $dialog->confirm('Yes');
-                                $dialog->deny('No');
-                            }
-                        );
-                });
+            ->text('One of your invoices has been paid!')
+            ->headerBlock('Invoice Paid')
+            ->contextBlock(function (ContextBlock $block) {
+                $block->text('Customer #1234');
+            })
+            ->sectionBlock(function (SectionBlock $block) {
+                $block->text('An invoice has been paid.');
+            })
+            ->actionsBlock(function (ActionsBlock $block) {
+                $block->button('Acknowledge Invoice')
+                    ->primary()
+                    ->confirm(
+                        'Acknowledge the payment and send a thank you email?',
+                        function (ConfirmObject $dialog) {
+                            $dialog->confirm('Yes');
+                            $dialog->deny('No');
+                        }
+                    );
+            });
     }
 
 <a name="inspecting-slack-blocks"></a>

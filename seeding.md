@@ -70,9 +70,9 @@ For example, let's create 50 users that each has one related post:
     public function run(): void
     {
         User::factory()
-                ->count(50)
-                ->hasPosts(1)
-                ->create();
+            ->count(50)
+            ->hasPosts(1)
+            ->create();
     }
 
 <a name="calling-additional-seeders"></a>
