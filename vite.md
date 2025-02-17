@@ -421,7 +421,7 @@ When referencing relative asset paths, you should remember that the paths are re
 
 Consider the following project structure:
 
-```nothing
+```text
 public/
   taylor.png
 resources/
@@ -646,7 +646,7 @@ ASSET_URL=https://cdn.example.com
 
 After configuring the asset URL, all re-written URLs to your assets will be prefixed with the configured value:
 
-```nothing
+```text
 https://cdn.example.com/build/assets/app.9dce8d17.js
 ```
 

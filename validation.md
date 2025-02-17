@@ -824,7 +824,7 @@ Some of Laravel's built-in validation rule error messages contain a `:value` pla
 
 If this validation rule fails, it will produce the following error message:
 
-```none
+```text
 The credit card number field is required when payment type is cc.
 ```
 
@@ -841,7 +841,7 @@ Instead of displaying `cc` as the payment type value, you may specify a more use
 
 After defining this value, the validation rule will produce the following error message:
 
-```none
+```text
 The credit card number field is required when payment type is credit card.
 ```
 
