@@ -139,6 +139,27 @@ If the `--log-level` option is explicitly passed to the `php artisan octane:star
 
 You may consult [the official FrankenPHP documentation](https://frankenphp.dev/docs/docker/) for more information on running FrankenPHP with Docker.
 
+<a name="frankenphp-configuration"></a>
+#### Configuring FrankenPHP with Laravel
+
+When integrating FrankenPHP with Laravel, modifying `php.ini` settings requires placing the `php.ini` file in one of two locations: either the `/lib` directory or the same directory as the binary (by default, the project root).
+
+To adjust PHP configuration, create a `php.ini` file in one of these locations and define your settings. For example, to increase the memory limit and file upload size, you can add the following to your `./php.ini` file:
+
+```ini
+# php.ini
+memory_limit = 512M
+upload_max_filesize = 100M
+post_max_size = 100M
+```
+
+If you're using the Docker image, you must store your `php.ini` in the directory specified in the `$PHP_INI_DIR` environment variable. FrankenPHP will then scan and load configuration files from `$PHP_INI_DIR/*.ini`.
+
+For more details, refer to the [FrankenPHP configuration documentation](https://frankenphp.dev/docs/config/).
+
+> [!NOTE]
+> After making changes to `php.ini`, restart your FrankenPHP worker for the updates to take effect.
+
 <a name="roadrunner"></a>
 ### RoadRunner
 
