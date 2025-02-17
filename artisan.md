@@ -657,17 +657,21 @@ Sometimes, you may need more manual control over how a progress bar is advanced.
 
 By default, Laravel automatically registers all commands within the `app/Console/Commands` directory. However, you can instruct Laravel to scan other directories for Artisan commands using the `withCommands` method in your application's `bootstrap/app.php` file:
 
-    ->withCommands([
-        __DIR__.'/../app/Domain/Orders/Commands',
-    ])
+```php
+->withCommands([
+    __DIR__.'/../app/Domain/Orders/Commands',
+])
+```
 
 If necessary, you may also manually register commands by providing the command's class name to the `withCommands` method:
 
-    use App\Domain\Orders\Commands\SendEmails;
+```php
+use App\Domain\Orders\Commands\SendEmails;
 
-    ->withCommands([
-        SendEmails::class,
-    ])
+->withCommands([
+    SendEmails::class,
+])
+```
 
 When Artisan boots, all the commands in your application will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan.
 
@@ -676,110 +680,130 @@ When Artisan boots, all the commands in your application will be resolved by the
 
 Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to execute an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts either the command's signature name or class name as its first argument, and an array of command parameters as the second argument. The exit code will be returned:
 
-    use Illuminate\Support\Facades\Artisan;
+```php
+use Illuminate\Support\Facades\Artisan;
 
-    Route::post('/user/{user}/mail', function (string $user) {
-        $exitCode = Artisan::call('mail:send', [
-            'user' => $user, '--queue' => 'default'
-        ]);
+Route::post('/user/{user}/mail', function (string $user) {
+    $exitCode = Artisan::call('mail:send', [
+        'user' => $user, '--queue' => 'default'
+    ]);
 
-        // ...
-    });
+    // ...
+});
+```
 
 Alternatively, you may pass the entire Artisan command to the `call` method as a string:
 
-    Artisan::call('mail:send 1 --queue=default');
+```php
+Artisan::call('mail:send 1 --queue=default');
+```
 
 <a name="passing-array-values"></a>
 #### Passing Array Values
 
 If your command defines an option that accepts an array, you may pass an array of values to that option:
 
-    use Illuminate\Support\Facades\Artisan;
+```php
+use Illuminate\Support\Facades\Artisan;
 
-    Route::post('/mail', function () {
-        $exitCode = Artisan::call('mail:send', [
-            '--id' => [5, 13]
-        ]);
-    });
+Route::post('/mail', function () {
+    $exitCode = Artisan::call('mail:send', [
+        '--id' => [5, 13]
+    ]);
+});
+```
 
 <a name="passing-boolean-values"></a>
 #### Passing Boolean Values
 
 If you need to specify the value of an option that does not accept string values, such as the `--force` flag on the `migrate:refresh` command, you should pass `true` or `false` as the value of the option:
 
-    $exitCode = Artisan::call('migrate:refresh', [
-        '--force' => true,
-    ]);
+```php
+$exitCode = Artisan::call('migrate:refresh', [
+    '--force' => true,
+]);
+```
 
 <a name="queueing-artisan-commands"></a>
 #### Queueing Artisan Commands
 
 Using the `queue` method on the `Artisan` facade, you may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/{{version}}/queues). Before using this method, make sure you have configured your queue and are running a queue listener:
 
-    use Illuminate\Support\Facades\Artisan;
+```php
+use Illuminate\Support\Facades\Artisan;
 
-    Route::post('/user/{user}/mail', function (string $user) {
-        Artisan::queue('mail:send', [
-            'user' => $user, '--queue' => 'default'
-        ]);
+Route::post('/user/{user}/mail', function (string $user) {
+    Artisan::queue('mail:send', [
+        'user' => $user, '--queue' => 'default'
+    ]);
 
-        // ...
-    });
+    // ...
+});
+```
 
 Using the `onConnection` and `onQueue` methods, you may specify the connection or queue the Artisan command should be dispatched to:
 
-    Artisan::queue('mail:send', [
-        'user' => 1, '--queue' => 'default'
-    ])->onConnection('redis')->onQueue('commands');
+```php
+Artisan::queue('mail:send', [
+    'user' => 1, '--queue' => 'default'
+])->onConnection('redis')->onQueue('commands');
+```
 
 <a name="calling-commands-from-other-commands"></a>
 ### Calling Commands From Other Commands
 
 Sometimes you may wish to call other commands from an existing Artisan command. You may do so using the `call` method. This `call` method accepts the command name and an array of command arguments / options:
 
-    /**
-     * Execute the console command.
-     */
-    public function handle(): void
-    {
-        $this->call('mail:send', [
-            'user' => 1, '--queue' => 'default'
-        ]);
+```php
+/**
+ * Execute the console command.
+ */
+public function handle(): void
+{
+    $this->call('mail:send', [
+        'user' => 1, '--queue' => 'default'
+    ]);
 
-        // ...
-    }
+    // ...
+}
+```
 
 If you would like to call another console command and suppress all of its output, you may use the `callSilently` method. The `callSilently` method has the same signature as the `call` method:
 
-    $this->callSilently('mail:send', [
-        'user' => 1, '--queue' => 'default'
-    ]);
+```php
+$this->callSilently('mail:send', [
+    'user' => 1, '--queue' => 'default'
+]);
+```
 
 <a name="signal-handling"></a>
 ## Signal Handling
 
 As you may know, operating systems allow signals to be sent to running processes. For example, the `SIGTERM` signal is how operating systems ask a program to terminate. If you wish to listen for signals in your Artisan console commands and execute code when they occur, you may use the `trap` method:
 
-    /**
-     * Execute the console command.
-     */
-    public function handle(): void
-    {
-        $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);
+```php
+/**
+ * Execute the console command.
+ */
+public function handle(): void
+{
+    $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);
 
-        while ($this->shouldKeepRunning) {
-            // ...
-        }
+    while ($this->shouldKeepRunning) {
+        // ...
     }
+}
+```
 
 To listen for multiple signals at once, you may provide an array of signals to the `trap` method:
 
-    $this->trap([SIGTERM, SIGQUIT], function (int $signal) {
-        $this->shouldKeepRunning = false;
+```php
+$this->trap([SIGTERM, SIGQUIT], function (int $signal) {
+    $this->shouldKeepRunning = false;
 
-        dump($signal); // SIGTERM / SIGQUIT
-    });
+    dump($signal); // SIGTERM / SIGQUIT
+});
+```
 
 <a name="stub-customization"></a>
 ## Stub Customization
