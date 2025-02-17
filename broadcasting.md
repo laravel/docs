@@ -93,13 +93,13 @@ Before broadcasting any events, you should first configure and run a [queue work
 
 When running the `install:broadcasting` command, you will be prompted to install [Laravel Reverb](/docs/{{version}}/reverb). Of course, you may also install Reverb manually using the Composer package manager.
 
-```sh
+```shell
 composer require laravel/reverb
 ```
 
 Once the package is installed, you may run Reverb's installation command to publish the configuration, add Reverb's required environment variables, and enable event broadcasting in your application:
 
-```sh
+```shell
 php artisan reverb:install
 ```
 
