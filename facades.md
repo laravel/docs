@@ -17,12 +17,14 @@ Laravel facades serve as "static proxies" to underlying classes in the service c
 
 All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespace. So, we can easily access a facade like so:
 
-    use Illuminate\Support\Facades\Cache;
-    use Illuminate\Support\Facades\Route;
+```php
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 
-    Route::get('/cache', function () {
-        return Cache::get('key');
-    });
+Route::get('/cache', function () {
+    return Cache::get('key');
+});
+```
 
 Throughout the Laravel documentation, many of the examples will use facades to demonstrate various features of the framework.
 
@@ -33,19 +35,21 @@ To complement facades, Laravel offers a variety of global "helper functions" tha
 
 For example, instead of using the `Illuminate\Support\Facades\Response` facade to generate a JSON response, we may simply use the `response` function. Because helper functions are globally available, you do not need to import any classes in order to use them:
 
-    use Illuminate\Support\Facades\Response;
+```php
+use Illuminate\Support\Facades\Response;
 
-    Route::get('/users', function () {
-        return Response::json([
-            // ...
-        ]);
-    });
+Route::get('/users', function () {
+    return Response::json([
+        // ...
+    ]);
+});
 
-    Route::get('/users', function () {
-        return response()->json([
-            // ...
-        ]);
-    });
+Route::get('/users', function () {
+    return response()->json([
+        // ...
+    ]);
+});
+```
 
 <a name="when-to-use-facades"></a>
 ## When to Utilize Facades
@@ -61,11 +65,13 @@ One of the primary benefits of dependency injection is the ability to swap imple
 
 Typically, it would not be possible to mock or stub a truly static class method. However, since facades use dynamic methods to proxy method calls to objects resolved from the service container, we actually can test facades just as we would test an injected class instance. For example, given the following route:
 
-    use Illuminate\Support\Facades\Cache;
+```php
+use Illuminate\Support\Facades\Cache;
 
-    Route::get('/cache', function () {
-        return Cache::get('key');
-    });
+Route::get('/cache', function () {
+    return Cache::get('key');
+});
+```
 
 Using Laravel's facade testing methods, we can write the following test to verify that the `Cache::get` method was called with the argument we expected:
 
@@ -106,33 +112,39 @@ public function test_basic_example(): void
 
 In addition to facades, Laravel includes a variety of "helper" functions which can perform common tasks like generating views, firing events, dispatching jobs, or sending HTTP responses. Many of these helper functions perform the same function as a corresponding facade. For example, this facade call and helper call are equivalent:
 
-    return Illuminate\Support\Facades\View::make('profile');
+```php
+return Illuminate\Support\Facades\View::make('profile');
 
-    return view('profile');
+return view('profile');
+```
 
 There is absolutely no practical difference between facades and helper functions. When using helper functions, you may still test them exactly as you would the corresponding facade. For example, given the following route:
 
-    Route::get('/cache', function () {
-        return cache('key');
-    });
+```php
+Route::get('/cache', function () {
+    return cache('key');
+});
+```
 
 The `cache` helper is going to call the `get` method on the class underlying the `Cache` facade. So, even though we are using the helper function, we can write the following test to verify that the method was called with the argument we expected:
 
-    use Illuminate\Support\Facades\Cache;
+```php
+use Illuminate\Support\Facades\Cache;
 
-    /**
-     * A basic functional test example.
-     */
-    public function test_basic_example(): void
-    {
-        Cache::shouldReceive('get')
-            ->with('key')
-            ->andReturn('value');
+/**
+ * A basic functional test example.
+ */
+public function test_basic_example(): void
+{
+    Cache::shouldReceive('get')
+        ->with('key')
+        ->andReturn('value');
 
-        $response = $this->get('/cache');
+    $response = $this->get('/cache');
 
-        $response->assertSee('value');
-    }
+    $response->assertSee('value');
+}
+```
 
 <a name="how-facades-work"></a>
 ## How Facades Work
@@ -141,41 +153,45 @@ In a Laravel application, a facade is a class that provides access to an object 
 
 The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to an object resolved from the container. In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static `get` method is being called on the `Cache` class:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
-    use Illuminate\Support\Facades\Cache;
-    use Illuminate\View\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\View\View;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * Show the profile for the given user.
+     */
+    public function showProfile(string $id): View
     {
-        /**
-         * Show the profile for the given user.
-         */
-        public function showProfile(string $id): View
-        {
-            $user = Cache::get('user:'.$id);
+        $user = Cache::get('user:'.$id);
 
-            return view('profile', ['user' => $user]);
-        }
+        return view('profile', ['user' => $user]);
     }
+}
+```
 
 Notice that near the top of the file we are "importing" the `Cache` facade. This facade serves as a proxy for accessing the underlying implementation of the `Illuminate\Contracts\Cache\Factory` interface. Any calls we make using the facade will be passed to the underlying instance of Laravel's cache service.
 
 If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
 
-    class Cache extends Facade
+```php
+class Cache extends Facade
+{
+    /**
+     * Get the registered name of the component.
+     */
+    protected static function getFacadeAccessor(): string
     {
-        /**
-         * Get the registered name of the component.
-         */
-        protected static function getFacadeAccessor(): string
-        {
-            return 'cache';
-        }
+        return 'cache';
     }
+}
+```
 
 Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. This method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
 
@@ -184,50 +200,54 @@ Instead, the `Cache` facade extends the base `Facade` class and defines the meth
 
 Using real-time facades, you may treat any class in your application as if it was a facade. To illustrate how this can be used, let's first examine some code that does not use real-time facades. For example, let's assume our `Podcast` model has a `publish` method. However, in order to publish the podcast, we need to inject a `Publisher` instance:
 
-    <?php
+```php
+<?php
 
-    namespace App\Models;
+namespace App\Models;
 
-    use App\Contracts\Publisher;
-    use Illuminate\Database\Eloquent\Model;
+use App\Contracts\Publisher;
+use Illuminate\Database\Eloquent\Model;
 
-    class Podcast extends Model
+class Podcast extends Model
+{
+    /**
+     * Publish the podcast.
+     */
+    public function publish(Publisher $publisher): void
     {
-        /**
-         * Publish the podcast.
-         */
-        public function publish(Publisher $publisher): void
-        {
-            $this->update(['publishing' => now()]);
+        $this->update(['publishing' => now()]);
 
-            $publisher->publish($this);
-        }
+        $publisher->publish($this);
     }
+}
+```
 
 Injecting a publisher implementation into the method allows us to easily test the method in isolation since we can mock the injected publisher. However, it requires us to always pass a publisher instance each time we call the `publish` method. Using real-time facades, we can maintain the same testability while not being required to explicitly pass a `Publisher` instance. To generate a real-time facade, prefix the namespace of the imported class with `Facades`:
 
-    <?php
+```php
+<?php
 
-    namespace App\Models;
+namespace App\Models;
 
-    use App\Contracts\Publisher; // [tl! remove]
-    use Facades\App\Contracts\Publisher; // [tl! add]
-    use Illuminate\Database\Eloquent\Model;
+use App\Contracts\Publisher; // [tl! remove]
+use Facades\App\Contracts\Publisher; // [tl! add]
+use Illuminate\Database\Eloquent\Model;
 
-    class Podcast extends Model
+class Podcast extends Model
+{
+    /**
+     * Publish the podcast.
+     */
+    public function publish(Publisher $publisher): void // [tl! remove]
+    public function publish(): void // [tl! add]
     {
-        /**
-         * Publish the podcast.
-         */
-        public function publish(Publisher $publisher): void // [tl! remove]
-        public function publish(): void // [tl! add]
-        {
-            $this->update(['publishing' => now()]);
+        $this->update(['publishing' => now()]);
 
-            $publisher->publish($this); // [tl! remove]
-            Publisher::publish($this); // [tl! add]
-        }
+        $publisher->publish($this); // [tl! remove]
+        Publisher::publish($this); // [tl! add]
     }
+}
+```
 
 When the real-time facade is used, the publisher implementation will be resolved out of the service container using the portion of the interface or class name that appears after the `Facades` prefix. When testing, we can use Laravel's built-in facade testing helpers to mock this method call:
 
