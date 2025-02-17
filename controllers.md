@@ -208,9 +208,9 @@ Typically, a 404 HTTP response will be generated if an implicitly bound resource
     use Illuminate\Support\Facades\Redirect;
 
     Route::resource('photos', PhotoController::class)
-            ->missing(function (Request $request) {
-                return Redirect::route('photos.index');
-            });
+        ->missing(function (Request $request) {
+            return Redirect::route('photos.index');
+        });
 
 <a name="soft-deleted-models"></a>
 #### Soft Deleted Models

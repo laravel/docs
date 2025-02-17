@@ -123,7 +123,7 @@ For more information regarding Meilisearch, please consult the [Meilisearch docu
 
 In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your Meilisearch binary version by reviewing [Meilisearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
 
-> [!WARNING]  
+> [!WARNING]
 > When upgrading Scout on an application that utilizes Meilisearch, you should always [review any additional breaking changes](https://github.com/meilisearch/Meilisearch/releases) to the Meilisearch service itself.
 
 <a name="typesense"></a>
@@ -281,6 +281,49 @@ Some search engines such as Meilisearch will only perform filter operations (`>`
         ];
     }
 
+<a name="configuring-indexes-for-algolia"></a>
+#### Configuring Index Settings (Algolia)
+
+Sometimes you may want to configure additional settings on your Algolia indexes. While you can manage these settings via the Algolia UI, it is sometimes more efficient to manage the desired state of your index configuration directly from your application's `config/scout.php` configuration file.
+
+This approach allows you to deploy these settings through your application's automated deployment pipeline, avoiding manual configuration and ensuring consistency across multiple environments. You may configure filterable attributes, ranking, faceting, or [any other supported settings](https://www.algolia.com/doc/rest-api/search/#tag/Indices/operation/setSettings).
+
+To get started, add settings for each index in your application's `config/scout.php` configuration file:
+
+```php
+use App\Models\User;
+use App\Models\Flight;
+
+'algolia' => [
+    'id' => env('ALGOLIA_APP_ID', ''),
+    'secret' => env('ALGOLIA_SECRET', ''),
+    'index-settings' => [
+        User::class => [
+            'searchableAttributes' => ['id', 'name', 'email'],
+            'attributesForFaceting'=> ['filterOnly(email)'],
+            // Other settings fields...
+        ],
+        Flight::class => [
+            'searchableAttributes'=> ['id', 'destination'],
+        ],
+    ],
+],
+```
+
+If the model underlying a given index is soft deletable and is included in the `index-settings` array, Scout will automatically include support for faceting on soft deleted models on that index. If you have no other faceting attributes to define for a soft deletable model index, you may simply add an empty entry to the `index-settings` array for that model:
+
+```php
+'index-settings' => [
+    Flight::class => []
+],
+```
+
+After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform Algolia of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
+
+```shell
+php artisan scout:sync-index-settings
+```
+
 <a name="configuring-filterable-data-for-meilisearch"></a>
 #### Configuring Filterable Data and Index Settings (Meilisearch)
 
@@ -400,7 +443,7 @@ Enabling this feature will also pass the request's IP address and your authentic
 <a name="database-engine"></a>
 ### Database Engine
 
-> [!WARNING]  
+> [!WARNING]
 > The database engine currently supports MySQL and PostgreSQL.
 
 If your application interacts with small to medium sized databases or has a light workload, you may find it more convenient to get started with Scout's "database" engine. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
@@ -441,7 +484,7 @@ public function toSearchableArray(): array
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types).
 
 <a name="collection-engine"></a>
@@ -496,7 +539,7 @@ If you would like to modify the query that is used to retrieve all of your model
         return $query->with('author');
     }
 
-> [!WARNING]  
+> [!WARNING]
 > The `makeAllSearchableUsing` method may not be applicable when using a queue to batch import models. Relationships are [not restored](/docs/{{version}}/queues#handling-relationships) when model collections are processed by jobs.
 
 <a name="adding-records"></a>
@@ -529,7 +572,7 @@ Or, if you already have a collection of Eloquent models in memory, you may call 
 
     $orders->searchable();
 
-> [!NOTE]  
+> [!NOTE]
 > The `searchable` method can be considered an "upsert" operation. In other words, if the model record is already in your index, it will be updated. If it does not exist in the search index, it will be added to the index.
 
 <a name="updating-records"></a>
@@ -625,7 +668,7 @@ Sometimes you may need to only make a model searchable under certain conditions.
 
 The `shouldBeSearchable` method is only applied when manipulating models through the `save` and `create` methods, queries, or relationships. Directly making models or collections searchable using the `searchable` method will override the result of the `shouldBeSearchable` method.
 
-> [!WARNING]  
+> [!WARNING]
 > The `shouldBeSearchable` method is not applicable when using Scout's "database" engine, as all searchable data is always stored in the database. To achieve similar behavior when using the database engine, you should use [where clauses](#where-clauses) instead.
 
 <a name="searching"></a>
@@ -682,7 +725,7 @@ The `whereNotIn` method verifies that the given column's value is not contained 
 
 Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
 
-> [!WARNING]  
+> [!WARNING]
 > If your application is using Meilisearch, you must configure your application's [filterable attributes](#configuring-filterable-data-for-meilisearch) before utilizing Scout's "where" clauses.
 
 <a name="pagination"></a>
@@ -719,7 +762,7 @@ Of course, if you would like to retrieve the pagination results as JSON, you may
         return Order::search($request->input('query'))->paginate(15);
     });
 
-> [!WARNING]  
+> [!WARNING]
 > Since search engines are not aware of your Eloquent model's global scope definitions, you should not utilize global scopes in applications that utilize Scout pagination. Or, you should recreate the global scope's constraints when searching via Scout.
 
 <a name="soft-deleting"></a>
@@ -739,7 +782,7 @@ When this configuration option is `true`, Scout will not remove soft deleted mod
     // Only include trashed records when retrieving results...
     $orders = Order::search('Star Trek')->onlyTrashed()->get();
 
-> [!NOTE]  
+> [!NOTE]
 > When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
 
 <a name="customizing-engine-searches"></a>

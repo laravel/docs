@@ -199,8 +199,8 @@ class PodcastController
     public function index(Request $request): Response
     {
         return Feature::active('new-api')
-                ? $this->resolveNewApiResponse($request)
-                : $this->resolveLegacyApiResponse($request);
+            ? $this->resolveNewApiResponse($request)
+            : $this->resolveLegacyApiResponse($request);
     }
 
     // ...
@@ -211,8 +211,8 @@ Although features are checked against the currently authenticated user by defaul
 
 ```php
 return Feature::for($user)->active('new-api')
-        ? $this->resolveNewApiResponse($request)
-        : $this->resolveLegacyApiResponse($request);
+    ? $this->resolveNewApiResponse($request)
+    : $this->resolveLegacyApiResponse($request);
 ```
 
 Pennant also offers some additional convenience methods that may prove useful when determining if a feature is active or not:
@@ -260,8 +260,8 @@ class PodcastController
     public function index(Request $request): Response
     {
         return Feature::active(NewApi::class)
-                ? $this->resolveNewApiResponse($request)
-                : $this->resolveLegacyApiResponse($request);
+            ? $this->resolveNewApiResponse($request)
+            : $this->resolveLegacyApiResponse($request);
     }
 
     // ...
@@ -509,8 +509,8 @@ As discussed, features are typically checked against the currently authenticated
 
 ```php
 return Feature::for($user)->active('new-api')
-        ? $this->resolveNewApiResponse($request)
-        : $this->resolveLegacyApiResponse($request);
+    ? $this->resolveNewApiResponse($request)
+    : $this->resolveLegacyApiResponse($request);
 ```
 
 Of course, feature scopes are not limited to "users". Imagine you have built a new billing experience that you are rolling out to entire teams rather than individual users. Perhaps you would like the oldest teams to have a slower rollout than the newer teams. Your feature resolution closure might look something like the following:

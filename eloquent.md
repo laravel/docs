@@ -32,6 +32,7 @@
 - [Query Scopes](#query-scopes)
     - [Global Scopes](#global-scopes)
     - [Local Scopes](#local-scopes)
+    - [Pending Attributes](#pending-attributes)
 - [Comparing Models](#comparing-models)
 - [Events](#events)
     - [Using Closures](#events-using-closures)
@@ -402,9 +403,9 @@ Once you have created a model and [its associated database table](/docs/{{versio
 The Eloquent `all` method will return all of the results in the model's table. However, since each Eloquent model serves as a [query builder](/docs/{{version}}/queries), you may add additional constraints to queries and then invoke the `get` method to retrieve the results:
 
     $flights = Flight::where('active', 1)
-                   ->orderBy('name')
-                   ->take(10)
-                   ->get();
+        ->orderBy('name')
+        ->take(10)
+        ->get();
 
 > [!NOTE]  
 > Since Eloquent models are query builders, you should review all of the methods provided by Laravel's [query builder](/docs/{{version}}/queries). You may use any of these methods when writing your Eloquent queries.
@@ -744,8 +745,8 @@ In the example below, if a flight exists with a `departure` location of `Oakland
 Updates can also be performed against models that match a given query. In this example, all flights that are `active` and have a `destination` of `San Diego` will be marked as delayed:
 
     Flight::where('active', 1)
-          ->where('destination', 'San Diego')
-          ->update(['delayed' => 1]);
+        ->where('destination', 'San Diego')
+        ->update(['delayed' => 1]);
 
 The `update` method expects an array of column and value pairs representing the columns that should be updated. The `update` method returns the number of affected rows.
 
@@ -1037,8 +1038,8 @@ As noted above, soft deleted models will automatically be excluded from query re
     use App\Models\Flight;
 
     $flights = Flight::withTrashed()
-                    ->where('account_id', 1)
-                    ->get();
+        ->where('account_id', 1)
+        ->get();
 
 The `withTrashed` method may also be called when building a [relationship](/docs/{{version}}/eloquent-relationships) query:
 
@@ -1050,8 +1051,8 @@ The `withTrashed` method may also be called when building a [relationship](/docs
 The `onlyTrashed` method will retrieve **only** soft deleted models:
 
     $flights = Flight::onlyTrashed()
-                    ->where('airline_id', 1)
-                    ->get();
+        ->where('airline_id', 1)
+        ->get();
 
 <a name="pruning-models"></a>
 ## Pruning Models
@@ -1389,6 +1390,37 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
 Once the expected arguments have been added to your scope method's signature, you may pass the arguments when calling the scope:
 
     $users = User::ofType('admin')->get();
+
+<a name="pending-attributes"></a>
+### Pending Attributes
+
+If you would like to use scopes to create models that have the same attributes as those used to constrain the scope, you may use the `withAttributes` method when building the scope query:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Database\Eloquent\Model;
+
+    class Post extends Model
+    {
+        /**
+         * Scope the query to only include drafts.
+         */
+        public function scopeDraft(Builder $query): void
+        {
+            $query->withAttributes([
+                'hidden' => true,
+            ]);
+        }
+    }
+
+The `withAttributes` method will add `where` clause constraints to the query using the given attributes, and it will also add the given attributes to any models created via the scope:
+
+    $draft = Post::draft()->create(['title' => 'In Progress']);
+
+    $draft->hidden; // true
 
 <a name="comparing-models"></a>
 ## Comparing Models

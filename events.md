@@ -84,6 +84,12 @@ If you plan to store your listeners in a different directory or within multiple 
         __DIR__.'/../app/Domain/Orders/Listeners',
     ])
 
+You may scan for listeners in multiple similar directories using the `*` character as a wildcard:
+
+    ->withEvents(discover: [
+        __DIR__.'/../app/Domain/*/Listeners',
+    ])
+
 The `event:list` command may be used to list all of the listeners registered within your application:
 
 ```shell

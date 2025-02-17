@@ -620,15 +620,15 @@ Typically, a 404 HTTP response will be generated if an implicitly bound model is
     use Illuminate\Support\Facades\Redirect;
 
     Route::get('/locations/{location:slug}', [LocationsController::class, 'show'])
-            ->name('locations.view')
-            ->missing(function (Request $request) {
-                return Redirect::route('locations.index');
-            });
+        ->name('locations.view')
+        ->missing(function (Request $request) {
+            return Redirect::route('locations.index');
+        });
 
 <a name="implicit-enum-binding"></a>
 ### Implicit Enum Binding
 
-PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To complement this feature, Laravel allows you to type-hint a [backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
+PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To complement this feature, Laravel allows you to type-hint a [string-backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
 
 ```php
 <?php
@@ -791,8 +791,8 @@ Since rate limiter callbacks receive the incoming HTTP request instance, you may
 
     RateLimiter::for('uploads', function (Request $request) {
         return $request->user()->vipCustomer()
-                    ? Limit::none()
-                    : Limit::perMinute(100);
+            ? Limit::none()
+            : Limit::perMinute(100);
     });
 
 <a name="segmenting-rate-limits"></a>
@@ -802,16 +802,16 @@ Sometimes you may wish to segment rate limits by some arbitrary value. For examp
 
     RateLimiter::for('uploads', function (Request $request) {
         return $request->user()->vipCustomer()
-                    ? Limit::none()
-                    : Limit::perMinute(100)->by($request->ip());
+            ? Limit::none()
+            : Limit::perMinute(100)->by($request->ip());
     });
 
 To illustrate this feature using another example, we can limit access to the route to 100 times per minute per authenticated user ID or 10 times per minute per IP address for guests:
 
     RateLimiter::for('uploads', function (Request $request) {
         return $request->user()
-                    ? Limit::perMinute(100)->by($request->user()->id)
-                    : Limit::perMinute(10)->by($request->ip());
+            ? Limit::perMinute(100)->by($request->user()->id)
+            : Limit::perMinute(10)->by($request->ip());
     });
 
 <a name="multiple-rate-limits"></a>

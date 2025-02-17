@@ -2576,19 +2576,19 @@ use App\Models\User;
 use Illuminate\Support\Facades\Pipeline;
 
 $user = Pipeline::send($user)
-            ->through([
-                function (User $user, Closure $next) {
-                    // ...
-
-                    return $next($user);
-                },
-                function (User $user, Closure $next) {
-                    // ...
-
-                    return $next($user);
-                },
-            ])
-            ->then(fn (User $user) => $user);
+    ->through([
+        function (User $user, Closure $next) {
+            // ...
+    
+            return $next($user);
+        },
+        function (User $user, Closure $next) {
+            // ...
+    
+            return $next($user);
+        },
+    ])
+    ->then(fn (User $user) => $user);
 ```
 
 As you can see, each invokable class or closure in the pipeline is provided the input and a `$next` closure. Invoking the `$next` closure will invoke the next callable in the pipeline. As you may have noticed, this is very similar to [middleware](/docs/{{version}}/middleware).
@@ -2599,12 +2599,12 @@ Of course, as discussed previously, you are not limited to providing closures to
 
 ```php
 $user = Pipeline::send($user)
-            ->through([
-                GenerateProfilePhoto::class,
-                ActivateSubscription::class,
-                SendWelcomeEmail::class,
-            ])
-            ->then(fn (User $user) => $user);
+    ->through([
+        GenerateProfilePhoto::class,
+        ActivateSubscription::class,
+        SendWelcomeEmail::class,
+    ])
+    ->then(fn (User $user) => $user);
 ```
 
 <a name="sleep"></a>
