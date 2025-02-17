@@ -112,8 +112,8 @@ When passing information in this manner, the data should be an array with key / 
 As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view. The `with` method returns an instance of the view object so that you can continue chaining methods before returning the view:
 
     return view('greeting')
-                ->with('name', 'Victoria')
-                ->with('occupation', 'Astronaut');
+        ->with('name', 'Victoria')
+        ->with('occupation', 'Astronaut');
 
 <a name="sharing-data-with-all-views"></a>
 ### Sharing Data With All Views

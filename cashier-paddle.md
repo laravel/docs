@@ -1081,8 +1081,9 @@ If you would like to offer trial periods to your customers while still collectin
     use Illuminate\Http\Request;
 
     Route::get('/user/subscribe', function (Request $request) {
-        $checkout = $request->user()->subscribe('pri_monthly')
-                    ->returnTo(route('home'));
+        $checkout = $request->user()
+            ->subscribe('pri_monthly')
+            ->returnTo(route('home'));
 
         return view('billing', ['checkout' => $checkout]);
     });
@@ -1147,7 +1148,8 @@ Once you are ready to create an actual subscription for the user, you may use th
     use Illuminate\Http\Request;
 
     Route::get('/user/subscribe', function (Request $request) {
-        $checkout = $user->subscribe('pri_monthly')
+        $checkout = $request->user()
+            ->subscribe('pri_monthly')
             ->returnTo(route('home'));
 
         return view('billing', ['checkout' => $checkout]);

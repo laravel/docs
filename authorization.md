@@ -183,8 +183,8 @@ use Illuminate\Support\Facades\Gate;
 
 Gate::define('edit-settings', function (User $user) {
     return $user->isAdmin
-                ? Response::allow()
-                : Response::deny('You must be an administrator.');
+        ? Response::allow()
+        : Response::deny('You must be an administrator.');
 });
 ```
 
@@ -220,8 +220,8 @@ use Illuminate\Support\Facades\Gate;
 
 Gate::define('edit-settings', function (User $user) {
     return $user->isAdmin
-                ? Response::allow()
-                : Response::denyWithStatus(404);
+        ? Response::allow()
+        : Response::denyWithStatus(404);
 });
 ```
 
@@ -234,8 +234,8 @@ use Illuminate\Support\Facades\Gate;
 
 Gate::define('edit-settings', function (User $user) {
     return $user->isAdmin
-                ? Response::allow()
-                : Response::denyAsNotFound();
+        ? Response::allow()
+        : Response::denyAsNotFound();
 });
 ```
 
@@ -397,8 +397,8 @@ use Illuminate\Auth\Access\Response;
 public function update(User $user, Post $post): Response
 {
     return $user->id === $post->user_id
-                ? Response::allow()
-                : Response::deny('You do not own this post.');
+        ? Response::allow()
+        : Response::deny('You do not own this post.');
 }
 ```
 
@@ -440,8 +440,8 @@ use Illuminate\Auth\Access\Response;
 public function update(User $user, Post $post): Response
 {
     return $user->id === $post->user_id
-                ? Response::allow()
-                : Response::denyWithStatus(404);
+        ? Response::allow()
+        : Response::denyWithStatus(404);
 }
 ```
 
@@ -458,8 +458,8 @@ use Illuminate\Auth\Access\Response;
 public function update(User $user, Post $post): Response
 {
     return $user->id === $post->user_id
-                ? Response::allow()
-                : Response::denyAsNotFound();
+        ? Response::allow()
+        : Response::denyAsNotFound();
 }
 ```
 

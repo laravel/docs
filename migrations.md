@@ -396,70 +396,142 @@ The schema builder blueprint offers a variety of methods that correspond to the 
     }
 </style>
 
+<a name="booleans-method-list"></a>
+#### Boolean Types
+
+<div class="collection-method-list" markdown="1">
+
+[boolean](#column-method-boolean)
+
+</div>
+
+<a name="strings-and-texts-method-list"></a>
+#### String & Text Types
+
+<div class="collection-method-list" markdown="1">
+
+[char](#column-method-char)
+[longText](#column-method-longText)
+[mediumText](#column-method-mediumText)
+[string](#column-method-string)
+[text](#column-method-text)
+[tinyText](#column-method-tinyText)
+
+</div>
+
+<a name="numbers--method-list"></a>
+#### Numeric Types
+
 <div class="collection-method-list" markdown="1">
 
 [bigIncrements](#column-method-bigIncrements)
 [bigInteger](#column-method-bigInteger)
-[binary](#column-method-binary)
-[boolean](#column-method-boolean)
-[char](#column-method-char)
-[dateTimeTz](#column-method-dateTimeTz)
-[dateTime](#column-method-dateTime)
-[date](#column-method-date)
 [decimal](#column-method-decimal)
 [double](#column-method-double)
-[enum](#column-method-enum)
 [float](#column-method-float)
-[foreignId](#column-method-foreignId)
-[foreignIdFor](#column-method-foreignIdFor)
-[foreignUlid](#column-method-foreignUlid)
-[foreignUuid](#column-method-foreignUuid)
-[geography](#column-method-geography)
-[geometry](#column-method-geometry)
 [id](#column-method-id)
 [increments](#column-method-increments)
 [integer](#column-method-integer)
-[ipAddress](#column-method-ipAddress)
-[json](#column-method-json)
-[jsonb](#column-method-jsonb)
-[longText](#column-method-longText)
-[macAddress](#column-method-macAddress)
 [mediumIncrements](#column-method-mediumIncrements)
 [mediumInteger](#column-method-mediumInteger)
-[mediumText](#column-method-mediumText)
-[morphs](#column-method-morphs)
-[nullableMorphs](#column-method-nullableMorphs)
-[nullableTimestamps](#column-method-nullableTimestamps)
-[nullableUlidMorphs](#column-method-nullableUlidMorphs)
-[nullableUuidMorphs](#column-method-nullableUuidMorphs)
-[rememberToken](#column-method-rememberToken)
-[set](#column-method-set)
 [smallIncrements](#column-method-smallIncrements)
 [smallInteger](#column-method-smallInteger)
-[softDeletesTz](#column-method-softDeletesTz)
-[softDeletes](#column-method-softDeletes)
-[string](#column-method-string)
-[text](#column-method-text)
-[timeTz](#column-method-timeTz)
-[time](#column-method-time)
-[timestampTz](#column-method-timestampTz)
-[timestamp](#column-method-timestamp)
-[timestampsTz](#column-method-timestampsTz)
-[timestamps](#column-method-timestamps)
 [tinyIncrements](#column-method-tinyIncrements)
 [tinyInteger](#column-method-tinyInteger)
-[tinyText](#column-method-tinyText)
 [unsignedBigInteger](#column-method-unsignedBigInteger)
 [unsignedInteger](#column-method-unsignedInteger)
 [unsignedMediumInteger](#column-method-unsignedMediumInteger)
 [unsignedSmallInteger](#column-method-unsignedSmallInteger)
 [unsignedTinyInteger](#column-method-unsignedTinyInteger)
-[ulidMorphs](#column-method-ulidMorphs)
-[uuidMorphs](#column-method-uuidMorphs)
-[ulid](#column-method-ulid)
-[uuid](#column-method-uuid)
-[vector](#column-method-vector)
+
+</div>
+
+<a name="dates-and-times-method-list"></a>
+#### Date & Time Types
+
+<div class="collection-method-list" markdown="1">
+
+[dateTime](#column-method-dateTime)
+[dateTimeTz](#column-method-dateTimeTz)
+[date](#column-method-date)
+[time](#column-method-time)
+[timeTz](#column-method-timeTz)
+[timestamp](#column-method-timestamp)
+[timestamps](#column-method-timestamps)
+[timestampsTz](#column-method-timestampsTz)
+[softDeletes](#column-method-softDeletes)
+[softDeletesTz](#column-method-softDeletesTz)
 [year](#column-method-year)
+
+</div>
+
+<a name="binaries-method-list"></a>
+#### Binary Types
+
+<div class="collection-method-list" markdown="1">
+
+[binary](#column-method-binary)
+
+</div>
+
+<a name="object-and-jsons-method-list"></a>
+#### Object & Json Types
+
+<div class="collection-method-list" markdown="1">
+
+[json](#column-method-json)
+[jsonb](#column-method-jsonb)
+
+</div>
+
+<a name="uuids-and-ulids-method-list"></a>
+#### UUID & ULID Types
+
+<div class="collection-method-list" markdown="1">
+
+[ulid](#column-method-ulid)
+[ulidMorphs](#column-method-ulidMorphs)
+[uuid](#column-method-uuid)
+[uuidMorphs](#column-method-uuidMorphs)
+[nullableUlidMorphs](#column-method-nullableUlidMorphs)
+[nullableUuidMorphs](#column-method-nullableUuidMorphs)
+
+</div>
+
+<a name="spatials-method-list"></a>
+#### Spatial Types
+
+<div class="collection-method-list" markdown="1">
+
+[geography](#column-method-geography)
+[geometry](#column-method-geometry)
+
+</div>
+
+#### Relationship Types
+
+<div class="collection-method-list" markdown="1">
+
+[foreignId](#column-method-foreignId)
+[foreignIdFor](#column-method-foreignIdFor)
+[foreignUlid](#column-method-foreignUlid)
+[foreignUuid](#column-method-foreignUuid)
+[morphs](#column-method-morphs)
+[nullableMorphs](#column-method-nullableMorphs)
+
+</div>
+
+<a name="spacifics-method-list"></a>
+#### Specialty Types
+
+<div class="collection-method-list" markdown="1">
+
+[enum](#column-method-enum)
+[set](#column-method-set)
+[macAddress](#column-method-macAddress)
+[ipAddress](#column-method-ipAddress)
+[rememberToken](#column-method-rememberToken)
+[vector](#column-method-vector)
 
 </div>
 
@@ -700,13 +772,6 @@ The `morphs` method is a convenience method that adds a `{column}_id` equivalent
 This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships). In the following example, `taggable_id` and `taggable_type` columns would be created:
 
     $table->morphs('taggable');
-
-<a name="column-method-nullableTimestamps"></a>
-#### `nullableTimestamps()` {.collection-method}
-
-The `nullableTimestamps` method is an alias of the [timestamps](#column-method-timestamps) method:
-
-    $table->nullableTimestamps(precision: 0);
 
 <a name="column-method-nullableMorphs"></a>
 #### `nullableMorphs()` {.collection-method}
@@ -1190,9 +1255,9 @@ The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, while the
 You may also specify the desired action for the "on delete" and "on update" properties of the constraint:
 
     $table->foreignId('user_id')
-          ->constrained()
-          ->onUpdate('cascade')
-          ->onDelete('cascade');
+        ->constrained()
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
 
 An alternative, expressive syntax is also provided for these actions:
 
@@ -1214,8 +1279,8 @@ An alternative, expressive syntax is also provided for these actions:
 Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:
 
     $table->foreignId('user_id')
-          ->nullable()
-          ->constrained();
+        ->nullable()
+        ->constrained();
 
 <a name="dropping-foreign-keys"></a>
 #### Dropping Foreign Keys

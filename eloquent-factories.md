@@ -267,12 +267,12 @@ Sometimes you may wish to alternate the value of a given model attribute for eac
     use Illuminate\Database\Eloquent\Factories\Sequence;
 
     $users = User::factory()
-                    ->count(10)
-                    ->state(new Sequence(
-                        ['admin' => 'Y'],
-                        ['admin' => 'N'],
-                    ))
-                    ->create();
+        ->count(10)
+        ->state(new Sequence(
+            ['admin' => 'Y'],
+            ['admin' => 'N'],
+        ))
+        ->create();
 
 In this example, five users will be created with an `admin` value of `Y` and five users will be created with an `admin` value of `N`.
 
@@ -281,28 +281,28 @@ If necessary, you may include a closure as a sequence value. The closure will be
     use Illuminate\Database\Eloquent\Factories\Sequence;
 
     $users = User::factory()
-                    ->count(10)
-                    ->state(new Sequence(
-                        fn (Sequence $sequence) => ['role' => UserRoles::all()->random()],
-                    ))
-                    ->create();
+        ->count(10)
+        ->state(new Sequence(
+            fn (Sequence $sequence) => ['role' => UserRoles::all()->random()],
+        ))
+        ->create();
 
 Within a sequence closure, you may access the `$index` or `$count` properties on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far, while the `$count` property contains the total number of times the sequence will be invoked:
 
     $users = User::factory()
-                    ->count(10)
-                    ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])
-                    ->create();
+        ->count(10)
+        ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])
+        ->create();
 
 For convenience, sequences may also be applied using the `sequence` method, which simply invokes the `state` method internally. The `sequence` method accepts a closure or arrays of sequenced attributes:
 
     $users = User::factory()
-                    ->count(2)
-                    ->sequence(
-                        ['name' => 'First User'],
-                        ['name' => 'Second User'],
-                    )
-                    ->create();
+        ->count(2)
+        ->sequence(
+            ['name' => 'First User'],
+            ['name' => 'Second User'],
+        )
+        ->create();
 
 <a name="factory-relationships"></a>
 ## Factory Relationships
@@ -316,26 +316,26 @@ Next, let's explore building Eloquent model relationships using Laravel's fluent
     use App\Models\User;
 
     $user = User::factory()
-                ->has(Post::factory()->count(3))
-                ->create();
+        ->has(Post::factory()->count(3))
+        ->create();
 
 By convention, when passing a `Post` model to the `has` method, Laravel will assume that the `User` model must have a `posts` method that defines the relationship. If necessary, you may explicitly specify the name of the relationship that you would like to manipulate:
 
     $user = User::factory()
-                ->has(Post::factory()->count(3), 'posts')
-                ->create();
+        ->has(Post::factory()->count(3), 'posts')
+        ->create();
 
 Of course, you may perform state manipulations on the related models. In addition, you may pass a closure based state transformation if your state change requires access to the parent model:
 
     $user = User::factory()
-                ->has(
-                    Post::factory()
-                            ->count(3)
-                            ->state(function (array $attributes, User $user) {
-                                return ['user_type' => $user->type];
-                            })
-                )
-                ->create();
+        ->has(
+            Post::factory()
+                ->count(3)
+                ->state(function (array $attributes, User $user) {
+                    return ['user_type' => $user->type];
+                })
+            )
+        ->create();
 
 <a name="has-many-relationships-using-magic-methods"></a>
 #### Using Magic Methods
@@ -343,24 +343,24 @@ Of course, you may perform state manipulations on the related models. In additio
 For convenience, you may use Laravel's magic factory relationship methods to build relationships. For example, the following example will use convention to determine that the related models should be created via a `posts` relationship method on the `User` model:
 
     $user = User::factory()
-                ->hasPosts(3)
-                ->create();
+        ->hasPosts(3)
+        ->create();
 
 When using magic methods to create factory relationships, you may pass an array of attributes to override on the related models:
 
     $user = User::factory()
-                ->hasPosts(3, [
-                    'published' => false,
-                ])
-                ->create();
+        ->hasPosts(3, [
+            'published' => false,
+        ])
+        ->create();
 
 You may provide a closure based state transformation if your state change requires access to the parent model:
 
     $user = User::factory()
-                ->hasPosts(3, function (array $attributes, User $user) {
-                    return ['user_type' => $user->type];
-                })
-                ->create();
+        ->hasPosts(3, function (array $attributes, User $user) {
+            return ['user_type' => $user->type];
+        })
+        ->create();
 
 <a name="belongs-to-relationships"></a>
 ### Belongs To Relationships
@@ -371,20 +371,20 @@ Now that we have explored how to build "has many" relationships using factories,
     use App\Models\User;
 
     $posts = Post::factory()
-                ->count(3)
-                ->for(User::factory()->state([
-                    'name' => 'Jessica Archer',
-                ]))
-                ->create();
+        ->count(3)
+        ->for(User::factory()->state([
+            'name' => 'Jessica Archer',
+        ]))
+        ->create();
 
 If you already have a parent model instance that should be associated with the models you are creating, you may pass the model instance to the `for` method:
 
     $user = User::factory()->create();
 
     $posts = Post::factory()
-                ->count(3)
-                ->for($user)
-                ->create();
+        ->count(3)
+        ->for($user)
+        ->create();
 
 <a name="belongs-to-relationships-using-magic-methods"></a>
 #### Using Magic Methods
@@ -392,11 +392,11 @@ If you already have a parent model instance that should be associated with the m
 For convenience, you may use Laravel's magic factory relationship methods to define "belongs to" relationships. For example, the following example will use convention to determine that the three posts should belong to the `user` relationship on the `Post` model:
 
     $posts = Post::factory()
-                ->count(3)
-                ->forUser([
-                    'name' => 'Jessica Archer',
-                ])
-                ->create();
+        ->count(3)
+        ->forUser([
+            'name' => 'Jessica Archer',
+        ])
+        ->create();
 
 <a name="many-to-many-relationships"></a>
 ### Many to Many Relationships
@@ -407,8 +407,8 @@ Like [has many relationships](#has-many-relationships), "many to many" relations
     use App\Models\User;
 
     $user = User::factory()
-                ->has(Role::factory()->count(3))
-                ->create();
+        ->has(Role::factory()->count(3))
+        ->create();
 
 <a name="pivot-table-attributes"></a>
 #### Pivot Table Attributes
@@ -419,33 +419,33 @@ If you need to define attributes that should be set on the pivot / intermediate 
     use App\Models\User;
 
     $user = User::factory()
-                ->hasAttached(
-                    Role::factory()->count(3),
-                    ['active' => true]
-                )
-                ->create();
+        ->hasAttached(
+            Role::factory()->count(3),
+            ['active' => true]
+        )
+        ->create();
 
 You may provide a closure based state transformation if your state change requires access to the related model:
 
     $user = User::factory()
-                ->hasAttached(
-                    Role::factory()
-                        ->count(3)
-                        ->state(function (array $attributes, User $user) {
-                            return ['name' => $user->name.' Role'];
-                        }),
-                    ['active' => true]
-                )
-                ->create();
+        ->hasAttached(
+            Role::factory()
+                ->count(3)
+                ->state(function (array $attributes, User $user) {
+                    return ['name' => $user->name.' Role'];
+                }),
+            ['active' => true]
+        )
+        ->create();
 
 If you already have model instances that you would like to be attached to the models you are creating, you may pass the model instances to the `hasAttached` method. In this example, the same three roles will be attached to all three users:
 
     $roles = Role::factory()->count(3)->create();
 
     $user = User::factory()
-                ->count(3)
-                ->hasAttached($roles, ['active' => true])
-                ->create();
+        ->count(3)
+        ->hasAttached($roles, ['active' => true])
+        ->create();
 
 <a name="many-to-many-relationships-using-magic-methods"></a>
 #### Using Magic Methods
@@ -453,10 +453,10 @@ If you already have model instances that you would like to be attached to the mo
 For convenience, you may use Laravel's magic factory relationship methods to define many to many relationships. For example, the following example will use convention to determine that the related models should be created via a `roles` relationship method on the `User` model:
 
     $user = User::factory()
-                ->hasRoles(1, [
-                    'name' => 'Editor'
-                ])
-                ->create();
+        ->hasRoles(1, [
+            'name' => 'Editor'
+        ])
+        ->create();
 
 <a name="polymorphic-relationships"></a>
 ### Polymorphic Relationships
@@ -485,17 +485,17 @@ Polymorphic "many to many" (`morphToMany` / `morphedByMany`) relationships may b
     use App\Models\Video;
 
     $videos = Video::factory()
-                ->hasAttached(
-                    Tag::factory()->count(3),
-                    ['public' => true]
-                )
-                ->create();
+        ->hasAttached(
+            Tag::factory()->count(3),
+            ['public' => true]
+        )
+        ->create();
 
 Of course, the magic `has` method may also be used to create polymorphic "many to many" relationships:
 
     $videos = Video::factory()
-                ->hasTags(3, ['public' => true])
-                ->create();
+        ->hasTags(3, ['public' => true])
+        ->create();
 
 <a name="defining-relationships-within-factories"></a>
 ### Defining Relationships Within Factories

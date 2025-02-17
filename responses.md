@@ -47,7 +47,7 @@ Returning a full `Response` instance allows you to customize the response's HTTP
 
     Route::get('/home', function () {
         return response('Hello World', 200)
-                      ->header('Content-Type', 'text/plain');
+            ->header('Content-Type', 'text/plain');
     });
 
 <a name="eloquent-models-and-collections"></a>
@@ -67,18 +67,18 @@ You may also return [Eloquent ORM](/docs/{{version}}/eloquent) models and collec
 Keep in mind that most response methods are chainable, allowing for the fluent construction of response instances. For example, you may use the `header` method to add a series of headers to the response before sending it back to the user:
 
     return response($content)
-                ->header('Content-Type', $type)
-                ->header('X-Header-One', 'Header Value')
-                ->header('X-Header-Two', 'Header Value');
+        ->header('Content-Type', $type)
+        ->header('X-Header-One', 'Header Value')
+        ->header('X-Header-Two', 'Header Value');
 
 Or, you may use the `withHeaders` method to specify an array of headers to be added to the response:
 
     return response($content)
-                ->withHeaders([
-                    'Content-Type' => $type,
-                    'X-Header-One' => 'Header Value',
-                    'X-Header-Two' => 'Header Value',
-                ]);
+        ->withHeaders([
+            'Content-Type' => $type,
+            'X-Header-One' => 'Header Value',
+            'X-Header-Two' => 'Header Value',
+        ]);
 
 <a name="cache-control-middleware"></a>
 #### Cache Control Middleware
@@ -255,8 +255,8 @@ The `response` helper may be used to generate other types of response instances.
 If you need control over the response's status and headers but also need to return a [view](/docs/{{version}}/views) as the response's content, you should use the `view` method:
 
     return response()
-                ->view('hello', $data, 200)
-                ->header('Content-Type', $type);
+        ->view('hello', $data, 200)
+        ->header('Content-Type', $type);
 
 Of course, if you do not need to pass a custom HTTP status code or custom headers, you may use the global `view` helper function.
 
@@ -273,8 +273,8 @@ The `json` method will automatically set the `Content-Type` header to `applicati
 If you would like to create a JSONP response, you may use the `json` method in combination with the `withCallback` method:
 
     return response()
-                ->json(['name' => 'Abigail', 'state' => 'CA'])
-                ->withCallback($request->input('callback'));
+        ->json(['name' => 'Abigail', 'state' => 'CA'])
+        ->withCallback($request->input('callback'));
 
 <a name="file-downloads"></a>
 ### File Downloads
@@ -343,8 +343,8 @@ Sometimes you may wish to turn the string response of a given operation into a d
 
     return response()->streamDownload(function () {
         echo GitHub::api('repo')
-                    ->contents()
-                    ->readme('laravel', 'laravel')['contents'];
+            ->contents()
+            ->readme('laravel', 'laravel')['contents'];
     }, 'laravel-readme.md');
 
 <a name="response-macros"></a>
