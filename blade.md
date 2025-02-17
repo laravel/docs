@@ -53,9 +53,11 @@ Blade is the simple, yet powerful templating engine that is included with Larave
 
 Blade views may be returned from routes or controllers using the global `view` helper. Of course, as mentioned in the documentation on [views](/docs/{{version}}/views), data may be passed to the Blade view using the `view` helper's second argument:
 
-    Route::get('/', function () {
-        return view('greeting', ['name' => 'Finn']);
-    });
+```php
+Route::get('/', function () {
+    return view('greeting', ['name' => 'Finn']);
+});
+```
 
 <a name="supercharging-blade-with-livewire"></a>
 ### Supercharging Blade With Livewire
@@ -67,9 +69,11 @@ Want to take your Blade templates to the next level and build dynamic interfaces
 
 You may display data that is passed to your Blade views by wrapping the variable in curly braces. For example, given the following route:
 
-    Route::get('/', function () {
-        return view('welcome', ['name' => 'Samantha']);
-    });
+```php
+Route::get('/', function () {
+    return view('welcome', ['name' => 'Samantha']);
+});
+```
 
 You may display the contents of the `name` variable like so:
 
@@ -91,23 +95,25 @@ The current UNIX timestamp is {{ time() }}.
 
 By default, Blade (and the Laravel `e` function) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
 
-    <?php
+```php
+<?php
 
-    namespace App\Providers;
+namespace App\Providers;
 
-    use Illuminate\Support\Facades\Blade;
-    use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
 
-    class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
     {
-        /**
-         * Bootstrap any application services.
-         */
-        public function boot(): void
-        {
-            Blade::withoutDoubleEncoding();
-        }
+        Blade::withoutDoubleEncoding();
     }
+}
+```
 
 <a name="displaying-unescaped-data"></a>
 #### Displaying Unescaped Data
@@ -691,15 +697,17 @@ When writing components for your own application, components are automatically d
 
 However, if you are building a package that utilizes Blade components, you will need to manually register your component class and its HTML tag alias. You should typically register your components in the `boot` method of your package's service provider:
 
-    use Illuminate\Support\Facades\Blade;
+```php
+use Illuminate\Support\Facades\Blade;
 
-    /**
-     * Bootstrap your package's services.
-     */
-    public function boot(): void
-    {
-        Blade::component('package-alert', Alert::class);
-    }
+/**
+ * Bootstrap your package's services.
+ */
+public function boot(): void
+{
+    Blade::component('package-alert', Alert::class);
+}
+```
 
 Once your component has been registered, it may be rendered using its tag alias:
 
@@ -709,15 +717,17 @@ Once your component has been registered, it may be rendered using its tag alias:
 
 Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Package\Views\Components` namespace:
 
-    use Illuminate\Support\Facades\Blade;
+```php
+use Illuminate\Support\Facades\Blade;
 
-    /**
-     * Bootstrap your package's services.
-     */
-    public function boot(): void
-    {
-        Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
-    }
+/**
+ * Bootstrap your package's services.
+ */
+public function boot(): void
+{
+    Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
+}
+```
 
 This will allow the usage of package components by their vendor namespace using the `package-name::` syntax:
 
@@ -747,15 +757,17 @@ If the component class is nested deeper within the `app/View/Components` directo
 
 If you would like to conditionally render your component, you may define a `shouldRender` method on your component class. If the `shouldRender` method returns `false` the component will not be rendered:
 
-    use Illuminate\Support\Str;
+```php
+use Illuminate\Support\Str;
 
-    /**
-     * Whether the component should be rendered
-     */
-    public function shouldRender(): bool
-    {
-        return Str::length($this->message) > 0;
-    }
+/**
+ * Whether the component should be rendered
+ */
+public function shouldRender(): bool
+{
+    return Str::length($this->message) > 0;
+}
+```
 
 <a name="index-components"></a>
 ### Index Components
@@ -788,31 +800,33 @@ You may pass data to Blade components using HTML attributes. Hard-coded, primiti
 
 You should define all of the component's data attributes in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
 
-    <?php
+```php
+<?php
 
-    namespace App\View\Components;
+namespace App\View\Components;
 
-    use Illuminate\View\Component;
-    use Illuminate\View\View;
+use Illuminate\View\Component;
+use Illuminate\View\View;
 
-    class Alert extends Component
+class Alert extends Component
+{
+    /**
+     * Create the component instance.
+     */
+    public function __construct(
+        public string $type,
+        public string $message,
+    ) {}
+
+    /**
+     * Get the view / contents that represent the component.
+     */
+    public function render(): View
     {
-        /**
-         * Create the component instance.
-         */
-        public function __construct(
-            public string $type,
-            public string $message,
-        ) {}
-
-        /**
-         * Get the view / contents that represent the component.
-         */
-        public function render(): View
-        {
-            return view('components.alert');
-        }
+        return view('components.alert');
     }
+}
+```
 
 When your component is rendered, you may display the contents of your component's public variables by echoing the variables by name:
 
@@ -827,12 +841,14 @@ When your component is rendered, you may display the contents of your component'
 
 Component constructor arguments should be specified using `camelCase`, while `kebab-case` should be used when referencing the argument names in your HTML attributes. For example, given the following component constructor:
 
-    /**
-     * Create the component instance.
-     */
-    public function __construct(
-        public string $alertType,
-    ) {}
+```php
+/**
+ * Create the component instance.
+ */
+public function __construct(
+    public string $alertType,
+) {}
+```
 
 The `$alertType` argument may be provided to the component like so:
 
@@ -877,13 +893,15 @@ The following HTML will be rendered by Blade:
 
 In addition to public variables being available to your component template, any public methods on the component may be invoked. For example, imagine a component that has an `isSelected` method:
 
-    /**
-     * Determine if the given option is the currently selected option.
-     */
-    public function isSelected(string $option): bool
-    {
-        return $option === $this->selected;
-    }
+```php
+/**
+ * Determine if the given option is the currently selected option.
+ */
+public function isSelected(string $option): bool
+{
+    return $option === $this->selected;
+}
+```
 
 You may execute this method from your component template by invoking the variable matching the name of the method:
 
@@ -898,27 +916,31 @@ You may execute this method from your component template by invoking the variabl
 
 Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method:
 
-    use Closure;
+```php
+use Closure;
 
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): Closure
-    {
-        return function () {
-            return '<div {{ $attributes }}>Components content</div>';
-        };
-    }
+/**
+ * Get the view / contents that represent the component.
+ */
+public function render(): Closure
+{
+    return function () {
+        return '<div {{ $attributes }}>Components content</div>';
+    };
+}
+```
 
 The closure returned by your component's `render` method may also receive a `$data` array as its only argument. This array will contain several elements that provide information about the component:
 
-    return function (array $data) {
-        // $data['componentName'];
-        // $data['attributes'];
-        // $data['slot'];
+```php
+return function (array $data) {
+    // $data['componentName'];
+    // $data['attributes'];
+    // $data['slot'];
 
-        return '<div {{ $attributes }}>Components content</div>';
-    }
+    return '<div {{ $attributes }}>Components content</div>';
+}
+```
 
 > [!WARNING]
 > The elements in the `$data` array should never be directly embedded into the Blade string returned by your `render` method, as doing so could allow remote code execution via malicious attribute content.
@@ -950,28 +972,30 @@ public function __construct(
 
 If you would like to prevent some public methods or properties from being exposed as variables to your component template, you may add them to an `$except` array property on your component:
 
-    <?php
+```php
+<?php
 
-    namespace App\View\Components;
+namespace App\View\Components;
 
-    use Illuminate\View\Component;
+use Illuminate\View\Component;
 
-    class Alert extends Component
-    {
-        /**
-         * The properties / methods that should not be exposed to the component template.
-         *
-         * @var array
-         */
-        protected $except = ['type'];
+class Alert extends Component
+{
+    /**
+     * The properties / methods that should not be exposed to the component template.
+     *
+     * @var array
+     */
+    protected $except = ['type'];
 
-        /**
-         * Create the component instance.
-         */
-        public function __construct(
-            public string $type,
-        ) {}
-    }
+    /**
+     * Create the component instance.
+     */
+    public function __construct(
+        public string $type,
+    ) {}
+}
+```
 
 <a name="component-attributes"></a>
 ### Component Attributes
@@ -1276,17 +1300,19 @@ To interact with slot attributes, you may access the `attributes` property of th
 
 For very small components, it may feel cumbersome to manage both the component class and the component's view template. For this reason, you may return the component's markup directly from the `render` method:
 
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): string
-    {
-        return <<<'blade'
-            <div class="alert alert-danger">
-                {{ $slot }}
-            </div>
-        blade;
-    }
+```php
+/**
+ * Get the view / contents that represent the component.
+ */
+public function render(): string
+{
+    return <<<'blade'
+        <div class="alert alert-danger">
+            {{ $slot }}
+        </div>
+    blade;
+}
+```
 
 <a name="generating-inline-view-components"></a>
 #### Generating Inline View Components
@@ -1318,16 +1344,18 @@ When writing components for your own application, components are automatically d
 
 However, if you are building a package that utilizes Blade components or placing components in non-conventional directories, you will need to manually register your component class and its HTML tag alias so that Laravel knows where to find the component. You should typically register your components in the `boot` method of your package's service provider:
 
-    use Illuminate\Support\Facades\Blade;
-    use VendorPackage\View\Components\AlertComponent;
+```php
+use Illuminate\Support\Facades\Blade;
+use VendorPackage\View\Components\AlertComponent;
 
-    /**
-     * Bootstrap your package's services.
-     */
-    public function boot(): void
-    {
-        Blade::component('package-alert', AlertComponent::class);
-    }
+/**
+ * Bootstrap your package's services.
+ */
+public function boot(): void
+{
+    Blade::component('package-alert', AlertComponent::class);
+}
+```
 
 Once your component has been registered, it may be rendered using its tag alias:
 
@@ -1339,15 +1367,17 @@ Once your component has been registered, it may be rendered using its tag alias:
 
 Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Package\Views\Components` namespace:
 
-    use Illuminate\Support\Facades\Blade;
+```php
+use Illuminate\Support\Facades\Blade;
 
-    /**
-     * Bootstrap your package's services.
-     */
-    public function boot(): void
-    {
-        Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
-    }
+/**
+ * Bootstrap your package's services.
+ */
+public function boot(): void
+{
+    Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
+}
+```
 
 This will allow the usage of package components by their vendor namespace using the `package-name::` syntax:
 
@@ -1471,13 +1501,15 @@ As previously discussed, anonymous components are typically defined by placing a
 
 The `anonymousComponentPath` method accepts the "path" to the anonymous component location as its first argument and an optional "namespace" that components should be placed under as its second argument. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Blade::anonymousComponentPath(__DIR__.'/../components');
-    }
+```php
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Blade::anonymousComponentPath(__DIR__.'/../components');
+}
+```
 
 When component paths are registered without a specified prefix as in the example above, they may be rendered in your Blade components without a corresponding prefix as well. For example, if a `panel.blade.php` component exists in the path registered above, it may be rendered like so:
 
@@ -1487,7 +1519,9 @@ When component paths are registered without a specified prefix as in the example
 
 Prefix "namespaces" may be provided as the second argument to the `anonymousComponentPath` method:
 
-    Blade::anonymousComponentPath(__DIR__.'/../components', 'dashboard');
+```php
+Blade::anonymousComponentPath(__DIR__.'/../components', 'dashboard');
+```
 
 When a prefix is provided, components within that "namespace" may be rendered by prefixing to the component's namespace to the component name when the component is rendered:
 
@@ -1556,11 +1590,13 @@ Remember, content that is injected into a component will be supplied to the defa
 
 Now that we have defined our layout and task list views, we just need to return the `task` view from a route:
 
-    use App\Models\Task;
+```php
+use App\Models\Task;
 
-    Route::get('/tasks', function () {
-        return view('tasks', ['tasks' => Task::all()]);
-    });
+Route::get('/tasks', function () {
+    return view('tasks', ['tasks' => Task::all()]);
+});
+```
 
 <a name="layouts-using-template-inheritance"></a>
 ### Layouts Using Template Inheritance
@@ -1836,37 +1872,41 @@ Blade allows you to define your own custom directives using the `directive` meth
 
 The following example creates a `@datetime($var)` directive which formats a given `$var`, which should be an instance of `DateTime`:
 
-    <?php
+```php
+<?php
 
-    namespace App\Providers;
+namespace App\Providers;
 
-    use Illuminate\Support\Facades\Blade;
-    use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
 
-    class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
     {
-        /**
-         * Register any application services.
-         */
-        public function register(): void
-        {
-            // ...
-        }
-
-        /**
-         * Bootstrap any application services.
-         */
-        public function boot(): void
-        {
-            Blade::directive('datetime', function (string $expression) {
-                return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
-            });
-        }
+        // ...
     }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Blade::directive('datetime', function (string $expression) {
+            return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
+        });
+    }
+}
+```
 
 As you can see, we will chain the `format` method onto whatever expression is passed into the directive. So, in this example, the final PHP generated by this directive will be:
 
-    <?php echo ($var)->format('m/d/Y H:i'); ?>
+```php
+<?php echo ($var)->format('m/d/Y H:i'); ?>
+```
 
 > [!WARNING]  
 > After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
@@ -1878,18 +1918,20 @@ If you attempt to "echo" an object using Blade, the object's `__toString` method
 
 In these cases, Blade allows you to register a custom echo handler for that particular type of object. To accomplish this, you should invoke Blade's `stringable` method. The `stringable` method accepts a closure. This closure should type-hint the type of object that it is responsible for rendering. Typically, the `stringable` method should be invoked within the `boot` method of your application's `AppServiceProvider` class:
 
-    use Illuminate\Support\Facades\Blade;
-    use Money\Money;
+```php
+use Illuminate\Support\Facades\Blade;
+use Money\Money;
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Blade::stringable(function (Money $money) {
-            return $money->formatTo('en_GB');
-        });
-    }
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Blade::stringable(function (Money $money) {
+        return $money->formatTo('en_GB');
+    });
+}
+```
 
 Once your custom echo handler has been defined, you may simply echo the object in your Blade template:
 
@@ -1902,17 +1944,19 @@ Cost: {{ $money }}
 
 Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using closures. For example, let's define a custom conditional that checks the configured default "disk" for the application. We may do this in the `boot` method of our `AppServiceProvider`:
 
-    use Illuminate\Support\Facades\Blade;
+```php
+use Illuminate\Support\Facades\Blade;
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Blade::if('disk', function (string $value) {
-            return config('filesystems.default') === $value;
-        });
-    }
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Blade::if('disk', function (string $value) {
+        return config('filesystems.default') === $value;
+    });
+}
+```
 
 Once the custom conditional has been defined, you can use it within your templates:
 
