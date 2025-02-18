@@ -107,29 +107,33 @@ By default, Dusk uses Google Chrome and a standalone [ChromeDriver](https://site
 
 To get started, open your `tests/DuskTestCase.php` file, which is the base Dusk test case for your application. Within this file, you can remove the call to the `startChromeDriver` method. This will stop Dusk from automatically starting the ChromeDriver:
 
-    /**
-     * Prepare for Dusk test execution.
-     *
-     * @beforeClass
-     */
-    public static function prepare(): void
-    {
-        // static::startChromeDriver();
-    }
+```php
+/**
+ * Prepare for Dusk test execution.
+ *
+ * @beforeClass
+ */
+public static function prepare(): void
+{
+    // static::startChromeDriver();
+}
+```
 
 Next, you may modify the `driver` method to connect to the URL and port of your choice. In addition, you may modify the "desired capabilities" that should be passed to the WebDriver:
 
-    use Facebook\WebDriver\Remote\RemoteWebDriver;
+```php
+use Facebook\WebDriver\Remote\RemoteWebDriver;
 
-    /**
-     * Create the RemoteWebDriver instance.
-     */
-    protected function driver(): RemoteWebDriver
-    {
-        return RemoteWebDriver::create(
-            'http://localhost:4444/wd/hub', DesiredCapabilities::phantomjs()
-        );
-    }
+/**
+ * Create the RemoteWebDriver instance.
+ */
+protected function driver(): RemoteWebDriver
+{
+    return RemoteWebDriver::create(
+        'http://localhost:4444/wd/hub', DesiredCapabilities::phantomjs()
+    );
+}
+```
 
 <a name="getting-started"></a>
 ## Getting Started
@@ -223,48 +227,56 @@ By default, this trait will truncate all tables except the `migrations` table. I
 > [!NOTE]  
 > If you are using Pest, you should define properties or methods on the base `DuskTestCase` class or on any class your test file extends.
 
-    /**
-     * Indicates which tables should be truncated.
-     *
-     * @var array
-     */
-    protected $tablesToTruncate = ['users'];
+```php
+/**
+ * Indicates which tables should be truncated.
+ *
+ * @var array
+ */
+protected $tablesToTruncate = ['users'];
 
+```
 Alternatively, you may define an `$exceptTables` property on your test class to specify which tables should be excluded from truncation:
 
-    /**
-     * Indicates which tables should be excluded from truncation.
-     *
-     * @var array
-     */
-    protected $exceptTables = ['users'];
+```php
+/**
+ * Indicates which tables should be excluded from truncation.
+ *
+ * @var array
+ */
+protected $exceptTables = ['users'];
+```
 
 To specify the database connections that should have their tables truncated, you may define a `$connectionsToTruncate` property on your test class:
 
-    /**
-     * Indicates which connections should have their tables truncated.
-     *
-     * @var array
-     */
-    protected $connectionsToTruncate = ['mysql'];
+```php
+/**
+ * Indicates which connections should have their tables truncated.
+ *
+ * @var array
+ */
+protected $connectionsToTruncate = ['mysql'];
+```
 
 If you would like to execute code before or after database truncation is performed, you may define `beforeTruncatingDatabase` or `afterTruncatingDatabase` methods on your test class:
 
-    /**
-     * Perform any work that should take place before the database has started truncating.
-     */
-    protected function beforeTruncatingDatabase(): void
-    {
-        //
-    }
+```php
+/**
+ * Perform any work that should take place before the database has started truncating.
+ */
+protected function beforeTruncatingDatabase(): void
+{
+    //
+}
 
-    /**
-     * Perform any work that should take place after the database has finished truncating.
-     */
-    protected function afterTruncatingDatabase(): void
-    {
-        //
-    }
+/**
+ * Perform any work that should take place after the database has finished truncating.
+ */
+protected function afterTruncatingDatabase(): void
+{
+    //
+}
+```
 
 <a name="running-tests"></a>
 ### Running Tests
@@ -295,29 +307,33 @@ php artisan dusk --group=foo
 
 By default, Dusk will automatically attempt to start ChromeDriver. If this does not work for your particular system, you may manually start ChromeDriver before running the `dusk` command. If you choose to start ChromeDriver manually, you should comment out the following line of your `tests/DuskTestCase.php` file:
 
-    /**
-     * Prepare for Dusk test execution.
-     *
-     * @beforeClass
-     */
-    public static function prepare(): void
-    {
-        // static::startChromeDriver();
-    }
+```php
+/**
+ * Prepare for Dusk test execution.
+ *
+ * @beforeClass
+ */
+public static function prepare(): void
+{
+    // static::startChromeDriver();
+}
+```
 
 In addition, if you start ChromeDriver on a port other than 9515, you should modify the `driver` method of the same class to reflect the correct port:
 
-    use Facebook\WebDriver\Remote\RemoteWebDriver;
+```php
+use Facebook\WebDriver\Remote\RemoteWebDriver;
 
-    /**
-     * Create the RemoteWebDriver instance.
-     */
-    protected function driver(): RemoteWebDriver
-    {
-        return RemoteWebDriver::create(
-            'http://localhost:9515', DesiredCapabilities::chrome()
-        );
-    }
+/**
+ * Create the RemoteWebDriver instance.
+ */
+protected function driver(): RemoteWebDriver
+{
+    return RemoteWebDriver::create(
+        'http://localhost:9515', DesiredCapabilities::chrome()
+    );
+}
+```
 
 <a name="environment-handling"></a>
 ### Environment Handling
@@ -399,112 +415,138 @@ As you can see in the example above, the `browse` method accepts a closure. A br
 
 Sometimes you may need multiple browsers in order to properly carry out a test. For example, multiple browsers may be needed to test a chat screen that interacts with websockets. To create multiple browsers, simply add more browser arguments to the signature of the closure given to the `browse` method:
 
-    $this->browse(function (Browser $first, Browser $second) {
-        $first->loginAs(User::find(1))
-            ->visit('/home')
-            ->waitForText('Message');
+```php
+$this->browse(function (Browser $first, Browser $second) {
+    $first->loginAs(User::find(1))
+        ->visit('/home')
+        ->waitForText('Message');
 
-        $second->loginAs(User::find(2))
-            ->visit('/home')
-            ->waitForText('Message')
-            ->type('message', 'Hey Taylor')
-            ->press('Send');
+    $second->loginAs(User::find(2))
+        ->visit('/home')
+        ->waitForText('Message')
+        ->type('message', 'Hey Taylor')
+        ->press('Send');
 
-        $first->waitForText('Hey Taylor')
-            ->assertSee('Jeffrey Way');
-    });
+    $first->waitForText('Hey Taylor')
+        ->assertSee('Jeffrey Way');
+});
+```
 
 <a name="navigation"></a>
 ### Navigation
 
 The `visit` method may be used to navigate to a given URI within your application:
 
-    $browser->visit('/login');
+```php
+$browser->visit('/login');
+```
 
 You may use the `visitRoute` method to navigate to a [named route](/docs/{{version}}/routing#named-routes):
 
-    $browser->visitRoute($routeName, $parameters);
+```php
+$browser->visitRoute($routeName, $parameters);
+```
 
 You may navigate "back" and "forward" using the `back` and `forward` methods:
 
-    $browser->back();
+```php
+$browser->back();
 
-    $browser->forward();
+$browser->forward();
+```
 
 You may use the `refresh` method to refresh the page:
 
-    $browser->refresh();
+```php
+$browser->refresh();
+```
 
 <a name="resizing-browser-windows"></a>
 ### Resizing Browser Windows
 
 You may use the `resize` method to adjust the size of the browser window:
 
-    $browser->resize(1920, 1080);
+```php
+$browser->resize(1920, 1080);
+```
 
 The `maximize` method may be used to maximize the browser window:
 
-    $browser->maximize();
+```php
+$browser->maximize();
+```
 
 The `fitContent` method will resize the browser window to match the size of its content:
 
-    $browser->fitContent();
+```php
+$browser->fitContent();
+```
 
 When a test fails, Dusk will automatically resize the browser to fit the content prior to taking a screenshot. You may disable this feature by calling the `disableFitOnFailure` method within your test:
 
-    $browser->disableFitOnFailure();
+```php
+$browser->disableFitOnFailure();
+```
 
 You may use the `move` method to move the browser window to a different position on your screen:
 
-    $browser->move($x = 100, $y = 100);
+```php
+$browser->move($x = 100, $y = 100);
+```
 
 <a name="browser-macros"></a>
 ### Browser Macros
 
 If you would like to define a custom browser method that you can re-use in a variety of your tests, you may use the `macro` method on the `Browser` class. Typically, you should call this method from a [service provider's](/docs/{{version}}/providers) `boot` method:
 
-    <?php
+```php
+<?php
 
-    namespace App\Providers;
+namespace App\Providers;
 
-    use Illuminate\Support\ServiceProvider;
-    use Laravel\Dusk\Browser;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Dusk\Browser;
 
-    class DuskServiceProvider extends ServiceProvider
+class DuskServiceProvider extends ServiceProvider
+{
+    /**
+     * Register Dusk's browser macros.
+     */
+    public function boot(): void
     {
-        /**
-         * Register Dusk's browser macros.
-         */
-        public function boot(): void
-        {
-            Browser::macro('scrollToElement', function (string $element = null) {
-                $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");
+        Browser::macro('scrollToElement', function (string $element = null) {
+            $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");
 
-                return $this;
-            });
-        }
+            return $this;
+        });
     }
+}
+```
 
 The `macro` function accepts a name as its first argument, and a closure as its second. The macro's closure will be executed when calling the macro as a method on a `Browser` instance:
 
-    $this->browse(function (Browser $browser) use ($user) {
-        $browser->visit('/pay')
-            ->scrollToElement('#credit-card-details')
-            ->assertSee('Enter Credit Card Details');
-    });
+```php
+$this->browse(function (Browser $browser) use ($user) {
+    $browser->visit('/pay')
+        ->scrollToElement('#credit-card-details')
+        ->assertSee('Enter Credit Card Details');
+});
+```
 
 <a name="authentication"></a>
 ### Authentication
 
 Often, you will be testing pages that require authentication. You can use Dusk's `loginAs` method in order to avoid interacting with your application's login screen during every test. The `loginAs` method accepts a primary key associated with your authenticatable model or an authenticatable model instance:
 
-    use App\Models\User;
-    use Laravel\Dusk\Browser;
+```php
+use App\Models\User;
+use Laravel\Dusk\Browser;
 
-    $this->browse(function (Browser $browser) {
-        $browser->loginAs(User::find(1))
-            ->visit('/home');
-    });
+$this->browse(function (Browser $browser) {
+    $browser->loginAs(User::find(1))
+        ->visit('/home');
+});
+```
 
 > [!WARNING]  
 > After using the `loginAs` method, the user session will be maintained for all tests within the file.
@@ -514,62 +556,80 @@ Often, you will be testing pages that require authentication. You can use Dusk's
 
 You may use the `cookie` method to get or set an encrypted cookie's value. By default, all of the cookies created by Laravel are encrypted:
 
-    $browser->cookie('name');
+```php
+$browser->cookie('name');
 
-    $browser->cookie('name', 'Taylor');
+$browser->cookie('name', 'Taylor');
+```
 
 You may use the `plainCookie` method to get or set an unencrypted cookie's value:
 
-    $browser->plainCookie('name');
+```php
+$browser->plainCookie('name');
 
-    $browser->plainCookie('name', 'Taylor');
+$browser->plainCookie('name', 'Taylor');
+```
 
 You may use the `deleteCookie` method to delete the given cookie:
 
-    $browser->deleteCookie('name');
+```php
+$browser->deleteCookie('name');
+```
 
 <a name="executing-javascript"></a>
 ### Executing JavaScript
 
 You may use the `script` method to execute arbitrary JavaScript statements within the browser:
 
-    $browser->script('document.documentElement.scrollTop = 0');
+```php
+$browser->script('document.documentElement.scrollTop = 0');
 
-    $browser->script([
-        'document.body.scrollTop = 0',
-        'document.documentElement.scrollTop = 0',
-    ]);
+$browser->script([
+    'document.body.scrollTop = 0',
+    'document.documentElement.scrollTop = 0',
+]);
 
-    $output = $browser->script('return window.location.pathname');
+$output = $browser->script('return window.location.pathname');
+```
 
 <a name="taking-a-screenshot"></a>
 ### Taking a Screenshot
 
 You may use the `screenshot` method to take a screenshot and store it with the given filename. All screenshots will be stored within the `tests/Browser/screenshots` directory:
 
-    $browser->screenshot('filename');
+```php
+$browser->screenshot('filename');
+```
 
 The `responsiveScreenshots` method may be used to take a series of screenshots at various breakpoints:
 
-    $browser->responsiveScreenshots('filename');
+```php
+$browser->responsiveScreenshots('filename');
+```
 
 The `screenshotElement` method may be used to take a screenshot of a specific element on the page:
 
-    $browser->screenshotElement('#selector', 'filename');
+```php
+$browser->screenshotElement('#selector', 'filename');
+```
 
 <a name="storing-console-output-to-disk"></a>
 ### Storing Console Output to Disk
 
 You may use the `storeConsoleLog` method to write the current browser's console output to disk with the given filename. Console output will be stored within the `tests/Browser/console` directory:
 
-    $browser->storeConsoleLog('filename');
+```php
+$browser->storeConsoleLog('filename');
+```
 
 <a name="storing-page-source-to-disk"></a>
 ### Storing Page Source to Disk
 
 You may use the `storeSource` method to write the current page's source to disk with the given filename. The page source will be stored within the `tests/Browser/source` directory:
 
-    $browser->storeSource('filename');
+```php
+$browser->storeSource('filename');
+```
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
@@ -579,29 +639,39 @@ You may use the `storeSource` method to write the current page's source to disk 
 
 Choosing good CSS selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, frontend changes can cause CSS selectors like the following to break your tests:
 
-    // HTML...
+```html
+// HTML...
 
-    <button>Login</button>
+<button>Login</button>
+```
 
-    // Test...
+```php
+// Test...
 
-    $browser->click('.login-page .container div > button');
+$browser->click('.login-page .container div > button');
+```
 
 Dusk selectors allow you to focus on writing effective tests rather than remembering CSS selectors. To define a selector, add a `dusk` attribute to your HTML element. Then, when interacting with a Dusk browser, prefix the selector with `@` to manipulate the attached element within your test:
 
-    // HTML...
+```html
+// HTML...
 
-    <button dusk="login-button">Login</button>
+<button dusk="login-button">Login</button>
+```
 
-    // Test...
+```php
+// Test...
 
-    $browser->click('@login-button');
+$browser->click('@login-button');
+```
 
 If desired, you may customize the HTML attribute that the Dusk selector utilizes via the `selectorHtmlAttribute` method. Typically, this method should be called from the `boot` method of your application's `AppServiceProvider`:
 
-    use Laravel\Dusk\Dusk;
+```php
+use Laravel\Dusk\Dusk;
 
-    Dusk::selectorHtmlAttribute('data-dusk');
+Dusk::selectorHtmlAttribute('data-dusk');
+```
 
 <a name="text-values-and-attributes"></a>
 ### Text, Values, and Attributes
@@ -611,29 +681,37 @@ If desired, you may customize the HTML attribute that the Dusk selector utilizes
 
 Dusk provides several methods for interacting with the current value, display text, and attributes of elements on the page. For example, to get the "value" of an element that matches a given CSS or Dusk selector, use the `value` method:
 
-    // Retrieve the value...
-    $value = $browser->value('selector');
+```php
+// Retrieve the value...
+$value = $browser->value('selector');
 
-    // Set the value...
-    $browser->value('selector', 'value');
+// Set the value...
+$browser->value('selector', 'value');
+```
 
 You may use the `inputValue` method to get the "value" of an input element that has a given field name:
 
-    $value = $browser->inputValue('field');
+```php
+$value = $browser->inputValue('field');
+```
 
 <a name="retrieving-text"></a>
 #### Retrieving Text
 
 The `text` method may be used to retrieve the display text of an element that matches the given selector:
 
-    $text = $browser->text('selector');
+```php
+$text = $browser->text('selector');
+```
 
 <a name="retrieving-attributes"></a>
 #### Retrieving Attributes
 
 Finally, the `attribute` method may be used to retrieve the value of an attribute of an element matching the given selector:
 
-    $attribute = $browser->attribute('selector', 'value');
+```php
+$attribute = $browser->attribute('selector', 'value');
+```
 
 <a name="interacting-with-forms"></a>
 ### Interacting With Forms
@@ -643,62 +721,86 @@ Finally, the `attribute` method may be used to retrieve the value of an attribut
 
 Dusk provides a variety of methods for interacting with forms and input elements. First, let's take a look at an example of typing text into an input field:
 
-    $browser->type('email', 'taylor@laravel.com');
+```php
+$browser->type('email', 'taylor@laravel.com');
+```
 
 Note that, although the method accepts one if necessary, we are not required to pass a CSS selector into the `type` method. If a CSS selector is not provided, Dusk will search for an `input` or `textarea` field with the given `name` attribute.
 
 To append text to a field without clearing its content, you may use the `append` method:
 
-    $browser->type('tags', 'foo')
-        ->append('tags', ', bar, baz');
+```php
+$browser->type('tags', 'foo')
+    ->append('tags', ', bar, baz');
+```
 
 You may clear the value of an input using the `clear` method:
 
-    $browser->clear('email');
+```php
+$browser->clear('email');
+```
 
 You can instruct Dusk to type slowly using the `typeSlowly` method. By default, Dusk will pause for 100 milliseconds between key presses. To customize the amount of time between key presses, you may pass the appropriate number of milliseconds as the third argument to the method:
 
-    $browser->typeSlowly('mobile', '+1 (202) 555-5555');
+```php
+$browser->typeSlowly('mobile', '+1 (202) 555-5555');
 
-    $browser->typeSlowly('mobile', '+1 (202) 555-5555', 300);
+$browser->typeSlowly('mobile', '+1 (202) 555-5555', 300);
+```
 
 You may use the `appendSlowly` method to append text slowly:
 
-    $browser->type('tags', 'foo')
-        ->appendSlowly('tags', ', bar, baz');
+```php
+$browser->type('tags', 'foo')
+    ->appendSlowly('tags', ', bar, baz');
+```
 
 <a name="dropdowns"></a>
 #### Dropdowns
 
 To select a value available on a `select` element, you may use the `select` method. Like the `type` method, the `select` method does not require a full CSS selector. When passing a value to the `select` method, you should pass the underlying option value instead of the display text:
 
-    $browser->select('size', 'Large');
+```php
+$browser->select('size', 'Large');
+```
 
 You may select a random option by omitting the second argument:
 
-    $browser->select('size');
+```php
+$browser->select('size');
+```
 
-By providing an array as the second argument to the `select` method, you can instruct the method to select multiple options:
+By providing an array as the second```php
 
-    $browser->select('categories', ['Art', 'Music']);
+``` argument to the `select` method, you can instruct the method to select multiple options:
+
+```php
+$browser->select('categories', ['Art', 'Music']);
+```
 
 <a name="checkboxes"></a>
 #### Checkboxes
 
 To "check" a checkbox input, you may use the `check` method. Like many other input related methods, a full CSS selector is not required. If a CSS selector match can't be found, Dusk will search for a checkbox with a matching `name` attribute:
 
-    $browser->check('terms');
+```php
+$browser->check('terms');
+```
 
 The `uncheck` method may be used to "uncheck" a checkbox input:
 
-    $browser->uncheck('terms');
+```php
+$browser->uncheck('terms');
+```
 
 <a name="radio-buttons"></a>
 #### Radio Buttons
 
 To "select" a `radio` input option, you may use the `radio` method. Like many other input related methods, a full CSS selector is not required. If a CSS selector match can't be found, Dusk will search for a `radio` input with matching `name` and `value` attributes:
 
-    $browser->radio('size', 'large');
+```php
+$browser->radio('size', 'large');
+```
 
 <a name="attaching-files"></a>
 ### Attaching Files

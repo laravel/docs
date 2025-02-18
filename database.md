@@ -86,34 +86,36 @@ Sometimes you may wish to use one database connection for SELECT statements, and
 
 To see how read / write connections should be configured, let's look at this example:
 
-    'mysql' => [
-        'read' => [
-            'host' => [
-                '192.168.1.1',
-                '196.168.1.2',
-            ],
+```php
+'mysql' => [
+    'read' => [
+        'host' => [
+            '192.168.1.1',
+            '196.168.1.2',
         ],
-        'write' => [
-            'host' => [
-                '196.168.1.3',
-            ],
-        ],
-        'sticky' => true,
-
-        'database' => env('DB_DATABASE', 'laravel'),
-        'username' => env('DB_USERNAME', 'root'),
-        'password' => env('DB_PASSWORD', ''),
-        'unix_socket' => env('DB_SOCKET', ''),
-        'charset' => env('DB_CHARSET', 'utf8mb4'),
-        'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
-        'prefix' => '',
-        'prefix_indexes' => true,
-        'strict' => true,
-        'engine' => null,
-        'options' => extension_loaded('pdo_mysql') ? array_filter([
-            PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-        ]) : [],
     ],
+    'write' => [
+        'host' => [
+            '196.168.1.3',
+        ],
+    ],
+    'sticky' => true,
+
+    'database' => env('DB_DATABASE', 'laravel'),
+    'username' => env('DB_USERNAME', 'root'),
+    'password' => env('DB_PASSWORD', ''),
+    'unix_socket' => env('DB_SOCKET', ''),
+    'charset' => env('DB_CHARSET', 'utf8mb4'),
+    'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+    'prefix' => '',
+    'prefix_indexes' => true,
+    'strict' => true,
+    'engine' => null,
+    'options' => extension_loaded('pdo_mysql') ? array_filter([
+        PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+    ]) : [],
+],
+```
 
 Note that three keys have been added to the configuration array: `read`, `write` and `sticky`. The `read` and `write` keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` configuration array.
 
@@ -134,107 +136,127 @@ Once you have configured your database connection, you may run queries using the
 
 To run a basic SELECT query, you may use the `select` method on the `DB` facade:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
-    use Illuminate\Support\Facades\DB;
-    use Illuminate\View\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * Show a list of all of the application's users.
+     */
+    public function index(): View
     {
-        /**
-         * Show a list of all of the application's users.
-         */
-        public function index(): View
-        {
-            $users = DB::select('select * from users where active = ?', [1]);
+        $users = DB::select('select * from users where active = ?', [1]);
 
-            return view('user.index', ['users' => $users]);
-        }
+        return view('user.index', ['users' => $users]);
     }
+}
+```
 
 The first argument passed to the `select` method is the SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection.
 
 The `select` method will always return an `array` of results. Each result within the array will be a PHP `stdClass` object representing a record from the database:
 
-    use Illuminate\Support\Facades\DB;
+```php
+use Illuminate\Support\Facades\DB;
 
-    $users = DB::select('select * from users');
+$users = DB::select('select * from users');
 
-    foreach ($users as $user) {
-        echo $user->name;
-    }
+foreach ($users as $user) {
+    echo $user->name;
+}
+```
 
 <a name="selecting-scalar-values"></a>
 #### Selecting Scalar Values
 
 Sometimes your database query may result in a single, scalar value. Instead of being required to retrieve the query's scalar result from a record object, Laravel allows you to retrieve this value directly using the `scalar` method:
 
-    $burgers = DB::scalar(
-        "select count(case when food = 'burger' then 1 end) as burgers from menu"
-    );
+```php
+$burgers = DB::scalar(
+    "select count(case when food = 'burger' then 1 end) as burgers from menu"
+);
+```
 
 <a name="selecting-multiple-result-sets"></a>
 #### Selecting Multiple Result Sets
 
 If your application calls stored procedures that return multiple result sets, you may use the `selectResultSets` method to retrieve all of the result sets returned by the stored procedure:
 
-    [$options, $notifications] = DB::selectResultSets(
-        "CALL get_user_options_and_notifications(?)", $request->user()->id
-    );
+```php
+[$options, $notifications] = DB::selectResultSets(
+    "CALL get_user_options_and_notifications(?)", $request->user()->id
+);
+```
 
 <a name="using-named-bindings"></a>
 #### Using Named Bindings
 
 Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
 
-    $results = DB::select('select * from users where id = :id', ['id' => 1]);
+```php
+$results = DB::select('select * from users where id = :id', ['id' => 1]);
+```
 
 <a name="running-an-insert-statement"></a>
 #### Running an Insert Statement
 
 To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method accepts the SQL query as its first argument and bindings as its second argument:
 
-    use Illuminate\Support\Facades\DB;
+```php
+use Illuminate\Support\Facades\DB;
 
-    DB::insert('insert into users (id, name) values (?, ?)', [1, 'Marc']);
+DB::insert('insert into users (id, name) values (?, ?)', [1, 'Marc']);
+```
 
 <a name="running-an-update-statement"></a>
 #### Running an Update Statement
 
 The `update` method should be used to update existing records in the database. The number of rows affected by the statement is returned by the method:
 
-    use Illuminate\Support\Facades\DB;
+```php
+use Illuminate\Support\Facades\DB;
 
-    $affected = DB::update(
-        'update users set votes = 100 where name = ?',
-        ['Anita']
-    );
+$affected = DB::update(
+    'update users set votes = 100 where name = ?',
+    ['Anita']
+);
+```
 
 <a name="running-a-delete-statement"></a>
 #### Running a Delete Statement
 
 The `delete` method should be used to delete records from the database. Like `update`, the number of rows affected will be returned by the method:
 
-    use Illuminate\Support\Facades\DB;
+```php
+use Illuminate\Support\Facades\DB;
 
-    $deleted = DB::delete('delete from users');
+$deleted = DB::delete('delete from users');
+```
 
 <a name="running-a-general-statement"></a>
 #### Running a General Statement
 
 Some database statements do not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
 
-    DB::statement('drop table users');
+```php
+DB::statement('drop table users');
+```
 
 <a name="running-an-unprepared-statement"></a>
 #### Running an Unprepared Statement
 
 Sometimes you may want to execute an SQL statement without binding any values. You may use the `DB` facade's `unprepared` method to accomplish this:
 
-    DB::unprepared('update users set votes = 100 where name = "Dries"');
+```php
+DB::unprepared('update users set votes = 100 where name = "Dries"');
+```
 
 > [!WARNING]  
 > Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
@@ -244,7 +266,9 @@ Sometimes you may want to execute an SQL statement without binding any values. Y
 
 When using the `DB` facade's `statement` and `unprepared` methods within transactions you must be careful to avoid statements that cause [implicit commits](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html). These statements will cause the database engine to indirectly commit the entire transaction, leaving Laravel unaware of the database's transaction level. An example of such a statement is creating a database table:
 
-    DB::unprepared('create table a (col varchar(1) null)');
+```php
+DB::unprepared('create table a (col varchar(1) null)');
+```
 
 Please refer to the MySQL manual for [a list of all statements](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) that trigger implicit commits.
 
@@ -253,128 +277,146 @@ Please refer to the MySQL manual for [a list of all statements](https://dev.mysq
 
 If your application defines multiple connections in your `config/database.php` configuration file, you may access each connection via the `connection` method provided by the `DB` facade. The connection name passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file or configured at runtime using the `config` helper:
 
-    use Illuminate\Support\Facades\DB;
+```php
+use Illuminate\Support\Facades\DB;
 
-    $users = DB::connection('sqlite')->select(/* ... */);
+$users = DB::connection('sqlite')->select(/* ... */);
+```
 
 You may access the raw, underlying PDO instance of a connection using the `getPdo` method on a connection instance:
 
-    $pdo = DB::connection()->getPdo();
+```php
+$pdo = DB::connection()->getPdo();
+```
 
 <a name="listening-for-query-events"></a>
 ### Listening for Query Events
 
 If you would like to specify a closure that is invoked for each SQL query executed by your application, you may use the `DB` facade's `listen` method. This method can be useful for logging queries or debugging. You may register your query listener closure in the `boot` method of a [service provider](/docs/{{version}}/providers):
 
-    <?php
+```php
+<?php
 
-    namespace App\Providers;
+namespace App\Providers;
 
-    use Illuminate\Database\Events\QueryExecuted;
-    use Illuminate\Support\Facades\DB;
-    use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\ServiceProvider;
 
-    class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
     {
-        /**
-         * Register any application services.
-         */
-        public function register(): void
-        {
-            // ...
-        }
-
-        /**
-         * Bootstrap any application services.
-         */
-        public function boot(): void
-        {
-            DB::listen(function (QueryExecuted $query) {
-                // $query->sql;
-                // $query->bindings;
-                // $query->time;
-                // $query->toRawSql();
-            });
-        }
+        // ...
     }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        DB::listen(function (QueryExecuted $query) {
+            // $query->sql;
+            // $query->bindings;
+            // $query->time;
+            // $query->toRawSql();
+        });
+    }
+}
+```
 
 <a name="monitoring-cumulative-query-time"></a>
 ### Monitoring Cumulative Query Time
 
 A common performance bottleneck of modern web applications is the amount of time they spend querying databases. Thankfully, Laravel can invoke a closure or callback of your choice when it spends too much time querying the database during a single request. To get started, provide a query time threshold (in milliseconds) and closure to the `whenQueryingForLongerThan` method. You may invoke this method in the `boot` method of a [service provider](/docs/{{version}}/providers):
 
-    <?php
+```php
+<?php
 
-    namespace App\Providers;
+namespace App\Providers;
 
-    use Illuminate\Database\Connection;
-    use Illuminate\Support\Facades\DB;
-    use Illuminate\Support\ServiceProvider;
-    use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Database\Connection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Events\QueryExecuted;
 
-    class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
     {
-        /**
-         * Register any application services.
-         */
-        public function register(): void
-        {
-            // ...
-        }
-
-        /**
-         * Bootstrap any application services.
-         */
-        public function boot(): void
-        {
-            DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
-                // Notify development team...
-            });
-        }
+        // ...
     }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
+            // Notify development team...
+        });
+    }
+}
+```
 
 <a name="database-transactions"></a>
 ## Database Transactions
 
 You may use the `transaction` method provided by the `DB` facade to run a set of operations within a database transaction. If an exception is thrown within the transaction closure, the transaction will automatically be rolled back and the exception is re-thrown. If the closure executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:
 
-    use Illuminate\Support\Facades\DB;
+```php
+use Illuminate\Support\Facades\DB;
 
-    DB::transaction(function () {
-        DB::update('update users set votes = 1');
+DB::transaction(function () {
+    DB::update('update users set votes = 1');
 
-        DB::delete('delete from posts');
-    });
+    DB::delete('delete from posts');
+});
+```
 
 <a name="handling-deadlocks"></a>
 #### Handling Deadlocks
 
 The `transaction` method accepts an optional second argument which defines the number of times a transaction should be retried when a deadlock occurs. Once these attempts have been exhausted, an exception will be thrown:
 
-    use Illuminate\Support\Facades\DB;
+```php
+use Illuminate\Support\Facades\DB;
 
-    DB::transaction(function () {
-        DB::update('update users set votes = 1');
+DB::transaction(function () {
+    DB::update('update users set votes = 1');
 
-        DB::delete('delete from posts');
-    }, 5);
+    DB::delete('delete from posts');
+}, 5);
+```
 
 <a name="manually-using-transactions"></a>
 #### Manually Using Transactions
 
 If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method provided by the `DB` facade:
 
-    use Illuminate\Support\Facades\DB;
+```php
+use Illuminate\Support\Facades\DB;
 
-    DB::beginTransaction();
+DB::beginTransaction();
+```
 
 You can rollback the transaction via the `rollBack` method:
 
-    DB::rollBack();
+```php
+DB::rollBack();
+```
 
 Lastly, you can commit a transaction via the `commit` method:
 
-    DB::commit();
+```php
+DB::commit();
+```
 
 > [!NOTE]  
 > The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
@@ -417,17 +459,21 @@ php artisan db:show --counts --views
 
 In addition, you may use the following `Schema` methods to inspect your database:
 
-    use Illuminate\Support\Facades\Schema;
+```php
+use Illuminate\Support\Facades\Schema;
 
-    $tables = Schema::getTables();
-    $views = Schema::getViews();
-    $columns = Schema::getColumns('users');
-    $indexes = Schema::getIndexes('users');
-    $foreignKeys = Schema::getForeignKeys('users');
+$tables = Schema::getTables();
+$views = Schema::getViews();
+$columns = Schema::getColumns('users');
+$indexes = Schema::getIndexes('users');
+$foreignKeys = Schema::getForeignKeys('users');
+```
 
 If you would like to inspect a database connection that is not your application's default connection, you may use the `connection` method:
 
-    $columns = Schema::connection('sqlite')->getColumns('users');
+```php
+$columns = Schema::connection('sqlite')->getColumns('users');
+```
 
 <a name="table-overview"></a>
 #### Table Overview
