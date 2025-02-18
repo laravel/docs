@@ -66,6 +66,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::pull](#method-array-pull)
 [Arr::query](#method-array-query)
 [Arr::random](#method-array-random)
+[Arr::reject](#method-array-reject)
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
@@ -755,6 +756,21 @@ You may also specify the number of items to return as an optional second argumen
     $items = Arr::random($array, 2);
 
     // [2, 5] - (retrieved randomly)
+
+<a name="method-array-reject"></a>
+#### `Arr::reject()` {.collection-method}
+
+The `Arr::reject` method removes items from an array using the given closure:
+
+    use Illuminate\Support\Arr;
+
+    $array = [100, '200', 300, '400', 500];
+
+    $filtered = Arr::reject($array, function (string|int $value, int $key) {
+        return is_string($value);
+    });
+
+    // [0 => 100, 2 => 300, 4 => 500]
 
 <a name="method-array-set"></a>
 #### `Arr::set()` {.collection-method}
