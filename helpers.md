@@ -2774,16 +2774,16 @@ Laravel uses the `Sleep` class internally whenever it is pausing execution. For 
 <a name="timebox"></a>
 ### Timebox
 
-Laravel's `Timebox` ensure that the given callback always takes a fixed amount of time to execute, even if its actual execution completes sooner. This is particularly useful for cryptographic operations and user authentication checks, where attackers might exploit variations in execution time to infer sensitive information. If the execution exceeds the fixed duration, `Timebox` has no effect. It is up to the developer to choose a sufficiently long time as the fixed duration to account for worst-case scenarios.
+Laravel's `Timebox` class ensures that the given callback always takes a fixed amount of time to execute, even if its actual execution completes sooner. This is particularly useful for cryptographic operations and user authentication checks, where attackers might exploit variations in execution time to infer sensitive information.
 
-The call method accepts a closure and a time limit in microseconds, and then executes and waits until the time limit is reached.
+If the execution exceeds the fixed duration, `Timebox` has no effect. It is up to the developer to choose a sufficiently long time as the fixed duration to account for worst-case scenarios.
+
+The call method accepts a closure and a time limit in microseconds, and then executes the closure and waits until the time limit is reached:
 
     use Illuminate\Support\Timebox;
 
     (new Timebox)->call(function ($timebox) {
-
         // ...
-
     }, microseconds: 10000);
 
-If an exception is thrown within its callback, this class will respect the defined delay and rethrow the exception after the delay.
+If an exception is thrown within the closure, this class will respect the defined delay and re-throw the exception after the delay.
