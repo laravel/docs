@@ -334,6 +334,39 @@ If you need to stream JSON data incrementally, you may utilize the `streamJson` 
         ]);
     });
 
+<a name="event-streams"></a>
+#### Event Streams
+
+The `eventStream` method may be used to return a server-sent events (SSE) streamed response using the `text/event-stream` content type. The `eventStream` method accepts a closure which should [yield](https://www.php.net/manual/en/language.generators.overview.php) responses to the stream as the responses become available:
+
+```php
+Route::get('/chat', function () {
+    return response()->eventStream(function () {
+        $stream = OpenAI::client()->chat()->createStreamed(...);
+
+        foreach ($stream as $response) {
+            yield $response->choices[0];
+        }
+    });
+});
+```
+
+This event stream may be consumed via an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) object by your application's frontend. The `eventStream` method will automatically send a `</stream>` update to the event stream when the stream is complete:
+
+```js
+const source = new EventSource('/chat');
+
+source.addEventListener('update', (event) => {
+    if (event.data === '</stream>') {
+        source.close();
+
+        return;
+    }
+
+    console.log(event.data);
+})
+```
+
 <a name="streamed-downloads"></a>
 #### Streamed Downloads
 
