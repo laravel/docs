@@ -2780,10 +2780,12 @@ If the execution exceeds the fixed duration, `Timebox` has no effect. It is up t
 
 The call method accepts a closure and a time limit in microseconds, and then executes the closure and waits until the time limit is reached:
 
-    use Illuminate\Support\Timebox;
+```php
+use Illuminate\Support\Timebox;
 
-    (new Timebox)->call(function ($timebox) {
-        // ...
-    }, microseconds: 10000);
+(new Timebox)->call(function ($timebox) {
+    // ...
+}, microseconds: 10000);
+```
 
 If an exception is thrown within the closure, this class will respect the defined delay and re-throw the exception after the delay.
