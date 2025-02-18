@@ -44,7 +44,7 @@ The `Concurrency` facade supports three drivers: `process` (the default), `fork`
 
 The `fork` driver offers improved performance compared to the default `process` driver, but it may only be used within PHP's CLI context, as PHP does not support forking during web requests. Before using the `fork` driver, you need to install the `spatie/fork` package:
 
-```bash
+```shell
 composer require spatie/fork
 ```
 
@@ -73,7 +73,7 @@ $results = Concurrency::driver('fork')->run(...);
 
 Or, to change the default concurrency driver, you should publish the `concurrency` configuration file via the `config:publish` Artisan command and update the `default` option within the file:
 
-```bash
+```shell
 php artisan config:publish concurrency
 ```
 

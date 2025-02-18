@@ -774,7 +774,7 @@ public function shouldRender(): bool
 
 Sometimes components are part of a component group and you may wish to group the related components within a single directory. For example, imagine a "card" component with the following class structure:
 
-```none
+```text
 App\Views\Components\Card\Card
 App\Views\Components\Card\Header
 App\Views\Components\Card\Body
@@ -1408,7 +1408,7 @@ You may use the `.` character to indicate if a component is nested deeper inside
 
 Sometimes, when a component is made up of many Blade templates, you may wish to group the given component's templates within a single directory. For example, imagine an "accordion" component with the following directory structure:
 
-```none
+```text
 /resources/views/components/accordion.blade.php
 /resources/views/components/accordion/item.blade.php
 ```
@@ -1427,7 +1427,7 @@ However, in order to render the accordion component via `x-accordion`, we were f
 
 Thankfully, Blade allows you to place a file matching the component's directory name within the component's directory itself. When this template exists, it can be rendered as the "root" element of the component even though it is nested within a directory. So, we can continue to use the same Blade syntax given in the example above; however, we will adjust our directory structure like so:
 
-```none
+```text
 /resources/views/components/accordion/accordion.blade.php
 /resources/views/components/accordion/item.blade.php
 ```

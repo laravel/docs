@@ -2178,7 +2178,7 @@ $invoice = $user->subscription('default')->previewInvoice(['price_yearly', 'pric
 
 Before generating invoice PDFs, you should use Composer to install the Dompdf library, which is the default invoice renderer for Cashier:
 
-```php
+```shell
 composer require dompdf/dompdf
 ```
 

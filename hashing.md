@@ -22,7 +22,7 @@ By default, Laravel uses the `bcrypt` hashing driver when hashing data. However,
 
 You may specify your application's hashing driver using the `HASH_DRIVER` environment variable. But, if you want to customize all of Laravel's hashing driver options, you should publish the complete `hashing` configuration file using the `config:publish` Artisan command:
 
-```bash
+```shell
 php artisan config:publish hashing
 ```
 

@@ -64,14 +64,14 @@ Have you started a new Laravel application using our Vite scaffolding but need t
 
 You must ensure that Node.js (16+) and NPM are installed before running Vite and the Laravel plugin:
 
-```sh
+```shell
 node -v
 npm -v
 ```
 
 You can easily install the latest version of Node and NPM using simple graphical installers from [the official Node website](https://nodejs.org/en/download/). Or, if you are using [Laravel Sail](https://laravel.com/docs/{{version}}/sail), you may invoke Node and NPM through Sail:
 
-```sh
+```shell
 ./vendor/bin/sail node -v
 ./vendor/bin/sail npm -v
 ```
@@ -81,7 +81,7 @@ You can easily install the latest version of Node and NPM using simple graphical
 
 Within a fresh installation of Laravel, you will find a `package.json` file in the root of your application's directory structure. The default `package.json` file already includes everything you need to get started using Vite and the Laravel plugin. You may install your application's frontend dependencies via NPM:
 
-```sh
+```shell
 npm install
 ```
 
@@ -310,7 +310,7 @@ export default defineConfig({
 
 If you would like to build your frontend using the [Vue](https://vuejs.org/) framework, then you will also need to install the `@vitejs/plugin-vue` plugin:
 
-```sh
+```shell
 npm install --save-dev @vitejs/plugin-vue
 ```
 
@@ -354,7 +354,7 @@ export default defineConfig({
 
 If you would like to build your frontend using the [React](https://reactjs.org/) framework, then you will also need to install the `@vitejs/plugin-react` plugin:
 
-```sh
+```shell
 npm install --save-dev @vitejs/plugin-react
 ```
 
@@ -421,7 +421,7 @@ When referencing relative asset paths, you should remember that the paths are re
 
 Consider the following project structure:
 
-```nothing
+```text
 public/
   taylor.png
 resources/
@@ -648,7 +648,7 @@ ASSET_URL=https://cdn.example.com
 
 After configuring the asset URL, all re-written URLs to your assets will be prefixed with the configured value:
 
-```nothing
+```text
 https://cdn.example.com/build/assets/app.9dce8d17.js
 ```
 
@@ -749,14 +749,14 @@ To ensure you don't forget to rebuild the SSR entry point, we recommend augmenti
 
 Then, to build and start the SSR server, you may run the following commands:
 
-```sh
+```shell
 npm run build
 node bootstrap/ssr/ssr.js
 ```
 
 If you are using [SSR with Inertia](https://inertiajs.com/server-side-rendering), you may instead use the `inertia:start-ssr` Artisan command to start the SSR server:
 
-```sh
+```shell
 php artisan inertia:start-ssr
 ```
 
