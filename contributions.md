@@ -107,44 +107,50 @@ Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master
 
 Below is an example of a valid Laravel documentation block. Note that the `@param` attribute is followed by two spaces, the argument type, two more spaces, and finally the variable name:
 
-    /**
-     * Register a binding with the container.
-     *
-     * @param  string|array  $abstract
-     * @param  \Closure|string|null  $concrete
-     * @param  bool  $shared
-     * @return void
-     *
-     * @throws \Exception
-     */
-    public function bind($abstract, $concrete = null, $shared = false)
-    {
-        // ...
-    }
+```php
+/**
+ * Register a binding with the container.
+ *
+ * @param  string|array  $abstract
+ * @param  \Closure|string|null  $concrete
+ * @param  bool  $shared
+ * @return void
+ *
+ * @throws \Exception
+ */
+public function bind($abstract, $concrete = null, $shared = false)
+{
+    // ...
+}
+```
 
 When the `@param` or `@return` attributes are redundant due to the use of native types, they can be removed:
 
-    /**
-     * Execute the job.
-     */
-    public function handle(AudioProcessor $processor): void
-    {
-        //
-    }
+```php
+/**
+ * Execute the job.
+ */
+public function handle(AudioProcessor $processor): void
+{
+    //
+}
+```
 
 However, when the native type is generic, please specify the generic type through the use of the `@param` or `@return` attributes:
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [
-            Attachment::fromStorage('/path/to/file'),
-        ];
-    }
+```php
+/**
+ * Get the attachments for the message.
+ *
+ * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+ */
+public function attachments(): array
+{
+    return [
+        Attachment::fromStorage('/path/to/file'),
+    ];
+}
+```
 
 <a name="styleci"></a>
 ### StyleCI
