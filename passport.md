@@ -6,30 +6,34 @@
     - [Deploying Passport](#deploying-passport)
     - [Upgrading Passport](#upgrading-passport)
 - [Configuration](#configuration)
-    - [Client Secret Hashing](#client-secret-hashing)
     - [Token Lifetimes](#token-lifetimes)
     - [Overriding Default Models](#overriding-default-models)
     - [Overriding Routes](#overriding-routes)
-- [Issuing Access Tokens](#issuing-access-tokens)
+- [Authorization Code Grant](#authorization-code-grant)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
+    - [Managing Tokens](#managing-tokens)
     - [Refreshing Tokens](#refreshing-tokens)
     - [Revoking Tokens](#revoking-tokens)
     - [Purging Tokens](#purging-tokens)
 - [Authorization Code Grant With PKCE](#code-grant-pkce)
     - [Creating the Client](#creating-a-auth-pkce-grant-client)
     - [Requesting Tokens](#requesting-auth-pkce-grant-tokens)
-- [Password Grant Tokens](#password-grant-tokens)
+- [Device Authorization Grant](#device-code-grant)
+    - [Creating a Device Code Grant Client](#creating-a-device-code-grant-client)
+    - [Requesting Tokens](#requesting-device-authorization-grant-tokens)
+- [Password Grant](#password-grant-tokens)
     - [Creating a Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
     - [Customizing the User Provider](#customizing-the-user-provider)
     - [Customizing the Username Field](#customizing-the-username-field)
     - [Customizing the Password Validation](#customizing-the-password-validation)
-- [Implicit Grant Tokens](#implicit-grant-tokens)
-- [Client Credentials Grant Tokens](#client-credentials-grant-tokens)
+- [Implicit Grant](#implicit-grant-tokens)
+- [Client Credentials Grant](#client-credentials-grant-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
     - [Creating a Personal Access Client](#creating-a-personal-access-client)
+    - [Customizing the User Provider](#customizing-the-user-provider-for-pat)
     - [Managing Personal Access Tokens](#managing-personal-access-tokens)
 - [Protecting Routes](#protecting-routes)
     - [Via Middleware](#via-middleware)
@@ -48,7 +52,7 @@
 
 [Laravel Passport](https://github.com/laravel/passport) provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
 
-> [!WARNING]  
+> [!NOTE]  
 > This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing.
 
 <a name="passport-or-sanctum"></a>
@@ -68,8 +72,6 @@ php artisan install:api --passport
 ```
 
 This command will publish and run the database migrations necessary for creating the tables your application needs to store OAuth2 clients and access tokens. The command will also create the encryption keys required to generate secure access tokens.
-
-Additionally, this command will ask if you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers.
 
 After running the `install:api` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
 
@@ -155,33 +157,22 @@ When upgrading to a new major version of Passport, it's important that you caref
 <a name="configuration"></a>
 ## Configuration
 
-<a name="client-secret-hashing"></a>
-### Client Secret Hashing
-
-If you would like your client's secrets to be hashed when stored in your database, you should call the `Passport::hashClientSecrets` method in the `boot` method of your `App\Providers\AppServiceProvider` class:
-
-```php
-use Laravel\Passport\Passport;
-
-Passport::hashClientSecrets();
-```
-
-Once enabled, all of your client secrets will only be displayable to the user immediately after they are created. Since the plain-text client secret value is never stored in the database, it is not possible to recover the secret's value if it is lost.
-
 <a name="token-lifetimes"></a>
 ### Token Lifetimes
 
 By default, Passport issues long-lived access tokens that expire after one year. If you would like to configure a longer / shorter token lifetime, you may use the `tokensExpireIn`, `refreshTokensExpireIn`, and `personalAccessTokensExpireIn` methods. These methods should be called from the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
 ```php
+use Carbon\CarbonInterval;
+
 /**
  * Bootstrap any application services.
  */
 public function boot(): void
 {
-    Passport::tokensExpireIn(now()->addDays(15));
-    Passport::refreshTokensExpireIn(now()->addDays(30));
-    Passport::personalAccessTokensExpireIn(now()->addMonths(6));
+    Passport::tokensExpireIn(CarbonInterval::days(15));
+    Passport::refreshTokensExpireIn(CarbonInterval::days(30));
+    Passport::personalAccessTokensExpireIn(CarbonInterval::months(6));
 }
 ```
 
@@ -207,7 +198,7 @@ After defining your model, you may instruct Passport to use your custom model vi
 ```php
 use App\Models\Passport\AuthCode;
 use App\Models\Passport\Client;
-use App\Models\Passport\PersonalAccessClient;
+use App\Models\Passport\DeviceCode;
 use App\Models\Passport\RefreshToken;
 use App\Models\Passport\Token;
 
@@ -220,7 +211,7 @@ public function boot(): void
     Passport::useRefreshTokenModel(RefreshToken::class);
     Passport::useAuthCodeModel(AuthCode::class);
     Passport::useClientModel(Client::class);
-    Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
+    Passport::useDeviceCodeModel(DeviceCode::class)
 }
 ```
 
@@ -241,7 +232,7 @@ public function register(): void
 }
 ```
 
-Then, you may copy the routes defined by Passport in [its routes file](https://github.com/laravel/passport/blob/11.x/routes/web.php) to your application's `routes/web.php` file and modify them to your liking:
+Then, you may copy the routes defined by Passport in [its routes file](https://github.com/laravel/passport/blob/master/routes/web.php) to your application's `routes/web.php` file and modify them to your liking:
 
 ```php
 Route::group([
@@ -253,107 +244,74 @@ Route::group([
 });
 ```
 
-<a name="issuing-access-tokens"></a>
-## Issuing Access Tokens
+<a name="authorization-code-grant-tokens"></a>
+## Authorization Code Grant
 
 Using OAuth2 via authorization codes is how most developers are familiar with OAuth2. When using authorization codes, a client application will redirect a user to your server where they will either approve or deny the request to issue an access token to the client.
+
+To get started, we need to instruct Passport how to return our "authorization" view. Remember, Passport is a headless OAuth2 library. If you would like a frontend implementation of Laravel's OAuth features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits).
+
+All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class. Passport will take care of defining the `/oauth/authorize` route that returns this view:
+
+```php
+use Laravel\Passport\Passport;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Passport::authorizationView('auth.oauth.authorize');
+
+    // ...
+}
+```
 
 <a name="managing-clients"></a>
 ### Managing Clients
 
-First, developers building applications that need to interact with your application's API will need to register their application with yours by creating a "client". Typically, this consists of providing the name of their application and a URL that your application can redirect to after users approve their request for authorization.
+First, developers building applications that need to interact with your application's API will need to register their application with yours by creating a "client". Typically, this consists of providing the name of their application and a URI that your application can redirect to after users approve their request for authorization.
 
-<a name="the-passportclient-command"></a>
-#### The `passport:client` Command
+<a name="managing-first-party-clients"></a>
+#### First-party clients
 
-The simplest way to create a client is using the `passport:client` Artisan command. This command may be used to create your own clients for testing your OAuth2 functionality. When you run the `client` command, Passport will prompt you for more information about your client and will provide you with a client ID and secret:
+The simplest way to create a client is using the `passport:client` Artisan command. This command may be used to create first-party clients or testing your OAuth2 functionality. When you run the `passport:client` command, Passport will prompt you for more information about your client and will provide you with a client ID and secret:
 
 ```shell
 php artisan passport:client
 ```
 
-**Redirect URLs**
-
-If you would like to allow multiple redirect URLs for your client, you may specify them using a comma-delimited list when prompted for the URL by the `passport:client` command. Any URLs which contain commas should be URL encoded:
+If you would like to allow multiple redirect URIs for your client, you may specify them using a comma-delimited list when prompted for the URI by the `passport:client` command. Any URIs which contain commas should be URI encoded:
 
 ```shell
 http://example.com/callback,http://examplefoo.com/callback
 ```
 
-<a name="clients-json-api"></a>
-#### JSON API
+<a name="managing-third-party-clients"></a>
+#### Third-party clients
 
-Since your application's users will not be able to utilize the `client` command, Passport provides a JSON API that you may use to create clients. This saves you the trouble of having to manually code controllers for creating, updating, and deleting clients.
+Since your application's users will not be able to utilize the `passport:client` command, you may use `createAuthorizationCodeGrantClient` method on the `ClientRepository` class to register a client for the given user:
 
-However, you will need to pair Passport's JSON API with your own frontend to provide a dashboard for your users to manage their clients. Below, we'll review all of the API endpoints for managing clients. For convenience, we'll use [Axios](https://github.com/axios/axios) to demonstrate making HTTP requests to the endpoints.
+```php
+use App\Models\User;
+use Laravel\Passport\ClientRepository;
 
-The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
+$user = User::find($userId);
 
-<a name="get-oauthclients"></a>
-#### `GET /oauth/clients`
+// Creating a client that belongs to the given user...
+$client = app(ClientRepository::class)->createAuthorizationCodeGrantClient(
+    user: $user,
+    name: 'Example App',
+    redirectUris: ['https://example.com/callback'],
+    confidential: true,
+    enableDeviceFlow: true
+);
 
-This route returns all of the clients for the authenticated user. This is primarily useful for listing all of the user's clients so that they may edit or delete them:
-
-```js
-axios.get('/oauth/clients')
-    .then(response => {
-        console.log(response.data);
-    });
+// Retrieving all the clients that belong to the user...
+$clients = $user->clients()->get();
 ```
 
-<a name="post-oauthclients"></a>
-#### `POST /oauth/clients`
-
-This route is used to create new clients. It requires two pieces of data: the client's `name` and a `redirect` URL. The `redirect` URL is where the user will be redirected after approving or denying a request for authorization.
-
-When a client is created, it will be issued a client ID and client secret. These values will be used when requesting access tokens from your application. The client creation route will return the new client instance:
-
-```js
-const data = {
-    name: 'Client Name',
-    redirect: 'http://example.com/callback'
-};
-
-axios.post('/oauth/clients', data)
-    .then(response => {
-        console.log(response.data);
-    })
-    .catch (response => {
-        // List errors on response...
-    });
-```
-
-<a name="put-oauthclientsclient-id"></a>
-#### `PUT /oauth/clients/{client-id}`
-
-This route is used to update clients. It requires two pieces of data: the client's `name` and a `redirect` URL. The `redirect` URL is where the user will be redirected after approving or denying a request for authorization. The route will return the updated client instance:
-
-```js
-const data = {
-    name: 'New Client Name',
-    redirect: 'http://example.com/callback'
-};
-
-axios.put('/oauth/clients/' + clientId, data)
-    .then(response => {
-        console.log(response.data);
-    })
-    .catch (response => {
-        // List errors on response...
-    });
-```
-
-<a name="delete-oauthclientsclient-id"></a>
-#### `DELETE /oauth/clients/{client-id}`
-
-This route is used to delete clients:
-
-```js
-axios.delete('/oauth/clients/' + clientId)
-    .then(response => {
-        // ...
-    });
-```
+The `createAuthorizationCodeGrantClient` method returns an instance of `Laravel\Passport\Client`. You may display the `$client->id` as the client ID and `$client->plainSecret` as the client secret to the user.
 
 <a name="requesting-tokens"></a>
 ### Requesting Tokens
@@ -397,12 +355,6 @@ If no `prompt` value is provided, the user will be prompted for authorization on
 
 When receiving authorization requests, Passport will automatically respond based on the value of `prompt` parameter (if present) and may display a template to the user allowing them to approve or deny the authorization request. If they approve the request, they will be redirected back to the `redirect_uri` that was specified by the consuming application. The `redirect_uri` must match the `redirect` URL that was specified when the client was created.
 
-If you would like to customize the authorization approval screen, you may publish Passport's views using the `vendor:publish` Artisan command. The published views will be placed in the `resources/views/vendor/passport` directory:
-
-```shell
-php artisan vendor:publish --tag=passport-views
-```
-
 Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately, unless the consuming application has explicitly set the `prompt` parameter when redirecting for authorization:
 
 ```php
@@ -410,14 +362,17 @@ Sometimes you may wish to skip the authorization prompt, such as when authorizin
 
 namespace App\Models\Passport;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Laravel\Passport\Client as BaseClient;
 
 class Client extends BaseClient
 {
     /**
      * Determine if the client should skip the authorization prompt.
+     *
+     * @param  \Laravel\Passport\Scope[]  $scopes 
      */
-    public function skipsAuthorization(): bool
+    public function skipsAuthorization(Authenticatable $user, array $scopes): bool
     {
         return $this->firstParty();
     }
@@ -459,30 +414,35 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 > [!NOTE]  
 > Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by Passport. There is no need to manually define this route.
 
-<a name="tokens-json-api"></a>
-#### JSON API
+<a name="managing-tokens"></a>
+### Managing Tokens
 
-Passport also includes a JSON API for managing authorized access tokens. You may pair this with your own frontend to offer your users a dashboard for managing access tokens. For convenience, we'll use [Axios](https://github.com/axios/axios) to demonstrate making HTTP requests to the endpoints. The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application.
+You may retrieve user's authorized tokens using the `tokens` method of the `Laravel\Passport\HasApiTokens`. For example, to offer your users a dashboard to keep track of their connections with third-party applications:
 
-<a name="get-oauthtokens"></a>
-#### `GET /oauth/tokens`
+```php
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Date;
+use Laravel\Passport\Token;
 
-This route returns all of the authorized access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they can revoke them:
+$user = User::find($userId);
 
-```js
-axios.get('/oauth/tokens')
-    .then(response => {
-        console.log(response.data);
-    });
-```
+// Retrieving all valid tokens for the user...
+$tokens = $user->tokens()
+    ->where('revoked', false)
+    ->where('expires_at', '>', Date::now())
+    ->get();
 
-<a name="delete-oauthtokenstoken-id"></a>
-#### `DELETE /oauth/tokens/{token-id}`
-
-This route may be used to revoke authorized access tokens and their related refresh tokens:
-
-```js
-axios.delete('/oauth/tokens/' + tokenId);
+// Retrieving all the user's connections to third-party clients...
+$connections = $tokens->load('client')
+    ->reject(fn (Token $token) => $token->client->firstParty())
+    ->groupBy('client_id')
+    ->map(fn (Collection $tokens) => [
+        'client' => $tokens->first()->client,
+        'scopes' => $tokens->pluck('scopes')->flatten()->unique()->values()->all(),
+        'tokens_count' => $tokens->count(),
+    ])
+    ->values();
 ```
 
 <a name="refreshing-tokens"></a>
@@ -497,7 +457,7 @@ $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
     'grant_type' => 'refresh_token',
     'refresh_token' => 'the-refresh-token',
     'client_id' => 'client-id',
-    'client_secret' => 'client-secret',
+    'client_secret' => 'client-secret', // required for confidential clients only
     'scope' => '',
 ]);
 
@@ -509,20 +469,18 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 <a name="revoking-tokens"></a>
 ### Revoking Tokens
 
-You may revoke a token by using the `revokeAccessToken` method on the `Laravel\Passport\TokenRepository`. You may revoke a token's refresh tokens using the `revokeRefreshTokensByAccessTokenId` method on the `Laravel\Passport\RefreshTokenRepository`. These classes may be resolved using Laravel's [service container](/docs/{{version}}/container):
+You may revoke a token by using the `revoke` method on the `Laravel\Passport\Token` model. You may revoke a token's refresh token using the `revoke` method on the `Laravel\Passport\RefreshToken` model:
 
 ```php
-use Laravel\Passport\TokenRepository;
-use Laravel\Passport\RefreshTokenRepository;
+use Laravel\Passport\Passport;
 
-$tokenRepository = app(TokenRepository::class);
-$refreshTokenRepository = app(RefreshTokenRepository::class);
+$token = Passport::token()->find($tokenId);
 
 // Revoke an access token...
-$tokenRepository->revokeAccessToken($tokenId);
+$token->revoke();
 
-// Revoke all of the token's refresh tokens...
-$refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
+// Revoke the token's refresh token...
+$token->refreshToken?->revoke();
 ```
 
 <a name="purging-tokens"></a>
@@ -555,7 +513,7 @@ Schedule::command('passport:purge')->hourly();
 <a name="code-grant-pkce"></a>
 ## Authorization Code Grant With PKCE
 
-The Authorization Code grant with "Proof Key for Code Exchange" (PKCE) is a secure way to authenticate single page applications or native applications to access your API. This grant should be used when you can't guarantee that the client secret will be stored confidentially or in order to mitigate the threat of having the authorization code intercepted by an attacker. A combination of a "code verifier" and a "code challenge" replaces the client secret when exchanging the authorization code for an access token.
+The Authorization Code grant with "Proof Key for Code Exchange" (PKCE) is a secure way to authenticate single page applications or mobile applications to access your API. This grant should be used when you can't guarantee that the client secret will be stored confidentially or in order to mitigate the threat of having the authorization code intercepted by an attacker. A combination of a "code verifier" and a "code challenge" replaces the client secret when exchanging the authorization code for an access token.
 
 <a name="creating-a-auth-pkce-grant-client"></a>
 ### Creating the Client
@@ -579,7 +537,7 @@ The code verifier should be a random string of between 43 and 128 characters con
 The code challenge should be a Base64 encoded string with URL and filename-safe characters. The trailing `'='` characters should be removed and no line breaks, whitespace, or other additional characters should be present.
 
 ```php
-$encoded = base64_encode(hash('sha256', $code_verifier, true));
+$encoded = base64_encode(hash('sha256', $codeVerifier, true));
 
 $codeChallenge = strtr(rtrim($encoded, '='), '+/', '-_');
 ```
@@ -597,11 +555,11 @@ Route::get('/redirect', function (Request $request) {
     $request->session()->put('state', $state = Str::random(40));
 
     $request->session()->put(
-        'code_verifier', $code_verifier = Str::random(128)
+        'code_verifier', $codeVerifier = Str::random(128)
     );
 
     $codeChallenge = strtr(rtrim(
-        base64_encode(hash('sha256', $code_verifier, true))
+        base64_encode(hash('sha256', $codeVerifier, true))
     , '='), '+/', '-_');
 
     $query = http_build_query([
@@ -652,8 +610,116 @@ Route::get('/callback', function (Request $request) {
 });
 ```
 
+<a name="device-code-grant"></a>
+## Device Authorization Grant
+
+The OAuth2 device authorization grant allows browserless or limited input devices, such as TVs and game consoles, to obtain an access token by exchanging a "device code". When using device flow, the device client will instruct the user to use a secondary device, such as a computer or a smartphone and connect to your server where they will enter the provided "user code" and either approve or deny the access request.
+
+To get started, we need to instruct Passport how to return our "user code" and "authorization" views. Remember, Passport is a headless OAuth2 library. If you would like a frontend implementation of Laravel's OAuth features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits).
+
+All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class. Passport will take care of defining the routes that returns these views:
+
+```php
+use Laravel\Passport\Passport;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Passport::deviceUserCodeView('auth.oauth.device.user-code');
+    Passport::deviceAuthorizationView('auth.oauth.device.authorize');
+
+    // ...
+}
+```
+
+<a name="creating-a-device-code-grant-client"></a>
+### Creating a Device Code Grant Client
+
+Before your application can issue tokens via the device authorization grant, you will need to create a device flow enabled client. You may do this using the `passport:client` Artisan command with the `--device` option. This command will create a first-party device flow enabled client and provide you with a client ID and secret:
+
+```shell
+php artisan passport:client --device
+```
+
+Additionally, you may use `createDeviceAuthorizationGrantClient` method on the `ClientRepository` class to register a third-party client that belongs to the given user:
+
+```php
+use App\Models\User;
+use Laravel\Passport\ClientRepository;
+
+$user = User::find($userId);
+
+$client = app(ClientRepository::class)->createDeviceAuthorizationGrantClient(
+    user: $user,
+    name: 'Example Device',
+    confidential: false,
+);
+```
+
+<a name="requesting-device-authorization-grant-tokens"></a>
+### Requesting Tokens
+
+<a name="device-code"></a>
+#### Requesting Device Code
+
+Once a client has been created, developers may use their client ID to request a device code from your application. First, the consuming device should make a `POST` request to your application's `/oauth/device/code` route to request a device code:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+$response = Http::asForm()->post('http://passport-app.test/oauth/device/code', [
+    'client_id' => 'client-id',
+    'scope' => '',
+]);
+
+return $response->json();
+```
+
+This will return a JSON response containing `device_code`, `user_code`, `verification_uri`, `interval` and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the device code expires. The `interval` attribute contains the number of seconds, the consuming device should wait between requests, when polling `\oauth\token` route to avoid rate limit errors.
+
+> [!NOTE]  
+> Remember, the `/oauth/device/code` route is already defined by Passport. You do not need to manually define this route.
+
+<a name="user-code"></a>
+#### Displaying Verification URI and User Code
+
+Once a device code request has been obtained, the consuming device should instruct the user to use another device and visit the provided `verification_uri` and enter the `user_code` in order to review the authorization request.
+
+<a name="polling-token-request"></a>
+#### Polling Token Request
+
+Since the user will be using a separate device to grant (or deny) access, the consuming device should poll your application's `/oauth/token` route to determine when the user has responded to the request. The consuming device should use the minimum polling `interval` provided in the JSON response when requesting device code to avoid rate limit errors:
+
+```php
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Sleep;
+
+$interval = 5;
+
+do {
+    Sleep::for($interval)->seconds();
+
+    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
+        'grant_type' => 'urn:ietf:params:oauth:grant-type:device_code',
+        'client_id' => 'client-id',
+        'client_secret' => 'client-secret', // required for confidential clients only
+        'device_code' => 'device-code',
+    ]);
+    
+    if ($response->json('error') === 'slow_down') {
+        $interval += 5;
+    }
+} while (in_array($response->json('error'), ['authorization_pending', 'slow_down']));
+
+return $response->json();
+```
+
+If the user has approved the authorization request, this will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
+
 <a name="password-grant-tokens"></a>
-## Password Grant Tokens
+## Password Grant
 
 > [!WARNING]  
 > We no longer recommend using password grant tokens. Instead, you should choose [a grant type that is currently recommended by OAuth2 Server](https://oauth2.thephpleague.com/authorization-server/which-grant/).
@@ -675,7 +741,7 @@ public function boot(): void
 <a name="creating-a-password-grant-client"></a>
 ### Creating a Password Grant Client
 
-Before your application can issue tokens via the password grant, you will need to create a password grant client. You may do this using the `passport:client` Artisan command with the `--password` option. **If you have already run the `passport:install` command, you do not need to run this command:**
+Before your application can issue tokens via the password grant, you will need to create a password grant client. You may do this using the `passport:client` Artisan command with the `--password` option.
 
 ```shell
 php artisan passport:client --password
@@ -684,7 +750,7 @@ php artisan passport:client --password
 <a name="requesting-password-grant-tokens"></a>
 ### Requesting Tokens
 
-Once you have created a password grant client, you may request an access token by issuing a `POST` request to the `/oauth/token` route with the user's email address and password. Remember, this route is already registered by Passport so there is no need to define it manually. If the request is successful, you will receive an `access_token` and `refresh_token` in the JSON response from the server:
+Once you have enabled the grant and have created a password grant client, you may request an access token by issuing a `POST` request to the `/oauth/token` route with the user's email address and password. Remember, this route is already registered by Passport so there is no need to define it manually. If the request is successful, you will receive an `access_token` and `refresh_token` in the JSON response from the server:
 
 ```php
 use Illuminate\Support\Facades\Http;
@@ -692,7 +758,7 @@ use Illuminate\Support\Facades\Http;
 $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
     'grant_type' => 'password',
     'client_id' => 'client-id',
-    'client_secret' => 'client-secret',
+    'client_secret' => 'client-secret', // required for confidential clients only
     'username' => 'taylor@laravel.com',
     'password' => 'my-password',
     'scope' => '',
@@ -715,7 +781,7 @@ use Illuminate\Support\Facades\Http;
 $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
     'grant_type' => 'password',
     'client_id' => 'client-id',
-    'client_secret' => 'client-secret',
+    'client_secret' => 'client-secret', // required for confidential clients only
     'username' => 'taylor@laravel.com',
     'password' => 'my-password',
     'scope' => '*',
@@ -725,7 +791,7 @@ $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
 <a name="customizing-the-user-provider"></a>
 ### Customizing the User Provider
 
-If your application uses more than one [authentication user provider](/docs/{{version}}/authentication#introduction), you may specify which user provider the password grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --password` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#via-middleware) to ensure that only users from the guard's specified provider are authorized.
+If your application uses more than one [authentication user provider](/docs/{{version}}/authentication#introduction), you may specify which user provider the password grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --password` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#multiple-authentication-guards) to ensure that only users from the guard's specified provider are authorized.
 
 <a name="customizing-the-username-field"></a>
 ### Customizing the Username Field
@@ -785,7 +851,7 @@ class User extends Authenticatable
 ```
 
 <a name="implicit-grant-tokens"></a>
-## Implicit Grant Tokens
+## Implicit Grant
 
 > [!WARNING]  
 > We no longer recommend using implicit grant tokens. Instead, you should choose [a grant type that is currently recommended by OAuth2 Server](https://oauth2.thephpleague.com/authorization-server/which-grant/).
@@ -802,7 +868,13 @@ public function boot(): void
 }
 ```
 
-Once the grant has been enabled, developers may use their client ID to request an access token from your application. The consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
+Before your application can issue tokens via the implicit grant, you will need to create an implicit grant client. You may do this using the `passport:client` Artisan command with the `--implicit` option.
+
+```shell
+php artisan passport:client --implicit
+```
+
+Once the grant has been enabled and an implicit client has been created, developers may use their client ID to request an access token from your application. The consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
 
 ```php
 use Illuminate\Http\Request;
@@ -827,7 +899,7 @@ Route::get('/redirect', function (Request $request) {
 > Remember, the `/oauth/authorize` route is already defined by Passport. You do not need to manually define this route.
 
 <a name="client-credentials-grant-tokens"></a>
-## Client Credentials Grant Tokens
+## Client Credentials Grant
 
 The client credentials grant is suitable for machine-to-machine authentication. For example, you might use this grant in a scheduled job which is performing maintenance tasks over an API.
 
@@ -837,23 +909,21 @@ Before your application can issue tokens via the client credentials grant, you w
 php artisan passport:client --client
 ```
 
-Next, to use this grant type, register a middleware alias for the `CheckClientCredentials` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
+Next, register a middleware alias for the `EnsureClientIsResourceOwner` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
 
-```php
-use Laravel\Passport\Http\Middleware\CheckClientCredentials;
+    use Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner;
 
-->withMiddleware(function (Middleware $middleware) {
-    $middleware->alias([
-        'client' => CheckClientCredentials::class
-    ]);
-})
-```
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'client' => EnsureClientIsResourceOwner::class,
+        ]);
+    })
 
 Then, attach the middleware to a route:
 
 ```php
 Route::get('/orders', function (Request $request) {
-    // ...
+    // Access token is valid and the client is resource owner...
 })->middleware('client');
 ```
 
@@ -861,8 +931,8 @@ To restrict access to the route to specific scopes, you may provide a comma-deli
 
 ```php
 Route::get('/orders', function (Request $request) {
-    // ...
-})->middleware('client:check-status,your-scope');
+    // Access token is valid, the client is resource owner, and has both "check-status" and "place-orders" scopes...
+})->middleware('client:check-status,place-orders');
 ```
 
 <a name="retrieving-tokens"></a>
@@ -889,7 +959,7 @@ return $response->json()['access_token'];
 Sometimes, your users may want to issue access tokens to themselves without going through the typical authorization code redirect flow. Allowing users to issue tokens to themselves via your application's UI can be useful for allowing users to experiment with your API or may serve as a simpler approach to issuing access tokens in general.
 
 > [!NOTE]  
-> If your application is primarily using Passport to issue personal access tokens, consider using [Laravel Sanctum](/docs/{{version}}/sanctum), Laravel's light-weight first-party library for issuing API access tokens.
+> If your application is using Passport primarily to issue personal access tokens, consider using [Laravel Sanctum](/docs/{{version}}/sanctum), Laravel's light-weight first-party library for issuing API access tokens.
 
 <a name="creating-a-personal-access-client"></a>
 ### Creating a Personal Access Client
@@ -900,12 +970,10 @@ Before your application can issue personal access tokens, you will need to creat
 php artisan passport:client --personal
 ```
 
-After creating your personal access client, place the client's ID and plain-text secret value in your application's `.env` file:
+<a name="customizing-the-user-provider-for-pat"></a>
+### Customizing the User Provider
 
-```ini
-PASSPORT_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
-PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
-```
+If your application uses more than one [authentication user provider](/docs/{{version}}/authentication#introduction), you may specify which user provider the personal access grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --personal` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#multiple-authentication-guards) to ensure that only users from the guard's specified provider are authorized.
 
 <a name="managing-personal-access-tokens"></a>
 ### Managing Personal Access Tokens
@@ -914,74 +982,27 @@ Once you have created a personal access client, you may issue tokens for a given
 
 ```php
 use App\Models\User;
+use Illuminate\Support\Facades\Date;
+use Laravel\Passport\Token;
 
-$user = User::find(1);
+$user = User::find($userId);
 
 // Creating a token without scopes...
 $token = $user->createToken('Token Name')->accessToken;
 
 // Creating a token with scopes...
 $token = $user->createToken('My Token', ['place-orders'])->accessToken;
-```
 
-<a name="personal-access-tokens-json-api"></a>
-#### JSON API
+// Creating a token with all scopes...
+$token = $user->createToken('My Token', ['*'])->accessToken;
 
-Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Axios](https://github.com/axios/axios) to demonstrate making HTTP requests to the endpoints.
-
-The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
-
-<a name="get-oauthscopes"></a>
-#### `GET /oauth/scopes`
-
-This route returns all of the [scopes](#token-scopes) defined for your application. You may use this route to list the scopes a user may assign to a personal access token:
-
-```js
-axios.get('/oauth/scopes')
-    .then(response => {
-        console.log(response.data);
-    });
-```
-
-<a name="get-oauthpersonal-access-tokens"></a>
-#### `GET /oauth/personal-access-tokens`
-
-This route returns all of the personal access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they may edit or revoke them:
-
-```js
-axios.get('/oauth/personal-access-tokens')
-    .then(response => {
-        console.log(response.data);
-    });
-```
-
-<a name="post-oauthpersonal-access-tokens"></a>
-#### `POST /oauth/personal-access-tokens`
-
-This route creates new personal access tokens. It requires two pieces of data: the token's `name` and the `scopes` that should be assigned to the token:
-
-```js
-const data = {
-    name: 'Token Name',
-    scopes: []
-};
-
-axios.post('/oauth/personal-access-tokens', data)
-    .then(response => {
-        console.log(response.data.accessToken);
-    })
-    .catch (response => {
-        // List errors on response...
-    });
-```
-
-<a name="delete-oauthpersonal-access-tokenstoken-id"></a>
-#### `DELETE /oauth/personal-access-tokens/{token-id}`
-
-This route may be used to revoke personal access tokens:
-
-```js
-axios.delete('/oauth/personal-access-tokens/' + tokenId);
+// Retrieving all the valid personal access tokens...
+$tokens = $user->tokens()
+    ->with('client')
+    ->where('revoked', false)
+    ->where('expires_at', '>', Date::now())
+    ->get()
+    ->filter(fn (Token $token) => $token->client->hasGrantType('personal_access'));
 ```
 
 <a name="protecting-routes"></a>
@@ -1007,14 +1028,16 @@ Route::get('/user', function () {
 If your application authenticates different types of users that perhaps use entirely different Eloquent models, you will likely need to define a guard configuration for each user provider type in your application. This allows you to protect requests intended for specific user providers. For example, given the following guard configuration the `config/auth.php` configuration file:
 
 ```php
-'api' => [
-    'driver' => 'passport',
-    'provider' => 'users',
-],
+'guards' => [
+    'api' => [
+        'driver' => 'passport',
+        'provider' => 'users',
+    ],
 
-'api-customers' => [
-    'driver' => 'passport',
-    'provider' => 'customers',
+    'api-customers' => [
+        'driver' => 'passport',
+        'provider' => 'customers',
+    ],
 ],
 ```
 
@@ -1027,7 +1050,7 @@ Route::get('/customer', function () {
 ```
 
 > [!NOTE]  
-> For more information on using multiple user providers with Passport, please consult the [password grant documentation](#customizing-the-user-provider).
+> For more information on using multiple user providers with Passport, please consult the [personal access tokens documentation](#customizing-the-user-provider-for-pat) and [password grant documentation](#customizing-the-user-provider).
 
 <a name="passing-the-access-token"></a>
 ### Passing the Access Token
@@ -1071,7 +1094,7 @@ public function boot(): void
 <a name="default-scope"></a>
 ### Default Scope
 
-If a client does not request any specific scopes, you may configure your Passport server to attach default scope(s) to the token using the `setDefaultScope` method. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class:
+If a client does not request any specific scopes, you may configure your Passport server to attach default scopes to the token using the `defaultScopes` method. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
 ```php
 use Laravel\Passport\Passport;
@@ -1081,14 +1104,11 @@ Passport::tokensCan([
     'check-status' => 'Check order status',
 ]);
 
-Passport::setDefaultScope([
+Passport::defaultScopes([
     'check-status',
     'place-orders',
 ]);
 ```
-
-> [!NOTE]  
-> Passport's default scopes do not apply to personal access tokens that are generated by the user.
 
 <a name="assigning-scopes-to-tokens"></a>
 ### Assigning Scopes to Tokens
@@ -1126,13 +1146,13 @@ $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope. To get started, define the following middleware aliases in your application's `bootstrap/app.php` file:
 
 ```php
-use Laravel\Passport\Http\Middleware\CheckForAnyScope;
-use Laravel\Passport\Http\Middleware\CheckScopes;
+use Laravel\Passport\Http\Middleware\CheckToken;
+use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 
 ->withMiddleware(function (Middleware $middleware) {
     $middleware->alias([
-        'scopes' => CheckScopes::class,
-        'scope' => CheckForAnyScope::class,
+        'scopes' => CheckToken::class,
+        'scope' => CheckTokenForAnyScope::class,
     ]);
 })
 ```
@@ -1204,7 +1224,7 @@ Passport::hasScope('place-orders');
 ```
 
 <a name="consuming-your-api-with-javascript"></a>
-## Consuming Your API With JavaScript
+## SPA Authentication
 
 When building an API, it can be extremely useful to be able to consume your own API from your JavaScript application. This approach to API development allows your own application to consume the same API that you are sharing with the world. The same API may be consumed by your web application, mobile applications, third-party applications, and any SDKs that you may publish on various package managers.
 
@@ -1250,7 +1270,7 @@ public function boot(): void
 <a name="csrf-protection"></a>
 #### CSRF Protection
 
-When using this method of authentication, you will need to ensure a valid CSRF token header is included in your requests. The default Laravel JavaScript scaffolding includes an Axios instance, which will automatically use the encrypted `XSRF-TOKEN` cookie value to send an `X-XSRF-TOKEN` header on same-origin requests.
+When using this method of authentication, you will need to ensure a valid CSRF token header is included in your requests. The default Laravel JavaScript scaffolding includes an [Axios](https://github.com/axios/axios) instance, which will automatically use the encrypted `XSRF-TOKEN` cookie value to send an `X-XSRF-TOKEN` header on same-origin requests.
 
 > [!NOTE]  
 > If you choose to send the `X-CSRF-TOKEN` header instead of `X-XSRF-TOKEN`, you will need to use the unencrypted token provided by `csrf_token()`.
