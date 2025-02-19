@@ -29,7 +29,7 @@
 
 You may install Reverb using the `install:broadcasting` Artisan command:
 
-```
+```shell
 php artisan install:broadcasting
 ```
 

@@ -1178,7 +1178,6 @@ public function boot(): void
 {
     Event::listen(UnexpectedNullScopeEncountered::class, fn () => abort(500));
 }
-
 ```
 
 ### `Laravel\Pennant\Events\FeatureUpdated`

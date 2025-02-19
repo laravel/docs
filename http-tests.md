@@ -514,7 +514,6 @@ test('asserting an exact json match', function () {
             'created' => true,
         ]);
 });
-
 ```
 
 ```php tab=PHPUnit
