@@ -372,7 +372,8 @@ source.addEventListener('update', (event) => {
 });
 ```
 
-You may change the event name by passing the `as` parameter to the `eventStream` method:
+##### Customizing Event Names
+By default, the event name is `update`. You can change this by passing the `as` parameter to the `eventStream` method:
 
 ```php
 Route::get('/chat', function () {
@@ -386,7 +387,24 @@ Route::get('/chat', function () {
 });
 ```
 
-You can also change the start and end indicators using `startStreamWith`/`endStreamWith` parameters respectively or pass `null` to disable the indication as needed.
+##### Customizing Start and End Indicators
+
+You can customize these indicators using the `startStreamWith` and `endStreamWith` parameters or pass `null` to disable them entirely:
+
+```php
+use App\Models\User;
+
+Route::get('/users', function () {
+    return response()->eventStream(function () {
+        $users = User::all();
+
+        foreach ($users as $user) {
+            yield $user->toJson();
+            sleep(1);
+        }
+    }, startStreamWith: '[', endStreamWith: ']');
+});
+```
 
 <a name="streamed-downloads"></a>
 #### Streamed Downloads
