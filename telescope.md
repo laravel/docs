@@ -276,7 +276,7 @@ Telescope "watchers" gather application data when a request or console command i
 'watchers' => [
     Watchers\CacheWatcher::class => true,
     Watchers\CommandWatcher::class => true,
-    ...
+    // ...
 ],
 ```
 
@@ -288,7 +288,7 @@ Some watchers also allow you to provide additional customization options:
         'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
         'slow' => 100,
     ],
-    ...
+    // ...
 ],
 ```
 
@@ -313,7 +313,7 @@ The command watcher records the arguments, options, exit code, and output whenev
         'enabled' => env('TELESCOPE_COMMAND_WATCHER', true),
         'ignore' => ['key:generate'],
     ],
-    ...
+    // ...
 ],
 ```
 
@@ -343,7 +343,7 @@ The gate watcher records the data and result of [gate and policy](/docs/{{versio
         'enabled' => env('TELESCOPE_GATE_WATCHER', true),
         'ignore_abilities' => ['viewNova'],
     ],
-    ...
+    // ...
 ],
 ```
 
@@ -391,7 +391,7 @@ The model watcher records model changes whenever an Eloquent [model event](/docs
         'enabled' => env('TELESCOPE_MODEL_WATCHER', true),
         'events' => ['eloquent.created*', 'eloquent.updated*'],
     ],
-    ...
+    // ...
 ],
 ```
 
@@ -404,7 +404,7 @@ If you would like to record the number of models hydrated during a given request
         'events' => ['eloquent.created*', 'eloquent.updated*'],
         'hydrations' => true,
     ],
-    ...
+    // ...
 ],
 ```
 
@@ -424,7 +424,7 @@ The query watcher records the raw SQL, bindings, and execution time for all quer
         'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
         'slow' => 50,
     ],
-    ...
+    // ...
 ],
 ```
 
@@ -444,7 +444,7 @@ The request watcher records the request, headers, session, and response data ass
         'enabled' => env('TELESCOPE_REQUEST_WATCHER', true),
         'size_limit' => env('TELESCOPE_RESPONSE_SIZE_LIMIT', 64),
     ],
-    ...
+    // ...
 ],
 ```
 

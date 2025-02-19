@@ -288,7 +288,7 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 {
-    ...
+    // ...
 }
 ```
 
@@ -363,7 +363,7 @@ use Illuminate\Support\Facades\Cache;
 
 class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 {
-    ...
+    // ...
 
     /**
      * Get the cache driver for the unique job lock.

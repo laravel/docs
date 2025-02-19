@@ -176,7 +176,7 @@ use Laravel\Reverb\Pulse\Recorders\ReverbMessages;
         'sample_rate' => 1,
     ],
 
-    ...
+    // ...
 ],
 ```
 
