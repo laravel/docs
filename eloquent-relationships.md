@@ -2175,7 +2175,7 @@ If you do not want to detach existing IDs that are missing from the given array,
 
 These sync methods return an array containing which values gets attached, detached, and updated:
 
-    $user->roles()->sync[1 => ['expires' => true], 2]);
+    $user->roles()->sync([1 => ['expires' => true], 2]);
 
     $changes = $user->roles()->sync([1 => ['expires' => false], 3]);
 
