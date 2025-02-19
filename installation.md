@@ -66,16 +66,16 @@ Before creating your first Laravel application, make sure that your local machin
 If you don't have PHP and Composer installed on your local machine, the following commands will install PHP, Composer, and the Laravel installer on macOS, Windows, or Linux:
 
 ```shell tab=macOS
-/bin/bash -c "$(curl -fsSL https://php.new/install/mac)"
+/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.4)"
 ```
 
 ```shell tab=Windows PowerShell
 # Run as administrator...
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.4'))
 ```
 
 ```shell tab=Linux
-/bin/bash -c "$(curl -fsSL https://php.new/install/linux)"
+/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
 ```
 
 After running one of the commands above, you should restart your terminal session. To update PHP, Composer, and the Laravel installer after installing them via `php.new`, you can re-run the command in your terminal.
@@ -94,13 +94,13 @@ composer global require laravel/installer
 
 After you have installed PHP, Composer, and the Laravel installer, you're ready to create a new Laravel application. The Laravel installer will prompt you to select your preferred testing framework, database, and starter kit:
 
-```nothing
+```shell
 laravel new example-app
 ```
 
 Once the application has been created, you can start Laravel's local development server, queue worker, and Vite development server using the `dev` Composer script:
 
-```nothing
+```shell
 cd example-app
 npm install && npm run build
 composer run dev
@@ -116,7 +116,7 @@ Once you have started the development server, your application will be accessibl
 
 All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
 
-Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `url` and `locale` that you may wish to change according to your application.
 
 <a name="environment-based-configuration"></a>
 ### Environment Based Configuration
@@ -179,7 +179,7 @@ Herd for macOS uses [dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) to support 
 
 After installing Herd, the fastest way to create a new Laravel application is using the Laravel CLI, which is bundled with Herd:
 
-```nothing
+```shell
 cd ~/Herd
 laravel new my-app
 cd my-app
@@ -201,7 +201,7 @@ During installation, Herd creates a "parked" directory in your home directory at
 
 After installing Herd, the fastest way to create a new Laravel application is using the Laravel CLI, which is bundled with Herd. To get started, open Powershell and run the following commands:
 
-```nothing
+```shell
 cd ~\Herd
 laravel new my-app
 cd my-app
@@ -340,7 +340,7 @@ Finally, you can access the application in your web browser at: http://localhost
 <a name="choosing-your-sail-services"></a>
 ### Choosing Your Sail Services
 
-When creating a new Laravel application via Sail, you may use the `with` query string variable to choose which services should be configured in your new application's `docker-compose.yml` file. Available services include `mysql`, `pgsql`, `mariadb`, `redis`, `memcached`, `meilisearch`, `typesense`, `minio`, `selenium`, and `mailpit`:
+When creating a new Laravel application via Sail, you may use the `with` query string variable to choose which services should be configured in your new application's `docker-compose.yml` file. Available services include `mysql`, `pgsql`, `mariadb`, `redis`, `valkey`, `memcached`, `meilisearch`, `typesense`, `minio`, `selenium`, and `mailpit`:
 
 ```shell
 curl -s "https://laravel.build/example-app?with=mysql,redis" | bash

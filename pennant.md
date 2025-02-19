@@ -199,8 +199,8 @@ class PodcastController
     public function index(Request $request): Response
     {
         return Feature::active('new-api')
-                ? $this->resolveNewApiResponse($request)
-                : $this->resolveLegacyApiResponse($request);
+            ? $this->resolveNewApiResponse($request)
+            : $this->resolveLegacyApiResponse($request);
     }
 
     // ...
@@ -211,8 +211,8 @@ Although features are checked against the currently authenticated user by defaul
 
 ```php
 return Feature::for($user)->active('new-api')
-        ? $this->resolveNewApiResponse($request)
-        : $this->resolveLegacyApiResponse($request);
+    ? $this->resolveNewApiResponse($request)
+    : $this->resolveLegacyApiResponse($request);
 ```
 
 Pennant also offers some additional convenience methods that may prove useful when determining if a feature is active or not:
@@ -260,8 +260,8 @@ class PodcastController
     public function index(Request $request): Response
     {
         return Feature::active(NewApi::class)
-                ? $this->resolveNewApiResponse($request)
-                : $this->resolveLegacyApiResponse($request);
+            ? $this->resolveNewApiResponse($request)
+            : $this->resolveLegacyApiResponse($request);
     }
 
     // ...
@@ -273,37 +273,41 @@ class PodcastController
 
 The `when` method may be used to fluently execute a given closure if a feature is active. Additionally, a second closure may be provided and will be executed if the feature is inactive:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use App\Features\NewApi;
-    use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
-    use Laravel\Pennant\Feature;
+use App\Features\NewApi;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Laravel\Pennant\Feature;
 
-    class PodcastController
+class PodcastController
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request): Response
     {
-        /**
-         * Display a listing of the resource.
-         */
-        public function index(Request $request): Response
-        {
-            return Feature::when(NewApi::class,
-                fn () => $this->resolveNewApiResponse($request),
-                fn () => $this->resolveLegacyApiResponse($request),
-            );
-        }
-
-        // ...
+        return Feature::when(NewApi::class,
+            fn () => $this->resolveNewApiResponse($request),
+            fn () => $this->resolveLegacyApiResponse($request),
+        );
     }
+
+    // ...
+}
+```
 
 The `unless` method serves as the inverse of the `when` method, executing the first closure if the feature is inactive:
 
-    return Feature::unless(NewApi::class,
-        fn () => $this->resolveLegacyApiResponse($request),
-        fn () => $this->resolveNewApiResponse($request),
-    );
+```php
+return Feature::unless(NewApi::class,
+    fn () => $this->resolveLegacyApiResponse($request),
+    fn () => $this->resolveNewApiResponse($request),
+);
+```
 
 <a name="the-has-features-trait"></a>
 ### The `HasFeatures` Trait
@@ -497,7 +501,9 @@ When checking a feature, Pennant will create an in-memory cache of the result. I
 
 If you need to manually flush the in-memory cache, you may use the `flushCache` method offered by the `Feature` facade:
 
-    Feature::flushCache();
+```php
+Feature::flushCache();
+```
 
 <a name="scope"></a>
 ## Scope
@@ -509,8 +515,8 @@ As discussed, features are typically checked against the currently authenticated
 
 ```php
 return Feature::for($user)->active('new-api')
-        ? $this->resolveNewApiResponse($request)
-        : $this->resolveLegacyApiResponse($request);
+    ? $this->resolveNewApiResponse($request)
+    : $this->resolveLegacyApiResponse($request);
 ```
 
 Of course, feature scopes are not limited to "users". Imagine you have built a new billing experience that you are rolling out to entire teams rather than individual users. Perhaps you would like the oldest teams to have a slower rollout than the newer teams. Your feature resolution closure might look something like the following:
@@ -698,17 +704,21 @@ Pennant's included Blade directive also makes it easy to conditionally render co
 
 When calling the [conditional `when`](#conditional-execution) method, the feature's rich value will be provided to the first closure:
 
-    Feature::when('purchase-button',
-        fn ($color) => /* ... */,
-        fn () => /* ... */,
-    );
+```php
+Feature::when('purchase-button',
+    fn ($color) => /* ... */,
+    fn () => /* ... */,
+);
+```
 
 Likewise, when calling the conditional `unless` method, the feature's rich value will be provided to the optional second closure:
 
-    Feature::unless('purchase-button',
-        fn () => /* ... */,
-        fn ($color) => /* ... */,
-    );
+```php
+Feature::unless('purchase-button',
+    fn () => /* ... */,
+    fn ($color) => /* ... */,
+);
+```
 
 <a name="retrieving-multiple-features"></a>
 ## Retrieving Multiple Features
@@ -740,25 +750,27 @@ However, class based features are dynamically registered and are not known by Pe
 
 If you would like to ensure that feature classes are always included when using the `all` method, you may use Pennant's feature discovery capabilities. To get started, invoke the `discover` method in one of your application's service providers:
 
-    <?php
+```php
+<?php
 
-    namespace App\Providers;
+namespace App\Providers;
 
-    use Illuminate\Support\ServiceProvider;
-    use Laravel\Pennant\Feature;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Pennant\Feature;
 
-    class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
     {
-        /**
-         * Bootstrap any application services.
-         */
-        public function boot(): void
-        {
-            Feature::discover();
+        Feature::discover();
 
-            // ...
-        }
+        // ...
     }
+}
+```
 
 The `discover` method will register all of the feature classes in your application's `app/Features` directory. The `all` method will now include these classes in its results, regardless of whether they have been checked during the current request:
 
@@ -815,7 +827,7 @@ Feature::for($users)->loadMissing([
 You may load all defined features using the `loadAll` method:
 
 ```php
-Feature::for($user)->loadAll();
+Feature::for($users)->loadAll();
 ```
 
 <a name="updating-values"></a>
@@ -894,7 +906,7 @@ Feature::purge();
 
 As it can be useful to purge features as part of your application's deployment pipeline, Pennant includes a `pennant:purge` Artisan command which will purge the provided features from storage:
 
-```sh
+```shell
 php artisan pennant:purge new-api
 
 php artisan pennant:purge new-api purchase-button
@@ -902,13 +914,13 @@ php artisan pennant:purge new-api purchase-button
 
 It is also possible to purge all features _except_ those in a given feature list. For example, imagine you wanted to purge all features but keep the values for the "new-api" and "purchase-button" features in storage. To accomplish this, you can pass those feature names to the `--except` option:
 
-```sh
+```shell
 php artisan pennant:purge --except=new-api --except=purchase-button
 ```
 
 For convenience, the `pennant:purge` command also supports an `--except-registered` flag. This flag indicates that all features except those explicitly registered in a service provider should be purged:
 
-```sh
+```shell
 php artisan pennant:purge --except-registered
 ```
 
@@ -1065,16 +1077,18 @@ class AppServiceProvider extends ServiceProvider
 
 Once the driver has been registered, you may use the `redis` driver in your application's `config/pennant.php` configuration file:
 
-    'stores' => [
+```php
+'stores' => [
 
-        'redis' => [
-            'driver' => 'redis',
-            'connection' => null,
-        ],
-
-        // ...
-
+    'redis' => [
+        'driver' => 'redis',
+        'connection' => null,
     ],
+
+    // ...
+
+],
+```
 
 <a name="defining-features-externally"></a>
 ### Defining Features Externally
@@ -1164,7 +1178,6 @@ public function boot(): void
 {
     Event::listen(UnexpectedNullScopeEncountered::class, fn () => abort(500));
 }
-
 ```
 
 ### `Laravel\Pennant\Events\FeatureUpdated`

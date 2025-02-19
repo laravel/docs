@@ -37,7 +37,7 @@ For in-depth debugging of individual events, check out [Laravel Telescope](/docs
 
 You may install Pulse using the Composer package manager:
 
-```sh
+```shell
 composer require laravel/pulse
 ```
 
@@ -63,7 +63,7 @@ Once Pulse's database migrations have been run, you may access the Pulse dashboa
 
 Many of Pulse's configuration options can be controlled using environment variables. To see the available options, register new recorders, or configure advanced options, you may publish the `config/pulse.php` configuration file:
 
-```sh
+```shell
 php artisan vendor:publish --tag=pulse-config
 ```
 
@@ -97,7 +97,7 @@ public function boot(): void
 
 The Pulse dashboard cards and layout may be configured by publishing the dashboard view. The dashboard view will be published to `resources/views/vendor/pulse/dashboard.blade.php`:
 
-```sh
+```shell
 php artisan vendor:publish --tag=pulse-dashboard
 ```
 
@@ -256,7 +256,7 @@ php artisan pulse:check
 
 As the `pulse:check` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
 
-```sh
+```shell
 php artisan pulse:restart
 ```
 
@@ -476,13 +476,13 @@ PULSE_DB_CONNECTION=pulse
 
 By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the HTTP response has been sent to the client or a job has been processed; however, you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
 
-```
+```ini
 PULSE_INGEST_DRIVER=redis
 ```
 
 Pulse will use your default [Redis connection](/docs/{{version}}/redis#configuration) by default, but you may customize this via the `PULSE_REDIS_CONNECTION` environment variable:
 
-```
+```ini
 PULSE_REDIS_CONNECTION=pulse
 ```
 
@@ -497,7 +497,7 @@ php artisan pulse:work
 
 As the `pulse:work` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
 
-```sh
+```shell
 php artisan pulse:restart
 ```
 
@@ -729,7 +729,7 @@ class TopSellers extends Card
 
 The `aggregate` method returns a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
 
-```
+```blade
 @foreach ($topSellers as $seller)
     {{ $seller->key }}
     {{ $seller->sum }}

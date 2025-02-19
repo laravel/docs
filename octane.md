@@ -589,15 +589,15 @@ In this example, we will register a closure to be invoked every 10 seconds. Typi
 
 ```php
 Octane::tick('simple-ticker', fn () => ray('Ticking...'))
-        ->seconds(10);
+    ->seconds(10);
 ```
 
 Using the `immediate` method, you may instruct Octane to immediately invoke the tick callback when the Octane server initially boots, and every N seconds thereafter:
 
 ```php
 Octane::tick('simple-ticker', fn () => ray('Ticking...'))
-        ->seconds(10)
-        ->immediate();
+    ->seconds(10)
+    ->immediate();
 ```
 
 <a name="the-octane-cache"></a>

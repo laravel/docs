@@ -38,31 +38,33 @@ Many types of classes in Laravel are resolved through the [service container](/d
 
 For example, take a look at this event listener:
 
-    <?php
+```php
+<?php
 
-    namespace App\Listeners;
+namespace App\Listeners;
 
-    use App\Events\OrderWasPlaced;
-    use App\Models\User;
-    use Illuminate\Contracts\Redis\Factory;
+use App\Events\OrderWasPlaced;
+use App\Models\User;
+use Illuminate\Contracts\Redis\Factory;
 
-    class CacheOrderInformation
+class CacheOrderInformation
+{
+    /**
+     * Create a new event handler instance.
+     */
+    public function __construct(
+        protected Factory $redis,
+    ) {}
+
+    /**
+     * Handle the event.
+     */
+    public function handle(OrderWasPlaced $event): void
     {
-        /**
-         * Create a new event handler instance.
-         */
-        public function __construct(
-            protected Factory $redis,
-        ) {}
-
-        /**
-         * Handle the event.
-         */
-        public function handle(OrderWasPlaced $event): void
-        {
-            // ...
-        }
+        // ...
     }
+}
+```
 
 When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).
 

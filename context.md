@@ -56,7 +56,7 @@ Log::info('User authenticated.', ['auth_id' => Auth::id()]);
 
 The written log will contain the `auth_id` passed to the log entry, but it will also contain the context's `url` and `trace_id` as metadata:
 
-```
+```text
 User authenticated. {"auth_id":27} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
@@ -96,7 +96,7 @@ class ProcessPodcast implements ShouldQueue
 
 The resulting log entry would contain the information that was added to the context during the request that originally dispatched the job:
 
-```
+```text
 Processing podcast. {"podcast_id":95} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
@@ -250,12 +250,16 @@ $data = Context::all();
 <a name="determining-item-existence"></a>
 ### Determining Item Existence
 
-You may use the `has` method to determine if the context has any value stored for the given key:
+You may use the `has` and `missing` methods to determine if the context has any value stored for the given key:
 
 ```php
 use Illuminate\Support\Facades\Context;
 
 if (Context::has('key')) {
+    // ...
+}
+
+if (Context::missing('key')) {
     // ...
 }
 ```

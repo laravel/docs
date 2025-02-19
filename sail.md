@@ -15,6 +15,7 @@
     - [MySQL](#mysql)
     - [MongoDB](#mongodb)
     - [Redis](#redis)
+    - [Valkey](#valkey)
     - [Meilisearch](#meilisearch)
     - [Typesense](#typesense)
 - [File Storage](#file-storage)
@@ -194,11 +195,11 @@ docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
-    laravelsail/php83-composer:latest \
+    laravelsail/php84-composer:latest \
     composer install --ignore-platform-reqs
 ```
 
-When using the `laravelsail/phpXX-composer` image, you should use the same version of PHP that you plan to use for your application (`80`, `81`, `82`, or `83`).
+When using the `laravelsail/phpXX-composer` image, you should use the same version of PHP that you plan to use for your application (`80`, `81`, `82`, `83`, or `84`).
 
 <a name="executing-artisan-commands"></a>
 ### Executing Artisan Commands
@@ -260,9 +261,16 @@ To connect to your application's MongoDB database from your local machine, you m
 <a name="redis"></a>
 ### Redis
 
-Your application's `docker-compose.yml` file also contains an entry for a [Redis](https://redis.io) container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your Redis data is persisted even when stopping and restarting your containers. Once you have started your containers, you may connect to the Redis instance within your application by setting your `REDIS_HOST` environment variable within your application's `.env` file to `redis`.
+Your application's `docker-compose.yml` file also contains an entry for a [Redis](https://redis.io) container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your Redis instance is persisted even when stopping and restarting your containers. Once you have started your containers, you may connect to the Redis instance within your application by setting your `REDIS_HOST` environment variable within your application's `.env` file to `redis`.
 
 To connect to your application's Redis database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the Redis database is accessible at `localhost` port 6379.
+
+<a name="valkey"></a>
+### Valkey
+
+If you choose to install Valkey service when installing Sail, your application's `docker-compose.yml` file will contain an entry for [Valkey](https://valkey.io/). This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your Valkey instance is persisted even when stopping and restarting your containers. You can connect to this container in you application by setting your `REDIS_HOST` environment variable within your application's `.env` file to `valkey`.
+
+To connect to your application's Valkey database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the Valkey database is accessible at `localhost` port 6379.
 
 <a name="meilisearch"></a>
 ### Meilisearch
@@ -416,7 +424,7 @@ sail tinker
 <a name="sail-php-versions"></a>
 ## PHP Versions
 
-Sail currently supports serving your application via PHP 8.4, 8.3, 8.2, 8.1, or PHP 8.0. The default PHP version used by Sail is currently PHP 8.3. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:
+Sail currently supports serving your application via PHP 8.4, 8.3, 8.2, 8.1, or PHP 8.0. The default PHP version used by Sail is currently PHP 8.4. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:
 
 ```yaml
 # PHP 8.4
@@ -496,10 +504,23 @@ sail share --subdomain=my-sail-site
 <a name="debugging-with-xdebug"></a>
 ## Debugging With Xdebug
 
-Laravel Sail's Docker configuration includes support for [Xdebug](https://xdebug.org/), a popular and powerful debugger for PHP. In order to enable Xdebug, you will need to add a few variables to your application's `.env` file to [configure Xdebug](https://xdebug.org/docs/step_debug#mode). To enable Xdebug you must set the appropriate mode(s) before starting Sail:
+Laravel Sail's Docker configuration includes support for [Xdebug](https://xdebug.org/), a popular and powerful debugger for PHP. To enable Xdebug, ensure you have [published your Sail configuration](#sail-customization). Then, add the following variables to your application's `.env` file to configure Xdebug:
 
 ```ini
 SAIL_XDEBUG_MODE=develop,debug,coverage
+```
+
+Next, ensure that your published `php.ini` file includes the following configuration so that Xdebug is activated in the specified modes:
+
+```ini
+[xdebug]
+xdebug.mode=${XDEBUG_MODE}
+```
+
+After modifying the `php.ini` file, remember to rebuild your Docker images so that your changes to the `php.ini` file take effect:
+
+```shell
+sail build --no-cache
 ```
 
 #### Linux Host IP Configuration

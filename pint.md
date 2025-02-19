@@ -13,7 +13,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Pint](https://github.com/laravel/pint) is an opinionated PHP code style fixer for minimalists. Pint is built on top of PHP-CS-Fixer and makes it simple to ensure that your code style stays clean and consistent.
+[Laravel Pint](https://github.com/laravel/pint) is an opinionated PHP code style fixer for minimalists. Pint is built on top of [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) and makes it simple to ensure that your code style stays clean and consistent.
 
 Pint is automatically installed with all new Laravel applications so you may start using it immediately. By default, Pint does not require any configuration and will fix code style issues in your code by following the opinionated coding style of Laravel.
 
@@ -53,6 +53,12 @@ If you would like Pint to simply inspect your code for style errors without actu
 
 ```shell
 ./vendor/bin/pint --test
+```
+
+If you would like Pint to only modify the files that differ from the provided branch according to Git, you may use the `--diff=[branch]` option. This can be effectively used in your CI environment (like GitHub actions) to save time by only inspecting new or modified files:
+
+```shell
+./vendor/bin/pint --diff=main
 ```
 
 If you would like Pint to only modify the files that have uncommitted changes according to Git, you may use the `--dirty` option:
@@ -124,7 +130,7 @@ However, if you wish, you may enable or disable specific rules in your `pint.jso
 }
 ```
 
-Pint is built on top of [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Therefore, you may use any of its rules to fix code style issues in your project: [PHP-CS-Fixer Configurator](https://mlocati.github.io/php-cs-fixer-configurator).
+Pint is built on top of [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Therefore, you may use any of its rules to fix code style issues in your project: [PHP CS Fixer Configurator](https://mlocati.github.io/php-cs-fixer-configurator).
 
 <a name="excluding-files-or-folders"></a>
 ### Excluding Files / Folders
@@ -178,7 +184,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.3]
+        php: [8.4]
 
     steps:
       - name: Checkout code
@@ -199,6 +205,4 @@ jobs:
 
       - name: Commit linted files
         uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Fixes coding style"
 ```

@@ -31,9 +31,11 @@ Views separate your controller / application logic from your presentation logic 
 
 Since this view is stored at `resources/views/greeting.blade.php`, we may return it using the global `view` helper like so:
 
-    Route::get('/', function () {
-        return view('greeting', ['name' => 'James']);
-    });
+```php
+Route::get('/', function () {
+    return view('greeting', ['name' => 'James']);
+});
+```
 
 > [!NOTE]  
 > Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
@@ -58,15 +60,19 @@ The `.blade.php` extension informs the framework that the file contains a [Blade
 
 Once you have created a view, you may return it from one of your application's routes or controllers using the global `view` helper:
 
-    Route::get('/', function () {
-        return view('greeting', ['name' => 'James']);
-    });
+```php
+Route::get('/', function () {
+    return view('greeting', ['name' => 'James']);
+});
+```
 
 Views may also be returned using the `View` facade:
 
-    use Illuminate\Support\Facades\View;
+```php
+use Illuminate\Support\Facades\View;
 
-    return View::make('greeting', ['name' => 'James']);
+return View::make('greeting', ['name' => 'James']);
+```
 
 As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view using [Blade syntax](/docs/{{version}}/blade).
 
@@ -75,7 +81,9 @@ As you can see, the first argument passed to the `view` helper corresponds to th
 
 Views may also be nested within subdirectories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.blade.php`, you may return it from one of your application's routes / controllers like so:
 
-    return view('admin.profile', $data);
+```php
+return view('admin.profile', $data);
+```
 
 > [!WARNING]  
 > View directory names should not contain the `.` character.
@@ -85,65 +93,75 @@ Views may also be nested within subdirectories of the `resources/views` director
 
 Using the `View` facade's `first` method, you may create the first view that exists in a given array of views. This may be useful if your application or package allows views to be customized or overwritten:
 
-    use Illuminate\Support\Facades\View;
+```php
+use Illuminate\Support\Facades\View;
 
-    return View::first(['custom.admin', 'admin'], $data);
+return View::first(['custom.admin', 'admin'], $data);
+```
 
 <a name="determining-if-a-view-exists"></a>
 ### Determining if a View Exists
 
 If you need to determine if a view exists, you may use the `View` facade. The `exists` method will return `true` if the view exists:
 
-    use Illuminate\Support\Facades\View;
+```php
+use Illuminate\Support\Facades\View;
 
-    if (View::exists('admin.profile')) {
-        // ...
-    }
+if (View::exists('admin.profile')) {
+    // ...
+}
+```
 
 <a name="passing-data-to-views"></a>
 ## Passing Data to Views
 
 As you saw in the previous examples, you may pass an array of data to views to make that data available to the view:
 
-    return view('greetings', ['name' => 'Victoria']);
+```php
+return view('greetings', ['name' => 'Victoria']);
+```
 
 When passing information in this manner, the data should be an array with key / value pairs. After providing data to a view, you can then access each value within your view using the data's keys, such as `<?php echo $name; ?>`.
 
 As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view. The `with` method returns an instance of the view object so that you can continue chaining methods before returning the view:
 
-    return view('greeting')
-                ->with('name', 'Victoria')
-                ->with('occupation', 'Astronaut');
+```php
+return view('greeting')
+    ->with('name', 'Victoria')
+    ->with('occupation', 'Astronaut');
+```
 
 <a name="sharing-data-with-all-views"></a>
 ### Sharing Data With All Views
 
 Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `View` facade's `share` method. Typically, you should place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `App\Providers\AppServiceProvider` class or generate a separate service provider to house them:
 
-    <?php
+```php
+<?php
 
-    namespace App\Providers;
+namespace App\Providers;
 
-    use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\View;
 
-    class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
     {
-        /**
-         * Register any application services.
-         */
-        public function register(): void
-        {
-            // ...
-        }
-
-        /**
-         * Bootstrap any application services.
-         */
-        public function boot(): void
-        {
-            View::share('key', 'value');
-        }
+        // ...
     }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        View::share('key', 'value');
+    }
+}
+```
 
 <a name="view-composers"></a>
 ## View Composers
@@ -154,70 +172,74 @@ Typically, view composers will be registered within one of your application's [s
 
 We'll use the `View` facade's `composer` method to register the view composer. Laravel does not include a default directory for class based view composers, so you are free to organize them however you wish. For example, you could create an `app/View/Composers` directory to house all of your application's view composers:
 
-    <?php
+```php
+<?php
 
-    namespace App\Providers;
+namespace App\Providers;
 
-    use App\View\Composers\ProfileComposer;
-    use Illuminate\Support\Facades;
-    use Illuminate\Support\ServiceProvider;
-    use Illuminate\View\View;
+use App\View\Composers\ProfileComposer;
+use Illuminate\Support\Facades;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\View\View;
 
-    class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
     {
-        /**
-         * Register any application services.
-         */
-        public function register(): void
-        {
-            // ...
-        }
-
-        /**
-         * Bootstrap any application services.
-         */
-        public function boot(): void
-        {
-            // Using class based composers...
-            Facades\View::composer('profile', ProfileComposer::class);
-
-            // Using closure based composers...
-            Facades\View::composer('welcome', function (View $view) {
-                // ...
-            });
-
-            Facades\View::composer('dashboard', function (View $view) {
-                // ...
-            });
-        }
+        // ...
     }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        // Using class based composers...
+        Facades\View::composer('profile', ProfileComposer::class);
+
+        // Using closure based composers...
+        Facades\View::composer('welcome', function (View $view) {
+            // ...
+        });
+
+        Facades\View::composer('dashboard', function (View $view) {
+            // ...
+        });
+    }
+}
+```
 
 Now that we have registered the composer, the `compose` method of the `App\View\Composers\ProfileComposer` class will be executed each time the `profile` view is being rendered. Let's take a look at an example of the composer class:
 
-    <?php
+```php
+<?php
 
-    namespace App\View\Composers;
+namespace App\View\Composers;
 
-    use App\Repositories\UserRepository;
-    use Illuminate\View\View;
+use App\Repositories\UserRepository;
+use Illuminate\View\View;
 
-    class ProfileComposer
+class ProfileComposer
+{
+    /**
+     * Create a new profile composer.
+     */
+    public function __construct(
+        protected UserRepository $users,
+    ) {}
+
+    /**
+     * Bind data to the view.
+     */
+    public function compose(View $view): void
     {
-        /**
-         * Create a new profile composer.
-         */
-        public function __construct(
-            protected UserRepository $users,
-        ) {}
-
-        /**
-         * Bind data to the view.
-         */
-        public function compose(View $view): void
-        {
-            $view->with('count', $this->users->count());
-        }
+        $view->with('count', $this->users->count());
     }
+}
+```
 
 As you can see, all view composers are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a composer's constructor.
 
@@ -226,32 +248,38 @@ As you can see, all view composers are resolved via the [service container](/doc
 
 You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:
 
-    use App\Views\Composers\MultiComposer;
-    use Illuminate\Support\Facades\View;
+```php
+use App\Views\Composers\MultiComposer;
+use Illuminate\Support\Facades\View;
 
-    View::composer(
-        ['profile', 'dashboard'],
-        MultiComposer::class
-    );
+View::composer(
+    ['profile', 'dashboard'],
+    MultiComposer::class
+);
+```
 
 The `composer` method also accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
 
-    use Illuminate\Support\Facades;
-    use Illuminate\View\View;
+```php
+use Illuminate\Support\Facades;
+use Illuminate\View\View;
 
-    Facades\View::composer('*', function (View $view) {
-        // ...
-    });
+Facades\View::composer('*', function (View $view) {
+    // ...
+});
+```
 
 <a name="view-creators"></a>
 ### View Creators
 
 View "creators" are very similar to view composers; however, they are executed immediately after the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
 
-    use App\View\Creators\ProfileCreator;
-    use Illuminate\Support\Facades\View;
+```php
+use App\View\Creators\ProfileCreator;
+use Illuminate\Support\Facades\View;
 
-    View::creator('profile', ProfileCreator::class);
+View::creator('profile', ProfileCreator::class);
+```
 
 <a name="optimizing-views"></a>
 ## Optimizing Views
