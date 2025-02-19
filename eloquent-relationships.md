@@ -2173,6 +2173,18 @@ If you do not want to detach existing IDs that are missing from the given array,
 
     $user->roles()->syncWithoutDetaching([1, 2, 3]);
 
+These sync methods return an array containing which values gets attached, detached, and updated:
+
+    $user->roles()->sync[1 => ['expires' => true], 2]);
+
+    $changes = $user->roles()->sync([1 => ['expires' => false], 3]);
+
+    in_array(3, $changes['attached']); // true
+
+    in_array(2, $changes['detached']); // true
+
+    in_array(1, $changes['updated']); // true
+
 <a name="toggling-associations"></a>
 #### Toggling Associations
 
