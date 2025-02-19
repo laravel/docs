@@ -234,8 +234,8 @@ By default, this trait will truncate all tables except the `migrations` table. I
  * @var array
  */
 protected $tablesToTruncate = ['users'];
-
 ```
+
 Alternatively, you may define an `$exceptTables` property on your test class to specify which tables should be excluded from truncation:
 
 ```php
