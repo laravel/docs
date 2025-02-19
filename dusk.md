@@ -1638,7 +1638,6 @@ Assert that the element matching the given selector is missing the provided attr
 
     $browser->assertAttributeMissing($selector, $attribute);
 
-
 <a name="assert-attribute-contains"></a>
 #### assertAttributeContains
 

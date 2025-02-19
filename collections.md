@@ -415,7 +415,6 @@ The `collapseWithKeys` method flattens a collection of arrays or collections int
       ['third'  => collect([7, 8, 9])]
     ]);
 
-
     $collapsed = $collection->collapseWithKeys();
 
     $collapsed->all();
@@ -3211,7 +3210,6 @@ The `whenEmpty` method will execute the given callback when the collection is em
 
     // ['Michael', 'Tom']
 
-
     $collection = collect();
 
     $collection->whenEmpty(function (Collection $collection) {
@@ -3252,7 +3250,6 @@ The `whenNotEmpty` method will execute the given callback when the collection is
     $collection->all();
 
     // ['michael', 'tom', 'adam']
-
 
     $collection = collect();
 
