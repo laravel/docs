@@ -194,9 +194,9 @@ php artisan migrate:rollback --step=5
 
 You may roll back a specific "batch" of migrations by providing the `batch` option to the `rollback` command, where the `batch` option corresponds to a batch value within your application's `migrations` database table. For example, the following command will roll back all migrations in batch three:
 
- ```shell
+```shell
 php artisan migrate:rollback --batch=3
- ```
+```
 
 If you would like to see the SQL statements that will be executed by the migrations without actually running them, you may provide the `--pretend` flag to the `migrate:rollback` command:
 

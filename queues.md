@@ -755,8 +755,8 @@ The `Skip` middleware allows you to specify that a job should be skipped / delet
 use Illuminate\Queue\Middleware\Skip;
 
 /**
-* Get the middleware the job should pass through.
-*/
+ * Get the middleware the job should pass through.
+ */
 public function middleware(): array
 {
     return [
@@ -771,8 +771,8 @@ You can also pass a `Closure` to the `when` and `unless` methods for more comple
 use Illuminate\Queue\Middleware\Skip;
 
 /**
-* Get the middleware the job should pass through.
-*/
+ * Get the middleware the job should pass through.
+ */
 public function middleware(): array
 {
     return [
@@ -1098,8 +1098,8 @@ Alternatively, you may specify the job's queue by calling the `onQueue` method w
 
 namespace App\Jobs;
 
- use Illuminate\Contracts\Queue\ShouldQueue;
- use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 
 class ProcessPodcast implements ShouldQueue
 {
@@ -1164,8 +1164,8 @@ Alternatively, you may specify the job's connection by calling the `onConnection
 
 namespace App\Jobs;
 
- use Illuminate\Contracts\Queue\ShouldQueue;
- use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 
 class ProcessPodcast implements ShouldQueue
 {

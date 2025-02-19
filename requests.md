@@ -34,27 +34,29 @@ Laravel's `Illuminate\Http\Request` class provides an object-oriented way to int
 
 To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your route closure or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use Illuminate\Http\RedirectResponse;
-    use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * Store a new user.
+     */
+    public function store(Request $request): RedirectResponse
     {
-        /**
-         * Store a new user.
-         */
-        public function store(Request $request): RedirectResponse
-        {
-            $name = $request->input('name');
+        $name = $request->input('name');
 
-            // Store the user...
+        // Store the user...
 
-            return redirect('/users');
-        }
+        return redirect('/users');
     }
+}
+```
 
 As mentioned, you may also type-hint the `Illuminate\Http\Request` class on a route closure. The service container will automatically inject the incoming request into the closure when it is executed:
 
@@ -75,25 +77,27 @@ If your controller method is also expecting input from a route parameter you sho
 
 You may still type-hint the `Illuminate\Http\Request` and access your `id` route parameter by defining your controller method as follows:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use Illuminate\Http\RedirectResponse;
-    use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * Update the specified user.
+     */
+    public function update(Request $request, string $id): RedirectResponse
     {
-        /**
-         * Update the specified user.
-         */
-        public function update(Request $request, string $id): RedirectResponse
-        {
-            // Update the user...
+        // Update the user...
 
-            return redirect('/users');
-        }
+        return redirect('/users');
     }
+}
+```
 
 <a name="request-path-and-method"></a>
 ### Request Path, Host, and Method

@@ -1584,17 +1584,17 @@ $user->meters();
 
 To specify the tax rates a user pays on a subscription, you should implement the `taxRates` method on your billable model and return an array containing the Stripe tax rate IDs. You can define these tax rates in [your Stripe dashboard](https://dashboard.stripe.com/test/tax-rates):
 
-  ```php
-  /**
-* The tax rates that should apply to the customer's subscriptions.
-   *
-* @return array<int, string>
-*/
-  public function taxRates(): array
-  {
-   return ['txr_id'];
-  }
-  ```
+```php
+/**
+ * The tax rates that should apply to the customer's subscriptions.
+ *
+ * @return array<int, string>
+ */
+public function taxRates(): array
+{
+    return ['txr_id'];
+}
+```
 
 The `taxRates` method enables you to apply a tax rate on a customer-by-customer basis, which may be helpful for a user base that spans multiple countries and tax rates.
 

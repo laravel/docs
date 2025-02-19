@@ -190,17 +190,17 @@ class Subscription extends CashierSubscription
 After defining your model, you may instruct Cashier to use your custom model via the `Laravel\Paddle\Cashier` class. Typically, you should inform Cashier about your custom models in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
 ```php
-  use App\Models\Cashier\Subscription;
-  use App\Models\Cashier\Transaction;
+use App\Models\Cashier\Subscription;
+use App\Models\Cashier\Transaction;
 
-  /**
-* Bootstrap any application services.
-*/
-  public function boot(): void
-  {
-   Cashier::useSubscriptionModel(Subscription::class);
-   Cashier::useTransactionModel(Transaction::class);
-  }
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Cashier::useSubscriptionModel(Subscription::class);
+    Cashier::useTransactionModel(Transaction::class);
+}
 ```
 
 <a name="quickstart"></a>

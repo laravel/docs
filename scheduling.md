@@ -31,14 +31,16 @@ Laravel's command scheduler offers a fresh approach to managing scheduled tasks 
 
 You may define all of your scheduled tasks in your application's `routes/console.php` file. To get started, let's take a look at an example. In this example, we will schedule a closure to be called every day at midnight. Within the closure we will execute a database query to clear a table:
 
-    <?php
+```php
+<?php
 
-    use Illuminate\Support\Facades\DB;
-    use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schedule;
 
-    Schedule::call(function () {
-        DB::table('recent_users')->delete();
-    })->daily();
+Schedule::call(function () {
+    DB::table('recent_users')->delete();
+})->daily();
+```
 
 In addition to scheduling using closures, you may also schedule [invokable objects](https://secure.php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
 

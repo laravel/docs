@@ -521,7 +521,7 @@ When an event is broadcast, all of its `public` properties are automatically ser
 
 However, if you wish to have more fine-grained control over your broadcast payload, you may add a `broadcastWith` method to your event. This method should return the array of data that you wish to broadcast as the event payload:
 
- ```php
+```php
 /**
  * Get the data to broadcast.
  *
@@ -531,7 +531,7 @@ public function broadcastWith(): array
 {
     return ['id' => $this->user->id];
 }
- ```
+```
 
 <a name="broadcast-queue"></a>
 ### Broadcast Queue

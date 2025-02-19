@@ -437,9 +437,9 @@ The `collapseWithKeys` method flattens a collection of arrays or collections int
 
 ```php
 $collection = collect([
-  ['first'  => collect([1, 2, 3])],
-  ['second' => [4, 5, 6]],
-  ['third'  => collect([7, 8, 9])]
+    ['first'  => collect([1, 2, 3])],
+    ['second' => [4, 5, 6]],
+    ['third'  => collect([7, 8, 9])]
 ]);
 
 

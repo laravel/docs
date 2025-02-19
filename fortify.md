@@ -263,7 +263,7 @@ class User extends Authenticatable
 {
     use Notifiable, TwoFactorAuthenticatable;
 }
- ```
+```
 
 Next, you should build a screen within your application where users can manage their two factor authentication settings. This screen should allow the user to enable and disable two factor authentication, as well as regenerate their two factor authentication recovery codes.
 

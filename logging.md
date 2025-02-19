@@ -462,25 +462,25 @@ Monolog can also process messages before logging them. You can create your own p
 
 If you would like to customize the processors for a `monolog` driver, add a `processors` configuration value to your channel's configuration:
 
- ```php
- 'memory' => [
-     'driver' => 'monolog',
-     'handler' => Monolog\Handler\StreamHandler::class,
-     'with' => [
-         'stream' => 'php://stderr',
-     ],
-     'processors' => [
-         // Simple syntax...
-         Monolog\Processor\MemoryUsageProcessor::class,
+```php
+'memory' => [
+    'driver' => 'monolog',
+    'handler' => Monolog\Handler\StreamHandler::class,
+    'with' => [
+        'stream' => 'php://stderr',
+    ],
+    'processors' => [
+        // Simple syntax...
+        Monolog\Processor\MemoryUsageProcessor::class,
 
-         // With options...
-         [
+        // With options...
+        [
             'processor' => Monolog\Processor\PsrLogMessageProcessor::class,
             'with' => ['removeUsedContextFields' => true],
         ],
-     ],
- ],
- ```
+    ],
+],
+```
 
 <a name="creating-custom-channels-via-factories"></a>
 ### Creating Custom Channels via Factories
