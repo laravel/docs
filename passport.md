@@ -853,7 +853,7 @@ Then, attach the middleware to a route:
 
 ```php
 Route::get('/orders', function (Request $request) {
-    ...
+    // ...
 })->middleware('client');
 ```
 
@@ -861,7 +861,7 @@ To restrict access to the route to specific scopes, you may provide a comma-deli
 
 ```php
 Route::get('/orders', function (Request $request) {
-    ...
+    // ...
 })->middleware('client:check-status,your-scope');
 ```
 

@@ -500,7 +500,7 @@ If you customize the broadcast name using the `broadcastAs` method, you should m
 
 ```javascript
 .listen('.server.created', function (e) {
-    ....
+    // ...
 });
 ```
 
