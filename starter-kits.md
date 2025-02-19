@@ -89,7 +89,16 @@ The Livewire starter kit utilizes Laravel Volt, Tailwind, and the [Flux UI](http
 <a name="workos-authkit-authentication"></a>
 ## WorkOS AuthKit Authentication
 
-By default, the React, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we also offer a [WorkOS AuthKit](https://authkit.com) powered variant of each starter kit, offering social authentication, passkeys, and SSO support.
+By default, the React, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we also offer a [WorkOS AuthKit](https://authkit.com) powered variant of each starter kit that offers:
+
+<div class="content-list" markdown="1">
+
+- Social authentication (Google, Microsoft, GitHub, and Apple)
+- Passkey authentication
+- Email based "Magic Auth"
+- SSO
+
+</div>
 
 Using WorkOS as your authentication provider [requires a WorkOS account](https://workos.com). WorkOS offers free authentication for applications up to 1 million monthly active users.
 
@@ -108,9 +117,9 @@ WORKOS_REDIRECT_URL="${APP_URL}/authenticate"
 <a name="configuring-authkit-authentication-methods"></a>
 #### Configuring AuthKit Authentication Methods
 
-When using a WorkOS powered starter kit, we recommend you disable "Email + Password" authentication within your application's WorkOS AuthKit configuration settings, allowing users to only authenticate via social authentication providers, passkeys, "Magic Auth", and SSO. This allows your application to totally avoid handling user passwords.
+When using a WorkOS powered starter kit, we recommend that you disable "Email + Password" authentication within your application's WorkOS AuthKit configuration settings, allowing users to only authenticate via social authentication providers, passkeys, "Magic Auth", and SSO. This allows your application to totally avoid handling user passwords.
 
 <a name="configuring-authkit-session-timeouts"></a>
 #### Configuring AuthKit Session Timeouts
 
-In addition, we recommend that you configure your WOrkOS AuthKit session inactivity timeout to match your Laravel application's configured session timeout threshold, which is typically two hours.
+In addition, we recommend that you configure your WorkOS AuthKit session inactivity timeout to match your Laravel application's configured session timeout threshold, which is typically two hours.
