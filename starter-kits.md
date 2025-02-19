@@ -1,128 +1,116 @@
 # Starter Kits
 
 - [Introduction](#introduction)
-- [Laravel Breeze](#laravel-breeze)
-    - [Installation](#laravel-breeze-installation)
-    - [Breeze and Blade](#breeze-and-blade)
-    - [Breeze and Livewire](#breeze-and-livewire)
-    - [Breeze and React / Vue](#breeze-and-inertia)
-    - [Breeze and Next.js / API](#breeze-and-next)
-- [Laravel Jetstream](#laravel-jetstream)
+- [Creating an Application Using a Starter Kit](#creating-an-application)
+- [Available Starter Kits](#available-starter-kits)
+    - [React](#react)
+    - [Vue](#vue)
+    - [Livewire](#livewire)
+- [Starter Kit Customization](#starter-kit-customization)
+    - [React](#react-customization)
+    - [Vue](#vue-customization)
+    - [Livewire](#livewire-customization)
+- [WorkOS AuthKit Authentication](#workos)
 
 <a name="introduction"></a>
 ## Introduction
 
-To give you a head start building your new Laravel application, we are happy to offer authentication and application starter kits. These kits automatically scaffold your application with the routes, controllers, and views you need to register and authenticate your application's users.
+To give you a head start building your new Laravel application, we are happy to offer [application starter kits](https://laravel.com/starter-kits). These starter kits give you a head start on building your next Laravel application, and include the routes, controllers, and views you need to register and authenticate your application's users.
 
 While you are welcome to use these starter kits, they are not required. You are free to build your own application from the ground up by simply installing a fresh copy of Laravel. Either way, we know you will build something great!
 
-<a name="laravel-breeze"></a>
-## Laravel Breeze
+<a name="creating-an-application"></a>
+## Creating an Application Using a Starter Kit
 
-[Laravel Breeze](https://github.com/laravel/breeze) is a minimal, simple implementation of all of Laravel's [authentication features](/docs/{{version}}/authentication), including login, registration, password reset, email verification, and password confirmation. In addition, Breeze includes a simple "profile" page where the user may update their name, email address, and password.
-
-Laravel Breeze's default view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](https://tailwindcss.com). Additionally, Breeze provides scaffolding options based on [Livewire](https://livewire.laravel.com) or [Inertia](https://inertiajs.com), with the choice of using Vue or React for the Inertia-based scaffolding.
-
-<img src="https://laravel.com/img/docs/breeze-register.png">
-
-<a name="laravel-breeze-installation"></a>
-### Installation
-
-First, you should [create a new Laravel application](/docs/{{version}}/installation). If you create your application using the [Laravel installer](/docs/{{version}}/installation#creating-a-laravel-project), you will be prompted to install Laravel Breeze during the installation process. Otherwise, you will need to follow the manual installation instructions below.
-
-If you have already created a new Laravel application without a starter kit, you may manually install Laravel Breeze using Composer:
+To create a new Laravel application using one of our starter kits, you should first [install PHP and the Laravel CLI tool](/docs/{{version}}/installation#installing-php). If you already have PHP and Composer installed, you may install the Laravel installer CLI tool via Composer:
 
 ```shell
-composer require laravel/breeze --dev
+composer global require laravel/installer
 ```
 
-After Composer has installed the Laravel Breeze package, you should run the `breeze:install` Artisan command. This command publishes the authentication views, routes, controllers, and other resources to your application. Laravel Breeze publishes all of its code to your application so that you have full control and visibility over its features and implementation.
-
-The `breeze:install` command will prompt you for your preferred frontend stack and testing framework:
+Then, create a new Laravel application using the Laravel installer CLI. The Laravel installer will prompt you to select your preferred starter kit:
 
 ```shell
-php artisan breeze:install
-
-php artisan migrate
-npm install
-npm run dev
+laravel new my-app
 ```
 
-<a name="breeze-and-blade"></a>
-### Breeze and Blade
-
-The default Breeze "stack" is the Blade stack, which utilizes simple [Blade templates](/docs/{{version}}/blade) to render your application's frontend. The Blade stack may be installed by invoking the `breeze:install` command with no other additional arguments and selecting the Blade frontend stack. After Breeze's scaffolding is installed, you should also compile your application's frontend assets:
+After creating your Laravel application, you only need to install its frontend dependencies via NPM and start the Laravel development server:
 
 ```shell
-php artisan breeze:install
-
-php artisan migrate
-npm install
-npm run dev
+cd my-app
+npm install && npm run build
+composer run dev
 ```
 
-Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
+Once you have started the Laravel development server, your application will be accessible in your web browser at [http://localhost:8000](http://localhost:8000).
 
-> [!NOTE]  
-> To learn more about compiling your application's CSS and JavaScript, check out Laravel's [Vite documentation](/docs/{{version}}/vite#running-vite).
+<a name="available-starter-kits"></a>
+## Available Starter Kits
 
-<a name="breeze-and-livewire"></a>
-### Breeze and Livewire
+<a name="react"></a>
+### React
 
-Laravel Breeze also offers [Livewire](https://livewire.laravel.com) scaffolding. Livewire is a powerful way of building dynamic, reactive, front-end UIs using just PHP.
+Our React starter kit provides a robust, modern starting point for building Laravel applications with a React frontend using [Inertia](https://inertiajs.com).
 
-Livewire is a great fit for teams that primarily use Blade templates and are looking for a simpler alternative to JavaScript-driven SPA frameworks like Vue and React.
+Inertia allows you to build modern, single-page React applications using classic server-side routing and controllers. This lets you enjoy the frontend power of React combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
 
-To use the Livewire stack, you may select the Livewire frontend stack when executing the `breeze:install` Artisan command. After Breeze's scaffolding is installed, you should run your database migrations:
+The React starter kit utilizes React 19, TypeScript, Tailwind, and the [shadcn](https://ui.shadcn.com) component library.
 
-```shell
-php artisan breeze:install
+<a name="vue"></a>
+### Vue
 
-php artisan migrate
+Our Vue starter kit provides a great starting point for building Laravel applications with a Vue frontend using [Inertia](https://inertiajs.com).
+
+Inertia allows you to build modern, single-page Vue applications using classic server-side routing and controllers. This lets you enjoy the frontend power of Vue combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
+
+The Vue starter kit utilizes the Vue Composition API, TypeScript, Tailwind, and the [shadcn-vue](https://www.shadcn-vue.com/) component library.
+
+<a name="livewire"></a>
+### Livewire
+
+Our Livewire starter kit provides the perfect starting point for building Laravel applications with a [Laravel Livewire](https://livewire.laravel.com) frontend.
+
+Livewire is a powerful way of building dynamic, reactive, frontend UIs using just PHP. It's a great fit for teams that primarily use Blade templates and are looking for a simpler alternative to JavaScript-driven SPA frameworks like React and Vue.
+
+The Livewire starter kit utilizes Laravel Volt, Tailwind, and the [Flux UI](https://fluxui.dev) component library.
+
+<a name="starter-kit-customization"></a>
+## Starter Kit Customization
+
+<a name="react-customization"></a>
+### React
+
+<a name="vue-customization"></a>
+### Vue
+
+<a name="livewire-customization"></a>
+### Livewire
+
+<a name="workos-authkit-authentication"></a>
+## WorkOS AuthKit Authentication
+
+By default, the React, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we also offer a [WorkOS AuthKit](https://authkit.com) powered variant of each starter kit, offering social authentication, passkeys, and SSO support.
+
+Using WorkOS as your authentication provider [requires a WorkOS account](https://workos.com). WorkOS offers free authentication for applications up to 1 million monthly active users.
+
+To use WorkOS AuthKit as your application's authentication provider, select the WorkOS option when creating your new starter kit powered application via `laravel new`.
+
+### Configuring Your WorkOS Starter Kit
+
+After creating a new application using a WorkOS powered starter kit, you should set the `WORKOS_CLIENT_ID`, `WORKOS_API_KEY`, and `WORKOS_REDIRECT_URL` environment variables in your application's `.env` file. These variables should match the values provided to you in the WorkOS dashboard for your application:
+
+```ini
+WORKOS_CLIENT_ID=your-client-id
+WORKOS_API_KEY=your-api-key
+WORKOS_REDIRECT_URL="${APP_URL}/authenticate"
 ```
 
-<a name="breeze-and-inertia"></a>
-### Breeze and React / Vue
+<a name="configuring-authkit-authentication-methods"></a>
+#### Configuring AuthKit Authentication Methods
 
-Laravel Breeze also offers React and Vue scaffolding via an [Inertia](https://inertiajs.com) frontend implementation. Inertia allows you to build modern, single-page React and Vue applications using classic server-side routing and controllers.
+When using a WorkOS powered starter kit, we recommend you disable "Email + Password" authentication within your application's WorkOS AuthKit configuration settings, allowing users to only authenticate via social authentication providers, passkeys, "Magic Auth", and SSO. This allows your application to totally avoid handling user passwords.
 
-Inertia lets you enjoy the frontend power of React and Vue combined with the incredible backend productivity of Laravel and lightning-fast [Vite](https://vitejs.dev) compilation. To use an Inertia stack, you may select the Vue or React frontend stacks when executing the `breeze:install` Artisan command.
+<a name="configuring-authkit-session-timeouts"></a>
+#### Configuring AuthKit Session Timeouts
 
-When selecting the Vue or React frontend stack, the Breeze installer will also prompt you to determine if you would like [Inertia SSR](https://inertiajs.com/server-side-rendering) or TypeScript support. After Breeze's scaffolding is installed, you should also compile your application's frontend assets:
-
-```shell
-php artisan breeze:install
-
-php artisan migrate
-npm install
-npm run dev
-```
-
-Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
-
-<a name="breeze-and-next"></a>
-### Breeze and Next.js / API
-
-Laravel Breeze can also scaffold an authentication API that is ready to authenticate modern JavaScript applications such as those powered by [Next](https://nextjs.org), [Nuxt](https://nuxt.com), and others. To get started, select the API stack as your desired stack when executing the `breeze:install` Artisan command:
-
-```shell
-php artisan breeze:install
-
-php artisan migrate
-```
-
-During installation, Breeze will add a `FRONTEND_URL` environment variable to your application's `.env` file. This URL should be the URL of your JavaScript application. This will typically be `http://localhost:3000` during local development. In addition, you should ensure that your `APP_URL` is set to `http://localhost:8000`, which is the default URL used by the `serve` Artisan command.
-
-<a name="next-reference-implementation"></a>
-#### Next.js Reference Implementation
-
-Finally, you are ready to pair this backend with the frontend of your choice. A Next reference implementation of the Breeze frontend is [available on GitHub](https://github.com/laravel/breeze-next). This frontend is maintained by Laravel and contains the same user interface as the traditional Blade and Inertia stacks provided by Breeze.
-
-<a name="laravel-jetstream"></a>
-## Laravel Jetstream
-
-While Laravel Breeze provides a simple and minimal starting point for building a Laravel application, Jetstream augments that functionality with more robust features and additional frontend technology stacks. **For those brand new to Laravel, we recommend learning the ropes with Laravel Breeze before graduating to Laravel Jetstream.**
-
-Jetstream provides a beautifully designed application scaffolding for Laravel and includes login, registration, email verification, two-factor authentication, session management, API support via Laravel Sanctum, and optional team management. Jetstream is designed using [Tailwind CSS](https://tailwindcss.com) and offers your choice of [Livewire](https://livewire.laravel.com) or [Inertia](https://inertiajs.com) driven frontend scaffolding.
-
-Complete documentation for installing Laravel Jetstream can be found within the [official Jetstream documentation](https://jetstream.laravel.com).
+In addition, we recommend that you configure your WOrkOS AuthKit session inactivity timeout to match your Laravel application's configured session timeout threshold, which is typically two hours.
