@@ -442,7 +442,6 @@ $collection = collect([
     ['third'  => collect([7, 8, 9])]
 ]);
 
-
 $collapsed = $collection->collapseWithKeys();
 
 $collapsed->all();
@@ -3594,7 +3593,6 @@ $collection->all();
 
 // ['Michael', 'Tom']
 
-
 $collection = collect();
 
 $collection->whenEmpty(function (Collection $collection) {
@@ -3639,7 +3637,6 @@ $collection->whenNotEmpty(function (Collection $collection) {
 $collection->all();
 
 // ['michael', 'tom', 'adam']
-
 
 $collection = collect();
 
