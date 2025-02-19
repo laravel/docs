@@ -25,10 +25,6 @@ Laravel Breeze's default view layer is made up of simple [Blade templates](/docs
 
 <img src="https://laravel.com/img/docs/breeze-register.png">
 
-#### Laravel Bootcamp
-
-If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://bootcamp.laravel.com). The Laravel Bootcamp will walk you through building your first Laravel application using Breeze. It's a great way to get a tour of everything that Laravel and Breeze have to offer.
-
 <a name="laravel-breeze-installation"></a>
 ### Installation
 
