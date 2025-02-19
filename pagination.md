@@ -47,8 +47,6 @@ There are several ways to paginate items. The simplest is by using the `paginate
 In this example, the only argument passed to the `paginate` method is the number of items you would like displayed "per page". In this case, let's specify that we would like to display `15` items per page:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -320,8 +318,6 @@ This command will place the views in your application's `resources/views/vendor/
 If you would like to designate a different file as the default pagination view, you may invoke the paginator's `defaultView` and `defaultSimpleView` methods within the `boot` method of your `App\Providers\AppServiceProvider` class:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Pagination\Paginator;

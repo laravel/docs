@@ -154,8 +154,6 @@ In a Laravel application, a facade is a class that provides access to an object 
 The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to an object resolved from the container. In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static `get` method is being called on the `Cache` class:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -201,8 +199,6 @@ Instead, the `Cache` facade extends the base `Facade` class and defines the meth
 Using real-time facades, you may treat any class in your application as if it was a facade. To illustrate how this can be used, let's first examine some code that does not use real-time facades. For example, let's assume our `Podcast` model has a `publish` method. However, in order to publish the podcast, we need to inject a `Publisher` instance:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use App\Contracts\Publisher;
@@ -225,8 +221,6 @@ class Podcast extends Model
 Injecting a publisher implementation into the method allows us to easily test the method in isolation since we can mock the injected publisher. However, it requires us to always pass a publisher instance each time we call the `publish` method. Using real-time facades, we can maintain the same testability while not being required to explicitly pass a `Publisher` instance. To generate a real-time facade, prefix the namespace of the imported class with `Facades`:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use App\Contracts\Publisher; // [tl! remove]

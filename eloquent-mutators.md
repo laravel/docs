@@ -33,8 +33,6 @@ An accessor transforms an Eloquent attribute value when it is accessed. To defin
 In this example, we'll define an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of the `first_name` attribute. All attribute accessor / mutator methods must declare a return type-hint of `Illuminate\Database\Eloquent\Casts\Attribute`:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -142,8 +140,6 @@ protected function address(): Attribute
 A mutator transforms an Eloquent attribute value when it is set. To define a mutator, you may provide the `set` argument when defining your attribute. Let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -239,8 +235,6 @@ The `casts` method should return an array where the key is the name of the attri
 To demonstrate attribute casting, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a boolean value:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -289,8 +283,6 @@ $user->mergeCasts([
 You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\Support\Stringable` object](/docs/{{version}}/strings#fluent-strings-method-list):
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\AsStringable;
@@ -318,8 +310,6 @@ class User extends Model
 The `array` cast is particularly useful when working with columns that are stored as serialized JSON. For example, if your database has a `JSON` or `TEXT` field type that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -588,8 +578,6 @@ php artisan make:cast Json
 All custom cast classes implement the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:
 
 ```php
-<?php
-
 namespace App\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
@@ -623,8 +611,6 @@ class Json implements CastsAttributes
 Once you have defined a custom cast type, you may attach it to a model attribute using its class name:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use App\Casts\Json;
@@ -654,8 +640,6 @@ You are not limited to casting values to primitive types. You may also cast valu
 As an example, we will define a custom cast class that casts multiple model values into a single `Address` value object. We will assume the `Address` value has two public properties: `lineOne` and `lineTwo`:
 
 ```php
-<?php
-
 namespace App\Casts;
 
 use App\ValueObjects\Address as AddressValueObject;
@@ -762,8 +746,6 @@ php artisan make:cast Hash --inbound
 A classic example of an inbound only cast is a "hashing" cast. For example, we may define a cast that hashes inbound values via a given algorithm:
 
 ```php
-<?php
-
 namespace App\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
@@ -830,8 +812,6 @@ protected function casts(): array
 Objects that implement the `Castable` interface must define a `castUsing` method that returns the class name of the custom caster class that is responsible for casting to and from the `Castable` class:
 
 ```php
-<?php
-
 namespace App\ValueObjects;
 
 use Illuminate\Contracts\Database\Eloquent\Castable;
@@ -870,8 +850,6 @@ protected function casts(): array
 By combining "castables" with PHP's [anonymous classes](https://www.php.net/manual/en/language.oop5.anonymous.php), you may define a value object and its casting logic as a single castable object. To accomplish this, return an anonymous class from your value object's `castUsing` method. The anonymous class should implement the `CastsAttributes` interface:
 
 ```php
-<?php
-
 namespace App\ValueObjects;
 
 use Illuminate\Contracts\Database\Eloquent\Castable;

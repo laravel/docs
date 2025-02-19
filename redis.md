@@ -241,8 +241,6 @@ Supported compression algorithms include: `Redis::COMPRESSION_NONE` (default), `
 You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](https://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the Redis `GET` command by calling the `get` method on the `Redis` facade:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -359,8 +357,6 @@ Laravel provides a convenient interface to the Redis `publish` and `subscribe` c
 First, let's setup a channel listener using the `subscribe` method. We'll place this method call within an [Artisan command](/docs/{{version}}/artisan) since calling the `subscribe` method begins a long-running process:
 
 ```php
-<?php
-
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;

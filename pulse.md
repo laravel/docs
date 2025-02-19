@@ -793,8 +793,6 @@ Recorders are registered in the `recorders` section of the application's `config
 Recorders may listen to events by specifying a `$listen` property. Pulse will automatically register the listeners and call the recorders `record` method:
 
 ```php
-<?php
-
 namespace Acme\Recorders;
 
 use Acme\Events\Deployment;

@@ -184,8 +184,6 @@ The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` 
 Job classes are very simple, normally containing only a `handle` method that is invoked when the job is processed by the queue. To get started, let's take a look at an example job class. In this example, we'll pretend we manage a podcast publishing service and need to process the uploaded podcast files before they are published:
 
 ```php
-<?php
-
 namespace App\Jobs;
 
 use App\Models\Podcast;
@@ -281,8 +279,6 @@ If a job receives a collection or array of Eloquent models instead of a single m
 Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class. This interface does not require you to define any additional methods on your class:
 
 ```php
-<?php
-
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
@@ -297,8 +293,6 @@ In the example above, the `UpdateSearchIndex` job is unique. So, the job will no
 In certain cases, you may want to define a specific "key" that makes the job unique or you may want to specify a timeout beyond which the job no longer stays unique. To accomplish this, you may define `uniqueId` and `uniqueFor` properties or methods on your job class:
 
 ```php
-<?php
-
 use App\Models\Product;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -340,8 +334,6 @@ In the example above, the `UpdateSearchIndex` job is unique by a product ID. So,
 By default, unique jobs are "unlocked" after a job completes processing or fails all of its retry attempts. However, there may be situations where you would like your job to unlock immediately before it is processed. To accomplish this, your job should implement the `ShouldBeUniqueUntilProcessing` contract instead of the `ShouldBeUnique` contract:
 
 ```php
-<?php
-
 use App\Models\Product;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
@@ -384,8 +376,6 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 Laravel allows you to ensure the privacy and integrity of a job's data via [encryption](/docs/{{version}}/encryption). To get started, simply add the `ShouldBeEncrypted` interface to the job class. Once this interface has been added to the class, Laravel will automatically encrypt your job before pushing it onto a queue:
 
 ```php
-<?php
-
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -425,8 +415,6 @@ While this code is valid, the implementation of the `handle` method becomes nois
 Instead of rate limiting in the handle method, we could define a job middleware that handles rate limiting. Laravel does not have a default location for job middleware, so you are welcome to place job middleware anywhere in your application. In this example, we will place the middleware in an `app/Jobs/Middleware` directory:
 
 ```php
-<?php
-
 namespace App\Jobs\Middleware;
 
 use Closure;
@@ -789,8 +777,6 @@ public function middleware(): array
 Once you have written your job class, you may dispatch it using the `dispatch` method on the job itself. The arguments passed to the `dispatch` method will be given to the job's constructor:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -833,8 +819,6 @@ In new Laravel applications, the `sync` driver is the default queue driver. This
 If you would like to specify that a job should not be immediately available for processing by a queue worker, you may use the `delay` method when dispatching the job. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -899,8 +883,6 @@ dispatch(function () {
 If you would like to dispatch a job immediately (synchronously), you may use the `dispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -1063,8 +1045,6 @@ Bus::chain([
 By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you assign to various queues. Keep in mind, this does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method when dispatching the job:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -1094,8 +1074,6 @@ class PodcastController extends Controller
 Alternatively, you may specify the job's queue by calling the `onQueue` method within the job's constructor:
 
 ```php
-<?php
-
 namespace App\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -1121,8 +1099,6 @@ class ProcessPodcast implements ShouldQueue
 If your application interacts with multiple queue connections, you may specify which connection to push a job to using the `onConnection` method:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -1160,8 +1136,6 @@ ProcessPodcast::dispatch($podcast)
 Alternatively, you may specify the job's connection by calling the `onConnection` method within the job's constructor:
 
 ```php
-<?php
-
 namespace App\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -1200,8 +1174,6 @@ If a job exceeds its maximum number of attempts, it will be considered a "failed
 You may take a more granular approach by defining the maximum number of times a job may be attempted on the job class itself. If the maximum number of attempts is specified on the job, it will take precedence over the `--tries` value provided on the command line:
 
 ```php
-<?php
-
 namespace App\Jobs;
 
 class ProcessPodcast implements ShouldQueue
@@ -1253,8 +1225,6 @@ public function retryUntil(): DateTime
 Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may define a `maxExceptions` property on your job class:
 
 ```php
-<?php
-
 namespace App\Jobs;
 
 use Illuminate\Support\Facades\Redis;
@@ -1308,8 +1278,6 @@ If the job exceeds its maximum attempts by continually timing out, it will be ma
 You may also define the maximum number of seconds a job should be allowed to run on the job class itself. If the timeout is specified on the job, it will take precedence over any timeout specified on the command line:
 
 ```php
-<?php
-
 namespace App\Jobs;
 
 class ProcessPodcast implements ShouldQueue
@@ -1417,8 +1385,6 @@ php artisan migrate
 To define a batchable job, you should [create a queueable job](#creating-jobs) as normal; however, you should add the `Illuminate\Bus\Batchable` trait to the job class. This trait provides access to a `batch` method which may be used to retrieve the current batch that the job is executing within:
 
 ```php
-<?php
-
 namespace App\Jobs;
 
 use Illuminate\Bus\Batchable;
@@ -2114,8 +2080,6 @@ public function backoff(): array
 When a particular job fails, you may want to send an alert to your users or revert any actions that were partially completed by the job. To accomplish this, you may define a `failed` method on your job class. The `Throwable` instance that caused the job to fail will be passed to the `failed` method:
 
 ```php
-<?php
-
 namespace App\Jobs;
 
 use App\Models\Podcast;
@@ -2275,8 +2239,6 @@ QUEUE_FAILED_DRIVER=null
 If you would like to register an event listener that will be invoked when a job fails, you may use the `Queue` facade's `failing` method. For example, we may attach a closure to this event from the `boot` method of the `AppServiceProvider` that is included with Laravel:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Queue;
@@ -2646,8 +2608,6 @@ $job->assertNotFailed();
 Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks to be executed before or after a queued job is processed. These callbacks are a great opportunity to perform additional logging or increment statistics for a dashboard. Typically, you should call these methods from the `boot` method of a [service provider](/docs/{{version}}/providers). For example, we may use the `AppServiceProvider` that is included with Laravel:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Queue;

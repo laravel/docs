@@ -205,8 +205,6 @@ php artisan folio:page "users/[.App.Models.User]"
 By default, models that have been soft deleted are not retrieved when resolving implicit model bindings. However, if you wish, you can instruct Folio to retrieve soft deleted models by invoking the `withTrashed` function within the page's template:
 
 ```php
-<?php
-
 use function Laravel\Folio\{withTrashed};
 
 withTrashed();
@@ -226,8 +224,6 @@ By default, Folio will return the content of the page's Blade template as the re
 The `render` function accepts a closure which will receive the `View` instance being rendered by Folio, allowing you to add additional data to the view or customize the entire response. In addition to receiving the `View` instance, any additional route parameters or model bindings will also be provided to the `render` closure:
 
 ```php
-<?php
-
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -257,8 +253,6 @@ render(function (View $view, Post $post) {
 You may specify a name for a given page's route using the `name` function:
 
 ```php
-<?php
-
 use function Laravel\Folio\name;
 
 name('users.index');
@@ -284,8 +278,6 @@ route('users.show', ['user' => $user]);
 You can apply middleware to a specific page by invoking the `middleware` function within the page's template:
 
 ```php
-<?php
-
 use function Laravel\Folio\{middleware};
 
 middleware(['auth', 'verified']);

@@ -89,8 +89,6 @@ $spy->shouldHaveReceived('process');
 Unlike traditional static method calls, [facades](/docs/{{version}}/facades) (including [real-time facades](/docs/{{version}}/facades#real-time-facades)) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability that you would have if you were using traditional dependency injection. When testing, you may often want to mock a call to a Laravel facade that occurs in one of your controllers. For example, consider the following controller action:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Cache;

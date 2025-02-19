@@ -72,8 +72,6 @@ To define a feature, you may use the `define` method offered by the `Feature` fa
 Typically, features are defined in a service provider using the `Feature` facade. The closure will receive the "scope" for the feature check. Most commonly, the scope is the currently authenticated user. In this example, we will define a feature for incrementally rolling out a new API to our application's users:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use App\Models\User;
@@ -121,8 +119,6 @@ php artisan pennant:feature NewApi
 When writing a feature class, you only need to define a `resolve` method, which will be invoked to resolve the feature's initial value for a given scope. Again, the scope will typically be the currently authenticated user:
 
 ```php
-<?php
-
 namespace App\Features;
 
 use App\Models\User;
@@ -160,8 +156,6 @@ $instance = Feature::instance(NewApi::class);
 By default, Pennant will store the feature class's fully qualified class name. If you would like to decouple the stored feature name from the application's internal structure, you may specify a `$name` property on the feature class. The value of this property will be stored in place of the class name:
 
 ```php
-<?php
-
 namespace App\Features;
 
 class NewApi
@@ -183,8 +177,6 @@ class NewApi
 To determine if a feature is active, you may use the `active` method on the `Feature` facade. By default, features are checked against the currently authenticated user:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -243,8 +235,6 @@ Feature::someAreInactive(['new-api', 'site-redesign']);
 For class based features, you should provide the class name when checking the feature:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Features\NewApi;
@@ -274,8 +264,6 @@ class PodcastController
 The `when` method may be used to fluently execute a given closure if a feature is active. Additionally, a second closure may be provided and will be executed if the feature is inactive:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Features\NewApi;
@@ -315,8 +303,6 @@ return Feature::unless(NewApi::class,
 Pennant's `HasFeatures` trait may be added to your application's `User` model (or any other model that has features) to provide a fluent, convenient way to check features directly from the model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -430,8 +416,6 @@ Sometimes it can be useful to perform some in-memory checks before retrieving th
 You can achieve this with a [class-based feature's](#class-based-features) `before` method. When present, the `before` method is always run in-memory before retrieving the value from storage. If a non-`null` value is returned from the method, it will be used in place of the feature's stored value for the duration of the request:
 
 ```php
-<?php
-
 namespace App\Features;
 
 use App\Models\User;
@@ -467,8 +451,6 @@ class NewApi
 You could also use this feature to schedule the global rollout of a feature that was previously behind a feature flag:
 
 ```php
-<?php
-
 namespace App\Features;
 
 use Illuminate\Support\Carbon;
@@ -556,8 +538,6 @@ if (Feature::for($user->team)->active('billing-v2')) {
 It is also possible to customize the default scope Pennant uses to check features. For example, maybe all of your features are checked against the currently authenticated user's team instead of the user. Instead of having to call `Feature::for($user->team)` every time you check a feature, you may instead specify the team as the default scope. Typically, this should be done in one of your application's service providers:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Auth;
@@ -621,8 +601,6 @@ In light of this, Pennant allows you to format scope values for storage by imple
 For example, imagine you are using two different feature drivers in a single application: the built-in `database` driver and a third-party "Flag Rocket" driver. The "Flag Rocket" driver does not know how to properly store an Eloquent model. Instead, it requires a `FlagRocketUser` instance. By implementing the `toFeatureIdentifier` defined by the `FeatureScopeable` contract, we can customize the storable scope value provided to each driver used by our application:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use FlagRocket\FlagRocketUser;
@@ -751,8 +729,6 @@ However, class based features are dynamically registered and are not known by Pe
 If you would like to ensure that feature classes are always included when using the `all` method, you may use Pennant's feature discovery capabilities. To get started, invoke the `discover` method in one of your application's service providers:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -1014,8 +990,6 @@ You may configure the store that Pennant will use during testing by defining the
 If none of Pennant's existing storage drivers fit your application's needs, you may write your own storage driver. Your custom driver should implement the `Laravel\Pennant\Contracts\Driver` interface:
 
 ```php
-<?php
-
 namespace App\Extensions;
 
 use Laravel\Pennant\Contracts\Driver;
@@ -1044,8 +1018,6 @@ Now, we just need to implement each of these methods using a Redis connection. F
 Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Pennant, you may use the `extend` method provided by the `Feature` facade. You should call the `extend` method from the `boot` method of one of your application's [service provider](/docs/{{version}}/providers):
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use App\Extensions\RedisFeatureDriver;
@@ -1096,8 +1068,6 @@ Once the driver has been registered, you may use the `redis` driver in your appl
 If your driver is a wrapper around a third-party feature flag platform, you will likely define features on the platform rather than using Pennant's `Feature::define` method. If that is the case, your custom driver should also implement the `Laravel\Pennant\Contracts\DefinesFeaturesExternally` interface:
 
 ```php
-<?php
-
 namespace App\Extensions;
 
 use Laravel\Pennant\Contracts\Driver;
@@ -1134,8 +1104,6 @@ This event is dispatched the first time a feature's value is resolved for a spec
 This event is dispatched the first time an unknown feature is resolved for a specific scope. Listening to this event may be useful if you have intended to remove a feature flag but have accidentally left stray references to it throughout your application:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;

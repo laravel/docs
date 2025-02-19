@@ -145,8 +145,6 @@ Occasionally, you may need to prepare certain resources used by your application
 Using the `ParallelTesting` facade, you may specify code to be executed on the `setUp` and `tearDown` of a process or test case. The given closures receive the `$token` and `$testCase` variables that contain the process token and the current test case, respectively:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Artisan;

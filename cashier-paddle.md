@@ -371,8 +371,6 @@ We can even easily determine if a user is subscribed to specific product or pric
 For convenience, you may wish to create a [middleware](/docs/{{version}}/middleware) which determines if the incoming request is from a subscribed user. Once this middleware has been defined, you may easily assign it to a route to prevent users that are not subscribed from accessing the route:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -797,8 +795,6 @@ if ($user->subscribed('default')) {
 The `subscribed` method also makes a great candidate for a [route middleware](/docs/{{version}}/middleware), allowing you to filter access to routes and controllers based on the user's subscription status:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -1390,8 +1386,6 @@ Cashier automatically handles subscription cancelation on failed charges and oth
 Both events contain the full payload of the Paddle webhook. For example, if you wish to handle the `transaction.billed` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
 
 ```php
-<?php
-
 namespace App\Listeners;
 
 use Laravel\Paddle\Events\WebhookReceived;

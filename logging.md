@@ -209,8 +209,6 @@ Log::debug($message);
 You may call any of these methods to log a message for the corresponding level. By default, the message will be written to the default log channel as configured by your `logging` configuration file:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -248,8 +246,6 @@ Log::info('User {id} failed to login.', ['id' => $user->id]);
 Occasionally, you may wish to specify some contextual information that should be included with all subsequent log entries in a particular channel. For example, you may wish to log a request ID that is associated with each incoming request to your application. To accomplish this, you may call the `Log` facade's `withContext` method:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -285,8 +281,6 @@ class AssignRequestId
 If you would like to share contextual information across _all_ logging channels, you may invoke the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -385,8 +379,6 @@ To get started, define a `tap` array on the channel's configuration. The `tap` a
 Once you have configured the `tap` option on your channel, you're ready to define the class that will customize your Monolog instance. This class only needs a single method: `__invoke`, which receives an `Illuminate\Log\Logger` instance. The `Illuminate\Log\Logger` instance proxies all method calls to the underlying Monolog instance:
 
 ```php
-<?php
-
 namespace App\Logging;
 
 use Illuminate\Log\Logger;
@@ -499,8 +491,6 @@ If you would like to define an entirely custom channel in which you have full co
 Once you have configured the `custom` driver channel, you're ready to define the class that will create your Monolog instance. This class only needs a single `__invoke` method which should return the Monolog logger instance. The method will receive the channels configuration array as its only argument:
 
 ```php
-<?php
-
 namespace App\Logging;
 
 use Monolog\Logger;

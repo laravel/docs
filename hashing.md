@@ -35,8 +35,6 @@ php artisan config:publish hashing
 You may hash a password by calling the `make` method on the `Hash` facade:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;

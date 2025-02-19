@@ -50,8 +50,6 @@ php artisan make:resource UserCollection
 Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` resource class:
 
 ```php
-<?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -113,8 +111,6 @@ php artisan make:resource UserCollection
 Once the resource collection class has been generated, you may easily define any meta data that should be included with the response:
 
 ```php
-<?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -156,8 +152,6 @@ Route::get('/users', function () {
 When returning a resource collection from a route, Laravel resets the collection's keys so that they are in numerical order. However, you may add a `preserveKeys` property to your resource class indicating whether a collection's original keys should be preserved:
 
 ```php
-<?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -192,8 +186,6 @@ Typically, the `$this->collection` property of a resource collection is automati
 For example, `UserCollection` will attempt to map the given user instances into the `UserResource` resource. To customize this behavior, you may override the `$collects` property of your resource collection:
 
 ```php
-<?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -218,8 +210,6 @@ class UserCollection extends ResourceCollection
 Resources only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:
 
 ```php
-<?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -303,8 +293,6 @@ Route::get('/users', function () {
 However, if you need to customize the meta data returned with the collection, it is necessary to define your own resource collection:
 
 ```php
-<?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -365,8 +353,6 @@ By default, your outermost resource is wrapped in a `data` key when the resource
 If you would like to disable the wrapping of the outermost resource, you should invoke the `withoutWrapping` method on the base `Illuminate\Http\Resources\Json\JsonResource` class. Typically, you should call this method from your `AppServiceProvider` or another [service provider](/docs/{{version}}/providers) that is loaded on every request to your application:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -403,8 +389,6 @@ You have total freedom to determine how your resource's relationships are wrappe
 You may be wondering if this will cause your outermost resource to be wrapped in two `data` keys. Don't worry, Laravel will never let your resources be accidentally double-wrapped, so you don't have to be concerned about the nesting level of the resource collection you are transforming:
 
 ```php
-<?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -760,8 +744,6 @@ When returning additional meta data from your resources, you never have to worry
 Sometimes you may wish to only include certain meta data with a resource response if the resource is the outermost resource being returned. Typically, this includes meta information about the response as a whole. To define this meta data, add a `with` method to your resource class. This method should return an array of meta data to be included with the resource response only when the resource is the outermost resource being transformed:
 
 ```php
-<?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -836,8 +818,6 @@ Route::get('/user', function () {
 Alternatively, you may define a `withResponse` method within the resource itself. This method will be called when the resource is returned as the outermost resource in a response:
 
 ```php
-<?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\JsonResponse;

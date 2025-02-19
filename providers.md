@@ -40,8 +40,6 @@ As mentioned previously, within the `register` method, you should only bind thin
 Let's take a look at a basic service provider. Within any of your service provider methods, you always have access to the `$app` property which provides access to the service container:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use App\Services\Riak\Connection;
@@ -70,8 +68,6 @@ This service provider only defines a `register` method, and uses that method to 
 If your service provider registers many simple bindings, you may wish to use the `bindings` and `singletons` properties instead of manually registering each container binding. When the service provider is loaded by the framework, it will automatically check for these properties and register their bindings:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use App\Contracts\DowntimeNotifier;
@@ -110,8 +106,6 @@ class AppServiceProvider extends ServiceProvider
 So, what if we need to register a [view composer](/docs/{{version}}/views#view-composers) within our service provider? This should be done within the `boot` method. **This method is called after all other service providers have been registered**, meaning you have access to all other services that have been registered by the framework:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\Facades\View;
@@ -156,8 +150,6 @@ public function boot(ResponseFactory $response): void
 All service providers are registered in the `bootstrap/providers.php` configuration file. This file returns an array that contains the class names of your application's service providers:
 
 ```php
-<?php
-
 return [
     App\Providers\AppServiceProvider::class,
 ];
@@ -166,8 +158,6 @@ return [
 When you invoke the `make:provider` Artisan command, Laravel will automatically add the generated provider to the `bootstrap/providers.php` file. However, if you have manually created the provider class, you should manually add the provider class to the array:
 
 ```php
-<?php
-
 return [
     App\Providers\AppServiceProvider::class,
     App\Providers\ComposerServiceProvider::class, // [tl! add]
@@ -184,8 +174,6 @@ Laravel compiles and stores a list of all of the services supplied by deferred s
 To defer the loading of a provider, implement the `\Illuminate\Contracts\Support\DeferrableProvider` interface and define a `provides` method. The `provides` method should return the service container bindings registered by the provider:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use App\Services\Riak\Connection;

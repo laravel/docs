@@ -128,8 +128,6 @@ Typically, translation strings are stored in files within the `lang` directory. 
 All language files return an array of keyed strings. For example:
 
 ```php
-<?php
-
 // lang/en/messages.php
 
 return [

@@ -127,8 +127,6 @@ After generating your command, you should define appropriate values for the `sig
 Let's take a look at an example command. Note that we are able to request any dependencies we need via the command's `handle` method. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies that are type-hinted in this method's signature:
 
 ```php
-<?php
-
 namespace App\Console\Commands;
 
 use App\Models\User;
@@ -230,8 +228,6 @@ Artisan::command('mail:send {user}', function (string $user) {
 Sometimes you may wish to ensure that only one instance of a command can run at a time. To accomplish this, you may implement the `Illuminate\Contracts\Console\Isolatable` interface on your command class:
 
 ```php
-<?php
-
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -436,8 +432,6 @@ protected $signature = 'mail:send
 If your command contains required arguments, the user will receive an error message when they are not provided. Alternatively, you may configure your command to automatically prompt the user when required arguments are missing by implementing the `PromptsForMissingInput` interface:
 
 ```php
-<?php
-
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;

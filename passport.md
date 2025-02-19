@@ -74,8 +74,6 @@ Additionally, this command will ask if you would like to use UUIDs as the primar
 After running the `install:api` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -406,8 +404,6 @@ php artisan vendor:publish --tag=passport-views
 Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately, unless the consuming application has explicitly set the `prompt` parameter when redirecting for authorization:
 
 ```php
-<?php
-
 namespace App\Models\Passport;
 
 use Laravel\Passport\Client as BaseClient;
@@ -733,8 +729,6 @@ If your application uses more than one [authentication user provider](/docs/{{ve
 When authenticating using the password grant, Passport will use the `email` attribute of your authenticatable model as the "username". However, you may customize this behavior by defining a `findForPassport` method on your model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -761,8 +755,6 @@ class User extends Authenticatable
 When authenticating using the password grant, Passport will use the `password` attribute of your model to validate the given password. If your model does not have a `password` attribute or you wish to customize the password validation logic, you can define a `validateForPassportPasswordGrant` method on your model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;

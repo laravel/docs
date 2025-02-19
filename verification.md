@@ -25,8 +25,6 @@ Many web applications require users to verify their email addresses before using
 Before getting started, verify that your `App\Models\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;

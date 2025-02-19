@@ -251,8 +251,6 @@ When Fortify's two factor authentication feature is enabled, the user is require
 Before getting started, you should first ensure that your application's `App\Models\User` model uses the `Laravel\Fortify\TwoFactorAuthenticatable` trait:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;

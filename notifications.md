@@ -78,8 +78,6 @@ This command will place a fresh notification class in your `app/Notifications` d
 Notifications may be sent in two ways: using the `notify` method of the `Notifiable` trait or using the `Notification` [facade](/docs/{{version}}/facades). The `Notifiable` trait is included on your application's `App\Models\User` model by default:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -150,8 +148,6 @@ public function via(object $notifiable): array
 Sending notifications can take time, especially if the channel needs to make an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using the `make:notification` command, so you may immediately add them to your notification class:
 
 ```php
-<?php
-
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -217,8 +213,6 @@ public function withDelay(object $notifiable): array
 By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may call the `onConnection` method from your notification's constructor:
 
 ```php
-<?php
-
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -315,8 +309,6 @@ $user->notify((new InvoicePaid($invoice))->afterCommit());
 Alternatively, you may call the `afterCommit` method from your notification's constructor:
 
 ```php
-<?php
-
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -514,8 +506,6 @@ public function toMail(object $notifiable): MailMessage
 When sending notifications via the `mail` channel, the notification system will automatically look for an `email` property on your notifiable entity. You may customize which email address is used to deliver the notification by defining a `routeNotificationForMail` method on the notifiable entity:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -1089,8 +1079,6 @@ Echo.private('App.Models.User.' + userId)
 If you would like to customize which channel that an entity's broadcast notifications are broadcast on, you may define a `receivesBroadcastNotificationsOn` method on the notifiable entity:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Broadcasting\PrivateChannel;
@@ -1212,8 +1200,6 @@ public function toVonage(object $notifiable): VonageMessage
 To route Vonage notifications to the proper phone number, define a `routeNotificationForVonage` method on your notifiable entity:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -1441,8 +1427,6 @@ To direct Slack notifications to the appropriate Slack team and channel, define 
 For instance, returning `#support-channel` from the `routeNotificationForSlack` method will send the notification to the `#support-channel` channel in the workspace associated with the Bot User OAuth token located in your application's `services.php` configuration file:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -1474,8 +1458,6 @@ Of course, you will often want to send notifications to the Slack workspaces own
 Once you have obtained the bot token and stored it within your application's database, you may utilize the `SlackRoute::make` method to route a notification to the user's workspace. In addition, your application will likely need to offer an opportunity for the user to specify which channel notifications should be sent to:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -1737,8 +1719,6 @@ Laravel ships with a handful of notification channels, but you may want to write
 Within the `send` method, you may call methods on the notification to retrieve a message object understood by your channel and then send the notification to the `$notifiable` instance however you wish:
 
 ```php
-<?php
-
 namespace App\Notifications;
 
 use Illuminate\Notifications\Notification;
@@ -1760,8 +1740,6 @@ class VoiceChannel
 Once your notification channel class has been defined, you may return the class name from the `via` method of any of your notifications. In this example, the `toVoice` method of your notification can return whatever object you choose to represent voice messages. For example, you might define your own `VoiceMessage` class to represent these messages:
 
 ```php
-<?php
-
 namespace App\Notifications;
 
 use App\Notifications\Messages\VoiceMessage;

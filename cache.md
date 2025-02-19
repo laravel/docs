@@ -131,8 +131,6 @@ For more information on configuring MongoDB, please refer to the MongoDB [Cache 
 To obtain a cache store instance, you may use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Cache;
@@ -448,8 +446,6 @@ Cache::lock('processing')->forceRelease();
 To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts). So, a MongoDB cache implementation might look something like this:
 
 ```php
-<?php
-
 namespace App\Extensions;
 
 use Illuminate\Contracts\Cache\Store;
@@ -486,8 +482,6 @@ Cache::extend('mongo', function (Application $app) {
 To register the custom cache driver with Laravel, we will use the `extend` method on the `Cache` facade. Since other service providers may attempt to read cached values within their `boot` method, we will register our custom driver within a `booting` callback. By using the `booting` callback, we can ensure that the custom driver is registered just before the `boot` method is called on our application's service providers but after the `register` method is called on all of the service providers. We will register our `booting` callback within the `register` method of our application's `App\Providers\AppServiceProvider` class:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use App\Extensions\MongoStore;

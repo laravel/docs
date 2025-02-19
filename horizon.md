@@ -323,8 +323,6 @@ sudo supervisorctl start horizon
 Horizon allows you to assign “tags” to jobs, including mailables, broadcast events, notifications, and queued event listeners. In fact, Horizon will intelligently and automatically tag most jobs depending on the Eloquent models that are attached to the job. For example, take a look at the following job:
 
 ```php
-<?php
-
 namespace App\Jobs;
 
 use App\Models\Video;

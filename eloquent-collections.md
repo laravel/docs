@@ -285,8 +285,6 @@ $users = $users->unique();
 If you would like to use a custom `Collection` object when interacting with a given model, you may add the `CollectedBy` attribute to your model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use App\Support\UserCollection;
@@ -303,8 +301,6 @@ class User extends Model
 Alternatively, you may define a `newCollection` method on your model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use App\Support\UserCollection;

@@ -627,8 +627,6 @@ It is possible to customize the validation rules executed during a precognitive 
 For example, on a user creation form, we may want to validate that a password is "uncompromised" only on the final form submission. For precognitive validation requests, we will simply validate that the password is required and has a minimum of 8 characters. Using the `isPrecognitive` method, we can customize the rules defined by our form request:
 
 ```php
-<?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -697,8 +695,6 @@ When adding the `HandlePrecognitiveRequests` middleware to a route, you should c
 For example, you may have a middleware that increments the total number of "interactions" each user has with your application, but you may not want precognitive requests to be counted as an interaction. To accomplish this, we may check the request's `isPrecognitive` method before incrementing the interaction count:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use App\Facades\Interaction;

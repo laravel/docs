@@ -54,8 +54,6 @@ The Laravel query builder uses PDO parameter binding to protect your application
 You may use the `table` method provided by the `DB` facade to begin a query. The `table` method returns a fluent query builder instance for the given table, allowing you to chain more constraints onto the query and then finally retrieve the results of the query using the `get` method:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;

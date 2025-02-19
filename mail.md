@@ -418,8 +418,6 @@ return new Content(
 Typically, you will want to pass some data to your view that you can utilize when rendering the email's HTML. There are two ways you may make data available to your view. First, any public property defined on your mailable class will automatically be made available to the view. So, for example, you may pass data into your mailable class's constructor and set that data to public properties defined on the class:
 
 ```php
-<?php
-
 namespace App\Mail;
 
 use App\Models\Order;
@@ -465,8 +463,6 @@ Once the data has been set to a public property, it will automatically be availa
 If you would like to customize the format of your email's data before it is sent to the template, you may manually pass your data to the view via the `Content` definition's `with` parameter. Typically, you will still pass data via the mailable class's constructor; however, you should set this data to `protected` or `private` properties so the data is not automatically made available to the template:
 
 ```php
-<?php
-
 namespace App\Mail;
 
 use App\Models\Order;
@@ -661,8 +657,6 @@ While attaching files to messages via simple string paths is often sufficient, i
 To get started, implement the `Illuminate\Contracts\Mail\Attachable` interface on the object that will be attachable to messages. This interface dictates that your class defines a `toMailAttachment` method that returns an `Illuminate\Mail\Attachment` instance:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Contracts\Mail\Attachable;
@@ -916,8 +910,6 @@ To customize the theme for an individual mailable, you may set the `$theme` prop
 To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/facades). The `to` method accepts an email address, a user instance, or a collection of users. If you pass an object or collection of objects, the mailer will automatically use their `email` and `name` properties when determining the email's recipients, so make sure these attributes are available on your objects. Once you have specified your recipients, you may pass an instance of your mailable class to the `send` method:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -1051,8 +1043,6 @@ Mail::to($request->user())->send(
 Alternatively, you may call the `afterCommit` method from your mailable's constructor:
 
 ```php
-<?php
-
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;

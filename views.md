@@ -137,8 +137,6 @@ return view('greeting')
 Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `View` facade's `share` method. Typically, you should place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `App\Providers\AppServiceProvider` class or generate a separate service provider to house them:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\Facades\View;
@@ -173,8 +171,6 @@ Typically, view composers will be registered within one of your application's [s
 We'll use the `View` facade's `composer` method to register the view composer. Laravel does not include a default directory for class based view composers, so you are free to organize them however you wish. For example, you could create an `app/View/Composers` directory to house all of your application's view composers:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use App\View\Composers\ProfileComposer;
@@ -215,8 +211,6 @@ class AppServiceProvider extends ServiceProvider
 Now that we have registered the composer, the `compose` method of the `App\View\Composers\ProfileComposer` class will be executed each time the `profile` view is being rendered. Let's take a look at an example of the composer class:
 
 ```php
-<?php
-
 namespace App\View\Composers;
 
 use App\Repositories\UserRepository;

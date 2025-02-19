@@ -500,8 +500,6 @@ $browser->move($x = 100, $y = 100);
 If you would like to define a custom browser method that you can re-use in a variety of your tests, you may use the `macro` method on the `Browser` class. Typically, you should call this method from a [service provider's](/docs/{{version}}/providers) `boot` method:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -893,8 +891,6 @@ $browser->withKeyboard(function (Keyboard $keyboard) {
 If you would like to define custom keyboard interactions that you can easily re-use throughout your test suite, you may use the `macro` method provided by the `Keyboard` class. Typically, you should call this method from a [service provider's](/docs/{{version}}/providers) `boot` method:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Facebook\WebDriver\WebDriverKeys;
@@ -2346,8 +2342,6 @@ public static function siteElements(): array
 In addition to the default methods defined on pages, you may define additional methods which may be used throughout your tests. For example, let's imagine we are building a music management application. A common action for one page of the application might be to create a playlist. Instead of re-writing the logic to create a playlist in each test, you may define a `createPlaylist` method on a page class:
 
 ```php
-<?php
-
 namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
@@ -2396,8 +2390,6 @@ php artisan dusk:component DatePicker
 As shown above, a "date picker" is an example of a component that might exist throughout your application on a variety of pages. It can become cumbersome to manually write the browser automation logic to select a date in dozens of tests throughout your test suite. Instead, we can define a Dusk component to represent the date picker, allowing us to encapsulate that logic within the component:
 
 ```php
-<?php
-
 namespace Tests\Browser\Components;
 
 use Laravel\Dusk\Browser;

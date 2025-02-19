@@ -148,8 +148,6 @@ $id = Auth::id();
 Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods. By type-hinting the `Illuminate\Http\Request` object, you may gain convenient access to the authenticated user from any controller method in your application via the request's `user` method:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
@@ -241,8 +239,6 @@ You are not required to use the authentication scaffolding included with Laravel
 We will access Laravel's authentication services via the `Auth` [facade](/docs/{{version}}/facades), so we'll need to make sure to import the `Auth` facade at the top of the class. Next, let's check out the `attempt` method. The `attempt` method is normally used to handle authentication attempts from your application's "login" form. If authentication is successful, you should regenerate the user's [session](/docs/{{version}}/session) to prevent [session fixation](https://en.wikipedia.org/wiki/Session_fixation):
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -442,8 +438,6 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 You may also use HTTP Basic Authentication without setting a user identifier cookie in the session. This is primarily helpful if you choose to use HTTP Authentication to authenticate requests to your application's API. To accomplish this, [define a middleware](/docs/{{version}}/middleware) that calls the `onceBasic` method. If no response is returned by the `onceBasic` method, the request may be passed further into the application:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -601,8 +595,6 @@ Route::post('/settings', function () {
 You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place your call to the `extend` method within a [service provider](/docs/{{version}}/providers). Since Laravel already ships with an `AppServiceProvider`, we can place the code in that provider:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use App\Services\Auth\JwtGuard;
@@ -686,8 +678,6 @@ Route::middleware('auth:api')->group(function () {
 If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication user provider. We will use the `provider` method on the `Auth` facade to define a custom user provider. The user provider resolver should return an implementation of `Illuminate\Contracts\Auth\UserProvider`:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use App\Extensions\MongoUserProvider;
@@ -742,8 +732,6 @@ Finally, you may reference this provider in your `guards` configuration:
 Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
 
 ```php
-<?php
-
 namespace Illuminate\Contracts\Auth;
 
 interface UserProvider
@@ -775,8 +763,6 @@ The `rehashPasswordIfRequired` method should rehash the given `$user`'s password
 Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable` contract. Remember, user providers should return implementations of this interface from the `retrieveById`, `retrieveByToken`, and `retrieveByCredentials` methods:
 
 ```php
-<?php
-
 namespace Illuminate\Contracts\Auth;
 
 interface Authenticatable

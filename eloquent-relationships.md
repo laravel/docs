@@ -76,8 +76,6 @@ But, before diving too deep into using relationships, let's learn how to define 
 A one-to-one relationship is a very basic type of database relationship. For example, a `User` model might be associated with one `Phone` model. To define this relationship, we will place a `phone` method on the `User` model. The `phone` method should call the `hasOne` method and return its result. The `hasOne` method is available to your model via the model's `Illuminate\Database\Eloquent\Model` base class:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -119,8 +117,6 @@ return $this->hasOne(Phone::class, 'foreign_key', 'local_key');
 So, we can access the `Phone` model from our `User` model. Next, let's define a relationship on the `Phone` model that will let us access the user that owns the phone. We can define the inverse of a `hasOne` relationship using the `belongsTo` method:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -170,8 +166,6 @@ public function user(): BelongsTo
 A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a blog post may have an infinite number of comments. Like all other Eloquent relationships, one-to-many relationships are defined by defining a method on your Eloquent model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -239,8 +233,6 @@ In the example above, an "N + 1" query problem has been introduced because, even
 If you would like Eloquent to automatically hydrate parent models onto their children, you may invoke the `chaperone` method when defining a `hasMany` relationship:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -274,8 +266,6 @@ $posts = Post::with([
 Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `hasMany` relationship, define a relationship method on the child model which calls the `belongsTo` method:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -516,8 +506,6 @@ owners
 Now that we have examined the table structure for the relationship, let's define the relationship on the `Mechanic` model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -606,8 +594,6 @@ deployments
 Now that we have examined the table structure for the relationship, let's define the relationship on the `Project` model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -677,8 +663,6 @@ return $this->throughEnvironments()->hasDeployments();
 It's common to add additional methods to models that constrain relationships. For example, you might add a `featuredPosts` method to a `User` model which constrains the broader `posts` relationship with an additional `where` constraint:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -756,8 +740,6 @@ role_user
 Many-to-many relationships are defined by writing a method that returns the result of the `belongsToMany` method. The `belongsToMany` method is provided by the `Illuminate\Database\Eloquent\Model` base class that is used by all of your application's Eloquent models. For example, let's define a `roles` method on our `User` model. The first argument passed to this method is the name of the related model class:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -811,8 +793,6 @@ return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
 To define the "inverse" of a many-to-many relationship, you should define a method on the related model which also returns the result of the `belongsToMany` method. To complete our user / role example, let's define the `users` method on the `Role` model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -945,8 +925,6 @@ If you would like to define a custom model to represent the intermediate table o
 Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\MorphPivot` class. For example, we may define a `Role` model which uses a custom `RoleUser` pivot model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -967,8 +945,6 @@ class Role extends Model
 When defining the `RoleUser` model, you should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -1033,8 +1009,6 @@ Note the `imageable_id` and `imageable_type` columns on the `images` table. The 
 Next, let's examine the model definitions needed to build this relationship:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -1152,8 +1126,6 @@ comments
 Next, let's examine the model definitions needed to build this relationship:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -1350,8 +1322,6 @@ Next, we're ready to define the relationships on the models. The `Post` and `Vid
 The `morphToMany` method accepts the name of the related model as well as the "relationship name". Based on the name we assigned to our intermediate table name and the keys it contains, we will refer to the relationship as "taggable":
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -1377,8 +1347,6 @@ Next, on the `Tag` model, you should define a method for each of its possible pa
 The `morphedByMany` method accepts the name of the related model as well as the "relationship name". Based on the name we assigned to our intermediate table name and the keys it contains, we will refer to the relationship as "taggable":
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -1493,8 +1461,6 @@ Since all Eloquent relationships are defined via methods, you may call those met
 For example, imagine a blog application in which a `User` model has many associated `Post` models:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -1903,8 +1869,6 @@ $activities->loadMorphCount('parentable', [
 When accessing Eloquent relationships as properties, the related models are "lazy loaded". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can "eager load" relationships at the time you query the parent model. Eager loading alleviates the "N + 1" query problem. To illustrate the N + 1 query problem, consider a `Book` model that "belongs to" to an `Author` model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -1989,8 +1953,6 @@ $books = Book::with([
 If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `with` method in combination with the `morphTo` relationship's `morphWith` method. To help illustrate this method, let's consider the following model:
 
 ```php
-<?php
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -2041,8 +2003,6 @@ $books = Book::with('author:id,name,book_id')->get();
 Sometimes you might want to always load some relationships when retrieving a model. To accomplish this, you may define a `$with` property on the model:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -2181,8 +2141,6 @@ If you would like to eager load a `morphTo` relationship, as well as nested rela
 This method accepts the name of the `morphTo` relationship as its first argument, and an array of model / relationship pairs as its second argument. To help illustrate this method, let's consider the following model:
 
 ```php
-<?php
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -2486,8 +2444,6 @@ When a model defines a `belongsTo` or `belongsToMany` relationship to another mo
 For example, when a `Comment` model is updated, you may want to automatically "touch" the `updated_at` timestamp of the owning `Post` so that it is set to the current date and time. To accomplish this, you may add a `touches` property to your child model containing the names of the relationships that should have their `updated_at` timestamps updated when the child model is updated:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

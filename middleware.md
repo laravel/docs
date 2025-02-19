@@ -30,8 +30,6 @@ php artisan make:middleware EnsureTokenIsValid
 This command will place a new `EnsureTokenIsValid` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `token` input matches a specified value. Otherwise, we will redirect the users back to the `/home` URI:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -69,8 +67,6 @@ It's best to envision middleware as a series of "layers" HTTP requests must pass
 Of course, a middleware can perform tasks before or after passing the request deeper into the application. For example, the following middleware would perform some task **before** the request is handled by the application:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -91,8 +87,6 @@ class BeforeMiddleware
 However, this middleware would perform its task **after** the request is handled by the application:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -404,8 +398,6 @@ Middleware can also receive additional parameters. For example, if your applicat
 Additional middleware parameters will be passed to the middleware after the `$next` argument:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -455,8 +447,6 @@ Route::put('/post/{id}', function (string $id) {
 Sometimes a middleware may need to do some work after the HTTP response has been sent to the browser. If you define a `terminate` method on your middleware and your web server is using FastCGI, the `terminate` method will automatically be called after the response is sent to the browser:
 
 ```php
-<?php
-
 namespace Illuminate\Session\Middleware;
 
 use Closure;

@@ -137,8 +137,6 @@ Once you have configured your database connection, you may run queries using the
 To run a basic SELECT query, you may use the `select` method on the `DB` facade:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -295,8 +293,6 @@ $pdo = DB::connection()->getPdo();
 If you would like to specify a closure that is invoked for each SQL query executed by your application, you may use the `DB` facade's `listen` method. This method can be useful for logging queries or debugging. You may register your query listener closure in the `boot` method of a [service provider](/docs/{{version}}/providers):
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Database\Events\QueryExecuted;
@@ -334,8 +330,6 @@ class AppServiceProvider extends ServiceProvider
 A common performance bottleneck of modern web applications is the amount of time they spend querying databases. Thankfully, Laravel can invoke a closure or callback of your choice when it spends too much time querying the database during a single request. To get started, provide a query time threshold (in milliseconds) and closure to the `whenQueryingForLongerThan` method. You may invoke this method in the `boot` method of a [service provider](/docs/{{version}}/providers):
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Database\Connection;

@@ -29,8 +29,6 @@ A seeder class only contains one method by default: `run`. This method is called
 As an example, let's modify the default `DatabaseSeeder` class and add a database insert statement to the `run` method:
 
 ```php
-<?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -104,8 +102,6 @@ public function run(): void
 While running seeds, you may want to prevent models from dispatching events. You may achieve this using the `WithoutModelEvents` trait. When used, the `WithoutModelEvents` trait ensures no model events are dispatched, even if additional seed classes are executed via the `call` method:
 
 ```php
-<?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;

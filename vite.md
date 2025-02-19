@@ -576,8 +576,6 @@ When building an SPA using Vite's code splitting feature, required assets are fe
 You can instruct Laravel to eagerly prefetch your assets by invoking the `Vite::prefetch` method in the `boot` method of a [service provider](/docs/{{version}}/providers):
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Vite;
@@ -701,8 +699,6 @@ class ExampleTest extends TestCase
 If you would like to disable Vite for all tests, you may call the `withoutVite` method from the `setUp` method on your base `TestCase` class:
 
 ```php
-<?php
-
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -772,8 +768,6 @@ php artisan inertia:start-ssr
 If you wish to include a [`nonce` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) on your script and style tags as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may generate or specify a nonce using the `useCspNonce` method within a custom [middleware](/docs/{{version}}/middleware):
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;

@@ -40,8 +40,6 @@ This approach to graceful decryption allows users to keep using your application
 You may encrypt a value using the `encryptString` method provided by the `Crypt` facade. All encrypted values are encrypted using OpenSSL and the AES-256-CBC cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC). The integrated message authentication code will prevent the decryption of any values that have been tampered with by malicious users:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;

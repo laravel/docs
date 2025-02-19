@@ -35,8 +35,6 @@ Laravel's `Illuminate\Http\Request` class provides an object-oriented way to int
 To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your route closure or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
@@ -82,8 +80,6 @@ Route::put('/user/{id}', [UserController::class, 'update']);
 You may still type-hint the `Illuminate\Http\Request` and access your `id` route parameter by defining your controller method as follows:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;

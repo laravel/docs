@@ -23,8 +23,6 @@ Laravel's "context" capabilities enable you to capture, retrieve, and share info
 The best way to understand Laravel's context capabilities is to see it in action using  the built-in logging features. To get started, you may [add information to the context](#capturing-context) using the `Context` facade. In this example, we will use a [middleware](/docs/{{version}}/middleware) to add the request URL and a unique trace ID to the context on every incoming request:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;

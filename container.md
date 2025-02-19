@@ -28,8 +28,6 @@ The Laravel service container is a powerful tool for managing class dependencies
 Let's look at a simple example:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Services\AppleMusic;
@@ -66,8 +64,6 @@ A deep understanding of the Laravel service container is essential to building a
 If a class has no dependencies or only depends on other concrete classes (not interfaces), the container does not need to be instructed on how to resolve that class. For example, you may place the following code in your `routes/web.php` file:
 
 ```php
-<?php
-
 class Service
 {
     // ...
@@ -265,8 +261,6 @@ Since contextual binding is often used to inject implementations of drivers or c
 For example, the `Storage` attribute may be used to inject a specific [storage disk](/docs/{{version}}/filesystem):
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Container\Attributes\Storage;
@@ -286,8 +280,6 @@ class PhotoController extends Controller
 In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `DB`, `Log`, `RouteParameter`, and [`Tag`](#tagging) attributes:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
@@ -337,8 +329,6 @@ Route::get('/user', function (#[CurrentUser] User $user) {
 You can create your own contextual attributes by implementing the `Illuminate\Contracts\Container\ContextualAttribute` contract. The container will call your attribute's `resolve` method, which should resolve the value that should be injected into the class utilizing the attribute. In the example below, we will re-implement Laravel's built-in `Config` attribute:
 
 ```php
-<?php
-
 namespace App\Attributes;
 
 use Illuminate\Contracts\Container\ContextualAttribute;
@@ -402,8 +392,6 @@ $this->app->when(ReportAggregator::class)
 Occasionally, you may have a class that receives an array of typed objects using a variadic constructor argument:
 
 ```php
-<?php
-
 use App\Models\Filter;
 use App\Services\Logger;
 
@@ -563,8 +551,6 @@ Alternatively, and importantly, you may type-hint the dependency in the construc
 For example, you may type-hint a service defined by your application in a controller's constructor. The service will automatically be resolved and injected into the class:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Services\AppleMusic;
@@ -594,8 +580,6 @@ class PodcastController extends Controller
 Sometimes you may wish to invoke a method on an object instance while allowing the container to automatically inject that method's dependencies. For example, given the following class:
 
 ```php
-<?php
-
 namespace App;
 
 use App\Services\AppleMusic;

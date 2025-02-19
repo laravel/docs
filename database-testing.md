@@ -158,8 +158,6 @@ class ExampleTest extends TestCase
 Alternatively, you may instruct Laravel to automatically seed the database before each test that uses the `RefreshDatabase` trait. You may accomplish this by defining a `$seed` property on your base test class:
 
 ```php
-<?php
-
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;

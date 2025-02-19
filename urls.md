@@ -253,8 +253,6 @@ Route::get('/{locale}/posts', function () {
 It is cumbersome to always pass the `locale` every time you call the `route` helper. So, you may use the `URL::defaults` method to define a default value for this parameter that will always be applied during the current request. You may wish to call this method from a [route middleware](/docs/{{version}}/middleware#assigning-middleware-to-routes) so that you have access to the current request:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Closure;

@@ -36,8 +36,6 @@ php artisan make:controller UserController
 Let's take a look at an example of a basic controller. A controller may have any number of public methods which will respond to incoming HTTP requests:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -76,8 +74,6 @@ When an incoming request matches the specified route URI, the `show` method on t
 If a controller action is particularly complex, you might find it convenient to dedicate an entire controller class to that single action. To accomplish this, you may define a single `__invoke` method within the controller:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 class ProvisionServer extends Controller
@@ -121,8 +117,6 @@ Route::get('/profile', [UserController::class, 'show'])->middleware('auth');
 Or, you may find it convenient to specify middleware within your controller class. To do so, your controller should implement the `HasMiddleware` interface, which dictates that the controller should have a static `middleware` method. From this method, you may return an array of middleware that should be applied to the controller's actions:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -552,8 +546,6 @@ Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
 The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Repositories\UserRepository;
@@ -575,8 +567,6 @@ class UserController extends Controller
 In addition to constructor injection, you may also type-hint dependencies on your controller's methods. A common use-case for method injection is injecting the `Illuminate\Http\Request` instance into your controller methods:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
@@ -609,8 +599,6 @@ Route::put('/user/{id}', [UserController::class, 'update']);
 You may still type-hint the `Illuminate\Http\Request` and access your `id` parameter by defining your controller method as follows:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;

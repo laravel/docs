@@ -32,8 +32,6 @@ Laravel's command scheduler offers a fresh approach to managing scheduled tasks 
 You may define all of your scheduled tasks in your application's `routes/console.php` file. To get started, let's take a look at an example. In this example, we will schedule a closure to be called every day at midnight. Within the closure we will execute a database query to clear a table:
 
 ```php
-<?php
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schedule;
 

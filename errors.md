@@ -80,8 +80,6 @@ If available, Laravel automatically adds the current user's ID to every exceptio
 While adding context to every log message can be useful, sometimes a particular exception may have unique context that you would like to include in your logs. By defining a `context` method on one of your application's exceptions, you may specify any data relevant to that exception that should be added to the exception's log entry:
 
 ```php
-<?php
-
 namespace App\Exceptions;
 
 use Exception;
@@ -186,8 +184,6 @@ use App\Exceptions\InvalidOrderException;
 Alternatively, you may simply "mark" an exception class with the `Illuminate\Contracts\Debug\ShouldntReport` interface. When an exception is marked with this interface, it will never be reported by Laravel's exception handler:
 
 ```php
-<?php
-
 namespace App\Exceptions;
 
 use Exception;
@@ -291,8 +287,6 @@ use Symfony\Component\HttpFoundation\Response;
 Instead of defining custom reporting and rendering behavior in your application's `bootstrap/app.php` file, you may define `report` and `render` methods directly on your application's exceptions. When these methods exist, they will automatically be called by the framework:
 
 ```php
-<?php
-
 namespace App\Exceptions;
 
 use Exception;

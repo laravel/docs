@@ -388,8 +388,6 @@ $url = Storage::temporaryUrl(
 If you need to customize how temporary URLs are created for a specific storage disk, you can use the `buildTemporaryUrlsUsing` method. For example, this can be useful if you have a controller that allows you to download files stored via a disk that doesn't typically support temporary URLs. Usually, this method should be called from the `boot` method of a service provider:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use DateTime;
@@ -555,8 +553,6 @@ Storage::putFile('photos', new File('/path/to/photo'), 'public');
 In web applications, one of the most common use-cases for storing files is storing user uploaded files such as photos and documents. Laravel makes it very easy to store uploaded files using the `store` method on an uploaded file instance. Call the `store` method with the path at which you wish to store the uploaded file:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -867,8 +863,6 @@ composer require spatie/flysystem-dropbox
 Next, you can register the driver within the `boot` method of one of your application's [service providers](/docs/{{version}}/providers). To accomplish this, you should use the `extend` method of the `Storage` facade:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Contracts\Foundation\Application;

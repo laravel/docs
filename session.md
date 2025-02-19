@@ -73,8 +73,6 @@ Before using Redis sessions with Laravel, you will need to either install the Ph
 There are two primary ways of working with session data in Laravel: the global `session` helper and via a `Request` instance. First, let's look at accessing the session via a `Request` instance, which can be type-hinted on a route closure or controller method. Remember, controller method dependencies are automatically injected via the Laravel [service container](/docs/{{version}}/container):
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -318,8 +316,6 @@ Route::post('/profile', function () {
 If none of the existing session drivers fit your application's needs, Laravel makes it possible to write your own session handler. Your custom session driver should implement PHP's built-in `SessionHandlerInterface`. This interface contains just a few simple methods. A stubbed MongoDB implementation looks like the following:
 
 ```php
-<?php
-
 namespace App\Extensions;
 
 class MongoSessionHandler implements \SessionHandlerInterface
@@ -354,8 +350,6 @@ Since the purpose of these methods is not readily understandable, here is an ove
 Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Laravel's session backend, you may use the `extend` method provided by the `Session` [facade](/docs/{{version}}/facades). You should call the `extend` method from the `boot` method of a [service provider](/docs/{{version}}/providers). You may do this from the existing `App\Providers\AppServiceProvider` or create an entirely new provider:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use App\Extensions\MongoSessionHandler;

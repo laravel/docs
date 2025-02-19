@@ -68,8 +68,6 @@ The `GET` route will display a form for the user to create a new blog post, whil
 Next, let's take a look at a simple controller that handles incoming requests to these routes. We'll leave the `store` method empty for now:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
@@ -589,8 +587,6 @@ protected function passedValidation(): void
 If you do not want to use the `validate` method on the request, you may create a validator instance manually using the `Validator` [facade](/docs/{{version}}/facades). The `make` method on the facade generates a new validator instance:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
@@ -2682,8 +2678,6 @@ php artisan make:rule Uppercase
 Once the rule has been created, we are ready to define its behavior. A rule object contains a single method: `validate`. This method receives the attribute name, its value, and a callback that should be invoked on failure with the validation error message:
 
 ```php
-<?php
-
 namespace App\Rules;
 
 use Closure;
@@ -2736,8 +2730,6 @@ $fail('validation.location')->translate([
 If your custom validation rule class needs to access all of the other data undergoing validation, your rule class may implement the `Illuminate\Contracts\Validation\DataAwareRule` interface. This interface requires your class to define a `setData` method. This method will automatically be invoked by Laravel (before validation proceeds) with all of the data under validation:
 
 ```php
-<?php
-
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\DataAwareRule;
@@ -2771,8 +2763,6 @@ class Uppercase implements DataAwareRule, ValidationRule
 Or, if your validation rule requires access to the validator instance performing the validation, you may implement the `ValidatorAwareRule` interface:
 
 ```php
-<?php
-
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\ValidationRule;

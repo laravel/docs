@@ -348,8 +348,6 @@ OrderShipmentStatusUpdated::dispatch($order);
 When a user is viewing one of their orders, we don't want them to have to refresh the page to view status updates. Instead, we want to broadcast the updates to the application as they are created. So, we need to mark the `OrderShipmentStatusUpdated` event with the `ShouldBroadcast` interface. This will instruct Laravel to broadcast the event when it is fired:
 
 ```php
-<?php
-
 namespace App\Events;
 
 use App\Models\Order;
@@ -442,8 +440,6 @@ To inform Laravel that a given event should be broadcast, you must implement the
 The `ShouldBroadcast` interface requires you to implement a single method: `broadcastOn`. The `broadcastOn` method should return a channel or array of channels that the event should broadcast on. The channels should be instances of `Channel`, `PrivateChannel`, or `PresenceChannel`. Instances of `Channel` represent public channels that any user may subscribe to, while `PrivateChannels` and `PresenceChannels` represent private channels that require [channel authorization](#authorizing-channels):
 
 ```php
-<?php
-
 namespace App\Events;
 
 use App\Models\User;
@@ -569,8 +565,6 @@ public function broadcastQueue(): string
 If you would like to broadcast your event using the `sync` queue instead of the default queue driver, you can implement the `ShouldBroadcastNow` interface instead of `ShouldBroadcast`:
 
 ```php
-<?php
-
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
 class OrderShipmentStatusUpdated implements ShouldBroadcastNow
@@ -602,8 +596,6 @@ When broadcast events are dispatched within database transactions, they may be p
 If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by implementing the `ShouldDispatchAfterCommit` interface on the event class:
 
 ```php
-<?php
-
 namespace App\Events;
 
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -697,8 +689,6 @@ Broadcast::channel('orders.{order}', OrderChannel::class);
 Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization closure. You may also take advantage of channel model binding:
 
 ```php
-<?php
-
 namespace App\Broadcasting;
 
 use App\Models\Order;
@@ -785,8 +775,6 @@ broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');
 Alternatively, you may specify the event's broadcast connection by calling the `broadcastVia` method within the event's constructor. However, before doing so, you should ensure that the event class uses the `InteractsWithBroadcasting` trait:
 
 ```php
-<?php
-
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
@@ -1037,8 +1025,6 @@ However, if you are not using these events for any other purposes in your applic
 To get started, your Eloquent model should use the `Illuminate\Database\Eloquent\BroadcastsEvents` trait. In addition, the model should define a `broadcastOn` method, which will return an array of channels that the model's events should broadcast on:
 
 ```php
-<?php
-
 namespace App\Models;
 
 use Illuminate\Broadcasting\Channel;

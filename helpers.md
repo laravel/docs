@@ -2327,8 +2327,6 @@ random(); // 123 (cached result)
 When the `once` function is executed from within an object instance, the cached result will be unique to that object instance:
 
 ```php
-<?php
-
 class NumberService
 {
     public function all(): array
@@ -2754,8 +2752,6 @@ The `when` function is primarily useful for conditionally rendering HTML attribu
 Sometimes you may wish to quickly test the performance of certain parts of your application. On those occasions, you may utilize the `Benchmark` support class to measure the number of milliseconds it takes for the given callbacks to complete:
 
 ```php
-<?php
-
 use App\Models\User;
 use Illuminate\Support\Benchmark;
 
@@ -2885,8 +2881,6 @@ class ExampleTest extends TestCase
 If you would like to disable deferred functions for all tests within a test case, you may call the `withoutDefer` method from the `setUp` method on your base `TestCase` class:
 
 ```php
-<?php
-
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;

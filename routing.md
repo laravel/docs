@@ -217,8 +217,6 @@ php artisan route:list --only-vendor
 By default, your application's routes are configured and loaded by the `bootstrap/app.php` file:
 
 ```php
-<?php
-
 use Illuminate\Foundation\Application;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -715,8 +713,6 @@ Route::get('/locations/{location:slug}', [LocationsController::class, 'show'])
 PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To complement this feature, Laravel allows you to type-hint a [string-backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
 
 ```php
-<?php
-
 namespace App\Enums;
 
 enum Category: string

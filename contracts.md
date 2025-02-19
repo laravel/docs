@@ -39,8 +39,6 @@ Many types of classes in Laravel are resolved through the [service container](/d
 For example, take a look at this event listener:
 
 ```php
-<?php
-
 namespace App\Listeners;
 
 use App\Events\OrderWasPlaced;

@@ -83,8 +83,6 @@ public function boot(): void
 To authorize an action using gates, you should use the `allows` or `denies` methods provided by the `Gate` facade. Note that you are not required to pass the currently authenticated user to these methods. Laravel will automatically take care of passing the user into the gate closure. It is typical to call the gate authorization methods within your application's controllers before performing an action that requires authorization:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -355,8 +353,6 @@ Once the policy class has been registered, you may add methods for each action i
 The `update` method will receive a `User` and a `Post` instance as its arguments, and should return `true` or `false` indicating whether the user is authorized to update the given `Post`. So, in this example, we will verify that the user's `id` matches the `user_id` on the post:
 
 ```php
-<?php
-
 namespace App\Policies;
 
 use App\Models\Post;
@@ -484,8 +480,6 @@ public function create(User $user): bool
 By default, all gates and policies automatically return `false` if the incoming HTTP request was not initiated by an authenticated user. However, you may allow these authorization checks to pass through to your gates and policies by declaring an "optional" type-hint or supplying a `null` default value for the user argument definition:
 
 ```php
-<?php
-
 namespace App\Policies;
 
 use App\Models\Post;
@@ -538,8 +532,6 @@ If you would like to deny all authorization checks for a particular type of user
 The `App\Models\User` model that is included with your Laravel application includes two helpful methods for authorizing actions: `can` and `cannot`. The `can` and `cannot` methods receive the name of the action you wish to authorize and the relevant model. For example, let's determine if a user is authorized to update a given `App\Models\Post` model. Typically, this will be done within a controller method:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -573,8 +565,6 @@ If a [policy is registered](#registering-policies) for the given model, the `can
 Remember, some actions may correspond to policy methods like `create` that do not require a model instance. In these situations, you may pass a class name to the `can` method. The class name will be used to determine which policy to use when authorizing the action:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -608,8 +598,6 @@ In addition to helpful methods provided to the `App\Models\User` model, you can 
 Like the `can` method, this method accepts the name of the action you wish to authorize and the relevant model. If the action is not authorized, the `authorize` method will throw an `Illuminate\Auth\Access\AuthorizationException` exception which the Laravel exception handler will automatically convert to an HTTP response with a 403 status code:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -808,8 +796,6 @@ Although authorization must always be handled on the server, it can often be con
 However, if you are using one of Laravel's Inertia-based [starter kits](/docs/{{version}}/starter-kits), your application already contains a `HandleInertiaRequests` middleware. Within this middleware's `share` method, you may return shared data that will be provided to all Inertia pages in your application. This shared data can serve as a convenient location to define authorization information for the user:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use App\Models\Post;

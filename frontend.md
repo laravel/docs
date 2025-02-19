@@ -62,8 +62,6 @@ Within the Laravel ecosystem, the need to create modern, dynamic frontends by pr
 When using Livewire, you will create Livewire "components" that render a discrete portion of your UI and expose methods and data that can be invoked and interacted with from your application's frontend. For example, a simple "Counter" component might look like the following:
 
 ```php
-<?php
-
 namespace App\Http\Livewire;
 
 use Livewire\Component;
@@ -121,8 +119,6 @@ Thankfully, Laravel offers the best of both worlds. [Inertia](https://inertiajs.
 After installing Inertia into your Laravel application, you will write routes and controllers like normal. However, instead of returning a Blade template from your controller, you will return an Inertia page:
 
 ```php
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;

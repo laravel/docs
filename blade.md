@@ -96,8 +96,6 @@ The current UNIX timestamp is {{ time() }}.
 By default, Blade (and the Laravel `e` function) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Blade;
@@ -801,8 +799,6 @@ You may pass data to Blade components using HTML attributes. Hard-coded, primiti
 You should define all of the component's data attributes in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
 
 ```php
-<?php
-
 namespace App\View\Components;
 
 use Illuminate\View\Component;
@@ -973,8 +969,6 @@ public function __construct(
 If you would like to prevent some public methods or properties from being exposed as variables to your component template, you may add them to an `$except` array property on your component:
 
 ```php
-<?php
-
 namespace App\View\Components;
 
 use Illuminate\View\Component;
@@ -1873,8 +1867,6 @@ Blade allows you to define your own custom directives using the `directive` meth
 The following example creates a `@datetime($var)` directive which formats a given `$var`, which should be an instance of `DateTime`:
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Blade;
