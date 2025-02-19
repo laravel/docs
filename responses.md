@@ -351,12 +351,17 @@ Route::get('/chat', function () {
 });
 ```
 
-This event stream may be consumed via an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) object by your application's frontend. The `eventStream` method will automatically send a `</stream>` update to the event stream when the stream is complete:
+This event stream may be consumed via an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) object by your application's frontend. The `eventStream` method will automatically send a `<stream>` update to the event stream when the stream starts and a `</stream>` update when it is completed:
 
 ```js
 const source = new EventSource('/chat');
 
 source.addEventListener('update', (event) => {
+    if (event.data === '<stream>') {
+        // Setup streaming here...
+        return;
+    }
+
     if (event.data === '</stream>') {
         source.close();
 
@@ -364,8 +369,24 @@ source.addEventListener('update', (event) => {
     }
 
     console.log(event.data);
-})
+});
 ```
+
+You may change the event name by passing the `as` parameter to the `eventStream` method:
+
+```php
+Route::get('/chat', function () {
+    return response()->eventStream(function () {
+        $stream = OpenAI::client()->chat()->createStreamed(...);
+
+        foreach ($stream as $response) {
+            yield $response->choices[0];
+        }
+    }, as: 'chat');
+});
+```
+
+You can also change the start and end indicators using `startStreamWith`/`endStreamWith` parameters respectively or pass `null` to disable the indication as needed.
 
 <a name="streamed-downloads"></a>
 #### Streamed Downloads
