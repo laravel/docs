@@ -104,11 +104,26 @@ import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout'; // [tl! remove
 import AppLayoutTemplate from '@/layouts/app/app-header-layout'; // [tl! add]
 ```
 
+<a name="react-sidebar-variants"></a>
+#### Sidebar Variants
+
 The sidebar layout includes three different variants: the default sidebar variant, the "inset" variant, and the "floating" variant. You may choose the variant you like best by modifying the `resources/js/components/app-sidebar.tsx` component:
 
 ```text
 <Sidebar collapsible="icon" variant="sidebar"> [tl! remove]
 <Sidebar collapsible="icon" variant="inset"> [tl! add]
+```
+
+<a name="react-authentication-page-layout-variants"></a>
+#### Authentication Page Layout Variants
+
+The authentication pages included with the React starter kit, such as the login page and registration page, also offer three different layout variants: "simple", "card", and "split".
+
+To change your authentication layout, modify the layout that is imported at the top of your application's `resources/js/layouts/auth-layout.tsx` file:
+
+```js
+import AuthLayoutTemplate from '@/layouts/auth/auth-simple-layout'; // [tl! remove]
+import AuthLayoutTemplate from '@/layouts/auth/auth-split-layout'; // [tl! add]
 ```
 
 <a name="vue-customization"></a>
@@ -138,11 +153,26 @@ import AppLayout from '@/layouts/app/AppSidebarLayout.vue'; // [tl! remove]
 import AppLayout from '@/layouts/app/AppHeaderLayout.vue'; // [tl! add]
 ```
 
+<a name="vue-sidebar-variants"></a>
+#### Sidebar Variants
+
 The sidebar layout includes three different variants: the default sidebar variant, the "inset" variant, and the "floating" variant. You may choose the variant you like best by modifying the `resources/js/components/AppSidebar.vue` component:
 
 ```text
 <Sidebar collapsible="icon" variant="sidebar"> [tl! remove]
 <Sidebar collapsible="icon" variant="inset"> [tl! add]
+```
+
+<a name="vue-authentication-page-layout-variants"></a>
+#### Authentication Page Layout Variants
+
+The authentication pages included with the Vue starter kit, such as the login page and registration page, also offer three different layout variants: "simple", "card", and "split".
+
+To change your authentication layout, modify the layout that is imported at the top of your application's `resources/js/layouts/AuthLayout.vue` file:
+
+```js
+import AuthLayout from '@/layouts/auth/AuthSimpleLayout.vue'; // [tl! remove]
+import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue'; // [tl! add]
 ```
 
 <a name="livewire-customization"></a>
@@ -165,11 +195,27 @@ resources/views
 <a name="livewire-available-layouts"></a>
 #### Available Layouts
 
-The Livewire starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is in your application's `resources/views/components/layouts/app.blade.php` file:
+The Livewire starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/components/layouts/app.blade.php` file:
 
-```text
-<x-layouts.app.sidebar> [tl! remove]
-<x-layouts.app.header> [tl! add]
+```blade
+<x-layouts.app.header>
+    <flux:main>
+        {{ $slot }}
+    </flux:main>
+</x-layouts.app.header>
+```
+
+<a name="livewire-authentication-page-layout-variants"></a>
+#### Authentication Page Layout Variants
+
+The authentication pages included with the Livewire starter kit, such as the login page and registration page, also offer three different layout variants: "simple", "card", and "split".
+
+To change your authentication layout, modify the layout that is used by your application's `resources/views/components/layouts/auth.blade.php` file:
+
+```blade
+<x-layouts.auth.split>
+    {{ $slot }}
+</x-layouts.auth.split>
 ```
 
 <a name="workos-authkit-authentication"></a>
