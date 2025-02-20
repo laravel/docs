@@ -417,7 +417,7 @@ And now your subscription will get canceled at the end of its billing period.
 
 Most operations to bill customers are performed using "checkouts" via Paddle's [Checkout Overlay widget](https://developer.paddle.com/build/checkout/build-overlay-checkout) or by utilizing [inline checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout).
 
-Before processing checkout payments using Paddle, you should define your application's [default payment link](https://developer.paddle.com/build/transactions/default-payment-link#set-default-link) in your Paddle checkout settings dashboard.
+Before processing checkout payments using Paddle, you should define your application's [default payment link](https://developer.paddle.com/build/transactions/default-payment-link#set-default-link) in your Paddle checkout settings dashboard. On your application's side, this doesn't need to be anything more than a route pointing to a view consisting of a blank page including the `@paddleJS` directive in its head. The Paddle JavaScript library will take care of displaying the checkout modal if a transaction ID is passed by the `?_ptxn=` query string parameter. Paddle requires having a page being able to handle any Paddle transaction this way; however, you do not need to handle checkout this way and this documentation won't refer to this method anymore. You just need to have this page because Paddle requires it.
 
 <a name="overlay-checkout"></a>
 ### Overlay Checkout
@@ -695,7 +695,7 @@ To create a subscription, first retrieve an instance of your billable model from
     use Illuminate\Http\Request;
 
     Route::get('/user/subscribe', function (Request $request) {
-        $checkout = $request->user()->subscribe($premium = 12345, 'default')
+        $checkout = $request->user()->subscribe($premium = 'pri_123', 'default')
             ->returnTo(route('home'));
 
         return view('billing', ['checkout' => $checkout]);
@@ -705,7 +705,7 @@ The first argument given to the `subscribe` method is the specific price the use
 
 You may also provide an array of custom metadata regarding the subscription using the `customData` method:
 
-    $checkout = $request->user()->subscribe($premium = 12345, 'default')
+    $checkout = $request->user()->subscribe($premium = 'pri_123', 'default')
         ->customData(['key' => 'value'])
         ->returnTo(route('home'));
 
@@ -868,7 +868,12 @@ The `charge` method will not actually charge the customer until the next billing
 <a name="updating-payment-information"></a>
 ### Updating Payment Information
 
-Paddle always saves a payment method per subscription. If you want to update the default payment method for a subscription, you should redirect your customer to Paddle's hosted payment method update page using the `redirectToUpdatePaymentMethod` method on the subscription model:
+Paddle always saves a payment method per subscription. If you want to update the default payment method for a subscription, you have two options: either redirecting your customer to Paddle's hosted payment method update page in their billing portal, or getting and handling a payment method update transaction which will be the most recent `past_due` transaction of the corresponding subscription or, if no such one exists, a new zero amount transaction for the items of the subscription.
+
+<a name="redirecting-a-user-to-the-payment-method-update-url"></a>
+#### Redirecting a user to the payment method update URL
+
+Use the `redirectToUpdatePaymentMethod` method on the subscription model:
 
     use Illuminate\Http\Request;
 
@@ -879,6 +884,21 @@ Paddle always saves a payment method per subscription. If you want to update the
     });
 
 When a user has finished updating their information, a `subscription_updated` webhook will be dispatched by Paddle and the subscription details will be updated in your application's database.
+
+<a name="handling-payment-method-updating-using-your-checkout-view"></a>
+#### Handling payment method updating using your checkout view
+
+Use the `paymentMethodUpdateTransaction` method on the subscription model to get a transaction that will allow the user to change their payment method, then create a new checkout and pass it to your checkout view:
+
+    use Illuminate\Http\Request;
+    use Laravel\Paddle\Checkout;
+
+    Route::get('/update-payment-method', function (Request $request) {
+        $checkout = Checkout::transaction($request->user()->paymentMethodUpdateTransaction())
+            ->returnTo(route('home'));
+
+        return view('billing', ['checkout' => $checkout]);
+    });
 
 <a name="changing-plans"></a>
 ### Changing Plans
@@ -1093,13 +1113,13 @@ When your application receives the `subscription_created` event, Cashier will se
 > [!WARNING]  
 > If the customer's subscription is not canceled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
 
-You may determine if the user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
+You may determine if the user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. However, please note that the `->subscription()` method will return `null` if the user doesn't have a subscription and only the `onTrial` method of the user, not the one of the subscription will return `true` if the user is on a [generic trial](#without-payment-method-up-front).
 
     if ($user->onTrial()) {
         // ...
     }
 
-    if ($user->subscription()->onTrial()) {
+    if ($user->subscription()?->onTrial()) {
         // ...
     }
 To determine if an existing trial has expired, you may use the `hasExpiredTrial` methods:
