@@ -94,6 +94,28 @@ resources/js/
 └── types/         # TypeScript definitions
 ```
 
+To publish additional shadcn components, first [find the component you want to publish](https://ui.shadcn.com). Then, publish the component using `npx`:
+
+```shell
+npx shadcn@latest add switch
+```
+
+In this example, the command will publish the Switch component to `resources/js/components/ui/switch.tsx`. Once the component has been published, you can use it in any of your pages:
+
+```jsx
+import { Switch } from "@/components/ui/switch"
+
+const MyPage = () => {
+  return (
+    <div>
+      <Switch />
+    </div>
+  );
+};
+
+export default MyPage;
+```
+
 <a name="react-available-layouts"></a>
 #### Available Layouts
 
@@ -141,6 +163,26 @@ resources/js/
 ├── lib/           # Utility functions and configuration
 ├── pages/         # Page components
 └── types/         # TypeScript definitions
+```
+
+To publish additional shadcn-vue components, first [find the component you want to publish](https://www.shadcn-vue.com). Then, publish the component using `npx`:
+
+```shell
+npx shadcn-vue@latest add switch
+```
+
+In this example, the command will publish the Switch component to `resources/js/components/ui/Switch.vue`. Once the component has been published, you can use it in any of your pages:
+
+```vue
+<script setup lang="ts">
+import { Switch } from '@/Components/ui/switch'
+</script>
+
+<template>
+    <div>
+        <Switch />
+    </div>
+</template>
 ```
 
 <a name="vue-available-layouts"></a>
