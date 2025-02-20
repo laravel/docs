@@ -351,7 +351,7 @@ Route::get('/chat', function () {
 });
 ```
 
-This event stream may be consumed via an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) object by your application's frontend. The `eventStream` method will automatically send a `</stream>` update to the event stream when the stream is complete::
+This event stream may be consumed via an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) object by your application's frontend. The `eventStream` method will automatically send a `</stream>` update to the event stream when the stream is complete:
 
 ```js
 const source = new EventSource('/chat');
