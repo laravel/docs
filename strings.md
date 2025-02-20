@@ -1520,6 +1520,9 @@ The `Str::wrap` method wraps the given string with an additional string or pair 
 
     // This is Laravel!
 
+> [!WARNING]
+> Unlike `Str::finish(Str::start($path, '/'), '/')`, `Str::wrap($path, '/')` **always** adds the prefix and suffix to the string, regardless of whether the string is already prefixed/suffixed with them.
+
 <a name="method-str"></a>
 #### `str()` {.collection-method}
 
