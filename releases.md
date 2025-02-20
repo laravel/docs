@@ -60,7 +60,7 @@ Therefore, the Laravel 12 release is a relatively minor "maintenance release" in
 <a name="new-application-starter-kits"></a>
 ### New Application Starter Kits
 
-Laravel 12 introduces new [application starter kits](/docs/{{version}}/starter-kits) for React, Vue, and Livewire. The React and Vue starter kits utilize Inertia 2, TypeScript, [shadcn](https://ui.shadcn.com), and Tailwind, while the Livewire starter kits utilizes the Tailwind based [Flux UI](https://fluxui.dev) component library and Laravel Volt.
+Laravel 12 introduces new [application starter kits](/docs/{{version}}/starter-kits) for React, Vue, and Livewire. The React and Vue starter kits utilize Inertia 2, TypeScript, [shadcn/ui](https://ui.shadcn.com), and Tailwind, while the Livewire starter kits utilizes the Tailwind based [Flux UI](https://fluxui.dev) component library and Laravel Volt.
 
 The React, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we are introducing a [WorkOS AuthKit](https://authkit.com) powered variant of each starter kit, offering social authentication, passkeys, and SSO support. WorkOS offers free authentication for applications up to 1 million monthly active users.
 

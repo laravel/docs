@@ -54,7 +54,7 @@ Our React starter kit provides a robust, modern starting point for building Lara
 
 Inertia allows you to build modern, single-page React applications using classic server-side routing and controllers. This lets you enjoy the frontend power of React combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
 
-The React starter kit utilizes React 19, TypeScript, Tailwind, and the [shadcn](https://ui.shadcn.com) component library.
+The React starter kit utilizes React 19, TypeScript, Tailwind, and the [shadcn/ui](https://ui.shadcn.com) component library.
 
 <a name="vue"></a>
 ### Vue
@@ -80,11 +80,97 @@ The Livewire starter kit utilizes Laravel Volt, Tailwind, and the [Flux UI](http
 <a name="react-customization"></a>
 ### React
 
+Our React starter kit is built with Inertia 2, React 19, Tailwind 4, and [shadcn/ui](https://ui.shadcn.com). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+
+The majority of the frontend code is located in the `resources/js` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
+
+```text
+resources/js/
+├── components/    # Reusable React components
+├── hooks/         # React hooks
+├── layouts/       # Application layouts
+├── lib/           # Utility functions and configuration
+├── pages/         # Page components
+└── types/         # TypeScript definitions
+```
+
+<a name="react-available-layouts"></a>
+#### Available Layouts
+
+The React starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/app-layout.tsx` file:
+
+```js
+import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout'; // [tl! remove]
+import AppLayoutTemplate from '@/layouts/app/app-header-layout'; // [tl! add]
+```
+
+The sidebar layout includes three different variants: the default sidebar variant, the "inset" variant, and the "floating" variant. You may choose the variant you like best by modifying the `resources/js/components/app-sidebar.tsx` component:
+
+```text
+<Sidebar collapsible="icon" variant="sidebar"> [tl! remove]
+<Sidebar collapsible="icon" variant="inset"> [tl! add]
+```
+
 <a name="vue-customization"></a>
 ### Vue
 
+Our Vue starter kit is built with Inertia 2, Vue 3 Composition API, Tailwind, and [shadcn-vue](https://www.shadcn-vue.com/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+
+The majority of the frontend code is located in the `resources/js` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
+
+```text
+resources/js/
+├── components/    # Reusable Vue components
+├── composables/   # Vue composables / hooks
+├── layouts/       # Application layouts
+├── lib/           # Utility functions and configuration
+├── pages/         # Page components
+└── types/         # TypeScript definitions
+```
+
+<a name="vue-available-layouts"></a>
+#### Available Layouts
+
+The Vue starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/AppLayout.vue` file:
+
+```js
+import AppLayout from '@/layouts/app/AppSidebarLayout.vue'; // [tl! remove]
+import AppLayout from '@/layouts/app/AppHeaderLayout.vue'; // [tl! add]
+```
+
+The sidebar layout includes three different variants: the default sidebar variant, the "inset" variant, and the "floating" variant. You may choose the variant you like best by modifying the `resources/js/components/AppSidebar.vue` component:
+
+```text
+<Sidebar collapsible="icon" variant="sidebar"> [tl! remove]
+<Sidebar collapsible="icon" variant="inset"> [tl! add]
+```
+
 <a name="livewire-customization"></a>
 ### Livewire
+
+Our Livewire starter kit is built with Livewire 3, Laravel Volt, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+
+The majority of the frontend code is located in the `resources/views` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
+
+```text
+resources/views
+├── components            # Reusable Livewire components
+├── flux                  # Customized Flux components
+├── livewire              # Livewire pages
+├── partials              # Reusable Blade partials
+├── dashboard.blade.php   # Authenticated user dashboard
+├── welcome.blade.php     # Guest user welcome page
+```
+
+<a name="livewire-available-layouts"></a>
+#### Available Layouts
+
+The Livewire starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is in your application's `resources/views/components/layouts/app.blade.php` file:
+
+```text
+<x-layouts.app.sidebar> [tl! remove]
+<x-layouts.app.header> [tl! add]
+```
 
 <a name="workos-authkit-authentication"></a>
 ## WorkOS AuthKit Authentication
