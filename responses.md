@@ -364,7 +364,60 @@ source.addEventListener('update', (event) => {
     }
 
     console.log(event.data);
-})
+});
+```
+
+##### Customizing Event Names
+By default, the event name is `update`. You can change this by passing the `as` parameter to the `eventStream` method:
+
+```php
+Route::get('/chat', function () {
+    return response()->eventStream(function () {
+        $stream = OpenAI::client()->chat()->createStreamed(...);
+
+        foreach ($stream as $response) {
+            yield $response->choices[0];
+        }
+    }, as: 'chat');
+});
+```
+
+The messages you are yielding could also implement the `Illuminate\Contracts\Routing\EventStreamable` to customize the event name using `streamAs` method:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Routing\EventStreamable;
+
+class Notification extends Model implements EventStreamable
+{
+    public function streamAs()
+    {
+        return 'notification';
+    }
+}
+```
+
+##### Customizing Start and End Indicators
+
+You can customize these indicators using the `startStreamWith` and `endStreamWith` parameters or pass `null` to disable them entirely:
+
+```php
+use App\Models\User;
+
+Route::get('/users', function () {
+    return response()->eventStream(function () {
+        $users = User::all();
+
+        foreach ($users as $user) {
+            yield $user->toJson();
+            sleep(1);
+        }
+    }, startStreamWith: '[', endStreamWith: ']');
+});
 ```
 
 <a name="streamed-downloads"></a>
