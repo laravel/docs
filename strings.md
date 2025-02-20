@@ -3100,6 +3100,6 @@ The `wrap` method wraps the given string with an additional string or pair of st
 
     // "Laravel"
 
-    Str::is('is')->wrap(before: 'This ', after: ' Laravel!');
+    Str::of('is')->wrap(before: 'This ', after: ' Laravel!');
 
     // This is Laravel!
