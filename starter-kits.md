@@ -237,11 +237,11 @@ resources/views
 <a name="livewire-available-layouts"></a>
 #### Available Layouts
 
-The Livewire starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/components/layouts/app.blade.php` file:
+The Livewire starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/components/layouts/app.blade.php` file. In addition, you should add the `container` attribute to the main Flux component:
 
 ```blade
 <x-layouts.app.header>
-    <flux:main>
+    <flux:main container>
         {{ $slot }}
     </flux:main>
 </x-layouts.app.header>
