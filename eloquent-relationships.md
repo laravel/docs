@@ -585,16 +585,16 @@ return $this->throughCars()->hasOwner();
 <a name="has-many-through"></a>
 ### Has Many Through
 
-The "has-many-through" relationship provides a convenient way to access distant relations via an intermediate relation. For example, let's assume we are building a deployment platform like [Laravel Vapor](https://vapor.laravel.com). A `Project` model might access many `Deployment` models through an intermediate `Environment` model. Using this example, you could easily gather all deployments for a given project. Let's look at the tables required to define this relationship:
+The "has-many-through" relationship provides a convenient way to access distant relations via an intermediate relation. For example, let's assume we are building a deployment platform like [Laravel Cloud](https://cloud.laravel.com). An `Application` model might access many `Deployment` models through an intermediate `Environment` model. Using this example, you could easily gather all deployments for a given application. Let's look at the tables required to define this relationship:
 
 ```text
-projects
+applications
     id - integer
     name - string
 
 environments
     id - integer
-    project_id - integer
+    application_id - integer
     name - string
 
 deployments
@@ -603,7 +603,7 @@ deployments
     commit_hash - string
 ```
 
-Now that we have examined the table structure for the relationship, let's define the relationship on the `Project` model:
+Now that we have examined the table structure for the relationship, let's define the relationship on the `Application` model:
 
 ```php
 <?php
@@ -613,10 +613,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
-class Project extends Model
+class Application extends Model
 {
     /**
-     * Get all of the deployments for the project.
+     * Get all of the deployments for the application.
      */
     public function deployments(): HasManyThrough
     {
@@ -627,7 +627,7 @@ class Project extends Model
 
 The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
-Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-many-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Project` model has a `environments` relationship and the `Environment` model has a `deployments` relationship, you may define a "has-many-through" relationship connecting the project and the deployments like so:
+Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-many-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Application` model has a `environments` relationship and the `Environment` model has a `deployments` relationship, you may define a "has-many-through" relationship connecting the application and the deployments like so:
 
 ```php
 // String based syntax...
@@ -637,7 +637,7 @@ return $this->through('environments')->has('deployments');
 return $this->throughEnvironments()->hasDeployments();
 ```
 
-Though the `Deployment` model's table does not contain a `project_id` column, the `hasManyThrough` relation provides access to a project's deployments via `$project->deployments`. To retrieve these models, Eloquent inspects the `project_id` column on the intermediate `Environment` model's table. After finding the relevant environment IDs, they are used to query the `Deployment` model's table.
+Though the `Deployment` model's table does not contain a `application_id` column, the `hasManyThrough` relation provides access to a application's deployments via `$application->deployments`. To retrieve these models, Eloquent inspects the `application_id` column on the intermediate `Environment` model's table. After finding the relevant environment IDs, they are used to query the `Deployment` model's table.
 
 <a name="has-many-through-key-conventions"></a>
 #### Key Conventions
@@ -645,16 +645,16 @@ Though the `Deployment` model's table does not contain a `project_id` column, th
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
 
 ```php
-class Project extends Model
+class Application extends Model
 {
     public function deployments(): HasManyThrough
     {
         return $this->hasManyThrough(
             Deployment::class,
             Environment::class,
-            'project_id', // Foreign key on the environments table...
+            'application_id', // Foreign key on the environments table...
             'environment_id', // Foreign key on the deployments table...
-            'id', // Local key on the projects table...
+            'id', // Local key on the applications table...
             'id' // Local key on the environments table...
         );
     }
