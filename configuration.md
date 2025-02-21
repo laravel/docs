@@ -321,7 +321,6 @@ Alternatively, Laravel offers a cache-based method for handling maintenance mode
 
 Or, you can configure this using environment variables.
 
-
 ```ini
 APP_MAINTENANCE_DRIVER=cache
 APP_MAINTENANCE_STORE=database
