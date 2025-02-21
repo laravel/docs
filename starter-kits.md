@@ -11,6 +11,7 @@
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
 - [WorkOS AuthKit Authentication](#workos)
+- [Frequently Asked Questions](#faqs)
 
 <a name="introduction"></a>
 ## Introduction
@@ -260,7 +261,7 @@ To change your authentication layout, modify the layout that is used by your app
 </x-layouts.auth.split>
 ```
 
-<a name="workos-authkit-authentication"></a>
+<a name="workos"></a>
 ## WorkOS AuthKit Authentication
 
 By default, the React, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we also offer a [WorkOS AuthKit](https://authkit.com) powered variant of each starter kit that offers:
@@ -298,18 +299,18 @@ When using a WorkOS powered starter kit, we recommend that you disable "Email + 
 
 In addition, we recommend that you configure your WorkOS AuthKit session inactivity timeout to match your Laravel application's configured session timeout threshold, which is typically two hours.
 
-<a name="faq"></a>
+<a name="faqs"></a>
 ### Frequently Asked Questions
 
 <a name="faq-upgrade"></a>
 #### How do I upgrade?
 
-The great news is that there's no upgrade process needed! Every starter kit gives you a solid starting point for your next application. With full ownership of the code, you can tweak, customize, and build your application exactly as you envision.
+Every starter kit gives you a solid starting point for your next application. With full ownership of the code, you can tweak, customize, and build your application exactly as you envision. However, there is no need to update the starter kit itself.
 
 <a name="faq-enable-email-verification"></a>
 #### How do I enable email verification?
 
-Email verification can be added by opening your `App/Models/User.php` model, uncommenting the *MustVerifyEmail* class, and ensuring it implements the `MustVerifyEmail` interface.
+Email verification can be added by by uncommenting the `MustVerifyEmail` import in your `App/Models/User.php` model and ensuring the model implements the `MustVerifyEmail` interface:
 
 ```php
 <?php
@@ -317,13 +318,15 @@ Email verification can be added by opening your `App/Models/User.php` model, unc
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-...
+// ...
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    // ...
+}
 ```
 
-Upon registration, users will receive a verification email. To restrict access until their email is verified, add the `verified` middleware to the necessary routes. For example:
+After registration, users will receive a verification email. To restrict access to certain routes until the user's email address is verified, add the `verified` middleware to the routes:
 
 ```php
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -333,32 +336,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 ```
 
-With this modification, if a user attempts to visit the dashboard without verifying their email, they will be redirected to the verification page.
-
-<a name="faq-password-confirmation"></a>
-#### How do I test the password confirmation screen
-
-There may be parts of your application where you want to confirm the user's password before allowing access to a specific page. To enable the password confirmation, add the `password.confirm` middleware to any route.
-
-```
-Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('password.confirm');
-```
-
-With this middleware added, users must confirm their password before accessing the page.
+> [!NOTE]
+> Email verification is not required when using the [WorkOS](#workos) variant of the starter kits.
 
 <a name="faq-modify-email-template"></a>
-#### How do I modify the email template
+#### How do I modify the default email template?
 
-You may want to customize the email template to better align with your application's branding. To modify this template, you'll need to publish the email views to your application with the following command:
+You may want to customize the default email template to better align with your application's branding. To modify this template, you should publish the email views to your application with the following command:
 
 ```
 php artisan vendor:publish --tag=laravel-mail
 ```
 
-This will generate several files in **resources/views/vendor/mail**. You can modify any of these files as well as the **resources/views/vendor/mail/themes/default.css** file to change the look and appearance of your default email template.
-
-<a name="faq-breeze-jetstream"></a>
-#### Can I still use Breeze or Jetstream?
-
-You're welcome to continue using the legacy starter kits, but we highly recommend switching to our new Starter Kits to take advantage of the latest technologies. While we'll still provide security fixes, we won't be offering ongoing support for Jetstream or Breeze in the future—another great reason to make the switch!
+This will generate several files in `resources/views/vendor/mail`. You can modify any of these files as well as the `resources/views/vendor/mail/themes/default.css` file to change the look and appearance of the default email template.
 
