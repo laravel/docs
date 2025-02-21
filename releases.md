@@ -48,5 +48,23 @@ For all Laravel releases, bug fixes are provided for 18 months and security fixe
 <a name="laravel-12"></a>
 ## Laravel 12
 
-This version of Laravel is in active development.
+Laravel 12 continues the improvements made in Laravel 11.x by updating upstream dependencies and introducing new starter kits for React, Vue, and Livewire, including the option of using [WorkOS AuthKit](https://authkit.com) for user authentication. The WorkOS variant of our starter kits offers social authentication, passkeys, and SSO support.
+
+<a name="minimal-breaking-changes"></a>
+### Mimimal Breaking Changes
+
+Much of our focus during this release cycle has been minimizing breaking changes. Instead, we have dedicated ourselves to shipping continual quality of life improvements throughout the year that do not break existing applications.
+
+Therefore, the Laravel 12 release is a relatively minor "maintenance release" in order to upgrade existing dependencies. In light of this, most Laravel applications may upgrade to Laravel 12 without changing any application code.
+
+<a name="new-application-starter-kits"></a>
+### New Application Starter Kits
+
+Laravel 12 introduces new [application starter kits](/docs/{{version}}/starter-kits) for React, Vue, and Livewire. The React and Vue starter kits utilize Inertia 2, TypeScript, [shadcn/ui](https://ui.shadcn.com), and Tailwind, while the Livewire starter kits utilizes the Tailwind based [Flux UI](https://fluxui.dev) component library and Laravel Volt.
+
+The React, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we are introducing a [WorkOS AuthKit](https://authkit.com) powered variant of each starter kit, offering social authentication, passkeys, and SSO support. WorkOS offers free authentication for applications up to 1 million monthly active users.
+
+With the introduction of our new application starter kits, Laravel Breeze and Laravel Jetstream will no longer receive additional updates.
+
+To get started with our new starter kits, check out the [starter kit documentation](/docs/{{version}}/starter-kits).
 

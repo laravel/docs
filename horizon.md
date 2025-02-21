@@ -277,7 +277,7 @@ sudo apt-get install supervisor
 ```
 
 > [!NOTE]  
-> If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
+> If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Cloud](https://cloud.laravel.com), which can manage background processes for your Laravel applications.
 
 <a name="supervisor-configuration"></a>
 #### Supervisor Configuration

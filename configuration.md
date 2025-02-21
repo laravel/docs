@@ -371,4 +371,4 @@ While your application is in maintenance mode, no [queued jobs](/docs/{{version}
 <a name="alternatives-to-maintenance-mode"></a>
 #### Alternatives to Maintenance Mode
 
-Since maintenance mode requires your application to have several seconds of downtime, consider alternatives like [Laravel Vapor](https://vapor.laravel.com) and [Envoyer](https://envoyer.io) to accomplish zero-downtime deployment with Laravel.
+Since maintenance mode requires your application to have several seconds of downtime, consider running your applications on a fully-managed platform like [Laravel Cloud](https://cloud.laravel.com) to accomplish zero-downtime deployment with Laravel.
