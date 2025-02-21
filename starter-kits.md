@@ -297,3 +297,68 @@ When using a WorkOS powered starter kit, we recommend that you disable "Email + 
 #### Configuring AuthKit Session Timeouts
 
 In addition, we recommend that you configure your WorkOS AuthKit session inactivity timeout to match your Laravel application's configured session timeout threshold, which is typically two hours.
+
+<a name="faq"></a>
+### Frequently Asked Questions
+
+<a name="faq-upgrade"></a>
+#### How do I upgrade?
+
+The great news is that there's no upgrade process needed! Each starter kit gives you a solid starting point for your next application. This means you have full ownership of the code, so you can tweak, customize, and build exactly what you envision.
+
+<a name="faq-enable-email-verification"></a>
+#### How do I enable email verification?
+
+Email verification can be added by opening up your `App/Models/User.php` model, uncommenting the *MustVerifyEmail* class, and ensuring it implements the `MustVerifyEmail` interface.
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+...
+
+class User extends Authenticatable implements MustVerifyEmail
+{
+```
+
+Users will now receive a verification email upon registration. To ensure users cannot access pages until they have verified their email address, you can apply the `verified` middleware to any route(s). Example:
+
+```php
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('dashboard');
+    })->name('dashboard');
+});
+```
+
+Now, if a user attempts to visit the dashboard without verifying their email, they will be redirected to the verification page.
+
+<a name="faq-password-confirmation"></a>
+#### How do I test the password confirmation screen
+
+There may be parts of your application where you want to confirm the user's password before allowing access to a specific page. To enable the password confirmation, add the `password.confirm` middleware to any route.
+
+```
+Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('password.confirm');
+```
+
+From this example, the user will now be required to confirm their password before accessing the page.
+
+<a name="faq-modify-email-template"></a>
+#### How do I modify the email template
+
+It might be ideal to modify the email template to be more on brand with your application. To modify this template, you'll need to publish the files to your views folder with the following command:
+
+```
+php artisan vendor:publish --tag=laravel-mail
+```
+
+You will now have a handful of files located at **resources/views/vendor/mail**. You can modify any of these files as well as the **resources/views/vendor/mail/themes/default.css** file to change the look and appearance of your default email template.
+
+<a name="faq-breeze-jetstream"></a>
+#### Can I still use Breeze or Jetstream?
+
+You're welcome to continue using the legacy starter kits, but we highly recommend switching to our new Starter Kits to take advantage of the latest technologies. While we'll still provide security fixes, we won't be offering ongoing support for Jetstream or Breeze in the future—another great reason to make the switch!
+
