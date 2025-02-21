@@ -310,13 +310,11 @@ When accessing this hidden route, you will then be redirected to the `/` route o
 
 By default, Laravel determines if your application is in maintenance mode using a file-based system. This means to activate maintenance mode, the `php artisan down` command has to be executed on each server hosting your application.
 
-Alternatively, Laravel offers a cache-based method for handling maintenance mode. This method requires running the `php artisan down` command on just one server. To use this approach, modify the "driver" setting in the `config/app.php` file of your application to `cache`. Then, select a cache `store` that is accessible by all your servers. This ensures the maintenance mode status is consistently maintained across every server:
+Alternatively, Laravel offers a cache-based method for handling maintenance mode. This method requires running the `php artisan down` command on just one server. To use this approach, modify the maintenance mode variables in your application's `.env` file. You should select a cache `store` that is accessible by all of your servers. This ensures the maintenance mode status is consistently maintained across every server:
 
-```php
-'maintenance' => [
-    'driver' => 'cache',
-    'store' => 'database',
-],
+```ini
+APP_MAINTENANCE_DRIVER=cache
+APP_MAINTENANCE_STORE=database
 ```
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
