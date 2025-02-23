@@ -748,7 +748,7 @@ To create a subscription, first retrieve an instance of your billable model from
 use Illuminate\Http\Request;
 
 Route::get('/user/subscribe', function (Request $request) {
-    $checkout = $request->user()->subscribe($premium = 12345, 'default')
+    $checkout = $request->user()->subscribe($premium = 'pri_123', 'default')
         ->returnTo(route('home'));
 
     return view('billing', ['checkout' => $checkout]);
@@ -760,7 +760,7 @@ The first argument given to the `subscribe` method is the specific price the use
 You may also provide an array of custom metadata regarding the subscription using the `customData` method:
 
 ```php
-$checkout = $request->user()->subscribe($premium = 12345, 'default')
+$checkout = $request->user()->subscribe($premium = 'pri_123', 'default')
     ->customData(['key' => 'value'])
     ->returnTo(route('home'));
 ```
@@ -1235,14 +1235,10 @@ When your application receives the `subscription_created` event, Cashier will se
 > [!WARNING]  
 > If the customer's subscription is not canceled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
 
-You may determine if the user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
+You may determine if the user is within their trial period using either the `onTrial` method of the user instance:
 
 ```php
 if ($user->onTrial()) {
-    // ...
-}
-
-if ($user->subscription()->onTrial()) {
     // ...
 }
 ```
@@ -1251,10 +1247,6 @@ To determine if an existing trial has expired, you may use the `hasExpiredTrial`
 
 ```php
 if ($user->hasExpiredTrial()) {
-    // ...
-}
-
-if ($user->subscription()->hasExpiredTrial()) {
     // ...
 }
 ```
