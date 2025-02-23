@@ -312,34 +312,38 @@ Route::get('/user', function (#[CurrentUser] User $user) {
 
 You can create your own contextual attributes by implementing the `Illuminate\Contracts\Container\ContextualAttribute` contract. The container will call your attribute's `resolve` method, which should resolve the value that should be injected into the class utilizing the attribute. In the example below, we will re-implement Laravel's built-in `Config` attribute:
 
-    <?php
+```php
+<?php
 
-    namespace App\Attributes;
+namespace App\Attributes;
 
-    use Illuminate\Contracts\Container\ContextualAttribute;
+use Attribute;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Container\ContextualAttribute;
 
-    #[Attribute(Attribute::TARGET_PARAMETER)]
-    class Config implements ContextualAttribute
+#[Attribute(Attribute::TARGET_PARAMETER)]
+class Config implements ContextualAttribute
+{
+    /**
+     * Create a new attribute instance.
+     */
+    public function __construct(public string $key, public mixed $default = null)
     {
-        /**
-         * Create a new attribute instance.
-         */
-        public function __construct(public string $key, public mixed $default = null)
-        {
-        }
-
-        /**
-         * Resolve the configuration value.
-         *
-         * @param  self  $attribute
-         * @param  \Illuminate\Contracts\Container\Container  $container
-         * @return mixed
-         */
-        public static function resolve(self $attribute, Container $container)
-        {
-            return $container->make('config')->get($attribute->key, $attribute->default);
-        }
     }
+
+    /**
+     * Resolve the configuration value.
+     *
+     * @param  self  $attribute
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return mixed
+     */
+    public static function resolve(self $attribute, Container $container)
+    {
+        return $container->make('config')->get($attribute->key, $attribute->default);
+    }
+}
+```
 
 <a name="binding-primitives"></a>
 ### Binding Primitives
