@@ -155,7 +155,7 @@ export default function Show({ user }) {
         <Layout>
             <Head title="Welcome" />
             <h1>Welcome</h1>
-            <p>Hello {user.name}, welcome to Laravel and Inertia.</p>
+            <p>Hello {user.name}, welcome to Inertia.</p>
         </Layout>
     )
 }
