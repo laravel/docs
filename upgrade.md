@@ -8,6 +8,7 @@
 <div class="content-list" markdown="1">
 
 - [Updating Dependencies](#updating-dependencies)
+- [Updating the Laravel Installer](#updating-the-laravel-installer)
 
 </div>
 
@@ -50,6 +51,32 @@ You should update the following dependencies in your application's `composer.jso
 **Likelihood Of Impact: Low**
 
 Support for [Carbon 2.x](https://carbon.nesbot.com/docs/) has been removed. All Laravel 12 applications now require Carbon 3.x.
+
+<a name="updating-the-laravel-installer"></a>
+### Updating the Laravel Installer
+
+If you are using the Laravel installer CLI tool to create new Laravel applications, you should update your installer installation to be compatible with Laravel 12.x and the [new Laravel starter kits](https://laravel.com/starter-kits). If you installed the Laravel installer via `composer global require`, you may update the installer using `composer global update`:
+
+```shell
+composer global update laravel/installer
+```
+
+If you originally installed PHP and Laravel via `php.new`, you may simply re-run the `php.new` installation commands for your operating system to install the latest version of PHP and the Laravel installer:
+
+```shell tab=macOS
+/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.4)"
+```
+
+```shell tab=Windows PowerShell
+# Run as administrator...
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.4'))
+```
+
+```shell tab=Linux
+/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
+```
+
+Or, if you are using [Laravel Herd's](https://herd.laravel.com) bundled copy of the Laravel installer, you should update your Herd installation to the latest release.
 
 <a name="concurrency"></a>
 ### Concurrency
