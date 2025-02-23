@@ -888,7 +888,7 @@ In addition to public variables being available to your component template, any 
 You may execute this method from your component template by invoking the variable matching the name of the method:
 
 ```blade
-<option {{ $isSelected($value) ? 'selected' : '' }} value="{{ $value }}">
+<option value="{{ $value }}" @selected($isSelected($value))>
     {{ $label }}
 </option>
 ```
