@@ -5,7 +5,7 @@
     - [PHP and Blade](#php-and-blade)
     - [Livewire](#livewire)
     - [Starter Kits](#php-starter-kits)
-- [Using Vue / React](#using-vue-react)
+- [Using React or Vue](#using-react-or-vue)
     - [Inertia](#inertia)
     - [Starter Kits](#inertia-starter-kits)
 - [Bundling Assets](#bundling-assets)
@@ -104,19 +104,19 @@ If you're new to Laravel, we recommend getting familiar with the basic usage of 
 
 If you would like to build your frontend using PHP and Livewire, you can leverage our [Livewire starter kit](/docs/{{version}}/starter-kits) to jump-start your application's development.
 
-<a name="using-vue-react"></a>
-## Using Vue / React
+<a name="using-react-or-vue"></a>
+## Using React or Vue
 
-Although it's possible to build modern frontends using Laravel and Livewire, many developers still prefer to leverage the power of a JavaScript framework like Vue or React. This allows developers to take advantage of the rich ecosystem of JavaScript packages and tools available via NPM.
+Although it's possible to build modern frontends using Laravel and Livewire, many developers still prefer to leverage the power of a JavaScript framework like React or Vue. This allows developers to take advantage of the rich ecosystem of JavaScript packages and tools available via NPM.
 
-However, without additional tooling, pairing Laravel with Vue or React would leave us needing to solve a variety of complicated problems such as client-side routing, data hydration, and authentication. Client-side routing is often simplified by using opinionated Vue / React frameworks such as [Nuxt](https://nuxt.com/) and [Next](https://nextjs.org/); however, data hydration and authentication remain complicated and cumbersome problems to solve when pairing a backend framework like Laravel with these frontend frameworks.
+However, without additional tooling, pairing Laravel with React or Vue would leave us needing to solve a variety of complicated problems such as client-side routing, data hydration, and authentication. Client-side routing is often simplified by using opinionated React / Vue frameworks such as [Next](https://nextjs.org/) and [Nuxt](https://nuxt.com/); however, data hydration and authentication remain complicated and cumbersome problems to solve when pairing a backend framework like Laravel with these frontend frameworks.
 
 In addition, developers are left maintaining two separate code repositories, often needing to coordinate maintenance, releases, and deployments across both repositories. While these problems are not insurmountable, we don't believe it's a productive or enjoyable way to develop applications.
 
 <a name="inertia"></a>
 ### Inertia
 
-Thankfully, Laravel offers the best of both worlds. [Inertia](https://inertiajs.com) bridges the gap between your Laravel application and your modern Vue or React frontend, allowing you to build full-fledged, modern frontends using Vue or React while leveraging Laravel routes and controllers for routing, data hydration, and authentication — all within a single code repository. With this approach, you can enjoy the full power of both Laravel and Vue / React without crippling the capabilities of either tool.
+Thankfully, Laravel offers the best of both worlds. [Inertia](https://inertiajs.com) bridges the gap between your Laravel application and your modern React or Vue frontend, allowing you to build full-fledged, modern frontends using React or Vue while leveraging Laravel routes and controllers for routing, data hydration, and authentication — all within a single code repository. With this approach, you can enjoy the full power of both Laravel and React / Vue without crippling the capabilities of either tool.
 
 After installing Inertia into your Laravel application, you will write routes and controllers like normal. However, instead of returning a Blade template from your controller, you will return an Inertia page:
 
@@ -137,41 +137,31 @@ class UserController extends Controller
      */
     public function show(string $id): Response
     {
-        return Inertia::render('Users/Profile', [
+        return Inertia::render('users/show', [
             'user' => User::findOrFail($id)
         ]);
     }
 }
 ```
 
-An Inertia page corresponds to a Vue or React component, typically stored within the `resources/js/Pages` directory of your application. The data given to the page via the `Inertia::render` method will be used to hydrate the "props" of the page component:
+An Inertia page corresponds to a React or Vue component, typically stored within the `resources/js/pages` directory of your application. The data given to the page via the `Inertia::render` method will be used to hydrate the "props" of the page component:
 
-```vue
-<script setup>
-import Layout from '@/Layouts/Authenticated.vue';
-import { Head } from '@inertiajs/vue3';
+```jsx
+import Layout from '@/layouts/authenticated';
+import { Head } from '@inertiajs/react';
 
-const props = defineProps(['user']);
-</script>
-
-<template>
-    <Head title="User Profile" />
-
-    <Layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Profile
-            </h2>
-        </template>
-
-        <div class="py-12">
-            Hello, {{ user.name }}
-        </div>
-    </Layout>
-</template>
+export default function Show({ user }) {
+    return (
+        <Layout>
+            <Head title="Welcome" />
+            <h1>Welcome</h1>
+            <p>Hello {user.name}, welcome to Laravel and Inertia.</p>
+        </Layout>
+    )
+}
 ```
 
-As you can see, Inertia allows you to leverage the full power of Vue or React when building your frontend, while providing a light-weight bridge between your Laravel powered backend and your JavaScript powered frontend.
+As you can see, Inertia allows you to leverage the full power of React or Vue when building your frontend, while providing a light-weight bridge between your Laravel powered backend and your JavaScript powered frontend.
 
 #### Server-Side Rendering
 
