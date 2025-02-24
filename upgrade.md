@@ -132,7 +132,7 @@ $table = Schema::getTableListing(schema: 'main', schemaQualified: false);
 // ['migrations', 'users']
 ```
 
-The `db:table` and `db:show` command now outputs results of all schemas on MySQL, MariaDB and SQLite, just like PostgreSQL and SQL Server. Consistent usage across all DB drivers.
+The `db:table` and `db:show` commands now output results of all schemas on MySQL, MariaDB and SQLite, just like PostgreSQL and SQL Server. Consistent usage across all DB drivers.
 
 <a name="requests"></a>
 ### Requests
