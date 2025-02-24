@@ -51,7 +51,7 @@ For all Laravel releases, bug fixes are provided for 18 months and security fixe
 Laravel 12 continues the improvements made in Laravel 11.x by updating upstream dependencies and introducing new starter kits for React, Vue, and Livewire, including the option of using [WorkOS AuthKit](https://authkit.com) for user authentication. The WorkOS variant of our starter kits offers social authentication, passkeys, and SSO support.
 
 <a name="minimal-breaking-changes"></a>
-### Mimimal Breaking Changes
+### Minimal Breaking Changes
 
 Much of our focus during this release cycle has been minimizing breaking changes. Instead, we have dedicated ourselves to shipping continual quality of life improvements throughout the year that do not break existing applications.
 
