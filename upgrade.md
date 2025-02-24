@@ -20,6 +20,7 @@
 - [Carbon 3](#carbon-3)
 - [Concurrency Result Index Mapping](#concurrency-result-index-mapping)
 - [Image Validation Now Excludes SVGs](#image-validation)
+- [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
 - [Nested Array Request Merging](#nested-array-request-merging)
 
 </div>
@@ -96,6 +97,42 @@ $result = Concurrency::run([
 
 // ['task-1' => 2, 'task-2' => 4]
 ```
+
+<a name="database"></a>
+### Database
+
+<a name="multi-schema-database-inspecting"></a>
+#### Multi-Schema Database Inspecting
+
+**Likelihood Of Impact: Low**
+
+The `Schema::getTables()`, `Schema::getViews()`, and `Schema::getTypes()` methods now include the results from all schemas by default. You may pass the `schema` argument to retrieve the result for the given schema only:
+
+```php
+// All tables on all schemas...
+$tables = Schema::getTables();
+
+// All tables on the 'main' schema...
+$table = Schema::getTables(schema: 'main');
+
+// All tables on the 'main' and 'blog' schemas...
+$table = Schema::getTables(schema: ['main', 'blog']);
+```
+
+The `Schema::getTableListing()` method now returns schema-qualified table names by default. You may pass the `schemaQualified` argument to change the behavior as desired:
+
+```php
+$tables = Schema::getTableListing();
+// ['main.migrations', 'main.users', 'blog.posts']
+
+$table = Schema::getTableListing(schema: 'main');
+// ['main.migrations', 'main.users']
+
+$table = Schema::getTableListing(schema: 'main', schemaQualified: false);
+// ['migrations', 'users']
+```
+
+The `db:table` and `db:show` commands now output the results of all schemas on MySQL, MariaDB, and SQLite, just like PostgreSQL and SQL Server.
 
 <a name="requests"></a>
 ### Requests
