@@ -120,7 +120,7 @@ export default MyPage;
 <a name="react-available-layouts"></a>
 #### Available Layouts
 
-The React starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/app-layout.tsx` file:
+The React starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/app-layout.tsx` file:
 
 ```js
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout'; // [tl! remove]
@@ -310,7 +310,7 @@ Every starter kit gives you a solid starting point for your next application. Wi
 <a name="faq-enable-email-verification"></a>
 #### How do I enable email verification?
 
-Email verification can be added by by uncommenting the `MustVerifyEmail` import in your `App/Models/User.php` model and ensuring the model implements the `MustVerifyEmail` interface:
+Email verification can be added by uncommenting the `MustVerifyEmail` import in your `App/Models/User.php` model and ensuring the model implements the `MustVerifyEmail` interface:
 
 ```php
 <?php
