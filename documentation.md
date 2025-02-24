@@ -95,4 +95,4 @@
     - [Socialite](/docs/{{version}}/socialite)
     - [Telescope](/docs/{{version}}/telescope)
     - [Valet](/docs/{{version}}/valet)
-- [API Documentation](/api/9.x)
+- [API Documentation](https://api.laravel.com/docs/9.x)
