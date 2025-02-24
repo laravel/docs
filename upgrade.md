@@ -115,15 +115,15 @@ $tables = Schema::getTables();
 // All tables on the 'main' schema...
 $table = Schema::getTables(schema: 'main');
 
-// All tables on the 'main' and 'temp' schemas...
-$table = Schema::getTables(schema: ['main', 'temp']);
+// All tables on the 'main' and 'blog' schemas...
+$table = Schema::getTables(schema: ['main', 'blog']);
 ```
 
 The `Schema::getTableListing()` method now returns schema-qualified table names by default. You may pass the `schemaQualified` argument to change the behavior as desired:
 
 ```php
 $tables = Schema::getTableListing();
-// ['main.migrations', 'main.users', 'temp.foo']
+// ['main.migrations', 'main.users', 'blog.posts']
 
 $table = Schema::getTableListing(schema: 'main');
 // ['main.migrations', 'main.users']
