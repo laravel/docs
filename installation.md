@@ -358,7 +358,7 @@ You are free to use any code editor you wish when developing Laravel application
 
 In addition, the community maintained [Laravel Idea](https://laravel-idea.com/) PhpStorm plugin offers a variety of helpful IDE augmentations, including code generation, Eloquent syntax completion, validation rule completion, and more.
 
-For developers preferring [Visual Studio Code (VS Code)](https://code.visualstudio.com), the official [Laravel Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel) is now available. This extension brings Laravel-specific tools directly into your VS Code environment, enhancing productivity.
+If you develop in [Visual Studio Code (VS Code)](https://code.visualstudio.com), the official [Laravel VS Code Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel) is now available. This extension brings Laravel-specific tools directly into your VS Code environment, enhancing productivity.
 
 <a name="next-steps"></a>
 ## Next Steps
