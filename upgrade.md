@@ -19,8 +19,8 @@
 
 - [Carbon 3](#carbon-3)
 - [Concurrency Result Index Mapping](#concurrency-result-index-mapping)
-- [Multi-schema Database Inspecting](#multi-schema-database-inspecting)
 - [Image Validation Now Excludes SVGs](#image-validation)
+- [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
 - [Nested Array Request Merging](#nested-array-request-merging)
 
 </div>
@@ -102,11 +102,11 @@ $result = Concurrency::run([
 ### Database
 
 <a name="multi-schema-database-inspecting"></a>
-#### Multi-schema Database Inspecting
+#### Multi-Schema Database Inspecting
 
 **Likelihood Of Impact: Low**
 
-The `Schema::getTables()`, `Schema::getViews()` and `Schema::getTypes()` methods now include the results from all schemas by default. You may pass the `schema` argument to retrieve the result for the given schema only:
+The `Schema::getTables()`, `Schema::getViews()`, and `Schema::getTypes()` methods now include the results from all schemas by default. You may pass the `schema` argument to retrieve the result for the given schema only:
 
 ```php
 // All tables on all schemas...
@@ -132,7 +132,7 @@ $table = Schema::getTableListing(schema: 'main', schemaQualified: false);
 // ['migrations', 'users']
 ```
 
-The `db:table` and `db:show` commands now output results of all schemas on MySQL, MariaDB and SQLite, just like PostgreSQL and SQL Server. Consistent usage across all DB drivers.
+The `db:table` and `db:show` commands now output the results of all schemas on MySQL, MariaDB, and SQLite, just like PostgreSQL and SQL Server.
 
 <a name="requests"></a>
 ### Requests
