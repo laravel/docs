@@ -1822,6 +1822,12 @@ $response->assertInvalid([
 ]);
 ```
 
+If you would like to assert that the given fields are the only fields with validation errors, you may use the `assertOnlyInvalid` method:
+
+```php
+$response->assertOnlyInvalid(['name', 'email']);
+```
+
 <a name="assert-view-has"></a>
 #### assertViewHas
 
