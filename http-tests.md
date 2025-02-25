@@ -989,6 +989,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertMovedPermanently](#assert-moved-permanently)
 [assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
+[assertStreamed](#assert-streamed)
 [assertStreamedContent](#assert-streamed-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
@@ -1471,6 +1472,13 @@ Assert that the response has the given HTTP status code and no content:
 ```php
 $response->assertNoContent($status = 204);
 ```
+
+<a name="assert-streamed"></a>
+#### assertStreamed
+
+Assert that the response was a streamed response:
+
+    $response->assertStreamed();
 
 <a name="assert-streamed-content"></a>
 #### assertStreamedContent

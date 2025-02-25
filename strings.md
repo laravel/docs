@@ -713,7 +713,7 @@ You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
 ```php
 use Illuminate\Support\Str;
 
-$matches = Str::is('*.jpg', 'photo.JPG', ignoreCase: true);     
+$matches = Str::is('*.jpg', 'photo.JPG', ignoreCase: true);
 
 // true
 ```
