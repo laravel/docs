@@ -134,6 +134,21 @@ $table = Schema::getTableListing(schema: 'main', schemaQualified: false);
 
 The `db:table` and `db:show` commands now output the results of all schemas on MySQL, MariaDB, and SQLite, just like PostgreSQL and SQL Server.
 
+<a name="models"></a>
+### Models
+
+<a name="switch-models-to-uuid-v7"></a>
+#### Switch Models to UUID v7
+
+**Likelihood Of Impact: Medium**
+
+The `HasUuids` trait using v7 UUIDs by default now (formerly v4 with ordered UUID implementation). If you do not want to break your database order you can stay on v4 by using `HasVersion4Uuids` trait.
+
+```diff
+- use Illuminate\Database\Eloquent\Concerns\HasUuids;
++ use Illuminate\Database\Eloquent\Concerns\HasVersion4Uuids as HasUuids;
+```
+
 <a name="requests"></a>
 ### Requests
 
