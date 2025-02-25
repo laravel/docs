@@ -861,8 +861,6 @@ When a notification is stored in your application's database, the `type` column 
 
     /**
      * Get the notification's database type.
-     *
-     * @return string
      */
     public function databaseType(object $notifiable): string
     {
@@ -870,13 +868,11 @@ When a notification is stored in your application's database, the `type` column 
     }
 
     /**
-     * Get the initial value for the read_at column.
-     *
-     * @return Carbon
+     * Get the initial value for the "read_at" column.
      */
-    public function initialDatabaseReadAtValue(): Carbon
+    public function initialDatabaseReadAtValue(): ?Carbon
     {
-        return Carbon::now();
+        return null;
     }
 
 <a name="todatabase-vs-toarray"></a>
