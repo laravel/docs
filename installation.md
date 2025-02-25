@@ -145,7 +145,7 @@ php artisan migrate
 ```
 
 > [!NOTE]
-> If you are developing on macOS or Windows and need to install MySQL, PostgreSQL, or Redis locally, consider using [Herd Pro](https://herd.laravel.com/#plans).
+> If you are developing on macOS or Windows and need to install MySQL, PostgreSQL, or Redis locally, consider using [Herd Pro](https://herd.laravel.com/#plans) or [DBngin](https://dbngin.com/).
 
 <a name="directory-configuration"></a>
 ### Directory Configuration
