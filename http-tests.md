@@ -1004,7 +1004,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
 [assertServerError](#assert-server-error)
-[assertServiceUnavailable](#assert-server-unavailable)
+[assertServiceUnavailable](#assert-service-unavailable)
 [assertSessionHas](#assert-session-has)
 [assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
@@ -1607,7 +1607,7 @@ Assert that the response has a server error (>= 500 , < 600) HTTP status code:
 $response->assertServerError();
 ```
 
-<a name="assert-server-unavailable"></a>
+<a name="assert-service-unavailable"></a>
 #### assertServiceUnavailable
 
 Assert that the response has a "Service Unavailable" (503) HTTP status code:
