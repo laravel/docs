@@ -149,6 +149,8 @@ The `HasUuids` trait using v7 UUIDs by default now (formerly v4 with ordered UUI
 + use Illuminate\Database\Eloquent\Concerns\HasVersion4Uuids as HasUuids;
 ```
 
+Also `HasVersion7Uuids` trait was removed. If you are using it, you should migrate to the `HasUuids` trait.
+
 <a name="requests"></a>
 ### Requests
 
