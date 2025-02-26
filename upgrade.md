@@ -52,6 +52,8 @@ You should update the following dependencies in your application's `composer.jso
 <div class="content-list" markdown="1">
 
 - `laravel/framework` to `^12.0`
+- `phpunit/phpunit` to `^11.0`
+- `pestphp/pest` to `^3.0`
 
 </div>
 
