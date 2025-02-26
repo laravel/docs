@@ -1172,11 +1172,11 @@ The `Str::replace` method replaces a given string within the string:
 ```php
 use Illuminate\Support\Str;
 
-$string = 'Laravel 10.x';
+$string = 'Laravel 11.x';
 
-$replaced = Str::replace('10.x', '11.x', $string);
+$replaced = Str::replace('11.x', '12.x', $string);
 
-// Laravel 11.x
+// Laravel 12.x
 ```
 
 The `replace` method also accepts a `caseSensitive` argument. By default, the `replace` method is case sensitive:

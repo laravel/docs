@@ -241,7 +241,7 @@ public function register(): void
 }
 ```
 
-Then, you may copy the routes defined by Passport in [its routes file](https://github.com/laravel/passport/blob/11.x/routes/web.php) to your application's `routes/web.php` file and modify them to your liking:
+Then, you may copy the routes defined by Passport in [its routes file](https://github.com/laravel/passport/blob/12.x/routes/web.php) to your application's `routes/web.php` file and modify them to your liking:
 
 ```php
 Route::group([
