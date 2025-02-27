@@ -2373,7 +2373,7 @@ $random->all();
 <a name="method-range"></a>
 #### `range()` {.collection-method}
 
-The `range` method returns a collection containing numbers between the specified range, with an optional step parameter:
+The `range` method returns a collection containing integers between the specified range, with an optional step parameter:
 
 ```php
 $collection = collect()->range(3, 6);
@@ -2384,6 +2384,7 @@ $collectionWithStep->all();
 
 // [3, 4, 5, 6]
 // [3, 5]
+
 ```
 
 <a name="method-reduce"></a>
