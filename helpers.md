@@ -851,6 +851,8 @@ The `Arr::reject` method removes items from an array using the given closure:
 The `Arr::select` method select an array of values from an array:
 
 ```php
+<?php
+
 use Illuminate\Support\Arr;
 
 $array = [
