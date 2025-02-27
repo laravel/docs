@@ -110,6 +110,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::ulid](#method-str-ulid)
 [Str::unwrap](#method-str-unwrap)
 [Str::uuid](#method-str-uuid)
+[Str::uuid7](#method-str-uuid7)
 [Str::wordCount](#method-str-word-count)
 [Str::wordWrap](#method-str-word-wrap)
 [Str::words](#method-str-words)
@@ -1681,6 +1682,19 @@ To instruct the `uuid` method to return to generating UUIDs normally, you may in
 ```php
 Str::createUuidsNormally();
 ```
+
+<a name="method-str-uuid7"></a>
+#### `Str::uuid7()` {.collection-method}
+
+The `Str::uuid7` method generates a UUID (version 7):
+
+```php
+use Illuminate\Support\Str;
+
+return (string) Str::uuid7(); // Example: 019548fa-0421-71d3-a72e-12e668351c0d
+return (string) Str::uuid7(time: now()); // Example 019548fa-0421-71d3-a72e-12e668f617b3
+```
+Optionally, a timestamp `time` of the type `DateTimeInterface` can be passed as a parameter, which is represented in the UUID.
 
 <a name="method-str-word-count"></a>
 #### `Str::wordCount()` {.collection-method}
