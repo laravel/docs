@@ -835,6 +835,8 @@ $items = Arr::random($array, 2);
 The `Arr::reject` method removes items from an array using the given closure:
 
 ```php
+<?php
+
 use Illuminate\Support\Arr;
 
 $array = [100, '200', 300, '400', 500];
