@@ -67,6 +67,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::query](#method-array-query)
 [Arr::random](#method-array-random)
 [Arr::reject](#method-array-reject)
+[Arr::select](#method-array-select)
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
@@ -843,6 +844,25 @@ The `Arr::reject` method removes items from an array using the given closure:
     });
 
     // [0 => 100, 2 => 300, 4 => 500]
+
+<a name="method-array-select"></a>
+#### `Arr::select()` {.collection-method}
+
+The `Arr::select` method select an array of values from an array:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [
+    ['id' => 1, 'name' => 'Desk', 'price' => 200],
+    ['id' => 2, 'name' => 'Table', 'price' => 150],
+    ['id' => 3, 'name' => 'Chair', 'price' => 300],
+];
+
+Arr::select($array, ['name', 'price']);
+
+// [['name' => 'Desk', 'price' => 200], ['name' => 'Table', 'price' => 150], ['name' => 'Chair', 'price' => 300]]
+```
 
 <a name="method-array-set"></a>
 #### `Arr::set()` {.collection-method}
