@@ -2373,14 +2373,14 @@ $random->all();
 <a name="method-range"></a>
 #### `range()` {.collection-method}
 
-The `range` method returns a collection containing integers between the specified range:
+The `range` method returns a collection containing numbers between the specified range, with an optional step parameter:
 
 ```php
-$collection = collect()->range(3, 6);
+$collection = collect()->range(3, 6, 2);
 
 $collection->all();
 
-// [3, 4, 5, 6]
+// [3, 5, 7, 9]
 ```
 
 <a name="method-reduce"></a>
