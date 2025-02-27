@@ -834,15 +834,17 @@ $items = Arr::random($array, 2);
 
 The `Arr::reject` method removes items from an array using the given closure:
 
-    use Illuminate\Support\Arr;
+```php
+use Illuminate\Support\Arr;
 
-    $array = [100, '200', 300, '400', 500];
+$array = [100, '200', 300, '400', 500];
 
-    $filtered = Arr::reject($array, function (string|int $value, int $key) {
-        return is_string($value);
-    });
+$filtered = Arr::reject($array, function (string|int $value, int $key) {
+    return is_string($value);
+});
 
-    // [0 => 100, 2 => 300, 4 => 500]
+// [0 => 100, 2 => 300, 4 => 500]
+```
 
 <a name="method-array-set"></a>
 #### `Arr::set()` {.collection-method}
