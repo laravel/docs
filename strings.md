@@ -1691,10 +1691,14 @@ The `Str::uuid7` method generates a UUID (version 7):
 ```php
 use Illuminate\Support\Str;
 
-return (string) Str::uuid7(); // Example: 019548fa-0421-71d3-a72e-12e668351c0d
-return (string) Str::uuid7(time: now()); // Example 019548fa-0421-71d3-a72e-12e668f617b3
+return (string) Str::uuid7();
 ```
-Optionally, a timestamp `time` of the type `DateTimeInterface` can be passed as a parameter, which is represented in the UUID.
+
+A `DateTimeInterface` may be passed as an optional parameter which will be used to generate the ordered UUID:
+
+```php
+return (string) Str::uuid7(time: now());
+```
 
 <a name="method-str-word-count"></a>
 #### `Str::wordCount()` {.collection-method}
