@@ -79,7 +79,7 @@ composer global require laravel/installer
 ```
 
 > [!NOTE]
-> For a fully-featured, graphical PHP installation and management experience, check out [Laravel Herd](#local-installation-using-herd).
+> For a fully-featured, graphical PHP installation and management experience, check out [Laravel Herd](#installation-using-herd).
 
 <a name="creating-an-application"></a>
 ### Creating an Application
