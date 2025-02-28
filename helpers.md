@@ -852,7 +852,7 @@ $filtered = Arr::reject($array, function (string|int $value, int $key) {
 <a name="method-array-select"></a>
 #### `Arr::select()` {.collection-method}
 
-The `Arr::select` method select an array of values from an array:
+The `Arr::select` method selects an array of values from an array:
 
 ```php
 <?php
