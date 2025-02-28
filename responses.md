@@ -432,7 +432,70 @@ source.addEventListener('update', (event) => {
     console.log(event.data);
 })
 ```
+##### Customizing Event Streams
+By default, events use the name update and end with `</stream>`.
 
+You can customize the default event name by providing the as parameter.
+For individual messages, use the `EventStream` class:
+
+```php
+use Illuminate\Http\EventStream;
+
+Route::get('/notifications', function () {
+    return response()->eventStream(
+        function () {
+            yield "Regular message";
+            
+            // Uses a custom event name for this specific message
+            yield new EventStream(
+                event: 'notification', 
+                data: ['id' => 1, 'message' => 'New message']
+            );
+        },
+        headers: [],
+        as: 'message',  // Changes default event name from 'update' to 'message'
+    );
+});
+```
+In JavaScript, to consume these event streams:
+
+```js
+const source = new EventSource('/notifications');
+
+source.addEventListener('message', (event) => {
+    console.log('Regular message:', event.data);
+});
+
+// Listen for custom event 
+source.addEventListener('notification', (event) => {
+    const data = JSON.parse(event.data);
+    console.log(`Notification #${data.id}: ${data.message}`);
+});
+```
+You can also customize what message is sent at the beginning and end of the stream:
+
+```php
+return response()->eventStream(
+    function () { /* ... */ },
+    as: 'message',
+    startStreamWith: '{"status":"connected"}',  // Sent when stream starts
+    endStreamWith: '{"status":"complete"}'      // Sent when stream ends (null to disable)
+);
+```
+To handle these custom messages in JavaScript:
+```js
+const source = new EventSource('/notifications');
+
+source.addEventListener('message', (event) => {
+    
+    if (event.data === '{"status":"connected"}') {
+        console.log('Stream started');
+    } else if (event.data === '{"status":"complete"}') {
+        source.close();
+    }
+    
+});
+```
 <a name="streamed-downloads"></a>
 #### Streamed Downloads
 
