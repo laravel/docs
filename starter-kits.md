@@ -189,7 +189,7 @@ import { Switch } from '@/Components/ui/switch'
 <a name="vue-available-layouts"></a>
 #### Available Layouts
 
-The Vue starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/AppLayout.vue` file:
+The Vue starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/AppLayout.vue` file:
 
 ```js
 import AppLayout from '@/layouts/app/AppSidebarLayout.vue'; // [tl! remove]
@@ -238,7 +238,7 @@ resources/views
 <a name="livewire-available-layouts"></a>
 #### Available Layouts
 
-The Livewire starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/components/layouts/app.blade.php` file. In addition, you should add the `container` attribute to the main Flux component:
+The Livewire starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/components/layouts/app.blade.php` file. In addition, you should add the `container` attribute to the main Flux component:
 
 ```blade
 <x-layouts.app.header>
