@@ -155,7 +155,7 @@ Context::when(
 <a name="scoped-context"></a>
 #### Scoped Context
 
-The `scope()` method provides a way to temporarily modify the context for a given callback and restore to the original state. Any changes made to both context and hidden data within the closure are isolated and automatically discarded once the closure completes. Additionally, you can pass extra data to be merged into the context (as the second and third arguments) while the closure executes.
+The `scope()` method provides a way to temporarily modify the context for a given callback and restore to the original state when complete. Any changes made to both context and hidden data within the closure are isolated and automatically discarded once the closure completes. Additionally, you can pass extra data to be merged into the context (as the second and third arguments) while the closure executes.
 
 ```php
 use Illuminate\Support\Facades\Context;
