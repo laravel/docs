@@ -221,7 +221,9 @@ import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue'; // [tl! add]
 <a name="livewire-customization"></a>
 ### Livewire
 
-Our Livewire starter kit is built with Livewire 3, Laravel Volt, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+Our Livewire starter kit is built with Livewire 3, Tailwind, and [Flux UI](https://fluxui.dev/). When choosing the Livewire starter kit you have the option of using Volt or traditional Livewire components. As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+
+#### Livewire and Volt
 
 The majority of the frontend code is located in the `resources/views` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
 
@@ -234,6 +236,10 @@ resources/views
 ├── dashboard.blade.php   # Authenticated user dashboard
 ├── welcome.blade.php     # Guest user welcome page
 ```
+
+#### Traditional Livewire Components
+
+The frontend code is located in the `resouces/views` directory and the authentication, user profile and settings logic is located in `app/Livewire`.
 
 <a name="livewire-available-layouts"></a>
 #### Available Layouts
