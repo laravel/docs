@@ -73,7 +73,7 @@ Our Livewire starter kit provides the perfect starting point for building Larave
 
 Livewire is a powerful way of building dynamic, reactive, frontend UIs using just PHP. It's a great fit for teams that primarily use Blade templates and are looking for a simpler alternative to JavaScript-driven SPA frameworks like React and Vue.
 
-The Livewire starter kit utilizes Livewire (either traditional components or Laravel Volt), Tailwind, the [Flux UI](https://fluxui.dev) component library.
+The Livewire starter kit utilizes Livewire (either traditional components or Laravel Volt), Tailwind and the [Flux UI](https://fluxui.dev) component library.
 
 <a name="starter-kit-customization"></a>
 ## Starter Kit Customization
