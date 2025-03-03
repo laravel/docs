@@ -116,6 +116,13 @@ The `path` method returns the request's path information. So, if the incoming re
 ```php
 $uri = $request->path();
 ```
+If your URL contains encoded characters,
+you can use the `decodedPath` method to get the decoded version of the path.
+For example, if the URL is `http://example.com/foo/user%2Dprofile` the `decodedPath` method will return `foo/user-profile`:
+
+```php
+$uri = $request->decodedPath();
+```
 
 <a name="inspecting-the-request-path"></a>
 #### Inspecting the Request Path / Route
