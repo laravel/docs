@@ -155,7 +155,7 @@ Context::when(
 <a name="scoped-context"></a>
 #### Scoped Context
 
-The `scope()` method provides a way to temporarily modify the context for a given callback and restore to the original state when complete. Any changes made to both context and hidden data within the closure are isolated and automatically discarded once the closure completes. Additionally, you can pass extra data to be merged into the context (as the second and third arguments) while the closure executes.
+The `scope` method provides a way to temporarily modify the context during the execution of a given callback and restore the context to its original state when the callback finishes executing. Additionally, you can pass extra data that should be merged into the context (as the second and third arguments) while the closure executes.
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -169,11 +169,12 @@ Context::scope(
         Context::add('action', 'adding_friend');
 
         $userId = Context::getHidden('user_id');
+
         Log::debug("Adding user [{$userId}] to friends list.");
         // Adding user [987] to friends list.  {"trace_id":"abc-999","user_name":"taylor_otwell","action":"adding_friend"}
     },
-    ['user_name' => 'taylor_otwell'],
-    ['user_id' => 987],
+    data: ['user_name' => 'taylor_otwell'],
+    hidden: ['user_id' => 987],
 );
 
 Context::all();
@@ -185,7 +186,8 @@ Context::allHidden();
 // ]
 ```
 
-If an object within the context is modified inside the closure, that mutation will be reflected outside the scope. To avoid unintended side effects, use immutable data or create copies as needed.
+> [!WARNING]
+> If an object within the context is modified inside the scoped closure, that mutation will be reflected outside of the scope.
 
 <a name="stacks"></a>
 ### Stacks
