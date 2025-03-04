@@ -1427,7 +1427,7 @@ A _ratio_ constraint should be represented as width divided by height. This can 
 'avatar' => 'dimensions:ratio=3/2'
 ```
 
-Since this rule requires several arguments, it is often more convenient to use use the `Rule::dimensions` method to fluently construct the rule:
+Since this rule requires several arguments, it is often more convenient to use the `Rule::dimensions` method to fluently construct the rule:
 
 ```php
 use Illuminate\Support\Facades\Validator;
