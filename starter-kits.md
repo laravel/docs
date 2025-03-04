@@ -239,7 +239,7 @@ resources/views
 
 #### Traditional Livewire Components
 
-The frontend code is located in the `resouces/views` directory and the authentication, user profile and settings logic is located in `app/Livewire`.
+The frontend code is located in the `resouces/views` directory, while the `app/Livewire` directory contains the corresponding backend logic for the Livewire components.
 
 <a name="livewire-available-layouts"></a>
 #### Available Layouts
