@@ -688,6 +688,8 @@ $slice = Arr::only($array, ['name', 'price']);
 The `Arr::partition` method may be combined with PHP array destructuring to separate elements that pass a given truth test from those that do not:
 
 ```php
+<?php
+
 use Illuminate\Support\Arr;
 
 $numbers = [1, 2, 3, 4, 5, 6];
@@ -696,11 +698,11 @@ $numbers = [1, 2, 3, 4, 5, 6];
     return $i < 3;
 });
 
-$underThree;
+dump($underThree);
 
 // [1, 2]
 
-$equalOrAboveThree;
+dump($equalOrAboveThree);
 
 // [3, 4, 5, 6]
 ```
