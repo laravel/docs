@@ -683,9 +683,9 @@ $slice = Arr::only($array, ['name', 'price']);
 ```
 
 <a name="method-array-partition"></a>
-#### `partition()` {.collection-method}
+#### `Arr::partition()` {.collection-method}
 
-The `partition` method may be combined with PHP array destructuring to separate elements that pass a given truth test from those that do not:
+The `Arr::partition` method may be combined with PHP array destructuring to separate elements that pass a given truth test from those that do not:
 
 ```php
 use Illuminate\Support\Arr;
