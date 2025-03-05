@@ -115,13 +115,13 @@ Typically, translation strings are stored in files within the `lang` directory. 
 
 All language files return an array of keyed strings. For example:
 
-    <?php
+```php filename=lang/en/messages.php
+<?php
 
-    // lang/en/messages.php
-
-    return [
-        'welcome' => 'Welcome to our application!',
-    ];
+return [
+    'welcome' => 'Welcome to our application!',
+];
+```
 
 > [!WARNING]  
 > For languages that differ by territory, you should name the language directories according to the ISO 15897. For example, "en_GB" should be used for British English rather than "en-gb".
