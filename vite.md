@@ -28,6 +28,7 @@
   - [Subresource Integrity (SRI)](#subresource-integrity-sri)
   - [Arbitrary Attributes](#arbitrary-attributes)
 - [Advanced Customization](#advanced-customization)
+  - [Dev Server Cross-Origin Resource Sharing (CORS)](#cors)
   - [Correcting Dev Server URLs](#correcting-dev-server-urls)
 
 <a name="introduction"></a>
@@ -63,14 +64,14 @@ Have you started a new Laravel application using our Vite scaffolding but need t
 
 You must ensure that Node.js (16+) and NPM are installed before running Vite and the Laravel plugin:
 
-```sh
+```shell
 node -v
 npm -v
 ```
 
 You can easily install the latest version of Node and NPM using simple graphical installers from [the official Node website](https://nodejs.org/en/download/). Or, if you are using [Laravel Sail](https://laravel.com/docs/{{version}}/sail), you may invoke Node and NPM through Sail:
 
-```sh
+```shell
 ./vendor/bin/sail node -v
 ./vendor/bin/sail npm -v
 ```
@@ -80,7 +81,7 @@ You can easily install the latest version of Node and NPM using simple graphical
 
 Within a fresh installation of Laravel, you will find a `package.json` file in the root of your application's directory structure. The default `package.json` file already includes everything you need to get started using Vite and the Laravel plugin. You may install your application's frontend dependencies via NPM:
 
-```sh
+```shell
 npm install
 ```
 
@@ -309,7 +310,7 @@ export default defineConfig({
 
 If you would like to build your frontend using the [Vue](https://vuejs.org/) framework, then you will also need to install the `@vitejs/plugin-vue` plugin:
 
-```sh
+```shell
 npm install --save-dev @vitejs/plugin-vue
 ```
 
@@ -346,14 +347,14 @@ export default defineConfig({
 ```
 
 > [!NOTE]  
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vue, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Vue, and Vite.
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vue, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, Vue, and Vite.
 
 <a name="react"></a>
 ### React
 
 If you would like to build your frontend using the [React](https://reactjs.org/) framework, then you will also need to install the `@vitejs/plugin-react` plugin:
 
-```sh
+```shell
 npm install --save-dev @vitejs/plugin-react
 ```
 
@@ -384,7 +385,7 @@ You will also need to include the additional `@viteReactRefresh` Blade directive
 The `@viteReactRefresh` directive must be called before the `@vite` directive.
 
 > [!NOTE]  
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, React, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, React, and Vite.
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, React, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, React, and Vite.
 
 <a name="inertia"></a>
 ### Inertia
@@ -409,7 +410,7 @@ createInertiaApp({
 If you are using Vite's code splitting feature with Inertia, we recommend configuring [asset prefetching](#asset-prefetching).
 
 > [!NOTE]  
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia, and Vite.
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, Inertia, and Vite.
 
 <a name="url-processing"></a>
 ### URL Processing
@@ -420,7 +421,7 @@ When referencing relative asset paths, you should remember that the paths are re
 
 Consider the following project structure:
 
-```nothing
+```text
 public/
   taylor.png
 resources/
@@ -551,13 +552,15 @@ export default defineConfig({
 
 It is common in JavaScript applications to [create aliases](#aliases) to regularly referenced directories. But, you may also create aliases to use in Blade by using the `macro` method on the `Illuminate\Support\Facades\Vite` class. Typically, "macros" should be defined within the `boot` method of a [service provider](/docs/{{version}}/providers):
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
-    }
+```php
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
+}
+```
 
 Once a macro has been defined, it can be invoked within your templates. For example, we can use the `image` macro defined above to reference an asset located at `resources/images/logo.png`:
 
@@ -645,7 +648,7 @@ ASSET_URL=https://cdn.example.com
 
 After configuring the asset URL, all re-written URLs to your assets will be prefixed with the configured value:
 
-```nothing
+```text
 https://cdn.example.com/build/assets/app.9dce8d17.js
 ```
 
@@ -746,19 +749,19 @@ To ensure you don't forget to rebuild the SSR entry point, we recommend augmenti
 
 Then, to build and start the SSR server, you may run the following commands:
 
-```sh
+```shell
 npm run build
 node bootstrap/ssr/ssr.js
 ```
 
 If you are using [SSR with Inertia](https://inertiajs.com/server-side-rendering), you may instead use the `inertia:start-ssr` Artisan command to start the SSR server:
 
-```sh
+```shell
 php artisan inertia:start-ssr
 ```
 
 > [!NOTE]  
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia SSR, and Vite.
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, Inertia SSR, and Vite.
 
 <a name="script-and-style-attributes"></a>
 ## Script and Style Tag Attributes
@@ -925,6 +928,72 @@ export default defineConfig({
     build: {
       manifest: 'assets.json', // Customize the manifest filename...
     },
+});
+```
+
+<a name="cors"></a>
+### Dev Server Cross-Origin Resource Sharing (CORS)
+
+If you are experiencing Cross-Origin Resource Sharing (CORS) issues in the browser while fetching assets from the Vite dev server, you may need to grant your custom origin access to the dev server. Vite combined with the Laravel plugin allows the following origins without any additional configuration:
+
+- `::1`
+- `127.0.0.1`
+- `localhost`
+- `*.test`
+- `*.localhost`
+- `APP_URL` in the project's `.env`
+
+The easiest way to allow a custom origin for your project is to ensure that your application's `APP_URL` environment variable matches the origin you are visiting in your browser. For example, if you visiting `https://my-app.laravel`, you should update your `.env` to match:
+
+```env
+APP_URL=https://my-app.laravel
+```
+
+If you need more fine-grained control over the origins, such as supporting multiple origins, you should utilize [Vite's comprehensive and flexible built-in CORS server configuration](https://vite.dev/config/server-options.html#server-cors). For example, you may specify multiple origins in the `server.cors.origin` configuration option in the project's `vite.config.js` file:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: 'resources/js/app.js',
+            refresh: true,
+        }),
+    ],
+    server: {  // [tl! add]
+        cors: {  // [tl! add]
+            origin: [  // [tl! add]
+                'https://backend.laravel',  // [tl! add]
+                'http://admin.laravel:8566',  // [tl! add]
+            ],  // [tl! add]
+        },  // [tl! add]
+    },  // [tl! add]
+});
+```
+
+You may also include regex patterns, which can be helpful if you would like to allow all origins for a given top-level domain, such as `*.laravel`:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: 'resources/js/app.js',
+            refresh: true,
+        }),
+    ],
+    server: {  // [tl! add]
+        cors: {  // [tl! add]
+            origin: [ // [tl! add]
+                // Supports: SCHEME://DOMAIN.laravel[:PORT] [tl! add]
+                /^https?:\/\/.*\.laravel(:\d+)?$/, //[tl! add]
+            ], // [tl! add]
+        }, // [tl! add]
+    }, // [tl! add]
 });
 ```
 

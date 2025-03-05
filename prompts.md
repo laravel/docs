@@ -922,7 +922,7 @@ $progress->finish();
 
 The `clear` function may be used to clear the user's terminal:
 
-```
+```php
 use function Laravel\Prompts\clear;
 
 clear();

@@ -28,7 +28,6 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 
 - [Laravel Application](https://github.com/laravel/laravel)
 - [Laravel Art](https://github.com/laravel/art)
-- [Laravel Breeze](https://github.com/laravel/breeze)
 - [Laravel Documentation](https://github.com/laravel/docs)
 - [Laravel Dusk](https://github.com/laravel/dusk)
 - [Laravel Cashier Stripe](https://github.com/laravel/cashier)
@@ -39,17 +38,19 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Framework](https://github.com/laravel/framework)
 - [Laravel Homestead](https://github.com/laravel/homestead) ([Build Scripts](https://github.com/laravel/settler))
 - [Laravel Horizon](https://github.com/laravel/horizon)
-- [Laravel Jetstream](https://github.com/laravel/jetstream)
+- [Laravel Livewire Starter Kit](https://github.com/laravel/livewire-starter-kit)
 - [Laravel Passport](https://github.com/laravel/passport)
 - [Laravel Pennant](https://github.com/laravel/pennant)
 - [Laravel Pint](https://github.com/laravel/pint)
 - [Laravel Prompts](https://github.com/laravel/prompts)
+- [Laravel React Starter Kit](https://github.com/laravel/react-starter-kit)
 - [Laravel Reverb](https://github.com/laravel/reverb)
 - [Laravel Sail](https://github.com/laravel/sail)
 - [Laravel Sanctum](https://github.com/laravel/sanctum)
 - [Laravel Scout](https://github.com/laravel/scout)
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
+- [Laravel Vue Starter Kit](https://github.com/laravel/vue-starter-kit)
 - [Laravel Website](https://github.com/laravel/laravel.com)
 
 </div>
@@ -81,9 +82,9 @@ Informal discussion regarding bugs, new features, and implementation of existing
 <a name="which-branch"></a>
 ## Which Branch?
 
-**All** bug fixes should be sent to the latest version that supports bug fixes (currently `11.x`). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**All** bug fixes should be sent to the latest version that supports bug fixes (currently `12.x`). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
 
-**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch (currently `11.x`).
+**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch (currently `12.x`).
 
 **Major** new features or features with breaking changes should always be sent to the `master` branch, which contains the upcoming release.
 
@@ -107,44 +108,50 @@ Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master
 
 Below is an example of a valid Laravel documentation block. Note that the `@param` attribute is followed by two spaces, the argument type, two more spaces, and finally the variable name:
 
-    /**
-     * Register a binding with the container.
-     *
-     * @param  string|array  $abstract
-     * @param  \Closure|string|null  $concrete
-     * @param  bool  $shared
-     * @return void
-     *
-     * @throws \Exception
-     */
-    public function bind($abstract, $concrete = null, $shared = false)
-    {
-        // ...
-    }
+```php
+/**
+ * Register a binding with the container.
+ *
+ * @param  string|array  $abstract
+ * @param  \Closure|string|null  $concrete
+ * @param  bool  $shared
+ * @return void
+ *
+ * @throws \Exception
+ */
+public function bind($abstract, $concrete = null, $shared = false)
+{
+    // ...
+}
+```
 
 When the `@param` or `@return` attributes are redundant due to the use of native types, they can be removed:
 
-    /**
-     * Execute the job.
-     */
-    public function handle(AudioProcessor $processor): void
-    {
-        //
-    }
+```php
+/**
+ * Execute the job.
+ */
+public function handle(AudioProcessor $processor): void
+{
+    //
+}
+```
 
 However, when the native type is generic, please specify the generic type through the use of the `@param` or `@return` attributes:
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [
-            Attachment::fromStorage('/path/to/file'),
-        ];
-    }
+```php
+/**
+ * Get the attachments for the message.
+ *
+ * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+ */
+public function attachments(): array
+{
+    return [
+        Attachment::fromStorage('/path/to/file'),
+    ];
+}
+```
 
 <a name="styleci"></a>
 ### StyleCI

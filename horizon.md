@@ -58,33 +58,37 @@ After publishing Horizon's assets, its primary configuration file will be locate
 
 After installation, the primary Horizon configuration option that you should familiarize yourself with is the `environments` configuration option. This configuration option is an array of environments that your application runs on and defines the worker process options for each environment. By default, this entry contains a `production` and `local` environment. However, you are free to add more environments as needed:
 
-    'environments' => [
-        'production' => [
-            'supervisor-1' => [
-                'maxProcesses' => 10,
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 3,
-            ],
-        ],
-
-        'local' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
-            ],
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            'maxProcesses' => 10,
+            'balanceMaxShift' => 1,
+            'balanceCooldown' => 3,
         ],
     ],
+
+    'local' => [
+        'supervisor-1' => [
+            'maxProcesses' => 3,
+        ],
+    ],
+],
+```
 
 You may also define a wildcard environment (`*`) which will be used when no other matching environment is found:
 
-    'environments' => [
-        // ...
+```php
+'environments' => [
+    // ...
 
-        '*' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
-            ],
+    '*' => [
+        'supervisor-1' => [
+            'maxProcesses' => 3,
         ],
     ],
+],
+```
 
 When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/docs/{{version}}/configuration#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
 
@@ -103,14 +107,16 @@ You may add additional supervisors to a given environment if you would like to d
 
 While your application is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
 
-    'environments' => [
-        'production' => [
-            'supervisor-1' => [
-                // ...
-                'force' => true,
-            ],
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'force' => true,
         ],
     ],
+],
+```
 
 <a name="default-values"></a>
 #### Default Values
@@ -128,21 +134,23 @@ The `auto` strategy, which is the configuration file's default, adjusts the numb
 
 When using the `auto` strategy, you may define the `minProcesses` and `maxProcesses` configuration options to control the minimum number of processes per queue and the maximum number of worker processes in total Horizon should scale up and down to:
 
-    'environments' => [
-        'production' => [
-            'supervisor-1' => [
-                'connection' => 'redis',
-                'queue' => ['default'],
-                'balance' => 'auto',
-                'autoScalingStrategy' => 'time',
-                'minProcesses' => 1,
-                'maxProcesses' => 10,
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 3,
-                'tries' => 3,
-            ],
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            'connection' => 'redis',
+            'queue' => ['default'],
+            'balance' => 'auto',
+            'autoScalingStrategy' => 'time',
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
+            'balanceMaxShift' => 1,
+            'balanceCooldown' => 3,
+            'tries' => 3,
         ],
     ],
+],
+```
 
 The `autoScalingStrategy` configuration value determines if Horizon will assign more worker processes to queues based on the total amount of time it will take to clear the queue (`time` strategy) or by the total number of jobs on the queue (`size` strategy).
 
@@ -155,19 +163,21 @@ When the `balance` option is set to `false`, the default Laravel behavior will b
 
 The Horizon dashboard may be accessed via the `/horizon` route. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
 
-    /**
-     * Register the Horizon gate.
-     *
-     * This gate determines who can access Horizon in non-local environments.
-     */
-    protected function gate(): void
-    {
-        Gate::define('viewHorizon', function (User $user) {
-            return in_array($user->email, [
-                'taylor@laravel.com',
-            ]);
-        });
-    }
+```php
+/**
+ * Register the Horizon gate.
+ *
+ * This gate determines who can access Horizon in non-local environments.
+ */
+protected function gate(): void
+{
+    Gate::define('viewHorizon', function (User $user) {
+        return in_array($user->email, [
+            'taylor@laravel.com',
+        ]);
+    });
+}
+```
 
 <a name="alternative-authentication-strategies"></a>
 #### Alternative Authentication Strategies
@@ -179,20 +189,24 @@ Remember that Laravel automatically injects the authenticated user into the gate
 
 Sometimes, you may not be interested in viewing certain jobs dispatched by your application or third-party packages. Instead of these jobs taking up space in your "Completed Jobs" list, you can silence them. To get started, add the job's class name to the `silenced` configuration option in your application's `horizon` configuration file:
 
-    'silenced' => [
-        App\Jobs\ProcessPodcast::class,
-    ],
+```php
+'silenced' => [
+    App\Jobs\ProcessPodcast::class,
+],
+```
 
 Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Contracts\Silenced` interface. If a job implements this interface, it will automatically be silenced, even if it is not present in the `silenced` configuration array:
 
-    use Laravel\Horizon\Contracts\Silenced;
+```php
+use Laravel\Horizon\Contracts\Silenced;
 
-    class ProcessPodcast implements ShouldQueue, Silenced
-    {
-        use Queueable;
+class ProcessPodcast implements ShouldQueue, Silenced
+{
+    use Queueable;
 
-        // ...
-    }
+    // ...
+}
+```
 
 <a name="upgrading-horizon"></a>
 ## Upgrading Horizon
@@ -263,7 +277,7 @@ sudo apt-get install supervisor
 ```
 
 > [!NOTE]  
-> If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
+> If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Cloud](https://cloud.laravel.com), which can manage background processes for your Laravel applications.
 
 <a name="supervisor-configuration"></a>
 #### Supervisor Configuration
@@ -308,78 +322,86 @@ sudo supervisorctl start horizon
 
 Horizon allows you to assign “tags” to jobs, including mailables, broadcast events, notifications, and queued event listeners. In fact, Horizon will intelligently and automatically tag most jobs depending on the Eloquent models that are attached to the job. For example, take a look at the following job:
 
-    <?php
+```php
+<?php
 
-    namespace App\Jobs;
+namespace App\Jobs;
 
-    use App\Models\Video;
-    use Illuminate\Contracts\Queue\ShouldQueue;
-    use Illuminate\Foundation\Queue\Queueable;
+use App\Models\Video;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 
-    class RenderVideo implements ShouldQueue
+class RenderVideo implements ShouldQueue
+{
+    use Queueable;
+
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(
+        public Video $video,
+    ) {}
+
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
     {
-        use Queueable;
-
-        /**
-         * Create a new job instance.
-         */
-        public function __construct(
-            public Video $video,
-        ) {}
-
-        /**
-         * Execute the job.
-         */
-        public function handle(): void
-        {
-            // ...
-        }
+        // ...
     }
+}
+```
 
 If this job is queued with an `App\Models\Video` instance that has an `id` attribute of `1`, it will automatically receive the tag `App\Models\Video:1`. This is because Horizon will search the job's properties for any Eloquent models. If Eloquent models are found, Horizon will intelligently tag the job using the model's class name and primary key:
 
-    use App\Jobs\RenderVideo;
-    use App\Models\Video;
+```php
+use App\Jobs\RenderVideo;
+use App\Models\Video;
 
-    $video = Video::find(1);
+$video = Video::find(1);
 
-    RenderVideo::dispatch($video);
+RenderVideo::dispatch($video);
+```
 
 <a name="manually-tagging-jobs"></a>
 #### Manually Tagging Jobs
 
 If you would like to manually define the tags for one of your queueable objects, you may define a `tags` method on the class:
 
-    class RenderVideo implements ShouldQueue
+```php
+class RenderVideo implements ShouldQueue
+{
+    /**
+     * Get the tags that should be assigned to the job.
+     *
+     * @return array<int, string>
+     */
+    public function tags(): array
     {
-        /**
-         * Get the tags that should be assigned to the job.
-         *
-         * @return array<int, string>
-         */
-        public function tags(): array
-        {
-            return ['render', 'video:'.$this->video->id];
-        }
+        return ['render', 'video:'.$this->video->id];
     }
+}
+```
 
 <a name="manually-tagging-event-listeners"></a>
 #### Manually Tagging Event Listeners
 
 When retrieving the tags for a queued event listener, Horizon will automatically pass the event instance to the `tags` method, allowing you to add event data to the tags:
 
-    class SendRenderNotifications implements ShouldQueue
+```php
+class SendRenderNotifications implements ShouldQueue
+{
+    /**
+     * Get the tags that should be assigned to the listener.
+     *
+     * @return array<int, string>
+     */
+    public function tags(VideoRendered $event): array
     {
-        /**
-         * Get the tags that should be assigned to the listener.
-         *
-         * @return array<int, string>
-         */
-        public function tags(VideoRendered $event): array
-        {
-            return ['video:'.$event->video->id];
-        }
+        return ['video:'.$event->video->id];
     }
+}
+```
 
 <a name="notifications"></a>
 ## Notifications
@@ -389,37 +411,43 @@ When retrieving the tags for a queued event listener, Horizon will automatically
 
 If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from the `boot` method of your application's `App\Providers\HorizonServiceProvider`:
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        parent::boot();
+```php
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    parent::boot();
 
-        Horizon::routeSmsNotificationsTo('15556667777');
-        Horizon::routeMailNotificationsTo('example@example.com');
-        Horizon::routeSlackNotificationsTo('slack-webhook-url', '#channel');
-    }
+    Horizon::routeSmsNotificationsTo('15556667777');
+    Horizon::routeMailNotificationsTo('example@example.com');
+    Horizon::routeSlackNotificationsTo('slack-webhook-url', '#channel');
+}
+```
 
 <a name="configuring-notification-wait-time-thresholds"></a>
 #### Configuring Notification Wait Time Thresholds
 
 You may configure how many seconds are considered a "long wait" within your application's `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination. Any undefined connection / queue combinations will default to a long wait threshold of 60 seconds:
 
-    'waits' => [
-        'redis:critical' => 30,
-        'redis:default' => 60,
-        'redis:batch' => 120,
-    ],
+```php
+'waits' => [
+    'redis:critical' => 30,
+    'redis:default' => 60,
+    'redis:batch' => 120,
+],
+```
 
 <a name="metrics"></a>
 ## Metrics
 
 Horizon includes a metrics dashboard which provides information regarding your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes in your application's `routes/console.php` file:
 
-    use Illuminate\Support\Facades\Schedule;
+```php
+use Illuminate\Support\Facades\Schedule;
 
-    Schedule::command('horizon:snapshot')->everyFiveMinutes();
+Schedule::command('horizon:snapshot')->everyFiveMinutes();
+```
 
 <a name="deleting-failed-jobs"></a>
 ## Deleting Failed Jobs

@@ -41,11 +41,13 @@ Before using Socialite, you will need to add credentials for the OAuth providers
 
 These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `x`, `linkedin-openid`, `google`, `github`, `gitlab`, `bitbucket`, `slack`, or `slack-openid`, depending on the providers your application requires:
 
-    'github' => [
-        'client_id' => env('GITHUB_CLIENT_ID'),
-        'client_secret' => env('GITHUB_CLIENT_SECRET'),
-        'redirect' => 'http://example.com/callback-url',
-    ],
+```php
+'github' => [
+    'client_id' => env('GITHUB_CLIENT_ID'),
+    'client_secret' => env('GITHUB_CLIENT_SECRET'),
+    'redirect' => 'http://example.com/callback-url',
+],
+```
 
 > [!NOTE]  
 > If the `redirect` option contains a relative path, it will automatically be resolved to a fully qualified URL.
@@ -58,17 +60,19 @@ These credentials should be placed in your application's `config/services.php` c
 
 To authenticate users using an OAuth provider, you will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. The example routes below demonstrate the implementation of both routes:
 
-    use Laravel\Socialite\Facades\Socialite;
+```php
+use Laravel\Socialite\Facades\Socialite;
 
-    Route::get('/auth/redirect', function () {
-        return Socialite::driver('github')->redirect();
-    });
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+});
 
-    Route::get('/auth/callback', function () {
-        $user = Socialite::driver('github')->user();
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('github')->user();
 
-        // $user->token
-    });
+    // $user->token
+});
+```
 
 The `redirect` method provided by the `Socialite` facade takes care of redirecting the user to the OAuth provider, while the `user` method will examine the incoming request and retrieve the user's information from the provider after they have approved the authentication request.
 
@@ -77,26 +81,28 @@ The `redirect` method provided by the `Socialite` facade takes care of redirecti
 
 Once the user has been retrieved from the OAuth provider, you may determine if the user exists in your application's database and [authenticate the user](/docs/{{version}}/authentication#authenticate-a-user-instance). If the user does not exist in your application's database, you will typically create a new record in your database to represent the user:
 
-    use App\Models\User;
-    use Illuminate\Support\Facades\Auth;
-    use Laravel\Socialite\Facades\Socialite;
+```php
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
-    Route::get('/auth/callback', function () {
-        $githubUser = Socialite::driver('github')->user();
+Route::get('/auth/callback', function () {
+    $githubUser = Socialite::driver('github')->user();
 
-        $user = User::updateOrCreate([
-            'github_id' => $githubUser->id,
-        ], [
-            'name' => $githubUser->name,
-            'email' => $githubUser->email,
-            'github_token' => $githubUser->token,
-            'github_refresh_token' => $githubUser->refreshToken,
-        ]);
+    $user = User::updateOrCreate([
+        'github_id' => $githubUser->id,
+    ], [
+        'name' => $githubUser->name,
+        'email' => $githubUser->email,
+        'github_token' => $githubUser->token,
+        'github_refresh_token' => $githubUser->refreshToken,
+    ]);
 
-        Auth::login($user);
+    Auth::login($user);
 
-        return redirect('/dashboard');
-    });
+    return redirect('/dashboard');
+});
+```
 
 > [!NOTE]  
 > For more information regarding what user information is available from specific OAuth providers, please consult the documentation on [retrieving user details](#retrieving-user-details).
@@ -106,17 +112,21 @@ Once the user has been retrieved from the OAuth provider, you may determine if t
 
 Before redirecting the user, you may use the `scopes` method to specify the "scopes" that should be included in the authentication request. This method will merge all previously specified scopes with the scopes that you specify:
 
-    use Laravel\Socialite\Facades\Socialite;
+```php
+use Laravel\Socialite\Facades\Socialite;
 
-    return Socialite::driver('github')
-        ->scopes(['read:user', 'public_repo'])
-        ->redirect();
+return Socialite::driver('github')
+    ->scopes(['read:user', 'public_repo'])
+    ->redirect();
+```
 
 You can overwrite all existing scopes on the authentication request using the `setScopes` method:
 
-    return Socialite::driver('github')
-        ->setScopes(['read:user', 'public_repo'])
-        ->redirect();
+```php
+return Socialite::driver('github')
+    ->setScopes(['read:user', 'public_repo'])
+    ->redirect();
+```
 
 <a name="slack-bot-scopes"></a>
 ### Slack Bot Scopes
@@ -134,14 +144,18 @@ By default, the `slack` driver will generate a `user` token and invoking the dri
 
 Bot tokens are primarily useful if your application will be sending notifications to external Slack workspaces that are owned by your application's users. To generate a bot token, invoke the `asBotUser` method before redirecting the user to Slack for authentication:
 
-    return Socialite::driver('slack')
-        ->asBotUser()
-        ->setScopes(['chat:write', 'chat:write.public', 'chat:write.customize'])
-        ->redirect();
+```php
+return Socialite::driver('slack')
+    ->asBotUser()
+    ->setScopes(['chat:write', 'chat:write.public', 'chat:write.customize'])
+    ->redirect();
+```
 
 In addition, you must invoke the `asBotUser` method before invoking the `user` method after Slack redirects the user back to your application after authentication:
 
-    $user = Socialite::driver('slack')->asBotUser()->user();
+```php
+$user = Socialite::driver('slack')->asBotUser()->user();
+```
 
 When generating a bot token, the `user` method will still return a `Laravel\Socialite\Two\User` instance; however, only the `token` property will be hydrated. This token may be stored in order to [send notifications to the authenticated user's Slack workspaces](/docs/{{version}}/notifications#notifying-external-slack-workspaces).
 
@@ -150,11 +164,13 @@ When generating a bot token, the `user` method will still return a `Laravel\Soci
 
 A number of OAuth providers support other optional parameters on the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
 
-    use Laravel\Socialite\Facades\Socialite;
+```php
+use Laravel\Socialite\Facades\Socialite;
 
-    return Socialite::driver('google')
-        ->with(['hd' => 'example.com'])
-        ->redirect();
+return Socialite::driver('google')
+    ->with(['hd' => 'example.com'])
+    ->redirect();
+```
 
 > [!WARNING]  
 > When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`.
@@ -166,36 +182,40 @@ After the user is redirected back to your application's authentication callback 
 
 Differing properties and methods may be available on this object depending on whether the OAuth provider you are authenticating with supports OAuth 1.0 or OAuth 2.0:
 
-    use Laravel\Socialite\Facades\Socialite;
+```php
+use Laravel\Socialite\Facades\Socialite;
 
-    Route::get('/auth/callback', function () {
-        $user = Socialite::driver('github')->user();
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('github')->user();
 
-        // OAuth 2.0 providers...
-        $token = $user->token;
-        $refreshToken = $user->refreshToken;
-        $expiresIn = $user->expiresIn;
+    // OAuth 2.0 providers...
+    $token = $user->token;
+    $refreshToken = $user->refreshToken;
+    $expiresIn = $user->expiresIn;
 
-        // OAuth 1.0 providers...
-        $token = $user->token;
-        $tokenSecret = $user->tokenSecret;
+    // OAuth 1.0 providers...
+    $token = $user->token;
+    $tokenSecret = $user->tokenSecret;
 
-        // All providers...
-        $user->getId();
-        $user->getNickname();
-        $user->getName();
-        $user->getEmail();
-        $user->getAvatar();
-    });
+    // All providers...
+    $user->getId();
+    $user->getNickname();
+    $user->getName();
+    $user->getEmail();
+    $user->getAvatar();
+});
+```
 
 <a name="retrieving-user-details-from-a-token-oauth2"></a>
 #### Retrieving User Details From a Token
 
 If you already have a valid access token for a user, you can retrieve their user details using Socialite's `userFromToken` method:
 
-    use Laravel\Socialite\Facades\Socialite;
+```php
+use Laravel\Socialite\Facades\Socialite;
 
-    $user = Socialite::driver('github')->userFromToken($token);
+$user = Socialite::driver('github')->userFromToken($token);
+```
 
 If you are using Facebook Limited Login via an iOS application, Facebook will return an OIDC token instead of an access token. Like an access token, the OIDC token can be provided to the `userFromToken` method in order to retrieve user details.
 
@@ -204,6 +224,8 @@ If you are using Facebook Limited Login via an iOS application, Facebook will re
 
 The `stateless` method may be used to disable session state verification. This is useful when adding social authentication to a stateless API that does not utilize cookie based sessions:
 
-    use Laravel\Socialite\Facades\Socialite;
+```php
+use Laravel\Socialite\Facades\Socialite;
 
-    return Socialite::driver('google')->stateless()->user();
+return Socialite::driver('google')->stateless()->user();
+```

@@ -157,32 +157,36 @@ class ExampleTest extends TestCase
 
 Alternatively, you may instruct Laravel to automatically seed the database before each test that uses the `RefreshDatabase` trait. You may accomplish this by defining a `$seed` property on your base test class:
 
-    <?php
+```php
+<?php
 
-    namespace Tests;
+namespace Tests;
 
-    use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
-    abstract class TestCase extends BaseTestCase
-    {
-        /**
-         * Indicates whether the default seeder should run before each test.
-         *
-         * @var bool
-         */
-        protected $seed = true;
-    }
+abstract class TestCase extends BaseTestCase
+{
+    /**
+     * Indicates whether the default seeder should run before each test.
+     *
+     * @var bool
+     */
+    protected $seed = true;
+}
+```
 
 When the `$seed` property is `true`, the test will run the `Database\Seeders\DatabaseSeeder` class before each test that uses the `RefreshDatabase` trait. However, you may specify a specific seeder that should be executed by defining a `$seeder` property on your test class:
 
-    use Database\Seeders\OrderStatusSeeder;
+```php
+use Database\Seeders\OrderStatusSeeder;
 
-    /**
-     * Run a specific seeder before each test.
-     *
-     * @var string
-     */
-    protected $seeder = OrderStatusSeeder::class;
+/**
+ * Run a specific seeder before each test.
+ *
+ * @var string
+ */
+protected $seeder = OrderStatusSeeder::class;
+```
 
 <a name="available-assertions"></a>
 ## Available Assertions
@@ -194,69 +198,94 @@ Laravel provides several database assertions for your [Pest](https://pestphp.com
 
 Assert that a table in the database contains the given number of records:
 
-    $this->assertDatabaseCount('users', 5);
+```php
+$this->assertDatabaseCount('users', 5);
+```
 
+<a name="assert-database-empty"></a>
+#### assertDatabaseEmpty
+
+Assert that a table in the database contains no records:
+
+```php
+$this->assertDatabaseEmpty('users');
+```
+    
 <a name="assert-database-has"></a>
 #### assertDatabaseHas
 
 Assert that a table in the database contains records matching the given key / value query constraints:
 
-    $this->assertDatabaseHas('users', [
-        'email' => 'sally@example.com',
-    ]);
+```php
+$this->assertDatabaseHas('users', [
+    'email' => 'sally@example.com',
+]);
+```
 
 <a name="assert-database-missing"></a>
 #### assertDatabaseMissing
 
 Assert that a table in the database does not contain records matching the given key / value query constraints:
 
-    $this->assertDatabaseMissing('users', [
-        'email' => 'sally@example.com',
-    ]);
+```php
+$this->assertDatabaseMissing('users', [
+    'email' => 'sally@example.com',
+]);
+```
 
 <a name="assert-deleted"></a>
 #### assertSoftDeleted
 
 The `assertSoftDeleted` method may be used to assert a given Eloquent model has been "soft deleted":
 
-    $this->assertSoftDeleted($user);
+```php
+$this->assertSoftDeleted($user);
+```
 
 <a name="assert-not-deleted"></a>
 #### assertNotSoftDeleted
 
 The `assertNotSoftDeleted` method may be used to assert a given Eloquent model hasn't been "soft deleted":
 
-    $this->assertNotSoftDeleted($user);
+```php
+$this->assertNotSoftDeleted($user);
+```
 
 <a name="assert-model-exists"></a>
 #### assertModelExists
 
 Assert that a given model exists in the database:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    $user = User::factory()->create();
+$user = User::factory()->create();
 
-    $this->assertModelExists($user);
+$this->assertModelExists($user);
+```
 
 <a name="assert-model-missing"></a>
 #### assertModelMissing
 
 Assert that a given model does not exist in the database:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    $user = User::factory()->create();
+$user = User::factory()->create();
 
-    $user->delete();
+$user->delete();
 
-    $this->assertModelMissing($user);
+$this->assertModelMissing($user);
+```
 
 <a name="expects-database-query-count"></a>
 #### expectsDatabaseQueryCount
 
 The `expectsDatabaseQueryCount` method may be invoked at the beginning of your test to specify the total number of database queries that you expect to be run during the test. If the actual number of executed queries does not exactly match this expectation, the test will fail:
 
-    $this->expectsDatabaseQueryCount(5);
+```php
+$this->expectsDatabaseQueryCount(5);
 
-    // Test...
+// Test...
+```

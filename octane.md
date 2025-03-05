@@ -78,7 +78,7 @@ Finally, add a `SUPERVISOR_PHP_COMMAND` environment variable to the `laravel.tes
 services:
   laravel.test:
     environment:
-      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80" # [tl! add]
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port='${APP_PORT:-80}'" # [tl! add]
       XDG_CONFIG_HOME:  /var/www/html/config # [tl! add]
       XDG_DATA_HOME:  /var/www/html/data # [tl! add]
 ```
@@ -170,7 +170,7 @@ Then, add a `SUPERVISOR_PHP_COMMAND` environment variable to the `laravel.test` 
 services:
   laravel.test:
     environment:
-      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=80" # [tl! add]
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port='${APP_PORT:-80}'" # [tl! add]
 ```
 
 Finally, ensure the `rr` binary is executable and build your Sail images:
@@ -215,7 +215,7 @@ To get started, add a `SUPERVISOR_PHP_COMMAND` environment variable to the `lara
 services:
   laravel.test:
     environment:
-      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port=80" # [tl! add]
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port='${APP_PORT:-80}'" # [tl! add]
 ```
 
 Finally, build your Sail images:
@@ -262,7 +262,7 @@ By default, applications running via Octane generate links prefixed with `http:/
 ### Serving Your Application via Nginx
 
 > [!NOTE]  
-> If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel Octane application, check out [Laravel Forge](https://forge.laravel.com).
+> If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel Octane application, check out [Laravel Cloud](https://cloud.laravel.com), which offers fully-managed Laravel Octane support.
 
 In production environments, you should serve your Octane application behind a traditional web server such as Nginx or Apache. Doing so will allow the web server to serve your static assets such as images and stylesheets, as well as manage your SSL certificate termination.
 
@@ -589,15 +589,15 @@ In this example, we will register a closure to be invoked every 10 seconds. Typi
 
 ```php
 Octane::tick('simple-ticker', fn () => ray('Ticking...'))
-        ->seconds(10);
+    ->seconds(10);
 ```
 
 Using the `immediate` method, you may instruct Octane to immediately invoke the tick callback when the Octane server initially boots, and every N seconds thereafter:
 
 ```php
 Octane::tick('simple-ticker', fn () => ray('Ticking...'))
-        ->seconds(10)
-        ->immediate();
+    ->seconds(10)
+    ->immediate();
 ```
 
 <a name="the-octane-cache"></a>

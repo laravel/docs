@@ -64,6 +64,7 @@
     - [Migrations](/docs/{{version}}/migrations)
     - [Seeding](/docs/{{version}}/seeding)
     - [Redis](/docs/{{version}}/redis)
+    - [MongoDB](/docs/{{version}}/mongodb)
 - ## Eloquent ORM
     - [Getting Started](/docs/{{version}}/eloquent)
     - [Relationships](/docs/{{version}}/eloquent-relationships)
@@ -80,7 +81,6 @@
     - [Database](/docs/{{version}}/database-testing)
     - [Mocking](/docs/{{version}}/mocking)
 - ## Packages
-    - [Breeze](/docs/{{version}}/starter-kits#laravel-breeze)
     - [Cashier (Stripe)](/docs/{{version}}/billing)
     - [Cashier (Paddle)](/docs/{{version}}/cashier-paddle)
     - [Dusk](/docs/{{version}}/dusk)
@@ -89,7 +89,6 @@
     - [Folio](/docs/{{version}}/folio)
     - [Homestead](/docs/{{version}}/homestead)
     - [Horizon](/docs/{{version}}/horizon)
-    - [Jetstream](https://jetstream.laravel.com)
     - [Mix](/docs/{{version}}/mix)
     - [Octane](/docs/{{version}}/octane)
     - [Passport](/docs/{{version}}/passport)
@@ -105,4 +104,4 @@
     - [Socialite](/docs/{{version}}/socialite)
     - [Telescope](/docs/{{version}}/telescope)
     - [Valet](/docs/{{version}}/valet)
-- [API Documentation](/api/11.x)
+- [API Documentation](https://api.laravel.com/docs/12.x)
