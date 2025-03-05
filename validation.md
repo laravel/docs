@@ -2316,7 +2316,7 @@ use Illuminate\Support\Facades\Validator;
 
 $validator = Validator::make($request->all(), [
     'email' => 'required|email',
-    'games' => 'required|numeric',
+    'games' => 'required|integer|min:0',
 ]);
 ```
 
