@@ -2728,7 +2728,7 @@ If necessary, you may provide placeholder replacements and the preferred languag
 ```php
 $fail('validation.location')->translate([
     'value' => $this->value,
-], 'fr')
+], 'fr');
 ```
 
 #### Accessing Additional Data
