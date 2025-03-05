@@ -223,6 +223,33 @@ A list of additional schedule constraints may be found below:
 
 </div>
 
+<a name="cron-constraints"></a>
+#### Cron Constraints
+
+Cron is used to schedule tasks to run at specific times. The `cron` method allows you to define a custom cron schedule for your task. This method is the most powerful scheduling method provided by Laravel:
+
+`->cron('* * * * *');`
+
+<div class="overflow-auto">
+
+| Field         | Value (*) | Meaning                                |
+|---------------|-----------|----------------------------------------|
+| Minute        | `*`       | Every minute (0-59)                    |
+| Hour          | `*`       | Every hour (0-23)                      |
+| Day of Month  | `*`       | Every day (1-31)                       |
+| Month         | `*`       | Every month (1-12)                     |
+| Day of Week   | `*`       | Every day (0-6, where Sunday = 0 or 7) |
+
+</div>
+
+```php
+use Illuminate\Support\Facades\Schedule;
+
+// Runs at 7:00 AM on the 2nd day of every month
+Schedule::command('emails:send')
+    ->cron('0 7 2 * *');
+```
+
 <a name="day-constraints"></a>
 #### Day Constraints
 
