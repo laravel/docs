@@ -60,6 +60,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::mapSpread](#method-array-map-spread)
 [Arr::mapWithKeys](#method-array-map-with-keys)
 [Arr::only](#method-array-only)
+[Arr::partition](#method-array-partition)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
 [Arr::prependKeysWith](#method-array-prependkeyswith)
@@ -679,6 +680,29 @@ $array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 $slice = Arr::only($array, ['name', 'price']);
 
 // ['name' => 'Desk', 'price' => 100]
+```
+
+<a name="method-array-partition"></a>
+#### `partition()` {.collection-method}
+
+The `partition` method may be combined with PHP array destructuring to separate elements that pass a given truth test from those that do not:
+
+```php
+use Illuminate\Support\Arr;
+
+$numbers = [1, 2, 3, 4, 5, 6];
+
+[$underThree, $equalOrAboveThree] = Arr::partition($numbers, function (int $i) {
+    return $i < 3;
+});
+
+$underThree;
+
+// [1, 2]
+
+$equalOrAboveThree;
+
+// [3, 4, 5, 6]
 ```
 
 <a name="method-array-pluck"></a>
