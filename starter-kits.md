@@ -11,6 +11,7 @@
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
 - [WorkOS AuthKit Authentication](#workos)
+- [Inertia SSR](#inertia-ssr)
 - [Frequently Asked Questions](#faqs)
 
 <a name="introduction"></a>
@@ -304,6 +305,21 @@ When using a WorkOS powered starter kit, we recommend that you disable "Email + 
 #### Configuring AuthKit Session Timeouts
 
 In addition, we recommend that you configure your WorkOS AuthKit session inactivity timeout to match your Laravel application's configured session timeout threshold, which is typically two hours.
+
+<a name="inertia-ssr"></a>
+### Inertia SSR
+
+The React and Vue starter kits are compatible with Inertia's [server-side rendering](https://inertiajs.com/server-side-rendering) capabilities. To build an Inertia SSR compatible bundle for your application, run the `build:ssr` command:
+
+```shell
+npm run build:ssr
+```
+
+For convenience, a `composer dev:ssr` command is also available. This command will start the Laravel development server and Inertia SSR server after building an SSR compatible bundle for your application, allowing you to test your application locally using Inertia's server-side rendering engine:
+
+```shell
+composer dev:ssr
+```
 
 <a name="faqs"></a>
 ### Frequently Asked Questions
