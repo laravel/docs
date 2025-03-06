@@ -8,6 +8,7 @@
 - [Asynchronous Processes](#asynchronous-processes)
     - [Process IDs and Signals](#process-ids-and-signals)
     - [Asynchronous Process Output](#asynchronous-process-output)
+    - [Asynchronous Process Timeouts](#asynchronous-process-timeouts)
 - [Concurrent Processes](#concurrent-processes)
     - [Naming Pool Processes](#naming-pool-processes)
     - [Pool Process IDs and Signals](#pool-process-ids-and-signals)
@@ -299,6 +300,23 @@ $process = Process::start('bash import.sh');
 $process->waitUntil(function (string $type, string $output) {
     return $output === 'Ready...';
 });
+```
+
+<a name="asynchronous-process-timeouts"></a>
+### Asynchronous Process Timeouts
+
+While an asynchronous process is running, any looped calls to the `running` method will ignore timeouts. To check if a running process has timed out you may utilise the `ensureNotTimedOut` method to throw a [timeout exception](#timeouts):
+
+```php
+$process = Process::timeout(120)->start('bash import.sh');
+
+while ($process->running()) {
+    $process->ensureNotTimedOut();
+
+    // ...
+
+    sleep(1);
+}
 ```
 
 <a name="concurrent-processes"></a>
