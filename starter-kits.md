@@ -12,6 +12,7 @@
     - [Livewire](#livewire-customization)
 - [WorkOS AuthKit Authentication](#workos)
 - [Inertia SSR](#inertia-ssr)
+- [Community Maintained Starter Kits](#community-maintained-starter-kits)
 - [Frequently Asked Questions](#faqs)
 
 <a name="introduction"></a>
@@ -320,6 +321,18 @@ For convenience, a `composer dev:ssr` command is also available. This command wi
 ```shell
 composer dev:ssr
 ```
+
+### Community Maintained Starter Kits
+
+When creating a new Laravel app you can specify a community maintained starter kit on Packagist with the `--using` flag:
+
+```shell
+laravel new my-app --using=vibe-coding/ai
+```
+
+#### Adding Your Starter Kit for Others to User
+
+To have a your own starter kit available to other users, you will need to publish your repository to Packagist. Please ensure you have the necessary environment variables defined in your `.env.example` and any necessary commands defined in the `post-create-project-cmd` array of your composer.json file.
 
 <a name="faqs"></a>
 ### Frequently Asked Questions
