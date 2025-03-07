@@ -400,6 +400,58 @@ Route::get('/users.json', function () {
 });
 ```
 
+<a name="event-streams"></a>
+#### Event Streams
+
+The `eventStream` method may be used to return a server-sent events (SSE) streamed response using the `text/event-stream` content type. The `eventStream` method accepts a closure which should [yield](https://www.php.net/manual/en/language.generators.overview.php) responses to the stream as the responses become available:
+
+```php
+Route::get('/chat', function () {
+    return response()->eventStream(function () {
+        $stream = OpenAI::client()->chat()->createStreamed(...);
+
+        foreach ($stream as $response) {
+            yield $response->choices[0];
+        }
+    });
+});
+```
+
+If you would like to customize the name of the event, you may yield an instance of the `StreamedEvent` class:
+
+```php
+use Illuminate\Http\StreamedEvent;
+
+yield new StreamedEvent(
+    event: 'update',
+    data: $response->choices[0],
+);
+```
+
+Event streams may be consumed via an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) object by your application's frontend. The `eventStream` method will automatically send a `</stream>` update to the event stream when the stream is complete:
+
+```js
+const source = new EventSource('/chat');
+
+source.addEventListener('update', (event) => {
+    if (event.data === '</stream>') {
+        source.close();
+
+        return;
+    }
+
+    console.log(event.data);
+})
+```
+
+To customize the final event that is sent to the event stream, you may provide a `StreamedEvent` instance to the `eventStream` method's `endStreamWith` argument:
+
+```php
+return response()->eventStream(function () {
+    // ...
+}, endStreamWith: new StreamedEvent(event: 'update', data: '</stream>'));
+```
+
 <a name="streamed-downloads"></a>
 #### Streamed Downloads
 

@@ -989,6 +989,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertMovedPermanently](#assert-moved-permanently)
 [assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
+[assertStreamed](#assert-streamed)
 [assertStreamedContent](#assert-streamed-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
@@ -1004,7 +1005,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
 [assertServerError](#assert-server-error)
-[assertServiceUnavailable](#assert-server-unavailable)
+[assertServiceUnavailable](#assert-service-unavailable)
 [assertSessionHas](#assert-session-has)
 [assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
@@ -1472,6 +1473,13 @@ Assert that the response has the given HTTP status code and no content:
 $response->assertNoContent($status = 204);
 ```
 
+<a name="assert-streamed"></a>
+#### assertStreamed
+
+Assert that the response was a streamed response:
+
+    $response->assertStreamed();
+
 <a name="assert-streamed-content"></a>
 #### assertStreamedContent
 
@@ -1607,7 +1615,7 @@ Assert that the response has a server error (>= 500 , < 600) HTTP status code:
 $response->assertServerError();
 ```
 
-<a name="assert-server-unavailable"></a>
+<a name="assert-service-unavailable"></a>
 #### assertServiceUnavailable
 
 Assert that the response has a "Service Unavailable" (503) HTTP status code:
@@ -1820,6 +1828,12 @@ $response->assertInvalid([
     'name' => 'The name field is required.',
     'email' => 'valid email address',
 ]);
+```
+
+If you would like to assert that the given fields are the only fields with validation errors, you may use the `assertOnlyInvalid` method:
+
+```php
+$response->assertOnlyInvalid(['name', 'email']);
 ```
 
 <a name="assert-view-has"></a>

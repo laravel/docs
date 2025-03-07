@@ -110,6 +110,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::ulid](#method-str-ulid)
 [Str::unwrap](#method-str-unwrap)
 [Str::uuid](#method-str-uuid)
+[Str::uuid7](#method-str-uuid7)
 [Str::wordCount](#method-str-word-count)
 [Str::wordWrap](#method-str-word-wrap)
 [Str::words](#method-str-words)
@@ -713,7 +714,7 @@ You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
 ```php
 use Illuminate\Support\Str;
 
-$matches = Str::is('*.jpg', 'photo.JPG', ignoreCase: true);     
+$matches = Str::is('*.jpg', 'photo.JPG', ignoreCase: true);
 
 // true
 ```
@@ -1172,11 +1173,11 @@ The `Str::replace` method replaces a given string within the string:
 ```php
 use Illuminate\Support\Str;
 
-$string = 'Laravel 10.x';
+$string = 'Laravel 11.x';
 
-$replaced = Str::replace('10.x', '11.x', $string);
+$replaced = Str::replace('11.x', '12.x', $string);
 
-// Laravel 11.x
+// Laravel 12.x
 ```
 
 The `replace` method also accepts a `caseSensitive` argument. By default, the `replace` method is case sensitive:
@@ -1680,6 +1681,23 @@ To instruct the `uuid` method to return to generating UUIDs normally, you may in
 
 ```php
 Str::createUuidsNormally();
+```
+
+<a name="method-str-uuid7"></a>
+#### `Str::uuid7()` {.collection-method}
+
+The `Str::uuid7` method generates a UUID (version 7):
+
+```php
+use Illuminate\Support\Str;
+
+return (string) Str::uuid7();
+```
+
+A `DateTimeInterface` may be passed as an optional parameter which will be used to generate the ordered UUID:
+
+```php
+return (string) Str::uuid7(time: now());
 ```
 
 <a name="method-str-word-count"></a>

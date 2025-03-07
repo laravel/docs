@@ -60,12 +60,15 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::mapSpread](#method-array-map-spread)
 [Arr::mapWithKeys](#method-array-map-with-keys)
 [Arr::only](#method-array-only)
+[Arr::partition](#method-array-partition)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
 [Arr::prependKeysWith](#method-array-prependkeyswith)
 [Arr::pull](#method-array-pull)
 [Arr::query](#method-array-query)
 [Arr::random](#method-array-random)
+[Arr::reject](#method-array-reject)
+[Arr::select](#method-array-select)
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
@@ -679,6 +682,31 @@ $slice = Arr::only($array, ['name', 'price']);
 // ['name' => 'Desk', 'price' => 100]
 ```
 
+<a name="method-array-partition"></a>
+#### `Arr::partition()` {.collection-method}
+
+The `Arr::partition` method may be combined with PHP array destructuring to separate elements that pass a given truth test from those that do not:
+
+```php
+<?php
+
+use Illuminate\Support\Arr;
+
+$numbers = [1, 2, 3, 4, 5, 6];
+
+[$underThree, $equalOrAboveThree] = Arr::partition($numbers, function (int $i) {
+    return $i < 3;
+});
+
+dump($underThree);
+
+// [1, 2]
+
+dump($equalOrAboveThree);
+
+// [3, 4, 5, 6]
+```
+
 <a name="method-array-pluck"></a>
 #### `Arr::pluck()` {.collection-method}
 
@@ -826,6 +854,42 @@ use Illuminate\Support\Arr;
 $items = Arr::random($array, 2);
 
 // [2, 5] - (retrieved randomly)
+```
+
+<a name="method-array-reject"></a>
+#### `Arr::reject()` {.collection-method}
+
+The `Arr::reject` method removes items from an array using the given closure:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [100, '200', 300, '400', 500];
+
+$filtered = Arr::reject($array, function (string|int $value, int $key) {
+    return is_string($value);
+});
+
+// [0 => 100, 2 => 300, 4 => 500]
+```
+
+<a name="method-array-select"></a>
+#### `Arr::select()` {.collection-method}
+
+The `Arr::select` method selects an array of values from an array:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [
+    ['id' => 1, 'name' => 'Desk', 'price' => 200],
+    ['id' => 2, 'name' => 'Table', 'price' => 150],
+    ['id' => 3, 'name' => 'Chair', 'price' => 300],
+];
+
+Arr::select($array, ['name', 'price']);
+
+// [['name' => 'Desk', 'price' => 200], ['name' => 'Table', 'price' => 150], ['name' => 'Chair', 'price' => 300]]
 ```
 
 <a name="method-array-set"></a>

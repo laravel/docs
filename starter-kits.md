@@ -11,6 +11,8 @@
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
 - [WorkOS AuthKit Authentication](#workos)
+- [Inertia SSR](#inertia-ssr)
+- [Community Maintained Starter Kits](#community-maintained-starter-kits)
 - [Frequently Asked Questions](#faqs)
 
 <a name="introduction"></a>
@@ -73,7 +75,7 @@ Our Livewire starter kit provides the perfect starting point for building Larave
 
 Livewire is a powerful way of building dynamic, reactive, frontend UIs using just PHP. It's a great fit for teams that primarily use Blade templates and are looking for a simpler alternative to JavaScript-driven SPA frameworks like React and Vue.
 
-The Livewire starter kit utilizes Laravel Volt, Tailwind, and the [Flux UI](https://fluxui.dev) component library.
+The Livewire starter kit utilizes Livewire, Tailwind, and the [Flux UI](https://fluxui.dev) component library.
 
 <a name="starter-kit-customization"></a>
 ## Starter Kit Customization
@@ -189,7 +191,7 @@ import { Switch } from '@/Components/ui/switch'
 <a name="vue-available-layouts"></a>
 #### Available Layouts
 
-The Vue starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/AppLayout.vue` file:
+The Vue starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/AppLayout.vue` file:
 
 ```js
 import AppLayout from '@/layouts/app/AppSidebarLayout.vue'; // [tl! remove]
@@ -221,7 +223,9 @@ import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue'; // [tl! add]
 <a name="livewire-customization"></a>
 ### Livewire
 
-Our Livewire starter kit is built with Livewire 3, Laravel Volt, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+Our Livewire starter kit is built with Livewire 3, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+
+#### Livewire and Volt
 
 The majority of the frontend code is located in the `resources/views` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
 
@@ -235,10 +239,14 @@ resources/views
 ├── welcome.blade.php     # Guest user welcome page
 ```
 
+#### Traditional Livewire Components
+
+The frontend code is located in the `resouces/views` directory, while the `app/Livewire` directory contains the corresponding backend logic for the Livewire components.
+
 <a name="livewire-available-layouts"></a>
 #### Available Layouts
 
-The Livewire starter kit includes two different primary layouts for you choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/components/layouts/app.blade.php` file. In addition, you should add the `container` attribute to the main Flux component:
+The Livewire starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/components/layouts/app.blade.php` file. In addition, you should add the `container` attribute to the main Flux component:
 
 ```blade
 <x-layouts.app.header>
@@ -298,6 +306,35 @@ When using a WorkOS powered starter kit, we recommend that you disable "Email + 
 #### Configuring AuthKit Session Timeouts
 
 In addition, we recommend that you configure your WorkOS AuthKit session inactivity timeout to match your Laravel application's configured session timeout threshold, which is typically two hours.
+
+<a name="inertia-ssr"></a>
+### Inertia SSR
+
+The React and Vue starter kits are compatible with Inertia's [server-side rendering](https://inertiajs.com/server-side-rendering) capabilities. To build an Inertia SSR compatible bundle for your application, run the `build:ssr` command:
+
+```shell
+npm run build:ssr
+```
+
+For convenience, a `composer dev:ssr` command is also available. This command will start the Laravel development server and Inertia SSR server after building an SSR compatible bundle for your application, allowing you to test your application locally using Inertia's server-side rendering engine:
+
+```shell
+composer dev:ssr
+```
+
+<a name="community-maintained-starter-kits"></a>
+### Community Maintained Starter Kits
+
+When creating a new Laravel application using the Laravel installer, you may provide any community maintained starter kit available on Packagist to the `--using` flag:
+
+```shell
+laravel new my-app --using=example/starter-kit
+```
+
+<a name="creating-starter-kits"></a>
+#### Creating Starter Kits
+
+To ensure your starter kit is available to others, you will need to publish it to [Packagist](https://packagist.org). Your starter kit should define its required environment variables in its `.env.example` file, and any necessary post-installation commands should be listed in the `post-create-project-cmd` array of the starter kit's `composer.json` file.
 
 <a name="faqs"></a>
 ### Frequently Asked Questions

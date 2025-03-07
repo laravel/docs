@@ -406,7 +406,7 @@ The example above may be simplified by passing a closure to the `block` method. 
 
 ```php
 Cache::lock('foo', 10)->block(5, function () {
-    // Lock acquired after waiting a maximum of 5 seconds...
+    // Lock acquired for 10 seconds after waiting a maximum of 5 seconds...
 });
 ```
 

@@ -859,8 +859,6 @@ $flattened->all();
 The `dump` method dumps the collection's items:
 
 ```php
-
-``````php
 $collection = collect(['John Doe', 'Jane Doe']);
 
 $collection->dump();
@@ -883,8 +881,6 @@ If you want to stop executing the script after dumping the collection, use the [
 The `duplicates` method retrieves and returns duplicate values from the collection:
 
 ```php
-
-``````php
 $collection = collect(['a', 'b', 'a', 'c', 'b']);
 
 $collection->duplicates();
@@ -895,8 +891,6 @@ $collection->duplicates();
 If the collection contains arrays or objects, you can pass the key of the attributes that you wish to check for duplicate values:
 
 ```php
-
-``````php
 $employees = collect([
     ['email' => 'abigail@example.com', 'position' => 'Developer'],
     ['email' => 'james@example.com', 'position' => 'Designer'],

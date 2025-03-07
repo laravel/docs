@@ -1214,7 +1214,7 @@ To restrict this validation rule to characters in the ASCII range (`a-z` and `A-
 
 The field under validation must be entirely Unicode alpha-numeric characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=), [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=), [`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=), as well as ASCII dashes (`-`) and ASCII underscores (`_`).
 
-To restrict this validation rule to characters in the ASCII range (`a-z` and `A-Z`), you may provide the `ascii` option to the validation rule:
+To restrict this validation rule to characters in the ASCII range (`a-z`, `A-Z`, and `0-9`), you may provide the `ascii` option to the validation rule:
 
 ```php
 'username' => 'alpha_dash:ascii',
@@ -1225,7 +1225,7 @@ To restrict this validation rule to characters in the ASCII range (`a-z` and `A-
 
 The field under validation must be entirely Unicode alpha-numeric characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=), [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=), and [`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=).
 
-To restrict this validation rule to characters in the ASCII range (`a-z` and `A-Z`), you may provide the `ascii` option to the validation rule:
+To restrict this validation rule to characters in the ASCII range (`a-z`, `A-Z`, and `0-9`), you may provide the `ascii` option to the validation rule:
 
 ```php
 'username' => 'alpha_num:ascii',
@@ -1427,7 +1427,7 @@ A _ratio_ constraint should be represented as width divided by height. This can 
 'avatar' => 'dimensions:ratio=3/2'
 ```
 
-Since this rule requires several arguments, it is often more convenient to use use the `Rule::dimensions` method to fluently construct the rule:
+Since this rule requires several arguments, it is often more convenient to use the `Rule::dimensions` method to fluently construct the rule:
 
 ```php
 use Illuminate\Support\Facades\Validator;
@@ -2316,7 +2316,7 @@ use Illuminate\Support\Facades\Validator;
 
 $validator = Validator::make($request->all(), [
     'email' => 'required|email',
-    'games' => 'required|numeric',
+    'games' => 'required|integer|min:0',
 ]);
 ```
 
@@ -2728,7 +2728,7 @@ If necessary, you may provide placeholder replacements and the preferred languag
 ```php
 $fail('validation.location')->translate([
     'value' => $this->value,
-], 'fr')
+], 'fr');
 ```
 
 #### Accessing Additional Data

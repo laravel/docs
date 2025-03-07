@@ -12,6 +12,15 @@
 
 </div>
 
+<a name="medium-impact-changes"></a>
+## Medium Impact Changes
+
+<div class="content-list" markdown="1">
+
+- [Models and UUIDv7](#models-and-uuidv7)
+
+</div>
+
 <a name="low-impact-changes"></a>
 ## Low Impact Changes
 
@@ -43,6 +52,8 @@ You should update the following dependencies in your application's `composer.jso
 <div class="content-list" markdown="1">
 
 - `laravel/framework` to `^12.0`
+- `phpunit/phpunit` to `^11.0`
+- `pestphp/pest` to `^3.0`
 
 </div>
 
@@ -133,6 +144,23 @@ $table = Schema::getTableListing(schema: 'main', schemaQualified: false);
 ```
 
 The `db:table` and `db:show` commands now output the results of all schemas on MySQL, MariaDB, and SQLite, just like PostgreSQL and SQL Server.
+
+<a name="eloquent"></a>
+### Eloquent
+
+<a name="models-and-uuidv7"></a>
+#### Models and UUIDv7
+
+**Likelihood Of Impact: Medium**
+
+The `HasUuids` trait now returns UUIDs that are compatible with version 7 of the UUID spec (ordered UUIDs). If you would like to continue using ordered UUIDv4 strings for your model's IDs, you should now use the `HasVersion4Uuids` trait:
+
+```php
+use Illuminate\Database\Eloquent\Concerns\HasUuids; // [tl! remove]
+use Illuminate\Database\Eloquent\Concerns\HasVersion4Uuids as HasUuids; // [tl! add]
+```
+
+The `HasVersion7Uuids` trait has been removed. If you were previously using this trait, you should use the `HasUuids` trait instead, which now provides the same behavior.
 
 <a name="requests"></a>
 ### Requests
