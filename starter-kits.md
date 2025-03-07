@@ -12,6 +12,7 @@
     - [Livewire](#livewire-customization)
 - [WorkOS AuthKit Authentication](#workos)
 - [Inertia SSR](#inertia-ssr)
+- [Community Maintained Starter Kits](#community-maintained-starter-kits)
 - [Frequently Asked Questions](#faqs)
 
 <a name="introduction"></a>
@@ -320,6 +321,20 @@ For convenience, a `composer dev:ssr` command is also available. This command wi
 ```shell
 composer dev:ssr
 ```
+
+<a name="community-maintained-starter-kits"></a>
+### Community Maintained Starter Kits
+
+When creating a new Laravel application using the Laravel installer, you may provide any community maintained starter kit available on Packagist to the `--using` flag:
+
+```shell
+laravel new my-app --using=example/starter-kit
+```
+
+<a name="creating-starter-kits"></a>
+#### Creating Starter Kits
+
+To ensure your starter kit is available to others, you will need to publish it to [Packagist](https://packagist.org). Your starter kit should define its required environment variables in its `.env.example` file, and any necessary post-installation commands should be listed in the `post-create-project-cmd` array of the starter kit's `composer.json` file.
 
 <a name="faqs"></a>
 ### Frequently Asked Questions
