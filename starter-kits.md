@@ -331,10 +331,10 @@ When creating a new Laravel application using the Laravel installer, you may pro
 laravel new my-app --using=example/starter-kit
 ```
 
-<a name="creating-community-starter-kits"></a>
-#### Creating Community Starter Kits
+<a name="creating-starter-kits"></a>
+#### Creating Starter Kits
 
-To ensure your starter kit is available to other users, you will need to publish it to [Packagist](https://packagist.org). Your starter kit should define its required environment variables in its `.env.example` file, and any necessary post installation commands should be listed in the `post-create-project-cmd` array of the starter kit's `composer.json` file.
+To ensure your starter kit is available to others, you will need to publish it to [Packagist](https://packagist.org). Your starter kit should define its required environment variables in its `.env.example` file, and any necessary post-installation commands should be listed in the `post-create-project-cmd` array of the starter kit's `composer.json` file.
 
 <a name="faqs"></a>
 ### Frequently Asked Questions
