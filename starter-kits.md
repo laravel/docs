@@ -325,15 +325,16 @@ composer dev:ssr
 <a name="community-maintained-starter-kits"></a>
 ### Community Maintained Starter Kits
 
-When creating a new Laravel app you can specify a community maintained starter kit on Packagist with the `--using` flag:
+When creating a new Laravel application using the Laravel installer, you may provide any community maintained starter kit available on Packagist to the `--using` flag:
 
 ```shell
-laravel new my-app --using=vibe-coding/ai
+laravel new my-app --using=example/starter-kit
 ```
 
-#### Adding Your Starter Kit
+<a name="creating-community-starter-kits"></a>
+#### Creating Community Starter Kits
 
-To have a your own starter kit available to other users, you will need to publish your repository to Packagist. Please ensure you have the necessary environment variables defined in your `.env.example` and any necessary commands defined in the `post-create-project-cmd` array of your composer.json file.
+To ensure your starter kit is available to other users, you will need to publish it to [Packagist](https://packagist.org). Your starter kit should define its required environment variables in its `.env.example` file, and any necessary post installation commands should be listed in the `post-create-project-cmd` array of the starter kit's `composer.json` file.
 
 <a name="faqs"></a>
 ### Frequently Asked Questions
