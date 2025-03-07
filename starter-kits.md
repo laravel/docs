@@ -331,7 +331,7 @@ When creating a new Laravel app you can specify a community maintained starter k
 laravel new my-app --using=vibe-coding/ai
 ```
 
-#### Adding Your Starter Kit for Others to User
+#### Adding Your Starter Kit
 
 To have a your own starter kit available to other users, you will need to publish your repository to Packagist. Please ensure you have the necessary environment variables defined in your `.env.example` and any necessary commands defined in the `post-create-project-cmd` array of your composer.json file.
 
