@@ -308,7 +308,7 @@ $client = app(ClientRepository::class)->createAuthorizationCodeGrantClient(
 );
 
 // Retrieving all the clients that belong to the user...
-$clients = $user->clients()->get();
+$clients = $user->oauthApps()->get();
 ```
 
 The `createAuthorizationCodeGrantClient` method returns an instance of `Laravel\Passport\Client`. You may display the `$client->id` as the client ID and `$client->plainSecret` as the client secret to the user.
