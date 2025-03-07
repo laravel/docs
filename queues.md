@@ -2004,7 +2004,7 @@ sudo apt-get install supervisor
 ```
 
 > [!NOTE]  
-> If configuring and managing Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your production Laravel projects.
+> If configuring and managing Supervisor yourself sounds overwhelming, consider using [Laravel Cloud](https://cloud.laravel.com), which provides a fully-managed platform for running Laravel queue workers.
 
 <a name="configuring-supervisor"></a>
 #### Configuring Supervisor

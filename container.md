@@ -144,7 +144,15 @@ $this->app->bindIf(Transistor::class, function (Application $app) {
 });
 ```
 
-> [!NOTE]  
+For convenience, you may omit providing the class or interface name that you wish to register as a separate argument and instead allow Laravel to infer the type from the return type of the closure you provide to the `bind` method:
+
+```php
+App::bind(function (Application $app): Transistor {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
+
+> [!NOTE]
 > There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.
 
 <a name="binding-a-singleton"></a>
