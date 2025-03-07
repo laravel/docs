@@ -322,6 +322,7 @@ For convenience, a `composer dev:ssr` command is also available. This command wi
 composer dev:ssr
 ```
 
+<a name="community-maintained-starter-kits"></a>
 ### Community Maintained Starter Kits
 
 When creating a new Laravel app you can specify a community maintained starter kit on Packagist with the `--using` flag:
