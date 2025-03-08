@@ -29,7 +29,7 @@ If you are using Laravel's default Tailwind pagination views with Tailwind CSS v
 
 ```css
 @import "tailwindcss";
-@source './../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views';
+@source "./../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views";
 ```
 
 <a name="tailwind-css-3"></a>
