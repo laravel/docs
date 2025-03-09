@@ -19,18 +19,18 @@
 - [Authorization Code Grant With PKCE](#code-grant-pkce)
     - [Creating the Client](#creating-a-auth-pkce-grant-client)
     - [Requesting Tokens](#requesting-auth-pkce-grant-tokens)
-- [Device Authorization Grant](#device-code-grant)
-    - [Creating a Device Code Grant Client](#creating-a-device-code-grant-client)
+- [Device Authorization Grant](#device-authorization-grant)
+    - [Creating a Device Code Grant Client](#creating-a-device-authorization-grant-client)
     - [Requesting Tokens](#requesting-device-authorization-grant-tokens)
-- [Password Grant](#password-grant-tokens)
+- [Password Grant](#password-grant)
     - [Creating a Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
     - [Customizing the User Provider](#customizing-the-user-provider)
     - [Customizing the Username Field](#customizing-the-username-field)
     - [Customizing the Password Validation](#customizing-the-password-validation)
-- [Implicit Grant](#implicit-grant-tokens)
-- [Client Credentials Grant](#client-credentials-grant-tokens)
+- [Implicit Grant](#implicit-grant)
+- [Client Credentials Grant](#client-credentials-grant)
 - [Personal Access Tokens](#personal-access-tokens)
     - [Creating a Personal Access Client](#creating-a-personal-access-client)
     - [Customizing the User Provider](#customizing-the-user-provider-for-pat)
@@ -43,7 +43,7 @@
     - [Default Scope](#default-scope)
     - [Assigning Scopes to Tokens](#assigning-scopes-to-tokens)
     - [Checking Scopes](#checking-scopes)
-- [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
+- [SPA Authentication](#spa-authentication)
 - [Events](#events)
 - [Testing](#testing)
 
@@ -245,7 +245,7 @@ Route::group([
 });
 ```
 
-<a name="authorization-code-grant-tokens"></a>
+<a name="authorization-code-grant"></a>
 ## Authorization Code Grant
 
 Using OAuth2 via authorization codes is how most developers are familiar with OAuth2. When using authorization codes, a client application will redirect a user to your server where they will either approve or deny the request to issue an access token to the client.
@@ -274,7 +274,7 @@ public function boot(): void
 First, developers building applications that need to interact with your application's API will need to register their application with yours by creating a "client". Typically, this consists of providing the name of their application and a URI that your application can redirect to after users approve their request for authorization.
 
 <a name="managing-first-party-clients"></a>
-#### First-party clients
+#### First-Party Clients
 
 The simplest way to create a client is using the `passport:client` Artisan command. This command may be used to create first-party clients or testing your OAuth2 functionality. When you run the `passport:client` command, Passport will prompt you for more information about your client and will provide you with a client ID and secret:
 
@@ -289,7 +289,7 @@ https://third-party-app.com/callback,https://example.com/oauth/redirect
 ```
 
 <a name="managing-third-party-clients"></a>
-#### Third-party clients
+#### Third-Party Clients
 
 Since your application's users will not be able to utilize the `passport:client` command, you may use `createAuthorizationCodeGrantClient` method of the `Laravel\Passport\ClientRepository` class to register a client for the given user:
 
@@ -618,7 +618,7 @@ Route::get('/callback', function (Request $request) {
 });
 ```
 
-<a name="device-code-grant"></a>
+<a name="device-authorization-grant"></a>
 ## Device Authorization Grant
 
 The OAuth2 device authorization grant allows browserless or limited input devices, such as TVs and game consoles, to obtain an access token by exchanging a "device code". When using device flow, the device client will instruct the user to use a secondary device, such as a computer or a smartphone and connect to your server where they will enter the provided "user code" and either approve or deny the access request.
@@ -642,8 +642,8 @@ public function boot(): void
 }
 ```
 
-<a name="creating-a-device-code-grant-client"></a>
-### Creating a Device Code Grant Client
+<a name="creating-a-device-authorization-grant-client"></a>
+### Creating a Device Authorization Grant Client
 
 Before your application can issue tokens via the device authorization grant, you will need to create a device flow enabled client. You may do this using the `passport:client` Artisan command with the `--device` option. This command will create a first-party device flow enabled client and provide you with a client ID and secret:
 
@@ -726,7 +726,7 @@ return $response->json();
 
 If the user has approved the authorization request, this will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
 
-<a name="password-grant-tokens"></a>
+<a name="password-grant"></a>
 ## Password Grant
 
 > [!WARNING]  
@@ -858,7 +858,7 @@ class User extends Authenticatable
 }
 ```
 
-<a name="implicit-grant-tokens"></a>
+<a name="implicit-grant"></a>
 ## Implicit Grant
 
 > [!WARNING]  
@@ -906,7 +906,7 @@ Route::get('/redirect', function (Request $request) {
 > [!NOTE]  
 > Remember, the `/oauth/authorize` route is already defined by Passport. You do not need to manually define this route.
 
-<a name="client-credentials-grant-tokens"></a>
+<a name="client-credentials-grant"></a>
 ## Client Credentials Grant
 
 The client credentials grant is suitable for machine-to-machine authentication. For example, you might use this grant in a scheduled job which is performing maintenance tasks over an API.
@@ -1020,7 +1020,7 @@ Route::get('/user', function () {
 ```
 
 > [!WARNING]  
-> If you are using the [client credentials grant](#client-credentials-grant-tokens), you should use [the `client` middleware](#client-credentials-grant-tokens) to protect your routes instead of the `auth:api` middleware.
+> If you are using the [client credentials grant](#client-credentials-grant), you should use [the `Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner` middleware](#client-credentials-grant) to protect your routes instead of the `auth:api` middleware.
 
 <a name="multiple-authentication-guards"></a>
 #### Multiple Authentication Guards
@@ -1217,7 +1217,7 @@ You may determine if a given scope has been defined using the `hasScope` method:
 Passport::hasScope('orders:create');
 ```
 
-<a name="consuming-your-api-with-javascript"></a>
+<a name="spa-authentication"></a>
 ## SPA Authentication
 
 When building an API, it can be extremely useful to be able to consume your own API from your JavaScript application. This approach to API development allows your own application to consume the same API that you are sharing with the world. The same API may be consumed by your web application, mobile applications, third-party applications, and any SDKs that you may publish on various package managers.
