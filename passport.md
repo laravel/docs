@@ -83,9 +83,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements OAuthenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 }
@@ -290,7 +291,7 @@ http://example.com/callback,http://examplefoo.com/callback
 <a name="managing-third-party-clients"></a>
 #### Third-party clients
 
-Since your application's users will not be able to utilize the `passport:client` command, you may use `createAuthorizationCodeGrantClient` method on the `ClientRepository` class to register a client for the given user:
+Since your application's users will not be able to utilize the `passport:client` command, you may use `createAuthorizationCodeGrantClient` method of the `Laravel\Passport\ClientRepository` class to register a client for the given user:
 
 ```php
 use App\Models\User;
@@ -298,16 +299,16 @@ use Laravel\Passport\ClientRepository;
 
 $user = User::find($userId);
 
-// Creating a client that belongs to the given user...
+// Creating an OAuth app client that belongs to the given user...
 $client = app(ClientRepository::class)->createAuthorizationCodeGrantClient(
     user: $user,
     name: 'Example App',
     redirectUris: ['https://example.com/callback'],
-    confidential: true,
+    confidential: false,
     enableDeviceFlow: true
 );
 
-// Retrieving all the clients that belong to the user...
+// Retrieving all the OAuth app clients that belong to the user...
 $clients = $user->oauthApps()->get();
 ```
 
@@ -329,10 +330,10 @@ Route::get('/redirect', function (Request $request) {
     $request->session()->put('state', $state = Str::random(40));
 
     $query = http_build_query([
-        'client_id' => 'client-id',
+        'client_id' => 'your-client-id',
         'redirect_uri' => 'http://third-party-app.com/callback',
         'response_type' => 'code',
-        'scope' => '',
+        'scope' => 'user:read orders:create',
         'state' => $state,
         // 'prompt' => '', // "none", "consent", or "login"
     ]);
@@ -399,8 +400,8 @@ Route::get('/callback', function (Request $request) {
 
     $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'authorization_code',
-        'client_id' => 'client-id',
-        'client_secret' => 'client-secret',
+        'client_id' => 'your-client-id',
+        'client_secret' => 'your-client-secret',
         'redirect_uri' => 'http://third-party-app.com/callback',
         'code' => $request->code,
     ]);
@@ -417,7 +418,7 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 <a name="managing-tokens"></a>
 ### Managing Tokens
 
-You may retrieve user's authorized tokens using the `tokens` method of the `Laravel\Passport\HasApiTokens`. For example, to offer your users a dashboard to keep track of their connections with third-party applications:
+You may retrieve user's authorized tokens using the `tokens` method of the `Laravel\Passport\HasApiTokens` trait. For example, to offer your users a dashboard to keep track of their connections with third-party applications:
 
 ```php
 use App\Models\User;
@@ -427,13 +428,13 @@ use Laravel\Passport\Token;
 
 $user = User::find($userId);
 
-// Retrieving all valid tokens for the user...
+// Retrieving all the valid tokens for the user...
 $tokens = $user->tokens()
     ->where('revoked', false)
     ->where('expires_at', '>', Date::now())
     ->get();
 
-// Retrieving all the user's connections to third-party clients...
+// Retrieving all the user's connections to third-party OAuth app clients...
 $connections = $tokens->load('client')
     ->reject(fn (Token $token) => $token->client->firstParty())
     ->groupBy('client_id')
@@ -456,9 +457,9 @@ use Illuminate\Support\Facades\Http;
 $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
     'grant_type' => 'refresh_token',
     'refresh_token' => 'the-refresh-token',
-    'client_id' => 'client-id',
-    'client_secret' => 'client-secret', // required for confidential clients only
-    'scope' => '',
+    'client_id' => 'your-client-id',
+    'client_secret' => 'your-client-secret', // required for confidential clients only
+    'scope' => 'user:read orders:create',
 ]);
 
 return $response->json();
@@ -473,6 +474,7 @@ You may revoke a token by using the `revoke` method on the `Laravel\Passport\Tok
 
 ```php
 use Laravel\Passport\Passport;
+use Laravel\Passport\Token;
 
 $token = Passport::token()->find($tokenId);
 
@@ -481,6 +483,12 @@ $token->revoke();
 
 // Revoke the token's refresh token...
 $token->refreshToken?->revoke();
+
+// Revoke all the user's tokens...
+User::find($userId)->tokens()->each(function (Token $token) {
+    $token->revoke();
+    $token->refreshToken?->revoke();
+});
 ```
 
 <a name="purging-tokens"></a>
@@ -489,16 +497,16 @@ $token->refreshToken?->revoke();
 When tokens have been revoked or expired, you might want to purge them from the database. Passport's included `passport:purge` Artisan command can do this for you:
 
 ```shell
-# Purge revoked and expired tokens and auth codes...
+# Purge revoked and expired tokens, auth codes, and device codes...
 php artisan passport:purge
 
 # Only purge tokens expired for more than 6 hours...
 php artisan passport:purge --hours=6
 
-# Only purge revoked tokens and auth codes...
+# Only purge revoked tokens, auth codes, and device codes...
 php artisan passport:purge --revoked
 
-# Only purge expired tokens and auth codes...
+# Only purge expired tokens, auth codes, and device codes...
 php artisan passport:purge --expired
 ```
 
@@ -563,10 +571,10 @@ Route::get('/redirect', function (Request $request) {
     , '='), '+/', '-_');
 
     $query = http_build_query([
-        'client_id' => 'client-id',
+        'client_id' => 'your-client-id',
         'redirect_uri' => 'http://third-party-app.com/callback',
         'response_type' => 'code',
-        'scope' => '',
+        'scope' => 'user:read orders:create',
         'state' => $state,
         'code_challenge' => $codeChallenge,
         'code_challenge_method' => 'S256',
@@ -600,7 +608,7 @@ Route::get('/callback', function (Request $request) {
 
     $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'authorization_code',
-        'client_id' => 'client-id',
+        'client_id' => 'your-client-id',
         'redirect_uri' => 'http://third-party-app.com/callback',
         'code_verifier' => $codeVerifier,
         'code' => $request->code,
@@ -670,8 +678,8 @@ Once a client has been created, developers may use their client ID to request a 
 use Illuminate\Support\Facades\Http;
 
 $response = Http::asForm()->post('http://passport-app.test/oauth/device/code', [
-    'client_id' => 'client-id',
-    'scope' => '',
+    'client_id' => 'your-client-id',
+    'scope' => 'user:read orders:create',
 ]);
 
 return $response->json();
@@ -703,9 +711,9 @@ do {
 
     $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'urn:ietf:params:oauth:grant-type:device_code',
-        'client_id' => 'client-id',
-        'client_secret' => 'client-secret', // required for confidential clients only
-        'device_code' => 'device-code',
+        'client_id' => 'your-client-id',
+        'client_secret' => 'your-client-secret', // required for confidential clients only
+        'device_code' => 'the-device-code',
     ]);
     
     if ($response->json('error') === 'slow_down') {
@@ -757,11 +765,11 @@ use Illuminate\Support\Facades\Http;
 
 $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
     'grant_type' => 'password',
-    'client_id' => 'client-id',
-    'client_secret' => 'client-secret', // required for confidential clients only
+    'client_id' => 'your-client-id',
+    'client_secret' => 'your-client-secret', // required for confidential clients only
     'username' => 'taylor@laravel.com',
     'password' => 'my-password',
-    'scope' => '',
+    'scope' => 'user:read orders:create',
 ]);
 
 return $response->json();
@@ -780,8 +788,8 @@ use Illuminate\Support\Facades\Http;
 
 $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
     'grant_type' => 'password',
-    'client_id' => 'client-id',
-    'client_secret' => 'client-secret', // required for confidential clients only
+    'client_id' => 'your-client-id',
+    'client_secret' => 'your-client-secret', // required for confidential clients only
     'username' => 'taylor@laravel.com',
     'password' => 'my-password',
     'scope' => '*',
@@ -883,10 +891,10 @@ Route::get('/redirect', function (Request $request) {
     $request->session()->put('state', $state = Str::random(40));
 
     $query = http_build_query([
-        'client_id' => 'client-id',
+        'client_id' => 'your-client-id',
         'redirect_uri' => 'http://third-party-app.com/callback',
         'response_type' => 'token',
-        'scope' => '',
+        'scope' => 'user:read orders:create',
         'state' => $state,
         // 'prompt' => '', // "none", "consent", or "login"
     ]);
@@ -909,30 +917,22 @@ Before your application can issue tokens via the client credentials grant, you w
 php artisan passport:client --client
 ```
 
-Next, register a middleware alias for the `EnsureClientIsResourceOwner` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
-
-    use Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner;
-
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'client' => EnsureClientIsResourceOwner::class,
-        ]);
-    })
-
-Then, attach the middleware to a route:
+Next, assign the `Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner` middleware to a route:
 
 ```php
+use Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner;
+
 Route::get('/orders', function (Request $request) {
     // Access token is valid and the client is resource owner...
-})->middleware('client');
+})->middleware(EnsureClientIsResourceOwner::class);
 ```
 
-To restrict access to the route to specific scopes, you may provide a comma-delimited list of the required scopes when attaching the `client` middleware to the route:
+To restrict access to the route to specific scopes, you may provide a list of the required scopes to the `using` method`:
 
 ```php
 Route::get('/orders', function (Request $request) {
-    // Access token is valid, the client is resource owner, and has both "check-status" and "place-orders" scopes...
-})->middleware('client:check-status,place-orders');
+    // Access token is valid, the client is resource owner, and has both "servers:read" and "servers:create" scopes...
+})->middleware(EnsureClientIsResourceOwner::using('servers:read', 'servers:create');
 ```
 
 <a name="retrieving-tokens"></a>
@@ -945,9 +945,9 @@ use Illuminate\Support\Facades\Http;
 
 $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
     'grant_type' => 'client_credentials',
-    'client_id' => 'client-id',
-    'client_secret' => 'client-secret',
-    'scope' => 'your-scope',
+    'client_id' => 'your-client-id',
+    'client_secret' => 'your-client-secret',
+    'scope' => 'servers:read servers:create',
 ]);
 
 return $response->json()['access_token'];
@@ -988,15 +988,15 @@ use Laravel\Passport\Token;
 $user = User::find($userId);
 
 // Creating a token without scopes...
-$token = $user->createToken('Token Name')->accessToken;
+$token = $user->createToken('My Token')->accessToken;
 
 // Creating a token with scopes...
-$token = $user->createToken('My Token', ['place-orders'])->accessToken;
+$token = $user->createToken('My Token', ['user:read', 'orders:create'])->accessToken;
 
 // Creating a token with all scopes...
 $token = $user->createToken('My Token', ['*'])->accessToken;
 
-// Retrieving all the valid personal access tokens...
+// Retrieving all the valid personal access tokens that belong to the user...
 $tokens = $user->tokens()
     ->with('client')
     ->where('revoked', false)
@@ -1015,7 +1015,7 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
 
 ```php
 Route::get('/user', function () {
-    // ...
+    // Only API authenticated users may access this route...
 })->middleware('auth:api');
 ```
 
@@ -1055,14 +1055,14 @@ Route::get('/customer', function () {
 <a name="passing-the-access-token"></a>
 ### Passing the Access Token
 
-When calling routes that are protected by Passport, your application's API consumers should specify their access token as a `Bearer` token in the `Authorization` header of their request. For example, when using the Guzzle HTTP library:
+When calling routes that are protected by Passport, your application's API consumers should specify their access token as a `Bearer` token in the `Authorization` header of their request. For example, when using the `Http` Facade:
 
 ```php
 use Illuminate\Support\Facades\Http;
 
 $response = Http::withHeaders([
     'Accept' => 'application/json',
-    'Authorization' => 'Bearer '.$accessToken,
+    'Authorization' => "Bearer $accessToken",
 ])->get('https://passport-app.test/api/user');
 
 return $response->json();
@@ -1085,8 +1085,9 @@ You may define your API's scopes using the `Passport::tokensCan` method in the `
 public function boot(): void
 {
     Passport::tokensCan([
-        'place-orders' => 'Place orders',
-        'check-status' => 'Check order status',
+        'user:read' => 'Retrieve the user info',
+        'orders:create' => 'Place orders',
+        'orders:read:status' => 'Check order status',
     ]);
 }
 ```
@@ -1100,13 +1101,14 @@ If a client does not request any specific scopes, you may configure your Passpor
 use Laravel\Passport\Passport;
 
 Passport::tokensCan([
-    'place-orders' => 'Place orders',
-    'check-status' => 'Check order status',
+        'user:read' => 'Retrieve the user info',
+        'orders:create' => 'Place orders',
+        'orders:read:status' => 'Check order status',
 ]);
 
 Passport::defaultScopes([
-    'check-status',
-    'place-orders',
+    'user:read',
+    'orders:create',
 ]);
 ```
 
@@ -1121,10 +1123,10 @@ When requesting an access token using the authorization code grant, consumers sh
 ```php
 Route::get('/redirect', function () {
     $query = http_build_query([
-        'client_id' => 'client-id',
+        'client_id' => 'your-client-id',
         'redirect_uri' => 'http://example.com/callback',
         'response_type' => 'code',
-        'scope' => 'place-orders check-status',
+        'scope' => 'user:read orders:create',
     ]);
 
     return redirect('http://passport-app.test/oauth/authorize?'.$query);
@@ -1137,46 +1139,38 @@ Route::get('/redirect', function () {
 If you are issuing personal access tokens using the `App\Models\User` model's `createToken` method, you may pass the array of desired scopes as the second argument to the method:
 
 ```php
-$token = $user->createToken('My Token', ['place-orders'])->accessToken;
+$token = $user->createToken('My Token', ['orders:create'])->accessToken;
 ```
 
 <a name="checking-scopes"></a>
 ### Checking Scopes
 
-Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope. To get started, define the following middleware aliases in your application's `bootstrap/app.php` file:
-
-```php
-use Laravel\Passport\Http\Middleware\CheckToken;
-use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
-
-->withMiddleware(function (Middleware $middleware) {
-    $middleware->alias([
-        'scopes' => CheckToken::class,
-        'scope' => CheckTokenForAnyScope::class,
-    ]);
-})
-```
+Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope.
 
 <a name="check-for-all-scopes"></a>
 #### Check For All Scopes
 
-The `scopes` middleware may be assigned to a route to verify that the incoming request's access token has all of the listed scopes:
+The `Laravel\Passport\Http\Middleware\CheckToken` middleware may be assigned to a route to verify that the incoming request's access token has all the listed scopes:
 
 ```php
+use Laravel\Passport\Http\Middleware\CheckToken;
+
 Route::get('/orders', function () {
-    // Access token has both "check-status" and "place-orders" scopes...
-})->middleware(['auth:api', 'scopes:check-status,place-orders']);
+    // Access token has both "orders:read" and "orders:create" scopes...
+})->middleware(['auth:api', CheckToken::using('orders:read', 'orders:create');
 ```
 
 <a name="check-for-any-scopes"></a>
 #### Check for Any Scopes
 
-The `scope` middleware may be assigned to a route to verify that the incoming request's access token has *at least one* of the listed scopes:
+The `Laravel\Passport\Http\Middleware\CheckTokenForAnyScope` middleware may be assigned to a route to verify that the incoming request's access token has *at least one* of the listed scopes:
 
 ```php
+use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
+
 Route::get('/orders', function () {
-    // Access token has either "check-status" or "place-orders" scope...
-})->middleware(['auth:api', 'scope:check-status,place-orders']);
+    // Access token has either "orders:read" or "orders:create" scope...
+})->middleware(['auth:api', CheckTokenForAnyScope::using('orders:read', 'orders:create');
 ```
 
 <a name="checking-scopes-on-a-token-instance"></a>
@@ -1188,7 +1182,7 @@ Once an access token authenticated request has entered your application, you may
 use Illuminate\Http\Request;
 
 Route::get('/orders', function (Request $request) {
-    if ($request->user()->tokenCan('place-orders')) {
+    if ($request->user()->tokenCan('orders:create')) {
         // ...
     }
 });
@@ -1214,13 +1208,13 @@ Passport::scopes();
 The `scopesFor` method will return an array of `Laravel\Passport\Scope` instances matching the given IDs / names:
 
 ```php
-Passport::scopesFor(['place-orders', 'check-status']);
+Passport::scopesFor(['user:read', 'orders:create']);
 ```
 
 You may determine if a given scope has been defined using the `hasScope` method:
 
 ```php
-Passport::hasScope('place-orders');
+Passport::hasScope('orders:create');
 ```
 
 <a name="consuming-your-api-with-javascript"></a>
@@ -1298,13 +1292,13 @@ Passport's `actingAs` method may be used to specify the currently authenticated 
 use App\Models\User;
 use Laravel\Passport\Passport;
 
-test('servers can be created', function () {
+test('orders can be created', function () {
     Passport::actingAs(
         User::factory()->create(),
-        ['create-servers']
+        ['orders:create']
     );
 
-    $response = $this->post('/api/create-server');
+    $response = $this->post('/api/orders');
 
     $response->assertStatus(201);
 });
@@ -1314,14 +1308,14 @@ test('servers can be created', function () {
 use App\Models\User;
 use Laravel\Passport\Passport;
 
-public function test_servers_can_be_created(): void
+public function test_orders_can_be_created(): void
 {
     Passport::actingAs(
         User::factory()->create(),
-        ['create-servers']
+        ['orders:create']
     );
 
-    $response = $this->post('/api/create-server');
+    $response = $this->post('/api/orders');
 
     $response->assertStatus(201);
 }
@@ -1333,13 +1327,13 @@ Passport's `actingAsClient` method may be used to specify the currently authenti
 use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
 
-test('orders can be retrieved', function () {
+test('servers can be retrieved', function () {
     Passport::actingAsClient(
         Client::factory()->create(),
-        ['check-status']
+        ['servers:read']
     );
 
-    $response = $this->get('/api/orders');
+    $response = $this->get('/api/servers');
 
     $response->assertStatus(200);
 });
@@ -1349,14 +1343,14 @@ test('orders can be retrieved', function () {
 use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
 
-public function test_orders_can_be_retrieved(): void
+public function test_servers_can_be_retrieved(): void
 {
     Passport::actingAsClient(
         Client::factory()->create(),
-        ['check-status']
+        ['servers:read']
     );
 
-    $response = $this->get('/api/orders');
+    $response = $this->get('/api/servers');
 
     $response->assertStatus(200);
 }
