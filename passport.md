@@ -285,7 +285,7 @@ php artisan passport:client
 If you would like to allow multiple redirect URIs for your client, you may specify them using a comma-delimited list when prompted for the URI by the `passport:client` command. Any URIs which contain commas should be URI encoded:
 
 ```shell
-http://example.com/callback,http://examplefoo.com/callback
+https://third-party-app.com/callback,https://example.com/oauth/redirect
 ```
 
 <a name="managing-third-party-clients"></a>
@@ -303,7 +303,7 @@ $user = User::find($userId);
 $client = app(ClientRepository::class)->createAuthorizationCodeGrantClient(
     user: $user,
     name: 'Example App',
-    redirectUris: ['https://example.com/callback'],
+    redirectUris: ['https://third-party-app.com/callback'],
     confidential: false,
     enableDeviceFlow: true
 );
@@ -331,14 +331,14 @@ Route::get('/redirect', function (Request $request) {
 
     $query = http_build_query([
         'client_id' => 'your-client-id',
-        'redirect_uri' => 'http://third-party-app.com/callback',
+        'redirect_uri' => 'https://third-party-app.com/callback',
         'response_type' => 'code',
         'scope' => 'user:read orders:create',
         'state' => $state,
         // 'prompt' => '', // "none", "consent", or "login"
     ]);
 
-    return redirect('http://passport-app.test/oauth/authorize?'.$query);
+    return redirect('https://passport-app.test/oauth/authorize?'.$query);
 });
 ```
 
@@ -398,11 +398,11 @@ Route::get('/callback', function (Request $request) {
         'Invalid state value.'
     );
 
-    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
+    $response = Http::asForm()->post('https://passport-app.test/oauth/token', [
         'grant_type' => 'authorization_code',
         'client_id' => 'your-client-id',
         'client_secret' => 'your-client-secret',
-        'redirect_uri' => 'http://third-party-app.com/callback',
+        'redirect_uri' => 'https://third-party-app.com/callback',
         'code' => $request->code,
     ]);
 
@@ -454,7 +454,7 @@ If your application issues short-lived access tokens, users will need to refresh
 ```php
 use Illuminate\Support\Facades\Http;
 
-$response = Http::asForm()->post('http://passport-app.test/oauth/token', [
+$response = Http::asForm()->post('https://passport-app.test/oauth/token', [
     'grant_type' => 'refresh_token',
     'refresh_token' => 'the-refresh-token',
     'client_id' => 'your-client-id',
@@ -572,7 +572,7 @@ Route::get('/redirect', function (Request $request) {
 
     $query = http_build_query([
         'client_id' => 'your-client-id',
-        'redirect_uri' => 'http://third-party-app.com/callback',
+        'redirect_uri' => 'https://third-party-app.com/callback',
         'response_type' => 'code',
         'scope' => 'user:read orders:create',
         'state' => $state,
@@ -581,7 +581,7 @@ Route::get('/redirect', function (Request $request) {
         // 'prompt' => '', // "none", "consent", or "login"
     ]);
 
-    return redirect('http://passport-app.test/oauth/authorize?'.$query);
+    return redirect('https://passport-app.test/oauth/authorize?'.$query);
 });
 ```
 
@@ -606,10 +606,10 @@ Route::get('/callback', function (Request $request) {
         InvalidArgumentException::class
     );
 
-    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
+    $response = Http::asForm()->post('https://passport-app.test/oauth/token', [
         'grant_type' => 'authorization_code',
         'client_id' => 'your-client-id',
-        'redirect_uri' => 'http://third-party-app.com/callback',
+        'redirect_uri' => 'https://third-party-app.com/callback',
         'code_verifier' => $codeVerifier,
         'code' => $request->code,
     ]);
@@ -677,7 +677,7 @@ Once a client has been created, developers may use their client ID to request a 
 ```php
 use Illuminate\Support\Facades\Http;
 
-$response = Http::asForm()->post('http://passport-app.test/oauth/device/code', [
+$response = Http::asForm()->post('https://passport-app.test/oauth/device/code', [
     'client_id' => 'your-client-id',
     'scope' => 'user:read orders:create',
 ]);
@@ -709,7 +709,7 @@ $interval = 5;
 do {
     Sleep::for($interval)->seconds();
 
-    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
+    $response = Http::asForm()->post('https://passport-app.test/oauth/token', [
         'grant_type' => 'urn:ietf:params:oauth:grant-type:device_code',
         'client_id' => 'your-client-id',
         'client_secret' => 'your-client-secret', // required for confidential clients only
@@ -763,7 +763,7 @@ Once you have enabled the grant and have created a password grant client, you ma
 ```php
 use Illuminate\Support\Facades\Http;
 
-$response = Http::asForm()->post('http://passport-app.test/oauth/token', [
+$response = Http::asForm()->post('https://passport-app.test/oauth/token', [
     'grant_type' => 'password',
     'client_id' => 'your-client-id',
     'client_secret' => 'your-client-secret', // required for confidential clients only
@@ -786,7 +786,7 @@ When using the password grant or client credentials grant, you may wish to autho
 ```php
 use Illuminate\Support\Facades\Http;
 
-$response = Http::asForm()->post('http://passport-app.test/oauth/token', [
+$response = Http::asForm()->post('https://passport-app.test/oauth/token', [
     'grant_type' => 'password',
     'client_id' => 'your-client-id',
     'client_secret' => 'your-client-secret', // required for confidential clients only
@@ -892,14 +892,14 @@ Route::get('/redirect', function (Request $request) {
 
     $query = http_build_query([
         'client_id' => 'your-client-id',
-        'redirect_uri' => 'http://third-party-app.com/callback',
+        'redirect_uri' => 'https://third-party-app.com/callback',
         'response_type' => 'token',
         'scope' => 'user:read orders:create',
         'state' => $state,
         // 'prompt' => '', // "none", "consent", or "login"
     ]);
 
-    return redirect('http://passport-app.test/oauth/authorize?'.$query);
+    return redirect('https://passport-app.test/oauth/authorize?'.$query);
 });
 ```
 
@@ -943,7 +943,7 @@ To retrieve a token using this grant type, make a request to the `oauth/token` e
 ```php
 use Illuminate\Support\Facades\Http;
 
-$response = Http::asForm()->post('http://passport-app.test/oauth/token', [
+$response = Http::asForm()->post('https://passport-app.test/oauth/token', [
     'grant_type' => 'client_credentials',
     'client_id' => 'your-client-id',
     'client_secret' => 'your-client-secret',
@@ -1124,12 +1124,12 @@ When requesting an access token using the authorization code grant, consumers sh
 Route::get('/redirect', function () {
     $query = http_build_query([
         'client_id' => 'your-client-id',
-        'redirect_uri' => 'http://example.com/callback',
+        'redirect_uri' => 'https://third-party-app.com/callback',
         'response_type' => 'code',
         'scope' => 'user:read orders:create',
     ]);
 
-    return redirect('http://passport-app.test/oauth/authorize?'.$query);
+    return redirect('https://passport-app.test/oauth/authorize?'.$query);
 });
 ```
 
