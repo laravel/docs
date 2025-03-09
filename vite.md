@@ -445,6 +445,30 @@ The following example demonstrates how Vite will treat relative and absolute URL
 <a name="working-with-stylesheets"></a>
 ## Working With Stylesheets
 
+> [!NOTE]  
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Tailwind, PostCSS, and Vite configuration. Or, if you would like to use Tailwind and Laravel without using one of our starter kits, check out [Tailwind's installation guide for Laravel](https://tailwindcss.com/docs/guides/laravel).
+
+<a name="tailwind-css-4"></a>
+#### Tailwind CSS v4
+
+If you are using v4, can use `@tailwindcss/vite` Vite plugin for installation, so it's sufficient to implement it in `vite.config.js` as follows:
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+    plugins: [
+        laravel(),
+        tailwindcss(),
+    ],
+});
+```
+
+<a name="tailwind-css-3"></a>
+#### Tailwind CSS v3
+
 You can learn more about Vite's CSS support within the [Vite documentation](https://vitejs.dev/guide/features.html#css). If you are using PostCSS plugins such as [Tailwind](https://tailwindcss.com), you may create a `postcss.config.js` file in the root of your project and Vite will automatically apply it:
 
 ```js
@@ -455,9 +479,6 @@ export default {
     },
 };
 ```
-
-> [!NOTE]  
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Tailwind, PostCSS, and Vite configuration. Or, if you would like to use Tailwind and Laravel without using one of our starter kits, check out [Tailwind's installation guide for Laravel](https://tailwindcss.com/docs/guides/laravel).
 
 <a name="working-with-blade-and-routes"></a>
 ## Working With Blade and Routes
