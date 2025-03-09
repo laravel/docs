@@ -469,7 +469,7 @@ export default defineConfig({
 <a name="tailwind-css-3"></a>
 #### Tailwind CSS v3
 
-You can learn more about Vite's CSS support within the [Vite documentation](https://vitejs.dev/guide/features.html#css). If you are using PostCSS plugins such as [Tailwind](https://tailwindcss.com), you may create a `postcss.config.js` file in the root of your project and Vite will automatically apply it:
+You can learn more about Vite's CSS support within the [Vite documentation](https://vitejs.dev/guide/features.html#css). If you are using PostCSS plugins such as [Tailwind](https://v3.tailwindcss.com), you may create a `postcss.config.js` file in the root of your project and Vite will automatically apply it:
 
 ```js
 export default {
