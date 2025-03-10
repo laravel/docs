@@ -64,7 +64,7 @@ To get started, you should install [Google Chrome](https://www.google.com/chrome
 composer require laravel/dusk --dev
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
 
 After installing the Dusk package, execute the `dusk:install` Artisan command. The `dusk:install` command will create a `tests/Browser` directory, an example Dusk test, and install the Chrome Driver binary for your operating system:
@@ -75,7 +75,7 @@ php artisan dusk:install
 
 Next, set the `APP_URL` environment variable in your application's `.env` file. This value should match the URL you use to access your application in a browser.
 
-> [!NOTE]  
+> [!NOTE]
 > If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please also consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
 
 <a name="managing-chromedriver-installations"></a>
@@ -97,7 +97,7 @@ php artisan dusk:chrome-driver --all
 php artisan dusk:chrome-driver --detect
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Dusk requires the `chromedriver` binaries to be executable. If you're having problems running Dusk, you should ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin/`.
 
 <a name="using-other-browsers"></a>
@@ -185,7 +185,7 @@ class ExampleTest extends DuskTestCase
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > SQLite in-memory databases may not be used when executing Dusk tests. Since the browser executes within its own process, it will not be able to access the in-memory databases of other processes.
 
 <a name="reset-truncation"></a>
@@ -224,7 +224,7 @@ class ExampleTest extends DuskTestCase
 
 By default, this trait will truncate all tables except the `migrations` table. If you would like to customize the tables that should be truncated, you may define a `$tablesToTruncate` property on your test class:
 
-> [!NOTE]  
+> [!NOTE]
 > If you are using Pest, you should define properties or methods on the base `DuskTestCase` class or on any class your test file extends.
 
 ```php
@@ -299,7 +299,7 @@ The `dusk` command accepts any argument that is normally accepted by the Pest / 
 php artisan dusk --group=foo
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
 
 <a name="manually-starting-chromedriver"></a>
@@ -548,7 +548,7 @@ $this->browse(function (Browser $browser) {
 });
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > After using the `loginAs` method, the user session will be maintained for all tests within the file.
 
 <a name="cookies"></a>
@@ -770,9 +770,7 @@ You may select a random option by omitting the second argument:
 $browser->select('size');
 ```
 
-By providing an array as the second```php
-
-``` argument to the `select` method, you can instruct the method to select multiple options:
+By providing an array as the second argument to the `select` method, you can instruct the method to select multiple options:
 
 ```php
 $browser->select('categories', ['Art', 'Music']);
@@ -811,7 +809,7 @@ The `attach` method may be used to attach a file to a `file` input element. Like
 $browser->attach('photo', __DIR__.'/photos/mountains.png');
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The attach function requires the `Zip` PHP extension to be installed and enabled on your server.
 
 <a name="pressing-buttons"></a>
@@ -850,7 +848,7 @@ if ($browser->seeLink($linkText)) {
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > These methods interact with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
 
 <a name="using-the-keyboard"></a>
@@ -868,7 +866,7 @@ Another valuable use case for the `keys` method is sending a "keyboard shortcut"
 $browser->keys('.app', ['{command}', 'j']);
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > All modifier keys such as `{command}` are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php).
 
 <a name="fluent-keyboard-interactions"></a>
@@ -2510,7 +2508,7 @@ class ExampleTest extends DuskTestCase
 <a name="continuous-integration"></a>
 ## Continuous Integration
 
-> [!WARNING]  
+> [!WARNING]
 > Most Dusk continuous integration configurations expect your Laravel application to be served using the built-in PHP development server on port 8000. Therefore, before continuing, you should ensure that your continuous integration environment has an `APP_URL` environment variable value of `http://127.0.0.1:8000`.
 
 <a name="running-tests-on-heroku-ci"></a>
