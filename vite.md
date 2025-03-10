@@ -445,19 +445,16 @@ The following example demonstrates how Vite will treat relative and absolute URL
 <a name="working-with-stylesheets"></a>
 ## Working With Stylesheets
 
-You can learn more about Vite's CSS support within the [Vite documentation](https://vitejs.dev/guide/features.html#css). If you are using PostCSS plugins such as [Tailwind](https://tailwindcss.com), you may create a `postcss.config.js` file in the root of your project and Vite will automatically apply it:
+> [!NOTE]  
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Tailwind and Vite configuration. Or, if you would like to use Tailwind and Laravel without using one of our starter kits, check out [Tailwind's installation guide for Laravel](https://tailwindcss.com/docs/guides/laravel).
 
-```js
-export default {
-    plugins: {
-        tailwindcss: {},
-        autoprefixer: {},
-    },
-};
+All Laravel applications already include Tailwind and a properly configured `vite.config.js` file. So, you only need to start the Vite development server or run the `dev` Composer command, which will start both the Laravel and Vite development servers:
+
+```shell
+composer run dev
 ```
 
-> [!NOTE]  
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Tailwind, PostCSS, and Vite configuration. Or, if you would like to use Tailwind and Laravel without using one of our starter kits, check out [Tailwind's installation guide for Laravel](https://tailwindcss.com/docs/guides/laravel).
+Your application's CSS may be placed within the `resources/css/app.css` file.
 
 <a name="working-with-blade-and-routes"></a>
 ## Working With Blade and Routes
