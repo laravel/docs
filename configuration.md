@@ -4,6 +4,7 @@
 - [Environment Configuration](#environment-configuration)
     - [Environment Variable Types](#environment-variable-types)
     - [Retrieving Environment Configuration](#retrieving-environment-configuration)
+    - [Auto-reloading Environment Variables Changes](#auto-reloading-env-changes)
     - [Determining the Current Environment](#determining-the-current-environment)
     - [Encrypting Environment Files](#encrypting-environment-files)
 - [Accessing Configuration Values](#accessing-configuration-values)
@@ -102,6 +103,17 @@ All of the variables listed in the `.env` file will be loaded into the `$_ENV` P
 ```
 
 The second value passed to the `env` function is the "default value". This value will be returned if no environment variable exists for the given key.
+
+<a name="auto-reloading-env-changes"></a>
+### Auto-reloading Environment Variables Changes
+
+When serving your application using the `php artisan serve` command, Laravel will automatically detect and apply changes made to your `.env` file without requiring you to restart the development server. You may disable this automatic reloading behavior, you may use the `--no-reload` option when invoking the command:
+
+```bash
+php artisan serve --no-reload
+```
+
+The auto-reloading behavior is automatically disabled when using the `PHP_CLI_WORKER_SERVERS` configuration to start multiple worker processes.
 
 <a name="determining-the-current-environment"></a>
 ### Determining the Current Environment
