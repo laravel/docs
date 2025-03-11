@@ -115,6 +115,8 @@ php artisan serve --no-reload
 
 The auto-reloading behavior is automatically disabled when using the `PHP_CLI_WORKER_SERVERS` configuration to start multiple worker processes.
 
+If you have either disabled the behavior or are using multiple processes, you need to manually restart the command when you may changes to the `.env` file.
+
 <a name="determining-the-current-environment"></a>
 ### Determining the Current Environment
 
