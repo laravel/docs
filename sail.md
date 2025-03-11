@@ -30,6 +30,7 @@
   - [Xdebug CLI Usage](#xdebug-cli-usage)
   - [Xdebug Browser Usage](#xdebug-browser-usage)
 - [Customization](#sail-customization)
+- [Sail Plugins](#sail-plugins)
 
 <a name="introduction"></a>
 ## Introduction
@@ -567,4 +568,113 @@ After running this command, the Dockerfiles and other configuration files used b
 
 ```shell
 sail build --no-cache
+```
+
+<a name="sail-plugins"></a>
+## Sail Plugins
+
+Laravel Sail supports third-party plugins for customizing its Docker environment. Plugins may define new services or override Sail’s built-in services within the `docker-compose.yml` file. Custom service configurations, environment variable modifications, application container overrides, and additional logic for installation or publishing may be included.
+
+<a name="sail-plugins-overview"></a>
+### Overview
+
+Plugins customize Sail’s default Docker configuration. New services may be added, built-in services like `mysql` or `redis` modified.
+
+<a name="sail-plugins-registering"></a>
+### Registering a Plugin
+
+You may register custom services within the service provider of your plugin package:
+
+```php
+namespace Vendor\CustomPlugin;
+
+use Laravel\Sail\Sail;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Command;
+
+class YourSailPluginProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        Sail::addService(
+            'custom-service',
+            __DIR__ . '/../stubs/custom-service.stub',
+            isPersistent: true,
+            isDependency: true,
+            env: [
+                'CUSTOM_SERVICE_FOO' => 'bar',
+            ],
+            preInstallCallback: function (Command $command, array $services, string $appService) {
+                $command->info('The PHP app will run in '.$appService.' service.');
+                $command->info('Following services have also been installed: '.implode($services, ', '));
+            },
+        )->addService(
+            'redis',
+            env: function (string $environment): string {
+                $commentedEnv = '# REDIS_HOST=127.0.0.1';
+                $environment = str_replace($commentedEnv, substr($commentedEnv, 2), $environment);
+
+                return str_replace('REDIS_HOST=127.0.0.1', "REDIS_HOST=redis", $environment);
+            },
+            default: true,
+        )->setBaseTemplate('path-to-app-service.stub');
+    }
+}
+```
+
+This example defines a `custom-service` using a service configuration located at `stubs/custom-service.stub`. The service is configured to persist data and depend on the application container. The `env` parameter updates the `.env` file with relevant variables, while the `preInstallCallback` closure executes additional logic before the services are built.
+It also overrides the built-in `redis` service, marking it as a default service.
+Finally, `setBaseTemplate` replaces the built-in docker-compose template.
+
+> [!NOTE]  
+> If multiple plugins override the same service, the last registered configuration takes precedence in the `docker-compose.yml` file. Check existing services with the `availableServices` method.
+
+> [!NOTE]  
+> Sail will look for the {{APP}} placeholder in the template to identify the app service.
+
+<a name="sail-plugins-stub"></a>
+### Creating a Docker Compose Service Configuration
+
+A plugin requires a Docker Compose service configuration to define new services or override built-in services. An example is shown below:
+
+```yaml
+custom-service:
+  image: custom/service:latest
+  ports:
+    - "8080:8080"
+  volumes:
+    - custom-service-data:/data
+  networks:
+    - sail
+  depends_on:
+    - {{APP}}
+```
+
+This service configuration should be placed within your plugin’s package, such as in a `stubs` directory.
+
+Sail resolves `{{APP}}` to the active application container name (typically `laravel.test`) during configuration.
+
+<a name="sail-plugins-callbacks"></a>
+### Executing additional logic
+
+Plugins may register additional logic that executes during the `sail:install` or `sail:publish` command:
+
+```php
+namespace Vendor\CustomPlugin;
+
+use Laravel\Sail\Sail;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Command;
+
+class YourSailPluginProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        Sail::addPreInstallCallback(function (Command $command, array $services, string $appService) {
+            $command->info('A docker-compose.yaml file with '.$appService.' and the following services has been created: '.implode($services, ', '));
+        })->addPostPublishCallback(function (Command $command) {
+            $command->info('Resources have been published. Update docker-compose.yml paths accordingly.');
+        });
+    }
+}
 ```
