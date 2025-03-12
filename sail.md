@@ -606,7 +606,7 @@ class YourSailPluginProvider extends ServiceProvider
             ],
             preInstallCallback: function (Command $command, array $services, string $appService) {
                 $command->info('The PHP app will run in '.$appService.' service.');
-                $command->info('Following services have also been installed: '.implode($services, ', '));
+                $command->info('Following services have also been installed: '.implode(', ', $services));
             },
         )->addService(
             'redis',
@@ -616,7 +616,7 @@ class YourSailPluginProvider extends ServiceProvider
 
                 return str_replace('REDIS_HOST=127.0.0.1', "REDIS_HOST=redis", $environment);
             },
-            default: true,
+            isDefault: true,
         )->setBaseTemplate('path-to-app-service.stub');
     }
 }
@@ -642,8 +642,6 @@ custom-service:
   image: custom/service:latest
   ports:
     - "8080:8080"
-  volumes:
-    - custom-service-data:/data
   networks:
     - sail
   depends_on:
@@ -671,7 +669,7 @@ class YourSailPluginProvider extends ServiceProvider
     public function boot()
     {
         Sail::addPreInstallCallback(function (Command $command, array $services, string $appService) {
-            $command->info('A docker-compose.yaml file with '.$appService.' and the following services has been created: '.implode($services, ', '));
+            $command->info('A docker-compose.yaml file with '.$appService.' and the following services has been created: '.implode(', ', $services));
         })->addPostPublishCallback(function (Command $command) {
             $command->info('Resources have been published. Update docker-compose.yml paths accordingly.');
         });
