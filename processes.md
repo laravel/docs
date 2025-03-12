@@ -305,7 +305,7 @@ $process->waitUntil(function (string $type, string $output) {
 <a name="asynchronous-process-timeouts"></a>
 ### Asynchronous Process Timeouts
 
-While an asynchronous process is running, any looped calls to the `running` method will ignore timeouts. To check if a running process has timed out you may utilise the `ensureNotTimedOut` method to throw a [timeout exception](#timeouts):
+While an asynchronous process is running, you may verify that the process has not timed out using the `ensureNotTimedOut` method. This method will throw a [timeout exception](#timeouts) if the process has timed out:
 
 ```php
 $process = Process::timeout(120)->start('bash import.sh');
