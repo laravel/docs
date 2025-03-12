@@ -1156,6 +1156,18 @@ You may retrieve a specific attribute's value using the `get` method:
 {{ $attributes->get('class') }}
 ```
 
+The `only` method may be used to retrieve only the attributes with the given keys:
+
+```blade
+{{ $attributes->only('class') }}
+```
+
+The `except` method may be used to retrieve all attributes except those with the given keys:
+
+```blade
+{{ $attributes->except('class') }}
+```
+
 <a name="reserved-keywords"></a>
 ### Reserved Keywords
 
