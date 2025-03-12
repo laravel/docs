@@ -422,7 +422,7 @@ When using the `monolog` driver, the `handler` configuration option is used to s
 'logentries' => [
     'driver'  => 'monolog',
     'handler' => Monolog\Handler\SyslogUdpHandler::class,
-    'with' => [
+    'handler_with' => [
         'host' => 'my.logentries.internal.datahubhost.company.com',
         'port' => '10000',
     ],
@@ -466,7 +466,7 @@ If you would like to customize the processors for a `monolog` driver, add a `pro
 'memory' => [
     'driver' => 'monolog',
     'handler' => Monolog\Handler\StreamHandler::class,
-    'with' => [
+    'handler_with' => [
         'stream' => 'php://stderr',
     ],
     'processors' => [
