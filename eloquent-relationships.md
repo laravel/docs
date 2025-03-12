@@ -8,6 +8,7 @@
     - [Has One of Many](#has-one-of-many)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
+    - [Has One Through Of Many](#has-one-through-of-many)
 - [Scoped Relationships](#scoped-relationships)
 - [Many to Many Relationships](#many-to-many)
     - [Retrieving Intermediate Table Columns](#retrieving-intermediate-table-columns)
@@ -669,6 +670,31 @@ return $this->through('environments')->has('deployments');
 
 // Dynamic syntax...
 return $this->throughEnvironments()->hasDeployments();
+```
+
+<a name="has-one-through-of-many"></a>
+### Has One Through of Many
+
+Similar to [Has One of Many](#has-one-of-many), you can retrieve a singular model from a larger `HasManyThrough` relationship:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+
+class Application extends Model
+{
+    /**
+     * Get the latest deployment for the application.
+     */
+    public function latestDeployment(): HasOneThrough
+    {
+        return $this->deployments()->one()->latestOfMany();
+    }
+}
 ```
 
 <a name="scoped-relationships"></a>
