@@ -137,6 +137,16 @@ Context::get('key');
 // "first"
 ```
 
+Context also provides convenient methods for incrementing or decrementing a given key. Both of these methods accept at least one argument: the key to track. A second argument may be provided to specify the amount by which the key should be incremented or decremented:
+
+```php
+Context::increment('records_added');
+Context::increment('records_added', 5);
+
+Context::decrement('records_added');
+Context::decrement('records_added', 5);
+```
+
 <a name="conditional-context"></a>
 #### Conditional Context
 
@@ -242,23 +252,6 @@ use Illuminate\Support\Str;
 return Context::stackContains('breadcrumbs', function ($value) {
     return Str::startsWith($value, 'query_');
 });
-```
-
-<a name="increment-and-decrement"></a>
-### Increment and Decrement
-
-Context also provides convenient methods for incrementing or decrementing a given key. Both of these methods accept at least one argument: the key to track. A second argument may be provided to specify the amount by which the key should be incremented or decremented:
-
-```php
-use Illuminate\Support\Facades\Context;
-
-Context::increment('records_added');
-
-Context::increment('records_added', 5);
-
-Context::decrement('records_added');
-
-Context::decrement('records_added', 5);
 ```
 
 <a name="retrieving-context"></a>
