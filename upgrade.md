@@ -28,6 +28,7 @@
 
 - [Carbon 3](#carbon-3)
 - [Concurrency Result Index Mapping](#concurrency-result-index-mapping)
+- [Container Class Dependency Resolution](#container-class-dependency-resolution)
 - [Image Validation Now Excludes SVGs](#image-validation)
 - [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
 - [Nested Array Request Merging](#nested-array-request-merging)
@@ -107,6 +108,31 @@ $result = Concurrency::run([
 ]);
 
 // ['task-1' => 2, 'task-2' => 4]
+```
+
+<a name="container"></a>
+### Container
+
+<a name="container-class-dependency-resolution"></a>
+#### Container Class Dependency Resolution
+
+**Likelihood Of Impact: Low**
+
+The dependency injection container now respects the default value of class properties when resolving a class instance. If you were previously relying on the container to resolve a class instance without the default value, you may need to adjust your application to account for this new behavior:
+
+```php
+class Example
+{
+    public function __construct(public ?Carbon $date = null) {}
+}
+
+$example = resolve(Example::class);
+
+// <= 11.x
+$example->date instanceof Carbon;
+
+// >= 12.x
+$example->date === null;
 ```
 
 <a name="database"></a>
