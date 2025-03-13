@@ -17,6 +17,7 @@
 
 <div class="content-list" markdown="1">
 
+- [Container Class Dependency Resolution](#container-class-dependency-resolution)
 - [Models and UUIDv7](#models-and-uuidv7)
 
 </div>
@@ -193,6 +194,30 @@ use Illuminate\Validation\Rules\File;
 
 // Or...
 'photo' => ['required', File::image(allowSvg: true)],
+```
+
+<a name="container"></a>
+### Container
+
+<a name="container-class-dependency-resolution"></a>
+#### Container Class Dependency Resolution
+
+**Likelihood Of Impact: Medium**
+
+The container now respects the default value of class properties when resolving a class instance. If you were previously relying on the container to resolve a class instance without the default value, you may need to adjust your application to account for this new behavior:
+
+```php
+class Foo
+{
+    public function __construct(public ?Carbon $default = null) {}
+}
+$foo = resolve(Foo::class);
+
+// < 11.0
+$foo->default instanceof Carbon;
+
+// >= 12.0
+$foo->default === null;
 ```
 
 <a name="miscellaneous"></a>
