@@ -310,7 +310,7 @@ class InvalidOrderException extends Exception
     }
 
     /**
-     * Render the exception into an HTTP response.
+     * Render the exception as an HTTP response.
      */
     public function render(Request $request): Response
     {
@@ -323,7 +323,7 @@ If your exception extends an exception that is already renderable, such as a bui
 
 ```php
 /**
- * Render the exception into an HTTP response.
+ * Render the exception as an HTTP response.
  */
 public function render(Request $request): Response|bool
 {
