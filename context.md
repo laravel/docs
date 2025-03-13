@@ -4,7 +4,6 @@
     - [How it Works](#how-it-works)
 - [Capturing Context](#capturing-context)
     - [Stacks](#stacks)
-    - [Increment and Decrement](#increment-and-decrement)
 - [Retrieving Context](#retrieving-context)
     - [Determining Item Existence](#determining-item-existence)
 - [Removing Context](#removing-context)
