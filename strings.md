@@ -3393,8 +3393,8 @@ The `whenEmpty` method invokes the given closure if the string is empty. If the 
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 
-$string = Str::of('  ')->whenEmpty(function (Stringable $string) {
-    return $string->trim()->prepend('Laravel');
+$string = Str::of('  ')->trim()->whenEmpty(function (Stringable $string) {
+    return $string->prepend('Laravel');
 });
 
 // 'Laravel'
