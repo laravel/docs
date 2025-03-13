@@ -17,7 +17,6 @@
 
 <div class="content-list" markdown="1">
 
-- [Container Class Dependency Resolution](#container-class-dependency-resolution)
 - [Models and UUIDv7](#models-and-uuidv7)
 
 </div>
@@ -29,6 +28,7 @@
 
 - [Carbon 3](#carbon-3)
 - [Concurrency Result Index Mapping](#concurrency-result-index-mapping)
+- [Container Class Dependency Resolution](#container-class-dependency-resolution)
 - [Image Validation Now Excludes SVGs](#image-validation)
 - [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
 - [Nested Array Request Merging](#nested-array-request-merging)
@@ -116,7 +116,7 @@ $result = Concurrency::run([
 <a name="container-class-dependency-resolution"></a>
 #### Container Class Dependency Resolution
 
-**Likelihood Of Impact: Medium**
+**Likelihood Of Impact: Low**
 
 The dependency injection container now respects the default value of class properties when resolving a class instance. If you were previously relying on the container to resolve a class instance without the default value, you may need to adjust your application to account for this new behavior:
 
