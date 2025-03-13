@@ -468,6 +468,15 @@ public function largestOrder(): HasOne
 }
 ```
 
+You may also use the `one` method to convert `HasManyThrough` relationships to `HasOneThrough` relationships:
+
+```php
+public function latestDeployment(): HasOneThrough
+{
+    return $this->deployments()->one()->latestOfMany();
+}
+```
+
 <a name="advanced-has-one-of-many-relationships"></a>
 #### Advanced Has One of Many Relationships
 
