@@ -586,7 +586,6 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
 namespace App\Http\Controllers;
 
 use App\Events\OrderShipped;
-use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

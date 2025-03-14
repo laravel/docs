@@ -125,7 +125,6 @@ After installing Inertia into your Laravel application, you will write routes an
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;

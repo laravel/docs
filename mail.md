@@ -920,7 +920,6 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Mail\OrderShipped;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;

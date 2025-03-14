@@ -141,7 +141,6 @@ To run a basic SELECT query, you may use the `select` method on the `DB` facade:
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 

@@ -793,7 +793,6 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -837,7 +836,6 @@ If you would like to specify that a job should not be immediately available for 
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -903,7 +901,6 @@ If you would like to dispatch a job immediately (synchronously), you may use the
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -1067,7 +1064,6 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -1125,7 +1121,6 @@ If your application interacts with multiple queue connections, you may specify w
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
