@@ -202,6 +202,22 @@ use Illuminate\Http\Request;
 })
 ```
 
+<a name="redirecting-authenticated-users"></a>
+#### Redirecting Authenticated Users
+
+When the `guest` middleware detects an authenticated user, it will redirect the user to `dashboard` or `home` named route. You may modify this behavior using the method `redirectUsersTo` of your application's `bootstrap/app.php` file:
+
+```php
+use Illuminate\Http\Request;
+
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->redirectUsersTo('/panel');
+
+    // Using a closure...
+    $middleware->redirectUsersTo(fn (Request $request) => route('panel'));
+})
+```
+
 <a name="specifying-a-guard"></a>
 #### Specifying a Guard
 
