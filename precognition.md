@@ -580,7 +580,7 @@ Alternatively, if you would like to submit the form via XHR you may use the form
         submit() {
             this.form.submit()
                 .then(response => {
-                    form.reset();
+                    this.form.reset();
 
                     alert('User created.')
                 })
