@@ -125,6 +125,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [diffAssoc](#method-diffassoc)
 [diffAssocUsing](#method-diffassocusing)
 [diffKeys](#method-diffkeys)
+[diffKeysUsing](#method-diffKeysUsing)
 [doesntContain](#method-doesntcontain)
 [dot](#method-dot)
 [dump](#method-dump)
@@ -793,6 +794,38 @@ $diff->all();
 
 // ['one' => 10, 'three' => 30, 'five' => 50]
 ```
+
+<a name="method-diffKeysUsing"></a>
+#### `diffKeysUsing()` {.collection-method}
+
+The `diffKeysUsing` method allows you to compare the keys of a collection against another collection or a plain PHP array using a custom comparison function.
+
+```php
+$collection = collect([
+    'ONE' => 10,
+    'TWO' => 20,
+    'THREE' => 30,
+    'FOUR' => 40,
+]);
+
+$itemsToCompare = collect([
+    'one' => 11,
+    'three' => 33,
+    'five' => 55,
+]);
+
+$diff = $collection->diffKeysUsing($itemsToCompare, function (string $key1, string $key2) {
+    return strcasecmp($key1, $key2);
+});
+
+$diff->all();
+
+// ['TWO' => 20, 'FOUR' => 40]
+```
+
+In this example, `diffKeysUsing` compares the keys of `$collection` against `$itemsToCompare` using a case-insensitive comparison function. The resulting collection contains the key/value pairs from `$collection` whose keys do not have a matching counterpart in `$itemsToCompare`, ignoring case differences.
+
+This method is particularly useful when you need to perform key comparisons with custom logic beyond the default behavior.
 
 <a name="method-doesntcontain"></a>
 #### `doesntContain()` {.collection-method}
