@@ -730,7 +730,6 @@ Of course, when using Eloquent, we don't only need to retrieve models from the d
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Flight;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
