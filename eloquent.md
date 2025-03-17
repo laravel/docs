@@ -872,11 +872,34 @@ $user = User::find(1);
 $user->name; // John
 $user->email; // john@example.com
 
-$user->name = "Jack";
+$user->name = 'Jack';
 $user->name; // Jack
 
 $user->getOriginal('name'); // John
 $user->getOriginal(); // Array of original attributes...
+```
+
+The `getChanges` method returns an array containing the attributes that changed when the model was last saved:
+
+```php
+$user = User::find(1);
+
+$user->name; // John
+$user->email; // john@example.com
+
+$user->update([
+    'name' => 'Jack',
+    'email' => 'jack@example.com',
+]);
+
+$user->getChanges();
+
+/*
+    [
+        'name' => 'Jack',
+        'email' => 'jack@example.com',
+    ]
+*/
 ```
 
 <a name="mass-assignment"></a>
