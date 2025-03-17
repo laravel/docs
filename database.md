@@ -52,7 +52,7 @@ By default, foreign key constraints are enabled for SQLite connections. If you w
 DB_FOREIGN_KEYS=false
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If you use the [Laravel installer](/docs/{{version}}/installation#creating-a-laravel-project) to create your Laravel application and select SQLite as your database, Laravel will automatically create a `database/database.sqlite` file and run the default [database migrations](/docs/{{version}}/migrations) for you.
 
 <a name="mssql-configuration"></a>
@@ -257,7 +257,7 @@ Sometimes you may want to execute an SQL statement without binding any values. Y
 DB::unprepared('update users set votes = 100 where name = "Dries"');
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
 
 <a name="implicit-commits-in-transactions"></a>
@@ -417,7 +417,7 @@ Lastly, you can commit a transaction via the `commit` method:
 DB::commit();
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
 
 <a name="connecting-to-the-database-cli"></a>

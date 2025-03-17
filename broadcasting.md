@@ -55,7 +55,7 @@ The core concepts behind broadcasting are simple: clients connect to named chann
 
 By default, Laravel includes three server-side broadcasting drivers for you to choose from: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels), and [Ably](https://ably.com).
 
-> [!NOTE]  
+> [!NOTE]
 > Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
 
 <a name="server-side-installation"></a>
@@ -139,7 +139,7 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 <a name="ably"></a>
 ### Ably
 
-> [!NOTE]  
+> [!NOTE]
 > The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team recommends and maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
 
 If you plan to broadcast your events using [Ably](https://ably.com), you should install the Ably PHP SDK using the Composer package manager:
@@ -199,7 +199,7 @@ Next, you should compile your application's assets:
 npm run build
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The Laravel Echo `reverb` broadcaster requires laravel-echo v1.16.0+.
 
 <a name="client-pusher-channels"></a>
@@ -254,7 +254,7 @@ Once you have adjusted the Echo configuration according to your application's ne
 npm run build
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
 
 <a name="using-an-existing-client-instance"></a>
@@ -280,7 +280,7 @@ window.Echo = new Echo({
 <a name="client-ably"></a>
 ### Ably
 
-> [!NOTE]  
+> [!NOTE]
 > The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team recommends and maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
 
 [Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. Echo also leverages the `pusher-js` NPM package to implement the Pusher protocol for WebSocket subscriptions, channels, and messages.
@@ -319,7 +319,7 @@ Once you have adjusted the Echo configuration according to your needs, you may c
 npm run dev
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
 
 <a name="concept-overview"></a>
@@ -616,7 +616,7 @@ class ServerCreated implements ShouldBroadcast, ShouldDispatchAfterCommit
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="authorizing-channels"></a>
@@ -663,7 +663,7 @@ Broadcast::channel('orders.{order}', function (User $user, Order $order) {
 });
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Unlike HTTP route model binding, channel model binding does not support automatic [implicit model binding scoping](/docs/{{version}}/routing#implicit-model-binding-scoping). However, this is rarely a problem because most channels can be scoped based on a single model's unique, primary key.
 
 <a name="authorization-callback-authentication"></a>
@@ -721,7 +721,7 @@ class OrderChannel
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Like many other classes in Laravel, channel classes will automatically be resolved by the [service container](/docs/{{version}}/container). So, you may type-hint any dependencies required by your channel in its constructor.
 
 <a name="broadcasting-events"></a>
@@ -757,7 +757,7 @@ axios.post('/task', task)
 
 However, remember that we also broadcast the task's creation. If your JavaScript application is also listening for this event in order to add tasks to the task list, you will have duplicate tasks in your list: one from the end-point and one from the broadcast. You may solve this by using the `toOthers` method to instruct the broadcaster to not broadcast the event to the current user.
 
-> [!WARNING]  
+> [!WARNING]
 > Your event must use the `Illuminate\Broadcasting\InteractsWithSockets` trait in order to call the `toOthers` method.
 
 <a name="only-to-others-configuration"></a>
@@ -1027,7 +1027,7 @@ Echo.join(`chat.${roomId}`)
 <a name="model-broadcasting"></a>
 ## Model Broadcasting
 
-> [!WARNING]  
+> [!WARNING]
 > Before reading the following documentation about model broadcasting, we recommend you become familiar with the general concepts of Laravel's model broadcasting services as well as how to manually create and listen to broadcast events.
 
 It is common to broadcast events when your application's [Eloquent models](/docs/{{version}}/eloquent) are created, updated, or deleted. Of course, this can easily be accomplished by manually [defining custom events for Eloquent model state changes](/docs/{{version}}/eloquent#events) and marking those events with the `ShouldBroadcast` interface.
@@ -1216,7 +1216,7 @@ Echo.private(`App.Models.User.${this.user.id}`)
 <a name="client-events"></a>
 ## Client Events
 
-> [!NOTE]  
+> [!NOTE]
 > When using [Pusher Channels](https://pusher.com/channels), you must enable the "Client Events" option in the "App Settings" section of your [application dashboard](https://dashboard.pusher.com/) in order to send client events.
 
 Sometimes you may wish to broadcast an event to other connected clients without hitting your Laravel application at all. This can be particularly useful for things like "typing" notifications, where you want to alert users of your application that another user is typing a message on a given screen.
