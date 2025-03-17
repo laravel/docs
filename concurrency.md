@@ -40,7 +40,7 @@ If you upgraded to Laravel 11.x from a Laravel 10.x application, you may need to
 
 Laravel achieves concurrency by serializing the given closures and dispatching them to a hidden Artisan CLI command, which unserializes the closures and invokes it within its own PHP process. After the closure has been invoked, the resulting value is serialized back to the parent process.
 
-The `Concurrency` facade supports three drivers: `process` (the default), `fork`, and `sync`. 
+The `Concurrency` facade supports three drivers: `process` (the default), `fork`, and `sync`.
 
 The `fork` driver offers improved performance compared to the default `process` driver, but it may only be used within PHP's CLI context, as PHP does not support forking during web requests. Before using the `fork` driver, you need to install the `spatie/fork` package:
 

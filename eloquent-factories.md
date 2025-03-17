@@ -73,7 +73,7 @@ As you can see, in their most basic form, factories are classes that extend Lara
 
 Via the `fake` helper, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing and seeding.
 
-> [!NOTE]  
+> [!NOTE]
 > You can change your application's Faker locale by updating the `faker_locale` option in your `config/app.php` configuration file.
 
 <a name="defining-model-factories"></a>
@@ -260,7 +260,7 @@ $user = User::factory()->state([
 ])->make();
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories.
 
 <a name="persisting-models"></a>
