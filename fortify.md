@@ -31,7 +31,7 @@
 
 Since Fortify does not provide its own user interface, it is meant to be paired with your own user interface which makes requests to the routes it registers. We will discuss exactly how to make requests to these routes in the remainder of this documentation.
 
-> [!NOTE]  
+> [!NOTE]
 > Remember, Fortify is a package that is meant to give you a head start implementing Laravel's authentication features. **You are not required to use it.** You are always free to manually interact with Laravel's authentication services by following the documentation available in the [authentication](/docs/{{version}}/authentication), [password reset](/docs/{{version}}/passwords), and [email verification](/docs/{{version}}/verification) documentation.
 
 <a name="what-is-fortify"></a>
@@ -216,7 +216,7 @@ By default, Fortify will throttle authentication attempts using the `EnsureLogin
 
 Some applications may require a different approach to throttling authentication attempts, such as throttling by IP address alone. Therefore, Fortify allows you to specify your own [rate limiter](/docs/{{version}}/routing#rate-limiting) via the `fortify.limiters.login` configuration option. Of course, this configuration option is located in your application's `config/fortify.php` configuration file.
 
-> [!NOTE]  
+> [!NOTE]
 > Utilizing a mixture of throttling, [two factor authentication](/docs/{{version}}/fortify#two-factor-authentication), and an external web application firewall (WAF) will provide the most robust defense for your legitimate application users.
 
 <a name="customizing-authentication-redirects"></a>
