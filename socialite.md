@@ -17,7 +17,7 @@
 
 In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, X, LinkedIn, Google, GitHub, GitLab, Bitbucket, and Slack.
 
-> [!NOTE]  
+> [!NOTE]
 > Adapters for other platforms are available via the community driven [Socialite Providers](https://socialiteproviders.com/) website.
 
 <a name="installation"></a>
@@ -49,7 +49,7 @@ These credentials should be placed in your application's `config/services.php` c
 ],
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If the `redirect` option contains a relative path, it will automatically be resolved to a fully qualified URL.
 
 <a name="authentication"></a>
@@ -104,7 +104,7 @@ Route::get('/auth/callback', function () {
 });
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > For more information regarding what user information is available from specific OAuth providers, please consult the documentation on [retrieving user details](#retrieving-user-details).
 
 <a name="access-scopes"></a>
@@ -172,7 +172,7 @@ return Socialite::driver('google')
     ->redirect();
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`.
 
 <a name="retrieving-user-details"></a>

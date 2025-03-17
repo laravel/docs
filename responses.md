@@ -39,7 +39,7 @@ Route::get('/', function () {
 });
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Did you know you can also return [Eloquent collections](/docs/{{version}}/eloquent-collections) from your routes or controllers? They will automatically be converted to JSON. Give it a shot!
 
 <a name="response-objects"></a>
@@ -345,7 +345,7 @@ return response()->download($pathToFile);
 return response()->download($pathToFile, $name, $headers);
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII filename.
 
 <a name="file-responses"></a>

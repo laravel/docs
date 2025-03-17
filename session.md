@@ -39,7 +39,7 @@ The session `driver` configuration option defines where session data will be sto
 
 </div>
 
-> [!NOTE]  
+> [!NOTE]
 > The array driver is primarily used during [testing](/docs/{{version}}/testing) and prevents the data stored in the session from being persisted.
 
 <a name="driver-prerequisites"></a>
@@ -61,7 +61,7 @@ php artisan migrate
 
 Before using Redis sessions with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer. For more information on configuring Redis, consult Laravel's [Redis documentation](/docs/{{version}}/redis#configuration).
 
-> [!NOTE]  
+> [!NOTE]
 > The `SESSION_CONNECTION` environment variable, or the `connection` option in the `session.php` configuration file, may be used to specify which Redis connection is used for session storage.
 
 <a name="interacting-with-the-session"></a>
@@ -126,7 +126,7 @@ Route::get('/home', function () {
 });
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > There is little practical difference between using the session via an HTTP request instance versus using the global `session` helper. Both methods are [testable](/docs/{{version}}/testing) via the `assertSessionHas` method which is available in all of your test cases.
 
 <a name="retrieving-all-session-data"></a>
@@ -280,7 +280,7 @@ $request->session()->invalidate();
 <a name="session-blocking"></a>
 ## Session Blocking
 
-> [!WARNING]  
+> [!WARNING]
 > To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, `mongodb` (included in the official `mongodb/laravel-mongodb` package), `database`, `file`, and `array` drivers. In addition, you may not use the `cookie` session driver.
 
 By default, Laravel allows requests using the same session to execute concurrently. So, for example, if you use a JavaScript HTTP library to make two HTTP requests to your application, they will both execute at the same time. For many applications, this is not a problem; however, session data loss can occur in a small subset of applications that make concurrent requests to two different application endpoints which both write data to the session.
