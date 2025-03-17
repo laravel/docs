@@ -66,7 +66,7 @@ $user = User::find(1);
 $firstName = $user->first_name;
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](/docs/{{version}}/eloquent-serialization#appending-values-to-json).
 
 <a name="building-value-objects-from-multiple-attributes"></a>
@@ -280,7 +280,7 @@ $user->mergeCasts([
 ]);
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship or assign a cast to the model's primary key.
 
 <a name="stringable-casting"></a>
@@ -710,7 +710,7 @@ $user->address->lineOne = 'Updated Address Value';
 $user->save();
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces on the value object.
 
 <a name="value-object-caching"></a>

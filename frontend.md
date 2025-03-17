@@ -180,5 +180,5 @@ By default, Laravel utilizes [Vite](https://vitejs.dev) to bundle your assets. V
 
 The fastest way to get started with Laravel and Vite is by beginning your application's development using [our application starter kits](/docs/{{version}}/starter-kits), which jump-starts your application by providing frontend and backend authentication scaffolding.
 
-> [!NOTE]  
+> [!NOTE]
 > For more detailed documentation on utilizing Vite with Laravel, please see our [dedicated documentation on bundling and compiling your assets](/docs/{{version}}/vite).
