@@ -189,7 +189,7 @@ Route::get('/flights', function () {
 <a name="redirecting-unauthenticated-users"></a>
 #### Redirecting Unauthenticated Users
 
-When the `auth` middleware detects an unauthenticated user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes). You may modify this behavior using the method `redirectGuestsTo` of your application's `bootstrap/app.php` file:
+When the `auth` middleware detects an unauthenticated user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes). You may modify this behavior using the `redirectGuestsTo` method within your application's `bootstrap/app.php` file:
 
 ```php
 use Illuminate\Http\Request;
@@ -205,7 +205,7 @@ use Illuminate\Http\Request;
 <a name="redirecting-authenticated-users"></a>
 #### Redirecting Authenticated Users
 
-When the `guest` middleware detects an authenticated user, it will redirect the user to `dashboard` or `home` named route. You may modify this behavior using the method `redirectUsersTo` of your application's `bootstrap/app.php` file:
+When the `guest` middleware detects an authenticated user, it will redirect the user to the `dashboard` or `home` named route. You may modify this behavior using the `redirectUsersTo` method within your application's `bootstrap/app.php` file:
 
 ```php
 use Illuminate\Http\Request;
