@@ -15,7 +15,7 @@
 
 Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this by hand for every application you create, Laravel provides convenient services for sending password reset links and secure resetting passwords.
 
-> [!NOTE]  
+> [!NOTE]
 > Want to get started fast? Install a Laravel [application starter kit](/docs/{{version}}/starter-kits) in a fresh Laravel application. Laravel's starter kits will take care of scaffolding your entire authentication system, including resetting forgotten passwords.
 
 <a name="model-preparation"></a>
@@ -86,12 +86,12 @@ Before moving on, let's examine this route in more detail. First, the request's 
 
 The `sendResetLink` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
 
-> [!NOTE]  
+> [!NOTE]
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 You may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `sendResetLink` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers).
 
-> [!NOTE]  
+> [!NOTE]
 > When manually implementing password resets, you are required to define the contents of the views and routes yourself. If you would like scaffolding that includes all necessary authentication and verification logic, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits).
 
 <a name="resetting-the-password"></a>

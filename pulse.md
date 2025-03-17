@@ -32,7 +32,7 @@ For in-depth debugging of individual events, check out [Laravel Telescope](/docs
 <a name="installation"></a>
 ## Installation
 
-> [!WARNING]  
+> [!WARNING]
 > Pulse's first-party storage implementation currently requires a MySQL, MariaDB, or PostgreSQL database. If you are using a different database engine, you will need a separate MySQL, MariaDB, or PostgreSQL database for your Pulse data.
 
 You may install Pulse using the Composer package manager:
@@ -55,7 +55,7 @@ php artisan migrate
 
 Once Pulse's database migrations have been run, you may access the Pulse dashboard via the `/pulse` route.
 
-> [!NOTE]  
+> [!NOTE]
 > If you do not want to store Pulse data in your application's primary database, you may [specify a dedicated database connection](#using-a-different-database).
 
 <a name="configuration"></a>
@@ -158,7 +158,7 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You may completely customize how the authenticated user is captured and retrieved by implementing the `Laravel\Pulse\Contracts\ResolvesUsers` contract and binding it in Laravel's [service container](/docs/{{version}}/container#binding-a-singleton).
 
 <a name="dashboard-cards"></a>
@@ -190,7 +190,7 @@ If you wish to view all usage metrics on screen at the same time, you may includ
 
 To learn how to customize how Pulse retrieves and displays user information, consult our documentation on [resolving users](#dashboard-resolving-users).
 
-> [!NOTE]  
+> [!NOTE]
 > If your application receives a lot of requests or dispatches a lot of jobs, you may wish to enable [sampling](#sampling). See the [user requests recorder](#user-requests-recorder), [user jobs recorder](#user-jobs-recorder), and [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
 
 <a name="exceptions-card"></a>
@@ -251,7 +251,7 @@ Most Pulse recorders will automatically capture entries based on framework event
 php artisan pulse:check
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To keep the `pulse:check` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the command does not stop running.
 
 As the `pulse:check` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
@@ -260,7 +260,7 @@ As the `pulse:check` command is a long-lived process, it will not see changes to
 php artisan pulse:restart
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Pulse uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a name="recorders"></a>
@@ -471,7 +471,7 @@ PULSE_DB_CONNECTION=pulse
 <a name="ingest"></a>
 ### Redis Ingest
 
-> [!WARNING]  
+> [!WARNING]
 > The Redis Ingest requires Redis 6.2 or greater and `phpredis` or `predis` as the application's configured Redis client driver.
 
 By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the HTTP response has been sent to the client or a job has been processed; however, you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
@@ -492,7 +492,7 @@ When using the Redis ingest, you will need to run the `pulse:work` command to mo
 php artisan pulse:work
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To keep the `pulse:work` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the Pulse worker does not stop running.
 
 As the `pulse:work` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
@@ -501,7 +501,7 @@ As the `pulse:work` command is a long-lived process, it will not see changes to 
 php artisan pulse:restart
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Pulse uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a name="sampling"></a>
@@ -593,7 +593,7 @@ Once you have defined your Livewire component and template, the card may be incl
 </x-pulse>
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If your card is included in a package, you will need to register the component with Livewire using the `Livewire::component` method.
 
 <a name="custom-card-styling"></a>
@@ -707,7 +707,7 @@ The available aggregation methods are:
 * `min`
 * `sum`
 
-> [!NOTE]  
+> [!NOTE]
 > When building a card package that captures the currently authenticated user ID, you should use the `Pulse::resolveAuthenticatedUserId()` method, which respects any [user resolver customizations](#dashboard-resolving-users) made to the application.
 
 <a name="custom-card-data-retrieval"></a>

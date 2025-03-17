@@ -154,7 +154,7 @@ class UserControllerTest extends TestCase
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
 
 <a name="facade-spies"></a>
