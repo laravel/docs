@@ -60,7 +60,7 @@ As you can see, if the given `token` does not match our secret token, the middle
 
 It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
 
-> [!NOTE]  
+> [!NOTE]
 > All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor.
 
 <a name="middleware-and-responses"></a>
@@ -325,7 +325,7 @@ If you would like to manually manage all of the middleware within Laravel's defa
 })
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > By default, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `bootstrap/app.php` file.
 
 <a name="middleware-aliases"></a>

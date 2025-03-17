@@ -831,7 +831,7 @@ Thanks,<br>
 </x-mail::message>
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Do not use excess indentation when writing Markdown emails. Per Markdown standards, Markdown parsers will render indented content as code blocks.
 
 <a name="button-component"></a>

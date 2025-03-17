@@ -66,7 +66,7 @@ Finally, use Composer to install the Laravel MongoDB package:
 composer require mongodb/laravel-mongodb
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > This installation of the package will fail if the `mongodb` PHP extension is not installed. The PHP configuration can differ between the CLI and the web server, so ensure the extension is enabled in both configurations.
 
 <a name="configuration"></a>

@@ -133,7 +133,7 @@ You may also determine if an input has passed or failed validation by passing th
 </span>
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
 If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:
@@ -156,7 +156,7 @@ To do this with Precognition, you should call the `validate` method passing the 
 
 ```html
 <button
-    type="button" 
+    type="button"
     @click="form.validate({
         only: ['name', 'email', 'phone'],
         onSuccess: (response) => nextStep(),
@@ -190,7 +190,7 @@ You may determine if a form submission request is in-flight by inspecting the fo
 <a name="using-vue-and-inertia"></a>
 ### Using Vue and Inertia
 
-> [!NOTE]  
+> [!NOTE]
 > If you would like a head start when developing your Laravel application with Vue and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
 Before using Precognition with Vue and Inertia, be sure to review our general documentation on [using Precognition with Vue](#using-vue). When using Vue with Inertia, you will need to install the Inertia compatible Precognition library via NPM:
@@ -320,7 +320,7 @@ You may also determine if an input has passed or failed validation by passing th
 {form.invalid('email') && <span>❌</span>}
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
 If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:
@@ -381,7 +381,7 @@ You may determine if a form submission request is in-flight by inspecting the fo
 <a name="using-react-and-inertia"></a>
 ### Using React and Inertia
 
-> [!NOTE]  
+> [!NOTE]
 > If you would like a head start when developing your Laravel application with React and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
 Before using Precognition with React and Inertia, be sure to review our general documentation on [using Precognition with React](#using-react). When using React with Inertia, you will need to install the Inertia compatible Precognition library via NPM:
@@ -528,7 +528,7 @@ You may also determine if an input has passed or failed validation by passing th
 </template>
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
 As we have seen, you can hook into an input's `change` event and validate individual inputs as the user interacts with them; however, you may need to validate inputs that the user has not yet interacted with. This is common when building a "wizard", where you want to validate all visible inputs, whether the user has interacted with them or not, before moving to the next step.
@@ -616,7 +616,7 @@ window.axios.defaults.headers.common['Authorization'] = authToken;
 client.use(window.axios)
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The Inertia flavored Precognition libraries will only use the configured Axios instance for validation requests. Form submissions will always be sent by Inertia.
 
 <a name="customizing-validation-rules"></a>
