@@ -93,14 +93,6 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 <a name="optional-software"></a>
 ### Optional Software
 
-<style>
-    #software-list > ul {
-        column-count: 2; -moz-column-count: 2; -webkit-column-count: 2;
-        column-gap: 5em; -moz-column-gap: 5em; -webkit-column-gap: 5em;
-        line-height: 1.9;
-    }
-</style>
-
 <div id="software-list" markdown="1">
 
 - Apache
