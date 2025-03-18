@@ -620,8 +620,13 @@ $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 Alternatively, you may pass a closure as the second argument to the `anticipate` method. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
 
 ```php
+use App\Models\Address;
+
 $name = $this->anticipate('What is your address?', function (string $input) {
-    // Return auto-completion options...
+    return Address::whereLIKE('name', "{$input}%")
+        ->limit(5)
+        ->pluck('name')
+        ->toArray();
 });
 ```
 
