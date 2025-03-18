@@ -386,4 +386,3 @@ php artisan vendor:publish --tag=laravel-mail
 ```
 
 This will generate several files in `resources/views/vendor/mail`. You can modify any of these files as well as the `resources/views/vendor/mail/themes/default.css` file to change the look and appearance of the default email template.
-

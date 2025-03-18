@@ -218,7 +218,7 @@ Within the `lang/en/validation.php` file, you will find a translation entry for 
 
 In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
 
-> [!WARNING]  
+> [!WARNING]
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 <a name="quick-xhr-requests-and-validation"></a>
@@ -345,7 +345,7 @@ public function rules(): array
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You may type-hint any dependencies you require within the `rules` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
 So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
@@ -373,7 +373,7 @@ public function store(StorePostRequest $request): RedirectResponse
 
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a [JSON representation of the validation errors](#validation-error-response-format).
 
-> [!NOTE]  
+> [!NOTE]
 > Need to add real-time form request validation to your Inertia powered Laravel frontend? Check out [Laravel Precognition](/docs/{{version}}/precognition).
 
 <a name="performing-additional-validation-on-form-requests"></a>
@@ -510,7 +510,7 @@ public function authorize(): bool
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You may type-hint any dependencies you need within the `authorize` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
 <a name="customizing-the-error-messages"></a>
@@ -874,7 +874,7 @@ Within the `lang/en/validation.php` file, you will find a translation entry for 
 
 In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
 
-> [!WARNING]  
+> [!WARNING]
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 <a name="custom-messages-for-specific-attributes"></a>
@@ -902,7 +902,7 @@ Many of Laravel's built-in error messages include an `:attribute` placeholder th
 ],
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 <a name="specifying-values-in-language-files"></a>
@@ -932,7 +932,7 @@ Instead of displaying `cc` as the payment type value, you may specify a more use
 ],
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
 After defining this value, the validation rule will produce the following error message:
@@ -1513,7 +1513,7 @@ $request->validate([
 ]);
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The `dns` and `spoof` validators require the PHP `intl` extension.
 
 <a name="rule-ends-with"></a>
@@ -1666,7 +1666,7 @@ The file under validation must have a user-assigned extension corresponding to o
 'photo' => ['required', 'extensions:jpg,png'],
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > You should never rely on validating a file by its user-assigned extension alone. This rule should typically always be used in combination with the [`mimes`](#rule-mimes) or [`mimetypes`](#rule-mimetypes) rules.
 
 <a name="rule-file"></a>
@@ -1748,7 +1748,7 @@ The field under validation must exist in _anotherfield_'s values.
 
 The field under validation must be an integer.
 
-> [!WARNING]  
+> [!WARNING]
 > This validation rule does not verify that the input is of the "integer" variable type, only that the input is of a type accepted by PHP's `FILTER_VALIDATE_INT` rule. If you need to validate the input as being a number please use this rule in combination with [the `numeric` validation rule](#rule-numeric).
 
 <a name="rule-ip"></a>
@@ -1898,7 +1898,7 @@ The field under validation must not match the given regular expression.
 
 Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'not_regex:/^.+$/i'`.
 
-> [!WARNING]  
+> [!WARNING]
 > When using the `regex` / `not_regex` patterns, it may be necessary to specify your validation rules using an array instead of using `|` delimiters, especially if the regular expression contains a `|` character.
 
 <a name="rule-nullable"></a>
@@ -2014,7 +2014,7 @@ The field under validation must match the given regular expression.
 
 Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
 
-> [!WARNING]  
+> [!WARNING]
 > When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using `|` delimiters, especially if the regular expression contains a `|` character.
 
 <a name="rule-required"></a>
@@ -2185,7 +2185,7 @@ Validator::make($data, [
 ]);
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > You should never pass any user controlled request input into the `ignore` method. Instead, you should only pass a system generated unique ID such as an auto-incrementing ID or UUID from an Eloquent model instance. Otherwise, your application will be vulnerable to an SQL injection attack.
 
 Instead of passing the model key's value to the `ignore` method, you may also pass the entire model instance. Laravel will automatically extract the key from the model:
@@ -2303,7 +2303,7 @@ $validator = Validator::make($data, [
 
 In the example above, the `email` field will only be validated if it is present in the `$data` array.
 
-> [!NOTE]  
+> [!NOTE]
 > If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields).
 
 <a name="complex-conditional-validation"></a>
@@ -2338,7 +2338,7 @@ $validator->sometimes(['reason', 'cost'], 'required', function (Fluent $input) {
 });
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > The `$input` parameter passed to your closure will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files under validation.
 
 <a name="complex-conditional-array-validation"></a>
@@ -2845,5 +2845,5 @@ For a custom rule to run even when an attribute is empty, the rule must imply th
 php artisan make:rule Uppercase --implicit
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > An "implicit" rule only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.

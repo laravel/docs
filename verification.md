@@ -16,7 +16,7 @@
 
 Many web applications require users to verify their email addresses before using the application. Rather than forcing you to re-implement this feature by hand for each application you create, Laravel provides convenient built-in services for sending and verifying email verification requests.
 
-> [!NOTE]  
+> [!NOTE]
 > Want to get started fast? Install one of the [Laravel application starter kits](/docs/{{version}}/starter-kits) in a fresh Laravel application. The starter kits will take care of scaffolding your entire authentication system, including email verification support.
 
 <a name="model-preparation"></a>
@@ -78,7 +78,7 @@ Route::get('/email/verify', function () {
 
 The route that returns the email verification notice should be named `verification.notice`. It is important that the route is assigned this exact name since the `verified` middleware [included with Laravel](#protecting-routes) will automatically redirect to this route name if a user has not verified their email address.
 
-> [!NOTE]  
+> [!NOTE]
 > When manually implementing email verification, you are required to define the contents of the verification notice view yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits).
 
 <a name="the-email-verification-handler"></a>
@@ -158,7 +158,7 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To learn more about mail notifications, please consult the [mail notification documentation](/docs/{{version}}/notifications#mail-notifications).
 
 <a name="events"></a>
