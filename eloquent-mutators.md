@@ -364,6 +364,25 @@ $user = User::find(1);
 $user->update(['options->key' => 'value']);
 ```
 
+<a name="json-and-unicode"></a>
+#### JSON and Unicode
+
+If you would like to store an array attribute as JSON with unescaped Unicode characters, you may use the `json:unicode` cast:
+
+```php
+/**
+ * Get the attributes that should be cast.
+ *
+ * @return array<string, string>
+ */
+protected function casts(): array
+{
+    return [
+        'options' => 'json:unicode',
+    ];
+}
+```
+
 <a name="array-object-and-collection-casting"></a>
 #### Array Object and Collection Casting
 
