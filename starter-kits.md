@@ -297,7 +297,7 @@ WORKOS_API_KEY=your-api-key
 WORKOS_REDIRECT_URL="${APP_URL}/authenticate"
 ```
 
-Additionally, configure the `App homepage URL` in your WorkOS dashboard settings. This URL will be used to redirect users after they successfully log out of your application.
+Additionally, you should configure the application homepage URL in your WorkOS dashboard. This URL is where users will be redirected after they log out of your application.
 
 <a name="configuring-authkit-authentication-methods"></a>
 #### Configuring AuthKit Authentication Methods
