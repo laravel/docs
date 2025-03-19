@@ -626,7 +626,7 @@ $name = $this->anticipate('What is your address?', function (string $input) {
     return Address::whereLike('name', "{$input}%")
         ->limit(5)
         ->pluck('name')
-        ->toArray();
+        ->all();
 });
 ```
 
