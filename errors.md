@@ -37,6 +37,8 @@ In Laravel, exception reporting is used to log exceptions or send them to an ext
 If you need to report different types of exceptions in different ways, you may use the `report` exception method in your application's `bootstrap/app.php` to register a closure that should be executed when an exception of a given type needs to be reported. Laravel will determine what type of exception the closure reports by examining the type-hint of the closure:
 
 ```php
+use App\Exceptions\InvalidOrderException;
+
 ->withExceptions(function (Exceptions $exceptions) {
     $exceptions->report(function (InvalidOrderException $e) {
         // ...
@@ -47,6 +49,8 @@ If you need to report different types of exceptions in different ways, you may u
 When you register a custom exception reporting callback using the `report` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback or return `false` from the callback:
 
 ```php
+use App\Exceptions\InvalidOrderException;
+
 ->withExceptions(function (Exceptions $exceptions) {
     $exceptions->report(function (InvalidOrderException $e) {
         // ...
