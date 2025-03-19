@@ -623,7 +623,7 @@ Alternatively, you may pass a closure as the second argument to the `anticipate`
 use App\Models\Address;
 
 $name = $this->anticipate('What is your address?', function (string $input) {
-    return Address::whereLIKE('name', "{$input}%")
+    return Address::whereLike('name', "{$input}%")
         ->limit(5)
         ->pluck('name')
         ->toArray();
