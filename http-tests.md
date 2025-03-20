@@ -305,7 +305,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-Alternatively, you may use the `dd`, `ddHeaders`, `ddSession`, and `ddJson` methods to dump information about the response and then stop execution:
+Alternatively, you may use the `dd`, `ddHeaders`, `ddBody`, `ddJson`, and `ddSession` methods to dump information about the response and then stop execution:
 
 ```php tab=Pest
 <?php
@@ -313,10 +313,11 @@ Alternatively, you may use the `dd`, `ddHeaders`, `ddSession`, and `ddJson` meth
 test('basic test', function () {
     $response = $this->get('/');
 
-    $response->ddHeaders();
-    $response->ddSession();
-    $response->ddJson();
     $response->dd();
+    $response->ddHeaders();
+    $response->ddBody();
+    $response->ddJson();
+    $response->ddSession();
 });
 ```
 
