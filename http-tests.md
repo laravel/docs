@@ -337,11 +337,11 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->ddHeaders();
-
-        $response->ddSession();
-
         $response->dd();
+        $response->ddHeaders();
+        $response->ddBody();
+        $response->ddJson();
+        $response->ddSession();
     }
 }
 ```
