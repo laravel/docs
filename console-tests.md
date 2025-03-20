@@ -139,8 +139,8 @@ test('console command', function () {
 public function test_console_command(): void
 {
     $this->artisan('example')
-            ->doesntExpectOutput()
-            ->assertExitCode(0);
+        ->doesntExpectOutput()
+        ->assertExitCode(0);
 }
 ```
 
@@ -161,8 +161,8 @@ test('console command', function () {
 public function test_console_command(): void
 {
     $this->artisan('example')
-            ->expectsOutputToContain('Taylor')
-            ->assertExitCode(0);
+        ->expectsOutputToContain('Taylor')
+        ->assertExitCode(0);
 }
 ```
 
