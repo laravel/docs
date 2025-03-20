@@ -32,6 +32,7 @@
 - [Image Validation Now Excludes SVGs](#image-validation)
 - [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
 - [Nested Array Request Merging](#nested-array-request-merging)
+- [Updated `DatabaseTokenRepository` constructor signature](#updated-databasetokenrepository-constructor-signature)
 
 </div>
 
@@ -90,6 +91,18 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 ```
 
 Or, if you are using [Laravel Herd's](https://herd.laravel.com) bundled copy of the Laravel installer, you should update your Herd installation to the latest release.
+
+<a name="authentication"></a>
+### Authentication
+
+<a name="updated-databasetokenrepository-constructor-signature"></a>
+#### Updated `DatabaseTokenRepository` constructor signature
+
+**Likelihood Of Impact: Low**
+
+The constructor of the `DatabaseTokenRepository` class now expects the `$expires` parameter to be given in seconds, rather than minutes.
+If you manually instantiate this class, or override the `PasswordBrokerManager` class that creates instances,
+you may have to change your values.
 
 <a name="concurrency"></a>
 ### Concurrency
