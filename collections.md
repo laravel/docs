@@ -3988,6 +3988,8 @@ LazyCollection::make(function () {
     while (($line = fgets($handle)) !== false) {
         yield $line;
     }
+
+    fclose($handle);
 })->chunk(4)->map(function (array $lines) {
     return LogEntry::fromLines($lines);
 })->each(function (LogEntry $logEntry) {
@@ -4033,6 +4035,8 @@ LazyCollection::make(function () {
     while (($line = fgets($handle)) !== false) {
         yield $line;
     }
+
+    fclose($handle);
 });
 ```
 
