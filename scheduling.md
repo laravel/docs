@@ -388,6 +388,17 @@ Schedule::call(fn () => User::resetApiRequestCount())
     ->onOneServer();
 ```
 
+<a name="customizing-cache-driver"></a>
+#### Customizing the Cache Driver
+If you need to override the default cache driver used for scheduling's atomic mutex locks, you can chain the `useCache` method after `onOneServer`. This allows you to specify a different cache driver (e.g. `'database'`) for the mutex without changing your application's primary cache configuration:
+
+```php
+Schedule::command('recipes:sync')
+    ->everyThirtyMinutes()
+    ->onOneServer();
+    ->useCache('database');
+```
+
 <a name="background-tasks"></a>
 ### Background Tasks
 
