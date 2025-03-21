@@ -34,6 +34,7 @@
 <div class="content-list" markdown="1">
 
 - [Doctrine DBAL Removal](#doctrine-dbal-removal)
+- [Removal of `$seed` parameter from `Arr::shuffle()` and `Collection::shuffle()`](#shuffle-seed-removal)
 - [Eloquent Model `casts` Method](#eloquent-model-casts-method)
 - [Spatial Types](#spatial-types)
 - [The `Enumerable` Contract](#the-enumerable-contract)
@@ -218,6 +219,36 @@ The `dump` method of the `Illuminate\Support\Enumerable` contract has been updat
 
 ```php
 public function dump(...$args);
+```
+
+<a name="shuffle-seed-removal"></a>
+#### Removal of the `$seed` parameter from the `Arr::shuffle()` and `Collection::shuffle()` methods
+
+**Likelihood Of Impact: Low**
+
+In Laravel 11, the `Arr::shuffle()` and `Collection::shuffle()` methods no longer accept a `$seed` parameter. This change was implemented to promote explicit and secure randomness within the framework.
+
+If your application requires seeded shuffles, you can define custom macros for the `Arr` and `Collection` classes:​
+
+```php
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+
+Arr::macro('shuffleWithSeed', function (array $array, ?int $seed = null): array {
+    if (is_null($seed)) {
+        shuffle($array);
+    } else {
+        mt_srand($seed);
+        shuffle($array);
+        mt_srand();
+    }
+
+    return $array;
+});
+
+Collection::macro('shuffleWithSeed', function (?int $seed = null): Collection {
+    return new Collection(Arr::shuffleWithSeed($this->items, $seed));
+});
 ```
 
 <a name="database"></a>
