@@ -32,7 +32,6 @@
 - [Image Validation Now Excludes SVGs](#image-validation)
 - [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
 - [Nested Array Request Merging](#nested-array-request-merging)
-- [Updated `DatabaseTokenRepository` constructor signature](#updated-databasetokenrepository-constructor-signature)
 
 </div>
 
@@ -96,13 +95,11 @@ Or, if you are using [Laravel Herd's](https://herd.laravel.com) bundled copy of 
 ### Authentication
 
 <a name="updated-databasetokenrepository-constructor-signature"></a>
-#### Updated `DatabaseTokenRepository` constructor signature
+#### Updated `DatabaseTokenRepository` Constructor Signature
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Very Low**
 
-The constructor of the `DatabaseTokenRepository` class now expects the `$expires` parameter to be given in seconds, rather than minutes.
-If you manually instantiate this class, or override the `PasswordBrokerManager` class that creates instances,
-you may have to change your values.
+The constructor of the `Illuminate\Auth\Passwords\DatabaseTokenRepository` class now expects the `$expires` parameter to be given in seconds, rather than minutes.
 
 <a name="concurrency"></a>
 ### Concurrency
