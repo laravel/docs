@@ -1130,8 +1130,8 @@ You may also use the `restore` method in a query to restore multiple models. Aga
 
 ```php
 Flight::withTrashed()
-        ->where('airline_id', 1)
-        ->restore();
+    ->where('airline_id', 1)
+    ->restore();
 ```
 
 The `restore` method may also be used when building [relationship](/docs/{{version}}/eloquent-relationships) queries:

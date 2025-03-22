@@ -1764,7 +1764,7 @@ Assert that the given JavaScript expression evaluates to the given value:
 
 ```php
 $browser->assertScript('window.isLoaded')
-        ->assertScript('document.readyState', 'complete');
+    ->assertScript('document.readyState', 'complete');
 ```
 
 <a name="assert-source-has"></a>
@@ -2288,9 +2288,9 @@ Sometimes you may already be on a given page and need to "load" the page's selec
 use Tests\Browser\Pages\CreatePlaylist;
 
 $browser->visit('/dashboard')
-        ->clickLink('Create Playlist')
-        ->on(new CreatePlaylist)
-        ->assertSee('@create');
+    ->clickLink('Create Playlist')
+    ->on(new CreatePlaylist)
+    ->assertSee('@create');
 ```
 
 <a name="shorthand-selectors"></a>
@@ -2372,8 +2372,8 @@ Once the method has been defined, you may use it within any test that utilizes t
 use Tests\Browser\Pages\Dashboard;
 
 $browser->visit(new Dashboard)
-        ->createPlaylist('My Playlist')
-        ->assertSee('My Playlist');
+    ->createPlaylist('My Playlist')
+    ->assertSee('My Playlist');
 ```
 
 <a name="components"></a>

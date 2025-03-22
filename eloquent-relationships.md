@@ -932,7 +932,7 @@ The `wherePivot` adds a where clause constraint to the query, but does not add t
 
 ```php
 return $this->belongsToMany(Role::class)
-        ->withPivotValue('approved', 1);
+    ->withPivotValue('approved', 1);
 ```
 
 <a name="ordering-queries-via-intermediate-table-columns"></a>
