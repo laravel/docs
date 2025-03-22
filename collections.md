@@ -860,7 +860,6 @@ The `dump` method dumps the collection's items:
 
 ```php
 
-``````php
 $collection = collect(['John Doe', 'Jane Doe']);
 
 $collection->dump();
@@ -884,7 +883,6 @@ The `duplicates` method retrieves and returns duplicate values from the collecti
 
 ```php
 
-``````php
 $collection = collect(['a', 'b', 'a', 'c', 'b']);
 
 $collection->duplicates();
@@ -896,7 +894,6 @@ If the collection contains arrays or objects, you can pass the key of the attrib
 
 ```php
 
-``````php
 $employees = collect([
     ['email' => 'abigail@example.com', 'position' => 'Developer'],
     ['email' => 'james@example.com', 'position' => 'Designer'],

@@ -1700,7 +1700,6 @@ The `Str::wordWrap` method wraps a string to a given number of characters:
 
 ```php
 
-``````php
 use Illuminate\Support\Str;
 
 $text = "The quick brown fox jumped over the lazy dog."
@@ -1721,7 +1720,6 @@ The `Str::words` method limits the number of words in a string. An additional st
 
 ```php
 
-``````php
 use Illuminate\Support\Str;
 
 return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
@@ -1736,7 +1734,6 @@ The `Str::wrap` method wraps the given string with an additional string or pair 
 
 ```php
 
-``````php
 use Illuminate\Support\Str;
 
 Str::wrap('Laravel', '"');
@@ -1755,7 +1752,6 @@ The `str` function returns a new `Illuminate\Support\Stringable` instance of the
 
 ```php
 
-``````php
 $string = str('Taylor')->append(' Otwell');
 
 // 'Taylor Otwell'
@@ -1765,7 +1761,6 @@ If no argument is provided to the `str` function, the function returns an instan
 
 ```php
 
-``````php
 $snake = str()->snake('FooBar');
 
 // 'foo_bar'
@@ -1778,7 +1773,6 @@ The `trans` function translates the given translation key using your [language f
 
 ```php
 
-``````php
 echo trans('messages.welcome');
 ```
 

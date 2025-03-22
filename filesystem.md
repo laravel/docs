@@ -688,7 +688,6 @@ When using the `local` driver, `public` [visibility](#file-visibility) translate
 
 ```php
 
-``````php
 'local' => [
     'driver' => 'local',
     'root' => storage_path('app'),
@@ -713,7 +712,6 @@ The `delete` method accepts a single filename or an array of files to delete:
 
 ```php
 
-``````php
 use Illuminate\Support\Facades\Storage;
 
 Storage::delete('file.jpg');
@@ -725,7 +723,6 @@ If necessary, you may specify the disk that the file should be deleted from:
 
 ```php
 
-``````php
 use Illuminate\Support\Facades\Storage;
 
 Storage::disk('s3')->delete('path/file.jpg');
