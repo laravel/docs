@@ -362,6 +362,15 @@ Schedule::command('report:generate')
     ->onOneServer();
 ```
 
+You may use the `useCache` method to customize the cache store used by the scheduler to obtain the atomic locks necessary for single-server tasks:
+
+```php
+Schedule::command('recipes:sync')
+    ->everyThirtyMinutes()
+    ->onOneServer();
+    ->useCache('database');
+```
+
 <a name="naming-unique-jobs"></a>
 #### Naming Single Server Jobs
 
