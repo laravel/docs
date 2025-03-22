@@ -362,6 +362,15 @@ Schedule::command('report:generate')
     ->onOneServer();
 ```
 
+You may use the `useCache` method to customize the cache store used by the scheduler to obtain the atomic locks necessary for single-server tasks:
+
+```php
+Schedule::command('recipes:sync')
+    ->everyThirtyMinutes()
+    ->onOneServer();
+    ->useCache('database');
+```
+
 <a name="naming-unique-jobs"></a>
 #### Naming Single Server Jobs
 
@@ -386,17 +395,6 @@ Schedule::call(fn () => User::resetApiRequestCount())
     ->name('reset-api-request-count')
     ->daily()
     ->onOneServer();
-```
-
-<a name="customizing-cache-driver"></a>
-#### Customizing the Cache Driver
-If you need to override the default cache driver used for scheduling's atomic mutex locks, you can chain the `useCache` method after `onOneServer`. This allows you to specify a different cache driver (e.g. `'database'`) for the mutex without changing your application's primary cache configuration:
-
-```php
-Schedule::command('recipes:sync')
-    ->everyThirtyMinutes()
-    ->onOneServer();
-    ->useCache('database');
 ```
 
 <a name="background-tasks"></a>
