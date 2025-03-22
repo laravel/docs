@@ -1751,7 +1751,6 @@ Str::wrap('is', before: 'This ', after: ' Laravel!');
 The `str` function returns a new `Illuminate\Support\Stringable` instance of the given string. This function is equivalent to the `Str::of` method:
 
 ```php
-
 $string = str('Taylor')->append(' Otwell');
 
 // 'Taylor Otwell'
@@ -1760,7 +1759,6 @@ $string = str('Taylor')->append(' Otwell');
 If no argument is provided to the `str` function, the function returns an instance of `Illuminate\Support\Str`:
 
 ```php
-
 $snake = str()->snake('FooBar');
 
 // 'foo_bar'
