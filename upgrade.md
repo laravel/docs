@@ -91,6 +91,16 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 
 Or, if you are using [Laravel Herd's](https://herd.laravel.com) bundled copy of the Laravel installer, you should update your Herd installation to the latest release.
 
+<a name="authentication"></a>
+### Authentication
+
+<a name="updated-databasetokenrepository-constructor-signature"></a>
+#### Updated `DatabaseTokenRepository` Constructor Signature
+
+**Likelihood Of Impact: Very Low**
+
+The constructor of the `Illuminate\Auth\Passwords\DatabaseTokenRepository` class now expects the `$expires` parameter to be given in seconds, rather than minutes.
+
 <a name="concurrency"></a>
 ### Concurrency
 
