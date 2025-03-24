@@ -1447,7 +1447,7 @@ DB::transaction(function () {
         ->find(1);
 
     $receiver = DB::table('users')
-        ->lockForUpdate();
+        ->lockForUpdate()
         ->find(2);
 
     if ($sender->balance < 100) {
