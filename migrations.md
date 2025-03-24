@@ -137,7 +137,7 @@ public function up(): void
 <a name="skipping-migrations"></a>
 #### Skipping Migrations
 
-If your migration has dependencies or is meant to support a feature that may not be active yet, you may not want it to run unless its requirements are met. In this case you should implement the optional `shouldRun` method, to return a boolean value based on your needs:
+If your migration has unmet dependencies or is meant to support a feature that is not yet active, you likely do not want it to run until its requirements have been met. In this case you should implement the optional `shouldRun` method, to return a boolean value based on your needs:
 
 ```php
 /**
