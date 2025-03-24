@@ -530,12 +530,21 @@ To execute code on every cache operation, you may listen for various [events](/d
 
 <div class="overflow-auto">
 
-| Event Name |
-| --- |
-| `Illuminate\Cache\Events\CacheHit` |
-| `Illuminate\Cache\Events\CacheMissed` |
-| `Illuminate\Cache\Events\KeyForgotten` |
-| `Illuminate\Cache\Events\KeyWritten` |
+| Event Name                                   |
+|----------------------------------------------|
+| `Illuminate\Cache\Events\CacheFlushed`       |
+| `Illuminate\Cache\Events\CacheFlushing`      |
+| `Illuminate\Cache\Events\CacheHit`           |
+| `Illuminate\Cache\Events\CacheMissed`        |
+| `Illuminate\Cache\Events\ForgettingKey`      |
+| `Illuminate\Cache\Events\KeyForgetFailed`    |
+| `Illuminate\Cache\Events\KeyForgotten`       |
+| `Illuminate\Cache\Events\KeyWriteFailed`     |
+| `Illuminate\Cache\Events\KeyWritten`         |
+| `Illuminate\Cache\Events\RetrievingKey`      |
+| `Illuminate\Cache\Events\RetrievingManyKeys` |
+| `Illuminate\Cache\Events\WritingKey`         |
+| `Illuminate\Cache\Events\WritingManyKeys`    |
 
 </div>
 
