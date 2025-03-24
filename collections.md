@@ -145,6 +145,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [forget](#method-forget)
 [forPage](#method-forpage)
 [get](#method-get)
+[getOrPut](#method-getorput)
 [groupBy](#method-groupby)
 [has](#method-has)
 [hasAny](#method-hasany)
@@ -1278,6 +1279,35 @@ $collection->get('email', function () {
 
 // taylor@example.com
 ```
+
+<a name="method-getorput"></a>
+#### `getOrPut()` {.collection-method}
+
+The `getOrPut` method returns the item at a given key. If the key does not exist, it adds the value to the collection and then returns it:
+
+    $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+
+    $value = $collection->getOrPut('name', 'abigail');
+
+    // taylor
+
+    $collection->all();
+
+    // ['name' => 'taylor', 'framework' => 'laravel', 'age' => 34]
+
+You may also pass a closure as the value:
+
+    $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+
+    $collection->getOrPut('email', function () {
+        return 'taylor@example.com';
+    });
+
+    // taylor@example.com
+
+    $collection->all();
+
+    // ['name' => 'taylor', 'framework' => 'laravel', 'email' => 'taylor@example.com']
 
 <a name="method-groupby"></a>
 #### `groupBy()` {.collection-method}
