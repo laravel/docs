@@ -557,6 +557,10 @@ Sometimes you may need to test your application's behavior if the HTTP client en
         'github.com/*' => Http::failedConnection(),
     ]);
 
+> [!WARNING]  
+> This method is only available since Laravel v.11.32.0
+
+
 <a name="faking-response-sequences"></a>
 #### Faking Response Sequences
 
