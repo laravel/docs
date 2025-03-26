@@ -210,6 +210,37 @@ In addition to the default configuration options, PhpRedis supports the followin
 ],
 ```
 
+### Unix Socket Connections
+
+Redis connections can also be configured to use Unix sockets instead of TCP. This can offer improved performance by eliminating TCP overhead for connections on the same server.
+
+To configure Redis to use a Unix socket with Laravel and the PhpRedis extension, you must set the `host` parameter to the path of the Redis socket and the `port` to `0`.
+
+Here's how you can set this in your `.env` file:
+
+```env
+REDIS_HOST=/run/redis/redis.sock
+REDIS_PORT=0
+```
+
+Update your Laravel Redis configuration accordingly in the `config/database.php` file:
+
+```php
+'redis' => [
+    'client' => env('REDIS_CLIENT', 'phpredis'),
+
+    'default' => [
+        'scheme' => 'unix',
+        'host' => env('REDIS_HOST', '/run/redis/redis.sock'),
+        'port' => env('REDIS_PORT', 0),
+        'database' => env('REDIS_DB', '0'),
+    ],
+],
+```
+
+When configured correctly, Laravel will seamlessly use the Unix socket for Redis connections, leveraging the performance benefits provided by local socket communication.
+
+
 <a name="phpredis-serialization"></a>
 #### PhpRedis Serialization and Compression
 
