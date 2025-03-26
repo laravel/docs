@@ -1,62 +1,47 @@
 # Broadcasting
 
-- [Broadcasting](#broadcasting)
-  - [Introduction](#introduction)
-      - [Supported Drivers](#supported-drivers)
-  - [Server Side Installation](#server-side-installation)
+- [Introduction](#introduction)
+- [Server Side Installation](#server-side-installation)
     - [Configuration](#configuration)
-      - [Installation](#installation)
-      - [Queue Configuration](#queue-configuration)
     - [Reverb](#reverb)
     - [Pusher Channels](#pusher-channels)
     - [Ably](#ably)
-  - [Client Side Installation](#client-side-installation)
-    - [Reverb](#reverb-1)
-    - [Pusher Channels](#pusher-channels-1)
-      - [Using an Existing Client Instance](#using-an-existing-client-instance)
-    - [Ably](#ably-1)
-  - [Concept Overview](#concept-overview)
-    - [Using an Example Application](#using-an-example-application)
-      - [The `ShouldBroadcast` Interface](#the-shouldbroadcast-interface)
-      - [Authorizing Channels](#authorizing-channels)
-      - [Listening for Event Broadcasts](#listening-for-event-broadcasts)
-  - [Defining Broadcast Events](#defining-broadcast-events)
+- [Client Side Installation](#client-side-installation)
+    - [Reverb](#client-reverb)
+    - [Pusher Channels](#client-pusher-channels)
+    - [Ably](#client-ably)
+- [Concept Overview](#concept-overview)
+    - [Using an Example Application](#using-example-application)
+- [Defining Broadcast Events](#defining-broadcast-events)
     - [Broadcast Name](#broadcast-name)
     - [Broadcast Data](#broadcast-data)
     - [Broadcast Queue](#broadcast-queue)
     - [Broadcast Conditions](#broadcast-conditions)
-      - [Broadcasting and Database Transactions](#broadcasting-and-database-transactions)
-  - [Authorizing Channels](#authorizing-channels-1)
+    - [Broadcasting and Database Transactions](#broadcasting-and-database-transactions)
+- [Authorizing Channels](#authorizing-channels)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
-      - [Authorization Callback Model Binding](#authorization-callback-model-binding)
-      - [Authorization Callback Authentication](#authorization-callback-authentication)
     - [Defining Channel Classes](#defining-channel-classes)
-  - [Broadcasting Events](#broadcasting-events)
+- [Broadcasting Events](#broadcasting-events)
     - [Only to Others](#only-to-others)
-      - [Configuration](#configuration-1)
     - [Customizing the Connection](#customizing-the-connection)
     - [Anonymous Events](#anonymous-events)
-  - [Receiving Broadcasts](#receiving-broadcasts)
+- [Receiving Broadcasts](#receiving-broadcasts)
     - [Listening for Events](#listening-for-events)
-      - [Stop Listening for Events](#stop-listening-for-events)
     - [Leaving a Channel](#leaving-a-channel)
     - [Namespaces](#namespaces)
-  - [Presence Channels](#presence-channels)
+- [Presence Channels](#presence-channels)
     - [Authorizing Presence Channels](#authorizing-presence-channels)
     - [Joining Presence Channels](#joining-presence-channels)
     - [Broadcasting to Presence Channels](#broadcasting-to-presence-channels)
-  - [Model Broadcasting](#model-broadcasting)
-      - [Customizing Model Broadcasting Event Creation](#customizing-model-broadcasting-event-creation)
+- [Model Broadcasting](#model-broadcasting)
     - [Model Broadcasting Conventions](#model-broadcasting-conventions)
-      - [Channel Conventions](#channel-conventions)
-      - [Event Conventions](#event-conventions)
     - [Listening for Model Broadcasts](#listening-for-model-broadcasts)
-  - [Installation in Starter Kits](#installation-in-starter-kits)
-    - [Using the Hook/Composable](#using-the-hookcomposable)
+- [Installation in Starter Kits](#installation-in-starter-kits)
+    - [Using the Hook/Composable](#using-the-hook-composable)
     - [Configuring Echo in Starter Kits](#configuring-echo-in-starter-kits)
     - [Testing Broadcasting in Starter Kits](#testing-broadcasting-in-starter-kits)
-  - [Client Events](#client-events)
-  - [Notifications](#notifications)
+- [Client Events](#client-events)
+- [Notifications](#notifications)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1229,6 +1214,32 @@ Once you have obtained a channel instance, you may use the `listen` method to li
 Echo.private(`App.Models.User.${this.user.id}`)
     .listen('.PostUpdated', (e) => {
         console.log(e.model);
+    });
+```
+
+<a name="client-events"></a>
+## Client Events
+
+> [!NOTE]
+> When using [Pusher Channels](https://pusher.com/channels), you must enable the "Client Events" option in the "App Settings" section of your [application dashboard](https://dashboard.pusher.com/) in order to send client events.
+
+Sometimes you may wish to broadcast an event to other connected clients without hitting your Laravel application at all. This can be particularly useful for things like "typing" notifications, where you want to alert users of your application that another user is typing a message on a given screen.
+
+To broadcast client events, you may use Echo's `whisper` method:
+
+```js
+Echo.private(`chat.${roomId}`)
+    .whisper('typing', {
+        name: this.user.name
+    });
+```
+
+To listen for client events, you may use the `listenForWhisper` method:
+
+```js
+Echo.private(`chat.${roomId}`)
+    .listenForWhisper('typing', (e) => {
+        console.log(e.name);
     });
 ```
 
