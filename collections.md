@@ -2417,7 +2417,7 @@ $ratio = [
     'eur' => 1.22,
 ];
 
-$collection->reduce(function (int $carry, int $value, int $key) use ($ratio) {
+$collection->reduce(function (int $carry, int $value, string $key) use ($ratio) {
     return $carry + ($value * $ratio[$key]);
 });
 
