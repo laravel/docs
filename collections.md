@@ -2419,7 +2419,7 @@ $ratio = [
 
 $collection->reduce(function (int $carry, int $value, string $key) use ($ratio) {
     return $carry + ($value * $ratio[$key]);
-});
+}, 0);
 
 // 4264
 ```
