@@ -2402,7 +2402,7 @@ $collection->reduce(function (int $carry, int $item) {
 // 10
 ```
 
-The `reduce` method also passes array keys in associative collections to the given callback:
+The `reduce` method also passes array keys to the given callback:
 
 ```php
 $collection = collect([
