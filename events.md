@@ -271,7 +271,7 @@ class SendShipmentNotification
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
 
 <a name="stopping-the-propagation-of-an-event"></a>
@@ -452,7 +452,7 @@ class SendShipmentNotification implements ShouldQueueAfterCommit
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="handling-failed-jobs"></a>
@@ -539,7 +539,7 @@ public function retryUntil(): DateTime
 #### Specifying Queued Listener Backoff
 
 If you would like to configure how many seconds Laravel should wait before retrying a listener that has encountered an exception, you may do so by defining a `backoff` property on your listener class:
-    
+
 ```php
 /**
  * The number of seconds to wait before retrying the queued listener.
@@ -586,7 +586,6 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
 namespace App\Http\Controllers;
 
 use App\Events\OrderShipped;
-use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -617,7 +616,7 @@ OrderShipped::dispatchIf($condition, $order);
 OrderShipped::dispatchUnless($condition, $order);
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
 
 <a name="dispatching-events-after-database-transactions"></a>
@@ -848,7 +847,7 @@ Event::assertListening(
 );
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
 
 <a name="faking-a-subset-of-events"></a>

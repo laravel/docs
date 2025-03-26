@@ -245,7 +245,6 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\View\View;
 
@@ -309,7 +308,7 @@ Facades\Redis::transaction(function (Redis $redis) {
 });
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands.
 
 #### Lua Scripts
@@ -332,7 +331,7 @@ $value = Redis::eval(<<<'LUA'
 LUA, 2, 'first-counter', 'second-counter');
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
 
 <a name="pipelining-commands"></a>

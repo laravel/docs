@@ -35,7 +35,7 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 $collection = collect([1, 2, 3]);
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
 
 <a name="extending-collections"></a>
@@ -488,7 +488,7 @@ $collection->all();
 // [1, 2, 3]
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > The `collect` method is especially useful when you have an instance of `Enumerable` and need a non-lazy collection instance. Since `collect()` is part of the `Enumerable` contract, you can safely use it to get a `Collection` instance.
 
 <a name="method-combine"></a>
@@ -593,7 +593,7 @@ collect(['1', '2'])->containsOneItem();
 
 This method has the same signature as the [`contains`](#method-contains) method; however, all values are compared using "strict" comparisons.
 
-> [!NOTE]  
+> [!NOTE]
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-contains).
 
 <a name="method-count"></a>
@@ -716,7 +716,7 @@ $diff->all();
 // [1, 3, 5]
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-diff).
 
 <a name="method-diffassoc"></a>
@@ -968,7 +968,7 @@ Primitive types such as `string`, `int`, `float`, `bool`, and `array` may also b
 return $collection->ensure('int');
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The `ensure` method does not guarantee that elements of different types will not be added to the collection at a later time.
 
 <a name="method-every"></a>
@@ -1013,7 +1013,7 @@ $filtered->all();
 
 For the inverse of `except`, see the [only](#method-only) method.
 
-> [!NOTE]  
+> [!NOTE]
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-except).
 
 <a name="method-filter"></a>
@@ -1228,7 +1228,7 @@ $collection->forget(['name', 'framework']);
 // []
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Unlike most other collection methods, `forget` does not return a new modified collection; it modifies and returns the collection it is called on.
 
 <a name="method-forpage"></a>
@@ -1457,7 +1457,7 @@ $intersect->all();
 // [0 => 'Desk', 2 => 'Chair']
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-intersect).
 
 <a name="method-intersectusing"></a>
@@ -1714,7 +1714,7 @@ $multiplied->all();
 // [2, 4, 6, 8, 10]
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
 
 <a name="method-mapinto"></a>
@@ -2022,7 +2022,7 @@ $filtered->all();
 
 For the inverse of `only`, see the [except](#method-except) method.
 
-> [!NOTE]  
+> [!NOTE]
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-only).
 
 <a name="method-pad"></a>
@@ -2668,7 +2668,7 @@ $subset->all();
 // [3, 4]
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > If the given value is not found or the callback never returns `true`, the `skipUntil` method will return an empty collection.
 
 <a name="method-skipwhile"></a>
@@ -2688,7 +2688,7 @@ $subset->all();
 // [4]
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > If the callback never returns `false`, the `skipWhile` method will return an empty collection.
 
 <a name="method-slice"></a>
@@ -2815,7 +2815,7 @@ $sorted->values()->all();
 
 If your sorting needs are more advanced, you may pass a callback to `sort` with your own algorithm. Refer to the PHP documentation on [`uasort`](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters), which is what the collection's `sort` method calls utilizes internally.
 
-> [!NOTE]  
+> [!NOTE]
 > If you need to sort a collection of nested arrays or objects, see the [`sortBy`](#method-sortby) and [`sortByDesc`](#method-sortbydesc) methods.
 
 <a name="method-sortby"></a>
@@ -3199,7 +3199,7 @@ $subset->all();
 // [1, 2]
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > If the given value is not found or the callback never returns `true`, the `takeUntil` method will return all items in the collection.
 
 <a name="method-takewhile"></a>
@@ -3219,7 +3219,7 @@ $subset->all();
 // [1, 2]
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > If the callback never returns `false`, the `takeWhile` method will return all items in the collection.
 
 <a name="method-tap"></a>
@@ -3270,7 +3270,7 @@ $collection->toArray();
 */
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw array underlying the collection, use the [`all`](#method-all) method instead.
 
 <a name="method-tojson"></a>
@@ -3303,7 +3303,7 @@ $collection->all();
 // [2, 4, 6, 8, 10]
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.
 
 <a name="method-undot"></a>
@@ -3417,7 +3417,7 @@ $unique->values()->all();
 
 The `unique` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`uniqueStrict`](#method-uniquestrict) method to filter using "strict" comparisons.
 
-> [!NOTE]  
+> [!NOTE]
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-unique).
 
 <a name="method-uniquestrict"></a>
@@ -3971,7 +3971,7 @@ return $users->sum->votes;
 <a name="lazy-collection-introduction"></a>
 ### Introduction
 
-> [!WARNING]  
+> [!WARNING]
 > Before learning more about Laravel's lazy collections, take some time to familiarize yourself with [PHP generators](https://www.php.net/manual/en/language.generators.overview.php).
 
 To supplement the already powerful `Collection` class, the `LazyCollection` class leverages PHP's [generators](https://www.php.net/manual/en/language.generators.overview.php) to allow you to work with very large datasets while keeping memory usage low.
@@ -3988,6 +3988,8 @@ LazyCollection::make(function () {
     while (($line = fgets($handle)) !== false) {
         yield $line;
     }
+
+    fclose($handle);
 })->chunk(4)->map(function (array $lines) {
     return LogEntry::fromLines($lines);
 })->each(function (LogEntry $logEntry) {
@@ -4033,6 +4035,8 @@ LazyCollection::make(function () {
     while (($line = fgets($handle)) !== false) {
         yield $line;
     }
+
+    fclose($handle);
 });
 ```
 
@@ -4170,7 +4174,7 @@ Almost all methods available on the `Collection` class are also available on the
 
 </div>
 
-> [!WARNING]  
+> [!WARNING]
 > Methods that mutate the collection (such as `shift`, `pop`, `prepend` etc.) are **not** available on the `LazyCollection` class.
 
 <a name="lazy-collection-methods"></a>

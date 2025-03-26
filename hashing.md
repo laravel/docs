@@ -85,7 +85,7 @@ $hashed = Hash::make('password', [
 ]);
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > For more information on these options, please refer to the [official PHP documentation regarding Argon hashing](https://secure.php.net/manual/en/function.password-hash.php).
 
 <a name="verifying-that-a-password-matches-a-hash"></a>

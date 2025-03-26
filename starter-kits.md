@@ -297,6 +297,8 @@ WORKOS_API_KEY=your-api-key
 WORKOS_REDIRECT_URL="${APP_URL}/authenticate"
 ```
 
+Additionally, you should configure the application homepage URL in your WorkOS dashboard. This URL is where users will be redirected after they log out of your application.
+
 <a name="configuring-authkit-authentication-methods"></a>
 #### Configuring AuthKit Authentication Methods
 
@@ -386,4 +388,3 @@ php artisan vendor:publish --tag=laravel-mail
 ```
 
 This will generate several files in `resources/views/vendor/mail`. You can modify any of these files as well as the `resources/views/vendor/mail/themes/default.css` file to change the look and appearance of the default email template.
-

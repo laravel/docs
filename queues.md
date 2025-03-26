@@ -64,7 +64,7 @@ Laravel queues provide a unified queueing API across a variety of different queu
 
 Laravel's queue configuration options are stored in your application's `config/queue.php` configuration file. In this file, you will find connection configurations for each of the queue drivers that are included with the framework, including the database, [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io), and [Beanstalkd](https://beanstalkd.github.io/) drivers, as well as a synchronous driver that will execute jobs immediately (for use during local development). A `null` queue driver is also included which discards queued jobs.
 
-> [!NOTE]  
+> [!NOTE]
 > Laravel now offers Horizon, a beautiful dashboard and configuration system for your Redis powered queues. Check out the full [Horizon documentation](/docs/{{version}}/horizon) for more information.
 
 <a name="connections-vs-queues"></a>
@@ -109,7 +109,7 @@ php artisan migrate
 
 In order to use the `redis` queue driver, you should configure a Redis database connection in your `config/database.php` configuration file.
 
-> [!WARNING]  
+> [!WARNING]
 > The `serializer` and `compression` Redis options are not supported by the `redis` queue driver.
 
 **Redis Cluster**
@@ -144,7 +144,7 @@ Adjusting this value based on your queue load can be more efficient than continu
 ],
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Setting `block_for` to `0` will cause queue workers to block indefinitely until a job is available. This will also prevent signals such as `SIGTERM` from being handled until the next job has been processed.
 
 <a name="other-driver-prerequisites"></a>
@@ -175,7 +175,7 @@ php artisan make:job ProcessPodcast
 
 The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously.
 
-> [!NOTE]  
+> [!NOTE]
 > Job stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="class-structure"></a>
@@ -235,7 +235,7 @@ $this->app->bindMethod([ProcessPodcast::class, 'handle'], function (ProcessPodca
 });
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
 
 <a name="handling-relationships"></a>
@@ -275,7 +275,7 @@ If a job receives a collection or array of Eloquent models instead of a single m
 <a name="unique-jobs"></a>
 ### Unique Jobs
 
-> [!WARNING]  
+> [!WARNING]
 > Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks. In addition, unique job constraints do not apply to jobs within batches.
 
 Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class. This interface does not require you to define any additional methods on your class:
@@ -331,7 +331,7 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 
 In the example above, the `UpdateSearchIndex` job is unique by a product ID. So, any new dispatches of the job with the same product ID will be ignored until the existing job has completed processing. In addition, if the existing job is not processed within one hour, the unique lock will be released and another job with the same unique key can be dispatched to the queue.
 
-> [!WARNING]  
+> [!WARNING]
 > If your application dispatches jobs from multiple web servers or containers, you should ensure that all of your servers are communicating with the same central cache server so that Laravel can accurately determine if a job is unique.
 
 <a name="keeping-jobs-unique-until-processing-begins"></a>
@@ -375,7 +375,7 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If you only need to limit the concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
 
 <a name="encrypted-jobs"></a>
@@ -474,7 +474,7 @@ public function middleware(): array
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Job middleware can also be assigned to queueable event listeners, mailables, and notifications.
 
 <a name="rate-limiting"></a>
@@ -539,7 +539,7 @@ public function middleware(): array
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If you are using Redis, you may use the `Illuminate\Queue\Middleware\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware.
 
 <a name="preventing-job-overlaps"></a>
@@ -605,7 +605,7 @@ public function middleware(): array
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
 
 <a name="sharing-lock-keys"></a>
@@ -743,7 +743,7 @@ public function middleware(): array
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
 
 <a name="skipping-jobs"></a>
@@ -793,7 +793,6 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -837,7 +836,6 @@ If you would like to specify that a job should not be immediately available for 
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -868,7 +866,7 @@ In some cases, jobs may have a default delay configured. If you need to bypass t
 ProcessPodcast::dispatch($podcast)->withoutDelay();
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The Amazon SQS queue service has a maximum delay time of 15 minutes.
 
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
@@ -903,7 +901,6 @@ If you would like to dispatch a job immediately (synchronously), you may use the
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -946,7 +943,7 @@ When the `after_commit` option is `true`, you may dispatch jobs within database 
 
 If a transaction is rolled back due to an exception that occurs during the transaction, the jobs that were dispatched during that transaction will be discarded.
 
-> [!NOTE]  
+> [!NOTE]
 > Setting the `after_commit` configuration option to `true` will also cause any queued event listeners, mailables, notifications, and broadcast events to be dispatched after all open database transactions have been committed.
 
 <a name="specifying-commit-dispatch-behavior-inline"></a>
@@ -996,7 +993,7 @@ Bus::chain([
 ])->dispatch();
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Deleting jobs using the `$this->delete()` method within the job will not prevent chained jobs from being processed. The chain will only stop executing if a job in the chain fails.
 
 <a name="chain-connection-queue"></a>
@@ -1051,7 +1048,7 @@ Bus::chain([
 })->dispatch();
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Since chain callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within chain callbacks.
 
 <a name="customizing-the-queue-and-connection"></a>
@@ -1067,7 +1064,6 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -1125,7 +1121,6 @@ If your application interacts with multiple queue connections, you may specify w
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -1244,7 +1239,7 @@ public function retryUntil(): DateTime
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You may also define a `tries` property or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners).
 
 <a name="max-exceptions"></a>
@@ -1325,7 +1320,7 @@ class ProcessPodcast implements ShouldQueue
 
 Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value.
 
-> [!WARNING]  
+> [!WARNING]
 > The `pcntl` PHP extension must be installed in order to specify job timeouts. In addition, a job's "timeout" value should always be less than its ["retry after"](#job-expiration) value. Otherwise, the job may be re-attempted before it has actually finished executing or timed out.
 
 <a name="failing-on-timeout"></a>
@@ -1397,7 +1392,7 @@ $this->fail($exception);
 $this->fail('Something went wrong.');
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > For more information on failed jobs, check out the [documentation on dealing with job failures](#dealing-with-failed-jobs).
 
 <a name="job-batching"></a>
@@ -1479,7 +1474,7 @@ return $batch->id;
 
 The batch's ID, which may be accessed via the `$batch->id` property, may be used to [query the Laravel command bus](#inspecting-batches) for information about the batch after it has been dispatched.
 
-> [!WARNING]  
+> [!WARNING]
 > Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks. In addition, since batched jobs are wrapped within database transactions, database statements that trigger implicit commits should not be executed within the jobs.
 
 <a name="naming-batches"></a>
@@ -1590,7 +1585,7 @@ public function handle(): void
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > You may only add jobs to a batch from within a job that belongs to the same batch.
 
 <a name="inspecting-batches"></a>
@@ -1822,7 +1817,7 @@ dispatch(function () use ($podcast) {
 });
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Since `catch` callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within `catch` callbacks.
 
 <a name="running-the-queue-worker"></a>
@@ -1837,7 +1832,7 @@ Laravel includes an Artisan command that will start a queue worker and process n
 php artisan queue:work
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
 
 You may include the `-v` flag when invoking the `queue:work` command if you would like the processed job IDs to be included in the command's output:
@@ -1959,7 +1954,7 @@ php artisan queue:restart
 
 This command will instruct all queue workers to gracefully exit after they finish processing their current job so that no existing jobs are lost. Since the queue workers will exit when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
 
-> [!NOTE]  
+> [!NOTE]
 > The queue uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a name="job-expirations-and-timeouts"></a>
@@ -1970,7 +1965,7 @@ This command will instruct all queue workers to gracefully exit after they finis
 
 In your `config/queue.php` configuration file, each queue connection defines a `retry_after` option. This option specifies how many seconds the queue connection should wait before retrying a job that is being processed. For example, if the value of `retry_after` is set to `90`, the job will be released back onto the queue if it has been processing for 90 seconds without being released or deleted. Typically, you should set the `retry_after` value to the maximum number of seconds your jobs should reasonably take to complete processing.
 
-> [!WARNING]  
+> [!WARNING]
 > The only queue connection which does not contain a `retry_after` value is Amazon SQS. SQS will retry the job based on the [Default Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) which is managed within the AWS console.
 
 <a name="worker-timeouts"></a>
@@ -1984,7 +1979,7 @@ php artisan queue:work --timeout=60
 
 The `retry_after` configuration option and the `--timeout` CLI option are different, but work together to ensure that jobs are not lost and that jobs are only successfully processed once.
 
-> [!WARNING]  
+> [!WARNING]
 > The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a frozen job is always terminated before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice.
 
 <a name="supervisor-configuration"></a>
@@ -2003,7 +1998,7 @@ Supervisor is a process monitor for the Linux operating system, and will automat
 sudo apt-get install supervisor
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If configuring and managing Supervisor yourself sounds overwhelming, consider using [Laravel Cloud](https://cloud.laravel.com), which provides a fully-managed platform for running Laravel queue workers.
 
 <a name="configuring-supervisor"></a>
@@ -2028,7 +2023,7 @@ stopwaitsecs=3600
 
 In this example, the `numprocs` directive will instruct Supervisor to run eight `queue:work` processes and monitor all of them, automatically restarting them if they fail. You should change the `command` directive of the configuration to reflect your desired queue connection and worker options.
 
-> [!WARNING]  
+> [!WARNING]
 > You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
 
 <a name="starting-supervisor"></a>
@@ -2153,7 +2148,7 @@ class ProcessPodcast implements ShouldQueue
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > A new instance of the job is instantiated before invoking the `failed` method; therefore, any class property modifications that may have occurred within the `handle` method will be lost.
 
 <a name="retrying-failed-jobs"></a>
@@ -2195,7 +2190,7 @@ If you would like to delete a failed job, you may use the `queue:forget` command
 php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
 
 To delete all of your failed jobs from the `failed_jobs` table, you may use the `queue:flush` command:
@@ -2310,7 +2305,7 @@ class AppServiceProvider extends ServiceProvider
 <a name="clearing-jobs-from-queues"></a>
 ## Clearing Jobs From Queues
 
-> [!NOTE]  
+> [!NOTE]
 > When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:clear` command to clear jobs from the queue instead of the `queue:clear` command.
 
 If you would like to delete all jobs from the default queue of the default connection, you may do so using the `queue:clear` Artisan command:
@@ -2325,7 +2320,7 @@ You may also provide the `connection` argument and `queue` option to delete jobs
 php artisan queue:clear redis --queue=emails
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Clearing jobs from queues is only available for the SQS, Redis, and database queue drivers. In addition, the SQS message deletion process takes up to 60 seconds, so jobs sent to the SQS queue up to 60 seconds after you clear the queue might also be deleted.
 
 <a name="monitoring-your-queues"></a>

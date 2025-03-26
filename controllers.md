@@ -67,7 +67,7 @@ Route::get('/user/{id}', [UserController::class, 'show']);
 
 When an incoming request matches the specified route URI, the `show` method on the `App\Http\Controllers\UserController` class will be invoked and the route parameters will be passed to the method.
 
-> [!NOTE]  
+> [!NOTE]
 > Controllers are not **required** to extend a base class. However, it is sometimes convenient to extend a base controller class that contains methods that should be shared across all of your controllers.
 
 <a name="single-action-controllers"></a>
@@ -106,7 +106,7 @@ You may generate an invokable controller by using the `--invokable` option of th
 php artisan make:controller ProvisionServer --invokable
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="controller-middleware"></a>
@@ -125,7 +125,6 @@ Or, you may find it convenient to specify middleware within your controller clas
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
@@ -166,7 +165,7 @@ public static function middleware(): array
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Controllers implementing `Illuminate\Routing\Controllers\HasMiddleware` should not extend `Illuminate\Routing\Controller`.
 
 <a name="resource-controllers"></a>
@@ -453,7 +452,7 @@ Route::get('/photos/popular', [PhotoController::class, 'popular']);
 Route::resource('photos', PhotoController::class);
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
 
 <a name="singleton-resource-controllers"></a>

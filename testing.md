@@ -46,7 +46,7 @@ If you would like to create a test within the `tests/Unit` directory, you may us
 php artisan make:test UserTest --unit
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 Once the test has been generated, you may define test as you normally would using Pest or PHPUnit. To run your tests, execute the `vendor/bin/pest`, `vendor/bin/phpunit`, or `php artisan test` command from your terminal:
@@ -78,7 +78,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class. Typically, you should invoke `parent::setUp()` at the start of your own `setUp` method, and `parent::tearDown()` at the end of your `tearDown` method.
 
 <a name="running-tests"></a>
@@ -123,7 +123,7 @@ By default, Laravel will create as many processes as there are available CPU cor
 php artisan test --parallel --processes=4
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > When running tests in parallel, some Pest / PHPUnit options (such as `--do-not-cache-result`) may not be available.
 
 <a name="parallel-testing-and-databases"></a>
@@ -195,7 +195,7 @@ If you would like to access the current parallel process "token" from any other 
 <a name="reporting-test-coverage"></a>
 ### Reporting Test Coverage
 
-> [!WARNING]  
+> [!WARNING]
 > This feature requires [Xdebug](https://xdebug.org) or [PCOV](https://pecl.php.net/package/pcov).
 
 When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much application code is used when running your tests. To accomplish this, you may provide the `--coverage` option when invoking the `test` command:

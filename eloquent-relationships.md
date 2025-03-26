@@ -442,7 +442,7 @@ public function largestOrder(): HasOne
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Because PostgreSQL does not support executing the `MAX` function against UUID columns, it is not currently possible to use one-of-many relationships in combination with PostgreSQL UUID columns.
 
 <a name="converting-many-relationships-to-has-one-relationships"></a>
@@ -465,6 +465,15 @@ public function orders(): HasMany
 public function largestOrder(): HasOne
 {
     return $this->orders()->one()->ofMany('price', 'max');
+}
+```
+
+You may also use the `one` method to convert `HasManyThrough` relationships to `HasOneThrough` relationships:
+
+```php
+public function latestDeployment(): HasOneThrough
+{
+    return $this->deployments()->one()->latestOfMany();
 }
 ```
 
@@ -861,7 +870,7 @@ If you would like your intermediate table to have `created_at` and `updated_at` 
 return $this->belongsToMany(Role::class)->withTimestamps();
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Intermediate tables that utilize Eloquent's automatically maintained timestamps are required to have both `created_at` and `updated_at` timestamp columns.
 
 <a name="customizing-the-pivot-attribute-name"></a>
@@ -923,7 +932,7 @@ The `wherePivot` adds a where clause constraint to the query, but does not add t
 
 ```php
 return $this->belongsToMany(Role::class)
-        ->withPivotValue('approved', 1);
+    ->withPivotValue('approved', 1);
 ```
 
 <a name="ordering-queries-via-intermediate-table-columns"></a>
@@ -979,7 +988,7 @@ class RoleUser extends Pivot
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Pivot models may not use the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model.
 
 <a name="custom-pivot-models-and-incrementing-ids"></a>
@@ -1309,7 +1318,7 @@ public function bestImage(): MorphOne
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > It is possible to construct more advanced "one of many" relationships. For more information, please consult the [has one of many documentation](#advanced-has-one-of-many-relationships).
 
 <a name="many-to-many-polymorphic-relations"></a>
@@ -1339,7 +1348,7 @@ taggables
     taggable_type - string
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Before diving into polymorphic many-to-many relationships, you may benefit from reading the documentation on typical [many-to-many relationships](#many-to-many).
 
 <a name="many-to-many-polymorphic-model-structure"></a>
@@ -1463,7 +1472,7 @@ $alias = $post->getMorphClass();
 $class = Relation::getMorphedModel($alias);
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > When adding a "morph map" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its "map" name.
 
 <a name="dynamic-relationships"></a>
@@ -1482,7 +1491,7 @@ Order::resolveRelationUsing('customer', function (Order $orderModel) {
 });
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > When defining dynamic relationships, always provide explicit key name arguments to the Eloquent relationship methods.
 
 <a name="querying-relations"></a>
@@ -1624,7 +1633,7 @@ $posts = Post::whereHas('comments', function (Builder $query) {
 }, '>=', 10)->get();
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database.
 
 <a name="inline-relationship-existence-queries"></a>
@@ -2032,7 +2041,7 @@ You may not always need every column from the relationships you are retrieving. 
 $books = Book::with('author:id,name,book_id')->get();
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
 
 <a name="eager-loading-by-default"></a>
@@ -2349,7 +2358,7 @@ $user->posts()->createManyQuietly([
 
 You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](/docs/{{version}}/eloquent#upserts).
 
-> [!NOTE]  
+> [!NOTE]
 > Before using the `create` method, be sure to review the [mass assignment](/docs/{{version}}/eloquent#mass-assignment) documentation.
 
 <a name="updating-belongs-to-relationships"></a>
@@ -2512,5 +2521,5 @@ class Comment extends Model
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method.

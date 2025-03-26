@@ -136,6 +136,16 @@ Context::get('key');
 // "first"
 ```
 
+Context also provides convenient methods for incrementing or decrementing a given key. Both of these methods accept at least one argument: the key to track. A second argument may be provided to specify the amount by which the key should be incremented or decremented:
+
+```php
+Context::increment('records_added');
+Context::increment('records_added', 5);
+
+Context::decrement('records_added');
+Context::decrement('records_added', 5);
+```
+
 <a name="conditional-context"></a>
 #### Conditional Context
 
@@ -275,7 +285,7 @@ Context::pop('breadcrumbs')
 // second_value
 
 Context::get('breadcrumbs');
-// ['first_value'] 
+// ['first_value']
 ```
 
 If you would like to retrieve all of the information stored in the context, you may invoke the `all` method:
@@ -395,7 +405,7 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You should not use the `Context` facade within the `dehydrating` callback, as that will change the context of the current process. Ensure you only make changes to the repository passed to the callback.
 
 <a name="hydrated"></a>
@@ -423,5 +433,5 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You should not use the `Context` facade within the `hydrated` callback and instead ensure you only make changes to the repository passed to the callback.

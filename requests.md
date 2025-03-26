@@ -276,7 +276,7 @@ Route::get('/', function (ServerRequestInterface $request) {
 });
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
 
 <a name="input"></a>
@@ -456,7 +456,7 @@ $input = $request->except(['credit_card']);
 $input = $request->except('credit_card');
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request.
 
 <a name="input-presence"></a>
@@ -754,7 +754,7 @@ $path = $request->photo->storeAs('images', 'filename.jpg');
 $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem).
 
 <a name="configuring-trusted-proxies"></a>
@@ -786,7 +786,7 @@ In addition to configuring the trusted proxies, you may also configure the proxy
 })
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If you are using AWS Elastic Load Balancing, the `headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. If your load balancer uses the standard `Forwarded` header from [RFC 7239](https://www.rfc-editor.org/rfc/rfc7239#section-4), the `headers` value should be `Request::HEADER_FORWARDED`. For more information on the constants that may be used in the `headers` value, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/7.0/deployment/proxies.html).
 
 <a name="trusting-all-proxies"></a>

@@ -1717,8 +1717,6 @@ Str::wordCount('Hello, world!'); // 2
 The `Str::wordWrap` method wraps a string to a given number of characters:
 
 ```php
-
-``````php
 use Illuminate\Support\Str;
 
 $text = "The quick brown fox jumped over the lazy dog."
@@ -1738,8 +1736,6 @@ dog.
 The `Str::words` method limits the number of words in a string. An additional string may be passed to this method via its third argument to specify which string should be appended to the end of the truncated string:
 
 ```php
-
-``````php
 use Illuminate\Support\Str;
 
 return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
@@ -1753,8 +1749,6 @@ return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
 The `Str::wrap` method wraps the given string with an additional string or pair of strings:
 
 ```php
-
-``````php
 use Illuminate\Support\Str;
 
 Str::wrap('Laravel', '"');
@@ -1772,8 +1766,6 @@ Str::wrap('is', before: 'This ', after: ' Laravel!');
 The `str` function returns a new `Illuminate\Support\Stringable` instance of the given string. This function is equivalent to the `Str::of` method:
 
 ```php
-
-``````php
 $string = str('Taylor')->append(' Otwell');
 
 // 'Taylor Otwell'
@@ -1782,8 +1774,6 @@ $string = str('Taylor')->append(' Otwell');
 If no argument is provided to the `str` function, the function returns an instance of `Illuminate\Support\Str`:
 
 ```php
-
-``````php
 $snake = str()->snake('FooBar');
 
 // 'foo_bar'
@@ -1795,8 +1785,6 @@ $snake = str()->snake('FooBar');
 The `trans` function translates the given translation key using your [language files](/docs/{{version}}/localization):
 
 ```php
-
-``````php
 echo trans('messages.welcome');
 ```
 
@@ -3405,8 +3393,8 @@ The `whenEmpty` method invokes the given closure if the string is empty. If the 
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 
-$string = Str::of('  ')->whenEmpty(function (Stringable $string) {
-    return $string->trim()->prepend('Laravel');
+$string = Str::of('  ')->trim()->whenEmpty(function (Stringable $string) {
+    return $string->prepend('Laravel');
 });
 
 // 'Laravel'

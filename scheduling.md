@@ -319,7 +319,7 @@ If you are repeatedly assigning the same timezone to all of your scheduled tasks
 'schedule_timezone' => 'America/Chicago',
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible.
 
 <a name="preventing-task-overlaps"></a>
@@ -346,7 +346,7 @@ Behind the scenes, the `withoutOverlapping` method utilizes your application's [
 <a name="running-tasks-on-one-server"></a>
 ### Running Tasks on One Server
 
-> [!WARNING]  
+> [!WARNING]
 > To utilize this feature, your application must be using the `database`, `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 If your application's scheduler is running on multiple servers, you may limit a scheduled job to only execute on a single server. For instance, assume you have a scheduled task that generates a new report every Friday night. If the task scheduler is running on three worker servers, the scheduled task will run on all three servers and generate the report three times. Not good!
@@ -360,6 +360,15 @@ Schedule::command('report:generate')
     ->fridays()
     ->at('17:00')
     ->onOneServer();
+```
+
+You may use the `useCache` method to customize the cache store used by the scheduler to obtain the atomic locks necessary for single-server tasks:
+
+```php
+Schedule::command('recipes:sync')
+    ->everyThirtyMinutes()
+    ->onOneServer();
+    ->useCache('database');
 ```
 
 <a name="naming-unique-jobs"></a>
@@ -401,7 +410,7 @@ Schedule::command('analytics:report')
     ->runInBackground();
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods.
 
 <a name="maintenance-mode"></a>
@@ -526,7 +535,7 @@ Schedule::command('report:generate')
     ->emailOutputOnFailure('taylor@example.com');
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods.
 
 <a name="task-hooks"></a>
@@ -602,7 +611,7 @@ The `pingBeforeIf`,`thenPingIf`,`pingOnSuccessIf`, and `pingOnFailureIf` methods
 Schedule::command('emails:send')
     ->daily()
     ->pingBeforeIf($condition, $url)
-    ->thenPingIf($condition, $url);             
+    ->thenPingIf($condition, $url);
 
 Schedule::command('emails:send')
     ->daily()
