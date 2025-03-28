@@ -15,7 +15,7 @@ Sometimes you may need to execute several slow tasks which do not depend on one 
 <a name="concurrency-compatibility"></a>
 #### Concurrency Compatibility
 
-If you upgraded to Laravel 11.x from a Laravel 10.x application, you may need to add the `ConcurrencyServiceProvider` to the `providers` array in your application's `config/app.php` configuration file:
+If you upgraded to Laravel 11.x from a Laravel 10.x application and are not already using the `providers.php` configuration file, you may need to add the `ConcurrencyServiceProvider` to the `providers` array in your application's `config/app.php` configuration file:
 
 ```php
 'providers' => ServiceProvider::defaultProviders()->merge([
