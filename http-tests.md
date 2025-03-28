@@ -1108,7 +1108,7 @@ $response->assertCreated();
 Assert that the given string is not contained within the response returned by the application. This assertion will automatically escape the given string unless you pass a second argument of `false`:
 
 ```php
-$response->assertDontSee($value, $escaped = true);
+$response->assertDontSee($value, $escape = true);
 ```
 
 <a name="assert-dont-see-text"></a>
@@ -1117,7 +1117,7 @@ $response->assertDontSee($value, $escaped = true);
 Assert that the given string is not contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`. This method will pass the response content to the `strip_tags` PHP function before making the assertion:
 
 ```php
-$response->assertDontSeeText($value, $escaped = true);
+$response->assertDontSeeText($value, $escape = true);
 ```
 
 <a name="assert-download"></a>
@@ -1577,7 +1577,7 @@ $response->assertRequestTimeout();
 Assert that the given string is contained within the response. This assertion will automatically escape the given string unless you pass a second argument of `false`:
 
 ```php
-$response->assertSee($value, $escaped = true);
+$response->assertSee($value, $escape = true);
 ```
 
 <a name="assert-see-in-order"></a>
@@ -1586,7 +1586,7 @@ $response->assertSee($value, $escaped = true);
 Assert that the given strings are contained in order within the response. This assertion will automatically escape the given strings unless you pass a second argument of `false`:
 
 ```php
-$response->assertSeeInOrder(array $values, $escaped = true);
+$response->assertSeeInOrder(array $values, $escape = true);
 ```
 
 <a name="assert-see-text"></a>
@@ -1595,7 +1595,7 @@ $response->assertSeeInOrder(array $values, $escaped = true);
 Assert that the given string is contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`. The response content will be passed to the `strip_tags` PHP function before the assertion is made:
 
 ```php
-$response->assertSeeText($value, $escaped = true);
+$response->assertSeeText($value, $escape = true);
 ```
 
 <a name="assert-see-text-in-order"></a>
@@ -1604,7 +1604,7 @@ $response->assertSeeText($value, $escaped = true);
 Assert that the given strings are contained in order within the response text. This assertion will automatically escape the given strings unless you pass a second argument of `false`. The response content will be passed to the `strip_tags` PHP function before the assertion is made:
 
 ```php
-$response->assertSeeTextInOrder(array $values, $escaped = true);
+$response->assertSeeTextInOrder(array $values, $escape = true);
 ```
 
 <a name="assert-server-error"></a>
