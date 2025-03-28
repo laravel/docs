@@ -1219,12 +1219,17 @@ Echo.private(`App.Models.User.${this.user.id}`)
 
 <a name="installation-in-starter-kits"></a>
 ## Installation in Starter Kits
+
 Using broadcasting in your React or Vue starter kit is incredibly simple. When you run the `install:broadcasting` command, a [hook](https://react.dev/reference/react/hooks) or [composable](https://vuejs.org/guide/reusability/composables) will automatically be published to your `resources/js` folder. From there, you can immediately start listening to events.
+
 > [!NOTE]
 > Using the Livewire starter kit? Livewire offers seamless integration with WebSockets. [Learn more here](https://livewire.laravel.com/docs/events#real-time-events-using-laravel-echo).
+
 <a name="using-the-hook-composable"></a>
 ### Using the Hook/Composable
+
 To begin listening for events, first, import the hook or composable into any component or page:
+
 ```jsx
 // For React
 import { useEcho } from '@/hooks/use-echo';
@@ -1232,13 +1237,17 @@ import { useEcho } from '@/hooks/use-echo';
 // For Vue
 import { useEcho } from '@/composables/useEcho';
 ```
+
 Then, use the `useEcho` hook or composable to listen for events:
+
 ```jsx
 useEcho('test-channel', 'test.event', (payload) => { console.log(payload) }, [], 'public');
 ```
 <a name="configuring-echo-in-starter-kits"></a>
 ### Configuring Echo in Starter Kits
+
 The `install:broadcasting` command automatically injects the necessary Echo configuration into your **app.tsx** or **app.vue** file:
+
 ```ts
 // For React
 import { configureEcho } from './hooks/use-echo';
@@ -1255,11 +1264,15 @@ configureEcho({
     enabledTransports: ['ws', 'wss'],
 });
 ```
+
 You can modify this configuration to use `reverb`, `pusher`, `ably`, or any other WebSocket service of your choice.
+
 <a name="testing-broadcasting-in-starter-kits"></a>
 ### Testing Broadcasting in Starter Kits
+
 You can broadcast a message using a Laravel Event or an anonymous event. For simplicity, we'll use an anonymous event in this example.
 If you've implemented one of the listener examples above and are listening on the `test-channel` for a `test.event`, you can trigger a broadcast by creating a simple GET route in your `routes/web.php` file like so:
+
 ```php
 use Illuminate\Support\Facades\Broadcast;
 
@@ -1270,8 +1283,11 @@ Route::get('test-channel', function () {
             ->send();
 });
 ```
+
 Next, navigate to a page listening on the `test-channel`. Open your browser's developer tools and go to the **Network** tab. You should see a WebSocket connection to the server. Click on that request to view the incoming messages.
+
 Then, open a new browser tab and visit the `/test-channel` route. You should now see a new message in the WebSocket logs with the following payload:
+
 ```json
 {
     "event": "test.event",
@@ -1279,6 +1295,7 @@ Then, open a new browser tab and visit the `/test-channel` route. You should now
     "channel": "test-channel"
 }
 ```
+
 You can decode this payload to access the event data. And just like that, you've set up a real-time socket connection where the server can send messages directly to the client.
 
 <a name="client-events"></a>
