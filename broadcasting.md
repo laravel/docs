@@ -1271,6 +1271,7 @@ You can modify this configuration to use `reverb`, `pusher`, `ably`, or any othe
 ### Testing Broadcasting in Starter Kits
 
 You can broadcast a message using a Laravel Event or an anonymous event. For simplicity, we'll use an anonymous event in this example.
+
 If you've implemented one of the listener examples above and are listening on the `test-channel` for a `test.event`, you can trigger a broadcast by creating a simple GET route in your `routes/web.php` file like so:
 
 ```php
