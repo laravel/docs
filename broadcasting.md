@@ -1246,7 +1246,7 @@ useEcho('test-channel', 'test.event', (payload) => { console.log(payload) }, [],
 <a name="configuring-echo-in-starter-kits"></a>
 ### Configuring Echo in Starter Kits
 
-The `install:broadcasting` command automatically injects the necessary Echo configuration into your **app.tsx** or **app.vue** file:
+The `install:broadcasting` command automatically injects the necessary Echo configuration into your **app.tsx** or **app.ts	** file:
 
 ```ts
 // For React
