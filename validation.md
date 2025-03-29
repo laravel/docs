@@ -118,7 +118,12 @@ public function store(Request $request): RedirectResponse
     $validated = $request->validate([
         'title' => 'required|unique:posts|max:255',
         'body' => 'required',
-    ]);
+    ],
+[
+    //custom error messages can be added too
+    'title.required'=>'new error message for required rule',
+    'body.required'=>'new error message for required rule',
+]);
 
     // The blog post is valid...
 
