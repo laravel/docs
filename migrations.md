@@ -137,15 +137,13 @@ public function up(): void
 <a name="skipping-migrations"></a>
 #### Skipping Migrations
 
-If your migration has unmet dependencies or is meant to support a feature that is not yet active, you likely do not want it to run until its requirements have been met. In this case you should implement the optional `shouldRun` method, to return a boolean value based on your needs:
+Sometimes a migration might be meant to support a feature that is not yet active and you do not want it to run yet. In this case you may define a `shouldRun` method on the migration. If the `shouldRun` method returns `false`, the migration will be skipped:
 
 ```php
 /**
  * Determine if this migration should run.
- *
- * @return bool
  */
-public function shouldRun()
+public function shouldRun(): bool
 {
     return Feature::active(Flights::class);
 }
