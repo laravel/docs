@@ -1594,12 +1594,20 @@ class Post extends Model
 }
 ```
 
-The `withAttributes` method will add `where` clause constraints to the query using the given attributes, and it will also add the given attributes to any models created via the scope:
+The `withAttributes` method will add `where` conditions to the query using the given attributes, and it will also add the given attributes to any models created via the scope:
 
 ```php
 $draft = Post::draft()->create(['title' => 'In Progress']);
 
 $draft->hidden; // true
+```
+
+To instruct the `withAttributes` method to not add `where` conditions to the query, you may set the `asConditions` argument to `false`:
+
+```php
+$query->withAttributes([
+    'hidden' => true,
+], asConditions: false);
 ```
 
 <a name="comparing-models"></a>
