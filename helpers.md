@@ -71,6 +71,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::select](#method-array-select)
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
+[Arr::sole](#method-array-sole)
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
@@ -918,6 +919,21 @@ use Illuminate\Support\Arr;
 $array = Arr::shuffle([1, 2, 3, 4, 5]);
 
 // [3, 2, 5, 1, 4] - (generated randomly)
+```
+
+<a name="method-array-sole"></a>
+#### `Arr::sole()` {.collection-method}
+
+The `Arr::sole` method retrieves a single value from an array using the given closure. If more than one value within the array matches the given truth test, an `Illuminate\Support\MultipleItemsFoundException` exception will be thrown. If no values match the truth test, an `Illuminate\Support\ItemNotFoundException` exception will be thrown:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['Desk', 'Table', 'Chair'];
+
+$value = Arr::sole($array, fn (string $value) => $value === 'Desk');
+
+// 'Desk'
 ```
 
 <a name="method-array-sort"></a>
