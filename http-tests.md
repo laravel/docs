@@ -441,6 +441,12 @@ $this->assertThrows(
 );
 ```
 
+The `assertDoesntThrow` method may be used to assert that the code within a given closure does not throw any exceptions:
+
+```php
+$this->assertDoesntThrow(fn () => (new ProcessOrder)->execute());
+```
+
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
 
