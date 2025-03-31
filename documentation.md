@@ -91,4 +91,4 @@
     - [Socialite](/docs/{{version}}/socialite)
     - [Telescope](/docs/{{version}}/telescope)
     - [Valet](/docs/{{version}}/valet)
-- [API Documentation](/api/8.x)
+- [API Documentation](https://api.laravel.com/docs/8.x/)
