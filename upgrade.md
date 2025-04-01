@@ -181,6 +181,13 @@ $table = Schema::getTableListing(schema: 'main', schemaQualified: false);
 
 The `db:table` and `db:show` commands now output the results of all schemas on MySQL, MariaDB, and SQLite, just like PostgreSQL and SQL Server.
 
+<a name="updated-blueprint-constructor-signature"></a>
+#### Updated `Blueprint` Constructor Signature
+
+**Likelihood Of Impact: Very Low**
+
+The constructor of the `Illuminate\Database\Schema\Blueprint` class now expects `Illuminate\Database\Connection` `$connection` as first argument.
+
 <a name="eloquent"></a>
 ### Eloquent
 
