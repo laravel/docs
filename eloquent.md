@@ -1481,7 +1481,7 @@ User::withoutGlobalScopes([
 
 Local scopes allow you to define common sets of query constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, add the `Scope` attribute to an Eloquent method.
 
-Scopes should always return the same query builder instance or `void`:
+Scopes should always return the same query builder instance or `void`. If the scope return is void you need to start your query with `Model::query()`:
 
 ```php
 <?php
@@ -1522,13 +1522,13 @@ Once the scope has been defined, you may call the scope methods when querying th
 ```php
 use App\Models\User;
 
-$users = User::popular()->active()->orderBy('created_at')->get();
+$users = User::query()->popular()->active()->orderBy('created_at')->get();
 ```
 
 Combining multiple Eloquent model scopes via an `or` query operator may require the use of closures to achieve the correct [logical grouping](/docs/{{version}}/queries#logical-grouping):
 
 ```php
-$users = User::popular()->orWhere(function (Builder $query) {
+$users = User::query()->popular()->orWhere(function (Builder $query) {
     $query->active();
 })->get();
 ```
@@ -1536,7 +1536,7 @@ $users = User::popular()->orWhere(function (Builder $query) {
 However, since this can be cumbersome, Laravel provides a "higher order" `orWhere` method that allows you to fluently chain scopes together without the use of closures:
 
 ```php
-$users = User::popular()->orWhere->active()->get();
+$users = User::query()->popular()->orWhere->active()->get();
 ```
 
 <a name="dynamic-scopes"></a>
@@ -1569,7 +1569,7 @@ class User extends Model
 Once the expected arguments have been added to your scope method's signature, you may pass the arguments when calling the scope:
 
 ```php
-$users = User::ofType('admin')->get();
+$users = User::query()->ofType('admin')->get();
 ```
 
 <a name="pending-attributes"></a>
@@ -1604,7 +1604,7 @@ class Post extends Model
 The `withAttributes` method will add `where` conditions to the query using the given attributes, and it will also add the given attributes to any models created via the scope:
 
 ```php
-$draft = Post::draft()->create(['title' => 'In Progress']);
+$draft = Post::query()->draft()->create(['title' => 'In Progress']);
 
 $draft->hidden; // true
 ```
