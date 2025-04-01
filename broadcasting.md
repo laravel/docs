@@ -1163,7 +1163,7 @@ So, for example, an update to the `App\Models\Post` model would broadcast an eve
         ...
     },
     ...
-    "socket": "someSocketId",
+    "socket": "someSocketId"
 }
 ```
 
