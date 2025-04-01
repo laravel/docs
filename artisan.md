@@ -51,7 +51,7 @@ If you are using [Laravel Sail](/docs/{{version}}/sail) as your local developmen
 <a name="tinker"></a>
 ### Tinker (REPL)
 
-Laravel [Tinker](https://github.com/laravel/tinker) is a powerful REPL for the Laravel framework, powered by the [PsySH](https://github.com/bobthecow/psysh) package.
+[Laravel Tinker](https://github.com/laravel/tinker) is a powerful REPL for the Laravel framework, powered by the [PsySH](https://github.com/bobthecow/psysh) package.
 
 <a name="installation"></a>
 #### Installation
