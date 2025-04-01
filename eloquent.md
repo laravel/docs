@@ -776,7 +776,7 @@ The `save` method may also be used to update models that already exist in the da
 ```php
 use App\Models\Flight;
 
-$flight = Flight::find(1);
+$flight = Flight::findOrFail(1);
 
 $flight->name = 'Paris to London';
 
@@ -867,7 +867,7 @@ $user->wasChanged(['first_name', 'title']); // true
 The `getOriginal` method returns an array containing the original attributes of the model regardless of any changes to the model since it was retrieved. If needed, you may pass a specific attribute name to get the original value of a particular attribute:
 
 ```php
-$user = User::find(1);
+$user = User::findOrFail(1);
 
 $user->name; // John
 $user->email; // john@example.com
@@ -882,7 +882,7 @@ $user->getOriginal(); // Array of original attributes...
 The `getChanges` method returns an array containing the attributes that changed when the model was last saved:
 
 ```php
-$user = User::find(1);
+$user = User::findOrFail(1);
 
 $user->name; // John
 $user->email; // john@example.com
@@ -1023,7 +1023,7 @@ To delete a model, you may call the `delete` method on the model instance:
 ```php
 use App\Models\Flight;
 
-$flight = Flight::find(1);
+$flight = Flight::findOrFail(1);
 
 $flight->delete();
 ```
@@ -1851,7 +1851,7 @@ use App\Models\User;
 $user = User::withoutEvents(function () {
     User::findOrFail(1)->delete();
 
-    return User::find(2);
+    return User::findOrFail(2);
 });
 ```
 
