@@ -186,7 +186,7 @@ The `db:table` and `db:show` commands now output the results of all schemas on M
 
 **Likelihood Of Impact: Very Low**
 
-The constructor of the `Illuminate\Database\Schema\Blueprint` class now expects `Illuminate\Database\Connection` `$connection` as first argument.
+The constructor of the `Illuminate\Database\Schema\Blueprint` class now expects an instance of `Illuminate\Database\Connection` as its first argument.
 
 <a name="eloquent"></a>
 ### Eloquent
