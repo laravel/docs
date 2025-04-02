@@ -33,6 +33,7 @@
     - [Increment and Decrement](#increment-and-decrement)
 - [Delete Statements](#delete-statements)
 - [Pessimistic Locking](#pessimistic-locking)
+- [Scopes](#scopes)
 - [Debugging](#debugging)
 
 <a name="introduction"></a>
@@ -1575,7 +1576,7 @@ class Paginate
 }
 ```
 
-Using the query builder's `pipe` method, we can use this scope to apply our shared pagination logic.
+Using the query builder's `pipe` method, we can use this scope to apply our shared pagination logic:
 
 ```php
 $flights = DB::table('flights')
