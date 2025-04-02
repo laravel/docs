@@ -1468,6 +1468,121 @@ DB::transaction(function () {
 });
 ```
 
+<a name="scopes"></a>
+## Scopes
+
+If you have repeated query logic throughout your application, you may extract the logic into scopes. Imagine you have these two different queries in your application:
+
+```php
+$destination = $request->query('destination');
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) {
+        $query->where('destination', $destination);
+    })
+    ->orderByDesc('price')
+    ->get();
+
+// ...
+
+$destination = $request->query('destination');
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) {
+        $query->where('destination', $destination);
+    })
+    ->where('user', $request->user()->id)
+    ->orderBy('destination')
+    ->get();
+```
+
+You may like to extract the destination filtering into a re-usable scope:
+
+```php
+<?php
+
+namespace App\Scopes;
+
+use Illuminate\Database\Query\Builder;
+
+class DesinationFilter
+{
+    public function __construct(
+        private ?string $desination,
+    ) {
+        //
+    }
+
+    public function __invoke(Builder $query): void
+    {
+        $query->when($this->destination, function (Builder $query) {
+            $query->where('destination', $this->destination);
+        });
+    }
+}
+```
+
+Then, you can use the query builder's `tap` method to apply the scope:
+
+```php
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
+        $query->where('destination', $destination); // [tl! remove]
+    }) // [tl! remove]
+    ->tap(new DesinationFilter($destination)) // [tl! add]
+    ->orderByDesc('price')
+    ->get();
+
+// ...
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
+        $query->where('destination', $destination); // [tl! remove]
+    }) // [tl! remove]
+    ->tap(new DesinationFilter($destination)) // [tl! add]
+    ->where('user', $request->user()->id)
+    ->orderBy('destination')
+    ->get();
+```
+
+The `tap` method will always return the query builder. If you would like to extract a scope that executes the query and returns another value, you may use the `pipe` method instead.
+
+Take the following scope that contains shared [pagination](/docs/{{version}}/pagination) logic used throughout an application. Unlike the `DesinationFilter`, which applies query conditions to the query, the `Paginate` scope runs the query and returns a paginator.
+
+```php
+<?php
+
+namespace App\Scopes;
+
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Query\Builder;
+
+class Paginate
+{
+    public function __construct(
+        private string $sortBy = 'timestamp',
+        private string $sortDirection = 'desc',
+        private string $perPage = 25,
+    ) {
+        //
+    }
+
+    public function __invoke(Builder $query): LengthAwarePaginator
+    {
+        $query->orderBy($this->sortBy, $this->sortDirection)
+            ->paginte($this->perPage, pageName: 'p');
+    }
+}
+```
+
+Using the query builder's `pipe` method, we can use this scope to apply our shared pagination logic.
+
+```php
+$flights = DB::table('flights')
+    ->tap(new DesinationFilter($destination))
+    ->pipe(new Paginate);
+```
+
 <a name="debugging"></a>
 ## Debugging
 
