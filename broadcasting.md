@@ -68,7 +68,7 @@ Event broadcasting is accomplished by a server-side broadcasting driver that bro
 <a name="configuration"></a>
 ### Configuration
 
-All of your application's event broadcasting configuration is stored in the `config/broadcasting.php` configuration file. Don't worry if this directory does not exist in your application; it will be created when you run the `install:broadcasting` Artisan command.
+All of your application's event broadcasting configuration is stored in the `config/broadcasting.php` configuration file. Don't worry if this file does not exist in your application; it will be created when you run the `install:broadcasting` Artisan command.
 
 Laravel supports several broadcast drivers out of the box: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to disable broadcasting during testing. A configuration example is included for each of these drivers in the `config/broadcasting.php` configuration file.
 
