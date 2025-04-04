@@ -725,12 +725,18 @@ public function featuredPosts(): HasMany
 }
 ```
 
-The `withAttributes` method will add `where` clause constraints to the query using the given attributes, and it will also add the given attributes to any models created via the relationship method:
+The `withAttributes` method will add `where` conditions to the query using the given attributes, and it will also add the given attributes to any models created via the relationship method:
 
 ```php
 $post = $user->featuredPosts()->create(['title' => 'Featured Post']);
 
 $post->featured; // true
+```
+
+To instruct the `withAttributes` method to not add `where` conditions to the query, you may set the `asConditions` argument to `false`:
+
+```php
+return $this->posts()->withAttributes(['featured' => true], asConditions: false);
 ```
 
 <a name="many-to-many"></a>

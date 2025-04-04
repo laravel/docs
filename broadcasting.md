@@ -901,7 +901,7 @@ If you would like to stop listening to a given event without [leaving the channe
 
 ```js
 Echo.private(`orders.${this.order.id}`)
-    .stopListening('OrderShipmentStatusUpdated')
+    .stopListening('OrderShipmentStatusUpdated');
 ```
 
 <a name="leaving-a-channel"></a>
@@ -1145,7 +1145,7 @@ return [new Channel($this->user)];
 If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for an `App\Models\User` model with an `id` of `1`:
 
 ```php
-$user->broadcastChannel()
+$user->broadcastChannel();
 ```
 
 <a name="model-broadcasting-event-conventions"></a>
@@ -1163,7 +1163,7 @@ So, for example, an update to the `App\Models\Post` model would broadcast an eve
         ...
     },
     ...
-    "socket": "someSocketId",
+    "socket": "someSocketId"
 }
 ```
 

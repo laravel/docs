@@ -1479,7 +1479,7 @@ User::withoutGlobalScopes([
 <a name="local-scopes"></a>
 ### Local Scopes
 
-Local scopes allow you to define common sets of query constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, prefix an Eloquent model method with `scope`.
+Local scopes allow you to define common sets of query constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, add the `Scope` attribute to an Eloquent method.
 
 Scopes should always return the same query builder instance or `void`:
 
@@ -1488,6 +1488,7 @@ Scopes should always return the same query builder instance or `void`:
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -1496,7 +1497,8 @@ class User extends Model
     /**
      * Scope a query to only include popular users.
      */
-    public function scopePopular(Builder $query): void
+    #[Scope]
+    protected function popular(Builder $query): void
     {
         $query->where('votes', '>', 100);
     }
@@ -1504,7 +1506,8 @@ class User extends Model
     /**
      * Scope a query to only include active users.
      */
-    public function scopeActive(Builder $query): void
+    #[Scope]
+    protected function active(Builder $query): void
     {
         $query->where('active', 1);
     }
@@ -1514,7 +1517,7 @@ class User extends Model
 <a name="utilizing-a-local-scope"></a>
 #### Utilizing a Local Scope
 
-Once the scope has been defined, you may call the scope methods when querying the model. However, you should not include the `scope` prefix when calling the method. You can even chain calls to various scopes:
+Once the scope has been defined, you may call the scope methods when querying the model. You can even chain calls to various scopes:
 
 ```php
 use App\Models\User;
@@ -1546,6 +1549,7 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -1554,7 +1558,8 @@ class User extends Model
     /**
      * Scope a query to only include users of a given type.
      */
-    public function scopeOfType(Builder $query, string $type): void
+    #[Scope]
+    protected function ofType(Builder $query, string $type): void
     {
         $query->where('type', $type);
     }
@@ -1577,6 +1582,7 @@ If you would like to use scopes to create models that have the same attributes a
 
 namespace App\Models;
 
+use Illuminate\Database\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -1585,7 +1591,8 @@ class Post extends Model
     /**
      * Scope the query to only include drafts.
      */
-    public function scopeDraft(Builder $query): void
+    #[Scope]
+    protected function draft(Builder $query): void
     {
         $query->withAttributes([
             'hidden' => true,
@@ -1594,12 +1601,20 @@ class Post extends Model
 }
 ```
 
-The `withAttributes` method will add `where` clause constraints to the query using the given attributes, and it will also add the given attributes to any models created via the scope:
+The `withAttributes` method will add `where` conditions to the query using the given attributes, and it will also add the given attributes to any models created via the scope:
 
 ```php
 $draft = Post::draft()->create(['title' => 'In Progress']);
 
 $draft->hidden; // true
+```
+
+To instruct the `withAttributes` method to not add `where` conditions to the query, you may set the `asConditions` argument to `false`:
+
+```php
+$query->withAttributes([
+    'hidden' => true,
+], asConditions: false);
 ```
 
 <a name="comparing-models"></a>

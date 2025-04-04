@@ -51,7 +51,6 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
 - [Laravel Vue Starter Kit](https://github.com/laravel/vue-starter-kit)
-- [Laravel Website](https://github.com/laravel/laravel.com)
 
 </div>
 

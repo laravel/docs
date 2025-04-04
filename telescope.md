@@ -474,8 +474,10 @@ public function register(): void
 {
     // ...
 
-    Telescope::avatar(function (string $id, string $email) {
-        return '/avatars/'.User::find($id)->avatar_path;
+    Telescope::avatar(function (?string $id, ?string $email) {
+        return ! is_null($id)
+            ? '/avatars/'.User::find($id)->avatar_path
+            : '/generic-avatar.jpg';
     });
 }
 ```

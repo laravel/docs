@@ -134,6 +134,24 @@ public function up(): void
 }
 ```
 
+<a name="skipping-migrations"></a>
+#### Skipping Migrations
+
+Sometimes a migration might be meant to support a feature that is not yet active and you do not want it to run yet. In this case you may define a `shouldRun` method on the migration. If the `shouldRun` method returns `false`, the migration will be skipped:
+
+```php
+use App\Models\Flights;
+use Laravel\Pennant\Feature;
+
+/**
+ * Determine if this migration should run.
+ */
+public function shouldRun(): bool
+{
+    return Feature::active(Flights::class);
+}
+```
+
 <a name="running-migrations"></a>
 ## Running Migrations
 
