@@ -155,7 +155,7 @@ The `@` symbol may also be used to escape Blade directives:
 
 Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
 
-```blade
+```php
 <script>
     var app = <?php echo json_encode($array); ?>;
 </script>
