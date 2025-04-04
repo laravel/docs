@@ -692,7 +692,7 @@ Supported `policy` values include: `none`, `download`, `upload`, and `public`.
 <a name="laravel-dusk"></a>
 ### Laravel Dusk
 
-In order to run [Laravel Dusk](/docs/{{version}}/dusk) tests within Homestead, you should enable the [`webdriver` feature](#installing-optional-features) in your Homestead configuration:
+In order to run [Laravel Dusk](/docs/{{version}}/dusk) tests within Homestead, you should enable the [webdriver feature](#installing-optional-features) in your Homestead configuration:
 
 ```yaml
 features:
