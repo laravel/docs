@@ -2051,7 +2051,7 @@ blank(false);
 // false
 ```
 
-For the inverse of `blank`, see the [`filled`](#method-filled) method.
+For the inverse of `blank`, see the [filled](#method-filled) method.
 
 <a name="method-broadcast"></a>
 #### `broadcast()` {.collection-method}
@@ -2184,7 +2184,7 @@ dd($value);
 dd($value1, $value2, $value3, ...);
 ```
 
-If you do not want to halt the execution of your script, use the [`dump`](#method-dump) function instead.
+If you do not want to halt the execution of your script, use the [dump](#method-dump) function instead.
 
 <a name="method-dispatch"></a>
 #### `dispatch()` {.collection-method}
@@ -2215,7 +2215,7 @@ dump($value);
 dump($value1, $value2, $value3, ...);
 ```
 
-If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.
+If you want to stop executing the script after dumping the variables, use the [dd](#method-dd) function instead.
 
 <a name="method-encrypt"></a>
 #### `encrypt()` {.collection-method}
@@ -2292,7 +2292,7 @@ filled(collect());
 // false
 ```
 
-For the inverse of `filled`, see the [`blank`](#method-blank) method.
+For the inverse of `filled`, see the [blank](#method-blank) method.
 
 <a name="method-info"></a>
 #### `info()` {.collection-method}
@@ -3241,7 +3241,7 @@ Sleep::for(1)->second();
 $start->diffForHumans(); // 1 second ago
 ```
 
-Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [`retry`](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.
+Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [retry](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.
 
 <a name="timebox"></a>
 ### Timebox

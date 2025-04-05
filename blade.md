@@ -1062,7 +1062,7 @@ If you need to merge other attributes onto your component, you can chain the `me
 ```
 
 > [!NOTE]
-> If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [`@class` directive](#conditional-classes).
+> If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [@class directive](#conditional-classes).
 
 <a name="non-class-attribute-merging"></a>
 #### Non-Class Attribute Merging
@@ -1926,7 +1926,7 @@ As you can see, we will chain the `format` method onto whatever expression is pa
 <a name="custom-echo-handlers"></a>
 ### Custom Echo Handlers
 
-If you attempt to "echo" an object using Blade, the object's `__toString` method will be invoked. The [`__toString`](https://www.php.net/manual/en/language.oop5.magic.php#object.tostring) method is one of PHP's built-in "magic methods". However, sometimes you may not have control over the `__toString` method of a given class, such as when the class that you are interacting with belongs to a third-party library.
+If you attempt to "echo" an object using Blade, the object's `__toString` method will be invoked. The [__toString](https://www.php.net/manual/en/language.oop5.magic.php#object.tostring) method is one of PHP's built-in "magic methods". However, sometimes you may not have control over the `__toString` method of a given class, such as when the class that you are interacting with belongs to a third-party library.
 
 In these cases, Blade allows you to register a custom echo handler for that particular type of object. To accomplish this, you should invoke Blade's `stringable` method. The `stringable` method accepts a closure. This closure should type-hint the type of object that it is responsible for rendering. Typically, the `stringable` method should be invoked within the `boot` method of your application's `AppServiceProvider` class:
 
