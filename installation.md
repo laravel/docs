@@ -29,23 +29,23 @@ Whether you are new to PHP web frameworks or have years of experience, Laravel i
 <a name="why-laravel"></a>
 ### Why Laravel?
 
-There are a variety of tools and frameworks available to you when building a web application. However, we believe Laravel is the best choice for building modern, full-stack web applications.
+There are a variety of tools and frameworks available to you when building a web application. However, we believe that Laravel is the best choice for building modern, full-stack web applications.
 
 #### A Progressive Framework
 
 We like to call Laravel a "progressive" framework. By that, we mean that Laravel grows with you. If you're just taking your first steps into web development, Laravel's vast library of documentation, guides, and [video tutorials](https://laracasts.com) will help you learn the ropes without becoming overwhelmed.
 
-If you're a senior developer, Laravel gives you robust tools for [dependency injection](/docs/{{version}}/container), [unit testing](/docs/{{version}}/testing), [queues](/docs/{{version}}/queues), [real-time events](/docs/{{version}}/broadcasting), and more. Laravel is fine-tuned for building professional web applications and ready to handle enterprise work loads.
+If you're a senior developer, Laravel gives you robust tools for [dependency injection](/docs/{{version}}/container), [unit testing](/docs/{{version}}/testing), [queues](/docs/{{version}}/queues), [real-time events](/docs/{{version}}/broadcasting), and more. Laravel is fine-tuned for building professional web applications and is ready to handle enterprise workloads.
 
 #### A Scalable Framework
 
 Laravel is incredibly scalable. Thanks to the scaling-friendly nature of PHP and Laravel's built-in support for fast, distributed cache systems like Redis, horizontal scaling with Laravel is a breeze. In fact, Laravel applications have been easily scaled to handle hundreds of millions of requests per month.
 
-Need extreme scaling? Platforms like [Laravel Cloud](https://cloud.laravel.com) allow you to run your Laravel application at nearly limitless scale.
+Need extreme scaling? Platforms like [Laravel Cloud](https://cloud.laravel.com) allow you to run your Laravel application at a nearly limitless scale.
 
 #### A Community Framework
 
-Laravel combines the best packages in the PHP ecosystem to offer the most robust and developer friendly framework available. In addition, thousands of talented developers from around the world have [contributed to the framework](https://github.com/laravel/framework). Who knows, maybe you'll even become a Laravel contributor.
+Laravel combines the best packages in the PHP ecosystem to offer the most robust and developer-friendly framework available. In addition, thousands of talented developers from around the world have [contributed to the framework](https://github.com/laravel/framework). Who knows, maybe you'll even become a Laravel contributor.
 
 <a name="creating-a-laravel-project"></a>
 ## Creating a Laravel Application
@@ -111,23 +111,23 @@ All of the configuration files for the Laravel framework are stored in the `conf
 Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `url` and `locale` that you may wish to change according to your application.
 
 <a name="environment-based-configuration"></a>
-### Environment Based Configuration
+### Environment-Based Configuration
 
 Since many of Laravel's configuration option values may vary depending on whether your application is running on your local machine or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
 
-Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would be exposed.
+Your `.env` file should not be committed to your application's source control, since each developer/server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository since any sensitive credentials would be exposed.
 
 > [!NOTE]
-> For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
+> For more information about the `.env` file and environment-based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="databases-and-migrations"></a>
 ### Databases and Migrations
 
 Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with an SQLite database.
 
-During the creation of the application, Laravel created a `database/database.sqlite` file for you, and ran the necessary migrations to create the application's database tables.
+During the creation of the application, Laravel created a `database/database.sqlite` file for you and ran the necessary migrations to create the application's database tables.
 
-If you prefer to use another database driver such as MySQL or PostgreSQL, you can update your `.env` configuration file to use the appropriate database. For example, if you wish to use MySQL, update your `.env` configuration file's `DB_*` variables like so:
+If you prefer to use another database driver, such as MySQL or PostgreSQL, you can update your `.env` configuration file to use the appropriate database. For example, if you wish to use MySQL, update your `.env` configuration file's `DB_*` variables like so:
 
 ```ini
 DB_CONNECTION=mysql
@@ -155,12 +155,12 @@ Laravel should always be served out of the root of the "web directory" configure
 <a name="installation-using-herd"></a>
 ## Installation Using Herd
 
-[Laravel Herd](https://herd.laravel.com) is a blazing fast, native Laravel and PHP development environment for macOS and Windows. Herd includes everything you need to get started with Laravel development, including PHP and Nginx.
+[Laravel Herd](https://herd.laravel.com) is a blazing fast, native Laravel and PHP development environment for macOS and Windows. The Herd includes everything you need to get started with Laravel development, including PHP and Nginx.
 
 Once you install Herd, you're ready to start developing with Laravel. Herd includes command line tools for `php`, `composer`, `laravel`, `expose`, `node`, `npm`, and `nvm`.
 
 > [!NOTE]
-> [Herd Pro](https://herd.laravel.com/#plans) augments Herd with additional powerful features, such as the ability to create and manage local MySQL, Postgres, and Redis databases, as well as local mail viewing and log monitoring.
+> [Herd Pro](https://herd.laravel.com/#plans) augments Herd with additional powerful features, such as the ability to create and manage local MySQL, PostgreSQL, and Redis databases, as well as local mail viewing and log monitoring.
 
 <a name="herd-on-macos"></a>
 ### Herd on macOS
@@ -169,7 +169,7 @@ If you develop on macOS, you can download the Herd installer from the [Herd webs
 
 Herd for macOS uses [dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) to support "parked" directories. Any Laravel application in a parked directory will automatically be served by Herd. By default, Herd creates a parked directory at `~/Herd` and you can access any Laravel application in this directory on the `.test` domain using its directory name.
 
-After installing Herd, the fastest way to create a new Laravel application is using the Laravel CLI, which is bundled with Herd:
+After installing Herd, the fastest way to create a new Laravel application is by using the Laravel CLI, which is bundled with Herd:
 
 ```shell
 cd ~/Herd
