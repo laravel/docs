@@ -155,7 +155,7 @@ Laravel should always be served out of the root of the "web directory" configure
 <a name="installation-using-herd"></a>
 ## Installation Using Herd
 
-[Laravel Herd](https://herd.laravel.com) is a blazing fast, native Laravel and PHP development environment for macOS and Windows. The Herd includes everything you need to get started with Laravel development, including PHP and Nginx.
+[Laravel Herd](https://herd.laravel.com) is a blazing fast, native Laravel and PHP development environment for macOS and Windows. Herd includes everything you need to get started with Laravel development, including PHP and Nginx.
 
 Once you install Herd, you're ready to start developing with Laravel. Herd includes command line tools for `php`, `composer`, `laravel`, `expose`, `node`, `npm`, and `nvm`.
 
