@@ -33,7 +33,7 @@
     - [Increment and Decrement](#increment-and-decrement)
 - [Delete Statements](#delete-statements)
 - [Pessimistic Locking](#pessimistic-locking)
-- [Scopes](#scopes)
+- [Reusable Query Components](#reusable-query-components)
 - [Debugging](#debugging)
 
 <a name="introduction"></a>
@@ -1469,12 +1469,15 @@ DB::transaction(function () {
 });
 ```
 
-<a name="scopes"></a>
-## Scopes
+<a name="reusable-query-components"></a>
+## Reusable Query Components
 
-If you have repeated query logic throughout your application, you may extract the logic into scopes. Imagine you have these two different queries in your application:
+If you have repeated query logic throughout your application, you may extract the logic into reusable objects using the query builder's `tap` and `pipe` methods. Imagine you have these two different queries in your application:
 
 ```php
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
+
 $destination = $request->query('destination');
 
 DB::table('flights')
@@ -1497,7 +1500,7 @@ DB::table('flights')
     ->get();
 ```
 
-You may like to extract the destination filtering into a re-usable scope:
+You may like to extract the destination filtering that is common between the queries into a reusable object:
 
 ```php
 <?php
@@ -1523,9 +1526,13 @@ class DesinationFilter
 }
 ```
 
-Then, you can use the query builder's `tap` method to apply the scope:
+Then, you can use the query builder's `tap` method to apply the object's logic to the query:
 
 ```php
+use App\Scopes\DestinationFilter;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
+
 DB::table('flights')
     ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
         $query->where('destination', $destination); // [tl! remove]
@@ -1546,9 +1553,12 @@ DB::table('flights')
     ->get();
 ```
 
-The `tap` method will always return the query builder. If you would like to extract a scope that executes the query and returns another value, you may use the `pipe` method instead.
+<a name="query-pipes"></a>
+#### Query Pipes
 
-Take the following scope that contains shared [pagination](/docs/{{version}}/pagination) logic used throughout an application. Unlike the `DesinationFilter`, which applies query conditions to the query, the `Paginate` scope runs the query and returns a paginator.
+The `tap` method will always return the query builder. If you would like to extract an object that executes the query and returns another value, you may use the `pipe` method instead.
+
+Consider the following query object that contains shared [pagination](/docs/{{version}}/pagination) logic used throughout an application. Unlike the `DesinationFilter`, which applies query conditions to the query, the `Paginate` object executes the query and returns a paginator instance:
 
 ```php
 <?php
@@ -1571,12 +1581,12 @@ class Paginate
     public function __invoke(Builder $query): LengthAwarePaginator
     {
         $query->orderBy($this->sortBy, $this->sortDirection)
-            ->paginte($this->perPage, pageName: 'p');
+            ->paginate($this->perPage, pageName: 'p');
     }
 }
 ```
 
-Using the query builder's `pipe` method, we can use this scope to apply our shared pagination logic:
+Using the query builder's `pipe` method, we can leverage this object to apply our shared pagination logic:
 
 ```php
 $flights = DB::table('flights')
