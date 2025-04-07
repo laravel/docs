@@ -624,7 +624,7 @@ $counted->all();
 // [1 => 1, 2 => 3, 3 => 1]
 ```
 
-You pass a closure to the `countBy` method to count all items by a custom value:
+You may pass a closure to the `countBy` method to count all items by a custom value:
 
 ```php
 $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
