@@ -2430,17 +2430,15 @@ $collection->reduce(function (int $carry, int $value, string $key) use ($ratio) 
 The `reduceSpread` method reduces the collection to an array of values, passing the results of each iteration into the subsequent iteration. This method is similar to the `reduce` method; however, it can accept multiple initial values:
 
 ```php
-[$creditsRemaining, $batch] = Image::where('status', 'unprocessed')
-    ->get()
-    ->reduceSpread(function (int $creditsRemaining, Collection $batch, Image $image) {
-        if ($creditsRemaining >= $image->creditsRequired()) {
-            $batch->push($image);
+$collection = collect([1, 2, 3, 4]);
 
-            $creditsRemaining -= $image->creditsRequired();
-        }
+[$sum, $product] = $collection->reduceSpread(function (int $carry1, int $carry2, int $item) {
+    return [$carry1 + $item, $carry2 * $item];
+}, 0, 1);
 
-        return [$creditsRemaining, $batch];
-    }, $creditsAvailable, collect());
+dd($sum, $product);
+
+// $sum = 10, $product = 24
 ```
 
 <a name="method-reject"></a>
