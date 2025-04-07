@@ -1421,7 +1421,7 @@ $collection = collect([
 
 $collection->implode('product', ', ');
 
-// Desk, Chair
+// 'Desk, Chair'
 ```
 
 If the collection contains simple strings or numeric values, you should pass the "glue" as the only argument to the method:
@@ -1439,7 +1439,7 @@ $collection->implode(function (array $item, int $key) {
     return strtoupper($item['product']);
 }, ', ');
 
-// DESK, CHAIR
+// 'DESK, CHAIR'
 ```
 
 <a name="method-intersect"></a>
