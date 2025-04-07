@@ -630,7 +630,7 @@ You pass a closure to the `countBy` method to count all items by a custom value:
 $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
 
 $counted = $collection->countBy(function (string $email) {
-    return substr(strrchr($email, "@"), 1);
+    return substr(strrchr($email, '@'), 1);
 });
 
 $counted->all();
