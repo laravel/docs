@@ -33,6 +33,7 @@
     - [Increment and Decrement](#increment-and-decrement)
 - [Delete Statements](#delete-statements)
 - [Pessimistic Locking](#pessimistic-locking)
+- [Reusable Query Components](#reusable-query-components)
 - [Debugging](#debugging)
 
 <a name="introduction"></a>
@@ -1466,6 +1467,131 @@ DB::transaction(function () {
             'balance' => $receiver->balance + 100
         ]);
 });
+```
+
+<a name="reusable-query-components"></a>
+## Reusable Query Components
+
+If you have repeated query logic throughout your application, you may extract the logic into reusable objects using the query builder's `tap` and `pipe` methods. Imagine you have these two different queries in your application:
+
+```php
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
+
+$destination = $request->query('destination');
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) {
+        $query->where('destination', $destination);
+    })
+    ->orderByDesc('price')
+    ->get();
+
+// ...
+
+$destination = $request->query('destination');
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) {
+        $query->where('destination', $destination);
+    })
+    ->where('user', $request->user()->id)
+    ->orderBy('destination')
+    ->get();
+```
+
+You may like to extract the destination filtering that is common between the queries into a reusable object:
+
+```php
+<?php
+
+namespace App\Scopes;
+
+use Illuminate\Database\Query\Builder;
+
+class DesinationFilter
+{
+    public function __construct(
+        private ?string $desination,
+    ) {
+        //
+    }
+
+    public function __invoke(Builder $query): void
+    {
+        $query->when($this->destination, function (Builder $query) {
+            $query->where('destination', $this->destination);
+        });
+    }
+}
+```
+
+Then, you can use the query builder's `tap` method to apply the object's logic to the query:
+
+```php
+use App\Scopes\DestinationFilter;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
+        $query->where('destination', $destination); // [tl! remove]
+    }) // [tl! remove]
+    ->tap(new DesinationFilter($destination)) // [tl! add]
+    ->orderByDesc('price')
+    ->get();
+
+// ...
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
+        $query->where('destination', $destination); // [tl! remove]
+    }) // [tl! remove]
+    ->tap(new DesinationFilter($destination)) // [tl! add]
+    ->where('user', $request->user()->id)
+    ->orderBy('destination')
+    ->get();
+```
+
+<a name="query-pipes"></a>
+#### Query Pipes
+
+The `tap` method will always return the query builder. If you would like to extract an object that executes the query and returns another value, you may use the `pipe` method instead.
+
+Consider the following query object that contains shared [pagination](/docs/{{version}}/pagination) logic used throughout an application. Unlike the `DesinationFilter`, which applies query conditions to the query, the `Paginate` object executes the query and returns a paginator instance:
+
+```php
+<?php
+
+namespace App\Scopes;
+
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Query\Builder;
+
+class Paginate
+{
+    public function __construct(
+        private string $sortBy = 'timestamp',
+        private string $sortDirection = 'desc',
+        private string $perPage = 25,
+    ) {
+        //
+    }
+
+    public function __invoke(Builder $query): LengthAwarePaginator
+    {
+        $query->orderBy($this->sortBy, $this->sortDirection)
+            ->paginate($this->perPage, pageName: 'p');
+    }
+}
+```
+
+Using the query builder's `pipe` method, we can leverage this object to apply our shared pagination logic:
+
+```php
+$flights = DB::table('flights')
+    ->tap(new DesinationFilter($destination))
+    ->pipe(new Paginate);
 ```
 
 <a name="debugging"></a>
