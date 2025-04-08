@@ -376,6 +376,7 @@ Each paginator instance provides additional pagination information via the follo
 | `$paginator->lastPage()` | Get the page number of the last available page. (Not available when using `simplePaginate`). |
 | `$paginator->nextPageUrl()` | Get the URL for the next page. |
 | `$paginator->onFirstPage()` | Determine if the paginator is on the first page. |
+| `$paginator->onLastPage()`      | Determine if the paginator is on the last page. |
 | `$paginator->perPage()` | The number of items to be shown per page. |
 | `$paginator->previousPageUrl()` | Get the URL for the previous page. |
 | `$paginator->total()` | Determine the total number of matching items in the data store. (Not available when using `simplePaginate`). |
