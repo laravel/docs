@@ -2839,7 +2839,29 @@ $sorted->values()->all();
 // [1, 2, 3, 4, 5]
 ```
 
-If your sorting needs are more advanced, you may pass a callback to `sort` with your own algorithm. Refer to the PHP documentation on [uasort](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters), which is what the collection's `sort` method calls utilizes internally.
+If your sorting needs are more advanced, you may pass a callback to `sort` with your own algorithm. In the following example, the collection is sorted with even numbers first, then odd numbers.
+
+```php
+$collection = collect([5, 3, 1, 2, 4]);
+
+$sorted = $collection->sort(function (int $a, int $b) {
+    $aEven = $a % 2 === 0;
+
+    $bEven = $b % 2 === 0;
+
+    if ($aEven && ! $bEven) return -1;
+
+    if (! $aEven && $bEven) return 1;
+
+    return $a <=> $b;
+});
+
+$sorted->values()->all();
+
+// [2, 4, 1, 3, 5]
+```
+
+Refer to the PHP documentation on [uasort](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters), which is what the collection's `sort` method calls utilizes internally.
 
 > [!NOTE]
 > If you need to sort a collection of nested arrays or objects, see the [sortBy](#method-sortby) and [sortByDesc](#method-sortbydesc) methods.
