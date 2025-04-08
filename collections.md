@@ -35,7 +35,7 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 $collection = collect([1, 2, 3]);
 ```
 
-You may also create a collection using [make](#method-make) and [fromJson](#method-fromjson) methods.
+You may also create a collection using the [make](#method-make) and [fromJson](#method-fromjson) methods.
 
 > [!NOTE]
 > The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
@@ -146,6 +146,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [flip](#method-flip)
 [forget](#method-forget)
 [forPage](#method-forpage)
+[fromJson](#method-fromjson)
 [get](#method-get)
 [groupBy](#method-groupby)
 [has](#method-has)
@@ -165,7 +166,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [lazy](#method-lazy)
 [macro](#method-macro)
 [make](#method-make)
-[fromJson](#method-fromjson)
 [map](#method-map)
 [mapInto](#method-mapinto)
 [mapSpread](#method-mapspread)
@@ -1249,6 +1249,23 @@ $chunk->all();
 // [4, 5, 6]
 ```
 
+<a name="method-fromjson"></a>
+#### `fromJson()` {.collection-method}
+
+The static `fromJson` method creates a new collection instance by decoding a given JSON string using the `json_decode` PHP function:
+
+```php
+use Illuminate\Support\Collection;
+
+$json = json_encode([
+    'name' => 'Taylor Otwell',
+    'role' => 'Developer',
+    'status' => 'Active',
+]);
+
+$collection = Collection::fromJson($json);
+```
+
 <a name="method-get"></a>
 #### `get()` {.collection-method}
 
@@ -1704,23 +1721,6 @@ The static `make` method creates a new collection instance. See the [Creating Co
 use Illuminate\Support\Collection;
 
 $collection = Collection::make([1, 2, 3]);
-```
-
-<a name="method-fromjson"></a>
-#### `fromJson()` {.collection-method}
-
-The static `fromJson` method creates a new collection instance by decoding a JSON string using `json_decode` PHP function. See the [Creating Collections](#creating-collections) section.
-
-```php
-use Illuminate\Support\Collection;
-
-$json = json_encode([
-    'name' => 'Taylor Otwell',
-    'role' => 'Developer',
-    'status' => 'Active',
-]);
-
-$collection = Collection::fromJson($json);
 ```
 
 <a name="method-map"></a>
