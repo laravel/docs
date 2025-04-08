@@ -1642,6 +1642,23 @@ $posts = Post::whereHas('comments', function (Builder $query) {
 > [!WARNING]
 > Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database.
 
+<a name="many-to-many-relationship-existence-queries"></a>
+#### Many to Many Relationship Existence Queries
+
+The `whereAttachedTo` method may be used to query for models that have a many to many attachment to a model or collection of models:
+
+```php
+$users = User::whereAttachedTo($role)->get();
+```
+
+You may also provide a [collection](/docs/{{version}}/eloquent-collections) instance to the `whereAttachedTo` method. When doing so, Laravel will retrieve models that are attached to any of the models within the collection:
+
+```php
+$tags = Tag::whereLike('name', '%laravel%')->get();
+
+$posts = Post::whereAttachedTo($tags)->get();
+```
+
 <a name="inline-relationship-existence-queries"></a>
 #### Inline Relationship Existence Queries
 
