@@ -74,7 +74,7 @@ class Service
 }
 
 Route::get('/', function (Service $service) {
-    die($service::class);
+    dd($service::class);
 });
 ```
 
