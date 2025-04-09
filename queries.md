@@ -1580,7 +1580,7 @@ class Paginate
 
     public function __invoke(Builder $query): LengthAwarePaginator
     {
-        $query->orderBy($this->sortBy, $this->sortDirection)
+        return $query->orderBy($this->sortBy, $this->sortDirection)
             ->paginate($this->perPage, pageName: 'p');
     }
 }
