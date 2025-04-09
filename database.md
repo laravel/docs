@@ -379,6 +379,22 @@ DB::transaction(function () {
 });
 ```
 
+You may optionally pass a closure to the `transaction` method to be executed when the transaction fails:
+
+```php
+use App\Notifications\SomethingImportantBroke;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+
+DB::transaction(function () {
+    DB::update('update users set votes = 1');
+
+    DB::delete('delete from posts');
+}, onFailure: function () {
+    Notification::send($admin, new SomethingImportantBroke);
+});
+```
+
 <a name="handling-deadlocks"></a>
 #### Handling Deadlocks
 
