@@ -1465,7 +1465,7 @@ $collection->implode(function (array $item, int $key) {
 <a name="method-intersect"></a>
 #### `intersect()` {.collection-method}
 
-The `intersect` method removes any values from the original collection that are not present in the given `array` or collection. The resulting collection will preserve the original collection's keys:
+The `intersect` method removes any values from the original collection that are not present in the given `array` or `collection`. The resulting collection will preserve the original collection's keys:
 
 ```php
 $collection = collect(['Desk', 'Sofa', 'Chair']);
@@ -1483,7 +1483,7 @@ $intersect->all();
 <a name="method-intersectusing"></a>
 #### `intersectUsing()` {.collection-method}
 
-The `intersectUsing` method removes any values from the original collection that are not present in the given `array` or collection, using a custom callback to compare the values. The resulting collection will preserve the original collection's keys:
+The `intersectUsing` method removes any values from the original collection that are not present in the given `array` or `collection`, using a custom callback to compare the values. The resulting collection will preserve the original collection's keys:
 
 ```php
 $collection = collect(['Desk', 'Sofa', 'Chair']);
@@ -1500,7 +1500,7 @@ $intersect->all();
 <a name="method-intersectAssoc"></a>
 #### `intersectAssoc()` {.collection-method}
 
-The `intersectAssoc` method compares the original collection against another collection or `array`, returning the key / value pairs that are present in all of the given collections:
+The `intersectAssoc` method compares the original collection against another `collection` or `array`, returning the key / value pairs that are present in all of the given collections:
 
 ```php
 $collection = collect([
@@ -1523,7 +1523,7 @@ $intersect->all();
 <a name="method-intersectassocusing"></a>
 #### `intersectAssocUsing()` {.collection-method}
 
-The `intersectAssocUsing` method compares the original collection against another collection or `array`, returning the key / value pairs that are present in both, using a custom comparison callback to determine equality for both keys and values:
+The `intersectAssocUsing` method compares the original collection against another `collection` or `array`, returning the key / value pairs that are present in both, using a custom comparison callback to determine equality for both keys and values:
 
 ```php
 $collection = collect([
@@ -1548,7 +1548,7 @@ $intersect->all();
 <a name="method-intersectbykeys"></a>
 #### `intersectByKeys()` {.collection-method}
 
-The `intersectByKeys` method removes any keys and their corresponding values from the original collection that are not present in the given `array` or collection:
+The `intersectByKeys` method removes any keys and their corresponding values from the original collection that are not present in the given `array` or `collection`:
 
 ```php
 $collection = collect([
