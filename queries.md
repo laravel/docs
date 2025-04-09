@@ -1509,10 +1509,10 @@ namespace App\Scopes;
 
 use Illuminate\Database\Query\Builder;
 
-class DesinationFilter
+class DestinationFilter
 {
     public function __construct(
-        private ?string $desination,
+        private ?string $destination,
     ) {
         //
     }
@@ -1537,7 +1537,7 @@ DB::table('flights')
     ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
         $query->where('destination', $destination); // [tl! remove]
     }) // [tl! remove]
-    ->tap(new DesinationFilter($destination)) // [tl! add]
+    ->tap(new DestinationFilter($destination)) // [tl! add]
     ->orderByDesc('price')
     ->get();
 
@@ -1547,7 +1547,7 @@ DB::table('flights')
     ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
         $query->where('destination', $destination); // [tl! remove]
     }) // [tl! remove]
-    ->tap(new DesinationFilter($destination)) // [tl! add]
+    ->tap(new DestinationFilter($destination)) // [tl! add]
     ->where('user', $request->user()->id)
     ->orderBy('destination')
     ->get();
@@ -1558,7 +1558,7 @@ DB::table('flights')
 
 The `tap` method will always return the query builder. If you would like to extract an object that executes the query and returns another value, you may use the `pipe` method instead.
 
-Consider the following query object that contains shared [pagination](/docs/{{version}}/pagination) logic used throughout an application. Unlike the `DesinationFilter`, which applies query conditions to the query, the `Paginate` object executes the query and returns a paginator instance:
+Consider the following query object that contains shared [pagination](/docs/{{version}}/pagination) logic used throughout an application. Unlike the `DestinationFilter`, which applies query conditions to the query, the `Paginate` object executes the query and returns a paginator instance:
 
 ```php
 <?php
@@ -1590,7 +1590,7 @@ Using the query builder's `pipe` method, we can leverage this object to apply ou
 
 ```php
 $flights = DB::table('flights')
-    ->tap(new DesinationFilter($destination))
+    ->tap(new DestinationFilter($destination))
     ->pipe(new Paginate);
 ```
 
