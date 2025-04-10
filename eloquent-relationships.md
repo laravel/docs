@@ -2283,6 +2283,14 @@ foreach ($users as $user) {
 
 Typically, the code above would execute a query for each user in order to retrieve their posts, as well as a query for each post to retrieve its comments. However, when the `automaticallyEagerLoadRelationships` feature has been enabled, Laravel will automatically [lazy eager load](#lazy-eager-loading) the posts for all users in the user collection when you attempt to access the posts on any of the retrieved users. Likewise, when you attempt to access the comments for any retrieved post, all comments will be lazy eager loaded for all posts that were originally retrieved.
 
+If you do not want to globally enable automatic eager loading, you can still enable this feature for a single Eloquent collection instance by invoking the `withRelationshipAutoloading` method on the collection:
+
+```php
+$users = User::where('vip', true)->get();
+
+return $users->withRelationshipAutoloading();
+```
+
 <a name="preventing-lazy-loading"></a>
 ### Preventing Lazy Loading
 
