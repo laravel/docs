@@ -188,7 +188,9 @@ Context::scope(
 );
 
 Context::all();
-// []
+// [
+//     'trace_id' => 'abc-999',
+// ]
 
 Context::allHidden();
 // [
