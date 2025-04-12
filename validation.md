@@ -14,6 +14,7 @@
     - [Authorizing Form Requests](#authorizing-form-requests)
     - [Customizing the Error Messages](#customizing-the-error-messages)
     - [Preparing Input for Validation](#preparing-input-for-validation)
+    - [Overriding default failure handlers](#overriding-default-failure-handlers)
 - [Manually Creating Validators](#manually-creating-validators)
     - [Automatic Redirection](#automatic-redirection)
     - [Named Error Bags](#named-error-bags)
@@ -582,6 +583,35 @@ protected function passedValidation(): void
     $this->replace(['name' => 'Taylor']);
 }
 ```
+
+<a name="overriding-default-failure-handlers"></a>
+### Overriding default failure handlers
+
+When a Form Request fails either during authorization or validation Laravel calls one of two hooks:
+
+```php
+/**
+ * Handle a failed authorization attempt.
+ */
+protected function failedAuthorization(): void
+{
+    throw new AuthorizationException;
+}
+
+/**
+ * Handle a failed validation attempt.
+ */
+protected function failedValidation(Validator $validator)
+{
+    $exception = $validator->getException();
+
+    throw (new $exception($validator))
+        ->errorBag($this->errorBag)
+        ->redirectTo($this->getRedirectUrl());
+}
+```
+
+The default behaviour is to throw a corresponding exception. You may override these methods to alter the handling of failed Form Requests.
 
 <a name="manually-creating-validators"></a>
 ## Manually Creating Validators
