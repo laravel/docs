@@ -194,15 +194,6 @@ If your application calls stored procedures that return multiple result sets, yo
 );
 ```
 
-<a name="using-named-bindings"></a>
-#### Using Named Bindings
-
-Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
-
-```php
-$results = DB::select('select * from users where id = :id', ['id' => 1]);
-```
-
 <a name="running-an-insert-statement"></a>
 #### Running an Insert Statement
 
@@ -237,6 +228,23 @@ The `delete` method should be used to delete records from the database. Like `up
 use Illuminate\Support\Facades\DB;
 
 $deleted = DB::delete('delete from users');
+```
+
+<a name="using-named-bindings"></a>
+#### Using Named Bindings
+
+Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
+
+```php
+use Illuminate\Support\Facades\DB;
+
+$selected = DB::select('select * from users where id = :id', ['id' => 1]);
+
+$inserted = DB::insert('insert into users (name) values (:name)', ['name' => 'Marc']);
+
+$affected = DB::update('update users set name = :name where id = :id', ['id' => 2, 'name' => 'Marcy']);
+
+$deleted = DB::delete('delete from users where id = :id', ['id' => 2]);
 ```
 
 <a name="running-a-general-statement"></a>
