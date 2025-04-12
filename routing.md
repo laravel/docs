@@ -596,17 +596,24 @@ Since the `$user` variable is type-hinted as the `App\Models\User` Eloquent mode
 Of course, implicit binding is also possible when using controller methods. Again, note the `{user}` URI segment matches the `$user` variable in the controller which contains an `App\Models\User` type-hint:
 
 ```php
+
 use App\Http\Controllers\UserController;
-use App\Models\User;
 
 // Route definition...
 Route::get('/users/{user}', [UserController::class, 'show']);
+
+```
+
+```php
+
+use App\Models\User;
 
 // Controller method definition...
 public function show(User $user)
 {
     return view('user.profile', ['user' => $user]);
 }
+
 ```
 
 <a name="implicit-soft-deleted-models"></a>
