@@ -611,7 +611,7 @@ protected function failedValidation(Validator $validator)
 }
 ```
 
-The default behaviour is to throw a corresponding exception. You may override these methods to alter the handling of failed Form Requests.
+The default behaviour is to throw a corresponding exception. You may override these methods to alter the handling of a failed Form Request.
 
 <a name="manually-creating-validators"></a>
 ## Manually Creating Validators
