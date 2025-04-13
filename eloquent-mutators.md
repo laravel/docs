@@ -449,6 +449,26 @@ protected function casts(): array
 }
 ```
 
+If you desire the collection items to be mapped into an specific class instance, or pass each of them to a callable, you may use a second parameter, or the `map()`  method if you want to use the base Collection class.
+
+```php
+use App\ValueObjects\Option;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
+use Illuminate\Support\Fluent;
+
+/**
+ * Get the attributes that should be cast.
+ *
+ * @return array<string, string>
+ */
+protected function casts(): array
+{
+    return [
+        'options' => AsCollection::map(Option::class)
+    ];
+}
+```
+
 <a name="date-casting"></a>
 ### Date Casting
 
