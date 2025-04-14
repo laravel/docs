@@ -449,7 +449,7 @@ protected function casts(): array
 }
 ```
 
-If you desire the collection items to be mapped into an specific class instance, or pass each of them to a callable, you may use a second parameter, or the `map()` method if you want to use the base Collection class.
+If you desire the collection items to be mapped into an specific class instance, you may use a second parameter or the `map()` method if you want to use the base Collection class.
 
 ```php
 use App\ValueObjects\Option;
@@ -468,7 +468,7 @@ protected function casts(): array
 }
 ```
 
-For better control on how the items should be constructed once inside the collection, you may set a callable that receives the items as an array. Plus, you may implement the `Arrayable` contract to control how the object should be serialized when the Collection is persisted into the database.
+For better control on how the items should be constructed once inside the collection, you may set a callable that receives the items as an array and returns an object. Plus, you may implement the `Arrayable` contract to control how the object should be serialized when the Collection is persisted into the database.
 
 ```php
 use App\ValueObjects\Option;
