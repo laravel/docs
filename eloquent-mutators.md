@@ -449,12 +449,11 @@ protected function casts(): array
 }
 ```
 
-If you desire the collection items to be mapped into an specific class instance, or pass each of them to a callable, you may use a second parameter, or the `map()`  method if you want to use the base Collection class.
+If you desire the collection items to be mapped into an specific class instance, or pass each of them to a callable, you may use a second parameter, or the `map()` method if you want to use the base Collection class.
 
 ```php
 use App\ValueObjects\Option;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
-use Illuminate\Support\Fluent;
 
 /**
  * Get the attributes that should be cast.
@@ -466,6 +465,66 @@ protected function casts(): array
     return [
         'options' => AsCollection::map(Option::class)
     ];
+}
+```
+
+For better control on how the items should be constructed once inside the collection, you may set a callable that receives the items as an array. Plus, you may implement the `Arrayable` contract to control how the object should be serialized when the Collection is persisted into the database.
+
+```php
+use App\ValueObjects\Option;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
+
+/**
+ * Get the attributes that should be cast.
+ *
+ * @return array<string, string>
+ */
+protected function casts(): array
+{
+    return [
+        'options' => AsCollection::map([Option::class, 'fromArray']),
+    ];
+}
+```
+
+
+```php
+namespace App\ValueObjects;
+
+class Option implements Arrayable
+{
+    /**
+     * Create a new Option instance.
+     */
+    public function __construct(
+        protected string $name,
+        protected mixed $value,
+        protected bool $isLocked = false
+    ) {
+        //
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'value' => $this->value,
+            'is_locked' => $this->isLocked,
+        ];
+    }
+
+    /**
+     * Create a new instance from an array.
+     */
+    public function fromArray(array $data): static
+    {
+        return new static($data['name'], $data['value'], $data['is_locked']);
+    }
 }
 ```
 
