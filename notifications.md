@@ -292,7 +292,7 @@ use Illuminate\Queue\Middleware\RateLimited;
 public function middleware(object $notifiable, string $channel)
 {
     return match ($channel) {
-        'email' => [new RateLimited('postmark')],
+        'mail' => [new RateLimited('postmark')],
         'slack' => [new RateLimited('slack')],
         default => [],
     };
