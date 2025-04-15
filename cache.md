@@ -8,6 +8,7 @@
     - [Retrieving Items From the Cache](#retrieving-items-from-the-cache)
     - [Storing Items in the Cache](#storing-items-in-the-cache)
     - [Removing Items From the Cache](#removing-items-from-the-cache)
+    - [Cache Memoization](#cache-memoization)
     - [The Cache Helper](#the-cache-helper)
 - [Atomic Locks](#atomic-locks)
     - [Managing Locks](#managing-locks)
@@ -324,6 +325,50 @@ Cache::flush();
 
 > [!WARNING]
 > Flushing the cache does not respect your configured cache "prefix" and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
+
+<a name="cache-memoization"></a>
+### Cache Memoization
+
+Laravel's `memo` cache driver allows you to temporarily store resolved cache values in memory during a single request or job execution. This prevents repeated cache hits within the same execution, significantly improving performance.
+
+To use the memoized cache, invoke the `memo` method:
+
+```php
+use Illuminate\Support\Facades\Cache;
+
+$value = Cache::memo()->get('key');
+```
+
+The `memo` method optionally accepts the name of a cache store, which specifies the underlying cache store the memoized driver will decorate:
+
+```php
+// Using the default cache store...
+$value = Cache::memo()->get('key');
+
+// Using the Redis cache store...
+$value = Cache::memo('redis')->get('key');
+```
+
+The first `get` call for a given key retrieves the value from your cache store, but subsequent calls within the same request or job will retrieve the value from memory:
+
+```php
+// Hits the cache...
+Cache::memo()->get('key');
+
+// Does not hit the cache, returns memoized value...
+Cache::memo()->get('key');
+```
+
+When calling methods that modify cache values (such as `put`, `increment`, `remember`, etc.), the memoized cache automatically forgets the memoized value and delegates the mutating method call to the underlying cache store:
+
+```php
+Cache::memo()->put('name', 'Taylor'); // Writes to underlying cache...
+Cache::memo()->get('name');           // Hits underlying cache...
+Cache::memo()->get('name');           // Memoized, does not hit cache...
+
+Cache::memo()->put('name', 'Tim');    // Forgets memoized value, writes new value...
+Cache::memo()->get('name');           // Hits underlying cache again...
+```
 
 <a name="the-cache-helper"></a>
 ### The Cache Helper
