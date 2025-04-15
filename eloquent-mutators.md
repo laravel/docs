@@ -452,8 +452,6 @@ protected function casts(): array
 If you desire the collection items to be mapped into an specific class instance, you may use a second parameter or the `map()` method if you want to use the base Collection class.
 
 ```php
-<?php
-
 use App\ValueObjects\Option;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 
@@ -491,6 +489,8 @@ protected function casts(): array
 
 
 ```php
+<?php
+
 namespace App\ValueObjects;
 
 class Option implements Arrayable
