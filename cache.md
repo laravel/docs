@@ -353,10 +353,10 @@ The first `get` call for a given key retrieves the value from your cache store, 
 
 ```php
 // Hits the cache...
-Cache::memo()->get('key');
+$value = Cache::memo()->get('key');
 
 // Does not hit the cache, returns memoized value...
-Cache::memo()->get('key');
+$value = Cache::memo()->get('key');
 ```
 
 When calling methods that modify cache values (such as `put`, `increment`, `remember`, etc.), the memoized cache automatically forgets the memoized value and delegates the mutating method call to the underlying cache store:
