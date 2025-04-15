@@ -439,3 +439,9 @@ Now your users may publish these groups separately by referencing their tag when
 ```shell
 php artisan vendor:publish --tag=courier-config
 ```
+
+Your users can also publish all publishable files defined by your package using the `--provider` flag:
+
+```shell
+php artisan vendor:publish --provider="Your\Package\ServiceProvider"
+```
