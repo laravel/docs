@@ -3283,6 +3283,9 @@ $uri = Uri::to('/dashboard');
 $uri = Uri::route('user.profile', ['user' => 1]);
 $uri = Uri::action([UserController::class, 'index']);
 $uri = Uri::action(InvokableController::class);
+
+// Generate a URI instance from the current request URL...
+$uri = $request->uri();
 ```
 
 Once you have a URI instance, you can fluently modify it:
