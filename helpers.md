@@ -3280,7 +3280,9 @@ $uri = Uri::of('https://example.com/path');
 
 // Generate URI instances to paths, named routes, or controller actions...
 $uri = Uri::to('/dashboard');
-$uri = Uri::route('user.profile', ['user' => 1]);
+$uri = Uri::route('users.show', ['user' => 1]);
+$uri = Uri::signedRoute('users.show', ['user' => 1]);
+$uri = Uri::temporarySignedRoute('user.index', now()->addMinutes(5));
 $uri = Uri::action([UserController::class, 'index']);
 $uri = Uri::action(InvokableController::class);
 
