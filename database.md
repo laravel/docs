@@ -379,20 +379,6 @@ DB::transaction(function () {
 });
 ```
 
-You may optionally pass a closure to the `transaction` method that will be executed if the transaction fails:
-
-```php
-use Illuminate\Support\Facades\DB;
-
-DB::transaction(function () {
-    DB::update('update users set votes = 1');
-
-    DB::delete('delete from posts');
-}, onFailure: function () {
-    // ...
-});
-```
-
 <a name="handling-deadlocks"></a>
 #### Handling Deadlocks
 
