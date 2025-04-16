@@ -144,6 +144,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [secure_asset](#method-secure-asset)
 [secure_url](#method-secure-url)
 [to_route](#method-to-route)
+[uri](#method-uri)
 [url](#method-url)
 
 </div>
@@ -1919,6 +1920,39 @@ If necessary, you may pass the HTTP status code that should be assigned to the r
 
 ```php
 return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
+```
+
+<a name="method-uri"></a>
+#### `uri()` {.collection-method}
+
+The `uri` function generates a [fluent URI instance](#uri) for the given URI:
+
+```php
+$uri = uri('https://example.com')
+    ->withPath('/users')
+    ->withQuery(['page' => 1])
+```
+
+If the `uri` function is given an array containing a callable controller and method pair, the function will create a `Uri` instance for the controller method's route path:
+
+```php
+use App\Http\Controllers\UserController;
+
+$uri = uri([UserController::class, 'show'], ['user' => $user])
+```
+
+If the controller is invokable, you may simply provide the controller class name:
+
+```php
+use App\Http\Controllers\UserIndexController;
+
+$uri = uri(UserIndexController::class);
+```
+
+If the value given to the `uri` function matches the name of a [named route](/docs/{{version}}/routing#named-routes), a `Uri` instance will be generated for that route's path:
+
+```php
+$uri = uri('users.show', ['user' => $user]);
 ```
 
 <a name="method-url"></a>
