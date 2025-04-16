@@ -1199,23 +1199,6 @@ use Illuminate\Validation\Rule;
 ],
 ```
 
-<a name="rule-anyof"></a>
-#### anyOf
-
-The `Rule::anyOf` validation rule allows you to specify that the field under validation must satisfy any of the given validation rulesets. For example, the following rule will validate that the `username` field is either an email address or an alpha-numeric string (including dashes) that is at least 6 characters long:
-
-```php
-use Illuminate\Validation\Rule;
-
-'username' => [
-    'required',
-    Rule::anyOf([
-        ['string', 'email'],
-        ['string', 'alpha_dash', 'min:6'],
-    ]),
-],
-```
-
 <a name="rule-alpha"></a>
 #### alpha
 
