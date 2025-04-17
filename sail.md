@@ -9,6 +9,7 @@
         - [Choosing Your Sail Services](#choosing-your-sail-services)
         - [Choosing Your Starter Kit](#choosing-your-starter-kit)
         - [Choosing Your Authentication Provider](#choosing-your-authentication-provider)
+        - [Choosing Your Testing Framework](#choosing-your-testing-framework)
     - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
     - [Rebuilding Sail Images](#rebuilding-sail-images)
     - [Configuring A Shell Alias](#configuring-a-shell-alias)
@@ -173,13 +174,24 @@ If you do not specify which starter kit you would like configured, a default of 
 <a name="choosing-your-authentication-provider"></a>
 ### Choosing Your Authentication Provider
 
-When creating a new Laravel application via Sail, you may use the `auth` query string variable to choose your Authentication Provider should be configured in your new application. Available Authentication Provider include `workos`:
+When creating a new Laravel application via Sail, you may use the `auth` query string variable to choose which Authentication Provider should be configured in your new application. Available Authentication Provider include `workos`:
 
 ```nothing
-curl -s "https://laravel.build/example-app?with=mysql&frontend=vue&auth=workos" | bash
+curl -s "https://laravel.build/example-app?with=mysql&auth=workos" | bash
 ```
 
 If you do not specify which Authentication Provider you would like configured, a default of Laravel's built-in authentication will be configured.
+
+<a name="choosing-your-testing-framework"></a>
+### Choosing Your Testing Framework
+
+When creating a new Laravel application via Sail, you may use the `tests` query string variable to choose which Testing Framework should be configured in your new application. Available Testing Framework include `pest` and `phpunit`:
+
+```nothing
+curl -s "https://laravel.build/example-app?with=mysql&tests=phpunit" | bash
+```
+
+If you do not specify which Testing Framework you would like configured, a default of `pest` will be configured.
 
 <a name="installing-sail-into-existing-applications"></a>
 ### Installing Sail Into Existing Applications
