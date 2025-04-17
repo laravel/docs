@@ -7,6 +7,7 @@
         - [Getting Started On Windows](#getting-started-on-windows)
         - [Getting Started On Linux](#getting-started-on-linux)
         - [Choosing Your Sail Services](#choosing-your-sail-services)
+        - [Choosing Your Starter Kit](#choosing-your-starter-kit)
     - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
     - [Rebuilding Sail Images](#rebuilding-sail-images)
     - [Configuring A Shell Alias](#configuring-a-shell-alias)
@@ -156,6 +157,17 @@ curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
 ```
 
 If you do not specify which services you would like configured, a default stack of `mysql`, `redis`, `meilisearch`, `mailpit`, and `selenium` will be configured.
+
+<a name="choosing-your-starter-kit"></a>
+### Choosing Your Starter Kit
+
+When creating a new Laravel application via Sail, you may use the `frontend` query string variable to choose which [Starter Kit](https://laravel.com/docs/12.x/starter-kits) should be configured in your new application. Available starter-kits include `react`, `vue`, `livewire` and `livewire-class-components`:
+
+```nothing
+curl -s "https://laravel.build/example-app?with=mysql&frontend=vue" | bash
+```
+
+If you do not specify which starter kit you would like configured, a default of `livewire` will be configured.
 
 <a name="installing-sail-into-existing-applications"></a>
 ### Installing Sail Into Existing Applications
