@@ -2,6 +2,11 @@
 
 - [Introduction](#introduction)
 - [Installation and Setup](#installation)
+    - [Starting A New Project With Sail](#starting-a-new-project-with-sail)
+        - [Getting Started On macOS](#getting-started-on-macos)
+        - [Getting Started On Windows](#getting-started-on-windows)
+        - [Getting Started On Linux](#getting-started-on-linux)
+        - [Choosing Your Sail Services](#choosing-your-sail-services)
     - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
     - [Rebuilding Sail Images](#rebuilding-sail-images)
     - [Configuring A Shell Alias](#configuring-a-shell-alias)
@@ -44,6 +49,113 @@ Laravel Sail is supported on macOS, Linux, and Windows (via [WSL2](https://docs.
 ## Installation and Setup
 
 Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately.
+
+<a name="starting-a-new-project-with-sail"></a>
+### Starting A New Project With Sail
+
+We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your own computer. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
+
+Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local computer's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your personal computer. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
+
+Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience.
+
+> {tip} Already a Docker expert? Don't worry! Everything about Sail can be customized using the `docker-compose.yml` file included with Laravel.
+
+<a name="getting-started-on-macos"></a>
+### Getting Started On macOS
+
+If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
+
+```nothing
+curl -s "https://laravel.build/example-app" | bash
+```
+
+Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
+
+After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
+
+```nothing
+cd example-app
+
+./vendor/bin/sail up
+```
+
+The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
+
+Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+
+> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
+
+<a name="getting-started-on-windows"></a>
+### Getting Started On Windows
+
+Before we create a new Laravel application on your Windows machine, make sure to install [Docker Desktop](https://www.docker.com/products/docker-desktop). Next, you should ensure that Windows Subsystem for Linux 2 (WSL2) is installed and enabled. WSL allows you to run Linux binary executables natively on Windows 10. Information on how to install and enable WSL2 can be found within Microsoft's [developer environment documentation](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+
+> {tip} After installing and enabling WSL2, you should ensure that Docker Desktop is [configured to use the WSL2 backend](https://docs.docker.com/docker-for-windows/wsl/).
+
+Next, you are ready to create your first Laravel project. Launch [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab) and begin a new terminal session for your WSL2 Linux operating system. Next, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
+
+```nothing
+curl -s https://laravel.build/example-app | bash
+```
+
+Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
+
+After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
+
+```nothing
+cd example-app
+
+./vendor/bin/sail up
+```
+
+The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
+
+Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+
+> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
+
+#### Developing Within WSL2
+
+Of course, you will need to be able to modify the Laravel application files that were created within your WSL2 installation. To accomplish this, we recommend using Microsoft's [Visual Studio Code](https://code.visualstudio.com) editor and their first-party extension for [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
+
+Once these tools are installed, you may open any Laravel project by executing the `code .` command from your application's root directory using Windows Terminal.
+
+<a name="getting-started-on-linux"></a>
+### Getting Started On Linux
+
+If you're developing on Linux and [Docker Compose](https://docs.docker.com/compose/install/) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
+
+```nothing
+curl -s https://laravel.build/example-app | bash
+```
+
+Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
+
+After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
+
+```nothing
+cd example-app
+
+./vendor/bin/sail up
+```
+
+The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
+
+Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+
+> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
+
+<a name="choosing-your-sail-services"></a>
+### Choosing Your Sail Services
+
+When creating a new Laravel application via Sail, you may use the `with` query string variable to choose which services should be configured in your new application's `docker-compose.yml` file. Available services include `mysql`, `pgsql`, `mariadb`, `redis`, `memcached`, `meilisearch`, `minio`, `selenium`, and `mailhog`:
+
+```nothing
+curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
+```
+
+If you do not specify which services you would like configured, a default stack of `mysql`, `redis`, `meilisearch`, `mailhog`, and `selenium` will be configured.
 
 <a name="installing-sail-into-existing-applications"></a>
 ### Installing Sail Into Existing Applications
