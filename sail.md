@@ -8,6 +8,7 @@
         - [Getting Started On Linux](#getting-started-on-linux)
         - [Choosing Your Sail Services](#choosing-your-sail-services)
         - [Choosing Your Starter Kit](#choosing-your-starter-kit)
+        - [Choosing Your Authentication Provider](#choosing-your-authentication-provider)
     - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
     - [Rebuilding Sail Images](#rebuilding-sail-images)
     - [Configuring A Shell Alias](#configuring-a-shell-alias)
@@ -168,6 +169,17 @@ curl -s "https://laravel.build/example-app?with=mysql&frontend=vue" | bash
 ```
 
 If you do not specify which starter kit you would like configured, a default of `livewire` will be configured.
+
+<a name="choosing-your-authentication-provider"></a>
+### Choosing Your Authentication Provider
+
+When creating a new Laravel application via Sail, you may use the `auth` query string variable to choose your Authentication Provider should be configured in your new application. Available Authentication Provider include `workos`:
+
+```nothing
+curl -s "https://laravel.build/example-app?with=mysql&frontend=vue&auth=workos" | bash
+```
+
+If you do not specify which Authentication Provider you would like configured, a default of Laravel's built-in authentication will be configured.
 
 <a name="installing-sail-into-existing-applications"></a>
 ### Installing Sail Into Existing Applications
