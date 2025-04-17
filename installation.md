@@ -5,6 +5,7 @@
 - [Creating a Laravel Application](#creating-a-laravel-project)
     - [Installing PHP and the Laravel Installer](#installing-php)
     - [Creating an Application](#creating-an-application)
+    - [Docker](#docker)
 - [Initial Configuration](#initial-configuration)
     - [Environment Based Configuration](#environment-based-configuration)
     - [Databases and Migrations](#databases-and-migrations)
@@ -102,6 +103,11 @@ Once you have started the development server, your application will be accessibl
 
 > [!NOTE]
 > If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
+
+<a name="docker"></a>
+### Docker
+
+If you would like to start your Laravel application using docker, follow [Sail Documentation](https://laravel.com/docs/12.x/sail)
 
 <a name="initial-configuration"></a>
 ## Initial Configuration
