@@ -449,7 +449,7 @@ protected function casts(): array
 }
 ```
 
-If you desire the collection items to be mapped into an specific class instance, you may use a second parameter or the `map()` method if you want to use the base Collection class.
+Collection items can be mapped into an specific class instance by using a second parameter. or the `map()` method if you want to use the base Collection class.
 
 ```php
 use App\ValueObjects\Option;
@@ -468,7 +468,7 @@ protected function casts(): array
 }
 ```
 
-For better control on how the items should be constructed once inside the collection, you may set a callable that receives the items as an array and returns an object. Plus, you may implement the `Arrayable` contract to control how the object should be serialized when the Collection is persisted into the database.
+For better control on how the items should be constructed once inside the Collection, you may set a callable that receives the items as an array and returns an object. 
 
 ```php
 use App\ValueObjects\Option;
@@ -487,13 +487,17 @@ protected function casts(): array
 }
 ```
 
+When serializing the Collection items, you should implement both `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces in the items class to control how these should be persisted into the database as JSON.
 
 ```php
 <?php
 
 namespace App\ValueObjects;
 
-class Option implements Arrayable
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerilizable;
+
+class Option implements Arrayable, JsonSerializable
 {
     /**
      * Create a new Option instance.
@@ -509,7 +513,7 @@ class Option implements Arrayable
     /**
      * Get the instance as an array.
      *
-     * @return array<string, mixed>
+     * @return array{name: string, data: string, is_locked: bool}
      */
     public function toArray(): array
     {
@@ -521,7 +525,19 @@ class Option implements Arrayable
     }
 
     /**
+     * Specify data which should be serialized to JSON.
+     *
+     * @return array{name: string, data: string, is_locked: bool}
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
      * Create a new instance from an array.
+     *
+     * @param  array{name: string, data: string, is_locked: bool}  $data
      */
     public function fromArray(array $data): static
     {
