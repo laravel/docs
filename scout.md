@@ -176,7 +176,7 @@ When utilizing Typesense, your searchable model's must define a `toSearchableArr
  *
  * @return array<string, mixed>
  */
-public function toSearchableArray()
+public function toSearchableArray(): array
 {
     return array_merge($this->toArray(),[
         'id' => (string) $this->id,
