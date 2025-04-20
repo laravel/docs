@@ -503,9 +503,9 @@ class Option implements Arrayable, JsonSerializable
      * Create a new Option instance.
      */
     public function __construct(
-        protected string $name,
-        protected mixed $value,
-        protected bool $isLocked = false
+        public string $name,
+        public mixed $value,
+        public bool $isLocked = false
     ) {
         //
     }
