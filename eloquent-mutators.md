@@ -468,7 +468,7 @@ protected function casts(): array
 }
 ```
 
-For better control on how the items should be constructed once inside the Collection, you may set a callable that receives the items as an array and returns an object. 
+For better control on how the items should be constructed once inside the Collection, you may set a callable that receives each item as an array.
 
 ```php
 use App\ValueObjects\Option;
@@ -487,7 +487,7 @@ protected function casts(): array
 }
 ```
 
-When serializing the Collection items, you should implement both `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces in the items class to control how these should be persisted into the database as JSON.
+When handling a collection of objects, you should implement both `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces in the object class to control how these should be serialized into the database as JSON.
 
 ```php
 <?php
