@@ -1653,7 +1653,7 @@ $number = Number::spell(10, until: 10);
 <a name="method-number-spell-ordinal"></a>
 #### `Number::spellOrdinal()` {.collection-method}
 
-The `Number::spellOrdinal`  method returns the number's ordinal representation as a string of words:
+The `Number::spellOrdinal` method returns the number's ordinal representation as a string of words:
 
 ```php
 use Illuminate\Support\Number;
