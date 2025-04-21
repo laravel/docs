@@ -108,6 +108,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::pairs](#method-number-pairs)
 [Number::percentage](#method-number-percentage)
 [Number::spell](#method-number-spell)
+[Number::spellOrdinal](#method-number-spell-ordinal)
 [Number::trim](#method-number-trim)
 [Number::useLocale](#method-number-use-locale)
 [Number::withLocale](#method-number-with-locale)
@@ -1647,6 +1648,27 @@ $number = Number::spell(5, until: 10);
 $number = Number::spell(10, until: 10);
 
 // 10
+```
+
+<a name="method-number-spell-ordinal"></a>
+#### `Number::spellOrdinal()` {.collection-method}
+
+The `Number::spellOrdinal`  method returns the number's ordinal representation as a string of words:
+
+```php
+use Illuminate\Support\Number;
+
+$number = Number::spellOrdinal(1);
+
+// first
+
+$number = Number::spellOrdinal(2);
+
+// second
+
+$number = Number::spellOrdinal(21);
+
+// twenty-first
 ```
 
 <a name="method-number-trim"></a>
