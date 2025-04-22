@@ -39,6 +39,7 @@
 - [The `Enumerable` Contract](#the-enumerable-contract)
 - [The `UserProvider` Contract](#the-user-provider-contract)
 - [The `Authenticatable` Contract](#the-authenticatable-contract)
+- [Task Scheduling move](#task-scheduling-move)
 
 </div>
 
@@ -628,6 +629,14 @@ php artisan vendor:publish --tag=telescope-migrations
 **Likelihood Of Impact: Medium**
 
 Laravel 11 now provides its own [`once` function](/docs/{{version}}/helpers#method-once) to ensure that a given closure is only executed once. Therefore, if your application has a dependency on the `spatie/once` package, you should remove it from your application's `composer.json` file to avoid conflicts.
+
+<a name="task-scheduling-move"></a>
+### Task Scheduling moved to routes/console.php
+
+**Likelihood Of Impact: Low**
+
+Laravel 11 now expects Artisan commands to be scheduled in [`routes/console.php`](/docs/{{version}}/scheduling) file, rather than in `app/Console/Kernel.php`.
+Although the old scheduling is expected to continue working, it is recomended that you move your Artisan command scheduling to the new location.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
