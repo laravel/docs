@@ -449,7 +449,7 @@ protected function casts(): array
 }
 ```
 
-Collection items can be mapped into an specific class instance by using a second parameter. or the `map()` method if you want to use the base Collection class.
+The `of` method may be used to indicate collection items should be mapped into a given class via the collection's [`mapInto` method](/docs/{{version}}/collections#method-mapinto):
 
 ```php
 use App\ValueObjects\Option;
@@ -463,31 +463,12 @@ use Illuminate\Database\Eloquent\Casts\AsCollection;
 protected function casts(): array
 {
     return [
-        'options' => AsCollection::map(Option::class)
+        'options' => AsCollection::of(Option::class)
     ];
 }
 ```
 
-For better control on how the items should be constructed once inside the Collection, you may set a callable that receives each item as an array.
-
-```php
-use App\ValueObjects\Option;
-use Illuminate\Database\Eloquent\Casts\AsCollection;
-
-/**
- * Get the attributes that should be cast.
- *
- * @return array<string, string>
- */
-protected function casts(): array
-{
-    return [
-        'options' => AsCollection::map([Option::class, 'fromArray']),
-    ];
-}
-```
-
-When handling a collection of objects, you should implement both `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces in the object class to control how these should be serialized into the database as JSON.
+When mapping collections to objects, the object should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces to define how their instances should be serialized into the database as JSON:
 
 ```php
 <?php
@@ -525,23 +506,13 @@ class Option implements Arrayable, JsonSerializable
     }
 
     /**
-     * Specify data which should be serialized to JSON.
+     * Specify the data which should be serialized to JSON.
      *
      * @return array{name: string, data: string, is_locked: bool}
      */
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Create a new instance from an array.
-     *
-     * @param  array{name: string, data: string, is_locked: bool}  $data
-     */
-    public function fromArray(array $data): static
-    {
-        return new static($data['name'], $data['value'], $data['is_locked']);
     }
 }
 ```
