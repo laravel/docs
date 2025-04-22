@@ -1506,8 +1506,8 @@ The example above will apply the `RFCValidation` and `DNSCheckValidation` valida
 
 <div class="content-list" markdown="1">
 
-- `rfc`: `RFCValidation` - Validate the email address according to RFC 5322.
-- `strict`: `NoRFCWarningsValidation` - Validate the email according to RFC 5322, rejecting trailing periods or multiple consecutive periods.
+- `rfc`: `RFCValidation` - Validate the email address according to [supported RFCs](https://github.com/egulias/EmailValidator?tab=readme-ov-file#supported-rfcs).
+- `strict`: `NoRFCWarningsValidation` - Validate the email according to [supported RFCs](https://github.com/egulias/EmailValidator?tab=readme-ov-file#supported-rfcs), failing when warnings are found (e.g. trailing periods and multiple consecutive periods).
 - `dns`: `DNSCheckValidation` - Ensure the email address's domain has a valid MX record.
 - `spoof`: `SpoofCheckValidation` - Ensure the email address does not contain homograph or deceptive Unicode characters.
 - `filter`: `FilterEmailValidation` - Ensure the email address is valid according to PHP's `filter_var` function.
