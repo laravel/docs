@@ -1117,6 +1117,8 @@ Below is a list of all available validation rules and their function:
 [Present With All](#rule-present-with-all)
 [Prohibited](#rule-prohibited)
 [Prohibited If](#rule-prohibited-if)
+[Prohibited If Accepted](#rule-prohibited-if-accepted)
+[Prohibited If Declined](#rule-prohibited-if-declined)
 [Prohibited Unless](#rule-prohibited-unless)
 [Prohibits](#rule-prohibits)
 [Required](#rule-required)
@@ -1996,6 +1998,15 @@ Validator::make($request->all(), [
     'role_id' => Rule::prohibitedIf(fn () => $request->user()->is_admin),
 ]);
 ```
+<a name="rule-prohibited-if-accepted"></a>
+#### prohibited_if_accepted:_anotherfield_,...
+
+The field under validation must be missing or empty if the _anotherfield_ field is equal to `"yes"`, `"on"`, `1`, `"1"`, `true`, or `"true"`.
+
+<a name="rule-prohibited-if-declined"></a>
+#### prohibited_if_declined:_anotherfield_,...
+
+The field under validation must be missing or empty if the _anotherfield_ field is equal to `"no"`, `"off"`, `0`, `"0"`, `false`, or `"false"`.
 
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_anotherfield_,_value_,...
