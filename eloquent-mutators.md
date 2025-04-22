@@ -449,6 +449,74 @@ protected function casts(): array
 }
 ```
 
+The `of` method may be used to indicate collection items should be mapped into a given class via the collection's [`mapInto` method](/docs/{{version}}/collections#method-mapinto):
+
+```php
+use App\ValueObjects\Option;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
+
+/**
+ * Get the attributes that should be cast.
+ *
+ * @return array<string, string>
+ */
+protected function casts(): array
+{
+    return [
+        'options' => AsCollection::of(Option::class)
+    ];
+}
+```
+
+When mapping collections to objects, the object should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces to define how their instances should be serialized into the database as JSON:
+
+```php
+<?php
+
+namespace App\ValueObjects;
+
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerilizable;
+
+class Option implements Arrayable, JsonSerializable
+{
+    /**
+     * Create a new Option instance.
+     */
+    public function __construct(
+        public string $name,
+        public mixed $value,
+        public bool $isLocked = false
+    ) {
+        //
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array{name: string, data: string, is_locked: bool}
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'value' => $this->value,
+            'is_locked' => $this->isLocked,
+        ];
+    }
+
+    /**
+     * Specify the data which should be serialized to JSON.
+     *
+     * @return array{name: string, data: string, is_locked: bool}
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+}
+```
+
 <a name="date-casting"></a>
 ### Date Casting
 
