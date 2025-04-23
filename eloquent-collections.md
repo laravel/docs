@@ -80,6 +80,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [makeVisible](#method-makeVisible)
 [makeHidden](#method-makeHidden)
 [only](#method-only)
+[partition](#method-partition)
 [setVisible](#method-setVisible)
 [setHidden](#method-setHidden)
 [toQuery](#method-toquery)
@@ -235,6 +236,19 @@ The `only` method returns all of the models that have the given primary keys:
 
 ```php
 $users = $users->only([1, 2, 3]);
+```
+
+<a name="method-partition"></a>
+#### `partition` {.collection-method}
+
+The `partition` method returns an instance of `Illuminate\Support\Collection` containing `Illuminate\Database\Eloquent\Collection` collection instances:
+
+```php
+$partition = $users->partition(fn ($user) => $user->age > 18);
+
+dump($partition::class);    // Illuminate\Support\Collection
+dump($partition[0]::class); // Illuminate\Database\Eloquent\Collection
+dump($partition[1]::class); // Illuminate\Database\Eloquent\Collection
 ```
 
 <a name="method-setVisible"></a>
