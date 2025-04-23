@@ -32,12 +32,12 @@ For in-depth debugging of individual events, check out [Laravel Telescope](/docs
 <a name="installation"></a>
 ## Installation
 
-> [!WARNING]  
+> [!WARNING]
 > Pulse's first-party storage implementation currently requires a MySQL, MariaDB, or PostgreSQL database. If you are using a different database engine, you will need a separate MySQL, MariaDB, or PostgreSQL database for your Pulse data.
 
 You may install Pulse using the Composer package manager:
 
-```sh
+```shell
 composer require laravel/pulse
 ```
 
@@ -55,7 +55,7 @@ php artisan migrate
 
 Once Pulse's database migrations have been run, you may access the Pulse dashboard via the `/pulse` route.
 
-> [!NOTE]  
+> [!NOTE]
 > If you do not want to store Pulse data in your application's primary database, you may [specify a dedicated database connection](#using-a-different-database).
 
 <a name="configuration"></a>
@@ -63,7 +63,7 @@ Once Pulse's database migrations have been run, you may access the Pulse dashboa
 
 Many of Pulse's configuration options can be controlled using environment variables. To see the available options, register new recorders, or configure advanced options, you may publish the `config/pulse.php` configuration file:
 
-```sh
+```shell
 php artisan vendor:publish --tag=pulse-config
 ```
 
@@ -97,7 +97,7 @@ public function boot(): void
 
 The Pulse dashboard cards and layout may be configured by publishing the dashboard view. The dashboard view will be published to `resources/views/vendor/pulse/dashboard.blade.php`:
 
-```sh
+```shell
 php artisan vendor:publish --tag=pulse-dashboard
 ```
 
@@ -158,7 +158,7 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You may completely customize how the authenticated user is captured and retrieved by implementing the `Laravel\Pulse\Contracts\ResolvesUsers` contract and binding it in Laravel's [service container](/docs/{{version}}/container#binding-a-singleton).
 
 <a name="dashboard-cards"></a>
@@ -190,7 +190,7 @@ If you wish to view all usage metrics on screen at the same time, you may includ
 
 To learn how to customize how Pulse retrieves and displays user information, consult our documentation on [resolving users](#dashboard-resolving-users).
 
-> [!NOTE]  
+> [!NOTE]
 > If your application receives a lot of requests or dispatches a lot of jobs, you may wish to enable [sampling](#sampling). See the [user requests recorder](#user-requests-recorder), [user jobs recorder](#user-jobs-recorder), and [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
 
 <a name="exceptions-card"></a>
@@ -251,16 +251,16 @@ Most Pulse recorders will automatically capture entries based on framework event
 php artisan pulse:check
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To keep the `pulse:check` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the command does not stop running.
 
 As the `pulse:check` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
 
-```sh
+```shell
 php artisan pulse:restart
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Pulse uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a name="recorders"></a>
@@ -404,7 +404,7 @@ If no regular expression patterns match the request's URL, then the `'default'` 
 <a name="servers-recorder"></a>
 #### Servers
 
-The `Servers` recorder captures CPU, memory, and storage usage of the servers that power your application for display on the [Servers](#servers-card) card. This recorder requires the [`pulse:check` command](#capturing-entries) to be running on each of the servers you wish to monitor.
+The `Servers` recorder captures CPU, memory, and storage usage of the servers that power your application for display on the [Servers](#servers-card) card. This recorder requires the [pulse:check command](#capturing-entries) to be running on each of the servers you wish to monitor.
 
 Each reporting server must have a unique name. By default, Pulse will use the value returned by PHP's `gethostname` function. If you wish to customize this, you may set the `PULSE_SERVER_NAME` environment variable:
 
@@ -471,18 +471,18 @@ PULSE_DB_CONNECTION=pulse
 <a name="ingest"></a>
 ### Redis Ingest
 
-> [!WARNING]  
+> [!WARNING]
 > The Redis Ingest requires Redis 6.2 or greater and `phpredis` or `predis` as the application's configured Redis client driver.
 
 By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the HTTP response has been sent to the client or a job has been processed; however, you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
 
-```
+```ini
 PULSE_INGEST_DRIVER=redis
 ```
 
 Pulse will use your default [Redis connection](/docs/{{version}}/redis#configuration) by default, but you may customize this via the `PULSE_REDIS_CONNECTION` environment variable:
 
-```
+```ini
 PULSE_REDIS_CONNECTION=pulse
 ```
 
@@ -492,16 +492,16 @@ When using the Redis ingest, you will need to run the `pulse:work` command to mo
 php artisan pulse:work
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > To keep the `pulse:work` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the Pulse worker does not stop running.
 
 As the `pulse:work` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
 
-```sh
+```shell
 php artisan pulse:restart
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Pulse uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a name="sampling"></a>
@@ -509,7 +509,7 @@ php artisan pulse:restart
 
 By default, Pulse will capture every relevant event that occurs in your application. For high-traffic applications, this can result in needing to aggregate millions of database rows in the dashboard, especially for longer time periods.
 
-You may instead choose to enable "sampling" on certain Pulse data recorders. For example, setting the sample rate to `0.1` on the [`User Requests`](#user-requests-recorder) recorder will mean that you only record approximately 10% of the requests to your application. In the dashboard, the values will be scaled up and prefixed with a `~` to indicate that they are an approximation.
+You may instead choose to enable "sampling" on certain Pulse data recorders. For example, setting the sample rate to `0.1` on the [User Requests](#user-requests-recorder) recorder will mean that you only record approximately 10% of the requests to your application. In the dashboard, the values will be scaled up and prefixed with a `~` to indicate that they are an approximation.
 
 In general, the more entries you have for a particular metric, the lower you can safely set the sample rate without sacrificing too much accuracy.
 
@@ -593,7 +593,7 @@ Once you have defined your Livewire component and template, the card may be incl
 </x-pulse>
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If your card is included in a package, you will need to register the component with Livewire using the `Livewire::component` method.
 
 <a name="custom-card-styling"></a>
@@ -671,7 +671,7 @@ You may then specify the configuration file in your CSS entrypoint:
 @tailwind utilities;
 ```
 
-You will also need to include an `id` or `class` attribute in your card's view that matches the selector passed to Tailwind's [`important` selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy):
+You will also need to include an `id` or `class` attribute in your card's view that matches the selector passed to Tailwind's [important selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy):
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">
@@ -707,7 +707,7 @@ The available aggregation methods are:
 * `min`
 * `sum`
 
-> [!NOTE]  
+> [!NOTE]
 > When building a card package that captures the currently authenticated user ID, you should use the `Pulse::resolveAuthenticatedUserId()` method, which respects any [user resolver customizations](#dashboard-resolving-users) made to the application.
 
 <a name="custom-card-data-retrieval"></a>
@@ -729,7 +729,7 @@ class TopSellers extends Card
 
 The `aggregate` method returns a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
 
-```
+```blade
 @foreach ($topSellers as $seller)
     {{ $seller->key }}
     {{ $seller->sum }}

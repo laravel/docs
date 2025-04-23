@@ -22,7 +22,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-> [!NOTE]  
+> [!NOTE]
 > Looking for an even easier way to develop Laravel applications on macOS or Windows? Check out [Laravel Herd](https://herd.laravel.com). Herd includes everything you need to get started with Laravel development, including Valet, PHP, and Composer.
 
 [Laravel Valet](https://github.com/laravel/valet) is a development environment for macOS minimalists. Laravel Valet configures your Mac to always run [Nginx](https://www.nginx.com/) in the background when your machine starts. Then, using [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq), Valet proxies all requests on the `*.test` domain to point to sites installed on your local machine.
@@ -69,7 +69,7 @@ However, you may extend Valet with your own [custom drivers](#custom-valet-drive
 <a name="installation"></a>
 ## Installation
 
-> [!WARNING]  
+> [!WARNING]
 > Valet requires macOS and [Homebrew](https://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.
 
 To get started, you first need to ensure that Homebrew is up to date using the `update` command:
@@ -103,7 +103,7 @@ Valet will automatically start its required services each time your machine boot
 <a name="php-versions"></a>
 #### PHP Versions
 
-> [!NOTE]  
+> [!NOTE]
 > Instead of modifying your global PHP version, you can instruct Valet to use per-site PHP versions via the `isolate` [command](#per-site-php-versions).
 
 Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Homebrew if it is not already installed:
@@ -122,7 +122,7 @@ php=php@8.2
 
 Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
 
-> [!WARNING]  
+> [!WARNING]
 > Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
 
 <a name="database"></a>
@@ -294,7 +294,7 @@ valet share
 
 To stop sharing your site, you may press `Control + C`.
 
-> [!WARNING]  
+> [!WARNING]
 > If you're using a custom DNS server (like `1.1.1.1`), ngrok sharing may not work correctly. If this is the case on your machine, open your Mac's system settings, go to the Network settings, open the Advanced settings, then go the DNS tab and add `127.0.0.1` as your first DNS server.
 
 <a name="sharing-sites-via-ngrok"></a>
@@ -306,7 +306,7 @@ Sharing your site using ngrok requires you to [create an ngrok account](https://
 valet set-ngrok-token YOUR_TOKEN_HERE
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You may pass additional ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
 
 <a name="sharing-sites-via-expose"></a>
@@ -332,19 +332,21 @@ Once you have updated your Nginx configuration, run the `valet restart` command 
 
 Some applications using other frameworks may depend on server environment variables but do not provide a way for those variables to be configured within your project. Valet allows you to configure site specific environment variables by adding a `.valet-env.php` file within the root of your project. This file should return an array of site / environment variable pairs which will be added to the global `$_SERVER` array for each site specified in the array:
 
-    <?php
+```php
+<?php
 
-    return [
-        // Set $_SERVER['key'] to "value" for the laravel.test site...
-        'laravel' => [
-            'key' => 'value',
-        ],
+return [
+    // Set $_SERVER['key'] to "value" for the laravel.test site...
+    'laravel' => [
+        'key' => 'value',
+    ],
 
-        // Set $_SERVER['key'] to "value" for all sites...
-        '*' => [
-            'key' => 'value',
-        ],
-    ];
+    // Set $_SERVER['key'] to "value" for all sites...
+    '*' => [
+        'key' => 'value',
+    ],
+];
+```
 
 <a name="proxying-services"></a>
 ## Proxying Services
@@ -391,34 +393,38 @@ The `serves` method should return `true` if your driver should handle the incomi
 
 For example, let's imagine we are writing a `WordPressValetDriver`. Our `serves` method might look something like this:
 
-    /**
-     * Determine if the driver serves the request.
-     */
-    public function serves(string $sitePath, string $siteName, string $uri): bool
-    {
-        return is_dir($sitePath.'/wp-admin');
-    }
+```php
+/**
+ * Determine if the driver serves the request.
+ */
+public function serves(string $sitePath, string $siteName, string $uri): bool
+{
+    return is_dir($sitePath.'/wp-admin');
+}
+```
 
 <a name="the-isstaticfile-method"></a>
 #### The `isStaticFile` Method
 
 The `isStaticFile` should determine if the incoming request is for a file that is "static", such as an image or a stylesheet. If the file is static, the method should return the fully qualified path to the static file on disk. If the incoming request is not for a static file, the method should return `false`:
 
-    /**
-     * Determine if the incoming request is for a static file.
-     *
-     * @return string|false
-     */
-    public function isStaticFile(string $sitePath, string $siteName, string $uri)
-    {
-        if (file_exists($staticFilePath = $sitePath.'/public/'.$uri)) {
-            return $staticFilePath;
-        }
-
-        return false;
+```php
+/**
+ * Determine if the incoming request is for a static file.
+ *
+ * @return string|false
+ */
+public function isStaticFile(string $sitePath, string $siteName, string $uri)
+{
+    if (file_exists($staticFilePath = $sitePath.'/public/'.$uri)) {
+        return $staticFilePath;
     }
 
-> [!WARNING]  
+    return false;
+}
+```
+
+> [!WARNING]
 > The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
 
 <a name="the-frontcontrollerpath-method"></a>
@@ -426,39 +432,43 @@ The `isStaticFile` should determine if the incoming request is for a file that i
 
 The `frontControllerPath` method should return the fully qualified path to your application's "front controller", which is typically an "index.php" file or equivalent:
 
-    /**
-     * Get the fully resolved path to the application's front controller.
-     */
-    public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
-    {
-        return $sitePath.'/public/index.php';
-    }
+```php
+/**
+ * Get the fully resolved path to the application's front controller.
+ */
+public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
+{
+    return $sitePath.'/public/index.php';
+}
+```
 
 <a name="local-drivers"></a>
 ### Local Drivers
 
 If you would like to define a custom Valet driver for a single application, create a `LocalValetDriver.php` file in the application's root directory. Your custom driver may extend the base `ValetDriver` class or extend an existing application specific driver such as the `LaravelValetDriver`:
 
-    use Valet\Drivers\LaravelValetDriver;
+```php
+use Valet\Drivers\LaravelValetDriver;
 
-    class LocalValetDriver extends LaravelValetDriver
+class LocalValetDriver extends LaravelValetDriver
+{
+    /**
+     * Determine if the driver serves the request.
+     */
+    public function serves(string $sitePath, string $siteName, string $uri): bool
     {
-        /**
-         * Determine if the driver serves the request.
-         */
-        public function serves(string $sitePath, string $siteName, string $uri): bool
-        {
-            return true;
-        }
-
-        /**
-         * Get the fully resolved path to the application's front controller.
-         */
-        public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
-        {
-            return $sitePath.'/public_html/index.php';
-        }
+        return true;
     }
+
+    /**
+     * Get the fully resolved path to the application's front controller.
+     */
+    public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
+    {
+        return $sitePath.'/public_html/index.php';
+    }
+}
+```
 
 <a name="other-valet-commands"></a>
 ## Other Valet Commands

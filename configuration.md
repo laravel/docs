@@ -17,7 +17,7 @@
 
 All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
 
-These configuration files allow you to configure things like your database connection information, your mail server information, as well as various other core configuration values such as your application timezone and encryption key.
+These configuration files allow you to configure things like your database connection information, your mail server information, as well as various other core configuration values such as your application URL and encryption key.
 
 <a name="the-about-command"></a>
 #### The `about` Command
@@ -51,7 +51,7 @@ Laravel's default `.env` file contains some common configuration values that may
 
 If you are developing with a team, you may wish to continue including and updating the `.env.example` file with your application. By putting placeholder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
 
-> [!NOTE]  
+> [!NOTE]
 > Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
 
 <a name="environment-file-security"></a>
@@ -97,7 +97,9 @@ APP_NAME="My Application"
 
 All of the variables listed in the `.env` file will be loaded into the `$_ENV` PHP super-global when your application receives a request. However, you may use the `env` function to retrieve values from these variables in your configuration files. In fact, if you review the Laravel configuration files, you will notice many of the options are already using this function:
 
-    'debug' => env('APP_DEBUG', false),
+```php
+'debug' => env('APP_DEBUG', false),
+```
 
 The second value passed to the `env` function is the "default value". This value will be returned if no environment variable exists for the given key.
 
@@ -106,21 +108,25 @@ The second value passed to the `env` function is the "default value". This value
 
 The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
 
-    use Illuminate\Support\Facades\App;
+```php
+use Illuminate\Support\Facades\App;
 
-    $environment = App::environment();
+$environment = App::environment();
+```
 
 You may also pass arguments to the `environment` method to determine if the environment matches a given value. The method will return `true` if the environment matches any of the given values:
 
-    if (App::environment('local')) {
-        // The environment is local
-    }
+```php
+if (App::environment('local')) {
+    // The environment is local
+}
 
-    if (App::environment(['local', 'staging'])) {
-        // The environment is either local OR staging...
-    }
+if (App::environment(['local', 'staging'])) {
+    // The environment is either local OR staging...
+}
+```
 
-> [!NOTE]  
+> [!NOTE]
 > The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable.
 
 <a name="encrypting-environment-files"></a>
@@ -143,7 +149,7 @@ Running the `env:encrypt` command will encrypt your `.env` file and place the en
 php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > The length of the key provided should match the key length required by the encryption cipher being used. By default, Laravel will use the `AES-256-CBC` cipher which requires a 32 character key. You are free to use any cipher supported by Laravel's [encrypter](/docs/{{version}}/encryption) by passing the `--cipher` option when invoking the command.
 
 If your application has multiple environment files, such as `.env` and `.env.staging`, you may specify the environment file that should be encrypted by providing the environment name via the `--env` option:
@@ -192,28 +198,34 @@ php artisan env:decrypt --force
 
 You may easily access your configuration values using the `Config` facade or global `config` function from anywhere in your application. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
 
-    use Illuminate\Support\Facades\Config;
+```php
+use Illuminate\Support\Facades\Config;
 
-    $value = Config::get('app.timezone');
+$value = Config::get('app.timezone');
 
-    $value = config('app.timezone');
+$value = config('app.timezone');
 
-    // Retrieve a default value if the configuration value does not exist...
-    $value = config('app.timezone', 'Asia/Seoul');
+// Retrieve a default value if the configuration value does not exist...
+$value = config('app.timezone', 'Asia/Seoul');
+```
 
 To set configuration values at runtime, you may invoke the `Config` facade's `set` method or pass an array to the `config` function:
 
-    Config::set('app.timezone', 'America/Chicago');
+```php
+Config::set('app.timezone', 'America/Chicago');
 
-    config(['app.timezone' => 'America/Chicago']);
+config(['app.timezone' => 'America/Chicago']);
+```
 
 To assist with static analysis, the `Config` facade also provides typed configuration retrieval methods. If the retrieved configuration value does not match the expected type, an exception will be thrown:
 
-    Config::string('config-key');
-    Config::integer('config-key');
-    Config::float('config-key');
-    Config::boolean('config-key');
-    Config::array('config-key');
+```php
+Config::string('config-key');
+Config::integer('config-key');
+Config::float('config-key');
+Config::boolean('config-key');
+Config::array('config-key');
+```
 
 <a name="configuration-caching"></a>
 ## Configuration Caching
@@ -232,7 +244,7 @@ The `config:clear` command may be used to purge the cached configuration:
 php artisan config:clear
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables.
 
 <a name="configuration-publishing"></a>
@@ -253,7 +265,7 @@ php artisan config:publish --all
 
 The `debug` option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your `.env` file.
 
-> [!WARNING]  
+> [!WARNING]
 > For local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
 
 <a name="maintenance-mode"></a>
@@ -302,7 +314,7 @@ php artisan down --with-secret
 
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
 
-> [!NOTE]  
+> [!NOTE]
 > Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?` or `&`.
 
 <a name="maintenance-mode-on-multiple-servers"></a>
@@ -310,13 +322,11 @@ When accessing this hidden route, you will then be redirected to the `/` route o
 
 By default, Laravel determines if your application is in maintenance mode using a file-based system. This means to activate maintenance mode, the `php artisan down` command has to be executed on each server hosting your application.
 
-Alternatively, Laravel offers a cache-based method for handling maintenance mode. This method requires running the `php artisan down` command on just one server. To use this approach, modify the "driver" setting in the `config/app.php` file of your application to `cache`. Then, select a cache `store` that is accessible by all your servers. This ensures the maintenance mode status is consistently maintained across every server:
+Alternatively, Laravel offers a cache-based method for handling maintenance mode. This method requires running the `php artisan down` command on just one server. To use this approach, modify the maintenance mode variables in your application's `.env` file. You should select a cache `store` that is accessible by all of your servers. This ensures the maintenance mode status is consistently maintained across every server:
 
-```php
-'maintenance' => [
-    'driver' => 'cache',
-    'store' => 'database',
-],
+```ini
+APP_MAINTENANCE_DRIVER=cache
+APP_MAINTENANCE_STORE=database
 ```
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
@@ -348,7 +358,7 @@ To disable maintenance mode, use the `up` command:
 php artisan up
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`.
 
 <a name="maintenance-mode-queues"></a>
@@ -359,4 +369,4 @@ While your application is in maintenance mode, no [queued jobs](/docs/{{version}
 <a name="alternatives-to-maintenance-mode"></a>
 #### Alternatives to Maintenance Mode
 
-Since maintenance mode requires your application to have several seconds of downtime, consider alternatives like [Laravel Vapor](https://vapor.laravel.com) and [Envoyer](https://envoyer.io) to accomplish zero-downtime deployment with Laravel.
+Since maintenance mode requires your application to have several seconds of downtime, consider running your applications on a fully-managed platform like [Laravel Cloud](https://cloud.laravel.com) to accomplish zero-downtime deployment with Laravel.

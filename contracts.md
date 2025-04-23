@@ -11,7 +11,7 @@
 
 Laravel's "contracts" are a set of interfaces that define the core services provided by the framework. For example, an `Illuminate\Contracts\Queue\Queue` contract defines the methods needed for queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines the methods needed for sending e-mail.
 
-Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by [Symfony Mailer](https://symfony.com/doc/7.0/mailer.html).
+Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by [Symfony Mailer](https://symfony.com/doc/current/mailer.html).
 
 All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized when building packages that interact with Laravel services.
 
@@ -38,31 +38,33 @@ Many types of classes in Laravel are resolved through the [service container](/d
 
 For example, take a look at this event listener:
 
-    <?php
+```php
+<?php
 
-    namespace App\Listeners;
+namespace App\Listeners;
 
-    use App\Events\OrderWasPlaced;
-    use App\Models\User;
-    use Illuminate\Contracts\Redis\Factory;
+use App\Events\OrderWasPlaced;
+use App\Models\User;
+use Illuminate\Contracts\Redis\Factory;
 
-    class CacheOrderInformation
+class CacheOrderInformation
+{
+    /**
+     * Create a new event handler instance.
+     */
+    public function __construct(
+        protected Factory $redis,
+    ) {}
+
+    /**
+     * Handle the event.
+     */
+    public function handle(OrderWasPlaced $event): void
     {
-        /**
-         * Create a new event handler instance.
-         */
-        public function __construct(
-            protected Factory $redis,
-        ) {}
-
-        /**
-         * Handle the event.
-         */
-        public function handle(OrderWasPlaced $event): void
-        {
-            // ...
-        }
+        // ...
     }
+}
+```
 
 When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).
 

@@ -56,7 +56,7 @@ Log::info('User authenticated.', ['auth_id' => Auth::id()]);
 
 The written log will contain the `auth_id` passed to the log entry, but it will also contain the context's `url` and `trace_id` as metadata:
 
-```
+```text
 User authenticated. {"auth_id":27} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
@@ -96,7 +96,7 @@ class ProcessPodcast implements ShouldQueue
 
 The resulting log entry would contain the information that was added to the context during the request that originally dispatched the job:
 
-```
+```text
 Processing podcast. {"podcast_id":95} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
@@ -136,6 +136,16 @@ Context::get('key');
 // "first"
 ```
 
+Context also provides convenient methods for incrementing or decrementing a given key. Both of these methods accept at least one argument: the key to track. A second argument may be provided to specify the amount by which the key should be incremented or decremented:
+
+```php
+Context::increment('records_added');
+Context::increment('records_added', 5);
+
+Context::decrement('records_added');
+Context::decrement('records_added', 5);
+```
+
 <a name="conditional-context"></a>
 #### Conditional Context
 
@@ -151,6 +161,45 @@ Context::when(
     fn ($context) => $context->add('permissions', []),
 );
 ```
+
+<a name="scoped-context"></a>
+#### Scoped Context
+
+The `scope` method provides a way to temporarily modify the context during the execution of a given callback and restore the context to its original state when the callback finishes executing. Additionally, you can pass extra data that should be merged into the context (as the second and third arguments) while the closure executes.
+
+```php
+use Illuminate\Support\Facades\Context;
+use Illuminate\Support\Facades\Log;
+
+Context::add('trace_id', 'abc-999');
+Context::addHidden('user_id', 123);
+
+Context::scope(
+    function () {
+        Context::add('action', 'adding_friend');
+
+        $userId = Context::getHidden('user_id');
+
+        Log::debug("Adding user [{$userId}] to friends list.");
+        // Adding user [987] to friends list.  {"trace_id":"abc-999","user_name":"taylor_otwell","action":"adding_friend"}
+    },
+    data: ['user_name' => 'taylor_otwell'],
+    hidden: ['user_id' => 987],
+);
+
+Context::all();
+// [
+//     'trace_id' => 'abc-999',
+// ]
+
+Context::allHidden();
+// [
+//     'user_id' => 123,
+// ]
+```
+
+> [!WARNING]
+> If an object within the context is modified inside the scoped closure, that mutation will be reflected outside of the scope.
 
 <a name="stacks"></a>
 ### Stacks
@@ -238,7 +287,7 @@ Context::pop('breadcrumbs')
 // second_value
 
 Context::get('breadcrumbs');
-// ['first_value'] 
+// ['first_value']
 ```
 
 If you would like to retrieve all of the information stored in the context, you may invoke the `all` method:
@@ -250,12 +299,16 @@ $data = Context::all();
 <a name="determining-item-existence"></a>
 ### Determining Item Existence
 
-You may use the `has` method to determine if the context has any value stored for the given key:
+You may use the `has` and `missing` methods to determine if the context has any value stored for the given key:
 
 ```php
 use Illuminate\Support\Facades\Context;
 
 if (Context::has('key')) {
+    // ...
+}
+
+if (Context::missing('key')) {
     // ...
 }
 ```
@@ -354,7 +407,7 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You should not use the `Context` facade within the `dehydrating` callback, as that will change the context of the current process. Ensure you only make changes to the repository passed to the callback.
 
 <a name="hydrated"></a>
@@ -382,5 +435,5 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > You should not use the `Context` facade within the `hydrated` callback and instead ensure you only make changes to the repository passed to the callback.

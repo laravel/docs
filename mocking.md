@@ -27,7 +27,7 @@ test('something can be mocked', function () {
     $this->instance(
         Service::class,
         Mockery::mock(Service::class, function (MockInterface $mock) {
-            $mock->shouldReceive('process')->once();
+            $mock->expects('process');
         })
     );
 });
@@ -43,7 +43,7 @@ public function test_something_can_be_mocked(): void
     $this->instance(
         Service::class,
         Mockery::mock(Service::class, function (MockInterface $mock) {
-            $mock->shouldReceive('process')->once();
+            $mock->expects('process');
         })
     );
 }
@@ -51,59 +51,67 @@ public function test_something_can_be_mocked(): void
 
 In order to make this more convenient, you may use the `mock` method that is provided by Laravel's base test case class. For example, the following example is equivalent to the example above:
 
-    use App\Service;
-    use Mockery\MockInterface;
+```php
+use App\Service;
+use Mockery\MockInterface;
 
-    $mock = $this->mock(Service::class, function (MockInterface $mock) {
-        $mock->shouldReceive('process')->once();
-    });
+$mock = $this->mock(Service::class, function (MockInterface $mock) {
+    $mock->expects('process');
+});
+```
 
 You may use the `partialMock` method when you only need to mock a few methods of an object. The methods that are not mocked will be executed normally when called:
 
-    use App\Service;
-    use Mockery\MockInterface;
+```php
+use App\Service;
+use Mockery\MockInterface;
 
-    $mock = $this->partialMock(Service::class, function (MockInterface $mock) {
-        $mock->shouldReceive('process')->once();
-    });
+$mock = $this->partialMock(Service::class, function (MockInterface $mock) {
+    $mock->expects('process');
+});
+```
 
 Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:
 
-    use App\Service;
+```php
+use App\Service;
 
-    $spy = $this->spy(Service::class);
+$spy = $this->spy(Service::class);
 
-    // ...
+// ...
 
-    $spy->shouldHaveReceived('process');
+$spy->shouldHaveReceived('process');
+```
 
 <a name="mocking-facades"></a>
 ## Mocking Facades
 
 Unlike traditional static method calls, [facades](/docs/{{version}}/facades) (including [real-time facades](/docs/{{version}}/facades#real-time-facades)) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability that you would have if you were using traditional dependency injection. When testing, you may often want to mock a call to a Laravel facade that occurs in one of your controllers. For example, consider the following controller action:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cache;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * Retrieve a list of all users of the application.
+     */
+    public function index(): array
     {
-        /**
-         * Retrieve a list of all users of the application.
-         */
-        public function index(): array
-        {
-            $value = Cache::get('key');
+        $value = Cache::get('key');
 
-            return [
-                // ...
-            ];
-        }
+        return [
+            // ...
+        ];
     }
+}
+```
 
-We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:
+We can mock the call to the `Cache` facade by using the `expects` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:
 
 ```php tab=Pest
 <?php
@@ -111,10 +119,9 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
 use Illuminate\Support\Facades\Cache;
 
 test('get index', function () {
-    Cache::shouldReceive('get')
-                ->once()
-                ->with('key')
-                ->andReturn('value');
+    Cache::expects('get')
+        ->with('key')
+        ->andReturn('value');
 
     $response = $this->get('/users');
 
@@ -134,10 +141,9 @@ class UserControllerTest extends TestCase
 {
     public function test_get_index(): void
     {
-        Cache::shouldReceive('get')
-                    ->once()
-                    ->with('key')
-                    ->andReturn('value');
+        Cache::expects('get')
+            ->with('key')
+            ->andReturn('value');
 
         $response = $this->get('/users');
 
@@ -146,7 +152,7 @@ class UserControllerTest extends TestCase
 }
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
 
 <a name="facade-spies"></a>
@@ -166,7 +172,7 @@ test('values are be stored in cache', function () {
 
     $response->assertStatus(200);
 
-    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);
+    Cache::shouldHaveReceived('put')->with('name', 'Taylor', 10);
 });
 ```
 
@@ -181,7 +187,7 @@ public function test_values_are_be_stored_in_cache(): void
 
     $response->assertStatus(200);
 
-    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);
+    Cache::shouldHaveReceived('put')->with('name', 'Taylor', 10);
 }
 ```
 
@@ -237,27 +243,31 @@ public function test_time_can_be_manipulated(): void
 
 You may also provide a closure to the various time travel methods. The closure will be invoked with time frozen at the specified time. Once the closure has executed, time will resume as normal:
 
-    $this->travel(5)->days(function () {
-        // Test something five days into the future...
-    });
+```php
+$this->travel(5)->days(function () {
+    // Test something five days into the future...
+});
 
-    $this->travelTo(now()->subDays(10), function () {
-        // Test something during a given moment...
-    });
+$this->travelTo(now()->subDays(10), function () {
+    // Test something during a given moment...
+});
+```
 
 The `freezeTime` method may be used to freeze the current time. Similarly, the `freezeSecond` method will freeze the current time but at the start of the current second:
 
-    use Illuminate\Support\Carbon;
+```php
+use Illuminate\Support\Carbon;
 
-    // Freeze time and resume normal time after executing closure...
-    $this->freezeTime(function (Carbon $time) {
-        // ...
-    });
+// Freeze time and resume normal time after executing closure...
+$this->freezeTime(function (Carbon $time) {
+    // ...
+});
 
-    // Freeze time at the current second and resume normal time after executing closure...
-    $this->freezeSecond(function (Carbon $time) {
-        // ...
-    })
+// Freeze time at the current second and resume normal time after executing closure...
+$this->freezeSecond(function (Carbon $time) {
+    // ...
+})
+```
 
 As you would expect, all of the methods discussed above are primarily useful for testing time sensitive application behavior, such as locking inactive posts on a discussion forum:
 

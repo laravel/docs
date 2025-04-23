@@ -32,7 +32,7 @@
 
 Laravel Prompts is perfect for accepting user input in your [Artisan console commands](/docs/{{version}}/artisan#writing-commands), but it may also be used in any command-line PHP project.
 
-> [!NOTE]  
+> [!NOTE]
 > Laravel Prompts supports macOS, Linux, and Windows with WSL. For more information, please see our documentation on [unsupported environments & fallbacks](#fallbacks).
 
 <a name="installation"></a>
@@ -862,7 +862,7 @@ $response = spin(
 );
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > The `spin` function requires the `pcntl` PHP extension to animate the spinner. When this extension is not available, a static version of the spinner will appear instead.
 
 <a name="progress"></a>
@@ -922,7 +922,7 @@ $progress->finish();
 
 The `clear` function may be used to clear the user's terminal:
 
-```
+```php
 use function Laravel\Prompts\clear;
 
 clear();
@@ -946,9 +946,9 @@ For any prompts that accept the `scroll` argument, the configured value will aut
 
 Laravel Prompts supports macOS, Linux, and Windows with WSL. Due to limitations in the Windows version of PHP, it is not currently possible to use Laravel Prompts on Windows outside of WSL.
 
-For this reason, Laravel Prompts supports falling back to an alternative implementation such as the [Symfony Console Question Helper](https://symfony.com/doc/7.0/components/console/helpers/questionhelper.html).
+For this reason, Laravel Prompts supports falling back to an alternative implementation such as the [Symfony Console Question Helper](https://symfony.com/doc/current/components/console/helpers/questionhelper.html).
 
-> [!NOTE]  
+> [!NOTE]
 > When using Laravel Prompts with the Laravel framework, fallbacks for each prompt have been configured for you and will be automatically enabled in unsupported environments.
 
 <a name="fallback-conditions"></a>
