@@ -690,8 +690,12 @@ class AsJson implements CastsAttributes
      * @param  array<string, mixed>  $attributes
      * @return array<string, mixed>
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): array
-    {
+    public function get(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): array {
         return json_decode($value, true);
     }
 
@@ -700,8 +704,12 @@ class AsJson implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): string
-    {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): string {
         return json_encode($value);
     }
 }
@@ -757,8 +765,12 @@ class AsAddress implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): Address
-    {
+    public function get(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): Address {
         return new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two']
@@ -771,8 +783,12 @@ class AsAddress implements CastsAttributes
      * @param  array<string, mixed>  $attributes
      * @return array<string, string>
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): array
-    {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): array {
         if (! $value instanceof Address) {
             throw new InvalidArgumentException('The given value is not an Address instance.');
         }
@@ -829,8 +845,12 @@ Therefore, you may specify that your custom cast class will be responsible for s
  *
  * @param  array<string, mixed>  $attributes
  */
-public function serialize(Model $model, string $key, mixed $value, array $attributes): string
-{
+public function serialize(
+    Model $model,
+    string $key,
+    mixed $value,
+    array $attributes,
+): string {
     return (string) $value;
 }
 ```
@@ -870,8 +890,12 @@ class AsHash implements CastsInboundAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): string
-    {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): string {
         return is_null($this->algorithm)
             ? bcrypt($value)
             : hash($this->algorithm, $value);
@@ -977,16 +1001,24 @@ class Address implements Castable
     {
         return new class implements CastsAttributes
         {
-            public function get(Model $model, string $key, mixed $value, array $attributes): Address
-            {
+            public function get(
+                Model $model,
+                string $key,
+                mixed $value,
+                array $attributes,
+            ): Address {
                 return new Address(
                     $attributes['address_line_one'],
                     $attributes['address_line_two']
                 );
             }
 
-            public function set(Model $model, string $key, mixed $value, array $attributes): array
-            {
+            public function set(
+                Model $model,
+                string $key,
+                mixed $value,
+                array $attributes,
+            ): array {
                 return [
                     'address_line_one' => $value->lineOne,
                     'address_line_two' => $value->lineTwo,
