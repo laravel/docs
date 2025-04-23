@@ -669,7 +669,7 @@ $users = User::select([
 Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. To create a cast, execute the `make:cast` Artisan command. The new cast class will be placed in your `app/Casts` directory:
 
 ```shell
-php artisan make:cast Json
+php artisan make:cast AsJson
 ```
 
 All custom cast classes implement the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:
@@ -682,7 +682,7 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class Json implements CastsAttributes
+class AsJson implements CastsAttributes
 {
     /**
      * Cast the given value.
@@ -714,7 +714,7 @@ Once you have defined a custom cast type, you may attach it to a model attribute
 
 namespace App\Models;
 
-use App\Casts\Json;
+use App\Casts\AsJson;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
@@ -727,7 +727,7 @@ class User extends Model
     protected function casts(): array
     {
         return [
-            'options' => Json::class,
+            'options' => AsJson::class,
         ];
     }
 }
@@ -738,28 +738,28 @@ class User extends Model
 
 You are not limited to casting values to primitive types. You may also cast values to objects. Defining custom casts that cast values to objects is very similar to casting to primitive types; however, if your value object encompasses more than one database column, the `set` method must return an array of key / value pairs that will be used to set raw, storable values on the model. If your value object only affects a single column, you should simply return the storable value.
 
-As an example, we will define a custom cast class that casts multiple model values into a single `Address` value object. We will assume the `Address` value has two public properties: `lineOne` and `lineTwo`:
+As an example, we will define a custom cast class that casts multiple model values into a single `Address` value object. We will assume the `Address` value object has two public properties: `lineOne` and `lineTwo`:
 
 ```php
 <?php
 
 namespace App\Casts;
 
-use App\ValueObjects\Address as AddressValueObject;
+use App\ValueObjects\Address;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
-class Address implements CastsAttributes
+class AsAddress implements CastsAttributes
 {
     /**
      * Cast the given value.
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): AddressValueObject
+    public function get(Model $model, string $key, mixed $value, array $attributes): Address
     {
-        return new AddressValueObject(
+        return new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two']
         );
@@ -773,7 +773,7 @@ class Address implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): array
     {
-        if (! $value instanceof AddressValueObject) {
+        if (! $value instanceof Address) {
             throw new InvalidArgumentException('The given value is not an Address instance.');
         }
 
@@ -808,7 +808,7 @@ When attributes that are cast to value objects are resolved, they are cached by 
 If you would like to disable the object caching behavior of custom cast classes, you may declare a public `withoutObjectCaching` property on your custom cast class:
 
 ```php
-class Address implements CastsAttributes
+class AsAddress implements CastsAttributes
 {
     public bool $withoutObjectCaching = true;
 
@@ -843,7 +843,7 @@ Occasionally, you may need to write a custom cast class that only transforms val
 Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined. The `make:cast` Artisan command may be invoked with the `--inbound` option to generate an inbound only cast class:
 
 ```shell
-php artisan make:cast Hash --inbound
+php artisan make:cast AsHash --inbound
 ```
 
 A classic example of an inbound only cast is a "hashing" cast. For example, we may define a cast that hashes inbound values via a given algorithm:
@@ -856,7 +856,7 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class Hash implements CastsInboundAttributes
+class AsHash implements CastsInboundAttributes
 {
     /**
      * Create a new cast class instance.
@@ -893,7 +893,7 @@ When attaching a custom cast to a model, cast parameters may be specified by sep
 protected function casts(): array
 {
     return [
-        'secret' => Hash::class.':sha256',
+        'secret' => AsHash::class.':sha256',
     ];
 }
 ```
@@ -922,7 +922,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
 namespace App\ValueObjects;
 
 use Illuminate\Contracts\Database\Eloquent\Castable;
-use App\Casts\Address as AddressCast;
+use App\Casts\AsAddress;
 
 class Address implements Castable
 {
@@ -933,7 +933,7 @@ class Address implements Castable
      */
     public static function castUsing(array $arguments): string
     {
-        return AddressCast::class;
+        return AsAddress::class;
     }
 }
 ```
