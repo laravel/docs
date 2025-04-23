@@ -241,7 +241,7 @@ $users = $users->only([1, 2, 3]);
 <a name="method-partition"></a>
 #### `partition` {.collection-method}
 
-The `partition` method returns a base Collection of Eloquent Collections:
+The `partition` method returns an instance of `Illuminate\Support\Collection` containing `Illuminate\Database\Eloquent\Collection` collection instances:
 
 ```php
 $partition = $users->partition(fn ($user) => $user->age > 18);
