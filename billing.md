@@ -2211,6 +2211,7 @@ The `downloadInvoice` method also allows for a custom filename via its third arg
 
 ```php
 return $request->user()->downloadInvoice($invoiceId, [], 'my-invoice');
+```
 
 <a name="custom-invoice-render"></a>
 #### Custom Invoice Renderer
