@@ -250,7 +250,7 @@ Route::group([
 
 Using OAuth2 via authorization codes is how most developers are familiar with OAuth2. When using authorization codes, a client application will redirect a user to your server where they will either approve or deny the request to issue an access token to the client.
 
-To get started, we need to instruct Passport how to return our "authorization" view. Remember, Passport is a headless OAuth2 library. If you would like a frontend implementation of Laravel's OAuth features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits).
+To get started, we need to instruct Passport how to return our "authorization" view.
 
 All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class. Passport will take care of defining the `/oauth/authorize` route that returns this view:
 
@@ -271,7 +271,7 @@ public function boot(): void
 <a name="managing-clients"></a>
 ### Managing Clients
 
-First, developers building applications that need to interact with your application's API will need to register their application with yours by creating a "client". Typically, this consists of providing the name of their application and a URI that your application can redirect to after users approve their request for authorization.
+Developers building applications that need to interact with your application's API will need to register their application with yours by creating a "client". Typically, this consists of providing the name of their application and a URI that your application can redirect to after users approve their request for authorization.
 
 <a name="managing-first-party-clients"></a>
 #### First-Party Clients
@@ -291,7 +291,7 @@ https://third-party-app.com/callback,https://example.com/oauth/redirect
 <a name="managing-third-party-clients"></a>
 #### Third-Party Clients
 
-Since your application's users will not be able to utilize the `passport:client` command, you may use `createAuthorizationCodeGrantClient` method of the `Laravel\Passport\ClientRepository` class to register a client for the given user:
+Since your application's users will not be able to utilize the `passport:client` command, you may use `createAuthorizationCodeGrantClient` method of the `Laravel\Passport\ClientRepository` class to register a client for a given user:
 
 ```php
 use App\Models\User;
@@ -418,7 +418,7 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 <a name="managing-tokens"></a>
 ### Managing Tokens
 
-You may retrieve user's authorized tokens using the `tokens` method of the `Laravel\Passport\HasApiTokens` trait. For example, to offer your users a dashboard to keep track of their connections with third-party applications:
+You may retrieve user's authorized tokens using the `tokens` method of the `Laravel\Passport\HasApiTokens` trait. For example, this may be used to offer your users a dashboard to keep track of their connections with third-party applications:
 
 ```php
 use App\Models\User;
@@ -428,7 +428,7 @@ use Laravel\Passport\Token;
 
 $user = User::find($userId);
 
-// Retrieving all the valid tokens for the user...
+// Retrieving all of the valid tokens for the user...
 $tokens = $user->tokens()
     ->where('revoked', false)
     ->where('expires_at', '>', Date::now())
@@ -484,7 +484,7 @@ $token->revoke();
 // Revoke the token's refresh token...
 $token->refreshToken?->revoke();
 
-// Revoke all the user's tokens...
+// Revoke all of the user's tokens...
 User::find($userId)->tokens()->each(function (Token $token) {
     $token->revoke();
     $token->refreshToken?->revoke();
@@ -623,7 +623,7 @@ Route::get('/callback', function (Request $request) {
 
 The OAuth2 device authorization grant allows browserless or limited input devices, such as TVs and game consoles, to obtain an access token by exchanging a "device code". When using device flow, the device client will instruct the user to use a secondary device, such as a computer or a smartphone and connect to your server where they will enter the provided "user code" and either approve or deny the access request.
 
-To get started, we need to instruct Passport how to return our "user code" and "authorization" views. Remember, Passport is a headless OAuth2 library. If you would like a frontend implementation of Laravel's OAuth features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits).
+To get started, we need to instruct Passport how to return our "user code" and "authorization" views.
 
 All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class. Passport will take care of defining the routes that returns these views:
 
@@ -670,7 +670,7 @@ $client = app(ClientRepository::class)->createDeviceAuthorizationGrantClient(
 ### Requesting Tokens
 
 <a name="device-code"></a>
-#### Requesting Device Code
+#### Requesting a Device Code
 
 Once a client has been created, developers may use their client ID to request a device code from your application. First, the consuming device should make a `POST` request to your application's `/oauth/device/code` route to request a device code:
 
@@ -685,15 +685,15 @@ $response = Http::asForm()->post('https://passport-app.test/oauth/device/code', 
 return $response->json();
 ```
 
-This will return a JSON response containing `device_code`, `user_code`, `verification_uri`, `interval` and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the device code expires. The `interval` attribute contains the number of seconds, the consuming device should wait between requests, when polling `\oauth\token` route to avoid rate limit errors.
+This will return a JSON response containing `device_code`, `user_code`, `verification_uri`, `interval`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the device code expires. The `interval` attribute contains the number of seconds the consuming device should wait between requests when polling `/oauth/token` route to avoid rate limit errors.
 
 > [!NOTE]  
 > Remember, the `/oauth/device/code` route is already defined by Passport. You do not need to manually define this route.
 
 <a name="user-code"></a>
-#### Displaying Verification URI and User Code
+#### Displaying the Verification URI and User Code
 
-Once a device code request has been obtained, the consuming device should instruct the user to use another device and visit the provided `verification_uri` and enter the `user_code` in order to review the authorization request.
+Once a device code request has been obtained, the consuming device should instruct the user to use another device and visit the provided `verification_uri` and enter the `user_code` in order to approve the authorization request.
 
 <a name="polling-token-request"></a>
 #### Polling Token Request
@@ -1264,7 +1264,7 @@ public function boot(): void
 <a name="csrf-protection"></a>
 #### CSRF Protection
 
-When using this method of authentication, you will need to ensure a valid CSRF token header is included in your requests. The default Laravel JavaScript scaffolding includes an [Axios](https://github.com/axios/axios) instance, which will automatically use the encrypted `XSRF-TOKEN` cookie value to send an `X-XSRF-TOKEN` header on same-origin requests.
+When using this method of authentication, you will need to ensure a valid CSRF token header is included in your requests. The default Laravel JavaScript scaffolding included with the skeleton application and all starter kits includes an [Axios](https://github.com/axios/axios) instance, which will automatically use the encrypted `XSRF-TOKEN` cookie value to send an `X-XSRF-TOKEN` header on same-origin requests.
 
 > [!NOTE]
 > If you choose to send the `X-CSRF-TOKEN` header instead of `X-XSRF-TOKEN`, you will need to use the unencrypted token provided by `csrf_token()`.
