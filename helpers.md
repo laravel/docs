@@ -3370,6 +3370,7 @@ $port = $uri->port();
 $path = $uri->path();
 $query = $uri->query();
 $fragment = $uri->fragment();
+$segments = $uri->pathSegments();
 ```
 
 <a name="manipulating-query-strings"></a>
