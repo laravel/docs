@@ -262,7 +262,17 @@ use Laravel\Passport\Passport;
  */
 public function boot(): void
 {
+    // Using named view...
     Passport::authorizationView('auth.oauth.authorize');
+    
+    // Using Responsable closure... 
+    Passport::authorizationView(fn ($params) => Inertia::render('Auth/OAuth/Authorize', [
+        'client' => $params['client'],
+        'user' => $params['user'],
+        'scopes' => $params['scopes'],
+        'request' => $params['request'],
+        'authToken' => $params['authToken'],
+    ]));
 
     // ...
 }
@@ -637,8 +647,19 @@ use Laravel\Passport\Passport;
  */
 public function boot(): void
 {
+    // Using named views...
     Passport::deviceUserCodeView('auth.oauth.device.user-code');
     Passport::deviceAuthorizationView('auth.oauth.device.authorize');
+    
+    // Using Responsable closures... 
+    Passport::deviceUserCodeView(fn ($params) => Inertia::render('Auth/OAuth/Device/UserCode'));
+    Passport::deviceAuthorizationView(fn ($params) => Inertia::render('Auth/OAuth/Device/Authorize', [
+        'client' => $params['client'],
+        'user' => $params['user'],
+        'scopes' => $params['scopes'],
+        'request' => $params['request'],
+        'authToken' => $params['authToken'],
+    ]));
 
     // ...
 }
