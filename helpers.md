@@ -3368,9 +3368,9 @@ $scheme = $uri->scheme();
 $host = $uri->host();
 $port = $uri->port();
 $path = $uri->path();
+$segments = $uri->pathSegments();
 $query = $uri->query();
 $fragment = $uri->fragment();
-$segments = $uri->pathSegments();
 ```
 
 <a name="manipulating-query-strings"></a>
