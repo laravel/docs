@@ -252,7 +252,7 @@ Using OAuth2 via authorization codes is how most developers are familiar with OA
 
 To get started, we need to instruct Passport how to return our "authorization" view.
 
-All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class. Passport will take care of defining the `/oauth/authorize` route that returns this view:
+All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
 ```php
 use Laravel\Passport\Passport;
@@ -266,6 +266,64 @@ public function boot(): void
 
     // ...
 }
+```
+
+Passport will take care of defining the `/oauth/authorize` endpoint that returns this view. Your `auth.oauth.authorize` template should include a form that makes a POST request to the `passport.authorizations.approve` route to approve the authorization and a form that makes a DELETE request to the `passport.authorizations.deny` route to deny the authorization. The `passport.authorizations.approve` and `passport.authorizations.deny` routes expect `state`, `client_id`, and `auth_token` fields.
+
+```php
+<div class="flex flex-col gap-6">
+    <div class="text-gray-600 text-center">
+        <strong>{{ $user->name }}</strong>
+        <p class="text-sm">{{ $user->email }}</p>
+    </div>
+  
+    <div class="text-sm text-gray-600">
+        {{ __(':client is requesting permission to access your account.', ['client' => $client->name]) }}
+    </div>
+  
+    @if (count($scopes) > 0)
+        <div class="text-sm text-gray-600">
+            <p class="pb-1">{{ __('This application will be able to:') }}</p>
+    
+            <ul class="list-inside list-disc">
+                @foreach ($scopes as $scope)
+                    <li>{{ $scope->description }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+  
+    <div class="flex flex-row-reverse gap-3 flex-wrap items-center">
+        <form method="POST" action="{{ route('passport.authorizations.approve') }}">
+            @csrf
+    
+            <input type="hidden" name="state" value="{{ $request->state }}">
+            <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
+            <input type="hidden" name="auth_token" value="{{ $authToken }}">
+    
+            <x-button type="submit">
+                {{ __('Authorize') }}
+            </x-button>
+        </form>
+    
+        <form method="POST" action="{{ route('passport.authorizations.deny') }}">
+            @csrf
+            @method('DELETE')
+    
+            <input type="hidden" name="state" value="{{ $request->state }}">
+            <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
+            <input type="hidden" name="auth_token" value="{{ $authToken }}">
+    
+            <x-secondary-button type="submit">
+                {{ __('Decline') }}
+            </x-secondary-button>
+        </form>
+    
+        <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ $request->fullUrlWithQuery(['prompt' => 'login']) }}">
+            {{ __('Log into another account') }}
+        </a>
+    </div>
+</div>
 ```
 
 <a name="managing-clients"></a>
@@ -625,7 +683,7 @@ The OAuth2 device authorization grant allows browserless or limited input device
 
 To get started, we need to instruct Passport how to return our "user code" and "authorization" views.
 
-All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class. Passport will take care of defining the routes that returns these views:
+All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class.
 
 ```php
 use Laravel\Passport\Passport;
@@ -640,6 +698,97 @@ public function boot(): void
 
     // ...
 }
+```
+
+Passport will take care of defining the routes that return these views. Your `auth.oauth.device.user-code` template should include a form that makes a GET request to the `passport.device.authorizations.authorize` route. The `passport.device.authorizations.authorize` route expects a `user_code` query parameter.
+
+```php
+<div class="flex flex-col gap-6">
+    @if (session('status') === 'authorization-approved')
+        <div class="font-medium text-sm text-green-600 dark:text-green-400">
+           {{ __('Success! Continue on your device.') }}
+        </div>
+    @elseif (session('status') === 'authorization-denied')
+        <div class="font-medium text-sm text-red-600 dark:text-red-400">
+            {{ __('Denied! Device authorization canceled.') }}
+        </div>
+    @endif
+
+    <div class="text-sm text-gray-600 dark:text-gray-400">
+        {{ __('Enter the code displayed on your device.') }}
+    </div>
+
+    <x-validation-errors />
+
+    <form method="GET" action="{{ route('passport.device.authorizations.authorize') }}">
+        <div class="block">
+            <x-label for="user_code" value="{{ __('Code') }}" />
+            <x-input id="user_code" class="block mt-1 w-full" type="text" name="user_code" :value="old('user_code')" required autofocus autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" />
+        </div>
+
+        <div class="flex items-center justify-end">
+            <x-button>{{ __('Continue') }}</x-button>
+        </div>
+    </form>
+</div>
+```
+
+Your `auth.oauth.device.authorize` template should include a form that makes a POST request to the `passport.device.authorizations.approve` route to approve the authorization and a form that makes a DELETE request to the `passport.device.authorizations.deny` route to deny the authorization. The `passport.device.authorizations.approve` and `passport.device.authorizations.deny` routes expect `state`, `client_id`, and `auth_token` fields.
+
+```php
+<div class="flex flex-col gap-6">
+    <div class="text-gray-600 text-center">
+        <strong>{{ $user->name }}</strong>
+        <p class="text-sm">{{ $user->email }}</p>
+    </div>
+  
+    <div class="text-sm text-gray-600">
+        {{ __(':client is requesting permission to access your account.', ['client' => $client->name]) }}
+    </div>
+  
+    @if (count($scopes) > 0)
+        <div class="text-sm text-gray-600">
+            <p class="pb-1">{{ __('This application will be able to:') }}</p>
+    
+            <ul class="list-inside list-disc">
+                @foreach ($scopes as $scope)
+                    <li>{{ $scope->description }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+  
+    <div class="flex flex-row-reverse gap-3 flex-wrap items-center">
+        <form method="POST" action="{{ route('passport.device.authorizations.approve') }}">
+            @csrf
+    
+            <input type="hidden" name="state" value="{{ $request->state }}">
+            <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
+            <input type="hidden" name="auth_token" value="{{ $authToken }}">
+    
+            <x-button type="submit">
+                {{ __('Authorize') }}
+            </x-button>
+        </form>
+    
+        <form method="POST" action="{{ route('passport.device.authorizations.deny') }}">
+            @csrf
+            @method('DELETE')
+    
+            <input type="hidden" name="state" value="{{ $request->state }}">
+            <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
+            <input type="hidden" name="auth_token" value="{{ $authToken }}">
+    
+            <x-secondary-button type="submit">
+                {{ __('Decline') }}
+            </x-secondary-button>
+        </form>
+    
+        <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ $request->fullUrlWithQuery(['prompt' => 'login']) }}">
+            {{ __('Log into another account') }}
+        </a>
+    </div>
+</div>
 ```
 
 <a name="creating-a-device-authorization-grant-client"></a>
