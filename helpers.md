@@ -40,6 +40,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 [Arr::accessible](#method-array-accessible)
 [Arr::add](#method-array-add)
+[Arr::appendKeysWith](#method-array-appendkeyswith)
 [Arr::collapse](#method-array-collapse)
 [Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
@@ -259,6 +260,29 @@ $array = Arr::add(['name' => 'Desk'], 'price', 100);
 $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
 
 // ['name' => 'Desk', 'price' => 100]
+```
+
+<a name="method-array-appendkeyswith"></a>
+#### `Arr::appendKeysWith()` {.collection-method}
+
+The `Arr::appendKeysWith` appends all key names of an associative array with the given suffix:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [
+    'id' => 1,
+    'name' => 'Lennart',
+];
+
+$keyed = Arr::appendKeysWith($array, '_user');
+
+/*
+    [
+        'id_user' => 1,
+        'name_user' => 'Lennart',
+    ]
+*/
 ```
 
 <a name="method-array-collapse"></a>
