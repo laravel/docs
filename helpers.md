@@ -40,8 +40,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 [Arr::accessible](#method-array-accessible)
 [Arr::add](#method-array-add)
-[Arr::array](#method-array)
-[Arr::boolean](#method-boolean)
+[Arr::array](#method-array-array)
+[Arr::boolean](#method-array-boolean)
 [Arr::collapse](#method-array-collapse)
 [Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
@@ -50,12 +50,12 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::exists](#method-array-exists)
 [Arr::first](#method-array-first)
 [Arr::flatten](#method-array-flatten)
-[Arr::float](#method-float)
+[Arr::float](#method-array-float)
 [Arr::forget](#method-array-forget)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
 [Arr::hasAny](#method-array-hasany)
-[Arr::integer](#method-integer)
+[Arr::integer](#method-array-integer)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::isList](#method-array-islist)
 [Arr::join](#method-array-join)
@@ -80,7 +80,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
-[Arr::string](#method-string)
+[Arr::string](#method-array-string)
 [Arr::take](#method-array-take)
 [Arr::toCssClasses](#method-array-to-css-classes)
 [Arr::toCssStyles](#method-array-to-css-styles)
@@ -266,7 +266,7 @@ $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
 // ['name' => 'Desk', 'price' => 100]
 ```
 
-<a name="method-array"></a>
+<a name="method-array-array"></a>
 #### `Arr::array()` {.collection-method}
 
 The `Arr::array()` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not an `array` (or is `NULL`).
@@ -285,7 +285,7 @@ $value = Arr::array($array, 'name');
 // throws InvalidArgumentException
 ```
 
-<a name="method-boolean"></a>
+<a name="method-array-boolean"></a>
 #### `Arr::boolean()` {.collection-method}
 
 The `Arr::boolean()` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `boolean` (or is `NULL`).
@@ -457,7 +457,7 @@ $flattened = Arr::flatten($array);
 // ['Joe', 'PHP', 'Ruby']
 ```
 
-<a name="method-float"></a>
+<a name="method-array-float"></a>
 #### `Arr::float()` {.collection-method}
 
 The `Arr::float()` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `float` (or is `NULL`).
@@ -558,7 +558,7 @@ $contains = Arr::hasAny($array, ['category', 'product.discount']);
 // false
 ```
 
-<a name="method-integer"></a>
+<a name="method-array-integer"></a>
 #### `Arr::integer()` {.collection-method}
 
 The `Arr::integer()` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not an `int` (or is `NULL`).
@@ -1130,7 +1130,7 @@ If you would like the results sorted in descending order, you may use the `Arr::
 $sorted = Arr::sortRecursiveDesc($array);
 ```
 
-<a name="method-string"></a>
+<a name="method-array-string"></a>
 #### `Arr::string()` {.collection-method}
 
 The `Arr::string()` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `string` (or is `NULL`).
