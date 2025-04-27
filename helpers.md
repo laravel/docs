@@ -283,6 +283,13 @@ $value = Arr::array($array, 'languages');
 $value = Arr::array($array, 'name');
 
 // throws InvalidArgumentException
+
+// retrieve a default value if the requested key is not in the array at all:
+
+$value = Arr::array($array, 'invoice_ids', [144, 155, 182]);
+
+// [144, 155, 182]
+
 ```
 
 <a name="method-array-boolean"></a>
@@ -302,6 +309,12 @@ $value = Arr::boolean($array, 'available');
 $value = Arr::boolean($array, 'name');
 
 // throws InvalidArgumentException
+
+// retrieve a default value if the requested key is not in the array at all:
+
+$value = Arr::boolean($array, 'is_admin', false);
+
+// false
 ```
 
 
@@ -474,6 +487,13 @@ $value = Arr::float($array, 'balance');
 $value = Arr::float($array, 'name');
 
 // throws InvalidArgumentException
+
+// retrieve a default value if the requested key is not in the array at all:
+
+$value = Arr::float($array, 'tax_rate', 0.075);
+
+// 0.075
+
 ```
 
 <a name="method-array-forget"></a>
@@ -575,6 +595,12 @@ $value = Arr::integer($array, 'age');
 $value = Arr::integer($array, 'name');
 
 // throws InvalidArgumentException
+
+// retrieve a default value if the requested key is not in the array at all:
+
+$value = Arr::integer($array, 'weight', 225);
+
+// 225
 ```
 
 <a name="method-array-isassoc"></a>
@@ -1147,6 +1173,13 @@ $value = Arr::string($array, 'name');
 $value = Arr::string($array, 'languages');
 
 // throws InvalidArgumentException
+
+// retrieve a default value if the requested key is not in the array at all:
+
+$value = Arr::string($array, 'city', 'Newmarket');
+
+// Newmarket
+
 ```
 
 <a name="method-array-take"></a>
