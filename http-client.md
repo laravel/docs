@@ -251,7 +251,7 @@ $response = Http::timeout(3)->get(/* ... */);
 
 If the given timeout is exceeded, an instance of `Illuminate\Http\Client\ConnectionException` will  be thrown.
 
-You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method:
+You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method. The default is 10 seconds:
 
 ```php
 $response = Http::connectTimeout(3)->get(/* ... */);
