@@ -1208,7 +1208,7 @@ Once you have obtained a channel instance, you may use the `listen` method to li
 
 ```js
 Echo.private(`App.Models.User.${this.user.id}`)
-    .listen('.PostUpdated', (e) => {
+    .listen('.UserUpdated', (e) => {
         console.log(e.model);
     });
 ```
