@@ -219,6 +219,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [whenContainsAll](#method-fluent-str-when-contains-all)
 [whenEmpty](#method-fluent-str-when-empty)
 [whenNotEmpty](#method-fluent-str-when-not-empty)
+[whenJson](#method-fluent-str-when-json)
+[whenNotJson](#method-fluent-str-when-not-json)
 [whenStartsWith](#method-fluent-str-when-starts-with)
 [whenEndsWith](#method-fluent-str-when-ends-with)
 [whenExactly](#method-fluent-str-when-exactly)
@@ -3414,6 +3416,38 @@ $string = Str::of('Framework')->whenNotEmpty(function (Stringable $string) {
 });
 
 // 'Laravel Framework'
+```
+
+<a name="method-fluent-str-when-json"></a>
+#### `whenJson` {.collection-method}
+
+The `whenJson` method invokes the given closure if the string is valid JSON. If the closure returns a value, that value will also be returned by the `whenJson` method. If the closure does not return a value, the fluent string instance will be returned:
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('1')->whenJson(function (Stringable $string) {
+    return $string->prepend('JSON: ');
+});
+
+// 'JSON: 1'
+```
+
+<a name="method-fluent-str-when-not-json"></a>
+#### `whenNotJson` {.collection-method}
+
+The `whenNotJson` method invokes the given closure if the string is not valid JSON. If the closure returns a value, that value will also be returned by the `whenNotJson` method. If the closure does not return a value, the fluent string instance will be returned:
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('invalid')->whenNotJson(function (Stringable $string) {
+    return $string->prepend('Not JSON: ');
+});
+
+// 'Not JSON: invalid'
 ```
 
 <a name="method-fluent-str-when-starts-with"></a>
