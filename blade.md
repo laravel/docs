@@ -658,16 +658,10 @@ If you have multiple classes within the same namespace, you may group the import
 @use('App\Models\{Flight, Airport}')
 ```
 
-The `@use` directive also supports importing PHP functions and constants by prefixing the import path with the `function` or `const` modifiers. For example, to import a function, you may use:
+The `@use` directive also supports importing PHP functions and constants by prefixing the import path with the `function` or `const` modifiers:
 
 ```blade
 @use(function App\Helpers\format_currency)
-```
-
-Similarly, to import a constant:
-
-```blade
-@use(const App\Constants\MAX_ATTEMPTS)
 ```
 
 Just like class imports, aliases are supported for functions and constants as well:
