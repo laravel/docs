@@ -571,6 +571,8 @@ If you would like to broadcast your event using the `sync` queue instead of the 
 ```php
 <?php
 
+namespace App\Events;
+
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
 class OrderShipmentStatusUpdated implements ShouldBroadcastNow
