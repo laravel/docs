@@ -476,7 +476,7 @@ When mapping collections to objects, the object should implement the `Illuminate
 namespace App\ValueObjects;
 
 use Illuminate\Contracts\Support\Arrayable;
-use JsonSerilizable;
+use JsonSerializable;
 
 class Option implements Arrayable, JsonSerializable
 {
