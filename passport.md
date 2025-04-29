@@ -468,7 +468,7 @@ $response = Http::asForm()->post('https://passport-app.test/oauth/token', [
     'grant_type' => 'refresh_token',
     'refresh_token' => 'the-refresh-token',
     'client_id' => 'your-client-id',
-    'client_secret' => 'your-client-secret', // required for confidential clients only
+    'client_secret' => 'your-client-secret', // Required for confidential clients only...
     'scope' => 'user:read orders:create',
 ]);
 
