@@ -262,19 +262,17 @@ use Laravel\Passport\Passport;
  */
 public function boot(): void
 {
-    // Using named view...
+    // By providing a view name...
     Passport::authorizationView('auth.oauth.authorize');
     
-    // Using Responsable closure... 
-    Passport::authorizationView(fn ($params) => Inertia::render('Auth/OAuth/Authorize', [
-        'client' => $params['client'],
-        'user' => $params['user'],
-        'scopes' => $params['scopes'],
-        'request' => $params['request'],
-        'authToken' => $params['authToken'],
+    // By providing a closure...
+    Passport::authorizationView(fn ($parameters) => Inertia::render('Auth/OAuth/Authorize', [
+        'request' => $parameters['request'],
+        'authToken' => $parameters['authToken'],
+        'client' => $parameters['client'],
+        'user' => $parameters['user'],
+        'scopes' => $parameters['scopes'],
     ]));
-
-    // ...
 }
 ```
 
@@ -647,18 +645,19 @@ use Laravel\Passport\Passport;
  */
 public function boot(): void
 {
-    // Using named views...
+    // By providing a view name...
     Passport::deviceUserCodeView('auth.oauth.device.user-code');
     Passport::deviceAuthorizationView('auth.oauth.device.authorize');
     
-    // Using Responsable closures... 
-    Passport::deviceUserCodeView(fn ($params) => Inertia::render('Auth/OAuth/Device/UserCode'));
-    Passport::deviceAuthorizationView(fn ($params) => Inertia::render('Auth/OAuth/Device/Authorize', [
-        'client' => $params['client'],
-        'user' => $params['user'],
-        'scopes' => $params['scopes'],
-        'request' => $params['request'],
-        'authToken' => $params['authToken'],
+    // By providing a closure...
+    Passport::deviceUserCodeView(fn ($parameters) => Inertia::render('Auth/OAuth/Device/UserCode'));
+
+    Passport::deviceAuthorizationView(fn ($parameters) => Inertia::render('Auth/OAuth/Device/Authorize', [
+        'request' => $parameters['request'],
+        'authToken' => $parameters['authToken'],
+        'client' => $parameters['client'],
+        'user' => $parameters['user'],
+        'scopes' => $parameters['scopes'],
     ]));
 
     // ...
