@@ -2218,6 +2218,7 @@ return $request->user()->downloadInvoice($invoiceId, [], 'my-invoice');
 
 Cashier also makes it possible to use a custom invoice renderer. By default, Cashier uses the `DompdfInvoiceRenderer` implementation, which utilizes the [dompdf](https://github.com/dompdf/dompdf) PHP library to generate Cashier's invoices. However, you may use any renderer you wish by implementing the `Laravel\Cashier\Contracts\InvoiceRenderer` interface. For example, you may wish to render an invoice PDF using an API call to a third-party PDF rendering service:
 
+```php
 use Illuminate\Support\Facades\Http;
 use Laravel\Cashier\Contracts\InvoiceRenderer;
 use Laravel\Cashier\Invoice;
