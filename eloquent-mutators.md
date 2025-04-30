@@ -480,15 +480,18 @@ use JsonSerializable;
 
 class Option implements Arrayable, JsonSerializable
 {
+    public string $name;
+    public mixed $value;
+    public bool $isLocked;
+
     /**
      * Create a new Option instance.
      */
-    public function __construct(
-        public string $name,
-        public mixed $value,
-        public bool $isLocked = false
-    ) {
-        //
+    public function __construct(array $data)
+    {
+        $this->name = $data['name'];
+        $this->value = $data['value'];
+        $this->isLocked = $data['is_locked'];
     }
 
     /**
