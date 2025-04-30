@@ -12,7 +12,7 @@
 
 Laravel includes the ability to seed your database with data using seed classes. All seed classes are stored in the `database/seeders` directory. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
 
-> [!NOTE]  
+> [!NOTE]
 > [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled during database seeding.
 
 <a name="writing-seeders"></a>
@@ -28,31 +28,33 @@ A seeder class only contains one method by default: `run`. This method is called
 
 As an example, let's modify the default `DatabaseSeeder` class and add a database insert statement to the `run` method:
 
-    <?php
+```php
+<?php
 
-    namespace Database\Seeders;
+namespace Database\Seeders;
 
-    use Illuminate\Database\Seeder;
-    use Illuminate\Support\Facades\DB;
-    use Illuminate\Support\Facades\Hash;
-    use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
-    class DatabaseSeeder extends Seeder
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Run the database seeders.
+     */
+    public function run(): void
     {
-        /**
-         * Run the database seeders.
-         */
-        public function run(): void
-        {
-            DB::table('users')->insert([
-                'name' => Str::random(10),
-                'email' => Str::random(10).'@example.com',
-                'password' => Hash::make('password'),
-            ]);
-        }
+        DB::table('users')->insert([
+            'name' => Str::random(10),
+            'email' => Str::random(10).'@example.com',
+            'password' => Hash::make('password'),
+        ]);
     }
+}
+```
 
-> [!NOTE]  
+> [!NOTE]
 > You may type-hint any dependencies you need within the `run` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
 <a name="using-model-factories"></a>
@@ -62,23 +64,56 @@ Of course, manually specifying the attributes for each model seed is cumbersome.
 
 For example, let's create 50 users that each has one related post:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    /**
-     * Run the database seeders.
-     */
-    public function run(): void
-    {
-        User::factory()
-                ->count(50)
-                ->hasPosts(1)
-                ->create();
-    }
+/**
+ * Run the database seeders.
+ */
+public function run(): void
+{
+    User::factory()
+        ->count(50)
+        ->hasPosts(1)
+        ->create();
+}
+```
 
 <a name="calling-additional-seeders"></a>
 ### Calling Additional Seeders
 
 Within the `DatabaseSeeder` class, you may use the `call` method to execute additional seed classes. Using the `call` method allows you to break up your database seeding into multiple files so that no single seeder class becomes too large. The `call` method accepts an array of seeder classes that should be executed:
+
+```php
+/**
+ * Run the database seeders.
+ */
+public function run(): void
+{
+    $this->call([
+        UserSeeder::class,
+        PostSeeder::class,
+        CommentSeeder::class,
+    ]);
+}
+```
+
+<a name="muting-model-events"></a>
+### Muting Model Events
+
+While running seeds, you may want to prevent models from dispatching events. You may achieve this using the `WithoutModelEvents` trait. When used, the `WithoutModelEvents` trait ensures no model events are dispatched, even if additional seed classes are executed via the `call` method:
+
+```php
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+class DatabaseSeeder extends Seeder
+{
+    use WithoutModelEvents;
 
     /**
      * Run the database seeders.
@@ -87,37 +122,10 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
     {
         $this->call([
             UserSeeder::class,
-            PostSeeder::class,
-            CommentSeeder::class,
         ]);
     }
-
-<a name="muting-model-events"></a>
-### Muting Model Events
-
-While running seeds, you may want to prevent models from dispatching events. You may achieve this using the `WithoutModelEvents` trait. When used, the `WithoutModelEvents` trait ensures no model events are dispatched, even if additional seed classes are executed via the `call` method:
-
-    <?php
-
-    namespace Database\Seeders;
-
-    use Illuminate\Database\Seeder;
-    use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
-    class DatabaseSeeder extends Seeder
-    {
-        use WithoutModelEvents;
-
-        /**
-         * Run the database seeders.
-         */
-        public function run(): void
-        {
-            $this->call([
-                UserSeeder::class,
-            ]);
-        }
-    }
+}
+```
 
 <a name="running-seeders"></a>
 ## Running Seeders
@@ -135,7 +143,7 @@ You may also seed your database using the `migrate:fresh` command in combination
 ```shell
 php artisan migrate:fresh --seed
 
-php artisan migrate:fresh --seed --seeder=UserSeeder 
+php artisan migrate:fresh --seed --seeder=UserSeeder
 ```
 
 <a name="forcing-seeding-production"></a>

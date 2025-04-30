@@ -32,12 +32,12 @@ For in-depth debugging of individual events, check out [Laravel Telescope](/docs
 <a name="installation"></a>
 ## Installation
 
-> [!WARNING]  
+> [!WARNING]
 > Pulse's first-party storage implementation currently requires a MySQL, MariaDB, or PostgreSQL database. If you are using a different database engine, you will need a separate MySQL, MariaDB, or PostgreSQL database for your Pulse data.
 
 You may install Pulse using the Composer package manager:
 
-```sh
+```shell
 composer require laravel/pulse
 ```
 
@@ -55,7 +55,7 @@ php artisan migrate
 
 Once Pulse's database migrations have been run, you may access the Pulse dashboard via the `/pulse` route.
 
-> [!NOTE]  
+> [!NOTE]
 > If you do not want to store Pulse data in your application's primary database, you may [specify a dedicated database connection](#using-a-different-database).
 
 <a name="configuration"></a>
@@ -63,7 +63,7 @@ Once Pulse's database migrations have been run, you may access the Pulse dashboa
 
 Many of Pulse's configuration options can be controlled using environment variables. To see the available options, register new recorders, or configure advanced options, you may publish the `config/pulse.php` configuration file:
 
-```sh
+```shell
 php artisan vendor:publish --tag=pulse-config
 ```
 
@@ -97,7 +97,7 @@ public function boot(): void
 
 The Pulse dashboard cards and layout may be configured by publishing the dashboard view. The dashboard view will be published to `resources/views/vendor/pulse/dashboard.blade.php`:
 
-```sh
+```shell
 php artisan vendor:publish --tag=pulse-dashboard
 ```
 
@@ -169,6 +169,12 @@ public function boot(): void
 
 The `<livewire:pulse.servers />` card displays system resource usage for all servers running the `pulse:check` command. Please refer to the documentation regarding the [servers recorder](#servers-recorder) for more information on system resource reporting.
 
+If you replace a server in your infrastructure, you may wish to stop displaying the inactive server in the Pulse dashboard after a given duration. You may accomplish this using the `ignore-after` prop, which accepts the number of seconds after which inactive servers should be removed from the Pulse dashboard. Alternatively, you may provide a relative time formatted string, such as `1 hour` or `3 days and 1 hour`:
+
+```blade
+<livewire:pulse.servers ignore-after="3 hours" />
+```
+
 <a name="application-usage-card"></a>
 #### Application Usage
 
@@ -214,10 +220,10 @@ The `<livewire:pulse.slow-queries />` card shows the database queries in your ap
 
 By default, slow queries are grouped based on the SQL query (without bindings) and the location where it occurred, but you may choose to not capture the location if you wish to group solely on the SQL query.
 
-If you encounter rendering performance issues due to extremely large SQL queries receiving syntax highlighting, you may disable highlighting by adding the `disable-highlighting` prop:
+If you encounter rendering performance issues due to extremely large SQL queries receiving syntax highlighting, you may disable highlighting by adding the `without-highlighting` prop:
 
 ```blade
-<livewire:pulse.slow-queries disable-highlighting />
+<livewire:pulse.slow-queries without-highlighting />
 ```
 
 See the [slow queries recorder](#slow-queries-recorder) documentation for more information.
@@ -250,11 +256,11 @@ php artisan pulse:check
 
 As the `pulse:check` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
 
-```sh
+```shell
 php artisan pulse:restart
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Pulse uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a name="recorders"></a>
@@ -303,6 +309,20 @@ The `SlowJobs` recorder captures information about slow jobs occurring in your a
 
 You may optionally adjust the slow job threshold, [sample rate](#sampling), and ignored job patterns.
 
+You may have some jobs that you expect to take longer than others. In those cases, you may configure per-job thresholds:
+
+```php
+Recorders\SlowJobs::class => [
+    // ...
+    'threshold' => [
+        '#^App\\Jobs\\GenerateYearlyReports$#' => 5000,
+        'default' => env('PULSE_SLOW_JOBS_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the job's classname, then the `'default'` value will be used.
+
 <a name="slow-outgoing-requests-recorder"></a>
 #### Slow Outgoing Requests
 
@@ -310,10 +330,24 @@ The `SlowOutgoingRequests` recorder captures information about outgoing HTTP req
 
 You may optionally adjust the slow outgoing request threshold, [sample rate](#sampling), and ignored URL patterns.
 
+You may have some outgoing requests that you expect to take longer than others. In those cases, you may configure per-request thresholds:
+
+```php
+Recorders\SlowOutgoingRequests::class => [
+    // ...
+    'threshold' => [
+        '#backup.zip$#' => 5000,
+        'default' => env('PULSE_SLOW_OUTGOING_REQUESTS_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the request's URL, then the `'default'` value will be used.
+
 You may also configure URL grouping so that similar URLs are grouped as a single entry. For example, you may wish to remove unique IDs from URL paths or group by domain only. Groups are configured using a regular expression to "find and replace" parts of the URL. Some examples are included in the configuration file:
 
 ```php
-Recorders\OutgoingRequests::class => [
+Recorders\SlowOutgoingRequests::class => [
     // ...
     'groups' => [
         // '#^https://api\.github\.com/repos/.*$#' => 'api.github.com/repos/*',
@@ -332,6 +366,20 @@ The `SlowQueries` recorder captures any database queries in your application tha
 
 You may optionally adjust the slow query threshold, [sample rate](#sampling), and ignored query patterns. You may also configure whether to capture the query location. The captured location will be displayed on the Pulse dashboard which can help to track down the query origin; however, if the same query is made in multiple locations then it will appear multiple times for each unique location.
 
+You may have some queries that you expect to take longer than others. In those cases, you may configure per-query thresholds:
+
+```php
+Recorders\SlowQueries::class => [
+    // ...
+    'threshold' => [
+        '#^insert into `yearly_reports`#' => 5000,
+        'default' => env('PULSE_SLOW_QUERIES_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the query's SQL, then the `'default'` value will be used.
+
 <a name="slow-requests-recorder"></a>
 #### Slow Requests
 
@@ -339,10 +387,24 @@ The `Requests` recorder captures information about requests made to your applica
 
 You may optionally adjust the slow route threshold, [sample rate](#sampling), and ignored paths.
 
+You may have some requests that you expect to take longer than others. In those cases, you may configure per-request thresholds:
+
+```php
+Recorders\SlowRequests::class => [
+    // ...
+    'threshold' => [
+        '#^/admin/#' => 5000,
+        'default' => env('PULSE_SLOW_REQUESTS_THRESHOLD', 1000),
+    ],
+],
+```
+
+If no regular expression patterns match the request's URL, then the `'default'` value will be used.
+
 <a name="servers-recorder"></a>
 #### Servers
 
-The `Servers` recorder captures CPU, memory, and storage usage of the servers that power your application for display on the [Servers](#servers-card) card. This recorder requires the [`pulse:check` command](#capturing-entries) to be running on each of the servers you wish to monitor.
+The `Servers` recorder captures CPU, memory, and storage usage of the servers that power your application for display on the [Servers](#servers-card) card. This recorder requires the [pulse:check command](#capturing-entries) to be running on each of the servers you wish to monitor.
 
 Each reporting server must have a unique name. By default, Pulse will use the value returned by PHP's `gethostname` function. If you wish to customize this, you may set the `PULSE_SERVER_NAME` environment variable:
 
@@ -364,7 +426,7 @@ You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
 
 The `UserRequests` recorder captures information about the users making requests to your application for display on the [Application Usage](#application-usage-card) card.
 
-You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
+You may optionally adjust the [sample rate](#sampling) and ignored URL patterns.
 
 <a name="filtering"></a>
 ### Filtering
@@ -414,13 +476,13 @@ PULSE_DB_CONNECTION=pulse
 
 By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the HTTP response has been sent to the client or a job has been processed; however, you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
 
-```
+```ini
 PULSE_INGEST_DRIVER=redis
 ```
 
 Pulse will use your default [Redis connection](/docs/{{version}}/redis#configuration) by default, but you may customize this via the `PULSE_REDIS_CONNECTION` environment variable:
 
-```
+```ini
 PULSE_REDIS_CONNECTION=pulse
 ```
 
@@ -435,11 +497,11 @@ php artisan pulse:work
 
 As the `pulse:work` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
 
-```sh
+```shell
 php artisan pulse:restart
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Pulse uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a name="sampling"></a>
@@ -447,7 +509,7 @@ php artisan pulse:restart
 
 By default, Pulse will capture every relevant event that occurs in your application. For high-traffic applications, this can result in needing to aggregate millions of database rows in the dashboard, especially for longer time periods.
 
-You may instead choose to enable "sampling" on certain Pulse data recorders. For example, setting the sample rate to `0.1` on the [`User Requests`](#user-requests-recorder) recorder will mean that you only record approximately 10% of the requests to your application. In the dashboard, the values will be scaled up and prefixed with a `~` to indicate that they are an approximation.
+You may instead choose to enable "sampling" on certain Pulse data recorders. For example, setting the sample rate to `0.1` on the [User Requests](#user-requests-recorder) recorder will mean that you only record approximately 10% of the requests to your application. In the dashboard, the values will be scaled up and prefixed with a `~` to indicate that they are an approximation.
 
 In general, the more entries you have for a particular metric, the lower you can safely set the sample rate without sacrificing too much accuracy.
 
@@ -609,7 +671,7 @@ You may then specify the configuration file in your CSS entrypoint:
 @tailwind utilities;
 ```
 
-You will also need to include an `id` or `class` attribute in your card's view that matches the selector passed to Tailwind's [`important` selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy):
+You will also need to include an `id` or `class` attribute in your card's view that matches the selector passed to Tailwind's [important selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy):
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">
@@ -659,15 +721,15 @@ class TopSellers extends Card
     public function render()
     {
         return view('livewire.pulse.top-sellers', [
-            'topSellers' => $this->aggregate('user_sale', ['sum', 'count']);
+            'topSellers' => $this->aggregate('user_sale', ['sum', 'count'])
         ]);
     }
 }
 ```
 
-The `aggregate` method returns return a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
+The `aggregate` method returns a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
 
-```
+```blade
 @foreach ($topSellers as $seller)
     {{ $seller->key }}
     {{ $seller->sum }}

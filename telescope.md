@@ -73,16 +73,18 @@ php artisan migrate
 
 After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your application's `bootstrap/providers.php` configuration file. Instead, manually register Telescope's service providers in the `register` method of your `App\Providers\AppServiceProvider` class. We will ensure the current environment is `local` before registering the providers:
 
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        if ($this->app->environment('local')) {
-            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
-        }
+```php
+/**
+ * Register any application services.
+ */
+public function register(): void
+{
+    if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+        $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+        $this->app->register(TelescopeServiceProvider::class);
     }
+}
+```
 
 Finally, you should also prevent the Telescope package from being [auto-discovered](/docs/{{version}}/packages#package-discovery) by adding the following to your `composer.json` file:
 
@@ -103,45 +105,53 @@ After publishing Telescope's assets, its primary configuration file will be loca
 
 If desired, you may disable Telescope's data collection entirely using the `enabled` configuration option:
 
-    'enabled' => env('TELESCOPE_ENABLED', true),
+```php
+'enabled' => env('TELESCOPE_ENABLED', true),
+```
 
 <a name="data-pruning"></a>
 ### Data Pruning
 
 Without pruning, the `telescope_entries` table can accumulate records very quickly. To mitigate this, you should [schedule](/docs/{{version}}/scheduling) the `telescope:prune` Artisan command to run daily:
 
-    use Illuminate\Support\Facades\Schedule;
+```php
+use Illuminate\Support\Facades\Schedule;
 
-    Schedule::command('telescope:prune')->daily();
+Schedule::command('telescope:prune')->daily();
+```
 
 By default, all entries older than 24 hours will be pruned. You may use the `hours` option when calling the command to determine how long to retain Telescope data. For example, the following command will delete all records created over 48 hours ago:
 
-    use Illuminate\Support\Facades\Schedule;
+```php
+use Illuminate\Support\Facades\Schedule;
 
-    Schedule::command('telescope:prune --hours=48')->daily();
+Schedule::command('telescope:prune --hours=48')->daily();
+```
 
 <a name="dashboard-authorization"></a>
 ### Dashboard Authorization
 
 The Telescope dashboard may be accessed via the `/telescope` route. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    /**
-     * Register the Telescope gate.
-     *
-     * This gate determines who can access Telescope in non-local environments.
-     */
-    protected function gate(): void
-    {
-        Gate::define('viewTelescope', function (User $user) {
-            return in_array($user->email, [
-                'taylor@laravel.com',
-            ]);
-        });
-    }
+/**
+ * Register the Telescope gate.
+ *
+ * This gate determines who can access Telescope in non-local environments.
+ */
+protected function gate(): void
+{
+    Gate::define('viewTelescope', function (User $user) {
+        return in_array($user->email, [
+            'taylor@laravel.com',
+        ]);
+    });
+}
+```
 
-> [!WARNING]  
+> [!WARNING]
 > You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
 
 <a name="upgrading-telescope"></a>
@@ -175,102 +185,112 @@ To keep the assets up-to-date and avoid issues in future updates, you may add th
 
 You may filter the data that is recorded by Telescope via the `filter` closure that is defined in your `App\Providers\TelescopeServiceProvider` class. By default, this closure records all data in the `local` environment and exceptions, failed jobs, scheduled tasks, and data with monitored tags in all other environments:
 
-    use Laravel\Telescope\IncomingEntry;
-    use Laravel\Telescope\Telescope;
+```php
+use Laravel\Telescope\IncomingEntry;
+use Laravel\Telescope\Telescope;
 
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        $this->hideSensitiveRequestDetails();
+/**
+ * Register any application services.
+ */
+public function register(): void
+{
+    $this->hideSensitiveRequestDetails();
 
-        Telescope::filter(function (IncomingEntry $entry) {
-            if ($this->app->environment('local')) {
-                return true;
-            }
+    Telescope::filter(function (IncomingEntry $entry) {
+        if ($this->app->environment('local')) {
+            return true;
+        }
 
-            return $entry->isReportableException() ||
-                $entry->isFailedJob() ||
-                $entry->isScheduledTask() ||
-                $entry->isSlowQuery() ||
-                $entry->hasMonitoredTag();
-        });
-    }
+        return $entry->isReportableException() ||
+            $entry->isFailedJob() ||
+            $entry->isScheduledTask() ||
+            $entry->isSlowQuery() ||
+            $entry->hasMonitoredTag();
+    });
+}
+```
 
 <a name="filtering-batches"></a>
 ### Batches
 
 While the `filter` closure filters data for individual entries, you may use the `filterBatch` method to register a closure that filters all data for a given request or console command. If the closure returns `true`, all of the entries are recorded by Telescope:
 
-    use Illuminate\Support\Collection;
-    use Laravel\Telescope\IncomingEntry;
-    use Laravel\Telescope\Telescope;
+```php
+use Illuminate\Support\Collection;
+use Laravel\Telescope\IncomingEntry;
+use Laravel\Telescope\Telescope;
 
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        $this->hideSensitiveRequestDetails();
+/**
+ * Register any application services.
+ */
+public function register(): void
+{
+    $this->hideSensitiveRequestDetails();
 
-        Telescope::filterBatch(function (Collection $entries) {
-            if ($this->app->environment('local')) {
-                return true;
-            }
+    Telescope::filterBatch(function (Collection $entries) {
+        if ($this->app->environment('local')) {
+            return true;
+        }
 
-            return $entries->contains(function (IncomingEntry $entry) {
-                return $entry->isReportableException() ||
-                    $entry->isFailedJob() ||
-                    $entry->isScheduledTask() ||
-                    $entry->isSlowQuery() ||
-                    $entry->hasMonitoredTag();
-                });
-        });
-    }
+        return $entries->contains(function (IncomingEntry $entry) {
+            return $entry->isReportableException() ||
+                $entry->isFailedJob() ||
+                $entry->isScheduledTask() ||
+                $entry->isSlowQuery() ||
+                $entry->hasMonitoredTag();
+            });
+    });
+}
+```
 
 <a name="tagging"></a>
 ## Tagging
 
 Telescope allows you to search entries by "tag". Often, tags are Eloquent model class names or authenticated user IDs which Telescope automatically adds to entries. Occasionally, you may want to attach your own custom tags to entries. To accomplish this, you may use the `Telescope::tag` method. The `tag` method accepts a closure which should return an array of tags. The tags returned by the closure will be merged with any tags Telescope would automatically attach to the entry. Typically, you should call the `tag` method within the `register` method of your `App\Providers\TelescopeServiceProvider` class:
 
-    use Laravel\Telescope\IncomingEntry;
-    use Laravel\Telescope\Telescope;
+```php
+use Laravel\Telescope\IncomingEntry;
+use Laravel\Telescope\Telescope;
 
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        $this->hideSensitiveRequestDetails();
+/**
+ * Register any application services.
+ */
+public function register(): void
+{
+    $this->hideSensitiveRequestDetails();
 
-        Telescope::tag(function (IncomingEntry $entry) {
-            return $entry->type === 'request'
-                        ? ['status:'.$entry->content['response_status']]
-                        : [];
-        });
-     }
+    Telescope::tag(function (IncomingEntry $entry) {
+        return $entry->type === 'request'
+            ? ['status:'.$entry->content['response_status']]
+            : [];
+    });
+}
+```
 
 <a name="available-watchers"></a>
 ## Available Watchers
 
 Telescope "watchers" gather application data when a request or console command is executed. You may customize the list of watchers that you would like to enable within your `config/telescope.php` configuration file:
 
-    'watchers' => [
-        Watchers\CacheWatcher::class => true,
-        Watchers\CommandWatcher::class => true,
-        ...
-    ],
+```php
+'watchers' => [
+    Watchers\CacheWatcher::class => true,
+    Watchers\CommandWatcher::class => true,
+    // ...
+],
+```
 
 Some watchers also allow you to provide additional customization options:
 
-    'watchers' => [
-        Watchers\QueryWatcher::class => [
-            'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
-            'slow' => 100,
-        ],
-        ...
+```php
+'watchers' => [
+    Watchers\QueryWatcher::class => [
+        'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
+        'slow' => 100,
     ],
+    // ...
+],
+```
 
 <a name="batch-watcher"></a>
 ### Batch Watcher
@@ -287,13 +307,15 @@ The cache watcher records data when a cache key is hit, missed, updated and forg
 
 The command watcher records the arguments, options, exit code, and output whenever an Artisan command is executed. If you would like to exclude certain commands from being recorded by the watcher, you may specify the command in the `ignore` option within your `config/telescope.php` file:
 
-    'watchers' => [
-        Watchers\CommandWatcher::class => [
-            'enabled' => env('TELESCOPE_COMMAND_WATCHER', true),
-            'ignore' => ['key:generate'],
-        ],
-        ...
+```php
+'watchers' => [
+    Watchers\CommandWatcher::class => [
+        'enabled' => env('TELESCOPE_COMMAND_WATCHER', true),
+        'ignore' => ['key:generate'],
     ],
+    // ...
+],
+```
 
 <a name="dump-watcher"></a>
 ### Dump Watcher
@@ -315,13 +337,15 @@ The exception watcher records the data and stack trace for any reportable except
 
 The gate watcher records the data and result of [gate and policy](/docs/{{version}}/authorization) checks by your application. If you would like to exclude certain abilities from being recorded by the watcher, you may specify those in the `ignore_abilities` option in your `config/telescope.php` file:
 
-    'watchers' => [
-        Watchers\GateWatcher::class => [
-            'enabled' => env('TELESCOPE_GATE_WATCHER', true),
-            'ignore_abilities' => ['viewNova'],
-        ],
-        ...
+```php
+'watchers' => [
+    Watchers\GateWatcher::class => [
+        'enabled' => env('TELESCOPE_GATE_WATCHER', true),
+        'ignore_abilities' => ['viewNova'],
     ],
+    // ...
+],
+```
 
 <a name="http-client-watcher"></a>
 ### HTTP Client Watcher
@@ -340,14 +364,16 @@ The log watcher records the [log data](/docs/{{version}}/logging) for any logs w
 
 By default, Telescope will only record logs at the `error` level and above. However, you can modify the `level` option in your application's `config/telescope.php` configuration file to modify this behavior:
 
-    'watchers' => [
-        Watchers\LogWatcher::class => [
-            'enabled' => env('TELESCOPE_LOG_WATCHER', true),
-            'level' => 'debug',
-        ],
-
-        // ...
+```php
+'watchers' => [
+    Watchers\LogWatcher::class => [
+        'enabled' => env('TELESCOPE_LOG_WATCHER', true),
+        'level' => 'debug',
     ],
+
+    // ...
+],
+```
 
 <a name="mail-watcher"></a>
 ### Mail Watcher
@@ -359,24 +385,28 @@ The mail watcher allows you to view an in-browser preview of [emails](/docs/{{ve
 
 The model watcher records model changes whenever an Eloquent [model event](/docs/{{version}}/eloquent#events) is dispatched. You may specify which model events should be recorded via the watcher's `events` option:
 
-    'watchers' => [
-        Watchers\ModelWatcher::class => [
-            'enabled' => env('TELESCOPE_MODEL_WATCHER', true),
-            'events' => ['eloquent.created*', 'eloquent.updated*'],
-        ],
-        ...
+```php
+'watchers' => [
+    Watchers\ModelWatcher::class => [
+        'enabled' => env('TELESCOPE_MODEL_WATCHER', true),
+        'events' => ['eloquent.created*', 'eloquent.updated*'],
     ],
+    // ...
+],
+```
 
 If you would like to record the number of models hydrated during a given request, enable the `hydrations` option:
 
-    'watchers' => [
-        Watchers\ModelWatcher::class => [
-            'enabled' => env('TELESCOPE_MODEL_WATCHER', true),
-            'events' => ['eloquent.created*', 'eloquent.updated*'],
-            'hydrations' => true,
-        ],
-        ...
+```php
+'watchers' => [
+    Watchers\ModelWatcher::class => [
+        'enabled' => env('TELESCOPE_MODEL_WATCHER', true),
+        'events' => ['eloquent.created*', 'eloquent.updated*'],
+        'hydrations' => true,
     ],
+    // ...
+],
+```
 
 <a name="notification-watcher"></a>
 ### Notification Watcher
@@ -388,13 +418,15 @@ The notification watcher records all [notifications](/docs/{{version}}/notificat
 
 The query watcher records the raw SQL, bindings, and execution time for all queries that are executed by your application. The watcher also tags any queries slower than 100 milliseconds as `slow`. You may customize the slow query threshold using the watcher's `slow` option:
 
-    'watchers' => [
-        Watchers\QueryWatcher::class => [
-            'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
-            'slow' => 50,
-        ],
-        ...
+```php
+'watchers' => [
+    Watchers\QueryWatcher::class => [
+        'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
+        'slow' => 50,
     ],
+    // ...
+],
+```
 
 <a name="redis-watcher"></a>
 ### Redis Watcher
@@ -406,13 +438,15 @@ The Redis watcher records all [Redis](/docs/{{version}}/redis) commands executed
 
 The request watcher records the request, headers, session, and response data associated with any requests handled by the application. You may limit your recorded response data via the `size_limit` (in kilobytes) option:
 
-    'watchers' => [
-        Watchers\RequestWatcher::class => [
-            'enabled' => env('TELESCOPE_REQUEST_WATCHER', true),
-            'size_limit' => env('TELESCOPE_RESPONSE_SIZE_LIMIT', 64),
-        ],
-        ...
+```php
+'watchers' => [
+    Watchers\RequestWatcher::class => [
+        'enabled' => env('TELESCOPE_REQUEST_WATCHER', true),
+        'size_limit' => env('TELESCOPE_RESPONSE_SIZE_LIMIT', 64),
     ],
+    // ...
+],
+```
 
 <a name="schedule-watcher"></a>
 ### Schedule Watcher
@@ -429,17 +463,21 @@ The view watcher records the [view](/docs/{{version}}/views) name, path, data, a
 
 The Telescope dashboard displays the user avatar for the user that was authenticated when a given entry was saved. By default, Telescope will retrieve avatars using the Gravatar web service. However, you may customize the avatar URL by registering a callback in your `App\Providers\TelescopeServiceProvider` class. The callback will receive the user's ID and email address and should return the user's avatar image URL:
 
-    use App\Models\User;
-    use Laravel\Telescope\Telescope;
+```php
+use App\Models\User;
+use Laravel\Telescope\Telescope;
 
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        // ...
+/**
+ * Register any application services.
+ */
+public function register(): void
+{
+    // ...
 
-        Telescope::avatar(function (string $id, string $email) {
-            return '/avatars/'.User::find($id)->avatar_path;
-        });
-    }
+    Telescope::avatar(function (?string $id, ?string $email) {
+        return ! is_null($id)
+            ? '/avatars/'.User::find($id)->avatar_path
+            : '/generic-avatar.jpg';
+    });
+}
+```

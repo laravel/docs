@@ -8,6 +8,7 @@
 - [Asynchronous Processes](#asynchronous-processes)
     - [Process IDs and Signals](#process-ids-and-signals)
     - [Asynchronous Process Output](#asynchronous-process-output)
+    - [Asynchronous Process Timeouts](#asynchronous-process-timeouts)
 - [Concurrent Processes](#concurrent-processes)
     - [Naming Pool Processes](#naming-pool-processes)
     - [Pool Process IDs and Signals](#pool-process-ids-and-signals)
@@ -22,7 +23,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides an expressive, minimal API around the [Symfony Process component](https://symfony.com/doc/7.0/components/process.html), allowing you to conveniently invoke external processes from your Laravel application. Laravel's process features are focused on the most common use cases and a wonderful developer experience.
+Laravel provides an expressive, minimal API around the [Symfony Process component](https://symfony.com/doc/current/components/process.html), allowing you to conveniently invoke external processes from your Laravel application. Laravel's process features are focused on the most common use cases and a wonderful developer experience.
 
 <a name="invoking-processes"></a>
 ## Invoking Processes
@@ -111,16 +112,16 @@ Environment variables may be provided to the process via the `env` method. The i
 
 ```php
 $result = Process::forever()
-            ->env(['IMPORT_PATH' => __DIR__])
-            ->run('bash import.sh');
+    ->env(['IMPORT_PATH' => __DIR__])
+    ->run('bash import.sh');
 ```
 
 If you wish to remove an inherited environment variable from the invoked process, you may provide that environment variable with a value of `false`:
 
 ```php
 $result = Process::forever()
-            ->env(['LOAD_PATH' => false])
-            ->run('bash import.sh');
+    ->env(['LOAD_PATH' => false])
+    ->run('bash import.sh');
 ```
 
 <a name="tty-mode"></a>
@@ -289,6 +290,33 @@ $process = Process::start('bash import.sh', function (string $type, string $outp
 });
 
 $result = $process->wait();
+```
+
+Instead of waiting until the process has finished, you may use the `waitUntil` method to stop waiting based on the output of the process. Laravel will stop waiting for the process to finish when the closure given to the `waitUntil` method returns `true`:
+
+```php
+$process = Process::start('bash import.sh');
+
+$process->waitUntil(function (string $type, string $output) {
+    return $output === 'Ready...';
+});
+```
+
+<a name="asynchronous-process-timeouts"></a>
+### Asynchronous Process Timeouts
+
+While an asynchronous process is running, you may verify that the process has not timed out using the `ensureNotTimedOut` method. This method will throw a [timeout exception](#timeouts) if the process has timed out:
+
+```php
+$process = Process::timeout(120)->start('bash import.sh');
+
+while ($process->running()) {
+    $process->ensureNotTimedOut();
+
+    // ...
+
+    sleep(1);
+}
 ```
 
 <a name="concurrent-processes"></a>
@@ -494,8 +522,8 @@ If the code you are testing invokes multiple processes with the same command, yo
 ```php
 Process::fake([
     'ls *' => Process::sequence()
-                ->push(Process::result('First invocation'))
-                ->push(Process::result('Second invocation')),
+        ->push(Process::result('First invocation'))
+        ->push(Process::result('Second invocation')),
 ]);
 ```
 
@@ -527,11 +555,11 @@ To properly fake this process, we need to be able to describe how many times the
 ```php
 Process::fake([
     'bash import.sh' => Process::describe()
-            ->output('First line of standard output')
-            ->errorOutput('First line of error output')
-            ->output('Second line of standard output')
-            ->exitCode(0)
-            ->iterations(3),
+        ->output('First line of standard output')
+        ->errorOutput('First line of error output')
+        ->output('Second line of standard output')
+        ->exitCode(0)
+        ->iterations(3),
 ]);
 ```
 
@@ -608,16 +636,18 @@ Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result
 
 If you would like to ensure that all invoked processes have been faked throughout your individual test or complete test suite, you can call the `preventStrayProcesses` method. After calling this method, any processes that do not have a corresponding fake result will throw an exception rather than starting an actual process:
 
-    use Illuminate\Support\Facades\Process;
+```php
+use Illuminate\Support\Facades\Process;
 
-    Process::preventStrayProcesses();
+Process::preventStrayProcesses();
 
-    Process::fake([
-        'ls *' => 'Test output...',
-    ]);
+Process::fake([
+    'ls *' => 'Test output...',
+]);
 
-    // Fake response is returned...
-    Process::run('ls -la');
+// Fake response is returned...
+Process::run('ls -la');
 
-    // An exception is thrown...
-    Process::run('bash import.sh');
+// An exception is thrown...
+Process::run('bash import.sh');
+```

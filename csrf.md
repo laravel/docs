@@ -28,9 +28,9 @@ Without CSRF protection, a malicious website could create an HTML form that poin
 </script>
 ```
 
- If the malicious website automatically submits the form when the page is loaded, the malicious user only needs to lure an unsuspecting user of your application to visit their website and their email address will be changed in your application.
+If the malicious website automatically submits the form when the page is loaded, the malicious user only needs to lure an unsuspecting user of your application to visit their website and their email address will be changed in your application.
 
- To prevent this vulnerability, we need to inspect every incoming `POST`, `PUT`, `PATCH`, or `DELETE` request for a secret session value that the malicious application is unable to access.
+To prevent this vulnerability, we need to inspect every incoming `POST`, `PUT`, `PATCH`, or `DELETE` request for a secret session value that the malicious application is unable to access.
 
 <a name="preventing-csrf-requests"></a>
 ## Preventing CSRF Requests
@@ -39,15 +39,17 @@ Laravel automatically generates a CSRF "token" for each active [user session](/d
 
 The current session's CSRF token can be accessed via the request's session or via the `csrf_token` helper function:
 
-    use Illuminate\Http\Request;
+```php
+use Illuminate\Http\Request;
 
-    Route::get('/token', function (Request $request) {
-        $token = $request->session()->token();
+Route::get('/token', function (Request $request) {
+    $token = $request->session()->token();
 
-        $token = csrf_token();
+    $token = csrf_token();
 
-        // ...
-    });
+    // ...
+});
+```
 
 Anytime you define a "POST", "PUT", "PATCH", or "DELETE" HTML form in your application, you should include a hidden CSRF `_token` field in the form so that the CSRF protection middleware can validate the request. For convenience, you may use the `@csrf` Blade directive to generate the hidden token input field:
 
@@ -65,7 +67,7 @@ The `Illuminate\Foundation\Http\Middleware\ValidateCsrfToken` [middleware](/docs
 <a name="csrf-tokens-and-spas"></a>
 ### CSRF Tokens & SPAs
 
-If you are building a SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities.
+If you are building an SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities.
 
 <a name="csrf-excluding-uris"></a>
 ### Excluding URIs From CSRF Protection
@@ -74,15 +76,17 @@ Sometimes you may wish to exclude a set of URIs from CSRF protection. For exampl
 
 Typically, you should place these kinds of routes outside of the `web` middleware group that Laravel applies to all routes in the `routes/web.php` file. However, you may also exclude specific routes by providing their URIs to the `validateCsrfTokens` method in your application's `bootstrap/app.php` file:
 
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->validateCsrfTokens(except: [
-            'stripe/*',
-            'http://example.com/foo/bar',
-            'http://example.com/foo/*',
-        ]);
-    })
+```php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->validateCsrfTokens(except: [
+        'stripe/*',
+        'http://example.com/foo/bar',
+        'http://example.com/foo/*',
+    ]);
+})
+```
 
-> [!NOTE]  
+> [!NOTE]
 > For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing).
 
 <a name="csrf-x-csrf-token"></a>
@@ -111,5 +115,5 @@ Laravel stores the current CSRF token in an encrypted `XSRF-TOKEN` cookie that i
 
 This cookie is primarily sent as a developer convenience since some JavaScript frameworks and libraries, like Angular and Axios, automatically place its value in the `X-XSRF-TOKEN` header on same-origin requests.
 
-> [!NOTE]  
+> [!NOTE]
 > By default, the `resources/js/bootstrap.js` file includes the Axios HTTP library which will automatically send the `X-XSRF-TOKEN` header for you.
