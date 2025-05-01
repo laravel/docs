@@ -286,7 +286,7 @@ $user->mergeCasts([
 <a name="stringable-casting"></a>
 #### Stringable Casting
 
-You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\Support\Stringable` object](/docs/{{version}}/strings#fluent-strings-method-list):
+You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent Illuminate\Support\Stringable object](/docs/{{version}}/strings#fluent-strings-method-list):
 
 ```php
 <?php
@@ -449,7 +449,7 @@ protected function casts(): array
 }
 ```
 
-The `of` method may be used to indicate collection items should be mapped into a given class via the collection's [`mapInto` method](/docs/{{version}}/collections#method-mapinto):
+The `of` method may be used to indicate collection items should be mapped into a given class via the collection's [mapInto method](/docs/{{version}}/collections#method-mapinto):
 
 ```php
 use App\ValueObjects\Option;
