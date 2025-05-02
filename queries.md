@@ -568,6 +568,8 @@ $users = DB::table('users')
 If you need to group an "or" condition within parentheses, you may pass a closure as the first argument to the `orWhere` method:
 
 ```php
+use Illuminate\Database\Query\Builder; 
+
 $users = DB::table('users')
     ->where('votes', '>', 100)
     ->orWhere(function (Builder $query) {
