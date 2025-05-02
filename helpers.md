@@ -1678,7 +1678,7 @@ use Illuminate\Support\Number;
 
 $result = Number::pairs(25, 10);
 
-// [[1, 10], [11, 20], [21, 25]]
+// [[0, 9], [10, 19], [20, 25]]
 
 $result = Number::pairs(25, 10, offset: 0);
 
