@@ -301,7 +301,7 @@ class PodcastTest extends TestCase
 
 Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [service container binding](/docs/{{version}}/container) key is also included where applicable.
 
-<div class="overflow-auto">
+<div>
 
 | Facade | Class | Service Container Binding |
 | --- | --- | --- |
