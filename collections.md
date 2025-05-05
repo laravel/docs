@@ -417,7 +417,7 @@ $chunks->all();
 <a name="method-collapse"></a>
 #### `collapse()` {.collection-method}
 
-The `collapse` method collapses a collection of arrays into a single, flat collection:
+The `collapse` method collapses a collection of arrays or collections into a single, flat collection:
 
 ```php
 $collection = collect([
