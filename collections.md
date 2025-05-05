@@ -3457,16 +3457,16 @@ This method has the same signature as the [unique](#method-unique) method; howev
 <a name="method-unless"></a>
 #### `unless()` {.collection-method}
 
-The `unless` method will execute the given callback unless the first argument given to the method evaluates to `true`:
+The `unless` method will execute the given callback unless the first argument given to the method evaluates to `true`. The collection instance and the first argument given to the `unless` method will be provided to the closure:
 
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->unless(true, function (Collection $collection) {
+$collection->unless(true, function (Collection $collection, int $value) {
     return $collection->push(4);
 });
 
-$collection->unless(false, function (Collection $collection) {
+$collection->unless(false, function (Collection $collection, int $value) {
     return $collection->push(5);
 });
 
@@ -3480,9 +3480,9 @@ A second callback may be passed to the `unless` method. The second callback will
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->unless(true, function (Collection $collection) {
+$collection->unless(true, function (Collection $collection, int $value) {
     return $collection->push(4);
-}, function (Collection $collection) {
+}, function (Collection $collection, int $value) {
     return $collection->push(5);
 });
 
@@ -3589,7 +3589,7 @@ $collection = collect([1, 2, 3]);
 
 $collection->when(false, function (Collection $collection, int $value) {
     return $collection->push(4);
-}, function (Collection $collection) {
+}, function (Collection $collection, int $value) {
     return $collection->push(5);
 });
 
