@@ -2243,7 +2243,7 @@ You may specify additional query conditions by customizing the query using the `
 'email' => Rule::unique('users')->where(fn (Builder $query) => $query->where('account_id', 1))
 ```
 
-**Ignoring Soft Deleteded Records in Unique Checks:**
+**Ignoring Soft Deleted Records in Unique Checks:**
 
 By default, the unique rule includes soft deleted records when determining uniqueness. To exclude soft deleted records from the uniqueness check, you may invoke the `withoutTrashed` method:
 
