@@ -1677,6 +1677,16 @@ You may explicitly specify the database column name that should be used by the `
 'state' => Rule::exists('states', 'abbreviation'),
 ```
 
+<a name="validate-an-array-of-values-against-database"></a>
+#### Validate an array of values against database
+Sometimes, you may wish to validate whether a collection of values exists in the database. You can do so by specifying both `exists` and [array](#rule-array) as the validation rules:
+
+```php
+'user_ids' => ['array', 'exists:users,id'],
+```
+
+Rather than validating each item in the array individually, Laravel will automatically build a single query to check if all passed values are valid.
+
 <a name="rule-extensions"></a>
 #### extensions:_foo_,_bar_,...
 
