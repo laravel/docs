@@ -300,6 +300,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Photo;
 use Illuminate\Container\Attributes\Auth;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Container\Attributes\Authenticated;
 use Illuminate\Container\Attributes\Cache;
 use Illuminate\Container\Attributes\Config;
 use Illuminate\Container\Attributes\DB;
@@ -315,6 +317,7 @@ class PhotoController extends Controller
 {
     public function __construct(
         #[Auth('web')] protected Guard $auth,
+        #[Authenticated('web')] protected Authenticatable $authenticatable,
         #[Cache('redis')] protected Repository $cache,
         #[Config('app.timezone')] protected string $timezone,
         #[DB('mysql')] protected Connection $connection,
