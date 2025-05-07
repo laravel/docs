@@ -276,7 +276,7 @@ valet unisolate
 
 Valet includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
 
-Out of the box, Valet supports sharing your sites via ngrok or Expose. Before sharing a site, you should update your Valet configuration using the `share-tool` command, specifying `ngrok`, `expose` or  `cloudflared`:
+Out of the box, Valet supports sharing your sites via ngrok or Expose. Before sharing a site, you should update your Valet configuration using the `share-tool` command, specifying `ngrok`, `expose`, or  `cloudflared`:
 
 ```shell
 valet share-tool ngrok
