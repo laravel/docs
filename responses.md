@@ -438,13 +438,13 @@ npm install @laravel/stream-react
 npm install @laravel/stream-vue
 ```
 
-Then, `useStream` may be used to consume the event stream. After providing your stream URL, the hook will automatically update the `message` with the concatenated response as messages are returned from your Laravel application:
+Then, `useEventStream` may be used to consume the event stream. After providing your stream URL, the hook will automatically update the `message` with the concatenated response as messages are returned from your Laravel application:
 
 ```jsx tab=React
-import { useStream } from "@laravel/stream-react";
+import { useEventStream } from "@laravel/stream-react";
 
 function App() {
-  const { message } = useStream("/chat");
+  const { message } = useEventStream("/chat");
 
   return <div>{message}</div>;
 }
@@ -452,9 +452,9 @@ function App() {
 
 ```vue tab=Vue
 <script setup lang="ts">
-import { useStream } from "@laravel/stream-vue";
+import { useEventStream } from "@laravel/stream-vue";
 
-const { message } = useStream("/chat");
+const { message } = useEventStream("/chat");
 </script>
 
 <template>
@@ -462,13 +462,13 @@ const { message } = useStream("/chat");
 </template>
 ```
 
-The second argument given to `useStream` is an options object that you may use to customize the stream consumption behavior. The default values for this object are shown below:
+The second argument given to `useEventStream` is an options object that you may use to customize the stream consumption behavior. The default values for this object are shown below:
 
 ```jsx tab=React
-import { useStream } from "@laravel/stream-react";
+import { useEventStream } from "@laravel/stream-react";
 
 function App() {
-  const { message } = useStream("/stream", {
+  const { message } = useEventStream("/stream", {
     event: "update",
     onMessage: (message) => {
       //
@@ -489,9 +489,9 @@ function App() {
 
 ```vue tab=Vue
 <script setup lang="ts">
-import { useStream } from "@laravel/stream-vue";
+import { useEventStream } from "@laravel/stream-vue";
 
-const { message } = useStream("/chat", {
+const { message } = useEventStream("/chat", {
   event: "update",
   onMessage: (message) => {
     // ...
