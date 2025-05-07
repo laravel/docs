@@ -431,11 +431,11 @@ yield new StreamedEvent(
 Event streams may be consumed using Laravel's `stream` npm package, which provides a convenient API for interacting with Laravel event streams. To get started, install the `@laravel/stream-react` or `@laravel/stream-vue` package:
 
 ```shell tab=React
-npm install --save @laravel/stream-react
+npm install @laravel/stream-react
 ```
 
 ```shell tab=Vue
-npm install --save @laravel/stream-vue
+npm install @laravel/stream-vue
 ```
 
 Then, `useStream` may be used to consume the event stream. After providing your stream URL, the hook will automatically update the `message` with the concatenated response as messages are returned from your Laravel application:
