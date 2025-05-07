@@ -525,7 +525,7 @@ public function middleware(): array
 
 Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [retryUntil method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
 
-You may also specify the number of seconds that must elapse before the released job will be attempted again:
+Using the `releaseAfter` method, you may also specify the number of seconds that must elapse before the released job will be attempted again:
 
 ```php
 /**
