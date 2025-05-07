@@ -705,7 +705,7 @@ public function middleware(): array
 }
 ```
 
-By default, this middleware will throttle every exception. You can modify this behaviour by invoking the `when` method when attaching the middleware to your job. The exception will then only be throttled if closure provided to the `when` method returns `true`:
+By default, this middleware will throttle every exception. You can modify this behavior by invoking the `when` method when attaching the middleware to your job. The exception will then only be throttled if closure provided to the `when` method returns `true`:
 
 ```php
 use Illuminate\Http\Client\HttpClientException;
