@@ -1819,6 +1819,14 @@ dispatch(function () use ($podcast) {
 });
 ```
 
+To assign a name to the queued closure which may be used by queue reporting dashboards, as well as be displayed by the `queue:work` command, you may use the `name` method:
+
+```php
+dispatch(function () {
+    // ...
+})->name('Publish Podcast');
+```
+
 Using the `catch` method, you may provide a closure that should be executed if the queued closure fails to complete successfully after exhausting all of your queue's [configured retry attempts](#max-job-attempts-and-timeout):
 
 ```php
