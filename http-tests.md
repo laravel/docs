@@ -1003,6 +1003,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertPaymentRequired](#assert-payment-required)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
+[assertRedirectBack](#assert-redirect-back)
 [assertRedirectContains](#assert-redirect-contains)
 [assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
@@ -1539,6 +1540,15 @@ Assert that the response is a redirect to the given URI:
 
 ```php
 $response->assertRedirect($uri = null);
+```
+
+<a name="assert-redirect-back"></a>
+#### assertRedirectBack
+
+Assert whether the response is redirecting back to the previous page:
+
+```php
+$response->assertRedirectBack();
 ```
 
 <a name="assert-redirect-contains"></a>
