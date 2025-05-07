@@ -428,7 +428,87 @@ yield new StreamedEvent(
 );
 ```
 
-Event streams may be consumed via an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) object by your application's frontend. The `eventStream` method will automatically send a `</stream>` update to the event stream when the stream is complete:
+Event streams may be consumed using Laravel's `stream` npm package, which provides a convenient API for interacting with Laravel event streams. To get started, install the `@laravel/stream-react` or `@laravel/stream-vue` package:
+
+```shell tab=React
+npm install --save @laravel/stream-react
+```
+
+```shell tab=Vue
+npm install --save @laravel/stream-vue
+```
+
+Then, `useStream` may be used to consume the event stream. After providing your stream URL, the hook will automatically update the `message` with the concatenated response as messages are returned from your Laravel application:
+
+```jsx tab=React
+import { useStream } from "@laravel/stream-react";
+
+function App() {
+  const { message } = useStream("/chat");
+
+  return <div>{message}</div>;
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useStream } from "@laravel/stream-vue";
+
+const { message } = useStream("/chat");
+</script>
+
+<template>
+  <div>{{ message }}</div>
+</template>
+```
+
+The second argument given to `useStream` is an options object that you may use to customize the stream consumption behavior. The default values for this object are shown below:
+
+```jsx tab=React
+import { useStream } from "@laravel/stream-react";
+
+function App() {
+  const { message } = useStream("/stream", {
+    event: "update",
+    onMessage: (message) => {
+      //
+    },
+    onError: (error) => {
+      //
+    },
+    onComplete: () => {
+      //
+    },
+    endSignal: "</stream>",
+    glue: " ",
+  });
+
+  return <div>{message}</div>;
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useStream } from "@laravel/stream-vue";
+
+const { message } = useStream("/chat", {
+  event: "update",
+  onMessage: (message) => {
+    // ...
+  },
+  onError: (error) => {
+    // ...
+  },
+  onComplete: () => {
+    // ...
+  },
+  endSignal: "</stream>",
+  glue: " ",
+});
+</script>
+```
+
+Event streams may also be manually consumed via an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) object by your application's frontend. The `eventStream` method will automatically send a `</stream>` update to the event stream when the stream is complete:
 
 ```js
 const source = new EventSource('/chat');
