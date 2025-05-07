@@ -1,4 +1,4 @@
-# Eloquent: Factories
+one# Eloquent: Factories
 
 - [Introduction](#introduction)
 - [Defining Model Factories](#defining-model-factories)
@@ -616,7 +616,8 @@ public function definition(): array
 <a name="recycling-an-existing-model-for-relationships"></a>
 ### Recycling an Existing Model for Relationships
 
-If you have models that share a common relationship with another model, you may use the `recycle` method to ensure a single instance of the related model is recycled for all of the relationships created by the factory.
+If you have models that have a one-to-one or one-to-many relationship, you may use the `recycle` method to ensure a single instance of the related model is recycled for all of the relationships created by the factory.
+To reuse models in a many-to-many relationship, see [HasAttached()](#pivot-table-attributes).
 
 For example, imagine you have `Airline`, `Flight`, and `Ticket` models, where the ticket belongs to an airline and a flight, and the flight also belongs to an airline. When creating tickets, you will probably want the same airline for both the ticket and the flight, so you may pass an airline instance to the `recycle` method:
 
