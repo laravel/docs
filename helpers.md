@@ -1552,6 +1552,10 @@ $currency = Number::currency(1000, in: 'EUR');
 $currency = Number::currency(1000, in: 'EUR', locale: 'de');
 
 // 1.000,00 €
+
+$currency = Number::currency(1000, in: 'EUR', locale: 'de', precision: 0);
+
+// 1.000 €
 ```
 
 <a name="method-default-currency"></a>
