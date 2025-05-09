@@ -3569,11 +3569,11 @@ The `when` method will execute the given callback when the first argument given 
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->when(true, function (Collection $collection, int $value) {
+$collection->when(true, function (Collection $collection, bool $value) {
     return $collection->push(4);
 });
 
-$collection->when(false, function (Collection $collection, int $value) {
+$collection->when(false, function (Collection $collection, bool $value) {
     return $collection->push(5);
 });
 
@@ -3587,9 +3587,9 @@ A second callback may be passed to the `when` method. The second callback will b
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->when(false, function (Collection $collection, int $value) {
+$collection->when(false, function (Collection $collection, bool $value) {
     return $collection->push(4);
-}, function (Collection $collection) {
+}, function (Collection $collection, bool $value) {
     return $collection->push(5);
 });
 
