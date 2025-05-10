@@ -296,6 +296,8 @@ If you would like to retrieve all of the information stored in the context, you 
 $data = Context::all();
 ```
 
+The `except` method, allows you to exclude sensitive or unnecessary items from the full context when, for example, preparing data for logging or display:
+
 ```php
 Context::add('user_id', 42);
 Context::add('request_id', 'req-abc123');
