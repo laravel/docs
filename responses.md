@@ -521,7 +521,7 @@ source.addEventListener('update', (event) => {
     }
 
     console.log(event.data);
-})
+});
 ```
 
 To customize the final event that is sent to the event stream, you may provide a `StreamedEvent` instance to the `eventStream` method's `endStreamWith` argument:

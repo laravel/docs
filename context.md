@@ -283,7 +283,7 @@ If context data is stored in a [stack](#stacks), you may pop items from the stac
 ```php
 Context::push('breadcrumbs', 'first_value', 'second_value');
 
-Context::pop('breadcrumbs')
+Context::pop('breadcrumbs');
 // second_value
 
 Context::get('breadcrumbs');
