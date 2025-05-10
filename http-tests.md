@@ -588,6 +588,12 @@ class ExampleTest extends TestCase
 }
 ```
 
+The second parameter of `assertJsonPath` method accepts enum cases, which will be automatically resolved to their underlying scalar values during the assertion:
+
+```php
+$response->assertJsonPath('team.owner.name', Owner::Darian);
+```
+
 The `assertJsonPath` method also accepts a closure, which may be used to dynamically determine if the assertion should pass:
 
 ```php
