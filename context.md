@@ -296,6 +296,21 @@ If you would like to retrieve all of the information stored in the context, you 
 $data = Context::all();
 ```
 
+```php
+Context::add('user_id', 42);
+Context::add('request_id', 'req-abc123');
+Context::add('ip_address', '192.168.0.1');
+Context::add('sensitive_token', 'secret');
+
+$logData = Context::except(['sensitive_token']);
+
+//[
+//    'user_id' => 42,
+//    'request_id' => 'req-abc123',
+//    'ip_address' => '192.168.0.1',
+//]
+```
+
 <a name="determining-item-existence"></a>
 ### Determining Item Existence
 
