@@ -1700,8 +1700,7 @@ $posts = Post::whereDoesntHave('comments', function (Builder $query) {
 })->get();
 ```
 
-You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments; however, posts that have comments from authors that are not banned will be included in the results:
-
+You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments; however, if a post has comments, the query will be applied on the related authors. If at least one comment has an author who is not banned, the post will be excluded from the results:
 ```php
 use Illuminate\Database\Eloquent\Builder;
 
