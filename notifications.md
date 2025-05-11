@@ -1670,7 +1670,7 @@ use Illuminate\Notifications\Events\NotificationSending;
 class CheckNotificationStatus
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(NotificationSending $event): void
     {
@@ -1683,7 +1683,7 @@ The notification will not be sent if an event listener for the `NotificationSend
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(NotificationSending $event): bool
 {
@@ -1695,7 +1695,7 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(NotificationSending $event): void
 {
@@ -1716,7 +1716,7 @@ use Illuminate\Notifications\Events\NotificationSent;
 class LogNotification
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(NotificationSent $event): void
     {
@@ -1729,7 +1729,7 @@ Within an event listener, you may access the `notifiable`, `notification`, `chan
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(NotificationSent $event): void
 {
