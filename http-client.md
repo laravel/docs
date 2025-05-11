@@ -830,7 +830,7 @@ use Illuminate\Http\Client\Events\RequestSending;
 class LogRequest
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(RequestSending $event): void
     {
