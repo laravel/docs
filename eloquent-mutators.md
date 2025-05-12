@@ -44,6 +44,8 @@ class User extends Model
 {
     /**
      * Get the user's first name.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, void>
      */
     protected function firstName(): Attribute
     {
@@ -80,6 +82,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * Interact with the user's address.
+ *
+ * @return \Illuminate\Database\Eloquent\Casts\Attribute<\App\Support\Address, void>
  */
 protected function address(): Attribute
 {
@@ -111,6 +115,9 @@ $user->save();
 However, you may sometimes wish to enable caching for primitive values like strings and booleans, particularly if they are computationally intensive. To accomplish this, you may invoke the `shouldCache` method when defining your accessor:
 
 ```php
+/**
+ * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, void>
+ */
 protected function hash(): Attribute
 {
     return Attribute::make(
@@ -124,6 +131,8 @@ If you would like to disable the object caching behavior of attributes, you may 
 ```php
 /**
  * Interact with the user's address.
+ *
+ * @return \Illuminate\Database\Eloquent\Casts\Attribute<\App\Support\Address, void>
  */
 protected function address(): Attribute
 {
@@ -153,6 +162,8 @@ class User extends Model
 {
     /**
      * Interact with the user's first name.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, string>
      */
     protected function firstName(): Attribute
     {
@@ -187,6 +198,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * Interact with the user's address.
+ *
+ * @return \Illuminate\Database\Eloquent\Casts\Attribute<\App\Support\Address, array{address_line_one: string, address_line_two: string}>
  */
 protected function address(): Attribute
 {
