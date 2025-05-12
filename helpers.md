@@ -495,7 +495,7 @@ Arr::forget($array, 'products.desk');
 <a name="method-array-from"></a>
 #### `Arr::from()` {.collection-method}
 
-The `Arr::from()` method converts a variety of input types into a plain PHP array. It supports a range of input types, including arrays, objects, and several common Laravel interfaces, such as `Arrayable`, `Enumerable`, `Jsonable`, and `JsonSerializable`. Additionally, it handles `Traversable` and `WeakMap` instances:
+The `Arr::from()` method converts various input types into a plain PHP array. It supports a range of input types, including arrays, objects, and several common Laravel interfaces, such as `Arrayable`, `Enumerable`, `Jsonable`, and `JsonSerializable`. Additionally, it handles `Traversable` and `WeakMap` instances:
 
 ```php
 use Illuminate\Support\Arr;
