@@ -52,6 +52,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::flatten](#method-array-flatten)
 [Arr::float](#method-array-float)
 [Arr::forget](#method-array-forget)
+[Arr::from](#method-array-from)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
 [Arr::hasAny](#method-array-hasany)
@@ -489,6 +490,49 @@ $array = ['products' => ['desk' => ['price' => 100]]];
 Arr::forget($array, 'products.desk');
 
 // ['products' => []]
+```
+
+<a name="method-array-from"></a>
+#### `Arr::from()` {.collection-method}
+
+The `Arr::from()` method converts a variety of input types into a plain PHP array. It supports a range of input types, including arrays, objects, and several common Laravel interfaces, such as `Arrayable`, `Enumerable`, `Jsonable`, and `JsonSerializable`. Additionally, it handles `Traversable` and `WeakMap` instances:
+
+```php
+use Illuminate\Support\Arr;
+
+Arr::from(['foo' => 'bar']); // Output: ['foo' => 'bar']
+
+Arr::from((object) ['foo' => 'bar']); // Output: ['foo' => 'bar']
+
+class TestArrayableObject implements Arrayable 
+{
+    public function toArray() 
+    {
+        return ['foo' => 'bar'];
+    }
+}
+
+Arr::from(new TestArrayableObject()); // Output: ['foo' => 'bar']
+
+class TestJsonableObject implements Jsonable 
+{
+    public function toJson($options = 0) 
+    {
+        return json_encode(['foo' => 'bar']);
+    }
+}
+
+Arr::from(new TestJsonableObject()); // Output: ['foo' => 'bar']
+
+class TestJsonSerializeObject implements JsonSerializable 
+{
+    public function jsonSerialize() 
+    {
+        return ['foo' => 'bar'];
+    }
+}
+
+Arr::from(new TestJsonSerializeObject()); // Output: ['foo' => 'bar']
 ```
 
 <a name="method-array-get"></a>
