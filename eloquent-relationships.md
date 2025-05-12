@@ -1043,6 +1043,16 @@ images
 
 Note the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Eloquent to determine which "type" of parent model to return when accessing the `imageable` relation. In this case, the column would contain either `App\Models\Post` or `App\Models\User`.
 
+In your migrations you can use the `morphs` helper to create these columns. As an example to for the above 'images' table you can do the following:
+
+```php
+Schema::create('images', function (Blueprint $table) {
+    $table->id();
+    $table->string('url');
+    $table->morphs('imageable');
+});
+```
+
 <a name="one-to-one-polymorphic-model-structure"></a>
 #### Model Structure
 
