@@ -1523,7 +1523,7 @@ Once you have obtained a channel instance, you may use the `listen` method to li
 
 ```js
 Echo.private(`App.Models.User.${this.user.id}`)
-    .listen('.PostUpdated', (e) => {
+    .listen('.UserUpdated', (e) => {
         console.log(e.model);
     });
 ```
@@ -1536,7 +1536,7 @@ If you are using React or Vue, you may use Laravel Echo's included `useEchoModel
 ```js tab=React
 import { useEchoModel } from "@laravel/echo-react";
 
-useEchoModel("App.Models.User", userId, ["PostUpdated"], (e) => {
+useEchoModel("App.Models.User", userId, ["UserUpdated"], (e) => {
     console.log(e.model);
 });
 ```
@@ -1545,10 +1545,25 @@ useEchoModel("App.Models.User", userId, ["PostUpdated"], (e) => {
 <script setup lang="ts">
 import { useEchoModel } from "@laravel/echo-vue";
 
-useEchoModel("App.Models.User", userId, ["PostUpdated"], (e) => {
+useEchoModel("App.Models.User", userId, ["UserUpdated"], (e) => {
     console.log(e.model);
 });
 </script>
+```
+
+You may also specify the shape of the model event payload data, providing greater type safety and editing convenience:
+
+```ts
+type User = {
+    id: number;
+    name: string;
+    email: string;
+};
+
+useEchoModel<User, "App.Models.User">("App.Models.User", userId, ["UserUpdated"], (e) => {
+    console.log(e.model.id);
+    console.log(e.model.name);
+});
 ```
 
 <a name="client-events"></a>
