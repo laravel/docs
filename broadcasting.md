@@ -1655,9 +1655,9 @@ Echo.private(`App.Models.User.${userId}`)
 ```
 
 ```js tab=React
-import { useEcho } from "@laravel/echo-react";
+import { useEchoModel } from "@laravel/echo-react";
 
-const { channel } = useEcho(`orders.${orderId}`);
+const { channel } = useEchoModel('App.Models.User', userId);
 
 channel().notification((notification) => {
     console.log(notification.type);
@@ -1666,9 +1666,9 @@ channel().notification((notification) => {
 
 ```vue tab=Vue
 <script setup lang="ts">
-import { useEcho } from "@laravel/echo-vue";
+import { useEchoModel } from "@laravel/echo-vue";
 
-const { channel } = useEcho(`orders.${orderId}`);
+const { channel } = useEchoModel('App.Models.User', userId);
 
 channel().notification((notification) => {
     console.log(notification.type);
