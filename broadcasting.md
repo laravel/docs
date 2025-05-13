@@ -1569,6 +1569,8 @@ Echo.private(`chat.${roomId}`)
 ```
 
 ```js tab=React
+import { useEcho } from "@laravel/echo-react";
+
 const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
     console.log('Chat event received:', e);
 });
@@ -1576,12 +1578,16 @@ const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
 channel().whisper('typing', { name: user.name });
 ```
 
-```js tab=Vue
+```vue tab=Vue
+<script setup lang="ts">
+import { useEcho } from "@laravel/echo-vue";
+
 const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
     console.log('Chat event received:', e);
 });
 
 channel().whisper('typing', { name: user.name });
+</script>
 ```
 
 To listen for client events, you may use the `listenForWhisper` method:
@@ -1594,6 +1600,8 @@ Echo.private(`chat.${roomId}`)
 ```
 
 ```js tab=React
+import { useEcho } from "@laravel/echo-react";
+
 const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
     console.log('Chat event received:', e);
 });
@@ -1603,7 +1611,10 @@ channel().listenForWhisper('typing', (e) => {
 });
 ```
 
-```js tab=Vue
+```vue tab=Vue
+<script setup lang="ts">
+import { useEcho } from "@laravel/echo-vue";
+
 const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
     console.log('Chat event received:', e);
 });
@@ -1611,6 +1622,7 @@ const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
 channel().listenForWhisper('typing', (e) => {
     console.log(e.name);
 });
+</script>
 ```
 
 <a name="notifications"></a>
@@ -1628,6 +1640,8 @@ Echo.private(`App.Models.User.${userId}`)
 ```
 
 ```js tab=React
+import { useEcho } from "@laravel/echo-react";
+
 const { channel } = useEcho(`App.Models.User.${userId}`);
 
 channel().notification((notification) => {
@@ -1635,12 +1649,16 @@ channel().notification((notification) => {
 });
 ```
 
-```js tab=Vue
+```vue tab=Vue
+<script setup lang="ts">
+import { useEcho } from "@laravel/echo-vue";
+
 const { channel } = useEcho(`App.Models.User.${userId}`);
 
 channel().notification((notification) => {
     console.log(notification.type);
 });
+</script>
 ```
 
 In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in your application's `routes/channels.php` file.
