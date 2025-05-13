@@ -495,24 +495,12 @@ Arr::forget($array, 'products.desk');
 <a name="method-array-from"></a>
 #### `Arr::from()` {.collection-method}
 
-The `Arr::from()` method converts various input types into a plain PHP array. It supports a range of input types, including arrays, objects, and several common Laravel interfaces, such as `Arrayable`, `Enumerable`, `Jsonable`, and `JsonSerializable`. Additionally, it handles `Traversable` and `WeakMap` instances:
+The `Arr::from` method converts various input types into a plain PHP array. It supports a range of input types, including arrays, objects, and several common Laravel interfaces, such as `Arrayable`, `Enumerable`, `Jsonable`, and `JsonSerializable`. Additionally, it handles `Traversable` and `WeakMap` instances:
 
 ```php
 use Illuminate\Support\Arr;
 
-Arr::from(['foo' => 'bar']); // Output: ['foo' => 'bar']
-
-Arr::from((object) ['foo' => 'bar']); // Output: ['foo' => 'bar']
-
-class TestArrayableObject implements Arrayable 
-{
-    public function toArray() 
-    {
-        return ['foo' => 'bar'];
-    }
-}
-
-Arr::from(new TestArrayableObject()); // Output: ['foo' => 'bar']
+Arr::from((object) ['foo' => 'bar']); // ['foo' => 'bar']
 
 class TestJsonableObject implements Jsonable 
 {
@@ -522,17 +510,7 @@ class TestJsonableObject implements Jsonable
     }
 }
 
-Arr::from(new TestJsonableObject()); // Output: ['foo' => 'bar']
-
-class TestJsonSerializeObject implements JsonSerializable 
-{
-    public function jsonSerialize() 
-    {
-        return ['foo' => 'bar'];
-    }
-}
-
-Arr::from(new TestJsonSerializeObject()); // Output: ['foo' => 'bar']
+Arr::from(new TestJsonableObject); // ['foo' => 'bar']
 ```
 
 <a name="method-array-get"></a>
