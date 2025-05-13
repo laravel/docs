@@ -1095,7 +1095,7 @@ Echo.channel('orders')
 <a name="using-react-or-vue"></a>
 ### Using React or Vue
 
-Laravel Echo includes React and Vue hooks that make it painless to listen for events. To get started, invoke the `useEcho` hook, which is used to listen for private events. The `useEcho` will hook will automatically leave channels when the consuming component is unmounted:
+Laravel Echo includes React and Vue hooks that make it painless to listen for events. To get started, invoke the `useEcho` hook, which is used to listen for private events. The `useEcho` hook will automatically leave channels when the consuming component is unmounted:
 
 ```js tab=React
 import { useEcho } from "@laravel/echo-react";
