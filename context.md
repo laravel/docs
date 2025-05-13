@@ -266,10 +266,12 @@ use Illuminate\Support\Facades\Context;
 $value = Context::get('key');
 ```
 
-The `only` method may be used to retrieve a subset of the information in the context:
+The `only` and `except` methods may be used to retrieve a subset of the information in the context:
 
 ```php
 $data = Context::only(['first_key', 'second_key']);
+
+$data = Context::except(['first_key']);
 ```
 
 The `pull` method may be used to retrieve information from the context and immediately remove it from the context:
@@ -294,23 +296,6 @@ If you would like to retrieve all of the information stored in the context, you 
 
 ```php
 $data = Context::all();
-```
-
-The `except` method allows you to exclude sensitive or unnecessary items from the full context when preparing data for logging or display:
-
-```php
-Context::add('user_id', 42);
-Context::add('request_id', 'req-abc123');
-Context::add('ip_address', '192.168.0.1');
-Context::add('sensitive_token', 'secret');
-
-$logData = Context::except(['sensitive_token']);
-
-//[
-//    'user_id' => 42,
-//    'request_id' => 'req-abc123',
-//    'ip_address' => '192.168.0.1',
-//]
 ```
 
 <a name="determining-item-existence"></a>
