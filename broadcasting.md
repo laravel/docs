@@ -1139,7 +1139,7 @@ useEcho(
 
 You may also specify the shape of the broadcast event payload data, providing greater type safety and editing convenience:
 
-```js
+```ts
 type OrderData = {
     order: {
         id: number;
