@@ -1620,11 +1620,27 @@ By pairing event broadcasting with [notifications](/docs/{{version}}/notificatio
 
 Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:
 
-```js
+```js tab=JavaScript
 Echo.private(`App.Models.User.${userId}`)
     .notification((notification) => {
         console.log(notification.type);
     });
+```
+
+```js tab=React
+const { channel } = useEcho(`App.Models.User.${userId}`);
+
+channel().notification((notification) => {
+    console.log(notification.type);
+});
+```
+
+```js tab=Vue
+const { channel } = useEcho(`App.Models.User.${userId}`);
+
+channel().notification((notification) => {
+    console.log(notification.type);
+});
 ```
 
 In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in your application's `routes/channels.php` file.
