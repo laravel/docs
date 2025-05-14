@@ -738,7 +738,7 @@ public function middleware(): array
 }
 ```
 
-If you would like to delete a job by condition, you can use the `deleteWhen` method:
+Contrary to using `->when(…)`, which indicates that the job should not be released back and instead throw an exception, `->deleteWhen(…)` allows you to exit the circuit of either throw exception or release back onto the queue, and instead to just delete the job. In this way, the job will just be deleted when this exception occurs. (Of course, you can still choose to report the exception just like before.):
 
 ```php
 public function middleware(): array
