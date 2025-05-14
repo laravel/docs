@@ -738,6 +738,15 @@ public function middleware(): array
 }
 ```
 
+If you would like to delete a job by condition, you can use the `deleteWhen` method:
+
+```php
+public function middleware(): array
+{
+    return [(new ThrottlesExceptions(2, 10 * 60))->deleteWhen(Exception::class)];
+}
+```
+
 If you would like to have the throttled exceptions reported to your application's exception handler, you can do so by invoking the `report` method when attaching the middleware to your job. Optionally, you may provide a closure to the `report` method and the exception will only be reported if the given closure returns `true`:
 
 ```php
