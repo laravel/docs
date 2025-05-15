@@ -738,12 +738,20 @@ public function middleware(): array
 }
 ```
 
-Contrary to using `->when(…)`, which indicates that the job should not be released back and instead throw an exception, `->deleteWhen(…)` allows you to exit the circuit of either throw exception or release back onto the queue, and instead to just delete the job. In this way, the job will just be deleted when this exception occurs. (Of course, you can still choose to report the exception just like before.):
+Unlike the `when` method, which releases the job back onto the queue or throws an exception, the `deleteWhen` method allows you to delete the job entirely when a given exception occurs:
 
 ```php
+use App\Exceptions\CustomerDeletedException;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+/**
+ * Get the middleware the job should pass through.
+ *
+ * @return array<int, object>
+ */
 public function middleware(): array
 {
-    return [(new ThrottlesExceptions(2, 10 * 60))->deleteWhen(Exception::class)];
+    return [(new ThrottlesExceptions(2, 10 * 60))->deleteWhen(CustomerDeletedException::class)];
 }
 ```
 
