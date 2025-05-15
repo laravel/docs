@@ -1492,7 +1492,7 @@ The `intersectUsing` method removes any values from the original collection that
 ```php
 $collection = collect(['Desk', 'Sofa', 'Chair']);
 
-$intersect = $collection->intersectUsing(['desk', 'chair', 'bookcase'], function ($a, $b) {
+$intersect = $collection->intersectUsing(['desk', 'chair', 'bookcase'], function (string $a, string $b) {
     return strcasecmp($a, $b);
 });
 
@@ -1540,7 +1540,7 @@ $intersect = $collection->intersectAssocUsing([
     'color' => 'blue',
     'size' => 'M',
     'material' => 'polyester',
-], function ($a, $b) {
+], function (string $a, string $b) {
     return strcasecmp($a, $b);
 });
 
@@ -2110,7 +2110,7 @@ The `percentage` method may be used to quickly determine the percentage of items
 ```php
 $collection = collect([1, 1, 2, 2, 2, 3]);
 
-$percentage = $collection->percentage(fn ($value) => $value === 1);
+$percentage = $collection->percentage(fn (int $value) => $value === 1);
 
 // 33.33
 ```
@@ -2118,7 +2118,7 @@ $percentage = $collection->percentage(fn ($value) => $value === 1);
 By default, the percentage will be rounded to two decimal places. However, you may customize this behavior by providing a second argument to the method:
 
 ```php
-$percentage = $collection->percentage(fn ($value) => $value === 1, precision: 3);
+$percentage = $collection->percentage(fn (int $value) => $value === 1, precision: 3);
 
 // 33.333
 ```
