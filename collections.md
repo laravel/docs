@@ -590,7 +590,7 @@ collect(['1', '2'])->containsOneItem();
 
 // false
 
-collect([1, 2, 3])->containsOneItem(fn ($item) => $item === 2);
+collect([1, 2, 3])->containsOneItem(fn (int $item) => $item === 2);
 
 // true
 ```
