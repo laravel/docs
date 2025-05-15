@@ -1253,8 +1253,7 @@ public function retryUntil(): DateTime
 }
 ```
 
-> [!NOTE]
-> If both `retryUntil` and a `tries` limit are defined, Laravel will prioritize the `retryUntil` method. This means the job may be attempted multiple times until the given time expires, even if the configured `tries` limit is exceeded.
+If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
 
 > [!NOTE]
 > You may also define a `tries` property or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners).
