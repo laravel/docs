@@ -738,6 +738,23 @@ public function middleware(): array
 }
 ```
 
+Unlike the `when` method, which releases the job back onto the queue or throws an exception, the `deleteWhen` method allows you to delete the job entirely when a given exception occurs:
+
+```php
+use App\Exceptions\CustomerDeletedException;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+/**
+ * Get the middleware the job should pass through.
+ *
+ * @return array<int, object>
+ */
+public function middleware(): array
+{
+    return [(new ThrottlesExceptions(2, 10 * 60))->deleteWhen(CustomerDeletedException::class)];
+}
+```
+
 If you would like to have the throttled exceptions reported to your application's exception handler, you can do so by invoking the `report` method when attaching the middleware to your job. Optionally, you may provide a closure to the `report` method and the exception will only be reported if the given closure returns `true`:
 
 ```php
