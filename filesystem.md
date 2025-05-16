@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
+    - [Publishing Configuration](#publishing-configuration)
     - [The Local Driver](#the-local-driver)
     - [The Public Disk](#the-public-disk)
     - [Driver Prerequisites](#driver-prerequisites)
@@ -39,6 +40,17 @@ The `local` driver interacts with files stored locally on the server running the
 
 > [!NOTE]
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
+
+<a name="publishing-configuration"></a>
+### Publishing Configuration
+
+To add or modify the filesystem configuration, run the following command to publish the config file:
+
+```shell
+php artisan config:publish filesystems
+```
+
+After running the command, the configuration file will be available at `config/filesystem.php`.
 
 <a name="the-local-driver"></a>
 ### The Local Driver
