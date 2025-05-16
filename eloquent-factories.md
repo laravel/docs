@@ -365,7 +365,7 @@ $user = User::factory()
     ->create();
 ```
 
-Of course, you may perform state manipulations on the related models. In addition, you may pass a closure based state transformation if your state change requires access to the parent model:
+Of course, you may perform state manipulations on the related models. In addition, you may pass a closure-based state transformation if your state change requires access to the parent model:
 
 ```php
 $user = User::factory()
@@ -400,7 +400,7 @@ $user = User::factory()
     ->create();
 ```
 
-You may provide a closure based state transformation if your state change requires access to the parent model:
+You may provide a closure-based state transformation if your state change requires access to the parent model:
 
 ```php
 $user = User::factory()
@@ -483,7 +483,7 @@ $user = User::factory()
     ->create();
 ```
 
-You may provide a closure based state transformation if your state change requires access to the related model:
+You may provide a closure-based state transformation if your state change requires access to the related model:
 
 ```php
 $user = User::factory()
