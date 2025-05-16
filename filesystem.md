@@ -44,7 +44,7 @@ The `local` driver interacts with files stored locally on the server running the
 <a name="publishing-configuration"></a>
 ### Publishing Configuration
 
-To add or modify the filesystem configuration, run the following command to publish the config file:
+To modify the filesystem configuration, run the following command to publish the config file:
 
 ```shell
 php artisan config:publish filesystems
