@@ -70,6 +70,16 @@ php artisan schema:dump --database=testing --prune
 
 You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
 
+> If you're using MySQL with a self-signed SSL certificate, you can disable SSL verification for schema dumping by adding the following to your **`config/database.php`** file:
+>
+> ```php
+> 'options' => [
+>     PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+> ],
+> ```
+>
+> This option disables SSL certificate verification and prevents related connection errors.
+
 > [!WARNING]
 > Migration squashing is only available for the MariaDB, MySQL, PostgreSQL, and SQLite databases and utilizes the database's command-line client.
 
