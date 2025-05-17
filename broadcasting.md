@@ -917,10 +917,10 @@ However, remember that we also broadcast the task's creation. If your JavaScript
 
 When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using a global [Axios](https://github.com/axios/axios) instance to make HTTP requests from your JavaScript application, the socket ID will automatically be attached to every outgoing request as an `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID.
 
-If you are not using a global Axios instance, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header with all outgoing requests. You may retrieve the socket ID using the `Echo.socketId` method:
+If you are not using a global Axios instance, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header with all outgoing requests. You may retrieve the socket ID using the `echo().socketId()` method:
 
 ```js
-var socketId = Echo.socketId();
+var socketId = echo().socketId();
 ```
 
 <a name="customizing-the-connection"></a>
@@ -1031,7 +1031,7 @@ Broadcast::on('orders.'.$order->id)
 Once you have [installed and instantiated Laravel Echo](#client-side-installation), you are ready to start listening for events that are broadcast from your Laravel application. First, use the `channel` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event:
 
 ```js
-Echo.channel(`orders.${this.order.id}`)
+echo().channel(`orders.${this.order.id}`)
     .listen('OrderShipmentStatusUpdated', (e) => {
         console.log(e.order.name);
     });
@@ -1040,7 +1040,7 @@ Echo.channel(`orders.${this.order.id}`)
 If you would like to listen for events on a private channel, use the `private` method instead. You may continue to chain calls to the `listen` method to listen for multiple events on a single channel:
 
 ```js
-Echo.private(`orders.${this.order.id}`)
+echo().private(`orders.${this.order.id}`)
     .listen(/* ... */)
     .listen(/* ... */)
     .listen(/* ... */);
@@ -1052,7 +1052,7 @@ Echo.private(`orders.${this.order.id}`)
 If you would like to stop listening to a given event without [leaving the channel](#leaving-a-channel), you may use the `stopListening` method:
 
 ```js
-Echo.private(`orders.${this.order.id}`)
+echo().private(`orders.${this.order.id}`)
     .stopListening('OrderShipmentStatusUpdated');
 ```
 
@@ -1062,13 +1062,13 @@ Echo.private(`orders.${this.order.id}`)
 To leave a channel, you may call the `leaveChannel` method on your Echo instance:
 
 ```js
-Echo.leaveChannel(`orders.${this.order.id}`);
+echo().leaveChannel(`orders.${this.order.id}`);
 ```
 
 If you would like to leave a channel and also its associated private and presence channels, you may call the `leave` method:
 
 ```js
-Echo.leave(`orders.${this.order.id}`);
+echo().leave(`orders.${this.order.id}`);
 ```
 <a name="namespaces"></a>
 ### Namespaces
@@ -1086,7 +1086,7 @@ window.Echo = new Echo({
 Alternatively, you may prefix event classes with a `.` when subscribing to them using Echo. This will allow you to always specify the fully-qualified class name:
 
 ```js
-Echo.channel('orders')
+echo().channel('orders')
     .listen('.Namespace\\Event\\Class', (e) => {
         // ...
     });
@@ -1281,7 +1281,7 @@ Broadcast::channel('chat.{roomId}', function (User $user, int $roomId) {
 To join a presence channel, you may use Echo's `join` method. The `join` method will return a `PresenceChannel` implementation which, along with exposing the `listen` method, allows you to subscribe to the `here`, `joining`, and `leaving` events.
 
 ```js
-Echo.join(`chat.${roomId}`)
+echo().join(`chat.${roomId}`)
     .here((users) => {
         // ...
     })
@@ -1328,7 +1328,7 @@ broadcast(new NewMessage($message))->toOthers();
 As typical of other types of events, you may listen for events sent to presence channels using Echo's `listen` method:
 
 ```js
-Echo.join(`chat.${roomId}`)
+echo().join(`chat.${roomId}`)
     .here(/* ... */)
     .joining(/* ... */)
     .leaving(/* ... */)
@@ -1520,7 +1520,7 @@ First, use the `private` method to retrieve an instance of a channel, then call 
 Once you have obtained a channel instance, you may use the `listen` method to listen for a particular event. Since model broadcast events are not associated with an "actual" event within your application's `App\Events` directory, the [event name](#model-broadcasting-event-conventions) must be prefixed with a `.` to indicate it does not belong to a particular namespace. Each model broadcast event has a `model` property which contains all of the broadcastable properties of the model:
 
 ```js
-Echo.private(`App.Models.User.${this.user.id}`)
+echo().private(`App.Models.User.${this.user.id}`)
     .listen('.UserUpdated', (e) => {
         console.log(e.model);
     });
@@ -1575,7 +1575,7 @@ Sometimes you may wish to broadcast an event to other connected clients without 
 To broadcast client events, you may use Echo's `whisper` method:
 
 ```js tab=JavaScript
-Echo.private(`chat.${roomId}`)
+echo().private(`chat.${roomId}`)
     .whisper('typing', {
         name: this.user.name
     });
@@ -1606,7 +1606,7 @@ channel().whisper('typing', { name: user.name });
 To listen for client events, you may use the `listenForWhisper` method:
 
 ```js tab=JavaScript
-Echo.private(`chat.${roomId}`)
+echo().private(`chat.${roomId}`)
     .listenForWhisper('typing', (e) => {
         console.log(e.name);
     });
@@ -1646,7 +1646,7 @@ By pairing event broadcasting with [notifications](/docs/{{version}}/notificatio
 Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:
 
 ```js tab=JavaScript
-Echo.private(`App.Models.User.${userId}`)
+echo().private(`App.Models.User.${userId}`)
     .notification((notification) => {
         console.log(notification.type);
     });
