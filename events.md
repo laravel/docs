@@ -918,7 +918,7 @@ test('orders can be processed', function () {
         return $order;
     });
 
-    // Events are dispatched as normal and observers will run ...
+    // Events are dispatched as normal and observers will run...
     $order->update([...]);
 });
 ```
@@ -948,7 +948,7 @@ class ExampleTest extends TestCase
             return $order;
         });
 
-        // Events are dispatched as normal and observers will run ...
+        // Events are dispatched as normal and observers will run...
         $order->update([...]);
     }
 }
