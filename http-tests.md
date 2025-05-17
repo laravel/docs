@@ -967,6 +967,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertCookieNotExpired](#assert-cookie-not-expired)
 [assertCookieMissing](#assert-cookie-missing)
 [assertCreated](#assert-created)
+[assertClientError](#assert-client-error)
 [assertDontSee](#assert-dont-see)
 [assertDontSeeText](#assert-dont-see-text)
 [assertDownload](#assert-download)
@@ -1107,6 +1108,15 @@ Assert that the response has a 201 HTTP status code:
 
 ```php
 $response->assertCreated();
+```
+
+<a name="assert-client-error"></a>
+#### assertClientError
+
+Assert that the response has a client error (>= 400 , < 500) HTTP status code:
+
+```php
+$response->assertClientError();
 ```
 
 <a name="assert-dont-see"></a>
