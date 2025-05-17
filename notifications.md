@@ -1088,7 +1088,7 @@ public function broadcastType(): string
 Notifications will broadcast on a private channel formatted using a `{notifiable}.{id}` convention. So, if you are sending a notification to an `App\Models\User` instance with an ID of `1`, the notification will be broadcast on the `App.Models.User.1` private channel. When using [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation), you may easily listen for notifications on a channel using the `notification` method:
 
 ```js
-Echo.private('App.Models.User.' + userId)
+echo().private('App.Models.User.' + userId)
     .notification((notification) => {
         console.log(notification.type);
     });
