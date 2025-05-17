@@ -422,6 +422,12 @@ use App\Enums\Status;
 $status = $request->enum('status', Status::class);
 ```
 
+You may also provide a default value:
+
+```php
+$status = $request->enum('status', Status::class, Status::Pending);
+```
+
 If the input value is an array of values that correspond to a PHP enum, you may use the `enums` method to retrieve the array of values as enum instances:
 
 ```php
