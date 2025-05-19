@@ -662,6 +662,7 @@ The `@use` directive also supports importing PHP functions and constants by pref
 
 ```blade
 @use(function App\Helpers\format_currency)
+@use(const App\Constants\MAX_ATTEMPTS)
 ```
 
 Just like class imports, aliases are supported for functions and constants as well:
