@@ -1059,7 +1059,7 @@ $response->assertAccepted();
 <a name="assert-client-error"></a>
 #### assertClientError
 
-Assert that the response has a client error (>= 400 , < 500) HTTP status code:
+Assert that the response has a client error (>= 400, < 500) HTTP status code:
 
 ```php
 $response->assertClientError();
