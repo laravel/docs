@@ -866,7 +866,9 @@ test('orders can be processed', function () {
     Event::assertDispatched(OrderCreated::class);
 
     // Other events are dispatched as normal...
-    $order->update([...]);
+    $order->update([
+        // ...
+    ]);
 });
 ```
 
@@ -885,7 +887,9 @@ public function test_orders_can_be_processed(): void
     Event::assertDispatched(OrderCreated::class);
 
     // Other events are dispatched as normal...
-    $order->update([...]);
+    $order->update([
+        // ...
+    ]);
 }
 ```
 
@@ -919,7 +923,9 @@ test('orders can be processed', function () {
     });
 
     // Events are dispatched as normal and observers will run...
-    $order->update([...]);
+    $order->update([
+        // ...
+    ]);
 });
 ```
 
@@ -949,7 +955,9 @@ class ExampleTest extends TestCase
         });
 
         // Events are dispatched as normal and observers will run...
-        $order->update([...]);
+        $order->update([
+            // ...
+        ]);
     }
 }
 ```
