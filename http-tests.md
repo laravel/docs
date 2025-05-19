@@ -1038,15 +1038,6 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 </div>
 
-<a name="assert-bad-request"></a>
-#### assertBadRequest
-
-Assert that the response has a bad request (400) HTTP status code:
-
-```php
-$response->assertBadRequest();
-```
-
 <a name="assert-accepted"></a>
 #### assertAccepted
 
@@ -1054,6 +1045,15 @@ Assert that the response has an accepted (202) HTTP status code:
 
 ```php
 $response->assertAccepted();
+```
+
+<a name="assert-bad-request"></a>
+#### assertBadRequest
+
+Assert that the response has a bad request (400) HTTP status code:
+
+```php
+$response->assertBadRequest();
 ```
 
 <a name="assert-client-error"></a>
