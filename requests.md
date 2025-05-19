@@ -422,7 +422,7 @@ use App\Enums\Status;
 $status = $request->enum('status', Status::class);
 ```
 
-You may also provide a default value:
+You may also provide a default value that will be returned if the value is missing or invalid:
 
 ```php
 $status = $request->enum('status', Status::class, Status::Pending);
