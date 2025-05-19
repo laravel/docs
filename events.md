@@ -160,7 +160,7 @@ public function boot(): void
 <a name="queuable-anonymous-event-listeners"></a>
 #### Queueable Anonymous Event Listeners
 
-When registering closure based event listeners, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
+When registering closure-based event listeners, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
 
 ```php
 use App\Events\PodcastProcessed;

@@ -112,7 +112,7 @@ For convenience, if a feature definition only returns a lottery, you may omit th
 <a name="class-based-features"></a>
 ### Class Based Features
 
-Pennant also allows you to define class based features. Unlike closure based feature definitions, there is no need to register a class based feature in a service provider. To create a class based feature, you may invoke the `pennant:feature` Artisan command. By default the feature class will be placed in your application's `app/Features` directory:
+Pennant also allows you to define class based features. Unlike closure-based feature definitions, there is no need to register a class based feature in a service provider. To create a class based feature, you may invoke the `pennant:feature` Artisan command. By default the feature class will be placed in your application's `app/Features` directory:
 
 ```shell
 php artisan pennant:feature NewApi
