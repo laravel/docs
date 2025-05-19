@@ -961,6 +961,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 [assertAccepted](#assert-accepted)
 [assertBadRequest](#assert-bad-request)
+[assertClientError](#assert-client-error)
 [assertConflict](#assert-conflict)
 [assertCookie](#assert-cookie)
 [assertCookieExpired](#assert-cookie-expired)
@@ -1053,6 +1054,15 @@ Assert that the response has an accepted (202) HTTP status code:
 
 ```php
 $response->assertAccepted();
+```
+
+<a name="assert-client-error"></a>
+#### assertClientError
+
+Assert that the response has a client error (>= 400 , < 500) HTTP status code:
+
+```php
+$response->assertClientError();
 ```
 
 <a name="assert-conflict"></a>
