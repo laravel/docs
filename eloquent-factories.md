@@ -109,6 +109,19 @@ protected static function newFactory()
 }
 ```
 
+For conveniences, you may use `UseFactory` attribute on your model instead of using `newFactory()` method:
+
+```php
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
+
+#[UseFactory(UserFactory::class)]
+class User extends Model
+{
+    use HasFactory;
+}
+```
+
 Then, define a `model` property on the corresponding factory:
 
 ```php
