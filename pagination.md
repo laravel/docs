@@ -275,6 +275,7 @@ The JSON from the paginator will include meta information such as `total`, `curr
    "per_page": 15,
    "current_page": 1,
    "last_page": 4,
+   "current_page_url": "http://laravel.app?page=1",
    "first_page_url": "http://laravel.app?page=1",
    "last_page_url": "http://laravel.app?page=4",
    "next_page_url": "http://laravel.app?page=2",
