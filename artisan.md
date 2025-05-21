@@ -697,7 +697,7 @@ $this->newLine(3);
 <a name="tables"></a>
 #### Tables
 
-The `table` method makes it easy to correctly format multiple rows / columns of data. All you need to do is provide the column names and the data for the table and Laravel will automatically calculate the appropriate width and height of the table for you:
+The `table` method makes it easy to correctly format multiple rows / columns of data. All you need to do is provide the column names and the data for the table and Laravel will automatically calculate the appropriate width and height of the table. The table method accepts an array or a collection as its second parameter. If a collection is provided, it is automatically converted to an array:
 
 ```php
 use App\Models\User;
