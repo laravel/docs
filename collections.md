@@ -697,12 +697,10 @@ $collection = collect(['John Doe', 'Jane Doe']);
 $collection->dd();
 
 /*
-    Collection {
-        #items: array:2 [
-            0 => "John Doe"
-            1 => "Jane Doe"
-        ]
-    }
+    array:2 [
+        0 => "John Doe"
+        1 => "Jane Doe"
+    ]
 */
 ```
 
@@ -871,12 +869,10 @@ $collection = collect(['John Doe', 'Jane Doe']);
 $collection->dump();
 
 /*
-    Collection {
-        #items: array:2 [
-            0 => "John Doe"
-            1 => "Jane Doe"
-        ]
-    }
+    array:2 [
+        0 => "John Doe"
+        1 => "Jane Doe"
+    ]
 */
 ```
 
