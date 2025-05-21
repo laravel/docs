@@ -535,6 +535,8 @@ public function retryUntil(): DateTime
 }
 ```
 
+If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
+
 <a name="specifying-queued-listener-backoff"></a>
 #### Specifying Queued Listener Backoff
 
