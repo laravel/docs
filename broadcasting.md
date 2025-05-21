@@ -197,7 +197,7 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 
 Sockudo is a high-performance, Pusher-compatible WebSocket server written in Rust. Since it's Pusher-compatible, you will use Laravel's existing Pusher broadcast driver, but configure it to point to your Sockudo server instance.
 
-First, ensure your Sockudo server is installed and running. You can run it from a binary or build from source. Please refer to the Sockudo documentation for installation instructions.
+First, ensure your Sockudo server is installed and running. You can run it from a binary or build from [source](https://github.com/RustNSparks/sockudo). Please refer to the Sockudo [documentation](https://sockudo.app) for installation instructions.
 
 Once Sockudo is running, note its host and port (default is typically 127.0.0.1 and 6001), as well as the app ID, key, and secret you configured for your Sockudo application.
 
