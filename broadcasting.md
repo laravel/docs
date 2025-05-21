@@ -211,15 +211,15 @@ Configure your Pusher credentials in the `config/broadcasting.php` configuration
 
 ```php
 'sockudo' => [
-    'driver' => 'sockudo',
-    'key' => env('SOCKUDO_APP_KEY'),
-    'secret' => env('SOCKUDO_APP_SECRET'),
-    'app_id' => env('SOCKUDO_APP_ID'),
+    'driver' => 'pusher',
+    'key' => env('PUSHER_APP_KEY'),
+    'secret' => env('PUSHER_APP_SECRET'),
+    'app_id' => env('PUSHER_APP_ID'),
     'options' => [
-        'host' => env('SOCKUDO_HOST', '127.0.0.1'),
-        'port' => env('SOCKUDO_PORT', 6001),
-        'scheme' => env('SOCKUDO_SCHEME', 'http'),
-        'useTLS' => env('SOCKUDO_SCHEME', 'http') === 'https',
+        'host' => env('PUSHER_HOST', '127.0.0.1'),
+        'port' => env('PUSHER_PORT', 6001),
+        'scheme' => env('PUSHER_SCHEME', 'http'),
+        'useTLS' => env('PUSHER_SCHEME', 'http') === 'https',
     ],
 ],
 ```
@@ -229,12 +229,12 @@ Update your application's `.env` file with the appropriate variables for Sockudo
 ```ini
 BROADCAST_CONNECTION=pusher
 
-SOCKUDO_APP_ID="your-sockudo-app-id"
-SOCKUDO_APP_KEY="your-sockudo-app-key"
-SOCKUDO_APP_SECRET="your-sockudo-app-secret"
-SOCKUDO_HOST=127.0.0.1
-SOCKUDO_PORT=6001
-SOCKUDO_SCHEME="http"
+PUSHER_APP_ID="your-sockudo-app-id"
+PUSHER_APP_KEY="your-sockudo-app-key"
+PUSHER_APP_SECRET="your-sockudo-app-secret"
+PUSHER_HOST=127.0.0.1
+PUSHER_PORT=6001
+PUSHER_SCHEME="http"
 ```
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
@@ -523,11 +523,11 @@ window.Pusher = Pusher;
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: import.meta.env.VITE_SOCKUDO_APP_KEY,
-    wsHost: import.meta.env.VITE_SOCKUDO_HOST,
-    wsPort: import.meta.env.VITE_SOCKUDO_PORT,
-    wssPort: import.meta.env.VITE_SOCKUDO_PORT, // Use same port for WSS or specific WSS port if different
-    forceTLS: (import.meta.env.VITE_SOCKUDO_SCHEME ?? 'http') === 'https',
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    wsHost: import.meta.env.VITE_PUSHER_HOST,
+    wsPort: import.meta.env.VITE_PUSHER_PORT,
+    wssPort: import.meta.env.VITE_PUSHER_PORT, // Use same port for WSS or specific WSS port if different
+    forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'http') === 'https',
     enabledTransports: ['ws', 'wss'],
     // cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER, // Not used by Sockudo
     // For Sockudo, you might not need 'encrypted' if forceTLS is correctly set.
@@ -541,11 +541,11 @@ import { configureEcho } from "@laravel/echo-react";
 
 configureEcho({
     broadcaster: "pusher",
-    key: import.meta.env.VITE_SOCKUDO_APP_KEY,
-    wsHost: import.meta.env.VITE_SOCKUDO_HOST,
-    wsPort: import.meta.env.VITE_SOCKUDO_PORT,
-    wssPort: import.meta.env.VITE_SOCKUDO_PORT,
-    forceTLS: (import.meta.env.VITE_SOCKUDO_SCHEME ?? 'http') === 'https',
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    wsHost: import.meta.env.VITE_PUSHER_HOST,
+    wsPort: import.meta.env.VITE_PUSHER_PORT,
+    wssPort: import.meta.env.VITE_PUSHER_PORT,
+    forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'http') === 'https',
     enabledTransports: ['ws', 'wss'],
     // cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER, // Not used by Sockudo
 });
@@ -556,23 +556,23 @@ import { configureEcho } from "@laravel/echo-vue";
 
 configureEcho({
     broadcaster: "pusher",
-    key: import.meta.env.VITE_SOCKUDO_APP_KEY,
-    wsHost: import.meta.env.VITE_SOCKUDO_PUSHER_HOST,
-    wsPort: import.meta.env.VITE_SOCKUDO_PUSHER_PORT,
-    wssPort: import.meta.env.VITE_SOCKUDO_PUSHER_PORT,
-    forceTLS: (import.meta.env.VITE_SOCKUDO_SCHEME ?? 'http') === 'https',
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    wsHost: import.meta.env.VITE_PUSHER_PUSHER_HOST,
+    wsPort: import.meta.env.VITE_PUSHER_PUSHER_PORT,
+    wssPort: import.meta.env.VITE_PUSHER_PUSHER_PORT,
+    forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'http') === 'https',
     enabledTransports: ['ws', 'wss'],
-    // cluster: import.meta.env.VITE_SOCKUDO_APP_CLUSTER, // Not used by Sockudo
+    // cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER, // Not used by Sockudo
 });
 ```
 
 Ensure your Vite environment variables in `.env` (prefixed with `VITE_`) are set up correctly to reflect your Sockudo server's address and your application's key:
 
 ```ini
-VITE_SOCKUDO_APP_KEY="${SOCKUDO_APP_KEY}"
-VITE_SOCKUDO_HOST="${SOCKUDO_HOST}"
-VITE_SOCKUDO_PORT="${SOCKUDO_PORT}"
-VITE_SOCKUDO_SCHEME="${SOCKUDO_SCHEME}"
+VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+VITE_PUSHER_HOST="${PUSHER_HOST}"
+VITE_PUSHER_PORT="${PUSHER_PORT}"
+VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
 ```
 
 After configuring Echo, you will need to compile your application's assets:
