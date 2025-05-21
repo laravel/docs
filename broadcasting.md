@@ -501,7 +501,7 @@ npm run dev
 
 [Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver.
 
-When installing broadcasting support via the `install:broadcasting --sockudo` Artisan command, Sockudo and Echo's scaffolding and configuration will be injected into your application automatically. However, if you wish to manually configure Laravel Echo, you may do so by following the instructions below.
+When installing broadcasting support via the `install:broadcasting --pusher` Artisan command, Sockudo and Echo's scaffolding and configuration will be injected into your application automatically. However, if you wish to manually configure Laravel Echo, you may do so by following the instructions below.
 
 <a name="sockudo-client-manual-installation"></a>
 #### Manual Installation
