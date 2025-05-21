@@ -6,10 +6,12 @@
     - [Reverb](#reverb)
     - [Pusher Channels](#pusher-channels)
     - [Ably](#ably)
+    - [Sockudo](#server-sockudo)
 - [Client Side Installation](#client-side-installation)
     - [Reverb](#client-reverb)
     - [Pusher Channels](#client-pusher-channels)
     - [Ably](#client-ably)
+    - [Sockudo](#client-sockudo)
 - [Concept Overview](#concept-overview)
     - [Using an Example Application](#using-example-application)
 - [Defining Broadcast Events](#defining-broadcast-events)
@@ -54,7 +56,7 @@ The core concepts behind broadcasting are simple: clients connect to named chann
 <a name="supported-drivers"></a>
 #### Supported Drivers
 
-By default, Laravel includes three server-side broadcasting drivers for you to choose from: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels), and [Ably](https://ably.com).
+By default, Laravel includes four server-side broadcasting drivers for you to choose from: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com) and [Sockudo](https://sockudo.app).
 
 > [!NOTE]
 > Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
@@ -70,7 +72,7 @@ php artisan install:broadcasting
 
 The `install:broadcasting` command with prompt you for which event broadcasting service you would like to use. In addition, it will create the `config/broadcasting.php` configuration file and the `routes/channels.php` file where you may register your application's broadcast authorization routes and callbacks.
 
-Laravel supports several broadcast drivers out of the box: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to disable broadcasting during testing. A configuration example is included for each of these drivers in the `config/broadcasting.php` configuration file.
+Laravel supports several broadcast drivers out of the box: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), [Sockudo](https://sockudo.app) and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to disable broadcasting during testing. A configuration example is included for each of these drivers in the `config/broadcasting.php` configuration file.
 
 All of your application's event broadcasting configuration is stored in the `config/broadcasting.php` configuration file. Don't worry if this file does not exist in your application; it will be created when you run the `install:broadcasting` Artisan command.
 
@@ -188,6 +190,51 @@ Then, set the `BROADCAST_CONNECTION` environment variable to `ably` in your appl
 
 ```ini
 BROADCAST_CONNECTION=ably
+```
+Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
+<a name="server-sockudo"></a>
+### Sockudo
+
+Sockudo is a high-performance, Pusher-compatible WebSocket server written in Rust. Since it's Pusher-compatible, you will use Laravel's existing Pusher broadcast driver, but configure it to point to your Sockudo server instance.
+
+First, ensure your Sockudo server is installed and running. You can run it from a binary or build from source. Please refer to the Sockudo documentation for installation instructions.
+
+Once Sockudo is running, note its host and port (default is typically 127.0.0.1 and 6001), as well as the app ID, key, and secret you configured for your Sockudo application.
+
+Install the Pusher Channels PHP SDK:
+
+```shell
+composer require pusher/pusher-php-server
+```
+
+Configure your Pusher credentials in the `config/broadcasting.php` configuration file to point to your Sockudo server:
+
+```php
+'sockudo' => [
+    'driver' => 'sockudo',
+    'key' => env('SOCKUDO_APP_KEY'),
+    'secret' => env('SOCKUDO_APP_SECRET'),
+    'app_id' => env('SOCKUDO_APP_ID'),
+    'options' => [
+        'host' => env('SOCKUDO_HOST', '127.0.0.1'),
+        'port' => env('SOCKUDO_PORT', 6001),
+        'scheme' => env('SOCKUDO_SCHEME', 'http'),
+        'useTLS' => env('SOCKUDO_SCHEME', 'http') === 'https',
+    ],
+],
+```
+
+Update your application's `.env` file with the appropriate variables for Sockudo:
+
+```ini
+BROADCAST_CONNECTION=pusher
+
+SOCKUDO_APP_ID="your-sockudo-app-id"
+SOCKUDO_APP_KEY="your-sockudo-app-key"
+SOCKUDO_APP_SECRET="your-sockudo-app-secret"
+SOCKUDO_HOST=127.0.0.1
+SOCKUDO_PORT=6001
+SOCKUDO_SCHEME="http"
 ```
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
@@ -449,6 +496,92 @@ Once you have adjusted the Echo configuration according to your needs, you may c
 ```shell
 npm run dev
 ```
+<a name="client-sockudo"></a>
+### Sockudo
+
+[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver.
+
+When installing broadcasting support via the `install:broadcasting --sockudo` Artisan command, Sockudo and Echo's scaffolding and configuration will be injected into your application automatically. However, if you wish to manually configure Laravel Echo, you may do so by following the instructions below.
+
+<a name="sockudo-client-manual-installation"></a>
+#### Manual Installation
+First, install the `laravel-echo` and `pusher-js` NPM packages:
+
+```shell
+npm install --save-dev laravel-echo pusher-js
+```
+
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework.
+
+You will configure Echo to use the Pusher broadcaster, then specify the `wsHost`, `wsPort` (and `wssPort` if Sockudo is served over TLS) to point to your Sockudo server. `forceTLS` should be set to `true` if Sockudo is using https and `false` otherwise. Sockudo does not use the cluster option.
+
+```js tab=JavaScript
+import Echo from 'laravel-echo';
+
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: import.meta.env.VITE_SOCKUDO_APP_KEY,
+    wsHost: import.meta.env.VITE_SOCKUDO_HOST,
+    wsPort: import.meta.env.VITE_SOCKUDO_PORT,
+    wssPort: import.meta.env.VITE_SOCKUDO_PORT, // Use same port for WSS or specific WSS port if different
+    forceTLS: (import.meta.env.VITE_SOCKUDO_SCHEME ?? 'http') === 'https',
+    enabledTransports: ['ws', 'wss'],
+    // cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER, // Not used by Sockudo
+    // For Sockudo, you might not need 'encrypted' if forceTLS is correctly set.
+    // However, if using older pusher-js versions or for clarity:
+    // encrypted: (import.meta.env.VITE_PUSHER_SCHEME ?? 'http') === 'https',
+});
+```
+
+```js tab=React
+import { configureEcho } from "@laravel/echo-react";
+
+configureEcho({
+    broadcaster: "pusher",
+    key: import.meta.env.VITE_SOCKUDO_APP_KEY,
+    wsHost: import.meta.env.VITE_SOCKUDO_HOST,
+    wsPort: import.meta.env.VITE_SOCKUDO_PORT,
+    wssPort: import.meta.env.VITE_SOCKUDO_PORT,
+    forceTLS: (import.meta.env.VITE_SOCKUDO_SCHEME ?? 'http') === 'https',
+    enabledTransports: ['ws', 'wss'],
+    // cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER, // Not used by Sockudo
+});
+```
+
+```js tab=Vue
+import { configureEcho } from "@laravel/echo-vue";
+
+configureEcho({
+    broadcaster: "pusher",
+    key: import.meta.env.VITE_SOCKUDO_APP_KEY,
+    wsHost: import.meta.env.VITE_SOCKUDO_PUSHER_HOST,
+    wsPort: import.meta.env.VITE_SOCKUDO_PUSHER_PORT,
+    wssPort: import.meta.env.VITE_SOCKUDO_PUSHER_PORT,
+    forceTLS: (import.meta.env.VITE_SOCKUDO_SCHEME ?? 'http') === 'https',
+    enabledTransports: ['ws', 'wss'],
+    // cluster: import.meta.env.VITE_SOCKUDO_APP_CLUSTER, // Not used by Sockudo
+});
+```
+
+Ensure your Vite environment variables in `.env` (prefixed with `VITE_`) are set up correctly to reflect your Sockudo server's address and your application's key:
+
+```ini
+VITE_SOCKUDO_APP_KEY="${SOCKUDO_APP_KEY}"
+VITE_SOCKUDO_HOST="${SOCKUDO_HOST}"
+VITE_SOCKUDO_PORT="${SOCKUDO_PORT}"
+VITE_SOCKUDO_SCHEME="${SOCKUDO_SCHEME}"
+```
+
+After configuring Echo, you will need to compile your application's assets:
+
+```shell
+npm run build
+```
+
+Your Laravel Echo instance is now configured to connect to your Sockudo server.
 
 > [!NOTE]
 > To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
