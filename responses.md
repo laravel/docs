@@ -504,7 +504,7 @@ const { data } = useStream("chat", {
 
 `onResponse` is triggered after a successful initial response from the stream and the raw [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) is passed to the callback. `onData` is called as each chunk is received - the current chunk is passed to the callback. `onFinish` is called when a stream has finished and when an error is thrown during the fetch / read cycle.
 
-By default, a request is not made the to stream on initialization. You may pass an initial payload to the stream by using the `initialInput` option:
+By default, a request is not made to the stream on initialization. You may pass an initial payload to the stream by using the `initialInput` option:
 
 ```tsx tab=React
 import { useStream } from "@laravel/stream-react";
