@@ -7,9 +7,6 @@
 <a name="introduction"></a>
 ## Introduction
 
-> [!WARNING]
-> Laravel's `Concurrency` facade is currently in beta while we gather community feedback.
-
 Sometimes you may need to execute several slow tasks which do not depend on one another. In many cases, significant performance improvements can be realized by executing the tasks concurrently. Laravel's `Concurrency` facade provides a simple, convenient API for executing closures concurrently.
 
 <a name="concurrency-compatibility"></a>
