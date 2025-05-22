@@ -56,6 +56,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
 [Arr::hasAny](#method-array-hasany)
+[Arr::missing](#method-array-missing)
+[Arr::missingAny](#method-array-missingany)
 [Arr::integer](#method-array-integer)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::isList](#method-array-islist)
@@ -576,6 +578,48 @@ $contains = Arr::hasAny($array, ['product.name', 'product.discount']);
 // true
 
 $contains = Arr::hasAny($array, ['category', 'product.discount']);
+
+// false
+```
+
+<a name="method-array-missing"></a>
+#### `Arr::missing()` {.collection-method}
+
+The `Arr::missing` method checks whether a given item or items are missing in an array using "dot" notation:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['product' => ['name' => 'Desk', 'price' => 100]];
+
+$contains = Arr::missing($array, 'product.quantity');
+
+// true
+
+$contains = Arr::missing($array, ['product.name', 'product.price']);
+
+// false
+```
+
+<a name="method-array-missingany"></a>
+#### `Arr::missingAny()` {.collection-method}
+
+The `Arr::missingAny` method checks whether any item in a given set is missing in an array using "dot" notation:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['product' => ['name' => 'Desk', 'price' => 100]];
+
+$contains = Arr::missingAny($array, 'product.quantity');
+
+// true
+
+$contains = Arr::missingAny($array, ['product.price', 'product.discount']);
+
+// true
+
+$contains = Arr::missingAny($array, ['product', 'product.price']);
 
 // false
 ```
