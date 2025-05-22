@@ -502,9 +502,9 @@ use Illuminate\Support\Arr;
 
 Arr::from((object) ['foo' => 'bar']); // ['foo' => 'bar']
 
-class TestJsonableObject implements Jsonable 
+class TestJsonableObject implements Jsonable
 {
-    public function toJson($options = 0) 
+    public function toJson($options = 0)
     {
         return json_encode(['foo' => 'bar']);
     }
@@ -3066,9 +3066,6 @@ For a thorough discussion of Carbon and its features, please consult the [offici
 
 <a name="deferred-functions"></a>
 ### Deferred Functions
-
-> [!WARNING]
-> Deferred functions are currently in beta while we gather community feedback.
 
 While Laravel's [queued jobs](/docs/{{version}}/queues) allow you to queue tasks for background processing, sometimes you may have simple tasks you would like to defer without configuring or maintaining a long-running queue worker.
 
