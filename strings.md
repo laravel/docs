@@ -89,6 +89,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
 [Str::snake](#method-snake-case)
+[Str::split](#method-str-split)
 [Str::squish](#method-str-squish)
 [Str::start](#method-str-start)
 [Str::startsWith](#method-starts-with)
@@ -1350,6 +1351,26 @@ $converted = Str::snake('fooBar', '-');
 // foo-bar
 ```
 
+<a name="method-str-split"></a>
+#### `Str::split()` {.collection-method}
+
+The `Str::split` method splits a string into an array using a given separator. You may also optionally specify a limit on the number of resulting segments:
+
+```php
+use Illuminate\Support\Str;
+
+$segments = Str::split('-', 'laravel-framework');
+
+// ['laravel', 'framework']
+```
+
+You may pass a third argument to limit the number of splits:
+
+```php
+$segments = Str::split(',', 'one,two,three,four', 3);
+
+// ['one', 'two', 'three,four']
+```
 <a name="method-str-squish"></a>
 #### `Str::squish()` {.collection-method}
 
