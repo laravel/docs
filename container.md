@@ -323,8 +323,7 @@ class PhotoController extends Controller
         #[Log('daily')] protected LoggerInterface $log,
         #[RouteParameter('photo')] protected Photo $photo,
         #[Tag('reports')] protected iterable $reports,
-    )
-    {
+    ) {
         // ...
     }
 }
