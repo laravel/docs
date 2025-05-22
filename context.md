@@ -227,6 +227,7 @@ Stacks can be useful to capture historical information about a request, such as 
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\DB;
 
+// In AppServiceProvider.php...
 DB::listen(function ($event) {
     Context::push('queries', [$event->time, $event->sql]);
 });
