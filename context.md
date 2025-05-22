@@ -162,6 +162,19 @@ Context::when(
 );
 ```
 
+The `unless` method may be used to add data to the context based on a given condition. The first closure provided to the `unless` method will be invoked unless the given condition evaluates to `true`, while the second closure will be invoked unless the condition evaluates to `false`:
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Context;
+
+Context::unless(
+    Auth::user()->isAdmin(),
+    fn ($context) => $context->add('permissions', Auth::user()->permissions),
+    fn ($context) => $context->add('permissions', []),
+);
+```
+
 <a name="scoped-context"></a>
 #### Scoped Context
 
