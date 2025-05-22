@@ -2254,7 +2254,7 @@ $plucked->all();
 <a name="method-pop"></a>
 #### `pop()` {.collection-method}
 
-The `pop` method removes and returns the last item from the collection:
+The `pop` method removes and returns the last item from the collection. If the collection is empty, `null` will be returned:
 
 ```php
 $collection = collect([1, 2, 3, 4, 5]);
