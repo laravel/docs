@@ -171,7 +171,7 @@ class User extends Model
      */
     protected function isAdmin(): Attribute
     {
-        return new Attribute(
+        return new Attribute::make(
             get: fn () => 'yes',
         );
     }
