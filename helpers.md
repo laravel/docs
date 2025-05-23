@@ -3103,19 +3103,6 @@ defer(fn () => Metrics::report(), 'reportMetrics');
 defer()->forget('reportMetrics');
 ```
 
-<a name="deferred-function-compatibility"></a>
-#### Deferred Function Compatibility
-
-If you upgraded to Laravel 11.x from a Laravel 10.x application and your application's skeleton still contains an `app/Http/Kernel.php` file, you should add the `InvokeDeferredCallbacks` middleware to the beginning of the kernel's `$middleware` property:
-
-```php
-protected $middleware = [
-    \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class, // [tl! add]
-    \App\Http\Middleware\TrustProxies::class,
-    // ...
-];
-```
-
 <a name="disabling-deferred-functions-in-tests"></a>
 #### Disabling Deferred Functions in Tests
 
