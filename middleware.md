@@ -171,39 +171,6 @@ Route::get('/', function () {
 })->middleware([First::class, Second::class]);
 ```
 
-<a name="excluding-middleware"></a>
-#### Excluding Middleware
-
-When assigning middleware to a group of routes, you may occasionally need to prevent the middleware from being applied to an individual route within the group. You may accomplish this using the `withoutMiddleware` method:
-
-```php
-use App\Http\Middleware\EnsureTokenIsValid;
-
-Route::middleware([EnsureTokenIsValid::class])->group(function () {
-    Route::get('/', function () {
-        // ...
-    });
-
-    Route::get('/profile', function () {
-        // ...
-    })->withoutMiddleware([EnsureTokenIsValid::class]);
-});
-```
-
-You may also exclude a given set of middleware from an entire [group](/docs/{{version}}/routing#route-groups) of route definitions:
-
-```php
-use App\Http\Middleware\EnsureTokenIsValid;
-
-Route::withoutMiddleware([EnsureTokenIsValid::class])->group(function () {
-    Route::get('/profile', function () {
-        // ...
-    });
-});
-```
-
-The `withoutMiddleware` method can only remove route middleware and does not apply to [global middleware](#global-middleware).
-
 <a name="middleware-groups"></a>
 ### Middleware Groups
 
@@ -237,6 +204,39 @@ Route::middleware(['group-name'])->group(function () {
     // ...
 });
 ```
+
+<a name="excluding-middleware"></a>
+#### Excluding Middleware
+
+When assigning middleware to a group of routes, you may occasionally need to prevent the middleware from being applied to an individual route within the group. You may accomplish this using the `withoutMiddleware` method:
+
+```php
+use App\Http\Middleware\EnsureTokenIsValid;
+
+Route::middleware([EnsureTokenIsValid::class])->group(function () {
+    Route::get('/', function () {
+        // ...
+    });
+
+    Route::get('/profile', function () {
+        // ...
+    })->withoutMiddleware([EnsureTokenIsValid::class]);
+});
+```
+
+You may also exclude a given set of middleware from an entire [group](/docs/{{version}}/routing#route-groups) of route definitions:
+
+```php
+use App\Http\Middleware\EnsureTokenIsValid;
+
+Route::withoutMiddleware([EnsureTokenIsValid::class])->group(function () {
+    Route::get('/profile', function () {
+        // ...
+    });
+});
+```
+
+The `withoutMiddleware` method can only remove route middleware and does not apply to [global middleware](#global-middleware).
 
 <a name="laravels-default-middleware-groups"></a>
 #### Laravel's Default Middleware Groups
