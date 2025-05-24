@@ -337,6 +337,13 @@ The second and third arguments accepted by the `date` method may be used to spec
 
 If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method.
 
+<a name="retrieving-array-input-values"></a>
+#### Retrieving Array Input Values
+
+Input values containing arrays may be retrieved using the `array` method. This method will always cast the input value to an array. If the request does not contain an input value with the given name, an empty array will be returned:
+
+    $versions = $request->array('versions');
+
 <a name="retrieving-enum-input-values"></a>
 #### Retrieving Enum Input Values
 
