@@ -949,7 +949,16 @@ $request->validate([
     'middle_name' => ['nullable', 'string', 'max:50'],
 ]);
 ```
+### prohibited_if
 
+The `prohibited_if` rule prohibits a field from being present if another specified field has a certain value. This is useful for creating dynamic forms where some fields should be excluded based on the values of others.
+
+```php
+$request->validate([
+    'company_name' => 'prohibited_if:is_freelancer,true',
+    'is_freelancer' => 'boolean',
+]);
+```
 <a name="available-validation-rules"></a>
 ## Available Validation Rules
 
