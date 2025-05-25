@@ -387,7 +387,7 @@ If you would like to define arguments or options to expect multiple input values
 'mail:send {user*}'
 ```
 
-When calling this method, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `1` and `2` as its values:
+When running this command, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `1` and `2` as its values:
 
 ```shell
 php artisan mail:send 1 2
