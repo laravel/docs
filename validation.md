@@ -940,6 +940,15 @@ After defining this value, the validation rule will produce the following error 
 ```text
 The credit card number field is required when payment type is credit card.
 ```
+### nullable
+
+The `nullable` rule allows a field to be `null`. If the field is `null`, no other validation rules will be applied to it.
+
+```php
+$request->validate([
+    'middle_name' => ['nullable', 'string', 'max:50'],
+]);
+```
 
 <a name="available-validation-rules"></a>
 ## Available Validation Rules
