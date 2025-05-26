@@ -655,6 +655,7 @@ public function boot(): void
     Passport::deviceUserCodeView(
         fn ($parameters) => Inertia::render('Auth/OAuth/Device/UserCode')
     );
+
     Passport::deviceAuthorizationView(
         fn ($parameters) => Inertia::render('Auth/OAuth/Device/Authorize', [
             'request' => $parameters['request'],
