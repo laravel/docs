@@ -160,10 +160,10 @@ The `Schema::getTables()`, `Schema::getViews()`, and `Schema::getTypes()` method
 $tables = Schema::getTables();
 
 // All tables on the 'main' schema...
-$table = Schema::getTables(schema: 'main');
+$tables = Schema::getTables(schema: 'main');
 
 // All tables on the 'main' and 'blog' schemas...
-$table = Schema::getTables(schema: ['main', 'blog']);
+$tables = Schema::getTables(schema: ['main', 'blog']);
 ```
 
 The `Schema::getTableListing()` method now returns schema-qualified table names by default. You may pass the `schemaQualified` argument to change the behavior as desired:
@@ -172,10 +172,10 @@ The `Schema::getTableListing()` method now returns schema-qualified table names 
 $tables = Schema::getTableListing();
 // ['main.migrations', 'main.users', 'blog.posts']
 
-$table = Schema::getTableListing(schema: 'main');
+$tables = Schema::getTableListing(schema: 'main');
 // ['main.migrations', 'main.users']
 
-$table = Schema::getTableListing(schema: 'main', schemaQualified: false);
+$tables = Schema::getTableListing(schema: 'main', schemaQualified: false);
 // ['migrations', 'users']
 ```
 

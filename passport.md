@@ -255,6 +255,7 @@ To get started, we need to instruct Passport how to return our "authorization" v
 All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
 ```php
+use Inertia\Inertia;
 use Laravel\Passport\Passport;
 
 /**
@@ -638,6 +639,7 @@ To get started, we need to instruct Passport how to return our "user code" and "
 All the authorization view's rendering logic may be customized using the appropriate methods available via the `Laravel\Passport\Passport` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class.
 
 ```php
+use Inertia\Inertia;
 use Laravel\Passport\Passport;
 
 /**
@@ -650,15 +652,19 @@ public function boot(): void
     Passport::deviceAuthorizationView('auth.oauth.device.authorize');
     
     // By providing a closure...
-    Passport::deviceUserCodeView(fn ($parameters) => Inertia::render('Auth/OAuth/Device/UserCode'));
+    Passport::deviceUserCodeView(
+        fn ($parameters) => Inertia::render('Auth/OAuth/Device/UserCode')
+    );
 
-    Passport::deviceAuthorizationView(fn ($parameters) => Inertia::render('Auth/OAuth/Device/Authorize', [
-        'request' => $parameters['request'],
-        'authToken' => $parameters['authToken'],
-        'client' => $parameters['client'],
-        'user' => $parameters['user'],
-        'scopes' => $parameters['scopes'],
-    ]));
+    Passport::deviceAuthorizationView(
+        fn ($parameters) => Inertia::render('Auth/OAuth/Device/Authorize', [
+            'request' => $parameters['request'],
+            'authToken' => $parameters['authToken'],
+            'client' => $parameters['client'],
+            'user' => $parameters['user'],
+            'scopes' => $parameters['scopes'],
+        ])
+    );
 
     // ...
 }
@@ -738,7 +744,7 @@ do {
     $response = Http::asForm()->post('https://passport-app.test/oauth/token', [
         'grant_type' => 'urn:ietf:params:oauth:grant-type:device_code',
         'client_id' => 'your-client-id',
-        'client_secret' => 'your-client-secret', // required for confidential clients only
+        'client_secret' => 'your-client-secret', // Required for confidential clients only...
         'device_code' => 'the-device-code',
     ]);
     
@@ -792,7 +798,7 @@ use Illuminate\Support\Facades\Http;
 $response = Http::asForm()->post('https://passport-app.test/oauth/token', [
     'grant_type' => 'password',
     'client_id' => 'your-client-id',
-    'client_secret' => 'your-client-secret', // required for confidential clients only
+    'client_secret' => 'your-client-secret', // Required for confidential clients only...
     'username' => 'taylor@laravel.com',
     'password' => 'my-password',
     'scope' => 'user:read orders:create',
@@ -815,7 +821,7 @@ use Illuminate\Support\Facades\Http;
 $response = Http::asForm()->post('https://passport-app.test/oauth/token', [
     'grant_type' => 'password',
     'client_id' => 'your-client-id',
-    'client_secret' => 'your-client-secret', // required for confidential clients only
+    'client_secret' => 'your-client-secret', // Required for confidential clients only...
     'username' => 'taylor@laravel.com',
     'password' => 'my-password',
     'scope' => '*',
@@ -839,9 +845,10 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements OAuthenticatable
 {
     use HasApiTokens, Notifiable;
 
@@ -868,9 +875,10 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements OAuthenticatable
 {
     use HasApiTokens, Notifiable;
 
@@ -1127,9 +1135,9 @@ If a client does not request any specific scopes, you may configure your Passpor
 use Laravel\Passport\Passport;
 
 Passport::tokensCan([
-        'user:read' => 'Retrieve the user info',
-        'orders:create' => 'Place orders',
-        'orders:read:status' => 'Check order status',
+    'user:read' => 'Retrieve the user info',
+    'orders:create' => 'Place orders',
+    'orders:read:status' => 'Check order status',
 ]);
 
 Passport::defaultScopes([
@@ -1305,6 +1313,7 @@ Passport raises events when issuing access tokens and refresh tokens. You may [l
 | Event Name |
 | --- |
 | `Laravel\Passport\Events\AccessTokenCreated` |
+| `Laravel\Passport\Events\AccessTokenRevoked` |
 | `Laravel\Passport\Events\RefreshTokenCreated` |
 
 </div>
