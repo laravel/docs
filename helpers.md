@@ -561,7 +561,7 @@ $contains = Arr::has($array, ['product.price', 'product.discount']);
 <a name="method-array-hasall"></a>
 #### `Arr::hasAll()` {.collection-method}
 
-The `Arr::hasAll` method checks if all of the specified keys exist in the given array using "dot" notation:
+The `Arr::hasAll` method determines if all of the specified keys exist in the given array using "dot" notation:
 
 ```php
 use Illuminate\Support\Arr;
