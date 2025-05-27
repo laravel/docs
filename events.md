@@ -569,7 +569,7 @@ You may easily configure "exponential" backoffs by returning an array of backoff
 /**
  * Calculate the number of seconds to wait before retrying the queued listener.
  *
- * @return array<int, int>
+ * @return list<int>
  */
 public function backoff(): array
 {
