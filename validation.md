@@ -1356,7 +1356,20 @@ You may also pass a custom confirmation field name. For example, `confirmed:repe
 <a name="rule-contains"></a>
 #### contains:_foo_,_bar_,...
 
-The field under validation must be an array that contains all of the given parameter values.
+The field under validation must be an array that contains all of the given parameter values. Since this rule often requires you to `implode` an array, the `Rule::contains` method may be used to fluently construct the rule:
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'roles' => [
+        'required',
+        'array',
+        Rule::contains(['admin', 'editor']),
+    ],
+]);
+```
 
 <a name="rule-current-password"></a>
 #### current_password
