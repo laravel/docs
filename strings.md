@@ -206,6 +206,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [title](#method-fluent-str-title)
 [toBase64](#method-fluent-str-to-base64)
 [toHtmlString](#method-fluent-str-to-html-string)
+[toUri](#method-fluent-str-to-uri)
 [transliterate](#method-fluent-str-transliterate)
 [trim](#method-fluent-str-trim)
 [ltrim](#method-fluent-str-ltrim)
@@ -3191,6 +3192,17 @@ The `toHtmlString` method converts the given string to an instance of `Illuminat
 use Illuminate\Support\Str;
 
 $htmlString = Str::of('Nuno Maduro')->toHtmlString();
+```
+
+<a name="method-fluent-str-to-uri"></a>
+#### `toUri` {.collection-method}
+
+The `toUri` method converts the given string to an instance of [Illuminate\Support\Uri](/docs/{{version}}/helpers#uri):
+
+```php
+use Illuminate\Support\Str;
+
+$uri = Str::of('https://example.com')->toUri();
 ```
 
 <a name="method-fluent-str-transliterate"></a>
