@@ -55,6 +55,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::from](#method-array-from)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
+[Arr::hasAll](#method-array-hasall)
 [Arr::hasAny](#method-array-hasany)
 [Arr::integer](#method-array-integer)
 [Arr::isAssoc](#method-array-isassoc)
@@ -553,6 +554,33 @@ $contains = Arr::has($array, 'product.name');
 // true
 
 $contains = Arr::has($array, ['product.price', 'product.discount']);
+
+// false
+```
+
+<a name="method-array-hasall"></a>
+#### `Arr::hasAll()`
+
+The `Arr::hasAll` method checks whether all items in a given set exist in an array using "dot" notation:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['product' => 'Desk', 'price' => 100, 'options' => ['color' => 'black']];
+
+$contains = Arr::hasAll($array, ['product']);
+
+// true
+
+$contains = Arr::hasAll($array, ['product', 'price', 'options.color']);
+
+// true
+
+$contains = Arr::hasAll($array, ['product', 'price', 'discount']);
+
+// false
+
+$contains = Arr::hasAll($array, ['product', 'price', 'options.size']);
 
 // false
 ```
