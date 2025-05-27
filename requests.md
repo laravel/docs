@@ -394,6 +394,15 @@ When dealing with HTML elements like checkboxes, your application may receive "t
 $archived = $request->boolean('archived');
 ```
 
+<a name="retrieving-array-input-values"></a>
+#### Retrieving Array Input Values
+
+Input values containing arrays may be retrieved using the `array` method. This method will always cast the input value to an array. If the request does not contain an input value with the given name, an empty array will be returned:
+
+```php
+$versions = $request->array('versions');
+```
+
 <a name="retrieving-date-input-values"></a>
 #### Retrieving Date Input Values
 
