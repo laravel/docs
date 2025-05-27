@@ -123,6 +123,35 @@ While your application is in [maintenance mode](/docs/{{version}}/configuration#
 
 Within Horizon's default configuration file, you will notice a `defaults` configuration option. This configuration option specifies the default values for your application's [supervisors](#supervisors). The supervisor's default configuration values will be merged into the supervisor's configuration for each environment, allowing you to avoid unnecessary repetition when defining your supervisors.
 
+```php
+'defaults' => [
+    'supervisor-1' => [
+        'connection' => 'redis',
+        'queue' => ['default'],
+        'balance' => 'auto',
+        'autoScalingStrategy' => 'time',
+        'maxProcesses' => 1,
+        'maxTime' => 0,
+        'maxJobs' => 0,
+        'memory' => 128,
+        'tries' => 1,
+        'timeout' => 60,
+        'nice' => 0,
+        'backoff' => 0,
+        'sleep' => 3,
+        'rest' => 0
+    ],
+],
+
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+        ],
+    ],
+],
+```
+
 <a name="balancing-strategies"></a>
 ### Balancing Strategies
 
