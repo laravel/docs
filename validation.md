@@ -1044,6 +1044,7 @@ Below is a list of all available validation rules and their function:
 [Contains](#rule-contains)
 [Distinct](#rule-distinct)
 [In Array](#rule-in-array)
+[In Array Keys](#rule-in-array-keys)
 [List](#rule-list)
 [Max](#rule-max)
 [Min](#rule-min)
@@ -1770,6 +1771,15 @@ Validator::make($input, [
 #### in_array:_anotherfield_.*
 
 The field under validation must exist in _anotherfield_'s values.
+
+<a name="rule-in-array-keys"></a>
+#### in_array_keys:_value_.*
+
+The field under validation must be an array having at least one of the given _values_ as a key within the array:
+
+```php
+'config' => 'array|in_array_keys:timezone'
+```
 
 <a name="rule-integer"></a>
 #### integer
