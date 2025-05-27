@@ -265,15 +265,17 @@ public function boot(): void
 {
     // By providing a view name...
     Passport::authorizationView('auth.oauth.authorize');
-    
+
     // By providing a closure...
-    Passport::authorizationView(fn ($parameters) => Inertia::render('Auth/OAuth/Authorize', [
-        'request' => $parameters['request'],
-        'authToken' => $parameters['authToken'],
-        'client' => $parameters['client'],
-        'user' => $parameters['user'],
-        'scopes' => $parameters['scopes'],
-    ]));
+    Passport::authorizationView(
+        fn ($parameters) => Inertia::render('Auth/OAuth/Authorize', [
+            'request' => $parameters['request'],
+            'authToken' => $parameters['authToken'],
+            'client' => $parameters['client'],
+            'user' => $parameters['user'],
+            'scopes' => $parameters['scopes'],
+        ])
+    );
 }
 ```
 
@@ -382,7 +384,7 @@ class Client extends BaseClient
     /**
      * Determine if the client should skip the authorization prompt.
      *
-     * @param  \Laravel\Passport\Scope[]  $scopes 
+     * @param  \Laravel\Passport\Scope[]  $scopes
      */
     public function skipsAuthorization(Authenticatable $user, array $scopes): bool
     {
@@ -650,7 +652,7 @@ public function boot(): void
     // By providing a view name...
     Passport::deviceUserCodeView('auth.oauth.device.user-code');
     Passport::deviceAuthorizationView('auth.oauth.device.authorize');
-    
+
     // By providing a closure...
     Passport::deviceUserCodeView(
         fn ($parameters) => Inertia::render('Auth/OAuth/Device/UserCode')
@@ -719,7 +721,7 @@ return $response->json();
 
 This will return a JSON response containing `device_code`, `user_code`, `verification_uri`, `interval`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the device code expires. The `interval` attribute contains the number of seconds the consuming device should wait between requests when polling `/oauth/token` route to avoid rate limit errors.
 
-> [!NOTE]  
+> [!NOTE]
 > Remember, the `/oauth/device/code` route is already defined by Passport. You do not need to manually define this route.
 
 <a name="user-code"></a>
@@ -747,7 +749,7 @@ do {
         'client_secret' => 'your-client-secret', // Required for confidential clients only...
         'device_code' => 'the-device-code',
     ]);
-    
+
     if ($response->json('error') === 'slow_down') {
         $interval += 5;
     }
