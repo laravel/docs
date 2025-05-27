@@ -566,11 +566,11 @@ The `Arr::hasAll` method determines if all of the specified keys exist in the gi
 ```php
 use Illuminate\Support\Arr;
 
-$array = ['name' => 'Taylor', 'language' => 'php'];
+$array = ['name' => 'Taylor', 'language' => 'PHP'];
 
 Arr::hasAll($array, ['name']); // true
 Arr::hasAll($array, ['name', 'language']); // true
-Arr::hasAll($array, ['name', 'ide']); // false
+Arr::hasAll($array, ['name', 'IDE']); // false
 ```
 
 <a name="method-array-hasany"></a>
@@ -2298,7 +2298,7 @@ $traits = class_uses_recursive(App\Models\User::class);
 The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the given value:
 
 ```php
-$collection = collect(['taylor', 'abigail']);
+$collection = collect(['Taylor', 'Abigail']);
 ```
 
 <a name="method-config"></a>
@@ -2844,7 +2844,7 @@ The `tap` function accepts two arguments: an arbitrary `$value` and a closure. T
 
 ```php
 $user = tap(User::first(), function (User $user) {
-    $user->name = 'taylor';
+    $user->name = 'Taylor';
 
     $user->save();
 });
