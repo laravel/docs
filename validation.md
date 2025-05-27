@@ -1371,34 +1371,6 @@ Validator::make($data, [
 ]);
 ```
 
-The `Rule::contains` method accepts arrays, collections, enums, and individual values:
-
-```php
-use App\Enums\Role;
-use Illuminate\Validation\Rule;
-
-// Using enums
-'roles' => [
-    'required',
-    'array',
-    Rule::contains([Role::Admin, Role::Editor]),
-],
-
-// Using individual arguments
-'roles' => [
-    'required',
-    'array',
-    Rule::contains('admin', 'editor'),
-],
-
-// Using collections
-'roles' => [
-    'required',
-    'array',
-    Rule::contains(collect(['admin', 'editor'])),
-],
-```
-
 <a name="rule-current-password"></a>
 #### current_password
 
