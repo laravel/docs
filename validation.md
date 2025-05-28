@@ -376,56 +376,6 @@ If validation fails, a redirect response will be generated to send the user back
 > [!NOTE]
 > Need to add real-time form request validation to your Inertia powered Laravel frontend? Check out [Laravel Precognition](/docs/{{version}}/precognition).
 
-<a name="performing-additional-validation-on-form-requests"></a>
-#### Performing Additional Validation
-
-Sometimes you need to perform additional validation after your initial validation is complete. You can accomplish this using the form request's `after` method.
-
-The `after` method should return an array of callables or closures which will be invoked after validation is complete. The given callables will receive an `Illuminate\Validation\Validator` instance, allowing you to raise additional error messages if necessary:
-
-```php
-use Illuminate\Validation\Validator;
-
-/**
- * Get the "after" validation callables for the request.
- */
-public function after(): array
-{
-    return [
-        function (Validator $validator) {
-            if ($this->somethingElseIsInvalid()) {
-                $validator->errors()->add(
-                    'field',
-                    'Something is wrong with this field!'
-                );
-            }
-        }
-    ];
-}
-```
-
-As noted, the array returned by the `after` method may also contain invokable classes. The `__invoke` method of these classes will receive an `Illuminate\Validation\Validator` instance:
-
-```php
-use App\Validation\ValidateShippingTime;
-use App\Validation\ValidateUserStatus;
-use Illuminate\Validation\Validator;
-
-/**
- * Get the "after" validation callables for the request.
- */
-public function after(): array
-{
-    return [
-        new ValidateUserStatus,
-        new ValidateShippingTime,
-        function (Validator $validator) {
-            //
-        }
-    ];
-}
-```
-
 <a name="request-stopping-on-first-validation-rule-failure"></a>
 #### Stopping on the First Validation Failure
 
