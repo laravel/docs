@@ -944,9 +944,9 @@ public function toArray(object $notifiable): array
 
 When a notification is stored in your application's database, the `type` column will be set to the notification's class name by default, and the `read_at` column will be `null`. However, you can customize this behavior by defining the `databaseType` and `initialDatabaseReadAtValue` methods in your notification class:
 
-    use Illuminate\Support\Carbon;
-
 ```php
+use Illuminate\Support\Carbon;
+
 /**
  * Get the notification's database type.
  */
