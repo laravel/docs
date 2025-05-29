@@ -10,6 +10,7 @@
     - [React](#react-customization)
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
+- [Descope Authentication Starter Kit](#descope)
 - [WorkOS AuthKit Authentication](#workos)
 - [Inertia SSR](#inertia-ssr)
 - [Community Maintained Starter Kits](#community-maintained-starter-kits)
@@ -268,6 +269,31 @@ To change your authentication layout, modify the layout that is used by your app
     {{ $slot }}
 </x-layouts.auth.split>
 ```
+
+<a name="descope"></a>
+## Descope Authentication Starter Kit
+
+All of Laravel's starter kits use Laravel's built-in authentication to provide the ability to register and log in users, verify emails, change passwords, and other important authentication services. However, Descope's PHP SDK allows you to use Descope's [Flows](https://www.descope.com/flows) to build your authentication through an easy visual, workflow-based interface.
+
+Using Flows, all authentication methods like Passwords, Magic Links, Passkeys, Social Login, and SSO can all be done with the same [Descope Starter Kit](https://github.com/descope-sample-apps/react-laravel-sample-app) and code simply by changing the flow.
+
+You can visit [Descope](https://www.descope.com/) to make an account and begin using their frictionless authentication services for free today.
+
+### Configure Descope in a Laravel Project
+
+The [Descope Starter Kit](https://github.com/descope-sample-apps/react-laravel-sample-app) has the server set up already for use with the Descope SDK. 
+
+To use the SDK, configure environment variables in the .env file of the server:
+```ini
+DESCOPE_PROJECT_ID="YOUR PROJECT ID"
+DESCOPE_MANAGEMENT_KEY="YOUR MANAGEMENT KEY" # Optional, used for user management functions
+```
+
+#### Using Flows
+
+The frontend SDK being used includes a flow ID under the Descope component in the sample app, this can be changed to any flow ID that exists within your Descope project to customize the authentication method or even adding MFA directly through the flow.
+
+Read more about using Descope's Flows and PHP SDK on their [docs](https://docs.descope.com).
 
 <a name="workos"></a>
 ## WorkOS AuthKit Authentication
