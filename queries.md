@@ -405,6 +405,26 @@ $users = DB::table('users')
     ->get();
 ```
 
+<a name="straight-join-clause"></a>
+#### Straight Join Clause
+
+> [!WARNING]
+> Straight joins are currently supported by MySQL and MariaDB.
+
+This method has the same signature as the `join` method
+
+Prioritizes the users and contacts tables by first joining these two tables using a standard join, and then uses a straight join to join the orders table. Using a straight join tells the MySQL optimizer to process the tables in the specified order, thus prioritizing the join of users and contacts before joining the results with orders.
+
+```php
+use Illuminate\Support\Facades\DB;
+
+$users = DB::table('users')
+    ->join('contacts', 'users.id', '=', 'contacts.user_id')
+    ->straightJoin('orders', 'users.id', '=', 'orders.user_id')
+    ->select('users.*', 'contacts.phone', 'orders.price')
+    ->get();
+```
+
 <a name="cross-join-clause"></a>
 #### Cross Join Clause
 
@@ -443,7 +463,10 @@ DB::table('users')
 <a name="subquery-joins"></a>
 #### Subquery Joins
 
-You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receives three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:
+> [!WARNING]
+> Straight joins are currently supported by MySQL and MariaDB.
+
+You may use the `joinSub`, `leftJoinSub`, `straightJoinSub` and `rightJoinSub` methods to join a query to a subquery. Each of these methods receives three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:
 
 ```php
 $latestPosts = DB::table('posts')
