@@ -213,6 +213,7 @@ The `casts` method should return an array where the key is the name of the attri
 <div class="content-list" markdown="1">
 
 - `array`
+- `AsUri::class`
 - `AsStringable::class`
 - `boolean`
 - `collection`
