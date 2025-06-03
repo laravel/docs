@@ -291,7 +291,7 @@ class PhotoController extends Controller
 }
 ```
 
-In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `Context`, `DB`, `Log`, `RouteParameter`, and [Tag](#tagging) attributes:
+In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `Context`, `DB`, `Give`, `Log`, `RouteParameter`, and [Tag](#tagging) attributes:
 
 ```php
 <?php
@@ -299,11 +299,14 @@ In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
+use App\Contracts\Repository;
+use App\Repositories\DatabaseRepository;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Container\Attributes\Cache;
 use Illuminate\Container\Attributes\Config;
 use Illuminate\Container\Attributes\Context;
 use Illuminate\Container\Attributes\DB;
+use Illuminate\Container\Attributes\Give;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Container\Attributes\RouteParameter;
 use Illuminate\Container\Attributes\Tag;
@@ -320,6 +323,7 @@ class PhotoController extends Controller
         #[Config('app.timezone')] protected string $timezone,
         #[Context('uuid')] protected string $uuid,
         #[DB('mysql')] protected Connection $connection,
+        #[Give(DatabaseRepository::class)] protected Repository $users,
         #[Log('daily')] protected LoggerInterface $log,
         #[RouteParameter('photo')] protected Photo $photo,
         #[Tag('reports')] protected iterable $reports,
