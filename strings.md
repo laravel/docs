@@ -67,6 +67,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::lower](#method-str-lower)
 [Str::markdown](#method-str-markdown)
 [Str::mask](#method-str-mask)
+[Str::match](#method-str-match)
+[Str::matchAll](#method-str-match-all)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
@@ -950,6 +952,48 @@ $string = Str::mask('taylor@example.com', '*', -15, 3);
 
 // tay***@example.com
 ```
+
+<a name="method-str-match"></a>
+#### `Str::match()` {.collection-method}
+
+The `Str::match` method will return the portion of a string that matches a given regular expression pattern:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::match('/bar/', 'foo bar');
+
+// 'bar'
+
+$result = Str::match('/foo (.*)/', 'foo bar');
+
+// 'bar'
+```
+
+<a name="method-str-match-all"></a>
+#### `Str::matchAll()` {.collection-method}
+
+The `Str::matchAll` method will return a collection containing the portions of a string that match a given regular expression pattern:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::matchAll('/bar/', 'bar foo bar');
+
+// collect(['bar', 'bar'])
+```
+
+If you specify a matching group within the expression, Laravel will return a collection of the first matching group's matches:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::matchAll('/f(\w*)/', 'bar fun bar fly');
+
+// collect(['un', 'ly']);
+```
+
+If no matches are found, an empty collection will be returned.
 
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {.collection-method}
