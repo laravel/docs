@@ -33,7 +33,6 @@
     - [Prerequisites](#broadcast-prerequisites)
     - [Formatting Broadcast Notifications](#formatting-broadcast-notifications)
     - [Listening for Notifications](#listening-for-notifications)
-        - [Using React or Vue](#using-react-or-vue)
 - [SMS Notifications](#sms-notifications)
     - [Prerequisites](#sms-prerequisites)
     - [Formatting SMS Notifications](#formatting-sms-notifications)
@@ -1124,7 +1123,7 @@ useEchoNotification(
 </script>
 ```
 
-By default, the hook listens to all notifications. To specify the notification types you'd like to listen to, you can provide either a string or array of types to `useEchoNotification`:
+By default, the hook listens to all notifications. To specify the notification types you would like to listen to, you can provide either a string or array of types to `useEchoNotification`:
 
 ```js tab=React
 import { useEchoNotification } from "@laravel/echo-react";
