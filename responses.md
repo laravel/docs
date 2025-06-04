@@ -459,7 +459,7 @@ const sendMessage = () => {
 When sending data back to the stream via `send`, the active connection to the stream is canceled before sending the new data. All requests are sent as JSON `POST` requests.
 
 > [!WARNING]
-> Since the `useStream` hook makes a `POST` request to your application, a valid CSRF token is required. The easiest way to provide the CSRF token is to [include it in your application layout's `head` tag](/docs/{{version}}/csrf#csrf-x-csrf-token).
+> Since the `useStream` hook makes a `POST` request to your application, a valid CSRF token is required. The easiest way to provide the CSRF token is to [include it via a `meta` tag in your application layout's `head`](/docs/{{version}}/csrf#csrf-x-csrf-token).
 
 The second argument given to `useStream` is an options object that you may use to customize the stream consumption behavior. The default values for this object are shown below:
 
