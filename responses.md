@@ -459,7 +459,7 @@ const sendMessage = () => {
 When sending data back to the stream via `send`, the active connection to the stream is canceled before sending the new data. All requests are sent as JSON `POST` requests.
 
 > [!WARNING]
-> Laravel's `stream` package, requires the `csrf token` to be passed manually or set to have an meta[name="csrf-token"] in the head of you application.
+> Since the `useStream` hook makes a `POST` request to your application, a valid CSRF token is required. The easiest way to provide the CSRF token is to [include it in your application layout's `head` tag](/docs/{{version}}/csrf#csrf-x-csrf-token).
 
 The second argument given to `useStream` is an options object that you may use to customize the stream consumption behavior. The default values for this object are shown below:
 
