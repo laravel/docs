@@ -384,7 +384,7 @@ Route::get('/stream', function () {
 For convenience, if the closure you provide to the `stream` method returns a [Generator](https://www.php.net/manual/en/language.generators.overview.php), Laravel will automatically flush the output buffer between strings returned by the generator, as well as disable Nginx output buffering:
 
 ```php
-Route::get('/chat', function () {
+Route::post('/chat', function () {
     return response()->stream(function (): void {
         $stream = OpenAI::client()->chat()->createStreamed(...);
 
@@ -457,6 +457,9 @@ const sendMessage = () => {
 ```
 
 When sending data back to the stream via `send`, the active connection to the stream is canceled before sending the new data. All requests are sent as JSON `POST` requests.
+
+> [!WARNING]
+> Since the `useStream` hook makes a `POST` request to your application, a valid CSRF token is required. The easiest way to provide the CSRF token is to [include it in your application layout's `head` tag](/docs/{{version}}/csrf#csrf-x-csrf-token).
 
 The second argument given to `useStream` is an options object that you may use to customize the stream consumption behavior. The default values for this object are shown below:
 
