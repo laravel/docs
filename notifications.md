@@ -33,6 +33,7 @@
     - [Prerequisites](#broadcast-prerequisites)
     - [Formatting Broadcast Notifications](#formatting-broadcast-notifications)
     - [Listening for Notifications](#listening-for-notifications)
+        - [Using React or Vue](#using-react-or-vue)
 - [SMS Notifications](#sms-notifications)
     - [Prerequisites](#sms-prerequisites)
     - [Formatting SMS Notifications](#formatting-sms-notifications)
@@ -1092,6 +1093,63 @@ Echo.private('App.Models.User.' + userId)
     .notification((notification) => {
         console.log(notification.type);
     });
+```
+
+<a name="using-react-or-vue"></a>
+#### Using React or Vue
+
+Laravel Echo includes React and Vue hooks that make it painless to listen for notifications. To get started, invoke the `useEchoNotification` hook, which is used to listen for notifications. The `useEchoNotification` hook will automatically leave channels when the consuming component is unmounted:
+
+```js tab=React
+import { useEchoNotification } from "@laravel/echo-react";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+);
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoNotification } from "@laravel/echo-vue";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+);
+</script>
+```
+
+By default, the hook listens to all notifications. To specify the notification types you'd like to listen to, you can provide either a string or array of types to `useEchoNotification`:
+
+```js tab=React
+import { useEchoNotification } from "@laravel/echo-react";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoNotification } from "@laravel/echo-vue";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
+</script>
 ```
 
 <a name="customizing-the-notification-channel"></a>
