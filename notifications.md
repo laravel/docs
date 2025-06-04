@@ -1152,6 +1152,25 @@ useEchoNotification(
 </script>
 ```
 
+You may also specify the shape of the notification payload data, providing greater type safety and editing convenience:
+
+```ts
+type InvoicePaidNotification = {
+    invoice_id: number;
+    created_at: string;
+};
+
+useEchoNotification<InvoicePaidNotification>(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.invoice_id);
+        console.log(notification.created_at);
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
+```
+
 <a name="customizing-the-notification-channel"></a>
 #### Customizing the Notification Channel
 
