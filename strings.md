@@ -2278,6 +2278,19 @@ $adjusted = Str::of('this/string/')->finish('/');
 // this/string/
 ```
 
+<a name="method-fluent-str-hash"></a>
+#### `hash` {.collection-method}
+
+The `hash` method hashes the string with a given algorithm:
+
+```php
+use Illuminate\Support\Str;
+
+$hashed = Str::of(config('app.secret_unique_key'))->hash(algorithm: 'sha256');
+
+// 'ee1673468b1f8639856a0dde8b0ef5fef6c4d9d0255b4d544013bcbb5976b87b'
+```
+
 <a name="method-fluent-str-headline"></a>
 #### `headline` {.collection-method}
 
