@@ -298,8 +298,8 @@ In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`
 
 namespace App\Http\Controllers;
 
+use App\Contracts\UserRepository;
 use App\Models\Photo;
-use App\Contracts\Repository;
 use App\Repositories\DatabaseRepository;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Container\Attributes\Cache;
@@ -323,7 +323,7 @@ class PhotoController extends Controller
         #[Config('app.timezone')] protected string $timezone,
         #[Context('uuid')] protected string $uuid,
         #[DB('mysql')] protected Connection $connection,
-        #[Give(DatabaseRepository::class)] protected Repository $users,
+        #[Give(DatabaseRepository::class)] protected UserRepository $users,
         #[Log('daily')] protected LoggerInterface $log,
         #[RouteParameter('photo')] protected Photo $photo,
         #[Tag('reports')] protected iterable $reports,
