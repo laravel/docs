@@ -1166,7 +1166,7 @@ Instead of passing a date string to be evaluated by `strtotime`, you may specify
 'finish_date' => 'required|date|after:start_date'
 ```
 
-For convenience, date based rules may be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1191,7 +1191,7 @@ The `afterToday` and `todayOrAfter` methods may be used to fluently express the 
 
 The field under validation must be a value after or equal to the given date. For more information, see the [after](#rule-after) rule.
 
-For convenience, date based rules may be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1300,7 +1300,7 @@ if ($validator->stopOnFirstFailure()->fails()) {
 
 The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [after](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
-For convenience, date based rules may also be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may also be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1325,7 +1325,7 @@ The `beforeToday` and `todayOrBefore` methods may be used to fluently express th
 
 The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [after](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
-For convenience, date based rules may also be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may also be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1395,7 +1395,7 @@ The field under validation must be equal to the given date. The dates will be pa
 
 The field under validation must match one of the given _formats_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
 
-For convenience, date based rules may be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
