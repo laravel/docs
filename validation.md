@@ -1255,7 +1255,13 @@ To restrict this validation rule to characters in the ASCII range (`a-z`, `A-Z`,
 <a name="rule-array"></a>
 #### array
 
-The field under validation must be a PHP `array`.
+The field under validation must be a PHP `array`. For convenience, array rules may be constructed using the fluent `array` rule builder:
+
+```php
+use Illuminate\Validation\Rule;
+
+'user' => ['required', Rule::array()],
+```
 
 When additional values are provided to the `array` rule, each key in the input array must be present within the list of values provided to the rule. In the following example, the `admin` key in the input array is invalid since it is not contained in the list of values provided to the `array` rule:
 
