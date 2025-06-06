@@ -5,6 +5,7 @@
     - [Extending Collections](#extending-collections)
 - [Available Methods](#available-methods)
 - [Higher Order Messages](#higher-order-messages)
+- [Higher Order Static Calls](#higher-order-static-calls)
 - [Lazy Collections](#lazy-collections)
     - [Introduction](#lazy-collection-introduction)
     - [Creating Lazy Collections](#creating-lazy-collections)
@@ -3992,6 +3993,40 @@ Likewise, we can use the `sum` higher order message to gather the total number o
 $users = User::where('group', 'Development')->get();
 
 return $users->sum->votes;
+```
+
+<a name="higher-order-static-calls"></a>
+## Higher Order Static Calls
+
+Collections also provide support for "higher order static calls", which are short-cuts for calling static methods elegantly if you’re storing class names in collections.
+
+```php
+class Transformer1
+{
+    public static function transform(string $name): string
+    {
+        return strtoupper($name);
+    }
+}
+
+class Transformer2
+{
+    public static function transform(string $name): string
+    {
+        return strtolower($name);
+    }
+}
+
+$transformers = collect([Transformer1::class, Transformer2::class]);
+
+$results = $transformers->map->transform('taylor');
+
+$results->dd();
+
+// array:2 [
+//     0 => "TAYLOR"
+//     1 => "taylor"
+// ]
 ```
 
 <a name="lazy-collections"></a>
