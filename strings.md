@@ -1229,7 +1229,11 @@ $replaced = Str::replace('11.x', '12.x', $string);
 The `replace` method also accepts a `caseSensitive` argument. By default, the `replace` method is case sensitive:
 
 ```php
-Str::replace('Framework', 'Laravel', caseSensitive: false);
+$string = 'PHP Framework for Web Artisans';
+
+$replaced = Str::replace('PHP', 'Laravel', $string, caseSensitive: false);
+
+// Laravel Framework for Web Artisans
 ```
 
 <a name="method-str-replace-array"></a>
