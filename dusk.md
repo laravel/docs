@@ -2515,6 +2515,14 @@ class ExampleTest extends DuskTestCase
 }
 ```
 
+The `component()` method returns a browser instance scoped to a component. It works identically to `with()`, only it doesn't require a closure.
+
+```
+$datePicker = $browser->component(new DatePickerComponent);
+$datePicker->selectDate(2019, 1, 30);
+$datePicker->assertSee('January');
+```
+
 <a name="continuous-integration"></a>
 ## Continuous Integration
 
