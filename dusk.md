@@ -2515,11 +2515,13 @@ class ExampleTest extends DuskTestCase
 }
 ```
 
-The `component()` method returns a browser instance scoped to a component. It works identically to `with()`, only it doesn't require a closure.
+The `component` method may be used to retrieve a browser instance scoped to the given component:
 
-```
+```php
 $datePicker = $browser->component(new DatePickerComponent);
+
 $datePicker->selectDate(2019, 1, 30);
+
 $datePicker->assertSee('January');
 ```
 
