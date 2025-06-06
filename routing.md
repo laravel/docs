@@ -544,9 +544,6 @@ Route::domain('{account}.example.com')->group(function () {
 });
 ```
 
-> [!WARNING]
-> In order to ensure your subdomain routes are reachable, you should register subdomain routes before registering root domain routes. This will prevent root domain routes from overwriting subdomain routes which have the same URI path.
-
 <a name="route-group-prefixes"></a>
 ### Route Prefixes
 
