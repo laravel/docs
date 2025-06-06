@@ -245,21 +245,21 @@ Laravel includes predefined `web` and `api` middleware groups that contain commo
 
 <div class="overflow-auto">
 
-| The `web` Middleware Group |
-| --- |
-| `Illuminate\Cookie\Middleware\EncryptCookies` |
+| The `web` Middleware Group                                |
+| --------------------------------------------------------- |
+| `Illuminate\Cookie\Middleware\EncryptCookies`             |
 | `Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse` |
-| `Illuminate\Session\Middleware\StartSession` |
-| `Illuminate\View\Middleware\ShareErrorsFromSession` |
+| `Illuminate\Session\Middleware\StartSession`              |
+| `Illuminate\View\Middleware\ShareErrorsFromSession`       |
 | `Illuminate\Foundation\Http\Middleware\ValidateCsrfToken` |
-| `Illuminate\Routing\Middleware\SubstituteBindings` |
+| `Illuminate\Routing\Middleware\SubstituteBindings`        |
 
 </div>
 
 <div class="overflow-auto">
 
-| The `api` Middleware Group |
-| --- |
+| The `api` Middleware Group                         |
+| -------------------------------------------------- |
 | `Illuminate\Routing\Middleware\SubstituteBindings` |
 
 </div>
@@ -355,20 +355,20 @@ For convenience, some of Laravel's built-in middleware are aliased by default. F
 
 <div class="overflow-auto">
 
-| Alias | Middleware |
-| --- | --- |
-| `auth` | `Illuminate\Auth\Middleware\Authenticate` |
-| `auth.basic` | `Illuminate\Auth\Middleware\AuthenticateWithBasicAuth` |
-| `auth.session` | `Illuminate\Session\Middleware\AuthenticateSession` |
-| `cache.headers` | `Illuminate\Http\Middleware\SetCacheHeaders` |
-| `can` | `Illuminate\Auth\Middleware\Authorize` |
-| `guest` | `Illuminate\Auth\Middleware\RedirectIfAuthenticated` |
-| `password.confirm` | `Illuminate\Auth\Middleware\RequirePassword` |
-| `precognitive` | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests` |
-| `signed` | `Illuminate\Routing\Middleware\ValidateSignature` |
-| `subscribed` | `\Spark\Http\Middleware\VerifyBillableIsSubscribed` |
-| `throttle` | `Illuminate\Routing\Middleware\ThrottleRequests` or `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` |
-| `verified` | `Illuminate\Auth\Middleware\EnsureEmailIsVerified` |
+| Alias              | Middleware                                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `auth`             | `Illuminate\Auth\Middleware\Authenticate`                                                                     |
+| `auth.basic`       | `Illuminate\Auth\Middleware\AuthenticateWithBasicAuth`                                                        |
+| `auth.session`     | `Illuminate\Session\Middleware\AuthenticateSession`                                                           |
+| `cache.headers`    | `Illuminate\Http\Middleware\SetCacheHeaders`                                                                  |
+| `can`              | `Illuminate\Auth\Middleware\Authorize`                                                                        |
+| `guest`            | `Illuminate\Auth\Middleware\RedirectIfAuthenticated`                                                          |
+| `password.confirm` | `Illuminate\Auth\Middleware\RequirePassword`                                                                  |
+| `precognitive`     | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests`                                            |
+| `signed`           | `Illuminate\Routing\Middleware\ValidateSignature`                                                             |
+| `subscribed`       | `\Spark\Http\Middleware\VerifyBillableIsSubscribed`                                                           |
+| `throttle`         | `Illuminate\Routing\Middleware\ThrottleRequests` or `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` |
+| `verified`         | `Illuminate\Auth\Middleware\EnsureEmailIsVerified`                                                            |
 
 </div>
 
