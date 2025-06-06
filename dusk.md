@@ -1414,6 +1414,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertDontSeeIn](#assert-dont-see-in)
 [assertSeeAnythingIn](#assert-see-anything-in)
 [assertSeeNothingIn](#assert-see-nothing-in)
+[assertCount](#assert-count)
 [assertScript](#assert-script)
 [assertSourceHas](#assert-source-has)
 [assertSourceMissing](#assert-source-missing)
@@ -1755,6 +1756,15 @@ Assert that no text is present within the selector:
 
 ```php
 $browser->assertSeeNothingIn($selector);
+```
+
+<a name="assert-count"></a>
+#### assertCount
+
+Assert that elements matching the given selector appear the specified number of times:
+
+```php
+$browser->assertCount($selector, $count);
 ```
 
 <a name="assert-script"></a>
@@ -2503,6 +2513,16 @@ class ExampleTest extends DuskTestCase
         });
     }
 }
+```
+
+The `component` method may be used to retrieve a browser instance scoped to the given component:
+
+```php
+$datePicker = $browser->component(new DatePickerComponent);
+
+$datePicker->selectDate(2019, 1, 30);
+
+$datePicker->assertSee('January');
 ```
 
 <a name="continuous-integration"></a>
