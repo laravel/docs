@@ -1231,7 +1231,7 @@ The `replace` method also accepts a `caseSensitive` argument. By default, the `r
 ```php
 $string = 'PHP Framework for Web Artisans';
 
-$replaced = Str::replace('PHP', 'Laravel', $string, caseSensitive: false);
+$replaced = Str::replace('php', 'Laravel', $string, caseSensitive: false);
 
 // Laravel Framework for Web Artisans
 ```
