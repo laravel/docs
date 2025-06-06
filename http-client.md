@@ -36,20 +36,24 @@ $response = Http::get('http://example.com');
 
 The `get` method returns an instance of `Illuminate\Http\Client\Response`, which provides a variety of methods that may be used to inspect the response:
 
-```php
-$response->body() : string;
-$response->json($key = null, $default = null) : mixed;
-$response->object() : object;
-$response->collect($key = null) : Illuminate\Support\Collection;
-$response->resource() : resource;
-$response->status() : int;
-$response->successful() : bool;
-$response->redirect(): bool;
-$response->failed() : bool;
-$response->clientError() : bool;
-$response->header($header) : string;
-$response->headers() : array;
-```
+<div class="overflow-auto">
+
+| Method                                           | Returns                       |
+| ------------------------------------------------ | ----------------------------- |
+| `$response->body();`                             | string                        |
+| `$response->json($key = null, $default = null);` | mixed                         |
+| `$response->object();`                           | object                        |
+| `$response->collect($key = null);`               | Illuminate\Support\Collection |
+| `$response->resource();`                         | resource                      |
+| `$response->status();`                           | int                           |
+| `$response->successful();`                       | bool                          |
+| `$response->redirect();`                         | bool                          |
+| `$response->failed();`                           | bool                          |
+| `$response->clientError();`                      | bool                          |
+| `$response->header($header);`                    | string                        |
+| `$response->headers();`                          | array                         |
+
+</div>
 
 The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
 
