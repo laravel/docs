@@ -1761,7 +1761,7 @@ $browser->assertSeeNothingIn($selector);
 <a name="assert-count"></a>
 #### assertCount
 
-Assert that the given element is present a given number of times:
+Assert that elements matching the given selector appear the specified number of times:
 
 ```php
 $browser->assertCount($selector, $count);
