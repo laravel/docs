@@ -2805,6 +2805,7 @@ return retry([100, 200], function () {
 To only retry under specific conditions, you may pass a closure as the fourth argument to the `retry` function:
 
 ```php
+use App\Exceptions\RetryException;
 use Exception;
 
 return retry(5, function () {
