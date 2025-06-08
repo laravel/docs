@@ -175,6 +175,16 @@ php artisan make:job ProcessPodcast
 
 The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously.
 
+### Create a Synchronous Job
+
+If you want the job to run immediately (synchronously) instead of being queued, you can use the `--sync` option:
+
+```bash
+php artisan make:job ProcessPodcast --sync
+```
+
+This will generate a job class that **does not** implement the `Illuminate\Contracts\Queue\ShouldQueue` interface. The job will be executed in the same process as the request, which is useful for simple tasks or development/testing environments.
+
 > [!NOTE]
 > Job stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
