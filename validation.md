@@ -172,6 +172,16 @@ $request->validate([
     'author.description' => 'required',
 ]);
 ```
+<a name="distinct-rule"></a>
+#### Distinct Rule for Arrays
+
+You can ensure that all values in an array input are unique by using the `distinct` validation rule. For example:
+
+```php
+$request->validate([
+    'tags' => ['required', 'array'],
+    'tags.*' => ['string', 'distinct'],
+]);
 
 On the other hand, if your field name contains a literal period, you can explicitly prevent this from being interpreted as "dot" syntax by escaping the period with a backslash:
 
