@@ -1473,6 +1473,12 @@ class ImportCsv implements ShouldQueue
 }
 ```
 
+You can also create a batchable job using the `make:job` Artisan command with the `--batched` option:
+
+```shell
+php artisan make:job ProcessPodcast --batched
+```
+
 <a name="dispatching-batches"></a>
 ### Dispatching Batches
 
