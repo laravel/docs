@@ -535,6 +535,8 @@ public function retryUntil(): DateTime
 }
 ```
 
+If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
+
 <a name="specifying-queued-listener-backoff"></a>
 #### Specifying Queued Listener Backoff
 
@@ -567,7 +569,7 @@ You may easily configure "exponential" backoffs by returning an array of backoff
 /**
  * Calculate the number of seconds to wait before retrying the queued listener.
  *
- * @return array<int, int>
+ * @return list<int>
  */
 public function backoff(): array
 {
@@ -656,7 +658,7 @@ class OrderShipped implements ShouldDispatchAfterCommit
 <a name="writing-event-subscribers"></a>
 ### Writing Event Subscribers
 
-Event subscribers are classes that may subscribe to multiple events from within the subscriber class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance. You may call the `listen` method on the given dispatcher to register event listeners:
+Event subscribers are classes that may subscribe to multiple events from within the subscriber class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which receives an event dispatcher instance. You may call the `listen` method on the given dispatcher to register event listeners:
 
 ```php
 <?php

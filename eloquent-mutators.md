@@ -214,6 +214,7 @@ The `casts` method should return an array where the key is the name of the attri
 
 - `array`
 - `AsStringable::class`
+- `AsUri::class`
 - `boolean`
 - `collection`
 - `date`

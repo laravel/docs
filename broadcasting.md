@@ -368,7 +368,7 @@ import Pusher from 'pusher-js';
 
 const options = {
     broadcaster: 'pusher',
-    key: 'your-pusher-channels-key'
+    key: import.meta.env.VITE_PUSHER_APP_KEY
 }
 
 window.Echo = new Echo({

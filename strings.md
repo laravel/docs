@@ -67,6 +67,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::lower](#method-str-lower)
 [Str::markdown](#method-str-markdown)
 [Str::mask](#method-str-mask)
+[Str::match](#method-str-match)
+[Str::matchAll](#method-str-match-all)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
@@ -150,6 +152,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [excerpt](#method-fluent-str-excerpt)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
+[hash](#method-fluent-str-hash)
 [headline](#method-fluent-str-headline)
 [inlineMarkdown](#method-fluent-str-inline-markdown)
 [is](#method-fluent-str-is)
@@ -206,6 +209,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [title](#method-fluent-str-title)
 [toBase64](#method-fluent-str-to-base64)
 [toHtmlString](#method-fluent-str-to-html-string)
+[toUri](#method-fluent-str-to-uri)
 [transliterate](#method-fluent-str-transliterate)
 [trim](#method-fluent-str-trim)
 [ltrim](#method-fluent-str-ltrim)
@@ -950,6 +954,48 @@ $string = Str::mask('taylor@example.com', '*', -15, 3);
 // tay***@example.com
 ```
 
+<a name="method-str-match"></a>
+#### `Str::match()` {.collection-method}
+
+The `Str::match` method will return the portion of a string that matches a given regular expression pattern:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::match('/bar/', 'foo bar');
+
+// 'bar'
+
+$result = Str::match('/foo (.*)/', 'foo bar');
+
+// 'bar'
+```
+
+<a name="method-str-match-all"></a>
+#### `Str::matchAll()` {.collection-method}
+
+The `Str::matchAll` method will return a collection containing the portions of a string that match a given regular expression pattern:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::matchAll('/bar/', 'bar foo bar');
+
+// collect(['bar', 'bar'])
+```
+
+If you specify a matching group within the expression, Laravel will return a collection of the first matching group's matches:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::matchAll('/f(\w*)/', 'bar fun bar fly');
+
+// collect(['un', 'ly']);
+```
+
+If no matches are found, an empty collection will be returned.
+
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {.collection-method}
 
@@ -1183,7 +1229,14 @@ $replaced = Str::replace('11.x', '12.x', $string);
 The `replace` method also accepts a `caseSensitive` argument. By default, the `replace` method is case sensitive:
 
 ```php
-Str::replace('Framework', 'Laravel', caseSensitive: false);
+$replaced = Str::replace(
+    'php',
+    'Laravel',
+    'PHP Framework for Web Artisans',
+    caseSensitive: false
+);
+
+// Laravel Framework for Web Artisans
 ```
 
 <a name="method-str-replace-array"></a>
@@ -2233,6 +2286,19 @@ $adjusted = Str::of('this/string/')->finish('/');
 // this/string/
 ```
 
+<a name="method-fluent-str-hash"></a>
+#### `hash` {.collection-method}
+
+The `hash` method hashes the string using the given [algorithm](https://www.php.net/manual/en/function.hash-algos.php):
+
+```php
+use Illuminate\Support\Str;
+
+$hashed = Str::of('secret')->hash(algorithm: 'sha256');
+
+// '2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b'
+```
+
 <a name="method-fluent-str-headline"></a>
 #### `headline` {.collection-method}
 
@@ -3191,6 +3257,17 @@ The `toHtmlString` method converts the given string to an instance of `Illuminat
 use Illuminate\Support\Str;
 
 $htmlString = Str::of('Nuno Maduro')->toHtmlString();
+```
+
+<a name="method-fluent-str-to-uri"></a>
+#### `toUri` {.collection-method}
+
+The `toUri` method converts the given string to an instance of [Illuminate\Support\Uri](/docs/{{version}}/helpers#uri):
+
+```php
+use Illuminate\Support\Str;
+
+$uri = Str::of('https://example.com')->toUri();
 ```
 
 <a name="method-fluent-str-transliterate"></a>
