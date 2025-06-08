@@ -182,7 +182,7 @@ $request->validate([
     'tags' => ['required', 'array'],
     'tags.*' => ['string', 'distinct'],
 ]);
-
+```
 On the other hand, if your field name contains a literal period, you can explicitly prevent this from being interpreted as "dot" syntax by escaping the period with a backslash:
 
 ```php
