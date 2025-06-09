@@ -2805,12 +2805,13 @@ return retry([100, 200], function () {
 To only retry under specific conditions, you may pass a closure as the fourth argument to the `retry` function:
 
 ```php
+use App\Exceptions\TemporaryException;
 use Exception;
 
 return retry(5, function () {
     // ...
 }, 100, function (Exception $exception) {
-    return $exception instanceof RetryException;
+    return $exception instanceof TemporaryException;
 });
 ```
 
