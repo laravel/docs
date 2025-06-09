@@ -38,20 +38,20 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
 
 <div class="overflow-auto">
 
-| Method                                           | Returns                       |
-| ------------------------------------------------ | ----------------------------- |
-| `$response->body();`                             | string                        |
-| `$response->json($key = null, $default = null);` | mixed                         |
-| `$response->object();`                           | object                        |
-| `$response->collect($key = null);`               | Illuminate\Support\Collection |
-| `$response->resource();`                         | resource                      |
-| `$response->status();`                           | int                           |
-| `$response->successful();`                       | bool                          |
-| `$response->redirect();`                         | bool                          |
-| `$response->failed();`                           | bool                          |
-| `$response->clientError();`                      | bool                          |
-| `$response->header($header);`                    | string                        |
-| `$response->headers();`                          | array                         |
+| Method                                         | Returns                       |
+| ---------------------------------------------- | ----------------------------- |
+| $response->body();                             | string                        |
+| $response->json($key = null, $default = null); | mixed                         |
+| $response->object();                           | object                        |
+| $response->collect($key = null);               | Illuminate\Support\Collection |
+| $response->resource();                         | resource                      |
+| $response->status();                           | int                           |
+| $response->successful();                       | bool                          |
+| $response->redirect();                         | bool                          |
+| $response->failed();                           | bool                          |
+| $response->clientError();                      | bool                          |
+| $response->header($header);                    | string                        |
+| $response->headers();                          | array                         |
 
 </div>
 
