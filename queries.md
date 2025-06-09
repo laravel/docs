@@ -1163,6 +1163,14 @@ $query = DB::table('users')->orderBy('name');
 $usersOrderedByEmail = $query->reorder('email', 'desc')->get();
 ```
 
+For convenience, you may use the `reorderDesc` method to reorder the query results in descending order:
+
+```php
+$query = DB::table('users')->orderBy('name');
+
+$usersOrderedByEmail = $query->reorderDesc('email')->get();
+```
+
 <a name="grouping"></a>
 ### Grouping
 
