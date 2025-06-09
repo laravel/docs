@@ -2145,7 +2145,7 @@ $containsAll = Str::of('This is my name')->containsAll(['MY', 'NAME'], ignoreCas
 <a name="method-fluent-str-decrypt"></a>
 #### `decrypt` {.collection-method}
 
-The `decrypt` method decrypts the encrypted string:
+The `decrypt` method [decrypts](/docs/{{version}}/encryption) the encrypted string:
 
 ```php
 use Illuminate\Support\Str;
@@ -2206,14 +2206,12 @@ $string = Str::of('/foo/bar/baz')->dirname(2);
 <a name="method-fluent-str-encrypt"></a>
 #### `encrypt` {.collection-method}
 
-The `encrypt` method encrypts the string:
+The `encrypt` method [encrypts](/docs/{{version}}/encryption) the string:
 
 ```php
 use Illuminate\Support\Str;
 
 $encrypted = Str::of('secret')->encrypt();
-
-// 'The result is different each time...'
 ```
 
 For the inverse of `encrypt`, see the [decrypt](#method-fluent-str-decrypt) method.
