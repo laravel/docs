@@ -1312,10 +1312,10 @@ Passport raises events when issuing access tokens and refresh tokens. You may [l
 
 <div class="overflow-auto">
 
-| Event Name |
-| --- |
-| `Laravel\Passport\Events\AccessTokenCreated` |
-| `Laravel\Passport\Events\AccessTokenRevoked` |
+| Event Name                                    |
+| --------------------------------------------- |
+| `Laravel\Passport\Events\AccessTokenCreated`  |
+| `Laravel\Passport\Events\AccessTokenRevoked`  |
 | `Laravel\Passport\Events\RefreshTokenCreated` |
 
 </div>
