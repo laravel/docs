@@ -623,12 +623,12 @@ Laravel dispatches a variety of [events](/docs/{{version}}/events) during the sc
 
 <div class="overflow-auto">
 
-| Event Name |
-| --- |
-| `Illuminate\Console\Events\ScheduledTaskStarting` |
-| `Illuminate\Console\Events\ScheduledTaskFinished` |
+| Event Name                                                  |
+| ----------------------------------------------------------- |
+| `Illuminate\Console\Events\ScheduledTaskStarting`           |
+| `Illuminate\Console\Events\ScheduledTaskFinished`           |
 | `Illuminate\Console\Events\ScheduledBackgroundTaskFinished` |
-| `Illuminate\Console\Events\ScheduledTaskSkipped` |
-| `Illuminate\Console\Events\ScheduledTaskFailed` |
+| `Illuminate\Console\Events\ScheduledTaskSkipped`            |
+| `Illuminate\Console\Events\ScheduledTaskFailed`             |
 
 </div>
