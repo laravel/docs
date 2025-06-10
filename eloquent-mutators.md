@@ -15,6 +15,7 @@
     - [Array / JSON Serialization](#array-json-serialization)
     - [Inbound Casting](#inbound-casting)
     - [Cast Parameters](#cast-parameters)
+    - [Comparing Cast Values](#comparing-cast-values)
     - [Castables](#castables)
 
 <a name="introduction"></a>
@@ -923,6 +924,33 @@ protected function casts(): array
     return [
         'secret' => AsHash::class.':sha256',
     ];
+}
+```
+
+<a name="comparing-cast-values"></a>
+### Comparing Cast Values
+
+If you would like to define how two given cast values should be compared to determine if they have been changed, your custom cast class may implement the `Illuminate\Contracts\Database\Eloquent\ComparesCastableAttributes` interface. This allows you to have fine-grained control over which values Eloquent considers changed and thus saves to the database when a model is updated.
+
+This interface states that your class should contain a `compare` method which should return `true` if the given values are different:
+
+```php
+/**
+ * Determine if the given values are equal.
+ *
+ * @param  \Illuminate\Database\Eloquent\Model  $model
+ * @param  string  $key
+ * @param  mixed  $firstValue
+ * @param  mixed  $secondValue
+ * @return bool
+ */
+public function compare(
+    Model $model,
+    string $key,
+    mixed $firstValue,
+    mixed $secondValue
+): bool {
+    return $firstValue !== $secondValue;
 }
 ```
 
