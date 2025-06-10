@@ -25,6 +25,7 @@
     - [Only to Others](#only-to-others)
     - [Customizing the Connection](#customizing-the-connection)
     - [Anonymous Events](#anonymous-events)
+    - [Rescuing Broadcasts](#rescuing-broadcasts)
 - [Receiving Broadcasts](#receiving-broadcasts)
     - [Listening for Events](#listening-for-events)
     - [Leaving a Channel](#leaving-a-channel)
@@ -1020,6 +1021,27 @@ To broadcast the event to all channel subscribers except the currently authentic
 Broadcast::on('orders.'.$order->id)
     ->toOthers()
     ->send();
+```
+
+<a name="rescuing-broadcasts"></a>
+### Rescuing Broadcasts
+
+When your application's queue server is unavailable or Laravel encounters an error while broadcasting an event, an exception is thrown that typically causes the end user to see an application error. Since event broadcasting is often supplementary to your application's core functionality, you can prevent these exceptions from disrupting the user experience by implementing the `ShouldRescue` interface on your events.
+
+Events that implement the `ShouldRescue` interface automatically utilize Laravel's [rescue helper function](/docs/{{version}}/helpers#method-rescue) during broadcast attempts. This helper catches any exceptions, reports them to your application's exception handler for logging, and allows the application to continue executing normally without interrupting the user's workflow:
+
+```php
+<?php
+
+namespace App\Events;
+
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldRescue;
+
+class ServerCreated implements ShouldBroadcast, ShouldRescue
+{
+    // ...
+}
 ```
 
 <a name="receiving-broadcasts"></a>
