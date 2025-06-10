@@ -322,6 +322,7 @@ class PhotoController extends Controller
         #[Cache('redis')] protected Repository $cache,
         #[Config('app.timezone')] protected string $timezone,
         #[Context('uuid')] protected string $uuid,
+        #[Context('ulid', hidden: true)] protected string $ulid,
         #[DB('mysql')] protected Connection $connection,
         #[Give(DatabaseRepository::class)] protected UserRepository $users,
         #[Log('daily')] protected LoggerInterface $log,
