@@ -470,7 +470,7 @@ $url = Str::chopEnd('laravel.com/index.php', ['/index.html', '/index.php']);
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
 
-The `Str::contains` method determines if the given string contains the given value. By default this method is case sensitive:
+The `Str::contains` method determines if the given string contains the given value. By default, this method is case sensitive:
 
 ```php
 use Illuminate\Support\Str;
@@ -526,7 +526,7 @@ $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], ignoreCase: t
 <a name="method-str-doesnt-contain"></a>
 #### `Str::doesntContain()` {.collection-method}
 
-The `Str::doesntContain` method determines if the given string doesn't contain the given value. By default this method is case sensitive:
+The `Str::doesntContain` method determines if the given string doesn't contain the given value. By default, this method is case sensitive:
 
 ```php
 use Illuminate\Support\Str;
@@ -2089,7 +2089,7 @@ $url = Str::of('http://laravel.com')->chopEnd(['.com', '.io']);
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
 
-The `contains` method determines if the given string contains the given value. By default this method is case sensitive:
+The `contains` method determines if the given string contains the given value. By default, this method is case sensitive:
 
 ```php
 use Illuminate\Support\Str;
