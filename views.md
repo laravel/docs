@@ -170,7 +170,7 @@ View composers are callbacks or class methods that are called when a view is ren
 
 Typically, view composers will be registered within one of your application's [service providers](/docs/{{version}}/providers). In this example, we'll assume that the `App\Providers\AppServiceProvider` will house this logic.
 
-We'll use the `View` facade's `composer` method to register the view composer. Laravel does not include a default directory for class based view composers, so you are free to organize them however you wish. For example, you could create an `app/View/Composers` directory to house all of your application's view composers:
+We'll use the `View` facade's `composer` method to register the view composer. Laravel does not include a default directory for class-based view composers, so you are free to organize them however you wish. For example, you could create an `app/View/Composers` directory to house all of your application's view composers:
 
 ```php
 <?php
@@ -197,7 +197,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Using class based composers...
+        // Using class-based composers...
         Facades\View::composer('profile', ProfileComposer::class);
 
         // Using closure-based composers...
