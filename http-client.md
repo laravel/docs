@@ -409,6 +409,12 @@ use Illuminate\Foundation\Configuration\Exceptions;
 })
 ```
 
+Alternatively, you may customize the exception truncation behavior per request using the `truncateExceptionsAt` method:
+
+```php
+return Http::truncateExceptionsAt(240)->post(/* ... */);
+```
+
 <a name="guzzle-middleware"></a>
 ### Guzzle Middleware
 
