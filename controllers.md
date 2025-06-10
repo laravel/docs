@@ -165,9 +165,6 @@ public static function middleware(): array
 }
 ```
 
-> [!WARNING]
-> Controllers implementing `Illuminate\Routing\Controllers\HasMiddleware` should not extend `Illuminate\Routing\Controller`.
-
 <a name="resource-controllers"></a>
 ## Resource Controllers
 
