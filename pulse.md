@@ -84,8 +84,8 @@ use Illuminate\Support\Facades\Gate;
  */
 public function boot(): void
 {
-    Gate::define('viewPulse', function (User $user) {
-        return $user->isAdmin();
+    Gate::define('viewPulse', function (?User $user) {
+        return $user?->isAdmin() ?? false;
     });
 
     // ...
