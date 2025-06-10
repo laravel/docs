@@ -475,7 +475,7 @@ public function middleware(): array
 ```
 
 > [!NOTE]
-> Job middleware can also be assigned to queueable event listeners, mailables, and notifications.
+> Job middleware can also be assigned to [queueable event listeners](/docs/{{version}}/events#queued-event-listeners), [mailables](/docs/{{version}}/mail#queueing-mail), and [notifications](/docs/{{version}}/notifications#queueing-notifications).
 
 <a name="rate-limiting"></a>
 ### Rate Limiting
