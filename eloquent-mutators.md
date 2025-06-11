@@ -932,7 +932,7 @@ protected function casts(): array
 
 If you would like to define how two given cast values should be compared to determine if they have been changed, your custom cast class may implement the `Illuminate\Contracts\Database\Eloquent\ComparesCastableAttributes` interface. This allows you to have fine-grained control over which values Eloquent considers changed and thus saves to the database when a model is updated.
 
-This interface states that your class should contain a `compare` method which should return `true` if the given values are different:
+This interface states that your class should contain a `compare` method which should return `true` if the given values are considered equal:
 
 ```php
 /**
@@ -950,7 +950,7 @@ public function compare(
     mixed $firstValue,
     mixed $secondValue
 ): bool {
-    return $firstValue !== $secondValue;
+    return $firstValue === $secondValue;
 }
 ```
 
