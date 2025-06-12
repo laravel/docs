@@ -179,6 +179,8 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [mode](#method-mode)
 [multiply](#method-multiply)
 [nth](#method-nth)
+[offsetExists](#method-offset-exists)
+[offsetGet](#method-offset-get)
 [only](#method-only)
 [pad](#method-pad)
 [partition](#method-partition)
@@ -2024,6 +2026,46 @@ You may optionally pass a starting offset as the second argument:
 $collection->nth(4, 1);
 
 // ['b', 'f']
+```
+
+<a name="method-offset-exists"></a>
+#### `offsetExists()` {.collection-method}
+
+The `offsetExists` method determines whether the collection contains an item at a given offset.
+
+```php
+$collection = collect([
+    'name' => 'Taylor',
+    'framework' => 'Laravel',
+]);
+
+$collection->offsetExists('name');
+
+// true
+
+$collection->offsetExists('language');
+
+// false
+```
+
+<a name="method-offset-get"></a>
+#### `offsetGet()` {.collection-method}
+
+The `offsetGet` method returns an item at a given offset. If the key does not exist, an exception will be thrown.
+
+```php
+$collection = collect([
+    'name' => 'Taylor',
+    'framework' => 'Laravel',
+]);
+
+$collection->offsetGet('name');
+
+// Taylor
+
+$collection->offsetGet('language');
+
+// ErrorException
 ```
 
 <a name="method-only"></a>
