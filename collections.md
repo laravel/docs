@@ -436,7 +436,7 @@ $collapsed->all();
 <a name="method-collapsewithkeys"></a>
 #### `collapseWithKeys()` {.collection-method}
 
-The `collapseWithKeys` method flattens a collection of arrays or collections into a single collection, keeping the original keys intact:
+The `collapseWithKeys` method flattens a collection of arrays or collections into a single collection, keeping the original keys intact. If the collection is already flat, it will return an empty collection:
 
 ```php
 $collection = collect([
