@@ -449,6 +449,12 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::command('horizon:snapshot')->everyFiveMinutes();
 ```
 
+If you would like to delete all metric data, you can invoke the `horizon:clear-metrics` Artisan command:
+
+```shell
+php artisan horizon:clear-metrics
+```
+
 <a name="deleting-failed-jobs"></a>
 ## Deleting Failed Jobs
 
