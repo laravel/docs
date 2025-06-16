@@ -197,6 +197,7 @@ class Client extends PassportClient
 After defining your model, you may instruct Passport to use your custom model via the `Laravel\Passport\Passport` class. Typically, you should inform Passport about your custom models in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
 
 ```php
+use Laravel\Passport\Passport;
 use App\Models\Passport\AuthCode;
 use App\Models\Passport\Client;
 use App\Models\Passport\DeviceCode;
