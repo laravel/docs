@@ -35,7 +35,7 @@ Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flys
 
 Laravel's filesystem configuration file is located at `config/filesystems.php`. Within this file, you may configure all of your filesystem "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file so you can modify the configuration to reflect your storage preferences and credentials.
 
-The `local` driver interacts with files stored locally on the server running the Laravel application while the `SFTP` storage driver is used for SSH key-based authentication, and the `s3` driver is used to write to Amazon's S3 cloud storage service.
+The `local` driver interacts with files stored locally on the server running the Laravel application, while the `sftp` storage driver is used for SSH key-based FTP. The `s3` driver is used to write to Amazon's S3 cloud storage service.
 
 > [!NOTE]
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
