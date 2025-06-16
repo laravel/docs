@@ -156,7 +156,7 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
     'username' => env('SFTP_USERNAME'),
     'password' => env('SFTP_PASSWORD'),
 
-    // Settings for SSH key based authentication with encryption password...
+    // Settings for SSH key-based authentication with encryption password...
     'privateKey' => env('SFTP_PRIVATE_KEY'),
     'passphrase' => env('SFTP_PASSPHRASE'),
 
