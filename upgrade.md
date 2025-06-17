@@ -35,7 +35,7 @@
 
 - [Doctrine DBAL Removal](#doctrine-dbal-removal)
 - [Eloquent Model `casts` Method](#eloquent-model-casts-method)
-- [Eager loading query pivot columns](#eager-loading-query-pivot-columns)
+- [Eager Loading Query Pivot Columns](#eager-loading-query-pivot-columns)
 - [Spatial Types](#spatial-types)
 - [The `Enumerable` Contract](#the-enumerable-contract)
 - [The `UserProvider` Contract](#the-user-provider-contract)
@@ -232,7 +232,7 @@ public function dump(...$args);
 If your application is utilizing an SQLite database, SQLite 3.26.0 or greater is required.
 
 <a name="eager-loading-query-pivot-columns"></a>
-#### Eager loading query pivot columns
+#### Eager Loading Query Pivot Columns
 
 **Likelihood Of Impact: Very Low**
 
