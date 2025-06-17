@@ -1434,6 +1434,8 @@ $this->fail('Something went wrong.');
 The `FailOnException` [job middleware](#job-middleware) allows you to short-circuit retries when specific exceptions are thrown. This allows retrying on transient exceptions such as external API errors, but failing the job permanently on persistent exceptions, such as a user's permissions being revoked:
 
 ```php
+<?php
+
 namespace App\Jobs;
 
 use App\Models\User;
