@@ -35,6 +35,7 @@
 
 - [Doctrine DBAL Removal](#doctrine-dbal-removal)
 - [Eloquent Model `casts` Method](#eloquent-model-casts-method)
+- [Eager loading query pivot columns](#eager-loading-query-pivot-columns)
 - [Spatial Types](#spatial-types)
 - [The `Enumerable` Contract](#the-enumerable-contract)
 - [The `UserProvider` Contract](#the-user-provider-contract)
@@ -229,6 +230,55 @@ public function dump(...$args);
 **Likelihood Of Impact: High**
 
 If your application is utilizing an SQLite database, SQLite 3.26.0 or greater is required.
+
+<a name="eager-loading-query-pivot-columns"></a>
+#### Eager loading query pivot columns
+
+**Likelihood Of Impact: Very Low**
+
+The underlying SQL query used for eager loading relationships with limit or take has changed in https://github.com/laravel/framework/pull/49695. If your application was ordering or filtering by pivot_* columns in an eager-loaded relationship, this may now result in a SQL error due to the pivot column not being selected in the subquery.
+
+For example:
+```php
+class Post extends Model {
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class)
+            ->withTimestamps()
+            ->using(PostTag::class);
+    }
+
+    public function latestTag()
+    {
+        return $this->tags()
+            ->orderBy('pivot_created_at', 'desc')
+            ->take(1);
+    }
+}
+```
+Previously, calling:
+```php
+Post::with(['latestTag'])->get();
+```
+
+would return the latest tag per post. In Laravel 10, this worked because the pivot column pivot_created_at was automatically available. However, in Laravel 11 this query may fail with a SQL error like:
+
+```
+Unknown column 'pivot_created_at' in 'order clause'
+```
+This is because pivot_created_at is not a real column — it is an alias provided by Eloquent after the query executes — and is not recognized in the SQL used to eager load limited relationships.
+
+>[!WARNING]
+> If you are using SQLite for your test database, it may not throw an error for the unknown column, so tests might pass silently even though it fails in production (e.g., MySQL or PostgreSQL).
+
+**Suggested Fix**
+
+Update your orderBy clause to refer to the actual pivot table name:
+
+```php
+->orderBy('post_tag.created_at', 'desc')
+```
+Alternatively, if you rely heavily on pivot_* fields for eager loading, consider refactoring the relationship or using a manual query to avoid this breaking change.
 
 <a name="eloquent-model-casts-method"></a>
 #### Eloquent Model `casts` Method
