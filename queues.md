@@ -816,7 +816,7 @@ public function middleware(): array
 ```
 
 <a name="fail-job-on-exception"></a>
-### Failing Jobs
+### Failing Jobs On Specific Exceptions
 The `FailOnException` job middleware allows you to short-circuit retries when specific exceptions are thrown. This allows retrying on transient exceptions such as external API errors, but failing the job permanently on persistent exceptions, such as a user's permissions being revoked.
 
 ```php
@@ -828,6 +828,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\FailOnException;
+use Illuminate\Support\Facades\Http;
  
 class SyncChatHistory implements ShouldQueue
 {
@@ -839,10 +840,11 @@ class SyncChatHistory implements ShouldQueue
         public User $user,
     ) {}
 
-    public function handle(ChatService $chatService): void
+    public function handle(): void
     {
         $user->authorize('sync-chat-history');
 
+        $response = Http::throw()->get("https://chat.laravel.test/?user={$user->uuid}");
         // ...
     }
 
