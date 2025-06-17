@@ -13,6 +13,7 @@
     - [Preventing Job Overlaps](#preventing-job-overlaps)
     - [Throttling Exceptions](#throttling-exceptions)
     - [Skipping Jobs](#skipping-jobs)
+    - [Failing Jobs on Exceptions](#fail-job-on-exception)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
@@ -813,6 +814,52 @@ public function middleware(): array
     ];
 }
 ```
+
+<a name="fail-job-on-exception"></a>
+### Failing Jobs
+The `FailOnException` job middleware allows you to short-circuit retries when specific exceptions are thrown. This allows retrying on transient exceptions such as external API errors, but failing the job permanently on persistent exceptions, such as a user's permissions being revoked.
+
+```php
+namespace App\Jobs;
+
+use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\FailOnException;
+ 
+class SyncChatHistory implements ShouldQueue
+{
+    use InteractsWithQueue;
+
+    public $tries = 3;
+
+    public function __construct(
+        public User $user,
+    ) {}
+
+    public function handle(ChatService $chatService): void
+    {
+        $user->authorize('sync-chat-history');
+
+        // ...
+    }
+
+    /**
+     * Get the middleware the job should pass through.
+     */
+    public function middleware(): array
+    {
+        return [
+            new FailOnException([AuthorizationException::class])
+        ];
+    }
+}
+```
+
+> [!NOTE]
+> Your job must use the `Illuminate\Queue\InteractsWithQueue` trait.
 
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
