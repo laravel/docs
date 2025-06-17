@@ -840,14 +840,6 @@ class SyncChatHistory implements ShouldQueue
         public User $user,
     ) {}
 
-    public function handle(): void
-    {
-        $user->authorize('sync-chat-history');
-
-        $response = Http::throw()->get("https://chat.laravel.test/?user={$user->uuid}");
-        // ...
-    }
-
     /**
      * Get the middleware the job should pass through.
      */
@@ -856,6 +848,14 @@ class SyncChatHistory implements ShouldQueue
         return [
             new FailOnException([AuthorizationException::class])
         ];
+    }
+
+    public function handle(): void
+    {
+        $user->authorize('sync-chat-history');
+
+        $response = Http::throw()->get("https://chat.laravel.test/?user={$user->uuid}");
+        // ...
     }
 }
 ```
