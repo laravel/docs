@@ -1005,6 +1005,8 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
 [assertRedirectBack](#assert-redirect-back)
+[assertRedirectBackWithErrors](#assert-redirect-back-with-errors)
+[assertRedirectBackWithoutErrors](#assert-redirect-back-without-errors)
 [assertRedirectContains](#assert-redirect-contains)
 [assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
@@ -1559,6 +1561,26 @@ Assert whether the response is redirecting back to the previous page:
 
 ```php
 $response->assertRedirectBack();
+```
+
+<a name="assert-redirect-back-with-errors"></a>
+#### assertRedirectBackWithErrors
+
+Assert whether the response is redirecting back to the previous page and the [session has the given errors](#assert-session-has-errors):
+
+```php
+$response->assertRedirectBackWithErrors(
+    array $keys = [], $format = null, $errorBag = 'default'
+);
+```
+
+<a name="assert-redirect-back-without-errors"></a>
+#### assertRedirectBackWithoutErrors
+
+Assert whether the response is redirecting back to the previous page and the session does not contain any error messages:
+
+```php
+$response->assertRedirectBackWithoutErrors();
 ```
 
 <a name="assert-redirect-contains"></a>
