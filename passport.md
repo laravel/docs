@@ -213,7 +213,7 @@ public function boot(): void
     Passport::useRefreshTokenModel(RefreshToken::class);
     Passport::useAuthCodeModel(AuthCode::class);
     Passport::useClientModel(Client::class);
-    Passport::useDeviceCodeModel(DeviceCode::class)
+    Passport::useDeviceCodeModel(DeviceCode::class);
 }
 ```
 
