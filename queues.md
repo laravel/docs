@@ -1470,7 +1470,6 @@ class SyncChatHistory implements ShouldQueue
             "https://chat.laravel.test/?user={$user->uuid}
         ");
 
-
         // ...
     }
 
