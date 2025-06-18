@@ -1467,8 +1467,8 @@ class SyncChatHistory implements ShouldQueue
         $user->authorize('sync-chat-history');
 
         $response = Http::throw()->get(
-            "https://chat.laravel.test/?user={$user->uuid}
-        ");
+            "https://chat.laravel.test/?user={$user->uuid}"
+        );
 
 
         // ...
