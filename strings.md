@@ -52,6 +52,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
+[Str::fromBase64](#method-str-from-base64)
 [Str::headline](#method-str-headline)
 [Str::inlineMarkdown](#method-str-inline-markdown)
 [Str::is](#method-str-is)
@@ -154,6 +155,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [excerpt](#method-fluent-str-excerpt)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
+[fromBase64](#method-fluent-str-from-base64)
 [hash](#method-fluent-str-hash)
 [headline](#method-fluent-str-headline)
 [inlineMarkdown](#method-fluent-str-inline-markdown)
@@ -1550,6 +1552,19 @@ use Illuminate\Support\Str;
 $converted = Str::title('a nice title uses the correct case');
 
 // A Nice Title Uses The Correct Case
+```
+
+<a name="method-str-from-base64"></a>
+#### `Str::fromBase64()` {.collection-method}
+
+The `Str::fromBase64` method converts the given Base64 string back to its original string:
+
+```php
+use Illuminate\Support\Str;
+
+$base64 = Str::toBase64('TGFyYXZlbA==');
+
+// Laravel
 ```
 
 <a name="method-str-to-base64"></a>
@@ -3263,6 +3278,19 @@ use Illuminate\Support\Str;
 $converted = Str::of('a nice title uses the correct case')->title();
 
 // A Nice Title Uses The Correct Case
+```
+
+<a name="method-fluent-str-from-base64"></a>
+#### `fromBase64` {.collection-method}
+
+The `fromBase64` method converts the given Base64 string back to its original string:
+
+```php
+use Illuminate\Support\Str;
+
+$base64 = Str::of('TGFyYXZlbA==')->fromBase64();
+
+// Laravel
 ```
 
 <a name="method-fluent-str-to-base64"></a>
