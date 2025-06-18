@@ -52,6 +52,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
+[Str::fromBase64](#method-str-from-base64)
 [Str::headline](#method-str-headline)
 [Str::inlineMarkdown](#method-str-inline-markdown)
 [Str::is](#method-str-is)
@@ -154,6 +155,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [excerpt](#method-fluent-str-excerpt)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
+[fromBase64](#method-fluent-str-from-base64)
 [hash](#method-fluent-str-hash)
 [headline](#method-fluent-str-headline)
 [inlineMarkdown](#method-fluent-str-inline-markdown)
@@ -651,6 +653,19 @@ $adjusted = Str::finish('this/string', '/');
 $adjusted = Str::finish('this/string/', '/');
 
 // this/string/
+```
+
+<a name="method-str-from-base64"></a>
+#### `Str::fromBase64()` {.collection-method}
+
+The `Str::fromBase64` method decodes the given Base64 string:
+
+```php
+use Illuminate\Support\Str;
+
+$decoded = Str::fromBase64('TGFyYXZlbA==');
+
+// Laravel
 ```
 
 <a name="method-str-headline"></a>
@@ -2314,6 +2329,19 @@ $adjusted = Str::of('this/string')->finish('/');
 $adjusted = Str::of('this/string/')->finish('/');
 
 // this/string/
+```
+
+<a name="method-fluent-str-from-base64"></a>
+#### `fromBase64` {.collection-method}
+
+The `fromBase64` method decodes the given Base64 string:
+
+```php
+use Illuminate\Support\Str;
+
+$decoded = Str::of('TGFyYXZlbA==')->fromBase64();
+
+// Laravel
 ```
 
 <a name="method-fluent-str-hash"></a>
