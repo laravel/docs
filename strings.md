@@ -655,6 +655,19 @@ $adjusted = Str::finish('this/string/', '/');
 // this/string/
 ```
 
+<a name="method-str-from-base64"></a>
+#### `Str::fromBase64()` {.collection-method}
+
+The `Str::fromBase64` method decodes the given Base64 string:
+
+```php
+use Illuminate\Support\Str;
+
+$decoded = Str::fromBase64('TGFyYXZlbA==');
+
+// Laravel
+```
+
 <a name="method-str-headline"></a>
 #### `Str::headline()` {.collection-method}
 
@@ -1554,19 +1567,6 @@ $converted = Str::title('a nice title uses the correct case');
 // A Nice Title Uses The Correct Case
 ```
 
-<a name="method-str-from-base64"></a>
-#### `Str::fromBase64()` {.collection-method}
-
-The `Str::fromBase64` method converts the given Base64 string back to its original string:
-
-```php
-use Illuminate\Support\Str;
-
-$decoded = Str::fromBase64('TGFyYXZlbA==');
-
-// Laravel
-```
-
 <a name="method-str-to-base64"></a>
 #### `Str::toBase64()` {.collection-method}
 
@@ -2329,6 +2329,19 @@ $adjusted = Str::of('this/string')->finish('/');
 $adjusted = Str::of('this/string/')->finish('/');
 
 // this/string/
+```
+
+<a name="method-fluent-str-from-base64"></a>
+#### `fromBase64` {.collection-method}
+
+The `fromBase64` method decodes the given Base64 string:
+
+```php
+use Illuminate\Support\Str;
+
+$decoded = Str::of('TGFyYXZlbA==')->fromBase64();
+
+// Laravel
 ```
 
 <a name="method-fluent-str-hash"></a>
@@ -3278,19 +3291,6 @@ use Illuminate\Support\Str;
 $converted = Str::of('a nice title uses the correct case')->title();
 
 // A Nice Title Uses The Correct Case
-```
-
-<a name="method-fluent-str-from-base64"></a>
-#### `fromBase64` {.collection-method}
-
-The `fromBase64` method converts the given Base64 string back to its original string:
-
-```php
-use Illuminate\Support\Str;
-
-$decoded = Str::of('TGFyYXZlbA==')->fromBase64();
-
-// Laravel
 ```
 
 <a name="method-fluent-str-to-base64"></a>
