@@ -168,6 +168,7 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
     // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
     // 'maxTries' => 4,
     // 'passphrase' => env('SFTP_PASSPHRASE'),
+    // 'url' => env('SFTP_URL'),
     // 'port' => env('SFTP_PORT', 22),
     // 'root' => env('SFTP_ROOT', ''),
     // 'timeout' => 30,
@@ -311,7 +312,7 @@ return Storage::download('file.jpg', $name, $headers);
 <a name="file-urls"></a>
 ### File URLs
 
-You may use the `url` method to get the URL for a given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` driver, the fully qualified remote URL will be returned:
+You may use the `url` method to get the URL for a given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `sftp` or `s3` drivers, the fully qualified remote URL will be returned:
 
 ```php
 use Illuminate\Support\Facades\Storage;
