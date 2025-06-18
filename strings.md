@@ -1562,7 +1562,7 @@ The `Str::fromBase64` method converts the given Base64 string back to its origin
 ```php
 use Illuminate\Support\Str;
 
-$base64 = Str::toBase64('TGFyYXZlbA==');
+$base64 = Str::fromBase64('TGFyYXZlbA==');
 
 // Laravel
 ```
