@@ -730,7 +730,7 @@ Storage::disk('s3')->delete('path/file.jpg');
 <a name="get-all-files-within-a-directory"></a>
 #### Get All Files Within a Directory
 
-The `files` method returns an array of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `allFiles` method:
+The `files` method returns an array of all files within a given directory. If you would like to retrieve a list of all files within a given directory including subdirectories, you may use the `allFiles` method:
 
 ```php
 use Illuminate\Support\Facades\Storage;
@@ -743,7 +743,7 @@ $files = Storage::allFiles($directory);
 <a name="get-all-directories-within-a-directory"></a>
 #### Get All Directories Within a Directory
 
-The `directories` method returns an array of all the directories within a given directory. Additionally, you may use the `allDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
+The `directories` method returns an array of all directories within a given directory. If you would like to retrieve a list of all directories within a given directory including subdirectories, you may use the `allDirectories` method:
 
 ```php
 $directories = Storage::directories($directory);
