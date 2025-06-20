@@ -61,7 +61,7 @@ use App\Events\PodcastProcessed;
 class SendPodcastNotification
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(PodcastProcessed $event): void
     {
@@ -74,7 +74,7 @@ You may listen to multiple events using PHP's union types:
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(PodcastProcessed|PodcastPublished $event): void
 {
@@ -160,7 +160,7 @@ public function boot(): void
 <a name="queuable-anonymous-event-listeners"></a>
 #### Queueable Anonymous Event Listeners
 
-When registering closure based event listeners, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
+When registering closure-based event listeners, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
 
 ```php
 use App\Events\PodcastProcessed;
@@ -535,6 +535,8 @@ public function retryUntil(): DateTime
 }
 ```
 
+If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
+
 <a name="specifying-queued-listener-backoff"></a>
 #### Specifying Queued Listener Backoff
 
@@ -567,7 +569,7 @@ You may easily configure "exponential" backoffs by returning an array of backoff
 /**
  * Calculate the number of seconds to wait before retrying the queued listener.
  *
- * @return array<int, int>
+ * @return list<int>
  */
 public function backoff(): array
 {
@@ -656,7 +658,7 @@ class OrderShipped implements ShouldDispatchAfterCommit
 <a name="writing-event-subscribers"></a>
 ### Writing Event Subscribers
 
-Event subscribers are classes that may subscribe to multiple events from within the subscriber class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance. You may call the `listen` method on the given dispatcher to register event listeners:
+Event subscribers are classes that may subscribe to multiple events from within the subscriber class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which receives an event dispatcher instance. You may call the `listen` method on the given dispatcher to register event listeners:
 
 ```php
 <?php
@@ -866,7 +868,9 @@ test('orders can be processed', function () {
     Event::assertDispatched(OrderCreated::class);
 
     // Other events are dispatched as normal...
-    $order->update([...]);
+    $order->update([
+        // ...
+    ]);
 });
 ```
 
@@ -885,7 +889,9 @@ public function test_orders_can_be_processed(): void
     Event::assertDispatched(OrderCreated::class);
 
     // Other events are dispatched as normal...
-    $order->update([...]);
+    $order->update([
+        // ...
+    ]);
 }
 ```
 
@@ -918,8 +924,10 @@ test('orders can be processed', function () {
         return $order;
     });
 
-    // Events are dispatched as normal and observers will run ...
-    $order->update([...]);
+    // Events are dispatched as normal and observers will run...
+    $order->update([
+        // ...
+    ]);
 });
 ```
 
@@ -948,8 +956,10 @@ class ExampleTest extends TestCase
             return $order;
         });
 
-        // Events are dispatched as normal and observers will run ...
-        $order->update([...]);
+        // Events are dispatched as normal and observers will run...
+        $order->update([
+            // ...
+        ]);
     }
 }
 ```

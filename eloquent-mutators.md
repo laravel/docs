@@ -15,6 +15,7 @@
     - [Array / JSON Serialization](#array-json-serialization)
     - [Inbound Casting](#inbound-casting)
     - [Cast Parameters](#cast-parameters)
+    - [Comparing Cast Values](#comparing-cast-values)
     - [Castables](#castables)
 
 <a name="introduction"></a>
@@ -213,7 +214,9 @@ The `casts` method should return an array where the key is the name of the attri
 <div class="content-list" markdown="1">
 
 - `array`
+- `AsFluent::class`
 - `AsStringable::class`
+- `AsUri::class`
 - `boolean`
 - `collection`
 - `date`
@@ -286,7 +289,7 @@ $user->mergeCasts([
 <a name="stringable-casting"></a>
 #### Stringable Casting
 
-You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\Support\Stringable` object](/docs/{{version}}/strings#fluent-strings-method-list):
+You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent Illuminate\Support\Stringable object](/docs/{{version}}/strings#fluent-strings-method-list):
 
 ```php
 <?php
@@ -449,7 +452,7 @@ protected function casts(): array
 }
 ```
 
-The `of` method may be used to indicate collection items should be mapped into a given class via the collection's [`mapInto` method](/docs/{{version}}/collections#method-mapinto):
+The `of` method may be used to indicate collection items should be mapped into a given class via the collection's [mapInto method](/docs/{{version}}/collections#method-mapinto):
 
 ```php
 use App\ValueObjects\Option;
@@ -476,19 +479,22 @@ When mapping collections to objects, the object should implement the `Illuminate
 namespace App\ValueObjects;
 
 use Illuminate\Contracts\Support\Arrayable;
-use JsonSerilizable;
+use JsonSerializable;
 
 class Option implements Arrayable, JsonSerializable
 {
+    public string $name;
+    public mixed $value;
+    public bool $isLocked;
+
     /**
      * Create a new Option instance.
      */
-    public function __construct(
-        public string $name,
-        public mixed $value,
-        public bool $isLocked = false
-    ) {
-        //
+    public function __construct(array $data)
+    {
+        $this->name = $data['name'];
+        $this->value = $data['value'];
+        $this->isLocked = $data['is_locked'];
     }
 
     /**
@@ -690,8 +696,12 @@ class AsJson implements CastsAttributes
      * @param  array<string, mixed>  $attributes
      * @return array<string, mixed>
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): array
-    {
+    public function get(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): array {
         return json_decode($value, true);
     }
 
@@ -700,8 +710,12 @@ class AsJson implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): string
-    {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): string {
         return json_encode($value);
     }
 }
@@ -757,8 +771,12 @@ class AsAddress implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): Address
-    {
+    public function get(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): Address {
         return new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two']
@@ -771,8 +789,12 @@ class AsAddress implements CastsAttributes
      * @param  array<string, mixed>  $attributes
      * @return array<string, string>
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): array
-    {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): array {
         if (! $value instanceof Address) {
             throw new InvalidArgumentException('The given value is not an Address instance.');
         }
@@ -829,8 +851,12 @@ Therefore, you may specify that your custom cast class will be responsible for s
  *
  * @param  array<string, mixed>  $attributes
  */
-public function serialize(Model $model, string $key, mixed $value, array $attributes): string
-{
+public function serialize(
+    Model $model,
+    string $key,
+    mixed $value,
+    array $attributes,
+): string {
     return (string) $value;
 }
 ```
@@ -870,8 +896,12 @@ class AsHash implements CastsInboundAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): string
-    {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): string {
         return is_null($this->algorithm)
             ? bcrypt($value)
             : hash($this->algorithm, $value);
@@ -895,6 +925,33 @@ protected function casts(): array
     return [
         'secret' => AsHash::class.':sha256',
     ];
+}
+```
+
+<a name="comparing-cast-values"></a>
+### Comparing Cast Values
+
+If you would like to define how two given cast values should be compared to determine if they have been changed, your custom cast class may implement the `Illuminate\Contracts\Database\Eloquent\ComparesCastableAttributes` interface. This allows you to have fine-grained control over which values Eloquent considers changed and thus saves to the database when a model is updated.
+
+This interface states that your class should contain a `compare` method which should return `true` if the given values are considered equal:
+
+```php
+/**
+ * Determine if the given values are equal.
+ *
+ * @param  \Illuminate\Database\Eloquent\Model  $model
+ * @param  string  $key
+ * @param  mixed  $firstValue
+ * @param  mixed  $secondValue
+ * @return bool
+ */
+public function compare(
+    Model $model,
+    string $key,
+    mixed $firstValue,
+    mixed $secondValue
+): bool {
+    return $firstValue === $secondValue;
 }
 ```
 
@@ -977,16 +1034,24 @@ class Address implements Castable
     {
         return new class implements CastsAttributes
         {
-            public function get(Model $model, string $key, mixed $value, array $attributes): Address
-            {
+            public function get(
+                Model $model,
+                string $key,
+                mixed $value,
+                array $attributes,
+            ): Address {
                 return new Address(
                     $attributes['address_line_one'],
                     $attributes['address_line_two']
                 );
             }
 
-            public function set(Model $model, string $key, mixed $value, array $attributes): array
-            {
+            public function set(
+                Model $model,
+                string $key,
+                mixed $value,
+                array $attributes,
+            ): array {
                 return [
                     'address_line_one' => $value->lineOne,
                     'address_line_two' => $value->lineTwo,

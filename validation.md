@@ -1044,6 +1044,7 @@ Below is a list of all available validation rules and their function:
 [Contains](#rule-contains)
 [Distinct](#rule-distinct)
 [In Array](#rule-in-array)
+[In Array Keys](#rule-in-array-keys)
 [List](#rule-list)
 [Max](#rule-max)
 [Min](#rule-min)
@@ -1165,7 +1166,7 @@ Instead of passing a date string to be evaluated by `strtotime`, you may specify
 'finish_date' => 'required|date|after:start_date'
 ```
 
-For convenience, date based rules may be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1190,7 +1191,7 @@ The `afterToday` and `todayOrAfter` methods may be used to fluently express the 
 
 The field under validation must be a value after or equal to the given date. For more information, see the [after](#rule-after) rule.
 
-For convenience, date based rules may be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1299,7 +1300,7 @@ if ($validator->stopOnFirstFailure()->fails()) {
 
 The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [after](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
-For convenience, date based rules may also be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may also be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1324,7 +1325,7 @@ The `beforeToday` and `todayOrBefore` methods may be used to fluently express th
 
 The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [after](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
-For convenience, date based rules may also be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may also be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1355,7 +1356,20 @@ You may also pass a custom confirmation field name. For example, `confirmed:repe
 <a name="rule-contains"></a>
 #### contains:_foo_,_bar_,...
 
-The field under validation must be an array that contains all of the given parameter values.
+The field under validation must be an array that contains all of the given parameter values. Since this rule often requires you to `implode` an array, the `Rule::contains` method may be used to fluently construct the rule:
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'roles' => [
+        'required',
+        'array',
+        Rule::contains(['admin', 'editor']),
+    ],
+]);
+```
 
 <a name="rule-current-password"></a>
 #### current_password
@@ -1381,7 +1395,7 @@ The field under validation must be equal to the given date. The dates will be pa
 
 The field under validation must match one of the given _formats_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
 
-For convenience, date based rules may be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1544,7 +1558,7 @@ The field under validation must end with one of the given values.
 <a name="rule-enum"></a>
 #### enum
 
-The `Enum` rule is a class based rule that validates whether the field under validation contains a valid enum value. The `Enum` rule accepts the name of the enum as its only constructor argument. When validating primitive values, a backed Enum should be provided to the `Enum` rule:
+The `Enum` rule is a class-based rule that validates whether the field under validation contains a valid enum value. The `Enum` rule accepts the name of the enum as its only constructor argument. When validating primitive values, a backed Enum should be provided to the `Enum` rule:
 
 ```php
 use App\Enums\ServerStatus;
@@ -1677,6 +1691,14 @@ You may explicitly specify the database column name that should be used by the `
 'state' => Rule::exists('states', 'abbreviation'),
 ```
 
+Sometimes, you may wish to validate whether an array of values exists in the database. You can do so by adding both the `exists` and [array](#rule-array) rules to the field being validated:
+
+```php
+'states' => ['array', Rule::exists('states', 'abbreviation')],
+```
+
+When both of these rules are assigned to a field, Laravel will automatically build a single query to determine if all of the given values exist in the specified table.
+
 <a name="rule-extensions"></a>
 #### extensions:_foo_,_bar_,...
 
@@ -1762,6 +1784,15 @@ Validator::make($input, [
 #### in_array:_anotherfield_.*
 
 The field under validation must exist in _anotherfield_'s values.
+
+<a name="rule-in-array-keys"></a>
+#### in_array_keys:_value_.*
+
+The field under validation must be an array having at least one of the given _values_ as a key within the array:
+
+```php
+'config' => 'array|in_array_keys:timezone'
+```
 
 <a name="rule-integer"></a>
 #### integer
@@ -2243,7 +2274,7 @@ You may specify additional query conditions by customizing the query using the `
 'email' => Rule::unique('users')->where(fn (Builder $query) => $query->where('account_id', 1))
 ```
 
-**Ignoring Soft Deleteded Records in Unique Checks:**
+**Ignoring Soft Deleted Records in Unique Checks:**
 
 By default, the unique rule includes soft deleted records when determining uniqueness. To exclude soft deleted records from the uniqueness check, you may invoke the `withoutTrashed` method:
 

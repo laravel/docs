@@ -812,6 +812,7 @@ If you need more granular control over a prompt in a form, you may invoke the `a
 ```php
 use function Laravel\Prompts\form;
 use function Laravel\Prompts\outro;
+use function Laravel\Prompts\text;
 
 $responses = form()
     ->text('What is your name?', required: true, name: 'name')

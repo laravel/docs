@@ -879,7 +879,7 @@ $user->getOriginal('name'); // John
 $user->getOriginal(); // Array of original attributes...
 ```
 
-The `getChanges` method returns an array containing the attributes that changed when the model was last saved:
+The `getChanges` method returns an array containing the attributes that changed when the model was last saved, while the `getPrevious` method returns an array containing the original attribute values before the model was last saved:
 
 ```php
 $user = User::find(1);
@@ -898,6 +898,15 @@ $user->getChanges();
     [
         'name' => 'Jack',
         'email' => 'jack@example.com',
+    ]
+*/
+
+$user->getPrevious();
+
+/*
+    [
+        'name' => 'John',
+        'email' => 'john@example.com',
     ]
 */
 ```
@@ -1582,7 +1591,7 @@ If you would like to use scopes to create models that have the same attributes a
 
 namespace App\Models;
 
-use Illuminate\Database\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 

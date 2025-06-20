@@ -279,7 +279,7 @@ $uri = Uri::of('https://example.com')
     ->withFragment('section-1');
 ```
 
-For more information on working with fluent URI objects, consult the [URI documentation](/docs/{{version}}/helpers#uris).
+For more information on working with fluent URI objects, consult the [URI documentation](/docs/{{version}}/helpers#uri).
 
 <a name="default-values"></a>
 ## Default Values

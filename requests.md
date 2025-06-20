@@ -394,6 +394,15 @@ When dealing with HTML elements like checkboxes, your application may receive "t
 $archived = $request->boolean('archived');
 ```
 
+<a name="retrieving-array-input-values"></a>
+#### Retrieving Array Input Values
+
+Input values containing arrays may be retrieved using the `array` method. This method will always cast the input value to an array. If the request does not contain an input value with the given name, an empty array will be returned:
+
+```php
+$versions = $request->array('versions');
+```
+
 <a name="retrieving-date-input-values"></a>
 #### Retrieving Date Input Values
 
@@ -420,6 +429,12 @@ Input values that correspond to [PHP enums](https://www.php.net/manual/en/langua
 use App\Enums\Status;
 
 $status = $request->enum('status', Status::class);
+```
+
+You may also provide a default value that will be returned if the value is missing or invalid:
+
+```php
+$status = $request->enum('status', Status::class, Status::Pending);
 ```
 
 If the input value is an array of values that correspond to a PHP enum, you may use the `enums` method to retrieve the array of values as enum instances:

@@ -658,6 +658,27 @@ If you have multiple classes within the same namespace, you may group the import
 @use('App\Models\{Flight, Airport}')
 ```
 
+The `@use` directive also supports importing PHP functions and constants by prefixing the import path with the `function` or `const` modifiers:
+
+```blade
+@use(function App\Helpers\format_currency)
+@use(const App\Constants\MAX_ATTEMPTS)
+```
+
+Just like class imports, aliases are supported for functions and constants as well:
+
+```blade
+@use(function App\Helpers\format_currency, 'formatMoney')
+@use(const App\Constants\MAX_ATTEMPTS, 'MAX_TRIES')
+```
+
+Grouped imports are also supported with both function and const modifiers, allowing you to import multiple symbols from the same namespace in a single directive:
+
+```blade
+@use(function App\Helpers\{format_currency, format_date})
+@use(const App\Constants\{MAX_ATTEMPTS, DEFAULT_TIMEOUT})
+```
+
 <a name="comments"></a>
 ### Comments
 
@@ -670,9 +691,9 @@ Blade also allows you to define comments in your views. However, unlike HTML com
 <a name="components"></a>
 ## Components
 
-Components and slots provide similar benefits to sections, layouts, and includes; however, some may find the mental model of components and slots easier to understand. There are two approaches to writing components: class based components and anonymous components.
+Components and slots provide similar benefits to sections, layouts, and includes; however, some may find the mental model of components and slots easier to understand. There are two approaches to writing components: class-based components and anonymous components.
 
-To create a class based component, you may use the `make:component` Artisan command. To illustrate how to use components, we will create a simple `Alert` component. The `make:component` command will place the component in the `app/View/Components` directory:
+To create a class-based component, you may use the `make:component` Artisan command. To illustrate how to use components, we will create a simple `Alert` component. The `make:component` command will place the component in the `app/View/Components` directory:
 
 ```shell
 php artisan make:component Alert

@@ -17,7 +17,7 @@
 The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper for working with arrays of data. For example, check out the following code. We'll use the `collect` helper to create a new collection instance from the array, run the `strtoupper` function on each element, and then remove all empty elements:
 
 ```php
-$collection = collect(['taylor', 'abigail', null])->map(function (?string $name) {
+$collection = collect(['Taylor', 'Abigail', null])->map(function (?string $name) {
     return strtoupper($name);
 })->reject(function (string $name) {
     return empty($name);
@@ -417,7 +417,7 @@ $chunks->all();
 <a name="method-collapse"></a>
 #### `collapse()` {.collection-method}
 
-The `collapse` method collapses a collection of arrays into a single, flat collection:
+The `collapse` method collapses a collection of arrays or collections into a single, flat collection:
 
 ```php
 $collection = collect([
@@ -436,7 +436,7 @@ $collapsed->all();
 <a name="method-collapsewithkeys"></a>
 #### `collapseWithKeys()` {.collection-method}
 
-The `collapseWithKeys` method flattens a collection of arrays or collections into a single collection, keeping the original keys intact:
+The `collapseWithKeys` method flattens a collection of arrays or collections into a single collection, keeping the original keys intact. If the collection is already flat, it will return an empty collection:
 
 ```php
 $collection = collect([
@@ -589,6 +589,10 @@ collect(['1'])->containsOneItem();
 collect(['1', '2'])->containsOneItem();
 
 // false
+
+collect([1, 2, 3])->containsOneItem(fn (int $item) => $item === 2);
+
+// true
 ```
 
 <a name="method-containsstrict"></a>
@@ -693,12 +697,10 @@ $collection = collect(['John Doe', 'Jane Doe']);
 $collection->dd();
 
 /*
-    Collection {
-        #items: array:2 [
-            0 => "John Doe"
-            1 => "Jane Doe"
-        ]
-    }
+    array:2 [
+        0 => "John Doe"
+        1 => "Jane Doe"
+    ]
 */
 ```
 
@@ -867,12 +869,10 @@ $collection = collect(['John Doe', 'Jane Doe']);
 $collection->dump();
 
 /*
-    Collection {
-        #items: array:2 [
-            0 => "John Doe"
-            1 => "Jane Doe"
-        ]
-    }
+    array:2 [
+        0 => "John Doe"
+        1 => "Jane Doe"
+    ]
 */
 ```
 
@@ -1152,9 +1152,9 @@ The `flatten` method flattens a multi-dimensional collection into a single dimen
 
 ```php
 $collection = collect([
-    'name' => 'taylor',
+    'name' => 'Taylor',
     'languages' => [
-        'php', 'javascript'
+        'PHP', 'JavaScript'
     ]
 ]);
 
@@ -1162,7 +1162,7 @@ $flattened = $collection->flatten();
 
 $flattened->all();
 
-// ['taylor', 'php', 'javascript'];
+// ['Taylor', 'PHP', 'JavaScript'];
 ```
 
 If necessary, you may pass the `flatten` method a "depth" argument:
@@ -1203,13 +1203,13 @@ In this example, calling `flatten` without providing the depth would have also f
 The `flip` method swaps the collection's keys with their corresponding values:
 
 ```php
-$collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+$collection = collect(['name' => 'Taylor', 'framework' => 'Laravel']);
 
 $flipped = $collection->flip();
 
 $flipped->all();
 
-// ['taylor' => 'name', 'laravel' => 'framework']
+// ['Taylor' => 'name', 'Laravel' => 'framework']
 ```
 
 <a name="method-forget"></a>
@@ -1218,12 +1218,12 @@ $flipped->all();
 The `forget` method removes an item from the collection by its key:
 
 ```php
-$collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+$collection = collect(['name' => 'Taylor', 'framework' => 'Laravel']);
 
 // Forget a single key...
 $collection->forget('name');
 
-// ['framework' => 'laravel']
+// ['framework' => 'Laravel']
 
 // Forget multiple keys...
 $collection->forget(['name', 'framework']);
@@ -1272,17 +1272,17 @@ $collection = Collection::fromJson($json);
 The `get` method returns the item at a given key. If the key does not exist, `null` is returned:
 
 ```php
-$collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+$collection = collect(['name' => 'Taylor', 'framework' => 'Laravel']);
 
 $value = $collection->get('name');
 
-// taylor
+// Taylor
 ```
 
 You may optionally pass a default value as the second argument:
 
 ```php
-$collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+$collection = collect(['name' => 'Taylor', 'framework' => 'Laravel']);
 
 $value = $collection->get('age', 34);
 
@@ -1488,7 +1488,7 @@ The `intersectUsing` method removes any values from the original collection that
 ```php
 $collection = collect(['Desk', 'Sofa', 'Chair']);
 
-$intersect = $collection->intersectUsing(['desk', 'chair', 'bookcase'], function ($a, $b) {
+$intersect = $collection->intersectUsing(['desk', 'chair', 'bookcase'], function (string $a, string $b) {
     return strcasecmp($a, $b);
 });
 
@@ -1536,7 +1536,7 @@ $intersect = $collection->intersectAssocUsing([
     'color' => 'blue',
     'size' => 'M',
     'material' => 'polyester',
-], function ($a, $b) {
+], function (string $a, string $b) {
     return strcasecmp($a, $b);
 });
 
@@ -2095,6 +2095,9 @@ $equalOrAboveThree->all();
 // [3, 4, 5, 6]
 ```
 
+> [!NOTE]
+> This method's behavior is modified when interacting with [Eloquent collections](/docs/{{version}}/eloquent-collections#method-partition).
+
 <a name="method-percentage"></a>
 #### `percentage()` {.collection-method}
 
@@ -2103,7 +2106,7 @@ The `percentage` method may be used to quickly determine the percentage of items
 ```php
 $collection = collect([1, 1, 2, 2, 2, 3]);
 
-$percentage = $collection->percentage(fn ($value) => $value === 1);
+$percentage = $collection->percentage(fn (int $value) => $value === 1);
 
 // 33.33
 ```
@@ -2111,7 +2114,7 @@ $percentage = $collection->percentage(fn ($value) => $value === 1);
 By default, the percentage will be rounded to two decimal places. However, you may customize this behavior by providing a second argument to the method:
 
 ```php
-$percentage = $collection->percentage(fn ($value) => $value === 1, precision: 3);
+$percentage = $collection->percentage(fn (int $value) => $value === 1, precision: 3);
 
 // 33.333
 ```
@@ -2251,7 +2254,7 @@ $plucked->all();
 <a name="method-pop"></a>
 #### `pop()` {.collection-method}
 
-The `pop` method removes and returns the last item from the collection:
+The `pop` method removes and returns the last item from the collection. If the collection is empty, `null` will be returned:
 
 ```php
 $collection = collect([1, 2, 3, 4, 5]);
@@ -2506,7 +2509,7 @@ $replaced->all();
 <a name="method-replacerecursive"></a>
 #### `replaceRecursive()` {.collection-method}
 
-This method works like `replace`, but it will recur into arrays and apply the same replacement process to the inner values:
+The `replaceRecursive` method behaves similarly to `replace`, but it will recur into arrays and apply the same replacement process to the inner values:
 
 ```php
 $collection = collect([
@@ -3454,16 +3457,16 @@ This method has the same signature as the [unique](#method-unique) method; howev
 <a name="method-unless"></a>
 #### `unless()` {.collection-method}
 
-The `unless` method will execute the given callback unless the first argument given to the method evaluates to `true`:
+The `unless` method will execute the given callback unless the first argument given to the method evaluates to `true`. The collection instance and the first argument given to the `unless` method will be provided to the closure:
 
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->unless(true, function (Collection $collection) {
+$collection->unless(true, function (Collection $collection, bool $value) {
     return $collection->push(4);
 });
 
-$collection->unless(false, function (Collection $collection) {
+$collection->unless(false, function (Collection $collection, bool $value) {
     return $collection->push(5);
 });
 
@@ -3477,9 +3480,9 @@ A second callback may be passed to the `unless` method. The second callback will
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->unless(true, function (Collection $collection) {
+$collection->unless(true, function (Collection $collection, bool $value) {
     return $collection->push(4);
-}, function (Collection $collection) {
+}, function (Collection $collection, bool $value) {
     return $collection->push(5);
 });
 
@@ -3566,11 +3569,11 @@ The `when` method will execute the given callback when the first argument given 
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->when(true, function (Collection $collection, int $value) {
+$collection->when(true, function (Collection $collection, bool $value) {
     return $collection->push(4);
 });
 
-$collection->when(false, function (Collection $collection, int $value) {
+$collection->when(false, function (Collection $collection, bool $value) {
     return $collection->push(5);
 });
 
@@ -3584,9 +3587,9 @@ A second callback may be passed to the `when` method. The second callback will b
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->when(false, function (Collection $collection, int $value) {
+$collection->when(false, function (Collection $collection, bool $value) {
     return $collection->push(4);
-}, function (Collection $collection) {
+}, function (Collection $collection, bool $value) {
     return $collection->push(5);
 });
 
@@ -3648,20 +3651,20 @@ For the inverse of `whenEmpty`, see the [whenNotEmpty](#method-whennotempty) met
 The `whenNotEmpty` method will execute the given callback when the collection is not empty:
 
 ```php
-$collection = collect(['michael', 'tom']);
+$collection = collect(['Michael', 'Tom']);
 
 $collection->whenNotEmpty(function (Collection $collection) {
-    return $collection->push('adam');
+    return $collection->push('Adam');
 });
 
 $collection->all();
 
-// ['michael', 'tom', 'adam']
+// ['Michael', 'Tom', 'Adam']
 
 $collection = collect();
 
 $collection->whenNotEmpty(function (Collection $collection) {
-    return $collection->push('adam');
+    return $collection->push('Adam');
 });
 
 $collection->all();
@@ -3675,14 +3678,14 @@ A second closure may be passed to the `whenNotEmpty` method that will be execute
 $collection = collect();
 
 $collection->whenNotEmpty(function (Collection $collection) {
-    return $collection->push('adam');
+    return $collection->push('Adam');
 }, function (Collection $collection) {
-    return $collection->push('taylor');
+    return $collection->push('Taylor');
 });
 
 $collection->all();
 
-// ['taylor']
+// ['Taylor']
 ```
 
 For the inverse of `whenNotEmpty`, see the [whenEmpty](#method-whenempty) method.

@@ -50,7 +50,7 @@ use Illuminate\Contracts\Redis\Factory;
 class CacheOrderInformation
 {
     /**
-     * Create a new event handler instance.
+     * Create the event listener.
      */
     public function __construct(
         protected Factory $redis,

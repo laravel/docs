@@ -40,6 +40,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 [Arr::accessible](#method-array-accessible)
 [Arr::add](#method-array-add)
+[Arr::array](#method-array-array)
+[Arr::boolean](#method-array-boolean)
 [Arr::collapse](#method-array-collapse)
 [Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
@@ -48,10 +50,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::exists](#method-array-exists)
 [Arr::first](#method-array-first)
 [Arr::flatten](#method-array-flatten)
+[Arr::float](#method-array-float)
 [Arr::forget](#method-array-forget)
+[Arr::from](#method-array-from)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
+[Arr::hasAll](#method-array-hasall)
 [Arr::hasAny](#method-array-hasany)
+[Arr::integer](#method-array-integer)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::isList](#method-array-islist)
 [Arr::join](#method-array-join)
@@ -76,6 +82,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::string](#method-array-string)
 [Arr::take](#method-array-take)
 [Arr::toCssClasses](#method-array-to-css-classes)
 [Arr::toCssStyles](#method-array-to-css-styles)
@@ -261,6 +268,45 @@ $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
 // ['name' => 'Desk', 'price' => 100]
 ```
 
+<a name="method-array-array"></a>
+#### `Arr::array()` {.collection-method}
+
+The `Arr::array` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not an `array`:
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
+
+$value = Arr::array($array, 'languages');
+
+// ['PHP', 'Ruby']
+
+$value = Arr::array($array, 'name');
+
+// throws InvalidArgumentException
+```
+
+<a name="method-array-boolean"></a>
+#### `Arr::boolean()` {.collection-method}
+
+The `Arr::boolean` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `boolean`:
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'available' => true];
+
+$value = Arr::boolean($array, 'available');
+
+// true
+
+$value = Arr::boolean($array, 'name');
+
+// throws InvalidArgumentException
+```
+
+
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
 
@@ -413,6 +459,25 @@ $flattened = Arr::flatten($array);
 // ['Joe', 'PHP', 'Ruby']
 ```
 
+<a name="method-array-float"></a>
+#### `Arr::float()` {.collection-method}
+
+The `Arr::float` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `float`:
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'balance' => 123.45];
+
+$value = Arr::float($array, 'balance');
+
+// 123.45
+
+$value = Arr::float($array, 'name');
+
+// throws InvalidArgumentException
+```
+
 <a name="method-array-forget"></a>
 #### `Arr::forget()` {.collection-method}
 
@@ -426,6 +491,27 @@ $array = ['products' => ['desk' => ['price' => 100]]];
 Arr::forget($array, 'products.desk');
 
 // ['products' => []]
+```
+
+<a name="method-array-from"></a>
+#### `Arr::from()` {.collection-method}
+
+The `Arr::from` method converts various input types into a plain PHP array. It supports a range of input types, including arrays, objects, and several common Laravel interfaces, such as `Arrayable`, `Enumerable`, `Jsonable`, and `JsonSerializable`. Additionally, it handles `Traversable` and `WeakMap` instances:
+
+```php
+use Illuminate\Support\Arr;
+
+Arr::from((object) ['foo' => 'bar']); // ['foo' => 'bar']
+
+class TestJsonableObject implements Jsonable
+{
+    public function toJson($options = 0)
+    {
+        return json_encode(['foo' => 'bar']);
+    }
+}
+
+Arr::from(new TestJsonableObject); // ['foo' => 'bar']
 ```
 
 <a name="method-array-get"></a>
@@ -472,6 +558,21 @@ $contains = Arr::has($array, ['product.price', 'product.discount']);
 // false
 ```
 
+<a name="method-array-hasall"></a>
+#### `Arr::hasAll()` {.collection-method}
+
+The `Arr::hasAll` method determines if all of the specified keys exist in the given array using "dot" notation:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Taylor', 'language' => 'PHP'];
+
+Arr::hasAll($array, ['name']); // true
+Arr::hasAll($array, ['name', 'language']); // true
+Arr::hasAll($array, ['name', 'IDE']); // false
+```
+
 <a name="method-array-hasany"></a>
 #### `Arr::hasAny()` {.collection-method}
 
@@ -493,6 +594,25 @@ $contains = Arr::hasAny($array, ['product.name', 'product.discount']);
 $contains = Arr::hasAny($array, ['category', 'product.discount']);
 
 // false
+```
+
+<a name="method-array-integer"></a>
+#### `Arr::integer()` {.collection-method}
+
+The `Arr::integer` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not an `int`:
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'age' => 42];
+
+$value = Arr::integer($array, 'age');
+
+// 42
+
+$value = Arr::integer($array, 'name');
+
+// throws InvalidArgumentException
 ```
 
 <a name="method-array-isassoc"></a>
@@ -1048,6 +1168,25 @@ If you would like the results sorted in descending order, you may use the `Arr::
 $sorted = Arr::sortRecursiveDesc($array);
 ```
 
+<a name="method-array-string"></a>
+#### `Arr::string()` {.collection-method}
+
+The `Arr::string` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `string`:
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
+
+$value = Arr::string($array, 'name');
+
+// Joe
+
+$value = Arr::string($array, 'languages');
+
+// throws InvalidArgumentException
+```
+
 <a name="method-array-take"></a>
 #### `Arr::take()` {.collection-method}
 
@@ -1451,6 +1590,10 @@ $currency = Number::currency(1000, in: 'EUR');
 $currency = Number::currency(1000, in: 'EUR', locale: 'de');
 
 // 1.000,00 €
+
+$currency = Number::currency(1000, in: 'EUR', locale: 'de', precision: 0);
+
+// 1.000 €
 ```
 
 <a name="method-default-currency"></a>
@@ -1577,7 +1720,7 @@ use Illuminate\Support\Number;
 
 $result = Number::pairs(25, 10);
 
-// [[1, 10], [11, 20], [21, 25]]
+// [[0, 9], [10, 19], [20, 25]]
 
 $result = Number::pairs(25, 10, offset: 0);
 
@@ -2155,7 +2298,7 @@ $traits = class_uses_recursive(App\Models\User::class);
 The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the given value:
 
 ```php
-$collection = collect(['taylor', 'abigail']);
+$collection = collect(['Taylor', 'Abigail']);
 ```
 
 <a name="method-config"></a>
@@ -2295,7 +2438,7 @@ $env = env('APP_ENV', 'production');
 ```
 
 > [!WARNING]
-> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
+> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return external environment variables such as server-level or system-level environment variables or `null`.
 
 <a name="method-event"></a>
 #### `event()` {.collection-method}
@@ -2662,12 +2805,13 @@ return retry([100, 200], function () {
 To only retry under specific conditions, you may pass a closure as the fourth argument to the `retry` function:
 
 ```php
+use App\Exceptions\TemporaryException;
 use Exception;
 
 return retry(5, function () {
     // ...
 }, 100, function (Exception $exception) {
-    return $exception instanceof RetryException;
+    return $exception instanceof TemporaryException;
 });
 ```
 
@@ -2701,7 +2845,7 @@ The `tap` function accepts two arguments: an arbitrary `$value` and a closure. T
 
 ```php
 $user = tap(User::first(), function (User $user) {
-    $user->name = 'taylor';
+    $user->name = 'Taylor';
 
     $user->save();
 });
@@ -2940,9 +3084,6 @@ For a thorough discussion of Carbon and its features, please consult the [offici
 <a name="deferred-functions"></a>
 ### Deferred Functions
 
-> [!WARNING]
-> Deferred functions are currently in beta while we gather community feedback.
-
 While Laravel's [queued jobs](/docs/{{version}}/queues) allow you to queue tasks for background processing, sometimes you may have simple tasks you would like to defer without configuring or maintaining a long-running queue worker.
 
 Deferred functions allow you to defer the execution of a closure until after the HTTP response has been sent to the user, keeping your application feeling fast and responsive. To defer the execution of a closure, simply pass the closure to the `Illuminate\Support\defer` function:
@@ -2977,19 +3118,6 @@ If you need to cancel a deferred function before it is executed, you can use the
 defer(fn () => Metrics::report(), 'reportMetrics');
 
 defer()->forget('reportMetrics');
-```
-
-<a name="deferred-function-compatibility"></a>
-#### Deferred Function Compatibility
-
-If you upgraded to Laravel 11.x from a Laravel 10.x application and your application's skeleton still contains an `app/Http/Kernel.php` file, you should add the `InvokeDeferredCallbacks` middleware to the beginning of the kernel's `$middleware` property:
-
-```php
-protected $middleware = [
-    \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class, // [tl! add]
-    \App\Http\Middleware\TrustProxies::class,
-    // ...
-];
 ```
 
 <a name="disabling-deferred-functions-in-tests"></a>
@@ -3368,6 +3496,7 @@ $scheme = $uri->scheme();
 $host = $uri->host();
 $port = $uri->port();
 $path = $uri->path();
+$segments = $uri->pathSegments();
 $query = $uri->query();
 $fragment = $uri->fragment();
 ```
