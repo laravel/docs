@@ -134,7 +134,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [config_path](#method-config-path)
 [database_path](#method-database-path)
 [lang_path](#method-lang-path)
-[mix](#method-mix)
 [public_path](#method-public-path)
 [resource_path](#method-resource-path)
 [storage_path](#method-storage-path)
@@ -1951,15 +1950,6 @@ $path = lang_path('en/messages.php');
 
 > [!NOTE]
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
-
-<a name="method-mix"></a>
-#### `mix()` {.collection-method}
-
-The `mix` function returns the path to a [versioned Mix file](/docs/{{version}}/mix):
-
-```php
-$path = mix('css/app.css');
-```
 
 <a name="method-public-path"></a>
 #### `public_path()` {.collection-method}
