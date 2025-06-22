@@ -431,7 +431,7 @@ The Eloquent `all` method will return all of the results in the model's table. H
 ```php
 $flights = Flight::where('active', 1)
     ->orderBy('name')
-    ->take(10)
+    ->limit(10)
     ->get();
 ```
 
