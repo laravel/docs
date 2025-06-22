@@ -2376,7 +2376,7 @@ $random = $collection->random(3);
 
 $random->all();
 
-// [2, 4, 5] - (retrieved randomly)
+// collect([2, 4, 5]) - (retrieved randomly)
 ```
 
 If the collection instance has fewer items than requested, the `random` method will throw an `InvalidArgumentException`.
