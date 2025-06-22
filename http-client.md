@@ -11,6 +11,7 @@
     - [Guzzle Middleware](#guzzle-middleware)
     - [Guzzle Options](#guzzle-options)
 - [Concurrent Requests](#concurrent-requests)
+- [Asynchronous Requests](#asynchronous-requests)
 - [Macros](#macros)
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
@@ -551,6 +552,35 @@ $responses = Http::pool(fn (Pool $pool) => [
     $pool->withHeaders($headers)->get('http://laravel.test/test'),
 ]);
 ```
+
+<a name="asynchronous-requests"></a>
+## Asynchronous Requests
+
+If you do not wish to wait for the response, you can use the `async` to make the request asynchronous.
+
+```php
+use Illuminate\Support\Facades\Http;
+
+Http::async()->get('http://example.com');
+
+// Code that will run without waiting for the request to finish
+```
+
+You can use `then` to handle the response of the request.
+
+```php
+use Illuminate\Support\Facades\Http;
+
+$promise = Http::async()->get('http://example.com')->then(function ($response) {
+    echo $response->status();
+    echo $response->body();
+});
+
+$promise->getState(); // 'pending', 'rejected' or 'fulfilled'
+```
+
+> [!WARNING]
+> If the lifecycle of your code ends before the request is completed, the request will be interrupted. To prevent this you can use `$promise->wait()` to wait for the response to the received before finishing the execution of you code.
 
 <a name="macros"></a>
 ## Macros
