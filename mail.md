@@ -1076,6 +1076,33 @@ class OrderShipped extends Mailable implements ShouldQueue
 > [!NOTE]
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
+<a name="queued-email-failures"></a>
+#### Queued Email Failures
+
+When a queued email fails, the `failed` method on the queued mailable class will be invoked if it has been defined. The `Throwable` instance that caused the queued email to fail will be passed to the `failed` method:
+
+```php
+<?php
+
+namespace App\Mail;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
+use Throwable;
+
+class OrderDelayed extends Mailable implements ShouldQueue
+{
+    /**
+     * Handle a queued email's failure.
+     */
+    public function failed(Throwable $exception): void
+    {
+        // ...
+    }
+}
+```
+
 <a name="rendering-mailables"></a>
 ## Rendering Mailables
 
