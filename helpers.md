@@ -170,6 +170,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [bcrypt](#method-bcrypt)
 [blank](#method-blank)
 [broadcast](#method-broadcast)
+[broadcast_if](#method-broadcast-if)
+[broadcast_unless](#method-broadcast-unless)
 [cache](#method-cache)
 [class_uses_recursive](#method-class-uses-recursive)
 [collect](#method-collect)
