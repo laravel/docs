@@ -1093,6 +1093,8 @@ use Throwable;
 
 class OrderDelayed extends Mailable implements ShouldQueue
 {
+    use SerializesModels;
+
     /**
      * Handle a queued email's failure.
      */
