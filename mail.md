@@ -1088,10 +1088,13 @@ namespace App\Mail;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
 use Throwable;
 
 class OrderDelayed extends Mailable implements ShouldQueue
 {
+    use SerializesModels;
+
     /**
      * Handle a queued email's failure.
      */
