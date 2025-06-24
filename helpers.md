@@ -2160,7 +2160,7 @@ The `abort_if` function throws an HTTP exception if a given boolean expression e
 abort_if(! Auth::user()->isAdmin(), 403);
 ```
 
-Like the `abort` method, you may also provide the exception's response text as the third argument and an array of custom response headers as the fourth argument to the function.
+Like the `abort` method, you may also provide the exception's message as the third argument and an array of custom response headers as the fourth argument to the function.
 
 <a name="method-abort-unless"></a>
 #### `abort_unless()` {.collection-method}
@@ -2171,7 +2171,7 @@ The `abort_unless` function throws an HTTP exception if a given boolean expressi
 abort_unless(Auth::user()->isAdmin(), 403);
 ```
 
-Like the `abort` method, you may also provide the exception's response text as the third argument and an array of custom response headers as the fourth argument to the function.
+Like the `abort` method, you may also provide the exception's message as the third argument and an array of custom response headers as the fourth argument to the function.
 
 <a name="method-app"></a>
 #### `app()` {.collection-method}
