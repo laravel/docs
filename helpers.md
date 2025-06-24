@@ -2256,6 +2256,24 @@ broadcast(new UserRegistered($user));
 broadcast(new UserRegistered($user))->toOthers();
 ```
 
+<a name="method-broadcast-if"></a>
+#### `broadcast_if()` {.collection-method}
+
+The `broadcast_if` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners if a given boolean expression evaluates to `true`:
+
+```php
+broadcast_if($user->isActive(), new UserRegistered($user));
+```
+
+<a name="method-broadcast-unless"></a>
+#### `broadcast_unless()` {.collection-method}
+
+The `broadcast_unless` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners if a given boolean expression evaluates to `false`:
+
+```php
+broadcast_unless($user->isBanned(), new UserRegistered($user));
+```
+
 <a name="method-cache"></a>
 #### `cache()` {.collection-method}
 
