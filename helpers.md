@@ -2085,7 +2085,7 @@ The `uri` function generates a [fluent URI instance](#uri) for the given URI:
 ```php
 $uri = uri('https://example.com')
     ->withPath('/users')
-    ->withQuery(['page' => 1])
+    ->withQuery(['page' => 1]);
 ```
 
 If the `uri` function is given an array containing a callable controller and method pair, the function will create a `Uri` instance for the controller method's route path:
@@ -2093,7 +2093,7 @@ If the `uri` function is given an array containing a callable controller and met
 ```php
 use App\Http\Controllers\UserController;
 
-$uri = uri([UserController::class, 'show'], ['user' => $user])
+$uri = uri([UserController::class, 'show'], ['user' => $user]);
 ```
 
 If the controller is invokable, you may simply provide the controller class name:
