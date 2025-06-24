@@ -701,27 +701,6 @@ Http::fake(function (Request $request) {
 });
 ```
 
-<a name="preventing-stray-requests"></a>
-### Preventing Stray Requests
-
-If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:
-
-```php
-use Illuminate\Support\Facades\Http;
-
-Http::preventStrayRequests();
-
-Http::fake([
-    'github.com/*' => Http::response('ok'),
-]);
-
-// An "ok" response is returned...
-Http::get('https://github.com/laravel/framework');
-
-// An exception is thrown...
-Http::get('https://laravel.com');
-```
-
 <a name="inspecting-requests"></a>
 ### Inspecting Requests
 
@@ -821,6 +800,27 @@ $recorded = Http::recorded(function (Request $request, Response $response) {
     return $request->url() !== 'https://laravel.com' &&
            $response->successful();
 });
+```
+
+<a name="preventing-stray-requests"></a>
+### Preventing Stray Requests
+
+If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+Http::preventStrayRequests();
+
+Http::fake([
+    'github.com/*' => Http::response('ok'),
+]);
+
+// An "ok" response is returned...
+Http::get('https://github.com/laravel/framework');
+
+// An exception is thrown...
+Http::get('https://laravel.com');
 ```
 
 <a name="events"></a>

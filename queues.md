@@ -1933,7 +1933,7 @@ php artisan queue:work
 > [!NOTE]
 > To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
 
-You may include the `-v` flag when invoking the `queue:work` command if you would like the processed job IDs to be included in the command's output:
+You may include the `-v` flag when invoking the `queue:work` command if you would like the processed job IDs, connection names, and queue names to be included in the command's output:
 
 ```shell
 php artisan queue:work -v

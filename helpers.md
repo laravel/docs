@@ -134,7 +134,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [config_path](#method-config-path)
 [database_path](#method-database-path)
 [lang_path](#method-lang-path)
-[mix](#method-mix)
 [public_path](#method-public-path)
 [resource_path](#method-resource-path)
 [storage_path](#method-storage-path)
@@ -1952,15 +1951,6 @@ $path = lang_path('en/messages.php');
 > [!NOTE]
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
-<a name="method-mix"></a>
-#### `mix()` {.collection-method}
-
-The `mix` function returns the path to a [versioned Mix file](/docs/{{version}}/mix):
-
-```php
-$path = mix('css/app.css');
-```
-
 <a name="method-public-path"></a>
 #### `public_path()` {.collection-method}
 
@@ -2095,7 +2085,7 @@ The `uri` function generates a [fluent URI instance](#uri) for the given URI:
 ```php
 $uri = uri('https://example.com')
     ->withPath('/users')
-    ->withQuery(['page' => 1])
+    ->withQuery(['page' => 1]);
 ```
 
 If the `uri` function is given an array containing a callable controller and method pair, the function will create a `Uri` instance for the controller method's route path:
@@ -2103,7 +2093,7 @@ If the `uri` function is given an array containing a callable controller and met
 ```php
 use App\Http\Controllers\UserController;
 
-$uri = uri([UserController::class, 'show'], ['user' => $user])
+$uri = uri([UserController::class, 'show'], ['user' => $user]);
 ```
 
 If the controller is invokable, you may simply provide the controller class name:
@@ -2140,6 +2130,8 @@ $full = url()->full();
 
 $previous = url()->previous();
 ```
+
+For more information on working with the `url` function, consult the [URL generation documentation](/docs/{{version}}/urls#generating-urls).
 
 <a name="miscellaneous"></a>
 ## Miscellaneous
