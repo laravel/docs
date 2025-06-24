@@ -2131,6 +2131,8 @@ $full = url()->full();
 $previous = url()->previous();
 ```
 
+For more information on working with the `url` function, consult the [Generating URLs section](/docs/{{version}}/urls#generating-urls).
+
 <a name="miscellaneous"></a>
 ## Miscellaneous
 
