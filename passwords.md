@@ -44,7 +44,7 @@ When using the default `database` driver, a table must be created to store your 
 <a name="cache"></a>
 #### Cache
 
-There is also a cache driver available for handling password resets, which does not require a dedicated database table.
+There is also a cache driver available for handling password resets, which does not require a dedicated database table. Entries are keyed by the user's email, so ensure you are not using that key within the cache store elsewhere.
 
 ```php
 'passwords' => [
