@@ -2265,6 +2265,8 @@ The `broadcast_if` function [broadcasts](/docs/{{version}}/broadcasting) the giv
 
 ```php
 broadcast_if($user->isActive(), new UserRegistered($user));
+
+broadcast_if($user->isActive(), new UserRegistered($user))->toOthers();
 ```
 
 <a name="method-broadcast-unless"></a>
@@ -2274,6 +2276,8 @@ The `broadcast_unless` function [broadcasts](/docs/{{version}}/broadcasting) the
 
 ```php
 broadcast_unless($user->isBanned(), new UserRegistered($user));
+
+broadcast_unless($user->isBanned(), new UserRegistered($user))->toOthers();
 ```
 
 <a name="method-cache"></a>
