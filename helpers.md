@@ -2653,7 +2653,7 @@ $policy = policy(App\Models\User::class);
 The `redirect` function returns a [redirect HTTP response](/docs/{{version}}/responses#redirects), or returns the redirector instance if called with no arguments:
 
 ```php
-return redirect($to = null, $status = 302, $headers = [], $https = null);
+return redirect($to = null, $status = 302, $headers = [], $secure = null);
 
 return redirect('/home');
 
