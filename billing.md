@@ -138,7 +138,7 @@ class User extends Authenticatable
 Cashier assumes your billable model will be the `App\Models\User` class that ships with Laravel. If you wish to change this you may specify a different model via the `useCustomerModel` method. This method should typically be called in the `boot` method of your `AppServiceProvider` class:
 
 ```php
-use App\Models\Cashier\User;
+use App\Models\User;
 use Laravel\Cashier\Cashier;
 
 /**
