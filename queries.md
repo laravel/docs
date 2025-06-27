@@ -538,9 +538,14 @@ $users = DB::table('users')
     ->get();
 ```
 
-You may also pass an array of conditions to the `where` function. Each element of the array should be an array containing the three arguments typically passed to the `where` method:
+You may also pass an array of conditions to the `where` function. That array can be an associative one. Or each element of the array could be an array itself containing the three arguments typically passed to the `where` method:
 
 ```php
+$users = DB::table('users')->where([
+    'status' => '1',
+    'team' => 'Nightwatch',
+])->get();
+
 $users = DB::table('users')->where([
     ['status', '=', '1'],
     ['subscribed', '<>', '1'],
