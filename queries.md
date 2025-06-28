@@ -1122,13 +1122,9 @@ $users = DB::table('users')
     ->get();
 ```
 
-The sort direction is optional and it is ascending by default. If you want to sort in descending order, you can specify the second parameter for the `orderBy` method, or just use `orderByDesc`.
+The sort direction is optional, and is ascending by default. If you want to sort in descending order, you can specify the second parameter for the `orderBy` method, or just use `orderByDesc`:
 
 ```php
-$users = DB::table('users')
-    ->orderBy('name')
-    ->get();
-
 $users = DB::table('users')
     ->orderByDesc('verified_at')
     ->get();
