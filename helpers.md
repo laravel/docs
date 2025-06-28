@@ -482,7 +482,7 @@ $value = Arr::float($array, 'name');
 <a name="method-array-forget"></a>
 #### `Arr::forget()` {.collection-method}
 
-The `Arr::forget` method removes a given key / value pair from a deeply nested array using "dot" notation:
+The `Arr::forget` method removes a given key / value pairs from a deeply nested array using "dot" notation:
 
 ```php
 use Illuminate\Support\Arr;
