@@ -2471,8 +2471,8 @@ You may also validate each element of an array. For example, to validate that ea
 
 ```php
 $validator = Validator::make($request->all(), [
-    'person.*.email' => 'email|unique:users',
-    'person.*.first_name' => 'required_with:person.*.last_name',
+    'users.*.email' => 'email|unique:users',
+    'users.*.first_name' => 'required_with:users.*.last_name',
 ]);
 ```
 
@@ -2480,8 +2480,8 @@ Likewise, you may use the `*` character when specifying [custom validation messa
 
 ```php
 'custom' => [
-    'person.*.email' => [
-        'unique' => 'Each person must have a unique email address',
+    'users.*.email' => [
+        'unique' => 'Each user must have a unique email address',
     ]
 ],
 ```
