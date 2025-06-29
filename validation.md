@@ -2457,7 +2457,7 @@ In general, you should always specify the array keys that are allowed to be pres
 <a name="validating-nested-array-input"></a>
 ### Validating Nested Array Input
 
-Validating nested array based form input fields doesn't have to be a pain. You may use "dot notation" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:
+Validating nested array-based form input fields doesn't have to be a pain. You may use "dot notation" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:
 
 ```php
 use Illuminate\Support\Facades\Validator;
@@ -2476,7 +2476,7 @@ $validator = Validator::make($request->all(), [
 ]);
 ```
 
-Likewise, you may use the `*` character when specifying [custom validation messages in your language files](#custom-messages-for-specific-attributes), making it a breeze to use a single validation message for array based fields:
+Likewise, you may use the `*` character when specifying [custom validation messages in your language files](#custom-messages-for-specific-attributes), making it a breeze to use a single validation message for array-based fields:
 
 ```php
 'custom' => [
