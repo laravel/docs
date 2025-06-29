@@ -1130,6 +1130,15 @@ $users = DB::table('users')
     ->get();
 ```
 
+Finally, the results can also be sorted by a JSON column, using the -> operator.
+
+```php
+$corporations = DB::table('corporations')
+    ->where('country', 'US')
+    ->orderBy('head_office->state')
+    ->get();
+```
+
 <a name="latest-oldest"></a>
 #### The `latest` and `oldest` Methods
 
