@@ -50,6 +50,7 @@
 - [Monitoring Your Queues](#monitoring-your-queues)
 - [Testing](#testing)
     - [Faking a Subset of Jobs](#faking-a-subset-of-jobs)
+    - [Scoped Queue Fakes](#scoped-queue-fakes)
     - [Testing Job Chains](#testing-job-chains)
     - [Testing Job Batches](#testing-job-batches)
     - [Testing Job / Queue Interactions](#testing-job-queue-interactions)
@@ -2582,6 +2583,120 @@ You may fake all jobs except for a set of specified jobs using the `except` meth
 Queue::fake()->except([
     ShipOrder::class,
 ]);
+```
+
+<a name="scoped-queue-fakes"></a>
+### Scoped Queue Fakes
+
+If you only want to fake queued jobs for a portion of your test, you may use the `fakeFor` method:
+
+```php tab=Pest
+<?php
+
+use App\Jobs\ShipOrder;
+use Illuminate\Support\Facades\Queue;
+
+test('orders can be shipped', function () {
+    // Perform some test setup...
+
+    Queue::fakeFor(function () {
+        Queue::push(new ShipOrder);
+
+        Queue::assertPushed(ShipOrder::class);
+    });
+
+    // Jobs are pushed to the queue as normal and will be processed...
+    Queue::push(new ShipOrder);
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Jobs\ShipOrder;
+use Illuminate\Support\Facades\Queue;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_orders_can_be_shipped(): void
+    {
+        // Perform some test setup...
+
+        Queue::fakeFor(function () {
+            Queue::push(new ShipOrder);
+
+            Queue::assertPushed(ShipOrder::class);
+        });
+
+        // Jobs are pushed to the queue as normal and will be processed...
+        Queue::push(new ShipOrder);
+    }
+}
+```
+
+If you only want to fake specific jobs during the execution of a callable, you may pass an array of job class names as the second argument to the `fakeFor` method:
+
+```php tab=Pest
+test('orders can be shipped', function () {
+    Queue::fakeFor(function () {
+        Queue::push(new ShipOrder);
+        Queue::push(new AnotherJob);
+
+        Queue::assertPushed(ShipOrder::class);
+        Queue::assertNotPushed(AnotherJob::class);
+    }, [
+        ShipOrder::class,
+    ]);
+});
+```
+
+```php tab=PHPUnit
+public function test_orders_can_be_shipped(): void
+{
+    Queue::fakeFor(function () {
+        Queue::push(new ShipOrder);
+        Queue::push(new AnotherJob);
+
+        Queue::assertPushed(ShipOrder::class);
+        Queue::assertNotPushed(AnotherJob::class);
+    }, [
+        ShipOrder::class,
+    ]);
+}
+```
+
+You may fake all jobs except for a set of specified jobs during the execution of a callable using the `fakeExceptFor` method:
+
+```php tab=Pest
+test('orders can be shipped', function () {
+    Queue::fakeExceptFor(function () {
+        Queue::push(new ShipOrder);        // Queued normally
+        Queue::push(new AnotherJob);       // Faked
+
+        Queue::assertNotPushed(ShipOrder::class);
+        Queue::assertPushed(AnotherJob::class);
+    }, [
+        ShipOrder::class, // This job will be queued normally
+    ]);
+});
+```
+
+```php tab=PHPUnit
+public function test_orders_can_be_shipped(): void
+{
+    Queue::fakeExceptFor(function () {
+        Queue::push(new ShipOrder);        // Queued normally
+        Queue::push(new AnotherJob);       // Faked
+
+        Queue::assertNotPushed(ShipOrder::class);
+        Queue::assertPushed(AnotherJob::class);
+    }, [
+        ShipOrder::class, // This job will be queued normally
+    ]);
+}
 ```
 
 <a name="testing-job-chains"></a>
