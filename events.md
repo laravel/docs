@@ -1033,5 +1033,3 @@ class ExampleTest extends TestCase
     }
 }
 ```
-
-
