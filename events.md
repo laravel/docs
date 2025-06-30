@@ -963,3 +963,75 @@ class ExampleTest extends TestCase
     }
 }
 ```
+
+If you want to fake all events except for a specific set of events, you may use the `fakeExceptFor` method. This method accepts a closure that will be executed with the events faked, and an array of event classes that should not be faked:
+
+```php tab=Pest
+<?php
+
+use App\Events\OrderCreated;
+use App\Events\OrderAudited;
+use App\Models\Order;
+use Illuminate\Support\Facades\Event;
+
+test('orders can be processed except for OrderAudited (scoped)', function () {
+    $order = Event::fakeExceptFor(function () {
+        // suppose order creation triggers OrderCreated and OrderAudited events
+        $order = Order::factory()->create();
+
+        // Only OrderAudited should be dispatched as normal, OrderCreated is faked
+        Event::assertDispatched(OrderCreated::class);
+        Event::assertNotDispatched(OrderAudited::class);
+
+        return $order;
+    }, [
+        OrderAudited::class,
+    ]);
+
+    // The events will be dispatched and listeners will run as normal...
+    $order->update([
+        // ...
+    ]);
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Events\OrderCreated;
+use App\Events\OrderAudited;
+use App\Models\Order;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * Test order process except for OrderAudited event (scoped).
+     */
+    public function test_orders_can_be_processed_except_for_order_shipped_scoped(): void
+    {
+        $order = Event::fakeExceptFor(function () {
+            // suppose order creation triggers OrderCreated and OrderAudited events
+            $order = Order::factory()->create();
+
+            // Only OrderAudited should be dispatched as normal, OrderCreated is faked
+            Event::assertDispatched(OrderCreated::class);
+            Event::assertNotDispatched(OrderAudited::class);
+
+            return $order;
+        }, [
+            OrderAudited::class,
+        ]);
+
+        // The events will be dispatched and listeners will run as normal...
+        $order->update([
+            // ...
+        ]);
+    }
+}
+```
+
+
