@@ -1,8 +1,9 @@
 # Resetting Passwords
 
 - [Introduction](#introduction)
+    - [Configuration](#configuration)
+    - [Driver Prerequisites](#driver-prerequisites)
     - [Model Preparation](#model-preparation)
-    - [Database Preparation](#database-preparation)
     - [Configuring Trusted Hosts](#configuring-trusted-hosts)
 - [Routing](#routing)
     - [Requesting the Password Reset Link](#requesting-the-password-reset-link)
@@ -18,17 +19,53 @@ Most web applications provide a way for users to reset their forgotten passwords
 > [!NOTE]
 > Want to get started fast? Install a Laravel [application starter kit](/docs/{{version}}/starter-kits) in a fresh Laravel application. Laravel's starter kits will take care of scaffolding your entire authentication system, including resetting forgotten passwords.
 
+<a name="configuration"></a>
+### Configuration
+
+Your application's password reset configuration file is stored at `config/auth.php`. Be sure to review the options available to you in this file. By default, Laravel is configured to use the `database` password reset driver.
+
+The password reset `driver` configuration option defines where password reset data will be stored. Laravel includes two drivers:
+
+<div class="content-list" markdown="1">
+
+- `database` - password reset data is stored in a relational database.
+- `cache` - password reset data is stored in one of your cache based stores.
+
+</div>
+
+<a name="driver-prerequisites"></a>
+### Driver Prerequisites
+
+<a name="database"></a>
+#### Database
+
+When using the default `database` driver, a table must be created to store your application's password reset tokens. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` database migration.
+
+<a name="cache"></a>
+#### Cache
+
+There is also a cache driver available for handling password resets, which does not require a dedicated database table. Entries are keyed by the user's email address, so ensure you are not using email addresses as a cache key elsewhere in your application:
+
+```php
+'passwords' => [
+    'users' => [
+        'driver' => 'cache',
+        'provider' => 'users',
+        'store' => 'passwords', // Optional...
+        'expire' => 60,
+        'throttle' => 60,
+    ],
+],
+```
+
+To prevent a call to `artisan cache:clear` from flushing your password reset data, you can optionally specify a separate cache store with the `store` configuration key. The value should correspond to a store configured in your `config/cache.php` configuration value.
+
 <a name="model-preparation"></a>
 ### Model Preparation
 
 Before using the password reset features of Laravel, your application's `App\Models\User` model must use the `Illuminate\Notifications\Notifiable` trait. Typically, this trait is already included on the default `App\Models\User` model that is created with new Laravel applications.
 
 Next, verify that your `App\Models\User` model implements the `Illuminate\Contracts\Auth\CanResetPassword` contract. The `App\Models\User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Passwords\CanResetPassword` trait to include the methods needed to implement the interface.
-
-<a name="database-preparation"></a>
-### Database Preparation
-
-A table must be created to store your application's password reset tokens. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` database migration.
 
 <a name="configuring-trusted-hosts"></a>
 ### Configuring Trusted Hosts
@@ -160,7 +197,7 @@ Before moving on, you may be wondering how Laravel knows how to retrieve the use
 <a name="deleting-expired-tokens"></a>
 ## Deleting Expired Tokens
 
-Password reset tokens that have expired will still be present within your database. However, you may easily delete these records using the `auth:clear-resets` Artisan command:
+If you are using the `database` driver, password reset tokens that have expired will still be present within your database. However, you may easily delete these records using the `auth:clear-resets` Artisan command:
 
 ```shell
 php artisan auth:clear-resets
