@@ -1130,12 +1130,12 @@ $users = DB::table('users')
     ->get();
 ```
 
-Finally, the results can also be sorted by a JSON column, using the -> operator.
+Finally, using the `->` operator, the results can be sorted by a value within a JSON column:
 
 ```php
 $corporations = DB::table('corporations')
     ->where('country', 'US')
-    ->orderBy('head_office->state')
+    ->orderBy('location->state')
     ->get();
 ```
 
