@@ -28,8 +28,8 @@ The password reset `driver` configuration option defines where password reset da
 
 <div class="content-list" markdown="1">
 
-- `database` - password resets are stored in a relational database.
-- `cache` - password resets are stored in one of your cache based stores.
+- `database` - password reset data is stored in a relational database.
+- `cache` - password reset data is stored in one of your cache based stores.
 
 </div>
 
@@ -44,21 +44,21 @@ When using the default `database` driver, a table must be created to store your 
 <a name="cache"></a>
 #### Cache
 
-There is also a cache driver available for handling password resets, which does not require a dedicated database table. Entries are keyed by the user's email, so ensure you are not using that key within the cache store elsewhere.
+There is also a cache driver available for handling password resets, which does not require a dedicated database table. Entries are keyed by the user's email address, so ensure you are not using email addresses as a cache key elsewhere in your application:
 
 ```php
 'passwords' => [
     'users' => [
         'driver' => 'cache',
         'provider' => 'users',
-        'store' => 'passwords', //optional
+        'store' => 'passwords', // Optional...
         'expire' => 60,
         'throttle' => 60,
     ],
 ],
 ```
 
-To prevent a call to `artisan cache:clear` from flushing your password resets, you can optionally specify a separate cache store with the `store` configuration key. The value should point to a store configured in `config/cache.php`.
+To prevent a call to `artisan cache:clear` from flushing your password reset data, you can optionally specify a separate cache store with the `store` configuration key. The value should correspond to a store configured in your `config/cache.php` configuration value.
 
 <a name="model-preparation"></a>
 ### Model Preparation
