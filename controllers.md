@@ -599,7 +599,8 @@ Route::middleware(['auth', 'verified', 'other'])->group(function () {
 
 You may pass a single method or an array of methods, and a single middleware or an array of middleware.
 
-> **Note**: The order in which you call `middleware`, `middlewareFor`, and `withoutMiddlewareFor` is respected.
+> [!NOTE] 
+> The order in which you call `middleware`, `middlewareFor`, and `withoutMiddlewareFor` is respected.
 
 <a name="dependency-injection-and-controllers"></a>
 ## Dependency Injection and Controllers
