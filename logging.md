@@ -534,7 +534,7 @@ Laravel Pail is a package that allows you to easily dive into your Laravel appli
 To get started, install Pail into your project using the Composer package manager:
 
 ```shell
-composer require laravel/pail
+composer require --dev laravel/pail
 ```
 
 <a name="pail-usage"></a>
