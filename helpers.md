@@ -3066,7 +3066,7 @@ Benchmark::dd([
 
 By default, the given callbacks will be executed once (one iteration), and their duration will be displayed in the browser / console.
 
-To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
+To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average number of milliseconds it took to execute the callback across all iterations:
 
 ```php
 Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
