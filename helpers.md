@@ -2337,7 +2337,7 @@ config(['app.debug' => true]);
 <a name="method-context"></a>
 #### `context()` {.collection-method}
 
-The `context` function gets the value from the [current context](/docs/{{version}}/context). You may also provide a default value that will be returned if the context key does not exist:
+The `context` function gets the value from the current [context](/docs/{{version}}/context). You may also provide a default value that will be returned if the context key does not exist:
 
 ```php
 $value = context('trace_id');
