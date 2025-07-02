@@ -33,7 +33,7 @@ The session `driver` configuration option defines where session data will be sto
 - `file` - sessions are stored in `storage/framework/sessions`.
 - `cookie` - sessions are stored in secure, encrypted cookies.
 - `database` - sessions are stored in a relational database.
-- `memcached` / `redis` - sessions are stored in one of these fast, cache based stores.
+- `memcached` / `redis` - sessions are stored in one of these fast, cache-based stores.
 - `dynamodb` - sessions are stored in AWS DynamoDB.
 - `array` - sessions are stored in a PHP array and will not be persisted.
 
