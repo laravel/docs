@@ -29,7 +29,7 @@ The password reset `driver` configuration option defines where password reset da
 <div class="content-list" markdown="1">
 
 - `database` - password reset data is stored in a relational database.
-- `cache` - password reset data is stored in one of your cache based stores.
+- `cache` - password reset data is stored in one of your cache-based stores.
 
 </div>
 
