@@ -284,8 +284,7 @@ class PhotoController extends Controller
 {
     public function __construct(
         #[Storage('local')] protected Filesystem $filesystem
-    )
-    {
+    ) {
         // ...
     }
 }
