@@ -313,7 +313,7 @@ $value = Arr::boolean($array, 'name');
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
 
-The `Arr::collapse` method collapses an array of arrays into a single array:
+The `Arr::collapse` method collapses an array of arrays or collections into a single array:
 
 ```php
 use Illuminate\Support\Arr;
