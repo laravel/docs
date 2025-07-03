@@ -2425,6 +2425,8 @@ The `decrypt` function [decrypts](/docs/{{version}}/encryption) the given value.
 $password = decrypt($value);
 ```
 
+For the inverse of `decrypt`, see the [encrypt](#method-encrypt) method.
+
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
 
@@ -2477,6 +2479,8 @@ The `encrypt` function [encrypts](/docs/{{version}}/encryption) the given value.
 ```php
 $secret = encrypt('my-secret-value');
 ```
+
+For the inverse of `encrypt`, see the [decrypt](#method-decrypt) method.
 
 <a name="method-env"></a>
 #### `env()` {.collection-method}
