@@ -204,6 +204,7 @@ In addition to receiving your command's arguments and options, command closures 
 ```php
 use App\Models\User;
 use App\Support\DripEmailer;
+use Illuminate\Support\Facades\Artisan;
 
 Artisan::command('mail:send {user}', function (DripEmailer $drip, string $user) {
     $drip->send(User::find($user));
@@ -772,6 +773,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 
 ```php
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/user/{user}/mail', function (string $user) {
     $exitCode = Artisan::call('mail:send', [
@@ -795,6 +797,7 @@ If your command defines an option that accepts an array, you may pass an array o
 
 ```php
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/mail', function () {
     $exitCode = Artisan::call('mail:send', [
@@ -821,6 +824,7 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
 
 ```php
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/user/{user}/mail', function (string $user) {
     Artisan::queue('mail:send', [
