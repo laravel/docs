@@ -113,6 +113,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::format](#method-number-format)
 [Number::ordinal](#method-number-ordinal)
 [Number::pairs](#method-number-pairs)
+[Number::parseInt](#method-number-parse-int)
+[Number::parseFloat](#method-number-parse-float)
 [Number::percentage](#method-number-percentage)
 [Number::spell](#method-number-spell)
 [Number::spellOrdinal](#method-number-spell-ordinal)
@@ -1726,6 +1728,40 @@ $result = Number::pairs(25, 10);
 $result = Number::pairs(25, 10, offset: 0);
 
 // [[0, 10], [10, 20], [20, 25]]
+```
+
+<a name="method-number-parse-int"></a>
+#### `Number::parseInt()` {.collection-method}
+
+The `Number::parseInt` method parse a string into an integer according to the specified locale:
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::parseInt('10.123');
+
+// (int) 10
+
+$result = Number::parseInt('10,123', locale: 'fr');
+
+// (int) 10
+```
+
+<a name="method-number-parse-float"></a>
+#### `Number::parseFloat()` {.collection-method}
+
+The `Number::parseFloat` method parse a string into a float according to the specified locale:
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::parseFloat('10');
+
+// (float) 10.0
+
+$result = Number::parseFloat('10', locale: 'fr');
+
+// (float) 10.0
 ```
 
 <a name="method-number-percentage"></a>
