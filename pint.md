@@ -73,6 +73,12 @@ If you would like Pint to fix any files with code style errors but also exit wit
 ./vendor/bin/pint --repair
 ```
 
+If you would like Pint to run in parallel mode (experimental), you may use the `--parallel` option:
+
+```shell
+./vendor/bin/pint --parallel
+```
+
 <a name="configuring-pint"></a>
 ## Configuring Pint
 
