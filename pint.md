@@ -35,6 +35,12 @@ You can instruct Pint to fix code style issues by invoking the `pint` binary tha
 ./vendor/bin/pint
 ```
 
+If you would like Pint to run in parallel mode (experimental) for improved performance, you may use the `--parallel` option:
+
+```shell
+./vendor/bin/pint --parallel
+```
+
 You may also run Pint on specific files or directories:
 
 ```shell
@@ -71,12 +77,6 @@ If you would like Pint to fix any files with code style errors but also exit wit
 
 ```shell
 ./vendor/bin/pint --repair
-```
-
-If you would like Pint to run in parallel mode (experimental) for improved performance, you may use the `--parallel` option:
-
-```shell
-./vendor/bin/pint --parallel
 ```
 
 <a name="configuring-pint"></a>
