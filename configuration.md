@@ -225,6 +225,7 @@ Config::integer('config-key');
 Config::float('config-key');
 Config::boolean('config-key');
 Config::array('config-key');
+Config::collection('config-key');
 ```
 
 <a name="configuration-caching"></a>
