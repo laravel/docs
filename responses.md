@@ -791,7 +791,7 @@ import { useEventStream } from "@laravel/stream-react";
 
 function App() {
   const { message } = useEventStream("/stream", {
-    event: "update",
+    eventName: "update",
     onMessage: (message) => {
       //
     },
@@ -814,7 +814,7 @@ function App() {
 import { useEventStream } from "@laravel/stream-vue";
 
 const { message } = useEventStream("/chat", {
-  event: "update",
+  eventName: "update",
   onMessage: (message) => {
     // ...
   },
