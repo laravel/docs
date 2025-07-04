@@ -722,7 +722,7 @@ $last = Arr::last($array, $callback, $default);
 <a name="method-array-map"></a>
 #### `Arr::map()` {.collection-method}
 
-The `Arr::map` method iterates through the array and passes each value and key to the given callback. The array value is replaced by the value returned by the callback:
+The `Arr::map` method iterates through the array and passes each value and key to the given callback. The callback is free to modify the item and return it, thus forming a new array of modified items:
 
 ```php
 use Illuminate\Support\Arr;
