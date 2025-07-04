@@ -587,7 +587,7 @@ $result = Str::deduplicate('The---Laravel---Framework', '-');
 // The-Laravel-Framework
 ```
 
-<a name="method-doesnt-end-with"></a>
+<a name="method-str-doesnt-end-with"></a>
 #### `Str::doesntEndWith()` {.collection-method}
 
 The `Str::doesntEndWith` method determines if the given string doesn't end with the given value:
@@ -614,7 +614,7 @@ $result = Str::doesntEndWith('This is my name', ['name', 'foo']);
 // false
 ```
 
-<a name="method-doesnt-start-with"></a>
+<a name="method-str-doesnt-start-with"></a>
 #### `Str::doesntStartWith()` {.collection-method}
 
 The `Str::doesntStartWith` method determines if the given string doesn't begin with the given value:
