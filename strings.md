@@ -48,6 +48,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::doesntContain](#method-str-doesnt-contain)
+[Str::doesntEndWith](#method-str-doesnt-end-with)
 [Str::doesntStartWith](#method-str-doesnt-start-with)
 [Str::deduplicate](#method-deduplicate)
 [Str::endsWith](#method-ends-with)
@@ -557,6 +558,23 @@ use Illuminate\Support\Str;
 $doesntContain = Str::doesntContain('This is name', 'MY', ignoreCase: true);
 
 // true
+```
+
+<a name="method-str-doesnt-end-with"></a>
+#### `Str::doesntEndWith()` {.collection-method}
+
+The `Str::doesntEndWith` method determine if a given string doesn't start with a given substring:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntEndWith = Str::doesntEndWith('a7', 'a');
+
+// true
+
+$doesntEndWith = Str::doesntEndWith('a7', '7');
+
+// false
 ```
 
 <a name="method-str-doesnt-start-with"></a>
