@@ -2251,6 +2251,23 @@ $plucked->all();
 // ['Tesla' => 'black', 'Pagani' => 'orange']
 ```
 
+The `pluck()` method also supports Closure for retrieving values:
+
+```php
+$countryArray = [
+    ['id' => 1, 'flag' => '🇺🇸', 'name' => 'United States'],
+    ['id' => 2, 'flag' => '🇫🇷', 'name' => 'France'],
+    ['id' => 3, 'flag' => '🇮🇷', 'name' => 'Iran'],
+];
+
+$countries = collect($countryArray)->pluck(
+    fn ($country) => "{$country['flag']} {$country['name']}",
+    'id',
+);
+
+// [1 => '🇺🇸 United States', 2 => '🇫🇷 France', 3 => '🇮🇷 Iran']
+```
+
 <a name="method-pop"></a>
 #### `pop()` {.collection-method}
 
