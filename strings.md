@@ -48,6 +48,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::doesntContain](#method-str-doesnt-contain)
+[Str::doesntEndWith](#method-str-doesnt-end-with)
+[Str::doesntStartWith](#method-str-doesnt-start-with)
 [Str::deduplicate](#method-deduplicate)
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
@@ -149,6 +151,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [decrypt](#method-fluent-str-decrypt)
 [deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
+[doesntEndWith](#method-fluent-str-doesnt-end-with)
+[doesntStartWith](#method-fluent-str-doesnt-start-with)
 [encrypt](#method-fluent-str-encrypt)
 [endsWith](#method-fluent-str-ends-with)
 [exactly](#method-fluent-str-exactly)
@@ -225,6 +229,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [when](#method-fluent-str-when)
 [whenContains](#method-fluent-str-when-contains)
 [whenContainsAll](#method-fluent-str-when-contains-all)
+[whenDoesntEndWith](#method-fluent-str-when-doesnt-end-with)
+[whenDoesntStartWith](#method-fluent-str-when-doesnt-start-with)
 [whenEmpty](#method-fluent-str-when-empty)
 [whenNotEmpty](#method-fluent-str-when-not-empty)
 [whenStartsWith](#method-fluent-str-when-starts-with)
@@ -579,6 +585,54 @@ use Illuminate\Support\Str;
 $result = Str::deduplicate('The---Laravel---Framework', '-');
 
 // The-Laravel-Framework
+```
+
+<a name="method-doesnt-end-with"></a>
+#### `Str::doesntEndWith()` {.collection-method}
+
+The `Str::doesntEndWith` method determines if the given string doesn't end with the given value:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::doesntEndWith('This is my name', 'dog');
+
+// true
+```
+
+You may also pass an array of values to determine if the given string doesn't end with any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::doesntEndWith('This is my name', ['this', 'foo']);
+
+// true
+
+$result = Str::doesntEndWith('This is my name', ['name', 'foo']);
+
+// false
+```
+
+<a name="method-doesnt-start-with"></a>
+#### `Str::doesntStartWith()` {.collection-method}
+
+The `Str::doesntStartWith` method determines if the given string doesn't begin with the given value:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::doesntStartWith('This is my name', 'That');
+
+// true
+```
+
+If an array of possible values is passed, the `doesntStartWith` method will return `true` if the string doesn't begin with any of the given values:
+
+```php
+$result = Str::doesntStartWith('This is my name', ['This', 'That', 'There']);
+
+// true
 ```
 
 <a name="method-ends-with"></a>
@@ -2218,6 +2272,56 @@ $string = Str::of('/foo/bar/baz')->dirname(2);
 // '/foo'
 ```
 
+<a name="method-fluent-str-doesnt-end-with"></a>
+#### `doesntEndWith` {.collection-method}
+
+The `doesntEndWith` method determines if the given string doesn't end with the given value:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntEndWith('dog');
+
+// true
+```
+
+You may also pass an array of values to determine if the given string doesn't end with any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntEndWith(['this', 'foo']);
+
+// true
+
+$result = Str::of('This is my name')->doesntEndWith(['name', 'foo']);
+
+// false
+```
+
+<a name="method-fluent-str-doesnt-start-with"></a>
+#### `doesntStartWith` {.collection-method}
+
+The `doesntStartWith` method determines if the given string doesn't begin with the given value:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntStartWith('That');
+
+// true
+```
+
+You may also pass an array of values to determine if the given string doesn't start with any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntStartWith(['This', 'That', 'There']);
+
+// true
+```
+
 <a name="method-fluent-str-encrypt"></a>
 #### `encrypt` {.collection-method}
 
@@ -3518,6 +3622,38 @@ $string = Str::of('tony stark')
 ```
 
 If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
+
+<a name="method-fluent-str-when-doesnt-end-with"></a>
+#### `whenDoesntEndWith` {.collection-method}
+
+The `whenDoesntEndWith` method invokes the given closure if the string doesn't end with the given sub-string. The closure will receive the fluent string instance:
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('disney world')->whenDoesntEndWith('land', function (Stringable $string) {
+    return $string->title();
+});
+
+// 'Disney World'
+```
+
+<a name="method-fluent-str-when-doesnt-start-with"></a>
+#### `whenDoesntStartWith` {.collection-method}
+
+The `whenDoesntStartWith` method invokes the given closure if the string doesn't start with the given sub-string. The closure will receive the fluent string instance:
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('disney world')->whenDoesntStartWith('sea', function (Stringable $string) {
+    return $string->title();
+});
+
+// 'Disney World'
+```
 
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {.collection-method}
