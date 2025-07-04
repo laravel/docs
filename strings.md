@@ -2312,6 +2312,16 @@ $result = Str::of('This is my name')->doesntStartWith('That');
 // true
 ```
 
+You may also pass an array of values to determine if the given string doesn't start with any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntStartWith(['This', 'That', 'There']);
+
+// true
+```
+
 <a name="method-fluent-str-encrypt"></a>
 #### `encrypt` {.collection-method}
 
