@@ -1726,7 +1726,7 @@ $collection = Collection::make([1, 2, 3]);
 <a name="method-map"></a>
 #### `map()` {.collection-method}
 
-The `map` method iterates through the collection and passes each value to the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items:
+The `map` method iterates through the collection and passes each value and key to the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items:
 
 ```php
 $collection = collect([1, 2, 3, 4, 5]);
