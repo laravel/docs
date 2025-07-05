@@ -35,7 +35,7 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 $collection = collect([1, 2, 3]);
 ```
 
-You may also create a collection using the [make](#method-make) and [fromJson](#method-fromjson) methods.
+You may also create a collection using the [make](#method-make) and [fromJson](#method-from-json) methods.
 
 > [!NOTE]
 > The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
@@ -568,9 +568,9 @@ $collection->contains('product', 'Bookcase');
 // false
 ```
 
-The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [containsStrict](#method-containsstrict) method to filter using "strict" comparisons.
+The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [containsStrict](#method-contains-strict) method to filter using "strict" comparisons.
 
-For the inverse of `contains`, see the [doesntContain](#method-doesntcontain) method.
+For the inverse of `contains`, see the [doesntContain](#method-doesnt-contain) method.
 
 <a name="method-contains-one-item"></a>
 #### `containsOneItem()` {.collection-method}
@@ -2762,7 +2762,7 @@ $chunks->toArray();
 // [[1, 2], [2, 3], [3, 4], [4, 5]]
 ```
 
-This is especially useful in conjunction with the [eachSpread](#method-eachspread) method:
+This is especially useful in conjunction with the [eachSpread](#method-each-spread) method:
 
 ```php
 $transactions->sliding(2)->eachSpread(function (Collection $previous, Collection $current) {
@@ -2845,7 +2845,7 @@ $sorted->values()->all();
 If your sorting needs are more advanced, you may pass a callback to `sort` with your own algorithm. Refer to the PHP documentation on [uasort](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters), which is what the collection's `sort` method calls utilizes internally.
 
 > [!NOTE]
-> If you need to sort a collection of nested arrays or objects, see the [sortBy](#method-sortby) and [sortByDesc](#method-sortbydesc) methods.
+> If you need to sort a collection of nested arrays or objects, see the [sortBy](#method-sort-by) and [sortByDesc](#method-sort-by-desc) methods.
 
 <a name="method-sort-by"></a>
 #### `sortBy()` {.collection-method}
@@ -2975,7 +2975,7 @@ $sorted->values()->all();
 <a name="method-sort-by-desc"></a>
 #### `sortByDesc()` {.collection-method}
 
-This method has the same signature as the [sortBy](#method-sortby) method, but will sort the collection in the opposite order.
+This method has the same signature as the [sortBy](#method-sort-by) method, but will sort the collection in the opposite order.
 
 <a name="method-sort-desc"></a>
 #### `sortDesc()` {.collection-method}
@@ -3022,7 +3022,7 @@ $sorted->all();
 <a name="method-sort-keys-desc"></a>
 #### `sortKeysDesc()` {.collection-method}
 
-This method has the same signature as the [sortKeys](#method-sortkeys) method, but will sort the collection in the opposite order.
+This method has the same signature as the [sortKeys](#method-sort-keys) method, but will sort the collection in the opposite order.
 
 <a name="method-sort-keys-using"></a>
 #### `sortKeysUsing()` {.collection-method}
@@ -3444,7 +3444,7 @@ $unique->values()->all();
 */
 ```
 
-The `unique` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [uniqueStrict](#method-uniquestrict) method to filter using "strict" comparisons.
+The `unique` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [uniqueStrict](#method-unique-strict) method to filter using "strict" comparisons.
 
 > [!NOTE]
 > This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-unique).
@@ -3496,12 +3496,12 @@ For the inverse of `unless`, see the [when](#method-when) method.
 <a name="method-unless-empty"></a>
 #### `unlessEmpty()` {.collection-method}
 
-Alias for the [whenNotEmpty](#method-whennotempty) method.
+Alias for the [whenNotEmpty](#method-when-not-empty) method.
 
 <a name="method-unless-not-empty"></a>
 #### `unlessNotEmpty()` {.collection-method}
 
-Alias for the [whenEmpty](#method-whenempty) method.
+Alias for the [whenEmpty](#method-when-empty) method.
 
 <a name="method-unwrap"></a>
 #### `unwrap()` {.collection-method}
@@ -3643,7 +3643,7 @@ $collection->all();
 // ['Michael', 'Tom', 'Taylor']
 ```
 
-For the inverse of `whenEmpty`, see the [whenNotEmpty](#method-whennotempty) method.
+For the inverse of `whenEmpty`, see the [whenNotEmpty](#method-when-not-empty) method.
 
 <a name="method-when-not-empty"></a>
 #### `whenNotEmpty()` {.collection-method}
@@ -3688,7 +3688,7 @@ $collection->all();
 // ['Taylor']
 ```
 
-For the inverse of `whenNotEmpty`, see the [whenEmpty](#method-whenempty) method.
+For the inverse of `whenNotEmpty`, see the [whenEmpty](#method-when-empty) method.
 
 <a name="method-where"></a>
 #### `where()` {.collection-method}
@@ -3715,7 +3715,7 @@ $filtered->all();
 */
 ```
 
-The `where` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [whereStrict](#method-wherestrict) method to filter using "strict" comparisons.
+The `where` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [whereStrict](#method-where-strict) method to filter using "strict" comparisons.
 
 Optionally, you may pass a comparison operator as the second parameter. Supported operators are: '===', '!==', '!=', '==', '=', '<>', '>', '<', '>=', and '<=':
 
@@ -3790,7 +3790,7 @@ $filtered->all();
 */
 ```
 
-The `whereIn` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [whereInStrict](#method-whereinstrict) method to filter using "strict" comparisons.
+The `whereIn` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [whereInStrict](#method-where-in-strict) method to filter using "strict" comparisons.
 
 <a name="method-where-instance-of"></a>
 #### `whereInstanceOf()` {.collection-method}
@@ -3817,7 +3817,7 @@ $filtered->all();
 <a name="method-where-in-strict"></a>
 #### `whereInStrict()` {.collection-method}
 
-This method has the same signature as the [whereIn](#method-wherein) method; however, all values are compared using "strict" comparisons.
+This method has the same signature as the [whereIn](#method-where-in) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-where-not-between"></a>
 #### `whereNotBetween()` {.collection-method}
@@ -3870,12 +3870,12 @@ $filtered->all();
 */
 ```
 
-The `whereNotIn` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [whereNotInStrict](#method-wherenotinstrict) method to filter using "strict" comparisons.
+The `whereNotIn` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [whereNotInStrict](#method-where-not-in-strict) method to filter using "strict" comparisons.
 
 <a name="method-where-not-in-strict"></a>
 #### `whereNotInStrict()` {.collection-method}
 
-This method has the same signature as the [whereNotIn](#method-wherenotin) method; however, all values are compared using "strict" comparisons.
+This method has the same signature as the [whereNotIn](#method-where-not-in) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-where-not-null"></a>
 #### `whereNotNull()` {.collection-method}
@@ -3974,7 +3974,7 @@ $zipped->all();
 <a name="higher-order-messages"></a>
 ## Higher Order Messages
 
-Collections also provide support for "higher order messages", which are short-cuts for performing common actions on collections. The collection methods that provide higher order messages are: [average](#method-average), [avg](#method-avg), [contains](#method-contains), [each](#method-each), [every](#method-every), [filter](#method-filter), [first](#method-first), [flatMap](#method-flatmap), [groupBy](#method-groupby), [keyBy](#method-keyby), [map](#method-map), [max](#method-max), [min](#method-min), [partition](#method-partition), [reject](#method-reject), [skipUntil](#method-skipuntil), [skipWhile](#method-skipwhile), [some](#method-some), [sortBy](#method-sortby), [sortByDesc](#method-sortbydesc), [sum](#method-sum), [takeUntil](#method-takeuntil), [takeWhile](#method-takewhile), and [unique](#method-unique).
+Collections also provide support for "higher order messages", which are short-cuts for performing common actions on collections. The collection methods that provide higher order messages are: [average](#method-average), [avg](#method-avg), [contains](#method-contains), [each](#method-each), [every](#method-every), [filter](#method-filter), [first](#method-first), [flatMap](#method-flat-map), [groupBy](#method-group-by), [keyBy](#method-key-by), [map](#method-map), [max](#method-max), [min](#method-min), [partition](#method-partition), [reject](#method-reject), [skipUntil](#method-skip-until), [skipWhile](#method-skip-while), [some](#method-some), [sortBy](#method-sort-by), [sortByDesc](#method-sort-by-desc), [sum](#method-sum), [takeUntil](#method-take-until), [takeWhile](#method-take-while), and [unique](#method-unique).
 
 Each higher order message can be accessed as a dynamic property on a collection instance. For instance, let's use the `each` higher order message to call a method on each object within a collection:
 
@@ -4093,59 +4093,59 @@ Almost all methods available on the `Collection` class are also available on the
 [average](#method-average)
 [avg](#method-avg)
 [chunk](#method-chunk)
-[chunkWhile](#method-chunkwhile)
+[chunkWhile](#method-chunk-while)
 [collapse](#method-collapse)
 [collect](#method-collect)
 [combine](#method-combine)
 [concat](#method-concat)
 [contains](#method-contains)
-[containsStrict](#method-containsstrict)
+[containsStrict](#method-contains-strict)
 [count](#method-count)
-[countBy](#method-countBy)
-[crossJoin](#method-crossjoin)
+[countBy](#method-count-by)
+[crossJoin](#method-cross-join)
 [dd](#method-dd)
 [diff](#method-diff)
-[diffAssoc](#method-diffassoc)
-[diffKeys](#method-diffkeys)
+[diffAssoc](#method-diff-assoc)
+[diffKeys](#method-diff-keys)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
-[duplicatesStrict](#method-duplicatesstrict)
+[duplicatesStrict](#method-duplicates-strict)
 [each](#method-each)
-[eachSpread](#method-eachspread)
+[eachSpread](#method-each-spread)
 [every](#method-every)
 [except](#method-except)
 [filter](#method-filter)
 [first](#method-first)
 [firstOrFail](#method-first-or-fail)
 [firstWhere](#method-first-where)
-[flatMap](#method-flatmap)
+[flatMap](#method-flat-map)
 [flatten](#method-flatten)
 [flip](#method-flip)
-[forPage](#method-forpage)
+[forPage](#method-for-page)
 [get](#method-get)
-[groupBy](#method-groupby)
+[groupBy](#method-group-by)
 [has](#method-has)
 [implode](#method-implode)
 [intersect](#method-intersect)
-[intersectAssoc](#method-intersectAssoc)
-[intersectByKeys](#method-intersectbykeys)
-[isEmpty](#method-isempty)
-[isNotEmpty](#method-isnotempty)
+[intersectAssoc](#method-intersect-assoc)
+[intersectByKeys](#method-intersect-by-keys)
+[isEmpty](#method-is-empty)
+[isNotEmpty](#method-is-not-empty)
 [join](#method-join)
-[keyBy](#method-keyby)
+[keyBy](#method-key-by)
 [keys](#method-keys)
 [last](#method-last)
 [macro](#method-macro)
 [make](#method-make)
 [map](#method-map)
-[mapInto](#method-mapinto)
-[mapSpread](#method-mapspread)
-[mapToGroups](#method-maptogroups)
-[mapWithKeys](#method-mapwithkeys)
+[mapInto](#method-map-into)
+[mapSpread](#method-map-spread)
+[mapToGroups](#method-map-to-groups)
+[mapWithKeys](#method-map-with-keys)
 [max](#method-max)
 [median](#method-median)
 [merge](#method-merge)
-[mergeRecursive](#method-mergerecursive)
+[mergeRecursive](#method-merge-recursive)
 [min](#method-min)
 [mode](#method-mode)
 [nth](#method-nth)
@@ -4158,7 +4158,7 @@ Almost all methods available on the `Collection` class are also available on the
 [reduce](#method-reduce)
 [reject](#method-reject)
 [replace](#method-replace)
-[replaceRecursive](#method-replacerecursive)
+[replaceRecursive](#method-replace-recursive)
 [reverse](#method-reverse)
 [search](#method-search)
 [shuffle](#method-shuffle)
@@ -4167,37 +4167,37 @@ Almost all methods available on the `Collection` class are also available on the
 [sole](#method-sole)
 [some](#method-some)
 [sort](#method-sort)
-[sortBy](#method-sortby)
-[sortByDesc](#method-sortbydesc)
-[sortKeys](#method-sortkeys)
-[sortKeysDesc](#method-sortkeysdesc)
+[sortBy](#method-sort-by)
+[sortByDesc](#method-sort-by-desc)
+[sortKeys](#method-sort-keys)
+[sortKeysDesc](#method-sort-keys-desc)
 [split](#method-split)
 [sum](#method-sum)
 [take](#method-take)
 [tap](#method-tap)
 [times](#method-times)
-[toArray](#method-toarray)
-[toJson](#method-tojson)
+[toArray](#method-to-array)
+[toJson](#method-to-json)
 [union](#method-union)
 [unique](#method-unique)
-[uniqueStrict](#method-uniquestrict)
+[uniqueStrict](#method-unique-strict)
 [unless](#method-unless)
-[unlessEmpty](#method-unlessempty)
-[unlessNotEmpty](#method-unlessnotempty)
+[unlessEmpty](#method-unless-empty)
+[unlessNotEmpty](#method-unless-not-empty)
 [unwrap](#method-unwrap)
 [values](#method-values)
 [when](#method-when)
-[whenEmpty](#method-whenempty)
-[whenNotEmpty](#method-whennotempty)
+[whenEmpty](#method-when-empty)
+[whenNotEmpty](#method-when-not-empty)
 [where](#method-where)
-[whereStrict](#method-wherestrict)
-[whereBetween](#method-wherebetween)
-[whereIn](#method-wherein)
-[whereInStrict](#method-whereinstrict)
-[whereInstanceOf](#method-whereinstanceof)
-[whereNotBetween](#method-wherenotbetween)
-[whereNotIn](#method-wherenotin)
-[whereNotInStrict](#method-wherenotinstrict)
+[whereBetween](#method-where-between)
+[whereIn](#method-where-in)
+[whereInstanceOf](#method-where-instance-of)
+[whereInStrict](#method-where-in-strict)
+[whereNotBetween](#method-where-not-between)
+[whereNotIn](#method-where-not-in)
+[whereNotInStrict](#method-where-not-in-strict)
+[whereStrict](#method-where-strict)
 [wrap](#method-wrap)
 [zip](#method-zip)
 
