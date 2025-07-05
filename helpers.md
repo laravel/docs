@@ -43,7 +43,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::array](#method-array-array)
 [Arr::boolean](#method-array-boolean)
 [Arr::collapse](#method-array-collapse)
-[Arr::crossJoin](#method-array-crossjoin)
+[Arr::crossJoin](#method-array-cross-join)
 [Arr::divide](#method-array-divide)
 [Arr::dot](#method-array-dot)
 [Arr::except](#method-array-except)
@@ -55,13 +55,13 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::from](#method-array-from)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
-[Arr::hasAll](#method-array-hasall)
-[Arr::hasAny](#method-array-hasany)
+[Arr::hasAll](#method-array-has-all)
+[Arr::hasAny](#method-array-has-any)
 [Arr::integer](#method-array-integer)
-[Arr::isAssoc](#method-array-isassoc)
-[Arr::isList](#method-array-islist)
+[Arr::isAssoc](#method-array-is-assoc)
+[Arr::isList](#method-array-is-list)
 [Arr::join](#method-array-join)
-[Arr::keyBy](#method-array-keyby)
+[Arr::keyBy](#method-array-key-by)
 [Arr::last](#method-array-last)
 [Arr::map](#method-array-map)
 [Arr::mapSpread](#method-array-map-spread)
@@ -70,7 +70,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::partition](#method-array-partition)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
-[Arr::prependKeysWith](#method-array-prependkeyswith)
+[Arr::prependKeysWith](#method-array-prepend-keys-with)
 [Arr::pull](#method-array-pull)
 [Arr::query](#method-array-query)
 [Arr::random](#method-array-random)
@@ -91,9 +91,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::whereNotNull](#method-array-where-not-null)
 [Arr::wrap](#method-array-wrap)
 [data_fill](#method-data-fill)
+[data_forget](#method-data-forget)
 [data_get](#method-data-get)
 [data_set](#method-data-set)
-[data_forget](#method-data-forget)
 [head](#method-head)
 [last](#method-last)
 </div>
@@ -106,23 +106,23 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::abbreviate](#method-number-abbreviate)
 [Number::clamp](#method-number-clamp)
 [Number::currency](#method-number-currency)
-[Number::defaultCurrency](#method-default-currency)
-[Number::defaultLocale](#method-default-locale)
+[Number::defaultCurrency](#method-number-default-currency)
+[Number::defaultLocale](#method-number-default-locale)
 [Number::fileSize](#method-number-file-size)
 [Number::forHumans](#method-number-for-humans)
 [Number::format](#method-number-format)
 [Number::ordinal](#method-number-ordinal)
 [Number::pairs](#method-number-pairs)
-[Number::parseInt](#method-number-parse-int)
 [Number::parseFloat](#method-number-parse-float)
+[Number::parseInt](#method-number-parse-int)
 [Number::percentage](#method-number-percentage)
 [Number::spell](#method-number-spell)
 [Number::spellOrdinal](#method-number-spell-ordinal)
 [Number::trim](#method-number-trim)
-[Number::useLocale](#method-number-use-locale)
-[Number::withLocale](#method-number-with-locale)
 [Number::useCurrency](#method-number-use-currency)
+[Number::useLocale](#method-number-use-locale)
 [Number::withCurrency](#method-number-with-currency)
+[Number::withLocale](#method-number-with-locale)
 
 </div>
 
@@ -323,7 +323,7 @@ $array = Arr::collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-<a name="method-array-crossjoin"></a>
+<a name="method-array-cross-join"></a>
 #### `Arr::crossJoin()` {.collection-method}
 
 The `Arr::crossJoin` method cross joins the given arrays, returning a Cartesian product with all possible permutations:
@@ -561,7 +561,7 @@ $contains = Arr::has($array, ['product.price', 'product.discount']);
 // false
 ```
 
-<a name="method-array-hasall"></a>
+<a name="method-array-has-all"></a>
 #### `Arr::hasAll()` {.collection-method}
 
 The `Arr::hasAll` method determines if all of the specified keys exist in the given array using "dot" notation:
@@ -576,7 +576,7 @@ Arr::hasAll($array, ['name', 'language']); // true
 Arr::hasAll($array, ['name', 'IDE']); // false
 ```
 
-<a name="method-array-hasany"></a>
+<a name="method-array-has-any"></a>
 #### `Arr::hasAny()` {.collection-method}
 
 The `Arr::hasAny` method checks whether any item in a given set exists in an array using "dot" notation:
@@ -618,7 +618,7 @@ $value = Arr::integer($array, 'name');
 // throws InvalidArgumentException
 ```
 
-<a name="method-array-isassoc"></a>
+<a name="method-array-is-assoc"></a>
 #### `Arr::isAssoc()` {.collection-method}
 
 The `Arr::isAssoc` method returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
@@ -635,7 +635,7 @@ $isAssoc = Arr::isAssoc([1, 2, 3]);
 // false
 ```
 
-<a name="method-array-islist"></a>
+<a name="method-array-is-list"></a>
 #### `Arr::isList()` {.collection-method}
 
 The `Arr::isList` method returns `true` if the given array's keys are sequential integers beginning from zero:
@@ -671,7 +671,7 @@ $joined = Arr::join($array, ', ', ' and ');
 // Tailwind, Alpine, Laravel and Livewire
 ```
 
-<a name="method-array-keyby"></a>
+<a name="method-array-key-by"></a>
 #### `Arr::keyBy()` {.collection-method}
 
 The `Arr::keyBy` method keys the array by the given key. If multiple items have the same key, only the last one will appear in the new array:
@@ -889,7 +889,7 @@ $array = Arr::prepend($array, 'Desk', 'name');
 // ['name' => 'Desk', 'price' => 100]
 ```
 
-<a name="method-array-prependkeyswith"></a>
+<a name="method-array-prepend-keys-with"></a>
 #### `Arr::prependKeysWith()` {.collection-method}
 
 The `Arr::prependKeysWith` prepends all key names of an associative array with the given prefix:
@@ -1370,6 +1370,19 @@ data_fill($data, 'products.*.price', 200);
 */
 ```
 
+<a name="method-data-forget"></a>
+#### `data_forget()` {.collection-method}
+
+The `data_forget` function removes a value within a nested array or object using "dot" notation:
+
+```php
+$data = ['products' => ['desk' => ['price' => 100]]];
+
+data_forget($data, 'products.desk.price');
+
+// ['products' => ['desk' => []]]
+```
+
 <a name="method-data-get"></a>
 #### `data_get()` {.collection-method}
 
@@ -1462,19 +1475,6 @@ $data = ['products' => ['desk' => ['price' => 100]]];
 data_set($data, 'products.desk.price', 200, overwrite: false);
 
 // ['products' => ['desk' => ['price' => 100]]]
-```
-
-<a name="method-data-forget"></a>
-#### `data_forget()` {.collection-method}
-
-The `data_forget` function removes a value within a nested array or object using "dot" notation:
-
-```php
-$data = ['products' => ['desk' => ['price' => 100]]];
-
-data_forget($data, 'products.desk.price');
-
-// ['products' => ['desk' => []]]
 ```
 
 This function also accepts wildcards using asterisks and will remove values on the target accordingly:
@@ -1599,7 +1599,7 @@ $currency = Number::currency(1000, in: 'EUR', locale: 'de', precision: 0);
 // 1.000 €
 ```
 
-<a name="method-default-currency"></a>
+<a name="method-number-default-currency"></a>
 #### `Number::defaultCurrency()` {.collection-method}
 
 The `Number::defaultCurrency` method returns the default currency being used by the `Number` class:
@@ -1612,7 +1612,7 @@ $currency = Number::defaultCurrency();
 // USD
 ```
 
-<a name="method-default-locale"></a>
+<a name="method-number-default-locale"></a>
 #### `Number::defaultLocale()` {.collection-method}
 
 The `Number::defaultLocale` method returns the default locale being used by the `Number` class:
@@ -1730,23 +1730,6 @@ $result = Number::pairs(25, 10, offset: 0);
 // [[0, 10], [10, 20], [20, 25]]
 ```
 
-<a name="method-number-parse-int"></a>
-#### `Number::parseInt()` {.collection-method}
-
-The `Number::parseInt` method parse a string into an integer according to the specified locale:
-
-```php
-use Illuminate\Support\Number;
-
-$result = Number::parseInt('10.123');
-
-// (int) 10
-
-$result = Number::parseInt('10,123', locale: 'fr');
-
-// (int) 10
-```
-
 <a name="method-number-parse-float"></a>
 #### `Number::parseFloat()` {.collection-method}
 
@@ -1762,6 +1745,23 @@ $result = Number::parseFloat('10');
 $result = Number::parseFloat('10', locale: 'fr');
 
 // (float) 10.0
+```
+
+<a name="method-number-parse-int"></a>
+#### `Number::parseInt()` {.collection-method}
+
+The `Number::parseInt` method parse a string into an integer according to the specified locale:
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::parseInt('10.123');
+
+// (int) 10
+
+$result = Number::parseInt('10,123', locale: 'fr');
+
+// (int) 10
 ```
 
 <a name="method-number-percentage"></a>
@@ -1868,36 +1868,6 @@ $number = Number::trim(12.30);
 // 12.3
 ```
 
-<a name="method-number-use-locale"></a>
-#### `Number::useLocale()` {.collection-method}
-
-The `Number::useLocale` method sets the default number locale globally, which affects how numbers and currency are formatted by subsequent invocations to the `Number` class's methods:
-
-```php
-use Illuminate\Support\Number;
-
-/**
- * Bootstrap any application services.
- */
-public function boot(): void
-{
-    Number::useLocale('de');
-}
-```
-
-<a name="method-number-with-locale"></a>
-#### `Number::withLocale()` {.collection-method}
-
-The `Number::withLocale` method executes the given closure using the specified locale and then restores the original locale after the callback has executed:
-
-```php
-use Illuminate\Support\Number;
-
-$number = Number::withLocale('de', function () {
-    return Number::format(1500);
-});
-```
-
 <a name="method-number-use-currency"></a>
 #### `Number::useCurrency()` {.collection-method}
 
@@ -1915,6 +1885,23 @@ public function boot(): void
 }
 ```
 
+<a name="method-number-use-locale"></a>
+#### `Number::useLocale()` {.collection-method}
+
+The `Number::useLocale` method sets the default number locale globally, which affects how numbers and currency are formatted by subsequent invocations to the `Number` class's methods:
+
+```php
+use Illuminate\Support\Number;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Number::useLocale('de');
+}
+```
+
 <a name="method-number-with-currency"></a>
 #### `Number::withCurrency()` {.collection-method}
 
@@ -1925,6 +1912,19 @@ use Illuminate\Support\Number;
 
 $number = Number::withCurrency('GBP', function () {
     // ...
+});
+```
+
+<a name="method-number-with-locale"></a>
+#### `Number::withLocale()` {.collection-method}
+
+The `Number::withLocale` method executes the given closure using the specified locale and then restores the original locale after the callback has executed:
+
+```php
+use Illuminate\Support\Number;
+
+$number = Number::withLocale('de', function () {
+    return Number::format(1500);
 });
 ```
 
