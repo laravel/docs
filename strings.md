@@ -41,8 +41,8 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::beforeLast](#method-str-before-last)
 [Str::between](#method-str-between)
 [Str::betweenFirst](#method-str-between-first)
-[Str::camel](#method-camel-case)
-[Str::charAt](#method-char-at)
+[Str::camel](#method-str-camel)
+[Str::charAt](#method-str-char-at)
 [Str::chopStart](#method-str-chop-start)
 [Str::chopEnd](#method-str-chop-end)
 [Str::contains](#method-str-contains)
@@ -50,9 +50,9 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::doesntContain](#method-str-doesnt-contain)
 [Str::doesntEndWith](#method-str-doesnt-end-with)
 [Str::doesntStartWith](#method-str-doesnt-start-with)
-[Str::deduplicate](#method-deduplicate)
-[Str::endsWith](#method-ends-with)
-[Str::excerpt](#method-excerpt)
+[Str::deduplicate](#method-str-deduplicate)
+[Str::endsWith](#method-str-ends-with)
+[Str::excerpt](#method-str-excerpt)
 [Str::finish](#method-str-finish)
 [Str::fromBase64](#method-str-from-base64)
 [Str::headline](#method-str-headline)
@@ -63,7 +63,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::isUlid](#method-str-is-ulid)
 [Str::isUrl](#method-str-is-url)
 [Str::isUuid](#method-str-is-uuid)
-[Str::kebab](#method-kebab-case)
+[Str::kebab](#method-str-kebab)
 [Str::lcfirst](#method-str-lcfirst)
 [Str::length](#method-str-length)
 [Str::limit](#method-str-limit)
@@ -73,9 +73,9 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::match](#method-str-match)
 [Str::matchAll](#method-str-match-all)
 [Str::orderedUuid](#method-str-ordered-uuid)
-[Str::padBoth](#method-str-padboth)
-[Str::padLeft](#method-str-padleft)
-[Str::padRight](#method-str-padright)
+[Str::padBoth](#method-str-pad-both)
+[Str::padLeft](#method-str-pad-left)
+[Str::padRight](#method-str-pad-right)
 [Str::password](#method-str-password)
 [Str::plural](#method-str-plural)
 [Str::pluralStudly](#method-str-plural-studly)
@@ -93,17 +93,17 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::reverse](#method-str-reverse)
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
-[Str::snake](#method-snake-case)
+[Str::snake](#method-str-snake)
 [Str::squish](#method-str-squish)
 [Str::start](#method-str-start)
-[Str::startsWith](#method-starts-with)
-[Str::studly](#method-studly-case)
+[Str::startsWith](#method-str-starts-with)
+[Str::studly](#method-str-studly)
 [Str::substr](#method-str-substr)
-[Str::substrCount](#method-str-substrcount)
-[Str::substrReplace](#method-str-substrreplace)
+[Str::substrCount](#method-str-substr-count)
+[Str::substrReplace](#method-str-substr-replace)
 [Str::swap](#method-str-swap)
-[Str::take](#method-take)
-[Str::title](#method-title-case)
+[Str::take](#method-str-take)
+[Str::title](#method-str-title)
 [Str::toBase64](#method-str-to-base64)
 [Str::transliterate](#method-str-transliterate)
 [Str::trim](#method-str-trim)
@@ -182,9 +182,9 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [matchAll](#method-fluent-str-match-all)
 [isMatch](#method-fluent-str-is-match)
 [newLine](#method-fluent-str-new-line)
-[padBoth](#method-fluent-str-padboth)
-[padLeft](#method-fluent-str-padleft)
-[padRight](#method-fluent-str-padright)
+[padBoth](#method-fluent-str-pad-both)
+[padLeft](#method-fluent-str-pad-left)
+[padRight](#method-fluent-str-pad-right)
 [pipe](#method-fluent-str-pipe)
 [plural](#method-fluent-str-plural)
 [position](#method-fluent-str-position)
@@ -209,7 +209,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [stripTags](#method-fluent-str-strip-tags)
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
-[substrReplace](#method-fluent-str-substrreplace)
+[substrReplace](#method-fluent-str-substr-replace)
 [swap](#method-fluent-str-swap)
 [take](#method-fluent-str-take)
 [tap](#method-fluent-str-tap)
@@ -403,7 +403,7 @@ $slice = Str::betweenFirst('[a] bc [d]', '[', ']');
 // 'a'
 ```
 
-<a name="method-camel-case"></a>
+<a name="method-str-camel"></a>
 #### `Str::camel()` {.collection-method}
 
 The `Str::camel` method converts the given string to `camelCase`:
@@ -416,7 +416,7 @@ $converted = Str::camel('foo_bar');
 // 'fooBar'
 ```
 
-<a name="method-char-at"></a>
+<a name="method-str-char-at"></a>
 #### `Str::charAt()` {.collection-method}
 
 The `Str::charAt` method returns the character at the specified index. If the index is out of bounds, `false` is returned:
@@ -564,7 +564,7 @@ $doesntContain = Str::doesntContain('This is name', 'MY', ignoreCase: true);
 // true
 ```
 
-<a name="method-deduplicate"></a>
+<a name="method-str-deduplicate"></a>
 #### `Str::deduplicate()` {.collection-method}
 
 The `Str::deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string. By default, the method deduplicates spaces:
@@ -587,7 +587,7 @@ $result = Str::deduplicate('The---Laravel---Framework', '-');
 // The-Laravel-Framework
 ```
 
-<a name="method-doesnt-end-with"></a>
+<a name="method-str-doesnt-end-with"></a>
 #### `Str::doesntEndWith()` {.collection-method}
 
 The `Str::doesntEndWith` method determines if the given string doesn't end with the given value:
@@ -614,7 +614,7 @@ $result = Str::doesntEndWith('This is my name', ['name', 'foo']);
 // false
 ```
 
-<a name="method-doesnt-start-with"></a>
+<a name="method-str-doesnt-start-with"></a>
 #### `Str::doesntStartWith()` {.collection-method}
 
 The `Str::doesntStartWith` method determines if the given string doesn't begin with the given value:
@@ -635,7 +635,7 @@ $result = Str::doesntStartWith('This is my name', ['This', 'That', 'There']);
 // true
 ```
 
-<a name="method-ends-with"></a>
+<a name="method-str-ends-with"></a>
 #### `Str::endsWith()` {.collection-method}
 
 The `Str::endsWith` method determines if the given string ends with the given value:
@@ -662,7 +662,7 @@ $result = Str::endsWith('This is my name', ['this', 'foo']);
 // false
 ```
 
-<a name="method-excerpt"></a>
+<a name="method-str-excerpt"></a>
 #### `Str::excerpt()` {.collection-method}
 
 The `Str::excerpt` method extracts an excerpt from a given string that matches the first instance of a phrase within that string:
@@ -889,7 +889,7 @@ $isUuid = Str::isUuid('laravel');
 // false
 ```
 
-<a name="method-kebab-case"></a>
+<a name="method-str-kebab"></a>
 #### `Str::kebab()` {.collection-method}
 
 The `Str::kebab` method converts the given string to `kebab-case`:
@@ -1078,7 +1078,7 @@ use Illuminate\Support\Str;
 return (string) Str::orderedUuid();
 ```
 
-<a name="method-str-padboth"></a>
+<a name="method-str-pad-both"></a>
 #### `Str::padBoth()` {.collection-method}
 
 The `Str::padBoth` method wraps PHP's `str_pad` function, padding both sides of a string with another string until the final string reaches a desired length:
@@ -1095,7 +1095,7 @@ $padded = Str::padBoth('James', 10);
 // '  James   '
 ```
 
-<a name="method-str-padleft"></a>
+<a name="method-str-pad-left"></a>
 #### `Str::padLeft()` {.collection-method}
 
 The `Str::padLeft` method wraps PHP's `str_pad` function, padding the left side of a string with another string until the final string reaches a desired length:
@@ -1112,7 +1112,7 @@ $padded = Str::padLeft('James', 10);
 // '     James'
 ```
 
-<a name="method-str-padright"></a>
+<a name="method-str-pad-right"></a>
 #### `Str::padRight()` {.collection-method}
 
 The `Str::padRight` method wraps PHP's `str_pad` function, padding the right side of a string with another string until the final string reaches a desired length:
@@ -1457,7 +1457,7 @@ $slug = Str::slug('Laravel 5 Framework', '-');
 // laravel-5-framework
 ```
 
-<a name="method-snake-case"></a>
+<a name="method-str-snake"></a>
 #### `Str::snake()` {.collection-method}
 
 The `Str::snake` method converts the given string to `snake_case`:
@@ -1504,7 +1504,7 @@ $adjusted = Str::start('/this/string', '/');
 // /this/string
 ```
 
-<a name="method-starts-with"></a>
+<a name="method-str-starts-with"></a>
 #### `Str::startsWith()` {.collection-method}
 
 The `Str::startsWith` method determines if the given string begins with the given value:
@@ -1525,7 +1525,7 @@ $result = Str::startsWith('This is my name', ['This', 'That', 'There']);
 // true
 ```
 
-<a name="method-studly-case"></a>
+<a name="method-str-studly"></a>
 #### `Str::studly()` {.collection-method}
 
 The `Str::studly` method converts the given string to `StudlyCase`:
@@ -1551,7 +1551,7 @@ $converted = Str::substr('The Laravel Framework', 4, 7);
 // Laravel
 ```
 
-<a name="method-str-substrcount"></a>
+<a name="method-str-substr-count"></a>
 #### `Str::substrCount()` {.collection-method}
 
 The `Str::substrCount` method returns the number of occurrences of a given value in the given string:
@@ -1564,7 +1564,7 @@ $count = Str::substrCount('If you like ice cream, you will like snow cones.', 'l
 // 2
 ```
 
-<a name="method-str-substrreplace"></a>
+<a name="method-str-substr-replace"></a>
 #### `Str::substrReplace()` {.collection-method}
 
 The `Str::substrReplace` method replaces text within a portion of a string, starting at the position specified by the third argument and replacing the number of characters specified by the fourth argument. Passing `0` to the method's fourth argument will insert the string at the specified position without replacing any of the existing characters in the string:
@@ -1595,7 +1595,7 @@ $string = Str::swap([
 // Burritos are fantastic!
 ```
 
-<a name="method-take"></a>
+<a name="method-str-take"></a>
 #### `Str::take()` {.collection-method}
 
 The `Str::take` method returns a specified number of characters from the beginning of a string:
@@ -1608,7 +1608,7 @@ $taken = Str::take('Build something amazing!', 5);
 // Build
 ```
 
-<a name="method-title-case"></a>
+<a name="method-str-title"></a>
 #### `Str::title()` {.collection-method}
 
 The `Str::title` method converts the given string to `Title Case`:
@@ -2865,7 +2865,7 @@ $padded = Str::of('Laravel')->newLine()->append('Framework');
 //  Framework'
 ```
 
-<a name="method-fluent-str-padboth"></a>
+<a name="method-fluent-str-pad-both"></a>
 #### `padBoth` {.collection-method}
 
 The `padBoth` method wraps PHP's `str_pad` function, padding both sides of a string with another string until the final string reaches the desired length:
@@ -2882,7 +2882,7 @@ $padded = Str::of('James')->padBoth(10);
 // '  James   '
 ```
 
-<a name="method-fluent-str-padleft"></a>
+<a name="method-fluent-str-pad-left"></a>
 #### `padLeft` {.collection-method}
 
 The `padLeft` method wraps PHP's `str_pad` function, padding the left side of a string with another string until the final string reaches the desired length:
@@ -2899,7 +2899,7 @@ $padded = Str::of('James')->padLeft(10);
 // '     James'
 ```
 
-<a name="method-fluent-str-padright"></a>
+<a name="method-fluent-str-pad-right"></a>
 #### `padRight` {.collection-method}
 
 The `padRight` method wraps PHP's `str_pad` function, padding the right side of a string with another string until the final string reaches the desired length:
@@ -3305,7 +3305,7 @@ $string = Str::of('Laravel Framework')->substr(8, 5);
 // Frame
 ```
 
-<a name="method-fluent-str-substrreplace"></a>
+<a name="method-fluent-str-substr-replace"></a>
 #### `substrReplace` {.collection-method}
 
 The `substrReplace` method replaces text within a portion of a string, starting at the position specified by the second argument and replacing the number of characters specified by the third argument. Passing `0` to the method's third argument will insert the string at the specified position without replacing any of the existing characters in the string:
