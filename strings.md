@@ -43,14 +43,14 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::betweenFirst](#method-str-between-first)
 [Str::camel](#method-camel-case)
 [Str::charAt](#method-char-at)
-[Str::chopStart](#method-str-chop-start)
 [Str::chopEnd](#method-str-chop-end)
+[Str::chopStart](#method-str-chop-start)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
+[Str::deduplicate](#method-deduplicate)
 [Str::doesntContain](#method-str-doesnt-contain)
 [Str::doesntEndWith](#method-str-doesnt-end-with)
 [Str::doesntStartWith](#method-str-doesnt-start-with)
-[Str::deduplicate](#method-deduplicate)
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
@@ -68,6 +68,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::length](#method-str-length)
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
+[Str::ltrim](#method-str-ltrim)
 [Str::markdown](#method-str-markdown)
 [Str::mask](#method-str-mask)
 [Str::match](#method-str-match)
@@ -85,12 +86,13 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::repeat](#method-str-repeat)
 [Str::replace](#method-str-replace)
 [Str::replaceArray](#method-str-replace-array)
+[Str::replaceEnd](#method-str-replace-end)
 [Str::replaceFirst](#method-str-replace-first)
 [Str::replaceLast](#method-str-replace-last)
 [Str::replaceMatches](#method-str-replace-matches)
 [Str::replaceStart](#method-str-replace-start)
-[Str::replaceEnd](#method-str-replace-end)
 [Str::reverse](#method-str-reverse)
+[Str::rtrim](#method-str-rtrim)
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
 [Str::snake](#method-snake-case)
@@ -107,18 +109,16 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::toBase64](#method-str-to-base64)
 [Str::transliterate](#method-str-transliterate)
 [Str::trim](#method-str-trim)
-[Str::ltrim](#method-str-ltrim)
-[Str::rtrim](#method-str-rtrim)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
-[Str::upper](#method-str-upper)
 [Str::ulid](#method-str-ulid)
 [Str::unwrap](#method-str-unwrap)
+[Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
 [Str::uuid7](#method-str-uuid7)
 [Str::wordCount](#method-str-word-count)
-[Str::wordWrap](#method-str-word-wrap)
 [Str::words](#method-str-words)
+[Str::wordWrap](#method-str-word-wrap)
 [Str::wrap](#method-str-wrap)
 [str](#method-str)
 [trans](#method-trans)
@@ -143,9 +143,9 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [betweenFirst](#method-fluent-str-between-first)
 [camel](#method-fluent-str-camel)
 [charAt](#method-fluent-str-char-at)
-[classBasename](#method-fluent-str-class-basename)
-[chopStart](#method-fluent-str-chop-start)
 [chopEnd](#method-fluent-str-chop-end)
+[chopStart](#method-fluent-str-chop-start)
+[classBasename](#method-fluent-str-class-basename)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
 [decrypt](#method-fluent-str-decrypt)
@@ -166,8 +166,9 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
-[isNotEmpty](#method-fluent-str-is-not-empty)
 [isJson](#method-fluent-str-is-json)
+[isMatch](#method-fluent-str-is-match)
+[isNotEmpty](#method-fluent-str-is-not-empty)
 [isUlid](#method-fluent-str-is-ulid)
 [isUrl](#method-fluent-str-is-url)
 [isUuid](#method-fluent-str-is-uuid)
@@ -176,11 +177,11 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
+[ltrim](#method-fluent-str-ltrim)
 [markdown](#method-fluent-str-markdown)
 [mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
-[isMatch](#method-fluent-str-is-match)
 [newLine](#method-fluent-str-new-line)
 [padBoth](#method-fluent-str-padboth)
 [padLeft](#method-fluent-str-padleft)
@@ -193,11 +194,12 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [repeat](#method-fluent-str-repeat)
 [replace](#method-fluent-str-replace)
 [replaceArray](#method-fluent-str-replace-array)
+[replaceEnd](#method-fluent-str-replace-end)
 [replaceFirst](#method-fluent-str-replace-first)
 [replaceLast](#method-fluent-str-replace-last)
 [replaceMatches](#method-fluent-str-replace-matches)
 [replaceStart](#method-fluent-str-replace-start)
-[replaceEnd](#method-fluent-str-replace-end)
+[rtrim](#method-fluent-str-rtrim)
 [scan](#method-fluent-str-scan)
 [singular](#method-fluent-str-singular)
 [slug](#method-fluent-str-slug)
@@ -220,8 +222,6 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [toUri](#method-fluent-str-to-uri)
 [transliterate](#method-fluent-str-transliterate)
 [trim](#method-fluent-str-trim)
-[ltrim](#method-fluent-str-ltrim)
-[rtrim](#method-fluent-str-rtrim)
 [ucfirst](#method-fluent-str-ucfirst)
 [ucsplit](#method-fluent-str-ucsplit)
 [unwrap](#method-fluent-str-unwrap)
@@ -232,15 +232,15 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [whenDoesntEndWith](#method-fluent-str-when-doesnt-end-with)
 [whenDoesntStartWith](#method-fluent-str-when-doesnt-start-with)
 [whenEmpty](#method-fluent-str-when-empty)
-[whenNotEmpty](#method-fluent-str-when-not-empty)
-[whenStartsWith](#method-fluent-str-when-starts-with)
 [whenEndsWith](#method-fluent-str-when-ends-with)
 [whenExactly](#method-fluent-str-when-exactly)
-[whenNotExactly](#method-fluent-str-when-not-exactly)
 [whenIs](#method-fluent-str-when-is)
 [whenIsAscii](#method-fluent-str-when-is-ascii)
 [whenIsUlid](#method-fluent-str-when-is-ulid)
 [whenIsUuid](#method-fluent-str-when-is-uuid)
+[whenNotEmpty](#method-fluent-str-when-not-empty)
+[whenNotExactly](#method-fluent-str-when-not-exactly)
+[whenStartsWith](#method-fluent-str-when-starts-with)
 [whenTest](#method-fluent-str-when-test)
 [wordCount](#method-fluent-str-word-count)
 [words](#method-fluent-str-words)
@@ -429,29 +429,6 @@ $character = Str::charAt('This is my name.', 6);
 // 's'
 ```
 
-<a name="method-str-chop-start"></a>
-#### `Str::chopStart()` {.collection-method}
-
-The `Str::chopStart` method removes the first occurrence of the given value only if the value appears at the start of the string:
-
-```php
-use Illuminate\Support\Str;
-
-$url = Str::chopStart('https://laravel.com', 'https://');
-
-// 'laravel.com'
-```
-
-You may also pass an array as the second argument. If the string starts with any of the values in the array then that value will be removed from string:
-
-```php
-use Illuminate\Support\Str;
-
-$url = Str::chopStart('http://laravel.com', ['https://', 'http://']);
-
-// 'laravel.com'
-```
-
 <a name="method-str-chop-end"></a>
 #### `Str::chopEnd()` {.collection-method}
 
@@ -471,6 +448,29 @@ You may also pass an array as the second argument. If the string ends with any o
 use Illuminate\Support\Str;
 
 $url = Str::chopEnd('laravel.com/index.php', ['/index.html', '/index.php']);
+
+// 'laravel.com'
+```
+
+<a name="method-str-chop-start"></a>
+#### `Str::chopStart()` {.collection-method}
+
+The `Str::chopStart` method removes the first occurrence of the given value only if the value appears at the start of the string:
+
+```php
+use Illuminate\Support\Str;
+
+$url = Str::chopStart('https://laravel.com', 'https://');
+
+// 'laravel.com'
+```
+
+You may also pass an array as the second argument. If the string starts with any of the values in the array then that value will be removed from string:
+
+```php
+use Illuminate\Support\Str;
+
+$url = Str::chopStart('http://laravel.com', ['https://', 'http://']);
 
 // 'laravel.com'
 ```
@@ -531,6 +531,29 @@ $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], ignoreCase: t
 // true
 ```
 
+<a name="method-deduplicate"></a>
+#### `Str::deduplicate()` {.collection-method}
+
+The `Str::deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string. By default, the method deduplicates spaces:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::deduplicate('The   Laravel   Framework');
+
+// The Laravel Framework
+```
+
+You may specify a different character to deduplicate by passing it in as the second argument to the method:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::deduplicate('The---Laravel---Framework', '-');
+
+// The-Laravel-Framework
+```
+
 <a name="method-str-doesnt-contain"></a>
 #### `Str::doesntContain()` {.collection-method}
 
@@ -562,29 +585,6 @@ use Illuminate\Support\Str;
 $doesntContain = Str::doesntContain('This is name', 'MY', ignoreCase: true);
 
 // true
-```
-
-<a name="method-deduplicate"></a>
-#### `Str::deduplicate()` {.collection-method}
-
-The `Str::deduplicate` method replaces consecutive instances of a character with a single instance of that character in the given string. By default, the method deduplicates spaces:
-
-```php
-use Illuminate\Support\Str;
-
-$result = Str::deduplicate('The   Laravel   Framework');
-
-// The Laravel Framework
-```
-
-You may specify a different character to deduplicate by passing it in as the second argument to the method:
-
-```php
-use Illuminate\Support\Str;
-
-$result = Str::deduplicate('The---Laravel---Framework', '-');
-
-// The-Laravel-Framework
 ```
 
 <a name="method-doesnt-end-with"></a>
@@ -832,6 +832,23 @@ $result = Str::isJson('{first: "John", last: "Doe"}');
 // false
 ```
 
+<a name="method-str-is-ulid"></a>
+#### `Str::isUlid()` {.collection-method}
+
+The `Str::isUlid` method determines if the given string is a valid ULID:
+
+```php
+use Illuminate\Support\Str;
+
+$isUlid = Str::isUlid('01gd6r360bp37zj17nxb55yv40');
+
+// true
+
+$isUlid = Str::isUlid('laravel');
+
+// false
+```
+
 <a name="method-str-is-url"></a>
 #### `Str::isUrl()` {.collection-method}
 
@@ -853,23 +870,6 @@ The `isUrl` method considers a wide range of protocols as valid. However, you ma
 
 ```php
 $isUrl = Str::isUrl('http://example.com', ['http', 'https']);
-```
-
-<a name="method-str-is-ulid"></a>
-#### `Str::isUlid()` {.collection-method}
-
-The `Str::isUlid` method determines if the given string is a valid ULID:
-
-```php
-use Illuminate\Support\Str;
-
-$isUlid = Str::isUlid('01gd6r360bp37zj17nxb55yv40');
-
-// true
-
-$isUlid = Str::isUlid('laravel');
-
-// false
 ```
 
 <a name="method-str-is-uuid"></a>
@@ -968,6 +968,19 @@ use Illuminate\Support\Str;
 $converted = Str::lower('LARAVEL');
 
 // laravel
+```
+
+<a name="method-str-ltrim"></a>
+#### `Str::ltrim()` {.collection-method}
+
+The `Str::ltrim` method strips whitespace (or other characters) from the beginning of the given string. Unlike PHP's native `ltrim` function, the `Str::ltrim` method also removes unicode whitespace characters:
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::ltrim('  foo bar  ');
+
+// 'foo bar  '
 ```
 
 <a name="method-str-markdown"></a>
@@ -1325,6 +1338,23 @@ $replaced = Str::replaceArray('?', ['8:30', '9:00'], $string);
 // The event will take place between 8:30 and 9:00
 ```
 
+<a name="method-str-replace-end"></a>
+#### `Str::replaceEnd()` {.collection-method}
+
+The `Str::replaceEnd` method replaces the last occurrence of the given value only if the value appears at the end of the string:
+
+```php
+use Illuminate\Support\Str;
+
+$replaced = Str::replaceEnd('World', 'Laravel', 'Hello World');
+
+// Hello Laravel
+
+$replaced = Str::replaceEnd('Hello', 'Laravel', 'Hello World');
+
+// Hello World
+```
+
 <a name="method-str-replace-first"></a>
 #### `Str::replaceFirst()` {.collection-method}
 
@@ -1397,23 +1427,6 @@ $replaced = Str::replaceStart('World', 'Laravel', 'Hello World');
 // Hello World
 ```
 
-<a name="method-str-replace-end"></a>
-#### `Str::replaceEnd()` {.collection-method}
-
-The `Str::replaceEnd` method replaces the last occurrence of the given value only if the value appears at the end of the string:
-
-```php
-use Illuminate\Support\Str;
-
-$replaced = Str::replaceEnd('World', 'Laravel', 'Hello World');
-
-// Hello Laravel
-
-$replaced = Str::replaceEnd('Hello', 'Laravel', 'Hello World');
-
-// Hello World
-```
-
 <a name="method-str-reverse"></a>
 #### `Str::reverse()` {.collection-method}
 
@@ -1425,6 +1438,19 @@ use Illuminate\Support\Str;
 $reversed = Str::reverse('Hello World');
 
 // dlroW olleH
+```
+
+<a name="method-str-rtrim"></a>
+#### `Str::rtrim()` {.collection-method}
+
+The `Str::rtrim` method strips whitespace (or other characters) from the end of the given string. Unlike PHP's native `rtrim` function, the `Str::rtrim` method also removes unicode whitespace characters:
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::rtrim('  foo bar  ');
+
+// '  foo bar'
 ```
 
 <a name="method-str-singular"></a>
@@ -1660,32 +1686,6 @@ $string = Str::trim(' foo bar ');
 // 'foo bar'
 ```
 
-<a name="method-str-ltrim"></a>
-#### `Str::ltrim()` {.collection-method}
-
-The `Str::ltrim` method strips whitespace (or other characters) from the beginning of the given string. Unlike PHP's native `ltrim` function, the `Str::ltrim` method also removes unicode whitespace characters:
-
-```php
-use Illuminate\Support\Str;
-
-$string = Str::ltrim('  foo bar  ');
-
-// 'foo bar  '
-```
-
-<a name="method-str-rtrim"></a>
-#### `Str::rtrim()` {.collection-method}
-
-The `Str::rtrim` method strips whitespace (or other characters) from the end of the given string. Unlike PHP's native `rtrim` function, the `Str::rtrim` method also removes unicode whitespace characters:
-
-```php
-use Illuminate\Support\Str;
-
-$string = Str::rtrim('  foo bar  ');
-
-// '  foo bar'
-```
-
 <a name="method-str-ucfirst"></a>
 #### `Str::ucfirst()` {.collection-method}
 
@@ -1710,19 +1710,6 @@ use Illuminate\Support\Str;
 $segments = Str::ucsplit('FooBar');
 
 // [0 => 'Foo', 1 => 'Bar']
-```
-
-<a name="method-str-upper"></a>
-#### `Str::upper()` {.collection-method}
-
-The `Str::upper` method converts the given string to uppercase:
-
-```php
-use Illuminate\Support\Str;
-
-$string = Str::upper('laravel');
-
-// LARAVEL
 ```
 
 <a name="method-str-ulid"></a>
@@ -1780,6 +1767,19 @@ Str::unwrap('{framework: "Laravel"}', '{', '}');
 // framework: "Laravel"
 ```
 
+<a name="method-str-upper"></a>
+#### `Str::upper()` {.collection-method}
+
+The `Str::upper` method converts the given string to uppercase:
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::upper('laravel');
+
+// LARAVEL
+```
+
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
 
@@ -1835,6 +1835,19 @@ use Illuminate\Support\Str;
 Str::wordCount('Hello, world!'); // 2
 ```
 
+<a name="method-str-words"></a>
+#### `Str::words()` {.collection-method}
+
+The `Str::words` method limits the number of words in a string. An additional string may be passed to this method via its third argument to specify which string should be appended to the end of the truncated string:
+
+```php
+use Illuminate\Support\Str;
+
+return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
+
+// Perfectly balanced, as >>>
+```
+
 <a name="method-str-word-wrap"></a>
 #### `Str::wordWrap()` {.collection-method}
 
@@ -1852,19 +1865,6 @@ The quick brown fox<br />
 jumped over the lazy<br />
 dog.
 */
-```
-
-<a name="method-str-words"></a>
-#### `Str::words()` {.collection-method}
-
-The `Str::words` method limits the number of words in a string. An additional string may be passed to this method via its third argument to specify which string should be appended to the end of the truncated string:
-
-```php
-use Illuminate\Support\Str;
-
-return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
-
-// Perfectly balanced, as >>>
 ```
 
 <a name="method-str-wrap"></a>
@@ -2096,17 +2096,27 @@ $character = Str::of('This is my name.')->charAt(6);
 // 's'
 ```
 
-<a name="method-fluent-str-class-basename"></a>
-#### `classBasename` {.collection-method}
+<a name="method-fluent-str-chop-end"></a>
+#### `chopEnd` {.collection-method}
 
-The `classBasename` method returns the class name of the given class with the class's namespace removed:
+The `chopEnd` method removes the last occurrence of the given value only if the value appears at the end of the string:
 
 ```php
 use Illuminate\Support\Str;
 
-$class = Str::of('Foo\Bar\Baz')->classBasename();
+$url = Str::of('https://laravel.com')->chopEnd('.com');
 
-// 'Baz'
+// 'https://laravel'
+```
+
+You may also pass an array. If the string ends with any of the values in the array then that value will be removed from string:
+
+```php
+use Illuminate\Support\Str;
+
+$url = Str::of('http://laravel.com')->chopEnd(['.com', '.io']);
+
+// 'http://laravel'
 ```
 
 <a name="method-fluent-str-chop-start"></a>
@@ -2132,27 +2142,17 @@ $url = Str::of('http://laravel.com')->chopStart(['https://', 'http://']);
 // 'laravel.com'
 ```
 
-<a name="method-fluent-str-chop-end"></a>
-#### `chopEnd` {.collection-method}
+<a name="method-fluent-str-class-basename"></a>
+#### `classBasename` {.collection-method}
 
-The `chopEnd` method removes the last occurrence of the given value only if the value appears at the end of the string:
-
-```php
-use Illuminate\Support\Str;
-
-$url = Str::of('https://laravel.com')->chopEnd('.com');
-
-// 'https://laravel'
-```
-
-You may also pass an array. If the string ends with any of the values in the array then that value will be removed from string:
+The `classBasename` method returns the class name of the given class with the class's namespace removed:
 
 ```php
 use Illuminate\Support\Str;
 
-$url = Str::of('http://laravel.com')->chopEnd(['.com', '.io']);
+$class = Str::of('Foo\Bar\Baz')->classBasename();
 
-// 'http://laravel'
+// 'Baz'
 ```
 
 <a name="method-fluent-str-contains"></a>
@@ -2557,23 +2557,6 @@ $result = Str::of('Laravel')->trim()->isEmpty();
 // false
 ```
 
-<a name="method-fluent-str-is-not-empty"></a>
-#### `isNotEmpty` {.collection-method}
-
-The `isNotEmpty` method determines if the given string is not empty:
-
-```php
-use Illuminate\Support\Str;
-
-$result = Str::of('  ')->trim()->isNotEmpty();
-
-// false
-
-$result = Str::of('Laravel')->trim()->isNotEmpty();
-
-// true
-```
-
 <a name="method-fluent-str-is-json"></a>
 #### `isJson` {.collection-method}
 
@@ -2593,6 +2576,40 @@ $result = Str::of('{"first": "John", "last": "Doe"}')->isJson();
 $result = Str::of('{first: "John", last: "Doe"}')->isJson();
 
 // false
+```
+
+<a name="method-fluent-str-is-match"></a>
+#### `isMatch` {.collection-method}
+
+The `isMatch` method will return `true` if the string matches a given regular expression:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('foo bar')->isMatch('/foo (.*)/');
+
+// true
+
+$result = Str::of('laravel')->isMatch('/foo (.*)/');
+
+// false
+```
+
+<a name="method-fluent-str-is-not-empty"></a>
+#### `isNotEmpty` {.collection-method}
+
+The `isNotEmpty` method determines if the given string is not empty:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('  ')->trim()->isNotEmpty();
+
+// false
+
+$result = Str::of('Laravel')->trim()->isNotEmpty();
+
+// true
 ```
 
 <a name="method-fluent-str-is-ulid"></a>
@@ -2733,6 +2750,23 @@ $result = Str::of('LARAVEL')->lower();
 // 'laravel'
 ```
 
+<a name="method-fluent-str-ltrim"></a>
+#### `ltrim` {.collection-method}
+
+The `ltrim` method trims the left side of the string. Unlike PHP's native `ltrim` function, Laravel's `ltrim` method also removes unicode whitespace characters:
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::of('  Laravel  ')->ltrim();
+
+// 'Laravel  '
+
+$string = Str::of('/Laravel/')->ltrim('/');
+
+// 'Laravel/'
+```
+
 <a name="method-fluent-str-markdown"></a>
 #### `markdown` {.collection-method}
 
@@ -2833,23 +2867,6 @@ $result = Str::of('bar fun bar fly')->matchAll('/f(\w*)/');
 ```
 
 If no matches are found, an empty collection will be returned.
-
-<a name="method-fluent-str-is-match"></a>
-#### `isMatch` {.collection-method}
-
-The `isMatch` method will return `true` if the string matches a given regular expression:
-
-```php
-use Illuminate\Support\Str;
-
-$result = Str::of('foo bar')->isMatch('/foo (.*)/');
-
-// true
-
-$result = Str::of('laravel')->isMatch('/foo (.*)/');
-
-// false
-```
 
 <a name="method-fluent-str-new-line"></a>
 #### `newLine` {.collection-method}
@@ -3060,6 +3077,22 @@ $replaced = Str::of($string)->replaceArray('?', ['8:30', '9:00']);
 
 // The event will take place between 8:30 and 9:00
 ```
+<a name="method-fluent-str-replace-end"></a>
+#### `replaceEnd` {.collection-method}
+
+The `replaceEnd` method replaces the last occurrence of the given value only if the value appears at the end of the string:
+
+```php
+use Illuminate\Support\Str;
+
+$replaced = Str::of('Hello World')->replaceEnd('World', 'Laravel');
+
+// Hello Laravel
+
+$replaced = Str::of('Hello World')->replaceEnd('Hello', 'Laravel');
+
+// Hello World
+```
 
 <a name="method-fluent-str-replace-first"></a>
 #### `replaceFirst` {.collection-method}
@@ -3129,21 +3162,21 @@ $replaced = Str::of('Hello World')->replaceStart('World', 'Laravel');
 // Hello World
 ```
 
-<a name="method-fluent-str-replace-end"></a>
-#### `replaceEnd` {.collection-method}
+<a name="method-fluent-str-rtrim"></a>
+#### `rtrim` {.collection-method}
 
-The `replaceEnd` method replaces the last occurrence of the given value only if the value appears at the end of the string:
+The `rtrim` method trims the right side of the given string. Unlike PHP's native `rtrim` function, Laravel's `rtrim` method also removes unicode whitespace characters:
 
 ```php
 use Illuminate\Support\Str;
 
-$replaced = Str::of('Hello World')->replaceEnd('World', 'Laravel');
+$string = Str::of('  Laravel  ')->rtrim();
 
-// Hello Laravel
+// '  Laravel'
 
-$replaced = Str::of('Hello World')->replaceEnd('Hello', 'Laravel');
+$string = Str::of('/Laravel/')->rtrim('/');
 
-// Hello World
+// '/Laravel'
 ```
 
 <a name="method-fluent-str-scan"></a>
@@ -3462,40 +3495,6 @@ $string = Str::of('/Laravel/')->trim('/');
 // 'Laravel'
 ```
 
-<a name="method-fluent-str-ltrim"></a>
-#### `ltrim` {.collection-method}
-
-The `ltrim` method trims the left side of the string. Unlike PHP's native `ltrim` function, Laravel's `ltrim` method also removes unicode whitespace characters:
-
-```php
-use Illuminate\Support\Str;
-
-$string = Str::of('  Laravel  ')->ltrim();
-
-// 'Laravel  '
-
-$string = Str::of('/Laravel/')->ltrim('/');
-
-// 'Laravel/'
-```
-
-<a name="method-fluent-str-rtrim"></a>
-#### `rtrim` {.collection-method}
-
-The `rtrim` method trims the right side of the given string. Unlike PHP's native `rtrim` function, Laravel's `rtrim` method also removes unicode whitespace characters:
-
-```php
-use Illuminate\Support\Str;
-
-$string = Str::of('  Laravel  ')->rtrim();
-
-// '  Laravel'
-
-$string = Str::of('/Laravel/')->rtrim('/');
-
-// '/Laravel'
-```
-
 <a name="method-fluent-str-ucfirst"></a>
 #### `ucfirst` {.collection-method}
 
@@ -3671,38 +3670,6 @@ $string = Str::of('  ')->trim()->whenEmpty(function (Stringable $string) {
 // 'Laravel'
 ```
 
-<a name="method-fluent-str-when-not-empty"></a>
-#### `whenNotEmpty` {.collection-method}
-
-The `whenNotEmpty` method invokes the given closure if the string is not empty. If the closure returns a value, that value will also be returned by the `whenNotEmpty` method. If the closure does not return a value, the fluent string instance will be returned:
-
-```php
-use Illuminate\Support\Str;
-use Illuminate\Support\Stringable;
-
-$string = Str::of('Framework')->whenNotEmpty(function (Stringable $string) {
-    return $string->prepend('Laravel ');
-});
-
-// 'Laravel Framework'
-```
-
-<a name="method-fluent-str-when-starts-with"></a>
-#### `whenStartsWith` {.collection-method}
-
-The `whenStartsWith` method invokes the given closure if the string starts with the given sub-string. The closure will receive the fluent string instance:
-
-```php
-use Illuminate\Support\Str;
-use Illuminate\Support\Stringable;
-
-$string = Str::of('disney world')->whenStartsWith('disney', function (Stringable $string) {
-    return $string->title();
-});
-
-// 'Disney World'
-```
-
 <a name="method-fluent-str-when-ends-with"></a>
 #### `whenEndsWith` {.collection-method}
 
@@ -3733,22 +3700,6 @@ $string = Str::of('laravel')->whenExactly('laravel', function (Stringable $strin
 });
 
 // 'Laravel'
-```
-
-<a name="method-fluent-str-when-not-exactly"></a>
-#### `whenNotExactly` {.collection-method}
-
-The `whenNotExactly` method invokes the given closure if the string does not exactly match the given string. The closure will receive the fluent string instance:
-
-```php
-use Illuminate\Support\Str;
-use Illuminate\Support\Stringable;
-
-$string = Str::of('framework')->whenNotExactly('laravel', function (Stringable $string) {
-    return $string->title();
-});
-
-// 'Framework'
 ```
 
 <a name="method-fluent-str-when-is"></a>
@@ -3812,6 +3763,54 @@ $string = Str::of('a0a2a2d2-0b87-4a18-83f2-2529882be2de')->whenIsUuid(function (
 });
 
 // 'a0a2a2d2'
+```
+
+<a name="method-fluent-str-when-not-empty"></a>
+#### `whenNotEmpty` {.collection-method}
+
+The `whenNotEmpty` method invokes the given closure if the string is not empty. If the closure returns a value, that value will also be returned by the `whenNotEmpty` method. If the closure does not return a value, the fluent string instance will be returned:
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('Framework')->whenNotEmpty(function (Stringable $string) {
+    return $string->prepend('Laravel ');
+});
+
+// 'Laravel Framework'
+```
+
+<a name="method-fluent-str-when-not-exactly"></a>
+#### `whenNotExactly` {.collection-method}
+
+The `whenNotExactly` method invokes the given closure if the string does not exactly match the given string. The closure will receive the fluent string instance:
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('framework')->whenNotExactly('laravel', function (Stringable $string) {
+    return $string->title();
+});
+
+// 'Framework'
+```
+
+<a name="method-fluent-str-when-starts-with"></a>
+#### `whenStartsWith` {.collection-method}
+
+The `whenStartsWith` method invokes the given closure if the string starts with the given sub-string. The closure will receive the fluent string instance:
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('disney world')->whenStartsWith('disney', function (Stringable $string) {
+    return $string->title();
+});
+
+// 'Disney World'
 ```
 
 <a name="method-fluent-str-when-test"></a>
