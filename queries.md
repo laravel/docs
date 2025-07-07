@@ -547,6 +547,15 @@ $users = DB::table('users')->where([
 ])->get();
 ```
 
+Associative arrays are also supported for cases where you don't need to pass a value for the `operator` argument. The key should be the column name and the value should be the value to compare against:
+
+```php
+$users = DB::table('users')->where([
+    'first_name' => 'Jane',
+    'last_name' => 'Doe',
+])->get();
+```
+
 > [!WARNING]
 > PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
 
