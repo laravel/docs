@@ -689,7 +689,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-You may use `whereJsonContains` and `whereJsonDoesntContain` to query JSON arrays:
+You may use the `whereJsonContains` and `whereJsonDoesntContain` methods to query JSON arrays:
 
 ```php
 $users = DB::table('users')
@@ -713,7 +713,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-In addition, you might use `whereJsonContainsKey` or `whereJsonDoesntContainKey` methods to retrieve the results that include or do not include a JSON key.
+In addition, you may use the `whereJsonContainsKey` or `whereJsonDoesntContainKey` methods to retrieve the results that include or do not include a JSON key:
 
 ```php
 $users = DB::table('users')
