@@ -2437,7 +2437,31 @@ Alternatively, you may pass your own closure to determine how to sort the collec
         ]
     */
 
-If you would like to sort your collection by multiple attributes, you may pass an array of sort operations to the `sortBy` method. Each sort operation should be an array consisting of the attribute that you wish to sort by and the direction of the desired sort:
+If you would like to sort your collection by multiple attributes, you may pass an array of the attributes that you wish to sort by:
+
+    $collection = collect([
+        ['name' => 'Taylor Otwell', 'age' => 34],
+        ['name' => 'Abigail Otwell', 'age' => 30],
+        ['name' => 'Taylor Otwell', 'age' => 36],
+        ['name' => 'Abigail Otwell', 'age' => 32],
+    ]);
+
+    $sorted = $collection->sortBy(['name', 'age']);
+
+    $sorted->values()->all();
+
+    /*
+        [
+            ['name' => 'Abigail Otwell', 'age' => 30],
+            ['name' => 'Abigail Otwell', 'age' => 32],
+            ['name' => 'Taylor Otwell', 'age' => 34],
+            ['name' => 'Taylor Otwell', 'age' => 36],
+        ]
+    */
+
+
+
+When sorting in multiple attributes and directions, you may pass an array of sort operations to the `sortBy` method. Each sort operation should be an array consisting of the attribute that you wish to sort by and the direction of the desired sort:
 
     $collection = collect([
         ['name' => 'Taylor Otwell', 'age' => 34],
