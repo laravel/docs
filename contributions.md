@@ -155,7 +155,7 @@ public function attachments(): array
 <a name="styleci"></a>
 ### StyleCI
 
-Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
+Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io) will automatically merge any style fixes into the Laravel repository after pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
 
 <a name="code-of-conduct"></a>
 ## Code of Conduct
