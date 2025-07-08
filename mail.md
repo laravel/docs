@@ -101,7 +101,7 @@ If you are not using the United States [Mailgun region](https://documentation.ma
 <a name="postmark-driver"></a>
 #### Postmark Driver
 
-To use the [Postmark](https://postmarkapp.com/) driver, install Symfony's Postmark Mailer transport via Composer:
+To use the [Postmark](https://postmarkapp.com) driver, install Symfony's Postmark Mailer transport via Composer:
 
 ```shell
 composer require symfony/postmark-mailer symfony/http-client
@@ -132,7 +132,7 @@ This way you are also able to set up multiple Postmark mailers with different me
 <a name="resend-driver"></a>
 #### Resend Driver
 
-To use the [Resend](https://resend.com/) driver, install Resend's PHP SDK via Composer:
+To use the [Resend](https://resend.com) driver, install Resend's PHP SDK via Composer:
 
 ```shell
 composer require resend/resend-php
@@ -211,7 +211,7 @@ If you would like to define [additional options](https://docs.aws.amazon.com/aws
 <a name="mailersend-driver"></a>
 #### MailerSend Driver
 
-[MailerSend](https://www.mailersend.com/), a transactional email and SMS service, maintains their own API based mail driver for Laravel. The package containing the driver may be installed via the Composer package manager:
+[MailerSend](https://www.mailersend.com), a transactional email and SMS service, maintains their own API based mail driver for Laravel. The package containing the driver may be installed via the Composer package manager:
 
 ```shell
 composer require mailersend/laravel-driver
