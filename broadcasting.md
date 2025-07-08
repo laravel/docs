@@ -78,7 +78,17 @@ All of your application's event broadcasting configuration is stored in the `con
 <a name="quickstart-next-steps"></a>
 #### Next Steps
 
-Once you have enabled event broadcasting, you're ready to learn more about [defining broadcast events](#defining-broadcast-events) and [listening for events](#listening-for-events). If you're using Laravel's React or Vue [starter kits](/docs/{{version}}/starter-kits), you may listen for events using Echo's [useEcho hook](#using-react-or-vue).
+Once you have enabled event broadcasting, you're ready to learn more about [defining broadcast events](#defining-broadcast-events) and [listening for events](#listening-for-events). Laravel Echo provides official helper packages that simplify integration with Vue and React applications.
+
+- Vue
+```bash
+npm install @laravel/echo-vue
+```
+
+- React
+```bash
+npm install @laravel/echo-react
+```
 
 > [!NOTE]
 > Before broadcasting any events, you should first configure and run a [queue worker](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected by events being broadcast.
