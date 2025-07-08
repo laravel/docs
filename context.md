@@ -296,9 +296,10 @@ Context::get('breadcrumbs');
 The `remember` and `rememberHidden` methods may be used to retrieve information from the context, while setting the context value to the value returned by the given closure if the requested information doesn't exist:
 
 ```php
-$permissions = Context::remember('user-permissions', function () use ($user) {
-    return $user->permissions;
-});
+$permissions = Context::remember(
+    'user-permissions',
+    fn () => $user->permissions,
+);
 ```
 
 If you would like to retrieve all of the information stored in the context, you may invoke the `all` method:
