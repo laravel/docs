@@ -18,7 +18,7 @@
 In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, X, LinkedIn, Google, GitHub, GitLab, Bitbucket, and Slack.
 
 > [!NOTE]
-> Adapters for other platforms are available via the community driven [Socialite Providers](https://socialiteproviders.com/) website.
+> Adapters for other platforms are available via the community driven [Socialite Providers](https://socialiteproviders.com) website.
 
 <a name="installation"></a>
 ## Installation
