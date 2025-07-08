@@ -385,7 +385,7 @@ $chunks->all();
 // [[1, 2, 3, 4], [5, 6, 7]]
 ```
 
-This method is especially useful in [views](/docs/{{version}}/views) when working with a grid system such as [Bootstrap](https://getbootstrap.com/docs/5.3/layout/grid/). For example, imagine you have a collection of [Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:
+This method is especially useful in [views](/docs/{{version}}/views) when working with a grid system such as [Bootstrap](https://getbootstrap.com/docs/5.3/layout/grid). For example, imagine you have a collection of [Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:
 
 ```blade
 @foreach ($products->chunk(3) as $chunk)
