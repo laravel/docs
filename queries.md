@@ -875,6 +875,24 @@ $patients = DB::table('patients')
     ->get();
 ```
 
+**whereValueBetween / whereValueNotBetween / orWhereValueBetween / orWhereValueNotBetween**
+
+The `whereValueBetween` method verifies that a value is between the values of two columns of the same type in the same table row:
+
+```php
+$patients = DB::table('patients')
+    ->whereValueBetween(100, ['minimum_allowed_weight', 'maximum_allowed_weight'])
+    ->get();
+```
+
+The `whereValueNotBetween` method verifies that a value lies outside the values of two columns in the same table row:
+
+```php
+$patients = DB::table('patients')
+    ->whereValueNotBetween(100, ['minimum_allowed_weight', 'maximum_allowed_weight'])
+    ->get();
+```
+
 **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
 The `whereNull` method verifies that the value of the given column is `NULL`:
