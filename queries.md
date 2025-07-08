@@ -522,6 +522,15 @@ For convenience, if you want to verify that a column is `=` to a given value, yo
 $users = DB::table('users')->where('votes', 100)->get();
 ```
 
+You may also provide an associative array to the `where` method to quickly query against multiple columns:
+
+```php
+$users = DB::table('users')->where([
+    'first_name' => 'Jane',
+    'last_name' => 'Doe',
+])->get();
+```
+
 As previously mentioned, you may use any operator that is supported by your database system:
 
 ```php
@@ -544,15 +553,6 @@ You may also pass an array of conditions to the `where` function. Each element o
 $users = DB::table('users')->where([
     ['status', '=', '1'],
     ['subscribed', '<>', '1'],
-])->get();
-```
-
-Associative arrays are also supported for cases where you don't need to pass a value for the `operator` argument. The key should be the column name and the value should be the value to compare against:
-
-```php
-$users = DB::table('users')->where([
-    'first_name' => 'Jane',
-    'last_name' => 'Doe',
 ])->get();
 ```
 
