@@ -53,7 +53,7 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 <a name="installing-php"></a>
 ### Installing PHP and the Laravel Installer
 
-Before creating your first Laravel application, make sure that your local machine has [PHP](https://php.net), [Composer](https://getcomposer.org), and [the Laravel installer](https://github.com/laravel/installer) installed. In addition, you should install either [Node and NPM](https://nodejs.org) or [Bun](https://bun.sh/) so that you can compile your application's frontend assets.
+Before creating your first Laravel application, make sure that your local machine has [PHP](https://php.net), [Composer](https://getcomposer.org), and [the Laravel installer](https://github.com/laravel/installer) installed. In addition, you should install either [Node and NPM](https://nodejs.org) or [Bun](https://bun.sh) so that you can compile your application's frontend assets.
 
 If you don't have PHP and Composer installed on your local machine, the following commands will install PHP, Composer, and the Laravel installer on macOS, Windows, or Linux:
 
@@ -145,7 +145,7 @@ php artisan migrate
 ```
 
 > [!NOTE]
-> If you are developing on macOS or Windows and need to install MySQL, PostgreSQL, or Redis locally, consider using [Herd Pro](https://herd.laravel.com/#plans) or [DBngin](https://dbngin.com/).
+> If you are developing on macOS or Windows and need to install MySQL, PostgreSQL, or Redis locally, consider using [Herd Pro](https://herd.laravel.com/#plans) or [DBngin](https://dbngin.com).
 
 <a name="directory-configuration"></a>
 ### Directory Configuration
@@ -165,7 +165,7 @@ Once you install Herd, you're ready to start developing with Laravel. Herd inclu
 <a name="herd-on-macos"></a>
 ### Herd on macOS
 
-If you develop on macOS, you can download the Herd installer from the [Herd website](https://herd.laravel.com). The installer automatically downloads the latest version of PHP and configures your Mac to always run [Nginx](https://www.nginx.com/) in the background.
+If you develop on macOS, you can download the Herd installer from the [Herd website](https://herd.laravel.com). The installer automatically downloads the latest version of PHP and configures your Mac to always run [Nginx](https://www.nginx.com) in the background.
 
 Herd for macOS uses [dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) to support "parked" directories. Any Laravel application in a parked directory will automatically be served by Herd. By default, Herd creates a parked directory at `~/Herd` and you can access any Laravel application in this directory on the `.test` domain using its directory name.
 
@@ -207,9 +207,9 @@ You can learn more about Herd by checking out the [Herd documentation for Window
 
 You are free to use any code editor you wish when developing Laravel applications. If you're looking for lightweight and extensible editors, [VS Code](https://code.visualstudio.com) or [Cursor](https://cursor.com) combined with the official [Laravel VS Code Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel) offers excellent Laravel support with features like syntax highlighting, snippets, artisan command integration, and smart autocompletion for Eloquent models, routes, middleware, assets, config, and Inertia.js.
 
-[PhpStorm](https://www.jetbrains.com/phpstorm/laravel/) by JetBrains combined with the [Laravel Idea plugin](https://laravel-idea.com/) provides extensive support for Laravel and its ecosystem including Laravel Pint, Larastan, and Pest. The framework support covers Blade templates, smart autocompletion for Eloquent models, routes, views, translations, and components, along with powerful code generation and navigation across Laravel projects.
+[PhpStorm](https://www.jetbrains.com/phpstorm/laravel) by JetBrains combined with the [Laravel Idea plugin](https://laravel-idea.com) provides extensive support for Laravel and its ecosystem including Laravel Pint, Larastan, and Pest. The framework support covers Blade templates, smart autocompletion for Eloquent models, routes, views, translations, and components, along with powerful code generation and navigation across Laravel projects.
 
-For those seeking a cloud-based development experience, [Firebase Studio](https://firebase.studio/) provides instant access to building with Laravel directly in your browser. With zero setup required, Firebase Studio makes it easy to start building Laravel applications from any device.
+For those seeking a cloud-based development experience, [Firebase Studio](https://firebase.studio) provides instant access to building with Laravel directly in your browser. With zero setup required, Firebase Studio makes it easy to start building Laravel applications from any device.
 
 <a name="next-steps"></a>
 ## Next Steps
