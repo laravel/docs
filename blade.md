@@ -321,6 +321,17 @@ The `@session` directive may be used to determine if a [session](/docs/{{version
 @endsession
 ```
 
+<a name="context-directives"></a>
+#### Context Directives
+
+The `@context` directive may be used to determine if a [context](/docs/{{version}}/context) value exists. If the context value exists, the template contents within the `@context` and `@endcontext` directives will be evaluated. Within the `@context` directive's contents, you may echo the `$value` variable to display the context value:
+
+```blade
+@context('canonical')
+    <link href="{{ $value }}" rel="canonical">
+@endcontext
+```
+
 <a name="switch-statements"></a>
 ### Switch Statements
 
