@@ -41,7 +41,7 @@
 #### Estimated Upgrade Time: 5 Minutes
 
 > [!NOTE]
-> We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
+> We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com) to help automate your application upgrades.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
@@ -63,7 +63,7 @@ You should update the following dependencies in your application's `composer.jso
 
 **Likelihood Of Impact: Low**
 
-Support for [Carbon 2.x](https://carbon.nesbot.com/docs/) has been removed. All Laravel 12 applications now require [Carbon 3.x](https://carbon.nesbot.com/docs/#api-carbon-3).
+Support for [Carbon 2.x](https://carbon.nesbot.com/docs) has been removed. All Laravel 12 applications now require [Carbon 3.x](https://carbon.nesbot.com/docs/#api-carbon-3).
 
 <a name="updating-the-laravel-installer"></a>
 ### Updating the Laravel Installer
