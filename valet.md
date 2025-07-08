@@ -25,7 +25,7 @@
 > [!NOTE]
 > Looking for an even easier way to develop Laravel applications on macOS or Windows? Check out [Laravel Herd](https://herd.laravel.com). Herd includes everything you need to get started with Laravel development, including Valet, PHP, and Composer.
 
-[Laravel Valet](https://github.com/laravel/valet) is a development environment for macOS minimalists. Laravel Valet configures your Mac to always run [Nginx](https://www.nginx.com/) in the background when your machine starts. Then, using [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq), Valet proxies all requests on the `*.test` domain to point to sites installed on your local machine.
+[Laravel Valet](https://github.com/laravel/valet) is a development environment for macOS minimalists. Laravel Valet configures your Mac to always run [Nginx](https://www.nginx.com) in the background when your machine starts. Then, using [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq), Valet proxies all requests on the `*.test` domain to point to sites installed on your local machine.
 
 In other words, Valet is a blazing fast Laravel development environment that uses roughly 7 MB of RAM. Valet isn't a complete replacement for [Sail](/docs/{{version}}/sail) or [Homestead](/docs/{{version}}/homestead), but provides a great alternative if you want flexible basics, prefer extreme speed, or are working on a machine with a limited amount of RAM.
 
@@ -41,20 +41,20 @@ Out of the box, Valet support includes, but is not limited to:
 <div id="valet-support" markdown="1">
 
 - [Laravel](https://laravel.com)
-- [Bedrock](https://roots.io/bedrock/)
+- [Bedrock](https://roots.io/bedrock)
 - [CakePHP 3](https://cakephp.org)
-- [ConcreteCMS](https://www.concretecms.com/)
-- [Contao](https://contao.org/en/)
+- [ConcreteCMS](https://www.concretecms.com)
+- [Contao](https://contao.org/en)
 - [Craft](https://craftcms.com)
-- [Drupal](https://www.drupal.org/)
-- [ExpressionEngine](https://www.expressionengine.com/)
+- [Drupal](https://www.drupal.org)
+- [ExpressionEngine](https://www.expressionengine.com)
 - [Jigsaw](https://jigsaw.tighten.co)
-- [Joomla](https://www.joomla.org/)
+- [Joomla](https://www.joomla.org)
 - [Katana](https://github.com/themsaid/katana)
-- [Kirby](https://getkirby.com/)
-- [Magento](https://magento.com/)
-- [OctoberCMS](https://octobercms.com/)
-- [Sculpin](https://sculpin.io/)
+- [Kirby](https://getkirby.com)
+- [Magento](https://magento.com)
+- [OctoberCMS](https://octobercms.com)
+- [Sculpin](https://sculpin.io)
 - [Slim](https://www.slimframework.com)
 - [Statamic](https://statamic.com)
 - Static HTML
@@ -70,7 +70,7 @@ However, you may extend Valet with your own [custom drivers](#custom-valet-drive
 ## Installation
 
 > [!WARNING]
-> Valet requires macOS and [Homebrew](https://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.
+> Valet requires macOS and [Homebrew](https://brew.sh). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.
 
 To get started, you first need to ensure that Homebrew is up to date using the `update` command:
 
