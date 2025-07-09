@@ -877,19 +877,19 @@ $patients = DB::table('patients')
 
 **whereValueBetween / whereValueNotBetween / orWhereValueBetween / orWhereValueNotBetween**
 
-The `whereValueBetween` method verifies that a value is between the values of two columns of the same type in the same table row:
+The `whereValueBetween` method verifies that a given value is between the values of two columns of the same type in the same table row:
 
 ```php
-$patients = DB::table('patients')
-    ->whereValueBetween(100, ['minimum_allowed_weight', 'maximum_allowed_weight'])
+$patients = DB::table('products')
+    ->whereValueBetween(100, ['min_price', 'max_price'])
     ->get();
 ```
 
 The `whereValueNotBetween` method verifies that a value lies outside the values of two columns in the same table row:
 
 ```php
-$patients = DB::table('patients')
-    ->whereValueNotBetween(100, ['minimum_allowed_weight', 'maximum_allowed_weight'])
+$patients = DB::table('products')
+    ->whereValueNotBetween(100, ['min_price', 'max_price'])
     ->get();
 ```
 
