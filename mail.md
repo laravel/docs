@@ -359,7 +359,10 @@ However, if your application uses the same "from" address for all of its emails,
 In addition, you may define a global "reply_to" address within your `config/mail.php` configuration file:
 
 ```php
-'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],
+'reply_to' => [
+    'address' => 'example@example.com',
+    'name' => 'App Name',
+],
 ```
 
 <a name="configuring-the-view"></a>
