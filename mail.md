@@ -502,7 +502,7 @@ class OrderShipped extends Mailable
 }
 ```
 
-Once the data has been passed to the `with` method, it will automatically be available in your view, so you may access it like you would access any other data in your Blade templates:
+Once the data has been passed via the `with` parameter, it will automatically be available in your view, so you may access it like you would access any other data in your Blade templates:
 
 ```blade
 <div>
