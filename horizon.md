@@ -3,7 +3,11 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Configuration](#configuration)
+    - [Queue Priorities](#queue-priorities)
     - [Balancing Strategies](#balancing-strategies)
+    - [Max Job Attempts](#max-job-attempts)
+    - [Job Timeout](#job-timeout)
+    - [Job Backoff](#job-backoff)
     - [Dashboard Authorization](#dashboard-authorization)
     - [Silenced Jobs](#silenced-jobs)
 - [Upgrading Horizon](#upgrading-horizon)
@@ -92,6 +96,23 @@ You may also define a wildcard environment (`*`) which will be used when no othe
 
 When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/docs/{{version}}/configuration#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
 
+You may also define Horizon's environment independently of the application's `APP_ENV` by adding an `env` key to your Horizon configuration file:
+
+```php
+/*
+| ------------------------------------------------------------------
+| Horizon Environement
+| ------------------------------------------------------------------
+|
+| This value determine Horizon's environment!
+*/
+'env' => env('HORIZON_ENV', env('APP_ENV')),
+```
+
+This can be particularly useful when running Horizon across multiple servers. For example, you might have one server processing general-purpose jobs using the default queue configuration, while a second server, using in a different environment key, is dedicated to handling resource-intensive jobs, such as video processing or large data imports.
+
+Using two different environments makes it easy to configure Horizon on a per-server basis rather than a per-environment basis, giving you more granular control over worker settings and job handling.
+
 > [!WARNING]
 > You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon.
 
@@ -123,6 +144,24 @@ While your application is in [maintenance mode](/docs/{{version}}/configuration#
 
 Within Horizon's default configuration file, you will notice a `defaults` configuration option. This configuration option specifies the default values for your application's [supervisors](#supervisors). The supervisor's default configuration values will be merged into the supervisor's configuration for each environment, allowing you to avoid unnecessary repetition when defining your supervisors.
 
+<a name="queue-priorities"></a>
+### Queue Priorities
+
+Each supervisor can process one or more queues. Just like Laravel's default queue system, queues are processed in the order they are listed in the queue configuration option, giving higher priority to queues defined first:
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            'connection' => 'redis',
+            'queue' => ['high', 'default', 'low'],
+        ],
+    ],
+],
+```
+
+In this example, jobs in the `high` queue will be prioritized over those in the `default` or `low` queues.
+
 <a name="balancing-strategies"></a>
 ### Balancing Strategies
 
@@ -132,7 +171,12 @@ Unlike Laravel's default queue system, Horizon allows you to choose from three w
 
 The `auto` strategy, which is the configuration file's default, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
 
-When using the `auto` strategy, you may define the `minProcesses` and `maxProcesses` configuration options to control the minimum number of processes per queue and the maximum number of worker processes in total Horizon should scale up and down to:
+When using the auto scaling strategy, you may define the `minProcesses` and `maxProcesses` configuration options:
+
+- `minProcesses` defines the minimum number of worker processes per queue. This value must be greater than or equal to 1.
+- `maxProcesses` defines the maximum total number of worker processes Horizon may scale up to across all queues. This value should typically be greater than the number of queues multiplied by the `minProcesses` value. To prevent the supervisor from spawning any processes, you may set this value to 0.
+
+For example, you may configure Horizon to maintain at least one process per queue and scale up to a total of 10 worker processes:
 
 ```php
 'environments' => [
@@ -146,17 +190,98 @@ When using the `auto` strategy, you may define the `minProcesses` and `maxProces
             'maxProcesses' => 10,
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
-            'tries' => 3,
         ],
     ],
 ],
 ```
 
-The `autoScalingStrategy` configuration value determines if Horizon will assign more worker processes to queues based on the total amount of time it will take to clear the queue (`time` strategy) or by the total number of jobs on the queue (`size` strategy).
+The `autoScalingStrategy` configuration option determines how Horizon will assign more worker processes to queues. You can choose between two strategies:
+- The `time` strategy will assign workers based on the total estimated amount of time it will take to clear the queue.
+- The `size` strategy will assign workers based on the total number of jobs on the queue.
 
 The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
 
 When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration.
+
+<a name="max-job-attempts"></a>
+### Max Job Attempts
+
+> [!NOTE]
+> Before refining these options, make sure you are familiar with Laravel's base [queue services](/docs/{{version}}/queues#max-job-attempts-and-timeout) and the concept of 'attempts'.
+
+You can define the maximum number of attempts a job can consume directly at the supervisor level:
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'tries' => 10,
+        ],
+    ],
+],
+```
+
+> [!NOTE]
+> This option is similar to the `--tries` option when using the Artisan command to process queues.
+
+Fine-tuning the `tries` option is essential when using middlewares such as `WithoutOverlapping` or `RateLimited` because they consume attempts, however depending on your case, it may be more appropriate to set the job class' `$tries` property.
+
+If you do not specify a value for the `tries` option, jobs will only be attempted once or as many times as specified by the job class `$tries` property.
+
+<a name="job-timeout"></a>
+### Job Timeout
+
+Similarly, you can define a `timeout` value at the supervisor level. This value determines how many seconds a worker process is allowed to run a job before it is forcefully terminated. If a job exceeds the specified time limit, the worker process will be terminated, and the job will either be retried or marked as failed based on your queue configuration.
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            /**
+             * The number of seconds the job can run before timing out.
+             */
+            'timeout' => 60,
+        ],
+    ],
+],
+```
+
+>[!WARNING]
+> The `timeout` value should always be at least several seconds shorter than the `retry_after` value define in your `config/queue.php` configuratin file. Otherwise your jobs may be processed twice.
+
+<a name="job-backoff"></a>
+### Job Backoff
+
+You can define the `backoff` value at the supervisor level to specify how long Horizon should wait before retrying a job that encounters an unhandled exception:
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            /**
+             * The number of seconds to wait
+             */
+            'backoff' => 10,
+        ],
+    ],
+],
+```
+
+You may also configure "exponential" backoffs by using an array for the `backoff` value. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, 10 seconds for the third retry, and 10 seconds for every subsequent retry if there are more attempts remaining:
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'backoff' => [1, 5, 10],
+        ],
+    ],
+],
+```
 
 <a name="dashboard-authorization"></a>
 ### Dashboard Authorization
