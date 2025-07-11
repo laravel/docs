@@ -99,14 +99,19 @@ When you start Horizon, it will use the worker process configuration options for
 You may also define Horizon's environment independently of the application's `APP_ENV` by adding an `env` key to your Horizon configuration file:
 
 ```php
-/*
-| ------------------------------------------------------------------
-| Horizon Environement
-| ------------------------------------------------------------------
-|
-| This value determine Horizon's environment!
-*/
-'env' => env('HORIZON_ENV', env('APP_ENV')),
+
+return [
+    /*
+    | ------------------------------------------------------------------
+    | Horizon Environement
+    | ------------------------------------------------------------------
+    |
+    | This value determine Horizon's environment!
+    */
+    'env' => env('HORIZON_ENV', env('APP_ENV')),
+
+    // ...
+];
 ```
 
 This can be particularly useful when running Horizon across multiple servers. For example, you might have one server processing general-purpose jobs using the default queue configuration, while a second server, using in a different environment key, is dedicated to handling resource-intensive jobs, such as video processing or large data imports.
