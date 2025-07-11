@@ -577,6 +577,8 @@ public function middleware(): array
 }
 ```
 
+Releasing an overlapping job back onto the queue will still increment the job's total number of attempts. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. For exemple, leaving the `tries` property to 1 as it is by default would prevent any overlapping job to be retried later.
+
 Any overlapping jobs of the same type will be released back to the queue. You may also specify the number of seconds that must elapse before the released job will be attempted again:
 
 ```php
@@ -1213,7 +1215,21 @@ class ProcessPodcast implements ShouldQueue
 <a name="max-attempts"></a>
 #### Max Attempts
 
-If one of your queued jobs is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
+Job attempts are a core concept of Laravel's queue system and power many advanced features. While they may seem confusing at first, it's important to understand how they work before modifying the default configuration.
+
+When a job is dispatched, it is pushed onto the queue. A worker then picks it up and attempts to execute it, this is known as a job attempt.
+
+However, an attempt does not necessarily mean the job’s handle method was executed. Attempts can be consumed in several ways:
+
+- The job's `handle` method runs and completes without throwing an exception.
+- The job encounters an unhandled exception during execution.
+- The job is manually released back to the queue using `$this->release()`.
+- Middleware such as `WithoutOverlapping` or `RateLimited` fails to acquire a lock and releases the job.
+
+You likely do not want it to keep retrying indefinitely a job. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
+
+> [!NOTE]
+> By default, Laravel will only attempt a job once. If your job uses middleware like `WithoutOverlapping` or `RateLimited`, or if you're manually releasing jobs, you’ll likely need to increase the number of allowed attempts.
 
 One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies the number of times it may be attempted:
 
@@ -1416,6 +1432,9 @@ public function handle(): void
     $this->fail();
 }
 ```
+
+> [!NOTE]
+> A job marked failed will never be retried.
 
 If you would like to mark your job as failed because of an exception that you have caught, you may pass the exception to the `fail` method. Or, for convenience, you may pass a string error message which will be converted to an exception for you:
 
@@ -2248,6 +2267,13 @@ class ProcessPodcast implements ShouldQueue
 
 > [!WARNING]
 > A new instance of the job is instantiated before invoking the `failed` method; therefore, any class property modifications that may have occurred within the `handle` method will be lost.
+
+A failed job is not necessarily one that encountered an unhandled exception. A job is considered failed when it has exhausted all of its allowed attempts. These attempts can be consumed in several ways:
+
+- The job encounters an unhandled exception during execution.
+- The job is released back to the queue either manually or by a middleware.
+
+If the final attempt fails due to an exception, the exception will be passed to the failed method. However, if the job fails simply because it reached the maximum number of attempts, the `$exception` will be an instance of `Illuminate\Queue\MaxAttemptsExceededException`.
 
 <a name="retrying-failed-jobs"></a>
 ### Retrying Failed Jobs
