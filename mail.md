@@ -383,7 +383,7 @@ public function content(): Content
 ```
 
 > [!NOTE]
-> You may wish to create a `resources/views/emails` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory.
+> You may wish to create a `resources/views/mail` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory.
 
 <a name="plain-text-emails"></a>
 #### Plain Text Emails
