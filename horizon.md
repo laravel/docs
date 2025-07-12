@@ -198,8 +198,8 @@ For example, in the following configuration, the high queue is not prioritized o
 ```php
 'environments' => [
     'production' => [
-        // ...
         'supervisor-1' => [
+            // ...
             'queue' => ['high', 'default'],
             'minProcesses' => 1,
             'maxProcesses' => 10,
@@ -213,13 +213,14 @@ If you need to enforce a strict priority between queues, you may define multiple
 ```php
 'environments' => [
     'production' => [
-        // ...
         'supervisor-1' => [
+            // ...
             'queue' => ['default'],
             'minProcesses' => 1,
             'maxProcesses' => 10,
         ],
         'supervisor-2' => [
+            // ...
             'queue' => ['images'],
             'minProcesses' => 1,
             'maxProcesses' => 1,
