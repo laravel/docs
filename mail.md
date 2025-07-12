@@ -1521,7 +1521,7 @@ public function boot(): void
     Mail::extend('mailchimp', function (array $config = []) {
         $client = new ApiClient;
 
-        $client->setApiKey($config['mailchimp_api_key']);
+        $client->setApiKey($config['key']);
 
         return new MailchimpTransport($client);
     });
@@ -1533,7 +1533,7 @@ Once your custom transport has been defined and registered, you may create a mai
 ```php
 'mailchimp' => [
     'transport' => 'mailchimp',
-    'mailchimp_api_key' => env('MAILCHIMP_API_KEY'),
+    'key' => env('MAILCHIMP_API_KEY'),
     // ...
 ],
 ```
