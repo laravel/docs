@@ -1511,6 +1511,7 @@ Once you've defined your custom transport, you may register it via the `extend` 
 ```php
 use App\Mail\MailchimpTransport;
 use Illuminate\Support\Facades\Mail;
+use MailchimpTransactional\ApiClient;
 
 /**
  * Bootstrap any application services.
@@ -1518,7 +1519,11 @@ use Illuminate\Support\Facades\Mail;
 public function boot(): void
 {
     Mail::extend('mailchimp', function (array $config = []) {
-        return new MailchimpTransport(/* ... */);
+        $client = new ApiClient;
+
+        $client->setApiKey($config['key']);
+
+        return new MailchimpTransport($client);
     });
 }
 ```
@@ -1528,6 +1533,7 @@ Once your custom transport has been defined and registered, you may create a mai
 ```php
 'mailchimp' => [
     'transport' => 'mailchimp',
+    'key' => env('MAILCHIMP_API_KEY'),
     // ...
 ],
 ```
