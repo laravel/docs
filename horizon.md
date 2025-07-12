@@ -209,6 +209,7 @@ For example, in the following configuration, the high queue is not prioritized o
 ```
 
 If you need to enforce a strict priority between queues, you may define multiple supervisors and explicitly allocate processing resources:
+
 ```php
 'environments' => [
     'production' => [
