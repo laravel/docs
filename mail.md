@@ -25,6 +25,7 @@
 - [Rendering Mailables](#rendering-mailables)
     - [Previewing Mailables in the Browser](#previewing-mailables-in-the-browser)
 - [Localizing Mailables](#localizing-mailables)
+    - [User Preferred Locales](#user-preferred-locales)
 - [Testing](#testing-mailables)
     - [Testing Mailable Content](#testing-mailable-content)
     - [Testing Mailable Sending](#testing-mailable-sending)
