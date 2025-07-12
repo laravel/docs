@@ -3,7 +3,6 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Configuration](#configuration)
-    - [Queue Priorities](#queue-priorities)
     - [Balancing Strategies](#balancing-strategies)
     - [Max Job Attempts](#max-job-attempts)
     - [Job Timeout](#job-timeout)
@@ -149,32 +148,15 @@ While your application is in [maintenance mode](/docs/{{version}}/configuration#
 
 Within Horizon's default configuration file, you will notice a `defaults` configuration option. This configuration option specifies the default values for your application's [supervisors](#supervisors). The supervisor's default configuration values will be merged into the supervisor's configuration for each environment, allowing you to avoid unnecessary repetition when defining your supervisors.
 
-<a name="queue-priorities"></a>
-### Queue Priorities
-
-Each supervisor can process one or more queues. Just like Laravel's default queue system, queues are processed in the order they are listed in the queue configuration option, giving higher priority to queues defined first:
-
-```php
-'environments' => [
-    'production' => [
-        'supervisor-1' => [
-            'connection' => 'redis',
-            'queue' => ['high', 'default', 'low'],
-        ],
-    ],
-],
-```
-
-In this example, jobs in the `high` queue will be prioritized over those in the `default` or `low` queues.
-
 <a name="balancing-strategies"></a>
 ### Balancing Strategies
 
-Unlike Laravel's default queue system, Horizon allows you to choose from three worker balancing strategies: `simple`, `auto`, and `false`. The `simple` strategy splits incoming jobs evenly between worker processes:
+Each supervisor can process one or more queues but unlike Laravel's default queue system, Horizon allows you to choose from three worker balancing strategies: `auto`, `simple`, and `false`. 
 
-    'balance' => 'simple',
+<a name="auto-strategy"></a>
+#### Auto Strategy
 
-The `auto` strategy, which is the configuration file's default, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
+The `auto` strategy, which is the default value, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `default` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
 
 When using the auto scaling strategy, you may define the `minProcesses` and `maxProcesses` configuration options:
 
@@ -188,7 +170,7 @@ For example, you may configure Horizon to maintain at least one process per queu
     'production' => [
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default'],
+            'queue' => ['default', 'notifications'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'minProcesses' => 1,
@@ -206,7 +188,86 @@ The `autoScalingStrategy` configuration option determines how Horizon will assig
 
 The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
 
-When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration.
+<a name="auto-queue-priorities"></a>
+#### Queue Priorities With Auto
+
+When using the `auto` balancing strategy, Horizon does not enforce strict priority between queues. The order in which queues are listed within a supervisor's configuration does not influence how jobs are assigned or processed. Instead, Horizon uses the configured balance strategy to dynamically allocate worker processes.
+
+For example, int the following configuration, the high queue is not prioritized over the default queue, despite appearing first in the list:
+
+```php
+'environments' => [
+    'production' => [
+        // ...
+        'supervisor-1' => [
+            'queue' => ['high', 'default'],
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
+        ],
+    ],
+],
+```
+
+If you need to enforce a strict priority between queues, you may define multiple supervisors and explicitly allocate processing resources:
+```php
+'environments' => [
+    'production' => [
+        // ...
+        'supervisor-1' => [
+            'queue' => ['default'],
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
+        ],
+        'supervisor-2' => [
+            'queue' => ['images'],
+            'minProcesses' => 1,
+            'maxProcesses' => 1,
+        ],
+    ],
+],
+```
+
+In this example, one process is always assigned to each queue, ensuring that all jobs are processed regardless of how many are present in each queue. However, the `images` queue will never have more than one process, even if a large number of jobs accumulate there. This guarantees that the `default` queue can scale independently of the `images` queue and that the `images` queue cannot spawn too many processes.
+
+<a name="simple-strategy"></a>
+#### Simple Strategy
+
+The `simple` strategy splits incoming jobs evenly between queues.
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'queue' => ['default', 'notifications'],
+            'balance' => 'simple',
+            'processes' => 5,
+        ],
+    ],
+],
+```
+
+In the exemple, both 'default' and 'notifications' will have 5 processes assigned to them.
+
+<a name="false-strategy"></a>
+#### False Strategy
+
+When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration:
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'queue' => ['default', 'notifications'],
+            'balance' => false,
+            'processes' => 5,
+        ],
+    ],
+],
+```
+
+In this example, jobs in the `default` queue will be prioritized over those in the `notifications` queue.
 
 <a name="max-job-attempts"></a>
 ### Max Job Attempts
