@@ -229,7 +229,7 @@ If you need to enforce a strict priority between queues, you may define multiple
 ],
 ```
 
-In this example, one process is always assigned to each queue, ensuring that all jobs are processed regardless of how many are present in each queue. However, the `images` queue will never have more than one process, even if a large number of jobs accumulate there. This guarantees that the `default` queue can scale independently of the `images` queue and that the `images` queue cannot spawn too many processes.
+In this example, the default `queue` can scale up to 10 processes, while the `images` queue is limited to one process. This configuration ensures that your queues can scale independently.
 
 <a name="simple-strategy"></a>
 #### Simple Strategy
