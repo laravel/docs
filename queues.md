@@ -1223,6 +1223,7 @@ However, an attempt does not necessarily mean the job’s handle method was exec
 
 - The job's `handle` method runs and completes without throwing an exception.
 - The job encounters an unhandled exception during execution.
+- The job timed out.
 - The job is manually released back to the queue using `$this->release()`.
 - Middleware such as `WithoutOverlapping` or `RateLimited` fails to acquire a lock and releases the job.
 
@@ -1385,6 +1386,10 @@ If you would like to indicate that a job should be marked as [failed](#dealing-w
  */
 public $failOnTimeout = true;
 ```
+
+> [!NOTE]
+> By default, when a job times out, it consumes one attempt and is released back to the queue (if retries are allowed).
+> However, if you configure the job to fail on timeout, it will not be retried, regardless of the value set for tries.
 
 <a name="error-handling"></a>
 ### Error Handling
@@ -2271,6 +2276,7 @@ class ProcessPodcast implements ShouldQueue
 A failed job is not necessarily one that encountered an unhandled exception. A job is considered failed when it has exhausted all of its allowed attempts. These attempts can be consumed in several ways:
 
 - The job encounters an unhandled exception during execution.
+- The job timed out.
 - The job is released back to the queue either manually or by a middleware.
 
 If the final attempt fails due to an exception thrown during job execution, that exception will be passed to the job’s failed method.
