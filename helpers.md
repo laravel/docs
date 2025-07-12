@@ -666,9 +666,9 @@ $joined = Arr::join($array, ', ');
 
 // Tailwind, Alpine, Laravel, Livewire
 
-$joined = Arr::join($array, ', ', ' and ');
+$joined = Arr::join($array, ', ', ', and ');
 
-// Tailwind, Alpine, Laravel and Livewire
+// Tailwind, Alpine, Laravel, and Livewire
 ```
 
 <a name="method-array-keyby"></a>
