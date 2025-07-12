@@ -193,7 +193,7 @@ The `balanceMaxShift` and `balanceCooldown` configuration values determine how q
 
 When using the `auto` balancing strategy, Horizon does not enforce strict priority between queues. The order in which queues are listed within a supervisor's configuration does not influence how jobs are assigned or processed. Instead, Horizon uses the configured balance strategy to dynamically allocate worker processes.
 
-For example, int the following configuration, the high queue is not prioritized over the default queue, despite appearing first in the list:
+For example, in the following configuration, the high queue is not prioritized over the default queue, despite appearing first in the list:
 
 ```php
 'environments' => [
