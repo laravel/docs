@@ -2273,7 +2273,11 @@ A failed job is not necessarily one that encountered an unhandled exception. A j
 - The job encounters an unhandled exception during execution.
 - The job is released back to the queue either manually or by a middleware.
 
-If the final attempt fails due to an exception, the exception will be passed to the failed method. However, if the job fails simply because it reached the maximum number of attempts, the `$exception` will be an instance of `Illuminate\Queue\MaxAttemptsExceededException`.
+If the final attempt fails due to an exception thrown during job execution, that exception will be passed to the job’s failed method.
+
+However, if the job fails because it has reached the maximum number of allowed attempts, the `$exception` will be an instance of `Illuminate\Queue\MaxAttemptsExceededException`.
+
+Similarly, if the job fails due to exceeding the configured timeout, the `$exception` will be an instance of `Illuminate\Queue\TimeoutExceededException`.
 
 <a name="retrying-failed-jobs"></a>
 ### Retrying Failed Jobs
