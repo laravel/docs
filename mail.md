@@ -1551,7 +1551,7 @@ Once the Brevo mailer package has been installed, you may add an entry for your 
 
 ```php
 'brevo' => [
-    'key' => 'your-api-key',
+    'key' => env('BREVO_API_KEY'),
 ],
 ```
 
