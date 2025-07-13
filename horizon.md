@@ -156,9 +156,9 @@ Each supervisor can process one or more queues but unlike Laravel's default queu
 <a name="auto-strategy"></a>
 #### Auto Strategy
 
-The `auto` strategy, which is the default value, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `default` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
+The `auto` strategy, which is the default strategy, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `default` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
 
-When using the auto scaling strategy, you may define the `minProcesses` and `maxProcesses` configuration options:
+You may define the `minProcesses` and `maxProcesses` configuration options:
 
 - `minProcesses` defines the minimum number of worker processes per queue. This value must be greater than or equal to 1.
 - `maxProcesses` defines the maximum total number of worker processes Horizon may scale up to across all queues. This value should typically be greater than the number of queues multiplied by the `minProcesses` value. To prevent the supervisor from spawning any processes, you may set this value to 0.
@@ -191,7 +191,7 @@ The `balanceMaxShift` and `balanceCooldown` configuration values determine how q
 <a name="auto-queue-priorities"></a>
 #### Queue Priorities With Auto
 
-When using the `auto` balancing strategy, Horizon does not enforce strict priority between queues. The order in which queues are listed within a supervisor's configuration does not influence how jobs are assigned or processed. Instead, Horizon uses the configured balance strategy to dynamically allocate worker processes.
+When using the `auto` balancing strategy, Horizon does not enforce strict priority between queues. The order of queues in a supervisor's configuration does not affect how worker processes are assigned. Instead, Horizon relies on the selected `autoScalingStrategy` to dynamically allocate worker processes based on queue load
 
 For example, in the following configuration, the high queue is not prioritized over the default queue, despite appearing first in the list:
 
@@ -231,6 +231,9 @@ If you need to enforce a relative priority between queues, you may define multip
 
 In this example, the default `queue` can scale up to 10 processes, while the `images` queue is limited to one process. This configuration ensures that your queues can scale independently.
 
+>[!NOTE]
+> When dispatching resource-intensive jobs, it's best to assign them to a dedicated queue with a limited `maxProcesses` value. Otherwise, these jobs could consume excessive CPU resources and overload your system.
+
 <a name="simple-strategy"></a>
 #### Simple Strategy
 
@@ -248,13 +251,12 @@ The `simple` strategy splits incoming jobs evenly between queues.
     ],
 ],
 ```
-
 In the exemple, both 'default' and 'notifications' will have 5 processes assigned to them.
 
 <a name="false-strategy"></a>
 #### False Strategy
 
-When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration:
+Setting the `balance` option to `false` means Horizon will not distribute worker processes dynamically between queues. Instead, queues are processed strictly in the order they are listed. Horizon will still scale up the number of processes if jobs begin to accumulate.
 
 ```php
 'environments' => [
@@ -263,13 +265,19 @@ When the `balance` option is set to `false`, the default Laravel behavior will b
             // ...
             'queue' => ['default', 'notifications'],
             'balance' => false,
-            'processes' => 5,
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
         ],
     ],
 ],
 ```
 
-In this example, jobs in the `default` queue will be prioritized over those in the `notifications` queue.
+In this example, jobs in the default queue are always prioritized over those in the notifications queue. For example, if there are 1,000 jobs in the default queue and only 10 in the notifications queue, Horizon will process all default jobs before beginning any from the notifications queue.
+
+You can also configure the minProcesses and maxProcesses options:
+
+- `minProcesses` defines the minimum number of worker processes in total. This value must be greater than or equal to 1.
+- `maxProcesses` defines the maximum total number of worker processes Horizon may scale up to.
 
 <a name="max-job-attempts"></a>
 ### Max Job Attempts
