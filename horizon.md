@@ -279,7 +279,7 @@ With this configuration, Horizon will assign 10 processes to the `default` queue
 <a name="false-strategy"></a>
 #### False Strategy
 
-When the `balance` option is set to `false`, Horizon processes queues strictly in the order they are listed. Horizon will still scale up the number of worker processes if jobs begin to accumulate. This strategy behaves similarly to Laravel’s default queue system.
+When the `balance` option is set to `false`, Horizon processes queues strictly in the order they're listed, similar to Laravel’s default queue system. However, it will still scale the number of worker processes if jobs begin to accumulate.
 
 ```php
 'environments' => [
