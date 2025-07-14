@@ -331,7 +331,7 @@ If you do not specify a value for the `tries` option, jobs will only be attempte
 <a name="job-timeout"></a>
 ### Job Timeout
 
-Similarly, you can define a `timeout` value at the supervisor level. This value determines how many seconds a worker process is allowed to run a job before it is forcefully terminated. If a job exceeds the specified time limit, the worker process will be terminated, and the job will either be retried or marked as failed based on your queue configuration.
+Similarly, you can set a `timeout` value at the supervisor level, which specifies how many seconds a worker process can run a job before it’s forcefully terminated. Once terminated, the job will either be retried or marked as failed, depending on your queue configuration.
 
 ```php
 'environments' => [
