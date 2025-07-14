@@ -348,7 +348,7 @@ Similarly, you can set a `timeout` value at the supervisor level, which specifie
 ```
 
 >[!WARNING]
-> The `timeout` value should always be at least several seconds shorter than the `retry_after` value define in your `config/queue.php` configuratin file. Otherwise your jobs may be processed twice.
+> The `timeout` value should always be at least a few seconds shorter than the `retry_after` value defined in your `config/queue.php` configuration file. Otherwise, your jobs may be processed twice.
 
 <a name="job-backoff"></a>
 ### Job Backoff
