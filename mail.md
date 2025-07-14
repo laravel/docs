@@ -253,6 +253,7 @@ To accomplish this, you should define a mailer within your application's `mail` 
             'mailgun',
             'sendmail',
         ],
+        'retry_after' => 60,
     ],
 
     // ...
@@ -278,6 +279,7 @@ The `roundrobin` transport allows you to distribute your mailing workload across
             'ses',
             'postmark',
         ],
+        'retry_after' => 60,
     ],
 
     // ...
