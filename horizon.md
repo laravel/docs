@@ -237,7 +237,7 @@ In this example, the default `queue` can scale up to 10 processes, while the `im
 <a name="simple-strategy"></a>
 #### Simple Strategy
 
-The `simple` strategy splits incoming jobs evenly between queues.
+The `simple` strategy distributes worker processes evenly across the specified queues. With this strategy, Horizon does not automatically scale the number of worker processes, it uses a fixed number of processes.
 
 ```php
 'environments' => [
@@ -246,18 +246,40 @@ The `simple` strategy splits incoming jobs evenly between queues.
             // ...
             'queue' => ['default', 'notifications'],
             'balance' => 'simple',
-            'minProcesses' => 1,
-            'maxProcesses' => 10,
+            'processes' => 10,
         ],
     ],
 ],
 ```
-In the exemple, both 'default' and 'notifications' will have 5 processes assigned to them.
+In the example above, Horizon will assign 5 processes to each queue, splitting the total of 10 evenly.
+
+If you'd like to control the number of worker processes assigned to each queue individually, you can define multiple supervisors:
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'queue' => ['default'],
+            'balance' => 'simple',
+            'processes' => 10,
+        ],
+        'supervisor-notifications' => [
+            // ...
+            'queue' => ['notifications'],
+            'balance' => 'simple',
+            'processes' => 2,
+        ],
+    ],
+],
+```
+
+With this configuration, Horizon will assign 10 processes to the `default@ queue and 2 processes to the `notifications` queue.
 
 <a name="false-strategy"></a>
 #### False Strategy
 
-Setting the `balance` option to `false` means Horizon will not distribute worker processes dynamically between queues. Instead, queues are processed strictly in the order they are listed. Horizon will still scale up the number of processes if jobs begin to accumulate.
+When the `balance` value is set to `false` Horizon will not distribute worker processes dynamically between queues. Instead, queues are processed strictly in the order they are listed. Horizon will still scale up the number of processes if jobs begin to accumulate.
 
 ```php
 'environments' => [
@@ -273,9 +295,9 @@ Setting the `balance` option to `false` means Horizon will not distribute worker
 ],
 ```
 
-In this example, jobs in the default queue are always prioritized over those in the notifications queue. For example, if there are 1,000 jobs in the default queue and only 10 in the notifications queue, Horizon will process all default jobs before beginning any from the notifications queue.
+In the example above, jobs in the `default` queue are always prioritized over jobs in the `notifications` queue. For instance, if there are 1,000 jobs in `default` and only 10 in `notifications`, Horizon will fully process all `default` jobs before handling any from `notifications`.
 
-You can also configure the minProcesses and maxProcesses options:
+You can control Horizon's ability to scale worker processes using the `minProcesses` and `maxProcesses` options:
 
 - `minProcesses` defines the minimum number of worker processes in total. This value must be greater than or equal to 1.
 - `maxProcesses` defines the maximum total number of worker processes Horizon may scale up to.
