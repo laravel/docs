@@ -246,7 +246,8 @@ The `simple` strategy splits incoming jobs evenly between queues.
             // ...
             'queue' => ['default', 'notifications'],
             'balance' => 'simple',
-            'processes' => 5,
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
         ],
     ],
 ],
