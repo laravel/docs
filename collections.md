@@ -2251,6 +2251,28 @@ $plucked->all();
 // ['Tesla' => 'black', 'Pagani' => 'orange']
 ```
 
+The `pluck` method also supports Closure for retrieving values:
+
+```php
+$languages = [
+    ['id' => 1, 'code' => 'JS', 'name' => 'JavaScript'],
+    ['id' => 2, 'code' => 'TS', 'name' => 'TypeScript'],
+    ['id' => 3, 'code' => 'PY', 'name' => 'Python'],
+];
+
+$plucked = collect($languages)->pluck(
+    fn ($language) => "{$language['code']}: {$language['name']}", 'id'
+);
+
+$plucked->all();
+
+// [
+//     1 => 'JS: JavaScript',
+//     2 => 'TS: TypeScript',
+//     3 => 'PY: Python',
+// ]
+```
+
 <a name="method-pop"></a>
 #### `pop()` {.collection-method}
 
