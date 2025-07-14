@@ -337,10 +337,7 @@ Similarly, you can set a `timeout` value at the supervisor level, which specifie
 'environments' => [
     'production' => [
         'supervisor-1' => [
-            // ...
-            /**
-             * The number of seconds the job can run before timing out.
-             */
+            // ...¨
             'timeout' => 60,
         ],
     ],
@@ -360,9 +357,6 @@ You can define the `backoff` value at the supervisor level to specify how long H
     'production' => [
         'supervisor-1' => [
             // ...
-            /**
-             * The number of seconds to wait
-             */
             'backoff' => 10,
         ],
     ],
