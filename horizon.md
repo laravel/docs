@@ -274,7 +274,7 @@ If you'd like to control the number of worker processes assigned to each queue i
 ],
 ```
 
-With this configuration, Horizon will assign 10 processes to the `default@ queue and 2 processes to the `notifications` queue.
+With this configuration, Horizon will assign 10 processes to the `default` queue and 2 processes to the `notifications` queue.
 
 <a name="false-strategy"></a>
 #### False Strategy
