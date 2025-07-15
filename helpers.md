@@ -1502,7 +1502,7 @@ data_forget($data, 'products.*.price');
 <a name="method-head"></a>
 #### `head()` {.collection-method}
 
-The `head` function returns the first element in the given array:
+The `head` function returns the first element in the given array. If the array is empty, `false` will be returned:
 
 ```php
 $array = [100, 200, 300];
@@ -1515,7 +1515,7 @@ $first = head($array);
 <a name="method-last"></a>
 #### `last()` {.collection-method}
 
-The `last` function returns the last element in the given array:
+The `last` function returns the last element in the given array. If the array is empty, `false` will be returned:
 
 ```php
 $array = [100, 200, 300];
