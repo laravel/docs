@@ -1182,9 +1182,7 @@ Mail::to($request->user())->send(new OrderShipped($order));
 <a name="testing-mailable-content"></a>
 ### Testing Mailable Content
 
-Laravel provides a variety of methods for inspecting your mailable's structure. In addition, Laravel provides several convenient methods for testing that your mailable contains the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, `assertSeeInOrderInText`, `assertHasAttachment`, `assertHasAttachedData`, `assertHasAttachmentFromStorage`, and `assertHasAttachmentFromStorageDisk`.
-
-As you might expect, the "HTML" assertions assert that the HTML version of your mailable contains a given string, while the "text" assertions assert that the plain-text version of your mailable contains a given string:
+Laravel provides a variety of methods for inspecting your mailable's structure. In addition, Laravel provides several convenient methods for testing that your mailable contains the content that you expect:
 
 ```php tab=Pest
 use App\Mail\InvoicePaid;
@@ -1205,10 +1203,11 @@ test('mailable content', function () {
     $mailable->assertHasMetadata('key', 'value');
 
     $mailable->assertSeeInHtml($user->email);
-    $mailable->assertSeeInHtml('Invoice Paid');
+    $mailable->assertDontSeeInHtml('Invoice Not Paid');
     $mailable->assertSeeInOrderInHtml(['Invoice Paid', 'Thanks']);
 
     $mailable->assertSeeInText($user->email);
+    $mailable->assertDontSeeInText('Invoice Not Paid');
     $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);
 
     $mailable->assertHasAttachment('/path/to/file');
@@ -1239,10 +1238,11 @@ public function test_mailable_content(): void
     $mailable->assertHasMetadata('key', 'value');
 
     $mailable->assertSeeInHtml($user->email);
-    $mailable->assertSeeInHtml('Invoice Paid');
+    $mailable->assertDontSeeInHtml('Invoice Not Paid');
     $mailable->assertSeeInOrderInHtml(['Invoice Paid', 'Thanks']);
 
     $mailable->assertSeeInText($user->email);
+    $mailable->assertDontSeeInText('Invoice Not Paid');
     $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);
 
     $mailable->assertHasAttachment('/path/to/file');
@@ -1252,6 +1252,8 @@ public function test_mailable_content(): void
     $mailable->assertHasAttachmentFromStorageDisk('s3', '/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
 }
 ```
+
+As you might expect, the "HTML" assertions assert that the HTML version of your mailable contains a given string, while the "text" assertions assert that the plain-text version of your mailable contains a given string.
 
 <a name="testing-mailable-sending"></a>
 ### Testing Mailable Sending
