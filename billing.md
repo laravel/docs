@@ -1755,7 +1755,7 @@ This method will set the trial period ending date on the subscription record wit
 The `trialUntil` method allows you to provide a `DateTime` instance that specifies when the trial period should end:
 
 ```php
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 $user->newSubscription('default', 'price_monthly')
     ->trialUntil(Carbon::now()->addDays(10))
