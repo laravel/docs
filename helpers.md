@@ -2511,7 +2511,7 @@ event(new UserRegistered($user));
 The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) singleton from the container, which can be useful when creating fake data in model factories, database seeding, tests, and prototyping views:
 
 ```blade
-@for($i = 0; $i < 10; $i++)
+@for ($i = 0; $i < 10; $i++)
     <dl>
         <dt>Name</dt>
         <dd>{{ fake()->name() }}</dd>
