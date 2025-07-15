@@ -523,7 +523,7 @@ Of course, feature scopes are not limited to "users". Imagine you have built a n
 
 ```php
 use App\Models\Team;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Lottery;
 use Laravel\Pennant\Feature;
 
