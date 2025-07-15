@@ -858,8 +858,8 @@ The `spin` function displays a spinner along with an optional message while exec
 use function Laravel\Prompts\spin;
 
 $response = spin(
-    callback: fn () => Http::get('http://example.com')
-    message: 'Fetching response...',
+    callback: fn () => Http::get('http://example.com'),
+    message: 'Fetching response...'
 );
 ```
 
