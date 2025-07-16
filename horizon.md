@@ -102,7 +102,7 @@ You may also define Horizon's environment independently of the application's `AP
 return [
     /*
     | ------------------------------------------------------------------
-    | Horizon Environement
+    | Horizon Environment
     | ------------------------------------------------------------------
     |
     | This value determine Horizon's environment!
