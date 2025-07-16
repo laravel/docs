@@ -325,7 +325,7 @@ You can define the maximum number of attempts a job can consume directly at the 
 > [!NOTE]
 > This option is similar to the `--tries` option when using the Artisan command to process queues.
 
-Fine-tuning the `tries` option is essential when using middlewares such as `WithoutOverlapping` or `RateLimited` because they consume attempts, however depending on your case, it may be more appropriate to set the job class' `$tries` property.
+Fine-tuning the `tries` option is essential when using middlewares such as `WithoutOverlapping` or `RateLimited` because they consume attempts. However, depending on your case, it may be more appropriate to set the job class' `$tries` property.
 
 If you do not specify a value for the `tries` option, jobs will only be attempted once or as many times as specified by the job class `$tries` property.
 
