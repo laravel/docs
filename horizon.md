@@ -191,7 +191,7 @@ The `balanceMaxShift` and `balanceCooldown` configuration values determine how q
 <a name="auto-queue-priorities"></a>
 #### Queue Priorities With Auto
 
-When using the `auto` balancing strategy, Horizon does not enforce strict priority between queues. The order of queues in a supervisor's configuration does not affect how worker processes are assigned. Instead, Horizon relies on the selected `autoScalingStrategy` to dynamically allocate worker processes based on queue load
+When using the `auto` balancing strategy, Horizon does not enforce strict priority between queues. The order of queues in a supervisor's configuration does not affect how worker processes are assigned. Instead, Horizon relies on the selected `autoScalingStrategy` to dynamically allocate worker processes based on queue load.
 
 For example, in the following configuration, the high queue is not prioritized over the default queue, despite appearing first in the list:
 
