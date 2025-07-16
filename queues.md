@@ -1227,7 +1227,7 @@ However, an attempt does not necessarily mean the job's handle method was execut
 - The job is manually released back to the queue using `$this->release()`.
 - Middleware such as `WithoutOverlapping` or `RateLimited` fails to acquire a lock and releases the job.
 
-You likely do not want it to keep retrying indefinitely a job. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
+You likely do not want it to keep retrying a job indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
 
 > [!NOTE]
 > By default, Laravel will only attempt a job once. If your job uses middleware like `WithoutOverlapping` or `RateLimited`, or if you're manually releasing jobs, you'll likely need to increase the number of allowed attempts.
