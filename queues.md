@@ -1230,7 +1230,7 @@ However, an attempt does not necessarily mean the job's handle method was execut
 You likely do not want it to keep retrying indefinitely a job. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
 
 > [!NOTE]
-> By default, Laravel will only attempt a job once. If your job uses middleware like `WithoutOverlapping` or `RateLimited`, or if you're manually releasing jobs, you’ll likely need to increase the number of allowed attempts.
+> By default, Laravel will only attempt a job once. If your job uses middleware like `WithoutOverlapping` or `RateLimited`, or if you're manually releasing jobs, you'll likely need to increase the number of allowed attempts.
 
 One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies the number of times it may be attempted:
 
