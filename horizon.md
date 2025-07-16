@@ -98,7 +98,6 @@ When you start Horizon, it will use the worker process configuration options for
 You may also define Horizon's environment independently of the application's `APP_ENV` by adding an `env` key to your Horizon configuration file:
 
 ```php
-
 return [
     /*
     | ------------------------------------------------------------------
