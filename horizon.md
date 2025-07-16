@@ -237,7 +237,7 @@ In this example, the default `queue` can scale up to 10 processes, while the `im
 <a name="simple-strategy"></a>
 #### Simple Strategy
 
-The `simple` strategy distributes worker processes evenly across the specified queues. With this strategy, Horizon does not automatically scale the number of worker processes, it uses a fixed number of processes.
+The `simple` strategy distributes worker processes evenly across the specified queues. With this strategy, Horizon does not automatically scale the number of worker processes. Rather, it uses a fixed number of processes.
 
 ```php
 'environments' => [
