@@ -1346,6 +1346,12 @@ The field under validation must have a size between the given _min_ and _max_ (i
 
 The field under validation must be able to be cast as a boolean. Accepted input are `true`, `false`, `1`, `0`, `"1"`, and `"0"`.
 
+You may use a strict parameter with the rule to validate the field as `true` or `false` exclusively.
+
+```php
+'foo' => 'boolean:strict'
+```
+
 <a name="rule-confirmed"></a>
 #### confirmed
 
