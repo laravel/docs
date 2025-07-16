@@ -113,7 +113,7 @@ return [
 ];
 ```
 
-This can be particularly useful when running Horizon across multiple servers. For example, you might have one server processing general-purpose jobs using the default queue configuration, while a second server, using in a different environment key, is dedicated to handling resource-intensive jobs, such as video processing or large data imports.
+This can be particularly useful when running Horizon across multiple servers. For example, you might have one server processing general-purpose jobs using the default queue configuration, while a second server, using a different environment key, is dedicated to handling resource-intensive jobs, such as video processing or large data imports.
 
 Using two different environments makes it easy to configure Horizon on a per-server basis rather than a per-environment basis, giving you more granular control over worker settings and job handling.
 
