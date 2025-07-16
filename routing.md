@@ -1,39 +1,40 @@
 # Routing
 
 - [Basic Routing](#basic-routing)
-    - [The Default Route Files](#the-default-route-files)
-    - [Redirect Routes](#redirect-routes)
-    - [View Routes](#view-routes)
-    - [Listing Your Routes](#listing-your-routes)
-    - [Routing Customization](#routing-customization)
+  - [The Default Route Files](#the-default-route-files)
+  - [Redirect Routes](#redirect-routes)
+  - [View Routes](#view-routes)
+  - [Listing Your Routes](#listing-your-routes)
+  - [Routing Customization](#routing-customization)
 - [Route Parameters](#route-parameters)
-    - [Required Parameters](#required-parameters)
-    - [Optional Parameters](#parameters-optional-parameters)
-    - [Regular Expression Constraints](#parameters-regular-expression-constraints)
+  - [Required Parameters](#required-parameters)
+  - [Optional Parameters](#parameters-optional-parameters)
+  - [Regular Expression Constraints](#parameters-regular-expression-constraints)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
-    - [Middleware](#route-group-middleware)
-    - [Controllers](#route-group-controllers)
-    - [Subdomain Routing](#route-group-subdomain-routing)
-    - [Route Prefixes](#route-group-prefixes)
-    - [Route Name Prefixes](#route-group-name-prefixes)
+  - [Middleware](#route-group-middleware)
+  - [Controllers](#route-group-controllers)
+  - [Subdomain Routing](#route-group-subdomain-routing)
+  - [Route Prefixes](#route-group-prefixes)
+  - [Route Name Prefixes](#route-group-name-prefixes)
 - [Route Model Binding](#route-model-binding)
-    - [Implicit Binding](#implicit-binding)
-    - [Implicit Enum Binding](#implicit-enum-binding)
-    - [Explicit Binding](#explicit-binding)
+  - [Implicit Binding](#implicit-binding)
+  - [Implicit Enum Binding](#implicit-enum-binding)
+  - [Explicit Binding](#explicit-binding)
 - [Fallback Routes](#fallback-routes)
 - [Rate Limiting](#rate-limiting)
-    - [Defining Rate Limiters](#defining-rate-limiters)
-    - [Attaching Rate Limiters to Routes](#attaching-rate-limiters-to-routes)
+  - [Defining Rate Limiters](#defining-rate-limiters)
+  - [Attaching Rate Limiters to Routes](#attaching-rate-limiters-to-routes)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing the Current Route](#accessing-the-current-route)
 - [Cross-Origin Resource Sharing (CORS)](#cors)
 - [Route Caching](#route-caching)
 
 <a name="basic-routing"></a>
+
 ## Basic Routing
 
-The most basic Laravel routes accept a URI and a closure, providing a very simple and expressive method of defining routes and behavior without complicated routing configuration files:
+The most basic Laravel routes accept a URI and a closure, providing a very simple and expressive method of defining routes and behavior without complicated routing config furation files:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,7 @@ Route::get('/greeting', function () {
 ```
 
 <a name="the-default-route-files"></a>
+
 ### The Default Route Files
 
 All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by Laravel using the configuration specified in your application's `bootstrap/app.php` file. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` [middleware group](/docs/{{version}}/middleware#laravels-default-middleware-groups), which provides features like session state and CSRF protection.
@@ -57,6 +59,7 @@ Route::get('/user', [UserController::class, 'index']);
 ```
 
 <a name="api-routes"></a>
+
 #### API Routes
 
 If your application will also offer a stateless API, you may enable API routing using the `install:api` Artisan command:
@@ -84,6 +87,7 @@ The routes in `routes/api.php` are stateless and are assigned to the `api` [midd
 ```
 
 <a name="available-router-methods"></a>
+
 #### Available Router Methods
 
 The router allows you to register routes that respond to any HTTP verb:
@@ -113,6 +117,7 @@ Route::any('/', function () {
 > When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, and `options` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route.
 
 <a name="dependency-injection"></a>
+
 #### Dependency Injection
 
 You may type-hint any dependencies required by your route in your route's callback signature. The declared dependencies will automatically be resolved and injected into the callback by the Laravel [service container](/docs/{{version}}/container). For example, you may type-hint the `Illuminate\Http\Request` class to have the current HTTP request automatically injected into your route callback:
@@ -126,6 +131,7 @@ Route::get('/users', function (Request $request) {
 ```
 
 <a name="csrf-protection"></a>
+
 #### CSRF Protection
 
 Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes that are defined in the `web` routes file should include a CSRF token field. Otherwise, the request will be rejected. You can read more about CSRF protection in the [CSRF documentation](/docs/{{version}}/csrf):
@@ -138,6 +144,7 @@ Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes 
 ```
 
 <a name="redirect-routes"></a>
+
 ### Redirect Routes
 
 If you are defining a route that redirects to another URI, you may use the `Route::redirect` method. This method provides a convenient shortcut so that you do not have to define a full route or controller for performing a simple redirect:
@@ -162,6 +169,7 @@ Route::permanentRedirect('/here', '/there');
 > When using route parameters in redirect routes, the following parameters are reserved by Laravel and cannot be used: `destination` and `status`.
 
 <a name="view-routes"></a>
+
 ### View Routes
 
 If your route only needs to return a [view](/docs/{{version}}/views), you may use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
@@ -176,6 +184,7 @@ Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 > When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
 
 <a name="listing-your-routes"></a>
+
 ### Listing Your Routes
 
 The `route:list` Artisan command can easily provide an overview of all of the routes that are defined by your application:
@@ -212,6 +221,7 @@ php artisan route:list --only-vendor
 ```
 
 <a name="routing-customization"></a>
+
 ### Routing Customization
 
 By default, your application's routes are configured and loaded by the `bootstrap/app.php` file:
@@ -266,9 +276,11 @@ use Illuminate\Support\Facades\Route;
 ```
 
 <a name="route-parameters"></a>
+
 ## Route Parameters
 
 <a name="required-parameters"></a>
+
 ### Required Parameters
 
 Sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
@@ -290,6 +302,7 @@ Route::get('/posts/{post}/comments/{comment}', function (string $postId, string 
 Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Underscores (`_`) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter.
 
 <a name="parameters-and-dependency-injection"></a>
+
 #### Parameters and Dependency Injection
 
 If your route has dependencies that you would like the Laravel service container to automatically inject into your route's callback, you should list your route parameters after your dependencies:
@@ -303,6 +316,7 @@ Route::get('/user/{id}', function (Request $request, string $id) {
 ```
 
 <a name="parameters-optional-parameters"></a>
+
 ### Optional Parameters
 
 Occasionally you may need to specify a route parameter that may not always be present in the URI. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
@@ -318,6 +332,7 @@ Route::get('/user/{name?}', function (?string $name = 'John') {
 ```
 
 <a name="parameters-regular-expression-constraints"></a>
+
 ### Regular Expression Constraints
 
 You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
@@ -347,12 +362,24 @@ Route::get('/user/{name}', function (string $name) {
     // ...
 })->whereAlphaNumeric('name');
 
-Route::get('/user/{id}', function (string $id) {
-    // ...
-})->whereUuid('id');
+# Restrict a route parameter to a UUID
+
+The `whereUuid` method restricts a route parameter to only match valid UUID values.
+A UUID (Universally Unique Identifier) is a 128-bit unique value, commonly used as a unique key in distributed systems.
+It looks like `550e8400-e29b-41d4-a716-446655440000`.
 
 Route::get('/user/{id}', function (string $id) {
-    // ...
+    // Only runs if {id} is a valid UUID
+})->whereUuid('id');
+
+# Restrict a route parameter to a ULID
+
+The whereUlid method restricts a route parameter to only match valid ULID values.
+A ULID (Universally Unique Lexicographically Sortable Identifier) is similar to a UUID, but is shorter and sortable by creation time.
+It looks like 01H7ZB7QP3N6E4M9D8P2A5V0B7.
+
+Route::get('/user/{id}', function (string $id) {
+    // Only runs if {id} is a valid ULID
 })->whereUlid('id');
 
 Route::get('/category/{category}', function (string $category) {
@@ -367,6 +394,7 @@ Route::get('/category/{category}', function (string $category) {
 If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.
 
 <a name="parameters-global-constraints"></a>
+
 #### Global Constraints
 
 If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
@@ -392,6 +420,7 @@ Route::get('/user/{id}', function (string $id) {
 ```
 
 <a name="parameters-encoded-forward-slashes"></a>
+
 #### Encoded Forward Slashes
 
 The Laravel routing component allows all characters except `/` to be present within route parameter values. You must explicitly allow `/` to be part of your placeholder using a `where` condition regular expression:
@@ -406,6 +435,7 @@ Route::get('/search/{search}', function (string $search) {
 > Encoded forward slashes are only supported within the last route segment.
 
 <a name="named-routes"></a>
+
 ## Named Routes
 
 Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route by chaining the `name` method onto the route definition:
@@ -429,6 +459,7 @@ Route::get(
 > Route names should always be unique.
 
 <a name="generating-urls-to-named-routes"></a>
+
 #### Generating URLs to Named Routes
 
 Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via Laravel's `route` and `redirect` helper functions:
@@ -469,6 +500,7 @@ $url = route('profile', ['id' => 1, 'photos' => 'yes']);
 > Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [URL::defaults method](/docs/{{version}}/urls#default-values).
 
 <a name="inspecting-the-current-route"></a>
+
 #### Inspecting the Current Route
 
 If you would like to determine if the current request was routed to a given named route, you may use the `named` method on a Route instance. For example, you may check the current route name from a route middleware:
@@ -494,6 +526,7 @@ public function handle(Request $request, Closure $next): Response
 ```
 
 <a name="route-groups"></a>
+
 ## Route Groups
 
 Route groups allow you to share route attributes, such as middleware, across a large number of routes without needing to define those attributes on each individual route.
@@ -501,6 +534,7 @@ Route groups allow you to share route attributes, such as middleware, across a l
 Nested groups attempt to intelligently "merge" attributes with their parent group. Middleware and `where` conditions are merged while names and prefixes are appended. Namespace delimiters and slashes in URI prefixes are automatically added where appropriate.
 
 <a name="route-group-middleware"></a>
+
 ### Middleware
 
 To assign [middleware](/docs/{{version}}/middleware) to all routes within a group, you may use the `middleware` method before defining the group. Middleware are executed in the order they are listed in the array:
@@ -518,6 +552,7 @@ Route::middleware(['first', 'second'])->group(function () {
 ```
 
 <a name="route-group-controllers"></a>
+
 ### Controllers
 
 If a group of routes all utilize the same [controller](/docs/{{version}}/controllers), you may use the `controller` method to define the common controller for all of the routes within the group. Then, when defining the routes, you only need to provide the controller method that they invoke:
@@ -532,6 +567,7 @@ Route::controller(OrderController::class)->group(function () {
 ```
 
 <a name="route-group-subdomain-routing"></a>
+
 ### Subdomain Routing
 
 Route groups may also be used to handle subdomain routing. Subdomains may be assigned route parameters just like route URIs, allowing you to capture a portion of the subdomain for usage in your route or controller. The subdomain may be specified by calling the `domain` method before defining the group:
@@ -548,6 +584,7 @@ Route::domain('{account}.example.com')->group(function () {
 > In order to ensure your subdomain routes are reachable, you should register subdomain routes before registering root domain routes. This will prevent root domain routes from overwriting subdomain routes which have the same URI path.
 
 <a name="route-group-prefixes"></a>
+
 ### Route Prefixes
 
 The `prefix` method may be used to prefix each route in the group with a given URI. For example, you may want to prefix all route URIs within the group with `admin`:
@@ -561,6 +598,7 @@ Route::prefix('admin')->group(function () {
 ```
 
 <a name="route-group-name-prefixes"></a>
+
 ### Route Name Prefixes
 
 The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix the names of all of the routes in the group with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
@@ -574,11 +612,13 @@ Route::name('admin.')->group(function () {
 ```
 
 <a name="route-model-binding"></a>
+
 ## Route Model Binding
 
 When injecting a model ID to a route or controller action, you will often query the database to retrieve the model that corresponds to that ID. Laravel route model binding provides a convenient way to automatically inject the model instances directly into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` model instance that matches the given ID.
 
 <a name="implicit-binding"></a>
+
 ### Implicit Binding
 
 Laravel automatically resolves Eloquent models defined in routes or controller actions whose type-hinted variable names match a route segment name. For example:
@@ -610,6 +650,7 @@ public function show(User $user)
 ```
 
 <a name="implicit-soft-deleted-models"></a>
+
 #### Soft Deleted Models
 
 Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/{{version}}/eloquent#soft-deleting). However, you may instruct the implicit binding to retrieve these models by chaining the `withTrashed` method onto your route's definition:
@@ -623,6 +664,7 @@ Route::get('/users/{user}', function (User $user) {
 ```
 
 <a name="customizing-the-default-key-name"></a>
+
 #### Customizing the Key
 
 Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
@@ -648,6 +690,7 @@ public function getRouteKeyName(): string
 ```
 
 <a name="implicit-model-binding-scoping"></a>
+
 #### Custom Keys and Scoping
 
 When implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the previous Eloquent model. For example, consider this route definition that retrieves a blog post by slug for a specific user:
@@ -693,6 +736,7 @@ Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) 
 ```
 
 <a name="customizing-missing-model-behavior"></a>
+
 #### Customizing Missing Model Behavior
 
 Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` method accepts a closure that will be invoked if an implicitly bound model cannot be found:
@@ -710,6 +754,7 @@ Route::get('/locations/{location:slug}', [LocationsController::class, 'show'])
 ```
 
 <a name="implicit-enum-binding"></a>
+
 ### Implicit Enum Binding
 
 PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To complement this feature, Laravel allows you to type-hint a [string-backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
@@ -738,6 +783,7 @@ Route::get('/categories/{category}', function (Category $category) {
 ```
 
 <a name="explicit-binding"></a>
+
 ### Explicit Binding
 
 You are not required to use Laravel's implicit, convention based model resolution in order to use model binding. You can also explicitly define how route parameters correspond to models. To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings at the beginning of the `boot` method of your `AppServiceProvider` class:
@@ -770,6 +816,7 @@ Since we have bound all `{user}` parameters to the `App\Models\User` model, an i
 If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
 
 <a name="customizing-the-resolution-logic"></a>
+
 #### Customizing the Resolution Logic
 
 If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The closure you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `AppServiceProvider`:
@@ -823,6 +870,7 @@ public function resolveChildRouteBinding($childType, $value, $field)
 ```
 
 <a name="fallback-routes"></a>
+
 ## Fallback Routes
 
 Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you would typically define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. You are free to add additional middleware to this route as needed:
@@ -834,9 +882,11 @@ Route::fallback(function () {
 ```
 
 <a name="rate-limiting"></a>
+
 ## Rate Limiting
 
 <a name="defining-rate-limiters"></a>
+
 ### Defining Rate Limiters
 
 Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs.
@@ -898,6 +948,7 @@ RateLimiter::for('uploads', function (Request $request) {
 ```
 
 <a name="segmenting-rate-limits"></a>
+
 #### Segmenting Rate Limits
 
 Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `by` method when building your rate limit:
@@ -921,6 +972,7 @@ RateLimiter::for('uploads', function (Request $request) {
 ```
 
 <a name="multiple-rate-limits"></a>
+
 #### Multiple Rate Limits
 
 If needed, you may return an array of rate limits for a given rate limiter configuration. Each rate limit will be evaluated for the route based on the order they are placed within the array:
@@ -946,6 +998,7 @@ RateLimiter::for('uploads', function (Request $request) {
 ```
 
 <a name="attaching-rate-limiters-to-routes"></a>
+
 ### Attaching Rate Limiters to Routes
 
 Rate limiters may be attached to routes or route groups using the `throttle` [middleware](/docs/{{version}}/middleware). The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
@@ -963,6 +1016,7 @@ Route::middleware(['throttle:uploads'])->group(function () {
 ```
 
 <a name="throttling-with-redis"></a>
+
 #### Throttling With Redis
 
 By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. However, if you are using Redis as your application's cache driver, you may wish to instruct Laravel to use Redis to manage rate limiting. To do so, you should use the `throttleWithRedis` method in your application's `bootstrap/app.php` file. This method maps the `throttle` middleware to the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` middleware class:
@@ -975,6 +1029,7 @@ By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middl
 ```
 
 <a name="form-method-spoofing"></a>
+
 ## Form Method Spoofing
 
 HTML forms do not support `PUT`, `PATCH`, or `DELETE` actions. So, when defining `PUT`, `PATCH`, or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form. The value sent with the `_method` field will be used as the HTTP request method:
@@ -996,6 +1051,7 @@ For convenience, you may use the `@method` [Blade directive](/docs/{{version}}/b
 ```
 
 <a name="accessing-the-current-route"></a>
+
 ## Accessing the Current Route
 
 You may use the `current`, `currentRouteName`, and `currentRouteAction` methods on the `Route` facade to access information about the route handling the incoming request:
@@ -1011,6 +1067,7 @@ $action = Route::currentRouteAction(); // string
 You may refer to the API documentation for both the [underlying class of the Route facade](https://api.laravel.com/docs/{{version}}/Illuminate/Routing/Router.html) and [Route instance](https://api.laravel.com/docs/{{version}}/Illuminate/Routing/Route.html) to review all of the methods that are available on the router and route classes.
 
 <a name="cors"></a>
+
 ## Cross-Origin Resource Sharing (CORS)
 
 Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/{{version}}/middleware) that is automatically included in your application's global middleware stack.
@@ -1027,6 +1084,7 @@ This command will place a `cors.php` configuration file within your application'
 > For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
 
 <a name="route-caching"></a>
+
 ## Route Caching
 
 When deploying your application to production, you should take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. To generate a route cache, execute the `route:cache` Artisan command:
