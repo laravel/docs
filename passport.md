@@ -68,7 +68,7 @@ To get started, install Passport via the Composer package manager:
 composer require laravel/passport
 ```
 
-Next, you should execute the `passport:install` Artisan command. This command will create the tables your application needs to store OAuth2 clients and access tokens. This will also create the encryption keys needed to generate secure access tokens. In addition, the command will create "personal access" and "password grant" clients which will be used to generate access tokens:
+Next, run the `passport:install` Artisan command. This command will handle database migrations required for passport, create the necessary tables, generate encryption keys, and set up default OAuth2 clients for personal and password grants:
 
 ```shell
 php artisan passport:install
