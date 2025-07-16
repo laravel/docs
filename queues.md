@@ -1217,7 +1217,7 @@ class ProcessPodcast implements ShouldQueue
 
 Job attempts are a core concept of Laravel's queue system and power many advanced features. While they may seem confusing at first, it's important to understand how they work before modifying the default configuration.
 
-When a job is dispatched, it is pushed onto the queue. A worker then picks it up and attempts to execute it, this is known as a job attempt.
+When a job is dispatched, it is pushed onto the queue. A worker then picks it up and attempts to execute it. This is known as a job attempt.
 
 However, an attempt does not necessarily mean the job’s handle method was executed. Attempts can be consumed in several ways:
 
