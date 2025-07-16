@@ -31,6 +31,10 @@
     - [Schedule Watcher](#schedule-watcher)
     - [View Watcher](#view-watcher)
 - [Displaying User Avatars](#displaying-user-avatars)
+- [Performance Monitoring](#performance-monitoring)
+    - [Slow Request Filtering](#slow-request-filtering)
+    - [Job Monitoring](#job-monitoring)
+    - [Best Practices](#best-practices)
 
 <a name="introduction"></a>
 ## Introduction
@@ -480,4 +484,84 @@ public function register(): void
             : '/generic-avatar.jpg';
     });
 }
+```
+
+<a name="performance-monitoring"></a>
+## Performance Monitoring
+
+Telescope provides powerful tools for monitoring application performance in production environments. For high-traffic applications, it's crucial to filter data intelligently to focus on issues while minimizing storage costs and performance impact.
+
+<a name="slow-request-filtering"></a>
+### Production-Ready Request Filtering
+
+In production environments, you typically want to monitor requests only when they:
+- Fail with errors/exceptions
+- Have monitored tags (for specific business logic tracking)
+- Take an unusually long time to complete or have slow queries
+
+Here's a sample configuration:
+
+```php
+use Laravel\Telescope\IncomingEntry;
+use Laravel\Telescope\Telescope;
+
+/**
+ * Register any application services.
+ */
+public function register(): void
+{
+    $this->hideSensitiveRequestDetails();
+
+    Telescope::filter(function (IncomingEntry $entry) {
+        if ($this->app->environment('local')) {
+            return true;
+        }
+
+        //Track if request took more than 2 seconds
+        $isSlowRequest = $entry->type === 'request' && $entry->content['duration'] > 2000;
+
+        return $entry->isReportableException() ||
+                $entry->isFailedRequest() ||
+                $entry->isFailedJob() ||
+                $entry->isScheduledTask() ||
+                $entry->hasMonitoredTag() ||
+                $entry->isSlowQuery() ||
+                $isSlowRequest;
+    });
+
+}
+```
+
+<a name="job-monitoring"></a>
+### Job Monitoring
+
+For production applications with heavy job processing, monitor job performance to prevent queue backlogs:
+
+```php
+// In your service provider filter
+if ($entry->type === 'job') {
+    // Always log failed jobs
+    if ($entry->isFailedJob()) {
+        return true;
+    }
+    
+    // Sample to log jobs that take too long
+    $slowJobThreshold = config('telescope.slow_job_threshold', 30000); // 30 seconds
+    if ($entry->content['duration'] >= $slowJobThreshold) {
+        return true;
+    }
+    
+    return false;
+}
+```
+
+<a name="best-practices"></a>
+### Best Practices
+
+For high-traffic applications consider frequent pruning:
+
+```php
+// In your Console/Kernel.php
+Schedule::command('telescope:prune --hours=6')->hourly(); // Keep only 6 hours of data
+Schedule::command('telescope:prune --hours=24')->daily(); // Backup daily pruning
 ```
