@@ -105,7 +105,7 @@ return [
     | Horizon Environment
     | ------------------------------------------------------------------
     |
-    | This value determine Horizon's environment!
+    | This value determines Horizon's environment.
     */
     'env' => env('HORIZON_ENV', env('APP_ENV')),
 
