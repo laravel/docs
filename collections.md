@@ -1195,8 +1195,6 @@ $products->values()->all();
 */
 ```
 
-In this example, calling `flatten` without providing the depth would have also flattened the nested arrays, resulting in `['iPhone 6S', 'Apple', 'Galaxy S7', 'Samsung']`. Providing a depth allows you to specify the number of levels nested arrays will be flattened.
-
 Providing a depth allows you to specify the number of levels nested arrays will be flattened. In the previous example, calling `flatten` without providing the depth would have also flattened the nested arrays, resulting in:
 
 ```php
