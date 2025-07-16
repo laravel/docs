@@ -251,6 +251,7 @@ The `simple` strategy distributes worker processes evenly across the specified q
     ],
 ],
 ```
+
 In the example above, Horizon will assign 5 processes to each queue, splitting the total of 10 evenly.
 
 If you'd like to control the number of worker processes assigned to each queue individually, you can define multiple supervisors:
