@@ -385,7 +385,7 @@ For convenience, if the closure you provide to the `stream` method returns a [Ge
 
 ```php
 Route::post('/chat', function () {
-    return response()->stream(function (): void {
+    return response()->stream(function (): Generator {
         $stream = OpenAI::client()->chat()->createStreamed(...);
 
         foreach ($stream as $response) {
