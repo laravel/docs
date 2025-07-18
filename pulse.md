@@ -486,6 +486,9 @@ Pulse will use your default [Redis connection](/docs/{{version}}/redis#configura
 PULSE_REDIS_CONNECTION=pulse
 ```
 
+> [!WARNING]
+> When Pulse uses the same Redis connection than your queue and the Pulse queue recorder is enabled, calls to `Bus::batch()` may produce an error. You should configure Pulse to use a different Redis connection in this case.
+
 When using the Redis ingest, you will need to run the `pulse:work` command to monitor the stream and move entries from Redis into Pulse's database tables.
 
 ```php
