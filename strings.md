@@ -630,7 +630,7 @@ $result = Str::doesntStartWith('This is my name', 'That');
 If an array of possible values is passed, the `doesntStartWith` method will return `true` if the string doesn't begin with any of the given values:
 
 ```php
-$result = Str::doesntStartWith('This is my name', ['This', 'That', 'There']);
+$result = Str::doesntStartWith('This is my name', ['What', 'That', 'There']);
 
 // true
 ```
@@ -2317,7 +2317,7 @@ You may also pass an array of values to determine if the given string doesn't st
 ```php
 use Illuminate\Support\Str;
 
-$result = Str::of('This is my name')->doesntStartWith(['This', 'That', 'There']);
+$result = Str::of('This is my name')->doesntStartWith(['What', 'That', 'There']);
 
 // true
 ```
