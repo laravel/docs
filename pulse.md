@@ -486,6 +486,9 @@ Pulse will use your default [Redis connection](/docs/{{version}}/redis#configura
 PULSE_REDIS_CONNECTION=pulse
 ```
 
+> [!WARNING]
+> When using the Redis ingest driver, your Pulse installation should always use a different Redis connection than your Redis powered queue, if applicable.
+
 When using the Redis ingest, you will need to run the `pulse:work` command to monitor the stream and move entries from Redis into Pulse's database tables.
 
 ```php
