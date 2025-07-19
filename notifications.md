@@ -145,7 +145,7 @@ public function via(object $notifiable): array
 ### Queueing Notifications
 
 > [!WARNING]
-> Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues#running-the-queue-worker).
+> Before queueing notifications, you should configure your queue and [start a worker](/docs/{{version}}/queues#running-the-queue-worker).
 
 Sending notifications can take time, especially if the channel needs to make an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using the `make:notification` command, so you may immediately add them to your notification class:
 
