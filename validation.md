@@ -1971,7 +1971,7 @@ The field under validation must be [numeric](https://www.php.net/manual/en/funct
 You may use the `strict` parameter to only consider the field valid if its value is an integer or float type. Numeric strings will be considered invalid:
 
 ```php
-'foo' => 'numeric:strict'
+'amount' => 'numeric:strict'
 ```
 
 <a name="rule-present"></a>
