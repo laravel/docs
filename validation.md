@@ -1968,6 +1968,12 @@ The field under validation may be `null`.
 
 The field under validation must be [numeric](https://www.php.net/manual/en/function.is-numeric.php).
 
+You may use the `strict` parameter to only consider the field valid if its value is an integer or float type. Numeric strings will be considered invalid:
+
+```php
+'amount' => 'numeric:strict'
+```
+
 <a name="rule-present"></a>
 #### present
 
