@@ -1913,3 +1913,38 @@ class OperatorRegistered extends Notification
     // You should also define a toMessage method (or similar) if needed
 }
 ```
+
+### Custom Channel using Manager
+After defining your custom notification channel class, you must register it using the Notification::extend method in a service provider, typically in the boot method of App\Providers\AppServiceProvider or a dedicated service provider.
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Notification;
+use App\Channels\MessageChannel;
+
+public function boot(): void
+{
+    Notification::extend('message', fn() => new MessageChannel);
+}
+```
+
+Once registered, you can use the custom channel in your notification classes by returning its name from the via method:
+
+```php
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Notifications\Notification;
+
+class OperatorRegistered extends Notification
+{
+    public function via(object $notifiable): array
+    {
+        return ['message'];
+    }
+
+    // You should also define a toMessage method (or similar) if needed
+}
+```
