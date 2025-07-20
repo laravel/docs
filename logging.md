@@ -529,12 +529,12 @@ Laravel Pail is a package that allows you to easily dive into your Laravel appli
 ### Installation
 
 > [!WARNING]
-> Laravel Pail requires [PHP 8.2+](https://php.net/releases/) and the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
+> Laravel Pail requires the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) PHP extension.
 
 To get started, install Pail into your project using the Composer package manager:
 
 ```shell
-composer require laravel/pail
+composer require --dev laravel/pail
 ```
 
 <a name="pail-usage"></a>

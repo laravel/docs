@@ -343,6 +343,24 @@ public function boot(): void
 }
 ```
 
+Alternatively, you may place the `UsePolicy` attribute on a model class to inform Laravel of the model's corresponding policy:
+
+```php
+<?php
+
+namespace App\Models;
+
+use App\Policies\OrderPolicy;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Model;
+
+#[UsePolicy(OrderPolicy::class)]
+class Order extends Model
+{
+    //
+}
+```
+
 <a name="writing-policies"></a>
 ## Writing Policies
 

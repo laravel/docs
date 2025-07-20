@@ -812,6 +812,7 @@ If you need more granular control over a prompt in a form, you may invoke the `a
 ```php
 use function Laravel\Prompts\form;
 use function Laravel\Prompts\outro;
+use function Laravel\Prompts\text;
 
 $responses = form()
     ->text('What is your name?', required: true, name: 'name')
@@ -857,13 +858,13 @@ The `spin` function displays a spinner along with an optional message while exec
 use function Laravel\Prompts\spin;
 
 $response = spin(
-    message: 'Fetching response...',
-    callback: fn () => Http::get('http://example.com')
+    callback: fn () => Http::get('http://example.com'),
+    message: 'Fetching response...'
 );
 ```
 
 > [!WARNING]
-> The `spin` function requires the `pcntl` PHP extension to animate the spinner. When this extension is not available, a static version of the spinner will appear instead.
+> The `spin` function requires the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) PHP extension to animate the spinner. When this extension is not available, a static version of the spinner will appear instead.
 
 <a name="progress"></a>
 ## Progress Bars
@@ -946,7 +947,7 @@ For any prompts that accept the `scroll` argument, the configured value will aut
 
 Laravel Prompts supports macOS, Linux, and Windows with WSL. Due to limitations in the Windows version of PHP, it is not currently possible to use Laravel Prompts on Windows outside of WSL.
 
-For this reason, Laravel Prompts supports falling back to an alternative implementation such as the [Symfony Console Question Helper](https://symfony.com/doc/7.0/components/console/helpers/questionhelper.html).
+For this reason, Laravel Prompts supports falling back to an alternative implementation such as the [Symfony Console Question Helper](https://symfony.com/doc/current/components/console/helpers/questionhelper.html).
 
 > [!NOTE]
 > When using Laravel Prompts with the Laravel framework, fallbacks for each prompt have been configured for you and will be automatically enabled in unsupported environments.

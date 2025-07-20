@@ -376,7 +376,7 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 ```
 
 > [!NOTE]
-> If you only need to limit the concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
+> If you only need to limit the concurrent processing of a job, use the [WithoutOverlapping](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
 
 <a name="encrypted-jobs"></a>
 ### Encrypted Jobs
@@ -458,7 +458,7 @@ class RateLimited
 
 As you can see, like [route middleware](/docs/{{version}}/middleware), job middleware receive the job being processed and a callback that should be invoked to continue processing the job.
 
-After creating job middleware, they may be attached to a job by returning them from the job's `middleware` method. This method does not exist on jobs scaffolded by the `make:job` Artisan command, so you will need to manually add it to your job class:
+You can generate a new job middleware class using the `make:job-middleware` Artisan command. After creating job middleware, they may be attached to a job by returning them from the job's `middleware` method. This method does not exist on jobs scaffolded by the `make:job` Artisan command, so you will need to manually add it to your job class:
 
 ```php
 use App\Jobs\Middleware\RateLimited;
@@ -475,7 +475,7 @@ public function middleware(): array
 ```
 
 > [!NOTE]
-> Job middleware can also be assigned to queueable event listeners, mailables, and notifications.
+> Job middleware can also be assigned to [queueable event listeners](/docs/{{version}}/events#queued-event-listeners), [mailables](/docs/{{version}}/mail#queueing-mail), and [notifications](/docs/{{version}}/notifications#queueing-notifications).
 
 <a name="rate-limiting"></a>
 ### Rate Limiting
@@ -523,7 +523,21 @@ public function middleware(): array
 }
 ```
 
-Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [`retryUntil` method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
+Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [retryUntil method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
+
+Using the `releaseAfter` method, you may also specify the number of seconds that must elapse before the released job will be attempted again:
+
+```php
+/**
+ * Get the middleware the job should pass through.
+ *
+ * @return array<int, object>
+ */
+public function middleware(): array
+{
+    return [(new RateLimited('backups'))->releaseAfter(60)];
+}
+```
 
 If you do not want a job to be retried when it is rate limited, you may use the `dontRelease` method:
 
@@ -705,7 +719,7 @@ public function middleware(): array
 }
 ```
 
-By default, this middleware will throttle every exception. You can modify this behaviour by invoking the `when` method when attaching the middleware to your job. The exception will then only be throttled if closure provided to the `when` method returns `true`:
+By default, this middleware will throttle every exception. You can modify this behavior by invoking the `when` method when attaching the middleware to your job. The exception will then only be throttled if the closure provided to the `when` method returns `true`:
 
 ```php
 use Illuminate\Http\Client\HttpClientException;
@@ -721,6 +735,23 @@ public function middleware(): array
     return [(new ThrottlesExceptions(10, 10 * 60))->when(
         fn (Throwable $throwable) => $throwable instanceof HttpClientException
     )];
+}
+```
+
+Unlike the `when` method, which releases the job back onto the queue or throws an exception, the `deleteWhen` method allows you to delete the job entirely when a given exception occurs:
+
+```php
+use App\Exceptions\CustomerDeletedException;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+/**
+ * Get the middleware the job should pass through.
+ *
+ * @return array<int, object>
+ */
+public function middleware(): array
+{
+    return [(new ThrottlesExceptions(2, 10 * 60))->deleteWhen(CustomerDeletedException::class)];
 }
 ```
 
@@ -1239,8 +1270,10 @@ public function retryUntil(): DateTime
 }
 ```
 
+If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
+
 > [!NOTE]
-> You may also define a `tries` property or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners).
+> You may also define a `tries` property or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners) and [queued notifications](/docs/{{version}}/notifications#queueing-notifications).
 
 <a name="max-exceptions"></a>
 #### Max Exceptions
@@ -1321,7 +1354,7 @@ class ProcessPodcast implements ShouldQueue
 Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value.
 
 > [!WARNING]
-> The `pcntl` PHP extension must be installed in order to specify job timeouts. In addition, a job's "timeout" value should always be less than its ["retry after"](#job-expiration) value. Otherwise, the job may be re-attempted before it has actually finished executing or timed out.
+> The [PCNTL](https://www.php.net/manual/en/book.pcntl.php) PHP extension must be installed in order to specify job timeouts. In addition, a job's "timeout" value should always be less than its ["retry after"](#job-expiration) value. Otherwise, the job may be re-attempted before it has actually finished executing or timed out.
 
 <a name="failing-on-timeout"></a>
 #### Failing on Timeout
@@ -1394,6 +1427,63 @@ $this->fail('Something went wrong.');
 
 > [!NOTE]
 > For more information on failed jobs, check out the [documentation on dealing with job failures](#dealing-with-failed-jobs).
+
+<a name="fail-jobs-on-exceptions"></a>
+#### Failing Jobs on Specific Exceptions
+
+The `FailOnException` [job middleware](#job-middleware) allows you to short-circuit retries when specific exceptions are thrown. This allows retrying on transient exceptions such as external API errors, but failing the job permanently on persistent exceptions, such as a user's permissions being revoked:
+
+```php
+<?php
+
+namespace App\Jobs;
+
+use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\FailOnException;
+use Illuminate\Support\Facades\Http;
+
+class SyncChatHistory implements ShouldQueue
+{
+    use InteractsWithQueue;
+
+    public $tries = 3;
+
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(
+        public User $user,
+    ) {}
+
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
+        $user->authorize('sync-chat-history');
+
+        $response = Http::throw()->get(
+            "https://chat.laravel.test/?user={$user->uuid}"
+        );
+
+        // ...
+    }
+
+    /**
+     * Get the middleware the job should pass through.
+     */
+    public function middleware(): array
+    {
+        return [
+            new FailOnException([AuthorizationException::class])
+        ];
+    }
+}
+```
 
 <a name="job-batching"></a>
 ## Job Batching
@@ -1805,6 +1895,14 @@ dispatch(function () use ($podcast) {
 });
 ```
 
+To assign a name to the queued closure which may be used by queue reporting dashboards, as well as be displayed by the `queue:work` command, you may use the `name` method:
+
+```php
+dispatch(function () {
+    // ...
+})->name('Publish Podcast');
+```
+
 Using the `catch` method, you may provide a closure that should be executed if the queued closure fails to complete successfully after exhausting all of your queue's [configured retry attempts](#max-job-attempts-and-timeout):
 
 ```php
@@ -1835,7 +1933,7 @@ php artisan queue:work
 > [!NOTE]
 > To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
 
-You may include the `-v` flag when invoking the `queue:work` command if you would like the processed job IDs to be included in the command's output:
+You may include the `-v` flag when invoking the `queue:work` command if you would like the processed job IDs, connection names, and queue names to be included in the command's output:
 
 ```shell
 php artisan queue:work -v

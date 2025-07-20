@@ -10,6 +10,7 @@
     - [Pipeline](#pipeline)
     - [Sleep](#sleep)
     - [Timebox](#timebox)
+    - [URI](#uri)
 
 <a name="introduction"></a>
 ## Introduction
@@ -39,6 +40,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 [Arr::accessible](#method-array-accessible)
 [Arr::add](#method-array-add)
+[Arr::array](#method-array-array)
+[Arr::boolean](#method-array-boolean)
 [Arr::collapse](#method-array-collapse)
 [Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
@@ -47,10 +50,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::exists](#method-array-exists)
 [Arr::first](#method-array-first)
 [Arr::flatten](#method-array-flatten)
+[Arr::float](#method-array-float)
 [Arr::forget](#method-array-forget)
+[Arr::from](#method-array-from)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
+[Arr::hasAll](#method-array-hasall)
 [Arr::hasAny](#method-array-hasany)
+[Arr::integer](#method-array-integer)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::isList](#method-array-islist)
 [Arr::join](#method-array-join)
@@ -75,6 +82,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::string](#method-array-string)
 [Arr::take](#method-array-take)
 [Arr::toCssClasses](#method-array-to-css-classes)
 [Arr::toCssStyles](#method-array-to-css-styles)
@@ -105,8 +113,11 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::format](#method-number-format)
 [Number::ordinal](#method-number-ordinal)
 [Number::pairs](#method-number-pairs)
+[Number::parseInt](#method-number-parse-int)
+[Number::parseFloat](#method-number-parse-float)
 [Number::percentage](#method-number-percentage)
 [Number::spell](#method-number-spell)
+[Number::spellOrdinal](#method-number-spell-ordinal)
 [Number::trim](#method-number-trim)
 [Number::useLocale](#method-number-use-locale)
 [Number::withLocale](#method-number-with-locale)
@@ -125,7 +136,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [config_path](#method-config-path)
 [database_path](#method-database-path)
 [lang_path](#method-lang-path)
-[mix](#method-mix)
 [public_path](#method-public-path)
 [resource_path](#method-resource-path)
 [storage_path](#method-storage-path)
@@ -143,6 +153,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [secure_asset](#method-secure-asset)
 [secure_url](#method-secure-url)
 [to_route](#method-to-route)
+[uri](#method-uri)
 [url](#method-url)
 
 </div>
@@ -161,6 +172,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [bcrypt](#method-bcrypt)
 [blank](#method-blank)
 [broadcast](#method-broadcast)
+[broadcast_if](#method-broadcast-if)
+[broadcast_unless](#method-broadcast-unless)
 [cache](#method-cache)
 [class_uses_recursive](#method-class-uses-recursive)
 [collect](#method-collect)
@@ -258,10 +271,49 @@ $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
 // ['name' => 'Desk', 'price' => 100]
 ```
 
+<a name="method-array-array"></a>
+#### `Arr::array()` {.collection-method}
+
+The `Arr::array` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not an `array`:
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
+
+$value = Arr::array($array, 'languages');
+
+// ['PHP', 'Ruby']
+
+$value = Arr::array($array, 'name');
+
+// throws InvalidArgumentException
+```
+
+<a name="method-array-boolean"></a>
+#### `Arr::boolean()` {.collection-method}
+
+The `Arr::boolean` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `boolean`:
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'available' => true];
+
+$value = Arr::boolean($array, 'available');
+
+// true
+
+$value = Arr::boolean($array, 'name');
+
+// throws InvalidArgumentException
+```
+
+
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
 
-The `Arr::collapse` method collapses an array of arrays into a single array:
+The `Arr::collapse` method collapses an array of arrays or collections into a single array:
 
 ```php
 use Illuminate\Support\Arr;
@@ -410,10 +462,29 @@ $flattened = Arr::flatten($array);
 // ['Joe', 'PHP', 'Ruby']
 ```
 
+<a name="method-array-float"></a>
+#### `Arr::float()` {.collection-method}
+
+The `Arr::float` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `float`:
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'balance' => 123.45];
+
+$value = Arr::float($array, 'balance');
+
+// 123.45
+
+$value = Arr::float($array, 'name');
+
+// throws InvalidArgumentException
+```
+
 <a name="method-array-forget"></a>
 #### `Arr::forget()` {.collection-method}
 
-The `Arr::forget` method removes a given key / value pair from a deeply nested array using "dot" notation:
+The `Arr::forget` method removes a given key / value pairs from a deeply nested array using "dot" notation:
 
 ```php
 use Illuminate\Support\Arr;
@@ -423,6 +494,27 @@ $array = ['products' => ['desk' => ['price' => 100]]];
 Arr::forget($array, 'products.desk');
 
 // ['products' => []]
+```
+
+<a name="method-array-from"></a>
+#### `Arr::from()` {.collection-method}
+
+The `Arr::from` method converts various input types into a plain PHP array. It supports a range of input types, including arrays, objects, and several common Laravel interfaces, such as `Arrayable`, `Enumerable`, `Jsonable`, and `JsonSerializable`. Additionally, it handles `Traversable` and `WeakMap` instances:
+
+```php
+use Illuminate\Support\Arr;
+
+Arr::from((object) ['foo' => 'bar']); // ['foo' => 'bar']
+
+class TestJsonableObject implements Jsonable
+{
+    public function toJson($options = 0)
+    {
+        return json_encode(['foo' => 'bar']);
+    }
+}
+
+Arr::from(new TestJsonableObject); // ['foo' => 'bar']
 ```
 
 <a name="method-array-get"></a>
@@ -469,6 +561,21 @@ $contains = Arr::has($array, ['product.price', 'product.discount']);
 // false
 ```
 
+<a name="method-array-hasall"></a>
+#### `Arr::hasAll()` {.collection-method}
+
+The `Arr::hasAll` method determines if all of the specified keys exist in the given array using "dot" notation:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Taylor', 'language' => 'PHP'];
+
+Arr::hasAll($array, ['name']); // true
+Arr::hasAll($array, ['name', 'language']); // true
+Arr::hasAll($array, ['name', 'IDE']); // false
+```
+
 <a name="method-array-hasany"></a>
 #### `Arr::hasAny()` {.collection-method}
 
@@ -490,6 +597,25 @@ $contains = Arr::hasAny($array, ['product.name', 'product.discount']);
 $contains = Arr::hasAny($array, ['category', 'product.discount']);
 
 // false
+```
+
+<a name="method-array-integer"></a>
+#### `Arr::integer()` {.collection-method}
+
+The `Arr::integer` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not an `int`:
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'age' => 42];
+
+$value = Arr::integer($array, 'age');
+
+// 42
+
+$value = Arr::integer($array, 'name');
+
+// throws InvalidArgumentException
 ```
 
 <a name="method-array-isassoc"></a>
@@ -529,7 +655,7 @@ $isList = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 <a name="method-array-join"></a>
 #### `Arr::join()` {.collection-method}
 
-The `Arr::join` method joins array elements with a string. Using this method's second argument, you may also specify the joining string for the final element of the array:
+The `Arr::join` method joins array elements with a string. Using this method's third argument, you may also specify the joining string for the final element of the array:
 
 ```php
 use Illuminate\Support\Arr;
@@ -540,9 +666,9 @@ $joined = Arr::join($array, ', ');
 
 // Tailwind, Alpine, Laravel, Livewire
 
-$joined = Arr::join($array, ', ', ' and ');
+$joined = Arr::join($array, ', ', ', and ');
 
-// Tailwind, Alpine, Laravel and Livewire
+// Tailwind, Alpine, Laravel, and Livewire
 ```
 
 <a name="method-array-keyby"></a>
@@ -1045,6 +1171,25 @@ If you would like the results sorted in descending order, you may use the `Arr::
 $sorted = Arr::sortRecursiveDesc($array);
 ```
 
+<a name="method-array-string"></a>
+#### `Arr::string()` {.collection-method}
+
+The `Arr::string` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `string`:
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
+
+$value = Arr::string($array, 'name');
+
+// Joe
+
+$value = Arr::string($array, 'languages');
+
+// throws InvalidArgumentException
+```
+
 <a name="method-array-take"></a>
 #### `Arr::take()` {.collection-method}
 
@@ -1357,7 +1502,7 @@ data_forget($data, 'products.*.price');
 <a name="method-head"></a>
 #### `head()` {.collection-method}
 
-The `head` function returns the first element in the given array:
+The `head` function returns the first element in the given array. If the array is empty, `false` will be returned:
 
 ```php
 $array = [100, 200, 300];
@@ -1370,7 +1515,7 @@ $first = head($array);
 <a name="method-last"></a>
 #### `last()` {.collection-method}
 
-The `last` function returns the last element in the given array:
+The `last` function returns the last element in the given array. If the array is empty, `false` will be returned:
 
 ```php
 $array = [100, 200, 300];
@@ -1448,6 +1593,10 @@ $currency = Number::currency(1000, in: 'EUR');
 $currency = Number::currency(1000, in: 'EUR', locale: 'de');
 
 // 1.000,00 €
+
+$currency = Number::currency(1000, in: 'EUR', locale: 'de', precision: 0);
+
+// 1.000 €
 ```
 
 <a name="method-default-currency"></a>
@@ -1574,11 +1723,45 @@ use Illuminate\Support\Number;
 
 $result = Number::pairs(25, 10);
 
-// [[1, 10], [11, 20], [21, 25]]
+// [[0, 9], [10, 19], [20, 25]]
 
 $result = Number::pairs(25, 10, offset: 0);
 
 // [[0, 10], [10, 20], [20, 25]]
+```
+
+<a name="method-number-parse-int"></a>
+#### `Number::parseInt()` {.collection-method}
+
+The `Number::parseInt` method parse a string into an integer according to the specified locale:
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::parseInt('10.123');
+
+// (int) 10
+
+$result = Number::parseInt('10,123', locale: 'fr');
+
+// (int) 10
+```
+
+<a name="method-number-parse-float"></a>
+#### `Number::parseFloat()` {.collection-method}
+
+The `Number::parseFloat` method parse a string into a float according to the specified locale:
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::parseFloat('10');
+
+// (float) 10.0
+
+$result = Number::parseFloat('10', locale: 'fr');
+
+// (float) 10.0
 ```
 
 <a name="method-number-percentage"></a>
@@ -1645,6 +1828,27 @@ $number = Number::spell(5, until: 10);
 $number = Number::spell(10, until: 10);
 
 // 10
+```
+
+<a name="method-number-spell-ordinal"></a>
+#### `Number::spellOrdinal()` {.collection-method}
+
+The `Number::spellOrdinal` method returns the number's ordinal representation as a string of words:
+
+```php
+use Illuminate\Support\Number;
+
+$number = Number::spellOrdinal(1);
+
+// first
+
+$number = Number::spellOrdinal(2);
+
+// second
+
+$number = Number::spellOrdinal(21);
+
+// twenty-first
 ```
 
 <a name="method-number-trim"></a>
@@ -1785,15 +1989,6 @@ $path = lang_path('en/messages.php');
 > [!NOTE]
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
-<a name="method-mix"></a>
-#### `mix()` {.collection-method}
-
-The `mix` function returns the path to a [versioned Mix file](/docs/{{version}}/mix):
-
-```php
-$path = mix('css/app.css');
-```
-
 <a name="method-public-path"></a>
 #### `public_path()` {.collection-method}
 
@@ -1920,6 +2115,39 @@ If necessary, you may pass the HTTP status code that should be assigned to the r
 return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
 ```
 
+<a name="method-uri"></a>
+#### `uri()` {.collection-method}
+
+The `uri` function generates a [fluent URI instance](#uri) for the given URI:
+
+```php
+$uri = uri('https://example.com')
+    ->withPath('/users')
+    ->withQuery(['page' => 1]);
+```
+
+If the `uri` function is given an array containing a callable controller and method pair, the function will create a `Uri` instance for the controller method's route path:
+
+```php
+use App\Http\Controllers\UserController;
+
+$uri = uri([UserController::class, 'show'], ['user' => $user]);
+```
+
+If the controller is invokable, you may simply provide the controller class name:
+
+```php
+use App\Http\Controllers\UserIndexController;
+
+$uri = uri(UserIndexController::class);
+```
+
+If the value given to the `uri` function matches the name of a [named route](/docs/{{version}}/routing#named-routes), a `Uri` instance will be generated for that route's path:
+
+```php
+$uri = uri('users.show', ['user' => $user]);
+```
+
 <a name="method-url"></a>
 #### `url()` {.collection-method}
 
@@ -1940,6 +2168,8 @@ $full = url()->full();
 
 $previous = url()->previous();
 ```
+
+For more information on working with the `url` function, consult the [URL generation documentation](/docs/{{version}}/urls#generating-urls).
 
 <a name="miscellaneous"></a>
 ## Miscellaneous
@@ -2051,7 +2281,7 @@ blank(false);
 // false
 ```
 
-For the inverse of `blank`, see the [`filled`](#method-filled) method.
+For the inverse of `blank`, see the [filled](#method-filled) function.
 
 <a name="method-broadcast"></a>
 #### `broadcast()` {.collection-method}
@@ -2062,6 +2292,28 @@ The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given 
 broadcast(new UserRegistered($user));
 
 broadcast(new UserRegistered($user))->toOthers();
+```
+
+<a name="method-broadcast-if"></a>
+#### `broadcast_if()` {.collection-method}
+
+The `broadcast_if` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners if a given boolean expression evaluates to `true`:
+
+```php
+broadcast_if($user->isActive(), new UserRegistered($user));
+
+broadcast_if($user->isActive(), new UserRegistered($user))->toOthers();
+```
+
+<a name="method-broadcast-unless"></a>
+#### `broadcast_unless()` {.collection-method}
+
+The `broadcast_unless` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners if a given boolean expression evaluates to `false`:
+
+```php
+broadcast_unless($user->isBanned(), new UserRegistered($user));
+
+broadcast_unless($user->isBanned(), new UserRegistered($user))->toOthers();
 ```
 
 <a name="method-cache"></a>
@@ -2098,13 +2350,13 @@ $traits = class_uses_recursive(App\Models\User::class);
 The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the given value:
 
 ```php
-$collection = collect(['taylor', 'abigail']);
+$collection = collect(['Taylor', 'Abigail']);
 ```
 
 <a name="method-config"></a>
 #### `config()` {.collection-method}
 
-The `config` function gets the value of a [configuration](/docs/{{version}}/configuration) variable. The configuration values may be accessed using "dot" syntax, which includes the name of the file and the option you wish to access. A default value may be specified and is returned if the configuration option does not exist:
+The `config` function gets the value of a [configuration](/docs/{{version}}/configuration) variable. The configuration values may be accessed using "dot" syntax, which includes the name of the file and the option you wish to access. You may also provide a default value that will be returned if the configuration option does not exist:
 
 ```php
 $value = config('app.timezone');
@@ -2121,7 +2373,7 @@ config(['app.debug' => true]);
 <a name="method-context"></a>
 #### `context()` {.collection-method}
 
-The `context` function gets the value from the [current context](/docs/{{version}}/context). A default value may be specified and is returned if the context key does not exist:
+The `context` function gets the value from the current [context](/docs/{{version}}/context). You may also provide a default value that will be returned if the context key does not exist:
 
 ```php
 $value = context('trace_id');
@@ -2173,6 +2425,8 @@ The `decrypt` function [decrypts](/docs/{{version}}/encryption) the given value.
 $password = decrypt($value);
 ```
 
+For the inverse of `decrypt`, see the [encrypt](#method-encrypt) function.
+
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
 
@@ -2184,7 +2438,7 @@ dd($value);
 dd($value1, $value2, $value3, ...);
 ```
 
-If you do not want to halt the execution of your script, use the [`dump`](#method-dump) function instead.
+If you do not want to halt the execution of your script, use the [dump](#method-dump) function instead.
 
 <a name="method-dispatch"></a>
 #### `dispatch()` {.collection-method}
@@ -2215,7 +2469,7 @@ dump($value);
 dump($value1, $value2, $value3, ...);
 ```
 
-If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.
+If you want to stop executing the script after dumping the variables, use the [dd](#method-dd) function instead.
 
 <a name="method-encrypt"></a>
 #### `encrypt()` {.collection-method}
@@ -2225,6 +2479,8 @@ The `encrypt` function [encrypts](/docs/{{version}}/encryption) the given value.
 ```php
 $secret = encrypt('my-secret-value');
 ```
+
+For the inverse of `encrypt`, see the [decrypt](#method-decrypt) function.
 
 <a name="method-env"></a>
 #### `env()` {.collection-method}
@@ -2238,7 +2494,7 @@ $env = env('APP_ENV', 'production');
 ```
 
 > [!WARNING]
-> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
+> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return external environment variables such as server-level or system-level environment variables or `null`.
 
 <a name="method-event"></a>
 #### `event()` {.collection-method}
@@ -2255,7 +2511,7 @@ event(new UserRegistered($user));
 The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) singleton from the container, which can be useful when creating fake data in model factories, database seeding, tests, and prototyping views:
 
 ```blade
-@for($i = 0; $i < 10; $i++)
+@for ($i = 0; $i < 10; $i++)
     <dl>
         <dt>Name</dt>
         <dd>{{ fake()->name() }}</dd>
@@ -2292,7 +2548,7 @@ filled(collect());
 // false
 ```
 
-For the inverse of `filled`, see the [`blank`](#method-blank) method.
+For the inverse of `filled`, see the [blank](#method-blank) function.
 
 <a name="method-info"></a>
 #### `info()` {.collection-method}
@@ -2461,7 +2717,7 @@ $policy = policy(App\Models\User::class);
 The `redirect` function returns a [redirect HTTP response](/docs/{{version}}/responses#redirects), or returns the redirector instance if called with no arguments:
 
 ```php
-return redirect($to = null, $status = 302, $headers = [], $https = null);
+return redirect($to = null, $status = 302, $headers = [], $secure = null);
 
 return redirect('/home');
 
@@ -2486,7 +2742,7 @@ report('Something went wrong.');
 <a name="method-report-if"></a>
 #### `report_if()` {.collection-method}
 
-The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if the given condition is `true`:
+The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if a given boolean expression evaluates to `true`:
 
 ```php
 report_if($shouldReport, $e);
@@ -2497,7 +2753,7 @@ report_if($shouldReport, 'Something went wrong.');
 <a name="method-report-unless"></a>
 #### `report_unless()` {.collection-method}
 
-The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if the given condition is `false`:
+The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if a given boolean expression evaluates to `false`:
 
 ```php
 report_unless($reportingDisabled, $e);
@@ -2605,12 +2861,13 @@ return retry([100, 200], function () {
 To only retry under specific conditions, you may pass a closure as the fourth argument to the `retry` function:
 
 ```php
+use App\Exceptions\TemporaryException;
 use Exception;
 
 return retry(5, function () {
     // ...
 }, 100, function (Exception $exception) {
-    return $exception instanceof RetryException;
+    return $exception instanceof TemporaryException;
 });
 ```
 
@@ -2644,7 +2901,7 @@ The `tap` function accepts two arguments: an arbitrary `$value` and a closure. T
 
 ```php
 $user = tap(User::first(), function (User $user) {
-    $user->name = 'taylor';
+    $user->name = 'Taylor';
 
     $user->save();
 });
@@ -2849,13 +3106,13 @@ Benchmark::dd([
 
 By default, the given callbacks will be executed once (one iteration), and their duration will be displayed in the browser / console.
 
-To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
+To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average number of milliseconds it took to execute the callback across all iterations:
 
 ```php
 Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
 ```
 
-Sometimes, you may want to benchmark the execution of a callback while still obtaining the value returned by the callback. The `value` method will return a tuple containing the value returned by the callback and the amount of milliseconds it took to execute the callback:
+Sometimes, you may want to benchmark the execution of a callback while still obtaining the value returned by the callback. The `value` method will return a tuple containing the value returned by the callback and the number of milliseconds it took to execute the callback:
 
 ```php
 [$count, $duration] = Benchmark::value(fn () => User::count());
@@ -2882,9 +3139,6 @@ For a thorough discussion of Carbon and its features, please consult the [offici
 
 <a name="deferred-functions"></a>
 ### Deferred Functions
-
-> [!WARNING]
-> Deferred functions are currently in beta while we gather community feedback.
 
 While Laravel's [queued jobs](/docs/{{version}}/queues) allow you to queue tasks for background processing, sometimes you may have simple tasks you would like to defer without configuring or maintaining a long-running queue worker.
 
@@ -2920,19 +3174,6 @@ If you need to cancel a deferred function before it is executed, you can use the
 defer(fn () => Metrics::report(), 'reportMetrics');
 
 defer()->forget('reportMetrics');
-```
-
-<a name="deferred-function-compatibility"></a>
-#### Deferred Function Compatibility
-
-If you upgraded to Laravel 11.x from a Laravel 10.x application and your application's skeleton still contains an `app/Http/Kernel.php` file, you should add the `InvokeDeferredCallbacks` middleware to the beginning of the kernel's `$middleware` property:
-
-```php
-protected $middleware = [
-    \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class, // [tl! add]
-    \App\Http\Middleware\TrustProxies::class,
-    // ...
-];
 ```
 
 <a name="disabling-deferred-functions-in-tests"></a>
@@ -3056,7 +3297,7 @@ $user = Pipeline::send($user)
 
 As you can see, each invokable class or closure in the pipeline is provided the input and a `$next` closure. Invoking the `$next` closure will invoke the next callable in the pipeline. As you may have noticed, this is very similar to [middleware](/docs/{{version}}/middleware).
 
-When the last callable in the pipeline invokes the `$next` closure, the callable provided to the `then` method will be invoked. Typically, this callable will simply return the given input.
+When the last callable in the pipeline invokes the `$next` closure, the callable provided to the `then` method will be invoked. Typically, this callable will simply return the given input. For convenience, if you simply want to return the input after it has been processed, you may use the `thenReturn` method.
 
 Of course, as discussed previously, you are not limited to providing closures to your pipeline. You may also provide invokable classes. If a class name is provided, the class will be instantiated via Laravel's [service container](/docs/{{version}}/container), allowing dependencies to be injected into the invokable class:
 
@@ -3067,7 +3308,7 @@ $user = Pipeline::send($user)
         ActivateSubscription::class,
         SendWelcomeEmail::class,
     ])
-    ->then(fn (User $user) => $user);
+    ->thenReturn();
 ```
 
 <a name="sleep"></a>
@@ -3214,7 +3455,7 @@ Sleep::assertNeverSlept();
 Sleep::assertInsomniac();
 ```
 
-Sometimes it may be useful to perform an action whenever a fake sleep occurs in your application code. To achieve this, you may provide a callback to the `whenFakingSleep` method. In the following example, we use Laravel's [time manipulation helpers](/docs/{{version}}/mocking#interacting-with-time) to instantly progress time by the duration of each sleep:
+Sometimes it may be useful to perform an action whenever a fake sleep occurs. To achieve this, you may provide a callback to the `whenFakingSleep` method. In the following example, we use Laravel's [time manipulation helpers](/docs/{{version}}/mocking#interacting-with-time) to instantly progress time by the duration of each sleep:
 
 ```php
 use Carbon\CarbonInterval as Duration;
@@ -3241,7 +3482,7 @@ Sleep::for(1)->second();
 $start->diffForHumans(); // 1 second ago
 ```
 
-Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [`retry`](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.
+Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [retry](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.
 
 <a name="timebox"></a>
 ### Timebox
@@ -3261,3 +3502,113 @@ use Illuminate\Support\Timebox;
 ```
 
 If an exception is thrown within the closure, this class will respect the defined delay and re-throw the exception after the delay.
+
+<a name="uri"></a>
+### URI
+
+Laravel's `Uri` class provides a convenient and fluent interface for creating and manipulating URIs. This class wraps the functionality provided by the underlying League URI package and integrates seamlessly with Laravel's routing system.
+
+You can create a `Uri` instance easily using static methods:
+
+```php
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\InvokableController;
+use Illuminate\Support\Uri;
+
+// Generate a URI instance from the given string...
+$uri = Uri::of('https://example.com/path');
+
+// Generate URI instances to paths, named routes, or controller actions...
+$uri = Uri::to('/dashboard');
+$uri = Uri::route('users.show', ['user' => 1]);
+$uri = Uri::signedRoute('users.show', ['user' => 1]);
+$uri = Uri::temporarySignedRoute('user.index', now()->addMinutes(5));
+$uri = Uri::action([UserController::class, 'index']);
+$uri = Uri::action(InvokableController::class);
+
+// Generate a URI instance from the current request URL...
+$uri = $request->uri();
+```
+
+Once you have a URI instance, you can fluently modify it:
+
+```php
+$uri = Uri::of('https://example.com')
+    ->withScheme('http')
+    ->withHost('test.com')
+    ->withPort(8000)
+    ->withPath('/users')
+    ->withQuery(['page' => 2])
+    ->withFragment('section-1');
+```
+
+<a name="inspecting-uris"></a>
+#### Inspecting URIs
+
+The `Uri` class also allows you to easily inspect the various components of the underlying URI:
+
+```php
+$scheme = $uri->scheme();
+$host = $uri->host();
+$port = $uri->port();
+$path = $uri->path();
+$segments = $uri->pathSegments();
+$query = $uri->query();
+$fragment = $uri->fragment();
+```
+
+<a name="manipulating-query-strings"></a>
+#### Manipulating Query Strings
+
+The `Uri` class offers several methods that may be used to manipulate a URI's query string. The `withQuery` method may be used to merge additional query string parameters into the existing query string:
+
+```php
+$uri = $uri->withQuery(['sort' => 'name']);
+```
+
+The `withQueryIfMissing` method may be used to merge additional query string parameters into the existing query string if the given keys do not already exist in the query string:
+
+```php
+$uri = $uri->withQueryIfMissing(['page' => 1]);
+```
+
+The `replaceQuery` method may be used to complete replace the existing query string with a new one:
+
+```php
+$uri = $uri->replaceQuery(['page' => 1]);
+```
+
+The `pushOntoQuery` method may be used to push additional parameters onto a query string parameter that has an array value:
+
+```php
+$uri = $uri->pushOntoQuery('filter', ['active', 'pending']);
+```
+
+The `withoutQuery` method may be used to remove parameters from the query string:
+
+```php
+$uri = $uri->withoutQuery(['page']);
+```
+
+<a name="generating-responses-from-uris"></a>
+#### Generating Responses From URIs
+
+The `redirect` method may be used to generate a `RedirectResponse` instance to the given URI:
+
+```php
+$uri = Uri::of('https://example.com');
+
+return $uri->redirect();
+```
+
+Or, you may simply return the `Uri` instance from a route or controller action, which will automatically generate a redirect response to the returned URI:
+
+```php
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Uri;
+
+Route::get('/redirect', function () {
+    return Uri::to('/index')
+        ->withQuery(['sort' => 'name']);
+});
+```

@@ -324,7 +324,7 @@ Blade will automatically detect the class that's linked to this component by pas
 <a name="anonymous-components"></a>
 #### Anonymous Components
 
-If your package contains anonymous components, they must be placed within a `components` directory of your package's "views" directory (as specified by the [`loadViewsFrom` method](#views)). Then, you may render them by prefixing the component name with the package's view namespace:
+If your package contains anonymous components, they must be placed within a `components` directory of your package's "views" directory (as specified by the [loadViewsFrom method](#views)). Then, you may render them by prefixing the component name with the package's view namespace:
 
 ```blade
 <x-courier::alert />
@@ -373,7 +373,7 @@ public function boot(): void
 <a name="optimize-commands"></a>
 ### Optimize Commands
 
-Laravel's [`optimize` command](/docs/{{version}}/deployment#optimization) caches the application's configuration, events, routes, and views. Using the `optimizes` method, you may register your package's own Artisan commands that should be invoked when the `optimize` and `optimize:clear` commands are executed:
+Laravel's [optimize command](/docs/{{version}}/deployment#optimization) caches the application's configuration, events, routes, and views. Using the `optimizes` method, you may register your package's own Artisan commands that should be invoked when the `optimize` and `optimize:clear` commands are executed:
 
 ```php
 /**
@@ -438,4 +438,10 @@ Now your users may publish these groups separately by referencing their tag when
 
 ```shell
 php artisan vendor:publish --tag=courier-config
+```
+
+Your users can also publish all publishable files defined by your package's service provider using the `--provider` flag:
+
+```shell
+php artisan vendor:publish --provider="Your\Package\ServiceProvider"
 ```

@@ -90,6 +90,14 @@ Route::get('/user/{id}', function (string $id) {
 });
 ```
 
+For convenience, you may use the model's `toResource` method, which will use framework conventions to automatically discover the model's underlying resource:
+
+```php
+return User::findOrFail($id)->toResource();
+```
+
+When invoking the `toResource` method, Laravel will attempt to locate a resource that matches the model's name and is optionally suffixed with `Resource` within the `Http\Resources` namespace closest to the model's namespace.
+
 <a name="resource-collections"></a>
 ### Resource Collections
 
@@ -104,7 +112,18 @@ Route::get('/users', function () {
 });
 ```
 
-Note that this does not allow any addition of custom meta data that may need to be returned with your collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:
+Or, for convenience, you may use the Eloquent collection's `toResourceCollection` method, which will use framework conventions to automatically discover the model's underlying resource collection:
+
+```php
+return User::all()->toResourceCollection();
+```
+
+When invoking the `toResourceCollection` method, Laravel will attempt to locate a resource collection that matches the model's name and is suffixed with `Collection` within the `Http\Resources` namespace closest to the model's namespace.
+
+<a name="custom-resource-collections"></a>
+#### Custom Resource Collections
+
+By default, resource collections do not allow any addition of custom meta data that may need to be returned with your collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:
 
 ```shell
 php artisan make:resource UserCollection
@@ -149,6 +168,14 @@ Route::get('/users', function () {
     return new UserCollection(User::all());
 });
 ```
+
+Or, for convenience, you may use the Eloquent collection's `toResourceCollection` method, which will use framework conventions to automatically discover the model's underlying resource collection:
+
+```php
+return User::all()->toResourceCollection();
+```
+
+When invoking the `toResourceCollection` method, Laravel will attempt to locate a resource collection that matches the model's name and is suffixed with `Collection` within the `Http\Resources` namespace closest to the model's namespace.
 
 <a name="preserving-collection-keys"></a>
 #### Preserving Collection Keys
@@ -248,11 +275,10 @@ class UserResource extends JsonResource
 Once a resource has been defined, it may be returned directly from a route or controller:
 
 ```php
-use App\Http\Resources\UserResource;
 use App\Models\User;
 
 Route::get('/user/{id}', function (string $id) {
-    return new UserResource(User::findOrFail($id));
+    return User::findOrFail($id)->toUserResource();
 });
 ```
 
@@ -289,14 +315,13 @@ public function toArray(Request $request): array
 <a name="writing-resource-collections"></a>
 #### Resource Collections
 
-While resources transform a single model into an array, resource collections transform a collection of models into an array. However, it is not absolutely necessary to define a resource collection class for each one of your models since all resources provide a `collection` method to generate an "ad-hoc" resource collection on the fly:
+While resources transform a single model into an array, resource collections transform a collection of models into an array. However, it is not absolutely necessary to define a resource collection class for each one of your models since all Eloquent model collections provide a `toResourceCollection` method to generate an "ad-hoc" resource collection on the fly:
 
 ```php
-use App\Http\Resources\UserResource;
 use App\Models\User;
 
 Route::get('/users', function () {
-    return UserResource::collection(User::all());
+    return User::all()->toResourceCollection();
 });
 ```
 
@@ -339,6 +364,14 @@ Route::get('/users', function () {
     return new UserCollection(User::all());
 });
 ```
+
+Or, for convenience, you may use the Eloquent collection's `toResourceCollection` method, which will use framework conventions to automatically discover the model's underlying resource collection:
+
+```php
+return User::all()->toResourceCollection();
+```
+
+When invoking the `toResourceCollection` method, Laravel will attempt to locate a resource collection that matches the model's name and is suffixed with `Collection` within the `Http\Resources` namespace closest to the model's namespace.
 
 <a name="data-wrapping"></a>
 ### Data Wrapping
@@ -472,6 +505,12 @@ use App\Models\User;
 Route::get('/users', function () {
     return new UserCollection(User::paginate());
 });
+```
+
+Or, for convenience, you may use the paginator's `toResourceCollection` method, which will use framework conventions to automatically discover the paginated model's underlying resource collection:
+
+```php
+return User::paginate()->toResourceCollection();
 ```
 
 Paginated responses always contain `meta` and `links` keys with information about the paginator's state:
@@ -800,7 +839,9 @@ class UserCollection extends ResourceCollection
 You may also add top-level data when constructing resource instances in your route or controller. The `additional` method, which is available on all resources, accepts an array of data that should be added to the resource response:
 
 ```php
-return (new UserCollection(User::all()->load('roles')))
+return User::all()
+    ->load('roles')
+    ->toResourceCollection()
     ->additional(['meta' => [
         'key' => 'value',
     ]]);
@@ -812,11 +853,10 @@ return (new UserCollection(User::all()->load('roles')))
 As you have already read, resources may be returned directly from routes and controllers:
 
 ```php
-use App\Http\Resources\UserResource;
 use App\Models\User;
 
 Route::get('/user/{id}', function (string $id) {
-    return new UserResource(User::findOrFail($id));
+    return User::findOrFail($id)->toResource();
 });
 ```
 
@@ -827,7 +867,8 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 
 Route::get('/user', function () {
-    return (new UserResource(User::find(1)))
+    return User::find(1)
+        ->toResource()
         ->response()
         ->header('X-Value', 'True');
 });

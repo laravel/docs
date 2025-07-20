@@ -188,7 +188,9 @@ Context::scope(
 );
 
 Context::all();
-// []
+// [
+//     'trace_id' => 'abc-999',
+// ]
 
 Context::allHidden();
 // [
@@ -225,6 +227,7 @@ Stacks can be useful to capture historical information about a request, such as 
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\DB;
 
+// In AppServiceProvider.php...
 DB::listen(function ($event) {
     Context::push('queries', [$event->time, $event->sql]);
 });
@@ -264,10 +267,12 @@ use Illuminate\Support\Facades\Context;
 $value = Context::get('key');
 ```
 
-The `only` method may be used to retrieve a subset of the information in the context:
+The `only` and `except` methods may be used to retrieve a subset of the information in the context:
 
 ```php
 $data = Context::only(['first_key', 'second_key']);
+
+$data = Context::except(['first_key']);
 ```
 
 The `pull` method may be used to retrieve information from the context and immediately remove it from the context:
@@ -281,11 +286,20 @@ If context data is stored in a [stack](#stacks), you may pop items from the stac
 ```php
 Context::push('breadcrumbs', 'first_value', 'second_value');
 
-Context::pop('breadcrumbs')
+Context::pop('breadcrumbs');
 // second_value
 
 Context::get('breadcrumbs');
 // ['first_value']
+```
+
+The `remember` and `rememberHidden` methods may be used to retrieve information from the context, while setting the context value to the value returned by the given closure if the requested information doesn't exist:
+
+```php
+$permissions = Context::remember(
+    'user-permissions',
+    fn () => $user->permissions,
+);
 ```
 
 If you would like to retrieve all of the information stored in the context, you may invoke the `all` method:
@@ -370,8 +384,10 @@ Context::getHidden(/* ... */);
 Context::pullHidden(/* ... */);
 Context::popHidden(/* ... */);
 Context::onlyHidden(/* ... */);
+Context::exceptHidden(/* ... */);
 Context::allHidden(/* ... */);
 Context::hasHidden(/* ... */);
+Context::missingHidden(/* ... */);
 Context::forgetHidden(/* ... */);
 ```
 

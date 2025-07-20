@@ -431,7 +431,7 @@ The Eloquent `all` method will return all of the results in the model's table. H
 ```php
 $flights = Flight::where('active', 1)
     ->orderBy('name')
-    ->take(10)
+    ->limit(10)
     ->get();
 ```
 
@@ -531,7 +531,7 @@ Flight::where(function ($query) {
 <a name="chunking-using-lazy-collections"></a>
 ### Chunking Using Lazy Collections
 
-The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that, behind the scenes, it executes the query in chunks. However, instead of passing each chunk directly into a callback as is, the `lazy` method returns a flattened [`LazyCollection`](/docs/{{version}}/collections#lazy-collections) of Eloquent models, which lets you interact with the results as a single stream:
+The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that, behind the scenes, it executes the query in chunks. However, instead of passing each chunk directly into a callback as is, the `lazy` method returns a flattened [LazyCollection](/docs/{{version}}/collections#lazy-collections) of Eloquent models, which lets you interact with the results as a single stream:
 
 ```php
 use App\Models\Flight;
@@ -879,7 +879,7 @@ $user->getOriginal('name'); // John
 $user->getOriginal(); // Array of original attributes...
 ```
 
-The `getChanges` method returns an array containing the attributes that changed when the model was last saved:
+The `getChanges` method returns an array containing the attributes that changed when the model was last saved, while the `getPrevious` method returns an array containing the original attribute values before the model was last saved:
 
 ```php
 $user = User::find(1);
@@ -898,6 +898,15 @@ $user->getChanges();
     [
         'name' => 'Jack',
         'email' => 'jack@example.com',
+    ]
+*/
+
+$user->getPrevious();
+
+/*
+    [
+        'name' => 'John',
+        'email' => 'john@example.com',
     ]
 */
 ```
@@ -1582,7 +1591,7 @@ If you would like to use scopes to create models that have the same attributes a
 
 namespace App\Models;
 
-use Illuminate\Database\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 

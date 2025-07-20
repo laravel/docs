@@ -1755,7 +1755,7 @@ This method will set the trial period ending date on the subscription record wit
 The `trialUntil` method allows you to provide a `DateTime` instance that specifies when the trial period should end:
 
 ```php
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 $user->newSubscription('default', 'price_monthly')
     ->trialUntil(Carbon::now()->addDays(10))
@@ -2211,12 +2211,14 @@ The `downloadInvoice` method also allows for a custom filename via its third arg
 
 ```php
 return $request->user()->downloadInvoice($invoiceId, [], 'my-invoice');
+```
 
 <a name="custom-invoice-render"></a>
 #### Custom Invoice Renderer
 
 Cashier also makes it possible to use a custom invoice renderer. By default, Cashier uses the `DompdfInvoiceRenderer` implementation, which utilizes the [dompdf](https://github.com/dompdf/dompdf) PHP library to generate Cashier's invoices. However, you may use any renderer you wish by implementing the `Laravel\Cashier\Contracts\InvoiceRenderer` interface. For example, you may wish to render an invoice PDF using an API call to a third-party PDF rendering service:
 
+```php
 use Illuminate\Support\Facades\Http;
 use Laravel\Cashier\Contracts\InvoiceRenderer;
 use Laravel\Cashier\Invoice;
@@ -2446,7 +2448,7 @@ Route::get('/product-checkout', function (Request $request) {
 });
 ```
 
-After a guest checkout has been completed, Stripe can dispatch a `checkout.session.completed` webhook event, so make sure to [configure your Stripe webhook](https://dashboard.stripe.com/webhooks) to actually send this event to your application. Once the webhook has been enabled within the Stripe dashboard, you may [handle the webhook with Cashier](#handling-stripe-webhooks). The object contained in the webhook payload will be a [`checkout` object](https://stripe.com/docs/api/checkout/sessions/object) that you may inspect in order to fulfill your customer's order.
+After a guest checkout has been completed, Stripe can dispatch a `checkout.session.completed` webhook event, so make sure to [configure your Stripe webhook](https://dashboard.stripe.com/webhooks) to actually send this event to your application. Once the webhook has been enabled within the Stripe dashboard, you may [handle the webhook with Cashier](#handling-stripe-webhooks). The object contained in the webhook payload will be a [checkout object](https://stripe.com/docs/api/checkout/sessions/object) that you may inspect in order to fulfill your customer's order.
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments

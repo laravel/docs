@@ -55,7 +55,7 @@ Want to get started fast? Install a [Laravel application starter kit](/docs/{{ve
 
 By default, Laravel includes an `App\Models\User` [Eloquent model](/docs/{{version}}/eloquent) in your `app/Models` directory. This model may be used with the default Eloquent authentication driver.
 
-If your application is not using Eloquent, you may use the `database` authentication provider which uses the Laravel query builder. If your application is using MongoDB, check out MongoDB's official [Laravel user authentication documentation](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/user-authentication/) .
+If your application is not using Eloquent, you may use the `database` authentication provider which uses the Laravel query builder. If your application is using MongoDB, check out MongoDB's official [Laravel user authentication documentation](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/user-authentication/).
 
 When building the database schema for the `App\Models\User` model, make sure the password column is at least 60 characters in length. Of course, the `users` table migration that is included in new Laravel applications already creates a column that exceeds this length.
 
@@ -825,19 +825,19 @@ Laravel dispatches a variety of [events](/docs/{{version}}/events) during the au
 
 <div class="overflow-auto">
 
-| Event Name |
-| --- |
-| `Illuminate\Auth\Events\Registered` |
-| `Illuminate\Auth\Events\Attempting` |
-| `Illuminate\Auth\Events\Authenticated` |
-| `Illuminate\Auth\Events\Login` |
-| `Illuminate\Auth\Events\Failed` |
-| `Illuminate\Auth\Events\Validated` |
-| `Illuminate\Auth\Events\Verified` |
-| `Illuminate\Auth\Events\Logout` |
+| Event Name                                   |
+| -------------------------------------------- |
+| `Illuminate\Auth\Events\Registered`          |
+| `Illuminate\Auth\Events\Attempting`          |
+| `Illuminate\Auth\Events\Authenticated`       |
+| `Illuminate\Auth\Events\Login`               |
+| `Illuminate\Auth\Events\Failed`              |
+| `Illuminate\Auth\Events\Validated`           |
+| `Illuminate\Auth\Events\Verified`            |
+| `Illuminate\Auth\Events\Logout`              |
 | `Illuminate\Auth\Events\CurrentDeviceLogout` |
-| `Illuminate\Auth\Events\OtherDeviceLogout` |
-| `Illuminate\Auth\Events\Lockout` |
-| `Illuminate\Auth\Events\PasswordReset` |
+| `Illuminate\Auth\Events\OtherDeviceLogout`   |
+| `Illuminate\Auth\Events\Lockout`             |
+| `Illuminate\Auth\Events\PasswordReset`       |
 
 </div>

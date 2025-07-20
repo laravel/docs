@@ -33,7 +33,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Scout](https://github.com/laravel/scout) provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
+[Laravel Scout](https://github.com/laravel/scout) provides a simple, driver-based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
 Currently, Scout ships with [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), [Typesense](https://typesense.org), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
@@ -168,7 +168,7 @@ Additional settings and schema definitions for your Typesense collections can be
 <a name="preparing-data-for-storage-in-typesense"></a>
 #### Preparing Data for Storage in Typesense
 
-When utilizing Typesense, your searchable model's must define a `toSearchableArray` method that casts your model's primary key to a string and creation date to a UNIX timestamp:
+When utilizing Typesense, your searchable models must define a `toSearchableArray` method that casts your model's primary key to a string and creation date to a UNIX timestamp:
 
 ```php
 /**
@@ -176,7 +176,7 @@ When utilizing Typesense, your searchable model's must define a `toSearchableArr
  *
  * @return array<string, mixed>
  */
-public function toSearchableArray()
+public function toSearchableArray(): array
 {
     return array_merge($this->toArray(),[
         'id' => (string) $this->id,
@@ -754,7 +754,7 @@ $orders = Order::search('Star Trek')->raw();
 <a name="custom-indexes"></a>
 #### Custom Indexes
 
-Search queries will typically be performed on the index specified by the model's [`searchableAs`](#configuring-model-indexes) method. However, you may use the `within` method to specify a custom index that should be searched instead:
+Search queries will typically be performed on the index specified by the model's [searchableAs](#configuring-model-indexes) method. However, you may use the `within` method to specify a custom index that should be searched instead:
 
 ```php
 $orders = Order::search('Star Trek')

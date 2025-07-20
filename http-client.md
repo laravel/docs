@@ -57,7 +57,7 @@ The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAcces
 return Http::get('http://example.com/users/1')['name'];
 ```
 
-In addition to the response methods listed above, the following methods may be used to determine if the response has a given status code:
+In addition to the response methods listed above, the following methods may be used to determine if the response has a specific status code:
 
 ```php
 $response->ok() : bool;                  // 200 OK
@@ -87,7 +87,7 @@ The HTTP client also allows you to construct request URLs using the [URI templat
 Http::withUrlParameters([
     'endpoint' => 'https://laravel.com',
     'page' => 'docs',
-    'version' => '11.x',
+    'version' => '12.x',
     'topic' => 'validation',
 ])->get('{+endpoint}/{page}/{version}/{topic}');
 ```
@@ -133,7 +133,7 @@ Alternatively, the `withQueryParameters` method may be used:
 Http::retry(3, 100)->withQueryParameters([
     'name' => 'Taylor',
     'page' => 1,
-])->get('http://example.com/users')
+])->get('http://example.com/users');
 ```
 
 <a name="sending-form-url-encoded-requests"></a>
@@ -251,7 +251,7 @@ $response = Http::timeout(3)->get(/* ... */);
 
 If the given timeout is exceeded, an instance of `Illuminate\Http\Client\ConnectionException` will  be thrown.
 
-You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method:
+You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method. The default is 10 seconds:
 
 ```php
 $response = Http::connectTimeout(3)->get(/* ... */);
@@ -398,6 +398,8 @@ return Http::post(/* ... */)->throw(function (Response $response, RequestExcepti
 By default, `RequestException` messages are truncated to 120 characters when logged or reported. To customize or disable this behavior, you may utilize the `truncateRequestExceptionsAt` and `dontTruncateRequestExceptions` methods when configuring your application's exception handling behavior in your `bootstrap/app.php` file:
 
 ```php
+use Illuminate\Foundation\Configuration\Exceptions;
+
 ->withExceptions(function (Exceptions $exceptions) {
     // Truncate request exception messages to 240 characters...
     $exceptions->truncateRequestExceptionsAt(240);
@@ -405,6 +407,12 @@ By default, `RequestException` messages are truncated to 120 characters when log
     // Disable request exception message truncation...
     $exceptions->dontTruncateRequestExceptions();
 })
+```
+
+Alternatively, you may customize the exception truncation behavior per request using the `truncateExceptionsAt` method:
+
+```php
+return Http::truncateExceptionsAt(240)->post(/* ... */);
 ```
 
 <a name="guzzle-middleware"></a>
@@ -592,7 +600,7 @@ $response = Http::post(/* ... */);
 <a name="faking-specific-urls"></a>
 #### Faking Specific URLs
 
-Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. Any requests made to URLs that have not been faked will actually be executed. You may use the `Http` facade's `response` method to construct stub / fake responses for these endpoints:
+Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. You may use the `Http` facade's `response` method to construct stub / fake responses for these endpoints:
 
 ```php
 Http::fake([
@@ -604,7 +612,7 @@ Http::fake([
 ]);
 ```
 
-If you would like to specify a fallback URL pattern that will stub all unmatched URLs, you may use a single `*` character:
+Any requests made to URLs that have not been faked will actually be executed. If you would like to specify a fallback URL pattern that will stub all unmatched URLs, you may use a single `*` character:
 
 ```php
 Http::fake([
@@ -627,13 +635,21 @@ Http::fake([
 ```
 
 <a name="faking-connection-exceptions"></a>
-#### Faking Connection Exceptions
+#### Faking Exceptions
 
 Sometimes you may need to test your application's behavior if the HTTP client encounters an `Illuminate\Http\Client\ConnectionException` when attempting to make a request. You can instruct the HTTP client to throw a connection exception using the `failedConnection` method:
 
 ```php
 Http::fake([
     'github.com/*' => Http::failedConnection(),
+]);
+```
+
+To test your application's behavior if a `Illuminate\Http\Client\RequestException` is thrown, you may use the `failedRequest` method:
+
+```php
+Http::fake([
+    'github.com/*' => Http::failedRequest(['code' => 'not_found'], 404),
 ]);
 ```
 
@@ -683,27 +699,6 @@ use Illuminate\Http\Client\Request;
 Http::fake(function (Request $request) {
     return Http::response('Hello World', 200);
 });
-```
-
-<a name="preventing-stray-requests"></a>
-### Preventing Stray Requests
-
-If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:
-
-```php
-use Illuminate\Support\Facades\Http;
-
-Http::preventStrayRequests();
-
-Http::fake([
-    'github.com/*' => Http::response('ok'),
-]);
-
-// An "ok" response is returned...
-Http::get('https://github.com/laravel/framework');
-
-// An exception is thrown...
-Http::get('https://laravel.com');
 ```
 
 <a name="inspecting-requests"></a>
@@ -807,6 +802,27 @@ $recorded = Http::recorded(function (Request $request, Response $response) {
 });
 ```
 
+<a name="preventing-stray-requests"></a>
+### Preventing Stray Requests
+
+If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+Http::preventStrayRequests();
+
+Http::fake([
+    'github.com/*' => Http::response('ok'),
+]);
+
+// An "ok" response is returned...
+Http::get('https://github.com/laravel/framework');
+
+// An exception is thrown...
+Http::get('https://laravel.com');
+```
+
 <a name="events"></a>
 ## Events
 
@@ -820,7 +836,7 @@ use Illuminate\Http\Client\Events\RequestSending;
 class LogRequest
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(RequestSending $event): void
     {

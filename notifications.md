@@ -145,7 +145,7 @@ public function via(object $notifiable): array
 ### Queueing Notifications
 
 > [!WARNING]
-> Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues#running-the-queue-worker).
+> Before queueing notifications, you should configure your queue and [start a worker](/docs/{{version}}/queues#running-the-queue-worker).
 
 Sending notifications can take time, especially if the channel needs to make an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using the `make:notification` command, so you may immediately add them to your notification class:
 
@@ -292,7 +292,7 @@ use Illuminate\Queue\Middleware\RateLimited;
 public function middleware(object $notifiable, string $channel)
 {
     return match ($channel) {
-        'email' => [new RateLimited('postmark')],
+        'mail' => [new RateLimited('postmark')],
         'slack' => [new RateLimited('slack')],
         default => [],
     };
@@ -920,7 +920,7 @@ php artisan migrate
 ```
 
 > [!NOTE]
-> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [`uuidMorphs`](/docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration.
+> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [uuidMorphs](/docs/{{version}}/migrations#column-method-uuidMorphs) or [ulidMorphs](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration.
 
 <a name="formatting-database-notifications"></a>
 ### Formatting Database Notifications
@@ -944,9 +944,9 @@ public function toArray(object $notifiable): array
 
 When a notification is stored in your application's database, the `type` column will be set to the notification's class name by default, and the `read_at` column will be `null`. However, you can customize this behavior by defining the `databaseType` and `initialDatabaseReadAtValue` methods in your notification class:
 
-    use Illuminate\Support\Carbon;
-
 ```php
+use Illuminate\Support\Carbon;
+
 /**
  * Get the notification's database type.
  */
@@ -1092,6 +1092,82 @@ Echo.private('App.Models.User.' + userId)
     .notification((notification) => {
         console.log(notification.type);
     });
+```
+
+<a name="using-react-or-vue"></a>
+#### Using React or Vue
+
+Laravel Echo includes React and Vue hooks that make it painless to listen for notifications. To get started, invoke the `useEchoNotification` hook, which is used to listen for notifications. The `useEchoNotification` hook will automatically leave channels when the consuming component is unmounted:
+
+```js tab=React
+import { useEchoNotification } from "@laravel/echo-react";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+);
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoNotification } from "@laravel/echo-vue";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+);
+</script>
+```
+
+By default, the hook listens to all notifications. To specify the notification types you would like to listen to, you can provide either a string or array of types to `useEchoNotification`:
+
+```js tab=React
+import { useEchoNotification } from "@laravel/echo-react";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoNotification } from "@laravel/echo-vue";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
+</script>
+```
+
+You may also specify the shape of the notification payload data, providing greater type safety and editing convenience:
+
+```ts
+type InvoicePaidNotification = {
+    invoice_id: number;
+    created_at: string;
+};
+
+useEchoNotification<InvoicePaidNotification>(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.invoice_id);
+        console.log(notification.created_at);
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
 ```
 
 <a name="customizing-the-notification-channel"></a>
@@ -1259,7 +1335,7 @@ composer require laravel/slack-notification-channel
 
 Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your Slack workspace.
 
-If you only need to send notifications to the same Slack workspace that the App is created in, you should ensure that your App has the `chat:write`, `chat:write.public`, and `chat:write.customize` scopes. If you want to send messages as your Slack App, you should ensure that your App also has the `chat:write:bot` scope. These scopes can be added from the "OAuth & Permissions" App management tab within Slack.
+If you only need to send notifications to the same Slack workspace that the App is created in, you should ensure that your App has the `chat:write`, `chat:write.public`, and `chat:write.customize` scopes. These scopes can be added from the "OAuth & Permissions" App management tab within Slack.
 
 Next, copy the App's "Bot User OAuth Token" and place it within a `slack` configuration array in your application's `services.php` configuration file. This token can be found on the "OAuth & Permissions" tab within Slack:
 
@@ -1670,7 +1746,7 @@ use Illuminate\Notifications\Events\NotificationSending;
 class CheckNotificationStatus
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(NotificationSending $event): void
     {
@@ -1683,7 +1759,7 @@ The notification will not be sent if an event listener for the `NotificationSend
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(NotificationSending $event): bool
 {
@@ -1695,7 +1771,7 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(NotificationSending $event): void
 {
@@ -1716,7 +1792,7 @@ use Illuminate\Notifications\Events\NotificationSent;
 class LogNotification
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(NotificationSent $event): void
     {
@@ -1729,7 +1805,7 @@ Within an event listener, you may access the `notifiable`, `notification`, `chan
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(NotificationSent $event): void
 {

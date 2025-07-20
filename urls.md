@@ -7,6 +7,7 @@
 - [URLs for Named Routes](#urls-for-named-routes)
     - [Signed URLs](#signed-urls)
 - [URLs for Controller Actions](#urls-for-controller-actions)
+- [Fluent URI Objects](#fluent-uri-objects)
 - [Default Values](#default-values)
 
 <a name="introduction"></a>
@@ -238,6 +239,47 @@ If the controller method accepts route parameters, you may pass an associative a
 ```php
 $url = action([UserController::class, 'profile'], ['id' => 1]);
 ```
+
+<a name="fluent-uri-objects"></a>
+## Fluent URI Objects
+
+Laravel's `Uri` class provides a convenient and fluent interface for creating and manipulating URIs via objects. This class wraps the functionality provided by the underlying League URI package and integrates seamlessly with Laravel's routing system.
+
+You can create a `Uri` instance easily using static methods:
+
+```php
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\InvokableController;
+use Illuminate\Support\Uri;
+
+// Generate a URI instance from the given string...
+$uri = Uri::of('https://example.com/path');
+
+// Generate URI instances to paths, named routes, or controller actions...
+$uri = Uri::to('/dashboard');
+$uri = Uri::route('users.show', ['user' => 1]);
+$uri = Uri::signedRoute('users.show', ['user' => 1]);
+$uri = Uri::temporarySignedRoute('user.index', now()->addMinutes(5));
+$uri = Uri::action([UserController::class, 'index']);
+$uri = Uri::action(InvokableController::class);
+
+// Generate a URI instance from the current request URL...
+$uri = $request->uri();
+```
+
+Once you have a URI instance, you can fluently modify it:
+
+```php
+$uri = Uri::of('https://example.com')
+    ->withScheme('http')
+    ->withHost('test.com')
+    ->withPort(8000)
+    ->withPath('/users')
+    ->withQuery(['page' => 2])
+    ->withFragment('section-1');
+```
+
+For more information on working with fluent URI objects, consult the [URI documentation](/docs/{{version}}/helpers#uri).
 
 <a name="default-values"></a>
 ## Default Values

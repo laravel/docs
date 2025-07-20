@@ -466,7 +466,7 @@ $url = route('profile', ['id' => 1, 'photos' => 'yes']);
 ```
 
 > [!NOTE]
-> Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values).
+> Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [URL::defaults method](/docs/{{version}}/urls#default-values).
 
 <a name="inspecting-the-current-route"></a>
 #### Inspecting the Current Route

@@ -20,7 +20,7 @@ Before using Redis with Laravel, we encourage you to install and use the [PhpRed
 If you are unable to install the PhpRedis extension, you may install the `predis/predis` package via Composer. Predis is a Redis client written entirely in PHP and does not require any additional extensions:
 
 ```shell
-composer require predis/predis:^2.0
+composer require predis/predis
 ```
 
 <a name="configuration"></a>
@@ -208,6 +208,16 @@ In addition to the default configuration options, PhpRedis supports the followin
         // 'stream' => ['verify_peer' => false],
     ],
 ],
+```
+
+<a name="unix-socket-connections"></a>
+#### Unix Socket Connections
+
+Redis connections can also be configured to use Unix sockets instead of TCP. This can offer improved performance by eliminating TCP overhead for connections to Redis instances on the same server as your application. To configure Redis to use a Unix socket, set your `REDIS_HOST` environment variable to the path of the Redis socket and the `REDIS_PORT` environment variable to `0`:
+
+```env
+REDIS_HOST=/run/redis/redis.sock
+REDIS_PORT=0
 ```
 
 <a name="phpredis-serialization"></a>
