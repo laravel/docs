@@ -1227,7 +1227,7 @@ However, an attempt does not necessarily mean the job's `handle` method was exec
 - The job's `handle` method runs and completes without throwing an exception.
 - Middleware such as `WithoutOverlapping` or `RateLimited` fails to acquire a lock and releases the job.
 
-You likely do not want it to keep retrying a job indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
+You likely do not want to keep attempting a job indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
 
 > [!NOTE]
 > By default, Laravel will only attempt a job once. If your job uses middleware like `WithoutOverlapping` or `RateLimited`, or if you're manually releasing jobs, you'll likely need to increase the number of allowed attempts via the `tries` option.
