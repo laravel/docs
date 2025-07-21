@@ -452,6 +452,29 @@ class SendShipmentNotification implements ShouldQueueAfterCommit
 }
 ```
 
+Alternatively, instead of implementing the `ShouldQueueAfterCommit` interface, you may define an `$afterCommit` property on your listener class:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    use InteractsWithQueue;
+
+    /**
+     * Indicate if the listener should be dispatched after all database transactions have committed.
+     *
+     * @var bool
+     */
+    public $afterCommit = true;
+}
+```
+
 > [!NOTE]
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
@@ -620,6 +643,110 @@ class SendShipmentNotification implements ShouldQueue
 ```
 
 In this example, the listener will be retried up to 25 times. However, the listener will fail if three unhandled exceptions are thrown by the listener.
+
+<a name="specifying-queued-listener-timeout"></a>
+#### Specifying Queued Listener Timeout
+
+Often, you know roughly how long you expect your queued listeners to take. For this reason, Laravel allows you to specify a "timeout" value. If a listener is processing for longer than the number of seconds specified by the timeout value, the worker processing the listener will exit with an error. You may define the maximum number of seconds a listener should be allowed to run by defining a `$timeout` property on your listener class:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * The number of seconds the listener can run before timing out.
+     *
+     * @var int
+     */
+    public $timeout = 120;
+}
+```
+
+<a name="failing-on-timeout"></a>
+#### Failing Queued Listeners on Timeout
+
+If you would like to indicate that a listener should be marked as failed on timeout, you may define the `$failOnTimeout` property on the listener class:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * Indicate if the listener should be marked as failed on timeout.
+     *
+     * @var bool
+     */
+    public $failOnTimeout = true;
+}
+```
+
+<a name="encrypted-queued-listeners"></a>
+#### Encrypted Queued Listeners
+
+Laravel allows you to ensure the privacy and integrity of a queued listener's data via [encryption](/docs/{{version}}/encryption). To get started, simply add the `ShouldBeEncrypted` interface to the listener class. Once this interface has been added to the class, Laravel will automatically encrypt your listener before pushing it onto a queue:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue, ShouldBeEncrypted
+{
+    // ...
+}
+```
+
+<a name="queued-listener-middleware"></a>
+#### Queued Listener Middleware
+
+Queued listeners can also utilize [job middleware](/docs/{{version}}/queues#job-middleware). Job middleware allow you to wrap custom logic around the execution of queued listeners, reducing boilerplate in the listeners themselves. After creating job middleware, they may be attached to a listener by returning them from the listener's `middleware` method:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use App\Jobs\Middleware\RateLimited;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * Get the middleware the listener should pass through.
+     *
+     * @return array<int, object>
+     */
+    public function middleware(): array
+    {
+        return [new RateLimited];
+    }
+
+    /**
+     * Handle the event.
+     */
+    public function handle(OrderShipped $event): void
+    {
+        // Process the event...
+    }
+}
+```
 
 <a name="dispatching-events"></a>
 ## Dispatching Events
