@@ -2273,7 +2273,7 @@ class ProcessPodcast implements ShouldQueue
 > [!WARNING]
 > A new instance of the job is instantiated before invoking the `failed` method; therefore, any class property modifications that may have occurred within the `handle` method will be lost.
 
-A failed job is not necessarily one that encountered an unhandled exception. A job is considered failed when it has exhausted all of its allowed attempts. These attempts can be consumed in several ways:
+A failed job is not necessarily one that encountered an unhandled exception. A job may also be considered failed when it has exhausted all of its allowed attempts. These attempts can be consumed in several ways:
 
 - The job encounters an unhandled exception during execution.
 - The job timed out.
