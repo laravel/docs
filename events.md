@@ -580,7 +580,7 @@ If you require more complex logic for determining the listeners's backoff time, 
 /**
  * Calculate the number of seconds to wait before retrying the queued listener.
  */
-public function backoff(): int
+public function backoff(OrderShipped $event): int
 {
     return 3;
 }
@@ -594,7 +594,7 @@ You may easily configure "exponential" backoffs by returning an array of backoff
  *
  * @return list<int>
  */
-public function backoff(): array
+public function backoff(OrderShipped $event): array
 {
     return [1, 5, 10];
 }
@@ -733,7 +733,7 @@ class SendShipmentNotification implements ShouldQueue
      *
      * @return array<int, object>
      */
-    public function middleware(): array
+    public function middleware(OrderShipped $event): array
     {
         return [new RateLimited];
     }
