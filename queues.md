@@ -2275,8 +2275,8 @@ class ProcessPodcast implements ShouldQueue
 
 A failed job is not necessarily one that encountered an unhandled exception. A job may also be considered failed when it has exhausted all of its allowed attempts. These attempts can be consumed in several ways:
 
-- The job encounters an unhandled exception during execution.
 - The job timed out.
+- The job encounters an unhandled exception during execution.
 - The job is released back to the queue either manually or by a middleware.
 
 If the final attempt fails due to an exception thrown during job execution, that exception will be passed to the job's failed method.
