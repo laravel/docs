@@ -328,7 +328,7 @@ Adjusting the `tries` option is essential when using middlewares such as `Withou
 
 If you don’t set the `tries` option, Horizon defaults to a single attempt, unless the job class defines `$tries`, which takes precedence over the Horizon configuration.
 
-Setting `tries` or `$tries` to 0 allows unlimited retries, which is ideal when the number of attempts is uncertain. To prevent endless failures, you can limit the number of exceptions allowed by setting the `$maxExceptions` property on the job class.
+Setting `tries` or `$tries` to 0 allows unlimited attempts, which is ideal when the number of attempts is uncertain. To prevent endless failures, you can limit the number of exceptions allowed by setting the `$maxExceptions` property on the job class.
 
 <a name="job-timeout"></a>
 ### Job Timeout
