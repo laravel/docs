@@ -1221,10 +1221,10 @@ When a job is dispatched, it is pushed onto the queue. A worker then picks it up
 
 However, an attempt does not necessarily mean the job's handle method was executed. Attempts can be consumed in several ways:
 
-- The job's `handle` method runs and completes without throwing an exception.
-- The job encounters an unhandled exception during execution.
 - The job timed out.
+- The job encounters an unhandled exception during execution.
 - The job is manually released back to the queue using `$this->release()`.
+- The job's `handle` method runs and completes without throwing an exception.
 - Middleware such as `WithoutOverlapping` or `RateLimited` fails to acquire a lock and releases the job.
 
 You likely do not want it to keep retrying a job indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
