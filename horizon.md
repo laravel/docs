@@ -324,11 +324,12 @@ You can define the maximum number of attempts a job can consume directly at the 
 > [!NOTE]
 > This option is similar to the `--tries` option when using the Artisan command to process queues.
 
-Fine-tuning the `tries` option is essential when using middlewares such as `WithoutOverlapping` or `RateLimited` because they consume attempts. However, depending on your case, it may be more appropriate to set the job class' `$tries` property.
+Adjusting the `tries` option is essential when using middlewares such as `WithoutOverlapping` or `RateLimited` because they consume attempts. To handle this, adjust the `tries` setting either at the supervisor level or by defining the `$tries` property on the job class.
 
-If you do not specify a value for the `tries` option, jobs will only be attempted once or as many times as specified by the job class `$tries` property.
+If you don't set the `tries` option, Horizon will default to a single attempt.
 
-If `tries` (or `$tries` on the job class) is set to 0, the job may be attempted (and released) an unlimited number of times. This can be helpful in handling circumstances when the number attempts may be unknown.
+Setting `tries` or `$tries` to 0 allows unlimited retries, which is ideal when the number of attempts is uncertain. To prevent endless failures, you can limit the number of exceptions allowed by setting the `$maxExceptions` property on the job class.
+
 <a name="job-timeout"></a>
 ### Job Timeout
 
