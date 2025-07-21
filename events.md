@@ -577,6 +577,50 @@ public function backoff(): array
 }
 ```
 
+<a name="specifying-queued-listener-max-exceptions"></a>
+#### Specifying Queued Listener Max Exceptions
+
+Sometimes you may wish to specify that a queued listener may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may define a `maxExceptions` property on your listener class:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    use InteractsWithQueue;
+
+    /**
+     * The number of times the queued listener may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 25;
+
+    /**
+     * The maximum number of unhandled exceptions to allow before failing.
+     *
+     * @var int
+     */
+    public $maxExceptions = 3;
+
+    /**
+     * Handle the event.
+     */
+    public function handle(OrderShipped $event): void
+    {
+        // Process the event...
+    }
+}
+```
+
+In this example, the listener will be retried up to 25 times. However, the listener will fail if three unhandled exceptions are thrown by the listener.
+
 <a name="dispatching-events"></a>
 ## Dispatching Events
 
