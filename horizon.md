@@ -328,6 +328,7 @@ Fine-tuning the `tries` option is essential when using middlewares such as `With
 
 If you do not specify a value for the `tries` option, jobs will only be attempted once or as many times as specified by the job class `$tries` property.
 
+If `tries` (or `$tries` on the job class) is set to 0, the job may be attempted (and released) an unlimited number of times. This can be helpful in handling circumstances when the number attempts may be unknown.
 <a name="job-timeout"></a>
 ### Job Timeout
 
