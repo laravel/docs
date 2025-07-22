@@ -11,6 +11,8 @@
 - [Queued Event Listeners](#queued-event-listeners)
     - [Manually Interacting With the Queue](#manually-interacting-with-the-queue)
     - [Queued Event Listeners and Database Transactions](#queued-event-listeners-and-database-transactions)
+    - [Queued Listener Middleware](#queued-listener-middleware)
+    - [Encrypted Queued Listeners](#encrypted-queued-listeners)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
     - [Dispatching Events After Database Transactions](#dispatching-events-after-database-transactions)
@@ -455,6 +457,62 @@ class SendShipmentNotification implements ShouldQueueAfterCommit
 > [!NOTE]
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
+<a name="queued-listener-middleware"></a>
+### Queued Listener Middleware
+
+Queued listeners can also utilize [job middleware](/docs/{{version}}/queues#job-middleware). Job middleware allow you to wrap custom logic around the execution of queued listeners, reducing boilerplate in the listeners themselves. After creating job middleware, they may be attached to a listener by returning them from the listener's `middleware` method:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use App\Jobs\Middleware\RateLimited;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * Handle the event.
+     */
+    public function handle(OrderShipped $event): void
+    {
+        // Process the event...
+    }
+
+    /**
+     * Get the middleware the listener should pass through.
+     *
+     * @return array<int, object>
+     */
+    public function middleware(OrderShipped $event): array
+    {
+        return [new RateLimited];
+    }
+}
+```
+
+<a name="encrypted-queued-listeners"></a>
+#### Encrypted Queued Listeners
+
+Laravel allows you to ensure the privacy and integrity of a queued listener's data via [encryption](/docs/{{version}}/encryption). To get started, simply add the `ShouldBeEncrypted` interface to the listener class. Once this interface has been added to the class, Laravel will automatically encrypt your listener before pushing it onto a queue:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue, ShouldBeEncrypted
+{
+    // ...
+}
+```
+
 <a name="handling-failed-jobs"></a>
 ### Handling Failed Jobs
 
@@ -645,9 +703,6 @@ class SendShipmentNotification implements ShouldQueue
 }
 ```
 
-<a name="failing-on-timeout"></a>
-#### Failing Queued Listeners on Timeout
-
 If you would like to indicate that a listener should be marked as failed on timeout, you may define the `$failOnTimeout` property on the listener class:
 
 ```php
@@ -666,62 +721,6 @@ class SendShipmentNotification implements ShouldQueue
      * @var bool
      */
     public $failOnTimeout = true;
-}
-```
-
-<a name="encrypted-queued-listeners"></a>
-#### Encrypted Queued Listeners
-
-Laravel allows you to ensure the privacy and integrity of a queued listener's data via [encryption](/docs/{{version}}/encryption). To get started, simply add the `ShouldBeEncrypted` interface to the listener class. Once this interface has been added to the class, Laravel will automatically encrypt your listener before pushing it onto a queue:
-
-```php
-<?php
-
-namespace App\Listeners;
-
-use App\Events\OrderShipped;
-use Illuminate\Contracts\Queue\ShouldBeEncrypted;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
-class SendShipmentNotification implements ShouldQueue, ShouldBeEncrypted
-{
-    // ...
-}
-```
-
-<a name="queued-listener-middleware"></a>
-#### Queued Listener Middleware
-
-Queued listeners can also utilize [job middleware](/docs/{{version}}/queues#job-middleware). Job middleware allow you to wrap custom logic around the execution of queued listeners, reducing boilerplate in the listeners themselves. After creating job middleware, they may be attached to a listener by returning them from the listener's `middleware` method:
-
-```php
-<?php
-
-namespace App\Listeners;
-
-use App\Events\OrderShipped;
-use App\Jobs\Middleware\RateLimited;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
-class SendShipmentNotification implements ShouldQueue
-{
-    /**
-     * Get the middleware the listener should pass through.
-     *
-     * @return array<int, object>
-     */
-    public function middleware(OrderShipped $event): array
-    {
-        return [new RateLimited];
-    }
-
-    /**
-     * Handle the event.
-     */
-    public function handle(OrderShipped $event): void
-    {
-        // Process the event...
-    }
 }
 ```
 
