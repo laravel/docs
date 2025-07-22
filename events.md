@@ -11,6 +11,8 @@
 - [Queued Event Listeners](#queued-event-listeners)
     - [Manually Interacting With the Queue](#manually-interacting-with-the-queue)
     - [Queued Event Listeners and Database Transactions](#queued-event-listeners-and-database-transactions)
+    - [Queued Listener Middleware](#queued-listener-middleware)
+    - [Encrypted Queued Listeners](#encrypted-queued-listeners)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
     - [Dispatching Events After Database Transactions](#dispatching-events-after-database-transactions)
@@ -455,6 +457,62 @@ class SendShipmentNotification implements ShouldQueueAfterCommit
 > [!NOTE]
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
+<a name="queued-listener-middleware"></a>
+### Queued Listener Middleware
+
+Queued listeners can also utilize [job middleware](/docs/{{version}}/queues#job-middleware). Job middleware allow you to wrap custom logic around the execution of queued listeners, reducing boilerplate in the listeners themselves. After creating job middleware, they may be attached to a listener by returning them from the listener's `middleware` method:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use App\Jobs\Middleware\RateLimited;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * Handle the event.
+     */
+    public function handle(OrderShipped $event): void
+    {
+        // Process the event...
+    }
+
+    /**
+     * Get the middleware the listener should pass through.
+     *
+     * @return array<int, object>
+     */
+    public function middleware(OrderShipped $event): array
+    {
+        return [new RateLimited];
+    }
+}
+```
+
+<a name="encrypted-queued-listeners"></a>
+#### Encrypted Queued Listeners
+
+Laravel allows you to ensure the privacy and integrity of a queued listener's data via [encryption](/docs/{{version}}/encryption). To get started, simply add the `ShouldBeEncrypted` interface to the listener class. Once this interface has been added to the class, Laravel will automatically encrypt your listener before pushing it onto a queue:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue, ShouldBeEncrypted
+{
+    // ...
+}
+```
+
 <a name="handling-failed-jobs"></a>
 ### Handling Failed Jobs
 
@@ -557,7 +615,7 @@ If you require more complex logic for determining the listeners's backoff time, 
 /**
  * Calculate the number of seconds to wait before retrying the queued listener.
  */
-public function backoff(): int
+public function backoff(OrderShipped $event): int
 {
     return 3;
 }
@@ -571,9 +629,98 @@ You may easily configure "exponential" backoffs by returning an array of backoff
  *
  * @return list<int>
  */
-public function backoff(): array
+public function backoff(OrderShipped $event): array
 {
     return [1, 5, 10];
+}
+```
+
+<a name="specifying-queued-listener-max-exceptions"></a>
+#### Specifying Queued Listener Max Exceptions
+
+Sometimes you may wish to specify that a queued listener may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may define a `maxExceptions` property on your listener class:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    use InteractsWithQueue;
+
+    /**
+     * The number of times the queued listener may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 25;
+
+    /**
+     * The maximum number of unhandled exceptions to allow before failing.
+     *
+     * @var int
+     */
+    public $maxExceptions = 3;
+
+    /**
+     * Handle the event.
+     */
+    public function handle(OrderShipped $event): void
+    {
+        // Process the event...
+    }
+}
+```
+
+In this example, the listener will be retried up to 25 times. However, the listener will fail if three unhandled exceptions are thrown by the listener.
+
+<a name="specifying-queued-listener-timeout"></a>
+#### Specifying Queued Listener Timeout
+
+Often, you know roughly how long you expect your queued listeners to take. For this reason, Laravel allows you to specify a "timeout" value. If a listener is processing for longer than the number of seconds specified by the timeout value, the worker processing the listener will exit with an error. You may define the maximum number of seconds a listener should be allowed to run by defining a `$timeout` property on your listener class:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * The number of seconds the listener can run before timing out.
+     *
+     * @var int
+     */
+    public $timeout = 120;
+}
+```
+
+If you would like to indicate that a listener should be marked as failed on timeout, you may define the `$failOnTimeout` property on the listener class:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * Indicate if the listener should be marked as failed on timeout.
+     *
+     * @var bool
+     */
+    public $failOnTimeout = true;
 }
 ```
 
