@@ -452,29 +452,6 @@ class SendShipmentNotification implements ShouldQueueAfterCommit
 }
 ```
 
-Alternatively, instead of implementing the `ShouldQueueAfterCommit` interface, you may define an `$afterCommit` property on your listener class:
-
-```php
-<?php
-
-namespace App\Listeners;
-
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-
-class SendShipmentNotification implements ShouldQueue
-{
-    use InteractsWithQueue;
-
-    /**
-     * Indicate if the listener should be dispatched after all database transactions have committed.
-     *
-     * @var bool
-     */
-    public $afterCommit = true;
-}
-```
-
 > [!NOTE]
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
