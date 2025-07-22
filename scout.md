@@ -536,6 +536,12 @@ If you are installing Scout into an existing project, you may already have datab
 php artisan scout:import "App\Models\Post"
 ```
 
+The `scout:queue` command may be used to import all of your existing records using [queued jobs](/docs/{{version}}/queues):
+
+```shell
+php artisan scout:queue "App\Models\Post" --chunk=500
+```
+
 The `flush` command may be used to remove all of a model's records from your search indexes:
 
 ```shell
