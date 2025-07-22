@@ -17,6 +17,7 @@
 
 <div class="content-list" markdown="1">
 
+- [Local Filesystem Disk Default Root Path](#local-filesystem-disk-default-root-path)
 - [Models and UUIDv7](#models-and-uuidv7)
 
 </div>
@@ -190,6 +191,13 @@ The constructor of the `Illuminate\Database\Schema\Blueprint` class now expects 
 
 <a name="eloquent"></a>
 ### Eloquent
+
+<a name="local-filesystem-disk-default-root-path"></a>
+#### Local Filesystem Disk Default Root Path
+
+**Likelihood Of Impact: Medium**
+
+The default root path for the `local` filesystem disk was changed from `storage/app` to `storage/app/private`. This means that any calls to `Storage::disk('local')` will now read from or write to the `storage/app/private` directory by default.
 
 <a name="models-and-uuidv7"></a>
 #### Models and UUIDv7
