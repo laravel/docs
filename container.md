@@ -178,6 +178,22 @@ $this->app->singletonIf(Transistor::class, function (Application $app) {
 });
 ```
 
+Alternatively, you may mark an interface or class with the `#[Singleton]` attribute to indicate to the container that it should be resolved one time:
+
+```php
+<?php
+
+namespace App\Services;
+
+use Illuminate\Container\Attributes\Singleton;
+
+#[Singleton]
+class Transistor
+{
+    // ...
+}
+```
+
 <a name="binding-scoped"></a>
 #### Binding Scoped Singletons
 
@@ -199,6 +215,22 @@ You may use the `scopedIf` method to register a scoped container binding only if
 $this->app->scopedIf(Transistor::class, function (Application $app) {
     return new Transistor($app->make(PodcastParser::class));
 });
+```
+
+Alternatively, you may mark an interface or class with the `#[Scoped]` attribute to indicate to the container that it should be resolved one time within a given Laravel request / job lifecycle:
+
+```php
+<?php
+
+namespace App\Services;
+
+use Illuminate\Container\Attributes\Scoped;
+
+#[Scoped]
+class Transistor
+{
+    // ...
+}
 ```
 
 <a name="binding-instances"></a>
