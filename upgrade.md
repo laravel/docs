@@ -30,6 +30,7 @@
 - [Concurrency Result Index Mapping](#concurrency-result-index-mapping)
 - [Container Class Dependency Resolution](#container-class-dependency-resolution)
 - [Image Validation Now Excludes SVGs](#image-validation)
+- [Local Filesystem Disk Default Root Path](#local-filesystem-disk-default-root-path)
 - [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
 - [Nested Array Request Merging](#nested-array-request-merging)
 
@@ -221,11 +222,23 @@ $request->mergeIfMissing([
 ]);
 ```
 
+<a name="storage"></a>
+### Storage
+
+<a name="local-filesystem-disk-default-root-path"></a>
+#### Local Filesystem Disk Default Root Path
+
+**Likelihood Of Impact: Low**
+
+If your application does not explicitly define a `local` disk in your filesystems configuration, Laravel will now default the local disk's root to `storage/app/private`. In previous releases, this defaulted to `storage/app`. As a result, calls to `Storage::disk('local')` will read from and write to `storage/app/private` unless otherwise configured. To restore the previous behavior, you may define the `local` disk manually and set the desired root path.
+
 <a name="validation"></a>
 ### Validation
 
 <a name="image-validation"></a>
 #### Image Validation Now Excludes SVGs
+
+**Likelihood Of Impact: Low**
 
 The `image` validation rule no longer allows SVG images by default. If you would like to allow SVGs when using the `image` rule, you must explicitly allow them:
 
