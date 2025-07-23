@@ -1638,7 +1638,7 @@ class Paginate
     public function __construct(
         private string $sortBy = 'timestamp',
         private string $sortDirection = 'desc',
-        private string $perPage = 25,
+        private int $perPage = 25,
     ) {
         //
     }
