@@ -981,22 +981,22 @@ foreach ($user->notifications as $notification) {
 }
 ```
 
-If you want to retrieve only the "read" notifications, you may use the `readNotifications` relationship. Again, these notifications will be sorted by the `created_at` timestamp with the most recent notifications at the beginning of the collection:
-
-```php
-$user = App\Models\User::find(1);
-
-foreach ($user->readNotifications as $notification) {
-    echo $notification->type;
-}
-```
-
 If you want to retrieve only the "unread" notifications, you may use the `unreadNotifications` relationship. Again, these notifications will be sorted by the `created_at` timestamp with the most recent notifications at the beginning of the collection:
 
 ```php
 $user = App\Models\User::find(1);
 
 foreach ($user->unreadNotifications as $notification) {
+    echo $notification->type;
+}
+```
+
+If you want to retrieve only the "read" notifications, you may use the `readNotifications` relationship:
+
+```php
+$user = App\Models\User::find(1);
+
+foreach ($user->readNotifications as $notification) {
     echo $notification->type;
 }
 ```
