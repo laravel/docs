@@ -991,6 +991,16 @@ foreach ($user->unreadNotifications as $notification) {
 }
 ```
 
+If you want to retrieve only the "read" notifications, you may use the `readNotifications` relationship:
+
+```php
+$user = App\Models\User::find(1);
+
+foreach ($user->readNotifications as $notification) {
+    echo $notification->type;
+}
+```
+
 > [!NOTE]
 > To access your notifications from your JavaScript client, you should define a notification controller for your application which returns the notifications for a notifiable entity, such as the current user. You may then make an HTTP request to that controller's URL from your JavaScript client.
 
