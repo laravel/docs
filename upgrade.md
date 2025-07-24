@@ -206,7 +206,7 @@ protected function configureEmailVerification()
 
 Previously, if a cache key prefix was defined for the DynamoDB, Memcached, or Redis cache stores, Laravel would append a `:` to the prefix. In Laravel 11, the cache key prefix does not receive the `:` suffix. If you would like to maintain the previous prefixing behavior, you can manually add the `:` suffix to your cache key prefix.
 
-If you do not have a cache prefix defined, ie were using the default cache prefix, you can simply add `:` to the end of the `prefix` property in your `cache.php` confile file to ensure your cache prefixes remain the same.
+If you do not have a cache prefix defined, ie were using the default cache prefix, you can simply add `:` to the end of the `prefix` property in your `cache.php` config file to ensure your existing cache prefixes remain the same.
 
 Before:
 
