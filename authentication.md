@@ -508,7 +508,7 @@ public function logout(Request $request): RedirectResponse
 <a name="invalidating-sessions-on-other-devices"></a>
 ### Invalidating Sessions on Other Devices
 
-Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device. This feature is typically utilized when a user is changing or updating their password and you would like to invalidate sessions on other devices while keeping the current device authenticated.
+Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device.
 
 Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is included on the routes that should receive session authentication. Typically, you should place this middleware on a route group definition so that it can be applied to the majority of your application's routes. By default, the `AuthenticateSession` middleware may be attached to a route using the `auth.session` [middleware alias](/docs/{{version}}/middleware#middleware-aliases):
 
@@ -529,6 +529,9 @@ Auth::logoutOtherDevices($currentPassword);
 ```
 
 When the `logoutOtherDevices` method is invoked, the user's other sessions will be invalidated entirely, meaning they will be "logged out" of all guards they were previously authenticated by.
+
+> [!NOTE]
+> When a user changes their password, sessions on other devices are logged out automatically next time they visit a route that uses the `auth.session` middleware.
 
 <a name="password-confirmation"></a>
 ## Password Confirmation
