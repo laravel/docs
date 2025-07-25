@@ -254,7 +254,7 @@ $this->assertNotSoftDeleted($user);
 <a name="assert-model-exists"></a>
 #### assertModelExists
 
-Assert that a given model exists in the database:
+Assert that a given model, or collection of models, exist in the database:
 
 ```php
 use App\Models\User;
@@ -262,12 +262,16 @@ use App\Models\User;
 $user = User::factory()->create();
 
 $this->assertModelExists($user);
+
+$users = User::factory()->count(5)->create();
+
+$this->assertModelExists($users);
 ```
 
 <a name="assert-model-missing"></a>
 #### assertModelMissing
 
-Assert that a given model does not exist in the database:
+Assert that a given model, or collection of models, do not exist in the database:
 
 ```php
 use App\Models\User;
@@ -277,6 +281,12 @@ $user = User::factory()->create();
 $user->delete();
 
 $this->assertModelMissing($user);
+
+$users = User::factory()->count(5)->create();
+
+$users->each->delete();
+
+$this->assertModelMissing($users);
 ```
 
 <a name="expects-database-query-count"></a>
