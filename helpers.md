@@ -158,6 +158,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 </div>
 
+### Models
+
+<div class="model-method-list" markdown="1">
+
+[Model::not](#method-models-not)
+
+</div>
+
 <a name="miscellaneous-method-list"></a>
 ### Miscellaneous
 
@@ -2170,6 +2178,19 @@ $previous = url()->previous();
 ```
 
 For more information on working with the `url` function, consult the [URL generation documentation](/docs/{{version}}/urls#generating-urls).
+
+<a name="models"></a>
+## Models
+
+<a name="method-models-not"></a>
+#### `not()` {.model-method}
+
+The `not()` function can be called on any Eloquent model to fluently negate boolean-returning methods or properties. This provides a clean, expressive alternative to manually negating with `!`.
+
+```php
+$model->not()->relationLoaded('foo'); // returns true if relation is not loaded
+$model->not()->is($anotherModel);     // returns true if models do not match
+```
 
 <a name="miscellaneous"></a>
 ## Miscellaneous
