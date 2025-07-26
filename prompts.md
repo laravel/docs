@@ -1006,10 +1006,10 @@ Fallbacks must be configured individually for each prompt class. The closure wil
 <a name="testing"></a>
 ## Testing
 
-Laravel provides a variety of methods for testing that your command displays the expected messages:
+Laravel provides a variety of methods for testing that your command displays the expected Prompt messages:
 
 ```php tab=Pest
-test('the report generate command', function () {
+test('report generation', function () {
     $this->artisan('report:generate')
         ->expectsPromptsInfo('Welcome to the application!')
         ->expectsPromptsWarning('This action cannot be undone')
@@ -1021,7 +1021,7 @@ test('the report generate command', function () {
             headers: ['Name', 'Email'],
             rows: [
                 ['Taylor Otwell', 'taylor@example.com'],
-                ['John Doe', 'john@example.com'],
+                ['Jason Beggs', 'jason@example.com'],
             ]
         )
         ->assertExitCode(0);
@@ -1029,7 +1029,7 @@ test('the report generate command', function () {
 ```
 
 ```php tab=PHPUnit
-public function test_the_report_generate_command(): void
+public function test_report_generation(): void
 {
     $this->artisan('report:generate')
         ->expectsPromptsInfo('Welcome to the application!')
@@ -1042,7 +1042,7 @@ public function test_the_report_generate_command(): void
             headers: ['Name', 'Email'],
             rows: [
                 ['Taylor Otwell', 'taylor@example.com'],
-                ['John Doe', 'john@example.com'],
+                ['Jason Beggs', 'jason@example.com'],
             ]
         )
         ->assertExitCode(0);
