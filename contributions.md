@@ -9,6 +9,7 @@
 - [Coding Style](#coding-style)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
+    - [Semantic Commits](#semantic-commits)
 - [Code of Conduct](#code-of-conduct)
 
 <a name="bug-reports"></a>
@@ -156,6 +157,53 @@ public function attachments(): array
 ### StyleCI
 
 Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
+
+
+<a name="semantic-commits"></a>
+### Semantic Commits
+
+This project enforces semantic commits following the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+
+#### Commit Workflow
+
+    git add .
+    git commit -m "feat(auth): add user authentication endpoint"
+
+#### Commit Message Format
+
+    <type>[optional scope]: <description>
+
+    [optional body]
+
+    [optional footer(s)]
+
+**Valid types:** feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert
+
+**Examples:**
+
+    feat(api): add user registration endpoint
+    fix(auth): resolve token validation issue
+    docs: update API documentation
+    test(api): add integration tests for auth
+
+#### Commit Message Linting
+
+This repository enforces the Conventional Commits standard for commit messages.
+
+**To set up commit message linting locally:**
+
+1. Set up the Git commit-msg hook:
+   ```bash
+   cp bin/commitlint.sh .git/hooks/commit-msg
+   ```
+   
+2. Make the commit lint script executable:
+   ```bash
+   chmod +x .git/hooks/commit-msg
+   ```
+
+If your commit message does not follow the Conventional Commits format, the commit will be rejected with an explanation and example.
+
 
 <a name="code-of-conduct"></a>
 ## Code of Conduct
