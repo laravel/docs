@@ -398,7 +398,7 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeEncrypted
 <a name="job-middleware"></a>
 ## Job Middleware
 
-Job middleware allow you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
+Job middleware allows you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
 
 ```php
 use Illuminate\Support\Facades\Redis;
