@@ -460,7 +460,7 @@ class SendShipmentNotification implements ShouldQueueAfterCommit
 <a name="queued-listener-middleware"></a>
 ### Queued Listener Middleware
 
-Queued listeners can also utilize [job middleware](/docs/{{version}}/queues#job-middleware). Job middleware allow you to wrap custom logic around the execution of queued listeners, reducing boilerplate in the listeners themselves. After creating job middleware, they may be attached to a listener by returning them from the listener's `middleware` method:
+Queued listeners can also utilize [job middleware](/docs/{{version}}/queues#job-middleware). Job middleware allows you to wrap custom logic around the execution of queued listeners, reducing boilerplate in the listeners themselves. After creating job middleware, they may be attached to a listener by returning them from the listener's `middleware` method:
 
 ```php
 <?php
