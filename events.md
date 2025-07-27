@@ -598,7 +598,7 @@ If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `r
 <a name="specifying-queued-listener-backoff"></a>
 #### Specifying Queued Listener Backoff
 
-If you would like to configure how many seconds Laravel should wait before retrying a listener that has encountered an exception, you may do so by defining a `backoff` property on your listener class:
+If you would like to configure how many seconds Laravel should wait before retrying a listener that has encountered an exception, you may do so by defining a `$backoff` property on your listener class:
 
 ```php
 /**
@@ -638,7 +638,7 @@ public function backoff(OrderShipped $event): array
 <a name="specifying-queued-listener-max-exceptions"></a>
 #### Specifying Queued Listener Max Exceptions
 
-Sometimes you may wish to specify that a queued listener may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may define a `maxExceptions` property on your listener class:
+Sometimes you may wish to specify that a queued listener may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may define a `$maxExceptions` property on your listener class:
 
 ```php
 <?php
