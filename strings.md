@@ -3806,12 +3806,13 @@ The `whenIsUuid` method invokes the given closure if the string is a valid UUID.
 ```php
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
+use Ramsey\Uuid\UuidFactory;
 
-$string = Str::of('a0a2a2d2-0b87-4a18-83f2-2529882be2de')->whenIsUuid(function (Stringable $string) {
-    return $string->substr(0, 8);
+$node = Str::of('a0a2a2d2-0b87-1a18-83f2-2529882be2de')->whenIsUuid(function (Stringable $string) {
+    return wordwrap((new UuidFactory)->fromString($string)->getFields()->getNode()->toString(), 2, ':', true);
 });
 
-// 'a0a2a2d2'
+// '25:29:88:2b:e2:de'
 ```
 
 <a name="method-fluent-str-when-test"></a>
