@@ -136,21 +136,6 @@ public function register(): void
 > [!WARNING]
 > This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
 
-<a name="routes"></a>
-### Routes
-
-If your package contains routes, you may load them using the `loadRoutesFrom` method. This method will automatically determine if the application's routes are cached and will not load your routes file if the routes have already been cached:
-
-```php
-/**
- * Bootstrap any package services.
- */
-public function boot(): void
-{
-    $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-}
-```
-
 <a name="migrations"></a>
 ### Migrations
 
@@ -165,6 +150,21 @@ public function boot(): void
     $this->publishesMigrations([
         __DIR__.'/../database/migrations' => database_path('migrations'),
     ]);
+}
+```
+
+<a name="routes"></a>
+### Routes
+
+If your package contains routes, you may load them using the `loadRoutesFrom` method. This method will automatically determine if the application's routes are cached and will not load your routes file if the routes have already been cached:
+
+```php
+/**
+ * Bootstrap any package services.
+ */
+public function boot(): void
+{
+    $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 }
 ```
 
