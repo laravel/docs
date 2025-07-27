@@ -123,7 +123,7 @@ The `mergeConfigFrom` method accepts the path to your package's configuration fi
 
 ```php
 /**
- * Register any application services.
+ * Register any package services.
  */
 public function register(): void
 {
