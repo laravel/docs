@@ -2488,8 +2488,11 @@ test('orders can be shipped', function () {
     // Assert a job was not pushed...
     Queue::assertNotPushed(AnotherJob::class);
 
-    // Assert that a Closure was pushed to the queue...
+    // Assert that a closure was pushed to the queue...
     Queue::assertClosurePushed();
+
+    // Assert that a closure was not pushed...
+    Queue::assertClosureNotPushed();
 
     // Assert the total number of jobs that were pushed...
     Queue::assertCount(3);
@@ -2527,8 +2530,11 @@ class ExampleTest extends TestCase
         // Assert a job was not pushed...
         Queue::assertNotPushed(AnotherJob::class);
 
-        // Assert that a Closure was pushed to the queue...
+        // Assert that a closure was pushed to the queue...
         Queue::assertClosurePushed();
+
+        // Assert that a closure was not pushed...
+        Queue::assertClosureNotPushed();
 
         // Assert the total number of jobs that were pushed...
         Queue::assertCount(3);
@@ -2536,11 +2542,17 @@ class ExampleTest extends TestCase
 }
 ```
 
-You may pass a closure to the `assertPushed` or `assertNotPushed` methods in order to assert that a job was pushed that passes a given "truth test". If at least one job was pushed that passes the given truth test then the assertion will be successful:
+You may pass a closure to the `assertPushed`, `assertNotPushed`, `assertClosurePushed`, or `assertClosureNotPushed` methods in order to assert that a job was pushed that passes a given "truth test". If at least one job was pushed that passes the given truth test then the assertion will be successful:
 
 ```php
+use Illuminate\Queue\CallQueuedClosure;
+
 Queue::assertPushed(function (ShipOrder $job) use ($order) {
     return $job->order->id === $order->id;
+});
+
+Queue::assertClosurePushed(function (CallQueuedClosure $job) {
+    return $job->name === 'validate-order';
 });
 ```
 
