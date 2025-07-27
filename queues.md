@@ -2542,7 +2542,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-You may pass a closure to the `assertPushed`, `assertNotPushed`, `assertClosurePushed` or `assertClosureNotPushed` methods in order to assert that a job was pushed that passes a given "truth test". If at least one job was pushed that passes the given truth test then the assertion will be successful:
+You may pass a closure to the `assertPushed`, `assertNotPushed`, `assertClosurePushed`, or `assertClosureNotPushed` methods in order to assert that a job was pushed that passes a given "truth test". If at least one job was pushed that passes the given truth test then the assertion will be successful:
 
 ```php
 use Illuminate\Queue\CallQueuedClosure;
@@ -2552,7 +2552,7 @@ Queue::assertPushed(function (ShipOrder $job) use ($order) {
 });
 
 Queue::assertClosurePushed(function (CallQueuedClosure $job) {
-    return $job->name === 'name_assigned_when_dispatching';
+    return $job->name === 'validate-order';
 });
 ```
 
