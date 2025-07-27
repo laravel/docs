@@ -1040,7 +1040,7 @@ $flight->delete();
 <a name="deleting-an-existing-model-by-its-primary-key"></a>
 #### Deleting an Existing Model by its Primary Key
 
-In the example above, we are retrieving the model from the database before calling the `delete` method. However, if you know the primary key of the model, you may delete the model without explicitly retrieving it by calling the `destroy` method.  In addition to accepting the single primary key, the `destroy` method will accept multiple primary keys, an array of primary keys, or a [collection](/docs/{{version}}/collections) of primary keys:
+In the example above, we are retrieving the model from the database before calling the `delete` method. However, if you know the primary key of the model, you may delete the model - without having to explicitly retrieve it first - by calling the `destroy` method.  In addition to accepting the single primary key, the `destroy` method will accept multiple primary keys, an array of primary keys, or a [collection](/docs/{{version}}/collections) of primary keys:
 
 ```php
 Flight::destroy(1);
@@ -1052,14 +1052,14 @@ Flight::destroy([1, 2, 3]);
 Flight::destroy(collect([1, 2, 3]));
 ```
 
+> [!WARNING]
+> The `destroy` method loads each model individually and calls the `delete` method so that the `deleting` and `deleted` events are properly dispatched for each model.
+
 If you are utilizing [soft deleting models](#soft-deleting), you may permanently delete models via the `forceDestroy` method:
 
 ```php
 Flight::forceDestroy(1);
 ```
-
-> [!WARNING]
-> The `destroy` method loads each model individually and calls the `delete` method so that the `deleting` and `deleted` events are properly dispatched for each model.
 
 <a name="deleting-models-using-queries"></a>
 #### Deleting Models Using Queries
