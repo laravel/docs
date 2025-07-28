@@ -339,7 +339,7 @@ Laravel's built-in `about` Artisan command provides a synopsis of the applicatio
 use Illuminate\Foundation\Console\AboutCommand;
 
 /**
- * Bootstrap any application services.
+ * Bootstrap any package services.
  */
 public function boot(): void
 {
