@@ -196,10 +196,10 @@ Route::resources([
 ]);
 ```
 
-The `softDeleteResources` method register many resources controllers that all use the `withTrashed` method:
+The `softDeletableResources` method registers many resources controllers that all use the `withTrashed` method:
 
 ```php
-Route::softDeleteResources([
+Route::softDeletableResources([
     'photos' => PhotoController::class,
     'posts' => PostController::class,
 ]);
