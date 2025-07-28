@@ -109,7 +109,7 @@ protected static function newFactory()
 }
 ```
 
-Then, define a `model` property on the corresponding factory:
+Then, define a `$model` property on the corresponding factory:
 
 ```php
 use App\Administration\Flight;

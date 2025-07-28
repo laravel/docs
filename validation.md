@@ -429,7 +429,7 @@ public function after(): array
 <a name="request-stopping-on-first-validation-rule-failure"></a>
 #### Stopping on the First Validation Failure
 
-By adding a `stopOnFirstFailure` property to your request class, you may inform the validator that it should stop validating all attributes once a single validation failure has occurred:
+By adding a `$stopOnFirstFailure` property to your request class, you may inform the validator that it should stop validating all attributes once a single validation failure has occurred:
 
 ```php
 /**

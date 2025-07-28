@@ -827,7 +827,7 @@ $user->save();
 
 When attributes that are cast to value objects are resolved, they are cached by Eloquent. Therefore, the same object instance will be returned if the attribute is accessed again.
 
-If you would like to disable the object caching behavior of custom cast classes, you may declare a public `withoutObjectCaching` property on your custom cast class:
+If you would like to disable the object caching behavior of custom cast classes, you may declare a public `$withoutObjectCaching` property on your custom cast class:
 
 ```php
 class AsAddress implements CastsAttributes

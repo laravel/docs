@@ -180,7 +180,7 @@ When invoking the `toResourceCollection` method, Laravel will attempt to locate 
 <a name="preserving-collection-keys"></a>
 #### Preserving Collection Keys
 
-When returning a resource collection from a route, Laravel resets the collection's keys so that they are in numerical order. However, you may add a `preserveKeys` property to your resource class indicating whether a collection's original keys should be preserved:
+When returning a resource collection from a route, Laravel resets the collection's keys so that they are in numerical order. However, you may add a `$preserveKeys` property to your resource class indicating whether a collection's original keys should be preserved:
 
 ```php
 <?php
@@ -200,7 +200,7 @@ class UserResource extends JsonResource
 }
 ```
 
-When the `preserveKeys` property is set to `true`, collection keys will be preserved when the collection is returned from a route or controller:
+When the `$preserveKeys` property is set to `true`, collection keys will be preserved when the collection is returned from a route or controller:
 
 ```php
 use App\Http\Resources\UserResource;

@@ -2502,7 +2502,7 @@ if ($user->subscription('default')->hasIncompletePayment()) {
 }
 ```
 
-You can derive the specific status of an incomplete payment by inspecting the `payment` property on the exception instance:
+You can derive the specific status of an incomplete payment by inspecting the `$payment` property on the exception instance:
 
 ```php
 use Laravel\Cashier\Exceptions\IncompletePayment;
