@@ -651,8 +651,8 @@ $name = $this->choice(
     'What is your name?',
     ['Taylor', 'Dayle'],
     $defaultIndex,
-    attempts: null,
-    multiple: false
+    $maxAttempts,
+    $allowMultipleSelections
 );
 ```
 
