@@ -994,6 +994,9 @@ Likewise, if the `after_commit` configuration option is set to `true`, you may i
 ProcessPodcast::dispatch($podcast)->beforeCommit();
 ```
 
+> [!WARNING]
+> The `beforeCommit()` method takes precedence over the `ShouldQueueAfterCommit` interface. This means even if a job implements `ShouldQueueAfterCommit`, calling `beforeCommit()` will force it to be dispatched immediately without waiting for open database transactions to get committed. So use this carefully to avoid unexpected behavior.
+
 <a name="job-chaining"></a>
 ### Job Chaining
 
