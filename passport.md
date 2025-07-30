@@ -969,7 +969,7 @@ To restrict access to the route to specific scopes, you may provide a list of th
 ```php
 Route::get('/orders', function (Request $request) {
     // Access token is valid, the client is resource owner, and has both "servers:read" and "servers:create" scopes...
-})->middleware(EnsureClientIsResourceOwner::using('servers:read', 'servers:create');
+})->middleware(EnsureClientIsResourceOwner::using('servers:read', 'servers:create'));
 ```
 
 <a name="retrieving-tokens"></a>
@@ -1194,7 +1194,7 @@ use Laravel\Passport\Http\Middleware\CheckToken;
 
 Route::get('/orders', function () {
     // Access token has both "orders:read" and "orders:create" scopes...
-})->middleware(['auth:api', CheckToken::using('orders:read', 'orders:create');
+})->middleware(['auth:api', CheckToken::using('orders:read', 'orders:create')]);
 ```
 
 <a name="check-for-any-scopes"></a>
@@ -1207,7 +1207,7 @@ use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 
 Route::get('/orders', function () {
     // Access token has either "orders:read" or "orders:create" scope...
-})->middleware(['auth:api', CheckTokenForAnyScope::using('orders:read', 'orders:create');
+})->middleware(['auth:api', CheckTokenForAnyScope::using('orders:read', 'orders:create')]);
 ```
 
 <a name="checking-scopes-on-a-token-instance"></a>
