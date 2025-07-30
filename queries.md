@@ -696,6 +696,10 @@ Laravel also supports querying JSON column types on databases that provide suppo
 $users = DB::table('users')
     ->where('preferences->dining->meal', 'salad')
     ->get();
+
+$users = DB::table('users')
+    ->whereIn('preferences->dining->meal', ['pasta', 'salad', 'sandwiches'])
+    ->get();
 ```
 
 You may use the `whereJsonContains` and `whereJsonDoesntContain` methods to query JSON arrays:
