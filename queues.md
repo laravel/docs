@@ -677,7 +677,7 @@ public function middleware(): array
 }
 
 /**
- * Determine the time at which the job should timeout.
+ * Determine the time at which the job should time out.
  */
 public function retryUntil(): DateTime
 {
@@ -1262,7 +1262,7 @@ As an alternative to defining how many times a job may be attempted before it fa
 use DateTime;
 
 /**
- * Determine the time at which the job should timeout.
+ * Determine the time at which the job should time out.
  */
 public function retryUntil(): DateTime
 {
