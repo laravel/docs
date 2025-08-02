@@ -223,6 +223,23 @@ Once you have started your containers, you may connect to the MySQL instance wit
 
 To connect to your application's MySQL database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the MySQL database is accessible at `localhost` port 3306 and the access credentials correspond to the values of your `DB_USERNAME` and `DB_PASSWORD` environment variables. Or, you may connect as the `root` user, which also utilizes the value of your `DB_PASSWORD` environment variable as its password.
 
+The following snippet shows how a volume for MySQL is defined in your `docker-compose.yml`
+
+```yaml
+mysql:
+    volumes:
+        - 'sail-mysql:/var/lib/mysql'
+```
+
+The subsequent definition means the following. `volumes` is the section where all of your volumes are being declared. `sail-mysql` is the name of the volume which you can also see in Docker Desktop under Volumes. `driver` set to `local` means that the volume is being stored on the host computer, e.g. where you run Docker Desktop.
+In case you want to backup your volumes you need to create a Docker account and login.
+
+```yaml
+volumes:
+    sail-mysql:
+        driver: local
+```
+
 <a name="mongodb"></a>
 ### MongoDB
 
