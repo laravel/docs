@@ -1363,7 +1363,8 @@ Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) 
            $mail->hasBcc('...') &&
            $mail->hasReplyTo('...') &&
            $mail->hasFrom('...') &&
-           $mail->hasSubject('...');
+           $mail->hasSubject('...') &&
+           $mail->usesMailer('ses');
 });
 ```
 
