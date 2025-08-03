@@ -90,7 +90,17 @@ if (App::isLocale('en')) {
 <a name="pluralization-language"></a>
 ### Pluralization Language
 
+<style>
+.code-list-no-flex-break code {
+    display: contents !important;
+}
+</style>
+
+<div class="code-list-no-flex-break">
+
 You may instruct Laravel's "pluralizer", which is used by Eloquent and other portions of the framework to convert singular strings to plural strings, to use a language other than English. This may be accomplished by invoking the `useLanguage` method within the `boot` method of one of your application's service providers. The pluralizer's currently supported languages are: `french`, `norwegian-bokmal`, `portuguese`, `spanish`, and `turkish`:
+
+</div>
 
 ```php
 use Illuminate\Support\Pluralizer;
