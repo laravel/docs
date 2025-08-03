@@ -1381,7 +1381,7 @@ Validator::make($data, [
 <a name="rule-doesnt-contain"></a>
 #### doesnt_contain:_foo_,_bar_,...
 
-The field under validation must be an array that does not contain all of the given parameter values. Since this rule often requires you to `implode` an array, the `Rule::doesntContain` method may be used to fluently construct the rule:
+The field under validation must be an array that does not contain any of the given parameter values. Since this rule often requires you to `implode` an array, the `Rule::doesntContain` method may be used to fluently construct the rule:
 
 ```php
 use Illuminate\Support\Facades\Validator;
