@@ -425,8 +425,8 @@ When testing this route, we can instruct Laravel to return a fake, successful pr
 ```php tab=Pest
 <?php
 
-use Illuminate\Process\PendingProcess;
 use Illuminate\Contracts\Process\ProcessResult;
+use Illuminate\Process\PendingProcess;
 use Illuminate\Support\Facades\Process;
 
 test('process is invoked', function () {
@@ -450,8 +450,8 @@ test('process is invoked', function () {
 
 namespace Tests\Feature;
 
-use Illuminate\Process\PendingProcess;
 use Illuminate\Contracts\Process\ProcessResult;
+use Illuminate\Process\PendingProcess;
 use Illuminate\Support\Facades\Process;
 use Tests\TestCase;
 
