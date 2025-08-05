@@ -3370,6 +3370,19 @@ $user = Pipeline::send($user)
     ->thenReturn();
 ```
 
+The `withinTransactions` method may be invoked on the pipeline to automatically invoke each step of the pipeline within a database transaction:
+
+```php
+$user = Pipeline::send($user)
+    ->withinTransactions()
+    ->through([
+        GenerateProfilePhoto::class,
+        ActivateSubscription::class,
+        SendWelcomeEmail::class,
+    ])
+    ->thenReturn();
+```
+
 <a name="sleep"></a>
 ### Sleep
 
