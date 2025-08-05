@@ -46,6 +46,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
 [Arr::dot](#method-array-dot)
+[Arr::every](#method-array-every)
 [Arr::except](#method-array-except)
 [Arr::exists](#method-array-exists)
 [Arr::first](#method-array-first)
@@ -79,6 +80,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sole](#method-array-sole)
+[Arr::some](#method-array-some)
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
@@ -387,6 +389,25 @@ $array = ['products' => ['desk' => ['price' => 100]]];
 $flattened = Arr::dot($array);
 
 // ['products.desk.price' => 100]
+```
+
+<a name="method-array-every"></a>
+#### `Arr::every()` {.collection-method}
+
+The `Arr::every` method ensures that all values in the array pass a given truth test:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [1, 2, 3];
+
+Arr::every($array, fn ($i) => $i > 0);
+
+// true
+
+Arr::every($array, fn ($i) => $i > 2);
+
+// false
 ```
 
 <a name="method-array-except"></a>
@@ -1061,6 +1082,21 @@ $array = ['Desk', 'Table', 'Chair'];
 $value = Arr::sole($array, fn (string $value) => $value === 'Desk');
 
 // 'Desk'
+```
+
+<a name="method-array-some"></a>
+#### `Arr::some()` {.collection-method}
+
+The `Arr::some` method ensures that at least one of the values in the array passes a given truth test:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [1, 2, 3];
+
+Arr::some($array, fn ($i) => $i > 2);
+
+// true
 ```
 
 <a name="method-array-sort"></a>
