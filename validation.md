@@ -2351,7 +2351,7 @@ The field under validation must be a valid [Universally Unique Lexicographically
 <a name="rule-uuid"></a>
 #### uuid
 
-The field under validation must be a valid RFC 9562 (version 1, 3, 4, 5, 6, 7, or 8) universally unique identifier (UUID).
+The field under validation must be a valid RFC 9562 (version 1, 3, 4, 5, 6, 7, 8, or one of the "special versions" nil (`00000000-0000-0000-0000-000000000000`) and max (`FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF`)) universally unique identifier (UUID).
 
 You may also validate that the given UUID matches a UUID specification by version:
 
