@@ -128,6 +128,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [diffAssocUsing](#method-diffassocusing)
 [diffKeys](#method-diffkeys)
 [doesntContain](#method-doesntcontain)
+[doesntContainStrict](#method-doesntcontainstrict)
 [dot](#method-dot)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
@@ -842,6 +843,11 @@ $collection->doesntContain('product', 'Bookcase');
 ```
 
 The `doesntContain` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value.
+
+<a name="method-doesntcontainstrict"></a>
+#### `doesntContainStrict()` {.collection-method}
+
+This method has the same signature as the [doesntContain](#method-doesntContain) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-dot"></a>
 #### `dot()` {.collection-method}
