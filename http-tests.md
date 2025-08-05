@@ -261,6 +261,12 @@ You may also specify which guard should be used to authenticate the given user b
 $this->actingAs($user, 'web')
 ```
 
+If you would like to ensure the request is unauthenticated, you may use the `actingAsGuest` method:
+
+```php
+$this->actingAsGuest()
+```
+
 <a name="debugging-responses"></a>
 ### Debugging Responses
 
