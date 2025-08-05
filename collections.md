@@ -847,7 +847,7 @@ The `doesntContain` method uses "loose" comparisons when checking item values, m
 <a name="method-doesntcontainstrict"></a>
 #### `doesntContainStrict()` {.collection-method}
 
-This method has the same signature as the [doesntContain](#method-doesntContain) method; however, all values are compared using "strict" comparisons.
+This method has the same signature as the [doesntContain](#method-doesntcontain) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-dot"></a>
 #### `dot()` {.collection-method}
