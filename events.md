@@ -935,6 +935,9 @@ test('orders can be shipped', function () {
     // Assert an event was dispatched twice...
     Event::assertDispatched(OrderShipped::class, 2);
 
+    // Assert an event was dispatched once...
+    Event::assertDispatchedOnce(OrderShipped::class);
+
     // Assert an event was not dispatched...
     Event::assertNotDispatched(OrderFailedToShip::class);
 
@@ -969,6 +972,9 @@ class ExampleTest extends TestCase
 
         // Assert an event was dispatched twice...
         Event::assertDispatched(OrderShipped::class, 2);
+
+        // Assert an event was dispatched once...
+        Event::assertDispatchedOnce(OrderShipped::class);
 
         // Assert an event was not dispatched...
         Event::assertNotDispatched(OrderFailedToShip::class);
