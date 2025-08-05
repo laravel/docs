@@ -152,6 +152,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [route](#method-route)
 [secure_asset](#method-secure-asset)
 [secure_url](#method-secure-url)
+[to_action](#method-to-action)
 [to_route](#method-to-route)
 [uri](#method-uri)
 [url](#method-url)
@@ -2098,6 +2099,28 @@ The `secure_url` function generates a fully qualified HTTPS URL to the given pat
 $url = secure_url('user/profile');
 
 $url = secure_url('user/profile', [1]);
+```
+
+<a name="method-to-action"></a>
+#### `to_action()` {.collection-method}
+
+The `to_action` function generates a [redirect HTTP response](/docs/{{version}}/responses#redirects) for a given controller action:
+
+```php
+use App\Http\Controllers\UserController;
+
+return to_action([UserController::class, 'show'], ['user' => 1]);
+```
+
+If necessary, you may pass the HTTP status code that should be assigned to the redirect and any additional response headers as the third and fourth arguments to the `to_action` method:
+
+```php
+return to_action(
+    [UserController::class, 'show'],
+    ['user' => 1],
+    302,
+    ['X-Framework' => 'Laravel']
+);
 ```
 
 <a name="method-to-route"></a>
