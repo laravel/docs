@@ -3199,9 +3199,6 @@ For a thorough discussion of Carbon and its features, please consult the [offici
 <a name="deferred-functions"></a>
 ### Deferred Functions
 
-> [!WARNING]
-> If you have the **swoole** PHP extension installed, Laravel's `defer()` helper may conflict with Swoole's global defer() function, leading to a `502 Bad Gateway` error from Nginx. Make sure you call the defer helper by explicitly namespacing it: `use function Illuminate\Support\defer;`
-
 While Laravel's [queued jobs](/docs/{{version}}/queues) allow you to queue tasks for background processing, sometimes you may have simple tasks you would like to defer without configuring or maintaining a long-running queue worker.
 
 Deferred functions allow you to defer the execution of a closure until after the HTTP response has been sent to the user, keeping your application feeling fast and responsive. To defer the execution of a closure, simply pass the closure to the `Illuminate\Support\defer` function:
@@ -3226,6 +3223,9 @@ By default, deferred functions will only be executed if the HTTP response, Artis
 ```php
 defer(fn () => Metrics::reportOrder($order))->always();
 ```
+
+> [!WARNING]
+> If you have the **swoole** PHP extension installed, Laravel's `defer` function may conflict with Swoole's own global `defer` function, leading to web server errors. Make sure you call Laravel's `defer` helper by explicitly namespacing it: `use function Illuminate\Support\defer;`
 
 <a name="cancelling-deferred-functions"></a>
 #### Cancelling Deferred Functions
