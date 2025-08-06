@@ -769,7 +769,7 @@ When Artisan boots, all the commands in your application will be resolved by the
 <a name="programmatically-executing-commands"></a>
 ## Programmatically Executing Commands
 
-Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to execute an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts either the command's signature name or class name as its first argument, and an array of command parameters as the second argument. The exit code will be returned:
+Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to execute an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts either the command's signature name or class as its first argument, and an array of command parameters as the second argument. The exit code will be returned:
 
 ```php
 use Illuminate\Support\Facades\Artisan;
@@ -777,6 +777,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/user/{user}/mail', function (string $user) {
     $exitCode = Artisan::call('mail:send', [
+        'user' => $user, '--queue' => 'default'
+    ]);
+
+    $exitCode = Artisan::call(new SendEmailsCommand, [
         'user' => $user, '--queue' => 'default'
     ]);
 

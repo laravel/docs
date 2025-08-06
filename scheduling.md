@@ -67,7 +67,7 @@ php artisan schedule:list
 <a name="scheduling-artisan-commands"></a>
 ### Scheduling Artisan Commands
 
-In addition to scheduling closures, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class.
+In addition to scheduling closures, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's signature name or class.
 
 When scheduling Artisan commands using the command's class name, you may pass an array of additional command-line arguments that should be provided to the command when it is invoked:
 
@@ -78,6 +78,8 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::command('emails:send Taylor --force')->daily();
 
 Schedule::command(SendEmailsCommand::class, ['Taylor', '--force'])->daily();
+
+Schedule::command(new SendEmailsCommand, ['Taylor', '--force'])->daily();
 ```
 
 <a name="scheduling-artisan-closure-commands"></a>
