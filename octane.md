@@ -140,13 +140,13 @@ You may consult [the official FrankenPHP documentation](https://frankenphp.dev/d
 <a name="frankenphp-caddyfile"></a>
 #### Custom Caddyfile Configuration
 
-When using FrankenPHP, you may specify a custom Caddyfile to configure the server's behavior using the `--caddyfile` option when starting Octane:
+When using FrankenPHP, you may specify a custom Caddyfile using the `--caddyfile` option when starting Octane:
 
 ```shell
 php artisan octane:start --server=frankenphp --caddyfile=/path/to/your/Caddyfile
 ```
 
-This allows you to customize FrankenPHP's configuration beyond the default settings, such as adding custom middleware, configuring advanced routing, or setting up custom directives. You may consult [the official Caddy documentation](https://caddyserver.com/docs/caddyfile) for more information on Caddyfile syntax and configuration options.
+This allows you to customize FrankenPHP's configuration beyond the default settings, such as adding custom middleware, configuring advanced routing, or setting up custom directives. You may consult the [official Caddy documentation](https://caddyserver.com/docs/caddyfile) for more information on Caddyfile syntax and configuration options.
 
 <a name="roadrunner"></a>
 ### RoadRunner
