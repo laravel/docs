@@ -12,6 +12,7 @@
     - [Watching for File Changes](#watching-for-file-changes)
     - [Specifying the Worker Count](#specifying-the-worker-count)
     - [Specifying the Max Request Count](#specifying-the-max-request-count)
+    - [Specifying the Max Execution Time](#specifying-the-max-execution-time)
     - [Reloading the Workers](#reloading-the-workers)
     - [Stopping the Server](#stopping-the-server)
 - [Dependency Injection and Octane](#dependency-injection-and-octane)
@@ -359,6 +360,20 @@ To help prevent stray memory leaks, Octane gracefully restarts any worker once i
 ```shell
 php artisan octane:start --max-requests=250
 ```
+
+<a name="specifying-the-max-execution-time"></a>
+### Specifying the Max Execution Time
+
+By default, Laravel Octane sets a maximum execution time of 30 seconds for incoming requests via the `max_execution_time` option in your application's `config/octane.php` configuration file:
+
+```php
+'max_execution_time' => 30,
+```
+
+This setting defines the maximum number of seconds that an incoming request is allowed to execute before being terminated. Setting this value to `0` will disable the execution time limit entirely. This configuration option is particularly useful for applications that handle long-running requests, such as file uploads, data processing, or API calls to external services.
+
+> [!WARNING]
+> When you modify the `max_execution_time` configuration, you must restart the Octane server for the changes to take effect.
 
 <a name="reloading-the-workers"></a>
 ### Reloading the Workers
