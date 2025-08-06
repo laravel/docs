@@ -3386,6 +3386,19 @@ $user = Pipeline::send($user)
     ->thenReturn();
 ```
 
+For convenience, you may wish to specify the connection name:
+
+```php
+$user = Pipeline::send($user)
+    ->withinTransaction($connection)
+    ->through([
+        GenerateProfilePhoto::class,
+        ActivateSubscription::class,
+        SendWelcomeEmail::class,
+    ])
+    ->thenReturn();
+```
+
 <a name="sleep"></a>
 ### Sleep
 
