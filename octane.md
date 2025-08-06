@@ -137,6 +137,17 @@ If the `--log-level` option is explicitly passed to the `php artisan octane:star
 
 You may consult [the official FrankenPHP documentation](https://frankenphp.dev/docs/docker/) for more information on running FrankenPHP with Docker.
 
+<a name="frankenphp-caddyfile"></a>
+#### Custom Caddyfile Configuration
+
+When using FrankenPHP, you may specify a custom Caddyfile using the `--caddyfile` option when starting Octane:
+
+```shell
+php artisan octane:start --server=frankenphp --caddyfile=/path/to/your/Caddyfile
+```
+
+This allows you to customize FrankenPHP's configuration beyond the default settings, such as adding custom middleware, configuring advanced routing, or setting up custom directives. You may consult the [official Caddy documentation](https://caddyserver.com/docs/caddyfile) for more information on Caddyfile syntax and configuration options.
+
 <a name="roadrunner"></a>
 ### RoadRunner
 
@@ -255,6 +266,21 @@ By default, applications running via Octane generate links prefixed with `http:/
 ```php
 'https' => env('OCTANE_HTTPS', false),
 ```
+
+When using FrankenPHP, you may enable HTTPS by using the `--https` flag when starting Octane:
+
+```shell
+php artisan octane:start --server=frankenphp --https
+```
+
+Additionally, you may enable automatic HTTP to HTTPS redirection by using the `--http-redirect` option along with `--https`:
+
+```shell
+php artisan octane:start --server=frankenphp --https --http-redirect
+```
+
+> [!NOTE]
+> The `--http-redirect` option is only available when using FrankenPHP and requires the `--https` flag to be enabled.
 
 <a name="serving-your-application-via-nginx"></a>
 ### Serving Your Application via Nginx
