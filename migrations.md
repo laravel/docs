@@ -686,6 +686,14 @@ The `enum` method creates a `ENUM` equivalent column with the given valid values
 $table->enum('difficulty', ['easy', 'hard']);
 ```
 
+Of course, you may use the `Enum::cases()` method instead of manually defining an array of allowed values:
+
+```php
+use App\Enums\Difficulty;
+
+$table->enum('difficulty', Difficulty::cases());
+```
+
 <a name="column-method-float"></a>
 #### `float()` {.collection-method}
 
