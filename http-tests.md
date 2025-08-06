@@ -258,13 +258,13 @@ class ExampleTest extends TestCase
 You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method. The guard that is provided to the `actingAs` method will also become the default guard for the duration of the test:
 
 ```php
-$this->actingAs($user, 'web')
+$this->actingAs($user, 'web');
 ```
 
 If you would like to ensure the request is unauthenticated, you may use the `actingAsGuest` method:
 
 ```php
-$this->actingAsGuest()
+$this->actingAsGuest();
 ```
 
 <a name="debugging-responses"></a>
