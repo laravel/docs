@@ -53,7 +53,7 @@ $result->errorOutput();
 <a name="throwing-exceptions"></a>
 #### Throwing Exceptions
 
-If you have a process result and would like to throw an instance of `Illuminate\Process\Exceptions\ProcessFailedException` if the exit code is greater than zero (thus indicating failure), you may use the `throw` and `throwIf` methods. If the process did not fail, the process result instance will be returned:
+If you have a process result and would like to throw an instance of `Illuminate\Process\Exceptions\ProcessFailedException` if the exit code is greater than zero (thus indicating failure), you may use the `throw` and `throwIf` methods. If the process did not fail, the `ProcessResult` instance will be returned:
 
 ```php
 $result = Process::run('ls -la')->throw();
@@ -239,7 +239,7 @@ while ($process->running()) {
 $result = $process->wait();
 ```
 
-As you may have noticed, you may invoke the `wait` method to wait until the process is finished executing and retrieve the process result instance:
+As you may have noticed, you may invoke the `wait` method to wait until the process is finished executing and retrieve the `ProcessResult` instance:
 
 ```php
 $process = Process::timeout(120)->start('bash import.sh');
@@ -345,7 +345,7 @@ while ($pool->running()->isNotEmpty()) {
 $results = $pool->wait();
 ```
 
-As you can see, you may wait for all of the pool processes to finish executing and resolve their results via the `wait` method. The `wait` method returns an array accessible object that allows you to access the process result instance of each process in the pool by its key:
+As you can see, you may wait for all of the pool processes to finish executing and resolve their results via the `wait` method. The `wait` method returns an array accessible object that allows you to access the `ProcessResult` instance of each process in the pool by its key:
 
 ```php
 $results = $pool->wait();
