@@ -148,6 +148,31 @@ php artisan octane:start --server=frankenphp --caddyfile=/path/to/your/Caddyfile
 
 This allows you to customize FrankenPHP's configuration beyond the default settings, such as adding custom middleware, configuring advanced routing, or setting up custom directives. You may consult the [official Caddy documentation](https://caddyserver.com/docs/caddyfile) for more information on Caddyfile syntax and configuration options.
 
+<a name="frankenphp-php-ini"></a>
+
+#### PHP INI Configuration
+
+When using FrankenPHP, you may override PHP INI options by creating a `php.ini` file in one of the following locations:
+
+- In your Laravel project's root directory: `php.ini`
+- System-wide configuration: `/etc/frankenphp/php.ini`
+- Additional configuration files: `/etc/frankenphp/php.d/*.ini`
+
+For example, you may create a `php.ini` file in your project root to increase the memory limit:
+
+```ini
+memory_limit = 512M
+upload_max_filesize = 100M
+post_max_size = 100M
+```
+
+> [!WARNING]
+> After modifying any PHP INI configuration files, you must reload the Octane server for the changes to take effect:
+>
+> ```shell
+> php artisan octane:reload
+> ```
+
 <a name="roadrunner"></a>
 ### RoadRunner
 
