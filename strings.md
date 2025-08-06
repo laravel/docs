@@ -889,6 +889,20 @@ $isUuid = Str::isUuid('laravel');
 // false
 ```
 
+You may also validate that the given UUID matches a UUID specification by version (1, 3, 4, 5, 6, 7, or 8):
+
+```php
+use Illuminate\Support\Str;
+
+$isUuid = Str::isUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de', version: 4);
+
+// true
+
+$isUuid = Str::isUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de', version: 1);
+
+// false
+```
+
 <a name="method-kebab-case"></a>
 #### `Str::kebab()` {.collection-method}
 
