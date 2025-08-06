@@ -3373,7 +3373,7 @@ $user = Pipeline::send($user)
     ->thenReturn();
 ```
 
-The `withinTransactions` method may be invoked on the pipeline to automatically invoke each step of the pipeline within a database transaction:
+The `withinTransactions` method may be invoked on the pipeline to automatically wrap all steps of the pipeline within a single database transaction:
 
 ```php
 $user = Pipeline::send($user)
