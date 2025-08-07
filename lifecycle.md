@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Lifecycle Overview](#lifecycle-overview)
     - [First Steps](#first-steps)
-    - [HTTP / Console Kernels](#http-console-kernels)
+    - [HTTP Kernel](#http-kernel)
     - [Service Providers](#service-providers)
     - [Routing](#routing)
     - [Finishing Up](#finishing-up)
@@ -26,10 +26,10 @@ The entry point for all requests to a Laravel application is the `public/index.p
 
 The `index.php` file loads the Composer generated autoloader definition, and then retrieves an instance of the Laravel application from `bootstrap/app.php`. The first action taken by Laravel itself is to create an instance of the application / [service container](/docs/{{version}}/container).
 
-<a name="http-console-kernels"></a>
-### HTTP / Console Kernels
+<a name="http-kernel"></a>
+### HTTP Kernel
 
-Next, the incoming request is sent to either the HTTP kernel or the console kernel, using the `handleRequest` or `handleCommand` methods of the application instance, depending on the type of request entering the application. These two kernels serve as the central location through which all requests flow. For now, let's just focus on the HTTP kernel, which is an instance of `Illuminate\Foundation\Http\Kernel`.
+Next, the incoming request is sent to HTTP kernel (`Illuminate\Foundation\Http\Kernel`) using the `handleRequest`.
 
 The HTTP kernel defines an array of `bootstrappers` that will be run before the request is executed. These bootstrappers configure error handling, configure logging, [detect the application environment](/docs/{{version}}/configuration#environment-configuration), and perform other tasks that need to be done before the request is actually handled. Typically, these classes handle internal Laravel configuration that you do not need to worry about.
 
