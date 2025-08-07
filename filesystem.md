@@ -209,6 +209,21 @@ Typically, after updating the disk's credentials to match the credentials of the
 
     'endpoint' => env('AWS_ENDPOINT', 'https://minio:9000'),
 
+<a name="aws-s3"></a>
+#### Amazon S3
+
+In April 2023, AWS changed the default behavior of new S3 buckets
+to [not use ACLS](https://aws.amazon.com/about-aws/whats-new/2023/04/amazon-s3-security-best-practices-buckets-default/).
+By default, Flysystem will attempt to use ACLs, but if you attempt this with an S3 bucket without ACLs, you will receive an error like "The bucket does not allow ACLs".
+To make Laravel's Flysystem integration work with AWS S3 buckets without ACLs, you need to add the following to the s3
+config:
+
+```php
+'options' => [
+    'ACL' => ''
+]
+```
+
 <a name="minio"></a>
 #### MinIO
 
