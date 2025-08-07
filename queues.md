@@ -342,7 +342,6 @@ By default, unique jobs are "unlocked" after a job completes processing or fails
 ```php
 <?php
 
-use App\Models\Product;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 
