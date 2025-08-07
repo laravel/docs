@@ -178,6 +178,9 @@ $this->app->singletonIf(Transistor::class, function (Application $app) {
 });
 ```
 
+<a name="singleton-attribute"></a>
+#### Singleton Attribute
+
 Alternatively, you may mark an interface or class with the `#[Singleton]` attribute to indicate to the container that it should be resolved one time:
 
 ```php
@@ -216,6 +219,9 @@ $this->app->scopedIf(Transistor::class, function (Application $app) {
     return new Transistor($app->make(PodcastParser::class));
 });
 ```
+
+<a name="scoped-attribute"></a>
+#### Scoped Attribute
 
 Alternatively, you may mark an interface or class with the `#[Scoped]` attribute to indicate to the container that it should be resolved one time within a given Laravel request / job lifecycle:
 
@@ -296,7 +302,7 @@ interface EventPusher
 }
 ```
 
-Furthermore, `Singleton` and `Scoped` attributes may be applied to indicate if the container bindings should be resolved once or once per request / job lifecycle:
+Furthermore, [Singleton](#singleton-attribute) and [Scoped](#scoped-attribute) attributes may be applied to indicate if the container bindings should be resolved once or once per request / job lifecycle:
 
 ```php
 use App\Services\RedisEventPusher;
