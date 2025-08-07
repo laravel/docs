@@ -270,7 +270,7 @@ public function __construct(
 ) {}
 ```
 
-For convenience, if you wish to serialize all models without relationships, you may use the `WithoutRelations` attribute with the entire class instead of applying the attribute to each model:
+For convenience, if you wish to serialize all models without relationships, you may apply the `WithoutRelations` attribute to the entire class instead of applying the attribute to each model:
 
 ```php
 <?php
