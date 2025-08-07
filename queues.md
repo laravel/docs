@@ -299,7 +299,8 @@ In certain cases, you may want to define a specific "key" that makes the job uni
 ```php
 <?php
 
-use App\Models\Product;
+namespace App\Jobs;
+
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
@@ -308,7 +309,7 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
     /**
      * The product instance.
      *
-     * @var \App\Product
+     * @var \App\Models\Product
      */
     public $product;
 
