@@ -1533,7 +1533,9 @@ class ImportCsv implements ShouldQueue
 <a name="dispatching-batches"></a>
 ### Dispatching Batches
 
-To dispatch a batch of jobs, you should use the `batch` method of the `Bus` facade. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked. In this example, we will imagine we are queueing a batch of jobs that each process a given number of rows from a CSV file:
+To dispatch a batch of jobs, you should use the `batch` method of the `Bus` facade. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked.
+
+In this example, we will imagine we are queueing a batch of jobs that each process a given number of rows from a CSV file:
 
 ```php
 use App\Jobs\ImportCsv;
@@ -1541,7 +1543,7 @@ use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-$batch = Bus::batch([
+Bus::batch([
     new ImportCsv(1, 100),
     new ImportCsv(101, 200),
     new ImportCsv(201, 300),
@@ -1558,6 +1560,28 @@ $batch = Bus::batch([
 })->finally(function (Batch $batch) {
     // The batch has finished executing...
 })->dispatch();
+```
+
+> [!WARNING]
+> Any jobs in the batch will be processed in parallel if you have multiple queue workers running.
+
+To make sure each job gets processed in the order you've defined, you should put that group of jobs into a nested array:
+
+```php
+use App\Jobs\ImportCsv;
+use Illuminate\Bus\Batch;
+use Illuminate\Support\Facades\Bus;
+use Throwable;
+
+$batch = Bus::batch([
+    [
+        new ImportCsv(1, 100),
+        new ImportCsv(101, 200),
+        new ImportCsv(201, 300),
+        new ImportCsv(301, 400),
+        new ImportCsv(401, 500),
+    ]
+])->dispatch();
 
 return $batch->id;
 ```
