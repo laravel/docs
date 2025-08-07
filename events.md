@@ -16,6 +16,7 @@
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
     - [Dispatching Events After Database Transactions](#dispatching-events-after-database-transactions)
+    - [Deferring Events](#deferring-events)
 - [Event Subscribers](#event-subscribers)
     - [Writing Event Subscribers](#writing-event-subscribers)
     - [Registering Event Subscribers](#registering-event-subscribers)
@@ -798,6 +799,26 @@ class OrderShipped implements ShouldDispatchAfterCommit
     ) {}
 }
 ```
+
+<a name="deferring-events"></a>
+### Deferring Events
+
+Deferred events allow you to delay the dispatching of model events and execution of event listeners until after a specific block of code has completed. This is particularly useful when you need to ensure that all related records are created before event listeners are triggered.
+
+To defer events, provide a closure to the `Event::defer()` method:
+
+```php
+use App\Models\User;
+use Illuminate\Support\Facades\Event;
+
+Event::defer(function () {
+    $user = User::create(['name' => 'Victoria Otwell']);
+
+    $user->posts()->create(['title' => 'My first post!']);
+});
+```
+
+All events triggered within the closure will be dispatched after the closure is executed. This ensures that event listeners have access to all related records that were created during the deferred execution. If an exception occurs within the closure, the deferred events will not be dispatched.
 
 <a name="event-subscribers"></a>
 ## Event Subscribers
