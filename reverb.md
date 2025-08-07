@@ -18,6 +18,9 @@
     - [Ports](#ports)
     - [Process Management](#process-management)
     - [Scaling](#scaling)
+- [Events](#events)
+    - [MessageSent](#message-sent)
+    - [MessageReceived](#message-received)
 
 <a name="introduction"></a>
 ## Introduction
@@ -316,3 +319,89 @@ REVERB_SCALING_ENABLED=true
 Next, you should have a dedicated, central Redis server to which all of the Reverb servers will communicate. Reverb will use the [default Redis connection configured for your application](/docs/{{version}}/redis#configuration) to publish messages to all of your Reverb servers.
 
 Once you have enabled Reverb's scaling option and configured a Redis server, you may simply invoke the `reverb:start` command on multiple servers that are able to communicate with your Redis server. These Reverb servers should be placed behind a load balancer that distributes incoming requests evenly among the servers.
+
+<a name="events"></a>
+## Events
+
+Reverb dispatches several events during the lifecycle of WebSocket connections and message handling. You may listen for these events to monitor activity, log messages, or perform additional processing.
+
+<a name="message-sent"></a>
+### MessageSent
+
+The `Laravel\Reverb\Events\MessageSent` event is dispatched whenever a message is successfully sent from the Reverb server to a connected client. This event contains information about the message that was sent and the connection it was sent to.
+
+You may listen for this event in your application's `EventServiceProvider`:
+
+```php
+use Laravel\Reverb\Events\MessageSent;
+
+/**
+ * The event listener mappings for the application.
+ *
+ * @var array
+ */
+protected $listen = [
+    MessageSent::class => [
+        'App\Listeners\LogMessageSent',
+    ],
+];
+```
+
+The `MessageSent` event provides access to the following properties:
+
+```php
+class MessageSent
+{
+    /**
+     * The connection the message was sent to.
+     */
+    public $connection;
+
+    /**
+     * The message that was sent.
+     */
+    public $message;
+}
+```
+
+<a name="message-received"></a>
+### MessageReceived
+
+The `Laravel\Reverb\Events\MessageReceived` event is dispatched whenever the Reverb server receives a message from a connected client. This event contains information about the received message and the connection it was received from.
+
+You may listen for this event to log incoming messages, perform validation, or trigger additional processing:
+
+```php
+use Laravel\Reverb\Events\MessageReceived;
+
+/**
+ * The event listener mappings for the application.
+ *
+ * @var array
+ */
+protected $listen = [
+    MessageReceived::class => [
+        'App\Listeners\LogMessageReceived',
+        'App\Listeners\ValidateMessage',
+    ],
+];
+```
+
+The `MessageReceived` event provides access to the following properties:
+
+```php
+class MessageReceived
+{
+    /**
+     * The connection the message was received from.
+     */
+    public $connection;
+
+    /**
+     * The message that was received.
+     */
+    public $message;
+}
+```
+
+These events are particularly useful for debugging, monitoring message flow, implementing custom logging, or performing analytics on your WebSocket communication patterns.
