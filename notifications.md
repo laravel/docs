@@ -1703,6 +1703,9 @@ class ExampleTest extends TestCase
             [$user], AnotherNotification::class
         );
 
+        // Assert a notification was sent twice...
+        Notification::assertSentTimes(WeeklyReminder::class, 2);
+
         // Assert that a given number of notifications were sent...
         Notification::assertCount(3);
     }
