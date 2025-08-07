@@ -3379,9 +3379,9 @@ The `withinTransaction` method may be invoked on the pipeline to automatically w
 $user = Pipeline::send($user)
     ->withinTransaction()
     ->through([
-        GenerateProfilePhoto::class,
-        ActivateSubscription::class,
-        SendWelcomeEmail::class,
+        ProcessOrder::class,
+        TransferFunds::class,
+        UpdateInventory::class,
     ])
     ->thenReturn();
 ```
