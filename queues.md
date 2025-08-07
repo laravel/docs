@@ -301,7 +301,6 @@ In certain cases, you may want to define a specific "key" that makes the job uni
 
 namespace App\Jobs;
 
-use App\Models\Product;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
