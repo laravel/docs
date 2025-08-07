@@ -1236,7 +1236,7 @@ While not obligatory, it is recommended to wrap pessimistic locks within a [tran
             ->find(1);
 
         $receiver = DB::table('users')
-            ->lockForUpdate();
+            ->lockForUpdate()
             ->find(2);
 
         if ($sender->balance < 100) {
