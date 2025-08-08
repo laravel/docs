@@ -278,8 +278,8 @@ public function __construct(
 ) {}
 ```
 
-<a name="bind-attributes"></a>
-#### Bind Attributes
+<a name="bind-attribute"></a>
+#### Bind Attribute
 
 Laravel also provides a `Bind` attribute for added convenience. You can apply this attribute to any interface to tell Laravel which implementation should be automatically injected whenever that interface is requested. When using the `Bind` attribute, there is no need to perform any additional service registration in your application's service providers.
 
