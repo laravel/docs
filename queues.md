@@ -256,7 +256,7 @@ public function __construct(
 }
 ```
 
-If you are using PHP constructor property promotion and would like to indicate that an Eloquent model should not have its relations serialized, you may use the `WithoutRelations` attribute:
+If you are using [PHP constructor property promotion](https://www.php.net/manual/en/language.oop5.decon.php#language.oop5.decon.constructor.promotion) and would like to indicate that an Eloquent model should not have its relations serialized, you may use the `WithoutRelations` attribute:
 
 ```php
 use Illuminate\Queue\Attributes\WithoutRelations;
