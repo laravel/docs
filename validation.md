@@ -1178,7 +1178,7 @@ use Illuminate\Validation\Rule;
 ],
 ```
 
-The `afterToday` and `todayOrAfter` methods may be used to fluently express the date must be after today or or today or after, respectively:
+The `afterToday` and `todayOrAfter` methods may be used to fluently express the date and must be after today, or today or after, respectively:
 
 ```php
 'start_date' => [
@@ -1312,7 +1312,7 @@ use Illuminate\Validation\Rule;
 ],
 ```
 
-The `beforeToday` and `todayOrBefore` methods may be used to fluently express the date must be before today or or today or before, respectively:
+The `beforeToday` and `todayOrBefore` methods may be used to fluently express the date and must be before today, or today or before, respectively:
 
 ```php
 'start_date' => [
