@@ -883,7 +883,7 @@ ProcessPodcast::dispatchIf($accountActive, $podcast);
 ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
 ```
 
-In new Laravel applications, the `sync` driver is the default queue driver. This driver executes jobs synchronously in the foreground of the current request, which is often convenient during local development. If you would like to actually begin queueing jobs for background processing, you may specify a different queue driver within your application's `config/queue.php` configuration file.
+In new Laravel applications, the `database` driver is the default queue driver. You may specify a different queue driver within your application's `config/queue.php` configuration file.
 
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
