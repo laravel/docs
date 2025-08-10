@@ -1194,6 +1194,22 @@ You may retrieve a specific attribute's value using the `get` method:
 {{ $attributes->get('class') }}
 ```
 
+If you would like to check if an attribute is present and has a non-empty value, you may use the `filled` method:
+
+```blade
+@if ($attributes->filled('class'))
+    <div>Class attribute has a value</div>
+@endif
+```
+
+Conversely, the `isNotFilled` method may be used to determine if an attribute is not present:
+
+```blade
+@if ($attributes->isNotFilled('class'))
+    <div>Class attribute is not present</div>
+@endif
+```
+
 The `only` method may be used to retrieve only the attributes with the given keys:
 
 ```blade
@@ -1205,6 +1221,74 @@ The `except` method may be used to retrieve all attributes except those with the
 ```blade
 {{ $attributes->except(['class']) }}
 ```
+
+You may also check if any of the given attributes have non-empty values using the `anyFilled` method:
+
+```blade
+@if ($attributes->anyFilled(['data-image-src', 'data-video-url']))
+    <div>Media content here</div>
+@endif
+```
+
+<a name="type-casting-attributes"></a>
+#### Type Casting Attributes
+
+The attribute bag provides convenient methods for casting attribute values to specific types, eliminating boilerplate code:
+
+The `boolean` method converts attribute values to booleans, treating `"true"`, `"1"`, `"on"`, and `"yes"` as `true`:
+
+```blade
+<dialog @if($attributes->boolean('data-modal-open')) open @endif>
+    {{ $slot }}
+</dialog>
+```
+
+The `integer` method converts attributes to integers, with optional default values:
+
+```blade
+<div data-carousel-slides="{{ $attributes->integer('data-slides-count', 3) }}">
+
+</div>
+```
+
+The `float` method converts attributes to floating point numbers, with optional default values:
+
+```blade
+<div style="opacity: {{ $attributes->float('data-opacity', 1.0) }};">
+    {{ $slot }}
+</div>
+```
+
+The `string` method returns a `Stringable` instance, allowing for method chaining:
+
+```blade
+@props(['name', 'role' => 'user'])
+
+<div class="user-card">
+    <h2>{{ $attributes->string('name')->title() }}</h2>
+    <p class="role-{{ $attributes->string('role')->lower() }}">
+        Role: {{ $attributes->string('role')->ucfirst() }}
+    </p>
+</div>
+```
+
+For working with enums, you may use the `enum` method:
+
+```blade
+<div data-theme-key="{{ $attributes->enum('data-theme', ThemeEnum::class)?->key() }}">
+    {{ $slot }}
+</div>
+```
+
+The `date` method converts attribute values to Carbon instances, with optional format and timezone parameters:
+
+```blade
+<time datetime="{{ $attributes->date('data-publish-date')?->toISOString() }}">
+    {{ $attributes->date('data-publish-date')?->format('F j, Y') }}
+</time>
+```
+
+These type casting methods make it much cleaner to work with component attributes compared to manual type checking and conversion.
 
 <a name="reserved-keywords"></a>
 ### Reserved Keywords
