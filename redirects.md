@@ -72,6 +72,21 @@ public function getRouteKey(): mixed
 }
 ```
 
+<a name="redirecting-signed-named-routes"></a>
+## Redirecting To Signed Named Routes
+
+If you are creating signed URLs to named routes, you may use the `signedRoute` method to generate redirects to [signed named routes](https://laravel.com/docs/12.x/urls#signed-urls):
+
+```php
+return redirect()->signedRoute('unsubscribe', ['user' => 1]);
+```
+
+If you would like to generate redirects to temporary signed route URLs that expire after a specified amount of time, you may use the `temporarySignedRoute` method:
+
+```php
+return redirect()->temporarySignedRoute('unsubscribe', now()->addMinutes(30), ['user' => 1]);
+```
+
 <a name="redirecting-controller-actions"></a>
 ## Redirecting To Controller Actions
 
