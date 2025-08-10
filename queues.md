@@ -1598,7 +1598,7 @@ The batch's ID, which may be accessed via the `$batch->id` property, may be used
 <a name="naming-batches"></a>
 #### Naming Batches
 
-Some tools such as Laravel Horizon and Laravel Telescope may provide more user-friendly debug information for batches if batches are named. To assign an arbitrary name to a batch, you may call the `name` method while defining the batch:
+Some tools such as [Laravel Horizon](/docs/{{version}}/horizon) and [Laravel Telescope](/docs/{{version}}/telescope) may provide more user-friendly debug information for batches if batches are named. To assign an arbitrary name to a batch, you may call the `name` method while defining the batch:
 
 ```php
 $batch = Bus::batch([
