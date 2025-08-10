@@ -1470,13 +1470,12 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\FailOnException;
 use Illuminate\Support\Facades\Http;
 
 class SyncChatHistory implements ShouldQueue
 {
-    use InteractsWithQueue;
+    use Queueable;
 
     public $tries = 3;
 
