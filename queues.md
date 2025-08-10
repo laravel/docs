@@ -1313,10 +1313,14 @@ Sometimes you may wish to specify that a job may be attempted many times, but sh
 
 namespace App\Jobs;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Redis;
 
 class ProcessPodcast implements ShouldQueue
 {
+    use Queueable;
+
     /**
      * The number of times the job may be attempted.
      *
