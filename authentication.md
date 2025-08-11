@@ -433,7 +433,7 @@ Once the middleware has been attached to the route, you will automatically be pr
 <a name="a-note-on-fastcgi"></a>
 #### A Note on FastCGI
 
-If you are using PHP FastCGI and Apache to serve your Laravel application, HTTP Basic authentication may not work correctly. To correct these problems, the following lines may be added to your application's `.htaccess` file:
+If you are using [PHP FastCGI](https://www.php.net/manual/en/install.fpm.php) and Apache to serve your Laravel application, HTTP Basic authentication may not work correctly. To correct these problems, the following lines may be added to your application's `.htaccess` file:
 
 ```apache
 RewriteCond %{HTTP:Authorization} ^(.+)$
