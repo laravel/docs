@@ -2187,7 +2187,7 @@ use App\Models\Book;
 
 $books = Book::all();
 
-if ($someCondition) {
+if ($condition) {
     $books->load('author', 'publisher');
 }
 ```

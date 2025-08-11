@@ -821,7 +821,7 @@ use Illuminate\Queue\Middleware\Skip;
 public function middleware(): array
 {
     return [
-        Skip::when($someCondition),
+        Skip::when($condition),
     ];
 }
 ```
