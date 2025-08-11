@@ -933,7 +933,7 @@ ProcessPodcast::dispatch($podcast)->withoutDelay();
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
 #### Dispatching After the Response is Sent to the Browser
 
-Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser if your web server is using FastCGI. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:
+Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser if your web server is using [FastCGI](https://www.php.net/manual/en/install.fpm.php). This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:
 
 ```php
 use App\Jobs\SendNotification;
