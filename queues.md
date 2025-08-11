@@ -941,7 +941,7 @@ use App\Jobs\SendNotification;
 SendNotification::dispatchAfterResponse();
 ```
 
-You may also `dispatch` a closure and chain the `afterResponse` method onto the `dispatch` helper to execute a closure after the HTTP response has been sent to the browser:
+You may also `dispatch` a closure and chain the `afterResponse` method onto the [dispatch helper](/docs/{{version}}/helpers#method-dispatch) to execute a closure after the HTTP response has been sent to the browser:
 
 ```php
 use App\Mail\WelcomeMessage;
