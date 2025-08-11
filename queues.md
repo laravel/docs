@@ -112,7 +112,8 @@ In order to use the `redis` queue driver, you should configure a Redis database 
 > [!WARNING]
 > The `serializer` and `compression` Redis options are not supported by the `redis` queue driver.
 
-**Redis Cluster**
+<a name="redis-cluster"></a>
+##### Redis Cluster
 
 If your Redis queue connection uses a [Redis Cluster](https://redis.io/docs/latest/operate/rs/databases/durability-ha/clustering), your queue names must contain a [key hash tag](https://redis.io/docs/latest/develop/using-commands/keyspace/#hashtags). This is required in order to ensure all of the Redis keys for a given queue are placed into the same hash slot:
 
@@ -127,7 +128,8 @@ If your Redis queue connection uses a [Redis Cluster](https://redis.io/docs/late
 ],
 ```
 
-**Blocking**
+<a name="blocking"></a>
+##### Blocking
 
 When using the Redis queue, you may use the `block_for` configuration option to specify how long the driver should wait for a job to become available before iterating through the worker loop and re-polling the Redis database.
 
