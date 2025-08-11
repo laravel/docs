@@ -217,7 +217,7 @@ Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 <a name="reset-link-customization"></a>
 #### Reset Link Customization
 
-You may customize the password reset link URL using the `createUrlUsing` method provided by the `ResetPassword` notification class. This method accepts a closure which receives the user instance that is receiving the notification as well as the password reset link token. Typically, you should call this method from your `App\Providers\AppServiceProvider` service provider's `boot` method:
+You may customize the password reset link URL using the `createUrlUsing` method provided by the `ResetPassword` notification class. This method accepts a closure which receives the user instance that is receiving the notification as well as the password reset link token. Typically, you should call this method from the `boot` method of your application's `AppServiceProvider`:
 
 ```php
 use App\Models\User;
