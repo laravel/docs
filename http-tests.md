@@ -278,11 +278,9 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
 test('basic test', function () {
     $response = $this->get('/');
 
-    $response->dumpHeaders();
-
-    $response->dumpSession();
-
     $response->dump();
+    $response->dumpHeaders();
+    $response->dumpSession();
 });
 ```
 
@@ -302,11 +300,9 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->dumpHeaders();
-
-        $response->dumpSession();
-
         $response->dump();
+        $response->dumpHeaders();
+        $response->dumpSession();
     }
 }
 ```
