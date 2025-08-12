@@ -3,10 +3,10 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Configuration](#configuration)
+    - [Dashboard Authorization](#dashboard-authorization)
     - [Max Job Attempts](#max-job-attempts)
     - [Job Timeout](#job-timeout)
     - [Job Backoff](#job-backoff)
-    - [Dashboard Authorization](#dashboard-authorization)
     - [Silenced Jobs](#silenced-jobs)
 - [Balancing Strategies](#balancing-strategies)
     - [Auto Balancing](#auto-balancing)
@@ -129,6 +129,32 @@ While your application is in [maintenance mode](/docs/{{version}}/configuration#
 
 Within Horizon's default configuration file, you will notice a `defaults` configuration option. This configuration option specifies the default values for your application's [supervisors](#supervisors). The supervisor's default configuration values will be merged into the supervisor's configuration for each environment, allowing you to avoid unnecessary repetition when defining your supervisors.
 
+<a name="dashboard-authorization"></a>
+### Dashboard Authorization
+
+The Horizon dashboard may be accessed via the `/horizon` route. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
+
+```php
+/**
+ * Register the Horizon gate.
+ *
+ * This gate determines who can access Horizon in non-local environments.
+ */
+protected function gate(): void
+{
+    Gate::define('viewHorizon', function (User $user) {
+        return in_array($user->email, [
+            'taylor@laravel.com',
+        ]);
+    });
+}
+```
+
+<a name="alternative-authentication-strategies"></a>
+#### Alternative Authentication Strategies
+
+Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function (User $user)` closure signature above to `function (User $user = null)` in order to force Laravel to not require authentication.
+
 <a name="max-job-attempts"></a>
 ### Max Job Attempts
 
@@ -204,32 +230,6 @@ You may also configure "exponential" backoffs by using an array for the `backoff
     ],
 ],
 ```
-
-<a name="dashboard-authorization"></a>
-### Dashboard Authorization
-
-The Horizon dashboard may be accessed via the `/horizon` route. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
-
-```php
-/**
- * Register the Horizon gate.
- *
- * This gate determines who can access Horizon in non-local environments.
- */
-protected function gate(): void
-{
-    Gate::define('viewHorizon', function (User $user) {
-        return in_array($user->email, [
-            'taylor@laravel.com',
-        ]);
-    });
-}
-```
-
-<a name="alternative-authentication-strategies"></a>
-#### Alternative Authentication Strategies
-
-Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function (User $user)` closure signature above to `function (User $user = null)` in order to force Laravel to not require authentication.
 
 <a name="silenced-jobs"></a>
 ### Silenced Jobs
