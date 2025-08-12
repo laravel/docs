@@ -607,6 +607,8 @@ public function middleware(): array
 }
 ```
 
+Releasing an overlapping job back onto the queue will still increment the job's total number of attempts. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. For example, leaving the `tries` property to 1 as it is by default would prevent any overlapping job from being retried later.
+
 Any overlapping jobs of the same type will be released back to the queue. You may also specify the number of seconds that must elapse before the released job will be attempted again:
 
 ```php
@@ -1243,7 +1245,26 @@ class ProcessPodcast implements ShouldQueue
 <a name="max-attempts"></a>
 #### Max Attempts
 
-If one of your queued jobs is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
+Job attempts are a core concept of Laravel's queue system and power many advanced features. While they may seem confusing at first, it's important to understand how they work before modifying the default configuration.
+
+When a job is dispatched, it is pushed onto the queue. A worker then picks it up and attempts to execute it. This is a job attempt.
+
+However, an attempt does not necessarily mean the job's `handle` method was executed. Attempts can also be "consumed" in several ways:
+
+<div class="content-list" markdown="1">
+
+- The job encounters an unhandled exception during execution.
+- The job is manually released back to the queue using `$this->release()`.
+- Middleware such as `WithoutOverlapping` or `RateLimited` fails to acquire a lock and releases the job.
+- The job timed out.
+- The job's `handle` method runs and completes without throwing an exception.
+
+</div>
+
+You likely do not want to keep attempting a job indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
+
+> [!NOTE]
+> By default, Laravel will only attempt a job once. If your job uses middleware like `WithoutOverlapping` or `RateLimited`, or if you're manually releasing jobs, you will likely need to increase the number of allowed attempts via the `tries` option.
 
 One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies the number of times it may be attempted:
 
@@ -1403,6 +1424,9 @@ If you would like to indicate that a job should be marked as [failed](#dealing-w
  */
 public $failOnTimeout = true;
 ```
+
+> [!NOTE]
+> By default, when a job times out, it consumes one attempt and is released back to the queue (if retries are allowed). However, if you configure the job to fail on timeout, it will not be retried, regardless of the value set for tries.
 
 <a name="error-handling"></a>
 ### Error Handling
@@ -2281,6 +2305,18 @@ class ProcessPodcast implements ShouldQueue
 
 > [!WARNING]
 > A new instance of the job is instantiated before invoking the `failed` method; therefore, any class property modifications that may have occurred within the `handle` method will be lost.
+
+A failed job is not necessarily one that encountered an unhandled exception. A job may also be considered failed when it has exhausted all of its allowed attempts. These attempts can be consumed in several ways:
+
+<div class="content-list" markdown="1">
+
+- The job timed out.
+- The job encounters an unhandled exception during execution.
+- The job is released back to the queue either manually or by a middleware.
+
+</div>
+
+If the final attempt fails due to an exception thrown during job execution, that exception will be passed to the job's failed method. However, if the job fails because it has reached the maximum number of allowed attempts, the `$exception` will be an instance of `Illuminate\Queue\MaxAttemptsExceededException`. Similarly, if the job fails due to exceeding the configured timeout, the `$exception` will be an instance of `Illuminate\Queue\TimeoutExceededException`.
 
 <a name="retrying-failed-jobs"></a>
 ### Retrying Failed Jobs
