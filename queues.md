@@ -2057,7 +2057,7 @@ php artisan queue:work --force
 <a name="resource-considerations"></a>
 #### Resource Considerations
 
-Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should release any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done processing the image.
+Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should release any heavy resources after each job completes. For example, if you are doing image manipulation with the [GD library](https://www.php.net/manual/en/book.image.php), you should free the memory with `imagedestroy` when you are done processing the image.
 
 <a name="queue-priorities"></a>
 ### Queue Priorities
