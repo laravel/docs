@@ -73,6 +73,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::prepend](#method-array-prepend)
 [Arr::prependKeysWith](#method-array-prependkeyswith)
 [Arr::pull](#method-array-pull)
+[Arr::push](#method-array-push)
 [Arr::query](#method-array-query)
 [Arr::random](#method-array-random)
 [Arr::reject](#method-array-reject)
@@ -957,6 +958,21 @@ A default value may be passed as the third argument to the method. This value wi
 use Illuminate\Support\Arr;
 
 $value = Arr::pull($array, $key, $default);
+```
+
+<a name="method-array-push"></a>
+#### `Arr::push()` {.collection-method}
+
+The `Arr::push` method push an item into an array using "dot" notation:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [];
+
+Arr::push($array, 'office.furniture', 'Desk');
+
+// $array: ['office' => ['furniture' => 'Desk']]
 ```
 
 <a name="method-array-query"></a>
