@@ -820,9 +820,7 @@ Event::defer(function () {
 
 All events triggered within the closure will be dispatched after the closure is executed. This ensures that event listeners have access to all related records that were created during the deferred execution. If an exception occurs within the closure, the deferred events will not be dispatched.
 
-#### Deferring Specific Events
-
-If you only want to defer specific events, you may provide an array of events to the `Event::defer()` method:
+If you only want to defer specific events, you may provide an array of events to the `defer` method:
 
 ```php
 use App\Models\User;
