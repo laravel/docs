@@ -133,6 +133,9 @@ The `tty` method may be used to enable TTY mode for your process. TTY mode conne
 Process::forever()->tty()->run('vim');
 ```
 
+> [!WARNING]
+> TTY mode is not supported on Windows.
+
 <a name="process-output"></a>
 ### Process Output
 
