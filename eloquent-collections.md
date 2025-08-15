@@ -335,7 +335,13 @@ class User extends Model
      */
     public function newCollection(array $models = []): Collection
     {
-        return new UserCollection($models);
+        $collection = new UserCollection($models);
+
+        if (Model::isAutomaticallyEagerLoadingRelationships()) {
+            $collection->withRelationshipAutoloading();
+        }
+
+        return $collection;
     }
 }
 ```
