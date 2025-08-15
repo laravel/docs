@@ -263,7 +263,7 @@ The Laravel paginator classes implement the `Illuminate\Contracts\Support\Jsonab
 use App\Models\User;
 
 Route::get('/users', function () {
-    return User::paginate();
+    return User::paginate(15)->toJson();
 });
 ```
 
