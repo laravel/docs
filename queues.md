@@ -2536,7 +2536,6 @@ You may use the `Queue` facade's `fake` method to prevent queued jobs from actua
 <?php
 
 use App\Jobs\AnotherJob;
-use App\Jobs\FinalJob;
 use App\Jobs\ShipOrder;
 use Illuminate\Support\Facades\Queue;
 
@@ -2574,7 +2573,6 @@ test('orders can be shipped', function () {
 namespace Tests\Feature;
 
 use App\Jobs\AnotherJob;
-use App\Jobs\FinalJob;
 use App\Jobs\ShipOrder;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
