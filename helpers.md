@@ -2508,6 +2508,8 @@ The `dispatch` function pushes the given [job](/docs/{{version}}/queues#creating
 dispatch(new App\Jobs\SendEmails);
 ```
 
+For more information on working with the `dispatch` function, consult the [Queueing Closures documentation](/docs/{{version}}/queues#queueing-closures).
+
 <a name="method-dispatch-sync"></a>
 #### `dispatch_sync()` {.collection-method}
 
