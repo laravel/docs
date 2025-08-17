@@ -2350,7 +2350,7 @@ public function boot(): void
     Event::listen(function (QueueBusy $event) {
         Notification::route('mail', 'dev@example.com')
             ->notify(new QueueHasLongWaitTime(
-                $event->connection,
+                $event->connectionName,
                 $event->queue,
                 $event->size
             ));
