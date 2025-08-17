@@ -158,7 +158,7 @@ App::bind(function (Application $app): Transistor {
 <a name="binding-a-singleton"></a>
 #### Binding A Singleton
 
-The `singleton` method binds a class or interface into the container that should only be resolved one time. Once a singleton binding is resolved, the same object instance will be returned on subsequent calls into the container:
+The `singleton` method binds a class or interface into the container that should only be resolved one time. Once a singleton binding is resolved, the same object instance will be returned on subsequent calls into the container. However, passing parameters during resolution causing the container to create a fresh instance instead of returning the cached singleton:
 
 ```php
 use App\Services\Transistor;
