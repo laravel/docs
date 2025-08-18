@@ -131,16 +131,20 @@ class User extends Model
 <a name="temporarily-modifying-attribute-visibility"></a>
 #### Temporarily Modifying Attribute Visibility
 
-If you would like to make some typically hidden attributes visible on a given model instance, you may use the `makeVisible` method. The `makeVisible` method returns the model instance:
+If you would like to make some typically hidden attributes visible on a given model instance, you may use the `makeVisible` or `mergeVisible` methods. The `makeVisible` method returns the model instance:
 
 ```php
 return $user->makeVisible('attribute')->toArray();
+
+return $user->mergeVisible(['name', 'email'])->toArray();
 ```
 
-Likewise, if you would like to hide some attributes that are typically visible, you may use the `makeHidden` method.
+Likewise, if you would like to hide some attributes that are typically visible, you may use the `makeHidden` or `mergeHidden` methods:
 
 ```php
 return $user->makeHidden('attribute')->toArray();
+
+return $user->mergeHidden(['name', 'email'])->toArray();
 ```
 
 If you wish to temporarily override all of the visible or hidden attributes, you may use the `setVisible` and `setHidden` methods respectively:
@@ -203,10 +207,12 @@ Once the attribute has been added to the `appends` list, it will be included in 
 <a name="appending-at-run-time"></a>
 #### Appending at Run Time
 
-At runtime, you may instruct a model instance to append additional attributes using the `append` method. Or, you may use the `setAppends` method to override the entire array of appended properties for a given model instance:
+At runtime, you may instruct a model instance to append additional attributes using the `append` or `mergeAppends` methods. Or, you may use the `setAppends` method to override the entire array of appended properties for a given model instance:
 
 ```php
 return $user->append('is_admin')->toArray();
+
+return $user->mergeAppends(['is_admin', 'status'])->toArray();
 
 return $user->setAppends(['is_admin'])->toArray();
 ```
