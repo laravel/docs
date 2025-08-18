@@ -44,7 +44,7 @@ $executed = RateLimiter::attempt(
 );
 
 if (! $executed) {
-  return 'Too many messages sent!';
+    return 'Too many messages sent!';
 }
 ```
 
