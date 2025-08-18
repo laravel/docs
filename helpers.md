@@ -963,7 +963,7 @@ $value = Arr::pull($array, $key, $default);
 <a name="method-array-push"></a>
 #### `Arr::push()` {.collection-method}
 
-The `Arr::push` method pushes an item into an array using "dot" notation:
+The `Arr::push` method pushes an item into an array using "dot" notation. If an array does not exist at the given key, it will be created:
 
 ```php
 use Illuminate\Support\Arr;
