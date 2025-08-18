@@ -22,7 +22,7 @@ Typically, the rate limiter utilizes your default application cache as defined b
 ```php
 'default' => env('CACHE_STORE', 'database'),
 
-'limiter' => 'redis',
+'limiter' => 'redis', // [tl! add]
 ```
 
 <a name="basic-usage"></a>
