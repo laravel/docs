@@ -103,11 +103,12 @@ When a key has no more attempts left, the `availableIn` method returns the numbe
 
 ```php
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
     $seconds = RateLimiter::availableIn('send-message:'.$user->id);
 
-    return 'You may try again in '.$seconds.' seconds.';
+    return 'You may try again in '.$seconds.' '.Str::plural('second', $seconds).'.';
 }
 
 RateLimiter::increment('send-message:'.$user->id);
