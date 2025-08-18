@@ -178,6 +178,28 @@ $this->app->singletonIf(Transistor::class, function (Application $app) {
 });
 ```
 
+As discussed previously, when resolving a singleton from the container, the same object instance will be returned. However, passing parameters during resolution causing the container to create a fresh instance instead of returning the cached singleton:
+
+```php
+class Transistor
+{
+    /**
+     * Create a new class instance.
+     */
+    public function __construct(int $id = 0)
+    {
+        // ...
+    }
+}
+
+$this->app->singleton(Transistor::class, function (Application $app, array $params) {
+    return new Transistor($params['id']);
+});
+
+$transistor1 = resolve(Transistor::class, ['id' => 1]); // create a fresh singleton.
+$transistor2 = resolve(Transistor::class, ['id' => 2]); // create another fresh singleton.
+```
+
 <a name="singleton-attribute"></a>
 #### Singleton Attribute
 
