@@ -13,6 +13,8 @@
     - [Herd on macOS](#herd-on-macos)
     - [Herd on Windows](#herd-on-windows)
 - [IDE Support](#ide-support)
+- [Laravel and AI](#laravel-and-ai)
+    - [Installing Laravel Boost](#installing-laravel-boost)
 - [Next Steps](#next-steps)
     - [Laravel the Full Stack Framework](#laravel-the-fullstack-framework)
     - [Laravel the API Backend](#laravel-the-api-backend)
@@ -210,6 +212,37 @@ You are free to use any code editor you wish when developing Laravel application
 [PhpStorm](https://www.jetbrains.com/phpstorm/laravel/) by JetBrains combined with the [Laravel Idea plugin](https://laravel-idea.com/) provides extensive support for Laravel and its ecosystem including Laravel Pint, Larastan, and Pest. The framework support covers Blade templates, smart autocompletion for Eloquent models, routes, views, translations, and components, along with powerful code generation and navigation across Laravel projects.
 
 For those seeking a cloud-based development experience, [Firebase Studio](https://firebase.studio/) provides instant access to building with Laravel directly in your browser. With zero setup required, Firebase Studio makes it easy to start building Laravel applications from any device.
+
+<a name="laravel-and-ai"></a>
+## Laravel and AI
+
+[Laravel Boost](https://github.com/laravel/boost) is a powerful tool that bridges the gap between AI coding agents and Laravel applications. Boost provides AI agents with Laravel-specific context, tools, and guidelines so they can generate more accurate, version-specific code that follows Laravel conventions.
+
+When you install Boost in your Laravel application, AI agents gain access to over 15 specialized tools including the ability to know which packages you are using, query your database, search the Laravel documentation, read browser logs, generate tests, and execute code via Tinker.
+
+In addition, Boost gives AI agents access to over 17,000 pieces of vectorized Laravel ecosystem documentation, specific to your installed package versions. This means agents can provide guidance targeted to the exact versions your project uses.
+
+Boost also includes Laravel-maintained AI guidelines that nudge agents to follow framework conventions, write appropriate tests, and avoid common pitfalls when generating Laravel code.
+
+<a name="installing-laravel-boost"></a>
+### Installing Laravel Boost
+
+Boost can be installed in Laravel 10, 11, and 12 applications running PHP 8.1 or higher. To get started, install Boost as a development dependency:
+
+```shell
+composer require laravel/boost --dev
+```
+
+Once installed, run the interactive installer:
+
+```shell
+php artisan boost:install
+```
+
+The installer will auto-detect your IDE and AI agents, allowing you to opt into the features that make sense for your project. Boost respects existing project conventions and doesn't force opinionated style rules by default.
+
+> [!NOTE]
+> To learn more about Boost, check out the [Laravel Boost repository on GitHub](https://github.com/laravel/boost).
 
 <a name="next-steps"></a>
 ## Next Steps
