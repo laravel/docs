@@ -41,7 +41,7 @@ If you would like Pint to run in parallel mode (experimental) for improved perfo
 ./vendor/bin/pint --parallel
 ```
 
-Parallel mode also allows specifying the max number of processes to run by passing the `--max-processes` and specifying a value. If this flag is not set, pint will simply use every available core on your machine.
+Parallel mode also allows you to specify the maximum number of processes to run via the `--max-processes` option. If this option is not provided, Pint will use every available core on your machine:
 
 ```shell
 ./vendor/bin/pint --parallel --max-processes=4
