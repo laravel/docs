@@ -409,7 +409,7 @@ Auth::loginUsingId(1, remember: true);
 <a name="authenticate-a-user-once"></a>
 #### Authenticate a User Once
 
-You may use the `once` method to authenticate a user with the application for a single request. No sessions or cookies will be utilized when calling this method:
+You may use the `once` method to authenticate a user with the application for a single request. No sessions or cookies will be utilized when calling this method, and the `Login` event will not be dispatched:
 
 ```php
 if (Auth::once($credentials)) {
