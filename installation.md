@@ -222,7 +222,7 @@ When you install Boost in your Laravel application, AI agents gain access to ove
 
 In addition, Boost gives AI agents access to over 17,000 pieces of vectorized Laravel ecosystem documentation, specific to your installed package versions. This means agents can provide guidance targeted to the exact versions your project uses.
 
-Boost also includes Laravel-maintained AI guidelines that nudge agents to follow framework conventions, write appropriate tests, and avoid common pitfalls when generating Laravel code.
+Boost also includes Laravel-maintained AI guidelines that help agents to follow framework conventions, write appropriate tests, and avoid common pitfalls when generating Laravel code.
 
 <a name="installing-laravel-boost"></a>
 ### Installing Laravel Boost
