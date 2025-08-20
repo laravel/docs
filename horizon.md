@@ -179,7 +179,7 @@ You can define the maximum number of attempts a job can consume within a supervi
 
 Adjusting the `tries` option is essential when using middlewares such as `WithoutOverlapping` or `RateLimited` because they consume attempts. To handle this, adjust the `tries` configuration value either at the supervisor level or by defining the `$tries` property on the job class.
 
-If you don’t set the `tries` option, Horizon retries indefinitely, unless the job class defines `$tries`, which takes precedence over the Horizon configuration.
+If you don’t set the `tries` option, Horizon defaults to a single attempt, unless the job class defines `$tries`, which takes precedence over the Horizon configuration.
 
 Setting `tries` or `$tries` to 0 allows unlimited attempts, which is ideal when the number of attempts is uncertain. To prevent endless failures, you can limit the number of exceptions allowed by setting the `$maxExceptions` property on the job class.
 
