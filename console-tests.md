@@ -203,7 +203,7 @@ By default, the `Illuminate\Console\Events\CommandStarting` and `Illuminate\Cons
 
 use Illuminate\Foundation\Testing\WithConsoleEvents;
 
-uses(WithConsoleEvents::class);
+pest()->use(WithConsoleEvents::class);
 
 // ...
 ```
