@@ -939,7 +939,7 @@ If you're assigning multiple rate limits segmented by identical `by` values, you
 ```php
 RateLimiter::for('uploads', function (Request $request) {
     return [
-        Limit::perMinute(10)->by('minute:'.$request->user()->id),
+        Limit::perHour(10)->by('hour:'.$request->user()->id),
         Limit::perDay(1000)->by('day:'.$request->user()->id),
     ];
 });
