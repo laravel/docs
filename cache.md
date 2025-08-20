@@ -396,7 +396,7 @@ cache()->remember('users', $seconds, function () {
 ```
 
 > [!NOTE]
-> When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing the facade](/docs/{{version}}/mocking#mocking-facades).
+> When testing calls to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing the facade](/docs/{{version}}/mocking#mocking-facades).
 
 <a name="atomic-locks"></a>
 ## Atomic Locks
