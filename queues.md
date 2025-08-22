@@ -1799,6 +1799,8 @@ public function handle(): void
 {
     if ($this->user->exceedsImportLimit()) {
         $this->batch()->cancel();
+
+        return;
     }
 
     if ($this->batch()->cancelled()) {
