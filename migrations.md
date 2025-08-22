@@ -403,7 +403,15 @@ Before renaming a table, you should verify that any foreign key constraints on t
 <a name="creating-columns"></a>
 ### Creating Columns
 
-The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives an `Illuminate\Database\Schema\Blueprint` instance you may use to add columns to the table:
+The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives an `Illuminate\Database\Schema\Blueprint` instance you may use to add columns to the table.
+
+<a name="generating-migrations-to-add-columns"></a>
+#### Generating Migrations to Add Columns
+
+You may generate a migration specifically for adding columns to an existing table using the `make:migration` [Artisan command](/docs/{{version}}/artisan) and the `--table` option:
+
+```shell
+php artisan make:migration add_votes_to_users_table --table=users
 
 ```php
 use Illuminate\Database\Schema\Blueprint;
