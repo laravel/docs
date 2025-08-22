@@ -1669,7 +1669,7 @@ Bus::batch([
         new SendPodcastReleaseNotification(2),
     ],
 ])->then(function (Batch $batch) {
-    // ...
+    // All jobs completed successfully...
 })->dispatch();
 ```
 
