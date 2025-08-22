@@ -494,7 +494,7 @@ return [
         label: 'Search for a user:',
         placeholder: 'E.g. Taylor Otwell',
         options: fn ($value) => strlen($value) > 0
-            ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+            ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
             : []
     ),
 ];
