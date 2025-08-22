@@ -1842,7 +1842,7 @@ $batch = Bus::batch([
 <a name="retrying-failed-batch-jobs"></a>
 #### Retrying Failed Batch Jobs
 
-For convenience, Laravel provides a `queue:retry-batch` Artisan command that allows you to easily retry all of the failed jobs for a given batch. The `queue:retry-batch` command accepts the UUID of the batch whose failed jobs should be retried:
+For convenience, Laravel provides a `queue:retry-batch` Artisan command that allows you to easily retry all of the failed jobs for a given batch. This command accepts the UUID of the batch whose failed jobs should be retried:
 
 ```shell
 php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
