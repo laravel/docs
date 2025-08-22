@@ -1798,7 +1798,7 @@ Sometimes you may need to cancel a given batch's execution. This can be accompli
 public function handle(): void
 {
     if ($this->user->exceedsImportLimit()) {
-        return $this->batch()->cancel();
+        $this->batch()->cancel();
     }
 
     if ($this->batch()->cancelled()) {
