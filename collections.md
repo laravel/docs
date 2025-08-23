@@ -230,6 +230,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [times](#method-times)
 [toArray](#method-toarray)
 [toJson](#method-tojson)
+[toPrettyJson](#method-toprettyjson)
 [transform](#method-transform)
 [undot](#method-undot)
 [union](#method-union)
@@ -3331,6 +3332,17 @@ $collection = collect(['name' => 'Desk', 'price' => 200]);
 $collection->toJson();
 
 // '{"name":"Desk", "price":200}'
+```
+
+<a name="method-toprettyjson"></a>
+#### `toPrettyJson()` {.collection-method}
+
+The `toPrettyJson` method converts the collection into a pretty JSON format:
+
+```php
+$collection = collect(['name' => 'Desk', 'price' => 200]);
+
+$collection->toPrettyJson();
 ```
 
 <a name="method-transform"></a>
