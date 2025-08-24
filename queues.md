@@ -2805,6 +2805,7 @@ $job = (new ProcessPodcast)->withFakeQueueInteractions();
 $job->handle();
 
 $job->assertReleased(delay: 30);
+$job->assertNotReleased();
 $job->assertDeleted();
 $job->assertNotDeleted();
 $job->assertFailed();
