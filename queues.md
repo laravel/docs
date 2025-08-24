@@ -2869,3 +2869,6 @@ Queue::looping(function () {
     }
 });
 ```
+
+> [!NOTE]
+> If you have multiple running workers, rolling back a transaction opened in worker A does not affect other transactions opened in worker B because each worker is a separate PHP process with its own memory space and database connection.
