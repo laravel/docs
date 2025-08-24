@@ -2366,6 +2366,12 @@ To delete all of your failed jobs from the `failed_jobs` table, you may use the 
 php artisan queue:flush
 ```
 
+By default, this command deletes all failed job records regardless of age. However, you may provide the `--hours` option to delete only jobs that failed at or before the given number of hours ago. For example, the following command will delete all jobs that failed 48 hours ago or earlier:
+
+```shell
+php artisan queue:flush --hours=48
+```
+
 <a name="ignoring-missing-models"></a>
 ### Ignoring Missing Models
 
