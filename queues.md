@@ -2758,7 +2758,7 @@ Bus::fake();
 // ...
 
 Bus::assertBatched(function (PendingBatch $batch) {
-    return $batch->name == 'import-csv' &&
+    return $batch->name == 'Import CSV' &&
            $batch->jobs->count() === 10;
 });
 ```
