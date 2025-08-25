@@ -3337,7 +3337,7 @@ $collection->toJson();
 <a name="method-toprettyjson"></a>
 #### `toPrettyJson()` {.collection-method}
 
-The `toPrettyJson` method converts the collection into a pretty JSON format:
+The `toPrettyJson` method converts the collection into a formatted JSON string using the `JSON_PRETTY_PRINT` option:
 
 ```php
 $collection = collect(['name' => 'Desk', 'price' => 200]);
