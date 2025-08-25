@@ -230,7 +230,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [times](#method-times)
 [toArray](#method-toarray)
 [toJson](#method-tojson)
-[toPrettyJson](#method-toprettyjson)
+[toPrettyJson](#method-to-pretty-json)
 [transform](#method-transform)
 [undot](#method-undot)
 [union](#method-union)
@@ -3334,7 +3334,7 @@ $collection->toJson();
 // '{"name":"Desk", "price":200}'
 ```
 
-<a name="method-toprettyjson"></a>
+<a name="method-to-pretty-json"></a>
 #### `toPrettyJson()` {.collection-method}
 
 The `toPrettyJson` method converts the collection into a formatted JSON string using the `JSON_PRETTY_PRINT` option:
