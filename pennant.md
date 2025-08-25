@@ -144,10 +144,10 @@ class NewApi
 }
 ```
 
-If you would like to manually resolve an instance of a class-based feature, you may invoke the `instance` method on the `Feature` facade:
+If you would like to manually resolve an instance of a class-based feature, you may invoke the `instance` method on the `Feature` manager:
 
 ```php
-use Illuminate\Support\Facades\Feature;
+use Laravel\Pennant\Feature;
 
 $instance = Feature::instance(NewApi::class);
 ```
@@ -180,7 +180,7 @@ class NewApi
 <a name="checking-features"></a>
 ## Checking Features
 
-To determine if a feature is active, you may use the `active` method on the `Feature` facade. By default, features are checked against the currently authenticated user:
+To determine if a feature is active, you may use the `active` method on the `Feature` class. By default, features are checked against the currently authenticated user:
 
 ```php
 <?php
@@ -207,7 +207,7 @@ class PodcastController
 }
 ```
 
-Although features are checked against the currently authenticated user by default, you may easily check the feature against another user or [scope](#scope). To accomplish this, use the `for` method offered by the `Feature` facade:
+Although features are checked against the currently authenticated user by default, you may easily check the feature against another user or [scope](#scope). To accomplish this, use the `for` method offered by the `Feature` class:
 
 ```php
 return Feature::for($user)->active('new-api')
@@ -499,7 +499,7 @@ class NewApi
 
 When checking a feature, Pennant will create an in-memory cache of the result. If you are using the `database` driver, this means that re-checking the same feature flag within a single request will not trigger additional database queries. This also ensures that the feature has a consistent result for the duration of the request.
 
-If you need to manually flush the in-memory cache, you may use the `flushCache` method offered by the `Feature` facade:
+If you need to manually flush the in-memory cache, you may use the `flushCache` method offered by the `Feature` class:
 
 ```php
 Feature::flushCache();
@@ -511,7 +511,7 @@ Feature::flushCache();
 <a name="specifying-the-scope"></a>
 ### Specifying the Scope
 
-As discussed, features are typically checked against the currently authenticated user. However, this may not always suit your needs. Therefore, it is possible to specify the scope you would like to check a given feature against via the `Feature` facade's `for` method:
+As discussed, features are typically checked against the currently authenticated user. However, this may not always suit your needs. Therefore, it is possible to specify the scope you would like to check a given feature against via the `Feature` class `for` method:
 
 ```php
 return Feature::for($user)->active('new-api')
@@ -540,7 +540,7 @@ Feature::define('billing-v2', function (Team $team) {
 });
 ```
 
-You will notice that the closure we have defined is not expecting a `User`, but is instead expecting a `Team` model. To determine if this feature is active for a user's team, you should pass the team to the `for` method offered by the `Feature` facade:
+You will notice that the closure we have defined is not expecting a `User`, but is instead expecting a `Team` model. To determine if this feature is active for a user's team, you should pass the team to the `for` method offered by the `Feature` class:
 
 ```php
 if (Feature::for($user->team)->active('billing-v2')) {
