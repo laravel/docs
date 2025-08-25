@@ -2392,7 +2392,7 @@ $browser->visit(new Dashboard)
 <a name="components"></a>
 ## Components
 
-Components are similar to Dusk’s “page objects”, but are intended for pieces of UI and functionality that are re-used throughout your application, such as a navigation bar or notification window. As such, components are not bound to specific URLs.
+Components are similar to Dusk's “page objects”, but are intended for pieces of UI and functionality that are re-used throughout your application, such as a navigation bar or notification window. As such, components are not bound to specific URLs.
 
 <a name="generating-components"></a>
 ### Generating Components
