@@ -22,7 +22,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Reverb](https://github.com/laravel/reverb) brings blazing-fast and scalable real-time WebSocket communication directly to your Laravel application, and provides seamless integration with Laravel’s existing suite of [event broadcasting tools](/docs/{{version}}/broadcasting).
+[Laravel Reverb](https://github.com/laravel/reverb) brings blazing-fast and scalable real-time WebSocket communication directly to your Laravel application, and provides seamless integration with Laravel's existing suite of [event broadcasting tools](/docs/{{version}}/broadcasting).
 
 <a name="installation"></a>
 ## Installation
