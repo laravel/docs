@@ -2626,7 +2626,7 @@ Queue::assertClosurePushed(function (CallQueuedClosure $job) {
 <a name="faking-a-subset-of-jobs"></a>
 ### Faking a Subset of Jobs
 
-If you only need to fake specific jobs while allowing your other jobs to execute normally (synchronous driver), you may pass the class names of the jobs that should be faked to the `fake` method:
+If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:
 
 ```php tab=Pest
 test('orders can be shipped', function () {
