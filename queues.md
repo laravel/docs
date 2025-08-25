@@ -1945,7 +1945,9 @@ If you defined your DynamoDB table with a `ttl` attribute, you may define config
 Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it cannot be modified in transit:
 
 ```php
-$podcast = App\Podcast::find(1);
+use App\Models\Podcast;
+
+$podcast = Podcast::find(1);
 
 dispatch(function () use ($podcast) {
     $podcast->publish();
