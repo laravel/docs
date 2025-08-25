@@ -2127,7 +2127,7 @@ Sometimes you may wish to eager load a relationship but also specify additional 
 
 ```php
 use App\Models\User;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 $users = User::with(['posts' => function (Builder $query) {
     $query->where('title', 'like', '%code%');
