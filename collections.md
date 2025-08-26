@@ -4328,3 +4328,29 @@ $users->take(5)->all();
 // The rest are hydrated from the database...
 $users->take(20)->all();
 ```
+
+<a name="method-with-heartbeat"></a>
+#### `withHeartbeat()` {.collection-method}
+
+The `withHeartbeat` method allows you to execute a callback at regular time intervals while a lazy collection is being enumerated. This is particularly useful for long-running operations that require periodic maintenance tasks, such as extending locks or sending progress updates:
+
+```php
+use Carbon\CarbonInterval;
+use Illuminate\Support\Facades\Cache;
+
+$lock = Cache::lock('generate-reports', CarbonInterval::minutes(5));
+
+if ($lock->get()) {
+    try {
+        Report::where('status', 'pending')
+            ->lazy()
+            ->withHeartbeat(
+                CarbonInterval::minutes(4),
+                fn () => $lock->extend(CarbonInterval::minutes(5))
+            )
+            ->each($report->process(...));
+    } finally {
+        $lock->release();
+    }
+}
+```
