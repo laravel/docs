@@ -428,6 +428,77 @@ class AppServiceProvider extends ServiceProvider
 > [!WARNING]
 > The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections.
 
+<a name="force-wrapping"></a>
+#### Force Wrapping
+
+In some cases, you may want to ensure that your resource response is always wrapped in the configured wrapper key, even when the resource data already contains that key. This commonly occurs when working with model attributes that match the wrapper name (usually `data`).
+
+By default, if your resource array contains a key that matches the wrapper, Laravel will skip the wrapping to avoid double-wrapping. However, this can lead to inconsistent API responses depending on your model's structure.
+
+To force consistent wrapping behavior, you may set the `$forceWrapping` static property to `true` on your resource class:
+
+```php
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class TaskResource extends JsonResource
+{
+    /**
+     * The "data" wrapper that should be applied.
+     *
+     * @var string|null
+     */
+    public static $wrap = 'data';
+
+    /**
+     * Whether to force wrapping even if the wrapper key exists in resource data.
+     *
+     * @var bool
+     */
+    public static $forceWrapping = true;
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'data' => $this->data, // This won't prevent wrapping anymore
+        ];
+    }
+}
+```
+
+With `$forceWrapping` set to `true`, your response will be consistently wrapped regardless of the model's attributes:
+
+```json
+{
+    "data": {
+        "id": 1,
+        "title": "Task Title",
+        "data": "some model data"
+    }
+}
+```
+
+Without `$forceWrapping`, the same resource might return an inconsistent response structure:
+
+```json
+{
+    "id": 1,
+    "title": "Task Title",
+    "data": "some model data"
+}
+```
+
 <a name="wrapping-nested-resources"></a>
 #### Wrapping Nested Resources
 
