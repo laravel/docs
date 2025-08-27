@@ -972,7 +972,7 @@ $array = [];
 
 Arr::push($array, 'office.furniture', 'Desk');
 
-// $array: ['office' => ['furniture' => 'Desk']]
+// $array: ['office' => ['furniture' => ['Desk']]]
 ```
 
 <a name="method-array-query"></a>
