@@ -521,6 +521,22 @@ In general, the more entries you have for a particular metric, the lower you can
 
 Pulse will automatically trim its stored entries once they are outside of the dashboard window. Trimming occurs when ingesting data using a lottery system which may be customized in the Pulse [configuration file](#configuration).
 
+The `keep` key specifies how often the trim will occur. By default, the interval is `7 days`, which is also the minimum value. You can customize this setting using a human-friendly format in the pattern `number unit`, where the unit can be `seconds`, `minutes`, `hours`, `days`, `months`, or `years`. For example, the trim will occur every 2 months:
+
+```
+    'ingest' => [
+        ....
+        'trim' => [
+            'lottery' => [1, 1_000],
+            'keep' => '2 months',
+        ],
+        ....
+    ],
+```
+
+> [!NOTE]
+> If you want a more customized/advanced interval, the `keep` key uses the `Carbon::fromString` behind the scenes.
+
 <a name="pulse-exceptions"></a>
 ### Handling Pulse Exceptions
 
