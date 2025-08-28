@@ -63,6 +63,16 @@ return $user->toJson();
 return $user->toJson(JSON_PRETTY_PRINT);
 ```
 
+For convenience, you may use the `toPrettyJson` method to convert a model into a formatted JSON string using the `JSON_PRETTY_PRINT` option:
+
+```php
+use App\Models\User;
+
+$user = User::find(1);
+
+return $user->toPrettyJson();
+```
+
 Alternatively, you may cast a model or collection to a string, which will automatically call the `toJson` method on the model or collection:
 
 ```php
