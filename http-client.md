@@ -823,7 +823,7 @@ Http::get('https://github.com/laravel/framework');
 Http::get('https://laravel.com');
 ```
 
-Sometimes, you may wish to prevent most stray requests while still allowing specific ones. To accomplish this, you may pass an array of URL patterns to the `allowStrayRequests` method. Any request matching one of the given patterns will be allowed, while all other requests will continue to throw an exception:
+Sometimes, you may wish to prevent most stray requests while still allowing specific requests to execute. To accomplish this, you may pass an array of URL patterns to the `allowStrayRequests` method. Any request matching one of the given patterns will be allowed, while all other requests will continue to throw an exception:
 
 ```php
 use Illuminate\Support\Facades\Http;
@@ -834,7 +834,7 @@ Http::allowStrayRequests([
     'http://127.0.0.1:5000/*',
 ]);
 
-// This request is allowed...
+// This request is executed...
 Http::get('http://127.0.0.1:5000/generate');
 
 // An exception is thrown...
