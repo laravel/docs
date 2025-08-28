@@ -4348,7 +4348,7 @@ if ($lock->get()) {
                 CarbonInterval::minutes(4),
                 fn () => $lock->extend(CarbonInterval::minutes(5))
             )
-            ->each($report->process(...));
+            ->each(fn ($report) => $report->process());
     } finally {
         $lock->release();
     }
