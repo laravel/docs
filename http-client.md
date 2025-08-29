@@ -180,6 +180,21 @@ $response = Http::attach(
 )->post('http://example.com/attachments');
 ```
 
+<a name="setting-a-base-url"></a>
+#### Setting a Base URL
+
+When interacting with endpoints that share a common root, you can use the baseUrl method. It accepts a root URL as its argument and applies it to all subsequent requests made from the same client instance.
+
+```php
+$client = Http::baseUrl('http://example.com');
+
+$client->get('/users');       // GET http://example.com/users
+$client->post('/login', [     // POST http://example.com/login
+    'email' => 'taylor@laravel.com',
+    'password' => 'secret',
+]);
+```
+
 <a name="headers"></a>
 ### Headers
 
