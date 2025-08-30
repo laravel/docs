@@ -4338,7 +4338,7 @@ The `withHeartbeat` method allows you to execute a callback at regular time inte
 use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\Cache;
 
-$lock = Cache::lock('generate-reports', CarbonInterval::minutes(5));
+$lock = Cache::lock('generate-reports', seconds: 60 * 5);
 
 if ($lock->get()) {
     try {
