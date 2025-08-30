@@ -183,7 +183,7 @@ $response = Http::attach(
 <a name="setting-a-base-url"></a>
 #### Setting a Base URL
 
-When interacting with endpoints that share a common root, you can use the baseUrl method. It accepts a root URL as its argument and applies it to all subsequent requests made from the same client instance.
+When interacting with endpoints that share a common root, you can use the baseUrl method. It accepts a root URL as its argument and applies it to all subsequent requests made from the same client instance:
 
 ```php
 $client = Http::baseUrl('http://example.com');
