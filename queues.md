@@ -20,6 +20,7 @@
     - [Job Chaining](#job-chaining)
     - [Customizing The Queue and Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
+    - [SQS FIFO and Fair Queues](#sqs-fifo-and-fair-queues)
     - [Error Handling](#error-handling)
 - [Job Batching](#job-batching)
     - [Defining Batchable Jobs](#defining-batchable-jobs)
@@ -1425,6 +1426,46 @@ public $failOnTimeout = true;
 
 > [!NOTE]
 > By default, when a job times out, it consumes one attempt and is released back to the queue (if retries are allowed). However, if you configure the job to fail on timeout, it will not be retried, regardless of the value set for tries.
+
+<a name="sqs-fifo-and-fair-queues"></a>
+### SQS FIFO and Fair Queues
+
+Laravel supports [Amazon SQS FIFO (First-In-First-Out)](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fifo-queues.html) queues, allowing you to process jobs in the exact order they were sent while ensuring exactly-once processing through message deduplication.
+
+FIFO queues require a message group ID to determine which jobs can be processed in parallel. Jobs with the same group ID are processed sequentially, while messages with different group IDs can be processed concurrently.
+
+Laravel provides a fluent `onGroup` method to specify the message group ID when dispatching jobs:
+
+```php
+ProcessOrder::dispatch($order)
+    ->onGroup("customer-{$order->customer_id}");
+```
+
+SQS FIFO queues support message deduplication to ensure exactly-once processing. Implement a `deduplicationId` method in your job class to provide a custom deduplication ID:
+
+```php
+<?php
+
+namespace App\Jobs;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+
+class ProcessSubscriptionRenewal implements ShouldQueue
+{
+    use Queueable;
+
+    // ...
+
+    /**
+     * Get the job's deduplication ID.
+     */
+    public function deduplicationId(): string
+    {
+        return "renewal-{$this->subscription->id}";
+    }
+}
+```
 
 <a name="error-handling"></a>
 ### Error Handling
