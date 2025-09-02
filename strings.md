@@ -2981,7 +2981,7 @@ $plural = Str::of('child')->plural();
 // children
 ```
 
-You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
+You may provide an integer argument to the function to retrieve the singular or plural form of the string:
 
 ```php
 use Illuminate\Support\Str;
