@@ -1191,7 +1191,7 @@ $singular = Str::plural('child', 1);
 // child
 ```
 
-You may pass a third argument to prefix the pluralized string with the formatted `$count`, via the `prependCount` parameter:
+The `prependCount` argument may be provided to prefix the pluralized string with the formatted `$count`:
 
 ```php
 use Illuminate\Support\Str;
@@ -3005,7 +3005,7 @@ $plural = Str::of('child')->plural(1);
 // child
 ```
 
-You may pass a second argument to prefix the pluralized string with the formatted `$count`, via the `prependCount` parameter:
+You may provide the `prependCount` argument to prefix the pluralized string with the formatted `$count`:
 
 ```php
 use Illuminate\Support\Str;
