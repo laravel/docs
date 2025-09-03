@@ -1258,7 +1258,7 @@ Sometimes a component may need to render multiple different slots in different l
 
 You may define the content of the named slot using the `x-slot` tag. Any content not within an explicit `x-slot` tag will be passed to the component in the `$slot` variable:
 
-```xml
+```blade
 <x-alert>
     <x-slot:title>
         Server Error
@@ -1310,7 +1310,7 @@ If you have used a JavaScript framework such as Vue, you may be familiar with "s
 
 Like Blade components, you may assign additional [attributes](#component-attributes) to slots such as CSS class names:
 
-```xml
+```blade
 <x-card class="shadow-sm">
     <x-slot:heading class="font-bold">
         Heading
