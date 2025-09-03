@@ -1268,6 +1268,22 @@ You may define the content of the named slot using the `x-slot` tag. Any content
 </x-alert>
 ```
 
+You may also use an unnamed `x-slot` tag for your default `$slot` content. This will take precedence over any content in the component *not* inside an `<x-slot>`.
+
+```blade
+<x-alert>
+    <x-slot:title>
+        Server Error
+    </x-slot>
+    
+    <div>I will not be rendered.</div>
+
+    <x-slot>
+        <strong>Whoops!</strong> Something went wrong!
+    </x-slot>
+</x-alert>
+```
+
 You may invoke a slot's `isEmpty` method to determine if the slot contains content:
 
 ```blade
@@ -1316,7 +1332,9 @@ Like Blade components, you may assign additional [attributes](#component-attribu
         Heading
     </x-slot>
 
-    Content
+    <x-slot class="rounded">
+        Content
+    </x-slot>
 
     <x-slot:footer class="text-sm">
         Footer
@@ -1337,7 +1355,9 @@ To interact with slot attributes, you may access the `attributes` property of th
         {{ $heading }}
     </h1>
 
-    {{ $slot }}
+    <div {{ $slot->attributes->class(['bg-gray-200', 'p-4']) }}>
+        {{ $slot }}
+    </div>
 
     <footer {{ $footer->attributes->class(['text-gray-700']) }}>
         {{ $footer }}
