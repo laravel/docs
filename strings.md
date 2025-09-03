@@ -1191,6 +1191,16 @@ $singular = Str::plural('child', 1);
 // child
 ```
 
+The `prependCount` argument may be provided to prefix the pluralized string with the formatted `$count`:
+
+```php
+use Illuminate\Support\Str;
+
+$label = Str::plural('car', 1000, prependCount: true);
+
+// 1,000 cars
+```
+
 <a name="method-str-plural-studly"></a>
 #### `Str::pluralStudly()` {.collection-method}
 
@@ -2981,7 +2991,7 @@ $plural = Str::of('child')->plural();
 // children
 ```
 
-You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
+You may provide an integer argument to the function to retrieve the singular or plural form of the string:
 
 ```php
 use Illuminate\Support\Str;
@@ -2993,6 +3003,16 @@ $plural = Str::of('child')->plural(2);
 $plural = Str::of('child')->plural(1);
 
 // child
+```
+
+You may provide the `prependCount` argument to prefix the pluralized string with the formatted `$count`:
+
+```php
+use Illuminate\Support\Str;
+
+$label = Str::of('car')->plural(1000, prependCount: true);
+
+// 1,000 cars
 ```
 
 <a name="method-fluent-str-position"></a>
