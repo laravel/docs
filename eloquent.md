@@ -1659,6 +1659,9 @@ Eloquent models dispatch several events, allowing you to hook into the following
 
 The `retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will dispatch. The `updating` / `updated` events will dispatch when an existing model is modified and the `save` method is called. The `saving` / `saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
 
+> [!WARNING]
+> When using [observers](#observers) that implement the `ShouldHandleEventsAfterCommit` interface, all model events (including `-ing` events) will be dispatched after the database transaction commits. This means `-ing` events will fire after changes are persisted, not before.
+
 To start listening to model events, define a `$dispatchesEvents` property on your Eloquent model. This property maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events). Each model event class should expect to receive an instance of the affected model via its constructor:
 
 ```php
