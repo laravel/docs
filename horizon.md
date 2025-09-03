@@ -653,6 +653,9 @@ You may configure how many seconds are considered a "long wait" within your appl
 ],
 ```
 
+> [!NOTE]
+> Setting a queue's threshold to `0` will disable long wait notifications for that queue.
+
 <a name="metrics"></a>
 ## Metrics
 
