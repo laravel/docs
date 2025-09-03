@@ -653,6 +653,20 @@ You may configure how many seconds are considered a "long wait" within your appl
 ],
 ```
 
+#### Customizing Long Wait Notifications
+
+You may customize the notification sent when a queue exceeds its wait threshold by creating your own notification class that implements `LongWaitDetectedNotification`:
+
+```php
+use Laravel\Horizon\Contracts\LongWaitDetectedNotification;
+
+class LongWaitNotification implements LongWaitDetectedNotification
+{
+    // ...
+}
+```
+Then, register your class in service provider so Horizon uses it.
+
 <a name="metrics"></a>
 ## Metrics
 
