@@ -1196,9 +1196,9 @@ You may pass a third argument to prefix the pluralized string with the formatted
 ```php
 use Illuminate\Support\Str;
 
-$label = Str::plural('car', 1234, prependCount: true);
+$label = Str::plural('car', 1000, prependCount: true);
 
-// 1,234 cars
+// 1,000 cars
 ```
 
 <a name="method-str-plural-studly"></a>
@@ -3010,9 +3010,9 @@ You may pass a second argument to prefix the pluralized string with the formatte
 ```php
 use Illuminate\Support\Str;
 
-$label = Str::of('car')->plural(1234, prependCount: true);
+$label = Str::of('car')->plural(1000, prependCount: true);
 
-// 1,234 cars
+// 1,000 cars
 ```
 
 <a name="method-fluent-str-position"></a>
