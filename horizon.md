@@ -200,7 +200,7 @@ Similarly, you can set a `timeout` value at the supervisor level, which specifie
 ```
 
 > [!WARNING]
-> The `timeout` value should always be at least a few seconds shorter than the `retry_after` value defined in your `config/queue.php` configuration file. Otherwise, your jobs may be processed twice.
+> When using the `auto` balancing strategy, Horizon will consider in-progress workers as “hanging” and force-kill them after the Horizon timeout during scale down. Always ensure the Horizon timeout is greater than any job-level timeout, otherwise jobs may be terminated mid-execution. In addition, the `timeout` value should always be at least a few seconds shorter than the `retry_after` value defined in your `config/queue.php` configuration file. Otherwise, your jobs may be processed twice.
 
 <a name="job-backoff"></a>
 ### Job Backoff
