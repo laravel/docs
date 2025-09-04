@@ -194,7 +194,7 @@ When the `auth` middleware detects an unauthenticated user, it will redirect the
 ```php
 use Illuminate\Http\Request;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->redirectGuestsTo('/login');
 
     // Using a closure...
@@ -210,7 +210,7 @@ When the `guest` middleware detects an authenticated user, it will redirect the 
 ```php
 use Illuminate\Http\Request;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->redirectUsersTo('/panel');
 
     // Using a closure...

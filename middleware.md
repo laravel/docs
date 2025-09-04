@@ -123,7 +123,7 @@ If you want a middleware to run during every HTTP request to your application, y
 ```php
 use App\Http\Middleware\EnsureTokenIsValid;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
      $middleware->append(EnsureTokenIsValid::class);
 })
 ```
@@ -136,7 +136,7 @@ The `$middleware` object provided to the `withMiddleware` closure is an instance
 If you would like to manage Laravel's global middleware stack manually, you may provide Laravel's default stack of global middleware to the `use` method. Then, you may adjust the default middleware stack as necessary:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->use([
         \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
         // \Illuminate\Http\Middleware\TrustHosts::class,
@@ -213,7 +213,7 @@ Sometimes you may want to group several middleware under a single key to make th
 use App\Http\Middleware\First;
 use App\Http\Middleware\Second;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->appendToGroup('group-name', [
         First::class,
         Second::class,
@@ -270,7 +270,7 @@ If you would like to append or prepend middleware to these groups, you may use t
 use App\Http\Middleware\EnsureTokenIsValid;
 use App\Http\Middleware\EnsureUserIsSubscribed;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->web(append: [
         EnsureUserIsSubscribed::class,
     ]);
@@ -306,7 +306,7 @@ $middleware->web(remove: [
 If you would like to manually manage all of the middleware within Laravel's default `web` and `api` middleware groups, you may redefine the groups entirely. The example below will define the `web` and `api` middleware groups with their default middleware, allowing you to customize them as necessary:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->group('web', [
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -336,7 +336,7 @@ You may assign aliases to middleware in your application's `bootstrap/app.php` f
 ```php
 use App\Http\Middleware\EnsureUserIsSubscribed;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->alias([
         'subscribed' => EnsureUserIsSubscribed::class
     ]);
@@ -378,7 +378,7 @@ For convenience, some of Laravel's built-in middleware are aliased by default. F
 Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In these situations, you may specify your middleware priority using the `priority` method in your application's `bootstrap/app.php` file:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->priority([
         \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
