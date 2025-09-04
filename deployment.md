@@ -77,6 +77,11 @@ server {
 
     error_page 404 /index.php;
 
+    # If you want to handle cors in the application instead of Nginx
+    if ($request_method = OPTIONS) {
+        rewrite ^ /index.php last;
+    }
+
     location ~ ^/index\.php(/|$) {
         fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
