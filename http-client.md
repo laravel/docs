@@ -400,7 +400,7 @@ By default, `RequestException` messages are truncated to 120 characters when log
 ```php
 use Illuminate\Foundation\Configuration\Exceptions;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     // Truncate request exception messages to 240 characters...
     $exceptions->truncateRequestExceptionsAt(240);
 

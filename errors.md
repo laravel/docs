@@ -39,7 +39,7 @@ If you need to report different types of exceptions in different ways, you may u
 ```php
 use App\Exceptions\InvalidOrderException;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->report(function (InvalidOrderException $e) {
         // ...
     });
@@ -51,7 +51,7 @@ When you register a custom exception reporting callback using the `report` metho
 ```php
 use App\Exceptions\InvalidOrderException;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->report(function (InvalidOrderException $e) {
         // ...
     })->stop();
@@ -71,7 +71,7 @@ use App\Exceptions\InvalidOrderException;
 If available, Laravel automatically adds the current user's ID to every exception's log message as contextual data. You may define your own global contextual data using the `context` exception method in your application's `bootstrap/app.php` file. This information will be included in every exception's log message written by your application:
 
 ```php
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->context(fn () => [
         'foo' => 'bar',
     ]);
@@ -132,7 +132,7 @@ If you are using the `report` function throughout your application, you may occa
 If you would like to ensure that a single instance of an exception is only ever reported once, you may invoke the `dontReportDuplicates` exception method in your application's `bootstrap/app.php` file:
 
 ```php
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->dontReportDuplicates();
 })
 ```
@@ -167,7 +167,7 @@ To accomplish this, you may use the `level` exception method in your application
 use PDOException;
 use Psr\Log\LogLevel;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->level(PDOException::class, LogLevel::CRITICAL);
 })
 ```
@@ -180,7 +180,7 @@ When building your application, there will be some types of exceptions you never
 ```php
 use App\Exceptions\InvalidOrderException;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->dontReport([
         InvalidOrderException::class,
     ]);
@@ -209,7 +209,7 @@ If you need even more control over when a particular type of exception is ignore
 use App\Exceptions\InvalidOrderException;
 use Throwable;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->dontReportWhen(function (Throwable $e) {
         return $e instanceof PodcastProcessingException &&
                $e->reason() === 'Subscription expired';
@@ -222,7 +222,7 @@ Internally, Laravel already ignores some types of errors for you, such as except
 ```php
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->stopIgnoring(HttpException::class);
 })
 ```
@@ -238,7 +238,7 @@ The closure passed to the `render` method should return an instance of `Illumina
 use App\Exceptions\InvalidOrderException;
 use Illuminate\Http\Request;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->render(function (InvalidOrderException $e, Request $request) {
         return response()->view('errors.invalid-order', status: 500);
     });
@@ -251,7 +251,7 @@ You may also use the `render` method to override the rendering behavior for buil
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->render(function (NotFoundHttpException $e, Request $request) {
         if ($request->is('api/*')) {
             return response()->json([
@@ -271,7 +271,7 @@ When rendering an exception, Laravel will automatically determine if the excepti
 use Illuminate\Http\Request;
 use Throwable;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $e) {
         if ($request->is('admin/*')) {
             return true;
@@ -290,7 +290,7 @@ Rarely, you may need to customize the entire HTTP response rendered by Laravel's
 ```php
 use Symfony\Component\HttpFoundation\Response;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->respond(function (Response $response) {
         if ($response->getStatusCode() === 419) {
             return back()->with([
@@ -387,7 +387,7 @@ To take a random sample rate of exceptions, you may use the `throttle` exception
 use Illuminate\Support\Lottery;
 use Throwable;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->throttle(function (Throwable $e) {
         return Lottery::odds(1, 1000);
     });
@@ -401,7 +401,7 @@ use App\Exceptions\ApiMonitoringException;
 use Illuminate\Support\Lottery;
 use Throwable;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->throttle(function (Throwable $e) {
         if ($e instanceof ApiMonitoringException) {
             return Lottery::odds(1, 1000);
@@ -417,7 +417,7 @@ use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Cache\RateLimiting\Limit;
 use Throwable;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->throttle(function (Throwable $e) {
         if ($e instanceof BroadcastException) {
             return Limit::perMinute(300);
@@ -433,7 +433,7 @@ use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Cache\RateLimiting\Limit;
 use Throwable;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->throttle(function (Throwable $e) {
         if ($e instanceof BroadcastException) {
             return Limit::perMinute(300)->by($e->getMessage());
@@ -451,7 +451,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Lottery;
 use Throwable;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->throttle(function (Throwable $e) {
         return match (true) {
             $e instanceof BroadcastException => Limit::perMinute(300),

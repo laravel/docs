@@ -1264,7 +1264,7 @@ Typically, if you want to consume your API from your JavaScript application, you
 ```php
 use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->web(append: [
         CreateFreshApiToken::class,
     ]);

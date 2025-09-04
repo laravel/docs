@@ -675,7 +675,7 @@ If you would like to disable this behavior for all requests, you may remove the 
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->remove([
         ConvertEmptyStringsToNull::class,
         TrimStrings::class,
@@ -686,7 +686,7 @@ use Illuminate\Foundation\Http\Middleware\TrimStrings;
 If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `trimStrings` and `convertEmptyStringsToNull` middleware methods within your application's `bootstrap/app.php` file. Both methods accept an array of closures, which should return `true` or `false` to indicate whether input normalization should be skipped:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->convertEmptyStringsToNull(except: [
         fn (Request $request) => $request->is('admin/*'),
     ]);
@@ -780,7 +780,7 @@ When running your applications behind a load balancer that terminates TLS / SSL 
 To solve this, you may enable the `Illuminate\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be specified using the `trustProxies` middleware method in your application's `bootstrap/app.php` file:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustProxies(at: [
         '192.168.1.1',
         '10.0.0.0/8',
@@ -791,7 +791,7 @@ To solve this, you may enable the `Illuminate\Http\Middleware\TrustProxies` midd
 In addition to configuring the trusted proxies, you may also configure the proxy headers that should be trusted:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustProxies(headers: Request::HEADER_X_FORWARDED_FOR |
         Request::HEADER_X_FORWARDED_HOST |
         Request::HEADER_X_FORWARDED_PORT |
@@ -810,7 +810,7 @@ In addition to configuring the trusted proxies, you may also configure the proxy
 If you are using Amazon AWS or another "cloud" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustProxies(at: '*');
 })
 ```
@@ -825,7 +825,7 @@ Typically, you should configure your web server, such as Nginx or Apache, to onl
 To enable the `TrustHosts` middleware, you should invoke the `trustHosts` middleware method in your application's `bootstrap/app.php` file. Using the `at` argument of this method, you may specify the hostnames that your application should respond to. Incoming requests with other `Host` headers will be rejected:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustHosts(at: ['laravel.test']);
 })
 ```
@@ -833,7 +833,7 @@ To enable the `TrustHosts` middleware, you should invoke the `trustHosts` middle
 By default, requests coming from subdomains of the application's URL are also automatically trusted. If you would like to disable this behavior, you may use the `subdomains` argument:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustHosts(at: ['laravel.test'], subdomains: false);
 })
 ```
@@ -841,7 +841,7 @@ By default, requests coming from subdomains of the application's URL are also au
 If you need to access your application's configuration files or database to determine your trusted hosts, you may provide a closure to the `at` argument:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustHosts(at: fn () => config('app.trusted_hosts'));
 })
 ```
