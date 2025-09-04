@@ -216,7 +216,7 @@ When someone visits a signed URL that has expired, they will receive a generic e
 ```php
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->render(function (InvalidSignatureException $e) {
         return response()->view('errors.link-expired', status: 403);
     });
@@ -328,7 +328,7 @@ Once the default value for the `locale` parameter has been set, you are no longe
 Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](/docs/{{version}}/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this using the `priority` middleware method in your application's `bootstrap/app.php` file:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->prependToPriorityList(
         before: \Illuminate\Routing\Middleware\SubstituteBindings::class,
         prepend: \App\Http\Middleware\SetDefaultLocaleForUrls::class,

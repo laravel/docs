@@ -653,6 +653,8 @@ You may configure how many seconds are considered a "long wait" within your appl
 ],
 ```
 
+Setting a queue's threshold to `0` will disable long wait notifications for that queue.
+
 #### Customizing Long Wait Notifications
 
 You may customize the notification sent when a queue exceeds its wait threshold by creating your own notification class that implements `LongWaitDetectedNotification`:

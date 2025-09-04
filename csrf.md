@@ -77,7 +77,7 @@ Sometimes you may wish to exclude a set of URIs from CSRF protection. For exampl
 Typically, you should place these kinds of routes outside of the `web` middleware group that Laravel applies to all routes in the `routes/web.php` file. However, you may also exclude specific routes by providing their URIs to the `validateCsrfTokens` method in your application's `bootstrap/app.php` file:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->validateCsrfTokens(except: [
         'stripe/*',
         'http://example.com/foo/bar',

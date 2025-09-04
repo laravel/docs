@@ -166,7 +166,7 @@ Sanctum also includes two middleware that may be used to verify that an incoming
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->alias([
         'abilities' => CheckAbilities::class,
         'ability' => CheckForAnyAbility::class,
@@ -291,7 +291,7 @@ To assist you in setting up your first-party stateful domains, Sanctum provides 
 Next, you should instruct Laravel that incoming requests from your SPA can authenticate using Laravel's session cookies, while still allowing requests from third parties or mobile applications to authenticate using API tokens. This can be easily accomplished by invoking the `statefulApi` middleware method in your application's `bootstrap/app.php` file:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->statefulApi();
 })
 ```
