@@ -43,11 +43,12 @@ Of course, the `Illuminate\Contracts\Process\ProcessResult` instance returned by
 ```php
 $result = Process::run('ls -la');
 
+$result->command();
 $result->successful();
 $result->failed();
-$result->exitCode();
 $result->output();
 $result->errorOutput();
+$result->exitCode();
 ```
 
 <a name="throwing-exceptions"></a>
