@@ -1473,7 +1473,7 @@ Or, if you defined the global scope using a closure, you should pass the string 
 User::withoutGlobalScope('ancient')->get();
 ```
 
-If you would like to remove several or even all of the query's global scopes, you may use the `withoutGlobalScopes` method:
+If you would like to remove several or even all of the query's global scopes, you may use the `withoutGlobalScopes` and `withoutGlobalScopesExcept` methods:
 
 ```php
 // Remove all of the global scopes...
@@ -1482,6 +1482,11 @@ User::withoutGlobalScopes()->get();
 // Remove some of the global scopes...
 User::withoutGlobalScopes([
     FirstScope::class, SecondScope::class
+])->get();
+
+// Remove all global scopes except the given ones...
+User::withoutGlobalScopesExcept([
+    SecondScope::class,
 ])->get();
 ```
 
