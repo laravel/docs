@@ -3492,7 +3492,7 @@ public function test_it_waits_until_ready()
 }
 ```
 
-When faking the `Sleep` class, the actual execution pause is by-passed, leading to a substantially faster test.
+When faking the `Sleep` class, the actual execution pause is bypassed, leading to a substantially faster test.
 
 Once the `Sleep` class has been faked, it is possible to make assertions against the expected "sleeps" that should have occurred. To illustrate this, let's imagine we are testing code that pauses execution three times, with each pause increasing by a single second. Using the `assertSequence` method, we can assert that our code "slept" for the proper amount of time while keeping our test fast:
 
