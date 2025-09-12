@@ -242,7 +242,7 @@ Sometimes, you may not be interested in viewing certain jobs dispatched by your 
 ],
 ```
 
-In addition to silencing individual job classes, Horizon also supports silencing jobs based on [tags](/docs/{{version}}/horizon#tags). This can be useful if you want to hide multiple jobs that share a common tag:
+In addition to silencing individual job classes, Horizon also supports silencing jobs based on [tags](#tags). This can be useful if you want to hide multiple jobs that share a common tag:
 
 ```php
 'silenced_tags' => [
