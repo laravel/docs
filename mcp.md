@@ -656,11 +656,11 @@ class DescribeWeatherPrompt extends Prompt
         $userMessage = "What is the current weather like in New York City?";
         
         return [
-            Response::assistant()->text($systemMessage),
-            Response::user()->text($promptText),
+            Response::text($systemMessage)->asAssistant(),
+            Response::text($promptText),
         ];
     }
 }
 ```
 
-You can use the `assistant()` and `user()` methods to specify the role for each message in the conversation context.
+You can use the `asAssistant()` method to indicate that a response message should be treated as coming from the AI assistant, while regular messages are treated as user input.
