@@ -13,13 +13,22 @@
     - [Validating Tool Arguments](#validating-tool-arguments)
     - [Tool Dependency Injection](#tool-dependency-injection)
     - [Tool Annotations](#tool-annotations)
+    - [Conditional Tool Registration](#conditional-tool-registration)
     - [Tool Responses](#tool-responses)
 - [Creating Prompts](#creating-prompts)
     - [Prompt Name, Title, and Description](#prompt-name-title-and-description)
     - [Prompt Arguments](#prompt-arguments)
     - [Validating Prompt Arguments](#validating-prompt-arguments)
     - [Prompt Dependency Injection](#prompt-dependency-injection)
+    - [Conditional Prompt Registration](#conditional-prompt-registration)
     - [Prompt Responses](#prompt-responses)
+- [Creating Resources](#creating-resources)
+    - [Resource Name, Title, and Description](#resource-name-title-and-description)
+    - [Resource Content](#resource-content)
+    - [Resource URI and MIME Type](#resource-uri-and-mime-type)
+    - [Binary Resources](#binary-resources)
+    - [Resource Dependency Injection](#resource-dependency-injection)
+    - [Conditional Resource Registration](#conditional-resource-registration)
 
 <a name="introduction"></a>
 ## Introduction
@@ -354,6 +363,55 @@ Available annotations include:
 | `#[IsIdempotent]`  | boolean | Indicates repeated calls with same arguments have no additional effect (when not read-only)   |
 | `#[IsOpenWorld]`   | boolean | Indicates the tool may interact with external entities                                        |
 
+<a name="conditional-tool-registration"></a>
+### Conditional Tool Registration
+
+You may conditionally register tools at runtime by implementing the `shouldRegister` method in your tool class. This method allows you to determine whether a tool should be available based on application state, configuration, or request parameters:
+
+```php
+<?php
+
+namespace App\Mcp\Tools;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Server\Tool;
+
+class CurrentWeatherTool extends Tool
+{
+    /**
+     * Determine if the tool should be registered.
+     */
+    public function shouldRegister(): bool
+    {
+        return config('features.weather_tools_enabled', false);
+    }
+}
+```
+
+The `shouldRegister` method can also accept the current `Request` instance, allowing you to make registration decisions based on request parameters:
+
+```php
+<?php
+
+namespace App\Mcp\Tools;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Server\Tool;
+
+class CurrentWeatherTool extends Tool
+{
+    /**
+     * Determine if the tool should be registered.
+     */
+    public function shouldRegister(Request $request): bool
+    {
+        return $request?->user()?->isSubscribed() ?? false;
+    }
+}
+```
+
+When a tool's `shouldRegister` method returns `false`, it will not appear in the list of available tools and cannot be invoked by AI clients.
+
 <a name="tool-responses"></a>
 ### Tool Responses
 
@@ -629,6 +687,55 @@ class DescribeWeatherPrompt extends Prompt
 }
 ```
 
+<a name="conditional-prompt-registration"></a>
+### Conditional Prompt Registration
+
+You may conditionally register prompts at runtime by implementing the `shouldRegister` method in your prompt class. This method allows you to determine whether a prompt should be available based on application state, configuration, or request parameters:
+
+```php
+<?php
+
+namespace App\Mcp\Prompts;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Server\Prompt;
+
+class CurrentWeatherPrompt extends Prompt
+{
+    /**
+     * Determine if the prompt should be registered.
+     */
+    public function shouldRegister(): bool
+    {
+        return config('features.weather_prompts_enabled', false);
+    }
+}
+```
+
+The `shouldRegister` method can also accept the current `Request` instance, allowing you to make registration decisions based on request parameters:
+
+```php
+<?php
+
+namespace App\Mcp\Prompts;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Server\Prompt;
+
+class CurrentWeatherPrompt extends Prompt
+{
+    /**
+     * Determine if the prompt should be registered.
+     */
+    public function shouldRegister(Request $request): bool
+    {
+        return $request?->user()?->isSubscribed() ?? false;
+    }
+}
+```
+
+When a prompt's `shouldRegister` method returns `false`, it will not appear in the list of available prompts and cannot be invoked by AI clients.
+
 <a name="prompt-responses"></a>
 ### Prompt Responses
 
@@ -664,3 +771,265 @@ class DescribeWeatherPrompt extends Prompt
 ```
 
 You can use the `asAssistant()` method to indicate that a response message should be treated as coming from the AI assistant, while regular messages are treated as user input.
+
+<a name="creating-resources"></a>
+## Creating Resources
+
+Resources enable your server to expose data and content that AI clients can read and use as context when interacting with language models. They provide a way to share static or dynamic information like documentation, configuration, or any data that helps inform AI responses. Create a resource using the `make:mcp-resource` Artisan command:
+
+```shell
+php artisan make:mcp-resource WeatherGuidelinesResource
+```
+
+After creating a resource, register it in your server's `$resources` property:
+
+```php
+<?php
+
+namespace App\Mcp\Servers;
+
+use App\Mcp\Resources\WeatherGuidelinesResource;
+use Laravel\Mcp\Server;
+
+class WeatherServer extends Server
+{
+    /**
+     * The resources registered with this MCP server.
+     *
+     * @var array<int, class-string<\Laravel\Mcp\Server\Resource>>
+     */
+    protected array $resources = [
+        WeatherGuidelinesResource::class,
+    ];
+}
+```
+
+<a name="resource-name-title-and-description"></a>
+### Resource Name, Title, and Description
+
+By default, the resource's name and title are derived from the class name. As example, `WeatherGuidelinesResource` will have a `weather_guidelines` name and `Weather Guidelines Resource` title. You may customize these values by overriding the `$name` and `$title` properties:
+
+```php
+class WeatherGuidelinesResource extends Resource
+{
+    /**
+     * The resource's name.
+     */
+    protected string $name = 'weather_api_docs';
+    
+    /**
+     * The resource's title.
+     */
+    protected string $title = 'Weather API Documentation';
+    
+    //
+}
+```
+
+On the other hand, the resource's description is not automatically generated. You should always provide a meaningful description by overriding the `$description` property:
+
+```php
+class WeatherGuidelinesResource extends Resource
+{
+    /**
+     * The resource's description.
+     */
+    protected string $description = 'Comprehensive guidelines for using the Weather API.';
+    
+    //
+}
+```
+
+<a name="resource-content"></a>
+### Resource Content
+
+Resources must implement the `read()` method to provide their content. This method should return the actual data that will be sent to AI clients:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Server\Resource;
+
+class WeatherGuidelinesResource extends Resource
+{
+    /**
+     * Get the resource's content.
+     */
+    public function read(): string
+    {
+        return file_get_contents(resource_path('weather/guidelines.md'));
+    }
+}
+```
+
+<a name="resource-uri-and-mime-type"></a>
+### Resource URI and MIME Type
+
+Resources are identified by a URI and have an associated MIME type. You can customize these by overriding the `uri()` and `mimeType()` methods:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Server\Resource;
+
+class WeatherGuidelinesResource extends Resource
+{
+    /**
+     * Get the resource's URI.
+     */
+    public function uri(): string
+    {
+        return 'weather://guidelines/api-documentation';
+    }
+    
+    /**
+     * Get the resource's MIME type.
+     */
+    public function mimeType(): string
+    {
+        return 'text/markdown';
+    }
+    
+    /**
+     * Get the resource's content.
+     */
+    public function read(): string
+    {
+        return file_get_contents(resource_path('weather/guidelines.md'));
+    }
+}
+```
+
+<a name="binary-resources"></a>
+### Binary Resources
+
+Resources can also serve binary content like images or other non-text files. The framework automatically detects binary content and handles it appropriately:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Server\Resource;
+
+class WeatherMapResource extends Resource
+{
+    /**
+     * The resource's description.
+     */
+    protected string $description = 'Current weather radar map image.';
+    
+    /**
+     * Get the resource's content.
+     */
+    public function read(): string
+    {
+        return file_get_contents(storage_path('weather/current-radar.png'));
+    }
+    
+    /**
+     * Get the resource's URI.
+     */
+    public function uri(): string
+    {
+        return 'weather://maps/current-radar';
+    }
+    
+    /**
+     * Get the resource's MIME type.
+     */
+    public function mimeType(): string
+    {
+        return 'image/png';
+    }
+}
+```
+
+<a name="resource-dependency-injection"></a>
+### Resource Dependency Injection
+
+The Laravel service container is used to resolve all resources. As a result, you are able to type-hint any dependencies your resource may need in its constructor. The declared dependencies will automatically be resolved and injected into the resource instance:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use App\Repositories\WeatherRepository;
+use App\Services\CacheService;
+use Laravel\Mcp\Server\Resource;
+
+class WeatherHistoryResource extends Resource
+{
+    /**
+     * Create a new resource instance.
+     */
+    public function __construct(
+        protected WeatherRepository $weather,
+        protected CacheService $cache,
+    ) {}
+    
+    /**
+     * Get the resource's content.
+     */
+    public function read(): string
+    {
+        return $this->cache->remember('weather-history', 3600, function () {
+            return $this->weather->getHistoricalData();
+        });
+    }
+}
+```
+
+<a name="conditional-resource-registration"></a>
+### Conditional Resource Registration
+
+You may conditionally register resources at runtime by implementing the `shouldRegister` method in your resource class. This method allows you to determine whether a resource should be available based on application state, configuration, or request parameters:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Server\Resource;
+
+class PremiumWeatherDataResource extends Resource
+{
+    /**
+     * Determine if the resource should be registered.
+     */
+    public function shouldRegister(): bool
+    {
+        return config('features.premium_weather_data_enabled', false);
+    }
+}
+```
+
+The `shouldRegister` method can also accept the current `Request` instance, allowing you to make registration decisions based on request parameters:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Server\Resource;
+
+class DetailedWeatherResource extends Resource
+{
+    /**
+     * Determine if the resource should be registered.
+     */
+    public function shouldRegister(Request $request): bool
+    {
+        return $request?->user()?->hasFeature('detailed_weather') ?? false;
+    }
+}
+```
+
+When a resource's `shouldRegister` method returns `false`, it will not appear in the list of available resources and cannot be accessed by AI clients.
