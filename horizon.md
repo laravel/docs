@@ -242,6 +242,14 @@ Sometimes, you may not be interested in viewing certain jobs dispatched by your 
 ],
 ```
 
+In addition to silencing individual job classes, Horizon also supports silencing jobs based on [tags](#tags). This can be useful if you want to hide multiple jobs that share a common tag:
+
+```php
+'silenced_tags' => [
+    'notifications'
+],
+```
+
 Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Contracts\Silenced` interface. If a job implements this interface, it will automatically be silenced, even if it is not present in the `silenced` configuration array:
 
 ```php
