@@ -14,6 +14,12 @@
     - [Tool Dependency Injection](#tool-dependency-injection)
     - [Tool Annotations](#tool-annotations)
     - [Tool Responses](#tool-responses)
+- [Creating Prompts](#creating-prompts)
+    - [Prompt Name, Title, and Description](#prompt-name-title-and-description)
+    - [Prompt Arguments](#prompt-arguments)
+    - [Validating Prompt Arguments](#validating-prompt-arguments)
+    - [Prompt Dependency Injection](#prompt-dependency-injection)
+    - [Prompt Responses](#prompt-responses)
 
 <a name="introduction"></a>
 ## Introduction
@@ -57,14 +63,29 @@ use Laravel\Mcp\Server;
 
 class WeatherServer extends Server
 {
+    /**
+     * The tools registered with this MCP server.
+     *
+     * @var array<int, class-string<\Laravel\Mcp\Server\Tool>>
+     */
     protected array $tools = [
         // ExampleTool::class,
     ];
 
+    /**
+     * The resources registered with this MCP server.
+     *
+     * @var array<int, class-string<\Laravel\Mcp\Server\Resource>>
+     */
     protected array $resources = [
         // ExampleResource::class,
     ];
 
+    /**
+     * The prompts registered with this MCP server.
+     *
+     * @var array<int, class-string<\Laravel\Mcp\Server\Prompt>>
+     */
     protected array $prompts = [
         // ExamplePrompt::class,
     ];
@@ -92,7 +113,7 @@ You may also apply middleware to protect your web servers:
 
 ```php
 Mcp::web('/mcp/weather', WeatherServer::class)
-    ->middleware(['auth:api', 'throttle:60,1']);
+    ->middleware(['throttle:60,1']);
 ```
 
 <a name="local-servers"></a>
@@ -266,7 +287,7 @@ class CurrentWeatherTool extends Tool
      * Create a new tool instance.
      */
     public function __construct(
-        protected WeatherRepository $users,
+        protected WeatherRepository $weather,
     ) {}
     
     //
@@ -280,8 +301,7 @@ In addition to constructor injection, you may also type-hint dependencies in you
 
 namespace App\Http\Mcp\Tools;
 
-use App\Services\WeatherService;
-
+use App\Repositories\WeatherRepository;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Tool;
@@ -291,7 +311,7 @@ class CurrentWeatherTool extends Tool
     /**
      * Handle the tool call.
      */
-    public function handle(Request $request, WeatherService $weather): Response
+    public function handle(Request $request, WeatherRepository $weather): Response
     {
         //
         
@@ -419,3 +439,228 @@ class CurrentWeatherTool extends Tool
 ```
 
 When using web-based servers, streaming responses automatically open an SSE (Server-Sent Events) stream, sending each yielded message as an event to the client.
+
+<a name="creating-prompts"></a>
+## Creating Prompts
+
+Prompts enable your server to share reusable prompt templates that AI clients can use to interact with language models. They provide a standardized way to structure common queries and interactions. Create a prompt using the `make:mcp-prompt` Artisan command:
+
+```shell
+php artisan make:mcp-prompt DescribeWeatherPrompt
+```
+
+After creating a prompt, register it in your server's `$prompts` property:
+
+```php
+<?php
+
+namespace App\Mcp\Servers;
+
+use App\Mcp\Prompts\AskWeatherPrompt;
+use Laravel\Mcp\Server;
+
+class WeatherServer extends Server
+{
+    /**
+     * The prompts registered with this MCP server.
+     *
+     * @var array<int, class-string<\Laravel\Mcp\Server\Prompt>>
+     */
+    protected array $prompts = [
+        DescribeWeatherPrompt::class,
+    ];
+}
+```
+
+<a name="prompt-name-title-and-description"></a>
+### Prompt Name, Title, and Description
+
+By default, the prompt's name and title are derived from the class name. As example, `AskWeatherPrompt` will have an `ask_weather` name and `Ask Weather Prompt` title. You may customize these values by overriding the `$name` and `$title` properties:
+
+```php
+class DescribeWeatherPrompt extends Prompt
+{
+    /**
+     * The prompt's name.
+     */
+    protected string $name = 'weather_assistant';
+    
+    /**
+     * The prompt's title.
+     */
+    protected string $title = 'Weather Assistant Prompt';
+    
+    //
+}
+```
+
+On the other hand, the prompt's description is not automatically generated. You should always provide a meaningful description by overriding the `$description` property:
+
+```php
+class AskWeatherPrompt extends Prompt
+{
+    /**
+     * The prompt's description.
+     */
+    protected string $description = 'Generates a natural-language explanation of the weather for a given location.';
+    
+    //
+}
+```
+
+<a name="prompt-arguments"></a>
+### Prompt Arguments
+
+Prompts can define arguments that allow AI clients to customize the prompt template with specific values. Use the `arguments()` method to define what parameters your prompt accepts:
+
+```php
+<?php
+
+namespace App\Mcp\Prompts;
+
+use Laravel\Mcp\Server\Prompt;
+use Laravel\Mcp\Server\Prompts\Argument;
+
+class DescribeWeatherPrompt extends Prompt
+{
+    /**
+     * Get the prompt's arguments.
+     *
+     * @return array<int, \Laravel\Mcp\Server\Prompts\Argument>
+     */
+    public function arguments(): array
+    {
+        return [
+            new Argument(
+                name: 'tone',
+                description: 'The tone to use in the weather description (e.g., formal, casual, humorous)',
+                required: true,
+            ),
+        ];
+    }
+}
+```
+
+<a name="validating-prompt-arguments"></a>
+### Validating Prompt Arguments
+
+Prompt arguments are automatically validated based on their definition, but you may also want to enforce more complex validation rules.
+
+Laravel MCP integrates seamlessly with Laravel's validation system. You may validate incoming prompt arguments within your prompt's `handle()` method:
+
+```php
+<?php
+
+namespace App\Mcp\Prompts;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Prompt;
+
+class DescribeWeatherPrompt extends Prompt
+{
+    /**
+     * Handle the prompt request.
+     */
+    public function handle(Request $request): Response
+    {
+        $validated = $request->validate([
+            'tone' => 'required|string|max:50',
+        ]);
+        
+        $location = $validated['tone'];
+        
+        // Generate the prompt response using the given tone...
+    }
+}
+```
+
+<a name="prompt-dependency-injection"></a>
+### Prompt Dependency Injection
+
+The Laravel service container is used to resolve all prompts. As a result, you are able to type-hint any dependencies your prompt may need in its constructor. The declared dependencies will automatically be resolved and injected into the prompt instance:
+
+```php
+<?php
+
+namespace App\Mcp\Prompts;
+
+use App\Repositories\WeatherRepository;
+use Laravel\Mcp\Server\Prompt;
+
+class DescribeWeatherPrompt extends Prompt
+{
+    /**
+     * Create a new prompt instance.
+     */
+    public function __construct(
+        protected WeatherRepository $weather,
+    ) {}
+    
+    //
+}
+```
+
+In addition to constructor injection, you may also type-hint dependencies in your prompt's `handle()` method. The service container will automatically resolve and inject the dependencies when the method is called:
+
+```php
+<?php
+
+namespace App\Mcp\Prompts;
+
+use App\Repositories\WeatherRepository;
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Prompt;
+
+class DescribeWeatherPrompt extends Prompt
+{
+    /**
+     * Handle the prompt request.
+     */
+    public function handle(Request $request, WeatherRepository $weather): Response
+    {
+        //
+
+        $isAvailable = $weather->isServiceAvailable();
+
+        //
+    }
+}
+```
+
+<a name="prompt-responses"></a>
+### Prompt Responses
+
+Prompts must return an instance of `Laravel\Mcp\Response`. This class encapsulates the generated prompt content that will be sent to the AI client:
+
+```php
+<?php
+
+namespace App\Mcp\Prompts;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Prompt;
+
+class DescribeWeatherPrompt extends Prompt
+{
+    /**
+     * Handle the prompt request.
+     */
+    public function handle(Request $request): Response
+    {
+        $tone = $request->string('tone');
+        
+        $systemMessage = "You are a helpful weather assistant. Please provide a weather description in a {$tone} tone.";
+        $userMessage = "What is the current weather like in New York City?";
+        
+        return [
+            Response::assistant()->text($systemMessage),
+            Response::user()->text($promptText),
+        ];
+    }
+}
+```
+
+You can use the `assistant()` and `user()` methods to specify the role for each message in the conversation context.
