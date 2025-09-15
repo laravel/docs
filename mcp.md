@@ -870,7 +870,9 @@ class WeatherGuidelinesResource extends Resource
 <a name="resource-uri-and-mime-type"></a>
 ### Resource URI and MIME Type
 
-Resources are identified by a URI and have an associated MIME type. You can customize these by overriding the `uri()` and `mimeType()` methods:
+Resources are identified by a URI and have an associated MIME type. You can customize these by setting the protected `$uri` and `$mimeType` properties.
+
+By default, the URI is set to `file://resources/{kebab-class-name}` and the MIME type is set to `text/plain`. You can override these defaults as needed:
 
 ```php
 <?php
@@ -882,20 +884,14 @@ use Laravel\Mcp\Server\Resource;
 class WeatherGuidelinesResource extends Resource
 {
     /**
-     * Get the resource's URI.
+     * The resource's URI.
      */
-    public function uri(): string
-    {
-        return 'weather://guidelines/api-documentation';
-    }
+    protected string $uri = 'file://guidelines/api-documentation';
     
     /**
-     * Get the resource's MIME type.
+     * The resource's MIME type.
      */
-    public function mimeType(): string
-    {
-        return 'text/markdown';
-    }
+    protected string $mimeType = 'text/markdown';
     
     /**
      * Get the resource's content.
@@ -927,27 +923,21 @@ class WeatherMapResource extends Resource
     protected string $description = 'Current weather radar map image.';
     
     /**
+     * The resource's URI.
+     */
+    protected string $uri = 'file://maps/current-radar';
+    
+    /**
+     * The resource's MIME type.
+     */
+    protected string $mimeType = 'image/png';
+    
+    /**
      * Get the resource's content.
      */
     public function read(): string
     {
         return file_get_contents(storage_path('weather/current-radar.png'));
-    }
-    
-    /**
-     * Get the resource's URI.
-     */
-    public function uri(): string
-    {
-        return 'weather://maps/current-radar';
-    }
-    
-    /**
-     * Get the resource's MIME type.
-     */
-    public function mimeType(): string
-    {
-        return 'image/png';
     }
 }
 ```
