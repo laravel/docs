@@ -141,7 +141,7 @@ use Laravel\Mcp\Facades\Mcp;
 Mcp::local('weather', WeatherServer::class);
 ```
 
-Once registered, you can start the server using the `mcp:start` command:
+Once registered, **don't run `mcp:start` yourself**, instead configure your MCP client (AI agent) to start the server. The `mcp:start` command is designed to be invoked by the client, which will handle starting and stopping the server as needed.
 
 ```shell
 php artisan mcp:start weather
@@ -181,7 +181,7 @@ class WeatherServer extends Server
 
 ### Tool Name, Title, and Description
 
-By default, the tool's name and title are derived from the class name. For example, `CurrentWeatherTool` will have a `current_weather` name and `Current Weather Tool` title. You may customize these values by overriding the `$name` and `$title` properties:
+By default, the tool's name and title are derived from the class name. For example, `CurrentWeatherTool` will have a `current-weather` name and `Current Weather Tool` title. You may customize these values by overriding the `$name` and `$title` properties:
 
 ```php
 class CurrentWeatherTool extends Tool
@@ -189,17 +189,20 @@ class CurrentWeatherTool extends Tool
     /**
      * The tool's name.
      */
-    protected string $name = 'get_optimistic_weather';
-    
+    protected string $name = 'get-optimistic-weather';
+
     /**
      * The tool's title.
      */
     protected string $title = 'Get Optimistic Weather Forecast';
-    
+
     //
 }
+```
 
 On the other hand, the tool's description is not automatically generated. You should always provide a meaningful description by overriding the `$description` property:
+
+> Note: The description is a critical part of the tool's metadata, as it helps AI models understand when and how to use the tool effectively.
 
 ```php
 class CurrentWeatherTool extends Tool
@@ -208,7 +211,7 @@ class CurrentWeatherTool extends Tool
      * The tool's description.
      */
     protected string $description = 'Fetches the current weather forecast for a specified location.';
-    
+
     //
 }
 ```
@@ -239,7 +242,7 @@ class CurrentWeatherTool extends Tool
             'location' => $schema->string()
                 ->description('The location to get the weather for')
                 ->required(),
-            
+
             'units' => $schema->enum(['celsius', 'fahrenheit'])
                 ->description('Temperature units to use')
                 ->default('celsius'),
@@ -275,10 +278,27 @@ class CurrentWeatherTool extends Tool
             'location' => 'required|string|max:100',
             'units' => 'in:celsius,fahrenheit',
         ]);
-        
+
         // Fetch weather data using the validated arguments...
     }
 }
+```
+
+On validation failure, AI clients will act based on the error messages you provide. As such, is critical to provide clear and actionable error messages:
+
+```php
+$validated = $request->validate(
+    [
+        'location' => ['required','string','max:100'],
+        'units' => 'in:celsius,fahrenheit',
+    ],
+    [
+        'location.required' => 'You must specify a location to get the weather for. For example, "New York City" or "Tokyo".',
+        'units.in' => 'You must specify either "celsius" or "fahrenheit" for the units.',
+    ],
+);
+
+//
 ```
 
 <a name="tool-dependency-injection"></a>
@@ -302,7 +322,7 @@ class CurrentWeatherTool extends Tool
     public function __construct(
         protected WeatherRepository $weather,
     ) {}
-    
+
     //
 }
 ```
@@ -450,7 +470,7 @@ public function handle(Request $request): array
 {
     $summary = Response::text('Weather Summary: Sunny, 72°F');
     $details = Response::text('**Detailed Forecast**\n- Morning: 65°F\n- Afternoon: 78°F\n- Evening: 70°F');
-    
+
     return [$summary, $details];
 }
 ```
@@ -480,7 +500,7 @@ class CurrentWeatherTool extends Tool
     public function handle(Request $request): Generator
     {
         $locations = $request->array('locations');
-        
+
         $forecasts = [];
 
         foreach ($locations as $index => $location) {
@@ -534,7 +554,7 @@ class WeatherServer extends Server
 <a name="prompt-name-title-and-description"></a>
 ### Prompt Name, Title, and Description
 
-By default, the prompt's name and title are derived from the class name. For example, `DescribeWeatherPrompt` will have a `describe_weather` name and `Describe Weather Prompt` title. You may customize these values by overriding the `$name` and `$title` properties:
+By default, the prompt's name and title are derived from the class name. For example, `DescribeWeatherPrompt` will have a `describe-weather` name and `Describe Weather Prompt` title. You may customize these values by overriding the `$name` and `$title` properties:
 
 ```php
 class DescribeWeatherPrompt extends Prompt
@@ -542,18 +562,20 @@ class DescribeWeatherPrompt extends Prompt
     /**
      * The prompt's name.
      */
-    protected string $name = 'weather_assistant';
-    
+    protected string $name = 'weather-assistant';
+
     /**
      * The prompt's title.
      */
     protected string $title = 'Weather Assistant Prompt';
-    
+
     //
 }
 ```
 
 On the other hand, the prompt's description is not automatically generated. You should always provide a meaningful description by overriding the `$description` property:
+
+> Note: The description is a critical part of the tool's metadata, as it helps AI models understand when and how to get the best use out of the prompt.
 
 ```php
 class DescribeWeatherPrompt extends Prompt
@@ -562,7 +584,7 @@ class DescribeWeatherPrompt extends Prompt
      * The prompt's description.
      */
     protected string $description = 'Generates a natural-language explanation of the weather for a given location.';
-    
+
     //
 }
 ```
@@ -626,12 +648,27 @@ class DescribeWeatherPrompt extends Prompt
         $validated = $request->validate([
             'tone' => 'required|string|max:50',
         ]);
-        
+
         $tone = $validated['tone'];
-        
+
         // Generate the prompt response using the given tone...
     }
 }
+```
+
+On validation failure, AI clients will act based on the error messages you provide. As such, is critical to provide clear and actionable error messages:
+
+```php
+$validated = $request->validate(
+    [
+        'tone' => ['required','string','max:50'],
+    ],
+    [
+        'tone.*' => 'You must specify a tone for the weather description. Examples include "formal", "casual", or "humorous".',
+    ],
+);
+
+//
 ```
 
 <a name="prompt-dependency-injection"></a>
@@ -655,7 +692,7 @@ class DescribeWeatherPrompt extends Prompt
     public function __construct(
         protected WeatherRepository $weather,
     ) {}
-    
+
     //
 }
 ```
@@ -761,10 +798,10 @@ class DescribeWeatherPrompt extends Prompt
     public function handle(Request $request): array
     {
         $tone = $request->string('tone');
-        
+
         $systemMessage = "You are a helpful weather assistant. Please provide a weather description in a {$tone} tone.";
         $userMessage = "What is the current weather like in New York City?";
-        
+
         return [
             Response::text($systemMessage)->asAssistant(),
             Response::text($userMessage),
@@ -810,7 +847,7 @@ class WeatherServer extends Server
 <a name="resource-name-title-and-description"></a>
 ### Resource Name, Title, and Description
 
-By default, the resource's name and title are derived from the class name. For example, `WeatherGuidelinesResource` will have a `weather_guidelines` name and `Weather Guidelines Resource` title. You may customize these values by overriding the `$name` and `$title` properties:
+By default, the resource's name and title are derived from the class name. For example, `WeatherGuidelinesResource` will have a `weather-guidelines` name and `Weather Guidelines Resource` title. You may customize these values by overriding the `$name` and `$title` properties:
 
 ```php
 class WeatherGuidelinesResource extends Resource
@@ -818,18 +855,20 @@ class WeatherGuidelinesResource extends Resource
     /**
      * The resource's name.
      */
-    protected string $name = 'weather_api_docs';
-    
+    protected string $name = 'weather-api-docs';
+
     /**
      * The resource's title.
      */
     protected string $title = 'Weather API Documentation';
-    
+
     //
 }
 ```
 
 On the other hand, the resource's description is not automatically generated. You should always provide a meaningful description by overriding the `$description` property:
+
+Note: The description is a critical part of the resource's metadata, as it helps AI models understand when and how to use the resource effectively.
 
 ```php
 class WeatherGuidelinesResource extends Resource
