@@ -29,6 +29,7 @@
     - [Binary Resources](#binary-resources)
     - [Resource Dependency Injection](#resource-dependency-injection)
     - [Conditional Resource Registration](#conditional-resource-registration)
+- [Testing Servers](#testing-servers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -44,13 +45,16 @@ To get started, install Laravel MCP into your project using the Composer package
 composer require laravel/mcp
 ```
 
-After installing Laravel MCP, you may execute the `vendor:publish` Artisan command, which will publish the `routes/ai.php` file where you'll define your MCP servers:
+<a name="publishing-routes"></a>
+### Publishing Routes
+
+After installing Laravel MCP, execute the `vendor:publish` Artisan command to publish the `routes/ai.php` file where you will define your MCP servers:
 
 ```shell
 php artisan vendor:publish --tag=ai-routes
 ```
 
-This command will create the `routes/ai.php` file in your application's `routes` directory that you use to register your MCP servers.
+This command creates the `routes/ai.php` file in your application's `routes` directory, which you will use to register your MCP servers.
 
 <a name="creating-servers"></a>
 ## Creating Servers
@@ -177,7 +181,7 @@ class WeatherServer extends Server
 
 ### Tool Name, Title, and Description
 
-By default, the tool's name and title are derived from the class name. As example, `CurrentWeatherTool` will have a `current_weather` name and `Current Weather Tool` title. You may customize these values by overriding the `$name` and `$title` properties:
+By default, the tool's name and title are derived from the class name. For example, `CurrentWeatherTool` will have a `current_weather` name and `Current Weather Tool` title. You may customize these values by overriding the `$name` and `$title` properties:
 
 ```php
 class CurrentWeatherTool extends Tool
@@ -280,7 +284,7 @@ class CurrentWeatherTool extends Tool
 <a name="tool-dependency-injection"></a>
 #### Tool Dependency Injection
 
-The Laravel service container is used to resolve all tools. As a result, you are able to type-hint any dependencies your tool may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:
+The Laravel service container is used to resolve all tools. As a result, you are able to type-hint any dependencies your tool may need in its constructor. The declared dependencies will automatically be resolved and injected into the tool instance:
 
 ```php
 <?php
@@ -308,7 +312,7 @@ In addition to constructor injection, you may also type-hint dependencies in you
 ```php
 <?php
 
-namespace App\Http\Mcp\Tools;
+namespace App\Mcp\Tools;
 
 use App\Repositories\WeatherRepository;
 use Laravel\Mcp\Request;
@@ -322,12 +326,13 @@ class CurrentWeatherTool extends Tool
      */
     public function handle(Request $request, WeatherRepository $weather): Response
     {
-        //
-        
+        $location = $request->get('location');
+
         $forecast = $weather->getForecastFor($location);
-        
+
         //
     }
+}
 ```
 
 <a name="tool-annotations"></a>
@@ -342,10 +347,8 @@ namespace App\Mcp\Tools;
 
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 use Laravel\Mcp\Server\Tools\Annotations\IsIdempotent;
-use Laravel\Mcp\Server\Tools\Annotations\Title;
 use Laravel\Mcp\Server\Tool;
 
-#[Title('Get Current Weather')]
 #[IsReadOnly]
 #[IsIdempotent]
 class CurrentWeatherTool extends Tool
@@ -484,14 +487,12 @@ class CurrentWeatherTool extends Tool
             // Send progress notification
             yield Response::notification('processing/progress', [
                 'current' => $index + 1,
-                'total' => count($items),
-                'item' => $item,
+                'total' => count($locations),
+                'location' => $location,
             ]);
-            
-            $forecasts[] = Response::text($this->forecastFor($location));
+
+            yield Response::text($this->forecastFor($location));
         }
-        
-        yield $responses;
     }
 }
 ```
@@ -514,7 +515,7 @@ After creating a prompt, register it in your server's `$prompts` property:
 
 namespace App\Mcp\Servers;
 
-use App\Mcp\Prompts\AskWeatherPrompt;
+use App\Mcp\Prompts\DescribeWeatherPrompt;
 use Laravel\Mcp\Server;
 
 class WeatherServer extends Server
@@ -533,7 +534,7 @@ class WeatherServer extends Server
 <a name="prompt-name-title-and-description"></a>
 ### Prompt Name, Title, and Description
 
-By default, the prompt's name and title are derived from the class name. As example, `AskWeatherPrompt` will have an `ask_weather` name and `Ask Weather Prompt` title. You may customize these values by overriding the `$name` and `$title` properties:
+By default, the prompt's name and title are derived from the class name. For example, `DescribeWeatherPrompt` will have a `describe_weather` name and `Describe Weather Prompt` title. You may customize these values by overriding the `$name` and `$title` properties:
 
 ```php
 class DescribeWeatherPrompt extends Prompt
@@ -555,7 +556,7 @@ class DescribeWeatherPrompt extends Prompt
 On the other hand, the prompt's description is not automatically generated. You should always provide a meaningful description by overriding the `$description` property:
 
 ```php
-class AskWeatherPrompt extends Prompt
+class DescribeWeatherPrompt extends Prompt
 {
     /**
      * The prompt's description.
@@ -626,7 +627,7 @@ class DescribeWeatherPrompt extends Prompt
             'tone' => 'required|string|max:50',
         ]);
         
-        $location = $validated['tone'];
+        $tone = $validated['tone'];
         
         // Generate the prompt response using the given tone...
     }
@@ -739,7 +740,7 @@ When a prompt's `shouldRegister` method returns `false`, it will not appear in t
 <a name="prompt-responses"></a>
 ### Prompt Responses
 
-Prompts must return an instance of `Laravel\Mcp\Response`. This class encapsulates the generated prompt content that will be sent to the AI client:
+Prompts may return a single `Laravel\Mcp\Response` or an iterable of `Laravel\Mcp\Response` instances. These responses encapsulate the content that will be sent to the AI client:
 
 ```php
 <?php
@@ -754,8 +755,10 @@ class DescribeWeatherPrompt extends Prompt
 {
     /**
      * Handle the prompt request.
+     *
+     * @return array<int, \Laravel\Mcp\Response>
      */
-    public function handle(Request $request): Response
+    public function handle(Request $request): array
     {
         $tone = $request->string('tone');
         
@@ -764,7 +767,7 @@ class DescribeWeatherPrompt extends Prompt
         
         return [
             Response::text($systemMessage)->asAssistant(),
-            Response::text($promptText),
+            Response::text($userMessage),
         ];
     }
 }
@@ -807,7 +810,7 @@ class WeatherServer extends Server
 <a name="resource-name-title-and-description"></a>
 ### Resource Name, Title, and Description
 
-By default, the resource's name and title are derived from the class name. As example, `WeatherGuidelinesResource` will have a `weather_guidelines` name and `Weather Guidelines Resource` title. You may customize these values by overriding the `$name` and `$title` properties:
+By default, the resource's name and title are derived from the class name. For example, `WeatherGuidelinesResource` will have a `weather_guidelines` name and `Weather Guidelines Resource` title. You may customize these values by overriding the `$name` and `$title` properties:
 
 ```php
 class WeatherGuidelinesResource extends Resource
@@ -1033,3 +1036,17 @@ class DetailedWeatherResource extends Resource
 ```
 
 When a resource's `shouldRegister` method returns `false`, it will not appear in the list of available resources and cannot be accessed by AI clients.
+
+
+<a name="testing-servers"></a>
+## Testing Servers
+
+The [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) is an interactive tool for testing and debugging your MCP servers. Use it to connect to your server, verify authentication, and try out tools, resources, and prompts.
+
+Run the inspector for a server you registered (for example, a local server named "weather"):
+
+```shell
+php artisan mcp:inspector weather
+```
+
+This command launches the MCP Inspector and provides the client settings you can copy into your MCP client to ensure everything is configured correctly. If your web server is protected by middleware (e.g., authentication), make sure to include the required headers (such as an Authorization bearer token) when connecting.
