@@ -30,6 +30,8 @@
     - [Resource Dependency Injection](#resource-dependency-injection)
     - [Conditional Resource Registration](#conditional-resource-registration)
 - [Testing Servers](#testing-servers)
+    - [MCP Inspector](#mcp-inspector)
+    - [Unit Tests](#unit-tests)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1066,16 +1068,129 @@ class DetailedWeatherResource extends Resource
 
 When a resource's `shouldRegister` method returns `false`, it will not appear in the list of available resources and cannot be accessed by AI clients.
 
-
 <a name="testing-servers"></a>
 ## Testing Servers
 
+You may test your MCP servers using the built-in MCP Inspector or by writing unit tests.
+
+<a name="mcp-inspector"></a>
+### MCP Inspector
+
 The [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) is an interactive tool for testing and debugging your MCP servers. Use it to connect to your server, verify authentication, and try out tools, resources, and prompts.
 
-Run the inspector for a server you registered (for example, a local server named "weather"):
+You may run the inspector for a registered server (for example, a local server named "weather"):
 
 ```shell
 php artisan mcp:inspector weather
 ```
 
-This command launches the MCP Inspector and provides the client settings you can copy into your MCP client to ensure everything is configured correctly. If your web server is protected by middleware (e.g., authentication), make sure to include the required headers (such as an Authorization bearer token) when connecting.
+This command launches the MCP Inspector and provides the client settings that you may copy into your MCP client to ensure everything is configured correctly. If your web server is protected by middleware (e.g., authentication), make sure to include the required headers (such as an Authorization bearer token) when connecting.
+
+<a name="unit-tests"></a>
+### Unit Tests
+
+You may write unit tests for your MCP servers, tools, resources, and prompts.
+
+To get started, create a new test case and invoke the desired primitive on the server that registers it. For example, to test a tool on the `WeatherServer`, you might write:
+
+```php tab=Pest
+test('tool', function () {
+    $response = WeatherServer::tool(CurrentWeatherTool::class, [
+        'location' => 'New York City',
+        'units' => 'fahrenheit',
+    ]);
+
+    $response->assertOk()
+             ->assertSee('The current weather in New York City is 72°F and sunny.');
+});
+```
+
+```php tab=PHPUnit
+/**
+ * Test a tool.
+ */
+public function test_tool(): void
+{
+    $response = WeatherServer::tool(CurrentWeatherTool::class, [
+        'location' => 'New York City',
+        'units' => 'fahrenheit',
+    ]);
+
+    $response->assertOk()
+             ->assertSee('The current weather in New York City is 72°F and sunny.');
+}
+```
+
+Similarly, you may test prompts and resources:
+
+```php
+$response = WeatherServer::prompt(...);
+$response = WeatherServer::resource(...);
+```
+
+You may also act as an authenticated user by chaining the `actingAs` method before invoking the primitive:
+
+```php
+$response = WeatherServer::actingAs($user)->tool(...);
+```
+
+Once you receive the response, you may use various assertion methods to verify the content and status of the response.
+
+You may assert that a response is successful using the `assertOk()` method. This checks that the response does not have any error:
+
+```php
+$response->assertOk();
+```
+
+You may also assert that a response contains specific text using the `assertSee()` method:
+
+```php
+$response->assertSee('The current weather in New York City is 72°F and sunny.');
+```
+
+You may assert that a response contains an error using the `assertHasErrors()` method:
+
+```php
+$response->assertHasErrors();
+$response->assertHasErrors([
+    'my error message',
+]);
+```
+
+You may assert that a response does not contain an error using the `assertHasNoErrors()` method:
+
+```php
+$response->assertHasNoErrors();
+```
+
+You may assert that a response contains specific metadata using the `assertName()`, `assertTitle()`, and `assertDescription()` methods:
+
+```php
+$response->assertName('current-weather');
+$response->assertTitle('Current Weather Tool');
+$response->assertDescription('Fetches the current weather forecast for a specified location.');
+```
+
+
+You may assert that notifications were sent using the `assertNotification()` and `assertNotificationCount()` methods:
+
+```php
+$response->assertNotification('processing/progress', [
+    'step' => 1,
+    'total' => 5,
+]);
+
+$response->assertNotification('processing/progress', [
+    'step' => 2,
+    'total' => 5,
+]);
+
+$response->assertNotificationCount(5);
+```
+
+Finally, if you wish to inspect the raw response content, you may use the `dd()` or `dump()` methods to output the response for debugging purposes:
+
+```php
+$response->dd();
+$response->dump();
+```
