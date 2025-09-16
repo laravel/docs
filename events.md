@@ -556,7 +556,7 @@ class SendShipmentNotification implements ShouldQueue
 
 If one of your queued listeners is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a listener may be attempted.
 
-You may define a `tries` property on your listener class to specify how many times the listener may be attempted before it is considered to have failed:
+You may define a `tries` property or method on your listener class to specify how many times the listener may be attempted before it is considered to have failed:
 
 ```php
 <?php
