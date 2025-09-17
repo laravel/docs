@@ -3745,25 +3745,25 @@ $filtered->all();
 */
 ```
 
-The `where` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [whereStrict](#method-wherestrict) method to filter using "strict" comparisons.
+The `where` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [whereStrict](#method-wherestrict) method to filter using "strict" comparisons, or the [whereNull](#method-wherenull) and [whereNotNull](#method-wherenotnull) methods to filter for `null` values.
 
 Optionally, you may pass a comparison operator as the second parameter. Supported operators are: '===', '!==', '!=', '==', '=', '<>', '>', '<', '>=', and '<=':
 
 ```php
 $collection = collect([
-    ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],
-    ['name' => 'Sally', 'deleted_at' => '2019-01-02 00:00:00'],
-    ['name' => 'Sue', 'deleted_at' => null],
+    ['name' => 'Jim', 'platform' => 'Mac'],
+    ['name' => 'Sally', 'platform' => 'Mac'],
+    ['name' => 'Sue', 'platform' => 'Linux'],
 ]);
 
-$filtered = $collection->where('deleted_at', '!=', null);
+$filtered = $collection->where('platform', '!=', 'Linux');
 
 $filtered->all();
 
 /*
     [
-        ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],
-        ['name' => 'Sally', 'deleted_at' => '2019-01-02 00:00:00'],
+        ['name' => 'Jim', 'platform' => 'Mac'],
+        ['name' => 'Sally', 'platform' => 'Mac'],
     ]
 */
 ```
@@ -3922,6 +3922,11 @@ $collection = collect([
     ['name' => 'Desk'],
     ['name' => null],
     ['name' => 'Bookcase'],
+    ['name' => 0],
+    ['name' => 0.0],
+    ['name' => ''],
+    ['name' => []],
+    ['name' => false],
 ]);
 
 $filtered = $collection->whereNotNull('name');
@@ -3932,6 +3937,11 @@ $filtered->all();
     [
         ['name' => 'Desk'],
         ['name' => 'Bookcase'],
+        ['name' => 0],
+        ['name' => 0.0],
+        ['name' => ''],
+        ['name' => []],
+        ['name' => false],
     ]
 */
 ```
@@ -3946,6 +3956,11 @@ $collection = collect([
     ['name' => 'Desk'],
     ['name' => null],
     ['name' => 'Bookcase'],
+    ['name' => 0],
+    ['name' => 0.0],
+    ['name' => ''],
+    ['name' => []],
+    ['name' => false],
 ]);
 
 $filtered = $collection->whereNull('name');
