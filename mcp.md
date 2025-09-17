@@ -24,11 +24,11 @@
     - [Prompt Responses](#prompt-responses)
 - [Creating Resources](#creating-resources)
     - [Resource Name, Title, and Description](#resource-name-title-and-description)
-    - [Resource Content](#resource-content)
     - [Resource URI and MIME Type](#resource-uri-and-mime-type)
-    - [Binary Resources](#binary-resources)
+    - [Resource Request](#resource-request)
     - [Resource Dependency Injection](#resource-dependency-injection)
     - [Conditional Resource Registration](#conditional-resource-registration)
+    - [Resource Responses](#resource-responses)
 - [Testing Servers](#testing-servers)
     - [MCP Inspector](#mcp-inspector)
     - [Unit Tests](#unit-tests)
@@ -272,7 +272,7 @@ use Laravel\Mcp\Server\Tool;
 class CurrentWeatherTool extends Tool
 {
     /**
-     * Handle the tool call.
+     * Handle the tool request.
      */
     public function handle(Request $request): Response
     {
@@ -344,7 +344,7 @@ use Laravel\Mcp\Server\Tool;
 class CurrentWeatherTool extends Tool
 {
     /**
-     * Handle the tool call.
+     * Handle the tool request.
      */
     public function handle(Request $request, WeatherRepository $weather): Response
     {
@@ -464,7 +464,7 @@ Tools can return multiple pieces of content by returning an array of Response in
 
 ```php
 /**
- * Handle the tool call.
+ * Handle the tool request.
  *
  * @return array<int, \Laravel\Mcp\Response>
  */
@@ -495,7 +495,7 @@ use Laravel\Mcp\Server\Tool;
 class CurrentWeatherTool extends Tool
 {
     /**
-     * Handle the tool call.
+     * Handle the tool request.
      *
      * @return \Generator<int, \Laravel\Mcp\Response>
      */
@@ -870,7 +870,7 @@ class WeatherGuidelinesResource extends Resource
 
 On the other hand, the resource's description is not automatically generated. You should always provide a meaningful description by overriding the `$description` property:
 
-Note: The description is a critical part of the resource's metadata, as it helps AI models understand when and how to use the resource effectively.
+> Note: The description is a critical part of the resource's metadata, as it helps AI models understand when and how to use the resource effectively.
 
 ```php
 class WeatherGuidelinesResource extends Resource
@@ -879,41 +879,19 @@ class WeatherGuidelinesResource extends Resource
      * The resource's description.
      */
     protected string $description = 'Comprehensive guidelines for using the Weather API.';
-    
+
     //
-}
-```
-
-<a name="resource-content"></a>
-### Resource Content
-
-Resources must implement the `read()` method to provide their content. This method should return the actual data that will be sent to AI clients:
-
-```php
-<?php
-
-namespace App\Mcp\Resources;
-
-use Laravel\Mcp\Server\Resource;
-
-class WeatherGuidelinesResource extends Resource
-{
-    /**
-     * Get the resource's content.
-     */
-    public function read(): string
-    {
-        return file_get_contents(resource_path('weather/guidelines.md'));
-    }
 }
 ```
 
 <a name="resource-uri-and-mime-type"></a>
 ### Resource URI and MIME Type
 
-Resources are identified by a URI and have an associated MIME type. You can customize these by setting the protected `$uri` and `$mimeType` properties.
+Each resource is identified by a unique URI and has an associated MIME type that helps AI clients understand the resource's format.
 
-By default, the URI is set to `file://resources/{kebab-class-name}` and the MIME type is set to `text/plain`. You can override these defaults as needed:
+By default, the resource's URI is generated based on the resource's name, so `WeatherGuidelinesResource` will have a `weather://resources/weather-guidelines` URI. The default MIME type is `text/plain`.
+
+You may customize these values by overriding the `$uri` and `$mimeType` properties:
 
 ```php
 <?php
@@ -927,58 +905,39 @@ class WeatherGuidelinesResource extends Resource
     /**
      * The resource's URI.
      */
-    protected string $uri = 'file://guidelines/api-documentation';
-    
+    protected string $uri = 'weather://resources/guidelines';
+
     /**
      * The resource's MIME type.
      */
-    protected string $mimeType = 'text/markdown';
-    
-    /**
-     * Get the resource's content.
-     */
-    public function read(): string
-    {
-        return file_get_contents(resource_path('weather/guidelines.md'));
-    }
+    protected string $mimeType = 'application/pdf';
 }
 ```
 
-<a name="binary-resources"></a>
-### Binary Resources
+The URI and MIME type help AI clients determine how to process and interpret the resource content appropriately.
 
-Resources can also serve binary content like images or other non-text files. The framework automatically detects binary content and handles it appropriately:
+<a name="resource-request"></a>
+### Resource Request
+
+Unlike tools and prompts, resources can not define input schemas or arguments. However, you may still want to interact with request object:
 
 ```php
 <?php
 
 namespace App\Mcp\Resources;
 
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Resource;
 
-class WeatherMapResource extends Resource
+class WeatherGuidelinesResource extends Resource
 {
     /**
-     * The resource's description.
+     * Handle the resource request.
      */
-    protected string $description = 'Current weather radar map image.';
-    
-    /**
-     * The resource's URI.
-     */
-    protected string $uri = 'file://maps/current-radar';
-    
-    /**
-     * The resource's MIME type.
-     */
-    protected string $mimeType = 'image/png';
-    
-    /**
-     * Get the resource's content.
-     */
-    public function read(): string
+    public function handle(Request $request): Response
     {
-        return file_get_contents(storage_path('weather/current-radar.png'));
+        // interact with the request...
     }
 }
 ```
@@ -994,27 +953,43 @@ The Laravel service container is used to resolve all resources. As a result, you
 namespace App\Mcp\Resources;
 
 use App\Repositories\WeatherRepository;
-use App\Services\CacheService;
 use Laravel\Mcp\Server\Resource;
 
-class WeatherHistoryResource extends Resource
+class WeatherGuidelinesResource extends Resource
 {
     /**
      * Create a new resource instance.
      */
     public function __construct(
         protected WeatherRepository $weather,
-        protected CacheService $cache,
     ) {}
-    
+
+    //
+}
+```
+
+In addition to constructor injection, you may also type-hint dependencies in your resource's `handle()` method. The service container will automatically resolve and inject the dependencies when the method is called:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use App\Repositories\WeatherRepository;
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Resource;
+
+class WeatherGuidelinesResource extends Resource
+{
     /**
-     * Get the resource's content.
+     * Handle the resource request.
      */
-    public function read(): string
+    public function handle(WeatherRepository $weather): Response
     {
-        return $this->cache->remember('weather-history', 3600, function () {
-            return $this->weather->getHistoricalData();
-        });
+        $guidelines = $weather->guidelines();
+
+        return Response::text($guidelines);
     }
 }
 ```
@@ -1032,14 +1007,14 @@ namespace App\Mcp\Resources;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Server\Resource;
 
-class PremiumWeatherDataResource extends Resource
+class WeatherGuidelinesResource extends Resource
 {
     /**
      * Determine if the resource should be registered.
      */
     public function shouldRegister(): bool
     {
-        return config('features.premium_weather_data_enabled', false);
+        return config('features.weather_resources_enabled', false);
     }
 }
 ```
@@ -1054,19 +1029,68 @@ namespace App\Mcp\Resources;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Server\Resource;
 
-class DetailedWeatherResource extends Resource
+class WeatherGuidelinesResource extends Resource
 {
     /**
      * Determine if the resource should be registered.
      */
     public function shouldRegister(Request $request): bool
     {
-        return $request?->user()?->hasFeature('detailed_weather') ?? false;
+        return $request?->user()?->isSubscribed() ?? false;
     }
 }
 ```
 
 When a resource's `shouldRegister` method returns `false`, it will not appear in the list of available resources and cannot be accessed by AI clients.
+
+<a name="resource-responses"></a>
+### Resource Responses
+
+Resources must return an instance of `Laravel\Mcp\Response`. The Response class provides several convenient methods for creating different types of responses:
+
+#### Text Responses
+
+For text content, use the `text()` method:
+
+```php
+return Response::text($weatherData);
+```
+
+#### Blob Responses
+
+For blob content, use the `blob()` method with the blob content:
+
+```php
+return Response::blob(file_get_contents(storage_path('weather/radar.png')));
+```
+
+When returning blob content, you may also specify the MIME type by chaining the `$mimeType` property on the resource class:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Server\Resource;
+
+class WeatherGuidelinesResource extends Resource
+{
+    /**
+     * The resource's MIME type.
+     */
+    protected string $mimeType = 'image/png';
+
+    //
+}
+```
+
+#### Error Responses
+
+To indicate an error occurred during resource retrieval, use the `error()` method:
+
+```php
+return Response::error('Unable to fetch weather data for the specified location.');
+```
 
 <a name="testing-servers"></a>
 ## Testing Servers
