@@ -9,6 +9,7 @@
     - [Flash Data](#flash-data)
     - [Deleting Data](#deleting-data)
     - [Regenerating the Session ID](#regenerating-the-session-id)
+- [Session Cache](#session-cache)
 - [Session Blocking](#session-blocking)
 - [Adding Custom Session Drivers](#adding-custom-session-drivers)
     - [Implementing the Driver](#implementing-the-driver)
@@ -276,6 +277,25 @@ If you need to regenerate the session ID and remove all data from the session in
 ```php
 $request->session()->invalidate();
 ```
+
+<a name="session-cache"></a>
+## Session Cache
+
+Laravel's session cache provides a convenient way to cache data that is scoped to an individual user session. Unlike the global application cache, session cache data is automatically isolated per session and is cleaned up when the session expires or is destroyed. The session cache supports all the familiar [Laravel cache methods](/docs/{{version}}/cache) like `get`, `put`, `remember`, `forget`, and more, but scoped to the current session.
+
+The session cache is perfect for storing temporary, user-specific data that you want to persist across multiple requests within the same session, but don't need to store permanently. This includes things like form data, temporary calculations, API responses, or any other ephemeral data that should be tied to a specific user's session.
+
+You can access the session cache through the `cache` method on the session:
+
+```php
+$discount = $request->session()->cache()->get('discount');
+
+$request->session()->cache()->put(
+    'discount', 10, now()->addMinutes(5)
+);
+```
+
+For more information on Laravel's cache methods, consult the [cache documentation](/docs/{{version}}/cache).
 
 <a name="session-blocking"></a>
 ## Session Blocking
