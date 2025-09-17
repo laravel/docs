@@ -319,12 +319,14 @@ $users = User::factory()
     ->create();
 ```
 
-Within a sequence closure, you may access the `$index` or `$count` properties on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far, while the `$count` property contains the total number of times the sequence will be invoked:
+Within a sequence closure, you may access the `$index` property on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far:
 
 ```php
 $users = User::factory()
     ->count(10)
-    ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])
+    ->state(new Sequence(
+        fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index],
+    ))
     ->create();
 ```
 
