@@ -1274,15 +1274,15 @@ $response->assertTitle('Current Weather Tool');
 $response->assertDescription('Fetches the current weather forecast for a specified location.');
 ```
 
-You may assert that notifications were sent using the `assertNotification` and `assertNotificationCount` methods:
+You may assert that notifications were sent using the `assertSentNotification` and `assertNotificationCount` methods:
 
 ```php
-$response->assertNotification('processing/progress', [
+$response->assertSentNotification('processing/progress', [
     'step' => 1,
     'total' => 5,
 ]);
 
-$response->assertNotification('processing/progress', [
+$response->assertSentNotification('processing/progress', [
     'step' => 2,
     'total' => 5,
 ]);
