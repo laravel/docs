@@ -3923,10 +3923,7 @@ $collection = collect([
     ['name' => null],
     ['name' => 'Bookcase'],
     ['name' => 0],
-    ['name' => 0.0],
     ['name' => ''],
-    ['name' => []],
-    ['name' => false],
 ]);
 
 $filtered = $collection->whereNotNull('name');
@@ -3938,10 +3935,7 @@ $filtered->all();
         ['name' => 'Desk'],
         ['name' => 'Bookcase'],
         ['name' => 0],
-        ['name' => 0.0],
         ['name' => ''],
-        ['name' => []],
-        ['name' => false],
     ]
 */
 ```
@@ -3957,10 +3951,7 @@ $collection = collect([
     ['name' => null],
     ['name' => 'Bookcase'],
     ['name' => 0],
-    ['name' => 0.0],
     ['name' => ''],
-    ['name' => []],
-    ['name' => false],
 ]);
 
 $filtered = $collection->whereNull('name');
