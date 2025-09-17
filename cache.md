@@ -10,6 +10,7 @@
     - [Removing Items From the Cache](#removing-items-from-the-cache)
     - [Cache Memoization](#cache-memoization)
     - [The Cache Helper](#the-cache-helper)
+- [Cache Tags](#cache-tags)
 - [Atomic Locks](#atomic-locks)
     - [Managing Locks](#managing-locks)
     - [Managing Locks Across Processes](#managing-locks-across-processes)
@@ -397,6 +398,42 @@ cache()->remember('users', $seconds, function () {
 
 > [!NOTE]
 > When testing calls to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing the facade](/docs/{{version}}/mocking#mocking-facades).
+
+<a name="cache-tags"></a>
+## Cache Tags
+
+> [!WARNING]
+> Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers.
+
+<a name="storing-tagged-cache-items"></a>
+### Storing Tagged Cache Items
+
+Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` a value into the cache:
+
+    use Illuminate\Support\Facades\Cache;
+
+    Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
+    Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
+
+<a name="accessing-tagged-cache-items"></a>
+### Accessing Tagged Cache Items
+
+Items stored via tags may not be accessed without also providing the tags that were used to store the value. To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method, then call the `get` method with the key you wish to retrieve:
+
+    $john = Cache::tags(['people', 'artists'])->get('John');
+
+    $anne = Cache::tags(['people', 'authors'])->get('Anne');
+
+<a name="removing-tagged-cache-items"></a>
+### Removing Tagged Cache Items
+
+You may flush all items that are assigned a tag or list of tags. For example, the following code would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:
+
+    Cache::tags(['people', 'authors'])->flush();
+
+In contrast, the code below would remove only cached values tagged with `authors`, so `Anne` would be removed, but not `John`:
+
+    Cache::tags('authors')->flush();
 
 <a name="atomic-locks"></a>
 ## Atomic Locks
