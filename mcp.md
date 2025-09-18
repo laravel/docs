@@ -156,7 +156,7 @@ php artisan mcp:start weather
 <a name="tools"></a>
 ## Tools
 
-Tools enable your server to expose functionality that AI clients can call. They allow language models to perform actions, run code, or interact with external systems.
+Tools enable your server to expose functionality that AI clients can call. They allow language models to perform actions, run code, or interact with external systems:
 
 ```php
 <?php
