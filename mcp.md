@@ -1222,11 +1222,11 @@ The [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) is an 
 You may run the inspector for any registered server:
 
 ```shell
-# Local server named "weather"...
-php artisan mcp:inspector weather
-
 # Web server...
 php artisan mcp:inspector /mcp/weather
+
+# Local server named "weather"...
+php artisan mcp:inspector weather
 ```
 
 This command launches the MCP Inspector and provides the client settings that you may copy into your MCP client to ensure everything is configured correctly. If your web server is protected by an authentication middleware, make sure to include the required headers, such as an `Authorization` bearer token, when connecting.
