@@ -101,6 +101,19 @@ When you start Horizon, it will use the worker process configuration options for
 > [!WARNING]
 > You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon.
 
+#### Proxy Path (Running Horizon under a Subdirectory)
+
+If you need to serve Horizon from a subdirectory (e.g., `domain.laravel/myapp/horizon`), you can configure the `proxy_path` option in your `config/horizon.php` file:
+
+```php
+'proxy_path' => env('HORIZON_PROXY_PATH', '/myapp'),
+```
+
+Additionally, define the environment variable in your .env file:
+
+```dotenv
+HORIZON_PROXY_PATH=/myapp
+```
 <a name="supervisors"></a>
 #### Supervisors
 
