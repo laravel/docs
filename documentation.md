@@ -87,6 +87,7 @@
     - [Folio](/docs/{{version}}/folio)
     - [Homestead](/docs/{{version}}/homestead)
     - [Horizon](/docs/{{version}}/horizon)
+    - [MCP](/docs/{{version}}/mcp)
     - [Jetstream](https://jetstream.laravel.com)
     - [Mix](/docs/{{version}}/mix)
     - [Octane](/docs/{{version}}/octane)
