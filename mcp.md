@@ -33,9 +33,7 @@
     - [OAuth 2.1](#oauth)
     - [Sanctum](#sanctum)
 - [Authorization](#authorization)
-- [Testing Servers](#testing-servers)
-    - [MCP Inspector](#mcp-inspector)
-    - [Unit Tests](#unit-tests)
+- [Unit Tests](#testing-servers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -135,23 +133,23 @@ Mcp::web('/mcp/weather', WeatherServer::class)
     ->middleware(['throttle:mcp']);
 ```
 
-<a name="local-servers"></a>
-### Local Servers
+To test your MCP server, add it to your AI client. Here’s an example with [Claude Code CLI](https://docs.claude.com/en/docs/claude-code/overview):
 
-Local servers run as Artisan commands, perfect for development, testing, or local AI assistant integrations. Register a local server using the `local` method:
-
-```php
-use App\Mcp\Servers\WeatherServer;
-use Laravel\Mcp\Facades\Mcp;
-
-Mcp::local('weather', WeatherServer::class);
+```bash
+claude mcp add -s user -t http "WeatherServer" "http://weather.test/mcp/weather"
 ```
 
-Once registered, you should not typically need to manually run `mcp:start` yourself. Instead, configure your MCP client (AI agent) to start the server. The `mcp:start` command is designed to be invoked by the client, which will handle starting and stopping the server as needed:
+> [!NOTE] At the time of writing, to test your MCP servers locally you must serve your application over HTTP, and **not HTTPS**.
 
-```shell
-php artisan mcp:start weather
+Then, open `claude` and prompt the model to use your server:
+
+```bash
+> What's the current weather in New York City?
+
+Tool use: current-weather-tool
 ```
+
+> [!NOTE] Adding a tool, prompt, or resource to your server requires restarting your AI client to pick up the changes.
 
 <a name="tools"></a>
 ## Tools
@@ -1213,26 +1211,8 @@ public function handle(Request $request): Response
 }
 ```
 
-<a name="testing-servers"></a>
-## Testing Servers
-
-You may test your MCP servers using the built-in MCP Inspector or by writing unit tests.
-
-<a name="mcp-inspector"></a>
-### MCP Inspector
-
-The [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) is an interactive tool for testing and debugging your MCP servers. Use it to connect to your server, verify authentication, and try out tools, resources, and prompts.
-
-You may run the inspector for any registered server (for example, a local server named "weather"):
-
-```shell
-php artisan mcp:inspector weather
-```
-
-This command launches the MCP Inspector and provides the client settings that you may copy into your MCP client to ensure everything is configured correctly. If your web server is protected by an authentication middleware, make sure to include the required headers, such as an `Authorization` bearer token, when connecting.
-
 <a name="unit-tests"></a>
-### Unit Tests
+## Unit Tests
 
 You may write unit tests for your MCP servers, tools, resources, and prompts.
 
