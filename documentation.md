@@ -88,6 +88,7 @@
     - [Homestead](/docs/{{version}}/homestead)
     - [Horizon](/docs/{{version}}/horizon)
     - [Jetstream](https://jetstream.laravel.com)
+    - [MCP](/docs/{{version}}/mcp)
     - [Mix](/docs/{{version}}/mix)
     - [Octane](/docs/{{version}}/octane)
     - [Passport](/docs/{{version}}/passport)
