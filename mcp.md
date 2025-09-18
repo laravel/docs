@@ -138,7 +138,7 @@ Mcp::web('/mcp/weather', WeatherServer::class)
 <a name="local-servers"></a>
 ### Local Servers
 
-Local servers run as Artisan commands, perfect for development, testing, or local AI assistant integrations. Register a local server using the `local` method:
+Local servers run as Artisan commands, perfect for building local AI assistant integrations like [Laravel Boost](/docs/{{version}}/installation#installing-laravel-boost). Register a local server using the `local` method:
 
 ```php
 use App\Mcp\Servers\WeatherServer;
@@ -147,11 +147,7 @@ use Laravel\Mcp\Facades\Mcp;
 Mcp::local('weather', WeatherServer::class);
 ```
 
-Once registered, you should not typically need to manually run `mcp:start` yourself. Instead, configure your MCP client (AI agent) to start the server. The `mcp:start` command is designed to be invoked by the client, which will handle starting and stopping the server as needed:
-
-```shell
-php artisan mcp:start weather
-```
+Once registered, you should not typically need to manually run the `mcp:start` Artisan command yourself. Instead, configure your MCP client (AI agent) to start the server or use the [MCP Inspector](#mcp-inspector).
 
 <a name="tools"></a>
 ## Tools
@@ -1223,10 +1219,14 @@ You may test your MCP servers using the built-in MCP Inspector or by writing uni
 
 The [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) is an interactive tool for testing and debugging your MCP servers. Use it to connect to your server, verify authentication, and try out tools, resources, and prompts.
 
-You may run the inspector for any registered server (for example, a local server named "weather"):
+You may run the inspector for any registered server:
 
 ```shell
+# Local server named "weather"...
 php artisan mcp:inspector weather
+
+# Web server...
+php artisan mcp:inspector /mcp/weather
 ```
 
 This command launches the MCP Inspector and provides the client settings that you may copy into your MCP client to ensure everything is configured correctly. If your web server is protected by an authentication middleware, make sure to include the required headers, such as an `Authorization` bearer token, when connecting.
