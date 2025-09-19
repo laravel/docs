@@ -1238,7 +1238,7 @@ You may run the inspector for any registered server:
 
 ```shell
 # Web server...
-php artisan mcp:inspector /mcp/weather
+php artisan mcp:inspector mcp/weather
 
 # Local server named "weather"...
 php artisan mcp:inspector weather
