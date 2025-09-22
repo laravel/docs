@@ -317,7 +317,7 @@ The Starter Kit comes with built-in Two-Factor Authentication (2FA) powered by [
 
 Users can protect their accounts using Time-based One-Time Password (TOTP) authenticator apps.
 
-Two-Factor Authentication is enabled by default and includes all options provided by [Fortify’s 2FA features](https://laravel.com/docs/12.x/fortify#two-factor-authentication):
+Two-Factor Authentication is enabled by default and support all options provided by [Fortify’s 2FA features](https://laravel.com/docs/12.x/fortify#two-factor-authentication):
 
 ```php
 Features::twoFactorAuthentication([
