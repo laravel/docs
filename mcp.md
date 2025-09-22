@@ -206,7 +206,7 @@ class CurrentWeatherTool extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'location' => $schema->string()
+            'location' => $schema::string()
                 ->description('The location to get the weather for.')
                 ->required(),
         ];
@@ -308,11 +308,12 @@ class CurrentWeatherTool extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'location' => $schema->string()
+            'location' => $schema::string()
                 ->description('The location to get the weather for.')
                 ->required(),
 
-            'units' => $schema->enum(['celsius', 'fahrenheit'])
+            'units' => $schema::array()
+                ->enum(['celsius', 'fahrenheit'])
                 ->description('The temperature units to use.')
                 ->default('celsius'),
         ];
