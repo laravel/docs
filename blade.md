@@ -907,6 +907,16 @@ When passing attributes to components, you may also use a "short attribute" synt
 <x-profile :user-id="$userId" :name="$name" />
 ```
 
+If you would like to pass `false` to an attribute, you may prefix the attribute with `!`:
+
+```blade
+{{-- Short attribute syntax... --}}
+<x-profile !margin />
+
+{{-- Is equivalent to... --}}
+<x-profile :margin="false" />
+```
+
 <a name="escaping-attribute-rendering"></a>
 #### Escaping Attribute Rendering
 
