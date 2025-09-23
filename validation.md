@@ -2546,7 +2546,7 @@ $validator = Validator::make($request->all(), [
 <a name="error-message-indexes-and-positions"></a>
 ### Error Message Indexes and Positions
 
-When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` (starts from `0`) and `:position` (starts from `1`) placeholders within your [custom validation message](#manual-customizing-the-error-messages):
+When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` (starts from `0`), `:position` (starts from `1`), or `:ordinal-position` (starts from `1st`) placeholders within your [custom validation message](#manual-customizing-the-error-messages):
 
 ```php
 use Illuminate\Support\Facades\Validator;
