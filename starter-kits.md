@@ -10,8 +10,8 @@
     - [React](#react-customization)
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
-- [WorkOS AuthKit Authentication](#workos)
 - [Two-Factor Authentication](#two-factor-authentication)
+- [WorkOS AuthKit Authentication](#workos)
 - [Inertia SSR](#inertia-ssr)
 - [Community Maintained Starter Kits](#community-maintained-starter-kits)
 - [Frequently Asked Questions](#faqs)
@@ -270,6 +270,20 @@ To change your authentication layout, modify the layout that is used by your app
 </x-layouts.auth.split>
 ```
 
+<a name="two-factor-authentication"></a>
+## Two-Factor Authentication
+
+All starter kits include built-in two-factor authentication (2FA) powered by [Laravel Fortify](/docs/{{version}}/fortify#two-factor-authentication), adding an extra layer of security to user accounts. Users can protect their accounts using any Time-based One-Time Password (TOTP) supporting authenticator application.
+
+Two-factor authentication is enabled by default and supports all options provided by [Fortify](/docs/{{version}}/fortify#two-factor-authentication):
+
+```php
+Features::twoFactorAuthentication([
+    'confirm' => true,
+    'confirmPassword' => true,
+]);
+```
+
 <a name="workos"></a>
 ## WorkOS AuthKit Authentication
 
@@ -309,22 +323,6 @@ When using a WorkOS powered starter kit, we recommend that you disable "Email + 
 #### Configuring AuthKit Session Timeouts
 
 In addition, we recommend that you configure your WorkOS AuthKit session inactivity timeout to match your Laravel application's configured session timeout threshold, which is typically two hours.
-
-<a name="two-factor-authentication"></a>
-### Two-Factor Authentication
-
-The Starter Kit comes with built-in Two-Factor Authentication (2FA) powered by [Laravel Fortify](https://laravel.com/docs/12.x/fortify#two-factor-authentication), adding an extra layer of security to user accounts.
-
-Users can protect their accounts using Time-based One-Time Password (TOTP) authenticator apps.
-
-Two-Factor Authentication is enabled by default and support all options provided by [Fortify’s 2FA features](https://laravel.com/docs/12.x/fortify#two-factor-authentication):
-
-```php
-Features::twoFactorAuthentication([
-    'confirm' => true,
-    'confirmPassword' => true,
-]);
-```
 
 <a name="inertia-ssr"></a>
 ### Inertia SSR
