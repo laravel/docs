@@ -505,7 +505,7 @@ If you already have model instances that you would like to be attached to the mo
 ```php
 $roles = Role::factory()->count(3)->create();
 
-$user = User::factory()
+$users = User::factory()
     ->count(3)
     ->hasAttached($roles, ['active' => true])
     ->create();
@@ -555,7 +555,7 @@ Polymorphic "many to many" (`morphToMany` / `morphedByMany`) relationships may b
 use App\Models\Tag;
 use App\Models\Video;
 
-$videos = Video::factory()
+$video = Video::factory()
     ->hasAttached(
         Tag::factory()->count(3),
         ['public' => true]
@@ -566,7 +566,7 @@ $videos = Video::factory()
 Of course, the magic `has` method may also be used to create polymorphic "many to many" relationships:
 
 ```php
-$videos = Video::factory()
+$video = Video::factory()
     ->hasTags(3, ['public' => true])
     ->create();
 ```
