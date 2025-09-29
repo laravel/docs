@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
+    - [Quickstart](#quickstart)
     - [Publishing Routes](#publishing-routes)
 - [Creating Servers](#creating-servers)
     - [Server Registration](#server-registration)
@@ -45,22 +46,44 @@
 <a name="installation"></a>
 ## Installation
 
+
 To get started, install Laravel MCP into your project using the Composer package manager:
 
 ```shell
 composer require laravel/mcp
 ```
 
+After installing Laravel MCP, you can get setup manually starting with [publishing routes](#publishing-routes), or using the [quickstart](#quickstart) Artisan command.
+
+<a name="quickstart"></a>
+### Quickstart
+
+Seeing MCP in action quickly within your project is a helpful starting point to build on top of.
+
+
+The `mcp:quickstart` Artisan command exists to help here by:
+1. Automatically publishing the `routes/ai.php` file
+2. Creating a demo MCP server in `app/Mcp/Servers/`
+3. Creating a demo MCP tool, resource, and prompt in `app/Mcp/{Tools,Resources,Prompts}/`
+4. Providing clear next steps to test
+
+```shell
+php artisan mcp:quickstart
+```
+
+These demo files show typical input, validation, and response management.
+
+
 <a name="publishing-routes"></a>
 ### Publishing Routes
 
-After installing Laravel MCP, execute the `vendor:publish` Artisan command to publish the `routes/ai.php` file where you will define your MCP servers:
+Execute the `vendor:publish` Artisan command to publish the `routes/ai.php` file where you will define your MCP servers:
 
 ```shell
 php artisan vendor:publish --tag=ai-routes
 ```
 
-This command creates the `routes/ai.php` file in your application's `routes` directory, which you will use to register your MCP servers.
+This command creates the `ai.php` file in your application's `routes` directory, which you will use to register your MCP servers.
 
 <a name="creating-servers"></a>
 ## Creating Servers
