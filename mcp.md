@@ -47,7 +47,6 @@
 <a name="installation"></a>
 ## Installation
 
-
 To get started, install Laravel MCP into your project using the Composer package manager:
 
 ```shell
@@ -61,7 +60,6 @@ After installing Laravel MCP, you can get setup manually starting with [publishi
 
 Seeing MCP in action quickly within your project is a helpful starting point to build on top of.
 
-
 The `mcp:quickstart` Artisan command exists to help here by:
 1. Automatically publishing the `routes/ai.php` file
 2. Creating a demo MCP server in `app/Mcp/Servers/`
@@ -73,7 +71,6 @@ php artisan mcp:quickstart
 ```
 
 These demo files show typical input, validation, and response management.
-
 
 <a name="publishing-routes"></a>
 ### Publishing Routes
@@ -1383,7 +1380,6 @@ $response->dump();
 ```
 
 <a name="node-and-https"></a>
-
 ### Node and HTTPS
 
 If you use self-signed SSL certificates you may have issues with `node`-based AI agents, such as Claude Code and Cursor, being unable to connect to your secure MCP server.
