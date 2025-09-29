@@ -567,7 +567,6 @@ Next, we will define a route that will handle the form request from the "confirm
 ```php
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 
 Route::post('/confirm-password', function (Request $request) {
     if (! Hash::check($request->password, $request->user()->password)) {
