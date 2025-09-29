@@ -37,6 +37,7 @@
 - [Testing Servers](#testing-servers)
     - [MCP Inspector](#mcp-inspector)
     - [Unit Tests](#unit-tests)
+    - [Node and HTTPS](#node-and-https)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1251,7 +1252,7 @@ public function handle(Request $request): Response
 <a name="testing-servers"></a>
 ## Testing Servers
 
-You may test your MCP servers using the built-in MCP Inspector or by writing unit tests.
+You may test your MCP servers using the built-in MCP Inspector, your AI agent of choice, or by writing unit tests.
 
 <a name="mcp-inspector"></a>
 ### MCP Inspector
@@ -1268,7 +1269,7 @@ php artisan mcp:inspector mcp/weather
 php artisan mcp:inspector weather
 ```
 
-This command launches the MCP Inspector and provides the client settings that you may copy into your MCP client to ensure everything is configured correctly. If your web server is protected by an authentication middleware, make sure to include the required headers, such as an `Authorization` bearer token, when connecting.
+This command launches the MCP Inspector and provides the client settings that you may copy into your MCP client to ensure everything is configured correctly. If your web server is protected by an authentication middleware other than OAuth, make sure to include the required headers, such as an `Authorization` bearer token, when connecting.
 
 <a name="unit-tests"></a>
 ### Unit Tests
@@ -1380,3 +1381,13 @@ Finally, if you wish to inspect the raw response content, you may use the `dd` o
 $response->dd();
 $response->dump();
 ```
+
+<a name="node-and-https"></a>
+
+### Node and HTTPS
+
+If you use self-signed SSL certificates you may have issues with `node`-based AI agents, such as Claude Code and Cursor, being unable to connect to your secure MCP server.
+
+This is because node uses its own certificate store which doesn't interact with your machine's trust store.
+
+During local development we recommend using `http://`.
