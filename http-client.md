@@ -500,6 +500,9 @@ public function boot(): void
 
 Sometimes, you may wish to make multiple HTTP requests concurrently. In other words, you want several requests to be dispatched at the same time instead of issuing the requests sequentially. This can lead to substantial performance improvements when interacting with slow HTTP APIs.
 
+<a name="http-pool"></a>
+### HTTP Pool
+
 Thankfully, you may accomplish this using the `pool` method. The `pool` method accepts a closure which receives an `Illuminate\Http\Client\Pool` instance, allowing you to easily add requests to the request pool for dispatching:
 
 ```php
@@ -550,6 +553,71 @@ $responses = Http::pool(fn (Pool $pool) => [
     $pool->withHeaders($headers)->get('http://laravel.test/test'),
     $pool->withHeaders($headers)->get('http://laravel.test/test'),
 ]);
+```
+
+<a name="http-batch"></a>
+### HTTP Batch
+
+Another way of working with concurrent requests in Laravel is with the `batch` method. Like the `pool` method, it accepts a closure which receives an `Illuminate\Http\Client\Batch` instance, allowing you to easily add requests to the request pool for dispatching, but it also allows to define completion callbacks similar to the ones in `Bus::batch`:
+
+```php
+use Illuminate\Http\Client\Batch;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
+
+$responses = Http::batch(fn (Batch $batch) => [
+    $batch->get('http://localhost/first'),
+    $batch->get('http://localhost/second'),
+    $batch->get('http://localhost/third'),
+])->before(function (Batch $batch) {
+    // This runs before the first HTTP request is executed.
+})->progress(function (Batch $batch, int|string $key, Response $response) {
+    // This runs after each successful HTTP request from the Batch.
+})->catch(function (Batch $batch, int|string $key, Response|RequestException $response) {
+    // This runs after each failed HTTP request from the Batch.
+})->then(function (Batch $batch, array $results) {
+    // This runs ONLY IF all the HTTP requests from the Batch are successful and the batch is not cancelled.
+})->finally(function (Batch $batch, array $results) {
+    // This runs after all the HTTP requests from the Batch finish and the batch is not cancelled.
+})->send();
+```
+
+Also like the `pool` method, you can use the `as` method to name your requests:
+
+```php
+$responses = Http::batch(fn (Batch $batch) => [
+    $batch->as('first')->get('http://localhost/first'),
+    $batch->as('second')->get('http://localhost/second'),
+    $batch->as('third')->get('http://localhost/third'),
+])->send();
+```
+
+After a `batch` is started by calling the `send` method, you can't add new requests to it. Trying to do it will result in a `Illuminate\Http\Client\BatchInProgressException` exception being thrown.
+
+<a name="inspecting-batches"></a>
+#### Inspecting Batches
+
+The `Illuminate\Http\Client\Batch` instance that is provided to batch completion callbacks has a variety of properties and methods to assist you in interacting with and inspecting a given batch of requests:
+
+```php
+// The total number of requests that belong to the batch.
+$batch->totalRequests;
+ 
+// The total number of requests that are still pending.
+$batch->pendingRequests;
+ 
+// The total number of requests that have failed.
+$batch->failedRequests;
+
+// The total number of requests that have been processed by the batch thus far.
+$batch->processedRequests();
+
+// Indicates if the batch has finished executing.
+$batch->finished();
+
+// Indicates if the batch has job failures.
+$batch->hasFailures();
 ```
 
 <a name="macros"></a>
