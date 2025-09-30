@@ -1885,6 +1885,16 @@ $batch = Bus::batch([
 })->allowFailures()->dispatch();
 ```
 
+You may optionally provide a closure to the `allowFailures` method, which will be executed on each job failure:
+
+```php
+$batch = Bus::batch([
+    // ...
+])->allowFailures(function (Batch $batch, $exception) {
+    // Handle individual job failures...
+})->dispatch();
+```
+
 <a name="retrying-failed-batch-jobs"></a>
 #### Retrying Failed Batch Jobs
 
