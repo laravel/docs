@@ -1470,6 +1470,67 @@ class ProcessSubscriptionRenewal implements ShouldQueue
 }
 ```
 
+<a name="fifo-listeners-mail-and-notifications"></a>
+#### FIFO Listeners, Mail, and Notifications
+
+When utilizing FIFO queues, you will also need to define message groups on listeners, mail, and notifications. Alternatively, you can dispatch queued instances of these objects to a non-FIFO queue.
+
+To define the message group for a [queued event listener](/docs/{{version}}/events#queued-event-listeners), define a `messageGroup` method on the listener. You may also optionally define a `deduplicationId` method:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+
+class SendShipmentNotification
+{
+    // ...
+
+    /**
+     * Get the job's message group.
+     */
+    public function messageGroup(): string
+    {
+        return "shipments";
+    }
+
+    /**
+     * Get the job's deduplication ID.
+     */
+    public function deduplicationId(): string
+    {
+        return "shipment-notification-{$this->shipment->id}";
+    }
+}
+```
+
+When sending a [mail message](/docs/{{version}}/mail) that is going to be queued on a FIFO queue, you should invoke the `onGroup` method and optionally the `withDeduplicator` method when sending the notification:
+
+```php
+use App\Mail\InvoicePaid;
+use Illuminate\Support\Facades\Mail;
+
+$invoicePaid = (new InvoicePaid($invoice))
+    ->onGroup('invoices')
+    ->withDeduplicator(fn () => 'invoices-'.$invoice->id);
+
+Mail::to($request->user())->send($invoicePaid);
+```
+
+When sending a [notification](/docs/{{version}}/notifications) that is going to be queued on a FIFO queue, you should invoke the `onGroup` method and optionally the `withDeduplicator` method when sending the notification:
+
+```php
+use App\Notifications\InvoicePaid;
+
+$invoicePaid = (new InvoicePaid($invoice))
+    ->onGroup('invoices')
+    ->withDeduplicator(fn () => 'invoices-'.$invoice->id);
+
+$user->notify($invoicePaid);
+```
+
 <a name="error-handling"></a>
 ### Error Handling
 
