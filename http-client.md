@@ -571,15 +571,15 @@ $responses = Http::batch(fn (Batch $batch) => [
     $batch->get('http://localhost/second'),
     $batch->get('http://localhost/third'),
 ])->before(function (Batch $batch) {
-    // This runs before the first HTTP request is executed.
+    // The batch has been created but no requests have been initialized...
 })->progress(function (Batch $batch, int|string $key, Response $response) {
-    // This runs after each successful HTTP request from the Batch.
-})->catch(function (Batch $batch, int|string $key, Response|RequestException $response) {
-    // This runs after each failed HTTP request from the Batch.
+    // A single request has completed successfully...
 })->then(function (Batch $batch, array $results) {
-    // This runs ONLY IF all the HTTP requests from the Batch are successful and the batch is not cancelled.
+    // All requests completed successfully...
+})->catch(function (Batch $batch, int|string $key, Response|RequestException $response) {
+    // First batch request failure detected...
 })->finally(function (Batch $batch, array $results) {
-    // This runs after all the HTTP requests from the Batch finish and the batch is not cancelled.
+    // The batch has finished executing...
 })->send();
 ```
 
@@ -601,22 +601,22 @@ After a `batch` is started by calling the `send` method, you can't add new reque
 The `Illuminate\Http\Client\Batch` instance that is provided to batch completion callbacks has a variety of properties and methods to assist you in interacting with and inspecting a given batch of requests:
 
 ```php
-// The total number of requests that belong to the batch.
+// The number of requests assigned to the batch...
 $batch->totalRequests;
  
-// The total number of requests that are still pending.
+// The number of requests that have not been processed yet...
 $batch->pendingRequests;
  
-// The total number of requests that have failed.
+// The number of requests that have failed...
 $batch->failedRequests;
 
-// The total number of requests that have been processed by the batch thus far.
+// The number of requests that have been processed thus far...
 $batch->processedRequests();
 
-// Indicates if the batch has finished executing.
+// Indicates if the batch has finished executing...
 $batch->finished();
 
-// Indicates if the batch has job failures.
+// Indicates if the batch has request failures...
 $batch->hasFailures();
 ```
 
