@@ -989,6 +989,33 @@ $response = Http::asForm()->post('https://passport-app.test/oauth/token', [
 
 return $response->json()['access_token'];
 ```
+### Retrieving The Authenticated Client
+
+When using the client credentials grant, your application may need to determine which client is currently authenticated. This is particularly useful in scenarios where you want to apply logic or restrictions based on the calling client rather than an individual user.
+
+You can easily retrieve the authenticated client instance by calling the client method on the API guard:
+
+```php
+$client = auth('api')->client();
+```
+
+This will return the Laravel\Passport\Client model associated with the current access token, allowing you to access its attributes such as the client ID, name, or any custom metadata you have stored in your database. For example:
+
+```php
+public function store(Request $request)
+{
+    $client = auth('api')->client();
+
+    // Access client details
+    $clientId = $client->id;
+    $clientName = $client->name;
+
+    // Apply client-specific logic...
+}
+```
+
+> **Note**  
+> Since the client credentials grant does not represent a specific user, `auth()->user()` will always return `null`. Use `auth('api')->client()` instead to work with the authenticated client.
 
 <a name="personal-access-tokens"></a>
 ## Personal Access Tokens
