@@ -1697,3 +1697,22 @@ channel().notification((notification) => {
 ```
 
 In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in your application's `routes/channels.php` file.
+
+<a name="stop-listening-for-notifications"></a>
+#### Stop Listening for Notifications
+
+If you would like to stop listening to notifications without [leaving the channel](#leaving-a-channel), you may use the `stopListeningForNotification` method:
+
+```js
+const callback = (notification) => {
+    console.log(notification.type);
+}
+
+// Start listening...
+Echo.private(`App.Models.User.${userId}`)
+    .notification(callback);
+
+// Stop listening (callback must be the same)...
+Echo.private(`App.Models.User.${userId}`)
+    .stopListeningForNotification(callback);
+```
