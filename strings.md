@@ -3053,9 +3053,9 @@ The `remove` method removes the given value or array of values from the string:
 ```php
 use Illuminate\Support\Str;
 
-$string = Str::of('Arkansas is quite beautiful!')->remove('quite');
+$string = Str::of('Arkansas is quite beautiful!')->remove('quite ');
 
-// Arkansas is  beautiful!
+// Arkansas is beautiful!
 ```
 
 You may also pass `false` as a second parameter to ignore case when removing strings.
