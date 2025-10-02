@@ -3053,7 +3053,7 @@ The `remove` method removes the given value or array of values from the string:
 ```php
 use Illuminate\Support\Str;
 
-$string = Str::of('Arkansas is quite beautiful!')->remove('quite');
+$string = Str::of('Arkansas is quite beautiful!')->remove('quite ');
 
 // Arkansas is beautiful!
 ```
@@ -3567,7 +3567,7 @@ use Illuminate\Support\Str;
 
 $string = Str::of('Foo Bar')->ucsplit();
 
-// collect(['Foo', 'Bar'])
+// collect(['Foo ', 'Bar'])
 ```
 
 <a name="method-fluent-str-unwrap"></a>
