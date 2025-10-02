@@ -3055,7 +3055,7 @@ use Illuminate\Support\Str;
 
 $string = Str::of('Arkansas is quite beautiful!')->remove('quite');
 
-// Arkansas is beautiful!
+// Arkansas is  beautiful!
 ```
 
 You may also pass `false` as a second parameter to ignore case when removing strings.
@@ -3567,7 +3567,7 @@ use Illuminate\Support\Str;
 
 $string = Str::of('Foo Bar')->ucsplit();
 
-// collect(['Foo', 'Bar'])
+// collect(['Foo ', 'Bar'])
 ```
 
 <a name="method-fluent-str-unwrap"></a>
