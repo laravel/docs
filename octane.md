@@ -9,6 +9,7 @@
 - [Serving Your Application](#serving-your-application)
     - [Serving Your Application via HTTPS](#serving-your-application-via-https)
     - [Serving Your Application via Nginx](#serving-your-application-via-nginx)
+    - [Serving Your Application via Supervisor](#serving-your-application-via-supervisor)
     - [Watching for File Changes](#watching-for-file-changes)
     - [Specifying the Worker Count](#specifying-the-worker-count)
     - [Specifying the Max Request Count](#specifying-the-max-request-count)
@@ -329,6 +330,31 @@ server {
         proxy_pass http://127.0.0.1:8000$suffix;
     }
 }
+```
+
+<a name="serving-your-application-via-supervisor"></a>
+### Serving Your Application via Supervisor
+
+If you are deploying your Octane application to production, you should use a process monitor such as Supervisor to ensure the Octane server stays running. A sample Supervisor configuration file for Octane might look like the following:
+
+```ini
+[program:octane]
+process_name=%(program_name)s_%(process_num)02d
+command=php /home/forge/example.com/artisan octane:start --server=frankenphp --host=127.0.0.1 --port=8000
+autostart=true
+autorestart=true
+user=forge
+redirect_stderr=true
+stdout_logfile=/home/forge/example.com/storage/logs/octane.log
+stopwaitsecs=3600
+```
+
+Once the configuration file has been created in `/etc/supervisor/conf.d/octane.conf`, you may start the process using the following commands:
+
+```shell
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start octane:*
 ```
 
 <a name="watching-for-file-changes"></a>
