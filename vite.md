@@ -91,7 +91,7 @@ export default defineConfig({
 });
 ```
 
-If you are building an SPA, including applications built using Inertia, Vite works best without CSS entry points:
+If you are building a SPA, including applications built using Inertia, Vite works best without CSS entry points:
 
 ```js
 import { defineConfig } from 'vite';
@@ -743,7 +743,7 @@ php artisan inertia:start-ssr
 ```
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, Inertia SSR, and Vite.
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. These starter kits offer the fastest way to get started with Laravel, Inertia SSR, and Vite.
 
 <a name="script-and-style-attributes"></a>
 ## Script and Style Tag Attributes
