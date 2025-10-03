@@ -391,7 +391,7 @@ DB::transaction(function () {
     DB::update('update users set votes = 1');
 
     DB::delete('delete from posts');
-}, 5);
+}, attempts: 5);
 ```
 
 <a name="manually-using-transactions"></a>
