@@ -258,6 +258,23 @@ php artisan octane:start
 
 By default, Octane will start the server on port 8000, so you may access your application in a web browser via `http://localhost:8000`.
 
+<a name="keeping-octane-running-in-production"></a>
+#### Keeping Octane Running in Production
+
+If you are deploying your Octane application to production, you should use a process monitor such as Supervisor to ensure the Octane server stays running. A sample Supervisor configuration file for Octane might look like the following:
+
+```ini
+[program:octane]
+process_name=%(program_name)s_%(process_num)02d
+command=php /home/forge/example.com/artisan octane:start --server=frankenphp --host=127.0.0.1 --port=8000
+autostart=true
+autorestart=true
+user=forge
+redirect_stderr=true
+stdout_logfile=/home/forge/example.com/storage/logs/octane.log
+stopwaitsecs=3600
+```
+
 <a name="serving-your-application-via-https"></a>
 ### Serving Your Application via HTTPS
 
