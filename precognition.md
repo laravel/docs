@@ -330,7 +330,13 @@ If you are validating a subset of a form's inputs with Precognition, it can be u
     id="avatar"
     type="file"
     onChange={(e) => {
-        form.setData('avatar', e.target.value);
+        const files = e.target.files;
+
+        if (files === null || files.length === 0) {
+            return;
+        }
+
+        form.setData('avatar', files[0]);
 
         form.forgetError('avatar');
     }}
