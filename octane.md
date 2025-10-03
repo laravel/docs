@@ -9,7 +9,6 @@
 - [Serving Your Application](#serving-your-application)
     - [Serving Your Application via HTTPS](#serving-your-application-via-https)
     - [Serving Your Application via Nginx](#serving-your-application-via-nginx)
-    - [Serving Your Application via Supervisor](#serving-your-application-via-supervisor)
     - [Watching for File Changes](#watching-for-file-changes)
     - [Specifying the Worker Count](#specifying-the-worker-count)
     - [Specifying the Max Request Count](#specifying-the-max-request-count)
