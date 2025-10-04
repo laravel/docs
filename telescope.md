@@ -249,6 +249,7 @@ public function register(): void
 Telescope allows you to search entries by "tag". Often, tags are Eloquent model class names or authenticated user IDs which Telescope automatically adds to entries. Occasionally, you may want to attach your own custom tags to entries. To accomplish this, you may use the `Telescope::tag` method. The `tag` method accepts a closure which should return an array of tags. The tags returned by the closure will be merged with any tags Telescope would automatically attach to the entry. Typically, you should call the `tag` method within the `register` method of your `App\Providers\TelescopeServiceProvider` class:
 
 ```php
+use Laravel\Telescope\EntryType;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 
@@ -260,7 +261,7 @@ public function register(): void
     $this->hideSensitiveRequestDetails();
 
     Telescope::tag(function (IncomingEntry $entry) {
-        return $entry->type === 'request'
+        return $entry->type === EntryType::REQUEST
             ? ['status:'.$entry->content['response_status']]
             : [];
     });
