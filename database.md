@@ -432,6 +432,18 @@ DB::transaction(function () {
 });
 ```
 
+Also, the afterRollback() method registers a callback that will be executed only if a database transaction is rolled back:
+
+```php
+DB::transaction(function () {
+    DB::afterRollBack(function () {
+        // ...
+    });
+ 
+    // ...
+});
+```
+
 <a name="connecting-to-the-database-cli"></a>
 ## Connecting to the Database CLI
 
