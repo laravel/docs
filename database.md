@@ -411,7 +411,7 @@ You can rollback the transaction via the `rollBack` method:
 DB::rollBack();
 ```
 
-Lastly, you can commit a transaction via the `commit` method:
+You can commit a transaction via the `commit` method:
 
 ```php
 DB::commit();
@@ -419,6 +419,18 @@ DB::commit();
 
 > [!NOTE]
 > The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+
+The afterCommit() method registers a callback that will be executed only after a successful database transaction has been committed:
+
+```php
+DB::transaction(function () {
+    DB::afterCommit(function () {
+        // ...
+    });
+    
+    // ...
+});
+```
 
 <a name="connecting-to-the-database-cli"></a>
 ## Connecting to the Database CLI
