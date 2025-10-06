@@ -107,6 +107,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 <div class="collection-method-list" markdown="1">
 
 [Number::abbreviate](#method-number-abbreviate)
+[Number::bitRate](#method-number-bit-rate)
 [Number::clamp](#method-number-clamp)
 [Number::currency](#method-number-currency)
 [Number::defaultCurrency](#method-default-currency)
@@ -1600,6 +1601,27 @@ $number = Number::abbreviate(489939);
 $number = Number::abbreviate(1230000, precision: 2);
 
 // 1.23M
+```
+
+<a name="method-number-bit-rate"></a>
+#### `Number::bitRate()` {.collection-method}
+
+The `Number::bitRate` method returns the bit rate representation of the given bit value as a string:
+
+```php
+use Illuminate\Support\Number;
+
+$rate = Number::bitRate(1000);
+
+// 1 Kbps
+
+$rate = Number::bitRate(1000 * 1000);
+
+// 1 Mbps
+
+$rate = Number::bitRate(1000, precision: 2);
+
+// 1.00 Kbps
 ```
 
 <a name="method-number-clamp"></a>
