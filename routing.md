@@ -462,7 +462,7 @@ Route::get('/user/{id}/profile', function (string $id) {
 
 $url = route('profile', ['id' => 1, 'photos' => 'yes']);
 
-// /user/1/profile?photos=yes
+// http://example.com/user/1/profile?photos=yes
 ```
 
 > [!NOTE]
