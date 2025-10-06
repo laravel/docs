@@ -420,7 +420,7 @@ DB::commit();
 > [!NOTE]
 > The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
 
-The afterCommit() method registers a callback that will be executed only after a successful database transaction has been committed:
+The `afterCommit()` method registers a callback that will be executed only after a successful database transaction has been committed:
 
 ```php
 DB::transaction(function () {
@@ -432,7 +432,7 @@ DB::transaction(function () {
 });
 ```
 
-Also, the afterRollback() method registers a callback that will be executed only if a database transaction is rolled back:
+Also, the `afterRollback()` method registers a callback that will be executed only if a database transaction is rolled back:
 
 ```php
 DB::transaction(function () {
