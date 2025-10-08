@@ -7,6 +7,7 @@
     - [Using the Notification Facade](#using-the-notification-facade)
     - [Specifying Delivery Channels](#specifying-delivery-channels)
     - [Queueing Notifications](#queueing-notifications)
+        - [Customizing Queued Notification Job Properties](#customizing-queued-notification-job-properties)
     - [On-Demand Notifications](#on-demand-notifications)
 - [Mail Notifications](#mail-notifications)
     - [Formatting Mail Messages](#formatting-mail-messages)
@@ -274,6 +275,81 @@ public function viaQueues(): array
     ];
 }
 ```
+
+<a name="customizing-queued-notification-job-properties"></a>
+#### Customizing Queued Notification Job Properties
+
+Queued notifications are processed by Laravel's queue system using queued jobs. You may customize the behavior of the underlying queued job by defining properties on your notification class. These properties will be inherited by the queued job that sends the notification:
+
+```php
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+
+class InvoicePaid extends Notification implements ShouldQueue
+{
+    use Queueable;
+
+    /**
+     * The number of times the notification may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 5;
+
+    /**
+     * The number of seconds the notification can run before timing out.
+     *
+     * @var int
+     */
+    public $timeout = 120;
+
+    /**
+     * The maximum number of unhandled exceptions to allow before failing.
+     *
+     * @var int
+     */
+    public $maxExceptions = 3;
+
+    /**
+     * Indicate if the notification should be encrypted.
+     *
+     * @var bool
+     */
+    public $shouldBeEncrypted = false;
+
+    // ...
+}
+```
+
+In addition to defining these properties directly on your notification class, you may also define `backoff` and `retryUntil` methods to specify the backoff strategy and retry timeout for the queued notification job:
+
+```php
+use DateTime;
+
+/**
+ * Calculate the number of seconds to wait before retrying the notification.
+ */
+public function backoff(): int
+{
+    return 3;
+}
+
+/**
+ * Determine the time at which the notification should timeout.
+ */
+public function retryUntil(): DateTime
+{
+    return now()->addMinutes(5);
+}
+```
+
+> [!NOTE]
+> For more information on these job properties and methods, please review the documentation on [queued jobs](/docs/{{version}}/queues#max-job-attempts-and-timeout) and [queued event listeners](/docs/{{version}}/events#queued-event-listeners).
 
 <a name="queued-notification-middleware"></a>
 #### Queued Notification Middleware
