@@ -291,7 +291,7 @@ Cache::add('key', 'value', $seconds);
 <a name="extending-item-lifetime"></a>
 ### Extending Item Lifetime
 
-The `touch` method allows you to extend the lifetime (TTL) of an existing cache item without retrieving or re-storing its value. The `touch` method will return `true` if the cache item exists and its expiration time was successfully extended. If the item does not exist in the cache, the method will return `false`:
+The `touch` method allows you to extend the lifetime (TTL) of an existing cache item. The `touch` method will return `true` if the cache item exists and its expiration time was successfully extended. If the item does not exist in the cache, the method will return `false`:
 
 ```php
 Cache::touch('key', 3600);
