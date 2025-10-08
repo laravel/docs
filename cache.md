@@ -7,6 +7,7 @@
     - [Obtaining a Cache Instance](#obtaining-a-cache-instance)
     - [Retrieving Items From the Cache](#retrieving-items-from-the-cache)
     - [Storing Items in the Cache](#storing-items-in-the-cache)
+    - [Extending Item Lifetime](#extending-item-lifetime)
     - [Removing Items From the Cache](#removing-items-from-the-cache)
     - [The Cache Helper](#the-cache-helper)
 - [Atomic Locks](#atomic-locks)
@@ -285,6 +286,21 @@ The `add` method will only add the item to the cache if it does not already exis
 
 ```php
 Cache::add('key', 'value', $seconds);
+```
+
+<a name="extending-item-lifetime"></a>
+### Extending Item Lifetime
+
+The `touch` method allows you to extend the lifetime (TTL) of an existing cache item. The `touch` method will return `true` if the cache item exists and its expiration time was successfully extended. If the item does not exist in the cache, the method will return `false`:
+
+```php
+Cache::touch('key', 3600);
+```
+
+You may provide a `DateTimeInterface`, `DateInterval`, or `Carbon` instance to specify an exact expiration time:
+
+```php
+Cache::touch('key', now()->addHours(2));
 ```
 
 <a name="storing-items-forever"></a>
