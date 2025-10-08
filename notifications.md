@@ -315,12 +315,25 @@ class InvoicePaid extends Notification implements ShouldQueue
      */
     public $maxExceptions = 3;
 
-    /**
-     * Indicate if the notification should be encrypted.
-     *
-     * @var bool
-     */
-    public $shouldBeEncrypted = false;
+    // ...
+}
+```
+
+If you would like to ensure the privacy and integrity of a queued notification's data via [encryption](/docs/{{version}}/encryption), add the `ShouldBeEncrypted` interface to your notification class:
+
+```php
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+
+class InvoicePaid extends Notification implements ShouldQueue, ShouldBeEncrypted
+{
+    use Queueable;
 
     // ...
 }
