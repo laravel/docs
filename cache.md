@@ -7,7 +7,7 @@
     - [Obtaining a Cache Instance](#obtaining-a-cache-instance)
     - [Retrieving Items From the Cache](#retrieving-items-from-the-cache)
     - [Storing Items in the Cache](#storing-items-in-the-cache)
-    - [Extending Cache Lifetime](#extending-cache-lifetime)
+    - [Extending Item Lifetime](#extending-item-lifetime)
     - [Removing Items From the Cache](#removing-items-from-the-cache)
     - [The Cache Helper](#the-cache-helper)
 - [Atomic Locks](#atomic-locks)
@@ -288,29 +288,19 @@ The `add` method will only add the item to the cache if it does not already exis
 Cache::add('key', 'value', $seconds);
 ```
 
-<a name="extending-cache-lifetime"></a>
-#### Extending Cache Lifetime
+<a name="extending-item-lifetime"></a>
+### Extending Item Lifetime
 
-The `touch` method allows you to extend the lifetime (TTL) of an existing cache item without retrieving or re-storing its value.
-This is particularly useful when you need to keep frequently accessed data, such as active sessions or popular content, fresh without introducing unnecessary read/write overhead.
-
-The method will return `true` if the cache item exists and its expiration time was successfully extended.
-If the item does not exist in the cache, the method will return `false`.
+The `touch` method allows you to extend the lifetime (TTL) of an existing cache item without retrieving or re-storing its value. The `touch` method will return `true` if the cache item exists and its expiration time was successfully extended. If the item does not exist in the cache, the method will return `false`:
 
 ```php
-Cache::touch('user_session:123', 3600);
+Cache::touch('key', 3600);
 ```
 
-You may also pass a DateTimeInterface, DateInterval, or Carbon instance to specify an exact expiration time:
+You may provide a `DateTimeInterface`, `DateInterval`, or `Carbon` instance to specify an exact expiration time:
 
 ```php
-Cache::touch('user_session', now()->addHours(2));
-```
-
-Passing null as the second argument will extend the cache item indefinitely (no expiration):
-
-```php
-Cache::touch('user_session', null);
+Cache::touch('key', now()->addHours(2));
 ```
 
 <a name="storing-items-forever"></a>
