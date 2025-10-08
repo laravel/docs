@@ -7,6 +7,7 @@
     - [Obtaining a Cache Instance](#obtaining-a-cache-instance)
     - [Retrieving Items From the Cache](#retrieving-items-from-the-cache)
     - [Storing Items in the Cache](#storing-items-in-the-cache)
+    - [Extending Cache Lifetime](#extending-cache-lifetime)
     - [Removing Items From the Cache](#removing-items-from-the-cache)
     - [The Cache Helper](#the-cache-helper)
 - [Atomic Locks](#atomic-locks)
