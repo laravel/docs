@@ -557,8 +557,8 @@ If you would like to customize the information included in the `links` or `meta`
  * Customize the pagination information for the resource.
  *
  * @param  \Illuminate\Http\Request  $request
- * @param  array $paginated
- * @param  array $default
+ * @param  array  $paginated
+ * @param  array  $default
  * @return array
  */
 public function paginationInformation($request, $paginated, $default)
