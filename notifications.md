@@ -7,7 +7,6 @@
     - [Using the Notification Facade](#using-the-notification-facade)
     - [Specifying Delivery Channels](#specifying-delivery-channels)
     - [Queueing Notifications](#queueing-notifications)
-        - [Customizing Queued Notification Job Properties](#customizing-queued-notification-job-properties)
     - [On-Demand Notifications](#on-demand-notifications)
 - [Mail Notifications](#mail-notifications)
     - [Formatting Mail Messages](#formatting-mail-messages)
@@ -362,7 +361,7 @@ public function retryUntil(): DateTime
 ```
 
 > [!NOTE]
-> For more information on these job properties and methods, please review the documentation on [queued jobs](/docs/{{version}}/queues#max-job-attempts-and-timeout) and [queued event listeners](/docs/{{version}}/events#queued-event-listeners).
+> For more information on these job properties and methods, please review the documentation on [queued jobs](/docs/{{version}}/queues#max-job-attempts-and-timeout).
 
 <a name="queued-notification-middleware"></a>
 #### Queued Notification Middleware
