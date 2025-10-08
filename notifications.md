@@ -278,7 +278,7 @@ public function viaQueues(): array
 <a name="customizing-queued-notification-job-properties"></a>
 #### Customizing Queued Notification Job Properties
 
-Queued notifications are processed by Laravel's queue system using queued jobs. You may customize the behavior of the underlying queued job by defining properties on your notification class. These properties will be inherited by the queued job that sends the notification:
+You may customize the behavior of the underlying queued job by defining properties on your notification class. These properties will be inherited by the queued job that sends the notification:
 
 ```php
 <?php
