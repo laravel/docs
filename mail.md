@@ -48,7 +48,7 @@ Within your `mail` configuration file, you will find a `mailers` configuration a
 <a name="driver-prerequisites"></a>
 ### Driver / Transport Prerequisites
 
-The API based drivers such as Mailgun, Postmark, Resend, and MailerSend are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
+The API based drivers such as Mailgun, Mailtrap, Postmark, Resend, and MailerSend are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
 
 <a name="mailgun-driver"></a>
 #### Mailgun Driver
@@ -97,6 +97,60 @@ If you are not using the United States [Mailgun region](https://documentation.ma
     'scheme' => 'https',
 ],
 ```
+
+<a name="mailtrap-driver" />
+#### Mailtrap Driver
+
+To use the [Mailtrap](https://mailtrap.io/) driver, install Symfony's Mailtrap transport via Composer:
+
+```shell tab="Symfony HTTP client (recommended)"
+composer require railsware/mailtrap-php symfony/http-client nyholm/psr7 symfony/mailer
+```
+
+```shell tab="Guzzle HTTP client"
+composer require railsware/mailtrap-php guzzlehttp/guzzle php-http/guzzle7-adapter symfony/mailer
+```
+
+Then, add the `mailtrap-sdk` mailer to `mailers.php`:
+
+```php
+'mailtrap-sdk' => [
+    'transport' => 'mailtrap-sdk',
+],
+```
+
+and add the following options to your `config/services.php` configuration file:
+
+```php
+'mailtrap-sdk' => [
+    'host' => env('MAILTRAP_HOST', 'send.api.mailtrap.io'),
+    'apiKey' => env('MAILTRAP_API_KEY'),
+    'inboxId' => env('MAILTRAP_INBOX_ID'),
+],
+```
+
+Finally, configure the environment variables:
+
+```properties
+MAIL_MAILER="mailtrap-sdk"
+
+# For transactional sending:
+MAILTRAP_HOST="send.api.mailtrap.io"
+MAILTRAP_API_KEY="YOUR_API_KEY_HERE"
+
+# For bulk sending:
+MAILTRAP_HOST="bulk.api.mailtrap.io"
+MAILTRAP_API_KEY="YOUR_API_KEY_HERE"
+
+# For sandbox (safe testing of email delivery):
+MAILTRAP_HOST="sandbox.api.mailtrap.io"
+MAILTRAP_API_KEY="YOUR_API_KEY_HERE"
+MAILTRAP_INBOX_ID=1000001
+```
+
+Note that you can use the same SDK to send live mail in production and also use the Mailtrap Email Sandbox functionality on development and staging servers—all configured through the environment variables.
+
+To learn more about Mailtrap and see examples, read the [Mailtrap driver documentation](https://github.com/railsware/mailtrap-php/tree/main/src/Bridge/Laravel#usage).
 
 <a name="postmark-driver"></a>
 #### Postmark Driver
@@ -1421,9 +1475,16 @@ When developing an application that sends email, you probably don't want to actu
 Instead of sending your emails, the `log` mail driver will write all email messages to your log files for inspection. Typically, this driver would only be used during local development. For more information on configuring your application per environment, check out the [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="mailtrap"></a>
-#### HELO / Mailtrap / Mailpit
+#### Mailtrap Email Sandbox
 
-Alternatively, you may use a service like [HELO](https://usehelo.com) or [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap's message viewer.
+[Mailtrap Email Sandbox](https://mailtrap.io/email-sandbox/) is a feature of Mailtrap that allows you to capture emails sent from staging and dev environments. The emails are then available through the Mailtrap site and APIs. Besides being convenient for testing, it protects you from accidentally sending test mails to real customers.
+
+You can set it up with the [Mailtrap driver](#mailtrap-driver), or alternatively use the regular `smtp` driver and configure it with the dummy mailbox credentials available in your Mailtrap account.
+
+<a name="mailpit"></a>
+#### HELO / Mailpit
+
+Alternatively, you may use a local service like [HELO](https://usehelo.com) or Mailpit to capture emails sent from your local machine.
 
 If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your messages using [Mailpit](https://github.com/axllent/mailpit). When Sail is running, you may access the Mailpit interface at: `http://localhost:8025`.
 
