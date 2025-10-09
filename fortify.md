@@ -10,10 +10,10 @@
     - [Customizing User Authentication](#customizing-user-authentication)
     - [Customizing the Authentication Pipeline](#customizing-the-authentication-pipeline)
     - [Customizing Redirects](#customizing-authentication-redirects)
-- [Two Factor Authentication](#two-factor-authentication)
-    - [Enabling Two Factor Authentication](#enabling-two-factor-authentication)
-    - [Authenticating With Two Factor Authentication](#authenticating-with-two-factor-authentication)
-    - [Disabling Two Factor Authentication](#disabling-two-factor-authentication)
+- [Two-Factor Authentication](#two-factor-authentication)
+    - [Enabling Two-Factor Authentication](#enabling-two-factor-authentication)
+    - [Authenticating With Two-Factor Authentication](#authenticating-with-two-factor-authentication)
+    - [Disabling Two-Factor Authentication](#disabling-two-factor-authentication)
 - [Registration](#registration)
     - [Customizing Registration](#customizing-registration)
 - [Password Reset](#password-reset)
@@ -217,7 +217,7 @@ By default, Fortify will throttle authentication attempts using the `EnsureLogin
 Some applications may require a different approach to throttling authentication attempts, such as throttling by IP address alone. Therefore, Fortify allows you to specify your own [rate limiter](/docs/{{version}}/routing#rate-limiting) via the `fortify.limiters.login` configuration option. Of course, this configuration option is located in your application's `config/fortify.php` configuration file.
 
 > [!NOTE]
-> Utilizing a mixture of throttling, [two factor authentication](/docs/{{version}}/fortify#two-factor-authentication), and an external web application firewall (WAF) will provide the most robust defense for your legitimate application users.
+> Utilizing a mixture of throttling, [two-factor authentication](/docs/{{version}}/fortify#two-factor-authentication), and an external web application firewall (WAF) will provide the most robust defense for your legitimate application users.
 
 <a name="customizing-authentication-redirects"></a>
 ### Customizing Redirects
@@ -244,9 +244,9 @@ public function register(): void
 ```
 
 <a name="two-factor-authentication"></a>
-## Two Factor Authentication
+## Two-Factor Authentication
 
-When Fortify's two factor authentication feature is enabled, the user is required to input a six digit numeric token during the authentication process. This token is generated using a time-based one-time password (TOTP) that can be retrieved from any TOTP compatible mobile authentication application such as Google Authenticator.
+When Fortify's two-factor authentication feature is enabled, the user is required to input a six digit numeric token during the authentication process. This token is generated using a time-based one-time password (TOTP) that can be retrieved from any TOTP compatible mobile authentication application such as Google Authenticator.
 
 Before getting started, you should first ensure that your application's `App\Models\User` model uses the `Laravel\Fortify\TwoFactorAuthenticatable` trait:
 
@@ -265,54 +265,54 @@ class User extends Authenticatable
 }
 ```
 
-Next, you should build a screen within your application where users can manage their two factor authentication settings. This screen should allow the user to enable and disable two factor authentication, as well as regenerate their two factor authentication recovery codes.
+Next, you should build a screen within your application where users can manage their two-factor authentication settings. This screen should allow the user to enable and disable two-factor authentication, as well as regenerate their two-factor authentication recovery codes.
 
-> By default, the `features` array of the `fortify` configuration file instructs Fortify's two factor authentication settings to require password confirmation before modification. Therefore, your application should implement Fortify's [password confirmation](#password-confirmation) feature before continuing.
+> By default, the `features` array of the `fortify` configuration file instructs Fortify's two-factor authentication settings to require password confirmation before modification. Therefore, your application should implement Fortify's [password confirmation](#password-confirmation) feature before continuing.
 
 <a name="enabling-two-factor-authentication"></a>
-### Enabling Two Factor Authentication
+### Enabling Two-Factor Authentication
 
-To begin enabling two factor authentication, your application should make a POST request to the `/user/two-factor-authentication` endpoint defined by Fortify. If the request is successful, the user will be redirected back to the previous URL and the `status` session variable will be set to `two-factor-authentication-enabled`. You may detect this `status` session variable within your templates to display the appropriate success message. If the request was an XHR request, `200` HTTP response will be returned.
+To begin enabling two-factor authentication, your application should make a POST request to the `/user/two-factor-authentication` endpoint defined by Fortify. If the request is successful, the user will be redirected back to the previous URL and the `status` session variable will be set to `two-factor-authentication-enabled`. You may detect this `status` session variable within your templates to display the appropriate success message. If the request was an XHR request, `200` HTTP response will be returned.
 
-After choosing to enable two factor authentication, the user must still "confirm" their two factor authentication configuration by providing a valid two factor authentication code. So, your "success" message should instruct the user that two factor authentication confirmation is still required:
+After choosing to enable two-factor authentication, the user must still "confirm" their two-factor authentication configuration by providing a valid two-factor authentication code. So, your "success" message should instruct the user that two-factor authentication confirmation is still required:
 
 ```html
 @if (session('status') == 'two-factor-authentication-enabled')
     <div class="mb-4 font-medium text-sm">
-        Please finish configuring two factor authentication below.
+        Please finish configuring two-factor authentication below.
     </div>
 @endif
 ```
 
-Next, you should display the two factor authentication QR code for the user to scan into their authenticator application. If you are using Blade to render your application's frontend, you may retrieve the QR code SVG using the `twoFactorQrCodeSvg` method available on the user instance:
+Next, you should display the two-factor authentication QR code for the user to scan into their authenticator application. If you are using Blade to render your application's frontend, you may retrieve the QR code SVG using the `twoFactorQrCodeSvg` method available on the user instance:
 
 ```php
 $request->user()->twoFactorQrCodeSvg();
 ```
 
-If you are building a JavaScript powered frontend, you may make an XHR GET request to the `/user/two-factor-qr-code` endpoint to retrieve the user's two factor authentication QR code. This endpoint will return a JSON object containing an `svg` key.
+If you are building a JavaScript powered frontend, you may make an XHR GET request to the `/user/two-factor-qr-code` endpoint to retrieve the user's two-factor authentication QR code. This endpoint will return a JSON object containing an `svg` key.
 
 <a name="confirming-two-factor-authentication"></a>
-#### Confirming Two Factor Authentication
+#### Confirming Two-Factor Authentication
 
-In addition to displaying the user's two factor authentication QR code, you should provide a text input where the user can supply a valid authentication code to "confirm" their two factor authentication configuration. This code should be provided to the Laravel application via a POST request to the `/user/confirmed-two-factor-authentication` endpoint defined by Fortify.
+In addition to displaying the user's two-factor authentication QR code, you should provide a text input where the user can supply a valid authentication code to "confirm" their two-factor authentication configuration. This code should be provided to the Laravel application via a POST request to the `/user/confirmed-two-factor-authentication` endpoint defined by Fortify.
 
 If the request is successful, the user will be redirected back to the previous URL and the `status` session variable will be set to `two-factor-authentication-confirmed`:
 
 ```html
 @if (session('status') == 'two-factor-authentication-confirmed')
     <div class="mb-4 font-medium text-sm">
-        Two factor authentication confirmed and enabled successfully.
+        Two-factor authentication confirmed and enabled successfully.
     </div>
 @endif
 ```
 
-If the request to the two factor authentication confirmation endpoint was made via an XHR request, a `200` HTTP response will be returned.
+If the request to the two-factor authentication confirmation endpoint was made via an XHR request, a `200` HTTP response will be returned.
 
 <a name="displaying-the-recovery-codes"></a>
 #### Displaying the Recovery Codes
 
-You should also display the user's two factor recovery codes. These recovery codes allow the user to authenticate if they lose access to their mobile device. If you are using Blade to render your application's frontend, you may access the recovery codes via the authenticated user instance:
+You should also display the user's two-factor recovery codes. These recovery codes allow the user to authenticate if they lose access to their mobile device. If you are using Blade to render your application's frontend, you may access the recovery codes via the authenticated user instance:
 
 ```php
 (array) $request->user()->recoveryCodes()
@@ -323,11 +323,11 @@ If you are building a JavaScript powered frontend, you may make an XHR GET reque
 To regenerate the user's recovery codes, your application should make a POST request to the `/user/two-factor-recovery-codes` endpoint.
 
 <a name="authenticating-with-two-factor-authentication"></a>
-### Authenticating With Two Factor Authentication
+### Authenticating With Two-Factor Authentication
 
-During the authentication process, Fortify will automatically redirect the user to your application's two factor authentication challenge screen. However, if your application is making an XHR login request, the JSON response returned after a successful authentication attempt will contain a JSON object that has a `two_factor` boolean property. You should inspect this value to know whether you should redirect to your application's two factor authentication challenge screen.
+During the authentication process, Fortify will automatically redirect the user to your application's two-factor authentication challenge screen. However, if your application is making an XHR login request, the JSON response returned after a successful authentication attempt will contain a JSON object that has a `two_factor` boolean property. You should inspect this value to know whether you should redirect to your application's two-factor authentication challenge screen.
 
-To begin implementing two factor authentication functionality, we need to instruct Fortify how to return our two factor authentication challenge view. All of Fortify's authentication view rendering logic may be customized using the appropriate methods available via the `Laravel\Fortify\Fortify` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\FortifyServiceProvider` class:
+To begin implementing two-factor authentication functionality, we need to instruct Fortify how to return our two-factor authentication challenge view. All of Fortify's authentication view rendering logic may be customized using the appropriate methods available via the `Laravel\Fortify\Fortify` class. Typically, you should call this method from the `boot` method of your application's `App\Providers\FortifyServiceProvider` class:
 
 ```php
 use Laravel\Fortify\Fortify;
@@ -349,12 +349,12 @@ Fortify will take care of defining the `/two-factor-challenge` route that return
 
 If the login attempt is successful, Fortify will redirect the user to the URI configured via the `home` configuration option within your application's `fortify` configuration file. If the login request was an XHR request, a 204 HTTP response will be returned.
 
-If the request was not successful, the user will be redirected back to the two factor challenge screen and the validation errors will be available to you via the shared `$errors` [Blade template variable](/docs/{{version}}/validation#quick-displaying-the-validation-errors). Or, in the case of an XHR request, the validation errors will be returned with a 422 HTTP response.
+If the request was not successful, the user will be redirected back to the two-factor challenge screen and the validation errors will be available to you via the shared `$errors` [Blade template variable](/docs/{{version}}/validation#quick-displaying-the-validation-errors). Or, in the case of an XHR request, the validation errors will be returned with a 422 HTTP response.
 
 <a name="disabling-two-factor-authentication"></a>
-### Disabling Two Factor Authentication
+### Disabling Two-Factor Authentication
 
-To disable two factor authentication, your application should make a DELETE request to the `/user/two-factor-authentication` endpoint. Remember, Fortify's two factor authentication endpoints require [password confirmation](#password-confirmation) prior to being called.
+To disable two-factor authentication, your application should make a DELETE request to the `/user/two-factor-authentication` endpoint. Remember, Fortify's two-factor authentication endpoints require [password confirmation](#password-confirmation) prior to being called.
 
 <a name="registration"></a>
 ## Registration
