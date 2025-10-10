@@ -1695,7 +1695,7 @@ class ImportCsv implements ShouldQueue
 
 To dispatch a batch of jobs, you should use the `batch` method of the `Bus` facade. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked.
 
-If you use multiple queue workers, the jobs in the batch will be processed in parallel. Therefore, the order in which the jobs complete may not be the same as the order in which they were added to the batch. See [Chains and Batches](#chains-and-batches) for information on how to run batches of jobs in sequence.
+When running multiple queue workers, the jobs in the batch will be processed in parallel. Therefore, the order in which the jobs complete may not be the same as the order in which they were added to the batch. Consult our documentation on [job chains and batches](#chains-and-batches) for information on how to run a series of jobs in sequence.
 
 In this example, we will imagine we are queueing a batch of jobs that each process a given number of rows from a CSV file:
 
