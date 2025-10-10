@@ -1816,6 +1816,18 @@ If you would like to `@push` content if a given boolean expression evaluates to 
 @endPushIf
 ```
 
+However, if you want to conditionally add content to a stack with multiple checks, you can use the `@elseIfPush` and `@elsePush` directives. These directives work similarly to the `@elseif` and `@else` conditionals, but inside an `@pushIf` block.
+
+```blade
+@pushIf($isAdmin, 'scripts')
+    <script src="/admin.js"></script>
+@elseIfPush($isEditor)
+    <script src="/editor.js"></script>
+@elsePush('scripts')
+    <script src="/guest.js"></script>
+@endPushIf
+```
+
 You may push to a stack as many times as needed. To render the complete stack contents, pass the name of the stack to the `@stack` directive:
 
 ```blade
