@@ -1821,7 +1821,7 @@ However, if you want to conditionally add content to a stack with multiple check
 ```blade
 @pushIf($isAdmin, 'scripts')
     <script src="/admin.js"></script>
-@elseIfPush($isEditor)
+@elsePushIf($isEditor)
     <script src="/editor.js"></script>
 @elsePush('scripts')
     <script src="/guest.js"></script>
