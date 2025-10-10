@@ -427,7 +427,7 @@ class SendShipmentNotification implements ShouldQueue
      */
     public function handle(OrderShipped $event): void
     {
-        if (true) {
+        if ($condition) {
             $this->release(30);
         }
     }
