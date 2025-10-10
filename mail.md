@@ -1430,7 +1430,7 @@ If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your me
 <a name="using-a-global-to-address"></a>
 #### Using a Global `to` Address
 
-Finally, you may specify a global "to" address by invoking the `alwaysTo` method offered by the `Mail` facade. This will remove "cc" and "bcc" adresses if they are defined. Typically, this method should be called from the `boot` method of one of your application's service providers:
+Finally, you may specify a global "to" address by invoking the `alwaysTo` method offered by the `Mail` facade. Typically, this method should be called from the `boot` method of one of your application's service providers:
 
 ```php
 use Illuminate\Support\Facades\Mail;
@@ -1445,6 +1445,8 @@ public function boot(): void
     }
 }
 ```
+
+When using the `alwaysTo` method, any additional "cc" or "bcc" addresses on mail messages will be removed.
 
 <a name="events"></a>
 ## Events
