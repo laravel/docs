@@ -1446,6 +1446,8 @@ public function boot(): void
 }
 ```
 
+When using the `alwaysTo` method, any additional "cc" or "bcc" addresses on mail messages will be removed.
+
 <a name="events"></a>
 ## Events
 
