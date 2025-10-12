@@ -22,7 +22,7 @@
     - [Prompt Dependency Injection](#prompt-dependency-injection)
     - [Conditional Prompt Registration](#conditional-prompt-registration)
     - [Prompt Responses](#prompt-responses)
-- [Resources](#creating-resources)
+- [Resources](#resources)
     - [Creating Resources](#creating-resources)
     - [Resource URI and MIME Type](#resource-uri-and-mime-type)
     - [Resource Request](#resource-request)
