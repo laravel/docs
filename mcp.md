@@ -312,7 +312,7 @@ class CurrentWeatherTool extends Tool
                 ->description('The location to get the weather for.')
                 ->required(),
 
-            'units' => $schema->array()
+            'units' => $schema->string()
                 ->enum(['celsius', 'fahrenheit'])
                 ->description('The temperature units to use.')
                 ->default('celsius'),
