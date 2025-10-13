@@ -612,20 +612,7 @@ public function stripeName(): string|null
 }
 ```
 
-Similarly, you may override the `stripeEmail`, `stripePhone`, `stripeAddress`, and `stripePreferredLocales` methods. These methods will sync information to their corresponding customer parameters when [updating the Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to take total control over the customer information sync process, you may override the `syncStripeCustomerDetails` method.
-
-> [!NOTE]
-> Stripe's `customers` object has a limit of 20 characters for the `phone` attribute. If your billable model uses this attribute, you may need to limit its length:
-
-```php
-/**
- * Get the customer phone that should be synced to Stripe.
- */
-public function stripePhone(): string|null
-{
-    return substr($this->phone, 0, 20) ?? null;
-}
-```
+Similarly, you may override the `stripeEmail`, `stripePhone` (20 character maximum), `stripeAddress`, and `stripePreferredLocales` methods. These methods will sync information to their corresponding customer parameters when [updating the Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to take total control over the customer information sync process, you may override the `syncStripeCustomerDetails` method.
 
 <a name="billing-portal"></a>
 ### Billing Portal
