@@ -618,9 +618,6 @@ Similarly, you may override the `stripeEmail`, `stripePhone`, `stripeAddress`, a
 > Stripe's `customers` object has a limit of 20 characters for the `phone` attribute. If your billable model uses this attribute, you may need to limit its length:
 
 ```php
-
-use Illuminate\Support\Str;
-
 /**
  * Get the customer phone that should be synced to Stripe.
  */
