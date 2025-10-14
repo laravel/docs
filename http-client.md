@@ -621,6 +621,33 @@ $batch->finished();
 // Indicates if the batch has request failures...
 $batch->hasFailures();
 ```
+<a name="deferring-batches"></a>
+#### Deferring Batches
+
+If you are not interested in the results returned by requests in the batch, you should consider using the `defer` method. When the `defer` method is invoked, the batch is not executed immediately. Instead, Laravel will execute the batch after the HTTP response has been sent to the user:
+
+```php
+use Illuminate\Http\Client\Batch;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
+
+$responses = Http::batch(fn (Batch $batch) => [
+    $batch->get('http://localhost/first'),
+    $batch->get('http://localhost/second'),
+    $batch->get('http://localhost/third'),
+])->before(function (Batch $batch) {
+    // The batch has been created but no requests have been initialized...
+})->progress(function (Batch $batch, int|string $key, Response $response) {
+    // An individual request has completed successfully...
+})->then(function (Batch $batch, array $results) {
+    // All requests completed successfully...
+})->catch(function (Batch $batch, int|string $key, Response|RequestException $response) {
+    // First batch request failure detected...
+})->finally(function (Batch $batch, array $results) {
+    // The batch has finished executing...
+})->defer();
+```
 
 <a name="macros"></a>
 ## Macros
