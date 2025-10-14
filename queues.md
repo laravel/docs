@@ -21,6 +21,7 @@
     - [Customizing The Queue and Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
     - [SQS FIFO and Fair Queues](#sqs-fifo-and-fair-queues)
+    - [Queue Failover](#queue-failover)
     - [Error Handling](#error-handling)
 - [Job Batching](#job-batching)
     - [Defining Batchable Jobs](#defining-batchable-jobs)
@@ -1529,6 +1530,29 @@ $invoicePaid = (new InvoicePaid($invoice))
     ->withDeduplicator(fn () => 'invoices-'.$invoice->id);
 
 $user->notify($invoicePaid);
+```
+
+<a name="queue-failover"></a>
+### Queue Failover
+
+The `failover` queue driver provides automatic failover functionality when pushing jobs to the queue. If the primary queue connection fails for any reason, Laravel will automatically attempt to push the job to the next configured connection in the list. This is particularly useful for ensuring high availability in production environments where queue reliability is critical.
+
+To configure a failover queue connection, specify the `failover` driver and provide an array of connection names to attempt in order:
+
+```php
+'failover' => [
+    'driver' => 'failover',
+    'connections' => [
+        env('QUEUE_CONNECTION', 'database'),
+        'sync',
+    ],
+],
+```
+
+Once you have configured a connection that uses the `failover` driver, you will probably want to set the failover connection as your default queue connection in your application's `.env` file:
+
+```ini
+QUEUE_CONNECTION=failover
 ```
 
 <a name="error-handling"></a>
