@@ -564,6 +564,7 @@ Another way of working with concurrent requests in Laravel is to use the `batch`
 
 ```php
 use Illuminate\Http\Client\Batch;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -578,7 +579,7 @@ $responses = Http::batch(fn (Batch $batch) => [
     // An individual request has completed successfully...
 })->then(function (Batch $batch, array $results) {
     // All requests completed successfully...
-})->catch(function (Batch $batch, int|string $key, Response|RequestException $response) {
+})->catch(function (Batch $batch, int|string $key, Response|RequestException|ConnectionException $response) {
     // First batch request failure detected...
 })->finally(function (Batch $batch, array $results) {
     // The batch has finished executing...
