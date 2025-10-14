@@ -71,7 +71,7 @@ class Post extends Model
 <a name="queueing"></a>
 ### Queueing
 
-While not strictly required to use Scout, you should strongly consider configuring a [queue driver](/docs/{{version}}/queues) before using the library. Running a queue worker will allow Scout to queue all operations that sync your model information to your search indexes, providing much better response times for your application's web interface.
+When using an engine that is not the `database` or `collection` engine, you should strongly consider configuring a [queue driver](/docs/{{version}}/queues) before using the library. Running a queue worker will allow Scout to queue all operations that sync your model information to your search indexes, providing much better response times for your application's web interface.
 
 Once you have configured a queue driver, set the value of the `queue` option in your `config/scout.php` configuration file to `true`:
 
@@ -427,7 +427,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Engines\Engine;
-use Laravel\Scout\EngineManager;
+use Laravel\Scout\Scout;
 use Laravel\Scout\Searchable;
 
 class User extends Model
@@ -439,7 +439,7 @@ class User extends Model
      */
     public function searchableUsing(): Engine
     {
-        return app(EngineManager::class)->engine('meilisearch');
+        return Scout::engine('meilisearch');
     }
 }
 ```
@@ -464,7 +464,7 @@ Enabling this feature will also pass the request's IP address and your authentic
 > [!WARNING]
 > The database engine currently supports MySQL and PostgreSQL.
 
-If your application interacts with small to medium sized databases or has a light workload, you may find it more convenient to get started with Scout's "database" engine. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
+The `database` engine is the fastest way to get started with Laravel Scout, and uses MySQL / PostgreSQL full-text indexes and "where like" clauses when filtering results from your existing database to determine the applicable search results for your query.
 
 To use the database engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `database`, or specify the `database` driver directly in your application's `scout` configuration file:
 
@@ -522,7 +522,7 @@ Once you have specified the collection driver as your preferred driver, you may 
 
 On first glance, the "database" and "collections" engines are fairly similar. They both interact directly with your database to retrieve search results. However, the collection engine does not utilize full text indexes or `LIKE` clauses to find matching records. Instead, it pulls all possible records and uses Laravel's `Str::is` helper to determine if the search string exists within the model attribute values.
 
-The collection engine is the most portable search engine as it works across all relational databases supported by Laravel (including SQLite and SQL Server); however, it is less efficient than Scout's database engine.
+The collection engine is the most portable search engine as it works across all relational databases supported by Laravel (including SQLite and SQL Server); however, it is much less efficient than Scout's database engine.
 
 <a name="indexing"></a>
 ## Indexing
