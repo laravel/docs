@@ -628,8 +628,6 @@ When the `defer` method is invoked, the batch of requests is not executed immedi
 
 ```php
 use Illuminate\Http\Client\Batch;
-use Illuminate\Http\Client\RequestException;
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 $responses = Http::batch(fn (Batch $batch) => [
