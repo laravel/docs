@@ -1215,6 +1215,7 @@ By default, some keywords are reserved for Blade's internal use in order to rend
 
 - `data`
 - `render`
+- `resolve`
 - `resolveView`
 - `shouldRender`
 - `view`
