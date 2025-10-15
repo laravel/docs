@@ -1543,7 +1543,7 @@ To configure a failover queue connection, specify the `failover` driver and prov
 'failover' => [
     'driver' => 'failover',
     'connections' => [
-        env('QUEUE_CONNECTION', 'database'),
+        'database',
         'sync',
     ],
 ],
