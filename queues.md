@@ -1555,6 +1555,8 @@ Once you have configured a connection that uses the `failover` driver, you will 
 QUEUE_CONNECTION=failover
 ```
 
+When a queue connection operation fails and failover is activated, Laravel will dispatch the `Illuminate\Queue\Events\QueueFailedOver` event, allowing you to report or log that a queue connection has failed.
+
 <a name="error-handling"></a>
 ### Error Handling
 
