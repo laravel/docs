@@ -293,12 +293,12 @@ The first pattern that matches will be used. If no patterns match, then the key 
 
 The `Exceptions` recorder captures information about reportable exceptions occurring in your application for display on the [Exceptions](#exceptions-card) card.
 
-You may optionally adjust the [sample rate](#sampling) and ignored exceptions patterns. You may also configure whether to capture the location that the exception originated from. The captured location will be displayed on the Pulse dashboard which can help to track down the exception origin; however, if the same exception occurs in multiple locations then it will appear multiple times for each unique location.
+You may optionally adjust the [sample rate](#sampling) and ignored exception patterns. You may also configure whether to capture the location that the exception originated from. The captured location will be displayed on the Pulse dashboard which can help to track down the exception origin; however, if the same exception occurs in multiple locations then it will appear multiple times for each unique location.
 
 <a name="queues-recorder"></a>
 #### Queues
 
-The `Queues` recorder captures information about your applications queues for display on the [Queues](#queues-card).
+The `Queues` recorder captures information about your application's queues for display on the [Queues](#queues-card).
 
 You may optionally adjust the [sample rate](#sampling) and ignored jobs patterns.
 
