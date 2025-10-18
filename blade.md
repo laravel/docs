@@ -640,35 +640,18 @@ Since the `@once` directive is often used in conjunction with the `@push` or `@p
 @endPushOnce
 ```
 
-If you have duplicate code that will be compiled separately, you must pass your own unique identifier to ensure it is only rendered once. For example, if you have multiple components using the same JavaScript code that you wish to only be rendered once, they must be given a custom unique ID.
+If you are pushing duplicate content from two separate Blade templates, you should provide a unique identifier as the second argument to the `@pushOnce` directive to ensure the content is only rendered once:
 
 ```blade
 <!-- pie-chart.blade.php -->
-<div>
-    <!-- HTML for pie chart -->
-</div>
-
-@pushOnce('scripts', 'chart-javascript')
+@pushOnce('scripts', 'chart.js')
     <script src="/chart.js"></script>
 @endPushOnce
-```
 
-```blade
 <!-- line-chart.blade.php -->
-<div>
-    <!-- HTML for line chart -->
-</div>
-
-@pushOnce('scripts', 'chart-javascript')
+@pushOnce('scripts', 'chart.js')
     <script src="/chart.js"></script>
 @endPushOnce
-```
-
-```blade
-<div>
-    <x-pie-chart></x-pie-chart>
-    <x-line-chart></x-line-chart>
-</div>
 ```
 
 <a name="raw-php"></a>
