@@ -354,7 +354,7 @@ class CurrentWeatherTool extends Tool
 }
 ```
 
-On validation failure, AI clients will act based on the error messages you provide. As such, is critical to provide clear and actionable error messages:
+On validation failure, AI clients will act based on the error messages you provide. As such, it is critical to provide clear and actionable error messages:
 
 ```php
 $validated = $request->validate([
@@ -715,7 +715,7 @@ class DescribeWeatherPrompt extends Prompt
 }
 ```
 
-On validation failure, AI clients will act based on the error messages you provide. As such, is critical to provide clear and actionable error messages:
+On validation failure, AI clients will act based on the error messages you provide. As such, it is critical to provide clear and actionable error messages:
 
 ```php
 $validated = $request->validate([
