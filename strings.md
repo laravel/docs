@@ -1163,7 +1163,7 @@ $password = Str::password(12);
 <a name="method-str-plural"></a>
 #### `Str::plural()` {.collection-method}
 
-The `Str::plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+The `Str::plural` method converts a singular word string to its plural form. This function supports [any of the languages supported by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
 ```php
 use Illuminate\Support\Str;
@@ -1204,7 +1204,7 @@ $label = Str::plural('car', 1000, prependCount: true);
 <a name="method-str-plural-studly"></a>
 #### `Str::pluralStudly()` {.collection-method}
 
-The `Str::pluralStudly` method converts a singular word string formatted in studly caps case to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+The `Str::pluralStudly` method converts a singular word string formatted in studly caps case to its plural form. This function supports [any of the languages supported by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
 ```php
 use Illuminate\Support\Str;
@@ -1454,7 +1454,7 @@ $reversed = Str::reverse('Hello World');
 <a name="method-str-singular"></a>
 #### `Str::singular()` {.collection-method}
 
-The `Str::singular` method converts a string to its singular form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+The `Str::singular` method converts a string to its singular form. This function supports [any of the languages supported by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
 ```php
 use Illuminate\Support\Str;
@@ -2977,7 +2977,7 @@ $closure = Str::of('foo')->pipe(function (Stringable $str) {
 <a name="method-fluent-str-plural"></a>
 #### `plural` {.collection-method}
 
-The `plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+The `plural` method converts a singular word string to its plural form. This function supports [any of the languages supported by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
 ```php
 use Illuminate\Support\Str;
@@ -3210,7 +3210,7 @@ $collection = Str::of('filename.jpg')->scan('%[^.].%s');
 <a name="method-fluent-str-singular"></a>
 #### `singular` {.collection-method}
 
-The `singular` method converts a string to its singular form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+The `singular` method converts a string to its singular form. This function supports [any of the languages supported by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
 ```php
 use Illuminate\Support\Str;
