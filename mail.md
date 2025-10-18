@@ -48,7 +48,7 @@ Within your `mail` configuration file, you will find a `mailers` configuration a
 <a name="driver-prerequisites"></a>
 ### Driver / Transport Prerequisites
 
-The API based drivers such as Mailgun, Postmark, Resend, and MailerSend are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
+The API based drivers such as Mailgun, Postmark, and Resend are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
 
 <a name="mailgun-driver"></a>
 #### Mailgun Driver
@@ -207,35 +207,6 @@ If you would like to define [additional options](https://docs.aws.amazon.com/aws
     ],
 ],
 ```
-
-<a name="mailersend-driver"></a>
-#### MailerSend Driver
-
-[MailerSend](https://www.mailersend.com/), a transactional email and SMS service, maintains their own API based mail driver for Laravel. The package containing the driver may be installed via the Composer package manager:
-
-```shell
-composer require mailersend/laravel-driver
-```
-
-Once the package is installed, add the `MAILERSEND_API_KEY` environment variable to your application's `.env` file. In addition, the `MAIL_MAILER` environment variable should be defined as `mailersend`:
-
-```ini
-MAIL_MAILER=mailersend
-MAIL_FROM_ADDRESS=app@yourdomain.com
-MAIL_FROM_NAME="App Name"
-
-MAILERSEND_API_KEY=your-api-key
-```
-
-Finally, add MailerSend to the `mailers` array in your application's `config/mail.php` configuration file:
-
-```php
-'mailersend' => [
-    'transport' => 'mailersend',
-],
-```
-
-To learn more about MailerSend, including how to use hosted templates, consult the [MailerSend driver documentation](https://github.com/mailersend/mailersend-laravel-driver#usage).
 
 <a name="failover-configuration"></a>
 ### Failover Configuration
