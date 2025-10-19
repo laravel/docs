@@ -161,7 +161,7 @@ To run all of your outstanding migrations, execute the `migrate` Artisan command
 php artisan migrate
 ```
 
-If you would like to see which migrations have run thus far, you may use the `migrate:status` Artisan command:
+If you would like to see which migrations have already run and which are still pending, you may use the `migrate:status` Artisan command:
 
 ```shell
 php artisan migrate:status
