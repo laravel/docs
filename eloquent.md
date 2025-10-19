@@ -794,6 +794,19 @@ $flight = Flight::updateOrCreate(
 );
 ```
 
+When we use methods such as `firstOrCreate` or `updateOrCreate`, we might not know whether a new model has been created, or an existing one has been updated. The `wasRecentlyCreated` property will help us find that out.
+
+```php
+$flight = Flight::updateOrCreate(
+    ['departure' => 'Atlanta', 'destination' => 'Toronto', 'number' => 'AA1234'],
+    ['departure_time' => '2025-10-19 14:00:00', 'arrival_time' => '2025-10-19 16:15:00']
+);
+
+if (! $flight->wasRecentlyCreated) {
+    // Notify buying customers that the flight time has been updated.
+}
+```
+
 <a name="mass-updates"></a>
 #### Mass Updates
 
