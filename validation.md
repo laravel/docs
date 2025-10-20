@@ -1467,7 +1467,7 @@ The integer under validation must have an exact length of _value_.
 <a name="rule-digits-between"></a>
 #### digits_between:_min_,_max_
 
-The integer validation must have a length between the given _min_ and _max_.
+The integer under validation must have a length between the given _min_ and _max_.
 
 <a name="rule-dimensions"></a>
 #### dimensions
