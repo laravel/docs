@@ -1,4 +1,4 @@
-ex# Laravel Fortify
+# Laravel Fortify
 
 - [Introduction](#introduction)
     - [What is Fortify?](#what-is-fortify)
@@ -41,7 +41,7 @@ As mentioned previously, Laravel Fortify is a frontend agnostic authentication b
 
 **You are not required to use Fortify in order to use Laravel's authentication features.** You are always free to manually interact with Laravel's authentication services by following the documentation available in the [authentication](/docs/{{version}}/authentication), [password reset](/docs/{{version}}/passwords), and [email verification](/docs/{{version}}/verification) documentation.
 
-If you are new to Laravel, you may wish to explore [our application starter kits](/docs/{{version}}/starter-kits) before attempting to use Laravel Fortify. Laravel's application starter kits use Fortify internally to provide authentication scaffolding for your application that includes a user interface built with [Tailwind CSS](https://tailwindcss.com). This allows you to study and get comfortable with Laravel's authentication features.
+If you are new to Laravel, you may wish to explore [our application starter kits](/docs/{{version}}/starter-kits). Laravel's application starter kits use Fortify internally to provide authentication scaffolding for your application that includes a user interface built with [Tailwind CSS](https://tailwindcss.com). This allows you to study and get comfortable with Laravel's authentication features.
 
 Laravel Fortify essentially takes the routes and controllers of our application starter kits and offers them as a package that does not include a user interface. This allows you to still quickly scaffold the backend implementation of your application's authentication layer without being tied to any particular frontend opinions.
 
