@@ -14,6 +14,7 @@
 - [Atomic Locks](#atomic-locks)
     - [Managing Locks](#managing-locks)
     - [Managing Locks Across Processes](#managing-locks-across-processes)
+- [Cache Failover](#cache-failover)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
     - [Writing the Driver](#writing-the-driver)
     - [Registering the Driver](#registering-the-driver)
@@ -528,6 +529,31 @@ If you would like to release a lock without respecting its current owner, you ma
 ```php
 Cache::lock('processing')->forceRelease();
 ```
+
+<a name="cache-failover"></a>
+## Cache Failover
+
+The `failover` cache driver provides automatic failover functionality when interacting with the cache. If the primary cache store fails for any reason, Laravel will automatically attempt to use the next configured store in the list. This is particularly useful for ensuring high availability in production environments where cache reliability is critical.
+
+To configure a failover cache store, specify the `failover` driver and provide an array of store names to attempt in order. By default, Laravel includes an example failover configuration in your application's `config/cache.php` configuration file:
+
+```php
+'failover' => [
+    'driver' => 'failover',
+    'stores' => [
+        'database',
+        'array',
+    ],
+],
+```
+
+Once you have configured a store that uses the `failover` driver, you will probably want to set the failover store as your default cache store in your application's `.env` file:
+
+```ini
+CACHE_STORE=failover
+```
+
+When a cache store operation fails and failover is activated, Laravel will dispatch the `Illuminate\Cache\Events\CacheFailedOver` event, allowing you to report or log that a cache store has failed.
 
 <a name="adding-custom-cache-drivers"></a>
 ## Adding Custom Cache Drivers
