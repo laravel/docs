@@ -990,6 +990,17 @@ class PodcastController extends Controller
 }
 ```
 
+<a name="deferred-dispatching"></a>
+#### Deferred Dispatching
+
+Using deferred synchronous dispatching, you can dispatch a job to be processed during the current process, but after the HTTP response has been sent to the user. This allows you to process "queued" jobs synchronously without slowing down your user's application experience. To defer the execution of a synchronous job, dispatch the job to the `deferred` connection:
+
+```php
+RecordDelivery::dispatch($order)->onConnection('deferred');
+```
+
+The `deferred` connection also serves as the default [failover queue](#queue-failover).
+
 <a name="jobs-and-database-transactions"></a>
 ### Jobs & Database Transactions
 
