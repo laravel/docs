@@ -132,7 +132,7 @@ When the `@param` or `@return` attributes are redundant due to the use of native
  */
 public function handle(AudioProcessor $processor): void
 {
-    //
+    // ...
 }
 ```
 
