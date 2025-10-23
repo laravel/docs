@@ -1546,27 +1546,41 @@ $user->notify($invoicePaid);
 <a name="queue-failover"></a>
 ### Queue Failover
 
-The `failover` queue driver provides automatic failover functionality when pushing jobs to the queue. If the primary queue connection fails for any reason, Laravel will automatically attempt to push the job to the next configured connection in the list. This is particularly useful for ensuring high availability in production environments where queue reliability is critical.
+Laravel’s `failover` queue driver ensures jobs aren’t lost when a **push** to your primary queue connection fails. If a push to the first connection is unsuccessful, Laravel will attempt the next connection in order. Failover affects *pushing* jobs; workers will consume jobs from whichever connection ultimately stored them.
 
-To configure a failover queue connection, specify the `failover` driver and provide an array of connection names to attempt in order. By default, Laravel includes an example failover configuration in your application's `config/queue.php` configuration file:
+To define a failover connection, specify the `failover` driver and list the connections to try in order. A sample configuration is included in `config/queue.php`:
 
 ```php
 'failover' => [
     'driver' => 'failover',
     'connections' => [
+        'redis',
         'database',
         'sync',
     ],
 ],
 ```
 
-Once you have configured a connection that uses the `failover` driver, you will probably want to set the failover connection as your default queue connection in your application's `.env` file:
+Then, set the failover connection as your default queue connection in your application’s `.env` file:
 
 ```ini
 QUEUE_CONNECTION=failover
 ```
 
-When a queue connection operation fails and failover is activated, Laravel will dispatch the `Illuminate\Queue\Events\QueueFailedOver` event, allowing you to report or log that a queue connection has failed.
+Next, start a worker for each **pull-based** connection that may receive failover jobs (for example, Redis and the database):
+
+```bash
+php artisan queue:work redis
+php artisan queue:work database
+```
+
+> [!NOTE]
+> You do **not** run a worker for `sync` (or `deferred`) since those execute within the current PHP process.
+
+When a queue push fails and failover is used, Laravel will dispatch the `Illuminate\Queue\Events\QueueFailedOver` event so you can log or report the incident.
+
+> [!TIP]
+> If you use Laravel Horizon, remember that Horizon manages **Redis** queues only. If your failover list includes `database`, you should run a regular `queue:work database` process alongside Horizon.
 
 <a name="error-handling"></a>
 ### Error Handling
