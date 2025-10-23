@@ -1119,16 +1119,16 @@ return Response::error('Unable to fetch weather data for the specified location.
 <a name="authentication"></a>
 ## Authentication
 
-You can authenticate web MCP servers with middleware just like you  would for routes. This will require a user to authenticate before using any capability of the server.
+Just like routes, you can authenticate web MCP servers with middleware. Adding authentication to your MCP server will require a user to authenticate before using any capability of the server.
 
-There are two ways to authenticate access to your MCP server: simple, token based authentication via [Laravel Sanctum](/docs/{{version}}/sanctum), or any other arbitrary API tokens which are passed via the `Authorization` HTTP header. Or, you may authenticate via OAuth using [Laravel Passport](/docs/{{version}}/passport).
+There are two ways to authenticate access to your MCP server: simple, token based authentication via [Laravel Sanctum](/docs/{{version}}/sanctum) or any token which is passed via the `Authorization` HTTP header. Or, you may authenticate via OAuth using [Laravel Passport](/docs/{{version}}/passport).
 
 <a name="oauth"></a>
 ### OAuth 2.1
 
-The most robust way to protect your web-based MCP servers is with OAuth through [Laravel Passport](/docs/{{version}}/passport).
+The most robust way to protect your web-based MCP servers is with OAuth using [Laravel Passport](/docs/{{version}}/passport).
 
-When authenticating your MCP server via OAuth, you will invoke the `Mcp::oauthRoutes` method in your `routes/ai.php` file to register the required OAuth2 discovery and client registration routes. Then, apply Passport's `auth:api` middleware to your `Mcp::web` route in your `routes/ai.php` file:
+When authenticating your MCP server via OAuth, invoke the `Mcp::oauthRoutes` method in your `routes/ai.php` file to register the required OAuth2 discovery and client registration routes. Then, apply Passport's `auth:api` middleware to your `Mcp::web` route in your `routes/ai.php` file:
 
 ```php
 use App\Mcp\Servers\WeatherExample;
@@ -1142,7 +1142,7 @@ Mcp::web('/mcp/weather', WeatherExample::class)
 
 #### New Passport Installation
 
-If your application is not already using Laravel Passport, start by following Passport's  [installation and deployment steps](/docs/{{version}}/passport#installation). You should have an `OAuthenticatable` model, new authentication guard, and passport keys before moving on.
+If your application is not already using Laravel Passport, follow Passport's  [installation and deployment guide](/docs/{{version}}/passport#installation) to add Passport to your application. You should have an `OAuthenticatable` model, new authentication guard, and passport keys before moving on.
 
 Next, you should publish Laravel MCP's provided Passport authorization view:
 
@@ -1177,7 +1177,7 @@ This view will be displayed to the end-user during authentication to reject or a
 
 If your application is already using Laravel Passport, Laravel MCP should work seamlessly within your existing Passport installation, but custom scopes aren't currently supported as OAuth is primarily used as a translation layer to the underlying authenticatable model.
 
-Laravel MCP, via the `Mcp::oauthRoutes()` method discussed above, adds, advertises, and uses a single `mcp:use` scope.
+Laravel MCP, via the `Mcp::oauthRoutes` method discussed above, adds, advertises, and uses a single `mcp:use` scope.
 
 #### Passport vs. Sanctum
 
