@@ -2127,9 +2127,8 @@ Sometimes you may wish to eager load a relationship but also specify additional 
 
 ```php
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 
-$users = User::with(['posts' => function (Builder $query) {
+$users = User::with(['posts' => function ($query) {
     $query->where('title', 'like', '%code%');
 }])->get();
 ```
@@ -2137,7 +2136,7 @@ $users = User::with(['posts' => function (Builder $query) {
 In this example, Eloquent will only eager load posts where the post's `title` column contains the word `code`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
 
 ```php
-$users = User::with(['posts' => function (Builder $query) {
+$users = User::with(['posts' => function ($query) {
     $query->orderBy('created_at', 'desc');
 }])->get();
 ```
