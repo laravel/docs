@@ -1567,7 +1567,7 @@ Once you have configured a connection that uses the `failover` driver, you will 
 QUEUE_CONNECTION=failover
 ```
 
-Next, start at least one worker for each connection in your failover connection list that may receive jobs:
+Next, start at least one worker for each connection in your failover connection list:
 
 ```bash
 php artisan queue:work redis
