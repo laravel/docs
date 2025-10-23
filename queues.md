@@ -935,28 +935,6 @@ ProcessPodcast::dispatch($podcast)->withoutDelay();
 > [!WARNING]
 > The Amazon SQS queue service has a maximum delay time of 15 minutes.
 
-<a name="dispatching-after-the-response-is-sent-to-browser"></a>
-#### Dispatching After the Response is Sent to the Browser
-
-Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser if your web server is using [FastCGI](https://www.php.net/manual/en/install.fpm.php). This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:
-
-```php
-use App\Jobs\SendNotification;
-
-SendNotification::dispatchAfterResponse();
-```
-
-You may also `dispatch` a closure and chain the `afterResponse` method onto the [dispatch helper](/docs/{{version}}/helpers#method-dispatch) to execute a closure after the HTTP response has been sent to the browser:
-
-```php
-use App\Mail\WelcomeMessage;
-use Illuminate\Support\Facades\Mail;
-
-dispatch(function () {
-    Mail::to('taylor@example.com')->send(new WelcomeMessage);
-})->afterResponse();
-```
-
 <a name="synchronous-dispatching"></a>
 ### Synchronous Dispatching
 
