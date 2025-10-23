@@ -1554,6 +1554,7 @@ To configure a failover queue connection, specify the `failover` driver and prov
 'failover' => [
     'driver' => 'failover',
     'connections' => [
+        'redis',
         'database',
         'sync',
     ],
@@ -1566,7 +1567,20 @@ Once you have configured a connection that uses the `failover` driver, you will 
 QUEUE_CONNECTION=failover
 ```
 
+Next, start at least one worker for each connection in your failover connection list:
+
+```bash
+php artisan queue:work redis
+php artisan queue:work database
+```
+
+> [!NOTE]
+> You do not need run a worker for connections using the `sync` or `deferred` queue drivers since those drivers process jobs within the current PHP process.
+
 When a queue connection operation fails and failover is activated, Laravel will dispatch the `Illuminate\Queue\Events\QueueFailedOver` event, allowing you to report or log that a queue connection has failed.
+
+> [!TIP]
+> If you use Laravel Horizon, remember that Horizon manages Redis queues only. If your failover list includes `database`, you should run a regular `php artisan queue:work database` process alongside Horizon.
 
 <a name="error-handling"></a>
 ### Error Handling
