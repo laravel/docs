@@ -850,6 +850,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 
 class User extends Authenticatable implements OAuthenticatable
 {
@@ -858,7 +859,7 @@ class User extends Authenticatable implements OAuthenticatable
     /**
      * Find the user instance for the given username.
      */
-    public function findForPassport(string $username): User
+    public function findForPassport(string $username, ClientEntityInterface $client): User
     {
         return $this->where('username', $username)->first();
     }
