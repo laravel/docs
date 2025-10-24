@@ -254,3 +254,48 @@ public function sendPasswordResetNotification($token): void
     $this->notify(new ResetPasswordNotification($url));
 }
 ```
+
+<a name="reset-query-override"></a>
+#### Override Query
+
+If you ever wanted to adjust the query made when using either the `eloquent` or `database` provider drivers, you can do so by altering the `$credentials` parameter passed into the `sendResetLink` and `reset` methods.
+
+```php
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+
+Route::post('/forgot-password', function (Request $request) {
+    // Validation...
+
+    $status = Password::sendResetLink(
+        array_merge(
+            $request->only('email'),
+            function ($query) {
+                $query->where('is_active', true)
+            },
+            'type' => ['admin', 'moderator'],
+        )
+    );
+
+    // Additional logic...
+});
+
+Route::post('/reset-password', function (Request $request) {
+    // Validation...
+
+    $status = Password::reset(
+        array_merge(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($query) {
+                $query->where('is_active', true)
+            },
+            'type' => ['admin', 'moderator'],
+        )
+        function () {
+            // Closure to save new password...
+        }
+    );
+
+    // Additional logic...
+});
+```
