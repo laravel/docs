@@ -859,7 +859,7 @@ class User extends Authenticatable implements OAuthenticatable
     /**
      * Find the user instance for the given username.
      */
-    public function findForPassport(string $username, ClientEntityInterface $client): User
+    public function findForPassport(string $username, Client $client): User
     {
         return $this->where('username', $username)->first();
     }
