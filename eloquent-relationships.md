@@ -88,6 +88,8 @@ class User extends Model
 {
     /**
      * Get the phone associated with the user.
+     *
+     * @return HasOne<Phone, $this> 
      */
     public function phone(): HasOne
     {
@@ -131,6 +133,8 @@ class Phone extends Model
 {
     /**
      * Get the user that owns the phone.
+     * 
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -146,6 +150,8 @@ Eloquent determines the foreign key name by examining the name of the relationsh
 ```php
 /**
  * Get the user that owns the phone.
+ * 
+ * @return BelongsTo<User, $this>
  */
 public function user(): BelongsTo
 {
@@ -158,6 +164,8 @@ If the parent model does not use `id` as its primary key, or you wish to find th
 ```php
 /**
  * Get the user that owns the phone.
+ * 
+ * @return BelongsTo<User, $this>
  */
 public function user(): BelongsTo
 {
@@ -182,6 +190,8 @@ class Post extends Model
 {
     /**
      * Get the comments for the blog post.
+     * 
+     * @return HasMany<Comment, $this>
      */
     public function comments(): HasMany
     {
@@ -251,6 +261,8 @@ class Post extends Model
 {
     /**
      * Get the comments for the blog post.
+     * 
+     * @return HasMany<Comment, $this>
      */
     public function comments(): HasMany
     {
@@ -286,6 +298,8 @@ class Comment extends Model
 {
     /**
      * Get the post that owns the comment.
+     * 
+     * @return BelongsTo<Post, $this>
      */
     public function post(): BelongsTo
     {
@@ -313,6 +327,8 @@ However, if the foreign key for your relationship does not follow these conventi
 ```php
 /**
  * Get the post that owns the comment.
+ * 
+ * @return BelongsTo<Post, $this>
  */
 public function post(): BelongsTo
 {
@@ -325,6 +341,8 @@ If your parent model does not use `id` as its primary key, or you wish to find t
 ```php
 /**
  * Get the post that owns the comment.
+ * 
+ * @return BelongsTo<Post, $this>
  */
 public function post(): BelongsTo
 {
@@ -340,6 +358,8 @@ The `belongsTo`, `hasOne`, `hasOneThrough`, and `morphOne` relationships allow y
 ```php
 /**
  * Get the author of the post.
+ * 
+ * @return BelongsTo<Post, $this>
  */
 public function user(): BelongsTo
 {
@@ -352,6 +372,8 @@ To populate the default model with attributes, you may pass an array or closure 
 ```php
 /**
  * Get the author of the post.
+ * 
+ * @return BelongsTo<Post, $this>
  */
 public function user(): BelongsTo
 {
@@ -362,6 +384,8 @@ public function user(): BelongsTo
 
 /**
  * Get the author of the post.
+ * 
+ * @return BelongsTo<Post, $this>
  */
 public function user(): BelongsTo
 {
@@ -410,6 +434,8 @@ Sometimes a model may have many related models, yet you want to easily retrieve 
 ```php
 /**
  * Get the user's most recent order.
+ * 
+ * @return HasOne<Order, $this>
  */
 public function latestOrder(): HasOne
 {
@@ -422,6 +448,8 @@ Likewise, you may define a method to retrieve the "oldest", or first, related mo
 ```php
 /**
  * Get the user's oldest order.
+ * 
+ * @return HasOne<Order, $this>
  */
 public function oldestOrder(): HasOne
 {
@@ -436,6 +464,8 @@ For example, using the `ofMany` method, you may retrieve the user's most expensi
 ```php
 /**
  * Get the user's largest order.
+ * 
+ * @return HasOne<Order, $this>
  */
 public function largestOrder(): HasOne
 {
@@ -454,6 +484,8 @@ Often, when retrieving a single model using the `latestOfMany`, `oldestOfMany`, 
 ```php
 /**
  * Get the user's orders.
+ * 
+ * @return HasMany<Order, $this>
  */
 public function orders(): HasMany
 {
@@ -462,6 +494,8 @@ public function orders(): HasMany
 
 /**
  * Get the user's largest order.
+ * 
+ * @return HasOne<Order, $this>
  */
 public function largestOrder(): HasOne
 {
@@ -472,6 +506,7 @@ public function largestOrder(): HasOne
 You may also use the `one` method to convert `HasManyThrough` relationships to `HasOneThrough` relationships:
 
 ```php
+/** @return HasOneThrough<Deployment, Environment, $this> */
 public function latestDeployment(): HasOneThrough
 {
     return $this->deployments()->one()->latestOfMany();
@@ -488,6 +523,8 @@ So, in summary, we need to retrieve the latest published pricing where the publi
 ```php
 /**
  * Get the current pricing for the product.
+ * 
+ * @return HasOne<Price, $this>
  */
 public function currentPricing(): HasOne
 {
@@ -537,6 +574,8 @@ class Mechanic extends Model
 {
     /**
      * Get the car's owner.
+     * 
+     * @return HasOneThrough<Owner, Car, $this>
      */
     public function carOwner(): HasOneThrough
     {
@@ -567,6 +606,8 @@ class Mechanic extends Model
 {
     /**
      * Get the car's owner.
+     * 
+     * @return HasOneThrough<Owner, Car, $this>
      */
     public function carOwner(): HasOneThrough
     {
@@ -627,6 +668,8 @@ class Application extends Model
 {
     /**
      * Get all of the deployments for the application.
+     * 
+     * @return HasOneThrough<Deployment, Environment, $this>
      */
     public function deployments(): HasManyThrough
     {
@@ -657,6 +700,7 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 ```php
 class Application extends Model
 {
+    /** @return HasOneThrough<Deployment, Environment, $this> */
     public function deployments(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -698,6 +742,8 @@ class User extends Model
 {
     /**
      * Get the user's posts.
+     * 
+     * @return HasMany<Post, $this>
      */
     public function posts(): HasMany
     {
@@ -706,6 +752,8 @@ class User extends Model
 
     /**
      * Get the user's featured posts.
+     * 
+     * @return HasMany<Post, $this>
      */
     public function featuredPosts(): HasMany
     {
@@ -719,6 +767,8 @@ However, if you attempt to create a model via the `featuredPosts` method, its `f
 ```php
 /**
  * Get the user's featured posts.
+ * 
+ * @return HasMany<Post, $this>
  */
 public function featuredPosts(): HasMany
 {
@@ -783,6 +833,8 @@ class User extends Model
 {
     /**
      * The roles that belong to the user.
+     * 
+     * @return BelongsToMany<Role, $this>
      */
     public function roles(): BelongsToMany
     {
@@ -838,6 +890,8 @@ class Role extends Model
 {
     /**
      * The users that belong to the role.
+     * 
+     * @return BelongsToMany<User, $this>
      */
     public function users(): BelongsToMany
     {
@@ -972,6 +1026,8 @@ class Role extends Model
 {
     /**
      * The users that belong to the role.
+     * 
+     * @return BelongsToMany<User, $this>
      */
     public function users(): BelongsToMany
     {
@@ -1060,6 +1116,8 @@ class Image extends Model
 {
     /**
      * Get the parent imageable model (user or post).
+     * 
+     * @return MorphTo<Image, $this>
      */
     public function imageable(): MorphTo
     {
@@ -1074,6 +1132,8 @@ class Post extends Model
 {
     /**
      * Get the post's image.
+     * 
+     * @return MorphOne<Image, $this>
      */
     public function image(): MorphOne
     {
@@ -1088,6 +1148,8 @@ class User extends Model
 {
     /**
      * Get the user's image.
+     * 
+     * @return MorphOne<Image, $this>
      */
     public function image(): MorphOne
     {
@@ -1129,6 +1191,8 @@ If necessary, you may specify the name of the "id" and "type" columns utilized b
 ```php
 /**
  * Get the model that the image belongs to.
+ * 
+ * @return MorphTo<Image, $this>
  */
 public function imageable(): MorphTo
 {
@@ -1179,6 +1243,8 @@ class Comment extends Model
 {
     /**
      * Get the parent commentable model (post or video).
+     * 
+     * @return MorphTo<Comment, $this>
      */
     public function commentable(): MorphTo
     {
@@ -1193,6 +1259,8 @@ class Post extends Model
 {
     /**
      * Get all of the post's comments.
+     * 
+     * @return MorphMany<Comment, $this>
      */
     public function comments(): MorphMany
     {
@@ -1207,6 +1275,8 @@ class Video extends Model
 {
     /**
      * Get all of the video's comments.
+     * 
+     * @return MorphMany<Comment, $this>
      */
     public function comments(): MorphMany
     {
@@ -1266,6 +1336,8 @@ class Post extends Model
 {
     /**
      * Get all of the post's comments.
+     * 
+     * @return MorphMany<Comment, $this>
      */
     public function comments(): MorphMany
     {
@@ -1292,6 +1364,8 @@ Sometimes a model may have many related models, yet you want to easily retrieve 
 ```php
 /**
  * Get the user's most recent image.
+ * 
+ * @return MorphOne<Image, $this>
  */
 public function latestImage(): MorphOne
 {
@@ -1304,6 +1378,8 @@ Likewise, you may define a method to retrieve the "oldest", or first, related mo
 ```php
 /**
  * Get the user's oldest image.
+ * 
+ * @return MorphOne<Image, $this>
  */
 public function oldestImage(): MorphOne
 {
@@ -1318,6 +1394,8 @@ For example, using the `ofMany` method, you may retrieve the user's most "liked"
 ```php
 /**
  * Get the user's most popular image.
+ * 
+ * @return MorphOne<Image, $this>
  */
 public function bestImage(): MorphOne
 {
@@ -1377,6 +1455,8 @@ class Post extends Model
 {
     /**
      * Get all of the tags for the post.
+     * 
+     * @return MorphToMany<Tag, $this>
      */
     public function tags(): MorphToMany
     {
@@ -1404,6 +1484,8 @@ class Tag extends Model
 {
     /**
      * Get all of the posts that are assigned this tag.
+     * 
+     * @return MorphToMany<Post, $this>
      */
     public function posts(): MorphToMany
     {
@@ -1412,6 +1494,8 @@ class Tag extends Model
 
     /**
      * Get all of the videos that are assigned this tag.
+     * 
+     * @return MorphToMany<Video, $this>
      */
     public function videos(): MorphToMany
     {
@@ -1520,6 +1604,8 @@ class User extends Model
 {
     /**
      * Get all of the posts for the user.
+     * 
+     * @return HasMany<Post, $this>
      */
     public function posts(): HasMany
     {
@@ -1947,6 +2033,8 @@ class Book extends Model
 {
     /**
      * Get the author that wrote the book.
+     * 
+     * @return BelongsTo<Author, $this>
      */
     public function author(): BelongsTo
     {
@@ -2031,6 +2119,9 @@ class ActivityFeed extends Model
 {
     /**
      * Get the parent of the activity feed record.
+     * 
+     * @return MorphTo<Model, $this>
+     * 
      */
     public function parentable(): MorphTo
     {
@@ -2092,6 +2183,8 @@ class Book extends Model
 
     /**
      * Get the author that wrote the book.
+     * 
+     * @return BelongsTo<Author, $this>
      */
     public function author(): BelongsTo
     {
@@ -2100,6 +2193,8 @@ class Book extends Model
 
     /**
      * Get the genre of the book.
+     * 
+     * @return BelongsTo<Genre, $this>
      */
     public function genre(): BelongsTo
     {
@@ -2222,6 +2317,8 @@ class ActivityFeed extends Model
 {
     /**
      * Get the parent of the activity feed record.
+     * 
+     * @return MorphTo<Model, $this>
      */
     public function parentable(): MorphTo
     {
@@ -2582,6 +2679,8 @@ class Comment extends Model
 
     /**
      * Get the post that the comment belongs to.
+     * 
+     * @return BelongsTo<Post, $this>
      */
     public function post(): BelongsTo
     {
