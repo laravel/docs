@@ -95,7 +95,20 @@ The new factory class will be placed in your `database/factories` directory.
 
 Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\Database\Eloquent\Factories\HasFactory` trait in order to instantiate a factory instance for that model.
 
-The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:
+The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may add the `UseFactory` attribute to the model to manually specify the model's factory:
+
+```php
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Database\Factories\Administration\FlightFactory;
+
+#[UseFactory(FlightFactory::class)]
+class Flight extends Model
+{
+    // ...
+}
+```
+
+Alternatively, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:
 
 ```php
 use Database\Factories\Administration\FlightFactory;
