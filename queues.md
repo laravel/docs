@@ -1472,8 +1472,6 @@ To define the message group for a [queued event listener](/docs/{{version}}/even
 
 namespace App\Listeners;
 
-use App\Events\OrderShipped;
-
 class SendShipmentNotification
 {
     // ...
@@ -1483,7 +1481,7 @@ class SendShipmentNotification
      */
     public function messageGroup(): string
     {
-        return "shipments";
+        return 'shipments';
     }
 
     /**
