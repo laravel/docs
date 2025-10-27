@@ -1472,8 +1472,6 @@ To define the message group for a [queued event listener](/docs/{{version}}/even
 
 namespace App\Listeners;
 
-use App\Events\OrderShipped;
-
 class SendShipmentNotification
 {
     // ...
@@ -1483,7 +1481,7 @@ class SendShipmentNotification
      */
     public function messageGroup(): string
     {
-        return "shipments";
+        return 'shipments';
     }
 
     /**
@@ -1553,7 +1551,7 @@ php artisan queue:work database
 ```
 
 > [!NOTE]
-> You do not need run a worker for connections using the `sync` or `deferred` queue drivers since those drivers process jobs within the current PHP process.
+> You do not need to run a worker for connections using the `sync` or `deferred` queue drivers since those drivers process jobs within the current PHP process.
 
 When a queue connection operation fails and failover is activated, Laravel will dispatch the `Illuminate\Queue\Events\QueueFailedOver` event, allowing you to report or log that a queue connection has failed.
 
