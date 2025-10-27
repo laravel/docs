@@ -67,7 +67,7 @@ Finally, you may start Sail. To continue learning how to use Sail, please contin
 ```
 
 > [!WARNING]
-> If you are using Docker Desktop for Linux, you should use the `default` Docker context by executing the following command: `docker context use default`. If you run into file permission errors within containers, set the `SUPERVISOR_PHP_USER` environment variable to `root`, as described [here](https://github.com/laravel/sail/pull/677#issuecomment-2641741443).
+> If you are using Docker Desktop for Linux, you should use the `default` Docker context by executing the following command: `docker context use default`. In addition, if you encounter file permission errors within containers, you may need to set the `SUPERVISOR_PHP_USER` environment variable to `root`.
 
 <a name="adding-additional-services"></a>
 #### Adding Additional Services
