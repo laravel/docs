@@ -2681,20 +2681,12 @@ $validator = Validator::make($request->all(), [
 The `Password` rule object allows you to easily customize the password complexity requirements for your application, such as specifying that passwords require at least one letter, number, symbol, or characters with mixed casing:
 
 ```php
-// Require at least 8 characters...
-Password::min(8)
-
-// Require at least one letter...
-Password::min(8)->letters()
-
-// Require at least one uppercase and one lowercase letter...
-Password::min(8)->mixedCase()
-
-// Require at least one number...
-Password::min(8)->numbers()
-
-// Require at least one symbol...
-Password::min(8)->symbols()
+// Require at least …
+Password::min(8) // … 8 characters
+    ->letters() // … one letter
+    ->mixedCase() // … one uppercase and one lowercase letter
+    ->numbers() // … one number
+    ->symbols() // … one symbol
 ```
 
 In addition, you may ensure that a password has not been compromised in a public password data breach leak using the `uncompromised` method:
@@ -2710,17 +2702,6 @@ By default, if a password appears at least once in a data leak, it will be consi
 ```php
 // Ensure the password appears less than 3 times in the same data leak...
 Password::min(8)->uncompromised(3);
-```
-
-Of course, you may chain all the methods in the examples above:
-
-```php
-Password::min(8)
-    ->letters()
-    ->mixedCase()
-    ->numbers()
-    ->symbols()
-    ->uncompromised()
 ```
 
 <a name="defining-default-password-rules"></a>
