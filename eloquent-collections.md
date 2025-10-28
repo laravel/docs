@@ -86,6 +86,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [setHidden](#method-setHidden)
 [toQuery](#method-toquery)
 [unique](#method-unique)
+[withoutAppends](#method-withoutAppends)
 
 </div>
 
@@ -301,6 +302,15 @@ The `unique` method returns all of the unique models in the collection. Any mode
 
 ```php
 $users = $users->unique();
+```
+
+<a name="method-withoutAppends"></a>
+#### `withoutAppends($attributes)` {.collection-method}
+
+The `withoutAppends` method temporarily removes all of the [appended attributes](/docs/{{version}}/eloquent-serialization#appending-values-to-json) on each model in the collection:
+
+```php
+$users = $users->withoutAppends();
 ```
 
 <a name="custom-collections"></a>
