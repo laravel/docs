@@ -537,6 +537,14 @@ $responses = Http::pool(fn (Pool $pool) => [
 return $responses['first']->ok();
 ```
 
+The maximum concurrency of the request pool may be controlled by providing the `concurrency` argument to the `pool` method. This value determines the maximum number of HTTP requests that may be concurrently in-flight while processing the request pool:
+
+```php
+$responses = Http::pool(fn (Pool $pool) => [
+    // ...
+], concurrency: 5);
+```
+
 <a name="customizing-concurrent-requests"></a>
 #### Customizing Concurrent Requests
 
@@ -597,6 +605,14 @@ $responses = Http::batch(fn (Batch $batch) => [
 ```
 
 After a `batch` is started by calling the `send` method, you can't add new requests to it. Trying to do so will result in a `Illuminate\Http\Client\BatchInProgressException` exception being thrown.
+
+The maximum concurrency of the request batch may be controlled via the `concurrency` method. This value determines the maximum number of HTTP requests that may be concurrently in-flight while processing the request batch:
+
+```php
+$responses = Http::batch(fn (Batch $batch) => [
+    // ...
+])->concurrency(5)->send();
+```
 
 <a name="inspecting-batches"></a>
 #### Inspecting Batches
