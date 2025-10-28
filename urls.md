@@ -265,6 +265,9 @@ $uri = Uri::action(InvokableController::class);
 
 // Generate a URI instance from the current request URL...
 $uri = $request->uri();
+
+// Generate a URI instance from the previous request URL...
+$uri = $request->session()->previousUri();
 ```
 
 Once you have a URI instance, you can fluently modify it:
