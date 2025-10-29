@@ -2108,6 +2108,12 @@ class Book extends Model
 }
 ```
 
+Similarly, if you always need relationship counts, you may define them within the `$withCount` property:
+
+```php
+protected $withCount = ['comments', 'likes'];
+```
+
 If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:
 
 ```php
