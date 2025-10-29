@@ -266,7 +266,10 @@ use Illuminate\Support\Facades\Route;
 ```
 
 <a name="route-parameters"></a>
-## Route Parameters
+## Route Parameters 
+
+> [!NOTE]
+> When defining multiple routes that share a similar URI pattern, always define static routes before dynamic routes. This is because dynamic routes act as wildcards and will match any segment, potentially overriding your static routes if defined earlier.
 
 <a name="required-parameters"></a>
 ### Required Parameters
