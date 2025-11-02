@@ -370,7 +370,7 @@ You may assign default values to options by specifying the default value after t
 To assign a shortcut when defining an option, you may specify it before the option name and use the `|` character as a delimiter to separate the shortcut from the full option name:
 
 ```php
-'mail:send {user} {--Q|queue}'
+'mail:send {user} {--Q|queue=}'
 ```
 
 When invoking the command on your terminal, option shortcuts should be prefixed with a single hyphen and no `=` character should be included when specifying a value for the option:
