@@ -979,6 +979,15 @@ RecordDelivery::dispatch($order)->onConnection('deferred');
 
 The `deferred` connection also serves as the default [failover queue](#queue-failover).
 
+<a name="background-dispatching"></a>
+#### Background Dispatching
+
+For low-traffic applications where you rarely want need the queue, you can use the `background` connection instead of a 'real' queue. This runs the job in a PHP background process without waiting for the result.
+
+```php
+RecordDelivery::dispatch($order)->onConnection('background');
+```
+
 <a name="jobs-and-database-transactions"></a>
 ### Jobs & Database Transactions
 
@@ -1551,7 +1560,7 @@ php artisan queue:work database
 ```
 
 > [!NOTE]
-> You do not need to run a worker for connections using the `sync` or `deferred` queue drivers since those drivers process jobs within the current PHP process.
+> You do not need to run a worker for connections using the `sync`, `background` or `deferred` queue drivers since those drivers process jobs within the current PHP process.
 
 When a queue connection operation fails and failover is activated, Laravel will dispatch the `Illuminate\Queue\Events\QueueFailedOver` event, allowing you to report or log that a queue connection has failed.
 
