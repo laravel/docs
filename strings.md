@@ -3306,6 +3306,16 @@ $result = Str::of('This is my name')->startsWith('This');
 // true
 ```
 
+You may also pass an array of values to determine if the given string starts with any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->startsWith(['This', 'That']);
+
+// true
+```
+
 <a name="method-fluent-str-strip-tags"></a>
 #### `stripTags` {.collection-method}
 
