@@ -111,6 +111,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::rtrim](#method-str-rtrim)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
+[Str::ucwords](#method-str-ucwords)
 [Str::upper](#method-str-upper)
 [Str::ulid](#method-str-ulid)
 [Str::unwrap](#method-str-unwrap)
@@ -224,6 +225,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [rtrim](#method-fluent-str-rtrim)
 [ucfirst](#method-fluent-str-ucfirst)
 [ucsplit](#method-fluent-str-ucsplit)
+[ucwords](#method-fluent-str-ucwords)
 [unwrap](#method-fluent-str-unwrap)
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
@@ -1734,6 +1736,19 @@ use Illuminate\Support\Str;
 $segments = Str::ucsplit('FooBar');
 
 // [0 => 'Foo', 1 => 'Bar']
+```
+
+<a name="method-str-ucwords"></a>
+#### `Str::ucwords()` {.collection-method}
+
+The `Str::ucwords` method converts the first character of each word in the given string to uppercase:
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::ucwords('laravel framework');
+
+// Laravel Framework
 ```
 
 <a name="method-str-upper"></a>
@@ -3578,6 +3593,19 @@ use Illuminate\Support\Str;
 $string = Str::of('Foo Bar')->ucsplit();
 
 // collect(['Foo ', 'Bar'])
+```
+
+<a name="method-fluent-str-ucwords"></a>
+#### `ucwords` {.collection-method}
+
+The `ucwords` method converts the first character of each word in the given string to uppercase:
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::of('laravel framework')->ucwords();
+
+// Laravel Framework
 ```
 
 <a name="method-fluent-str-unwrap"></a>
