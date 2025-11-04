@@ -982,7 +982,7 @@ The `deferred` connection also serves as the default [failover queue](#queue-fai
 <a name="background-dispatching"></a>
 #### Background Dispatching
 
-For low-traffic applications where you rarely want need the queue, you can use the `background` connection instead of a 'real' queue. This runs the job in a PHP background process without waiting for the result.
+For low-traffic applications where you rarely need the queue, you can use the `background` connection instead of a 'real' queue. This runs the job in a PHP background process without waiting for the result.
 
 ```php
 RecordDelivery::dispatch($order)->onConnection('background');
