@@ -979,10 +979,7 @@ RecordDelivery::dispatch($order)->onConnection('deferred');
 
 The `deferred` connection also serves as the default [failover queue](#queue-failover).
 
-<a name="background-dispatching"></a>
-#### Background Dispatching
-
-For low-traffic applications where you rarely need the queue, you can use the `background` connection instead of a 'real' queue. This runs the job in a PHP background process without waiting for the result.
+Similarly, the `background` connection processes jobs after the HTTP response has been sent to the user; however, the job is processed in a separately spawned PHP process, allowing the PHP-FPM / application worker to be available to handle another incoming HTTP request:
 
 ```php
 RecordDelivery::dispatch($order)->onConnection('background');
