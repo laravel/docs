@@ -2296,6 +2296,39 @@ $string = Str::of('/foo/bar/baz')->dirname(2);
 // '/foo'
 ```
 
+<a name="method-str-doesntcontain"></a>
+#### `Str::doesntContain()` {.collection-method}
+
+The `Str::doesntContain` method determines if the given string does not contain the given value. This method is the inverse of the `contains` method. By default, this method is case sensitive:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is my name')->doesntContain('my');
+
+// false
+```
+
+You may also pass an array of values to determine if the given string does not contain any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is my name')->doesntContain(['my', 'foo']);
+
+// false
+```
+
+You may disable case sensitivity by setting the ignoreCase argument to true:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is my name')->doesntContain('MY', ignoreCase: true);
+
+// false
+```
+
 <a name="method-fluent-str-doesnt-end-with"></a>
 #### `doesntEndWith` {.collection-method}
 
