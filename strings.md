@@ -151,6 +151,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [decrypt](#method-fluent-str-decrypt)
 [deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
+[doesntContain](#method-fluent-str-doesnt-contain)
 [doesntEndWith](#method-fluent-str-doesnt-end-with)
 [doesntStartWith](#method-fluent-str-doesnt-start-with)
 [encrypt](#method-fluent-str-encrypt)
@@ -2296,10 +2297,10 @@ $string = Str::of('/foo/bar/baz')->dirname(2);
 // '/foo'
 ```
 
-<a name="method-str-doesntcontain"></a>
-#### `Str::doesntContain()` {.collection-method}
+<a name="method-fluent-str-doesnt-contain"></a>
+#### `doesntContain()` {.collection-method}
 
-The `Str::doesntContain` method determines if the given string does not contain the given value. This method is the inverse of the `contains` method. By default, this method is case sensitive:
+The `doesntContain` method determines if the given string does not contain the given value. This method is the inverse of the [contains](#method-fluent-str-contains) method. By default, this method is case sensitive:
 
 ```php
 use Illuminate\Support\Str;
