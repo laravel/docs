@@ -2513,6 +2513,19 @@ $validator = Validator::make($request->all(), [
 ]);
 ```
 
+You may also use the `*` as a key of a sub-array. For example, if your users have an `email` and a `last_name` in a given sub-array input field, you may do the following:
+
+```php
+$validator = Validator::make($request->all(), [
+    'users' => [
+        '*' => [
+            'email' => 'email|unique:users',
+            'first_name' => 'required_with:users.*.last_name',
+        ],
+    ],
+]);
+```
+
 Likewise, you may use the `*` character when specifying [custom validation messages in your language files](#custom-messages-for-specific-attributes), making it a breeze to use a single validation message for array-based fields:
 
 ```php
