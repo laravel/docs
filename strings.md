@@ -152,6 +152,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [decrypt](#method-fluent-str-decrypt)
 [deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
+[doesntContain](#method-fluent-str-doesnt-contain)
 [doesntEndWith](#method-fluent-str-doesnt-end-with)
 [doesntStartWith](#method-fluent-str-doesnt-start-with)
 [encrypt](#method-fluent-str-encrypt)
@@ -551,7 +552,7 @@ You may also pass an array of values to determine if the given string doesn't co
 ```php
 use Illuminate\Support\Str;
 
-$doesntContain = Str::doesntContain('This is name', ['my', 'foo']);
+$doesntContain = Str::doesntContain('This is name', ['my', 'framework']);
 
 // true
 ```
@@ -2309,6 +2310,39 @@ use Illuminate\Support\Str;
 $string = Str::of('/foo/bar/baz')->dirname(2);
 
 // '/foo'
+```
+
+<a name="method-fluent-str-doesnt-contain"></a>
+#### `doesntContain()` {.collection-method}
+
+The `doesntContain` method determines if the given string does not contain the given value. This method is the inverse of the [contains](#method-fluent-str-contains) method. By default, this method is case sensitive:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is name')->doesntContain('my');
+
+// true
+```
+
+You may also pass an array of values to determine if the given string does not contain any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is name')->doesntContain(['my', 'framework']);
+
+// true
+```
+
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is my name')->doesntContain('MY', ignoreCase: true);
+
+// true
 ```
 
 <a name="method-fluent-str-doesnt-end-with"></a>
