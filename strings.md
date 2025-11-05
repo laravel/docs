@@ -550,7 +550,7 @@ You may also pass an array of values to determine if the given string doesn't co
 ```php
 use Illuminate\Support\Str;
 
-$doesntContain = Str::doesntContain('This is name', ['my', 'foo']);
+$doesntContain = Str::doesntContain('This is name', ['my', 'framework']);
 
 // true
 ```
@@ -2305,9 +2305,9 @@ The `doesntContain` method determines if the given string does not contain the g
 ```php
 use Illuminate\Support\Str;
 
-$doesntContain = Str::of('This is my name')->doesntContain('my');
+$doesntContain = Str::of('This is name')->doesntContain('my');
 
-// false
+// true
 ```
 
 You may also pass an array of values to determine if the given string does not contain any of the values in the array:
@@ -2315,19 +2315,19 @@ You may also pass an array of values to determine if the given string does not c
 ```php
 use Illuminate\Support\Str;
 
-$doesntContain = Str::of('This is my name')->doesntContain(['my', 'foo']);
+$doesntContain = Str::of('This is name')->doesntContain(['my', 'framework']);
 
-// false
+// true
 ```
 
-You may disable case sensitivity by setting the ignoreCase argument to true:
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
 
 ```php
 use Illuminate\Support\Str;
 
 $doesntContain = Str::of('This is my name')->doesntContain('MY', ignoreCase: true);
 
-// false
+// true
 ```
 
 <a name="method-fluent-str-doesnt-end-with"></a>
