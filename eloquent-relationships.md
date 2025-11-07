@@ -1504,11 +1504,18 @@ trait HasComments
     }
 }
 
-// Your model
+// Your models
 
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
+{
+    use HasComments;
+
+    // ...
+}
+
+class Video extends Model
 {
     use HasComments;
 
