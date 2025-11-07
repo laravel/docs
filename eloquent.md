@@ -1745,6 +1745,38 @@ static::created(queueable(function (User $user) {
 }));
 ```
 
+<a name="events-using-traits"></a>
+### Using Traits
+
+If your model has traits, the traits may carry their own booting functions. This can help you register closures listening to the events that should deal with the trait's logic, independent of the model the trait is attached to. The name of the function should be `boot` followed by the trait's name:
+
+```php
+// Your trait
+use Illuminate\Database\Eloquent\Model;
+
+trait HasBootedEvent
+{
+    protected static function bootHasBootedEvent()
+    {
+        static::created(function (Model $model) {
+            // ...
+        });
+    }
+}
+
+// Your model
+
+use Illuminate\Database\Eloquent\Model;
+use HasBootedEvent;
+
+class User extends Model
+{
+    use HasBootedEvent;
+
+    // ...
+}
+```
+
 <a name="observers"></a>
 ### Observers
 
