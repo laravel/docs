@@ -36,6 +36,7 @@
 - [Comparing Models](#comparing-models)
 - [Events](#events)
     - [Using Closures](#events-using-closures)
+    - [Using Traits](#events-using-traits)
     - [Observers](#observers)
     - [Muting Events](#muting-events)
 
