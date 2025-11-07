@@ -1753,6 +1753,7 @@ If your model has traits, the traits may carry their own booting functions. This
 
 ```php
 // Your trait
+
 use Illuminate\Database\Eloquent\Model;
 
 trait HasBootedEvent
