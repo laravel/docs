@@ -81,10 +81,12 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [makeHidden](#method-makeHidden)
 [only](#method-only)
 [partition](#method-partition)
+[setAppends](#method-setAppends)
 [setVisible](#method-setVisible)
 [setHidden](#method-setHidden)
 [toQuery](#method-toquery)
 [unique](#method-unique)
+[withoutAppends](#method-withoutAppends)
 
 </div>
 
@@ -251,6 +253,15 @@ dump($partition[0]::class); // Illuminate\Database\Eloquent\Collection
 dump($partition[1]::class); // Illuminate\Database\Eloquent\Collection
 ```
 
+<a name="method-setAppends"></a>
+#### `setAppends($attributes)` {.collection-method}
+
+The `setAppends` method temporarily overrides all of the [appended attributes](/docs/{{version}}/eloquent-serialization#appending-values-to-json) on each model in the collection:
+
+```php
+$users = $users->setAppends(['is_admin']);
+```
+
 <a name="method-setVisible"></a>
 #### `setVisible($attributes)` {.collection-method}
 
@@ -291,6 +302,15 @@ The `unique` method returns all of the unique models in the collection. Any mode
 
 ```php
 $users = $users->unique();
+```
+
+<a name="method-withoutAppends"></a>
+#### `withoutAppends($attributes)` {.collection-method}
+
+The `withoutAppends` method temporarily removes all of the [appended attributes](/docs/{{version}}/eloquent-serialization#appending-values-to-json) on each model in the collection:
+
+```php
+$users = $users->withoutAppends();
 ```
 
 <a name="custom-collections"></a>

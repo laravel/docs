@@ -111,7 +111,7 @@ Next, set the `default` option in your application's `config/mail.php` configura
 
 ```php
 'postmark' => [
-    'token' => env('POSTMARK_TOKEN'),
+    'key' => env('POSTMARK_API_TOKEN'),
 ],
 ```
 
@@ -142,7 +142,7 @@ Next, set the `default` option in your application's `config/mail.php` configura
 
 ```php
 'resend' => [
-    'key' => env('RESEND_KEY'),
+    'key' => env('RESEND_API_KEY'),
 ],
 ```
 

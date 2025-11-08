@@ -640,6 +640,20 @@ Since the `@once` directive is often used in conjunction with the `@push` or `@p
 @endPushOnce
 ```
 
+If you are pushing duplicate content from two separate Blade templates, you should provide a unique identifier as the second argument to the `@pushOnce` directive to ensure the content is only rendered once:
+
+```blade
+<!-- pie-chart.blade.php -->
+@pushOnce('scripts', 'chart.js')
+    <script src="/chart.js"></script>
+@endPushOnce
+
+<!-- line-chart.blade.php -->
+@pushOnce('scripts', 'chart.js')
+    <script src="/chart.js"></script>
+@endPushOnce
+```
+
 <a name="raw-php"></a>
 ### Raw PHP
 
@@ -719,14 +733,6 @@ php artisan make:component Forms/Input
 ```
 
 The command above will create an `Input` component in the `app/View/Components/Forms` directory and the view will be placed in the `resources/views/components/forms` directory.
-
-If you would like to create an anonymous component (a component with only a Blade template and no class), you may use the `--view` flag when invoking the `make:component` command:
-
-```shell
-php artisan make:component forms.input --view
-```
-
-The command above will create a Blade file at `resources/views/components/forms/input.blade.php` which can be rendered as a component via `<x-forms.input />`.
 
 <a name="manually-registering-package-components"></a>
 #### Manually Registering Package Components
@@ -1453,6 +1459,14 @@ You may use the `.` character to indicate if a component is nested deeper inside
 ```blade
 <x-inputs.button/>
 ```
+
+To create an anonymous component via Artisan, you may use the `--view` flag when invoking the `make:component` command:
+
+```shell
+php artisan make:component forms.input --view
+```
+
+The command above will create a Blade file at `resources/views/components/forms/input.blade.php` which can be rendered as a component via `<x-forms.input />`.
 
 <a name="anonymous-index-components"></a>
 ### Anonymous Index Components

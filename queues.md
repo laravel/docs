@@ -935,28 +935,6 @@ ProcessPodcast::dispatch($podcast)->withoutDelay();
 > [!WARNING]
 > The Amazon SQS queue service has a maximum delay time of 15 minutes.
 
-<a name="dispatching-after-the-response-is-sent-to-browser"></a>
-#### Dispatching After the Response is Sent to the Browser
-
-Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser if your web server is using [FastCGI](https://www.php.net/manual/en/install.fpm.php). This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:
-
-```php
-use App\Jobs\SendNotification;
-
-SendNotification::dispatchAfterResponse();
-```
-
-You may also `dispatch` a closure and chain the `afterResponse` method onto the [dispatch helper](/docs/{{version}}/helpers#method-dispatch) to execute a closure after the HTTP response has been sent to the browser:
-
-```php
-use App\Mail\WelcomeMessage;
-use Illuminate\Support\Facades\Mail;
-
-dispatch(function () {
-    Mail::to('taylor@example.com')->send(new WelcomeMessage);
-})->afterResponse();
-```
-
 <a name="synchronous-dispatching"></a>
 ### Synchronous Dispatching
 
@@ -988,6 +966,23 @@ class PodcastController extends Controller
         return redirect('/podcasts');
     }
 }
+```
+
+<a name="deferred-dispatching"></a>
+#### Deferred Dispatching
+
+Using deferred synchronous dispatching, you can dispatch a job to be processed during the current process, but after the HTTP response has been sent to the user. This allows you to process "queued" jobs synchronously without slowing down your user's application experience. To defer the execution of a synchronous job, dispatch the job to the `deferred` connection:
+
+```php
+RecordDelivery::dispatch($order)->onConnection('deferred');
+```
+
+The `deferred` connection also serves as the default [failover queue](#queue-failover).
+
+Similarly, the `background` connection processes jobs after the HTTP response has been sent to the user; however, the job is processed in a separately spawned PHP process, allowing the PHP-FPM / application worker to be available to handle another incoming HTTP request:
+
+```php
+RecordDelivery::dispatch($order)->onConnection('background');
 ```
 
 <a name="jobs-and-database-transactions"></a>
@@ -1483,8 +1478,6 @@ To define the message group for a [queued event listener](/docs/{{version}}/even
 
 namespace App\Listeners;
 
-use App\Events\OrderShipped;
-
 class SendShipmentNotification
 {
     // ...
@@ -1494,7 +1487,7 @@ class SendShipmentNotification
      */
     public function messageGroup(): string
     {
-        return "shipments";
+        return 'shipments';
     }
 
     /**
@@ -1543,6 +1536,7 @@ To configure a failover queue connection, specify the `failover` driver and prov
 'failover' => [
     'driver' => 'failover',
     'connections' => [
+        'redis',
         'database',
         'sync',
     ],
@@ -1555,7 +1549,20 @@ Once you have configured a connection that uses the `failover` driver, you will 
 QUEUE_CONNECTION=failover
 ```
 
+Next, start at least one worker for each connection in your failover connection list:
+
+```bash
+php artisan queue:work redis
+php artisan queue:work database
+```
+
+> [!NOTE]
+> You do not need to run a worker for connections using the `sync`, `background`, or `deferred` queue drivers since those drivers process jobs within the current PHP process.
+
 When a queue connection operation fails and failover is activated, Laravel will dispatch the `Illuminate\Queue\Events\QueueFailedOver` event, allowing you to report or log that a queue connection has failed.
+
+> [!TIP]
+> If you use Laravel Horizon, remember that Horizon manages Redis queues only. If your failover list includes `database`, you should run a regular `php artisan queue:work database` process alongside Horizon.
 
 <a name="error-handling"></a>
 ### Error Handling

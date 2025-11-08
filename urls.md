@@ -74,12 +74,6 @@ echo url()->current();
 
 // Get the current URL including the query string...
 echo url()->full();
-
-// Get the full URL for the previous request...
-echo url()->previous();
-
-// Get the path for the previous request...
-echo url()->previousPath();
 ```
 
 Each of these methods may also be accessed via the `URL` [facade](/docs/{{version}}/facades):
@@ -88,6 +82,37 @@ Each of these methods may also be accessed via the `URL` [facade](/docs/{{versio
 use Illuminate\Support\Facades\URL;
 
 echo URL::current();
+```
+
+<a name="accessing-the-previous-url"></a>
+#### Accessing the Previous URL
+
+Sometimes it is helpful to know the previous URL that the user is visiting from. You can access the previous URL via the `url` helper's `previous` and `previousPath` methods:
+
+```php
+// Get the full URL for the previous request...
+echo url()->previous();
+
+// Get the path for the previous request...
+echo url()->previousPath();
+```
+
+Or, via the [session](/docs/{{version}}/session), you may access the previous URL as a [fluent URI](#fluent-uri-objects) instance:
+
+```php
+use Illuminate\Http\Request;
+
+Route::post('/users', function (Request $request) {
+    $previousUri = $request->session()->previousUri();
+
+    // ...
+});
+```
+
+It is also possible to retrieve the route name for the previously visited URL via the session:
+
+```php
+$previousRoute = $request->session()->previousRoute();
 ```
 
 <a name="urls-for-named-routes"></a>
@@ -265,6 +290,9 @@ $uri = Uri::action(InvokableController::class);
 
 // Generate a URI instance from the current request URL...
 $uri = $request->uri();
+
+// Generate a URI instance from the previous request URL...
+$uri = $request->session()->previousUri();
 ```
 
 Once you have a URI instance, you can fluently modify it:

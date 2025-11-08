@@ -98,6 +98,30 @@ return User::findOrFail($id)->toResource();
 
 When invoking the `toResource` method, Laravel will attempt to locate a resource that matches the model's name and is optionally suffixed with `Resource` within the `Http\Resources` namespace closest to the model's namespace.
 
+If your resource class doesn't follow this naming convention or is located in a different namespace, you may specify the default resource for the model using the `UseResource` attribute:
+
+```php
+<?php
+
+namespace App\Models;
+
+use App\Http\Resources\CustomUserResource;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\UseResource;
+
+#[UseResource(CustomUserResource::class)]
+class User extends Model
+{
+    // ...
+}
+```
+
+Alternatively, you may specify resource class by passing it to the `toResource` method:
+
+```php
+return User::findOrFail($id)->toResource(CustomUserResource::class);
+```
+
 <a name="resource-collections"></a>
 ### Resource Collections
 
@@ -119,6 +143,30 @@ return User::all()->toResourceCollection();
 ```
 
 When invoking the `toResourceCollection` method, Laravel will attempt to locate a resource collection that matches the model's name and is suffixed with `Collection` within the `Http\Resources` namespace closest to the model's namespace.
+
+If your resource collection class doesn't follow this naming convention or is located in a different namespace, you may specify the default resource collection for the model using the `UseResourceCollection` attribute:
+
+```php
+<?php
+
+namespace App\Models;
+
+use App\Http\Resources\CustomUserCollection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\UseResourceCollection;
+
+#[UseResourceCollection(CustomUserCollection::class)]
+class User extends Model
+{
+    // ...
+}
+```
+
+Alternatively, you may specify the resource collection class by passing it to the `toResourceCollection` method:
+
+```php
+return User::all()->toResourceCollection(CustomUserCollection::class);
+```
 
 <a name="custom-resource-collections"></a>
 #### Custom Resource Collections

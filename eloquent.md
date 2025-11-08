@@ -794,6 +794,18 @@ $flight = Flight::updateOrCreate(
 );
 ```
 
+When using methods such as `firstOrCreate` or `updateOrCreate`, you may not know whether a new model has been created or an existing one has been updated. The `wasRecentlyCreated` property indicates if the model was created during its current lifecycle:
+
+```php
+$flight = Flight::updateOrCreate(
+    // ...
+);
+
+if ($flight->wasRecentlyCreated) {
+    // New flight record was inserted...
+}
+```
+
 <a name="mass-updates"></a>
 #### Mass Updates
 
