@@ -706,6 +706,17 @@ $flight = Flight::firstOrNew(
 );
 ```
 
+Alternately, we can also use the `createOrFirst` method, which will attempt to create a new record in the database first. If that fails because a unique index prevents duplicate values, the existing model will be returned.
+
+```php
+// We try to create a new flight with the below number and name first.
+// If that number already exists and has a unique index, the existing flight with that number will be returned.
+$flight = Flight::createOrFirst(
+    ['number' => 'AA1234'],
+    ['name' => 'Chicago to Vancouver']
+);
+```
+
 <a name="retrieving-aggregates"></a>
 ### Retrieving Aggregates
 
