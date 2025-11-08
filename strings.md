@@ -2342,7 +2342,7 @@ use Illuminate\Support\Str;
 
 $doesntContain = Str::of('This is my name')->doesntContain('MY', ignoreCase: true);
 
-// true
+// false
 ```
 
 <a name="method-fluent-str-doesnt-end-with"></a>
