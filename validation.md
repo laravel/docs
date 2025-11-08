@@ -2723,6 +2723,9 @@ Password::min(8)
     ->uncompromised()
 ```
 
+> [!NOTE]
+> The compromised password check will only happen if the submitted password has passed all of the other password complexity requirements that you have set.
+
 <a name="defining-default-password-rules"></a>
 #### Defining Default Password Rules
 
