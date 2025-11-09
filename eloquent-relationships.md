@@ -20,7 +20,6 @@
     - [One of Many](#one-of-many-polymorphic-relations)
     - [Many to Many](#many-to-many-polymorphic-relations)
     - [Custom Polymorphic Types](#custom-polymorphic-types)
-    - [Using Traits](#using-traits)
 - [Dynamic Relationships](#dynamic-relationships)
 - [Querying Relations](#querying-relations)
     - [Relationship Methods vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
@@ -1482,49 +1481,6 @@ $class = Relation::getMorphedModel($alias);
 
 > [!WARNING]
 > When adding a "morph map" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its "map" name.
-
-<a name="using-traits"></a>
-### Using Traits
-
-PHP's Trait mechanism can be helpful in dealing with polymorphic relationships. You may create a Trait containing your relationship and add it to your models to improve code cohesion. This is most useful for parent models that each reuse the same `morphOne` or `morphMany` methods:
-
-```php
-// Your trait
-
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-
-trait HasComments
-{
-    /**
-     * Get all of the comments of a model using this trait.
-     */
-    public function comments(): MorphMany
-    {
-        return $this->morphMany(Comment::class, 'commentable');
-    }
-}
-
-// Your models
-
-use Illuminate\Database\Eloquent\Model;
-
-class Post extends Model
-{
-    use HasComments;
-
-    // ...
-}
-
-class Video extends Model
-{
-    use HasComments;
-
-    // ...
-}
-```
-
-> [!NOTE]
-> You can further upgrade your traits concerning polymorphic relationships by registering to [model events](/docs/{{version}}/eloquent#events-using-traits).
 
 <a name="dynamic-relationships"></a>
 ### Dynamic Relationships
