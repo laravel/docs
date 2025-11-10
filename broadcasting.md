@@ -777,7 +777,7 @@ class ServerCreated implements ShouldBroadcast, ShouldDispatchAfterCommit
 
 Private channels require you to authorize that the currently authenticated user can actually listen on the channel. This is accomplished by making an HTTP request to your Laravel application with the channel name and allowing your application to determine if the user can listen on that channel. When using [Laravel Echo](#client-side-installation), the HTTP request to authorize subscriptions to private channels will be made automatically.
 
-When broadcasting is installed Laravel attempts to automatically register the `/broadcasting/auth` route to handle authorization requests. If this fails you must activate them manually in your `/bootstrap/app.php` file.
+When broadcasting is installed Laravel attempts to automatically register the `/broadcasting/auth` route to handle authorization requests. If Laravel fails to automatically register these routes, you may register them manually in your application's `/bootstrap/app.php` file:
 
 ```php
 ->withRouting(
@@ -786,8 +786,6 @@ When broadcasting is installed Laravel attempts to automatically register the `/
     health: '/up',
 )
 ```
-
-The `/broadcasting/auth` route is automatically placed within the `web` middleware group.
 
 <a name="defining-authorization-callbacks"></a>
 ### Defining Authorization Callbacks
