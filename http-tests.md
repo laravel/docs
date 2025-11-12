@@ -7,6 +7,7 @@
     - [Session / Authentication](#session-and-authentication)
     - [Debugging Responses](#debugging-responses)
     - [Exception Handling](#exception-handling)
+- [Caching Routes](#caching-routes)
 - [Testing JSON APIs](#testing-json-apis)
     - [Fluent JSON Testing](#fluent-json-testing)
 - [Testing File Uploads](#testing-file-uploads)
@@ -447,6 +448,52 @@ The `assertDoesntThrow` method may be used to assert that the code within a give
 
 ```php
 $this->assertDoesntThrow(fn () => (new ProcessOrder)->execute());
+```
+
+<a name="caching-routes"></a>
+## Caching Routes
+
+Before a test runs, Laravel boots a fresh instance of the application, including collecting all defined routes. If you have many routes files in your application, you may wish to employ `Illuminate\Foundation\Testing\WithCachedRoutes` trait. On tests which use this trait, routes are built once and stored in memory, meaning the route collection process is only run once for all tests in your suite.
+
+```php tab=Pest
+<?php
+
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Testing\WithCachedRoutes;
+
+pest()->use(WithCachedRoutes::class);
+
+test('basic example', function () {
+    $this->get(action([UserController::class, 'index']));
+
+    // ...
+});
+
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Testing\WithCachedRoutes;
+use Tests\TestCase;
+
+class BasicTest extends TestCase
+{
+    use WithCachedRoutes;
+
+    /**
+     * A basic functional test example.
+     */
+    public function test_basic_example(): void
+    {
+        $response = $this->get(action([UserController::class, 'index']));
+
+        // ...
+    }
+}
 ```
 
 <a name="testing-json-apis"></a>
