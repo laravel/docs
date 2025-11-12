@@ -37,7 +37,7 @@ In addition, you may create a `.env.testing` file in the root of your project. T
 
 When running tests, Laravel boots the application for each individual test method.  Without a cached configuration file, each config file must be loaded and parsed. To build the configuration once and re-use it for all tests in a single run, Laravel offers the `Illuminate\Foundation\Testing\WithCachedConfig` trait. 
 
-``php tab=Pest
+```php tab=Pest
 <?php
 
 use Illuminate\Foundation\Testing\WithCachedConfig;
