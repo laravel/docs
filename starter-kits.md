@@ -224,7 +224,7 @@ import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue'; // [tl! add]
 <a name="livewire-customization"></a>
 ### Livewire
 
-Our Livewire starter kit is built with Livewire 3, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+Our Livewire starter kit is built with Livewire 4, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
 
 The majority of the frontend code is located in the `resources/views` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
 
