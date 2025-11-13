@@ -71,6 +71,7 @@ class ConfigTest extends TestCase
      */
     public function test_modifies_config(): void
     {
+        config(['services.postmark.key' => 'xyz']);
         $this->assertEquals('xyz', config('services.postmark.key'));
     }
 
