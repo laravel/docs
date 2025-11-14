@@ -7,6 +7,7 @@
     - [Running Tests in Parallel](#running-tests-in-parallel)
     - [Reporting Test Coverage](#reporting-test-coverage)
     - [Profiling Tests](#profiling-tests)
+- [Caching Configuration](#caching-configuration)
 
 <a name="introduction"></a>
 ## Introduction
@@ -220,4 +221,35 @@ The Artisan test runner also includes a convenient mechanism for listing your ap
 
 ```shell
 php artisan test --profile
+```
+
+<a name="configuration-caching"></a>
+## Configuration Caching
+
+When running tests, Laravel boots the application for each individual test method.  Without a cached configuration file, each configuration file in your application must be loaded at the start of a test. To build the configuration once and re-use it for all tests in a single run, you may use the `Illuminate\Foundation\Testing\WithCachedConfig` trait:
+
+```php tab=Pest
+<?php
+
+use Illuminate\Foundation\Testing\WithCachedConfig;
+
+pest()->use(WithCachedConfig::class);
+
+// ...
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\WithCachedConfig;
+use Tests\TestCase;
+
+class ConfigTest extends TestCase
+{
+    use WithCachedConfig;
+
+    // ...
+}
 ```
