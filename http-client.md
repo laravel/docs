@@ -397,17 +397,17 @@ return Http::post(/* ... */)->throw(function (Response $response, RequestExcepti
 })->json();
 ```
 
-By default, `RequestException` messages are truncated to 120 characters when logged or reported. To customize or disable this behavior, you may utilize the `truncateRequestExceptionsAt` and `dontTruncateRequestExceptions` methods when configuring your application's exception handling behavior in your `bootstrap/app.php` file:
+By default, `RequestException` messages are truncated to 120 characters when logged or reported. To customize or disable this behavior, you may utilize the `truncateAt` and `dontTruncate` methods when configuring your application's registered behavior in your `bootstrap/app.php` file:
 
 ```php
-use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Http\Client\RequestException;
 
-->withExceptions(function (Exceptions $exceptions): void {
+->registered(function (): void {
     // Truncate request exception messages to 240 characters...
-    $exceptions->truncateRequestExceptionsAt(240);
+    RequestException::truncateAt(240);
 
     // Disable request exception message truncation...
-    $exceptions->dontTruncateRequestExceptions();
+    RequestException::dontTruncate();
 })
 ```
 
