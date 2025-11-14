@@ -2,12 +2,12 @@
 
 - [Introduction](#introduction)
 - [Environment](#environment)
-- [Caching Configuration](#caching-config)
 - [Creating Tests](#creating-tests)
 - [Running Tests](#running-tests)
     - [Running Tests in Parallel](#running-tests-in-parallel)
     - [Reporting Test Coverage](#reporting-test-coverage)
     - [Profiling Tests](#profiling-tests)
+- [Caching Configuration](#caching-configuration)
 
 <a name="introduction"></a>
 ## Introduction
@@ -31,62 +31,6 @@ You are free to define other testing environment configuration values as necessa
 #### The `.env.testing` Environment File
 
 In addition, you may create a `.env.testing` file in the root of your project. This file will be used instead of the `.env` file when running Pest and PHPUnit tests or executing Artisan commands with the `--env=testing` option.
-
-<a name="caching-config"></a>
-## Caching Config
-
-When running tests, Laravel boots the application for each individual test method.  Without a cached configuration file, each config file for your application must be loaded at the start of a test. To build the configuration once and re-use it for all tests in a single run, Laravel offers the `Illuminate\Foundation\Testing\WithCachedConfig` trait. 
-
-```php tab=Pest
-<?php
-
-use Illuminate\Foundation\Testing\WithCachedConfig;
-
-pest()->use(WithCachedConfig::class);
-
-test('modifies config', function () {
-    config(['services.postmark.key' => 'xyz']);
-    expect(config('services.postmark.key'))->toBe('xyz');
-});
-
-test('uses default config', function () {
-    expect(config('services.postmark.key'))->not->toBe('xyz');
-});
-```
-
-```php tab=PHPUnit
-<?php
-
-namespace Tests\Feature;
-
-use Illuminate\Foundation\Testing\WithCachedConfig;
-use Tests\TestCase;
-
-class ConfigTest extends TestCase
-{
-    use WithCachedConfig;
-
-    /**
-     * A test that modifies the config.
-     */
-    public function test_modifies_config(): void
-    {
-        config(['services.postmark.key' => 'xyz']);
-        $this->assertEquals('xyz', config('services.postmark.key'));
-    }
-
-    /**
-     * A test that makes no modification to the config.
-     */
-    public function test_uses_default_config(): void
-    {
-        $this->assertNotEquals('xyz', config('services.postmark.key'));
-    }
-}
-```
-
-> [!NOTE]
-> Changes to the cache in one test case should not affect the configuration that is loaded in subsequent tests.
 
 <a name="creating-tests"></a>
 ## Creating Tests
@@ -277,4 +221,35 @@ The Artisan test runner also includes a convenient mechanism for listing your ap
 
 ```shell
 php artisan test --profile
+```
+
+<a name="configuration-caching"></a>
+## Configuration Caching
+
+When running tests, Laravel boots the application for each individual test method.  Without a cached configuration file, each configuration file in your application must be loaded at the start of a test. To build the configuration once and re-use it for all tests in a single run, you may use the `Illuminate\Foundation\Testing\WithCachedConfig` trait:
+
+```php tab=Pest
+<?php
+
+use Illuminate\Foundation\Testing\WithCachedConfig;
+
+pest()->use(WithCachedConfig::class);
+
+// ...
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\WithCachedConfig;
+use Tests\TestCase;
+
+class ConfigTest extends TestCase
+{
+    use WithCachedConfig;
+
+    // ...
+}
 ```
