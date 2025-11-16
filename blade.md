@@ -1855,7 +1855,7 @@ If you would like to prepend content onto the beginning of a stack, you should u
 @endprepend
 ```
 
-To conditionally wrap content around the stack if it is not empty, use the `@hasstack` directive:
+The `@hasstack` directive may be used to determine if a stack is empty:
 
 ```blade
 @hasstack('list')
