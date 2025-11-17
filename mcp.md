@@ -1128,6 +1128,9 @@ You can attach metadata to individual response content using the `withMeta` meth
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 
+/**
+ * Handle the tool request.
+ */
 public function handle(Request $request): Response
 {
     return Response::text('The weather is sunny.')
@@ -1142,6 +1145,9 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
 
+/**
+ * Handle the tool request.
+ */
 public function handle(Request $request): ResponseFactory
 {
     return Response::make(
