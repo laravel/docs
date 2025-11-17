@@ -29,7 +29,7 @@
     - [Resource Dependency Injection](#resource-dependency-injection)
     - [Conditional Resource Registration](#conditional-resource-registration)
     - [Resource Responses](#resource-responses)
-- [Meta](#meta)
+- [Metadata](#metadata)
 - [Authentication](#authentication)
     - [OAuth 2.1](#oauth)
     - [Sanctum](#sanctum)
@@ -1117,13 +1117,10 @@ To indicate an error occurred during resource retrieval, use the `error()` metho
 return Response::error('Unable to fetch weather data for the specified location.');
 ```
 
-<a name="meta"></a>
-## Meta
+<a name="metadata"></a>
+## Metadata
 
-Laravel MCP supports the `_meta` field as specified in the [MCP specification](https://modelcontextprotocol.io/specification/2025-06-18/basic#meta). In most cases, you won't need to attach metadata to your responses. However, certain MCP clients or integrations may require it to add meta for different use cases.
-
-> [!NOTE]
-> Meta can be applied to all MCP primitives, including tools, resources, and prompts, as well as their responses.
+Laravel MCP also supports the `_meta` field as specified in the [MCP specification](https://modelcontextprotocol.io/specification/2025-06-18/basic#meta), which is required by certain MCP clients or integrations. Metadata can be applied to all MCP primitives, including tools, resources, and prompts, as well as their responses.
 
 You can attach metadata to individual response content using the `withMeta` method:
 
@@ -1138,7 +1135,7 @@ public function handle(Request $request): Response
 }
 ```
 
-For result-level metadata that applies to the entire response envelope, wrap your responses with `Response::make` and call `withMeta` on the returned factory:
+For result-level metadata that applies to the entire response envelope, wrap your responses with `Response::make` and call `withMeta` on the returned response factory instance:
 
 ```php
 use Laravel\Mcp\Request;
@@ -1153,7 +1150,7 @@ public function handle(Request $request): ResponseFactory
 }
 ```
 
-To attach metadata to a tool, resource, or prompt itself (which appears in listing responses), define a `$meta` property on the class:
+To attach metadata to a tool, resource, or prompt itself, define a `$meta` property on the class:
 
 ```php
 use Laravel\Mcp\Server\Tool;
