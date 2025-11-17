@@ -1117,7 +1117,7 @@ To indicate an error occurred during resource retrieval, use the `error()` metho
 return Response::error('Unable to fetch weather data for the specified location.');
 ```
 
-<a name="metadata"></a>
+<a name="meta"></a>
 ## Meta
 
 Laravel MCP supports the `_meta` field as specified in the [MCP specification](https://modelcontextprotocol.io/specification/2025-06-18/basic#meta). In most cases, you won't need to attach metadata to your responses. However, certain MCP clients or integrations may require it to add meta for different use cases.
