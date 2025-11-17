@@ -111,7 +111,7 @@ Next, set the `default` option in your application's `config/mail.php` configura
 
 ```php
 'postmark' => [
-    'key' => env('POSTMARK_API_TOKEN'),
+    'key' => env('POSTMARK_API_KEY'),
 ],
 ```
 
