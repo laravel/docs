@@ -890,7 +890,7 @@ ProcessPodcast::dispatchIf($accountActive, $podcast);
 ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
 ```
 
-In new Laravel applications, the `database` driver is the default queue driver. You may specify a different queue driver within your application's `config/queue.php` configuration file.
+In new Laravel applications, the `database` connection is defined as the default queue. You may specify a different default queue connection by changing the `QUEUE_CONNECTION` environment variable in your application's `.env` file.
 
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
