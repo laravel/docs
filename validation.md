@@ -1504,25 +1504,6 @@ Validator::make($data, [
 ]);
 ```
 
-<a name="rule-encoding"></a>
-#### encoding:*encoding_type*
-
-The field under validation must match the specified character encoding. This rule uses PHP's `mb_check_encoding()` function to verify the encoding of both strings and file contents.
-
-For convenience, encoding rule may be constructed using the fluent file rule builder:
-
-```php
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\File;
-
-Validator::validate($input, [
-    'attachment' => [
-        'required',
-        File::rule()->encoding('utf-8'),
-    ],
-]);
-```
-
 <a name="rule-distinct"></a>
 #### distinct
 
@@ -1594,6 +1575,25 @@ $request->validate([
 
 > [!WARNING]
 > The `dns` and `spoof` validators require the PHP `intl` extension.
+
+<a name="rule-encoding"></a>
+#### encoding:*encoding_type*
+
+The field under validation must match the specified character encoding. This rule uses PHP's `mb_check_encoding()` function to verify the encoding of both strings and file contents.
+
+For convenience, encoding rule may be constructed using the fluent file rule builder:
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\File;
+
+Validator::validate($input, [
+    'attachment' => [
+        'required',
+        File::rule()->encoding('utf-8'),
+    ],
+]);
+```
 
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...
