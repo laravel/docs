@@ -7,7 +7,7 @@
     - [Running Tests in Parallel](#running-tests-in-parallel)
     - [Reporting Test Coverage](#reporting-test-coverage)
     - [Profiling Tests](#profiling-tests)
-- [Caching Configuration](#caching-configuration)
+- [Configuration Caching](#configuration-caching)
 
 <a name="introduction"></a>
 ## Introduction
