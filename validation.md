@@ -1590,7 +1590,7 @@ use Illuminate\Validation\Rules\File;
 Validator::validate($input, [
     'attachment' => [
         'required',
-        File::rule()->encoding('utf-8'),
+        File::encoding('utf-8'),
     ],
 ]);
 ```
