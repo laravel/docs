@@ -1579,9 +1579,7 @@ $request->validate([
 <a name="rule-encoding"></a>
 #### encoding:*encoding_type*
 
-The field under validation must match the specified character encoding. This rule uses PHP's `mb_check_encoding()` function to verify the encoding of both strings and file contents.
-
-For convenience, encoding rule may be constructed using the fluent file rule builder:
+The field under validation must match the specified character encoding. This rule uses PHP's `mb_check_encoding` function to verify the encoding of the given file or string value. For convenience, the `encoding` rule may be constructed using Laravel's fluent file rule builder:
 
 ```php
 use Illuminate\Support\Facades\Validator;
@@ -1590,7 +1588,8 @@ use Illuminate\Validation\Rules\File;
 Validator::validate($input, [
     'attachment' => [
         'required',
-        File::encoding('utf-8'),
+        File::types(['csv'])
+            ->encoding('utf-8'),
     ],
 ]);
 ```
