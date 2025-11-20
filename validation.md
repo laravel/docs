@@ -1075,6 +1075,7 @@ Below is a list of all available validation rules and their function:
 
 [Between](#rule-between)
 [Dimensions](#rule-dimensions)
+[Encoding](#rule-encoding)
 [Extensions](#rule-extensions)
 [File](#rule-file)
 [Image](#rule-image)
@@ -1499,6 +1500,25 @@ Validator::make($data, [
             ->maxWidth(1000)
             ->maxHeight(500)
             ->ratio(3 / 2),
+    ],
+]);
+```
+
+<a name="rule-encoding"></a>
+#### encoding:*encoding_type*
+
+The field under validation must match the specified character encoding. This rule uses PHP's `mb_check_encoding()` function to verify the encoding of both strings and file contents.
+
+For convenience, encoding rule may be constructed using the fluent file rule builder:
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\File;
+
+Validator::validate($input, [
+    'attachment' => [
+        'required',
+        File::rule()->encoding('utf-8'),
     ],
 ]);
 ```
