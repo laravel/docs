@@ -211,6 +211,12 @@ Likewise, you may also instruct Laravel to only show routes that are defined by 
 php artisan route:list --only-vendor
 ```
 
+If you want to only show routes that use a specific middleware:
+
+```shell
+php artisan route:list --middleware=api
+```
+
 <a name="routing-customization"></a>
 ### Routing Customization
 
