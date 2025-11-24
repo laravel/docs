@@ -294,6 +294,9 @@ You may retrieve all of the incoming request's input data as an `array` using th
 $input = $request->all();
 ```
 
+> [!WARNING]
+> Malicious users may inject unexpected inputs into the request. Use [validation](/docs/{{version}}/validation) to ensure the input is safe before using it.
+
 Using the `collect` method, you may retrieve all of the incoming request's input data as a [collection](/docs/{{version}}/collections):
 
 ```php
