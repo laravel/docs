@@ -650,31 +650,28 @@ When this card is included on the dashboard, Pulse will automatically include th
 <a name="custom-card-styling-tailwind"></a>
 #### Tailwind CSS
 
-When using Tailwind CSS, you should create a dedicated Tailwind configuration file to avoid loading unnecessary CSS or conflicting with Pulse's Tailwind classes:
-
-```js
-export default {
-    darkMode: 'class',
-    important: '#top-sellers',
-    content: [
-        './resources/views/livewire/pulse/top-sellers.blade.php',
-    ],
-    corePlugins: {
-        preflight: false,
-    },
-};
-```
-
-You may then specify the configuration file in your CSS entrypoint:
+When using Tailwind CSS, you should create a main CSS entrypoint where you import TailwindCSS and, using `@source`, provide the relative paths to the files that contain the Tailwind CSS utilities. To avoid conflicts with other Tailwind CSS classes, a special import is required, where the utilities are integrated by embedding them inside a dedicated CSS selector (e.g. `#top-sellers`).
 
 ```css
-@config "../../tailwind.top-sellers.config.js";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+
+@source "./../../resources/views/livewire/pulse/top-sellers.blade.php";
+
+@theme {
+  /* ... */
+}
+
+@layer utilities {
+  #top-sellers {
+    @tailwind utilities;
+  }
+}
 ```
 
-You will also need to include an `id` or `class` attribute in your card's view that matches the selector passed to Tailwind's [important selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy):
+You will also need to include an `id` or `class` attribute in your card's view that matches the selector passed the previously specified special selector:
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">
