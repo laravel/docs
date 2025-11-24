@@ -658,6 +658,7 @@ When using Tailwind CSS, you should create a main CSS entrypoint where you impor
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 
+@custom-variant dark (&:where(.dark, .dark *));
 @source "./../../resources/views/livewire/pulse/top-sellers.blade.php";
 
 @theme {
