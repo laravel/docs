@@ -1855,6 +1855,16 @@ If you would like to prepend content onto the beginning of a stack, you should u
 @endprepend
 ```
 
+The `@hasstack` directive may be used to determine if a stack is empty:
+
+```blade
+@hasstack('list')
+    <ul>
+        @stack('list')
+    </ul>
+@endif
+```
+
 <a name="service-injection"></a>
 ## Service Injection
 

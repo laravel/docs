@@ -12,6 +12,7 @@
 - [Testing File Uploads](#testing-file-uploads)
 - [Testing Views](#testing-views)
     - [Rendering Blade and Components](#rendering-blade-and-components)
+- [Caching Routes](#caching-routes)
 - [Available Assertions](#available-assertions)
     - [Response Assertions](#response-assertions)
     - [Authentication Assertions](#authentication-assertions)
@@ -936,6 +937,51 @@ You may use the `component` method to evaluate and render a [Blade component](/d
 $view = $this->component(Profile::class, ['name' => 'Taylor']);
 
 $view->assertSee('Taylor');
+```
+
+<a name="caching-routes"></a>
+## Caching Routes
+
+Before a test runs, Laravel boots a fresh instance of the application, including collecting all defined routes. If your applications have many route files, you may wish to add the `Illuminate\Foundation\Testing\WithCachedRoutes` trait to your test cases. On tests which use this trait, routes are built once and stored in memory, meaning the route collection process is only run once for all tests in your suite:
+
+```php tab=Pest
+<?php
+
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Testing\WithCachedRoutes;
+
+pest()->use(WithCachedRoutes::class);
+
+test('basic example', function () {
+    $this->get(action([UserController::class, 'index']));
+
+    // ...
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Testing\WithCachedRoutes;
+use Tests\TestCase;
+
+class BasicTest extends TestCase
+{
+    use WithCachedRoutes;
+
+    /**
+     * A basic functional test example.
+     */
+    public function test_basic_example(): void
+    {
+        $response = $this->get(action([UserController::class, 'index']));
+
+        // ...
+    }
+}
 ```
 
 <a name="available-assertions"></a>

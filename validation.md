@@ -1075,6 +1075,7 @@ Below is a list of all available validation rules and their function:
 
 [Between](#rule-between)
 [Dimensions](#rule-dimensions)
+[Encoding](#rule-encoding)
 [Extensions](#rule-extensions)
 [File](#rule-file)
 [Image](#rule-image)
@@ -1574,6 +1575,24 @@ $request->validate([
 
 > [!WARNING]
 > The `dns` and `spoof` validators require the PHP `intl` extension.
+
+<a name="rule-encoding"></a>
+#### encoding:*encoding_type*
+
+The field under validation must match the specified character encoding. This rule uses PHP's `mb_check_encoding` function to verify the encoding of the given file or string value. For convenience, the `encoding` rule may be constructed using Laravel's fluent file rule builder:
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\File;
+
+Validator::validate($input, [
+    'attachment' => [
+        'required',
+        File::types(['csv'])
+            ->encoding('utf-8'),
+    ],
+]);
+```
 
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...

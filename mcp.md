@@ -29,6 +29,7 @@
     - [Resource Dependency Injection](#resource-dependency-injection)
     - [Conditional Resource Registration](#conditional-resource-registration)
     - [Resource Responses](#resource-responses)
+- [Metadata](#metadata)
 - [Authentication](#authentication)
     - [OAuth 2.1](#oauth)
     - [Sanctum](#sanctum)
@@ -1114,6 +1115,63 @@ To indicate an error occurred during resource retrieval, use the `error()` metho
 
 ```php
 return Response::error('Unable to fetch weather data for the specified location.');
+```
+
+<a name="metadata"></a>
+## Metadata
+
+Laravel MCP also supports the `_meta` field as defined in the [MCP specification](https://modelcontextprotocol.io/specification/2025-06-18/basic#meta), which is required by certain MCP clients or integrations. Metadata can be applied to all MCP primitives, including tools, resources, and prompts, as well as their responses.
+
+You can attach metadata to individual response content using the `withMeta` method:
+
+```php
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+
+/**
+ * Handle the tool request.
+ */
+public function handle(Request $request): Response
+{
+    return Response::text('The weather is sunny.')
+        ->withMeta(['source' => 'weather-api', 'cached' => true]);
+}
+```
+
+For result-level metadata that applies to the entire response envelope, wrap your responses with `Response::make` and call `withMeta` on the returned response factory instance:
+
+```php
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\ResponseFactory;
+
+/**
+ * Handle the tool request.
+ */
+public function handle(Request $request): ResponseFactory
+{
+    return Response::make(
+        Response::text('The weather is sunny.')
+    )->withMeta(['request_id' => '12345']);
+}
+```
+
+To attach metadata to a tool, resource, or prompt itself, define a `$meta` property on the class:
+
+```php
+use Laravel\Mcp\Server\Tool;
+
+class CurrentWeatherTool extends Tool
+{
+    protected string $description = 'Fetches the current weather forecast.';
+
+    protected ?array $meta = [
+        'version' => '2.0',
+        'author' => 'Weather Team',
+    ];
+
+    // ...
+}
 ```
 
 <a name="authentication"></a>
