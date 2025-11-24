@@ -295,7 +295,7 @@ $input = $request->all();
 ```
 
 > [!WARNING]
-> Malicious users may inject unexpected inputs into the request. Use [validation](/docs/{{version}}/validation) to ensure the input is safe before using it.
+> Malicious users may inject unexpected inputs into the request. Use [validation](/docs/{{version}}/validation) to ensure the input is safe before using it. The `all` method will not filter the incoming request data.
 
 Using the `collect` method, you may retrieve all of the incoming request's input data as a [collection](/docs/{{version}}/collections):
 
