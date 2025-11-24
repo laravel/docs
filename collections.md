@@ -3191,6 +3191,14 @@ $collection->sum(function (array $product) {
 // 6
 ```
 
+Summing an empty collection results in 0:
+
+```php
+collect()->sum();
+
+// 0
+```
+
 <a name="method-take"></a>
 #### `take()` {.collection-method}
 
