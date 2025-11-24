@@ -2176,6 +2176,12 @@ $users = User::withWhereHas('posts', function ($query) {
 })->get();
 ```
 
+Alternatively, you may use the `withWhereRelation` method to eager load and filter relationships based on simple `where` conditions in a single, simplified and convenient method. This method provides a simplified syntax compared to `withWhereHas`:
+
+```php
+$users = User::withWhereRelation('posts', 'featured', true)->get();
+```
+
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
 
