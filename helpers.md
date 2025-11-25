@@ -4,7 +4,7 @@
 - [Available Methods](#available-methods)
 - [Other Utilities](#other-utilities)
     - [Benchmarking](#benchmarking)
-    - [Dates](#dates)
+    - [Dates and Time](#dates)
     - [Deferred Functions](#deferred-functions)
     - [Lottery](#lottery)
     - [Pipeline](#pipeline)
@@ -3194,7 +3194,7 @@ Sometimes, you may want to benchmark the execution of a callback while still obt
 ```
 
 <a name="dates"></a>
-### Dates
+### Dates and Time
 
 Laravel includes [Carbon](https://carbon.nesbot.com/docs/), a powerful date and time manipulation library. To create a new `Carbon` instance, you may invoke the `now` function. This function is globally available within your Laravel application:
 
@@ -3210,7 +3210,32 @@ use Illuminate\Support\Carbon;
 $now = Carbon::now();
 ```
 
+Laravel also augments `Carbon` instances with `plus` and `minus` methods, allowing easy manipulation of the instance's date and time:
+
+```php
+return now()->plus(minutes: 5);
+return now()->plus(hours: 8);
+return now()->plus(weeks: 4);
+
+return now()->minus(minutes: 5);
+return now()->minus(hours: 8);
+return now()->minus(weeks: 4);
+```
+
 For a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/docs/).
+
+<a name="interval-functions"></a>
+#### Interval Functions
+
+Laravel also offers `seconds`, `minutes`, `hours`, `days`, and `years` functions that return `CarbonInterval` instances, which extend PHP's [DateInterval](https://www.php.net/manual/en/class.dateinterval.php) class. These functions may be used anywhere that Laravel accepts a `DateInterval` instance:
+
+```php
+use Illuminate\Support\Facades\Cache;
+
+use function Illuminate\Support\{minutes};
+
+Cache::put('metrics', $metrics, minutes(10));
+```
 
 <a name="deferred-functions"></a>
 ### Deferred Functions
