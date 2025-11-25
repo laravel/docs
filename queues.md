@@ -39,6 +39,7 @@
     - [Queue Priorities](#queue-priorities)
     - [Queue Workers and Deployment](#queue-workers-and-deployment)
     - [Job Expirations and Timeouts](#job-expirations-and-timeouts)
+    - [Pausing and Resuming Queue Workers](#pausing-and-resuming-queue-workers)
 - [Supervisor Configuration](#supervisor-configuration)
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
@@ -2290,6 +2291,27 @@ The `retry_after` configuration option and the `--timeout` CLI option are differ
 
 > [!WARNING]
 > The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a frozen job is always terminated before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice.
+
+<a name="pausing-and-resuming-queue-workers"></a>
+### Pausing and Resuming Queue Workers
+
+Sometimes you may need to temporarily prevent a queue worker from processing new jobs without stopping the worker entirely. For example, you may want to pause job processing during system maintenance. Laravel provides the `queue:pause` and `queue:continue` Artisan commands to pause and resume queue workers.
+
+To pause a specific queue, provide the queue connection name and the queue name:
+
+```shell
+php artisan queue:pause database:default
+```
+
+In this example, `database` is the queue connection name and `default` is the queue name. Once a queue is paused, any workers processing jobs from that queue will continue to finish their current job, but will not pick up any new jobs until the queue is resumed.
+
+To resume processing jobs on a paused queue, use the `queue:continue` command:
+
+```shell
+php artisan queue:continue database:default
+```
+
+After resuming a queue, workers will begin processing new jobs from that queue immediately. Note that pausing a queue does not stop the worker process itself - it only prevents the worker from processing new jobs from the specified queue.
 
 <a name="supervisor-configuration"></a>
 ## Supervisor Configuration
