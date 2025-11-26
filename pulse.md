@@ -653,21 +653,17 @@ When this card is included on the dashboard, Pulse will automatically include th
 When using Tailwind CSS, you should create a dedicated CSS entrypoint. The following example excludes Tailwind's [Preflight](https://tailwindcss.com/docs/preflight) base styles which are already included by Pulse, and scopes Tailwind using a CSS selector to avoid conflicts with Pulse's Tailwind classes.
 
 ```css
-@layer theme, base, components, utilities;
-
-@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/theme.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
-@source "./../../resources/views/livewire/pulse/top-sellers.blade.php";
+@source "./../../views/livewire/pulse/top-sellers.blade.php";
 
 @theme {
   /* ... */
 }
 
-@layer utilities {
-  #top-sellers {
-    @tailwind utilities;
-  }
+#top-sellers {
+  @import "tailwindcss/utilities.css" source(none);
 }
 ```
 
