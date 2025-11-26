@@ -650,7 +650,7 @@ When this card is included on the dashboard, Pulse will automatically include th
 <a name="custom-card-styling-tailwind"></a>
 #### Tailwind CSS
 
-When using Tailwind CSS, you should create a main CSS entrypoint where you import TailwindCSS and, using `@source`, provide the relative paths to the files that contain the Tailwind CSS utilities. To avoid conflicts with other Tailwind CSS classes, a special import is required, where the utilities are integrated by embedding them inside a dedicated CSS selector (e.g. `#top-sellers`).
+When using Tailwind CSS, you should create a dedicated CSS entrypoint. The following example excludes Tailwind's [Preflight](https://tailwindcss.com/docs/preflight) base styles which are already included by Pulse, and scopes Tailwind using a CSS selector to avoid conflicts with Pulse's Tailwind classes.
 
 ```css
 @layer theme, base, components, utilities;
