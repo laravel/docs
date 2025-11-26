@@ -674,7 +674,7 @@ When using Tailwind CSS, you should create a dedicated CSS entrypoint. The follo
 }
 ```
 
-You will also need to include an `id` or `class` attribute in your card's view that matches the selector passed the previously specified special selector:
+You will also need to include an `id` or `class` attribute in your card's view that matches the CSS selector in your entrypoint:
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">
