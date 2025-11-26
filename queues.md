@@ -1562,7 +1562,7 @@ php artisan queue:work database
 
 When a queue connection operation fails and failover is activated, Laravel will dispatch the `Illuminate\Queue\Events\QueueFailedOver` event, allowing you to report or log that a queue connection has failed.
 
-> [!TIP]
+> [!NOTE]
 > If you use Laravel Horizon, remember that Horizon manages Redis queues only. If your failover list includes `database`, you should run a regular `php artisan queue:work database` process alongside Horizon.
 
 <a name="error-handling"></a>
