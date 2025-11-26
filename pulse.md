@@ -656,9 +656,6 @@ When using Tailwind CSS, you should create a dedicated CSS entrypoint. The follo
 @layer theme, base, components, utilities;
 
 @import "tailwindcss/theme.css" layer(theme);
-/* For disable Preflight just don't import preflight.css */
-/* See more: https://tailwindcss.com/docs/preflight#disabling-preflight */
-/* @import "tailwindcss/preflight.css" layer(base); */
 
 @custom-variant dark (&:where(.dark, .dark *));
 @source "./../../resources/views/livewire/pulse/top-sellers.blade.php";
