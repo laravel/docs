@@ -10,6 +10,7 @@
 - [Tools](#tools)
     - [Creating Tools](#creating-tools)
     - [Tool Input Schemas](#tool-input-schemas)
+    - [Tool Output Schemas](#tool-output-schemas)
     - [Validating Tool Arguments](#validating-tool-arguments)
     - [Tool Dependency Injection](#tool-dependency-injection)
     - [Tool Annotations](#tool-annotations)
@@ -322,6 +323,45 @@ class CurrentWeatherTool extends Tool
 }
 ```
 
+<a name="tool-output-schemas"></a>
+### Tool Output Schemas
+
+Tools can define [output schemas](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#output-schema) to specify the structure of their responses. This enables better integration with AI clients that need parseable tool results. Use the `outputSchema` method to define your tool's output structure:
+
+```php
+<?php
+
+namespace App\Mcp\Tools;
+
+use Illuminate\JsonSchema\JsonSchema;
+use Laravel\Mcp\Server\Tool;
+
+class CurrentWeatherTool extends Tool
+{
+    /**
+     * Get the tool's output schema.
+     *
+     * @return array<string, JsonSchema>
+     */
+    public function outputSchema(JsonSchema $schema): array
+    {
+        return [
+            'temperature' => $schema->number()
+                ->description('Temperature in Celsius')
+                ->required(),
+
+            'conditions' => $schema->string()
+                ->description('Weather conditions')
+                ->required(),
+
+            'humidity' => $schema->integer()
+                ->description('Humidity percentage')
+                ->required(),
+        ];
+    }
+}
+```
+
 <a name="validating-tool-arguments"></a>
 ### Validating Tool Arguments
 
@@ -505,6 +545,30 @@ To indicate an error occurred during tool execution, use the `error` method:
 
 ```php
 return Response::error('Unable to fetch weather data. Please try again.');
+```
+
+<a name="structured-responses"></a>
+#### Structured Responses
+
+Tools can return [structured content](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#structured-content) using the `structured` method. This provides parseable data for AI clients while maintaining backward compatibility with a JSON-encoded text representation:
+
+```php
+return Response::structured([
+    'temperature' => 22.5,
+    'conditions' => 'Partly cloudy',
+    'humidity' => 65,
+]);
+```
+
+If you need to provide custom text alongside structured content, use the `withStructuredContent` method on the response factory:
+
+```php
+return Response::make(
+    Response::text('Weather is 22.5°C and sunny')
+)->withStructuredContent([
+    'temperature' => 22.5,
+    'conditions' => 'Sunny',
+]);
 ```
 
 <a name="multiple-content-responses"></a>
