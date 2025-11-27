@@ -1047,7 +1047,7 @@ use Laravel\Mcp\Server\Annotations\LastModified;
 use Laravel\Mcp\Server\Annotations\Priority;
 use Laravel\Mcp\Server\Resource;
 
-#[Audience(Role::USER)]
+#[Audience(Role::User)]
 #[Priority(0.9)]
 #[LastModified('2025-01-12T15:00:58Z')]
 class UserDashboardResource extends Resource
@@ -1060,7 +1060,7 @@ Available annotations include:
 
 | Annotation       | Type           | Description                                                                                     |
 | ---------------- | -------------- | ----------------------------------------------------------------------------------------------- |
-| `#[Audience]`    | Role or array  | Specifies the intended audience (`Role::USER`, `Role::ASSISTANT`, or both).                    |
+| `#[Audience]`    | Role or array  | Specifies the intended audience (`Role::User`, `Role::Assistant`, or both).                    |
 | `#[Priority]`    | float          | A numerical score between 0.0 and 1.0 indicating resource importance.                          |
 | `#[LastModified]`| string         | An ISO 8601 timestamp showing when the resource was last updated.                               |
 
