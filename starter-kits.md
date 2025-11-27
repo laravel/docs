@@ -10,7 +10,11 @@
     - [React](#react-customization)
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
-- [Two-Factor Authentication](#two-factor-authentication)
+- [Authentication](#authentication)
+    - [Enabling and Disabling Features](#enabling-and-disabling-features)
+    - [Customizing User Creation and Password Reset](#customizing-actions)
+    - [Two-Factor Authentication](#two-factor-authentication)
+    - [Rate Limiting](#rate-limiting)
 - [WorkOS AuthKit Authentication](#workos)
 - [Inertia SSR](#inertia-ssr)
 - [Community Maintained Starter Kits](#community-maintained-starter-kits)
@@ -270,18 +274,106 @@ To change your authentication layout, modify the layout that is used by your app
 </x-layouts.auth.split>
 ```
 
-<a name="two-factor-authentication"></a>
-## Two-Factor Authentication
+<a name="authentication"></a>
+## Authentication
 
-All starter kits include built-in two-factor authentication (2FA) powered by [Laravel Fortify](/docs/{{version}}/fortify#two-factor-authentication), adding an extra layer of security to user accounts. Users can protect their accounts using any Time-based One-Time Password (TOTP) supporting authenticator application.
+All starter kits use [Laravel Fortify](/docs/{{version}}/fortify) to handle authentication. Fortify provides routes, controllers, and logic for login, registration, password reset, email verification, and more.
 
-Two-factor authentication is enabled by default and supports all options provided by [Fortify](/docs/{{version}}/fortify#two-factor-authentication):
+Fortify automatically registers the following authentication routes based on the features that are enabled in your application's `config/fortify.php` configuration file:
+
+| Route                              | Method | Description                         |
+| ---------------------------------- | ------ | ----------------------------------- |
+| `/login`                           | `GET`    | Display login form                  |
+| `/login`                           | `POST`   | Authenticate user                   |
+| `/logout`                          | `POST`   | Log user out                        |
+| `/register`                        | `GET`    | Display registration form           |
+| `/register`                        | `POST`   | Create new user                     |
+| `/forgot-password`                 | `GET`    | Display password reset request form |
+| `/forgot-password`                 | `POST`   | Send password reset link            |
+| `/reset-password/{token}`          | `GET`    | Display password reset form         |
+| `/reset-password`                  | `POST`   | Update password                     |
+| `/email/verify`                    | `GET`    | Display email verification notice   |
+| `/email/verify/{id}/{hash}`        | `GET`    | Verify email address                |
+| `/email/verification-notification` | `POST`   | Resend verification email           |
+| `/user/confirm-password`           | `GET`    | Display password confirmation form  |
+| `/user/confirm-password`           | `POST`   | Confirm password                    |
+| `/two-factor-challenge`            | `GET`    | Display 2FA challenge form          |
+| `/two-factor-challenge`            | `POST`   | Verify 2FA code                     |
+
+The `php artisan route:list` Artisan command can be used to display all of the routes in your application.
+
+<a name="enabling-and-disabling-features"></a>
+### Enabling and Disabling Features
+
+You can control which Fortify features are enabled in your application's `config/fortify.php` configuration file:
 
 ```php
-Features::twoFactorAuthentication([
-    'confirm' => true,
-    'confirmPassword' => true,
-]);
+use Laravel\Fortify\Features;
+
+'features' => [
+    Features::registration(),
+    Features::resetPasswords(),
+    Features::emailVerification(),
+    Features::twoFactorAuthentication([
+        'confirm' => true,
+        'confirmPassword' => true,
+    ]),
+],
+```
+
+If you want to disable a feature, simply comment out or remove that feature entry from the `features` array. For example, remove `Features::registration()` to disable public registration.
+
+<a name="customizing-actions"></a>
+### Customizing User Creation and Password Reset
+
+When a user registers or resets their password, Fortify invokes action classes located in your application's `app/Actions/Fortify` directory:
+
+| File                          | Description                           |
+| ----------------------------- | ------------------------------------- |
+| `CreateNewUser.php`           | Validates and creates new users       |
+| `ResetUserPassword.php`       | Validates and updates user passwords  |
+| `PasswordValidationRules.php` | Defines password validation rules     |
+
+For example, to customize your application's registration logic, you should edit the `CreateNewUser` action:
+
+```php
+public function create(array $input): User
+{
+    Validator::make($input, [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'max:255', 'unique:users'],
+        'phone' => ['required', 'string', 'max:20'], // [tl! add]
+        'password' => $this->passwordRules(),
+    ])->validate();
+
+    return User::create([
+        'name' => $input['name'],
+        'email' => $input['email'],
+        'phone' => $input['phone'], // [tl! add]
+        'password' => Hash::make($input['password']),
+    ]);
+}
+```
+
+<a name="two-factor-authentication"></a>
+### Two-Factor Authentication
+
+Starter kits include built-in two-factor authentication (2FA), allowing users to secure their accounts using any TOTP-compatible authenticator app. 2FA is enabled by default via `Features::twoFactorAuthentication()` in your application's `config/fortify.php` configuration file.
+
+The `confirm` option requires users to verify a code before 2FA is fully enabled, while `confirmPassword` requires password confirmation before enabling or disabling 2FA. For more details, see [Fortify's two-factor authentication documentation](/docs/{{version}}/fortify#two-factor-authentication).
+
+<a name="rate-limiting"></a>
+### Rate Limiting
+
+Rate limiting prevents brute-forcing and repeated login attempts from overwhelming your authentication endpoints. You can customize Fortify's rate limiting behavior in your application's `FortifyServiceProvider`:
+
+```php
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
+
+RateLimiter::for('login', function ($request) {
+    return Limit::perMinute(5)->by($request->email.$request->ip());
+});
 ```
 
 <a name="workos"></a>
