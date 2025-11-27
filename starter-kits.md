@@ -284,24 +284,24 @@ All starter kits use [Laravel Fortify](/docs/{{version}}/fortify) to handle auth
 
 Fortify automatically registers the following authentication routes based on features you enable:
 
-| Route | Method | Description |
-|-------|--------|-------------|
-| `/login` | GET | Display login form |
-| `/login` | POST | Authenticate user |
-| `/logout` | POST | Log user out |
-| `/register` | GET | Display registration form |
-| `/register` | POST | Create new user |
-| `/forgot-password` | GET | Display password reset request form |
-| `/forgot-password` | POST | Send password reset link |
-| `/reset-password/{token}` | GET | Display password reset form |
-| `/reset-password` | POST | Update password |
-| `/email/verify` | GET | Display email verification notice |
-| `/email/verify/{id}/{hash}` | GET | Verify email address |
-| `/email/verification-notification` | POST | Resend verification email |
-| `/user/confirm-password` | GET | Display password confirmation form |
-| `/user/confirm-password` | POST | Confirm password |
-| `/two-factor-challenge` | GET | Display 2FA challenge form |
-| `/two-factor-challenge` | POST | Verify 2FA code |
+| Route                              | Method | Description                         |
+| ---------------------------------- | ------ | ----------------------------------- |
+| `/login`                           | GET    | Display login form                  |
+| `/login`                           | POST   | Authenticate user                   |
+| `/logout`                          | POST   | Log user out                        |
+| `/register`                        | GET    | Display registration form           |
+| `/register`                        | POST   | Create new user                     |
+| `/forgot-password`                 | GET    | Display password reset request form |
+| `/forgot-password`                 | POST   | Send password reset link            |
+| `/reset-password/{token}`          | GET    | Display password reset form         |
+| `/reset-password`                  | POST   | Update password                     |
+| `/email/verify`                    | GET    | Display email verification notice   |
+| `/email/verify/{id}/{hash}`        | GET    | Verify email address                |
+| `/email/verification-notification` | POST   | Resend verification email           |
+| `/user/confirm-password`           | GET    | Display password confirmation form  |
+| `/user/confirm-password`           | POST   | Confirm password                    |
+| `/two-factor-challenge`            | GET    | Display 2FA challenge form          |
+| `/two-factor-challenge`            | POST   | Verify 2FA code                     |
 
 Run `php artisan route:list` to see all routes in your application.
 
@@ -331,11 +331,11 @@ Simply remove a line to disable that feature. For example, remove `Features::reg
 
 When a user registers or resets their password, Fortify uses action classes located in `app/Actions/Fortify`:
 
-| File | What It Does |
-|------|--------------|
-| `CreateNewUser.php` | Validates input and creates new users |
-| `ResetUserPassword.php` | Validates and updates user passwords |
-| `PasswordValidationRules.php` | Defines password validation rules |
+| File                          | What It Does                          |
+| ----------------------------- | ------------------------------------- |
+| `CreateNewUser.php`           | Validates input and creates new users |
+| `ResetUserPassword.php`       | Validates and updates user passwords  |
+| `PasswordValidationRules.php` | Defines password validation rules     |
 
 To customize registration (e.g., add a phone number field), edit `CreateNewUser.php`:
 
