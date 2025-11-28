@@ -176,7 +176,7 @@ Tools enable your server to expose functionality that AI clients can call. They 
 
 namespace App\Mcp\Tools;
 
-use Illuminate\JsonSchema\JsonSchema;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Tool;
@@ -203,7 +203,7 @@ class CurrentWeatherTool extends Tool
     /**
      * Get the tool's input schema.
      *
-     * @return array<string, \Illuminate\JsonSchema\JsonSchema>
+     * @return array<string, \Illuminate\Contracts\JsonSchema\JsonSchema>
      */
     public function schema(JsonSchema $schema): array
     {
@@ -290,14 +290,14 @@ class CurrentWeatherTool extends Tool
 <a name="tool-input-schemas"></a>
 ### Tool Input Schemas
 
-Tools can define input schemas to specify what arguments they accept from AI clients. Use Laravel's `Illuminate\JsonSchema\JsonSchema` builder to define your tool's input requirements:
+Tools can define input schemas to specify what arguments they accept from AI clients. Use Laravel's `Illuminate\Contracts\JsonSchema\JsonSchema` builder to define your tool's input requirements:
 
 ```php
 <?php
 
 namespace App\Mcp\Tools;
 
-use Illuminate\JsonSchema\JsonSchema;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Server\Tool;
 
 class CurrentWeatherTool extends Tool
@@ -333,7 +333,7 @@ Tools can define [output schemas](https://modelcontextprotocol.io/specification/
 
 namespace App\Mcp\Tools;
 
-use Illuminate\JsonSchema\JsonSchema;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Server\Tool;
 
 class CurrentWeatherTool extends Tool
