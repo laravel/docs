@@ -1710,6 +1710,12 @@ $posts = Post::whereDoesntHave('comments.author', function (Builder $query) {
 })->get();
 ```
 
+If you would like to query for a relationship's absence with a single, simple where condition, you may find it more convenient to use the `whereDoesntHaveRelation` and `orWhereDoesntHaveRelation` methods. For example, we may query for all posts that have unapproved comments:
+
+```php
+Post::whereDoesntHaveRelation('comments', 'is_approved', true)->get();
+```
+
 <a name="querying-morph-to-relationships"></a>
 ### Querying Morph To Relationships
 
