@@ -138,7 +138,7 @@ Since many JavaScript frameworks also use "curly" braces to indicate a given exp
 Hello, @{{ name }}.
 ```
 
-In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to be rendered by your JavaScript framework.
+In this example, the `@` symbol will be removed by Blade; however, the `{{ name }}` expression will remain untouched by the Blade engine, allowing it to be rendered by your JavaScript framework.
 
 The `@` symbol may also be used to escape Blade directives:
 
@@ -161,7 +161,7 @@ Sometimes you may pass an array to your view with the intention of rendering it 
 </script>
 ```
 
-However, instead of manually calling `json_encode`, you may use the `Illuminate\Support\Js::from` method directive. The `from` method accepts the same arguments as PHP's `json_encode` function; however, it will ensure that the resulting JSON has been properly escaped for inclusion within HTML quotes. The `from` method will return a string `JSON.parse` JavaScript statement that will convert the given object or array into a valid JavaScript object:
+However, instead of manually calling `json_encode`, you may use the `Illuminate\Support\Js::from` method. The `from` method accepts the same arguments as PHP's `json_encode` function; however, it will ensure that the resulting JSON has been properly escaped for inclusion within HTML quotes. The `from` method will return a string `JSON.parse` JavaScript statement that will convert the given object or array into a valid JavaScript object:
 
 ```blade
 <script>
@@ -1588,7 +1588,7 @@ Prefix "namespaces" may be provided as the second argument to the `anonymousComp
 Blade::anonymousComponentPath(__DIR__.'/../components', 'dashboard');
 ```
 
-When a prefix is provided, components within that "namespace" may be rendered by prefixing to the component's namespace to the component name when the component is rendered:
+When a prefix is provided, components within that "namespace" may be rendered by prefixing the component's namespace to the component name when the component is rendered:
 
 ```blade
 <x-dashboard::panel />
