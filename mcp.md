@@ -1048,8 +1048,8 @@ use Laravel\Mcp\Server\Annotations\Priority;
 use Laravel\Mcp\Server\Resource;
 
 #[Audience(Role::User)]
-#[Priority(0.9)]
 #[LastModified('2025-01-12T15:00:58Z')]
+#[Priority(0.9)]
 class UserDashboardResource extends Resource
 {
     //
