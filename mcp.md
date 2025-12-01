@@ -547,30 +547,6 @@ To indicate an error occurred during tool execution, use the `error` method:
 return Response::error('Unable to fetch weather data. Please try again.');
 ```
 
-<a name="structured-responses"></a>
-#### Structured Responses
-
-Tools can return [structured content](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#structured-content) using the `structured` method. This provides parseable data for AI clients while maintaining backward compatibility with a JSON-encoded text representation:
-
-```php
-return Response::structured([
-    'temperature' => 22.5,
-    'conditions' => 'Partly cloudy',
-    'humidity' => 65,
-]);
-```
-
-If you need to provide custom text alongside structured content, use the `withStructuredContent` method on the response factory:
-
-```php
-return Response::make(
-    Response::text('Weather is 22.5°C and sunny')
-)->withStructuredContent([
-    'temperature' => 22.5,
-    'conditions' => 'Sunny',
-]);
-```
-
 <a name="multiple-content-responses"></a>
 #### Multiple Content Responses
 
@@ -594,6 +570,30 @@ public function handle(Request $request): array
         Response::text('**Detailed Forecast**\n- Morning: 65°F\n- Afternoon: 78°F\n- Evening: 70°F')
     ];
 }
+```
+
+<a name="structured-responses"></a>
+#### Structured Responses
+
+Tools can return [structured content](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#structured-content) using the `structured` method. This provides parseable data for AI clients while maintaining backward compatibility with a JSON-encoded text representation:
+
+```php
+return Response::structured([
+    'temperature' => 22.5,
+    'conditions' => 'Partly cloudy',
+    'humidity' => 65,
+]);
+```
+
+If you need to provide custom text alongside structured content, use the `withStructuredContent` method on the response factory:
+
+```php
+return Response::make(
+    Response::text('Weather is 22.5°C and sunny')
+)->withStructuredContent([
+    'temperature' => 22.5,
+    'conditions' => 'Sunny',
+]);
 ```
 
 <a name="streaming-responses"></a>
