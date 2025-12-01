@@ -27,6 +27,7 @@
     - [Resource URI and MIME Type](#resource-uri-and-mime-type)
     - [Resource Request](#resource-request)
     - [Resource Dependency Injection](#resource-dependency-injection)
+    - [Resource Annotations](#resource-annotations)
     - [Conditional Resource Registration](#conditional-resource-registration)
     - [Resource Responses](#resource-responses)
 - [Metadata](#metadata)
@@ -1029,6 +1030,39 @@ class WeatherGuidelinesResource extends Resource
     }
 }
 ```
+
+<a name="resource-annotations"></a>
+### Resource Annotations
+
+You may enhance your resources with [annotations](https://modelcontextprotocol.io/specification/2025-06-18/schema#resourceannotations) to provide additional metadata to AI clients. Annotations are added to resources via attributes:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Enums\Role;
+use Laravel\Mcp\Server\Annotations\Audience;
+use Laravel\Mcp\Server\Annotations\LastModified;
+use Laravel\Mcp\Server\Annotations\Priority;
+use Laravel\Mcp\Server\Resource;
+
+#[Audience(Role::User)]
+#[Priority(0.9)]
+#[LastModified('2025-01-12T15:00:58Z')]
+class UserDashboardResource extends Resource
+{
+    //
+}
+```
+
+Available annotations include:
+
+| Annotation       | Type           | Description                                                                                     |
+| ---------------- | -------------- | ----------------------------------------------------------------------------------------------- |
+| `#[Audience]`    | Role or array  | Specifies the intended audience (`Role::User`, `Role::Assistant`, or both).                    |
+| `#[Priority]`    | float          | A numerical score between 0.0 and 1.0 indicating resource importance.                          |
+| `#[LastModified]`| string         | An ISO 8601 timestamp showing when the resource was last updated.                               |
 
 <a name="conditional-resource-registration"></a>
 ### Conditional Resource Registration
