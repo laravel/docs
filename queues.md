@@ -2314,7 +2314,7 @@ php artisan queue:continue database:default
 
 After resuming a queue, workers will begin processing new jobs from that queue immediately. Note that pausing a queue does not stop the worker process itself - it only prevents the worker from processing new jobs from the specified queue.
 
-<a name="worker-interruption-signals"></a>
+<a name="worker-restart-and-pause-signals"></a>
 ### Worker Restart and Pause Signals
 
 By default, queue workers poll the cache driver for restart and pause signals on each job iteration. While this polling is essential for responding to `queue:restart` and `queue:pause` commands, it does introduce a small performance overhead.
