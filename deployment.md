@@ -11,6 +11,7 @@
     - [Caching Events](#caching-events)
     - [Caching Routes](#optimizing-route-loading)
     - [Caching Views](#optimizing-view-loading)
+- [Reloading Services](#reloading-services)
 - [Debug Mode](#debug-mode)
 - [The Health Route](#the-health-route)
 - [Deploying With Laravel Cloud or Forge](#deploying-with-cloud-or-forge)
@@ -167,6 +168,15 @@ php artisan view:cache
 ```
 
 This command precompiles all your Blade views so they are not compiled on demand, improving the performance of each request that returns a view.
+
+<a name="reloading-services"></a>
+## Reloading Services
+
+After deploying a new version of your application, any running services (eg. Reverb, Octane etc.) should be reloaded/restarted to use the new code. Laravel provides a single `reload` Artisan command that will reload all registered services:
+
+```shell
+php artisan reload
+```
 
 <a name="debug-mode"></a>
 ## Debug Mode

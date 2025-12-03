@@ -390,6 +390,22 @@ public function boot(): void
 }
 ```
 
+### Reload Commands
+
+Laravel's [reload command](/docs/{{version}}/deployment#reloading-services) reloads any running services. Using the `reloads` method, you may register your package's own Artisan commands that should be invoked when the `reload` commands is executed:
+
+```php
+/**
+ * Bootstrap any package services.
+ */
+public function boot(): void
+{
+    if ($this->app->runningInConsole()) {
+        $this->reloads('package:reload');
+    }
+}
+```
+
 <a name="public-assets"></a>
 ## Public Assets
 
