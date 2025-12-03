@@ -2349,7 +2349,6 @@ public function boot(): void
 > [!WARNING]
 > When interruption polling is disabled, workers will not respond to `queue:restart` or `queue:pause` commands (depending on which features are disabled). You will need to manually stop and restart worker processes to apply code changes or pause queue processing.
 
-
 <a name="supervisor-configuration"></a>
 ## Supervisor Configuration
 
