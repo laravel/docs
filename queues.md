@@ -40,6 +40,7 @@
     - [Queue Workers and Deployment](#queue-workers-and-deployment)
     - [Job Expirations and Timeouts](#job-expirations-and-timeouts)
     - [Pausing and Resuming Queue Workers](#pausing-and-resuming-queue-workers)
+    - [Worker Restart and Pause Signals](#worker-restart-and-pause-signals)
 - [Supervisor Configuration](#supervisor-configuration)
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
@@ -2312,6 +2313,42 @@ php artisan queue:continue database:default
 ```
 
 After resuming a queue, workers will begin processing new jobs from that queue immediately. Note that pausing a queue does not stop the worker process itself - it only prevents the worker from processing new jobs from the specified queue.
+
+<a name="worker-interruption-signals"></a>
+#### Worker Restart and Pause Signals
+
+By default, queue workers poll the cache driver for restart and pause signals on each job iteration. While this polling is essential for responding to `queue:restart` and `queue:pause` commands, it does introduce a small performance overhead.
+
+If you need to optimize performance and don't require these interruption features, you may disable this polling globally by calling the `withoutInterruptionPolling` method on the `Queue` facade. This should typically be done in the `boot` method of your `AppServiceProvider`:
+```php
+use Illuminate\Support\Facades\Queue;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Queue::withoutInterruptionPolling();
+}
+```
+
+Alternatively, you may disable restart or pause polling individually by setting the static `$restartable` or `$pausable` properties on the `Illuminate\Queue\Worker` class:
+```php
+use Illuminate\Queue\Worker;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Worker::$restartable = false;
+    Worker::$pausable = false;
+}
+```
+
+> [!WARNING]
+> When interruption polling is disabled, workers will not respond to `queue:restart` or `queue:pause` commands (depending on which features are disabled). You will need to manually stop and restart worker processes to apply code changes or pause queue processing.
+
 
 <a name="supervisor-configuration"></a>
 ## Supervisor Configuration
