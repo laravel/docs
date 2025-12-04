@@ -3227,7 +3227,7 @@ For a thorough discussion of Carbon and its features, please consult the [offici
 <a name="interval-functions"></a>
 #### Interval Functions
 
-Laravel also offers `seconds`, `minutes`, `hours`, `days`, and `years` functions that return `CarbonInterval` instances, which extend PHP's [DateInterval](https://www.php.net/manual/en/class.dateinterval.php) class. These functions may be used anywhere that Laravel accepts a `DateInterval` instance:
+Laravel also offers `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `weeks`, `months`, and `years` functions that return `CarbonInterval` instances, which extend PHP's [DateInterval](https://www.php.net/manual/en/class.dateinterval.php) class. These functions may be used anywhere that Laravel accepts a `DateInterval` instance:
 
 ```php
 use Illuminate\Support\Facades\Cache;
