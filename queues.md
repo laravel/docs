@@ -2320,6 +2320,7 @@ After resuming a queue, workers will begin processing new jobs from that queue i
 By default, queue workers poll the cache driver for restart and pause signals on each job iteration. While this polling is essential for responding to `queue:restart` and `queue:pause` commands, it does introduce a small performance overhead.
 
 If you need to optimize performance and don't require these interruption features, you may disable this polling globally by calling the `withoutInterruptionPolling` method on the `Queue` facade. This should typically be done in the `boot` method of your `AppServiceProvider`:
+
 ```php
 use Illuminate\Support\Facades\Queue;
 
@@ -2333,6 +2334,7 @@ public function boot(): void
 ```
 
 Alternatively, you may disable restart or pause polling individually by setting the static `$restartable` or `$pausable` properties on the `Illuminate\Queue\Worker` class:
+
 ```php
 use Illuminate\Queue\Worker;
 
