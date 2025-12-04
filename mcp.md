@@ -204,7 +204,7 @@ class CurrentWeatherTool extends Tool
     /**
      * Get the tool's input schema.
      *
-     * @return array<string, \Illuminate\Contracts\JsonSchema\JsonSchema>
+     * @return array<string, \Illuminate\JsonSchema\Type\Type>
      */
     public function schema(JsonSchema $schema): array
     {
@@ -306,7 +306,7 @@ class CurrentWeatherTool extends Tool
     /**
      * Get the tool's input schema.
      *
-     * @return array<string, JsonSchema>
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
      */
     public function schema(JsonSchema $schema): array
     {
@@ -342,7 +342,7 @@ class CurrentWeatherTool extends Tool
     /**
      * Get the tool's output schema.
      *
-     * @return array<string, JsonSchema>
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
      */
     public function outputSchema(JsonSchema $schema): array
     {
