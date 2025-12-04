@@ -25,6 +25,7 @@
     - [Prompt Responses](#prompt-responses)
 - [Resources](#resources)
     - [Creating Resources](#creating-resources)
+    - [Resource Templates](#resource-templates)
     - [Resource URI and MIME Type](#resource-uri-and-mime-type)
     - [Resource Request](#resource-request)
     - [Resource Dependency Injection](#resource-dependency-injection)
@@ -984,6 +985,115 @@ class WeatherGuidelinesResource extends Resource
 
 > [!NOTE]
 > The description is a critical part of the resource's metadata, as it helps AI models understand when and how to use the resource effectively.
+
+<a name="resource-templates"></a>
+### Resource Templates
+
+[Resource templates](https://modelcontextprotocol.io/specification/2025-06-18/server/resources#resource-templates) enable your server to expose dynamic resources that match URI patterns with variables. Instead of defining a static URI for each resource, you can create a single resource that handles multiple URIs based on a template pattern.
+
+<a name="creating-resource-templates"></a>
+#### Creating Resource Templates
+
+To create a resource template, implement the `HasUriTemplate` interface on your resource class and define a `uriTemplate` method that returns a `UriTemplate` instance:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Contracts\HasUriTemplate;
+use Laravel\Mcp\Server\Resource;
+use Laravel\Mcp\Support\UriTemplate;
+
+class UserFileResource extends Resource implements HasUriTemplate
+{
+    /**
+     * The resource's description.
+     */
+    protected string $description = 'Access user files by ID';
+
+    /**
+     * The resource's MIME type.
+     */
+    protected string $mimeType = 'text/plain';
+
+    /**
+     * Get the URI template for this resource.
+     */
+    public function uriTemplate(): UriTemplate
+    {
+        return new UriTemplate('file://users/{userId}/files/{fileId}');
+    }
+
+    /**
+     * Handle the resource request.
+     */
+    public function handle(Request $request): Response
+    {
+        $userId = $request->get('userId');
+        $fileId = $request->get('fileId');
+
+        // Fetch and return the file content...
+
+        return Response::text("User {$userId}, File {$fileId}");
+    }
+}
+```
+
+When a resource implements the `HasUriTemplate` interface, it will be registered as a resource template rather than a static resource. AI clients can then request resources using URIs that match the template pattern, and the variables from the URI will be automatically extracted and made available in your resource's `handle` method.
+
+<a name="uri-template-syntax"></a>
+#### URI Template Syntax
+
+URI templates use placeholders enclosed in curly braces to define variable segments in the URI:
+
+```php
+new UriTemplate('file://users/{userId}');
+new UriTemplate('file://users/{userId}/files/{fileId}');
+new UriTemplate('https://api.example.com/{version}/{resource}/{id}');
+```
+
+<a name="accessing-template-variables"></a>
+#### Accessing Template Variables
+
+When a URI matches your resource template, the extracted variables are automatically merged into the request and can be accessed using the `get` method:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Contracts\HasUriTemplate;
+use Laravel\Mcp\Server\Resource;
+use Laravel\Mcp\Support\UriTemplate;
+
+class UserProfileResource extends Resource implements HasUriTemplate
+{
+    public function uriTemplate(): UriTemplate
+    {
+        return new UriTemplate('file://users/{userId}/profile');
+    }
+
+    public function handle(Request $request): Response
+    {
+        // Access the extracted variable
+        $userId = $request->get('userId');
+
+        // Access the full URI if needed
+        $uri = $request->uri();
+
+        // Fetch user profile...
+
+        return Response::text("Profile for user {$userId}");
+    }
+}
+```
+
+The `Request` object provides both the extracted variables and the original URI that was requested, giving you full context for processing the resource request.
 
 <a name="resource-uri-and-mime-type"></a>
 ### Resource URI and MIME Type
