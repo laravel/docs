@@ -533,7 +533,7 @@ Cache::lock('processing')->forceRelease();
 <a name="cache-failover"></a>
 ## Cache Failover
 
-The `failover` cache driver provides automatic failover functionality when interacting with the cache. If the primary cache store fails for any reason, Laravel will automatically attempt to use the next configured store in the list. This is particularly useful for ensuring high availability in production environments where cache reliability is critical.
+The `failover` cache driver provides automatic failover functionality when interacting with the cache. If the primary cache store of the `failover` store fails for any reason, Laravel will automatically attempt to use the next configured store in the list. This is particularly useful for ensuring high availability in production environments where cache reliability is critical.
 
 To configure a failover cache store, specify the `failover` driver and provide an array of store names to attempt in order. By default, Laravel includes an example failover configuration in your application's `config/cache.php` configuration file:
 
@@ -547,7 +547,7 @@ To configure a failover cache store, specify the `failover` driver and provide a
 ],
 ```
 
-Once you have configured a store that uses the `failover` driver, you will probably want to set the failover store as your default cache store in your application's `.env` file:
+Once you have configured a store that uses the `failover` driver, you will need to set the failover store as your default cache store in your application's `.env` file to make use of the failover functionality:
 
 ```ini
 CACHE_STORE=failover
