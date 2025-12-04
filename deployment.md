@@ -172,11 +172,16 @@ This command precompiles all your Blade views so they are not compiled on demand
 <a name="reloading-services"></a>
 ## Reloading Services
 
-After deploying a new version of your application, any running services (eg. Reverb, Octane etc.) should be reloaded/restarted to use the new code. Laravel provides a single `reload` Artisan command that will reload all registered services:
+> [!NOTE]
+> When deploying to [Laravel Cloud](https://cloud.laravel.com), it is not necessary to use the `reload` command, as gracefully reloading of all services is handled automatically.
+
+After deploying a new version of your application, any long-running services such as queue workers, Laravel Reverb, or Laravel Octane should be reloaded / restarted to use the new code. Laravel provides a single `reload` Artisan command that will terminate these services:
 
 ```shell
 php artisan reload
 ```
+
+If you are not using [Laravel Cloud](https://cloud.laravel.com), you should manually  configure a process monitor that can detect when your reloadable processes exit and automatically restart them.
 
 <a name="debug-mode"></a>
 ## Debug Mode

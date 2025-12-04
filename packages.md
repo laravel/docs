@@ -14,6 +14,7 @@
     - ["About" Artisan Command](#about-artisan-command)
 - [Commands](#commands)
     - [Optimize Commands](#optimize-commands)
+    - [Reload Commands](#reload-commands)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 
@@ -390,9 +391,10 @@ public function boot(): void
 }
 ```
 
+<a name="reload-commands"></a>
 ### Reload Commands
 
-Laravel's [reload command](/docs/{{version}}/deployment#reloading-services) reloads any running services. Using the `reloads` method, you may register your package's own Artisan commands that should be invoked when the `reload` commands is executed:
+Laravel's [reload command](/docs/{{version}}/deployment#reloading-services) terminates any running services so they can be automatically restarted by a system process monitor. Using the `reloads` method, you may register your package's own Artisan commands that should be invoked when the `reload` command is executed:
 
 ```php
 /**
