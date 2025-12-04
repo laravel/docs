@@ -1384,6 +1384,18 @@ When creating an index, Laravel will automatically generate an index name based 
 $table->unique('email', 'unique_email');
 ```
 
+Runs the given callback only if the specified table does not have the specified index, allowing you to apply schema changes safely and prevent duplicate index errors:
+
+```php
+Schema::whenTableDoesntHaveIndex('product', 'name', function (Blueprint $table) {
+    $table->index('name', 'index_name');
+});
+
+Schema::whenTableDoesntHaveIndex('product', 'name', function (Blueprint $table) {
+    $table->index('name', 'index_name');
+});
+```
+
 <a name="available-index-types"></a>
 #### Available Index Types
 
