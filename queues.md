@@ -1529,7 +1529,7 @@ $user->notify($invoicePaid);
 <a name="queue-failover"></a>
 ### Queue Failover
 
-The `failover` queue driver provides automatic failover functionality when pushing jobs to the queue. If the primary queue connection fails for any reason, Laravel will automatically attempt to push the job to the next configured connection in the list. This is particularly useful for ensuring high availability in production environments where queue reliability is critical.
+The `failover` queue driver provides automatic failover functionality when pushing jobs to the queue. If the primary queue connection of the `failover` configuration fails for any reason, Laravel will automatically attempt to push the job to the next configured connection in the list. This is particularly useful for ensuring high availability in production environments where queue reliability is critical.
 
 To configure a failover queue connection, specify the `failover` driver and provide an array of connection names to attempt in order. By default, Laravel includes an example failover configuration in your application's `config/queue.php` configuration file:
 
@@ -1544,7 +1544,7 @@ To configure a failover queue connection, specify the `failover` driver and prov
 ],
 ```
 
-Once you have configured a connection that uses the `failover` driver, you will probably want to set the failover connection as your default queue connection in your application's `.env` file:
+Once you have configured a connection that uses the `failover` driver, you will need to set the failover connection as your default queue connection in your application's `.env` file to make use of the failover functionality:
 
 ```ini
 QUEUE_CONNECTION=failover
