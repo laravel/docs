@@ -40,7 +40,6 @@
     - [Queue Workers and Deployment](#queue-workers-and-deployment)
     - [Job Expirations and Timeouts](#job-expirations-and-timeouts)
     - [Pausing and Resuming Queue Workers](#pausing-and-resuming-queue-workers)
-    - [Worker Restart and Pause Signals](#worker-restart-and-pause-signals)
 - [Supervisor Configuration](#supervisor-configuration)
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
@@ -2315,7 +2314,7 @@ php artisan queue:continue database:default
 After resuming a queue, workers will begin processing new jobs from that queue immediately. Note that pausing a queue does not stop the worker process itself - it only prevents the worker from processing new jobs from the specified queue.
 
 <a name="worker-restart-and-pause-signals"></a>
-### Worker Restart and Pause Signals
+#### Worker Restart and Pause Signals
 
 By default, queue workers poll the cache driver for restart and pause signals on each job iteration. While this polling is essential for responding to `queue:restart` and `queue:pause` commands, it does introduce a small performance overhead.
 
