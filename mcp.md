@@ -1037,7 +1037,7 @@ class UserFileResource extends Resource implements HasUriTemplate
 
         // Fetch and return the file content...
 
-        return Response::text("User {$userId}, File {$fileId}");
+        return Response::text($content);
     }
 }
 ```
