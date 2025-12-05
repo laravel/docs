@@ -1387,7 +1387,7 @@ $table->unique('email', 'unique_email');
 Runs the given callback only if the specified table does not have the specified index, allowing you to apply schema changes safely and prevent duplicate index errors:
 
 ```php
-Schema::whenTableDoesntHaveIndex('product', 'name', function (Blueprint $table) {
+Schema::whenTableHasIndex('product', 'name', function (Blueprint $table) {
     $table->index('name', 'index_name');
 });
 
