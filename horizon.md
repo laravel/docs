@@ -37,7 +37,7 @@ When using Horizon, all of your queue worker configuration is stored in a single
 ## Installation
 
 > [!WARNING]
-> Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file.
+> Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file. Horizon is not compatible with Redis Cluster at this time.
 
 You may install Horizon into your project using the Composer package manager:
 
