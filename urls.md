@@ -186,9 +186,12 @@ If you would like to generate a temporary signed route URL that expires after a 
 
 ```php
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Carbon;
 
 return URL::temporarySignedRoute(
-    'unsubscribe', now()->addMinutes(30), ['user' => 1]
+    'unsubscribe', 
+    now()->addMinutes(30),
+    ['user' => 1]
 );
 ```
 
