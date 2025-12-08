@@ -191,7 +191,7 @@ You can download the Windows installer for Herd on the [Herd website](https://he
 
 The Herd UI is accessible by left-clicking on Herd's system tray icon. A right-click opens the quick menu with access to all tools that you need on a daily basis.
 
-During installation, Herd creates a "parked" directory in your home directory at `%USERPROFILE%\Herd`. Any Laravel application in a parked directory will automatically be served by Herd, and you can access any Laravel application in this directory on the `.test` domain using its directory name.
+During installation, Herd creates a "parked" directory in your home directory at %USERPROFILE%\Herd. Any Laravel application in a parked directory will automatically be served by Herd, and you can access any Laravel application in this directory on the .test domain using its directory name.
 
 After installing Herd, the fastest way to create a new Laravel application is using the Laravel CLI, which is bundled with Herd. To get started, open Powershell and run the following commands:
 
