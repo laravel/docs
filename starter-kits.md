@@ -321,7 +321,9 @@ use Laravel\Fortify\Features;
 ],
 ```
 
-If you want to disable a feature, simply comment out or remove that feature entry from the `features` array. For example, remove `Features::registration()` to disable public registration.
+To disable a feature, comment out or remove that feature entry from the `features` array. For example, remove `Features::registration()` to disable public registration.
+
+When using the [React](#react) or [Vue](#vue) starter kits, you will also need to remove any references to the disabled feature's routes in your frontend code. For example, if you disable email verification, you should remove the imports and references to the `verification` routes in your Vue or React components. This is necessary because these starter kits use Wayfinder for type-safe routing, which generates route definitions at build time. If you reference routes that no longer exist, your application will fail to build.
 
 <a name="customizing-actions"></a>
 ### Customizing User Creation and Password Reset
