@@ -1150,13 +1150,13 @@ $user->subscription()->pauseNow();
 Using the `pauseUntil` method, you can pause the subscription until a specific moment in time:
 
 ```php
-$user->subscription()->pauseUntil(now()->addMonth());
+$user->subscription()->pauseUntil(now()->plus(months: 1));
 ```
 
 Or, you may use the `pauseNowUntil` method to immediately pause the subscription until a given point in time:
 
 ```php
-$user->subscription()->pauseNowUntil(now()->addMonth());
+$user->subscription()->pauseNowUntil(now()->plus(months: 1));
 ```
 
 You may determine if a user has paused their subscription but are still on their "grace period" using the `onPausedGracePeriod` method:
@@ -1276,7 +1276,7 @@ $user = User::create([
 ]);
 
 $user->createAsCustomer([
-    'trial_ends_at' => now()->addDays(10)
+    'trial_ends_at' => now()->plus(days: 10)
 ]);
 ```
 
@@ -1324,7 +1324,7 @@ if ($user->onGenericTrial()) {
 You can extend an existing trial period on a subscription by invoking the `extendTrial` method and specifying the moment in time that the trial should end:
 
 ```php
-$user->subscription()->extendTrial(now()->addDays(5));
+$user->subscription()->extendTrial(now()->plus(days: 5));
 ```
 
 Or, you may immediately activate a subscription by ending its trial by calling the `activate` method on the subscription:

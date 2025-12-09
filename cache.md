@@ -204,7 +204,7 @@ The `increment` and `decrement` methods may be used to adjust the value of integ
 
 ```php
 // Initialize the value if it does not exist...
-Cache::add('key', 0, now()->addHours(4));
+Cache::add('key', 0, now()->plus(hours: 4));
 
 // Increment or decrement the value...
 Cache::increment('key');
@@ -278,7 +278,7 @@ Cache::put('key', 'value');
 Instead of passing the number of seconds as an integer, you may also pass a `DateTime` instance representing the desired expiration time of the cached item:
 
 ```php
-Cache::put('key', 'value', now()->addMinutes(10));
+Cache::put('key', 'value', now()->plus(minutes: 10));
 ```
 
 <a name="store-if-not-present"></a>
@@ -386,7 +386,7 @@ If you provide an array of key / value pairs and an expiration time to the funct
 ```php
 cache(['key' => 'value'], $seconds);
 
-cache(['key' => 'value'], now()->addMinutes(10));
+cache(['key' => 'value'], now()->plus(minutes: 10));
 ```
 
 When the `cache` function is called without any arguments, it returns an instance of the `Illuminate\Contracts\Cache\Factory` implementation, allowing you to call other caching methods:

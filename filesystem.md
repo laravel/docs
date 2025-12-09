@@ -348,7 +348,7 @@ Using the `temporaryUrl` method, you may create temporary URLs to files stored u
 use Illuminate\Support\Facades\Storage;
 
 $url = Storage::temporaryUrl(
-    'file.jpg', now()->addMinutes(5)
+    'file.jpg', now()->plus(minutes: 5)
 );
 ```
 
@@ -374,7 +374,7 @@ If you need to specify additional [S3 request parameters](https://docs.aws.amazo
 ```php
 $url = Storage::temporaryUrl(
     'file.jpg',
-    now()->addMinutes(5),
+    now()->plus(minutes: 5),
     [
         'ResponseContentType' => 'application/octet-stream',
         'ResponseContentDisposition' => 'attachment; filename=file2.jpg',
@@ -429,7 +429,7 @@ If you need to generate a temporary URL that can be used to upload a file direct
 use Illuminate\Support\Facades\Storage;
 
 ['url' => $url, 'headers' => $headers] = Storage::temporaryUploadUrl(
-    'file.jpg', now()->addMinutes(5)
+    'file.jpg', now()->plus(minutes: 5)
 );
 ```
 

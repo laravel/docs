@@ -186,7 +186,7 @@ Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods
 ```php
 Event::listen(queueable(function (PodcastProcessed $event) {
     // ...
-})->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
+})->onConnection('redis')->onQueue('podcasts')->delay(now()->plus(seconds: 10)));
 ```
 
 If you would like to handle anonymous queued listener failures, you may provide a closure to the `catch` method while defining the `queueable` listener. This closure will receive the event instance and the `Throwable` instance that caused the listener's failure:
@@ -590,7 +590,7 @@ use DateTime;
  */
 public function retryUntil(): DateTime
 {
-    return now()->addMinutes(5);
+    return now()->plus(minutes: 5);
 }
 ```
 

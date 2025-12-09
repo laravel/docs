@@ -250,7 +250,7 @@ If you would like to specify the expiration time of each token independently, yo
 
 ```php
 return $user->createToken(
-    'token-name', ['*'], now()->addWeek()
+    'token-name', ['*'], now()->plus(weeks: 1)
 )->plainTextToken;
 ```
 

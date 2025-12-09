@@ -211,7 +211,7 @@ test('time can be manipulated', function () {
     $this->travel(-5)->hours();
 
     // Travel to an explicit time...
-    $this->travelTo(now()->subHours(6));
+    $this->travelTo(now()->minus(hours: 6));
 
     // Return back to the present time...
     $this->travelBack();
@@ -234,7 +234,7 @@ public function test_time_can_be_manipulated(): void
     $this->travel(-5)->hours();
 
     // Travel to an explicit time...
-    $this->travelTo(now()->subHours(6));
+    $this->travelTo(now()->minus(hours: 6));
 
     // Return back to the present time...
     $this->travelBack();
@@ -248,7 +248,7 @@ $this->travel(5)->days(function () {
     // Test something five days into the future...
 });
 
-$this->travelTo(now()->subDays(10), function () {
+$this->travelTo(now()->mins(days: 10), function () {
     // Test something during a given moment...
 });
 ```

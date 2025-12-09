@@ -2407,7 +2407,7 @@ You may add items to the cache by passing an array of key / value pairs to the f
 ```php
 cache(['key' => 'value'], 300);
 
-cache(['key' => 'value'], now()->addSeconds(10));
+cache(['key' => 'value'], now()->plus(seconds: 10));
 ```
 
 <a name="method-class-uses-recursive"></a>
@@ -3466,7 +3466,7 @@ Sleep::for(500)->milliseconds();
 Sleep::for(5000)->microseconds();
 
 // Pause execution until a given time...
-Sleep::until(now()->addMinute());
+Sleep::until(now()->plus(minutes: 1));
 
 // Alias of PHP's native "sleep" function...
 Sleep::sleep(2);
@@ -3638,7 +3638,7 @@ $uri = Uri::of('https://example.com/path');
 $uri = Uri::to('/dashboard');
 $uri = Uri::route('users.show', ['user' => 1]);
 $uri = Uri::signedRoute('users.show', ['user' => 1]);
-$uri = Uri::temporarySignedRoute('user.index', now()->addMinutes(5));
+$uri = Uri::temporarySignedRoute('user.index', now()->plus(minutes: 5));
 $uri = Uri::action([UserController::class, 'index']);
 $uri = Uri::action(InvokableController::class);
 

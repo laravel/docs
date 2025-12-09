@@ -1232,7 +1232,7 @@ class Flight extends Model
      */
     public function prunable(): Builder
     {
-        return static::where('created_at', '<=', now()->subMonth());
+        return static::where('created_at', '<=', now()->minus(months: 1));
     }
 }
 ```
@@ -1305,7 +1305,7 @@ class Flight extends Model
      */
     public function prunable(): Builder
     {
-        return static::where('created_at', '<=', now()->subMonth());
+        return static::where('created_at', '<=', now()->minus(months: 1));
     }
 }
 ```
@@ -1387,7 +1387,7 @@ class AncientScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->where('created_at', '<', now()->subYears(2000));
+        $builder->where('created_at', '<', now()->minus(years: 2000));
     }
 }
 ```
@@ -1464,7 +1464,7 @@ class User extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('ancient', function (Builder $builder) {
-            $builder->where('created_at', '<', now()->subYears(2000));
+            $builder->where('created_at', '<', now()->minus(years: 2000));
         });
     }
 }

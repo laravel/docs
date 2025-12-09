@@ -717,7 +717,7 @@ public function middleware(): array
  */
 public function retryUntil(): DateTime
 {
-    return now()->addMinutes(30);
+    return now()->plus(minutes: 30);
 }
 ```
 
@@ -920,7 +920,7 @@ class PodcastController extends Controller
         // ...
 
         ProcessPodcast::dispatch($podcast)
-            ->delay(now()->addMinutes(10));
+            ->delay(now()->plus(minutes: 10));
 
         return redirect('/podcasts');
     }
@@ -1316,7 +1316,7 @@ use DateTime;
  */
 public function retryUntil(): DateTime
 {
-    return now()->addMinutes(10);
+    return now()->plus(minutes: 10);
 }
 ```
 
@@ -1592,7 +1592,7 @@ By default, the `release` method will release the job back onto the queue for im
 ```php
 $this->release(10);
 
-$this->release(now()->addSeconds(10));
+$this->release(now()->plus(seconds: 10));
 ```
 
 <a name="manually-failing-a-job"></a>

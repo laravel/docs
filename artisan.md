@@ -285,7 +285,7 @@ use DateInterval;
  */
 public function isolationLockExpiresAt(): DateTimeInterface|DateInterval
 {
-    return now()->addMinutes(5);
+    return now()->plus(minutes: 5);
 }
 ```
 

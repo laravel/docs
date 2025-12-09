@@ -977,7 +977,7 @@ If you wish to delay the delivery of a queued email message, you may use the `la
 Mail::to($request->user())
     ->cc($moreUsers)
     ->bcc($evenMoreUsers)
-    ->later(now()->addMinutes(10), new OrderShipped($order));
+    ->later(now()->plus(minutes: 10), new OrderShipped($order));
 ```
 
 <a name="pushing-to-specific-queues"></a>
