@@ -140,7 +140,7 @@ public function up(): void
 Sometimes a migration might be meant to support a feature that is not yet active and you do not want it to run yet. In this case you may define a `shouldRun` method on the migration. If the `shouldRun` method returns `false`, the migration will be skipped:
 
 ```php
-use App\Models\Flights;
+use App\Models\Flight;
 use Laravel\Pennant\Feature;
 
 /**
@@ -148,7 +148,7 @@ use Laravel\Pennant\Feature;
  */
 public function shouldRun(): bool
 {
-    return Feature::active(Flights::class);
+    return Feature::active(Flight::class);
 }
 ```
 
@@ -173,6 +173,7 @@ If you would like to see the SQL statements that will be executed by the migrati
 php artisan migrate --pretend
 ```
 
+<a name="isolating-migration-execution"></a>
 #### Isolating Migration Execution
 
 If you are deploying your application across multiple servers and running migrations as part of your deployment process, you likely do not want two servers attempting to migrate the database at the same time. To avoid this, you may use the `isolated` option when invoking the `migrate` command.
