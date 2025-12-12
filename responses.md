@@ -179,6 +179,9 @@ By default, thanks to the `Illuminate\Cookie\Middleware\EncryptCookies` middlewa
 })
 ```
 
+> [!NOTE]
+> In general, cookie encryption should never be disabled, as this exposes your cookies to potential client-side data exposure and tampering.
+
 <a name="redirects"></a>
 ## Redirects
 
