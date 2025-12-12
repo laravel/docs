@@ -316,25 +316,7 @@ $users = $users->withoutAppends();
 <a name="custom-collections"></a>
 ## Custom Collections
 
-If you would like to use a custom `Collection` object when interacting with a given model, you may add the `CollectedBy` attribute to your model:
-
-```php
-<?php
-
-namespace App\Models;
-
-use App\Support\UserCollection;
-use Illuminate\Database\Eloquent\Attributes\CollectedBy;
-use Illuminate\Database\Eloquent\Model;
-
-#[CollectedBy(UserCollection::class)]
-class User extends Model
-{
-    // ...
-}
-```
-
-Alternatively, you may define a `newCollection` method on your model:
+If you would like to use a custom `Collection` object when interacting with a given model, you may define a `$collectionClass` property on your model:
 
 ```php
 <?php
@@ -348,24 +330,14 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * Create a new Eloquent Collection instance.
+     * The Eloquent collection class to use for the model.
      *
-     * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models
-     * @return \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Database\Eloquent\Model>
+     * @var class-string<\Illuminate\Database\Eloquent\Collection<*, *>>
      */
-    public function newCollection(array $models = []): Collection
-    {
-        $collection = new UserCollection($models);
-
-        if (Model::isAutomaticallyEagerLoadingRelationships()) {
-            $collection->withRelationshipAutoloading();
-        }
-
-        return $collection;
-    }
+    protected static string $collectionClass = UserCollection::class;
 }
 ```
 
-Once you have defined a `newCollection` method or added the `CollectedBy` attribute to your model, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\Database\Eloquent\Collection` instance.
+Once you have defined the `$collectionClass` property on your model, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\Database\Eloquent\Collection` instance.
 
-If you would like to use a custom collection for every model in your application, you should define the `newCollection` method on a base model class that is extended by all of your application's models.
+If you would like to use a custom collection for every model in your application, you should define the `$collectionClass` property on a base model class that is extended by all of your application's models.
