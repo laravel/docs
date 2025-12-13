@@ -1302,9 +1302,6 @@ class ExampleTest extends TestCase
         // Assert a mailable was not sent...
         Mail::assertNotSent(AnotherMailable::class);
 
-        // Assert a mailable was sent twice...
-        Mail::assertSentTimes(OrderShipped::class, 2);
-
         // Assert 3 total mailables were sent...
         Mail::assertSentCount(3);
     }
