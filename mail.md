@@ -1262,9 +1262,6 @@ test('orders can be shipped', function () {
     // Assert a mailable was not sent...
     Mail::assertNotSent(AnotherMailable::class);
 
-    // Assert a mailable was sent twice...
-    Mail::assertSentTimes(OrderShipped::class, 2);
-
     // Assert 3 total mailables were sent...
     Mail::assertSentCount(3);
 });
@@ -1341,6 +1338,7 @@ Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) 
            $mail->hasReplyTo('...') &&
            $mail->hasFrom('...') &&
            $mail->hasSubject('...') &&
+           $mail->hasMetadata('order_id', $mail->order->id) &&
            $mail->usesMailer('ses');
 });
 ```
