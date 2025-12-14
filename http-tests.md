@@ -17,6 +17,9 @@
     - [Response Assertions](#response-assertions)
     - [Authentication Assertions](#authentication-assertions)
     - [Validation Assertions](#validation-assertions)
+- [Extending the Test Response](#extending-the-test-response)
+    - [Macros](#macros)
+    - [Mixins](#mixins)
 
 <a name="introduction"></a>
 ## Introduction
@@ -2071,4 +2074,79 @@ $response->assertInvalid([
     'name' => 'The name field is required.',
     'email' => 'valid email address',
 ]);
+```
+
+<a name="extending-the-test-response"></a>
+## Extending the Test Response
+
+<a name="macros"></a>
+### Macros
+
+We are able to add our own methods, or macros, to the `Illuminate\Testing\TestResponse` class. The class's `macro` method accept a method name and a closure, which will be executed when this custom method is called. We can access the current test response via `$this`, as if it were a real method of the `Illuminate\Testing\TestResponse` class.
+
+For example, the following macros assert that JSON responses contain, or don't contain, a specific order object:
+
+```php
+use App\Models\Order;
+use Illuminate\Testing\TestResponse;
+
+TestResponse::macro('assertContain', function (Order $order) {
+    return $this->assertJson([
+        'id' => $order->id,
+        'created_at' => $order->created_at,
+    ]);
+});
+
+TestResponse::macro('assertDontContain', function (Order $order) {
+    return $this->assertJsonMissing([
+        'id' => $order->id,
+        'created_at' => $order->created_at,
+    ]);
+});
+```
+
+These macros can be defined at the `setUp` method for PHPUnit, the `beforeEach` method for Pest, or the `boot` method of a [service provider](/docs/{{version}}/providers).
+
+### Mixins
+
+In addition to macros. we can also add more functionality to the `Illuminate\Testing\TestResponse` class with it's `mixin` method.
+
+First, we define a new class with methods that we want to add to our test responses. Please note that those methods should not contain any parameters. The actual parameters and implementations will be part of the returned closures:
+
+```php
+namespace App\Mixins;
+
+use App\Models\Order;
+
+class OrderAssertions
+{
+    public function assertContain()
+    {
+        return function (Order $order) {
+            return $this->assertJson([
+                'id' => $order->id,
+                'created_at' => $order->created_at,
+            ]);
+        };
+    }
+
+    public function assertDontContain()
+    {
+        return function (Order $order) {
+            return $this->assertJsonMissing([
+                'id' => $order->id,
+                'created_at' => $order->created_at,
+            ]);
+        };
+    }
+}
+```
+
+Then we can pass an instance of the above class to the `mixin` method. And the `Illuminate\Testing\TestResponse` class will have all the extra functionality:
+
+```php
+use App\Mixins\OrderAssertions;
+use Illuminate\Testing\TestResponse;
+
+TestResponse::mixin(new OrderAssertions);
 ```
