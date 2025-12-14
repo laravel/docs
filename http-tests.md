@@ -2082,7 +2082,7 @@ $response->assertInvalid([
 <a name="macros"></a>
 ### Macros
 
-We are able to add our own methods, or macros, to the `Illuminate\Testing\TestResponse` class. The class's `macro` method accept a method name and a closure, which will be executed when this custom method is called. We can access the current test response via `$this`, as if it were a real method of the `Illuminate\Testing\TestResponse` class.
+We are able to add our own methods, or macros, to the `Illuminate\Testing\TestResponse` class. The class's `macro` method accept a method name and a closure, which will be executed when this custom method is called. The closure can access the current test response via `$this`, as if it were a real method of the `Illuminate\Testing\TestResponse` class.
 
 For example, the following macros assert that JSON responses contain, or don't contain, a specific order object:
 
