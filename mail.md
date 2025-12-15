@@ -1323,6 +1323,12 @@ Mail::assertNothingQueued();
 Mail::assertQueuedCount(3);
 ```
 
+You can also assert the total number of mailables that have been sent or queued using the `assertOutgoingCount` method:
+
+```php
+Mail::assertOutgoingCount(3);
+```
+
 You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
 
 ```php
