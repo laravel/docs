@@ -102,7 +102,7 @@ return response($content)
 Laravel includes a `cache.headers` middleware, which may be used to quickly set the `Cache-Control` header for a group of routes. Directives should be provided using the "snake case" equivalent of the corresponding cache-control directive and should be separated by a semicolon. If `etag` is specified in the list of directives, an MD5 hash of the response content will automatically be set as the ETag identifier:
 
 ```php
-Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
+Route::middleware('cache.headers:public;max_age=30;s_maxage=300;stale_while_revalidate=600;etag')->group(function () {
     Route::get('/privacy', function () {
         // ...
     });
