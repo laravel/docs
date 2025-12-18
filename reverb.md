@@ -11,6 +11,9 @@
     - [Debugging](#debugging)
     - [Restarting](#restarting)
 - [Monitoring](#monitoring)
+- [Events](#events)
+    - [Dispatched Events](#dispatched-events)
+    - [Listening for Events](#listening-for-events)
 - [Running Reverb in Production](#production)
     - [Open Files](#open-files)
     - [Event Loop](#event-loop)
@@ -191,6 +194,66 @@ Next, add the Pulse cards for each recorder to your [Pulse dashboard](/docs/{{ve
 ```
 
 Connection activity is recorded by polling for new updates on a periodic basis. To ensure this information is rendered correctly on the Pulse dashboard, you must run the `pulse:check` daemon on your Reverb server. If you are running Reverb in a [horizontally scaled](#scaling) configuration, you should only run this daemon on one of your servers.
+
+<a name="events"></a>
+## Events
+
+Reverb dispatches internal events during the lifecycle of a connection and message handling. You may listen for these events using [Laravel Event Listener](/docs/{{version}}/events) to perform actions when connections are managed or messages are exchanged.
+
+<a name="dispatched-events"></a>
+### Dispatched Events
+
+The following events are dispatched by Reverb:
+
+<div class="overflow-auto">
+
+| Event Name | Class | Description |
+| --- | --- | --- |
+| ChannelCreated | [`Laravel\Reverb\Events\ChannelCreated`](https://github.com/laravel/reverb/blob/main/src/Events/ChannelCreated.php) | Dispatched when a channel is created. This typically occurs when the first connection subscribes to a specific channel. The event receives the `Laravel\Reverb\Protocols\Pusher\Channel` instance. |
+| ChannelRemoved | [`Laravel\Reverb\Events\ChannelRemoved`](https://github.com/laravel/reverb/blob/main/src/Events/ChannelRemoved.php) | Dispatched when a channel is removed. This typically occurs when the last connection unsubscribes from a channel. The event receives the `Laravel\Reverb\Protocols\Pusher\Channel` instance. |
+| ConnectionPruned | [`Laravel\Reverb\Events\ConnectionPruned`](https://github.com/laravel/reverb/blob/main/src/Events/ConnectionPruned.php) | Dispatched when a stale connection is pruned by the server. The event receives the `Laravel\Reverb\Contracts\Connection` instance. |
+| MessageReceived | [`Laravel\Reverb\Events\MessageReceived`](https://github.com/laravel/reverb/blob/main/src/Events/MessageReceived.php) | Dispatched when a message is received from a client connection. The event receives the `Laravel\Reverb\Contracts\Connection` instance and the raw string `$message`. |
+| MessageSent | [`Laravel\Reverb\Events\MessageSent`](https://github.com/laravel/reverb/blob/main/src/Events/MessageSent.php) | Dispatched when a message is sent to a client connection. The event receives the `Laravel\Reverb\Contracts\Connection` instance and the raw string `$message`. |
+
+</div>
+
+<a name="listening-for-events"></a>
+### Listening for Events
+
+As these events are dispatched internally by Reverb, you cannot modify them directly. However, you can listen for them by defining a listener in your application.
+
+First, create a listener using the `make:listener` Artisan command:
+
+```shell
+php artisan make:listener LogMessageReceived --event="\Laravel\Reverb\Events\MessageReceived"
+```
+
+Next, define the logic in your listener's `handle` method. You may access the connection and message data via the event's public properties:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use Laravel\Reverb\Events\MessageReceived;
+
+class LogMessageReceived
+{
+    /**
+     * Handle the event.
+     */
+    public function handle(MessageReceived $event): void
+    {
+        // Access the raw message...
+        $payload = $event->message;
+
+        // Access the connection details...
+        $socketId = $event->connection->id();
+    }
+}
+```
+
+Finally, ensure your listener is registered in your application's [AppServiceProvider](/docs/{{version}}/events#manually-registering-events) or automatically discovered if you are using event discovery.
 
 <a name="production"></a>
 ## Running Reverb in Production
