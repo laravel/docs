@@ -18,6 +18,7 @@
     - [Ports](#ports)
     - [Process Management](#process-management)
     - [Scaling](#scaling)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -316,3 +317,30 @@ REVERB_SCALING_ENABLED=true
 Next, you should have a dedicated, central Redis server to which all of the Reverb servers will communicate. Reverb will use the [default Redis connection configured for your application](/docs/{{version}}/redis#configuration) to publish messages to all of your Reverb servers.
 
 Once you have enabled Reverb's scaling option and configured a Redis server, you may simply invoke the `reverb:start` command on multiple servers that are able to communicate with your Redis server. These Reverb servers should be placed behind a load balancer that distributes incoming requests evenly among the servers.
+
+<a name="events"></a>
+## Events
+
+Reverb dispatches internal events during the lifecycle of a connection and message handling. You may [listen for these events](/docs/{{version}}/events) to perform actions when connections are managed or messages are exchanged.
+
+The following events are dispatched by Reverb:
+
+#### `Laravel\Reverb\Events\ChannelCreated`
+
+Dispatched when a channel is created. This typically occurs when the first connection subscribes to a specific channel. The event receives the `Laravel\Reverb\Protocols\Pusher\Channel` instance.
+
+#### `Laravel\Reverb\Events\ChannelRemoved`
+
+Dispatched when a channel is removed. This typically occurs when the last connection unsubscribes from a channel. The event receives the `Laravel\Reverb\Protocols\Pusher\Channel` instance.
+
+#### `Laravel\Reverb\Events\ConnectionPruned`
+
+Dispatched when a stale connection is pruned by the server. The event receives the `Laravel\Reverb\Contracts\Connection` instance.
+
+#### `Laravel\Reverb\Events\MessageReceived`
+
+Dispatched when a message is received from a client connection. The event receives the `Laravel\Reverb\Contracts\Connection` instance and the raw string `$message`.
+
+#### `Laravel\Reverb\Events\MessageSent`
+
+Dispatched when a message is sent to a client connection. The event receives the `Laravel\Reverb\Contracts\Connection` instance and the raw string `$message`.
