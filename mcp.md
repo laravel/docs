@@ -494,8 +494,6 @@ Available annotations include:
 | `#[IsIdempotent]`  | boolean | Indicates repeated calls with same arguments have no additional effect (when not read-only).   |
 | `#[IsOpenWorld]`   | boolean | Indicates the tool may interact with external entities.                                        |
 
-#### Explicitly Setting Annotation Values
-
 Annotation values can be explicitly set using boolean arguments:
 
 ```php
@@ -514,6 +512,7 @@ class CurrentWeatherTool extends Tool
     //
 }
 ```
+
 <a name="conditional-tool-registration"></a>
 ### Conditional Tool Registration
 
