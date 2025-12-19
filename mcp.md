@@ -494,6 +494,25 @@ Available annotations include:
 | `#[IsIdempotent]`  | boolean | Indicates repeated calls with same arguments have no additional effect (when not read-only).   |
 | `#[IsOpenWorld]`   | boolean | Indicates the tool may interact with external entities.                                        |
 
+Annotation values can be explicitly set using boolean arguments:
+
+```php
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsIdempotent;
+use Laravel\Mcp\Server\Tool;
+
+#[IsReadOnly(true)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
+#[IsIdempotent(true)]
+class CurrentWeatherTool extends Tool
+{
+    //
+}
+```
+
 <a name="conditional-tool-registration"></a>
 ### Conditional Tool Registration
 
