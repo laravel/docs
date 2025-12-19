@@ -494,6 +494,35 @@ Available annotations include:
 | `#[IsIdempotent]`  | boolean | Indicates repeated calls with same arguments have no additional effect (when not read-only).   |
 | `#[IsOpenWorld]`   | boolean | Indicates the tool may interact with external entities.                                        |
 
+> [!NOTE]
+> Tool annotations are optional, but omitted annotations are assigned **default values**
+> as defined by the MCP specification.
+>
+> This means that not specifying an annotation does **not** imply `false`.
+> For example, omitting `#[IsDestructive]` does not guarantee that a tool
+> will be treated as non-destructive during MCP inspection.
+
+#### Explicitly Setting Annotation Values
+
+To avoid ambiguity—especially during automated MCP inspection or OpenAI app review—
+it is recommended to explicitly define annotation values:
+
+```php
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsIdempotent;
+use Laravel\Mcp\Server\Tool;
+
+#[IsReadOnly(true)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
+#[IsIdempotent(true)]
+class CurrentWeatherTool extends Tool
+{
+    //
+}
+```
 <a name="conditional-tool-registration"></a>
 ### Conditional Tool Registration
 
