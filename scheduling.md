@@ -495,6 +495,12 @@ Typically, you would not add a scheduler cron entry to your local development ma
 php artisan schedule:work
 ```
 
+You can also pass a --whisper option to the `schedule:work` command. The option is passed through to the `schedule:run` command, which hides the "No scheduled commands are ready to run" message from the output, producing cleaner logs and terminal output.
+
+```shell
+php artisan schedule:work --whisper
+```
+
 <a name="task-output"></a>
 ## Task Output
 
