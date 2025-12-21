@@ -236,7 +236,7 @@ $users = $users->makeHidden(['address', 'phone_number']);
 <a name="method-mergeVisible"></a>
 #### `mergeVisible($attributes)` {.collection-method}
 
-The `mergeVisible` method [makes attributes visible](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that typically merges these attributes to the `$visible` array on each model in the collection:
+The `mergeVisible` method [makes additional attributes visible](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) while retaining existing visible attributes:
 
 ```php
 $users = $users->mergeVisible(['middle_name']);
@@ -245,7 +245,7 @@ $users = $users->mergeVisible(['middle_name']);
 <a name="method-mergeHidden"></a>
 #### `mergeHidden($attributes)` {.collection-method}
 
-The `mergeHidden` method [hides attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that typically merges these attributes to the `$hidden` array on each model in the collection:
+The `mergeHidden` method [hides additional attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) twhile retaining existing hidden attributes:
 
 ```php
 $users = $users->mergeHidden(['last_login_at']);
