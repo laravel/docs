@@ -245,7 +245,7 @@ $users = $users->mergeVisible(['middle_name']);
 <a name="method-mergeHidden"></a>
 #### `mergeHidden($attributes)` {.collection-method}
 
-The `mergeHidden` method [hides additional attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) twhile retaining existing hidden attributes:
+The `mergeHidden` method [hides additional attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) while retaining existing hidden attributes:
 
 ```php
 $users = $users->mergeHidden(['last_login_at']);
