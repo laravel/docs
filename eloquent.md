@@ -325,8 +325,19 @@ If you need to customize the names of the columns used to store the timestamps, 
 
 class Flight extends Model
 {
-    const CREATED_AT = 'creation_date';
-    const UPDATED_AT = 'updated_date';
+    /**
+     * The name of the "created at" column.
+     *
+     * @var string|null
+     */
+    public const CREATED_AT = 'creation_date';
+
+    /**
+     * The name of the "updated at" column.
+     *
+     * @var string|null
+     */
+    public const UPDATED_AT = 'updated_date';
 }
 ```
 
