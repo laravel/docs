@@ -96,7 +96,7 @@ To see how read / write connections should be configured, let's look at this exa
     ],
     'write' => [
         'host' => [
-            '196.168.1.3',
+            '192.168.1.3',
         ],
     ],
     'sticky' => true,
