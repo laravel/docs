@@ -199,7 +199,7 @@ Connection activity is recorded by polling for new updates on a periodic basis. 
 Due to the long-running nature of WebSocket servers, you may need to make some optimizations to your server and hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the resources available on your server.
 
 > [!NOTE]
-> If your site is managed by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel. By enabling the Reverb integration, Forge will ensure your server is production-ready, including installing any required extensions and increasing the allowed number of connections.
+> [Laravel Cloud](https://cloud.laravel.com) offers fully managed WebSocket infrastructure powered by Laravel Reverb clusters, allowing you to scale and ship Reverb enabled applications without managing infrastructure.
 
 <a name="open-files"></a>
 ### Open Files
