@@ -815,6 +815,9 @@ If you are using Amazon AWS or another "cloud" load balancer provider, you may n
 })
 ```
 
+> [!NOTE]
+> `*` will get the client IP address from the `REMOTE_ADDR` header, if you need the leftmost IP from the standard `Forwarded` header use `0.0.0.0/0`.
+
 <a name="configuring-trusted-hosts"></a>
 ## Configuring Trusted Hosts
 
