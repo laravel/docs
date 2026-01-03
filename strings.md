@@ -72,6 +72,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::mask](#method-str-mask)
 [Str::match](#method-str-match)
 [Str::matchAll](#method-str-match-all)
+[Str::isMatch](#method-str-is-match)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
@@ -1083,6 +1084,23 @@ $result = Str::matchAll('/f(\w*)/', 'bar fun bar fly');
 ```
 
 If no matches are found, an empty collection will be returned.
+
+<a name="method-str-is-match"></a>
+#### `Str::isMatch()` {.collection-method}
+
+The `Str::isMatch` method will return `true` if the string matches a given regular expression:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::isMatch('/foo (.*)/', 'foo bar');
+
+// true
+
+$result = Str::isMatch('/foo (.*)/', 'laravel');
+
+// false
+```
 
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {.collection-method}

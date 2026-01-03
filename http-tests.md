@@ -1025,6 +1025,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertFound](#assert-found)
 [assertGone](#assert-gone)
 [assertHeader](#assert-header)
+[assertHeaderContains](#assert-header-contains)
 [assertHeaderMissing](#assert-header-missing)
 [assertInternalServerError](#assert-internal-server-error)
 [assertJson](#assert-json)
@@ -1256,6 +1257,15 @@ Assert that the given header and value is present on the response:
 
 ```php
 $response->assertHeader($headerName, $value = null);
+```
+
+<a name="assert-header-contains"></a>
+#### assertHeaderContains
+
+Assert that the given header contains a given substring value:
+
+```php
+$response->assertHeaderContains($headerName, $value);
 ```
 
 <a name="assert-header-missing"></a>

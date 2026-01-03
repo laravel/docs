@@ -64,7 +64,7 @@ You should update the following dependencies in your application's `composer.jso
 
 **Likelihood Of Impact: Low**
 
-Support for [Carbon 2.x](https://carbon.nesbot.com/docs/) has been removed. All Laravel 12 applications now require [Carbon 3.x](https://carbon.nesbot.com/docs/#api-carbon-3).
+Support for Carbon 2.x has been removed. All Laravel 12 applications now require [Carbon 3.x](https://carbon.nesbot.com/guide/getting-started/migration.html).
 
 <a name="updating-the-laravel-installer"></a>
 ### Updating the Laravel Installer

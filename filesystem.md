@@ -213,25 +213,13 @@ Next, you may include the `read-only` configuration option in one or more of you
 <a name="amazon-s3-compatible-filesystems"></a>
 ### Amazon S3 Compatible Filesystems
 
-By default, your application's `filesystems` configuration file contains a disk configuration for the `s3` disk. In addition to using this disk to interact with [Amazon S3](https://aws.amazon.com/s3/), you may use it to interact with any S3-compatible file storage service such as [MinIO](https://github.com/minio/minio), [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/), [Vultr Object Storage](https://www.vultr.com/products/object-storage/), [Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/), or [Hetzner Cloud Storage](https://www.hetzner.com/storage/object-storage/).
+By default, your application's `filesystems` configuration file contains a disk configuration for the `s3` disk. In addition to using this disk to interact with [Amazon S3](https://aws.amazon.com/s3/), you may use it to interact with any S3-compatible file storage service such as [RustFS](https://github.com/rustfs/rustfs), [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/), [Vultr Object Storage](https://www.vultr.com/products/object-storage/), [Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/), or [Hetzner Cloud Storage](https://www.hetzner.com/storage/object-storage/).
 
 Typically, after updating the disk's credentials to match the credentials of the service you are planning to use, you only need to update the value of the `endpoint` configuration option. This option's value is typically defined via the `AWS_ENDPOINT` environment variable:
 
 ```php
-'endpoint' => env('AWS_ENDPOINT', 'https://minio:9000'),
+'endpoint' => env('AWS_ENDPOINT', 'https://rustfs:9000'),
 ```
-
-<a name="minio"></a>
-#### MinIO
-
-In order for Laravel's Flysystem integration to generate proper URLs when using MinIO, you should define the `AWS_URL` environment variable so that it matches your application's local URL and includes the bucket name in the URL path:
-
-```ini
-AWS_URL=http://localhost:9000/local
-```
-
-> [!WARNING]
-> Generating temporary storage URLs via the `temporaryUrl` method may not work when using MinIO if the `endpoint` is not accessible by the client.
 
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances

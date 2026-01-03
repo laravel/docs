@@ -79,6 +79,8 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [modelKeys](#method-modelKeys)
 [makeVisible](#method-makeVisible)
 [makeHidden](#method-makeHidden)
+[mergeVisible](#method-mergeVisible)
+[mergeHidden](#method-mergeHidden)
 [only](#method-only)
 [partition](#method-partition)
 [setAppends](#method-setAppends)
@@ -229,6 +231,24 @@ The `makeHidden` method [hides attributes](/docs/{{version}}/eloquent-serializat
 
 ```php
 $users = $users->makeHidden(['address', 'phone_number']);
+```
+
+<a name="method-mergeVisible"></a>
+#### `mergeVisible($attributes)` {.collection-method}
+
+The `mergeVisible` method [makes additional attributes visible](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) while retaining existing visible attributes:
+
+```php
+$users = $users->mergeVisible(['middle_name']);
+```
+
+<a name="method-mergeHidden"></a>
+#### `mergeHidden($attributes)` {.collection-method}
+
+The `mergeHidden` method [hides additional attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) while retaining existing hidden attributes:
+
+```php
+$users = $users->mergeHidden(['last_login_at']);
 ```
 
 <a name="method-only"></a>
