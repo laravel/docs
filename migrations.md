@@ -1146,7 +1146,7 @@ $table->ulidMorphs('taggable');
 
 The `uuidMorphs` method is a convenience method that adds a `{column}_id` `CHAR(36)` equivalent column and a `{column}_type` `VARCHAR` equivalent column.
 
-This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that use UUID identifiers. In the following example, `taggable_id` and `taggable_type` columns would be created:
+This method is intended to be used when defining the columns necessary for a [polymorphic Eloquent relationship](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) that use UUID identifiers. In the following example, `taggable_id` and `taggable_type` columns would be created:
 
 ```php
 $table->uuidMorphs('taggable');
