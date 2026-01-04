@@ -134,12 +134,6 @@ public function boot(): void
 }
 ```
 
-The `event:list` command may be used to list all of the listeners registered within your application:
-
-```shell
-php artisan event:list
-```
-
 <a name="closure-listeners"></a>
 ### Closure Listeners
 
