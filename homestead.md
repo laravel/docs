@@ -209,6 +209,9 @@ folders:
 > [!WARNING]
 > Windows users should not use the `~/` path syntax and instead should use the full path to their project, such as `C:\Users\user\Code\project1`.
 
+> [!NOTE] 
+> macOS users: ensure folder permissions are correct when using NFS or rsync.
+
 You should always map individual applications to their own folder mapping instead of mapping a single large directory that contains all of your applications. When you map a folder, the virtual machine must keep track of all disk IO for *every* file in the folder. You may experience reduced performance if you have a large number of files in a folder:
 
 ```yaml
@@ -221,6 +224,9 @@ folders:
 
 > [!WARNING]
 > You should never mount `.` (the current directory) when using Homestead. This causes Vagrant to not map the current folder to `/vagrant` and will break optional features and cause unexpected results while provisioning.
+
+> [!NOTE] 
+> macOS's users: ensure folder permissions allow NFS access; otherwise the VM may not see all files correctly.
 
 To enable [NFS](https://developer.hashicorp.com/vagrant/docs/synced-folders/nfs), you may add a `type` option to your folder mapping:
 
@@ -245,6 +251,8 @@ folders:
           rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
           rsync__exclude: ["node_modules"]
 ```
+> [!NOTE] 
+> macOS/Windows users: rsync may not preserve some permissions; ensure your project folders are writable by the VM user (vagrant).
 
 <a name="configuring-nginx-sites"></a>
 ### Configuring Nginx Sites
