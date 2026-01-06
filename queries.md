@@ -665,7 +665,7 @@ WHERE published = true AND (
 The `whereNone` method may be used to retrieve records where none of the given columns match a given constraint:
 
 ```php
-$posts = DB::table('albums')
+$albums = DB::table('albums')
     ->where('published', true)
     ->whereNone([
         'title',
@@ -823,7 +823,7 @@ You may also provide a query object as the `whereIn` method's second argument:
 ```php
 $activeUsers = DB::table('users')->select('id')->where('is_active', 1);
 
-$users = DB::table('comments')
+$comments = DB::table('comments')
     ->whereIn('user_id', $activeUsers)
     ->get();
 ```
