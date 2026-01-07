@@ -679,7 +679,7 @@ class PodcastController extends Controller
     }
 }
 ```
-Alternatively, you may type-hint the dependency in the `handle` method of a job.
+Alternatively, you may type-hint [the dependency in the `handle` method of a job](/docs/{{version}}/queues.md#handle-method-dependency-injection).
 
 > [!WARNING]
 > In Laravel 12, if a dependency is nullable and defines `null` as its default value (e.g. `public function __construct(?Service $service = null)`), the container will inject `null` instead of attempting to resolve the dependency. To force resolution, remove the default `null` value.
